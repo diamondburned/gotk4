@@ -354,6 +354,11 @@ func (s StateType) String() string {
 
 // StateTypeForName gets the StateType corresponding to the description string
 // name.
+//
+// The function takes the following parameters:
+//
+//    - name: character string state name.
+//
 func StateTypeForName(name string) StateType {
 	var _arg1 *C.gchar       // out
 	var _cret C.AtkStateType // in
@@ -372,6 +377,11 @@ func StateTypeForName(name string) StateType {
 }
 
 // StateTypeGetName gets the description string describing the StateType type.
+//
+// The function takes the following parameters:
+//
+//    - typ whose name is required.
+//
 func StateTypeGetName(typ StateType) string {
 	var _arg1 C.AtkStateType // out
 	var _cret *C.gchar       // in
@@ -389,6 +399,11 @@ func StateTypeGetName(typ StateType) string {
 }
 
 // StateTypeRegister: register a new object state.
+//
+// The function takes the following parameters:
+//
+//    - name: character string describing the new state.
+//
 func StateTypeRegister(name string) StateType {
 	var _arg1 *C.gchar       // out
 	var _cret C.AtkStateType // in

@@ -73,6 +73,13 @@ func marshalBlendNoder(p uintptr) (interface{}, error) {
 
 // NewBlendNode creates a GskRenderNode that will use blend_mode to blend the
 // top node onto the bottom node.
+//
+// The function takes the following parameters:
+//
+//    - bottom node to be drawn.
+//    - top: node to be blended onto the bottom node.
+//    - blendMode: blend mode to use.
+//
 func NewBlendNode(bottom, top RenderNoder, blendMode BlendMode) *BlendNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
@@ -190,6 +197,12 @@ func marshalBlurNoder(p uintptr) (interface{}, error) {
 }
 
 // NewBlurNode creates a render node that blurs the child.
+//
+// The function takes the following parameters:
+//
+//    - child node to blur.
+//    - radius: blur radius.
+//
 func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 C.float          // out
@@ -278,6 +291,14 @@ func marshalBorderNoder(p uintptr) (interface{}, error) {
 // inside the given outline.
 //
 // The 4 sides of the border can have different widths and colors.
+//
+// The function takes the following parameters:
+//
+//    - outline describing the outline of the border.
+//    - borderWidth: stroke width of the border on the top, right, bottom and
+//    left side respectively.
+//    - borderColor: color used on the top, right, bottom and left side.
+//
 func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) *BorderNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.float          // out
@@ -374,6 +395,11 @@ func marshalCairoNoder(p uintptr) (interface{}, error) {
 // the area given by bounds.
 //
 // You can draw to the cairo surface using gsk.CairoNode.GetDrawContext().
+//
+// The function takes the following parameters:
+//
+//    - bounds: rectangle to render to.
+//
 func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
@@ -456,6 +482,12 @@ func marshalClipNoder(p uintptr) (interface{}, error) {
 
 // NewClipNode creates a GskRenderNode that will clip the child to the area
 // given by clip.
+//
+// The function takes the following parameters:
+//
+//    - child: node to draw.
+//    - clip to apply.
+//
 func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
@@ -549,6 +581,13 @@ func marshalColorMatrixNoder(p uintptr) (interface{}, error) {
 //    pixel = color_matrix * pixel + color_offset
 //
 // for every pixel.
+//
+// The function takes the following parameters:
+//
+//    - child: node to draw.
+//    - colorMatrix: matrix to apply.
+//    - colorOffset values to add to the color.
+//
 func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) *ColorMatrixNode {
 	var _arg1 *C.GskRenderNode     // out
 	var _arg2 *C.graphene_matrix_t // out
@@ -656,6 +695,12 @@ func marshalColorNoder(p uintptr) (interface{}, error) {
 
 // NewColorNode creates a GskRenderNode that will render the color specified by
 // rgba into the area given by bounds.
+//
+// The function takes the following parameters:
+//
+//    - rgba: GdkRGBA specifying a color.
+//    - bounds: rectangle to render the color into.
+//
 func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 	var _arg1 *C.GdkRGBA         // out
 	var _arg2 *C.graphene_rect_t // out
@@ -716,6 +761,16 @@ func marshalConicGradientNoder(p uintptr) (interface{}, error) {
 // The conic gradient starts around center in the direction of rotation. A
 // rotation of 0 means that the gradient points up. Color stops are then added
 // clockwise.
+//
+// The function takes the following parameters:
+//
+//    - bounds of the node.
+//    - center of the gradient.
+//    - rotation of the gradient in degrees.
+//    - colorStops: pointer to an array of GskColorStop defining the gradient.
+//    The offsets of all color stops must be increasing. The first stop's
+//    offset must be >= 0 and the last stop's offset must be <= 1.
+//
 func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) *ConicGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -861,6 +916,11 @@ func marshalContainerNoder(p uintptr) (interface{}, error) {
 // children.
 //
 // The new node will acquire a reference to each of the children.
+//
+// The function takes the following parameters:
+//
+//    - children of the node.
+//
 func NewContainerNode(children []RenderNoder) *ContainerNode {
 	var _arg1 **C.GskRenderNode // out
 	var _arg2 C.guint
@@ -961,6 +1021,14 @@ func marshalCrossFadeNoder(p uintptr) (interface{}, error) {
 
 // NewCrossFadeNode creates a GskRenderNode that will do a cross-fade between
 // start and end.
+//
+// The function takes the following parameters:
+//
+//    - start node to be drawn.
+//    - end: node to be cross_fadeed onto the start node.
+//    - progress: how far the fade has progressed from start to end. The value
+//    will be clamped to the range [0 ... 1].
+//
 func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
@@ -1083,6 +1151,12 @@ func marshalDebugNoder(p uintptr) (interface{}, error) {
 // the given child.
 //
 // Adding this node has no visual effect.
+//
+// The function takes the following parameters:
+//
+//    - child to add debug info for.
+//    - message: debug message.
+//
 func NewDebugNode(child RenderNoder, message string) *DebugNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.char          // out
@@ -1184,6 +1258,15 @@ func marshalGLShaderNoder(p uintptr) (interface{}, error) {
 // compiling the shader, then the node will draw pink. You should use
 // gsk.GLShader.Compile() to ensure the shader will work for the renderer before
 // using it.
+//
+// The function takes the following parameters:
+//
+//    - shader: GLShader.
+//    - bounds: rectangle to render the shader into.
+//    - args arguments for the uniforms.
+//    - children: array of child nodes, these will be rendered to textures and
+//    used as input.
+//
 func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNoder) *GLShaderNode {
 	var _arg1 *C.GskGLShader     // out
 	var _arg2 *C.graphene_rect_t // out
@@ -1334,6 +1417,16 @@ func marshalInsetShadowNoder(p uintptr) (interface{}, error) {
 
 // NewInsetShadowNode creates a GskRenderNode that will render an inset shadow
 // into the box given by outline.
+//
+// The function takes the following parameters:
+//
+//    - outline of the region containing the shadow.
+//    - color of the shadow.
+//    - dx: horizontal offset of shadow.
+//    - dy: vertical offset of shadow.
+//    - spread: how far the shadow spreads towards the inside.
+//    - blurRadius: how much blur to apply to the shadow.
+//
 func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *InsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -1489,6 +1582,16 @@ func marshalLinearGradientNoder(p uintptr) (interface{}, error) {
 // NewLinearGradientNode creates a GskRenderNode that will create a linear
 // gradient from the given points and color stops, and render that into the area
 // given by bounds.
+//
+// The function takes the following parameters:
+//
+//    - bounds: rectangle to render the linear gradient into.
+//    - start: point at which the linear gradient will begin.
+//    - end: point at which the linear gradient will finish.
+//    - colorStops: pointer to an array of GskColorStop defining the gradient.
+//    The offsets of all color stops must be increasing. The first stop's
+//    offset must be >= 0 and the last stop's offset must be <= 1.
+//
 func NewLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, colorStops []ColorStop) *LinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -1609,6 +1712,12 @@ func marshalOpacityNoder(p uintptr) (interface{}, error) {
 
 // NewOpacityNode creates a GskRenderNode that will drawn the child with reduced
 // opacity.
+//
+// The function takes the following parameters:
+//
+//    - child: node to draw.
+//    - opacity to apply.
+//
 func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 C.float          // out
@@ -1695,6 +1804,16 @@ func marshalOutsetShadowNoder(p uintptr) (interface{}, error) {
 
 // NewOutsetShadowNode creates a GskRenderNode that will render an outset shadow
 // around the box given by outline.
+//
+// The function takes the following parameters:
+//
+//    - outline of the region surrounded by shadow.
+//    - color of the shadow.
+//    - dx: horizontal offset of shadow.
+//    - dy: vertical offset of shadow.
+//    - spread: how far the shadow spreads towards the inside.
+//    - blurRadius: how much blur to apply to the shadow.
+//
 func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *OutsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -1852,6 +1971,21 @@ func marshalRadialGradientNoder(p uintptr) (interface{}, error) {
 // The radial gradient starts around center. The size of the gradient is
 // dictated by hradius in horizontal orientation and by vradius in vertial
 // orientation.
+//
+// The function takes the following parameters:
+//
+//    - bounds of the node.
+//    - center of the gradient.
+//    - hradius: horizontal radius.
+//    - vradius: vertical radius.
+//    - start: percentage >= 0 that defines the start of the gradient around
+//    center.
+//    - end: percentage >= 0 that defines the end of the gradient around
+//    center.
+//    - colorStops: pointer to an array of GskColorStop defining the gradient.
+//    The offsets of all color stops must be increasing. The first stop's
+//    offset must be >= 0 and the last stop's offset must be <= 1.
+//
 func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, colorStops []ColorStop) *RadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -2032,6 +2166,14 @@ func marshalRepeatNoder(p uintptr) (interface{}, error) {
 
 // NewRepeatNode creates a GskRenderNode that will repeat the drawing of child
 // across the given bounds.
+//
+// The function takes the following parameters:
+//
+//    - bounds of the area to be painted.
+//    - child to repeat.
+//    - childBounds: area of the child to repeat or NULL to use the child's
+//    bounds.
+//
 func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphene.Rect) *RepeatNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 *C.GskRenderNode   // out
@@ -2124,6 +2266,16 @@ func marshalRepeatingLinearGradientNoder(p uintptr) (interface{}, error) {
 // NewRepeatingLinearGradientNode creates a GskRenderNode that will create a
 // repeating linear gradient from the given points and color stops, and render
 // that into the area given by bounds.
+//
+// The function takes the following parameters:
+//
+//    - bounds: rectangle to render the linear gradient into.
+//    - start: point at which the linear gradient will begin.
+//    - end: point at which the linear gradient will finish.
+//    - colorStops: pointer to an array of GskColorStop defining the gradient.
+//    The offsets of all color stops must be increasing. The first stop's
+//    offset must be >= 0 and the last stop's offset must be <= 1.
+//
 func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, colorStops []ColorStop) *RepeatingLinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -2180,6 +2332,21 @@ func marshalRepeatingRadialGradientNoder(p uintptr) (interface{}, error) {
 // The radial gradient starts around center. The size of the gradient is
 // dictated by hradius in horizontal orientation and by vradius in vertial
 // orientation.
+//
+// The function takes the following parameters:
+//
+//    - bounds of the node.
+//    - center of the gradient.
+//    - hradius: horizontal radius.
+//    - vradius: vertical radius.
+//    - start: percentage >= 0 that defines the start of the gradient around
+//    center.
+//    - end: percentage >= 0 that defines the end of the gradient around
+//    center.
+//    - colorStops: pointer to an array of GskColorStop defining the gradient.
+//    The offsets of all color stops must be increasing. The first stop's
+//    offset must be >= 0 and the last stop's offset must be <= 1.
+//
 func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, colorStops []ColorStop) *RepeatingRadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -2242,6 +2409,12 @@ func marshalRoundedClipNoder(p uintptr) (interface{}, error) {
 
 // NewRoundedClipNode creates a GskRenderNode that will clip the child to the
 // area given by clip.
+//
+// The function takes the following parameters:
+//
+//    - child: node to draw.
+//    - clip to apply.
+//
 func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.GskRoundedRect // out
@@ -2329,6 +2502,12 @@ func marshalShadowNoder(p uintptr) (interface{}, error) {
 
 // NewShadowNode creates a GskRenderNode that will draw a child with the given
 // shadows below it.
+//
+// The function takes the following parameters:
+//
+//    - child: node to draw.
+//    - shadows to apply.
+//
 func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskShadow     // out
@@ -2445,6 +2624,14 @@ func marshalTextNoder(p uintptr) (interface{}, error) {
 // NewTextNode creates a render node that renders the given glyphs.
 //
 // Note that color may not be used if the font contains color glyphs.
+//
+// The function takes the following parameters:
+//
+//    - font containing the glyphs.
+//    - glyphs to render.
+//    - color: foreground color to render with.
+//    - offset of the baseline.
+//
 func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) *TextNode {
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
@@ -2616,6 +2803,12 @@ func marshalTextureNoder(p uintptr) (interface{}, error) {
 
 // NewTextureNode creates a GskRenderNode that will render the given texture
 // into the area given by bounds.
+//
+// The function takes the following parameters:
+//
+//    - texture: GdkTexture.
+//    - bounds: rectangle to render the texture into.
+//
 func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 	var _arg1 *C.GdkTexture      // out
 	var _arg2 *C.graphene_rect_t // out
@@ -2685,6 +2878,12 @@ func marshalTransformNoder(p uintptr) (interface{}, error) {
 
 // NewTransformNode creates a GskRenderNode that will transform the given child
 // with the given transform.
+//
+// The function takes the following parameters:
+//
+//    - child: node to transform.
+//    - transform to apply.
+//
 func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskTransform  // out

@@ -150,6 +150,12 @@ func marshalRadioButtonner(p uintptr) (interface{}, error) {
 
 // NewRadioButton creates a new RadioButton. To be of any practical value, a
 // widget should then be packed into the radio button.
+//
+// The function takes the following parameters:
+//
+//    - group: existing radio button group, or NULL if you are creating a new
+//    group.
+//
 func NewRadioButton(group []RadioButton) *RadioButton {
 	var _arg1 *C.GSList    // out
 	var _cret *C.GtkWidget // in
@@ -177,6 +183,11 @@ func NewRadioButton(group []RadioButton) *RadioButton {
 // NewRadioButtonFromWidget creates a new RadioButton, adding it to the same
 // group as radio_group_member. As with gtk_radio_button_new(), a widget should
 // be packed into the radio button.
+//
+// The function takes the following parameters:
+//
+//    - radioGroupMember: existing RadioButton.
+//
 func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _cret *C.GtkWidget      // in
@@ -196,6 +207,13 @@ func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 }
 
 // NewRadioButtonWithLabel creates a new RadioButton with a text label.
+//
+// The function takes the following parameters:
+//
+//    - group: existing radio button group, or NULL if you are creating a new
+//    group.
+//    - label: text label to display next to the radio button.
+//
 func NewRadioButtonWithLabel(group []RadioButton, label string) *RadioButton {
 	var _arg1 *C.GSList    // out
 	var _arg2 *C.gchar     // out
@@ -226,6 +244,12 @@ func NewRadioButtonWithLabel(group []RadioButton, label string) *RadioButton {
 
 // NewRadioButtonWithLabelFromWidget creates a new RadioButton with a text
 // label, adding it to the same group as radio_group_member.
+//
+// The function takes the following parameters:
+//
+//    - radioGroupMember: widget to get radio group from or NULL.
+//    - label: text string to display next to the radio button.
+//
 func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label string) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
@@ -252,6 +276,13 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 // adding it to the same group as group. The label will be created using
 // gtk_label_new_with_mnemonic(), so underscores in label indicate the mnemonic
 // for the button.
+//
+// The function takes the following parameters:
+//
+//    - group: radio button group, or NULL.
+//    - label: text of the button, with an underscore in front of the mnemonic
+//    character.
+//
 func NewRadioButtonWithMnemonic(group []RadioButton, label string) *RadioButton {
 	var _arg1 *C.GSList    // out
 	var _arg2 *C.gchar     // out
@@ -283,6 +314,13 @@ func NewRadioButtonWithMnemonic(group []RadioButton, label string) *RadioButton 
 // NewRadioButtonWithMnemonicFromWidget creates a new RadioButton containing a
 // label. The label will be created using gtk_label_new_with_mnemonic(), so
 // underscores in label indicate the mnemonic for the button.
+//
+// The function takes the following parameters:
+//
+//    - radioGroupMember: widget to get radio group from or NULL.
+//    - label: text of the button, with an underscore in front of the mnemonic
+//    character.
+//
 func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label string) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out

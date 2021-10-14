@@ -22,6 +22,11 @@ import "C"
 //
 // If string does not describe a valid transform, FALSE is returned and NULL is
 // put in out_transform.
+//
+// The function takes the following parameters:
+//
+//    - str: string to parse.
+//
 func TransformParse(str string) (*Transform, bool) {
 	var _arg1 *C.char         // out
 	var _arg2 *C.GskTransform // in

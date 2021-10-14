@@ -28,6 +28,11 @@ func GetDebugFlags() DebugFlags {
 }
 
 // SetDebugFlags sets the GTK debug flags.
+//
+// The function takes the following parameters:
+//
+//    - flags: debug flags to set.
+//
 func SetDebugFlags(flags DebugFlags) {
 	var _arg1 C.GtkDebugFlags // out
 

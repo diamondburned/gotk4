@@ -60,6 +60,11 @@ func marshalGesturePanner(p uintptr) (interface{}, error) {
 
 // NewGesturePan returns a newly created GtkGesture that recognizes pan
 // gestures.
+//
+// The function takes the following parameters:
+//
+//    - orientation: expected orientation.
+//
 func NewGesturePan(orientation Orientation) *GesturePan {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkGesture    // in

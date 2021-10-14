@@ -82,6 +82,16 @@ func marshalTreeListModeller(p uintptr) (interface{}, error) {
 
 // NewTreeListModel creates a new empty GtkTreeListModel displaying root with
 // all rows collapsed.
+//
+// The function takes the following parameters:
+//
+//    - root: GListModel to use as root.
+//    - passthrough: TRUE to pass through items from the models.
+//    - autoexpand: TRUE to set the autoexpand property and expand the root
+//    model.
+//    - createFunc: function to call to create the GListModel for the children
+//    of an item.
+//
 func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
 	var _arg1 *C.GListModel                     // out
 	var _arg2 C.gboolean                        // out

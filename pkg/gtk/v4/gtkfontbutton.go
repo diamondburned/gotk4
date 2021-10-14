@@ -89,6 +89,11 @@ func NewFontButton() *FontButton {
 
 // NewFontButtonWithFont creates a new font picker widget showing the given
 // font.
+//
+// The function takes the following parameters:
+//
+//    - fontname: name of font to display in font chooser dialog.
+//
 func NewFontButtonWithFont(fontname string) *FontButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

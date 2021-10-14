@@ -54,6 +54,12 @@ func marshalFilterListModeller(p uintptr) (interface{}, error) {
 
 // NewFilterListModel creates a new GtkFilterListModel that will filter model
 // using the given filter.
+//
+// The function takes the following parameters:
+//
+//    - model to sort, or NULL.
+//    - filter or NULL to not filter items.
+//
 func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel {
 	var _arg1 *C.GListModel         // out
 	var _arg2 *C.GtkFilter          // out

@@ -56,6 +56,11 @@ func marshalShortcutLabeller(p uintptr) (interface{}, error) {
 }
 
 // NewShortcutLabel creates a new GtkShortcutLabel with accelerator set.
+//
+// The function takes the following parameters:
+//
+//    - accelerator: initial accelerator.
+//
 func NewShortcutLabel(accelerator string) *ShortcutLabel {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

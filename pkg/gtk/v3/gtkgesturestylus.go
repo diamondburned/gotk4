@@ -49,6 +49,11 @@ func marshalGestureStylusser(p uintptr) (interface{}, error) {
 }
 
 // NewGestureStylus creates a new GestureStylus.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func NewGestureStylus(widget Widgetter) *GestureStylus {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

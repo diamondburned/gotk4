@@ -84,6 +84,13 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 // linked against an old version of GTK+ and calling the old version of
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK+.
+//
+// The function takes the following parameters:
+//
+//    - requiredMajor: required major version.
+//    - requiredMinor: required minor version.
+//    - requiredMicro: required micro version.
+//
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint  // out
 	var _arg2 C.guint  // out
@@ -112,6 +119,13 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 // associated pointer or keyboard (if any) are delivered to widget. If the
 // block_others parameter is TRUE, any other devices will be unable to interact
 // with widget during the grab.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//    - device to grab on.
+//    - blockOthers: TRUE to prevent other devices to interact with widget.
+//
 func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
@@ -132,6 +146,12 @@ func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 // DeviceGrabRemove removes a device grab from the given widget.
 //
 // You have to pair calls to gtk_device_grab_add() and gtk_device_grab_remove().
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//    - device: Device.
+//
 func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
@@ -398,6 +418,12 @@ func GetMinorVersion() uint {
 // You should add this group to your Context with g_option_context_add_group(),
 // if you are using g_option_context_parse() to parse your commandline
 // arguments.
+//
+// The function takes the following parameters:
+//
+//    - openDefaultDisplay: whether to open the default display when parsing
+//    the commandline arguments.
+//
 func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	var _arg1 C.gboolean      // out
 	var _cret *C.GOptionGroup // in
@@ -450,6 +476,11 @@ func GrabGetCurrent() Widgetter {
 //
 // Deprecated: Key snooping should not be done. Events should be handled by
 // widgets.
+//
+// The function takes the following parameters:
+//
+//    - snooperHandlerId identifies the key snooper to remove.
+//
 func KeySnooperRemove(snooperHandlerId uint) {
 	var _arg1 C.guint // out
 
@@ -488,6 +519,11 @@ func MainIteration() bool {
 
 // MainIterationDo runs a single iteration of the mainloop. If no events are
 // available either return or block depending on the value of blocking.
+//
+// The function takes the following parameters:
+//
+//    - blocking: TRUE if you want GTK+ to block if no events are pending.
+//
 func MainIterationDo(blocking bool) bool {
 	var _arg1 C.gboolean // out
 	var _cret C.gboolean // in

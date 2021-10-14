@@ -205,6 +205,11 @@ func (icon *Icon) String() string {
 
 // IconDeserialize deserializes a #GIcon previously serialized using
 // g_icon_serialize().
+//
+// The function takes the following parameters:
+//
+//    - value created with g_icon_serialize().
+//
 func IconDeserialize(value *glib.Variant) Iconner {
 	var _arg1 *C.GVariant // out
 	var _cret *C.GIcon    // in
@@ -233,6 +238,11 @@ func IconDeserialize(value *glib.Variant) Iconner {
 }
 
 // IconHash gets a hash for an icon.
+//
+// The function takes the following parameters:
+//
+//    - icon to an icon object.
+//
 func IconHash(icon cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -255,6 +265,11 @@ func IconHash(icon cgo.Handle) uint {
 // If your application or library provides one or more #GIcon implementations
 // you need to ensure that each #GType is registered with the type system prior
 // to calling g_icon_new_for_string().
+//
+// The function takes the following parameters:
+//
+//    - str: string obtained via g_icon_to_string().
+//
 func NewIconForString(str string) (Iconner, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GIcon  // in

@@ -91,6 +91,11 @@ func marshalExpanderer(p uintptr) (interface{}, error) {
 }
 
 // NewExpander creates a new expander using label as the text of the label.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the label.
+//
 func NewExpander(label string) *Expander {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -116,6 +121,12 @@ func NewExpander(label string) *Expander {
 // (two underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. Pressing Alt and that key activates the
 // button.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the label with an underscore in front of the mnemonic
+//    character.
+//
 func NewExpanderWithMnemonic(label string) *Expander {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

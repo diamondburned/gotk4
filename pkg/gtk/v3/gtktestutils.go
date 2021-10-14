@@ -24,6 +24,12 @@ import "C"
 // test function teardown.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
+//
+// The function takes the following parameters:
+//
+//    - windowTitle: title of the window to be displayed.
+//    - dialogText: text inside the window to be displayed.
+//
 func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -64,6 +70,12 @@ func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 // tend to alter (translate” label strings, so this function is genrally only
 // useful in test programs with predetermined locales, see gtk_test_init() for
 // more details.
+//
+// The function takes the following parameters:
+//
+//    - widget: valid label or container widget.
+//    - labelPattern: shell-glob pattern to match a label string.
+//
 func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -102,6 +114,12 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 // be returned. The general purpose of this function is to find the most likely
 // “action” widget, relative to another labeling widget. Such as finding a
 // button or text entry widget, given its corresponding label widget.
+//
+// The function takes the following parameters:
+//
+//    - baseWidget: valid widget, part of a widget hierarchy.
+//    - widgetType: type of a aearched for sibling widget.
+//
 func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) Widgetter {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.GType      // out
@@ -140,6 +158,13 @@ func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) Widgetter
 // gtk_test_find_label(), gtk_test_find_sibling() and gtk_test_widget_click()
 // for possible caveats involving the search of such widgets and synthesizing
 // widget events.
+//
+// The function takes the following parameters:
+//
+//    - widget: container widget, usually a GtkWindow.
+//    - labelPattern: shell-glob pattern to match a label string.
+//    - widgetType: type of a aearched for label sibling widget.
+//
 func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib.Type) Widgetter {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -208,6 +233,11 @@ func TestRegisterAllTypes() {
 // widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
+//
+// The function takes the following parameters:
+//
+//    - widget: valid widget pointer.
+//
 func TestSliderGetValue(widget Widgetter) float64 {
 	var _arg1 *C.GtkWidget // out
 	var _cret C.double     // in
@@ -230,6 +260,12 @@ func TestSliderGetValue(widget Widgetter) float64 {
 // lower and upper limits, according to the percentage argument.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
+//
+// The function takes the following parameters:
+//
+//    - widget: valid widget pointer.
+//    - percentage: value between 0 and 100.
+//
 func TestSliderSetPerc(widget Widgetter, percentage float64) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
@@ -247,6 +283,13 @@ func TestSliderSetPerc(widget Widgetter, percentage float64) {
 // or decrease of spin button’s value.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
+//
+// The function takes the following parameters:
+//
+//    - spinner: valid GtkSpinButton widget.
+//    - button: number of the pointer button for the event, usually 1, 2 or 3.
+//    - upwards: TRUE for upwards arrow click, FALSE for downwards arrow click.
+//
 func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
 	var _arg2 C.guint          // out
@@ -277,6 +320,11 @@ func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
+//
+// The function takes the following parameters:
+//
+//    - widget: valid widget pointer.
+//
 func TestTextGet(widget Widgetter) string {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.gchar     // in
@@ -298,6 +346,12 @@ func TestTextGet(widget Widgetter) string {
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
+//
+// The function takes the following parameters:
+//
+//    - widget: valid widget pointer.
+//    - str: 0-terminated C string.
+//
 func TestTextSet(widget Widgetter, str string) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -321,6 +375,13 @@ func TestTextSet(widget Widgetter, str string) {
 // details.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
+//
+// The function takes the following parameters:
+//
+//    - widget: widget to generate a button click on.
+//    - button: number of the pointer button for the event, usually 1, 2 or 3.
+//    - modifiers: keyboard modifiers the event is setup with.
+//
 func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.guint           // out
@@ -352,6 +413,13 @@ func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) 
 // For other widgets, this is usually widget->window. Certain caveats should be
 // considered when using this function, in particular because the mouse pointer
 // is warped to the key press location, see gdk_test_simulate_key() for details.
+//
+// The function takes the following parameters:
+//
+//    - widget: widget to generate a key press and release on.
+//    - keyval: gdk keyboard value.
+//    - modifiers: keyboard modifiers the event is setup with.
+//
 func TestWidgetSendKey(widget Widgetter, keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.guint           // out
@@ -382,6 +450,11 @@ func TestWidgetSendKey(widget Widgetter, keyval uint, modifiers gdk.ModifierType
 //
 // This function is intended to be used for syncing with actions that depend on
 // widget relayouting or on interaction with the display server.
+//
+// The function takes the following parameters:
+//
+//    - widget to wait for.
+//
 func TestWidgetWaitForDraw(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 

@@ -1890,6 +1890,12 @@ func (reference *TreeRowReference) Valid() bool {
 // TreeRowReferenceDeleted lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::row-deleted signal.
+//
+// The function takes the following parameters:
+//
+//    - proxy: #GObject.
+//    - path position that was deleted.
+//
 func TreeRowReferenceDeleted(proxy *externglib.Object, path *TreePath) {
 	var _arg1 *C.GObject     // out
 	var _arg2 *C.GtkTreePath // out
@@ -1905,6 +1911,12 @@ func TreeRowReferenceDeleted(proxy *externglib.Object, path *TreePath) {
 // TreeRowReferenceInserted lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::row-inserted signal.
+//
+// The function takes the following parameters:
+//
+//    - proxy: #GObject.
+//    - path: row position that was inserted.
+//
 func TreeRowReferenceInserted(proxy *externglib.Object, path *TreePath) {
 	var _arg1 *C.GObject     // out
 	var _arg2 *C.GtkTreePath // out

@@ -18,6 +18,13 @@ import "C"
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
+//
+// The function takes the following parameters:
+//
+//    - digestType to use for the HMAC.
+//    - key to use in the HMAC.
+//    - data: binary blob to compute the HMAC of.
+//
 func ComputeHMACForBytes(digestType ChecksumType, key, data *Bytes) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.GBytes       // out
@@ -45,6 +52,13 @@ func ComputeHMACForBytes(digestType ChecksumType, key, data *Bytes) string {
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
+//
+// The function takes the following parameters:
+//
+//    - digestType to use for the HMAC.
+//    - key to use in the HMAC.
+//    - data: binary blob to compute the HMAC of.
+//
 func ComputeHMACForData(digestType ChecksumType, key, data []byte) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar       // out
@@ -79,6 +93,14 @@ func ComputeHMACForData(digestType ChecksumType, key, data []byte) string {
 // ComputeHMACForString computes the HMAC for a string.
 //
 // The hexadecimal string returned will be in lower case.
+//
+// The function takes the following parameters:
+//
+//    - digestType to use for the HMAC.
+//    - key to use in the HMAC.
+//    - str: string to compute the HMAC for.
+//    - length of the string, or -1 if the string is nul-terminated.
+//
 func ComputeHMACForString(digestType ChecksumType, key []byte, str string, length int) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar       // out

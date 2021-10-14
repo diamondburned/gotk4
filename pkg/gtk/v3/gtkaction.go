@@ -132,6 +132,15 @@ func marshalActioner(p uintptr) (interface{}, error) {
 //
 // Deprecated: Use #GAction instead, associating it to a widget with Actionable
 // or creating a Menu with gtk_menu_new_from_model().
+//
+// The function takes the following parameters:
+//
+//    - name: unique name for the action.
+//    - label displayed in menu items and on buttons, or NULL.
+//    - tooltip for the action, or NULL.
+//    - stockId: stock icon to display in widgets representing the action, or
+//    NULL.
+//
 func NewAction(name, label, tooltip, stockId string) *Action {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out

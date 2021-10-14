@@ -430,6 +430,11 @@ func (colorsel *ColorSelection) ConnectColorChanged(f func()) externglib.SignalH
 
 // ColorSelectionPaletteFromString parses a color palette string; the string is
 // a colon-separated list of color names readable by gdk_color_parse().
+//
+// The function takes the following parameters:
+//
+//    - str: string encoding a color palette.
+//
 func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.GdkColor // in
@@ -457,6 +462,11 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 
 // ColorSelectionPaletteToString encodes a palette as a string, useful for
 // persistent storage.
+//
+// The function takes the following parameters:
+//
+//    - colors: array of colors.
+//
 func ColorSelectionPaletteToString(colors []gdk.Color) string {
 	var _arg1 *C.GdkColor // out
 	var _arg2 C.gint

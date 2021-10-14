@@ -53,6 +53,11 @@ func marshalSingleSelectioner(p uintptr) (interface{}, error) {
 }
 
 // NewSingleSelection creates a new selection to handle model.
+//
+// The function takes the following parameters:
+//
+//    - model: GListModel to manage, or NULL.
+//
 func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkSingleSelection // in

@@ -326,6 +326,11 @@ func NewBuilder() *Builder {
 // If there is an error opening the file or parsing the description then the
 // program will be aborted. You should only ever attempt to parse user interface
 // descriptions that are shipped as part of your program.
+//
+// The function takes the following parameters:
+//
+//    - filename of user interface description file.
+//
 func NewBuilderFromFile(filename string) *Builder {
 	var _arg1 *C.char       // out
 	var _cret *C.GtkBuilder // in
@@ -347,6 +352,11 @@ func NewBuilderFromFile(filename string) *Builder {
 //
 // If there is an error locating the resource or parsing the description, then
 // the program will be aborted.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: GResource resource path.
+//
 func NewBuilderFromResource(resourcePath string) *Builder {
 	var _arg1 *C.char       // out
 	var _cret *C.GtkBuilder // in
@@ -372,6 +382,12 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 // If there is an error parsing string then the program will be aborted. You
 // should not attempt to parse user interface description from untrusted
 // sources.
+//
+// The function takes the following parameters:
+//
+//    - str: user interface (XML) description.
+//    - length of string, or -1.
+//
 func NewBuilderFromString(str string, length int) *Builder {
 	var _arg1 *C.char       // out
 	var _arg2 C.gssize      // out

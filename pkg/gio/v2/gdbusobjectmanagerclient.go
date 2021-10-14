@@ -140,6 +140,12 @@ func marshalDBusObjectManagerClienter(p uintptr) (interface{}, error) {
 
 // NewDBusObjectManagerClientFinish finishes an operation started with
 // g_dbus_object_manager_client_new().
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to
+//    g_dbus_object_manager_client_new().
+//
 func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
@@ -163,6 +169,12 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 
 // NewDBusObjectManagerClientForBusFinish finishes an operation started with
 // g_dbus_object_manager_client_new_for_bus().
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to
+//    g_dbus_object_manager_client_new_for_bus().
+//
 func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
@@ -191,6 +203,17 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 // This is a synchronous failable constructor - the calling thread is blocked
 // until a reply is received. See g_dbus_object_manager_client_new_for_bus() for
 // the asynchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busType: Type.
+//    - flags: zero or more flags from the BusObjectManagerClientFlags
+//    enumeration.
+//    - name: owner of the control object (unique or well-known name).
+//    - objectPath: object path of the control object.
+//    - getProxyTypeFunc function or NULL to always construct BusProxy proxies.
+//
 func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 C.GBusType                      // out
@@ -244,6 +267,18 @@ func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, 
 // This is a synchronous failable constructor - the calling thread is blocked
 // until a reply is received. See g_dbus_object_manager_client_new() for the
 // asynchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - connection: BusConnection.
+//    - flags: zero or more flags from the BusObjectManagerClientFlags
+//    enumeration.
+//    - name: owner of the control object (unique or well-known name), or NULL
+//    when not using a message bus connection.
+//    - objectPath: object path of the control object.
+//    - getProxyTypeFunc function or NULL to always construct BusProxy proxies.
+//
 func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 *C.GDBusConnection              // out
@@ -404,6 +439,18 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objec
 // this method from. You can then call g_dbus_object_manager_client_new_finish()
 // to get the result. See g_dbus_object_manager_client_new_sync() for the
 // synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - connection: BusConnection.
+//    - flags: zero or more flags from the BusObjectManagerClientFlags
+//    enumeration.
+//    - name: owner of the control object (unique or well-known name).
+//    - objectPath: object path of the control object.
+//    - getProxyTypeFunc function or NULL to always construct BusProxy proxies.
+//    - callback to call when the request is satisfied.
+//
 func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 *C.GDBusConnection              // out
@@ -456,6 +503,18 @@ func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection,
 // method from. You can then call
 // g_dbus_object_manager_client_new_for_bus_finish() to get the result. See
 // g_dbus_object_manager_client_new_for_bus_sync() for the synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busType: Type.
+//    - flags: zero or more flags from the BusObjectManagerClientFlags
+//    enumeration.
+//    - name: owner of the control object (unique or well-known name).
+//    - objectPath: object path of the control object.
+//    - getProxyTypeFunc function or NULL to always construct BusProxy proxies.
+//    - callback to call when the request is satisfied.
+//
 func NewDBusObjectManagerClientForBus(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 C.GBusType                      // out

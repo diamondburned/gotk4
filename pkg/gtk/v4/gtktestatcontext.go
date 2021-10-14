@@ -12,6 +12,11 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+//
+// The function takes the following parameters:
+//
+
+//
 func TestAccessibleAssertionMessageRole(domain, file string, line int, fn, expr string, accessible Accessibler, expectedRole, actualRole AccessibleRole) {
 	var _arg1 *C.char             // out
 	var _arg2 *C.char             // out
@@ -47,6 +52,12 @@ func TestAccessibleAssertionMessageRole(domain, file string, line int, fn, expr 
 }
 
 // TestAccessibleHasProperty checks whether the Accessible has property set.
+//
+// The function takes the following parameters:
+//
+//    - accessible: Accessible.
+//    - property: AccessibleProperty.
+//
 func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProperty) bool {
 	var _arg1 *C.GtkAccessible        // out
 	var _arg2 C.GtkAccessibleProperty // out
@@ -69,6 +80,12 @@ func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProper
 }
 
 // TestAccessibleHasRelation checks whether the Accessible has relation set.
+//
+// The function takes the following parameters:
+//
+//    - accessible: Accessible.
+//    - relation: AccessibleRelation.
+//
 func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelation) bool {
 	var _arg1 *C.GtkAccessible        // out
 	var _arg2 C.GtkAccessibleRelation // out
@@ -92,6 +109,12 @@ func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelati
 
 // TestAccessibleHasRole checks whether the Accessible:accessible-role of the
 // accessible is role.
+//
+// The function takes the following parameters:
+//
+//    - accessible: Accessible.
+//    - role: AccessibleRole.
+//
 func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 	var _arg1 *C.GtkAccessible    // out
 	var _arg2 C.GtkAccessibleRole // out
@@ -114,6 +137,12 @@ func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 }
 
 // TestAccessibleHasState checks whether the Accessible has state set.
+//
+// The function takes the following parameters:
+//
+//    - accessible: Accessible.
+//    - state: AccessibleState.
+//
 func TestAccessibleHasState(accessible Accessibler, state AccessibleState) bool {
 	var _arg1 *C.GtkAccessible     // out
 	var _arg2 C.GtkAccessibleState // out

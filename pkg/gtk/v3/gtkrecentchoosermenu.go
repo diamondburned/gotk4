@@ -115,6 +115,11 @@ func NewRecentChooserMenu() *RecentChooserMenu {
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object or if you wish to share
 // a common RecentManager object among multiple RecentChooser widgets.
+//
+// The function takes the following parameters:
+//
+//    - manager: RecentManager.
+//
 func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in

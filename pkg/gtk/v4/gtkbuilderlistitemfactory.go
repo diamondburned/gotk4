@@ -65,6 +65,12 @@ func marshalBuilderListItemFactorier(p uintptr) (interface{}, error) {
 
 // NewBuilderListItemFactoryFromBytes creates a new GtkBuilderListItemFactory
 // that instantiates widgets using bytes as the data to pass to GtkBuilder.
+//
+// The function takes the following parameters:
+//
+//    - scope to use when instantiating.
+//    - bytes: GBytes containing the ui file to instantiate.
+//
 func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
 	var _arg2 *C.GBytes             // out
@@ -89,6 +95,12 @@ func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) 
 // NewBuilderListItemFactoryFromResource creates a new GtkBuilderListItemFactory
 // that instantiates widgets using data read from the given resource_path to
 // pass to GtkBuilder.
+//
+// The function takes the following parameters:
+//
+//    - scope to use when instantiating.
+//    - resourcePath: valid path to a resource that contains the data.
+//
 func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath string) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
 	var _arg2 *C.char               // out

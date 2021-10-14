@@ -114,6 +114,11 @@ func marshalPanedder(p uintptr) (interface{}, error) {
 }
 
 // NewPaned creates a new Paned widget.
+//
+// The function takes the following parameters:
+//
+//    - orientation paned’s orientation.
+//
 func NewPaned(orientation Orientation) *Paned {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in

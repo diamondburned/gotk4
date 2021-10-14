@@ -167,6 +167,11 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, ar
 
 // PixbufGetFileInfo parses an image file far enough to determine its format and
 // size.
+//
+// The function takes the following parameters:
+//
+//    - filename: name of the file to identify.
+//
 func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *PixbufFormat) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // in
@@ -201,6 +206,13 @@ func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *Pi
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_get_file_info_finish() to get the result of the
 // operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - filename: name of the file to identify.
+//    - callback: GAsyncReadyCallback to call when the file info is available.
+//
 func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
@@ -227,6 +239,11 @@ func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.A
 
 // PixbufGetFileInfoFinish finishes an asynchronous pixbuf parsing operation
 // started with gdk_pixbuf_get_file_info_async().
+//
+// The function takes the following parameters:
+//
+//    - asyncResult: GAsyncResult.
+//
 func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height int, pixbufFormat *PixbufFormat, goerr error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 C.gint             // in
@@ -288,6 +305,11 @@ func PixbufGetFormats() []PixbufFormat {
 // file types coverage, such as image viewers, would be expected to ship the
 // gdk-pixbuf modules in a separate location, bundled with the application in a
 // separate directory from the OS or runtime- provided modules.
+//
+// The function takes the following parameters:
+//
+//    - path: path to directory where the loaders.cache is installed.
+//
 func PixbufInitModules(path string) error {
 	var _arg1 *C.char   // out
 	var _cerr *C.GError // in

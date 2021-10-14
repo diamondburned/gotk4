@@ -127,6 +127,11 @@ func marshalColumnViewer(p uintptr) (interface{}, error) {
 //
 // You most likely want to call gtk.ColumnView.AppendColumn() to add columns
 // next.
+//
+// The function takes the following parameters:
+//
+//    - model: list model to use, or NULL.
+//
 func NewColumnView(model SelectionModeller) *ColumnView {
 	var _arg1 *C.GtkSelectionModel // out
 	var _cret *C.GtkWidget         // in

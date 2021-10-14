@@ -83,6 +83,12 @@ func marshalViewporter(p uintptr) (interface{}, error) {
 
 // NewViewport creates a new Viewport with the given adjustments, or with
 // default adjustments if none are given.
+//
+// The function takes the following parameters:
+//
+//    - hadjustment: horizontal adjustment.
+//    - vadjustment: vertical adjustment.
+//
 func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out

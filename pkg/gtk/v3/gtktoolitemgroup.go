@@ -80,6 +80,11 @@ func marshalToolItemGrouper(p uintptr) (interface{}, error) {
 }
 
 // NewToolItemGroup creates a new tool item group with label label.
+//
+// The function takes the following parameters:
+//
+//    - label of the new group.
+//
 func NewToolItemGroup(label string) *ToolItemGroup {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

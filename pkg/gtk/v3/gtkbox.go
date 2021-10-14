@@ -106,6 +106,12 @@ func marshalBoxer(p uintptr) (interface{}, error) {
 }
 
 // NewBox creates a new Box.
+//
+// The function takes the following parameters:
+//
+//    - orientation box’s orientation.
+//    - spacing: number of pixels to place by default between children.
+//
 func NewBox(orientation Orientation, spacing int) *Box {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.gint           // out

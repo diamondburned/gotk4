@@ -141,6 +141,11 @@ func NewMenu() *Menu {
 //
 // Actions can also be added using gtk_widget_insert_action_group() on the
 // menu's attach widget or on any of its parent widgets.
+//
+// The function takes the following parameters:
+//
+//    - model: Model.
+//
 func NewMenuFromModel(model gio.MenuModeller) *Menu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -677,6 +682,11 @@ func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flip
 
 // MenuGetForAttachWidget returns a list of the menus which are attached to this
 // widget. This list is owned by GTK+ and must not be modified.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GList     // in

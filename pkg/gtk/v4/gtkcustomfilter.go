@@ -79,6 +79,11 @@ func marshalCustomFilterer(p uintptr) (interface{}, error) {
 //
 // If the filter func changes its filtering behavior, gtk_filter_changed() needs
 // to be called.
+//
+// The function takes the following parameters:
+//
+//    - matchFunc: function to filter items.
+//
 func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 	var _arg1 C.GtkCustomFilterFunc // out
 	var _arg2 C.gpointer

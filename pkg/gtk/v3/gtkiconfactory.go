@@ -27,6 +27,11 @@ func init() {
 // IconSizeFromName looks up the icon size associated with name.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - name to look up.
+//
 func IconSizeFromName(name string) int {
 	var _arg1 *C.gchar      // out
 	var _cret C.GtkIconSize // in
@@ -48,6 +53,11 @@ func IconSizeFromName(name string) int {
 // string is statically allocated and should not be freed.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - size: IconSize.
+//
 func IconSizeGetName(size int) string {
 	var _arg1 C.GtkIconSize // out
 	var _cret *C.gchar      // in
@@ -71,6 +81,11 @@ func IconSizeGetName(size int) string {
 // pixbuf may not even correspond to the width/height returned by
 // gtk_icon_size_lookup(), because themes are free to render the pixbuf however
 // they like, including changing the usual size.
+//
+// The function takes the following parameters:
+//
+//    - size: icon size (IconSize).
+//
 func IconSizeLookup(size int) (width int, height int, ok bool) {
 	var _arg1 C.GtkIconSize // out
 	var _arg2 C.gint        // in
@@ -105,6 +120,13 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 // they like, including changing the usual size.
 //
 // Deprecated: Use gtk_icon_size_lookup() instead.
+//
+// The function takes the following parameters:
+//
+//    - settings object, used to determine which set of user preferences to
+//    used.
+//    - size: icon size (IconSize).
+//
 func IconSizeLookupForSettings(settings *Settings, size int) (width int, height int, ok bool) {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 C.GtkIconSize  // out
@@ -136,6 +158,13 @@ func IconSizeLookupForSettings(settings *Settings, size int) (width int, height 
 // K_ICON_SIZE_MENU, etc. Returns the integer value for the size.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - name of the icon size.
+//    - width: icon width.
+//    - height: icon height.
+//
 func IconSizeRegister(name string, width, height int) int {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
@@ -163,6 +192,12 @@ func IconSizeRegister(name string, width, height int) int {
 // gtk_icon_size_from_name() with alias as argument will return target.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - alias for target.
+//    - target: existing icon size (IconSize).
+//
 func IconSizeRegisterAlias(alias string, target int) {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -398,6 +433,11 @@ func (factory *IconFactory) RemoveDefault() {
 // account.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: icon name.
+//
 func IconFactoryLookupDefault(stockId string) *IconSet {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkIconSet // in

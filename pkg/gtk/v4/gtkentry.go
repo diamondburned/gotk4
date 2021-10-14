@@ -229,6 +229,11 @@ func NewEntry() *Entry {
 }
 
 // NewEntryWithBuffer creates a new entry with the specified text buffer.
+//
+// The function takes the following parameters:
+//
+//    - buffer to use for the new GtkEntry.
+//
 func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 	var _arg1 *C.GtkEntryBuffer // out
 	var _cret *C.GtkWidget      // in

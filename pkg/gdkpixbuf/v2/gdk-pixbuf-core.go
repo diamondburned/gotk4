@@ -187,6 +187,15 @@ func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GErr
 //
 // This function is useful for front-ends and backends that want to check image
 // values without needing to create a GdkPixbuf.
+//
+// The function takes the following parameters:
+//
+//    - colorspace: color space for image.
+//    - hasAlpha: whether the image should have transparency information.
+//    - bitsPerSample: number of bits per color sample.
+//    - width: width of image in pixels, must be > 0.
+//    - height: height of image in pixels, must be > 0.
+//
 func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int) int {
 	var _arg1 C.GdkColorspace // out
 	var _arg2 C.gboolean      // out
@@ -226,6 +235,13 @@ func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSampl
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
 // the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - stream: GInputStream from which to load the pixbuf.
+//    - callback: GAsyncReadyCallback to call when the pixbuf is loaded.
+//
 func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
@@ -258,6 +274,16 @@ func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, cal
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
 // the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - stream: GInputStream from which to load the pixbuf.
+//    - width the image should have or -1 to not constrain the width.
+//    - height the image should have or -1 to not constrain the height.
+//    - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
+//    - callback: GAsyncReadyCallback to call when the pixbuf is loaded.
+//
 func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStreamer, width, height int, preserveAspectRatio bool, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
@@ -294,6 +320,11 @@ func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStream
 
 // PixbufSaveToStreamFinish finishes an asynchronous pixbuf save operation
 // started with gdk_pixbuf_save_to_stream_async().
+//
+// The function takes the following parameters:
+//
+//    - asyncResult: GAsyncResult.
+//
 func PixbufSaveToStreamFinish(asyncResult gio.AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in

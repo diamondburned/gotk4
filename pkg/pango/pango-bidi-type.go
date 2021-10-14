@@ -126,6 +126,11 @@ func (b BidiType) String() string {
 // The bidirectional type is specified in the Unicode Character Database.
 //
 // A simplified version of this function is available as unichar_direction.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
 func BidiTypeForUnichar(ch uint32) BidiType {
 	var _arg1 C.gunichar      // out
 	var _cret C.PangoBidiType // in
@@ -144,6 +149,12 @@ func BidiTypeForUnichar(ch uint32) BidiType {
 
 // FindBaseDir searches a string the first character that has a strong
 // direction, according to the Unicode bidirectional algorithm.
+//
+// The function takes the following parameters:
+//
+//    - text to process. Must be valid UTF-8.
+//    - length of text in bytes (may be -1 if text is nul-terminated).
+//
 func FindBaseDir(text string, length int) Direction {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.gint           // out
@@ -170,6 +181,12 @@ func FindBaseDir(text string, length int) Direction {
 //
 // Use g_unichar_get_mirror_char() instead; the docs for that function provide
 // full details.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//    - mirroredCh: location to store the mirrored character.
+//
 func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gunichar // out
@@ -199,6 +216,11 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 // This function is useful to categorize characters into left-to-right letters,
 // right-to-left letters, and everything else. If full Unicode bidirectional
 // type of a character is needed, pango.BidiType.ForUnichar can be used instead.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
 func UnicharDirection(ch uint32) Direction {
 	var _arg1 C.gunichar       // out
 	var _cret C.PangoDirection // in

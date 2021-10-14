@@ -146,6 +146,11 @@ func marshalGLShaderer(p uintptr) (interface{}, error) {
 
 // NewGLShaderFromBytes creates a GskGLShader that will render pixels using the
 // specified code.
+//
+// The function takes the following parameters:
+//
+//    - sourcecode: GLSL sourcecode for the shader, as a GBytes.
+//
 func NewGLShaderFromBytes(sourcecode *glib.Bytes) *GLShader {
 	var _arg1 *C.GBytes      // out
 	var _cret *C.GskGLShader // in
@@ -164,6 +169,12 @@ func NewGLShaderFromBytes(sourcecode *glib.Bytes) *GLShader {
 
 // NewGLShaderFromResource creates a GskGLShader that will render pixels using
 // the specified code.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: path to a resource that contains the GLSL sourcecode for
+//    the shader.
+//
 func NewGLShaderFromResource(resourcePath string) *GLShader {
 	var _arg1 *C.char        // out
 	var _cret *C.GskGLShader // in

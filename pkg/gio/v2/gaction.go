@@ -410,6 +410,11 @@ func (action *Action) StateType() *glib.VariantType {
 //
 // It is an error to call this function with a non-utf8 action_name. action_name
 // must not be NULL.
+//
+// The function takes the following parameters:
+//
+//    - actionName: potential action name.
+//
 func ActionNameIsValid(actionName string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -452,6 +457,11 @@ func ActionNameIsValid(actionName string) bool {
 // "app.action('target')". For strings, this third format must be used if *
 // target value is empty or contains characters other than alphanumerics, '-'
 // and '.'.
+//
+// The function takes the following parameters:
+//
+//    - detailedName: detailed action name.
+//
 func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // in
@@ -495,6 +505,12 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 //
 // See that function for the types of strings that will be printed by this
 // function.
+//
+// The function takes the following parameters:
+//
+//    - actionName: valid action name.
+//    - targetValue target value, or NULL.
+//
 func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.GVariant // out

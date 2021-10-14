@@ -114,6 +114,12 @@ func marshalDropTargetter(p uintptr) (interface{}, error) {
 //
 // If the drop target should support more than 1 type, pass G_TYPE_INVALID for
 // type and then call gtk.DropTarget.SetGTypes().
+//
+// The function takes the following parameters:
+//
+//    - typ: supported type or G_TYPE_INVALID.
+//    - actions: supported actions.
+//
 func NewDropTarget(typ externglib.Type, actions gdk.DragAction) *DropTarget {
 	var _arg1 C.GType          // out
 	var _arg2 C.GdkDragAction  // out

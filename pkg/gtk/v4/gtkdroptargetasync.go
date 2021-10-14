@@ -74,6 +74,12 @@ func marshalDropTargetAsyncer(p uintptr) (interface{}, error) {
 }
 
 // NewDropTargetAsync creates a new GtkDropTargetAsync object.
+//
+// The function takes the following parameters:
+//
+//    - formats: supported data formats.
+//    - actions: supported actions.
+//
 func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *DropTargetAsync {
 	var _arg1 *C.GdkContentFormats  // out
 	var _arg2 C.GdkDragAction       // out

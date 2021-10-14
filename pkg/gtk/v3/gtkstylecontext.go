@@ -624,6 +624,18 @@ func (s StyleContextPrintFlags) Has(other StyleContextPrintFlags) bool {
 // shape.
 //
 // Deprecated: Use gtk_render_insertion_cursor() instead.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//    - cr: cairo context to draw to.
+//    - location where to draw the cursor (location->width is ignored).
+//    - isPrimary: if the cursor should be the primary cursor color.
+//    - direction: whether the cursor is left-to-right or right-to-left. Should
+//    never be K_TEXT_DIR_NONE.
+//    - drawArrow: TRUE to draw a directional arrow on the cursor. Should be
+//    FALSE unless the cursor is split.
+//
 func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 *C.cairo_t         // out
@@ -654,6 +666,17 @@ func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rect
 
 // RenderInsertionCursor draws a text caret on cr at the specified index of
 // layout.
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin.
+//    - y: y origin.
+//    - layout of the text.
+//    - index in the Layout.
+//    - direction of the text.
+//
 func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x, y float64, layout *pango.Layout, index int, direction pango.Direction) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -2098,6 +2121,16 @@ func (context *StyleContext) ConnectChanged(f func()) externglib.SignalHandle {
 // Note: If both priorities are the same, A StyleProvider added through
 // gtk_style_context_add_provider() takes precedence over another added through
 // this function.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//    - provider: StyleProvider.
+//    - priority of the style provider. The lower it is, the earlier it will be
+//    used in the style construction. Typically this will be in the range
+//    between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//    GTK_STYLE_PROVIDER_PRIORITY_USER.
+//
 func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProviderer, priority uint) {
 	var _arg1 *C.GdkScreen        // out
 	var _arg2 *C.GtkStyleProvider // out
@@ -2115,6 +2148,12 @@ func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProvider
 
 // StyleContextRemoveProviderForScreen removes provider from the global style
 // providers list in screen.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//    - provider: StyleProvider.
+//
 func StyleContextRemoveProviderForScreen(screen *gdk.Screen, provider StyleProviderer) {
 	var _arg1 *C.GdkScreen        // out
 	var _arg2 *C.GtkStyleProvider // out
@@ -2133,6 +2172,11 @@ func StyleContextRemoveProviderForScreen(screen *gdk.Screen, provider StyleProvi
 // gets a new style, it will both redraw and recompute any cached information
 // about its appearance. As an example, it is used when the color scheme changes
 // in the related Settings object.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//
 func StyleContextResetWidgets(screen *gdk.Screen) {
 	var _arg1 *C.GdkScreen // out
 

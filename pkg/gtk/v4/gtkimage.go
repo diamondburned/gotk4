@@ -160,6 +160,11 @@ func NewImage() *Image {
 //
 // The storage type (see gtk.Image.GetStorageType()) of the returned image is
 // not defined, it will be whatever is appropriate for displaying the file.
+//
+// The function takes the following parameters:
+//
+//    - filename: filename.
+//
 func NewImageFromFile(filename string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -183,6 +188,11 @@ func NewImageFromFile(filename string) *Image {
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
+//
+// The function takes the following parameters:
+//
+//    - icon: icon.
+//
 func NewImageFromGIcon(icon gio.Iconner) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
@@ -205,6 +215,11 @@ func NewImageFromGIcon(icon gio.Iconner) *Image {
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name or NULL.
+//
 func NewImageFromIconName(iconName string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -232,6 +247,11 @@ func NewImageFromIconName(iconName string) *Image {
 //
 // The GtkImage will track changes to the paintable and update its size and
 // contents in response to it.
+//
+// The function takes the following parameters:
+//
+//    - paintable: GdkPaintable, or NULL.
+//
 func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
@@ -262,6 +282,11 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 // Note that this function just creates an GtkImage from the pixbuf. The
 // GtkImage created will not react to state changes. Should you want that, you
 // should use gtk.Image.NewFromIconName.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: GdkPixbuf, or NULL.
+//
 func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
@@ -293,6 +318,11 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 //
 // The storage type (see gtk.Image.GetStorageType()) of the returned image is
 // not defined, it will be whatever is appropriate for displaying the file.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path.
+//
 func NewImageFromResource(resourcePath string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

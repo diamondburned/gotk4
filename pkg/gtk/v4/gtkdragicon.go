@@ -143,6 +143,11 @@ func (self *DragIcon) SetChild(child Widgetter) {
 // This method is used to set the default drag icon on drag'n'drop operations
 // started by GtkDragSource, so you don't need to set a drag icon using this
 // function there.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue.
+//
 func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 	var _arg1 *C.GValue    // out
 	var _cret *C.GtkWidget // in
@@ -173,6 +178,11 @@ func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 // DragIconGetForDrag gets the GtkDragIcon in use with drag.
 //
 // If no drag icon exists yet, a new one will be created and shown.
+//
+// The function takes the following parameters:
+//
+//    - drag: GdkDrag.
+//
 func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	var _arg1 *C.GdkDrag   // out
 	var _cret *C.GtkWidget // in
@@ -206,6 +216,14 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 //
 // The hotspot position on the paintable is aligned with the hotspot of the
 // cursor.
+//
+// The function takes the following parameters:
+//
+//    - drag: GdkDrag.
+//    - paintable: GdkPaintable to display.
+//    - hotX: x coordinate of the hotspot.
+//    - hotY: y coordinate of the hotspot.
+//
 func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, hotY int) {
 	var _arg1 *C.GdkDrag      // out
 	var _arg2 *C.GdkPaintable // out

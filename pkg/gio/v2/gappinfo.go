@@ -1006,6 +1006,13 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 // example, if the commandline contains percent-encoded URIs, the
 // percent-character must be doubled in order to prevent it from being swallowed
 // by Exec key unquoting. See the specification for exact quoting rules.
+//
+// The function takes the following parameters:
+//
+//    - commandline to use.
+//    - applicationName: application name, or NULL to use commandline.
+//    - flags that can specify details of the created Info.
+//
 func AppInfoCreateFromCommandline(commandline, applicationName string, flags AppInfoCreateFlags) (AppInfor, error) {
 	var _arg1 *C.char               // out
 	var _arg2 *C.char               // out
@@ -1089,6 +1096,11 @@ func AppInfoGetAll() []AppInfor {
 // AppInfoGetAllForType gets a list of all Infos for a given content type,
 // including the recommended and fallback Infos. See
 // g_app_info_get_recommended_for_type() and g_app_info_get_fallback_for_type().
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type to find a Info for.
+//
 func AppInfoGetAllForType(contentType string) []AppInfor {
 	var _arg1 *C.char  // out
 	var _cret *C.GList // in
@@ -1125,6 +1137,12 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 }
 
 // AppInfoGetDefaultForType gets the default Info for a given content type.
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type to find a Info for.
+//    - mustSupportUris: if TRUE, the Info is expected to support URIs.
+//
 func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor {
 	var _arg1 *C.char     // out
 	var _arg2 C.gboolean  // out
@@ -1161,6 +1179,11 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 // AppInfoGetDefaultForURIScheme gets the default application for handling URIs
 // with the given URI scheme. A URI scheme is the initial part of the URI, up to
 // but not including the ':', e.g. "http", "ftp" or "sip".
+//
+// The function takes the following parameters:
+//
+//    - uriScheme: string containing a URI scheme.
+//
 func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 	var _arg1 *C.char     // out
 	var _cret *C.GAppInfo // in
@@ -1192,6 +1215,11 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 // AppInfoGetFallbackForType gets a list of fallback Infos for a given content
 // type, i.e. those applications which claim to support the given content type
 // by MIME type subclassing and not directly.
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type to find a Info for.
+//
 func AppInfoGetFallbackForType(contentType string) []AppInfor {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
@@ -1232,6 +1260,11 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 // content type exactly, and not by MIME type subclassing. Note that the first
 // application of the list is the last used one, i.e. the last one for which
 // g_app_info_set_as_last_used_for_type() has been called.
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type to find a Info for.
+//
 func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
@@ -1274,6 +1307,12 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 // The D-Bus–activated applications don't have to be started if your application
 // terminates too soon after this function. To prevent this, use
 // g_app_info_launch_default_for_uri_async() instead.
+//
+// The function takes the following parameters:
+//
+//    - uri to show.
+//    - context: optional LaunchContext.
+//
 func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	var _arg1 *C.char              // out
 	var _arg2 *C.GAppLaunchContext // out
@@ -1308,6 +1347,14 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 // This is also useful if you want to be sure that the D-Bus–activated
 // applications are really started before termination and if you are interested
 // in receiving error information from their activation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//    - uri to show.
+//    - context: optional LaunchContext.
+//    - callback to call when the request is done.
+//
 func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *AppLaunchContext, callback AsyncReadyCallback) {
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -1339,6 +1386,11 @@ func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *A
 
 // AppInfoLaunchDefaultForURIFinish finishes an asynchronous
 // launch-default-for-uri operation.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -1361,6 +1413,11 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 // done by g_app_info_set_as_default_for_type(),
 // g_app_info_set_as_default_for_extension(), g_app_info_add_supports_type() or
 // g_app_info_remove_supports_type().
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type.
+//
 func AppInfoResetTypeAssociations(contentType string) {
 	var _arg1 *C.char // out
 

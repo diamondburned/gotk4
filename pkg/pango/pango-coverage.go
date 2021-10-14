@@ -213,6 +213,11 @@ func (coverage *Coverage) ToBytes() []byte {
 // to a PangoCoverage.
 //
 // Deprecated: This returns NULL.
+//
+// The function takes the following parameters:
+//
+//    - bytes: binary data representing a PangoCoverage.
+//
 func CoverageFromBytes(bytes []byte) *Coverage {
 	var _arg1 *C.guchar // out
 	var _arg2 C.int

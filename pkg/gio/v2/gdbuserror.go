@@ -36,6 +36,11 @@ import "C"
 //
 // This function is typically only used in object mappings to put a #GError on
 // the wire. Regular applications should not use it.
+//
+// The function takes the following parameters:
+//
+//    - err: #GError.
+//
 func DBusErrorEncodeGError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
@@ -59,6 +64,11 @@ func DBusErrorEncodeGError(err error) string {
 // returned from functions handling remote method calls (e.g.
 // g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
 // been used on error.
+//
+// The function takes the following parameters:
+//
+//    - err: #GError.
+//
 func DBusErrorGetRemoteError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
@@ -81,6 +91,11 @@ func DBusErrorGetRemoteError(err error) string {
 // DBusErrorIsRemoteError checks if error represents an error received via D-Bus
 // from a remote peer. If so, use g_dbus_error_get_remote_error() to get the
 // name of the error.
+//
+// The function takes the following parameters:
+//
+//    - err: #GError.
+//
 func DBusErrorIsRemoteError(err error) bool {
 	var _arg1 *C.GError  // out
 	var _cret C.gboolean // in
@@ -124,6 +139,12 @@ func DBusErrorIsRemoteError(err error) bool {
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
+//
+// The function takes the following parameters:
+//
+//    - dbusErrorName d-Bus error name.
+//    - dbusErrorMessage d-Bus error message.
+//
 func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // out
@@ -150,6 +171,13 @@ func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 //
 // This is typically done in the routine that returns the #GQuark for an error
 // domain.
+//
+// The function takes the following parameters:
+//
+//    - errorDomain for an error domain.
+//    - errorCode: error code.
+//    - dbusErrorName d-Bus error name.
+//
 func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var _arg1 C.GQuark   // out
 	var _arg2 C.gint     // out
@@ -180,6 +208,13 @@ func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName
 //
 // While quark_volatile has a volatile qualifier, this is a historical artifact
 // and the argument passed to it should not be volatile.
+//
+// The function takes the following parameters:
+//
+//    - errorDomainQuarkName: error domain name.
+//    - quarkVolatile: pointer where to store the #GQuark.
+//    - entries: pointer to num_entries BusErrorEntry struct items.
+//
 func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *uint, entries []DBusErrorEntry) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gsize           // out
@@ -211,6 +246,11 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *ui
 // wire.
 //
 // This is typically used when presenting errors to the end user.
+//
+// The function takes the following parameters:
+//
+//    - err: #GError.
+//
 func DBusErrorStripRemoteError(err error) bool {
 	var _arg1 *C.GError  // out
 	var _cret C.gboolean // in
@@ -231,6 +271,13 @@ func DBusErrorStripRemoteError(err error) bool {
 
 // DBusErrorUnregisterError destroys an association previously set up with
 // g_dbus_error_register_error().
+//
+// The function takes the following parameters:
+//
+//    - errorDomain for an error domain.
+//    - errorCode: error code.
+//    - dbusErrorName d-Bus error name.
+//
 func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var _arg1 C.GQuark   // out
 	var _arg2 C.gint     // out

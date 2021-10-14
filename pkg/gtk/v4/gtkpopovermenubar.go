@@ -80,6 +80,11 @@ func marshalPopoverMenuBarrer(p uintptr) (interface{}, error) {
 }
 
 // NewPopoverMenuBarFromModel creates a GtkPopoverMenuBar from a GMenuModel.
+//
+// The function takes the following parameters:
+//
+//    - model: GMenuModel, or NULL.
+//
 func NewPopoverMenuBarFromModel(model gio.MenuModeller) *PopoverMenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in

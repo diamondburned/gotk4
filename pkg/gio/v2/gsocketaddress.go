@@ -92,6 +92,12 @@ func marshalSocketAddresser(p uintptr) (interface{}, error) {
 
 // NewSocketAddressFromNative creates a Address subclass corresponding to the
 // native struct sockaddr native.
+//
+// The function takes the following parameters:
+//
+//    - native: pointer to a struct sockaddr.
+//    - len: size of the memory location pointed to by native.
+//
 func NewSocketAddressFromNative(native cgo.Handle, len uint) *SocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out

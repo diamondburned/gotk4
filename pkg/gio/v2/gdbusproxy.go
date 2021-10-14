@@ -111,6 +111,12 @@ func marshalDBusProxier(p uintptr) (interface{}, error) {
 }
 
 // NewDBusProxyFinish finishes creating a BusProxy.
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback function passed to
+//    g_dbus_proxy_new().
+//
 func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
@@ -133,6 +139,12 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 }
 
 // NewDBusProxyForBusFinish finishes creating a BusProxy.
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback function passed to
+//    g_dbus_proxy_new_for_bus().
+//
 func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
@@ -158,6 +170,17 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 // of a BusConnection.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busType: Type.
+//    - flags flags used when constructing the proxy.
+//    - info specifying the minimal interface that proxy conforms to or NULL.
+//    - name bus name (well-known or unique).
+//    - objectPath: object path.
+//    - interfaceName d-Bus interface name.
+//
 func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string) (*DBusProxy, error) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 C.GBusType            // out
@@ -228,6 +251,18 @@ func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProx
 // g_dbus_proxy_new_finish() for the asynchronous version.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - connection: BusConnection.
+//    - flags flags used when constructing the proxy.
+//    - info specifying the minimal interface that proxy conforms to or NULL.
+//    - name bus name (well-known or unique) or NULL if connection is not a
+//    message bus connection.
+//    - objectPath: object path.
+//    - interfaceName d-Bus interface name.
+//
 func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string) (*DBusProxy, error) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 *C.GDBusConnection    // out
@@ -1045,6 +1080,19 @@ func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, par
 // constructor.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - connection: BusConnection.
+//    - flags flags used when constructing the proxy.
+//    - info specifying the minimal interface that proxy conforms to or NULL.
+//    - name bus name (well-known or unique) or NULL if connection is not a
+//    message bus connection.
+//    - objectPath: object path.
+//    - interfaceName d-Bus interface name.
+//    - callback: callback function to invoke when the proxy is ready.
+//
 func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 *C.GDBusConnection    // out
@@ -1094,6 +1142,18 @@ func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusPro
 // BusConnection.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busType: Type.
+//    - flags flags used when constructing the proxy.
+//    - info specifying the minimal interface that proxy conforms to or NULL.
+//    - name bus name (well-known or unique).
+//    - objectPath: object path.
+//    - interfaceName d-Bus interface name.
+//    - callback: callback function to invoke when the proxy is ready.
+//
 func NewDBusProxyForBus(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 C.GBusType            // out

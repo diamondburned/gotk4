@@ -55,6 +55,12 @@ func marshalShortcutter(p uintptr) (interface{}, error) {
 
 // NewShortcut creates a new GtkShortcut that is triggered by trigger and then
 // activates action.
+//
+// The function takes the following parameters:
+//
+//    - trigger that will trigger the shortcut.
+//    - action that will be activated upon triggering.
+//
 func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutAction  // out

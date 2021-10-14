@@ -33,6 +33,11 @@ import "C"
 //
 // Deprecated: Use gdk_window_begin_draw_frame() and
 // gdk_drawing_context_get_cairo_context() instead.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
 func CairoCreate(window Windower) *cairo.Context {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.cairo_t   // in
@@ -67,6 +72,19 @@ func CairoCreate(window Windower) *cairo.Context {
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - window we're rendering for (not necessarily into).
+//    - source: GL ID of the source buffer.
+//    - sourceType: type of the source.
+//    - bufferScale: scale-factor that the source buffer is allocated for.
+//    - x: source x position in source to start copying from in GL coordinates.
+//    - y: source y position in source to start copying from in GL coordinates.
+//    - width of the region to draw.
+//    - height of the region to draw.
+//
 func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, bufferScale, x, y, width, height int) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
@@ -103,6 +121,11 @@ func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, buf
 // CairoGetClipRectangle: this is a convenience function around
 // cairo_clip_extents(). It rounds the clip extents to integer coordinates and
 // returns a boolean indicating if a clip area exists.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//
 func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
 	var _arg1 *C.cairo_t     // out
 	var _arg2 C.GdkRectangle // in
@@ -126,6 +149,11 @@ func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
 
 // CairoGetDrawingContext retrieves the DrawingContext that created the Cairo
 // context cr.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//
 func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 	var _arg1 *C.cairo_t           // out
 	var _cret *C.GdkDrawingContext // in
@@ -145,6 +173,12 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 }
 
 // CairoRectangle adds the given rectangle to the current path of cr.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - rectangle: Rectangle.
+//
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg1 *C.cairo_t      // out
 	var _arg2 *C.GdkRectangle // out
@@ -158,6 +192,12 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 }
 
 // CairoRegion adds the given region to the current path of cr.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - region: #cairo_region_t.
+//
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var _arg1 *C.cairo_t        // out
 	var _arg2 *C.cairo_region_t // out
@@ -175,6 +215,11 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
+//
+// The function takes the following parameters:
+//
+//    - surface: cairo surface.
+//
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.cairo_region_t  // in
@@ -200,6 +245,12 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 // CairoSetSourceColor sets the specified Color as the source color of cr.
 //
 // Deprecated: Use gdk_cairo_set_source_rgba() instead.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - color: Color.
+//
 func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 	var _arg1 *C.cairo_t  // out
 	var _arg2 *C.GdkColor // out
@@ -216,6 +267,14 @@ func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 //
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of pixbuf is pixbuf_x, pixbuf_y.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - pixbuf: Pixbuf.
+//    - pixbufX: x coordinate of location to place upper left corner of pixbuf.
+//    - pixbufY: y coordinate of location to place upper left corner of pixbuf.
+//
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, pixbufY float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkPixbuf // out
@@ -235,6 +294,12 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of cr.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - rgba: RGBA.
+//
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 *C.GdkRGBA // out
@@ -255,6 +320,14 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 //
 // Note that the contents of window are undefined outside of the visible part of
 // window, so use this function with care.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - window: Window.
+//    - x: x coordinate of location to place upper left corner of window.
+//    - y: y coordinate of location to place upper left corner of window.
+//
 func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
@@ -275,6 +348,13 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 
 // CairoSurfaceCreateFromPixbuf creates an image surface with the same contents
 // as the pixbuf.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: Pixbuf.
+//    - scale of the new surface, or 0 to use same as window.
+//    - forWindow: window this will be drawn to, or NULL.
+//
 func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow Windower) *cairo.Surface {
 	var _arg1 *C.GdkPixbuf       // out
 	var _arg2 C.int              // out

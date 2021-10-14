@@ -151,6 +151,11 @@ func NewEntryCompletion() *EntryCompletion {
 // NewEntryCompletionWithArea creates a new EntryCompletion object using the
 // specified area to layout cells in the underlying TreeViewColumn for the
 // drop-down menu.
+//
+// The function takes the following parameters:
+//
+//    - area used to layout cells.
+//
 func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 	var _arg1 *C.GtkCellArea        // out
 	var _cret *C.GtkEntryCompletion // in

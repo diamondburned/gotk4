@@ -189,6 +189,15 @@ func marshalPixbuffer(p uintptr) (interface{}, error) {
 //
 // The buffer has an optimal rowstride. Note that the buffer is not cleared; you
 // will have to fill it completely yourself.
+//
+// The function takes the following parameters:
+//
+//    - colorspace: color space for image.
+//    - hasAlpha: whether the image should have transparency information.
+//    - bitsPerSample: number of bits per color sample.
+//    - width: width of image in pixels, must be > 0.
+//    - height: height of image in pixels, must be > 0.
+//
 func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int) *Pixbuf {
 	var _arg1 C.GdkColorspace // out
 	var _arg2 C.gboolean      // out
@@ -227,6 +236,17 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, heigh
 //
 // This is the GBytes variant of gdk_pixbuf_new_from_data(), useful for language
 // bindings.
+//
+// The function takes the following parameters:
+//
+//    - data: image data in 8-bit/sample packed format inside a #GBytes.
+//    - colorspace: colorspace for the image data.
+//    - hasAlpha: whether the data has an opacity channel.
+//    - bitsPerSample: number of bits per sample.
+//    - width: width of the image in pixels, must be > 0.
+//    - height: height of the image in pixels, must be > 0.
+//    - rowstride: distance in bytes between row starts.
+//
 func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height, rowstride int) *Pixbuf {
 	var _arg1 *C.GBytes       // out
 	var _arg2 C.GdkColorspace // out
@@ -275,6 +295,11 @@ func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, 
 //    - the image buffer contains invalid data
 //
 // The error domains are GDK_PIXBUF_ERROR and G_FILE_ERROR.
+//
+// The function takes the following parameters:
+//
+//    - filename: name of file to load, in the GLib file name encoding.
+//
 func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
@@ -321,6 +346,14 @@ func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 // be scaled to the exact given width. When not preserving aspect ratio, a width
 // or height of -1 means to not scale the image at all in that dimension.
 // Negative values for width and height are allowed since 2.8.
+//
+// The function takes the following parameters:
+//
+//    - filename: name of file to load, in the GLib file name encoding.
+//    - width the image should have or -1 to not constrain the width.
+//    - height the image should have or -1 to not constrain the height.
+//    - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
+//
 func NewPixbufFromFileAtScale(filename string, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -373,6 +406,13 @@ func NewPixbufFromFileAtScale(filename string, width, height int, preserveAspect
 // aspect ratio. Note that the returned pixbuf may be smaller than width x
 // height, if the aspect ratio requires it. To load and image at the requested
 // size, regardless of aspect ratio, use gdkpixbuf.Pixbuf.NewFromFileAtScale.
+//
+// The function takes the following parameters:
+//
+//    - filename: name of file to load, in the GLib file name encoding.
+//    - width the image should have or -1 to not constrain the width.
+//    - height the image should have or -1 to not constrain the height.
+//
 func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -435,6 +475,13 @@ func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error
 // data located at runtime, you could have corrupt inline data in addition.
 //
 // Deprecated: Use GResource instead.
+//
+// The function takes the following parameters:
+//
+//    - data: byte data containing a serialized GdkPixdata structure.
+//    - copyPixels: whether to copy the pixel data, or use direct pointers data
+//    for the resulting pixbuf.
+//
 func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 	var _arg2 *C.guint8 // out
 	var _arg1 C.gint
@@ -470,6 +517,11 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 //
 // The file format is detected automatically. If NULL is returned, then error
 // will be set.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: path of the resource file.
+//
 func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
@@ -508,6 +560,14 @@ func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 // at all in that dimension.
 //
 // The stream is not closed.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: path of the resource file.
+//    - width the image should have or -1 to not constrain the width.
+//    - height the image should have or -1 to not constrain the height.
+//    - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
+//
 func NewPixbufFromResourceAtScale(resourcePath string, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -555,6 +615,12 @@ func NewPixbufFromResourceAtScale(resourcePath string, width, height int, preser
 // Other possible errors are in the GDK_PIXBUF_ERROR and G_IO_ERROR domains.
 //
 // The stream is not closed.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - stream: GInputStream to load the pixbuf from.
+//
 func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf, error) {
 	var _arg2 *C.GCancellable // out
 	var _arg1 *C.GInputStream // out
@@ -606,6 +672,15 @@ func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf
 // the image at all in that dimension.
 //
 // The stream is not closed.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - stream: GInputStream to load the pixbuf from.
+//    - width the image should have or -1 to not constrain the width.
+//    - height the image should have or -1 to not constrain the height.
+//    - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
+//
 func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg5 *C.GCancellable // out
 	var _arg1 *C.GInputStream // out
@@ -649,6 +724,11 @@ func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, w
 
 // NewPixbufFromStreamFinish finishes an asynchronous pixbuf creation operation
 // started with gdk_pixbuf_new_from_stream_async().
+//
+// The function takes the following parameters:
+//
+//    - asyncResult: GAsyncResult.
+//
 func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GdkPixbuf    // in
@@ -676,6 +756,11 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 //
 // This data is commonly the result of including an XPM file into a program's C
 // source.
+//
+// The function takes the following parameters:
+//
+//    - data: pointer to inline XPM data.
+//
 func NewPixbufFromXPMData(data []string) *Pixbuf {
 	var _arg1 **C.char     // out
 	var _cret *C.GdkPixbuf // in

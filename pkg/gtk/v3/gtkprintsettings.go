@@ -139,6 +139,11 @@ func NewPrintSettings() *PrintSettings {
 // new PrintSettings object with the restored settings, or NULL if an error
 // occurred. If the file could not be loaded then error is set to either a Error
 // or FileError. See gtk_print_settings_to_file().
+//
+// The function takes the following parameters:
+//
+//    - fileName: filename to read the settings from.
+//
 func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GtkPrintSettings // in
@@ -163,6 +168,11 @@ func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
 
 // NewPrintSettingsFromGVariant: deserialize print settings from an a{sv}
 // variant in the format produced by gtk_print_settings_to_gvariant().
+//
+// The function takes the following parameters:
+//
+//    - variant: a{sv} #GVariant.
+//
 func NewPrintSettingsFromGVariant(variant *glib.Variant) *PrintSettings {
 	var _arg1 *C.GVariant         // out
 	var _cret *C.GtkPrintSettings // in
@@ -183,6 +193,13 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) *PrintSettings {
 // group_name in key_file. Returns a new PrintSettings object with the restored
 // settings, or NULL if an error occurred. If the file could not be loaded then
 // error is set to either a Error or FileError.
+//
+// The function takes the following parameters:
+//
+//    - keyFile to retrieve the settings from.
+//    - groupName: name of the group to use, or NULL to use the default “Print
+//    Settings”.
+//
 func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PrintSettings, error) {
 	var _arg1 *C.GKeyFile         // out
 	var _arg2 *C.gchar            // out

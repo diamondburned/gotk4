@@ -277,6 +277,11 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 // to update the current visible tooltip, or to show/hide the current tooltip.
 // This function is useful to call when, for example, the state of the widget
 // changed by a key press.
+//
+// The function takes the following parameters:
+//
+//    - display: Display.
+//
 func TooltipTriggerTooltipQuery(display *gdk.Display) {
 	var _arg1 *C.GdkDisplay // out
 

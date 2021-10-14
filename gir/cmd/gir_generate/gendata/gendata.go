@@ -254,7 +254,6 @@ var Filters = []FilterMatcher{
 	FileFilter("gbitlock."),
 	FileFilter("gdataset."),
 	FileFilter("gdate."),
-	FileFilter("gdatetime."),
 	FileFilter("gerror."), // already handled internally
 	FileFilter("ghook."),
 	FileFilter("glib-unix."),
@@ -318,6 +317,51 @@ func ImportGError(nsgen *girgen.NamespaceGenerator) error {
 
 	f := nsgen.MakeFile("")
 	f.Header().DashImport(core)
+
+	return nil
+}
+
+// GLibDateTime generates NewTimeZoneFromGo and NewDateTimeFromGo.
+func GLibDateTime(nsgen *girgen.NamespaceGenerator) error {
+	fg, ok := nsgen.Files["gdatetime.go"]
+	if !ok {
+		return nil
+	}
+
+	h := fg.Header()
+	h.Import("time")
+
+	p := fg.Pen()
+	p.Line(`
+		// NewTimeZoneFromGo creates a new TimeZone instance from Go's Location.
+		// The location's accuracy is down to the second.
+		func NewTimeZoneFromGo(loc *time.Location) *TimeZone {
+			switch loc {
+			case time.UTC:
+				return NewTimeZoneUTC()
+			case time.Local:
+				return NewTimeZoneLocal()
+			}
+
+			t1 := time.Date(2009, time.November, 10, 23, 0, 0, 0, loc)
+			t2 := time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC)
+			return NewTimeZoneOffset(int32(t2.Sub(t1) / time.Second))
+		}
+
+		// NewDateTimeFromGo creates a new DateTime instance from Go's Time. The
+		// TimeZone of the DateTime will be implicitly converted from the Time.
+		func NewDateTimeFromGo(t *time.Time) *DateTime {
+			tz := NewTimeZoneFromGo(t.Location())
+
+			Y, M, D := t.Date()
+			h, m, s := t.Clock()
+
+			// Second offset within a minute in nanoseconds.
+			seconds := (time.Duration(s) * time.Second) + time.Duration(t.Nanosecond())
+
+			return NewDateTime(tz, Y, int(M), D, h, m, seconds.Seconds())
+		}
+	`)
 
 	return nil
 }
@@ -626,7 +670,7 @@ func GtkTextBufferInsert(nsgen *girgen.NamespaceGenerator) error {
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
-	"GLib-2": {GioArrayUseBytes, GLibAliases, GLibLogs},
+	"GLib-2": {GioArrayUseBytes, GLibAliases, GLibLogs, GLibDateTime},
 	"Gio-2":  {ImportGError},
 	"Gtk-3":  {ImportGError},
 	"Gtk-4":  {ImportGError}, // for the marshaler

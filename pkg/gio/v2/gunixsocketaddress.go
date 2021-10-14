@@ -69,6 +69,11 @@ func marshalUnixSocketAddresser(p uintptr) (interface{}, error) {
 //
 // To create abstract socket addresses, on systems that support that, use
 // g_unix_socket_address_new_abstract().
+//
+// The function takes the following parameters:
+//
+//    - path: socket path.
+//
 func NewUnixSocketAddress(path string) *UnixSocketAddress {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GSocketAddress // in
@@ -90,6 +95,11 @@ func NewUnixSocketAddress(path string) *UnixSocketAddress {
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED SocketAddress for path.
 //
 // Deprecated: Use g_unix_socket_address_new_with_type().
+//
+// The function takes the following parameters:
+//
+//    - path: abstract name.
+//
 func NewUnixSocketAddressAbstract(path string) *UnixSocketAddress {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint
@@ -140,6 +150,12 @@ func NewUnixSocketAddressAbstract(path string) *UnixSocketAddress {
 // connecting to a server created by another process, you must use the
 // appropriate type corresponding to how that process created its listening
 // socket.
+//
+// The function takes the following parameters:
+//
+//    - path: name.
+//    - typ: SocketAddressType.
+//
 func NewUnixSocketAddressWithType(path string, typ UnixSocketAddressType) *UnixSocketAddress {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint

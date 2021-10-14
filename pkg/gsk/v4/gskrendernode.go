@@ -231,6 +231,12 @@ func (node *RenderNode) WriteToFile(filename string) error {
 // gsk_render_node_serialize().
 //
 // For a discussion of the supported format, see that function.
+//
+// The function takes the following parameters:
+//
+//    - bytes containing the data.
+//    - errorFunc: callback on parsing errors or NULL.
+//
 func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNoder {
 	var _arg1 *C.GBytes           // out
 	var _arg2 C.GskParseErrorFunc // out

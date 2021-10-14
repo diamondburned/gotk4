@@ -179,6 +179,11 @@ func NewTreeViewColumn() *TreeViewColumn {
 
 // NewTreeViewColumnWithArea creates a new TreeViewColumn using area to render
 // its cells.
+//
+// The function takes the following parameters:
+//
+//    - area that the newly created column should use to layout cells.
+//
 func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 	var _arg1 *C.GtkCellArea       // out
 	var _cret *C.GtkTreeViewColumn // in

@@ -1041,6 +1041,12 @@ func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.Sig
 // grab. This is not public API and must not be used by applications.
 //
 // Deprecated: The symbol was never meant to be used outside of GTK+.
+//
+// The function takes the following parameters:
+//
+//    - display for which to get the grab information.
+//    - device to get the grab information from.
+//
 func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Windower, ownerEvents bool, ok bool) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkDevice  // out

@@ -708,6 +708,11 @@ func GetDefaultRootWindow() Windower {
 }
 
 // OffscreenWindowGetEmbedder gets the window that window is embedded in.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
 func OffscreenWindowGetEmbedder(window Windower) Windower {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
@@ -738,6 +743,11 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 // OffscreenWindowGetSurface gets the offscreen surface that an offscreen window
 // renders into. If you need to keep this around over window resizes, you need
 // to add a reference to it.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
 func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 	var _arg1 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
@@ -766,6 +776,12 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 // is also necessary to handle the Window::pick-embedded-child signal on the
 // embedder and the Window::to-embedder and Window::from-embedder signals on
 // window.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//    - embedder that window gets embedded in.
+//
 func OffscreenWindowSetEmbedder(window, embedder Windower) {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 *C.GdkWindow // out
@@ -1232,6 +1248,14 @@ func marshalWindower(p uintptr) (interface{}, error) {
 // NewWindow creates a new Window using the attributes from attributes. See
 // WindowAttr and WindowAttributesType for more details. Note: to use this on
 // displays other than the default display, parent must be specified.
+//
+// The function takes the following parameters:
+//
+//    - parent or NULL to create the window as a child of the default root
+//    window for the default display.
+//    - attributes of the new window.
+//    - attributesMask: mask indicating which fields in attributes are valid.
+//
 func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAttributesType) *Window {
 	var _arg1 *C.GdkWindow     // out
 	var _arg2 *C.GdkWindowAttr // out
@@ -5352,6 +5376,14 @@ func WindowAtPointer() (winX int, winY int, window Windower) {
 
 // WindowConstrainSize constrains a desired width and height according to a set
 // of geometry hints (such as minimum and maximum size).
+//
+// The function takes the following parameters:
+//
+//    - geometry: Geometry structure.
+//    - flags: mask indicating what portions of geometry are set.
+//    - width: desired width of window.
+//    - height: desired height of the window.
+//
 func WindowConstrainSize(geometry *Geometry, flags WindowHints, width, height int) (newWidth int, newHeight int) {
 	var _arg1 *C.GdkGeometry   // out
 	var _arg2 C.GdkWindowHints // out
@@ -5407,6 +5439,11 @@ func WindowProcessAllUpdates() {
 // time.
 //
 // Deprecated: since version 3.22.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to turn on update debugging.
+//
 func WindowSetDebugUpdates(setting bool) {
 	var _arg1 C.gboolean // out
 

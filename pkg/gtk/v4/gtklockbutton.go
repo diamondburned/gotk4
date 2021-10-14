@@ -108,6 +108,11 @@ func marshalLockButtonner(p uintptr) (interface{}, error) {
 }
 
 // NewLockButton creates a new lock button which reflects the permission.
+//
+// The function takes the following parameters:
+//
+//    - permission: GPermission.
+//
 func NewLockButton(permission gio.Permissioner) *LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in

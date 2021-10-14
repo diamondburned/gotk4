@@ -54,6 +54,12 @@ func marshalAlternativeTriggerer(p uintptr) (interface{}, error) {
 //
 // Note that nesting is allowed, so if you want more than two alternative,
 // create a new alternative trigger for each option.
+//
+// The function takes the following parameters:
+//
+//    - first trigger that may trigger.
+//    - second trigger that may trigger.
+//
 func NewAlternativeTrigger(first, second ShortcutTriggerer) *AlternativeTrigger {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutTrigger // out
@@ -159,6 +165,12 @@ func marshalKeyvalTriggerer(p uintptr) (interface{}, error) {
 
 // NewKeyvalTrigger creates a GtkShortcutTrigger that will trigger whenever the
 // key with the given keyval and modifiers is pressed.
+//
+// The function takes the following parameters:
+//
+//    - keyval to trigger for.
+//    - modifiers that need to be present.
+//
 func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger {
 	var _arg1 C.guint               // out
 	var _arg2 C.GdkModifierType     // out
@@ -240,6 +252,11 @@ func marshalMnemonicTriggerer(p uintptr) (interface{}, error) {
 //
 // Mnemonics are activated by calling code when a key event with the right
 // modifiers is detected.
+//
+// The function takes the following parameters:
+//
+//    - keyval to trigger for.
+//
 func NewMnemonicTrigger(keyval uint) *MnemonicTrigger {
 	var _arg1 C.guint               // out
 	var _cret *C.GtkShortcutTrigger // in
@@ -375,6 +392,11 @@ func marshalShortcutTriggerer(p uintptr) (interface{}, error) {
 // Note that you will have to escape the < and > characters when specifying
 // triggers in XML files, such as GtkBuilder ui files. Use &lt; instead of < and
 // &gt; instead of >.
+//
+// The function takes the following parameters:
+//
+//    - str: string to parse.
+//
 func NewShortcutTriggerParseString(str string) *ShortcutTrigger {
 	var _arg1 *C.char               // out
 	var _cret *C.GtkShortcutTrigger // in

@@ -221,6 +221,12 @@ func (m MarkupParseFlags) Has(other MarkupParseFlags) bool {
 // of &#x1; ... &#x1f; for all control sequences except for tabstop, newline and
 // carriage return. The character references in this range are not valid XML
 // 1.0, but they are valid XML 1.1 and will be accepted by the GMarkup parser.
+//
+// The function takes the following parameters:
+//
+//    - text: some valid UTF-8 text.
+//    - length of text in bytes, or -1 if the text is nul-terminated.
+//
 func MarkupEscapeText(text string, length int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out

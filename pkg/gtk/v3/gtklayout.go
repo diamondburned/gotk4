@@ -76,6 +76,12 @@ func marshalLayouter(p uintptr) (interface{}, error) {
 // NewLayout creates a new Layout. Unless you have a specific adjustment you’d
 // like the layout to use for scrolling, pass NULL for hadjustment and
 // vadjustment.
+//
+// The function takes the following parameters:
+//
+//    - hadjustment: horizontal scroll adjustment, or NULL.
+//    - vadjustment: vertical scroll adjustment, or NULL.
+//
 func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out

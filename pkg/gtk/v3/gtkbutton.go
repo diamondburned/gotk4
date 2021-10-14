@@ -149,6 +149,12 @@ func NewButton() *Button {
 //
 // This function is a convenience wrapper around gtk_button_new() and
 // gtk_button_set_image().
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name or NULL.
+//    - size: icon size (IconSize).
+//
 func NewButtonFromIconName(iconName string, size int) *Button {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -180,6 +186,11 @@ func NewButtonFromIconName(iconName string, size int) *Button {
 //
 // Deprecated: Stock items are deprecated. Use gtk_button_new_with_label()
 // instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: name of the stock item.
+//
 func NewButtonFromStock(stockId string) *Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -199,6 +210,11 @@ func NewButtonFromStock(stockId string) *Button {
 
 // NewButtonWithLabel creates a Button widget with a Label child containing the
 // given text.
+//
+// The function takes the following parameters:
+//
+//    - label: text you want the Label to hold.
+//
 func NewButtonWithLabel(label string) *Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -221,6 +237,12 @@ func NewButtonWithLabel(label string) *Button {
 // literal underscore character in a label, use “__” (two underscores). The
 // first underlined character represents a keyboard accelerator called a
 // mnemonic. Pressing Alt and that key activates the button.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the button, with an underscore in front of the mnemonic
+//    character.
+//
 func NewButtonWithMnemonic(label string) *Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

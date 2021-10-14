@@ -27,6 +27,12 @@ func RandomDouble() float64 {
 
 // RandomDoubleRange returns a random #gdouble equally distributed over the
 // range [begin..end).
+//
+// The function takes the following parameters:
+//
+//    - begin: lower closed bound of the interval.
+//    - end: upper open bound of the interval.
+//
 func RandomDoubleRange(begin, end float64) float64 {
 	var _arg1 C.gdouble // out
 	var _arg2 C.gdouble // out
@@ -62,6 +68,12 @@ func RandomInt() uint32 {
 
 // RandomIntRange returns a random #gint32 equally distributed over the range
 // [begin..end-1].
+//
+// The function takes the following parameters:
+//
+//    - begin: lower closed bound of the interval.
+//    - end: upper open bound of the interval.
+//
 func RandomIntRange(begin, end int32) int32 {
 	var _arg1 C.gint32 // out
 	var _arg2 C.gint32 // out
@@ -83,6 +95,11 @@ func RandomIntRange(begin, end int32) int32 {
 
 // RandomSetSeed sets the seed for the global random number generator, which is
 // used by the g_random_* functions, to seed.
+//
+// The function takes the following parameters:
+//
+//    - seed: value to reinitialize the global random number generator.
+//
 func RandomSetSeed(seed uint32) {
 	var _arg1 C.guint32 // out
 

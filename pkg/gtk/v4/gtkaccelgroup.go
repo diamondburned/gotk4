@@ -33,6 +33,12 @@ func AcceleratorGetDefaultModMask() gdk.ModifierType {
 
 // AcceleratorGetLabel converts an accelerator keyval and modifier mask into a
 // string which can be used to represent the accelerator to the user.
+//
+// The function takes the following parameters:
+//
+//    - acceleratorKey: accelerator keyval.
+//    - acceleratorMods: accelerator modifier mask.
+//
 func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -62,6 +68,14 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 //
 // This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
+//
+// The function takes the following parameters:
+//
+//    - display or NULL to use the default display.
+//    - acceleratorKey: accelerator keyval.
+//    - keycode: accelerator keycode.
+//    - acceleratorMods: accelerator modifier mask.
+//
 func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
 	var _arg2 C.guint           // out
@@ -98,6 +112,12 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycod
 //
 // If you need to display accelerators in the user interface, see
 // gtk.AcceleratorGetLabel().
+//
+// The function takes the following parameters:
+//
+//    - acceleratorKey: accelerator keyval.
+//    - acceleratorMods: accelerator modifier mask.
+//
 func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -124,6 +144,14 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 // This is similar to gtk.AcceleratorName() but handling keycodes. This is only
 // useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
+//
+// The function takes the following parameters:
+//
+//    - display or NULL to use the default display.
+//    - acceleratorKey: accelerator keyval.
+//    - keycode: accelerator keycode.
+//    - acceleratorMods: accelerator modifier mask.
+//
 func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
 	var _arg2 C.guint           // out
@@ -163,6 +191,11 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 //
 // If the parse fails, accelerator_key and accelerator_mods will be set to 0
 // (zero).
+//
+// The function takes the following parameters:
+//
+//    - accelerator: string representing an accelerator.
+//
 func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // in
@@ -202,6 +235,12 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 //
 // If the parse fails, accelerator_key, accelerator_mods and accelerator_codes
 // will be set to 0 (zero).
+//
+// The function takes the following parameters:
+//
+//    - accelerator: string representing an accelerator.
+//    - display to look up accelerator_codes in.
+//
 func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint, []uint, gdk.ModifierType, bool) {
 	var _arg1 *C.char           // out
 	var _arg2 *C.GdkDisplay     // out
@@ -256,6 +295,12 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint
 // For example, the GDK_KEY_a keyval plus GDK_CONTROL_MASK mark is valid, and
 // matches the “Ctrl+a” accelerator. But, you can't, for instance, use the
 // GDK_KEY_Control_L keyval as an accelerator.
+//
+// The function takes the following parameters:
+//
+//    - keyval: GDK keyval.
+//    - modifiers: modifier mask.
+//
 func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out

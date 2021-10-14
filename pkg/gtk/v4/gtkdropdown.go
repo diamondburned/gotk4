@@ -85,6 +85,12 @@ func marshalDropDowner(p uintptr) (interface{}, error) {
 //
 // You may want to call gtk.DropDown.SetFactory() to set up a way to map its
 // items to widgets.
+//
+// The function takes the following parameters:
+//
+//    - model to use or NULL for none.
+//    - expression to use or NULL for none.
+//
 func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 	var _arg1 *C.GListModel    // out
 	var _arg2 *C.GtkExpression // out
@@ -112,6 +118,11 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 
 // NewDropDownFromStrings creates a new GtkDropDown that is populated with the
 // strings.
+//
+// The function takes the following parameters:
+//
+//    - strings to put in the dropdown.
+//
 func NewDropDownFromStrings(strings []string) *DropDown {
 	var _arg1 **C.char     // out
 	var _cret *C.GtkWidget // in

@@ -71,6 +71,11 @@ func NewInvisible() *Invisible {
 }
 
 // NewInvisibleForScreen creates a new Invisible object for a specified screen.
+//
+// The function takes the following parameters:
+//
+//    - screen which identifies on which the new Invisible will be created.
+//
 func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 	var _arg1 *C.GdkScreen // out
 	var _cret *C.GtkWidget // in

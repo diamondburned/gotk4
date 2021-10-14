@@ -104,6 +104,11 @@ func marshalRadioMenuItemmer(p uintptr) (interface{}, error) {
 }
 
 // NewRadioMenuItem creates a new RadioMenuItem.
+//
+// The function takes the following parameters:
+//
+//    - group to which the radio menu item is to be attached, or NULL.
+//
 func NewRadioMenuItem(group []RadioMenuItem) *RadioMenuItem {
 	var _arg1 *C.GSList    // out
 	var _cret *C.GtkWidget // in
@@ -130,6 +135,11 @@ func NewRadioMenuItem(group []RadioMenuItem) *RadioMenuItem {
 
 // NewRadioMenuItemFromWidget creates a new RadioMenuItem adding it to the same
 // group as group.
+//
+// The function takes the following parameters:
+//
+//    - group: existing RadioMenuItem.
+//
 func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _cret *C.GtkWidget        // in
@@ -150,6 +160,12 @@ func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 
 // NewRadioMenuItemWithLabel creates a new RadioMenuItem whose child is a simple
 // Label.
+//
+// The function takes the following parameters:
+//
+//    - group: group the radio menu item is inside, or NULL.
+//    - label: text for the label.
+//
 func NewRadioMenuItemWithLabel(group []RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GSList    // out
 	var _arg2 *C.gchar     // out
@@ -181,6 +197,12 @@ func NewRadioMenuItemWithLabel(group []RadioMenuItem, label string) *RadioMenuIt
 // NewRadioMenuItemWithLabelFromWidget creates a new GtkRadioMenuItem whose
 // child is a simple GtkLabel. The new RadioMenuItem is added to the same group
 // as group.
+//
+// The function takes the following parameters:
+//
+//    - group: existing RadioMenuItem.
+//    - label: text for the label.
+//
 func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out
@@ -208,6 +230,13 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 // NewRadioMenuItemWithMnemonic creates a new RadioMenuItem containing a label.
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
 // in label indicate the mnemonic for the menu item.
+//
+// The function takes the following parameters:
+//
+//    - group: group the radio menu item is inside, or NULL.
+//    - label: text of the button, with an underscore in front of the mnemonic
+//    character.
+//
 func NewRadioMenuItemWithMnemonic(group []RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GSList    // out
 	var _arg2 *C.gchar     // out
@@ -242,6 +271,13 @@ func NewRadioMenuItemWithMnemonic(group []RadioMenuItem, label string) *RadioMen
 // for the menu item.
 //
 // The new RadioMenuItem is added to the same group as group.
+//
+// The function takes the following parameters:
+//
+//    - group: existing RadioMenuItem.
+//    - label: text of the button, with an underscore in front of the mnemonic
+//    character.
+//
 func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out

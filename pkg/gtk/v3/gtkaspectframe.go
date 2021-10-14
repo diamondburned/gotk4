@@ -68,6 +68,18 @@ func marshalAspectFramer(p uintptr) (interface{}, error) {
 }
 
 // NewAspectFrame: create a new AspectFrame.
+//
+// The function takes the following parameters:
+//
+//    - label: label text.
+//    - xalign: horizontal alignment of the child within the allocation of the
+//    AspectFrame. This ranges from 0.0 (left aligned) to 1.0 (right aligned).
+//    - yalign: vertical alignment of the child within the allocation of the
+//    AspectFrame. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned).
+//    - ratio: desired aspect ratio.
+//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken
+//    from the requistion of the child.
+//
 func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool) *AspectFrame {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gfloat     // out

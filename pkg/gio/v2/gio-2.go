@@ -191,6 +191,11 @@ func marshalBytesIconner(p uintptr) (interface{}, error) {
 //
 // This cannot fail, but loading and interpreting the bytes may fail later on
 // (for example, if g_loadable_icon_load() is called) if the image is invalid.
+//
+// The function takes the following parameters:
+//
+//    - bytes: #GBytes.
+//
 func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 	var _arg1 *C.GBytes // out
 	var _cret *C.GIcon  // in
@@ -473,6 +478,11 @@ func marshalDBusConnectioner(p uintptr) (interface{}, error) {
 
 // NewDBusConnectionFinish finishes an operation started with
 // g_dbus_connection_new().
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to g_dbus_connection_new().
+//
 func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
@@ -496,6 +506,11 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 
 // NewDBusConnectionForAddressFinish finishes an operation started with
 // g_dbus_connection_new_for_address().
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to g_dbus_connection_new().
+//
 func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
@@ -532,6 +547,14 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 // g_dbus_connection_new_for_address() for the asynchronous version.
 //
 // If observer is not NULL it may be used to control the authentication process.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - address d-Bus address.
+//    - flags describing how to make the connection.
+//    - observer or NULL.
+//
 func NewDBusConnectionForAddressSync(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
 	var _arg4 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out
@@ -583,6 +606,15 @@ func NewDBusConnectionForAddressSync(ctx context.Context, address string, flags 
 //
 // This is a synchronous failable constructor. See g_dbus_connection_new() for
 // the asynchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - stream: OStream.
+//    - guid: GUID to use if authenticating as a server or NULL.
+//    - flags describing how to make the connection.
+//    - observer or NULL.
+//
 func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
 	var _arg5 *C.GCancellable        // out
 	var _arg1 *C.GIOStream           // out
@@ -2382,6 +2414,12 @@ func NewDBusMessage() *DBusMessage {
 //
 // If the blob cannot be parsed, contains invalid fields, or contains invalid
 // headers, G_IO_ERROR_INVALID_ARGUMENT will be returned.
+//
+// The function takes the following parameters:
+//
+//    - blob representing a binary D-Bus message.
+//    - capabilities describing what protocol features are supported.
+//
 func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBusMessage, error) {
 	var _arg1 *C.guchar // out
 	var _arg2 C.gsize
@@ -2411,6 +2449,14 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBu
 }
 
 // NewDBusMessageMethodCall creates a new BusMessage for a method call.
+//
+// The function takes the following parameters:
+//
+//    - name: valid D-Bus name or NULL.
+//    - path: valid object path.
+//    - interface_: valid D-Bus interface name or NULL.
+//    - method: valid method name.
+//
 func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessage {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
@@ -2445,6 +2491,13 @@ func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessag
 }
 
 // NewDBusMessageSignal creates a new BusMessage for a signal emission.
+//
+// The function takes the following parameters:
+//
+//    - path: valid object path.
+//    - interface_: valid D-Bus interface name.
+//    - signal: valid signal name.
+//
 func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
@@ -3870,6 +3923,15 @@ func marshalDBusServerer(p uintptr) (interface{}, error) {
 //
 // This is a synchronous failable constructor. There is currently no
 // asynchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - address d-Bus address.
+//    - flags flags from the BusServerFlags enumeration.
+//    - guid d-Bus GUID.
+//    - observer or NULL.
+//
 func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlags, guid string, observer *DBusAuthObserver) (*DBusServer, error) {
 	var _arg5 *C.GCancellable      // out
 	var _arg1 *C.gchar             // out
@@ -4485,6 +4547,12 @@ func marshalMenuItemmer(p uintptr) (interface{}, error) {
 // If detailed_action is non-NULL it is used to set the "action" and possibly
 // the "target" attribute of the new item. See g_menu_item_set_detailed_action()
 // for more information.
+//
+// The function takes the following parameters:
+//
+//    - label: section label, or NULL.
+//    - detailedAction: detailed action string, or NULL.
+//
 func NewMenuItem(label, detailedAction string) *MenuItem {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -4515,6 +4583,12 @@ func NewMenuItem(label, detailedAction string) *MenuItem {
 //
 // item_index must be valid (ie: be sure to call g_menu_model_get_n_items()
 // first).
+//
+// The function takes the following parameters:
+//
+//    - model: Model.
+//    - itemIndex: index of an item in model.
+//
 func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	var _arg1 *C.GMenuModel // out
 	var _arg2 C.gint        // out
@@ -4591,6 +4665,12 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 //        </link>
 //      </item>
 //    </menu>.
+//
+// The function takes the following parameters:
+//
+//    - label: section label, or NULL.
+//    - section with the items of the section.
+//
 func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -4617,6 +4697,12 @@ func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 //
 // This is a convenience API around g_menu_item_new() and
 // g_menu_item_set_submenu().
+//
+// The function takes the following parameters:
+//
+//    - label: section label, or NULL.
+//    - submenu with the items of the submenu.
+//
 func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -5028,6 +5114,11 @@ func marshalNotificationer(p uintptr) (interface{}, error) {
 // After populating notification with more details, it can be sent to the
 // desktop shell with g_application_send_notification(). Changing any properties
 // after this call will not have any effect until resending notification.
+//
+// The function takes the following parameters:
+//
+//    - title of the notification.
+//
 func NewNotification(title string) *Notification {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GNotification // in
@@ -5347,6 +5438,13 @@ func marshalPropertyActioner(p uintptr) (interface{}, error) {
 //
 // This function takes a reference on object and doesn't release it until the
 // action is destroyed.
+//
+// The function takes the following parameters:
+//
+//    - name of the action to create.
+//    - object that has the property to wrap.
+//    - propertyName: name of the property.
+//
 func NewPropertyAction(name string, object *externglib.Object, propertyName string) *PropertyAction {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gpointer         // out
@@ -5403,6 +5501,13 @@ func marshalSimpleActioner(p uintptr) (interface{}, error) {
 //
 // The created action is stateless. See g_simple_action_new_stateful() to create
 // an action that has state.
+//
+// The function takes the following parameters:
+//
+//    - name of the action.
+//    - parameterType: type of parameter that will be passed to handlers for
+//    the Action::activate signal, or NULL for no parameter.
+//
 func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariantType  // out
@@ -5430,6 +5535,14 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 // All future state values must have the same Type as the initial state.
 //
 // If the state #GVariant is floating, it is consumed.
+//
+// The function takes the following parameters:
+//
+//    - name of the action.
+//    - parameterType: type of the parameter that will be passed to handlers
+//    for the Action::activate signal, or NULL for no parameter.
+//    - state: initial state of the action.
+//
 func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) *SimpleAction {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariantType  // out
@@ -5607,6 +5720,12 @@ func marshalSimpleIOStreamer(p uintptr) (interface{}, error) {
 
 // NewSimpleIOStream creates a new IOStream wrapping input_stream and
 // output_stream. See also OStream.
+//
+// The function takes the following parameters:
+//
+//    - inputStream: Stream.
+//    - outputStream: Stream.
+//
 func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *SimpleIOStream {
 	var _arg1 *C.GInputStream  // out
 	var _arg2 *C.GOutputStream // out
@@ -5653,6 +5772,11 @@ func marshalSimplePermissioner(p uintptr) (interface{}, error) {
 
 // NewSimplePermission creates a new #GPermission instance that represents an
 // action that is either always or never allowed.
+//
+// The function takes the following parameters:
+//
+//    - allowed: TRUE if the action is allowed.
+//
 func NewSimplePermission(allowed bool) *SimplePermission {
 	var _arg1 C.gboolean     // out
 	var _cret *C.GPermission // in
@@ -5745,6 +5869,12 @@ func marshalSubprocesser(p uintptr) (interface{}, error) {
 // NewSubprocess: create a new process with the given flags and argument list.
 //
 // The argument list is expected to be NULL-terminated.
+//
+// The function takes the following parameters:
+//
+//    - argv: commandline arguments for the subprocess.
+//    - flags that define the behaviour of the subprocess.
+//
 func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 	var _arg1 **C.gchar          // out
 	var _arg2 C.GSubprocessFlags // out
@@ -6617,6 +6747,11 @@ func marshalSubprocessLauncherer(p uintptr) (interface{}, error) {
 // The launcher is created with the default options. A copy of the environment
 // of the calling process is made at the time of this call and will be used as
 // the environment that the process is launched in.
+//
+// The function takes the following parameters:
+//
+//    - flags: Flags.
+//
 func NewSubprocessLauncher(flags SubprocessFlags) *SubprocessLauncher {
 	var _arg1 C.GSubprocessFlags     // out
 	var _cret *C.GSubprocessLauncher // in
@@ -7201,6 +7336,11 @@ func marshalTestDBusser(p uintptr) (interface{}, error) {
 }
 
 // NewTestDBus: create a new DBus object.
+//
+// The function takes the following parameters:
+//
+//    - flags: DBusFlags.
+//
 func NewTestDBus(flags TestDBusFlags) *TestDBus {
 	var _arg1 C.GTestDBusFlags // out
 	var _cret *C.GTestDBus     // in

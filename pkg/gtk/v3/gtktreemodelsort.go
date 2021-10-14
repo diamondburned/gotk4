@@ -108,6 +108,11 @@ func marshalTreeModelSorter(p uintptr) (interface{}, error) {
 
 // NewTreeModelSortWithModel creates a new TreeModelSort, with child_model as
 // the child model.
+//
+// The function takes the following parameters:
+//
+//    - childModel: TreeModel.
+//
 func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in

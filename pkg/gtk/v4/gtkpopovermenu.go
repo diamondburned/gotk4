@@ -244,6 +244,11 @@ func marshalPopoverMenuer(p uintptr) (interface{}, error) {
 //
 // This function creates menus with sliding submenus. See
 // gtk.PopoverMenu.NewFromModelFull for a way to control this.
+//
+// The function takes the following parameters:
+//
+//    - model: GMenuModel, or NULL.
+//
 func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -274,6 +279,12 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 // The only flag that is supported currently is GTK_POPOVER_MENU_NESTED, which
 // makes GTK create traditional, nested submenus instead of the default sliding
 // submenus.
+//
+// The function takes the following parameters:
+//
+//    - model: GMenuModel.
+//    - flags that affect how the menu is created.
+//
 func NewPopoverMenuFromModelFull(model gio.MenuModeller, flags PopoverMenuFlags) *PopoverMenu {
 	var _arg1 *C.GMenuModel         // out
 	var _arg2 C.GtkPopoverMenuFlags // out

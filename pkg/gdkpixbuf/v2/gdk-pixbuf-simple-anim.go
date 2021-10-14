@@ -41,6 +41,13 @@ func marshalPixbufSimpleAnimmer(p uintptr) (interface{}, error) {
 }
 
 // NewPixbufSimpleAnim creates a new, empty animation.
+//
+// The function takes the following parameters:
+//
+//    - width of the animation.
+//    - height of the animation.
+//    - rate: speed of the animation, in frames per second.
+//
 func NewPixbufSimpleAnim(width, height int, rate float32) *PixbufSimpleAnim {
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out

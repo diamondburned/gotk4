@@ -61,6 +61,13 @@ func marshalNetworkServicer(p uintptr) (interface{}, error) {
 // NewNetworkService creates a new Service representing the given service,
 // protocol, and domain. This will initially be unresolved; use the Connectable
 // interface to resolve it.
+//
+// The function takes the following parameters:
+//
+//    - service type to look up (eg, "ldap").
+//    - protocol: networking protocol to use for service (eg, "tcp").
+//    - domain: DNS domain to look up the service in.
+//
 func NewNetworkService(service, protocol, domain string) *NetworkService {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out

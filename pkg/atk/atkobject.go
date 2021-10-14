@@ -784,6 +784,11 @@ func (r Role) String() string {
 }
 
 // RoleForName: get the Role type corresponding to a rolew name.
+//
+// The function takes the following parameters:
+//
+//    - name: string which is the (non-localized) name of an ATK role.
+//
 func RoleForName(name string) Role {
 	var _arg1 *C.gchar  // out
 	var _cret C.AtkRole // in
@@ -803,6 +808,11 @@ func RoleForName(name string) Role {
 
 // RoleGetLocalizedName gets the localized description string describing the
 // Role role.
+//
+// The function takes the following parameters:
+//
+//    - role whose localized name is required.
+//
 func RoleGetLocalizedName(role Role) string {
 	var _arg1 C.AtkRole // out
 	var _cret *C.gchar  // in
@@ -820,6 +830,11 @@ func RoleGetLocalizedName(role Role) string {
 }
 
 // RoleGetName gets the description string describing the Role role.
+//
+// The function takes the following parameters:
+//
+//    - role whose name is required.
+//
 func RoleGetName(role Role) string {
 	var _arg1 C.AtkRole // out
 	var _cret *C.gchar  // in
@@ -842,6 +857,11 @@ func RoleGetName(role Role) string {
 // Deprecated: Since 2.12. If your application/toolkit doesn't find a suitable
 // role for a specific object defined at Role, please submit a bug in order to
 // add a new role to the specification.
+//
+// The function takes the following parameters:
+//
+//    - name: character string describing the new role.
+//
 func RoleRegister(name string) Role {
 	var _arg1 *C.gchar  // out
 	var _cret C.AtkRole // in

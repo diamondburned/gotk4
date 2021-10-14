@@ -20,6 +20,11 @@ import "C"
 // Note that a hostname might contain a mix of encoded and unencoded segments,
 // and so it is possible for g_hostname_is_non_ascii() and
 // g_hostname_is_ascii_encoded() to both return TRUE for a name.
+//
+// The function takes the following parameters:
+//
+//    - hostname: hostname.
+//
 func HostnameIsASCIIEncoded(hostname string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -43,6 +48,11 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 // address. (Eg, "192.168.0.1".)
 //
 // Since 2.66, IPv6 addresses with a zone-id are accepted (RFC6874).
+//
+// The function takes the following parameters:
+//
+//    - hostname (or IP address in string form).
+//
 func HostnameIsIPAddress(hostname string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -69,6 +79,11 @@ func HostnameIsIPAddress(hostname string) bool {
 // Note that a hostname might contain a mix of encoded and unencoded segments,
 // and so it is possible for g_hostname_is_non_ascii() and
 // g_hostname_is_ascii_encoded() to both return TRUE for a name.
+//
+// The function takes the following parameters:
+//
+//    - hostname: hostname.
+//
 func HostnameIsNonASCII(hostname string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -90,6 +105,11 @@ func HostnameIsNonASCII(hostname string) bool {
 
 // HostnameToASCII converts hostname to its canonical ASCII form; an ASCII-only
 // string containing no uppercase letters and not ending with a trailing dot.
+//
+// The function takes the following parameters:
+//
+//    - hostname: valid UTF-8 or ASCII hostname.
+//
 func HostnameToASCII(hostname string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -117,6 +137,11 @@ func HostnameToASCII(hostname string) string {
 //
 // Of course if hostname is not an internationalized hostname, then the
 // canonical presentation form will be entirely ASCII.
+//
+// The function takes the following parameters:
+//
+//    - hostname: valid UTF-8 or ASCII hostname.
+//
 func HostnameToUnicode(hostname string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in

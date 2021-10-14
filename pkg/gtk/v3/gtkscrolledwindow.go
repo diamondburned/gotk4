@@ -228,6 +228,12 @@ func marshalScrolledWindower(p uintptr) (interface{}, error) {
 // with the scrollbars and the child widget to keep the bars in sync with the
 // child. Usually you want to pass NULL for the adjustments, which will cause
 // the scrolled window to create them for you.
+//
+// The function takes the following parameters:
+//
+//    - hadjustment: horizontal adjustment.
+//    - vadjustment: vertical adjustment.
+//
 func NewScrolledWindow(hadjustment, vadjustment *Adjustment) *ScrolledWindow {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out

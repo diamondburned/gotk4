@@ -117,6 +117,11 @@ func marshalBufferedInputStreamer(p uintptr) (interface{}, error) {
 
 // NewBufferedInputStream creates a new Stream from the given base_stream, with
 // a buffer set to the default size (4 kilobytes).
+//
+// The function takes the following parameters:
+//
+//    - baseStream: Stream.
+//
 func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _cret *C.GInputStream // in
@@ -135,6 +140,12 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 
 // NewBufferedInputStreamSized creates a new InputStream from the given
 // base_stream, with a buffer set to size.
+//
+// The function takes the following parameters:
+//
+//    - baseStream: Stream.
+//    - size: #gsize.
+//
 func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _arg2 C.gsize         // out

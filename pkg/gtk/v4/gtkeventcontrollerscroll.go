@@ -144,6 +144,11 @@ func marshalEventControllerScroller(p uintptr) (interface{}, error) {
 
 // NewEventControllerScroll creates a new event controller that will handle
 // scroll events.
+//
+// The function takes the following parameters:
+//
+//    - flags affecting the controller behavior.
+//
 func NewEventControllerScroll(flags EventControllerScrollFlags) *EventControllerScroll {
 	var _arg1 C.GtkEventControllerScrollFlags // out
 	var _cret *C.GtkEventController           // in

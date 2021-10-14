@@ -15,6 +15,13 @@ import "C"
 //
 // Input values must be in the [0.0, 1.0] range; output values will be in the
 // same range.
+//
+// The function takes the following parameters:
+//
+//    - h: hue.
+//    - s: saturation.
+//    - v: value.
+//
 func HSVToRGB(h, s, v float32) (r float32, g float32, b float32) {
 	var _arg1 C.float // out
 	var _arg2 C.float // out
@@ -47,6 +54,13 @@ func HSVToRGB(h, s, v float32) (r float32, g float32, b float32) {
 //
 // Input values must be in the [0.0, 1.0] range; output values will be in the
 // same range.
+//
+// The function takes the following parameters:
+//
+//    - r: red.
+//    - g: green.
+//    - b: blue.
+//
 func RGBToHSV(r, g, b float32) (h float32, s float32, v float32) {
 	var _arg1 C.float // out
 	var _arg2 C.float // out

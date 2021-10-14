@@ -216,6 +216,11 @@ func SettingsGetDefault() *Settings {
 
 // SettingsGetForScreen gets the Settings object for screen, creating it if
 // necessary.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//
 func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	var _arg1 *C.GdkScreen   // out
 	var _cret *C.GtkSettings // in

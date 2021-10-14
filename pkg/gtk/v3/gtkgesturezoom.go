@@ -48,6 +48,11 @@ func marshalGestureZoomer(p uintptr) (interface{}, error) {
 
 // NewGestureZoom returns a newly created Gesture that recognizes zoom in/out
 // gestures (usually known as pinch/zoom).
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func NewGestureZoom(widget Widgetter) *GestureZoom {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

@@ -24,6 +24,11 @@ type Quark = uint32
 // This function must not be used before library constructors have finished
 // running. In particular, this means it cannot be used to initialize global
 // variables in C++.
+//
+// The function takes the following parameters:
+//
+//    - str: static string.
+//
 func InternStaticString(str string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -50,6 +55,11 @@ func InternStaticString(str string) string {
 // This function must not be used before library constructors have finished
 // running. In particular, this means it cannot be used to initialize global
 // variables in C++.
+//
+// The function takes the following parameters:
+//
+//    - str: string.
+//
 func InternString(str string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -84,6 +94,11 @@ func InternString(str string) string {
 // This function must not be used before library constructors have finished
 // running. In particular, this means it cannot be used to initialize global
 // variables in C++.
+//
+// The function takes the following parameters:
+//
+//    - str: string.
+//
 func QuarkFromStaticString(str string) Quark {
 	var _arg1 *C.gchar // out
 	var _cret C.GQuark // in
@@ -110,6 +125,11 @@ func QuarkFromStaticString(str string) Quark {
 // This function must not be used before library constructors have finished
 // running. In particular, this means it cannot be used to initialize global
 // variables in C++.
+//
+// The function takes the following parameters:
+//
+//    - str: string.
+//
 func QuarkFromString(str string) Quark {
 	var _arg1 *C.gchar // out
 	var _cret C.GQuark // in
@@ -130,6 +150,11 @@ func QuarkFromString(str string) Quark {
 }
 
 // QuarkToString gets the string associated with the given #GQuark.
+//
+// The function takes the following parameters:
+//
+//    - quark: #GQuark.
+//
 func QuarkToString(quark Quark) string {
 	var _arg1 C.GQuark // out
 	var _cret *C.gchar // in
@@ -154,6 +179,11 @@ func QuarkToString(quark Quark) string {
 //
 // This function must not be used before library constructors have finished
 // running.
+//
+// The function takes the following parameters:
+//
+//    - str: string.
+//
 func QuarkTryString(str string) Quark {
 	var _arg1 *C.gchar // out
 	var _cret C.GQuark // in

@@ -159,6 +159,11 @@ func (d DialogFlags) Has(other DialogFlags) bool {
 // changes.
 //
 // Deprecated: Deprecated.
+//
+// The function takes the following parameters:
+//
+//    - screen or NULL to use the default screen.
+//
 func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 	var _arg1 *C.GdkScreen // out
 	var _cret C.gboolean   // in

@@ -107,6 +107,12 @@ func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
 
 // NewMenuToolButton creates a new MenuToolButton using icon_widget as icon and
 // label as label.
+//
+// The function takes the following parameters:
+//
+//    - iconWidget: widget that will be used as icon widget, or NULL.
+//    - label: string that will be used as label, or NULL.
+//
 func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
@@ -136,6 +142,11 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 // by stock_id.
 //
 // Deprecated: Use gtk_menu_tool_button_new() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: name of a stock item.
+//
 func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in

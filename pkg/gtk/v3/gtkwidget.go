@@ -158,6 +158,12 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 // system this function will return TRUE for all windows, so you need to draw
 // the bottommost window first. Also, do not use “else if” statements to check
 // which window should be drawn.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - window to check. window may not be an input-only window.
+//
 func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
@@ -187,6 +193,13 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 // expose event to be emitted with the Widget::draw signal. It is intended to
 // help porting multiwindow widgets from GTK+ 2 to the rendering architecture of
 // GTK+ 3.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context to transform.
+//    - widget the context is currently centered for.
+//    - window to transform the context to.
+//
 func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Windower) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GtkWidget // out
@@ -8342,6 +8355,11 @@ func WidgetPushCompositeChild() {
 // WidgetSetDefaultDirection sets the default reading direction for widgets
 // where the direction has not been explicitly set by
 // gtk_widget_set_direction().
+//
+// The function takes the following parameters:
+//
+//    - dir: new default direction. This cannot be GTK_TEXT_DIR_NONE.
+//
 func WidgetSetDefaultDirection(dir TextDirection) {
 	var _arg1 C.GtkTextDirection // out
 

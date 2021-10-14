@@ -83,6 +83,12 @@ func marshalEntryBufferer(p uintptr) (interface{}, error) {
 // NewEntryBuffer: create a new GtkEntryBuffer object.
 //
 // Optionally, specify initial text to set in the buffer.
+//
+// The function takes the following parameters:
+//
+//    - initialChars: initial buffer text, or NULL.
+//    - nInitialChars: number of characters in initial_chars, or -1.
+//
 func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.gint            // out

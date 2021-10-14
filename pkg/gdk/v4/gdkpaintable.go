@@ -526,6 +526,12 @@ func (paintable *Paintable) ConnectInvalidateSize(f func()) externglib.SignalHan
 // PaintableInterface.get_current_image() virtual function when the paintable is
 // in an incomplete state (like a gtk.MediaStream before receiving the first
 // frame).
+//
+// The function takes the following parameters:
+//
+//    - intrinsicWidth: intrinsic width to report. Can be 0 for no width.
+//    - intrinsicHeight: intrinsic height to report. Can be 0 for no height.
+//
 func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) Paintabler {
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out

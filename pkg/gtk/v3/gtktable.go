@@ -139,6 +139,14 @@ func marshalTabler(p uintptr) (interface{}, error) {
 // silently interpreted as 1.
 //
 // Deprecated: Use gtk_grid_new().
+//
+// The function takes the following parameters:
+//
+//    - rows: number of rows the new table should have.
+//    - columns: number of columns the new table should have.
+//    - homogeneous: if set to TRUE, all table cells are resized to the size of
+//    the cell containing the largest widget.
+//
 func NewTable(rows, columns uint, homogeneous bool) *Table {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out

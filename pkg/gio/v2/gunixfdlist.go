@@ -76,6 +76,11 @@ func NewUnixFDList() *UnixFDList {
 // Each file descriptor in the array should be set to close-on-exec.
 //
 // If n_fds is -1 then fds must be terminated with -1.
+//
+// The function takes the following parameters:
+//
+//    - fds: initial list of file descriptors.
+//
 func NewUnixFDListFromArray(fds []int) *UnixFDList {
 	var _arg1 *C.gint // out
 	var _arg2 C.gint

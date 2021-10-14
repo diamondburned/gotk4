@@ -125,6 +125,11 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 }
 
 // NewPopover creates a new popover to point to relative_to.
+//
+// The function takes the following parameters:
+//
+//    - relativeTo the popover is related to.
+//
 func NewPopover(relativeTo Widgetter) *Popover {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -152,6 +157,12 @@ func NewPopover(relativeTo Widgetter) *Popover {
 //
 // Actions can also be added using gtk_widget_insert_action_group() on the menus
 // attach widget or on any of its parent widgets.
+//
+// The function takes the following parameters:
+//
+//    - relativeTo the popover is related to.
+//    - model: Model.
+//
 func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover {
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 *C.GMenuModel // out

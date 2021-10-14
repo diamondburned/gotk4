@@ -216,6 +216,12 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 //
 // If no application ID is given then some features of #GApplication (most
 // notably application uniqueness) will be disabled.
+//
+// The function takes the following parameters:
+//
+//    - applicationId: application id.
+//    - flags: application flags.
+//
 func NewApplication(applicationId string, flags ApplicationFlags) *Application {
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GApplicationFlags // out
@@ -1463,6 +1469,11 @@ func ApplicationGetDefault() *Application {
 // contains leading digits they should be escaped by prepending an underscore.
 // For example, if the owner of 7-zip.org used an application identifier for an
 // archiving application, it might be named org._7_zip.Archiver.
+//
+// The function takes the following parameters:
+//
+//    - applicationId: potential application identifier.
+//
 func ApplicationIDIsValid(applicationId string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in

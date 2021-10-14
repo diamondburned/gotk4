@@ -181,6 +181,12 @@ func (d DragAction) Has(other DragAction) bool {
 //
 // This function does not need to be called in managed drag and drop operations.
 // See gdk_drag_context_manage_dnd() for more information.
+//
+// The function takes the following parameters:
+//
+//    - context: DragContext.
+//    - time_: timestamp for this operation.
+//
 func DragAbort(context *DragContext, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
@@ -199,6 +205,12 @@ func DragAbort(context *DragContext, time_ uint32) {
 //
 // This function does not need to be called in managed drag and drop operations.
 // See gdk_drag_context_manage_dnd() for more information.
+//
+// The function takes the following parameters:
+//
+//    - context: DragContext.
+//    - time_: timestamp for this operation.
+//
 func DragDrop(context *DragContext, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
@@ -220,6 +232,12 @@ func DragDrop(context *DragContext, time_ uint32) {
 // The DragContext will only take the first gdk_drag_drop_done() call as
 // effective, if this function is called multiple times, all subsequent calls
 // will be ignored.
+//
+// The function takes the following parameters:
+//
+//    - context: DragContext.
+//    - success: whether the drag was ultimatively successful.
+//
 func DragDropDone(context *DragContext, success bool) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
@@ -237,6 +255,11 @@ func DragDropDone(context *DragContext, success bool) {
 // DragDropSucceeded returns whether the dropped data has been successfully
 // transferred. This function is intended to be used while handling a
 // GDK_DROP_FINISHED event, its return value is meaningless at other times.
+//
+// The function takes the following parameters:
+//
+//    - context: DragContext.
+//
 func DragDropSucceeded(context *DragContext) bool {
 	var _arg1 *C.GdkDragContext // out
 	var _cret C.gboolean        // in
@@ -260,6 +283,16 @@ func DragDropSucceeded(context *DragContext) bool {
 //
 // This function is called by the drag source to obtain the dest_window and
 // protocol parameters for gdk_drag_motion().
+//
+// The function takes the following parameters:
+//
+//    - context: DragContext.
+//    - dragWindow: window which may be at the pointer position, but should be
+//    ignored, since it is put up by the drag source as an icon.
+//    - screen where the destination window is sought.
+//    - xRoot: x position of the pointer in root coordinates.
+//    - yRoot: y position of the pointer in root coordinates.
+//
 func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *Screen, xRoot, yRoot int) (Windower, DragProtocol) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkWindow      // out
@@ -310,6 +343,18 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 //
 // This function does not need to be called in managed drag and drop operations.
 // See gdk_drag_context_manage_dnd() for more information.
+//
+// The function takes the following parameters:
+//
+//    - context: DragContext.
+//    - destWindow: new destination window, obtained by gdk_drag_find_window().
+//    - protocol: DND protocol in use, obtained by gdk_drag_find_window().
+//    - xRoot: x position of the pointer in root coordinates.
+//    - yRoot: y position of the pointer in root coordinates.
+//    - suggestedAction: suggested action.
+//    - possibleActions: possible actions.
+//    - time_: timestamp for this operation.
+//
 func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol, xRoot, yRoot int, suggestedAction, possibleActions DragAction, time_ uint32) bool {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkWindow      // out
@@ -353,6 +398,14 @@ func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol
 //
 // This function is called by the drag destination in response to
 // gdk_drag_motion() called by the drag source.
+//
+// The function takes the following parameters:
+//
+//    - context: DragContext.
+//    - action: selected action which will be taken when a drop happens, or 0
+//    to indicate that a drop will not be accepted.
+//    - time_: timestamp for this operation.
+//
 func DragStatus(context *DragContext, action DragAction, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.GdkDragAction   // out
@@ -371,6 +424,13 @@ func DragStatus(context *DragContext, action DragAction, time_ uint32) {
 // DropFinish ends the drag operation after a drop.
 //
 // This function is called by the drag destination.
+//
+// The function takes the following parameters:
+//
+//    - context: DragContext.
+//    - success: TRUE if the data was successfully received.
+//    - time_: timestamp for this operation.
+//
 func DropFinish(context *DragContext, success bool, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
@@ -392,6 +452,13 @@ func DropFinish(context *DragContext, success bool, time_ uint32) {
 //
 // This function is called by the drag destination in response to a drop
 // initiated by the drag source.
+//
+// The function takes the following parameters:
+//
+//    - context: DragContext.
+//    - accepted: TRUE if the drop is accepted.
+//    - time_: timestamp for this operation.
+//
 func DropReply(context *DragContext, accepted bool, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out

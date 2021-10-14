@@ -94,6 +94,11 @@ func (v ValueType) String() string {
 
 // ValueTypeGetLocalizedName gets the localized description string describing
 // the ValueType value_type.
+//
+// The function takes the following parameters:
+//
+//    - valueType whose localized name is required.
+//
 func ValueTypeGetLocalizedName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
 	var _cret *C.gchar       // in
@@ -112,6 +117,11 @@ func ValueTypeGetLocalizedName(valueType ValueType) string {
 
 // ValueTypeGetName gets the description string describing the ValueType
 // value_type.
+//
+// The function takes the following parameters:
+//
+//    - valueType whose name is required.
+//
 func ValueTypeGetName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
 	var _cret *C.gchar       // in

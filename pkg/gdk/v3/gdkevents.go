@@ -813,6 +813,11 @@ func GetShowEvents() bool {
 // SetShowEvents sets whether a trace of received events is output. Note that
 // GTK+ must be compiled with debugging (that is, configured using the
 // --enable-debug option) to use this option.
+//
+// The function takes the following parameters:
+//
+//    - showEvents: TRUE to output event debugging information.
+//
 func SetShowEvents(showEvents bool) {
 	var _arg1 C.gboolean // out
 
@@ -826,6 +831,12 @@ func SetShowEvents(showEvents bool) {
 
 // SettingGet obtains a desktop-wide setting, such as the double-click time, for
 // the default screen. See gdk_screen_get_setting().
+//
+// The function takes the following parameters:
+//
+//    - name of the setting.
+//    - value: location to store the value of the setting.
+//
 func SettingGet(name string, value *externglib.Value) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.GValue  // out

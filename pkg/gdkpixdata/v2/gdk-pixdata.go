@@ -194,6 +194,13 @@ func (p PixdataType) Has(other PixdataType) bool {
 // data is copied into newly-allocated memory; otherwise it is reused.
 //
 // Deprecated: Use GResource instead.
+//
+// The function takes the following parameters:
+//
+//    - pixdata to convert into a GdkPixbuf.
+//    - copyPixels: whether to copy raw pixel data; run-length encoded pixel
+//    data is always copied.
+//
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, error) {
 	var _arg1 *C.GdkPixdata // out
 	var _arg2 C.gboolean    // out

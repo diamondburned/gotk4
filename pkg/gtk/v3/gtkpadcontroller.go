@@ -125,6 +125,13 @@ func marshalPadControllerer(p uintptr) (interface{}, error) {
 // The PadController is created with no mapped actions. In order to map pad
 // events to actions, use gtk_pad_controller_set_action_entries() or
 // gtk_pad_controller_set_action().
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//    - group to trigger actions from.
+//    - pad: GDK_SOURCE_TABLET_PAD device, or NULL to handle all pads.
+//
 func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _arg1 *C.GtkWindow        // out
 	var _arg2 *C.GActionGroup     // out

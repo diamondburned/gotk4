@@ -69,6 +69,11 @@ func marshalHScaler(p uintptr) (interface{}, error) {
 // NewHScale creates a new HScale.
 //
 // Deprecated: Use gtk_scale_new() with GTK_ORIENTATION_HORIZONTAL instead.
+//
+// The function takes the following parameters:
+//
+//    - adjustment which sets the range of the scale.
+//
 func NewHScale(adjustment *Adjustment) *HScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -98,6 +103,13 @@ func NewHScale(adjustment *Adjustment) *HScale {
 //
 // Deprecated: Use gtk_scale_new_with_range() with GTK_ORIENTATION_HORIZONTAL
 // instead.
+//
+// The function takes the following parameters:
+//
+//    - min: minimum value.
+//    - max: maximum value.
+//    - step increment (tick size) used with keyboard shortcuts.
+//
 func NewHScaleWithRange(min, max, step float64) *HScale {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out

@@ -73,6 +73,11 @@ func NewUnixCredentialsMessage() *UnixCredentialsMessage {
 
 // NewUnixCredentialsMessageWithCredentials creates a new CredentialsMessage
 // holding credentials.
+//
+// The function takes the following parameters:
+//
+//    - credentials #GCredentials object.
+//
 func NewUnixCredentialsMessageWithCredentials(credentials *Credentials) *UnixCredentialsMessage {
 	var _arg1 *C.GCredentials          // out
 	var _cret *C.GSocketControlMessage // in

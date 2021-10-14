@@ -48,6 +48,11 @@ func _gotk4_gtk4_ExpressionNotify(arg0 C.gpointer) {
 
 // ValueDupExpression retrieves the GtkExpression stored inside the given value,
 // and acquires a reference to it.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
+//
 func ValueDupExpression(value *externglib.Value) Expressioner {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
@@ -76,6 +81,11 @@ func ValueDupExpression(value *externglib.Value) Expressioner {
 }
 
 // ValueGetExpression retrieves the GtkExpression stored inside the given value.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
+//
 func ValueGetExpression(value *externglib.Value) Expressioner {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
@@ -106,6 +116,12 @@ func ValueGetExpression(value *externglib.Value) Expressioner {
 // ValueSetExpression stores the given GtkExpression inside value.
 //
 // The GValue will acquire a reference to the expression.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
+//    - expression: GtkExpression.
+//
 func ValueSetExpression(value *externglib.Value, expression Expressioner) {
 	var _arg1 *C.GValue        // out
 	var _arg2 *C.GtkExpression // out
@@ -121,6 +137,12 @@ func ValueSetExpression(value *externglib.Value, expression Expressioner) {
 // ValueTakeExpression stores the given GtkExpression inside value.
 //
 // This function transfers the ownership of the expression to the GValue.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
+//    - expression: GtkExpression.
+//
 func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 	var _arg1 *C.GValue        // out
 	var _arg2 *C.GtkExpression // out
@@ -200,6 +222,11 @@ func marshalConstantExpressioner(p uintptr) (interface{}, error) {
 
 // NewConstantExpressionForValue creates an expression that always evaluates to
 // the given value.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue.
+//
 func NewConstantExpressionForValue(value *externglib.Value) *ConstantExpression {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
@@ -597,6 +624,11 @@ func marshalObjectExpressioner(p uintptr) (interface{}, error) {
 // This expression is meant to break reference cycles.
 //
 // If you want to keep a reference to object, use gtk.ConstantExpression.New.
+//
+// The function takes the following parameters:
+//
+//    - object to watch.
+//
 func NewObjectExpression(object *externglib.Object) *ObjectExpression {
 	var _arg1 *C.GObject       // out
 	var _cret *C.GtkExpression // in
@@ -659,6 +691,14 @@ func marshalPropertyExpressioner(p uintptr) (interface{}, error) {
 // fail.
 //
 // The given this_type must have a property with property_name.
+//
+// The function takes the following parameters:
+//
+//    - thisType: type to expect for the this type.
+//    - expression: expression to evaluate to get the object to query or NULL
+//    to query the this object.
+//    - propertyName: name of the property.
+//
 func NewPropertyExpression(thisType externglib.Type, expression Expressioner, propertyName string) *PropertyExpression {
 	var _arg1 C.GType          // out
 	var _arg2 *C.GtkExpression // out

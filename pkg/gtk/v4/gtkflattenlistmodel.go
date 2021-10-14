@@ -49,6 +49,11 @@ func marshalFlattenListModeller(p uintptr) (interface{}, error) {
 }
 
 // NewFlattenListModel creates a new GtkFlattenListModel that flattens list.
+//
+// The function takes the following parameters:
+//
+//    - model to be flattened.
+//
 func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 	var _arg1 *C.GListModel          // out
 	var _cret *C.GtkFlattenListModel // in

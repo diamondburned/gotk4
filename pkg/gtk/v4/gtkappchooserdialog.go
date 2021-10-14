@@ -115,6 +115,13 @@ func marshalAppChooserDialogger(p uintptr) (interface{}, error) {
 // NewAppChooserDialog creates a new GtkAppChooserDialog for the provided GFile.
 //
 // The dialog will show applications that can open the file.
+//
+// The function takes the following parameters:
+//
+//    - parent: GtkWindow, or NULL.
+//    - flags for this dialog.
+//    - file: GFile.
+//
 func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
@@ -143,6 +150,13 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *App
 // provided content type.
 //
 // The dialog will show applications that can open the content type.
+//
+// The function takes the following parameters:
+//
+//    - parent: GtkWindow, or NULL.
+//    - flags for this dialog.
+//    - contentType: content type string.
+//
 func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, contentType string) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out

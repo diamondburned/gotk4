@@ -100,6 +100,11 @@ func marshalLinkButtonner(p uintptr) (interface{}, error) {
 }
 
 // NewLinkButton creates a new GtkLinkButton with the URI as its text.
+//
+// The function takes the following parameters:
+//
+//    - uri: valid URI.
+//
 func NewLinkButton(uri string) *LinkButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -118,6 +123,12 @@ func NewLinkButton(uri string) *LinkButton {
 }
 
 // NewLinkButtonWithLabel creates a new GtkLinkButton containing a label.
+//
+// The function takes the following parameters:
+//
+//    - uri: valid URI.
+//    - label: text of the button.
+//
 func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out

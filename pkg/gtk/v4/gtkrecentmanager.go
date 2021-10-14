@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gtk4
@@ -628,6 +629,31 @@ func (info *RecentInfo) Exists() bool {
 	return _ok
 }
 
+// Added gets the the time when the resource was added to the recently used
+// resources list.
+func (info *RecentInfo) Added() *glib.DateTime {
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.GDateTime     // in
+
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+
+	_cret = C.gtk_recent_info_get_added(_arg0)
+	runtime.KeepAlive(info)
+
+	var _dateTime *glib.DateTime // out
+
+	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_date_time_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_dateTime)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
+		},
+	)
+
+	return _dateTime
+}
+
 // Age gets the number of days elapsed since the last update of the resource
 // pointed by info.
 func (info *RecentInfo) Age() int {
@@ -644,6 +670,49 @@ func (info *RecentInfo) Age() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// ApplicationInfo gets the data regarding the application that has registered
+// the resource pointed by info.
+//
+// If the command line contains any escape characters defined inside the storage
+// specification, they will be expanded.
+func (info *RecentInfo) ApplicationInfo(appName string) (string, uint, *glib.DateTime, bool) {
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.char          // out
+	var _arg2 *C.char          // in
+	var _arg3 C.guint          // in
+	var _arg4 *C.GDateTime     // in
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_recent_info_get_application_info(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(appName)
+
+	var _appExec string       // out
+	var _count uint           // out
+	var _stamp *glib.DateTime // out
+	var _ok bool              // out
+
+	_appExec = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	_count = uint(_arg3)
+	_stamp = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+	C.g_date_time_ref(_arg4)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_stamp)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
+		},
+	)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _appExec, _count, _stamp, _ok
 }
 
 // Applications retrieves the list of applications that have registered this
@@ -783,6 +852,30 @@ func (info *RecentInfo) MIMEType() string {
 	return _utf8
 }
 
+// Modified gets the time when the meta-data for the resource was last modified.
+func (info *RecentInfo) Modified() *glib.DateTime {
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.GDateTime     // in
+
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+
+	_cret = C.gtk_recent_info_get_modified(_arg0)
+	runtime.KeepAlive(info)
+
+	var _dateTime *glib.DateTime // out
+
+	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_date_time_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_dateTime)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
+		},
+	)
+
+	return _dateTime
+}
+
 // PrivateHint gets the value of the “private” flag.
 //
 // Resources in the recently used list that have this flag set to TRUE should
@@ -865,6 +958,30 @@ func (info *RecentInfo) URIDisplay() string {
 	}
 
 	return _utf8
+}
+
+// Visited gets the time when the meta-data for the resource was last visited.
+func (info *RecentInfo) Visited() *glib.DateTime {
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.GDateTime     // in
+
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+
+	_cret = C.gtk_recent_info_get_visited(_arg0)
+	runtime.KeepAlive(info)
+
+	var _dateTime *glib.DateTime // out
+
+	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_date_time_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_dateTime)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
+		},
+	)
+
+	return _dateTime
 }
 
 // HasApplication checks whether an application registered this resource using

@@ -20,6 +20,14 @@ import "C"
 // For most purposes you may want to use pango_get_log_attrs().
 //
 // Deprecated: Use pango_default_break() and pango_tailor_break().
+//
+// The function takes the following parameters:
+//
+//    - text to process. Must be valid UTF-8.
+//    - length of text in bytes (may be -1 if text is nul-terminated).
+//    - analysis structure from pango_itemize().
+//    - attrs: array to store character information in.
+//
 func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.int            // out
@@ -54,6 +62,15 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 // analyis argument is unused and can be NULL.
 //
 // See pango_tailor_break() for language-specific breaks.
+//
+// The function takes the following parameters:
+//
+//    - text to break. Must be valid UTF-8.
+//    - length of text in bytes (may be -1 if text is nul-terminated).
+//    - analysis for the text.
+//    - attrs: logical attributes to fill in.
+//    - attrsLen: size of the array passed as attrs.
+//
 func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.int            // out
@@ -89,6 +106,12 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 // If no delimiters are found, both paragraph_delimiter_index and
 // next_paragraph_start are filled with the length of text (an index one off the
 // end).
+//
+// The function takes the following parameters:
+//
+//    - text: UTF-8 text.
+//    - length of text in bytes, or -1 if nul-terminated.
+//
 func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int, nextParagraphStart int) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
@@ -119,6 +142,16 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 // at the end of the text. text should be an entire paragraph; logical
 // attributes can't be computed without context (for example you need to see
 // spaces on either side of a word to know the word is a word).
+//
+// The function takes the following parameters:
+//
+//    - text to process. Must be valid UTF-8.
+//    - length in bytes of text.
+//    - level: embedding level, or -1 if unknown.
+//    - language tag.
+//    - logAttrs: array with one PangoLogAttr per character in text, plus one
+//    extra, to be filled in.
+//
 func GetLogAttrs(text string, length, level int, language *Language, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
@@ -156,6 +189,17 @@ func GetLogAttrs(text string, length, level int, language *Language, logAttrs []
 //
 // If offset is not -1, it is used to apply attributes from analysis that are
 // relevant to line breaking.
+//
+// The function takes the following parameters:
+//
+//    - text to process. Must be valid UTF-8.
+//    - length in bytes of text.
+//    - analysis: PangoAnalysis structure from itemize for text.
+//    - offset: byte offset of text from the beginning of the paragraph, or -1
+//    to ignore attributes from analysis.
+//    - logAttrs: array with one PangoLogAttr per character in text, plus one
+//    extra, to be filled in.
+//
 func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out

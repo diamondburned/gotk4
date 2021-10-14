@@ -64,6 +64,11 @@ func marshalInetAddresser(p uintptr) (interface{}, error) {
 
 // NewInetAddressAny creates a Address for the "any" address (unassigned/"don't
 // care") for family.
+//
+// The function takes the following parameters:
+//
+//    - family address family.
+//
 func NewInetAddressAny(family SocketFamily) *InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
@@ -82,6 +87,11 @@ func NewInetAddressAny(family SocketFamily) *InetAddress {
 
 // NewInetAddressFromString parses string as an IP address and creates a new
 // Address.
+//
+// The function takes the following parameters:
+//
+//    - str: string representation of an IP address.
+//
 func NewInetAddressFromString(str string) *InetAddress {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GInetAddress // in
@@ -102,6 +112,11 @@ func NewInetAddressFromString(str string) *InetAddress {
 }
 
 // NewInetAddressLoopback creates a Address for the loopback address for family.
+//
+// The function takes the following parameters:
+//
+//    - family address family.
+//
 func NewInetAddressLoopback(family SocketFamily) *InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in

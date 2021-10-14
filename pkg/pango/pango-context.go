@@ -33,6 +33,18 @@ func init() {
 // before or containing start_index; cached_iter will be advanced to the range
 // covering the position just after start_index + length. (i.e. if itemizing in
 // a loop, just keep passing in the same cached_iter).
+//
+// The function takes the following parameters:
+//
+//    - context: structure holding information that affects the itemization
+//    process.
+//    - text to itemize. Must be valid UTF-8.
+//    - startIndex: first byte in text to process.
+//    - length: number of bytes (not characters) to process after start_index.
+//    This must be >= 0.
+//    - attrs: set of attributes that apply to text.
+//    - cachedIter: cached attribute iterator, or NULL.
+//
 func Itemize(context *Context, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 *C.char              // out
@@ -85,6 +97,19 @@ func Itemize(context *Context, text string, startIndex, length int, attrs *AttrL
 // The base direction is used when computing bidirectional levels. (see
 // pango.Context.SetBaseDir()). itemize gets the base direction from the
 // PangoContext.
+//
+// The function takes the following parameters:
+//
+//    - context: structure holding information that affects the itemization
+//    process.
+//    - baseDir: base direction to use for bidirectional processing.
+//    - text to itemize.
+//    - startIndex: first byte in text to process.
+//    - length: number of bytes (not characters) to process after start_index.
+//    This must be >= 0.
+//    - attrs: set of attributes that apply to text.
+//    - cachedIter: cached attribute iterator, or NULL.
+//
 func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 C.PangoDirection     // out

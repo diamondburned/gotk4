@@ -103,6 +103,12 @@ func marshalMapListModeller(p uintptr) (interface{}, error) {
 }
 
 // NewMapListModel creates a new GtkMapListModel for the given arguments.
+//
+// The function takes the following parameters:
+//
+//    - model to map or NULL for none.
+//    - mapFunc: map function or NULL to not map items.
+//
 func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapListModel {
 	var _arg1 *C.GListModel            // out
 	var _arg2 C.GtkMapListModelMapFunc // out

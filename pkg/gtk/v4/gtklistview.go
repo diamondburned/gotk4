@@ -162,6 +162,12 @@ func marshalListViewer(p uintptr) (interface{}, error) {
 //
 //    list_view = gtk_list_view_new (create_model (),
 //      gtk_builder_list_item_factory_new_from_resource ("/resource.ui"));.
+//
+// The function takes the following parameters:
+//
+//    - model to use, or NULL.
+//    - factory to populate items with, or NULL.
+//
 func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out

@@ -101,6 +101,12 @@ func NewCellView() *CellView {
 // Specifying the same context for a handfull of cells lets the underlying area
 // synchronize the geometry for those cells, in this way alignments with
 // cellviews for other rows are possible.
+//
+// The function takes the following parameters:
+//
+//    - area to layout cells.
+//    - context in which to calculate cell geometry.
+//
 func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView {
 	var _arg1 *C.GtkCellArea        // out
 	var _arg2 *C.GtkCellAreaContext // out
@@ -123,6 +129,11 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 // NewCellViewWithMarkup creates a new CellView widget, adds a CellRendererText
 // to it, and makes it show markup. The text can be marked up with the [Pango
 // text markup language][PangoMarkupFormat].
+//
+// The function takes the following parameters:
+//
+//    - markup: text to display in the cell view.
+//
 func NewCellViewWithMarkup(markup string) *CellView {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -142,6 +153,11 @@ func NewCellViewWithMarkup(markup string) *CellView {
 
 // NewCellViewWithPixbuf creates a new CellView widget, adds a
 // CellRendererPixbuf to it, and makes it show pixbuf.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: image to display in the cell view.
+//
 func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
@@ -160,6 +176,11 @@ func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 
 // NewCellViewWithText creates a new CellView widget, adds a CellRendererText to
 // it, and makes it show text.
+//
+// The function takes the following parameters:
+//
+//    - text to display in the cell view.
+//
 func NewCellViewWithText(text string) *CellView {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

@@ -199,6 +199,11 @@ func (color *Color) String() string {
 // “\#ffffffffffff”).
 //
 // Deprecated: Use RGBA.
+//
+// The function takes the following parameters:
+//
+//    - spec: string specifying the color.
+//
 func ColorParse(spec string) (Color, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.GdkColor // in

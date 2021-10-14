@@ -56,6 +56,12 @@ func marshalDBusObjectProxier(p uintptr) (interface{}, error) {
 
 // NewDBusObjectProxy creates a new BusObjectProxy for the given connection and
 // object path.
+//
+// The function takes the following parameters:
+//
+//    - connection: BusConnection.
+//    - objectPath: object path.
+//
 func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out

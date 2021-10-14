@@ -142,6 +142,11 @@ func NewComboBox() *ComboBox {
 }
 
 // NewComboBoxWithArea creates a new empty ComboBox using area to layout cells.
+//
+// The function takes the following parameters:
+//
+//    - area to use to layout cell renderers.
+//
 func NewComboBoxWithArea(area CellAreaer) *ComboBox {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
@@ -161,6 +166,11 @@ func NewComboBoxWithArea(area CellAreaer) *ComboBox {
 // NewComboBoxWithAreaAndEntry creates a new empty ComboBox with an entry.
 //
 // The new combo box will use area to layout cells.
+//
+// The function takes the following parameters:
+//
+//    - area to use to layout cell renderers.
+//
 func NewComboBoxWithAreaAndEntry(area CellAreaer) *ComboBox {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
@@ -192,6 +202,11 @@ func NewComboBoxWithEntry() *ComboBox {
 
 // NewComboBoxWithModel creates a new ComboBox with the model initialized to
 // model.
+//
+// The function takes the following parameters:
+//
+//    - model: TreeModel.
+//
 func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
@@ -210,6 +225,11 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 
 // NewComboBoxWithModelAndEntry creates a new empty ComboBox with an entry and
 // with the model initialized to model.
+//
+// The function takes the following parameters:
+//
+//    - model: TreeModel.
+//
 func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in

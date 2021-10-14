@@ -535,6 +535,11 @@ func (s Script) String() string {
 // g_unichar_get_script(). Callers must be prepared to handle unknown values.
 //
 // Deprecated: Use g_unichar_get_script().
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
 func ScriptForUnichar(ch uint32) Script {
 	var _arg1 C.gunichar    // out
 	var _cret C.PangoScript // in
@@ -576,6 +581,11 @@ func ScriptForUnichar(ch uint32) Script {
 // instead of Arabic (ar) when a segment of Arabic text is found in an otherwise
 // non-Arabic text. The same trick can be used to choose a default language for
 // PANGO_SCRIPT_HAN when setting context language is not feasible.
+//
+// The function takes the following parameters:
+//
+//    - script: PangoScript.
+//
 func ScriptGetSampleLanguage(script Script) *Language {
 	var _arg1 C.PangoScript    // out
 	var _cret *C.PangoLanguage // in

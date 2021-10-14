@@ -21,6 +21,13 @@ import "C"
 
 // ShowURI: this function launches the default application for showing a given
 // uri, or shows an error dialog if that fails.
+//
+// The function takes the following parameters:
+//
+//    - parent window.
+//    - uri to show.
+//    - timestamp from the event that triggered this call, or GDK_CURRENT_TIME.
+//
 func ShowURI(parent *Window, uri string, timestamp uint32) {
 	var _arg1 *C.GtkWindow // out
 	var _arg2 *C.char      // out
@@ -47,6 +54,15 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
+//
+// The function takes the following parameters:
+//
+//    - ctx to cancel the launch.
+//    - parent window.
+//    - uri to show.
+//    - timestamp from the event that triggered this call, or GDK_CURRENT_TIME.
+//    - callback to call when the action is complete.
+//
 func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint32, callback gio.AsyncReadyCallback) {
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.GtkWindow          // out
@@ -81,6 +97,12 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
 // the operation.
+//
+// The function takes the following parameters:
+//
+//    - parent passed to gtk_show_uri().
+//    - result that was passed to callback.
+//
 func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	var _arg1 *C.GtkWindow    // out
 	var _arg2 *C.GAsyncResult // out

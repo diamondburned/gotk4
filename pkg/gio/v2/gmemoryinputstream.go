@@ -82,6 +82,11 @@ func NewMemoryInputStream() *MemoryInputStream {
 
 // NewMemoryInputStreamFromBytes creates a new InputStream with data from the
 // given bytes.
+//
+// The function takes the following parameters:
+//
+//    - bytes: #GBytes.
+//
 func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 	var _arg1 *C.GBytes       // out
 	var _cret *C.GInputStream // in

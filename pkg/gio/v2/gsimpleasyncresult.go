@@ -41,6 +41,13 @@ func init() {
 // building a new one.
 //
 // Deprecated: Use g_task_report_error().
+//
+// The function takes the following parameters:
+//
+//    - object or NULL.
+//    - callback: ReadyCallback.
+//    - err to report.
+//
 func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncReadyCallback, err error) {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -252,6 +259,13 @@ func marshalSimpleAsyncResulter(p uintptr) (interface{}, error) {
 // returns.
 //
 // Deprecated: Use g_task_new() instead.
+//
+// The function takes the following parameters:
+//
+//    - sourceObject or NULL.
+//    - callback: ReadyCallback.
+//    - sourceTag asynchronous function.
+//
 func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCallback, sourceTag cgo.Handle) *SimpleAsyncResult {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -283,6 +297,13 @@ func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCa
 // NewSimpleAsyncResultFromError creates a AsyncResult from an error condition.
 //
 // Deprecated: Use g_task_new() and g_task_return_error() instead.
+//
+// The function takes the following parameters:
+//
+//    - sourceObject or NULL.
+//    - callback: ReadyCallback.
+//    - err: #GError.
+//
 func NewSimpleAsyncResultFromError(sourceObject *externglib.Object, callback AsyncReadyCallback, err error) *SimpleAsyncResult {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -555,6 +576,13 @@ func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 // result's source tag is NULL, then the source tag check is skipped.)
 //
 // Deprecated: Use #GTask and g_task_is_valid() instead.
+//
+// The function takes the following parameters:
+//
+//    - result passed to the _finish function.
+//    - source passed to the _finish function.
+//    - sourceTag asynchronous function.
+//
 func SimpleAsyncResultIsValid(result AsyncResulter, source *externglib.Object, sourceTag cgo.Handle) bool {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.GObject      // out

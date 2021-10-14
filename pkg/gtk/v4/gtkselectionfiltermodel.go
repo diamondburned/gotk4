@@ -47,6 +47,11 @@ func marshalSelectionFilterModeller(p uintptr) (interface{}, error) {
 
 // NewSelectionFilterModel creates a new GtkSelectionFilterModel that will
 // include the selected items from the underlying selection model.
+//
+// The function takes the following parameters:
+//
+//    - model: selection model to filter, or NULL.
+//
 func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 	var _arg1 *C.GtkSelectionModel       // out
 	var _cret *C.GtkSelectionFilterModel // in

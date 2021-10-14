@@ -53,6 +53,11 @@ func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 
 // NewGestureLongPress returns a newly created Gesture that recognizes long
 // presses.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

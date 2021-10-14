@@ -53,6 +53,11 @@ func marshalZlibDecompressorrer(p uintptr) (interface{}, error) {
 }
 
 // NewZlibDecompressor creates a new Decompressor.
+//
+// The function takes the following parameters:
+//
+//    - format to use for the compressed data.
+//
 func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _cret *C.GZlibDecompressor    // in

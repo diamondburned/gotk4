@@ -432,6 +432,12 @@ func VisualGetBestType() VisualType {
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+//
+// The function takes the following parameters:
+//
+//    - depth: bit depth.
+//    - visualType: visual type.
+//
 func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 	var _arg1 C.gint          // out
 	var _arg2 C.GdkVisualType // out
@@ -460,6 +466,11 @@ func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+//
+// The function takes the following parameters:
+//
+//    - depth: bit depth.
+//
 func VisualGetBestWithDepth(depth int) *Visual {
 	var _arg1 C.gint       // out
 	var _cret *C.GdkVisual // in
@@ -483,6 +494,11 @@ func VisualGetBestWithDepth(depth int) *Visual {
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+//
+// The function takes the following parameters:
+//
+//    - visualType: visual type.
+//
 func VisualGetBestWithType(visualType VisualType) *Visual {
 	var _arg1 C.GdkVisualType // out
 	var _cret *C.GdkVisual    // in

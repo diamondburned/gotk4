@@ -133,6 +133,11 @@ func NewMenuItem() *MenuItem {
 }
 
 // NewMenuItemWithLabel creates a new MenuItem whose child is a Label.
+//
+// The function takes the following parameters:
+//
+//    - label: text for the label.
+//
 func NewMenuItemWithLabel(label string) *MenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -154,6 +159,12 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 //
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
 // in label indicate the mnemonic for the menu item.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the button, with an underscore in front of the mnemonic
+//    character.
+//
 func NewMenuItemWithMnemonic(label string) *MenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

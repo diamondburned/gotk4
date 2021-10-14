@@ -96,6 +96,12 @@ func marshalScrollbarrer(p uintptr) (interface{}, error) {
 }
 
 // NewScrollbar creates a new scrollbar with the given orientation.
+//
+// The function takes the following parameters:
+//
+//    - orientation scrollbar’s orientation.
+//    - adjustment to use, or NULL to create a new adjustment.
+//
 func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out

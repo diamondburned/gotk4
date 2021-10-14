@@ -196,6 +196,11 @@ func NewFileFilter() *FileFilter {
 
 // NewFileFilterFromGVariant: deserialize a file filter from an a{sv} variant in
 // the format produced by gtk_file_filter_to_gvariant().
+//
+// The function takes the following parameters:
+//
+//    - variant: a{sv} #GVariant.
+//
 func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in

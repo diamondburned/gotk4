@@ -97,6 +97,11 @@ func marshalListStorer(p uintptr) (interface{}, error) {
 
 // NewListStore: non-vararg creation function. Used primarily by language
 // bindings.
+//
+// The function takes the following parameters:
+//
+//    - types: array of #GType types for the columns, from first to last.
+//
 func NewListStore(types []externglib.Type) *ListStore {
 	var _arg2 *C.GType // out
 	var _arg1 C.gint

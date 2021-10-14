@@ -59,6 +59,12 @@ func marshalEmblemedIconner(p uintptr) (interface{}, error) {
 }
 
 // NewEmblemedIcon creates a new emblemed icon for icon with the emblem emblem.
+//
+// The function takes the following parameters:
+//
+//    - icon: #GIcon.
+//    - emblem or NULL.
+//
 func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out

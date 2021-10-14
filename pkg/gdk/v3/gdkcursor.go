@@ -410,6 +410,11 @@ func marshalCursorrer(p uintptr) (interface{}, error) {
 // To make the cursor invisible, use GDK_BLANK_CURSOR.
 //
 // Deprecated: Use gdk_cursor_new_for_display() instead.
+//
+// The function takes the following parameters:
+//
+//    - cursorType: cursor to create.
+//
 func NewCursor(cursorType CursorType) *Cursor {
 	var _arg1 C.GdkCursorType // out
 	var _cret *C.GdkCursor    // in
@@ -427,6 +432,12 @@ func NewCursor(cursorType CursorType) *Cursor {
 }
 
 // NewCursorForDisplay creates a new cursor from the set of builtin cursors.
+//
+// The function takes the following parameters:
+//
+//    - display for which the cursor will be created.
+//    - cursorType: cursor to create.
+//
 func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 	var _arg1 *C.GdkDisplay   // out
 	var _arg2 C.GdkCursorType // out
@@ -523,6 +534,12 @@ func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 // - ! (zoom_in_cursor.png) "zoom-in"
 //
 // - ! (zoom_out_cursor.png) "zoom-out".
+//
+// The function takes the following parameters:
+//
+//    - display for which the cursor will be created.
+//    - name of the cursor.
+//
 func NewCursorFromName(display *Display, name string) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.gchar      // out
@@ -560,6 +577,14 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
+//
+// The function takes the following parameters:
+//
+//    - display for which the cursor will be created.
+//    - pixbuf containing the cursor image.
+//    - x: horizontal offset of the “hotspot” of the cursor.
+//    - y: vertical offset of the “hotspot” of the cursor.
+//
 func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
@@ -596,6 +621,14 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
+//
+// The function takes the following parameters:
+//
+//    - display for which the cursor will be created.
+//    - surface: cairo image surface containing the cursor pixel data.
+//    - x: horizontal offset of the “hotspot” of the cursor.
+//    - y: vertical offset of the “hotspot” of the cursor.
+//
 func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64) *Cursor {
 	var _arg1 *C.GdkDisplay      // out
 	var _arg2 *C.cairo_surface_t // out

@@ -112,6 +112,11 @@ func SettingsGetDefault() *Settings {
 
 // SettingsGetForDisplay gets the GtkSettings object for display, creating it if
 // necessary.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay.
+//
 func SettingsGetForDisplay(display *gdk.Display) *Settings {
 	var _arg1 *C.GdkDisplay  // out
 	var _cret *C.GtkSettings // in

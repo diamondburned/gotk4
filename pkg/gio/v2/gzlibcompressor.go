@@ -53,6 +53,12 @@ func marshalZlibCompressorrer(p uintptr) (interface{}, error) {
 }
 
 // NewZlibCompressor creates a new Compressor.
+//
+// The function takes the following parameters:
+//
+//    - format to use for the compressed data.
+//    - level: compression level (0-9), -1 for default.
+//
 func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _arg2 C.int                   // out

@@ -60,6 +60,11 @@ func marshalBoxLayouter(p uintptr) (interface{}, error) {
 }
 
 // NewBoxLayout creates a new GtkBoxLayout.
+//
+// The function takes the following parameters:
+//
+//    - orientation for the new layout.
+//
 func NewBoxLayout(orientation Orientation) *BoxLayout {
 	var _arg1 C.GtkOrientation    // out
 	var _cret *C.GtkLayoutManager // in

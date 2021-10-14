@@ -61,6 +61,13 @@ func marshalATContexter(p uintptr) (interface{}, error) {
 //
 // The GtkATContext implementation being instantiated will depend on the
 // platform.
+//
+// The function takes the following parameters:
+//
+//    - accessibleRole: accessible role used by the GtkATContext.
+//    - accessible: GtkAccessible implementation using the GtkATContext.
+//    - display: GdkDisplay used by the GtkATContext.
+//
 func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, display *gdk.Display) *ATContext {
 	var _arg1 C.GtkAccessibleRole // out
 	var _arg2 *C.GtkAccessible    // out

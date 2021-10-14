@@ -89,6 +89,11 @@ func marshalAccelLabeller(p uintptr) (interface{}, error) {
 }
 
 // NewAccelLabel creates a new AccelLabel.
+//
+// The function takes the following parameters:
+//
+//    - str: label string. Must be non-NULL.
+//
 func NewAccelLabel(str string) *AccelLabel {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

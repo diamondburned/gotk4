@@ -79,6 +79,11 @@ func NewVideo() *Video {
 }
 
 // NewVideoForFile creates a GtkVideo to play back the given file.
+//
+// The function takes the following parameters:
+//
+//    - file: GFile.
+//
 func NewVideoForFile(file gio.Filer) *Video {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
@@ -101,6 +106,11 @@ func NewVideoForFile(file gio.Filer) *Video {
 //
 // This is a utility function that calls gtk.Video.NewForFile, See that function
 // for details.
+//
+// The function takes the following parameters:
+//
+//    - filename to play back.
+//
 func NewVideoForFilename(filename string) *Video {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -121,6 +131,11 @@ func NewVideoForFilename(filename string) *Video {
 }
 
 // NewVideoForMediaStream creates a GtkVideo to play back the given stream.
+//
+// The function takes the following parameters:
+//
+//    - stream: GtkMediaStream.
+//
 func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
@@ -143,6 +158,11 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 // resource_path.
 //
 // This is a utility function that calls gtk.Video.NewForFile.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path to play back.
+//
 func NewVideoForResource(resourcePath string) *Video {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

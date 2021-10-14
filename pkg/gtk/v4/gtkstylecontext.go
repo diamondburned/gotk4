@@ -569,6 +569,16 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 // Note: If both priorities are the same, A GtkStyleProvider added through
 // gtk.StyleContext.AddProvider() takes precedence over another added through
 // this function.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay.
+//    - provider: GtkStyleProvider.
+//    - priority of the style provider. The lower it is, the earlier it will be
+//    used in the style construction. Typically this will be in the range
+//    between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//    GTK_STYLE_PROVIDER_PRIORITY_USER.
+//
 func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint) {
 	var _arg1 *C.GdkDisplay       // out
 	var _arg2 *C.GtkStyleProvider // out
@@ -586,6 +596,12 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 
 // StyleContextRemoveProviderForDisplay removes provider from the global style
 // providers list in display.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay.
+//    - provider: GtkStyleProvider.
+//
 func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StyleProviderer) {
 	var _arg1 *C.GdkDisplay       // out
 	var _arg2 *C.GtkStyleProvider // out

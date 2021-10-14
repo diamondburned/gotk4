@@ -69,6 +69,12 @@ func marshalDirectoryLister(p uintptr) (interface{}, error) {
 // NewDirectoryList creates a new GtkDirectoryList.
 //
 // The GtkDirectoryList is querying the given file with the given attributes.
+//
+// The function takes the following parameters:
+//
+//    - attributes to query with.
+//    - file to query.
+//
 func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 	var _arg1 *C.char             // out
 	var _arg2 *C.GFile            // out

@@ -49,6 +49,11 @@ func (s ShellError) String() string {
 // shell expansions. If the input does contain such expansions, they are passed
 // through literally. Possible errors are those from the SHELL_ERROR domain.
 // Free the returned vector with g_strfreev().
+//
+// The function takes the following parameters:
+//
+//    - commandLine: command line to parse.
+//
 func ShellParseArgv(commandLine string) ([]string, error) {
 	var _arg1 *C.gchar  // out
 	var _arg3 **C.gchar // in
@@ -87,6 +92,11 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 // for example, you should first quote it with this function. The return value
 // must be freed with g_free(). The quoting style used is undefined (single or
 // double quotes may be used).
+//
+// The function takes the following parameters:
+//
+//    - unquotedString: literal string.
+//
 func ShellQuote(unquotedString string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -123,6 +133,11 @@ func ShellQuote(unquotedString string) string {
 // ' in the quoted text, you have to do something like 'foo'\”bar'. Double
 // quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
 // double quotes preserve things literally.
+//
+// The function takes the following parameters:
+//
+//    - quotedString: shell-quoted string.
+//
 func ShellUnquote(quotedString string) (string, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.gchar  // in

@@ -645,6 +645,11 @@ func (clipboard *Clipboard) ConnectOwnerChange(f func(event gdk.EventOwnerChange
 
 // ClipboardGetDefault returns the default clipboard object for use with
 // cut/copy/paste menu items and keyboard shortcuts.
+//
+// The function takes the following parameters:
+//
+//    - display for which the clipboard is to be retrieved.
+//
 func ClipboardGetDefault(display *gdk.Display) *Clipboard {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.GtkClipboard // in

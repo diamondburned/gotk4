@@ -79,6 +79,11 @@ func _gotk4_gio2_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar,
 // Notify function passed to g_bus_watch_name() is called, in order to avoid
 // memory leaks through callbacks queued on the Context after it’s stopped being
 // iterated.
+//
+// The function takes the following parameters:
+//
+//    - watcherId: identifier obtained from g_bus_watch_name().
+//
 func BusUnwatchName(watcherId uint) {
 	var _arg1 C.guint // out
 

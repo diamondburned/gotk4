@@ -100,6 +100,11 @@ func marshalWindowControlser(p uintptr) (interface{}, error) {
 }
 
 // NewWindowControls creates a new GtkWindowControls.
+//
+// The function takes the following parameters:
+//
+//    - side: side.
+//
 func NewWindowControls(side PackType) *WindowControls {
 	var _arg1 C.GtkPackType // out
 	var _cret *C.GtkWidget  // in

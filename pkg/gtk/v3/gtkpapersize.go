@@ -587,6 +587,12 @@ func PaperSizeGetDefault() string {
 }
 
 // PaperSizeGetPaperSizes creates a list of known paper sizes.
+//
+// The function takes the following parameters:
+//
+//    - includeCustom: whether to include custom paper sizes as defined in the
+//    page setup dialog.
+//
 func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
 	var _arg1 C.gboolean // out
 	var _cret *C.GList   // in

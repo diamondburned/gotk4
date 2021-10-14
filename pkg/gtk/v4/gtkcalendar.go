@@ -6,7 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gtk4
@@ -120,6 +122,31 @@ func (calendar *Calendar) ClearMarks() {
 	runtime.KeepAlive(calendar)
 }
 
+// Date returns a Time representing the shown year, month and the selected day.
+//
+// The returned date is in the local time zone.
+func (self *Calendar) Date() *glib.DateTime {
+	var _arg0 *C.GtkCalendar // out
+	var _cret *C.GDateTime   // in
+
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_calendar_get_date(_arg0)
+	runtime.KeepAlive(self)
+
+	var _dateTime *glib.DateTime // out
+
+	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_dateTime)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
+		},
+	)
+
+	return _dateTime
+}
+
 // DayIsMarked returns if the day of the calendar is already marked.
 //
 // The function takes the following parameters:
@@ -227,6 +254,24 @@ func (calendar *Calendar) MarkDay(day uint) {
 	C.gtk_calendar_mark_day(_arg0, _arg1)
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
+}
+
+// SelectDay switches to date's year and month and select its day.
+//
+// The function takes the following parameters:
+//
+//    - date representing the day to select.
+//
+func (self *Calendar) SelectDay(date *glib.DateTime) {
+	var _arg0 *C.GtkCalendar // out
+	var _arg1 *C.GDateTime   // out
+
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(date)))
+
+	C.gtk_calendar_select_day(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(date)
 }
 
 // SetShowDayNames sets whether the calendar shows day names.

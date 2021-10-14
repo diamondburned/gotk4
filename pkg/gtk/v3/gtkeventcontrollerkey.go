@@ -46,6 +46,11 @@ func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
 	return wrapEventControllerKey(obj), nil
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in

@@ -69,6 +69,11 @@ func marshalHScrollbarrer(p uintptr) (interface{}, error) {
 // NewHScrollbar creates a new horizontal scrollbar.
 //
 // Deprecated: Use gtk_scrollbar_new() with GTK_ORIENTATION_HORIZONTAL instead.
+//
+// The function takes the following parameters:
+//
+//    - adjustment to use, or NULL to create a new adjustment.
+//
 func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in

@@ -94,6 +94,13 @@ func marshalCursorrer(p uintptr) (interface{}, error) {
 // (nesw_resize_cursor.png) "nesw-resize" | | ! (nwse_resize_cursor.png)
 // "nwse-resize" | ! (zoom_in_cursor.png) "zoom-in" | ! (zoom_out_cursor.png)
 // "zoom-out" | |.
+//
+// The function takes the following parameters:
+//
+//    - name of the cursor.
+//    - fallback: NULL or the GdkCursor to fall back to when this one cannot be
+//    supported.
+//
 func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GdkCursor // out
@@ -119,6 +126,15 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 }
 
 // NewCursorFromTexture creates a new cursor from a GdkTexture.
+//
+// The function takes the following parameters:
+//
+//    - texture providing the pixel data.
+//    - hotspotX: horizontal offset of the “hotspot” of the cursor.
+//    - hotspotY: vertical offset of the “hotspot” of the cursor.
+//    - fallback: NULL or the GdkCursor to fall back to when this one cannot be
+//    supported.
+//
 func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int, fallback *Cursor) *Cursor {
 	var _arg1 *C.GdkTexture // out
 	var _arg2 C.int         // out

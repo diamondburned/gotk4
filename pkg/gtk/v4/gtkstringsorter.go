@@ -51,6 +51,11 @@ func marshalStringSorterer(p uintptr) (interface{}, error) {
 //
 // Unless an expression is set on it, this sorter will always compare items as
 // invalid.
+//
+// The function takes the following parameters:
+//
+//    - expression to evaluate.
+//
 func NewStringSorter(expression Expressioner) *StringSorter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringSorter // in

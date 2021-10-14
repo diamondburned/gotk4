@@ -65,6 +65,11 @@ func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
 }
 
 // NewDBusObjectSkeleton creates a new BusObjectSkeleton.
+//
+// The function takes the following parameters:
+//
+//    - objectPath: object path.
+//
 func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	var _arg1 *C.gchar               // out
 	var _cret *C.GDBusObjectSkeleton // in

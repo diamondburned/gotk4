@@ -258,6 +258,16 @@ func _gotk4_glib2_SpawnChildSetupFunc(arg0 C.gpointer) {
 // Note that the returned child_pid on Windows is a handle to the child process
 // and not its identifier. Process handles and process identifiers are different
 // concepts on Windows.
+//
+// The function takes the following parameters:
+//
+//    - workingDirectory child's current working directory, or NULL to inherit
+//    parent's.
+//    - argv: child's argument vector.
+//    - envp: child's environment, or NULL to inherit parent's.
+//    - flags from Flags.
+//    - childSetup: function to run in the child just before exec().
+//
 func SpawnAsync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (Pid, error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
@@ -324,6 +334,20 @@ func SpawnAsync(workingDirectory string, argv, envp []string, flags SpawnFlags, 
 
 // SpawnAsyncWithFds: identical to g_spawn_async_with_pipes_and_fds() but with
 // n_fds set to zero, so no FD assignments are used.
+//
+// The function takes the following parameters:
+//
+//    - workingDirectory child's current working directory, or NULL to inherit
+//    parent's, in the GLib file name encoding.
+//    - argv child's argument vector, in the GLib file name encoding.
+//    - envp child's environment, or NULL to inherit parent's, in the GLib file
+//    name encoding.
+//    - flags from Flags.
+//    - childSetup: function to run in the child just before exec().
+//    - stdinFd: file descriptor to use for child's stdin, or -1.
+//    - stdoutFd: file descriptor to use for child's stdout, or -1.
+//    - stderrFd: file descriptor to use for child's stderr, or -1.
+//
 func SpawnAsyncWithFds(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd, stdoutFd, stderrFd int) (Pid, error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
@@ -399,6 +423,17 @@ func SpawnAsyncWithFds(workingDirectory string, argv, envp []string, flags Spawn
 
 // SpawnAsyncWithPipes: identical to g_spawn_async_with_pipes_and_fds() but with
 // n_fds set to zero, so no FD assignments are used.
+//
+// The function takes the following parameters:
+//
+//    - workingDirectory child's current working directory, or NULL to inherit
+//    parent's, in the GLib file name encoding.
+//    - argv child's argument vector, in the GLib file name encoding.
+//    - envp: child's environment, or NULL to inherit parent's, in the GLib
+//    file name encoding.
+//    - flags from Flags.
+//    - childSetup: function to run in the child just before exec().
+//
 func SpawnAsyncWithPipes(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, standardInput int, standardOutput int, standardError int, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
@@ -646,6 +681,23 @@ func SpawnAsyncWithPipes(workingDirectory string, argv, envp []string, flags Spa
 // graphical application too, then to ensure that the spawned program opens its
 // windows on the right screen, you may want to use AppLaunchContext,
 // LaunchContext, or set the DISPLAY environment variable.
+//
+// The function takes the following parameters:
+//
+//    - workingDirectory child's current working directory, or NULL to inherit
+//    parent's, in the GLib file name encoding.
+//    - argv child's argument vector, in the GLib file name encoding.
+//    - envp: child's environment, or NULL to inherit parent's, in the GLib
+//    file name encoding.
+//    - flags from Flags.
+//    - childSetup: function to run in the child just before exec().
+//    - stdinFd: file descriptor to use for child's stdin, or -1.
+//    - stdoutFd: file descriptor to use for child's stdout, or -1.
+//    - stderrFd: file descriptor to use for child's stderr, or -1.
+//    - sourceFds: array of FDs from the parent process to make available in
+//    the child process.
+//    - targetFds: array of FDs to remap source_fds to in the child process.
+//
 func SpawnAsyncWithPipesAndFds(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd, stdoutFd, stderrFd int, sourceFds, targetFds []int) (childPidOut Pid, stdinPipeOut int, stdoutPipeOut int, stderrPipeOut int, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
@@ -786,6 +838,11 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv, envp []string, fla
 // WEXITSTATUS() on exit_status directly. Do not attempt to scan or parse the
 // error message string; it may be translated and/or change in future versions
 // of GLib.
+//
+// The function takes the following parameters:
+//
+//    - exitStatus: exit code as returned from g_spawn_sync().
+//
 func SpawnCheckExitStatus(exitStatus int) error {
 	var _arg1 C.gint    // out
 	var _cerr *C.GError // in
@@ -808,6 +865,11 @@ func SpawnCheckExitStatus(exitStatus int) error {
 // a resource which must be closed to prevent resource leaking.
 // g_spawn_close_pid() is provided for this purpose. It should be used on all
 // platforms, even though it doesn't do anything under UNIX.
+//
+// The function takes the following parameters:
+//
+//    - pid process reference to close.
+//
 func SpawnClosePid(pid Pid) {
 	var _arg1 C.GPid // out
 
@@ -826,6 +888,11 @@ func SpawnClosePid(pid Pid) {
 // g_shell_parse_argv() and g_spawn_async().
 //
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
+//
+// The function takes the following parameters:
+//
+//    - commandLine: command line.
+//
 func SpawnCommandLineAsync(commandLine string) error {
 	var _arg1 *C.gchar  // out
 	var _cerr *C.GError // in
@@ -865,6 +932,11 @@ func SpawnCommandLineAsync(commandLine string) error {
 // eaten, and the space will act as a separator. You need to enclose such paths
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
+//
+// The function takes the following parameters:
+//
+//    - commandLine: command line.
+//
 func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
@@ -941,6 +1013,16 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 // This function calls g_spawn_async_with_pipes() internally; see that function
 // for full details on the other parameters and details on how these functions
 // work on Windows.
+//
+// The function takes the following parameters:
+//
+//    - workingDirectory child's current working directory, or NULL to inherit
+//    parent's.
+//    - argv: child's argument vector.
+//    - envp: child's environment, or NULL to inherit parent's.
+//    - flags from Flags.
+//    - childSetup: function to run in the child just before exec().
+//
 func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out

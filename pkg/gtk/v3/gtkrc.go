@@ -352,6 +352,12 @@ func (r RCFlags) Has(other RCFlags) bool {
 // gtk_init().
 //
 // Deprecated: Use StyleContext with a custom StyleProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - filename: pathname to the file. If filename is not absolute, it is
+//    searched in the current directory.
+//
 func RCAddDefaultFile(filename string) {
 	var _arg1 *C.gchar // out
 
@@ -366,6 +372,11 @@ func RCAddDefaultFile(filename string) {
 // function is not useful for applications and should not be used.
 //
 // Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - moduleFile: name of a theme engine.
+//
 func RCFindModuleInPath(moduleFile string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -389,6 +400,14 @@ func RCFindModuleInPath(moduleFile string) string {
 // returns NULL.
 //
 // Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - settings: Settings.
+//    - scanner: scanner used to get line number information for the warning
+//    message, or NULL.
+//    - pixmapFile: name of the pixmap file to locate.
+//
 func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile string) string {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.GScanner    // out
@@ -502,6 +521,11 @@ func RCGetModuleDir() string {
 // not be created.)
 //
 // Deprecated: Use StyleContext instead.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func RCGetStyle(widget Widgetter) *Style {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
@@ -533,6 +557,17 @@ func RCGetStyle(widget Widgetter) *Style {
 //                               G_OBJECT_TYPE (widget));
 //
 // Deprecated: Use StyleContext instead.
+//
+// The function takes the following parameters:
+//
+//    - settings Settings object.
+//    - widgetPath: widget path to use when looking up the style, or NULL if no
+//    matching against the widget path should be done.
+//    - classPath class path to use when looking up the style, or NULL if no
+//    matching against the class path should be done.
+//    - typ: type that will be used along with parent types of this type when
+//    matching against class styles, or TYPE_NONE.
+//
 func RCGetStyleByPaths(settings *Settings, widgetPath, classPath string, typ externglib.Type) *Style {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.char        // out
@@ -586,6 +621,12 @@ func RCGetThemeDir() string {
 // RCParse parses a given resource file.
 //
 // Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - filename of a file to parse. If filename is not absolute, it is
+//    searched in the current directory.
+//
 func RCParse(filename string) {
 	var _arg1 *C.gchar // out
 
@@ -602,6 +643,11 @@ func RCParse(filename string) {
 // support symbolic colors.
 //
 // Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - scanner: #GScanner.
+//
 func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
 	var _arg2 C.GdkColor  // in
@@ -625,6 +671,12 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 // is not NULL, it will be consulted to resolve references to symbolic colors.
 //
 // Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - scanner: #GScanner.
+//    - style or NULL.
+//
 func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
@@ -653,6 +705,11 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
 // file.
 //
 // Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - scanner (must be initialized for parsing an RC file).
+//
 func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 	var _arg1 *C.GScanner    // out
 	var _arg2 C.GtkStateType // in
@@ -675,6 +732,11 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 // RCParseString parses resource information directly from a string.
 //
 // Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - rcString: string to parse.
+//
 func RCParseString(rcString string) {
 	var _arg1 *C.gchar // out
 
@@ -709,6 +771,12 @@ func RCReparseAll() bool {
 // reread all previously read RC files.
 //
 // Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - settings: Settings.
+//    - forceLoad: load whether or not anything changed.
+//
 func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 C.gboolean     // out
@@ -742,6 +810,11 @@ func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 // widgets that have a style set explicitly on them with gtk_widget_set_style().
 //
 // Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - settings: Settings.
+//
 func RCResetStyles(settings *Settings) {
 	var _arg1 *C.GtkSettings // out
 
@@ -755,6 +828,11 @@ func RCResetStyles(settings *Settings) {
 // gtk_init().
 //
 // Deprecated: Use StyleContext with a custom StyleProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - filenames: a NULL-terminated list of filenames.
+//
 func RCSetDefaultFiles(filenames []string) {
 	var _arg1 **C.gchar // out
 

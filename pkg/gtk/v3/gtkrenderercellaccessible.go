@@ -58,6 +58,11 @@ func marshalRendererCellAccessibler(p uintptr) (interface{}, error) {
 	return wrapRendererCellAccessible(obj), nil
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible {
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.AtkObject       // in

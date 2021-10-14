@@ -180,6 +180,13 @@ func marshalScaler(p uintptr) (interface{}, error) {
 }
 
 // NewScale creates a new GtkScale.
+//
+// The function takes the following parameters:
+//
+//    - orientation scale’s orientation.
+//    - adjustment: gtk.Adjustment which sets the range of the scale, or NULL
+//    to create a new adjustment.
+//
 func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
@@ -211,6 +218,14 @@ func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 // Note that the way in which the precision is derived works best if step is a
 // power of ten. If the resulting precision is not suitable for your needs, use
 // gtk.Scale.SetDigits() to correct it.
+//
+// The function takes the following parameters:
+//
+//    - orientation scale’s orientation.
+//    - min: minimum value.
+//    - max: maximum value.
+//    - step increment (tick size) used with keyboard shortcuts.
+//
 func NewScaleWithRange(orientation Orientation, min, max, step float64) *Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.double         // out

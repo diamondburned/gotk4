@@ -1796,6 +1796,11 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 // A typical example:
 //
 //    "Cantarell Italic Light 15 \wght=200".
+//
+// The function takes the following parameters:
+//
+//    - str: string representation of a font description.
+//
 func FontDescriptionFromString(str string) *FontDescription {
 	var _arg1 *C.char                 // out
 	var _cret *C.PangoFontDescription // in

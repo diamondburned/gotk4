@@ -26,6 +26,11 @@ func init() {
 //
 // If string is not a valid mime type, NULL is returned instead. See RFC 2048
 // for the syntax if mime types.
+//
+// The function takes the following parameters:
+//
+//    - str: string of a potential mime type.
+//
 func InternMIMEType(str string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in

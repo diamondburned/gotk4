@@ -26,6 +26,12 @@ func init() {
 
 // TreeCreateRowDragContent creates a content provider for dragging path from
 // tree_model.
+//
+// The function takes the following parameters:
+//
+//    - treeModel: TreeModel.
+//    - path: row in tree_model.
+//
 func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.ContentProvider {
 	var _arg1 *C.GtkTreeModel       // out
 	var _arg2 *C.GtkTreePath        // out
@@ -54,6 +60,11 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
+//
+// The function takes the following parameters:
+//
+//    - value: #GValue.
+//
 func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool) {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GtkTreeModel // in

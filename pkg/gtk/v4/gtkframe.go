@@ -104,6 +104,11 @@ func marshalFramer(p uintptr) (interface{}, error) {
 // NewFrame creates a new GtkFrame, with optional label label.
 //
 // If label is NULL, the label is omitted.
+//
+// The function takes the following parameters:
+//
+//    - label: text to use as the label of the frame.
+//
 func NewFrame(label string) *Frame {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

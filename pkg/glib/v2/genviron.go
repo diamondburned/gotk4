@@ -14,6 +14,13 @@ import "C"
 
 // EnvironGetenv returns the value of the environment variable variable in the
 // provided list envp.
+//
+// The function takes the following parameters:
+//
+//    - envp: an environment list (eg, as returned from g_get_environ()), or
+//    NULL for an empty environment list.
+//    - variable: environment variable to get.
+//
 func EnvironGetenv(envp []string, variable string) string {
 	var _arg1 **C.gchar // out
 	var _arg2 *C.gchar  // out
@@ -48,6 +55,15 @@ func EnvironGetenv(envp []string, variable string) string {
 
 // EnvironSetenv sets the environment variable variable in the provided list
 // envp to value.
+//
+// The function takes the following parameters:
+//
+//    - envp: an environment list that can be freed using g_strfreev() (e.g.,
+//    as returned from g_get_environ()), or NULL for an empty environment list.
+//    - variable: environment variable to set, must not contain '='.
+//    - value for to set the variable to.
+//    - overwrite: whether to change the variable if it already exists.
+//
 func EnvironSetenv(envp []string, variable, value string, overwrite bool) []string {
 	var _arg1 **C.gchar  // out
 	var _arg2 *C.gchar   // out
@@ -103,6 +119,13 @@ func EnvironSetenv(envp []string, variable, value string, overwrite bool) []stri
 
 // EnvironUnsetenv removes the environment variable variable from the provided
 // environment envp.
+//
+// The function takes the following parameters:
+//
+//    - envp: an environment list that can be freed using g_strfreev() (e.g.,
+//    as returned from g_get_environ()), or NULL for an empty environment list.
+//    - variable: environment variable to remove, must not contain '='.
+//
 func EnvironUnsetenv(envp []string, variable string) []string {
 	var _arg1 **C.gchar // out
 	var _arg2 *C.gchar  // out
@@ -189,6 +212,11 @@ func GetEnviron() []string {
 // some consistent character set and encoding. On Windows, they are in UTF-8. On
 // Windows, in case the environment variable's value contains references to
 // other environment variables, they are expanded.
+//
+// The function takes the following parameters:
+//
+//    - variable: environment variable to get.
+//
 func Getenv(variable string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -258,6 +286,13 @@ func Listenv() []string {
 // g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
+//
+// The function takes the following parameters:
+//
+//    - variable: environment variable to set, must not contain '='.
+//    - value for to set the variable to.
+//    - overwrite: whether to change the variable if it already exists.
+//
 func Setenv(variable, value string, overwrite bool) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -302,6 +337,11 @@ func Setenv(variable, value string, overwrite bool) bool {
 // g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
+//
+// The function takes the following parameters:
+//
+//    - variable: environment variable to remove, must not contain '='.
+//
 func Unsetenv(variable string) {
 	var _arg1 *C.gchar // out
 

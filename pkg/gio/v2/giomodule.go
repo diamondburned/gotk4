@@ -31,6 +31,11 @@ import "C"
 //
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
+//
+// The function takes the following parameters:
+//
+//    - dirname: pathname for a directory containing modules to scan.
+//
 func IOModulesScanAllInDirectory(dirname string) {
 	var _arg1 *C.char // out
 

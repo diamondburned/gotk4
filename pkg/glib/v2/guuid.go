@@ -20,6 +20,11 @@ import "C"
 //
 // Note that hyphens are required within the UUID string itself, as per the
 // aforementioned RFC.
+//
+// The function takes the following parameters:
+//
+//    - str: string representing a UUID.
+//
 func UUIDStringIsValid(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in

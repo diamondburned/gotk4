@@ -244,6 +244,13 @@ func _gotk4_gtk3_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
 //
 // Note that this function may use a recursive mainloop to show the page setup
 // dialog. See gtk_print_run_page_setup_dialog_async() if this is a problem.
+//
+// The function takes the following parameters:
+//
+//    - parent: transient parent.
+//    - pageSetup: existing PageSetup.
+//    - settings: PrintSettings.
+//
 func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *PrintSettings) *PageSetup {
 	var _arg1 *C.GtkWindow        // out
 	var _arg2 *C.GtkPageSetup     // out
@@ -276,6 +283,14 @@ func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *Pri
 // In contrast to gtk_print_run_page_setup_dialog(), this function returns after
 // showing the page setup dialog on platforms that support this, and calls
 // done_cb from a signal handler for the ::response signal of the dialog.
+//
+// The function takes the following parameters:
+//
+//    - parent: transient parent, or NULL.
+//    - pageSetup: existing PageSetup, or NULL.
+//    - settings: PrintSettings.
+//    - doneCb: function to call when the user saves the modified page setup.
+//
 func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings *PrintSettings, doneCb PageSetupDoneFunc) {
 	var _arg1 *C.GtkWindow           // out
 	var _arg2 *C.GtkPageSetup        // out

@@ -81,6 +81,16 @@ func marshalScaleButtonner(p uintptr) (interface{}, error) {
 //
 // The new scale button has a range between min and max, with a stepping of
 // step.
+//
+// The function takes the following parameters:
+//
+//    - min: minimum value of the scale (usually 0).
+//    - max: maximum value of the scale (usually 100).
+//    - step: stepping of value when a scroll-wheel event, or up/down arrow
+//    event occurs (usually 2).
+//    - icons: NULL-terminated array of icon names, or NULL if you want to set
+//    the list later with gtk_scale_button_set_icons().
+//
 func NewScaleButton(min, max, step float64, icons []string) *ScaleButton {
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out

@@ -174,6 +174,11 @@ func NewComboBoxWithEntry() *ComboBox {
 }
 
 // NewComboBoxWithModel creates a new GtkComboBox with a model.
+//
+// The function takes the following parameters:
+//
+//    - model: GtkTreeModel.
+//
 func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
@@ -192,6 +197,11 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 
 // NewComboBoxWithModelAndEntry creates a new empty GtkComboBox with an entry
 // and a model.
+//
+// The function takes the following parameters:
+//
+//    - model: GtkTreeModel.
+//
 func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in

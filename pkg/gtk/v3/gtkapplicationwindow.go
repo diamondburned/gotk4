@@ -177,6 +177,11 @@ func marshalApplicationWindower(p uintptr) (interface{}, error) {
 }
 
 // NewApplicationWindow creates a new ApplicationWindow.
+//
+// The function takes the following parameters:
+//
+//    - application: Application.
+//
 func NewApplicationWindow(application *Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in

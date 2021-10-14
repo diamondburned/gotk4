@@ -187,6 +187,11 @@ func marshalCallbackActioner(p uintptr) (interface{}, error) {
 
 // NewCallbackAction: create a custom action that calls the given callback when
 // activated.
+//
+// The function takes the following parameters:
+//
+//    - callback to call.
+//
 func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	var _arg1 C.GtkShortcutFunc // out
 	var _arg2 C.gpointer
@@ -273,6 +278,11 @@ func marshalNamedActioner(p uintptr) (interface{}, error) {
 // It also passes the given arguments to it.
 //
 // See gtk.Widget.InsertActionGroup() for how to add actions to widgets.
+//
+// The function takes the following parameters:
+//
+//    - name: detailed name of the action.
+//
 func NewNamedAction(name string) *NamedAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -414,6 +424,11 @@ func marshalShortcutActioner(p uintptr) (interface{}, error) {
 // - action(NAME), for a GtkNamedAction for the action named NAME
 //
 // - signal(NAME), for a GtkSignalAction for the signal NAME.
+//
+// The function takes the following parameters:
+//
+//    - str: string to parse.
+//
 func NewShortcutActionParseString(str string) *ShortcutAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -523,6 +538,11 @@ func marshalSignalActioner(p uintptr) (interface{}, error) {
 // signal on the provided widget.
 //
 // It will also unpack the args into arguments passed to the signal.
+//
+// The function takes the following parameters:
+//
+//    - signalName: name of the signal to emit.
+//
 func NewSignalAction(signalName string) *SignalAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in

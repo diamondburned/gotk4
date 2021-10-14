@@ -58,6 +58,11 @@ func (d DragCancelReason) String() string {
 // multiple actions.
 //
 // When action is 0 - ie no action was given, TRUE is returned.
+//
+// The function takes the following parameters:
+//
+//    - action: GdkDragAction.
+//
 func DragActionIsUnique(action DragAction) bool {
 	var _arg1 C.GdkDragAction // out
 	var _cret C.gboolean      // in
@@ -402,6 +407,16 @@ func (drag *Drag) ConnectDropPerformed(f func()) externglib.SignalHandle {
 // Note: if actions include GDK_ACTION_MOVE, you need to listen for the
 // gdk.Drag::dnd-finished signal and delete the data at the source if
 // gdk.Drag.GetSelectedAction() returns GDK_ACTION_MOVE.
+//
+// The function takes the following parameters:
+//
+//    - surface: source surface for this drag.
+//    - device that controls this drag.
+//    - content: offered content.
+//    - actions supported by this drag.
+//    - dx: x offset to device's position where the drag nominally started.
+//    - dy: y offset to device's position where the drag nominally started.
+//
 func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx, dy float64) Dragger {
 	var _arg1 *C.GdkSurface         // out
 	var _arg2 *C.GdkDevice          // out

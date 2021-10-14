@@ -89,6 +89,11 @@ func (s ShapeFlags) Has(other ShapeFlags) bool {
 //
 // The visual order is determined from the associated directional levels of the
 // items. The original list is unmodified.
+//
+// The function takes the following parameters:
+//
+//    - logicalItems: GList of PangoItem in logical order.
+//
 func ReorderItems(logicalItems []Item) []Item {
 	var _arg1 *C.GList // out
 	var _cret *C.GList // in
@@ -135,6 +140,14 @@ func ReorderItems(logicalItems []Item) []Item {
 // Note that the extra attributes in the analyis that is returned from itemize
 // have indices that are relative to the entire paragraph, so you need to
 // subtract the item offset from their indices before calling shape.
+//
+// The function takes the following parameters:
+//
+//    - text to process.
+//    - length (in bytes) of text.
+//    - analysis: PangoAnalysis structure from itemize.
+//    - glyphs: glyph string in which to store results.
+//
 func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -170,6 +183,18 @@ func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 // have indices that are relative to the entire paragraph, so you do not pass
 // the full paragraph text as paragraph_text, you need to subtract the item
 // offset from their indices before calling shape_full.
+//
+// The function takes the following parameters:
+//
+//    - itemText: valid UTF-8 text to shape.
+//    - itemLength: length (in bytes) of item_text. -1 means nul-terminated
+//    text.
+//    - paragraphText: text of the paragraph (see details). May be NULL.
+//    - paragraphLength: length (in bytes) of paragraph_text. -1 means
+//    nul-terminated text.
+//    - analysis: PangoAnalysis structure from itemize.
+//    - glyphs: glyph string in which to store results.
+//
 func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -211,6 +236,19 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 // have indices that are relative to the entire paragraph, so you do not pass
 // the full paragraph text as paragraph_text, you need to subtract the item
 // offset from their indices before calling shape_with_flags.
+//
+// The function takes the following parameters:
+//
+//    - itemText: valid UTF-8 text to shape.
+//    - itemLength: length (in bytes) of item_text. -1 means nul-terminated
+//    text.
+//    - paragraphText: text of the paragraph (see details). May be NULL.
+//    - paragraphLength: length (in bytes) of paragraph_text. -1 means
+//    nul-terminated text.
+//    - analysis: PangoAnalysis structure from itemize.
+//    - glyphs: glyph string in which to store results.
+//    - flags influencing the shaping process.
+//
 func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out

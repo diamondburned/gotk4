@@ -49,6 +49,11 @@ func marshalCustomSorterer(p uintptr) (interface{}, error) {
 // compare items.
 //
 // If sort_func is NULL, all items are considered equal.
+//
+// The function takes the following parameters:
+//
+//    - sortFunc: GCompareDataFunc to use for sorting.
+//
 func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 	var _arg1 C.GCompareDataFunc // out
 	var _arg2 C.gpointer

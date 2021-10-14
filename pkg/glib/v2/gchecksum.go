@@ -66,6 +66,12 @@ func (c ChecksumType) String() string {
 // g_checksum_free().
 //
 // The hexadecimal string returned will be in lower case.
+//
+// The function takes the following parameters:
+//
+//    - checksumType: Type.
+//    - data: binary blob to compute the digest of.
+//
 func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.GBytes       // out
@@ -93,6 +99,12 @@ func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 // and g_checksum_free().
 //
 // The hexadecimal string returned will be in lower case.
+//
+// The function takes the following parameters:
+//
+//    - checksumType: Type.
+//    - data: binary blob to compute the digest of.
+//
 func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar       // out
@@ -122,6 +134,13 @@ func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 // ComputeChecksumForString computes the checksum of a string.
 //
 // The hexadecimal string returned will be in lower case.
+//
+// The function takes the following parameters:
+//
+//    - checksumType: Type.
+//    - str: string to compute the checksum of.
+//    - length of the string, or -1 if the string is null-terminated.
+//
 func ComputeChecksumForString(checksumType ChecksumType, str string, length int) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.gchar        // out
@@ -270,6 +289,11 @@ func (checksum *Checksum) Update(data []byte) {
 
 // ChecksumTypeGetLength gets the length in bytes of digests of type
 // checksum_type.
+//
+// The function takes the following parameters:
+//
+//    - checksumType: Type.
+//
 func ChecksumTypeGetLength(checksumType ChecksumType) int {
 	var _arg1 C.GChecksumType // out
 	var _cret C.gssize        // in

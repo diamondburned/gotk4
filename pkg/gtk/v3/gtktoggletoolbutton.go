@@ -114,6 +114,11 @@ func NewToggleToolButton() *ToggleToolButton {
 // It is an error if stock_id is not a name of a stock item.
 //
 // Deprecated: Use gtk_toggle_tool_button_new() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: name of the stock item.
+//
 func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in

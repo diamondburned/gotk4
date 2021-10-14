@@ -1553,6 +1553,11 @@ func WindowListToplevels() []Widgetter {
 // In that example, you would disable startup notification temporarily, show
 // your splash screen, then re-enable it so that showing the main window would
 // automatically result in notification.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to automatically do startup notification.
+//
 func WindowSetAutoStartupNotification(setting bool) {
 	var _arg1 C.gboolean // out
 
@@ -1568,6 +1573,11 @@ func WindowSetAutoStartupNotification(setting bool) {
 //
 // The fallback icon is used for windows that haven't had
 // gtk.Window.SetIconName() called on them.
+//
+// The function takes the following parameters:
+//
+//    - name of the themed icon.
+//
 func WindowSetDefaultIconName(name string) {
 	var _arg1 *C.char // out
 
@@ -1583,6 +1593,11 @@ func WindowSetDefaultIconName(name string) {
 //
 // The debugger offers access to the widget hierarchy of the application and to
 // useful debugging tools.
+//
+// The function takes the following parameters:
+//
+//    - enable: TRUE to enable interactive debugging.
+//
 func WindowSetInteractiveDebugging(enable bool) {
 	var _arg1 C.gboolean // out
 

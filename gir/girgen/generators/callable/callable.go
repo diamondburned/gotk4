@@ -20,6 +20,11 @@ type FileGenerator interface {
 	types.FileGenerator
 }
 
+type ParamDoc struct {
+	Name         string
+	InfoElements gir.InfoElements
+}
+
 // Generator is a generator instance that generates a GIR callable.
 type Generator struct {
 	*gir.CallableAttrs
@@ -34,6 +39,8 @@ type Generator struct {
 	Results []typeconv.ValueConverted
 	GoArgs  pen.Joints
 	GoRets  pen.Joints
+
+	ParamDocs []ParamDoc
 
 	typ *gir.TypeFindResult
 	pen *pen.BlockSections
@@ -136,6 +143,16 @@ func (g *Generator) Use(typ *gir.TypeFindResult, call *gir.CallableAttrs) bool {
 	if !g.renderBlock() {
 		return false
 	}
+
+	g.ParamDocs = g.ParamDocs[:0]
+	g.EachParamResult(func(value *typeconv.ValueConverted) {
+		g.ParamDocs = append(g.ParamDocs, ParamDoc{
+			Name: value.InName, // GoName
+			InfoElements: gir.InfoElements{
+				DocElements: gir.DocElements{Doc: value.Doc},
+			},
+		})
+	})
 
 	return true
 }

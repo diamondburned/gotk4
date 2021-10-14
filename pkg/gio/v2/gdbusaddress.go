@@ -34,6 +34,12 @@ import "C"
 // For instance, if string is /run/bus-for-:0, this function would return
 // /run/bus-for-3A0, which could be used in a D-Bus address like
 // unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-3A0.
+//
+// The function takes the following parameters:
+//
+//    - str: unescaped string to be included in a D-Bus address as the value in
+//    a key-value pair.
+//
 func DBusAddressEscapeValue(str string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -58,6 +64,12 @@ func DBusAddressEscapeValue(str string) string {
 //
 // The returned address will be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busType: Type.
+//
 func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, error) {
 	var _arg2 *C.GCancellable // out
 	var _arg1 C.GBusType      // out
@@ -98,6 +110,13 @@ func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, err
 //
 // This is an asynchronous failable function. See
 // g_dbus_address_get_stream_sync() for the synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - address: valid D-Bus address.
+//    - callback to call when the request is satisfied.
+//
 func DBusAddressGetStream(ctx context.Context, address string, callback AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
@@ -127,6 +146,12 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 //
 // A server is not required to set a GUID, so out_guid may be set to NULL even
 // on success.
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the GAsyncReadyCallback passed to
+//    g_dbus_address_get_stream().
+//
 func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.gchar        // in
@@ -177,6 +202,12 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - address: valid D-Bus address.
+//
 func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOStreamer, error) {
 	var _arg3 *C.GCancellable // out
 	var _arg1 *C.gchar        // out
@@ -229,6 +260,11 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 //
 // This doesn't check if string is actually supported by BusServer or
 // BusConnection - use g_dbus_is_supported_address() to do more checks.
+//
+// The function takes the following parameters:
+//
+//    - str: string.
+//
 func DBusIsAddress(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -252,6 +288,11 @@ func DBusIsAddress(str string) bool {
 // library supports the transports in string and that key/value pairs for each
 // transport are valid. See the specification of the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// The function takes the following parameters:
+//
+//    - str: string.
+//
 func DBusIsSupportedAddress(str string) error {
 	var _arg1 *C.gchar  // out
 	var _cerr *C.GError // in

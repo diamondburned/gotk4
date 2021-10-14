@@ -133,6 +133,11 @@ func NewButton() *Button {
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name or NULL.
+//
 func NewButtonFromIconName(iconName string) *Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -153,6 +158,11 @@ func NewButtonFromIconName(iconName string) *Button {
 }
 
 // NewButtonWithLabel creates a GtkButton widget with a GtkLabel child.
+//
+// The function takes the following parameters:
+//
+//    - label: text you want the GtkLabel to hold.
+//
 func NewButtonWithLabel(label string) *Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -177,6 +187,12 @@ func NewButtonWithLabel(label string) *Button {
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. Pressing Alt and that key activates the
 // button.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the button, with an underscore in front of the mnemonic
+//    character.
+//
 func NewButtonWithMnemonic(label string) *Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

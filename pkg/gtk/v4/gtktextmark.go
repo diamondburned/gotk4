@@ -77,6 +77,12 @@ func marshalTextMarker(p uintptr) (interface{}, error) {
 // the mark will end up on the right of newly-inserted text. The standard
 // left-to-right cursor is a mark with right gravity (when you type, the cursor
 // stays on the right side of the text you’re typing).
+//
+// The function takes the following parameters:
+//
+//    - name: mark name or NULL.
+//    - leftGravity: whether the mark should have left gravity.
+//
 func NewTextMark(name string, leftGravity bool) *TextMark {
 	var _arg1 *C.char        // out
 	var _arg2 C.gboolean     // out

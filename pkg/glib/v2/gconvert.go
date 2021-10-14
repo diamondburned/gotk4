@@ -79,6 +79,13 @@ func (c ConvertError) String() string {
 //
 // Using extensions such as "//TRANSLIT" may not work (or may not work well) on
 // many platforms. Consider using g_str_to_ascii() instead.
+//
+// The function takes the following parameters:
+//
+//    - str: the string to convert.
+//    - toCodeset: name of character set into which to convert str.
+//    - fromCodeset: character set of str.
+//
 func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
@@ -133,6 +140,17 @@ func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 // g_convert_with_fallback(). (An example of this is the GNU C converter for
 // CP1255 which does not emit a base character until it knows that the next
 // character is not a mark that could combine with the base character.).
+//
+// The function takes the following parameters:
+//
+//    - str: the string to convert.
+//    - toCodeset: name of character set into which to convert str.
+//    - fromCodeset: character set of str.
+//    - fallback: UTF-8 string to use in place of characters not present in the
+//    target encoding. (The string must be representable in the target
+//    encoding). If NULL, characters not in the target encoding will be
+//    represented as Unicode escapes \uxxxx or \Uxxxxyyyy.
+//
 func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
@@ -192,6 +210,11 @@ func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []
 //
 // This function is preferred over g_filename_display_name() if you know the
 // whole path, as it allows translation.
+//
+// The function takes the following parameters:
+//
+//    - filename: absolute pathname in the GLib file name encoding.
+//
 func FilenameDisplayBasename(filename string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -225,6 +248,11 @@ func FilenameDisplayBasename(filename string) string {
 // If you know the whole pathname of the file you should use
 // g_filename_display_basename(), since that allows location-based translation
 // of filenames.
+//
+// The function takes the following parameters:
+//
+//    - filename: pathname hopefully in the GLib file name encoding.
+//
 func FilenameDisplayName(filename string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -245,6 +273,11 @@ func FilenameDisplayName(filename string) string {
 
 // FilenameFromURI converts an escaped ASCII-encoded URI to a local filename in
 // the encoding used for filenames.
+//
+// The function takes the following parameters:
+//
+//    - uri describing a filename (escaped, encoded in ASCII).
+//
 func FilenameFromURI(uri string) (hostname string, filename string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
@@ -284,6 +317,12 @@ func FilenameFromURI(uri string) (hostname string, filename string, goerr error)
 // G_CONVERT_ERROR_ILLEGAL_SEQUENCE. If the filename encoding is not UTF-8 and
 // the conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns NULL.
+//
+// The function takes the following parameters:
+//
+//    - utf8String: UTF-8 encoded string.
+//    - len: length of the string, or -1 if the string is nul-terminated.
+//
 func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, filename string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 C.gssize  // out
@@ -318,6 +357,13 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 
 // FilenameToURI converts an absolute filename to an escaped ASCII-encoded URI,
 // with the path component following Section 3.3. of RFC 2396.
+//
+// The function takes the following parameters:
+//
+//    - filename: absolute filename specified in the GLib file name encoding,
+//    which is the on-disk file name bytes on Unix, and UTF-8 on Windows.
+//    - hostname: UTF-8 encoded hostname, or NULL for none.
+//
 func FilenameToURI(filename, hostname string) (string, error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // out
@@ -358,6 +404,14 @@ func FilenameToURI(filename, hostname string) (string, error) {
 // conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns NULL. Use
 // g_convert() to produce output that may contain embedded nul characters.
+//
+// The function takes the following parameters:
+//
+//    - opsysstring: string in the encoding for filenames.
+//    - len: length of the string, or -1 if the string is nul-terminated (Note
+//    that some encodings may allow nul bytes to occur inside strings. In that
+//    case, using -1 for the len parameter is unsafe).
+//
 func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 C.gssize  // out
@@ -450,6 +504,12 @@ func GetFilenameCharsets() ([]string, bool) {
 // positive. A nul character found inside the string will result in error
 // G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Use g_convert() to convert input that may
 // contain embedded nul characters.
+//
+// The function takes the following parameters:
+//
+//    - utf8String: UTF-8 encoded string.
+//    - len: length of the string, or -1 if the string is nul-terminated.
+//
 func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 C.gssize  // out
@@ -491,6 +551,12 @@ func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
 // treated with the G_CONVERT_ERROR_ILLEGAL_SEQUENCE error for backward
 // compatibility with earlier versions of this library. Use g_convert() to
 // produce output that may contain embedded nul characters.
+//
+// The function takes the following parameters:
+//
+//    - opsysstring: string in the encoding of the current locale. On Windows
+//    this means the system codepage.
+//
 func LocaleToUTF8(opsysstring string) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
@@ -526,6 +592,11 @@ func LocaleToUTF8(opsysstring string) (bytesRead uint, bytesWritten uint, utf8 s
 // URIListExtractURIs splits an URI list conforming to the text/uri-list mime
 // type defined in RFC 2483 into individual URIs, discarding any comments. The
 // URIs are not validated.
+//
+// The function takes the following parameters:
+//
+//    - uriList: URI list.
+//
 func URIListExtractURIs(uriList string) []string {
 	var _arg1 *C.gchar  // out
 	var _cret **C.gchar // in

@@ -74,6 +74,12 @@ func marshalArrower(p uintptr) (interface{}, error) {
 // NewArrow creates a new Arrow widget.
 //
 // Deprecated: Use a Image with a suitable icon.
+//
+// The function takes the following parameters:
+//
+//    - arrowType: valid ArrowType.
+//    - shadowType: valid ShadowType.
+//
 func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
 	var _arg1 C.GtkArrowType  // out
 	var _arg2 C.GtkShadowType // out

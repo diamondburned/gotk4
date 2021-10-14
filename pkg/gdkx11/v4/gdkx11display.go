@@ -29,6 +29,12 @@ func init() {
 //
 // See the X Session Management Library documentation for more information on
 // session management and the Inter-Client Communication Conventions Manual.
+//
+// The function takes the following parameters:
+//
+//    - smClientId: client id assigned by the session manager when the
+//    connection was opened, or NULL to remove the property.
+//
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.char // out
 
@@ -458,6 +464,11 @@ func (display *X11Display) ConnectXevent(f func(xevent cgo.Handle) bool) externg
 
 // X11DisplayOpen tries to open a new display to the X server given by
 // display_name. If opening the display fails, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - displayName: name of the X display. See the XOpenDisplay() for details.
+//
 func X11DisplayOpen(displayName string) *gdk.Display {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkDisplay // in
@@ -488,6 +499,12 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 //
 // The X11 backend uses the program class to set the class name part of the
 // WM_CLASS property on toplevel windows; see the ICCCM.
+//
+// The function takes the following parameters:
+//
+//    - display: Display.
+//    - programClass: string.
+//
 func X11DisplaySetProgramClass(display *gdk.Display, programClass string) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.char       // out

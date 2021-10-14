@@ -18,6 +18,16 @@ import "C"
 
 // RenderActivity renders an activity indicator (such as in Spinner). The state
 // GTK_STATE_FLAG_CHECKED determines whether there is activity going on.
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
 func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -47,6 +57,17 @@ func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 // Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
 //
 // ! (arrows.png).
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - angle: arrow angle from 0 to 2 * G_PI, being 0 the arrow pointing to
+//    the north.
+//    - x: x origin of the render area.
+//    - y: y origin of the render area.
+//    - size: square side for render area.
+//
 func RenderArrow(context *StyleContext, cr *cairo.Context, angle, x, y, size float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -77,6 +98,16 @@ func RenderArrow(context *StyleContext, cr *cairo.Context, angle, x, y, size flo
 // border-width and border-radius:
 //
 // ! (background.png).
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
 func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -110,6 +141,16 @@ func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, hei
 // Typical checkmark rendering:
 //
 // ! (checks.png).
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
 func RenderCheck(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -141,6 +182,16 @@ func RenderCheck(context *StyleContext, cr *cairo.Context, x, y, width, height f
 // Typical expander rendering:
 //
 // ! (expanders.png).
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
 func RenderExpander(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -171,6 +222,16 @@ func RenderExpander(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 // Typical focus rendering:
 //
 // ! (focus.png).
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
 func RenderFocus(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -202,6 +263,16 @@ func RenderFocus(context *StyleContext, cr *cairo.Context, x, y, width, height f
 // border-color, border-width, border-radius and junctions:
 //
 // ! (frames.png).
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
 func RenderFrame(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -232,6 +303,16 @@ func RenderFrame(context *StyleContext, cr *cairo.Context, x, y, width, height f
 // Handles rendered for the paned and grip classes:
 //
 // ! (handles.png).
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
 func RenderHandle(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -261,6 +342,15 @@ func RenderHandle(context *StyleContext, cr *cairo.Context, x, y, width, height 
 // This function will render the icon in texture at exactly its size, regardless
 // of scaling factors, which may not be appropriate when drawing on displays
 // with high pixel densities.
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - texture containing the icon to draw.
+//    - x: x position for the texture.
+//    - y: y position for the texture.
+//
 func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, x, y float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -283,6 +373,15 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, 
 }
 
 // RenderLayout renders layout on the coordinates x, y.
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin.
+//    - y: y origin.
+//    - layout to render.
+//
 func RenderLayout(context *StyleContext, cr *cairo.Context, x, y float64, layout *pango.Layout) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -305,6 +404,16 @@ func RenderLayout(context *StyleContext, cr *cairo.Context, x, y float64, layout
 }
 
 // RenderLine renders a line from (x0, y0) to (x1, y1).
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x0: x coordinate for the origin of the line.
+//    - y0: y coordinate for the origin of the line.
+//    - x1: x coordinate for the end of the line.
+//    - y1: y coordinate for the end of the line.
+//
 func RenderLine(context *StyleContext, cr *cairo.Context, x0, y0, x1, y1 float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
@@ -336,6 +445,16 @@ func RenderLine(context *StyleContext, cr *cairo.Context, x0, y0, x1, y1 float64
 // Typical option mark rendering:
 //
 // ! (options.png).
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - cr: #cairo_t.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
 func RenderOption(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out

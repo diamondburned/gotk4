@@ -77,6 +77,11 @@ func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
 // NewFileChooserWidget creates a new FileChooserWidget. This is a file chooser
 // widget that can be embedded in custom windows, and it is the same widget that
 // is used by FileChooserDialog.
+//
+// The function takes the following parameters:
+//
+//    - action: open or save mode for the widget.
+//
 func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	var _arg1 C.GtkFileChooserAction // out
 	var _cret *C.GtkWidget           // in

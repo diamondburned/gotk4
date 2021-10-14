@@ -57,6 +57,11 @@ func (p PropMode) String() string {
 // representation as a STRING. The representation of characters not in STRING is
 // not specified; it may be as pseudo-escape sequences \x{ABCD}, or it may be in
 // some other form of approximation.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 string.
+//
 func UTF8ToStringTarget(str string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in

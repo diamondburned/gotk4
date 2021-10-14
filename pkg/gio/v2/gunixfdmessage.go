@@ -75,6 +75,11 @@ func NewUnixFDMessage() *UnixFDMessage {
 }
 
 // NewUnixFDMessageWithFdList creates a new FDMessage containing list.
+//
+// The function takes the following parameters:
+//
+//    - fdList: FDList.
+//
 func NewUnixFDMessageWithFdList(fdList *UnixFDList) *UnixFDMessage {
 	var _arg1 *C.GUnixFDList           // out
 	var _cret *C.GSocketControlMessage // in

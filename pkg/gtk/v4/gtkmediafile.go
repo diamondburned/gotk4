@@ -99,6 +99,11 @@ func NewMediaFile() *MediaFile {
 }
 
 // NewMediaFileForFile creates a new media file to play file.
+//
+// The function takes the following parameters:
+//
+//    - file to play.
+//
 func NewMediaFileForFile(file gio.Filer) *MediaFile {
 	var _arg1 *C.GFile          // out
 	var _cret *C.GtkMediaStream // in
@@ -119,6 +124,11 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 //
 // This is a utility function that converts the given filename to a GFile and
 // calls gtk.MediaFile.NewForFile.
+//
+// The function takes the following parameters:
+//
+//    - filename to open.
+//
 func NewMediaFileForFilename(filename string) *MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
@@ -140,6 +150,11 @@ func NewMediaFileForFilename(filename string) *MediaFile {
 //
 // If you want the resulting media to be seekable, the stream should implement
 // the GSeekable interface.
+//
+// The function takes the following parameters:
+//
+//    - stream to play.
+//
 func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 	var _arg1 *C.GInputStream   // out
 	var _cret *C.GtkMediaStream // in
@@ -160,6 +175,11 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 //
 // This is a utility function that converts the given resource to a GFile and
 // calls gtk.MediaFile.NewForFile.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path to open.
+//
 func NewMediaFileForResource(resourcePath string) *MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in

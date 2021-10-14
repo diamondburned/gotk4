@@ -24,6 +24,15 @@ import "C"
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the surface contains one.
+//
+// The function takes the following parameters:
+//
+//    - surface to copy from.
+//    - srcX: source X coordinate within surface.
+//    - srcY: source Y coordinate within surface.
+//    - width: width in pixels of region to get.
+//    - height: height in pixels of region to get.
+//
 func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.cairo_surface_t // out
 	var _arg2 C.int              // out
@@ -68,6 +77,11 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int)
 //
 // This should generally not be used in newly written code as later stages will
 // almost certainly convert the pixbuf back into a texture to draw it on screen.
+//
+// The function takes the following parameters:
+//
+//    - texture: GdkTexture.
+//
 func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkTexture // out
 	var _cret *C.GdkPixbuf  // in

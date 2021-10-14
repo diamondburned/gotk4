@@ -61,6 +61,11 @@ func (obj *GObjectAccessible) Object() *externglib.Object {
 }
 
 // GObjectAccessibleForObject gets the accessible object for the specified obj.
+//
+// The function takes the following parameters:
+//
+//    - obj: #GObject.
+//
 func GObjectAccessibleForObject(obj *externglib.Object) *ObjectClass {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in

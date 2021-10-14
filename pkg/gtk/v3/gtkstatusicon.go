@@ -114,6 +114,11 @@ func NewStatusIcon() *StatusIcon {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
+//
+// The function takes the following parameters:
+//
+//    - filename: filename.
+//
 func NewStatusIconFromFile(filename string) *StatusIcon {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GtkStatusIcon // in
@@ -136,6 +141,11 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
+//
+// The function takes the following parameters:
+//
+//    - icon: #GIcon.
+//
 func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 	var _arg1 *C.GIcon         // out
 	var _cret *C.GtkStatusIcon // in
@@ -158,6 +168,11 @@ func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name.
+//
 func NewStatusIconFromIconName(iconName string) *StatusIcon {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GtkStatusIcon // in
@@ -182,6 +197,11 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: Pixbuf.
+//
 func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 	var _arg1 *C.GdkPixbuf     // out
 	var _cret *C.GtkStatusIcon // in
@@ -205,6 +225,11 @@ func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock icon id.
+//
 func NewStatusIconFromStock(stockId string) *StatusIcon {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GtkStatusIcon // in

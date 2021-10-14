@@ -97,6 +97,11 @@ func NewPageSetup() *PageSetup {
 //
 // Returns a new GtkPageSetup object with the restored page setup, or NULL if an
 // error occurred. See gtk.PageSetup.ToFile().
+//
+// The function takes the following parameters:
+//
+//    - fileName: filename to read the page setup from.
+//
 func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 	var _arg1 *C.char         // out
 	var _cret *C.GtkPageSetup // in
@@ -122,6 +127,11 @@ func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 // NewPageSetupFromGVariant: desrialize a page setup from an a{sv} variant.
 //
 // The variant must be in the format produced by gtk.PageSetup.ToGVariant().
+//
+// The function takes the following parameters:
+//
+//    - variant: a{sv} GVariant.
+//
 func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPageSetup // in
@@ -143,6 +153,13 @@ func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 //
 // Returns a new GtkPageSetup object with the restored page setup, or NULL if an
 // error occurred.
+//
+// The function takes the following parameters:
+//
+//    - keyFile: GKeyFile to retrieve the page_setup from.
+//    - groupName: name of the group in the key_file to read, or NULL to use
+//    the default name “Page Setup”.
+//
 func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetup, error) {
 	var _arg1 *C.GKeyFile     // out
 	var _arg2 *C.char         // out

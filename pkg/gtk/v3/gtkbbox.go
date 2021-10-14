@@ -110,6 +110,11 @@ func marshalButtonBoxer(p uintptr) (interface{}, error) {
 }
 
 // NewButtonBox creates a new ButtonBox.
+//
+// The function takes the following parameters:
+//
+//    - orientation box's orientation.
+//
 func NewButtonBox(orientation Orientation) *ButtonBox {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in

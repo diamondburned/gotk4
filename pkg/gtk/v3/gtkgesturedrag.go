@@ -51,6 +51,11 @@ func marshalGestureDragger(p uintptr) (interface{}, error) {
 }
 
 // NewGestureDrag returns a newly created Gesture that recognizes drags.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func NewGestureDrag(widget Widgetter) *GestureDrag {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

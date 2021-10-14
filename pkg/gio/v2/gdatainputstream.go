@@ -63,6 +63,11 @@ func marshalDataInputStreamer(p uintptr) (interface{}, error) {
 }
 
 // NewDataInputStream creates a new data input stream for the base_stream.
+//
+// The function takes the following parameters:
+//
+//    - baseStream: Stream.
+//
 func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 	var _arg1 *C.GInputStream     // out
 	var _cret *C.GDataInputStream // in

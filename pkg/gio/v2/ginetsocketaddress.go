@@ -54,6 +54,12 @@ func marshalInetSocketAddresser(p uintptr) (interface{}, error) {
 }
 
 // NewInetSocketAddress creates a new SocketAddress for address and port.
+//
+// The function takes the following parameters:
+//
+//    - address: Address.
+//    - port number.
+//
 func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
@@ -78,6 +84,12 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 //
 // If address is an IPv6 address, it can also contain a scope ID (separated from
 // the address by a %).
+//
+// The function takes the following parameters:
+//
+//    - address: string form of an IP address.
+//    - port number.
+//
 func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddress {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // out

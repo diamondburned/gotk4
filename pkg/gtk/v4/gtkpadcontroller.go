@@ -132,6 +132,12 @@ func marshalPadControllerer(p uintptr) (interface{}, error) {
 //
 // Be aware that pad events will only be delivered to GtkWindows, so adding a
 // pad controller to any other type of widget will not have an effect.
+//
+// The function takes the following parameters:
+//
+//    - group: GActionGroup to trigger actions from.
+//    - pad: GDK_SOURCE_TABLET_PAD device, or NULL to handle all pads.
+//
 func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _arg1 *C.GActionGroup     // out
 	var _arg2 *C.GdkDevice        // out

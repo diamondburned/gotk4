@@ -71,6 +71,11 @@ func marshalBufferedOutputStreamer(p uintptr) (interface{}, error) {
 
 // NewBufferedOutputStream creates a new buffered output stream for a base
 // stream.
+//
+// The function takes the following parameters:
+//
+//    - baseStream: Stream.
+//
 func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _cret *C.GOutputStream // in
@@ -89,6 +94,12 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 
 // NewBufferedOutputStreamSized creates a new buffered output stream with a
 // given buffer size.
+//
+// The function takes the following parameters:
+//
+//    - baseStream: Stream.
+//    - size: #gsize.
+//
 func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 C.gsize          // out

@@ -44,6 +44,12 @@ type Glyph = uint32
 // inclusive. If you want two touching-but-not-overlapping rectangles stay
 // touching-but-not-overlapping after rounding to device units, pass them in as
 // nearest.
+//
+// The function takes the following parameters:
+//
+//    - inclusive: rectangle to round to pixels inclusively, or NULL.
+//    - nearest: rectangle to round to nearest pixels, or NULL.
+//
 func ExtentsToPixels(inclusive, nearest *Rectangle) {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
@@ -64,6 +70,11 @@ func ExtentsToPixels(inclusive, nearest *Rectangle) {
 //
 // The conversion is done by multiplying d by PANGO_SCALE and rounding the
 // result to nearest integer.
+//
+// The function takes the following parameters:
+//
+//    - d: double floating-point value.
+//
 func UnitsFromDouble(d float64) int {
 	var _arg1 C.double // out
 	var _cret C.int    // in
@@ -83,6 +94,11 @@ func UnitsFromDouble(d float64) int {
 // UnitsToDouble converts a number in Pango units to floating-point.
 //
 // The conversion is done by dividing i by PANGO_SCALE.
+//
+// The function takes the following parameters:
+//
+//    - i: value in Pango units.
+//
 func UnitsToDouble(i int) float64 {
 	var _arg1 C.int    // out
 	var _cret C.double // in

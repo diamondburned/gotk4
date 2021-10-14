@@ -579,6 +579,11 @@ func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
 // standard directories.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - name: theme engine name to load.
+//
 func ThemingEngineLoad(name string) *ThemingEngine {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GtkThemingEngine // in

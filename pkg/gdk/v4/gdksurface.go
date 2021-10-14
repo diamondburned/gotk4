@@ -116,6 +116,12 @@ func marshalSurfacer(p uintptr) (interface{}, error) {
 //
 // The surface will be attached to parent and can be positioned relative to it
 // using gdk.Popup.Present().
+//
+// The function takes the following parameters:
+//
+//    - parent surface to attach the surface to.
+//    - autohide: whether to hide the surface on outside clicks.
+//
 func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 	var _arg1 *C.GdkSurface // out
 	var _arg2 C.gboolean    // out
@@ -138,6 +144,11 @@ func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 }
 
 // NewSurfaceToplevel creates a new toplevel surface.
+//
+// The function takes the following parameters:
+//
+//    - display to create the surface on.
+//
 func NewSurfaceToplevel(display *Display) *Surface {
 	var _arg1 *C.GdkDisplay // out
 	var _cret *C.GdkSurface // in

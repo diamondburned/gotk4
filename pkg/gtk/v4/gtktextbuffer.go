@@ -120,6 +120,11 @@ func marshalTextBufferer(p uintptr) (interface{}, error) {
 }
 
 // NewTextBuffer creates a new text buffer.
+//
+// The function takes the following parameters:
+//
+//    - table: tag table, or NULL to create a new one.
+//
 func NewTextBuffer(table *TextTagTable) *TextBuffer {
 	var _arg1 *C.GtkTextTagTable // out
 	var _cret *C.GtkTextBuffer   // in

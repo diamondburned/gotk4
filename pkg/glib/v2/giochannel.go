@@ -259,6 +259,12 @@ func (i IOFlags) Has(other IOFlags) bool {
 // On Windows, polling a #GSource created to watch a channel for a socket puts
 // the socket in non-blocking mode. This is a side-effect of the implementation
 // and unavoidable.
+//
+// The function takes the following parameters:
+//
+//    - channel to watch.
+//    - condition conditions to watch for.
+//
 func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	var _arg1 *C.GIOChannel  // out
 	var _arg2 C.GIOCondition // out
@@ -992,6 +998,11 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 }
 
 // IOChannelErrorFromErrno converts an errno error number to a OChannelError.
+//
+// The function takes the following parameters:
+//
+//    - en: errno error number, e.g. EINVAL.
+//
 func IOChannelErrorFromErrno(en int) IOChannelError {
 	var _arg1 C.gint            // out
 	var _cret C.GIOChannelError // in

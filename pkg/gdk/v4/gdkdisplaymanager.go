@@ -53,6 +53,11 @@ func init() {
 //
 // This call must happen prior to functions that open a display, such as
 // gdk.Display().Open, gtk_init(), or gtk_init_check() in order to take effect.
+//
+// The function takes the following parameters:
+//
+//    - backends: comma-separated list of backends.
+//
 func SetAllowedBackends(backends string) {
 	var _arg1 *C.char // out
 

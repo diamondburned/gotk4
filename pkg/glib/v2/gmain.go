@@ -138,6 +138,12 @@ func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 //
 // Calling waitpid for specific processes other than pid remains a valid thing
 // to do.
+//
+// The function takes the following parameters:
+//
+//    - pid process to watch. On POSIX the positive pid of a child process. On
+//    Windows a handle for a process (which doesn't have to be a child).
+//
 func NewChildWatchSource(pid Pid) *Source {
 	var _arg1 C.GPid     // out
 	var _cret *C.GSource // in
@@ -165,6 +171,11 @@ func NewChildWatchSource(pid Pid) *Source {
 // You may find g_get_real_time() to be more convenient.
 //
 // Deprecated: Val is not year-2038-safe. Use g_get_real_time() instead.
+//
+// The function takes the following parameters:
+//
+//    - result structure in which to store current time.
+//
 func GetCurrentTime(result *TimeVal) {
 	var _arg1 *C.GTimeVal // out
 
@@ -216,6 +227,11 @@ func GetRealTime() int64 {
 }
 
 // IdleRemoveByData removes the idle function with the given data.
+//
+// The function takes the following parameters:
+//
+//    - data for the idle source's callback.
+//
 func IdleRemoveByData(data cgo.Handle) bool {
 	var _arg1 C.gpointer // out
 	var _cret C.gboolean // in
@@ -356,6 +372,11 @@ func MainDepth() int {
 //
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
+//
+// The function takes the following parameters:
+//
+//    - interval: timeout interval in milliseconds.
+//
 func NewTimeoutSource(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
@@ -388,6 +409,11 @@ func NewTimeoutSource(interval uint) *Source {
 //
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
+//
+// The function takes the following parameters:
+//
+//    - interval: timeout interval in seconds.
+//
 func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
@@ -1728,6 +1754,12 @@ func (source *Source) SetReadyTime(readyTime int64) {
 // SourceRemoveByFuncsUserData removes a source from the default main loop
 // context given the source functions and user data. If multiple sources exist
 // with the same source functions and user data, only one will be destroyed.
+//
+// The function takes the following parameters:
+//
+//    - funcs passed to g_source_new().
+//    - userData: user data for the callback.
+//
 func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) bool {
 	var _arg1 *C.GSourceFuncs // out
 	var _arg2 C.gpointer      // out
@@ -1752,6 +1784,11 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) bool {
 // SourceRemoveByUserData removes a source from the default main loop context
 // given the user data for the callback. If multiple sources exist with the same
 // user data, only one will be destroyed.
+//
+// The function takes the following parameters:
+//
+//    - userData: user_data for the callback.
+//
 func SourceRemoveByUserData(userData cgo.Handle) bool {
 	var _arg1 C.gpointer // out
 	var _cret C.gboolean // in
@@ -1784,6 +1821,12 @@ func SourceRemoveByUserData(userData cgo.Handle) bool {
 // been removed by the time this function is called on its (now invalid) source
 // ID. This source ID may have been reissued, leading to the operation being
 // performed against the wrong source.
+//
+// The function takes the following parameters:
+//
+//    - tag: #GSource ID.
+//    - name: debug name for the source.
+//
 func SourceSetNameByID(tag uint, name string) {
 	var _arg1 C.guint // out
 	var _arg2 *C.char // out

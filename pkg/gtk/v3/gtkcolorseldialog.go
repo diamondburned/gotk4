@@ -60,6 +60,11 @@ func marshalColorSelectionDialogger(p uintptr) (interface{}, error) {
 }
 
 // NewColorSelectionDialog creates a new ColorSelectionDialog.
+//
+// The function takes the following parameters:
+//
+//    - title: string containing the title text for the dialog.
+//
 func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

@@ -61,6 +61,12 @@ func marshalTLSPassworder(p uintptr) (interface{}, error) {
 }
 
 // NewTLSPassword: create a new Password object.
+//
+// The function takes the following parameters:
+//
+//    - flags: password flags.
+//    - description of what the password is for.
+//
 func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
 	var _arg1 C.GTlsPasswordFlags // out
 	var _arg2 *C.gchar            // out

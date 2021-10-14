@@ -36,6 +36,16 @@ func init() {
 //
 // When the operation is finished, callback will be called. You must then call
 // content_deserialize_finish to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object.
+//    - stream: GInputStream to read the serialized content from.
+//    - mimeType: mime type to deserialize from.
+//    - typ: GType to deserialize from.
+//    - ioPriority: i/O priority of the operation.
+//    - callback to call when the operation is done.
+//
 func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mimeType string, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
@@ -70,6 +80,12 @@ func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mime
 }
 
 // ContentDeserializeFinish finishes a content deserialization operation.
+//
+// The function takes the following parameters:
+//
+//    - result: GAsyncResult.
+//    - value: return location for the result of the operation.
+//
 func ContentDeserializeFinish(result gio.AsyncResulter, value *externglib.Value) error {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.GValue       // out

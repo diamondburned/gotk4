@@ -56,6 +56,11 @@ func marshalGestureSwiper(p uintptr) (interface{}, error) {
 }
 
 // NewGestureSwipe returns a newly created Gesture that recognizes swipes.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in

@@ -69,6 +69,11 @@ func marshalVScaler(p uintptr) (interface{}, error) {
 // NewVScale creates a new VScale.
 //
 // Deprecated: Use gtk_scale_new() with GTK_ORIENTATION_VERTICAL instead.
+//
+// The function takes the following parameters:
+//
+//    - adjustment which sets the range of the scale.
+//
 func NewVScale(adjustment *Adjustment) *VScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -96,6 +101,13 @@ func NewVScale(adjustment *Adjustment) *VScale {
 //
 // Deprecated: Use gtk_scale_new_with_range() with GTK_ORIENTATION_VERTICAL
 // instead.
+//
+// The function takes the following parameters:
+//
+//    - min: minimum value.
+//    - max: maximum value.
+//    - step increment (tick size) used with keyboard shortcuts.
+//
 func NewVScaleWithRange(min, max, step float64) *VScale {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out

@@ -142,6 +142,11 @@ func GetLanguageNames() []string {
 //
 // g_get_language_names() returns
 // g_get_language_names_with_category("LC_MESSAGES").
+//
+// The function takes the following parameters:
+//
+//    - categoryName: locale category name.
+//
 func GetLanguageNamesWithCategory(categoryName string) []string {
 	var _arg1 *C.gchar  // out
 	var _cret **C.gchar // in
@@ -185,6 +190,11 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 //
 // If you need the list of variants for the current locale, use
 // g_get_language_names().
+//
+// The function takes the following parameters:
+//
+//    - locale identifier.
+//
 func GetLocaleVariants(locale string) []string {
 	var _arg1 *C.gchar  // out
 	var _cret **C.gchar // in

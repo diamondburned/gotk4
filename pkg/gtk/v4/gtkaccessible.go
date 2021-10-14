@@ -21,6 +21,11 @@ func init() {
 	})
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func AccessiblePropertyInitValue(property AccessibleProperty, value *externglib.Value) {
 	var _arg1 C.GtkAccessibleProperty // out
 	var _arg2 *C.GValue               // out
@@ -33,6 +38,11 @@ func AccessiblePropertyInitValue(property AccessibleProperty, value *externglib.
 	runtime.KeepAlive(value)
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.Value) {
 	var _arg1 C.GtkAccessibleRelation // out
 	var _arg2 *C.GValue               // out
@@ -45,6 +55,11 @@ func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.
 	runtime.KeepAlive(value)
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 	var _arg1 C.GtkAccessibleState // out
 	var _arg2 *C.GValue            // out

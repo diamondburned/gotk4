@@ -459,6 +459,11 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 }
 
 // IOStreamSpliceFinish finishes an asynchronous io stream splice operation.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func IOStreamSpliceFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in

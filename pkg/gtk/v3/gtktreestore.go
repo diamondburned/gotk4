@@ -84,6 +84,11 @@ func marshalTreeStorer(p uintptr) (interface{}, error) {
 
 // NewTreeStore: non vararg creation function. Used primarily by language
 // bindings.
+//
+// The function takes the following parameters:
+//
+//    - types: array of #GType types for the columns, from first to last.
+//
 func NewTreeStore(types []externglib.Type) *TreeStore {
 	var _arg2 *C.GType // out
 	var _arg1 C.gint

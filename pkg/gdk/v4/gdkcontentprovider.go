@@ -102,6 +102,12 @@ func marshalContentProviderer(p uintptr) (interface{}, error) {
 
 // NewContentProviderForBytes: create a content provider that provides the given
 // bytes as data for the given mime_type.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: mime type.
+//    - bytes: GBytes with the data for mime_type.
+//
 func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProvider {
 	var _arg1 *C.char               // out
 	var _arg2 *C.GBytes             // out
@@ -124,6 +130,11 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProv
 
 // NewContentProviderForValue: create a content provider that provides the given
 // value.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue.
+//
 func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 	var _arg1 *C.GValue             // out
 	var _cret *C.GdkContentProvider // in
@@ -155,6 +166,11 @@ func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 //                                      gdk_content_provider_new_typed (G_TYPE_FILE, file),
 //                                      gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture)
 //                                    }, 2);.
+//
+// The function takes the following parameters:
+//
+//    - providers: The ContentProviders to present the union of.
+//
 func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	var _arg1 **C.GdkContentProvider // out
 	var _arg2 C.gsize

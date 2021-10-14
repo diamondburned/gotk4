@@ -169,6 +169,11 @@ func NewIconView() *IconView {
 
 // NewIconViewWithArea creates a new IconView widget using the specified area to
 // layout cells inside the icons.
+//
+// The function takes the following parameters:
+//
+//    - area to use to layout cells.
+//
 func NewIconViewWithArea(area CellAreaer) *IconView {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
@@ -186,6 +191,11 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 }
 
 // NewIconViewWithModel creates a new IconView widget with the model model.
+//
+// The function takes the following parameters:
+//
+//    - model: model.
+//
 func NewIconViewWithModel(model TreeModeller) *IconView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in

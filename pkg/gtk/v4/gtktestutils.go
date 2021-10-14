@@ -52,6 +52,11 @@ func TestRegisterAllTypes() {
 //
 // This function is intended to be used for syncing with actions that depend on
 // widget relayouting or on interaction with the display server.
+//
+// The function takes the following parameters:
+//
+//    - widget to wait for.
+//
 func TestWidgetWaitForDraw(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 

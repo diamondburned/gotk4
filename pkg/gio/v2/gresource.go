@@ -31,6 +31,12 @@ import "C"
 // terminated list of strings which should be released with g_strfreev().
 //
 // lookup_flags controls the behaviour of the lookup.
+//
+// The function takes the following parameters:
+//
+//    - path: pathname inside the resource.
+//    - lookupFlags: LookupFlags.
+//
 func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -74,6 +80,12 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 // globally registered resources and if found returns information about it.
 //
 // lookup_flags controls the behaviour of the lookup.
+//
+// The function takes the following parameters:
+//
+//    - path: pathname inside the resource.
+//    - lookupFlags: LookupFlags.
+//
 func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -115,6 +127,12 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 // uncompress the data.
 //
 // lookup_flags controls the behaviour of the lookup.
+//
+// The function takes the following parameters:
+//
+//    - path: pathname inside the resource.
+//    - lookupFlags: LookupFlags.
+//
 func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (*glib.Bytes, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -151,6 +169,12 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (*glib.By
 // data.
 //
 // lookup_flags controls the behaviour of the lookup.
+//
+// The function takes the following parameters:
+//
+//    - path: pathname inside the resource.
+//    - lookupFlags: LookupFlags.
+//
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStreamer, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -191,6 +215,11 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 // ResourcesRegister registers the resource with the process-global set of
 // resources. Once a resource is registered the files in it can be accessed with
 // the global resource lookup functions like g_resources_lookup_data().
+//
+// The function takes the following parameters:
+//
+//    - resource: #GResource.
+//
 func ResourcesRegister(resource *Resource) {
 	var _arg1 *C.GResource // out
 
@@ -202,6 +231,11 @@ func ResourcesRegister(resource *Resource) {
 
 // ResourcesUnregister unregisters the resource from the process-global set of
 // resources.
+//
+// The function takes the following parameters:
+//
+//    - resource: #GResource.
+//
 func ResourcesUnregister(resource *Resource) {
 	var _arg1 *C.GResource // out
 
@@ -220,6 +254,11 @@ func ResourcesUnregister(resource *Resource) {
 // If filename is empty or the data in it is corrupt, G_RESOURCE_ERROR_INTERNAL
 // will be returned. If filename doesn’t exist, or there is an error in reading
 // it, an error from g_mapped_file_new() will be returned.
+//
+// The function takes the following parameters:
+//
+//    - filename: path of a filename to load, in the GLib filename encoding.
+//
 func ResourceLoad(filename string) (*Resource, error) {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GResource // in

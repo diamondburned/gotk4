@@ -5296,6 +5296,11 @@ func WidgetGetDefaultDirection() TextDirection {
 // WidgetSetDefaultDirection sets the default reading direction for widgets.
 //
 // See gtk.Widget.SetDirection().
+//
+// The function takes the following parameters:
+//
+//    - dir: new default direction. This cannot be GTK_TEXT_DIR_NONE.
+//
 func WidgetSetDefaultDirection(dir TextDirection) {
 	var _arg1 C.GtkTextDirection // out
 

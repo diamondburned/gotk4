@@ -60,6 +60,17 @@ func marshalProxyAddresser(p uintptr) (interface{}, error) {
 // (Note that this method doesn't set the Address:uri or
 // Address:destination-protocol fields; use g_object_new() directly if you want
 // to set those.).
+//
+// The function takes the following parameters:
+//
+//    - inetaddr: proxy server Address.
+//    - port: proxy server port.
+//    - protocol: proxy protocol to support, in lower case (e.g. socks, http).
+//    - destHostname: destination hostname the proxy should tunnel to.
+//    - destPort: destination port to tunnel to.
+//    - username to authenticate to the proxy server (or NULL).
+//    - password to authenticate to the proxy server (or NULL).
+//
 func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname string, destPort uint16, username, password string) *ProxyAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out

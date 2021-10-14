@@ -67,6 +67,12 @@ func marshalNetworkAddresser(p uintptr) (interface{}, error) {
 // localhost may refer to the IPv4 loopback address only, or to both IPv4 and
 // IPv6; use g_network_address_new_loopback() to create a Address that is
 // guaranteed to resolve to both addresses.
+//
+// The function takes the following parameters:
+//
+//    - hostname: hostname.
+//    - port: port.
+//
 func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -98,6 +104,11 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 //
 // g_network_address_get_hostname() will always return localhost for a Address
 // created with this constructor.
+//
+// The function takes the following parameters:
+//
+//    - port: port.
+//
 func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 	var _arg1 C.guint16             // out
 	var _cret *C.GSocketConnectable // in
@@ -188,6 +199,12 @@ func (addr *NetworkAddress) Scheme() string {
 // rather than as a numeric port, but this functionality is deprecated, because
 // it depends on the contents of /etc/services, which is generally quite sparse
 // on platforms other than Linux.).
+//
+// The function takes the following parameters:
+//
+//    - hostAndPort: hostname and optionally a port.
+//    - defaultPort: default port if not in host_and_port.
+//
 func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddress, error) {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -218,6 +235,12 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 //
 // Using this rather than g_network_address_new() or g_network_address_parse()
 // allows Client to determine when to use application-specific proxy protocols.
+//
+// The function takes the following parameters:
+//
+//    - uri: hostname and optionally a port.
+//    - defaultPort: default port if none is found in the URI.
+//
 func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, error) {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out

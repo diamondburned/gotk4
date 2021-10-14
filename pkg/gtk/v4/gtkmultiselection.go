@@ -48,6 +48,11 @@ func marshalMultiSelectioner(p uintptr) (interface{}, error) {
 }
 
 // NewMultiSelection creates a new selection to handle model.
+//
+// The function takes the following parameters:
+//
+//    - model: GListModel to manage, or NULL.
+//
 func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 	var _arg1 *C.GListModel        // out
 	var _cret *C.GtkMultiSelection // in

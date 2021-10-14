@@ -16,6 +16,11 @@ import "C"
 // symbol.
 //
 // Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
+//
+// The function takes the following parameters:
+//
+//    - symbol: keyval.
+//
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	var _arg1 C.guint // out
 	var _arg2 C.guint // in
@@ -39,6 +44,11 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 //
 // The names are the same as those in the gdk/gdkkeysyms.h header file but
 // without the leading “GDK_KEY_”.
+//
+// The function takes the following parameters:
+//
+//    - keyvalName: key name.
+//
 func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.char // out
 	var _cret C.guint // in
@@ -57,6 +67,11 @@ func KeyvalFromName(keyvalName string) uint {
 }
 
 // KeyvalIsLower returns TRUE if the given key value is in lower case.
+//
+// The function takes the following parameters:
+//
+//    - keyval: key value.
+//
 func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
@@ -76,6 +91,11 @@ func KeyvalIsLower(keyval uint) bool {
 }
 
 // KeyvalIsUpper returns TRUE if the given key value is in upper case.
+//
+// The function takes the following parameters:
+//
+//    - keyval: key value.
+//
 func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
@@ -98,6 +118,11 @@ func KeyvalIsUpper(keyval uint) bool {
 //
 // The names are the same as those in the gdk/gdkkeysyms.h header file but
 // without the leading “GDK_KEY_”.
+//
+// The function takes the following parameters:
+//
+//    - keyval: key value.
+//
 func KeyvalName(keyval uint) string {
 	var _arg1 C.guint // out
 	var _cret *C.char // in
@@ -117,6 +142,11 @@ func KeyvalName(keyval uint) string {
 }
 
 // KeyvalToLower converts a key value to lower case, if applicable.
+//
+// The function takes the following parameters:
+//
+//    - keyval: key value.
+//
 func KeyvalToLower(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
@@ -138,6 +168,11 @@ func KeyvalToLower(keyval uint) uint {
 //
 // Note that the conversion does not take the current locale into consideration,
 // which might be expected for particular keyvals, such as GDK_KEY_KP_Decimal.
+//
+// The function takes the following parameters:
+//
+//    - keyval: GDK key symbol.
+//
 func KeyvalToUnicode(keyval uint) uint32 {
 	var _arg1 C.guint   // out
 	var _cret C.guint32 // in
@@ -155,6 +190,11 @@ func KeyvalToUnicode(keyval uint) uint32 {
 }
 
 // KeyvalToUpper converts a key value to upper case, if applicable.
+//
+// The function takes the following parameters:
+//
+//    - keyval: key value.
+//
 func KeyvalToUpper(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
@@ -172,6 +212,11 @@ func KeyvalToUpper(keyval uint) uint {
 }
 
 // UnicodeToKeyval: convert from a Unicode character to a key symbol.
+//
+// The function takes the following parameters:
+//
+//    - wc: unicode character.
+//
 func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32 // out
 	var _cret C.guint   // in

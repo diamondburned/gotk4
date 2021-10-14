@@ -73,6 +73,12 @@ func marshalUnixOutputStreamer(p uintptr) (interface{}, error) {
 //
 // If close_fd, is TRUE, the file descriptor will be closed when the output
 // stream is destroyed.
+//
+// The function takes the following parameters:
+//
+//    - fd: UNIX file descriptor.
+//    - closeFd: TRUE to close the file descriptor when done.
+//
 func NewUnixOutputStream(fd int, closeFd bool) *UnixOutputStream {
 	var _arg1 C.gint           // out
 	var _arg2 C.gboolean       // out

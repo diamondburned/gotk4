@@ -623,6 +623,11 @@ func _gotk4_gtk3_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
 // persistent and GTK+ need not copy the array.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - items or array of items.
+//
 func StockAdd(items []StockItem) {
 	var _arg1 *C.GtkStockItem // out
 	var _arg2 C.guint
@@ -645,6 +650,11 @@ func StockAdd(items []StockItem) {
 // must persist until application exit.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - items or array of StockItem.
+//
 func StockAddStatic(items []StockItem) {
 	var _arg1 *C.GtkStockItem // out
 	var _arg2 C.guint
@@ -691,6 +701,11 @@ func StockListIds() []string {
 // TRUE if stock_id was known.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock item name.
+//
 func StockLookup(stockId string) (StockItem, bool) {
 	var _arg1 *C.gchar       // out
 	var _arg2 C.GtkStockItem // in
@@ -745,6 +760,12 @@ func StockLookup(stockId string) (StockItem, bool) {
 //    gtk_stock_set_translate_func ("even-item-domain", my_translate_func, "even items");
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - domain: translation domain for which func shall be used.
+//    - fn: TranslateFunc.
+//
 func StockSetTranslateFunc(domain string, fn TranslateFunc) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GtkTranslateFunc // out

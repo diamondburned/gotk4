@@ -205,6 +205,11 @@ func (a AttrType) String() string {
 //
 // The returned value is an interned string (see g_intern_string() for what that
 // means) that should not be modified or freed.
+//
+// The function takes the following parameters:
+//
+//    - typ: attribute type ID to fetch the name for.
+//
 func AttrTypeGetName(typ AttrType) string {
 	var _arg1 C.PangoAttrType // out
 	var _cret *C.char         // in
@@ -227,6 +232,11 @@ func AttrTypeGetName(typ AttrType) string {
 //
 // The attribute type name can be accessed later by using
 // pango.AttrType.GetName.
+//
+// The function takes the following parameters:
+//
+//    - name: identifier for the type.
+//
 func AttrTypeRegister(name string) AttrType {
 	var _arg1 *C.gchar        // out
 	var _cret C.PangoAttrType // in
@@ -438,6 +448,11 @@ func _gotk4_pango1_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret
 //
 // If breaks are disabled, the range will be kept in a single run, as far as
 // possible.
+//
+// The function takes the following parameters:
+//
+//    - allowBreaks: TRUE if we line breaks are allowed.
+//
 func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
@@ -463,6 +478,11 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 }
 
 // NewAttrBackgroundAlpha: create a new background alpha attribute.
+//
+// The function takes the following parameters:
+//
+//    - alpha value, between 1 and 65536.
+//
 func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _cret *C.PangoAttribute // in
@@ -486,6 +506,13 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 }
 
 // NewAttrBackground: create a new background color attribute.
+//
+// The function takes the following parameters:
+//
+//    - red value (ranging from 0 to 65535).
+//    - green value.
+//    - blue value.
+//
 func NewAttrBackground(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -519,6 +546,12 @@ func NewAttrBackground(red, green, blue uint16) *Attribute {
 // If fallback is disabled, characters will only be used from the closest
 // matching font on the system. No fallback will be done to other fonts on the
 // system that might contain the characters in the text.
+//
+// The function takes the following parameters:
+//
+//    - enableFallback: TRUE if we should fall back on other fonts for
+//    characters the active font is missing.
+//
 func NewAttrFallback(enableFallback bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
@@ -544,6 +577,11 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 }
 
 // NewAttrFamily: create a new font family attribute.
+//
+// The function takes the following parameters:
+//
+//    - family or comma separated list of families.
+//
 func NewAttrFamily(family string) *Attribute {
 	var _arg1 *C.char           // out
 	var _cret *C.PangoAttribute // in
@@ -568,6 +606,11 @@ func NewAttrFamily(family string) *Attribute {
 }
 
 // NewAttrForegroundAlpha: create a new foreground alpha attribute.
+//
+// The function takes the following parameters:
+//
+//    - alpha value, between 1 and 65536.
+//
 func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _cret *C.PangoAttribute // in
@@ -591,6 +634,13 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 }
 
 // NewAttrForeground: create a new foreground color attribute.
+//
+// The function takes the following parameters:
+//
+//    - red value (ranging from 0 to 65535).
+//    - green value.
+//    - blue value.
+//
 func NewAttrForeground(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -620,6 +670,11 @@ func NewAttrForeground(red, green, blue uint16) *Attribute {
 }
 
 // NewAttrGravityHint: create a new gravity hint attribute.
+//
+// The function takes the following parameters:
+//
+//    - hint: gravity hint value.
+//
 func NewAttrGravityHint(hint GravityHint) *Attribute {
 	var _arg1 C.PangoGravityHint // out
 	var _cret *C.PangoAttribute  // in
@@ -643,6 +698,11 @@ func NewAttrGravityHint(hint GravityHint) *Attribute {
 }
 
 // NewAttrGravity: create a new gravity attribute.
+//
+// The function takes the following parameters:
+//
+//    - gravity value; should not be PANGO_GRAVITY_AUTO.
+//
 func NewAttrGravity(gravity Gravity) *Attribute {
 	var _arg1 C.PangoGravity    // out
 	var _cret *C.PangoAttribute // in
@@ -669,6 +729,11 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 //
 // Pango will insert hyphens when breaking lines in the middle of a word. This
 // attribute can be used to suppress the hyphen.
+//
+// The function takes the following parameters:
+//
+//    - insertHyphens: TRUE if hyphens should be inserted.
+//
 func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
@@ -694,6 +759,12 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 }
 
 // NewAttrLetterSpacing: create a new letter-spacing attribute.
+//
+// The function takes the following parameters:
+//
+//    - letterSpacing: amount of extra space to add between graphemes of the
+//    text, in Pango units.
+//
 func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
@@ -720,6 +791,13 @@ func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 //
 // This attribute modifies the color of overlines. If not set, overlines will
 // use the foreground color.
+//
+// The function takes the following parameters:
+//
+//    - red value (ranging from 0 to 65535).
+//    - green value.
+//    - blue value.
+//
 func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -749,6 +827,11 @@ func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 }
 
 // NewAttrOverline: create a new overline-style attribute.
+//
+// The function takes the following parameters:
+//
+//    - overline style.
+//
 func NewAttrOverline(overline Overline) *Attribute {
 	var _arg1 C.PangoOverline   // out
 	var _cret *C.PangoAttribute // in
@@ -772,6 +855,12 @@ func NewAttrOverline(overline Overline) *Attribute {
 }
 
 // NewAttrRise: create a new baseline displacement attribute.
+//
+// The function takes the following parameters:
+//
+//    - rise: amount that the text should be displaced vertically, in Pango
+//    units. Positive values displace the text upwards.
+//
 func NewAttrRise(rise int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
@@ -798,6 +887,11 @@ func NewAttrRise(rise int) *Attribute {
 //
 // The base font for the affected text will have its size multiplied by
 // scale_factor.
+//
+// The function takes the following parameters:
+//
+//    - scaleFactor: factor to scale the font.
+//
 func NewAttrScale(scaleFactor float64) *Attribute {
 	var _arg1 C.double          // out
 	var _cret *C.PangoAttribute // in
@@ -822,6 +916,11 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 
 // NewAttrShow: create a new attribute that influences how invisible characters
 // are rendered.
+//
+// The function takes the following parameters:
+//
+//    - flags: PangoShowFlags to apply.
+//
 func NewAttrShow(flags ShowFlags) *Attribute {
 	var _arg1 C.PangoShowFlags  // out
 	var _cret *C.PangoAttribute // in
@@ -845,6 +944,11 @@ func NewAttrShow(flags ShowFlags) *Attribute {
 }
 
 // NewAttrStretch: create a new font stretch attribute.
+//
+// The function takes the following parameters:
+//
+//    - stretch: stretch.
+//
 func NewAttrStretch(stretch Stretch) *Attribute {
 	var _arg1 C.PangoStretch    // out
 	var _cret *C.PangoAttribute // in
@@ -871,6 +975,13 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 //
 // This attribute modifies the color of strikethrough lines. If not set,
 // strikethrough lines will use the foreground color.
+//
+// The function takes the following parameters:
+//
+//    - red value (ranging from 0 to 65535).
+//    - green value.
+//    - blue value.
+//
 func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -900,6 +1011,11 @@ func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 }
 
 // NewAttrStrikethrough: create a new strike-through attribute.
+//
+// The function takes the following parameters:
+//
+//    - strikethrough: TRUE if the text should be struck-through.
+//
 func NewAttrStrikethrough(strikethrough bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
@@ -925,6 +1041,11 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 }
 
 // NewAttrStyle: create a new font slant style attribute.
+//
+// The function takes the following parameters:
+//
+//    - style: slant style.
+//
 func NewAttrStyle(style Style) *Attribute {
 	var _arg1 C.PangoStyle      // out
 	var _cret *C.PangoAttribute // in
@@ -951,6 +1072,13 @@ func NewAttrStyle(style Style) *Attribute {
 //
 // This attribute modifies the color of underlines. If not set, underlines will
 // use the foreground color.
+//
+// The function takes the following parameters:
+//
+//    - red value (ranging from 0 to 65535).
+//    - green value.
+//    - blue value.
+//
 func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -980,6 +1108,11 @@ func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 }
 
 // NewAttrUnderline: create a new underline-style attribute.
+//
+// The function takes the following parameters:
+//
+//    - underline style.
+//
 func NewAttrUnderline(underline Underline) *Attribute {
 	var _arg1 C.PangoUnderline  // out
 	var _cret *C.PangoAttribute // in
@@ -1003,6 +1136,11 @@ func NewAttrUnderline(underline Underline) *Attribute {
 }
 
 // NewAttrVariant: create a new font variant attribute (normal or small caps).
+//
+// The function takes the following parameters:
+//
+//    - variant: variant.
+//
 func NewAttrVariant(variant Variant) *Attribute {
 	var _arg1 C.PangoVariant    // out
 	var _cret *C.PangoAttribute // in
@@ -1026,6 +1164,11 @@ func NewAttrVariant(variant Variant) *Attribute {
 }
 
 // NewAttrWeight: create a new font weight attribute.
+//
+// The function takes the following parameters:
+//
+//    - weight: weight.
+//
 func NewAttrWeight(weight Weight) *Attribute {
 	var _arg1 C.PangoWeight     // out
 	var _cret *C.PangoAttribute // in
@@ -1054,6 +1197,11 @@ func NewAttrWeight(weight Weight) *Attribute {
 // g_markup_parse_context_parse(), use this function to get the list of
 // attributes and text out of the markup. This function will not free context,
 // use g_markup_parse_context_free() to do so.
+//
+// The function takes the following parameters:
+//
+//    - context: valid parse context that was returned from markup_parser_new.
+//
 func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
 	var _arg1 *C.GMarkupParseContext // out
 	var _arg2 *C.PangoAttrList       // in
@@ -1114,6 +1262,11 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 // This function is designed for applications that read Pango markup from
 // streams. To simply parse a string containing Pango markup, the parse_markup
 // API is recommended instead.
+//
+// The function takes the following parameters:
+//
+//    - accelMarker: character that precedes an accelerator, or 0 for none.
+//
 func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	var _arg1 C.gunichar             // out
 	var _cret *C.GMarkupParseContext // in
@@ -1154,6 +1307,13 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 //
 // If any error happens, none of the output arguments are touched except for
 // error.
+//
+// The function takes the following parameters:
+//
+//    - markupText: markup to parse (see the Pango Markup docs).
+//    - length of markup_text, or -1 if nul-terminated.
+//    - accelMarker: character that precedes an accelerator, or 0 for none.
+//
 func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
@@ -1284,6 +1444,11 @@ func (a *AttrFontDesc) Desc() *FontDescription {
 //
 // This attribute allows setting family, style, weight, variant, stretch, and
 // size simultaneously.
+//
+// The function takes the following parameters:
+//
+//    - desc: font description.
+//
 func NewAttrFontDesc(desc *FontDescription) *Attribute {
 	var _arg1 *C.PangoFontDescription // out
 	var _cret *C.PangoAttribute       // in
@@ -1334,6 +1499,11 @@ func (a *AttrFontFeatures) Features() string {
 }
 
 // NewAttrFontFeatures: create a new font features tag attribute.
+//
+// The function takes the following parameters:
+//
+//    - features: string with OpenType font features, in CSS syntax.
+//
 func NewAttrFontFeatures(features string) *Attribute {
 	var _arg1 *C.gchar          // out
 	var _cret *C.PangoAttribute // in
@@ -1562,6 +1732,11 @@ func (a *AttrLanguage) Value() *Language {
 }
 
 // NewAttrLanguage: create a new language tag attribute.
+//
+// The function takes the following parameters:
+//
+//    - language tag.
+//
 func NewAttrLanguage(language *Language) *Attribute {
 	var _arg1 *C.PangoLanguage  // out
 	var _cret *C.PangoAttribute // in
@@ -1896,6 +2071,12 @@ type attrShape struct {
 // A shape is used to impose a particular ink and logical rectangle on the
 // result of shaping a particular glyph. This might be used, for instance, for
 // embedding a picture or a widget inside a PangoLayout.
+//
+// The function takes the following parameters:
+//
+//    - inkRect: ink rectangle to assign to each character.
+//    - logicalRect: logical rectangle to assign to each character.
+//
 func NewAttrShape(inkRect, logicalRect *Rectangle) *Attribute {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
@@ -1950,6 +2131,11 @@ func (a *AttrSize) Size() int {
 }
 
 // NewAttrSize: create a new font-size attribute in fractional points.
+//
+// The function takes the following parameters:
+//
+//    - size: font size, in PANGO_SCALEths of a point.
+//
 func NewAttrSize(size int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
@@ -1973,6 +2159,11 @@ func NewAttrSize(size int) *Attribute {
 }
 
 // NewAttrSizeAbsolute: create a new font-size attribute in device units.
+//
+// The function takes the following parameters:
+//
+//    - size: font size, in PANGO_SCALEths of a device unit.
+//
 func NewAttrSizeAbsolute(size int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in

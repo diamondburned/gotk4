@@ -61,6 +61,12 @@ func _gotk4_glib2_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cre
 //
 // This equality function is also appropriate for keys that are integers stored
 // in pointers, such as GINT_TO_POINTER (n).
+//
+// The function takes the following parameters:
+//
+//    - v1: key.
+//    - v2: key to compare with v1.
+//
 func DirectEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -88,6 +94,11 @@ func DirectEqual(v1, v2 cgo.Handle) bool {
 //
 // This hash function is also appropriate for keys that are integers stored in
 // pointers, such as GINT_TO_POINTER (n).
+//
+// The function takes the following parameters:
+//
+//    - v: #gpointer key.
+//
 func DirectHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -108,6 +119,12 @@ func DirectHash(v cgo.Handle) uint {
 // TRUE if they are equal. It can be passed to g_hash_table_new() as the
 // key_equal_func parameter, when using non-NULL pointers to doubles as keys in
 // a Table.
+//
+// The function takes the following parameters:
+//
+//    - v1: pointer to a #gdouble key.
+//    - v2: pointer to a #gdouble key to compare with v1.
+//
 func DoubleEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -133,6 +150,11 @@ func DoubleEqual(v1, v2 cgo.Handle) bool {
 // to g_hash_table_new() as the hash_func parameter, It can be passed to
 // g_hash_table_new() as the hash_func parameter, when using non-NULL pointers
 // to doubles as keys in a Table.
+//
+// The function takes the following parameters:
+//
+//    - v: pointer to a #gdouble key.
+//
 func DoubleHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -153,6 +175,12 @@ func DoubleHash(v cgo.Handle) uint {
 // if they are equal. It can be passed to g_hash_table_new() as the
 // key_equal_func parameter, when using non-NULL pointers to 64-bit integers as
 // keys in a Table.
+//
+// The function takes the following parameters:
+//
+//    - v1: pointer to a #gint64 key.
+//    - v2: pointer to a #gint64 key to compare with v1.
+//
 func Int64Equal(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -178,6 +206,11 @@ func Int64Equal(v1, v2 cgo.Handle) bool {
 //
 // It can be passed to g_hash_table_new() as the hash_func parameter, when using
 // non-NULL pointers to 64-bit integer values as keys in a Table.
+//
+// The function takes the following parameters:
+//
+//    - v: pointer to a #gint64 key.
+//
 func Int64Hash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -201,6 +234,12 @@ func Int64Hash(v cgo.Handle) uint {
 // Note that this function acts on pointers to #gint, not on #gint directly: if
 // your hash table's keys are of the form GINT_TO_POINTER (n), use
 // g_direct_equal() instead.
+//
+// The function takes the following parameters:
+//
+//    - v1: pointer to a #gint key.
+//    - v2: pointer to a #gint key to compare with v1.
+//
 func IntEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -229,6 +268,11 @@ func IntEqual(v1, v2 cgo.Handle) bool {
 // Note that this function acts on pointers to #gint, not on #gint directly: if
 // your hash table's keys are of the form GINT_TO_POINTER (n), use
 // g_direct_hash() instead.
+//
+// The function takes the following parameters:
+//
+//    - v: pointer to a #gint key.
+//
 func IntHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -252,6 +296,12 @@ func IntHash(v cgo.Handle) uint {
 // This function is typically used for hash table comparisons, but can be used
 // for general purpose comparisons of non-NULL strings. For a NULL-safe string
 // comparison function, see g_strcmp0().
+//
+// The function takes the following parameters:
+//
+//    - v1: key.
+//    - v2: key to compare with v1.
+//
 func StrEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -285,6 +335,11 @@ func StrEqual(v1, v2 cgo.Handle) bool {
 //
 // Note that this function may not be a perfect fit for all use cases. For
 // example, it produces some hash collisions with strings as short as 2.
+//
+// The function takes the following parameters:
+//
+//    - v: string key.
+//
 func StrHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -334,6 +389,12 @@ func marshalHashTable(p uintptr) (interface{}, error) {
 //
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//    - key to insert.
+//
 func HashTableAdd(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 	var _arg1 *C.GHashTable // out
 	var _arg2 C.gpointer    // out
@@ -364,6 +425,12 @@ func HashTableAdd(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 }
 
 // HashTableContains checks if key is in hash_table.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//    - key to check.
+//
 func HashTableContains(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -398,6 +465,11 @@ func HashTableContains(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool
 // should either free them first or create the Table with destroy notifiers
 // using g_hash_table_new_full(). In the latter case the destroy functions you
 // supplied will be called on all keys and values during the destruction phase.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//
 func HashTableDestroy(hashTable map[cgo.Handle]cgo.Handle) {
 	var _arg1 *C.GHashTable // out
 
@@ -424,6 +496,13 @@ func HashTableDestroy(hashTable map[cgo.Handle]cgo.Handle) {
 //
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//    - key to insert.
+//    - value to associate with the key.
+//
 func HashTableInsert(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle) bool {
 	var _arg1 *C.GHashTable // out
 	var _arg2 C.gpointer    // out
@@ -460,6 +539,12 @@ func HashTableInsert(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle)
 // distinguish between a key that is not present and one which is present and
 // has the value NULL. If you need this distinction, use
 // g_hash_table_lookup_extended().
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//    - key to look up.
+//
 func HashTableLookup(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) cgo.Handle {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -494,6 +579,12 @@ func HashTableLookup(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) cgo.Ha
 //
 // You can actually pass NULL for lookup_key to test whether the NULL key
 // exists, provided the hash and equal functions of hash_table are NULL-safe.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//    - lookupKey: key to look up.
+//
 func HashTableLookupExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.Handle) (origKey cgo.Handle, value cgo.Handle, ok bool) {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -534,6 +625,12 @@ func HashTableLookupExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.
 // If the Table was created using g_hash_table_new_full(), the key and value are
 // freed using the supplied destroy functions, otherwise you have to make sure
 // that any dynamically allocated values are freed yourself.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//    - key to remove.
+//
 func HashTableRemove(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -568,6 +665,11 @@ func HashTableRemove(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 // If the Table was created using g_hash_table_new_full(), the keys and values
 // are freed using the supplied destroy functions, otherwise you have to make
 // sure that any dynamically allocated values are freed yourself.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//
 func HashTableRemoveAll(hashTable map[cgo.Handle]cgo.Handle) {
 	var _arg1 *C.GHashTable // out
 
@@ -594,6 +696,13 @@ func HashTableRemoveAll(hashTable map[cgo.Handle]cgo.Handle) {
 //
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//    - key to insert.
+//    - value to associate with the key.
+//
 func HashTableReplace(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle) bool {
 	var _arg1 *C.GHashTable // out
 	var _arg2 C.gpointer    // out
@@ -627,6 +736,11 @@ func HashTableReplace(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle
 }
 
 // HashTableSize returns the number of elements contained in the Table.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//
 func HashTableSize(hashTable map[cgo.Handle]cgo.Handle) uint {
 	var _arg1 *C.GHashTable // out
 	var _cret C.guint       // in
@@ -653,6 +767,12 @@ func HashTableSize(hashTable map[cgo.Handle]cgo.Handle) uint {
 
 // HashTableSteal removes a key and its associated value from a Table without
 // calling the key and value destroy functions.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//    - key to remove.
+//
 func HashTableSteal(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -684,6 +804,11 @@ func HashTableSteal(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 
 // HashTableStealAll removes all keys and their associated values from a Table
 // without calling the key and value destroy functions.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//
 func HashTableStealAll(hashTable map[cgo.Handle]cgo.Handle) {
 	var _arg1 *C.GHashTable // out
 
@@ -711,6 +836,12 @@ func HashTableStealAll(hashTable map[cgo.Handle]cgo.Handle) {
 //
 // You can pass NULL for lookup_key, provided the hash and equal functions of
 // hash_table are NULL-safe.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//    - lookupKey: key to look up.
+//
 func HashTableStealExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.Handle) (stolenKey cgo.Handle, stolenValue cgo.Handle, ok bool) {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out

@@ -70,6 +70,12 @@ func (*TLSServerConnection) privateTLSServerConnection() {}
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the base_io_stream after this function
 // has returned.
+//
+// The function takes the following parameters:
+//
+//    - baseIoStream to wrap.
+//    - certificate: default server certificate, or NULL.
+//
 func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (TLSServerConnectioner, error) {
 	var _arg1 *C.GIOStream       // out
 	var _arg2 *C.GTlsCertificate // out

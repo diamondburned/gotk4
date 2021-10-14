@@ -106,6 +106,12 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 // DBusAnnotationInfoLookup looks up the value of an annotation.
 //
 // The cost of this function is O(n) in number of annotations.
+//
+// The function takes the following parameters:
+//
+//    - annotations: NULL-terminated array of annotations or NULL.
+//    - name of the annotation to look up.
+//
 func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
 	var _arg1 **C.GDBusAnnotationInfo // out
 	var _arg2 *C.gchar                // out

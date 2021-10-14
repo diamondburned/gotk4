@@ -106,6 +106,12 @@ func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
 }
 
 // NewFileChooserButton creates a new file-selecting button widget.
+//
+// The function takes the following parameters:
+//
+//    - title of the browse dialog.
+//    - action: open mode for the widget.
+//
 func NewFileChooserButton(title string, action FileChooserAction) *FileChooserButton {
 	var _arg1 *C.gchar               // out
 	var _arg2 C.GtkFileChooserAction // out
@@ -135,6 +141,11 @@ func NewFileChooserButton(title string, action FileChooserAction) *FileChooserBu
 // Also note that the dialog needs to have its confirmative button added with
 // response GTK_RESPONSE_ACCEPT or GTK_RESPONSE_OK in order for the button to
 // take over the file selected in the dialog.
+//
+// The function takes the following parameters:
+//
+//    - dialog: widget to use as dialog.
+//
 func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in

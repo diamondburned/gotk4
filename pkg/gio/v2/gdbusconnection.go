@@ -417,6 +417,13 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gcha
 //
 // This is an asynchronous failable function. See g_bus_get_sync() for the
 // synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busType: Type.
+//    - callback to call when the request is satisfied.
+//
 func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.GBusType            // out
@@ -449,6 +456,11 @@ func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to TRUE.
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to g_bus_get().
+//
 func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
@@ -485,6 +497,12 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to TRUE.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busType: Type.
+//
 func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 	var _arg2 *C.GCancellable    // out
 	var _arg1 C.GBusType         // out
@@ -530,6 +548,16 @@ func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 //
 // This is an asynchronous failable constructor. See
 // g_dbus_connection_new_sync() for the synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - stream: OStream.
+//    - guid: GUID to use if authenticating as a server or NULL.
+//    - flags describing how to make the connection.
+//    - observer or NULL.
+//    - callback to call when the request is satisfied.
+//
 func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
 	var _arg5 *C.GCancellable        // out
 	var _arg1 *C.GIOStream           // out
@@ -586,6 +614,15 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 //
 // This is an asynchronous failable constructor. See
 // g_dbus_connection_new_for_address_sync() for the synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - address d-Bus address.
+//    - flags describing how to make the connection.
+//    - observer or NULL.
+//    - callback to call when the request is satisfied.
+//
 func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
 	var _arg4 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out

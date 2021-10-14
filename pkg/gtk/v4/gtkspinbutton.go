@@ -293,6 +293,14 @@ func marshalSpinButtonner(p uintptr) (interface{}, error) {
 }
 
 // NewSpinButton creates a new GtkSpinButton.
+//
+// The function takes the following parameters:
+//
+//    - adjustment: GtkAdjustment that this spin button should use, or NULL.
+//    - climbRate specifies by how much the rate of change in the value will
+//    accelerate if you continue to hold down an up/down button or arrow key.
+//    - digits: number of decimal places to display.
+//
 func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *SpinButton {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.double         // out
@@ -327,6 +335,13 @@ func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *Spin
 // Note that the way in which the precision is derived works best if step is a
 // power of ten. If the resulting precision is not suitable for your needs, use
 // gtk.SpinButton.SetDigits() to correct it.
+//
+// The function takes the following parameters:
+//
+//    - min: minimum allowable value.
+//    - max: maximum allowable value.
+//    - step: increment added or subtracted by spinning the widget.
+//
 func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out

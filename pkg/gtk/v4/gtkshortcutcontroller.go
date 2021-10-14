@@ -112,6 +112,11 @@ func NewShortcutController() *ShortcutController {
 // A controller created by this function does not let you add or remove
 // individual shortcuts using the shortcut controller api, but you can change
 // the contents of the model.
+//
+// The function takes the following parameters:
+//
+//    - model: GListModel containing shortcuts.
+//
 func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkEventController // in

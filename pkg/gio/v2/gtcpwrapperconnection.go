@@ -58,6 +58,12 @@ func marshalTCPWrapperConnectioner(p uintptr) (interface{}, error) {
 
 // NewTCPWrapperConnection wraps base_io_stream and socket together as a
 // Connection.
+//
+// The function takes the following parameters:
+//
+//    - baseIoStream to wrap.
+//    - socket associated with base_io_stream.
+//
 func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrapperConnection {
 	var _arg1 *C.GIOStream         // out
 	var _arg2 *C.GSocket           // out

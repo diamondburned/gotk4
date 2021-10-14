@@ -89,6 +89,11 @@ func marshalStringFilterer(p uintptr) (interface{}, error) {
 //
 // You will want to set up the filter by providing a string to search for and by
 // providing a property to look up on the item.
+//
+// The function takes the following parameters:
+//
+//    - expression to evaluate or NULL for none.
+//
 func NewStringFilter(expression Expressioner) *StringFilter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringFilter // in

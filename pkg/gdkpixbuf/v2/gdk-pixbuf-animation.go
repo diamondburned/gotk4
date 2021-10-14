@@ -126,6 +126,11 @@ func marshalPixbufAnimationer(p uintptr) (interface{}, error) {
 // with a single frame will be created.
 //
 // Possible errors are in the GDK_PIXBUF_ERROR and G_FILE_ERROR domains.
+//
+// The function takes the following parameters:
+//
+//    - filename: name of file to load, in the GLib file name encoding.
+//
 func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 	var _arg1 *C.char               // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -155,6 +160,11 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 //
 // The file format is detected automatically. If NULL is returned, then error
 // will be set.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: path of the resource file.
+//
 func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, error) {
 	var _arg1 *C.char               // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -191,6 +201,12 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 // Other possible errors are in the GDK_PIXBUF_ERROR and G_IO_ERROR domains.
 //
 // The stream is not closed.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object.
+//    - stream: GInputStream to load the pixbuf from.
+//
 func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer) (*PixbufAnimation, error) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
@@ -224,6 +240,11 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 // NewPixbufAnimationFromStreamFinish finishes an asynchronous pixbuf animation
 // creation operation started with
 // gdkpixbuf.PixbufAnimation().NewFromStreamAsync.
+//
+// The function takes the following parameters:
+//
+//    - asyncResult: Result.
+//
 func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufAnimation, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -395,6 +416,13 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_animation_new_from_stream_finish() to get the
 // result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object.
+//    - stream from which to load the animation.
+//    - callback: GAsyncReadyCallback to call when the pixbuf is loaded.
+//
 func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out

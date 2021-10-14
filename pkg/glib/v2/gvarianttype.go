@@ -783,6 +783,11 @@ func (typ *VariantType) Value() *VariantType {
 	return _variantType
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func VariantTypeChecked_(arg0 string) *VariantType {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GVariantType // in
@@ -800,6 +805,11 @@ func VariantTypeChecked_(arg0 string) *VariantType {
 	return _variantType
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func VariantTypeStringGetDepth_(typeString string) uint {
 	var _arg1 *C.gchar // out
 	var _cret C.gsize  // in
@@ -820,6 +830,11 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 // VariantTypeStringIsValid checks if type_string is a valid GVariant type
 // string. This call is equivalent to calling g_variant_type_string_scan() and
 // confirming that the following character is a nul terminator.
+//
+// The function takes the following parameters:
+//
+//    - typeString: pointer to any string.
+//
 func VariantTypeStringIsValid(typeString string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -851,6 +866,12 @@ func VariantTypeStringIsValid(typeString string) bool {
 //
 // For the simple case of checking if a string is a valid type string, see
 // g_variant_type_string_is_valid().
+//
+// The function takes the following parameters:
+//
+//    - str: pointer to any string.
+//    - limit: end of string, or NULL.
+//
 func VariantTypeStringScan(str, limit string) (string, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out

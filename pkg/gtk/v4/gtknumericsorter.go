@@ -46,6 +46,11 @@ func marshalNumericSorterer(p uintptr) (interface{}, error) {
 //
 // Smaller numbers will be sorted first. You can call
 // gtk.NumericSorter.SetSortOrder() to change this.
+//
+// The function takes the following parameters:
+//
+//    - expression to evaluate.
+//
 func NewNumericSorter(expression Expressioner) *NumericSorter {
 	var _arg1 *C.GtkExpression    // out
 	var _cret *C.GtkNumericSorter // in

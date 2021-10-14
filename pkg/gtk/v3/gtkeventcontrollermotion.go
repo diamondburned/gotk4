@@ -47,6 +47,11 @@ func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 
 // NewEventControllerMotion creates a new event controller that will handle
 // motion events for the given widget.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in

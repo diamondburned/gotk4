@@ -228,6 +228,11 @@ func marshalWindower(p uintptr) (interface{}, error) {
 // internally, gtk_window_new() does not return a reference to the caller.
 //
 // To delete a Window, call gtk_widget_destroy().
+//
+// The function takes the following parameters:
+//
+//    - typ: type of window.
+//
 func NewWindow(typ WindowType) *Window {
 	var _arg1 C.GtkWindowType // out
 	var _cret *C.GtkWidget    // in
@@ -3189,6 +3194,11 @@ func WindowListToplevels() []Widgetter {
 // In that example, you would disable startup notification temporarily, show
 // your splash screen, then re-enable it so that showing the main window would
 // automatically result in notification.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to automatically do startup notification.
+//
 func WindowSetAutoStartupNotification(setting bool) {
 	var _arg1 C.gboolean // out
 
@@ -3202,6 +3212,11 @@ func WindowSetAutoStartupNotification(setting bool) {
 
 // WindowSetDefaultIcon sets an icon to be used as fallback for windows that
 // haven't had gtk_window_set_icon() called on them from a pixbuf.
+//
+// The function takes the following parameters:
+//
+//    - icon: icon.
+//
 func WindowSetDefaultIcon(icon *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GdkPixbuf // out
 
@@ -3214,6 +3229,11 @@ func WindowSetDefaultIcon(icon *gdkpixbuf.Pixbuf) {
 // WindowSetDefaultIconFromFile sets an icon to be used as fallback for windows
 // that haven't had gtk_window_set_icon_list() called on them from a file on
 // disk. Warns on failure if err is NULL.
+//
+// The function takes the following parameters:
+//
+//    - filename: location of icon file.
+//
 func WindowSetDefaultIconFromFile(filename string) error {
 	var _arg1 *C.gchar  // out
 	var _cerr *C.GError // in
@@ -3239,6 +3259,11 @@ func WindowSetDefaultIconFromFile(filename string) error {
 // all windows in your app at once.
 //
 // See gtk_window_set_icon_list() for more details.
+//
+// The function takes the following parameters:
+//
+//    - list of Pixbuf.
+//
 func WindowSetDefaultIconList(list []gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GList // out
 
@@ -3256,6 +3281,11 @@ func WindowSetDefaultIconList(list []gdkpixbuf.Pixbuf) {
 // WindowSetDefaultIconName sets an icon to be used as fallback for windows that
 // haven't had gtk_window_set_icon_list() called on them from a named themed
 // icon, see gtk_window_set_icon_name().
+//
+// The function takes the following parameters:
+//
+//    - name of the themed icon.
+//
 func WindowSetDefaultIconName(name string) {
 	var _arg1 *C.gchar // out
 
@@ -3269,6 +3299,11 @@ func WindowSetDefaultIconName(name string) {
 // WindowSetInteractiveDebugging opens or closes the [interactive
 // debugger][interactive-debugging], which offers access to the widget hierarchy
 // of the application and to useful debugging tools.
+//
+// The function takes the following parameters:
+//
+//    - enable: TRUE to enable interactive debugging.
+//
 func WindowSetInteractiveDebugging(enable bool) {
 	var _arg1 C.gboolean // out
 

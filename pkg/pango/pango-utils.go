@@ -20,6 +20,11 @@ import "C"
 // This includes all Unicode characters with "ZERO WIDTH" in their name, as well
 // as *bidi* formatting characters, and a few other ones. This is totally
 // different from g_unichar_iszerowidth() and is at best misnamed.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
 func IsZeroWidth(ch uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -48,6 +53,13 @@ func IsZeroWidth(ch uint32) bool {
 // g_free().
 //
 // Deprecated: since version 1.38.
+//
+// The function takes the following parameters:
+//
+//    - typ: enum type to parse, eg. PANGO_TYPE_ELLIPSIZE_MODE.
+//    - str: string to parse. May be NULL.
+//    - warn: if TRUE, issue a g_warning() on bad input.
+//
 func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg1 C.GType    // out
 	var _arg2 *C.char    // out
@@ -92,6 +104,12 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 // "semi_condensed", "normal", "semi_expanded", "expanded", "extra_expanded" and
 // "ultra_expanded". Case variations are ignored and the '_' characters may be
 // omitted.
+//
+// The function takes the following parameters:
+//
+//    - str: string to parse.
+//    - warn: if TRUE, issue a g_warning() on bad input.
+//
 func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _arg1 *C.char        // out
 	var _arg2 C.PangoStretch // in
@@ -123,6 +141,12 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 //
 // The allowed values are "normal", "italic" and "oblique", case variations
 // being ignored.
+//
+// The function takes the following parameters:
+//
+//    - str: string to parse.
+//    - warn: if TRUE, issue a g_warning() on bad input.
+//
 func ParseStyle(str string, warn bool) (Style, bool) {
 	var _arg1 *C.char      // out
 	var _arg2 C.PangoStyle // in
@@ -154,6 +178,12 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 //
 // The allowed values are "normal" and "smallcaps" or "small_caps", case
 // variations being ignored.
+//
+// The function takes the following parameters:
+//
+//    - str: string to parse.
+//    - warn: if TRUE, issue a g_warning() on bad input.
+//
 func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _arg1 *C.char        // out
 	var _arg2 C.PangoVariant // in
@@ -185,6 +215,12 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 //
 // The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
 // "ultraleight" and integers. Case variations are ignored.
+//
+// The function takes the following parameters:
+//
+//    - str: string to parse.
+//    - warn: if TRUE, issue a g_warning() on bad input.
+//
 func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _arg1 *C.char       // out
 	var _arg2 C.PangoWeight // in
@@ -216,6 +252,11 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 // stripping white space and substituting ~/ with $HOME/.
 //
 // Deprecated: since version 1.38.
+//
+// The function takes the following parameters:
+//
+//    - str: G_SEARCHPATH_SEPARATOR separated list of filenames.
+//
 func SplitFileList(str string) []string {
 	var _arg1 *C.char  // out
 	var _cret **C.char // in
@@ -250,6 +291,11 @@ func SplitFileList(str string) []string {
 // TrimString trims leading and trailing whitespace from a string.
 //
 // Deprecated: since version 1.38.
+//
+// The function takes the following parameters:
+//
+//    - str: string.
+//
 func TrimString(str string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -301,6 +347,13 @@ func Version() int {
 // required_major.required_minor.required_micro (same major version.)
 //
 // For compile-time version checking use PANGO_VERSION_CHECK().
+//
+// The function takes the following parameters:
+//
+//    - requiredMajor: required major version.
+//    - requiredMinor: required minor version.
+//    - requiredMicro: required major version.
+//
 func VersionCheck(requiredMajor, requiredMinor, requiredMicro int) string {
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out

@@ -42,6 +42,11 @@ func marshalBoolFilterer(p uintptr) (interface{}, error) {
 }
 
 // NewBoolFilter creates a new bool filter.
+//
+// The function takes the following parameters:
+//
+//    - expression to evaluate or NULL for none.
+//
 func NewBoolFilter(expression Expressioner) *BoolFilter {
 	var _arg1 *C.GtkExpression // out
 	var _cret *C.GtkBoolFilter // in

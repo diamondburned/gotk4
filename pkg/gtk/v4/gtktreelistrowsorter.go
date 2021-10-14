@@ -55,6 +55,11 @@ func marshalTreeListRowSorterer(p uintptr) (interface{}, error) {
 //
 // Note that this sorter relies on gtk.TreeListModel:passthrough being FALSE as
 // it can only sort gtk.TreeListRows.
+//
+// The function takes the following parameters:
+//
+//    - sorter: GtkSorter, or NULL.
+//
 func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 	var _arg1 *C.GtkSorter            // out
 	var _cret *C.GtkTreeListRowSorter // in

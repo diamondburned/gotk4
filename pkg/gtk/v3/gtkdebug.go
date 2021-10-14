@@ -30,6 +30,11 @@ func GetDebugFlags() uint {
 }
 
 // SetDebugFlags sets the GTK+ debug flags.
+//
+// The function takes the following parameters:
+//
+
+//
 func SetDebugFlags(flags uint) {
 	var _arg1 C.guint // out
 

@@ -386,6 +386,11 @@ func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer))
 // instead create shadow mounts with the URI of the mount they intend to adopt.
 // See the proxy volume monitor in gvfs for an example of this. Also see
 // g_mount_is_shadowed(), g_mount_shadow() and g_mount_unshadow() functions.
+//
+// The function takes the following parameters:
+//
+//    - mount object to find a parent for.
+//
 func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 	var _arg1 *C.GMount  // out
 	var _cret *C.GVolume // in

@@ -96,6 +96,11 @@ func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
 
 // NewAppChooserWidget creates a new GtkAppChooserWidget for applications that
 // can handle content of the given type.
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type to show applications for.
+//
 func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

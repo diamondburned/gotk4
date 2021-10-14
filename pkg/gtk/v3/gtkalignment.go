@@ -75,6 +75,20 @@ func marshalAlignmenter(p uintptr) (interface{}, error) {
 // NewAlignment creates a new Alignment.
 //
 // Deprecated: Use Widget alignment and margin properties.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment of the child widget, from 0 (left) to 1
+//    (right).
+//    - yalign: vertical alignment of the child widget, from 0 (top) to 1
+//    (bottom).
+//    - xscale: amount that the child widget expands horizontally to fill up
+//    unused space, from 0 to 1. A value of 0 indicates that the child widget
+//    should never expand. A value of 1 indicates that the child widget will
+//    expand to fill all of the space allocated for the Alignment.
+//    - yscale: amount that the child widget expands vertically to fill up
+//    unused space, from 0 to 1. The values are similar to xscale.
+//
 func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 	var _arg1 C.gfloat     // out
 	var _arg2 C.gfloat     // out

@@ -137,6 +137,13 @@ func marshalIconPaintabler(p uintptr) (interface{}, error) {
 // size and scale.
 //
 // The icon can then be rendered by using it as a GdkPaintable.
+//
+// The function takes the following parameters:
+//
+//    - file: GFile.
+//    - size: desired icon size.
+//    - scale: desired scale.
+//
 func NewIconPaintableForFile(file gio.Filer, size, scale int) *IconPaintable {
 	var _arg1 *C.GFile            // out
 	var _arg2 C.int               // out
@@ -797,6 +804,11 @@ func (self *IconTheme) ConnectChanged(f func()) externglib.SignalHandle {
 // better choice than calling gtk.IconTheme.New and setting the display
 // yourself; by using this function a single icon theme object will be shared
 // between users.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay.
+//
 func IconThemeGetForDisplay(display *gdk.Display) *IconTheme {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.GtkIconTheme // in

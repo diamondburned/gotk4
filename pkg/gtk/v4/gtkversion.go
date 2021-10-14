@@ -57,6 +57,13 @@ const MINOR_VERSION = 2
 // against an old version of GTK and calling the old version of
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK.
+//
+// The function takes the following parameters:
+//
+//    - requiredMajor: required major version.
+//    - requiredMinor: required minor version.
+//    - requiredMicro: required micro version.
+//
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out

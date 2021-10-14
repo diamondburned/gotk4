@@ -83,6 +83,11 @@ func marshalLabeller(p uintptr) (interface{}, error) {
 
 // NewLabel creates a new label with the given text inside it. You can pass NULL
 // to get an empty label widget.
+//
+// The function takes the following parameters:
+//
+//    - str: text of the label.
+//
 func NewLabel(str string) *Label {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -115,6 +120,12 @@ func NewLabel(str string) *Label {
 // ancestor of the Label will be chosen as the mnemonic widget. For instance, if
 // the label is inside a button or menu item, the button or menu item will
 // automatically become the mnemonic widget and be activated by the mnemonic.
+//
+// The function takes the following parameters:
+//
+//    - str: text of the label, with an underscore in front of the mnemonic
+//    character.
+//
 func NewLabelWithMnemonic(str string) *Label {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

@@ -94,6 +94,12 @@ func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
 }
 
 // NewRadioToolButton creates a new RadioToolButton, adding it to group.
+//
+// The function takes the following parameters:
+//
+//    - group: an existing radio button group, or NULL if you are creating a
+//    new group.
+//
 func NewRadioToolButton(group []RadioButton) *RadioToolButton {
 	var _arg1 *C.GSList      // out
 	var _cret *C.GtkToolItem // in
@@ -123,6 +129,13 @@ func NewRadioToolButton(group []RadioButton) *RadioToolButton {
 // item indicated by stock_id.
 //
 // Deprecated: Use gtk_radio_tool_button_new() instead.
+//
+// The function takes the following parameters:
+//
+//    - group: existing radio button group, or NULL if you are creating a new
+//    group.
+//    - stockId: name of a stock item.
+//
 func NewRadioToolButtonFromStock(group []RadioButton, stockId string) *RadioToolButton {
 	var _arg1 *C.GSList      // out
 	var _arg2 *C.gchar       // out
@@ -153,6 +166,11 @@ func NewRadioToolButtonFromStock(group []RadioButton, stockId string) *RadioTool
 
 // NewRadioToolButtonFromWidget creates a new RadioToolButton adding it to the
 // same group as gruup.
+//
+// The function takes the following parameters:
+//
+//    - group: existing RadioToolButton, or NULL.
+//
 func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _cret *C.GtkToolItem        // in
@@ -176,6 +194,12 @@ func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
 // label from the stock item indicated by stock_id.
 //
 // Deprecated: gtk_radio_tool_button_new_from_widget.
+//
+// The function takes the following parameters:
+//
+//    - group: existing RadioToolButton.
+//    - stockId: name of a stock item.
+//
 func NewRadioToolButtonWithStockFromWidget(group *RadioToolButton, stockId string) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _arg2 *C.gchar              // out

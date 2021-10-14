@@ -33,6 +33,11 @@ func init() {
 // get memory corruption. In the TreeDragDest drag_data_received handler, you
 // can assume that selection data of type GTK_TREE_MODEL_ROW is in from the
 // current process. The returned path must be freed with gtk_tree_path_free().
+//
+// The function takes the following parameters:
+//
+//    - selectionData: SelectionData.
+//
 func TreeGetRowDragData(selectionData *SelectionData) (TreeModeller, *TreePath, bool) {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // in
@@ -78,6 +83,13 @@ func TreeGetRowDragData(selectionData *SelectionData) (TreeModeller, *TreePath, 
 
 // TreeSetRowDragData sets selection data of target type GTK_TREE_MODEL_ROW.
 // Normally used in a drag_data_get handler.
+//
+// The function takes the following parameters:
+//
+//    - selectionData: some SelectionData.
+//    - treeModel: TreeModel.
+//    - path: row in tree_model.
+//
 func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeller, path *TreePath) bool {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // out

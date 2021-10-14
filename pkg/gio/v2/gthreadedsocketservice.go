@@ -73,6 +73,12 @@ func marshalThreadedSocketServicer(p uintptr) (interface{}, error) {
 
 // NewThreadedSocketService creates a new SocketService with no listeners.
 // Listeners must be added with one of the Listener "add" methods.
+//
+// The function takes the following parameters:
+//
+//    - maxThreads: maximal number of threads to execute concurrently handling
+//    incoming clients, -1 means no limit.
+//
 func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	var _arg1 C.int             // out
 	var _cret *C.GSocketService // in

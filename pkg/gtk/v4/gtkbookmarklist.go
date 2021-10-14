@@ -51,6 +51,12 @@ func marshalBookmarkLister(p uintptr) (interface{}, error) {
 }
 
 // NewBookmarkList creates a new GtkBookmarkList with the given attributes.
+//
+// The function takes the following parameters:
+//
+//    - filename: bookmark file to load.
+//    - attributes to query.
+//
 func NewBookmarkList(filename, attributes string) *BookmarkList {
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out

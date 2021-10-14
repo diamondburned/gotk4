@@ -195,6 +195,11 @@ func NewImage() *Image {
 // PRIORITY_DEFAULT. When using animations to indicate busyness, keep in mind
 // that the animation will only be shown if the main loop is not busy with
 // something that has a higher priority.
+//
+// The function takes the following parameters:
+//
+//    - animation: animation.
+//
 func NewImageFromAnimation(animation *gdkpixbuf.PixbufAnimation) *Image {
 	var _arg1 *C.GdkPixbufAnimation // out
 	var _cret *C.GtkWidget          // in
@@ -225,6 +230,11 @@ func NewImageFromAnimation(animation *gdkpixbuf.PixbufAnimation) *Image {
 //
 // The storage type (gtk_image_get_storage_type()) of the returned image is not
 // defined, it will be whatever is appropriate for displaying the file.
+//
+// The function takes the following parameters:
+//
+//    - filename: filename.
+//
 func NewImageFromFile(filename string) *Image {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -246,6 +256,12 @@ func NewImageFromFile(filename string) *Image {
 // theme. If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
+//
+// The function takes the following parameters:
+//
+//    - icon: icon.
+//    - size: stock icon size (IconSize).
+//
 func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
@@ -269,6 +285,12 @@ func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 // theme. If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name or NULL.
+//    - size: stock icon size (IconSize).
+//
 func NewImageFromIconName(iconName string, size int) *Image {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -303,6 +325,12 @@ func NewImageFromIconName(iconName string, size int) *Image {
 // adopting yours.
 //
 // Deprecated: Use gtk_image_new_from_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - iconSet: IconSet.
+//    - size: stock icon size (IconSize).
+//
 func NewImageFromIconSet(iconSet *IconSet, size int) *Image {
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
@@ -329,6 +357,11 @@ func NewImageFromIconSet(iconSet *IconSet, size int) *Image {
 // Note that this function just creates an Image from the pixbuf. The Image
 // created will not react to state changes. Should you want that, you should use
 // gtk_image_new_from_icon_name().
+//
+// The function takes the following parameters:
+//
+//    - pixbuf or NULL.
+//
 func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
@@ -361,6 +394,11 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 //
 // The storage type (gtk_image_get_storage_type()) of the returned image is not
 // defined, it will be whatever is appropriate for displaying the file.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path.
+//
 func NewImageFromResource(resourcePath string) *Image {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -385,6 +423,12 @@ func NewImageFromResource(resourcePath string) *Image {
 // see gtk_icon_factory_add_default() and gtk_icon_factory_add().
 //
 // Deprecated: Use gtk_image_new_from_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock icon name.
+//    - size: stock icon size (IconSize).
+//
 func NewImageFromStock(stockId string, size int) *Image {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -408,6 +452,11 @@ func NewImageFromStock(stockId string, size int) *Image {
 // NewImageFromSurface creates a new Image displaying surface. The Image does
 // not assume a reference to the surface; you still need to unref it if you own
 // references. Image will add its own reference rather than adopting yours.
+//
+// The function takes the following parameters:
+//
+//    - surface or NULL.
+//
 func NewImageFromSurface(surface *cairo.Surface) *Image {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.GtkWidget       // in

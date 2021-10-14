@@ -109,6 +109,11 @@ func marshalSizeGrouper(p uintptr) (interface{}, error) {
 }
 
 // NewSizeGroup: create a new SizeGroup.
+//
+// The function takes the following parameters:
+//
+//    - mode for the new size group.
+//
 func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
 	var _cret *C.GtkSizeGroup    // in

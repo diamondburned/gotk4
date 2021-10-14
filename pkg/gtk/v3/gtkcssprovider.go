@@ -286,6 +286,12 @@ func CSSProviderGetDefault() *CSSProvider {
 }
 
 // CSSProviderGetNamed loads a theme from the usual theme paths.
+//
+// The function takes the following parameters:
+//
+//    - name: theme name.
+//    - variant to load, for example, "dark", or NULL for the default.
+//
 func CSSProviderGetNamed(name, variant string) *CSSProvider {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out

@@ -76,6 +76,11 @@ func marshalSeparatorrer(p uintptr) (interface{}, error) {
 }
 
 // NewSeparator creates a new GtkSeparator with the given orientation.
+//
+// The function takes the following parameters:
+//
+//    - orientation separator’s orientation.
+//
 func NewSeparator(orientation Orientation) *Separator {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in

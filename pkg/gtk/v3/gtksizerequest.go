@@ -23,6 +23,16 @@ import "C"
 // The remaining space will be added to the minimum_size member of the
 // GtkRequestedSize struct. If all sizes reach their natural size then the
 // remaining space is returned.
+//
+// The function takes the following parameters:
+//
+//    - extraSpace: extra space to redistribute among children after
+//    subtracting minimum sizes and any child padding from the overall
+//    allocation.
+//    - nRequestedSizes: number of requests to fit into the allocation.
+//    - sizes: array of structs with a client pointer and a minimum/natural
+//    size in the orientation of the allocation.
+//
 func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int {
 	var _arg1 C.gint              // out
 	var _arg2 C.guint             // out

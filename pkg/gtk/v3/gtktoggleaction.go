@@ -62,6 +62,15 @@ func marshalToggleActioner(p uintptr) (interface{}, error) {
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - name: unique name for the action.
+//    - label displayed in menu items and on buttons, or NULL.
+//    - tooltip for the action, or NULL.
+//    - stockId: stock icon to display in widgets representing the action, or
+//    NULL.
+//
 func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out

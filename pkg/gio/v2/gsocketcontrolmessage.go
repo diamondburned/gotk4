@@ -185,6 +185,13 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 //
 // If there is no implementation for this kind of control message, NULL will be
 // returned.
+//
+// The function takes the following parameters:
+//
+//    - level: socket level.
+//    - typ: socket control message type for the given level.
+//    - data: pointer to the message data.
+//
 func SocketControlMessageDeserialize(level, typ int, data []byte) SocketControlMessager {
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out

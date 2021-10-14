@@ -70,6 +70,16 @@ func marshalAdjustmenter(p uintptr) (interface{}, error) {
 }
 
 // NewAdjustment creates a new Adjustment.
+//
+// The function takes the following parameters:
+//
+//    - value: initial value.
+//    - lower: minimum value.
+//    - upper: maximum value.
+//    - stepIncrement: step increment.
+//    - pageIncrement: page increment.
+//    - pageSize: page size.
+//
 func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) *Adjustment {
 	var _arg1 C.gdouble        // out
 	var _arg2 C.gdouble        // out

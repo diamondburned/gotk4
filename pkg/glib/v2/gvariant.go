@@ -2366,6 +2366,11 @@ func (value *Variant) Store(data cgo.Handle) {
 // characters separated by / characters. Each sequence must contain only the
 // characters [A-Z][a-z][0-9]_. No sequence (including the one following the
 // final / character) may be empty.
+//
+// The function takes the following parameters:
+//
+//    - str: normal C nul-terminated string.
+//
 func VariantIsObjectPath(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -2391,6 +2396,11 @@ func VariantIsObjectPath(str string) bool {
 //
 // D-Bus type signatures consist of zero or more definite Type strings in
 // sequence.
+//
+// The function takes the following parameters:
+//
+//    - str: normal C nul-terminated string.
+//
 func VariantIsSignature(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -2434,6 +2444,12 @@ func VariantIsSignature(str string) bool {
 // source_str must be exactly the same string that caused the error. If
 // source_str was not nul-terminated when you passed it to g_variant_parse()
 // then you must add nul termination before using this function.
+//
+// The function takes the following parameters:
+//
+//    - err from the ParseError domain.
+//    - sourceStr: string that was given to the parser.
+//
 func VariantParseErrorPrintContext(err error, sourceStr string) string {
 	var _arg1 *C.GError // out
 	var _arg2 *C.gchar  // out

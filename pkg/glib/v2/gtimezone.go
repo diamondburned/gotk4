@@ -168,8 +168,8 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 	return _timeZone
 }
 
-// NewTimeZoneUtc constructs a struct TimeZone.
-func NewTimeZoneUtc() *TimeZone {
+// NewTimeZoneUTC constructs a struct TimeZone.
+func NewTimeZoneUTC() *TimeZone {
 	var _cret *C.GTimeZone // in
 
 	_cret = C.g_time_zone_new_utc()

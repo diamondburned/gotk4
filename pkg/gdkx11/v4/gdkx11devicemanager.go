@@ -15,6 +15,12 @@ import (
 import "C"
 
 // X11DeviceManagerLookup returns the Device that wraps the given device ID.
+//
+// The function takes the following parameters:
+//
+//    - deviceManager: DeviceManager.
+//    - deviceId: device ID, as understood by the XInput2 protocol.
+//
 func X11DeviceManagerLookup(deviceManager *X11DeviceManagerXI2, deviceId int) *X11DeviceXI2 {
 	var _arg1 *C.GdkX11DeviceManagerXI2 // out
 	var _arg2 C.int                     // out

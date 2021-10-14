@@ -23,6 +23,12 @@ func init() {
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.
+//
+// The function takes the following parameters:
+//
+//    - window used for communication with the server. The window must have
+//    GDK_PROPERTY_CHANGE_MASK in its events mask or a hang will result.
+//
 func X11GetServerTime(window *X11Window) uint32 {
 	var _arg1 *C.GdkWindow // out
 	var _cret C.guint32    // in

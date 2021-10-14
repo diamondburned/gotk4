@@ -34,6 +34,13 @@ func init() {
 //
 // This function should only be needed in unusual circumstances, e.g. when
 // filtering XInput extension events on the root window.
+//
+// The function takes the following parameters:
+//
+//    - display: Display.
+//    - eventBase: first event type code to register.
+//    - nEvents: number of event type codes to register.
+//
 func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // out
@@ -55,6 +62,12 @@ func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 //
 // See the X Session Management Library documentation for more information on
 // session management and the Inter-Client Communication Conventions Manual.
+//
+// The function takes the following parameters:
+//
+//    - smClientId: client id assigned by the session manager when the
+//    connection was opened, or NULL to remove the property.
+//
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.gchar // out
 

@@ -58,6 +58,12 @@ func marshalCharsetConverterer(p uintptr) (interface{}, error) {
 }
 
 // NewCharsetConverter creates a new Converter.
+//
+// The function takes the following parameters:
+//
+//    - toCharset: destination charset.
+//    - fromCharset: source charset.
+//
 func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, error) {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out

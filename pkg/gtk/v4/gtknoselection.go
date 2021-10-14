@@ -51,6 +51,11 @@ func marshalNoSelectioner(p uintptr) (interface{}, error) {
 }
 
 // NewNoSelection creates a new selection to handle model.
+//
+// The function takes the following parameters:
+//
+//    - model: GListModel to manage, or NULL.
+//
 func NewNoSelection(model gio.ListModeller) *NoSelection {
 	var _arg1 *C.GListModel     // out
 	var _cret *C.GtkNoSelection // in

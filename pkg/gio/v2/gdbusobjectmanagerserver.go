@@ -78,6 +78,11 @@ func marshalDBusObjectManagerServerer(p uintptr) (interface{}, error) {
 // all of your objects before doing so to avoid InterfacesAdded
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
 // signals being emitted.
+//
+// The function takes the following parameters:
+//
+//    - objectPath: object path to export the manager object at.
+//
 func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 	var _arg1 *C.gchar                    // out
 	var _cret *C.GDBusObjectManagerServer // in

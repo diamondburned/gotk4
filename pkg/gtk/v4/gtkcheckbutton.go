@@ -147,6 +147,11 @@ func NewCheckButton() *CheckButton {
 }
 
 // NewCheckButtonWithLabel creates a new GtkCheckButton with the given text.
+//
+// The function takes the following parameters:
+//
+//    - label: text for the check button.
+//
 func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -168,6 +173,12 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 
 // NewCheckButtonWithMnemonic creates a new GtkCheckButton with the given text
 // and a mnemonic.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the button, with an underscore in front of the mnemonic
+//    character.
+//
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

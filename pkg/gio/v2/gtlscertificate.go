@@ -103,6 +103,11 @@ func marshalTLSCertificater(p uintptr) (interface{}, error) {
 //
 // If file cannot be read or parsed, the function will return NULL and set
 // error. Otherwise, this behaves like g_tls_certificate_new_from_pem().
+//
+// The function takes the following parameters:
+//
+//    - file containing a PEM-encoded certificate to import.
+//
 func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in
@@ -136,6 +141,13 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 //
 // If either file cannot be read or parsed, the function will return NULL and
 // set error. Otherwise, this behaves like g_tls_certificate_new_from_pem().
+//
+// The function takes the following parameters:
+//
+//    - certFile: file containing one or more PEM-encoded certificates to
+//    import.
+//    - keyFile: file containing a PEM-encoded private key to import.
+//
 func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -175,6 +187,12 @@ func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, erro
 // Certificate:issuer property of each certificate will be set accordingly if
 // the verification succeeds. If any certificate in the chain cannot be
 // verified, the first certificate in the file will still be returned.
+//
+// The function takes the following parameters:
+//
+//    - data: PEM-encoded certificate data.
+//    - length of data, or -1 if it's 0-terminated.
+//
 func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gssize           // out
@@ -225,6 +243,12 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 //
 // Note that the private key is not accessed until usage and may fail or require
 // a PIN later.
+//
+// The function takes the following parameters:
+//
+//    - pkcs11Uri: PKCS \#11 URI.
+//    - privateKeyPkcs11Uri: PKCS \#11 URI.
+//
 func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -364,6 +388,11 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 // PEM-encoded data in file. If file cannot be read or parsed, the function will
 // return NULL and set error. If file does not contain any PEM-encoded
 // certificates, this will return an empty list and not set error.
+//
+// The function takes the following parameters:
+//
+//    - file containing PEM-encoded certificates to import.
+//
 func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GList  // in

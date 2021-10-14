@@ -58,6 +58,11 @@ func marshalMediaControlser(p uintptr) (interface{}, error) {
 
 // NewMediaControls creates a new GtkMediaControls managing the stream passed to
 // it.
+//
+// The function takes the following parameters:
+//
+//    - stream to manage or NULL for none.
+//
 func NewMediaControls(stream MediaStreamer) *MediaControls {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in

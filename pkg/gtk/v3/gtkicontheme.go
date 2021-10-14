@@ -170,6 +170,12 @@ func marshalIconInfor(p uintptr) (interface{}, error) {
 }
 
 // NewIconInfoForPixbuf creates a IconInfo for a Pixbuf.
+//
+// The function takes the following parameters:
+//
+//    - iconTheme: IconTheme.
+//    - pixbuf to wrap in a IconInfo.
+//
 func NewIconInfoForPixbuf(iconTheme *IconTheme, pixbuf *gdkpixbuf.Pixbuf) *IconInfo {
 	var _arg1 *C.GtkIconTheme // out
 	var _arg2 *C.GdkPixbuf    // out
@@ -1917,6 +1923,14 @@ func (iconTheme *IconTheme) ConnectChanged(f func()) externglib.SignalHandle {
 //
 // Deprecated: Use gtk_icon_theme_add_resource_path() to add
 // application-specific icons to the icon theme.
+//
+// The function takes the following parameters:
+//
+//    - iconName: name of the icon to register.
+//    - size in pixels at which to register the icon (different images can be
+//    registered for the same icon name at different sizes.).
+//    - pixbuf that contains the image to use for icon_name.
+//
 func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -1954,6 +1968,11 @@ func IconThemeGetDefault() *IconTheme {
 // better choice than calling than gtk_icon_theme_new() and setting the screen
 // yourself; by using this function a single icon theme object will be shared
 // between users.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//
 func IconThemeGetForScreen(screen *gdk.Screen) *IconTheme {
 	var _arg1 *C.GdkScreen    // out
 	var _cret *C.GtkIconTheme // in

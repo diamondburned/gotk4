@@ -242,6 +242,11 @@ func marshalFontsetSimpler(p uintptr) (interface{}, error) {
 }
 
 // NewFontsetSimple creates a new PangoFontsetSimple for the given language.
+//
+// The function takes the following parameters:
+//
+//    - language: PangoLanguage tag.
+//
 func NewFontsetSimple(language *Language) *FontsetSimple {
 	var _arg1 *C.PangoLanguage      // out
 	var _cret *C.PangoFontsetSimple // in

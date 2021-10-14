@@ -125,6 +125,11 @@ func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
 
 // NewAppChooserButton creates a new AppChooserButton for applications that can
 // handle content of the given type.
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type to show applications for.
+//
 func NewAppChooserButton(contentType string) *AppChooserButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

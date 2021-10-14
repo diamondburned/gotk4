@@ -94,6 +94,11 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 //
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object.
+//
+// The function takes the following parameters:
+//
+//    - manager: RecentManager.
+//
 func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidget {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in

@@ -31,6 +31,14 @@ import "C"
 // to this context. All calls on the returned menu model (and linked models)
 // must also originate from this same context, with the thread default main
 // context unchanged.
+//
+// The function takes the following parameters:
+//
+//    - connection: BusConnection.
+//    - busName bus name which exports the menu model or NULL if connection is
+//    not a message bus connection.
+//    - objectPath: object path at which the menu model is exported.
+//
 func DBusMenuModelGet(connection *DBusConnection, busName, objectPath string) *DBusMenuModel {
 	var _arg1 *C.GDBusConnection // out
 	var _arg2 *C.gchar           // out

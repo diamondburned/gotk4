@@ -33,6 +33,19 @@ import "C"
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - surface we're rendering for (not necessarily into).
+//    - source: GL ID of the source buffer.
+//    - sourceType: type of the source.
+//    - bufferScale: scale-factor that the source buffer is allocated for.
+//    - x: source x position in source to start copying from in GL coordinates.
+//    - y: source y position in source to start copying from in GL coordinates.
+//    - width of the region to draw.
+//    - height of the region to draw.
+//
 func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bufferScale, x, y, width, height int) {
 	var _arg1 *C.cairo_t    // out
 	var _arg2 *C.GdkSurface // out
@@ -67,6 +80,12 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bu
 }
 
 // CairoRectangle adds the given rectangle to the current path of cr.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - rectangle: Rectangle.
+//
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg1 *C.cairo_t      // out
 	var _arg2 *C.GdkRectangle // out
@@ -80,6 +99,12 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 }
 
 // CairoRegion adds the given region to the current path of cr.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - region: #cairo_region_t.
+//
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var _arg1 *C.cairo_t        // out
 	var _arg2 *C.cairo_region_t // out
@@ -97,6 +122,11 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
+//
+// The function takes the following parameters:
+//
+//    - surface: cairo surface.
+//
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.cairo_region_t  // in
@@ -123,6 +153,14 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 //
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of pixbuf is pixbuf_x, pixbuf_y.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - pixbuf: Pixbuf.
+//    - pixbufX: x coordinate of location to place upper left corner of pixbuf.
+//    - pixbufY: y coordinate of location to place upper left corner of pixbuf.
+//
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, pixbufY float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkPixbuf // out
@@ -142,6 +180,12 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of cr.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - rgba: RGBA.
+//
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 *C.GdkRGBA // out

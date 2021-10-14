@@ -179,6 +179,11 @@ func marshalLayouter(p uintptr) (interface{}, error) {
 
 // NewLayout: create a new PangoLayout object with attributes initialized to
 // default values for a particular PangoContext.
+//
+// The function takes the following parameters:
+//
+//    - context: PangoContext.
+//
 func NewLayout(context *Context) *Layout {
 	var _arg1 *C.PangoContext // out
 	var _cret *C.PangoLayout  // in

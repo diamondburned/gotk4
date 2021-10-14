@@ -55,6 +55,12 @@ func marshalSortListModeller(p uintptr) (interface{}, error) {
 
 // NewSortListModel creates a new sort list model that uses the sorter to sort
 // model.
+//
+// The function takes the following parameters:
+//
+//    - model to sort, or NULL.
+//    - sorter: GtkSorter to sort model with, or NULL.
+//
 func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 	var _arg1 *C.GListModel       // out
 	var _arg2 *C.GtkSorter        // out

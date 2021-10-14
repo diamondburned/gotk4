@@ -62,6 +62,17 @@ func marshalRadioActioner(p uintptr) (interface{}, error) {
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - name: unique name for the action.
+//    - label displayed in menu items and on buttons, or NULL.
+//    - tooltip for this action, or NULL.
+//    - stockId: stock icon to display in widgets representing this action, or
+//    NULL.
+//    - value which gtk_radio_action_get_current_value() should return if this
+//    action is selected.
+//
 func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioAction {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out

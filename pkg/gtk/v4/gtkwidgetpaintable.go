@@ -63,6 +63,11 @@ func marshalWidgetPaintabler(p uintptr) (interface{}, error) {
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget or NULL.
+//
 func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in

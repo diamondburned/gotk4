@@ -55,6 +55,11 @@ func marshalTextTagger(p uintptr) (interface{}, error) {
 }
 
 // NewTextTag creates a GtkTextTag.
+//
+// The function takes the following parameters:
+//
+//    - name: tag name, or NULL.
+//
 func NewTextTag(name string) *TextTag {
 	var _arg1 *C.char       // out
 	var _cret *C.GtkTextTag // in

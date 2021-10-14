@@ -205,6 +205,15 @@ func marshalFileChooserNativer(p uintptr) (interface{}, error) {
 }
 
 // NewFileChooserNative creates a new FileChooserNative.
+//
+// The function takes the following parameters:
+//
+//    - title: title of the native, or NULL.
+//    - parent: transient parent of the native, or NULL.
+//    - action: open or save mode for the dialog.
+//    - acceptLabel: text to go in the accept button, or NULL for the default.
+//    - cancelLabel: text to go in the cancel button, or NULL for the default.
+//
 func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel, cancelLabel string) *FileChooserNative {
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.GtkWindow            // out

@@ -267,6 +267,11 @@ func (proxy *Proxy) SupportsHostname() bool {
 
 // ProxyGetDefaultForProtocol: find the gio-proxy extension point for a proxy
 // implementation that supports the specified protocol.
+//
+// The function takes the following parameters:
+//
+//    - protocol: proxy protocol name (e.g. http, socks, etc).
+//
 func ProxyGetDefaultForProtocol(protocol string) Proxier {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GProxy // in

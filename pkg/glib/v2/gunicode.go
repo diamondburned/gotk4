@@ -1061,6 +1061,13 @@ func (u UnicodeType) String() string {
 
 // UCS4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
 // added to the result after the converted text.
+//
+// The function takes the following parameters:
+//
+//    - str: UCS-4 encoded string.
+//    - len: maximum length (number of characters) of str to use. If len < 0,
+//    then the string is nul-terminated.
+//
 func UCS4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gunichar  // out
 	var _arg2 C.glong      // out
@@ -1093,6 +1100,13 @@ func UCS4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, g
 
 // UCS4ToUTF8: convert a string from a 32-bit fixed width representation as
 // UCS-4. to UTF-8. The result will be terminated with a 0 byte.
+//
+// The function takes the following parameters:
+//
+//    - str: UCS-4 encoded string.
+//    - len: maximum length (number of characters) of str to use. If len < 0,
+//    then the string is nul-terminated.
+//
 func UCS4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.glong     // out
@@ -1130,6 +1144,11 @@ func UCS4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, ut
 // ("text boundaries"), Pango implements the Unicode boundary resolution
 // algorithms and normally you would use a function such as pango_break()
 // instead of caring about break types yourself.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharBreakType(c uint32) UnicodeBreakType {
 	var _arg1 C.gunichar          // out
 	var _cret C.GUnicodeBreakType // in
@@ -1148,6 +1167,11 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 
 // UnicharCombiningClass determines the canonical combining class of a Unicode
 // character.
+//
+// The function takes the following parameters:
+//
+//    - uc: unicode character.
+//
 func UnicharCombiningClass(uc uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
@@ -1177,6 +1201,12 @@ func UnicharCombiningClass(uc uint32) int {
 // If a and b do not compose a new character, ch is set to zero.
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
+//
+// The function takes the following parameters:
+//
+//    - a: unicode character.
+//    - b: unicode character.
+//
 func UnicharCompose(a, b uint32) (uint32, bool) {
 	var _arg1 C.gunichar // out
 	var _arg2 C.gunichar // out
@@ -1217,6 +1247,11 @@ func UnicharCompose(a, b uint32) (uint32, bool) {
 // function on a. Or use g_unichar_fully_decompose().
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
 func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 	var _arg1 C.gunichar // out
 	var _arg2 C.gunichar // in
@@ -1243,6 +1278,11 @@ func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 
 // UnicharDigitValue determines the numeric value of a character as a decimal
 // digit.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharDigitValue(c uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
@@ -1273,6 +1313,13 @@ func UnicharDigitValue(c uint32) int {
 // G_UNICHAR_MAX_DECOMPOSITION_LENGTH.
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//    - compat: whether perform canonical or compatibility decomposition.
+//    - resultLen: length of result.
+//
 func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint) {
 	var _arg1 C.gunichar // out
 	var _arg2 C.gboolean // out
@@ -1309,6 +1356,12 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint
 // character that typically has a glyph that is the mirror image of ch's glyph
 // and mirrored_ch is set, it puts that character in the address pointed to by
 // mirrored_ch. Otherwise the original character is put.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//    - mirroredCh: location to store the mirrored character.
+//
 func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gunichar // out
@@ -1336,6 +1389,11 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 //
 // This function is equivalent to pango_script_for_unichar() and the two are
 // interchangeable.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
 func UnicharGetScript(ch uint32) UnicodeScript {
 	var _arg1 C.gunichar       // out
 	var _cret C.GUnicodeScript // in
@@ -1354,6 +1412,11 @@ func UnicharGetScript(ch uint32) UnicodeScript {
 
 // UnicharIsalnum determines whether a character is alphanumeric. Given some
 // UTF-8 text, obtain a character value with g_utf8_get_char().
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsalnum(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1374,6 +1437,11 @@ func UnicharIsalnum(c uint32) bool {
 
 // UnicharIsalpha determines whether a character is alphabetic (i.e. a letter).
 // Given some UTF-8 text, obtain a character value with g_utf8_get_char().
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsalpha(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1394,6 +1462,11 @@ func UnicharIsalpha(c uint32) bool {
 
 // UnicharIscntrl determines whether a character is a control character. Given
 // some UTF-8 text, obtain a character value with g_utf8_get_char().
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIscntrl(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1414,6 +1487,11 @@ func UnicharIscntrl(c uint32) bool {
 
 // UnicharIsdefined determines if a given character is assigned in the Unicode
 // standard.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsdefined(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1435,6 +1513,11 @@ func UnicharIsdefined(c uint32) bool {
 // UnicharIsdigit determines whether a character is numeric (i.e. a digit). This
 // covers ASCII 0-9 and also digits in other languages/scripts. Given some UTF-8
 // text, obtain a character value with g_utf8_get_char().
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsdigit(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1457,6 +1540,11 @@ func UnicharIsdigit(c uint32) bool {
 // (returns FALSE for control characters, format characters, and spaces).
 // g_unichar_isprint() is similar, but returns TRUE for spaces. Given some UTF-8
 // text, obtain a character value with g_utf8_get_char().
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsgraph(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1477,6 +1565,11 @@ func UnicharIsgraph(c uint32) bool {
 
 // UnicharIslower determines whether a character is a lowercase letter. Given
 // some UTF-8 text, obtain a character value with g_utf8_get_char().
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIslower(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1502,6 +1595,11 @@ func UnicharIslower(c uint32) bool {
 // Note: in most cases where isalpha characters are allowed, ismark characters
 // should be allowed to as they are essential for writing most European
 // languages as well as many non-Latin scripts.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsmark(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1523,6 +1621,11 @@ func UnicharIsmark(c uint32) bool {
 // UnicharIsprint determines whether a character is printable. Unlike
 // g_unichar_isgraph(), returns TRUE for spaces. Given some UTF-8 text, obtain a
 // character value with g_utf8_get_char().
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsprint(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1543,6 +1646,11 @@ func UnicharIsprint(c uint32) bool {
 
 // UnicharIspunct determines whether a character is punctuation or a symbol.
 // Given some UTF-8 text, obtain a character value with g_utf8_get_char().
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIspunct(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1567,6 +1675,11 @@ func UnicharIspunct(c uint32) bool {
 //
 // (Note: don't use this to do word breaking; you have to use Pango or
 // equivalent to get word breaking right, the algorithm is fairly complex.).
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsspace(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1590,6 +1703,11 @@ func UnicharIsspace(c uint32) bool {
 // instead of just two. The titlecase form is used at the beginning of a word
 // where only the first letter is capitalized. The titlecase form of the DZ
 // digraph is U+01F2 LATIN CAPITAL LETTTER D WITH SMALL LETTER Z.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIstitle(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1609,6 +1727,11 @@ func UnicharIstitle(c uint32) bool {
 }
 
 // UnicharIsupper determines if a character is uppercase.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsupper(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1629,6 +1752,11 @@ func UnicharIsupper(c uint32) bool {
 
 // UnicharIswide determines if a character is typically rendered in a
 // double-width cell.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIswide(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1656,6 +1784,11 @@ func UnicharIswide(c uint32) bool {
 // If a character passes the g_unichar_iswide() test then it will also pass this
 // test, but not the other way around. Note that some characters may pass both
 // this test and g_unichar_iszerowidth().
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIswideCjk(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1675,6 +1808,11 @@ func UnicharIswideCjk(c uint32) bool {
 }
 
 // UnicharIsxdigit determines if a character is a hexadecimal digit.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIsxdigit(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1702,6 +1840,11 @@ func UnicharIsxdigit(c uint32) bool {
 // g_unichar_iswide_cjk() to determine the number of cells a string occupies
 // when displayed on a grid display (terminals). However, note that not all
 // terminals support zero-width rendering of zero-width marks.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharIszerowidth(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1721,6 +1864,11 @@ func UnicharIszerowidth(c uint32) bool {
 }
 
 // UnicharToLower converts a character to lower case.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharToLower(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
@@ -1738,6 +1886,11 @@ func UnicharToLower(c uint32) uint32 {
 }
 
 // UnicharToTitle converts a character to the titlecase.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharToTitle(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
@@ -1755,6 +1908,11 @@ func UnicharToTitle(c uint32) uint32 {
 }
 
 // UnicharToUpper converts a character to uppercase.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharToUpper(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
@@ -1772,6 +1930,11 @@ func UnicharToUpper(c uint32) uint32 {
 }
 
 // UnicharType classifies a Unicode character by type.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharType(c uint32) UnicodeType {
 	var _arg1 C.gunichar     // out
 	var _cret C.GUnicodeType // in
@@ -1791,6 +1954,11 @@ func UnicharType(c uint32) UnicodeType {
 // UnicharValidate checks whether ch is a valid Unicode character. Some possible
 // integer values of ch will not be valid. 0 is considered a valid character,
 // though it's normally a string terminator.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
 func UnicharValidate(ch uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -1811,6 +1979,11 @@ func UnicharValidate(ch uint32) bool {
 
 // UnicharXDigitValue determines the numeric value of a character as a
 // hexadecimal digit.
+//
+// The function takes the following parameters:
+//
+//    - c: unicode character.
+//
 func UnicharXDigitValue(c uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
@@ -1831,6 +2004,12 @@ func UnicharXDigitValue(c uint32) int {
 // Unicode character.
 //
 // Deprecated: Use the more flexible g_unichar_fully_decompose() instead.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//    - resultLen: location to store the length of the return value.
+//
 func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gsize    // out
@@ -1853,6 +2032,12 @@ func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 // UnicodeCanonicalOrdering computes the canonical ordering of a string
 // in-place. This rearranges decomposed characters in the string according to
 // their combining classes. See the Unicode manual for more information.
+//
+// The function takes the following parameters:
+//
+//    - str: UCS-4 encoded string.
+//    - len: maximum length of string to use.
+//
 func UnicodeCanonicalOrdering(str *uint32, len uint) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.gsize     // out
@@ -1873,6 +2058,11 @@ func UnicodeCanonicalOrdering(str *uint32, len uint) {
 //
 // See Codes for the representation of names of scripts
 // (http://unicode.org/iso15924/codelists.html) for details.
+//
+// The function takes the following parameters:
+//
+//    - iso15924: unicode script.
+//
 func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 	var _arg1 C.guint32        // out
 	var _cret C.GUnicodeScript // in
@@ -1897,6 +2087,11 @@ func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 //
 // See Codes for the representation of names of scripts
 // (http://unicode.org/iso15924/codelists.html) for details.
+//
+// The function takes the following parameters:
+//
+//    - script: unicode script.
+//
 func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 	var _arg1 C.GUnicodeScript // out
 	var _cret C.guint32        // in
@@ -1915,6 +2110,13 @@ func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 
 // UTF16ToUCS4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-16 encoded string.
+//    - len: maximum length (number of #gunichar2) of str to use. If len < 0,
+//    then the string is nul-terminated.
+//
 func UTF16ToUCS4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong      // out
@@ -1956,6 +2158,13 @@ func UTF16ToUCS4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, g
 // e.g. include embedded NUL characters. The only validation done by this
 // function is to ensure that the input can be correctly interpreted as UTF-16,
 // i.e. it doesn't contain unpaired surrogates or partial character sequences.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-16 encoded string.
+//    - len: maximum length (number of #gunichar2) of str to use. If len < 0,
+//    then the string is nul-terminated.
+//
 func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong      // out
@@ -1997,6 +2206,12 @@ func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, u
 // is a fairly good one. Getting this exactly right would require a more
 // sophisticated collation function that takes case sensitivity into account.
 // GLib does not currently provide such a function.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: length of str, in bytes, or -1 if str is nul-terminated.
+//
 func UTF8Casefold(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -2023,6 +2238,12 @@ func UTF8Casefold(str string, len int) string {
 // number of strings, it will be significantly faster to obtain collation keys
 // with g_utf8_collate_key() and compare the keys with strcmp() when sorting
 // instead of sorting the original strings.
+//
+// The function takes the following parameters:
+//
+//    - str1: UTF-8 encoded string.
+//    - str2: UTF-8 encoded string.
+//
 func UTF8Collate(str1, str2 string) int {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -2051,6 +2272,12 @@ func UTF8Collate(str1, str2 string) int {
 // always be the same as comparing the two original keys with g_utf8_collate().
 //
 // Note that this function depends on the [current locale][setlocale].
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: length of str, in bytes, or -1 if str is nul-terminated.
+//
 func UTF8CollateKey(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -2084,6 +2311,12 @@ func UTF8CollateKey(str string, len int) string {
 // "file10".
 //
 // Note that this function depends on the [current locale][setlocale].
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: length of str, in bytes, or -1 if str is nul-terminated.
+//
 func UTF8CollateKeyForFilename(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -2115,6 +2348,13 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 // If end is NULL, the return value will never be NULL: if the end of the string
 // is reached, a pointer to the terminating nul byte is returned. If end is
 // non-NULL, the return value will be NULL if the end of the string is reached.
+//
+// The function takes the following parameters:
+//
+//    - p: pointer to a position within a UTF-8 encoded string.
+//    - end: pointer to the byte following the end of the string, or NULL to
+//    indicate that the string is nul-terminated.
+//
 func UTF8FindNextChar(p, end string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -2147,6 +2387,12 @@ func UTF8FindNextChar(p, end string) string {
 // p does not have to be at the beginning of a UTF-8 character. No check is made
 // to see if the character found is actually valid other than it starts with an
 // appropriate byte.
+//
+// The function takes the following parameters:
+//
+//    - str: pointer to the beginning of a UTF-8 encoded string.
+//    - p: pointer to some position within str.
+//
 func UTF8FindPrevChar(str, p string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -2176,6 +2422,11 @@ func UTF8FindPrevChar(str, p string) string {
 // If p does not point to a valid UTF-8 encoded character, results are
 // undefined. If you are not sure that the bytes are complete valid Unicode
 // characters, you should use g_utf8_get_char_validated() instead.
+//
+// The function takes the following parameters:
+//
+//    - p: pointer to Unicode character encoded as UTF-8.
+//
 func UTF8GetChar(p string) uint32 {
 	var _arg1 *C.gchar   // out
 	var _cret C.gunichar // in
@@ -2200,6 +2451,12 @@ func UTF8GetChar(p string) uint32 {
 //
 // Note that g_utf8_get_char_validated() returns (gunichar)-2 if max_len is
 // positive and any of the bytes in the first UTF-8 character sequence are nul.
+//
+// The function takes the following parameters:
+//
+//    - p: pointer to Unicode character encoded as UTF-8.
+//    - maxLen: maximum number of bytes to read, or -1 if p is nul-terminated.
+//
 func UTF8GetCharValidated(p string, maxLen int) uint32 {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.gssize   // out
@@ -2229,6 +2486,13 @@ func UTF8GetCharValidated(p string, maxLen int) uint32 {
 // version of it that can be logged or displayed to the user, with the
 // assumption that it is close enough to ASCII or UTF-8 to be mostly readable
 // as-is.
+//
+// The function takes the following parameters:
+//
+//    - str: string to coerce into UTF-8.
+//    - len: maximum length of str to use, in bytes. If len < 0, then the
+//    string is nul-terminated.
+//
 func UTF8MakeValid(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -2268,6 +2532,13 @@ func UTF8MakeValid(str string, len int) string {
 // forms rather than a maximally decomposed form. This is often useful if you
 // intend to convert the string to a legacy encoding or pass it to a system with
 // less capable Unicode handling.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: length of str, in bytes, or -1 if str is nul-terminated.
+//    - mode: type of normalization to perform.
+//
 func UTF8Normalize(str string, len int, mode NormalizeMode) string {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.gssize         // out
@@ -2307,6 +2578,12 @@ func UTF8Normalize(str string, len int, mode NormalizeMode) string {
 // that function. Call g_utf8_strlen() when unsure. This limitation exists as
 // this function is called frequently during text rendering and therefore has to
 // be as fast as possible.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - offset: character offset within str.
+//
 func UTF8OffsetToPointer(str string, offset int32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.glong  // out
@@ -2332,6 +2609,12 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 //
 // Since 2.10, this function allows pos to be before str, and returns a negative
 // offset in this case.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - pos: pointer to a position within str.
+//
 func UTF8PointerToOffset(str, pos string) int32 {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -2359,6 +2642,11 @@ func UTF8PointerToOffset(str, pos string) int32 {
 // to see if the character found is actually valid other than it starts with an
 // appropriate byte. If p might be the first character of the string, you must
 // use g_utf8_find_prev_char() instead.
+//
+// The function takes the following parameters:
+//
+//    - p: pointer to a position within a UTF-8 encoded string.
+//
 func UTF8PrevChar(p string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -2379,6 +2667,13 @@ func UTF8PrevChar(p string) string {
 // UTF8Strchr finds the leftmost occurrence of the given Unicode character in a
 // UTF-8 encoded string, while limiting the search to len bytes. If len is -1,
 // allow unbounded search.
+//
+// The function takes the following parameters:
+//
+//    - p: nul-terminated UTF-8 encoded string.
+//    - len: maximum length of p.
+//    - c: unicode character.
+//
 func UTF8Strchr(p string, len int, c uint32) string {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.gssize   // out
@@ -2407,6 +2702,12 @@ func UTF8Strchr(p string, len int, c uint32) string {
 // UTF8Strdown converts all Unicode characters in the string that have a case to
 // lowercase. The exact manner that this is done depends on the current locale,
 // and may result in the number of characters in the string changing.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: length of str, in bytes, or -1 if str is nul-terminated.
+//
 func UTF8Strdown(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -2431,6 +2732,15 @@ func UTF8Strdown(str string, len int) string {
 // UTF8Strlen computes the length of the string in characters, not including the
 // terminating nul character. If the max'th byte falls in the middle of a
 // character, the last (partial) character is not counted.
+//
+// The function takes the following parameters:
+//
+//    - p: pointer to the start of a UTF-8 encoded string.
+//    - max: maximum number of bytes to examine. If max is less than 0, then
+//    the string is assumed to be nul-terminated. If max is 0, p will not be
+//    examined and may be NULL. If max is greater than 0, up to max bytes are
+//    examined.
+//
 func UTF8Strlen(p string, max int) int32 {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -2458,6 +2768,13 @@ func UTF8Strlen(p string, max int) int32 {
 //
 // Note you must ensure dest is at least 4 * n to fit the largest possible UTF-8
 // characters.
+//
+// The function takes the following parameters:
+//
+//    - dest: buffer to fill with characters from src.
+//    - src: UTF-8 encoded string.
+//    - n: character count.
+//
 func UTF8Strncpy(dest, src string, n uint) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -2485,6 +2802,13 @@ func UTF8Strncpy(dest, src string, n uint) string {
 // UTF8Strrchr: find the rightmost occurrence of the given Unicode character in
 // a UTF-8 encoded string, while limiting the search to len bytes. If len is -1,
 // allow unbounded search.
+//
+// The function takes the following parameters:
+//
+//    - p: nul-terminated UTF-8 encoded string.
+//    - len: maximum length of p.
+//    - c: unicode character.
+//
 func UTF8Strrchr(p string, len int, c uint32) string {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.gssize   // out
@@ -2521,6 +2845,13 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 //
 // Note that unlike g_strreverse(), this function returns newly-allocated
 // memory, which should be freed with g_free() when no longer needed.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: maximum length of str to use, in bytes. If len < 0, then the
+//    string is nul-terminated.
+//
 func UTF8Strreverse(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -2546,6 +2877,12 @@ func UTF8Strreverse(str string, len int) string {
 // uppercase. The exact manner that this is done depends on the current locale,
 // and may result in the number of characters in the string increasing. (For
 // instance, the German ess-zet will be changed to SS.).
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: length of str, in bytes, or -1 if str is nul-terminated.
+//
 func UTF8Strup(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -2569,6 +2906,13 @@ func UTF8Strup(str string, len int) string {
 
 // UTF8Substring copies a substring out of a UTF-8 encoded string. The substring
 // will contain end_pos - start_pos characters.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - startPos: character offset within str.
+//    - endPos: another character offset within str.
+//
 func UTF8Substring(str string, startPos, endPos int32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.glong  // out
@@ -2596,6 +2940,13 @@ func UTF8Substring(str string, startPos, endPos int32) string {
 // UTF8ToUCS4: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4. A trailing 0 character will be added to the string
 // after the converted text.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: maximum length of str to use, in bytes. If len < 0, then the
+//    string is nul-terminated.
+//
 func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.glong     // out
@@ -2631,6 +2982,13 @@ func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 // representation as UCS-4, assuming valid UTF-8 input. This function is roughly
 // twice as fast as g_utf8_to_ucs4() but does no error checking on the input. A
 // trailing 0 character will be added to the string after the converted text.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: maximum length of str to use, in bytes. If len < 0, then the
+//    string is nul-terminated.
+//
 func UTF8ToUCS4Fast(str string, len int32) (int32, *uint32) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.glong     // out
@@ -2656,6 +3014,13 @@ func UTF8ToUCS4Fast(str string, len int32) (int32, *uint32) {
 
 // UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
 // added to the result after the converted text.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 encoded string.
+//    - len: maximum length (number of bytes) of str to use. If len < 0, then
+//    the string is nul-terminated.
+//
 func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.glong      // out
@@ -2700,6 +3065,11 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 // Returns TRUE if all of str was valid. Many GLib and GTK+ routines require
 // valid UTF-8 as input; so data read from a file or the network should be
 // checked with g_utf8_validate() before doing anything else with it.
+//
+// The function takes the following parameters:
+//
+//    - str: pointer to character data.
+//
 func UTF8Validate(str string) (string, bool) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
@@ -2731,6 +3101,11 @@ func UTF8Validate(str string) (string, bool) {
 //
 // As with g_utf8_validate(), but max_len must be set, and hence this function
 // will always return FALSE if any of the bytes of str are nul.
+//
+// The function takes the following parameters:
+//
+//    - str: pointer to character data.
+//
 func UTF8ValidateLen(str string) (string, bool) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gsize

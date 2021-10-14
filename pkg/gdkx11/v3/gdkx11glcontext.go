@@ -23,6 +23,11 @@ func init() {
 }
 
 // X11DisplayGetGLXVersion retrieves the version of the GLX implementation.
+//
+// The function takes the following parameters:
+//
+//    - display: Display.
+//
 func X11DisplayGetGLXVersion(display *gdk.Display) (major int, minor int, ok bool) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // in

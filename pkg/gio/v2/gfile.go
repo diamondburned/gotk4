@@ -6592,6 +6592,11 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) erro
 // but g_application_command_line_create_file_for_arg() may be more useful for
 // you there. It is also always possible to use this function with Context
 // arguments of type G_OPTION_ARG_FILENAME.
+//
+// The function takes the following parameters:
+//
+//    - arg: command line string.
+//
 func NewFileForCommandlineArg(arg string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -6632,6 +6637,12 @@ func NewFileForCommandlineArg(arg string) Filer {
 // the invocation of the current process.
 //
 // See also g_application_command_line_create_file_for_arg().
+//
+// The function takes the following parameters:
+//
+//    - arg: command line string.
+//    - cwd: current working directory of the commandline.
+//
 func NewFileForCommandlineArgAndCwd(arg, cwd string) Filer {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -6668,6 +6679,12 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) Filer {
 // NewFileForPath constructs a #GFile for a given path. This operation never
 // fails, but the returned object might not support any I/O operation if path is
 // malformed.
+//
+// The function takes the following parameters:
+//
+//    - path: string containing a relative or absolute path. The string must be
+//    encoded in the glib filename encoding.
+//
 func NewFileForPath(path string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -6700,6 +6717,11 @@ func NewFileForPath(path string) Filer {
 // NewFileForURI constructs a #GFile for a given URI. This operation never
 // fails, but the returned object might not support any I/O operation if uri is
 // malformed or if the uri type is not supported.
+//
+// The function takes the following parameters:
+//
+//    - uri: UTF-8 string containing a URI.
+//
 func NewFileForURI(uri string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -6739,6 +6761,12 @@ func NewFileForURI(uri string) Filer {
 //
 // Unlike the other #GFile constructors, this will return NULL if a temporary
 // file could not be created.
+//
+// The function takes the following parameters:
+//
+//    - tmpl: template for the file name, as in g_file_open_tmp(), or NULL for
+//    a default template.
+//
 func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 	var _arg1 *C.char          // out
 	var _arg2 *C.GFileIOStream // in
@@ -6782,6 +6810,11 @@ func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 // given by g_file_get_parse_name()). This operation never fails, but the
 // returned object might not support any I/O operation if the parse_name cannot
 // be parsed.
+//
+// The function takes the following parameters:
+//
+//    - parseName: file name or path to be parsed.
+//
 func FileParseName(parseName string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in

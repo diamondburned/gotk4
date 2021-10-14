@@ -125,6 +125,12 @@ func NewImageMenuItem() *ImageMenuItem {
 // gtk_accel_map_add_entry() to register it.
 //
 // Deprecated: Use gtk_menu_item_new_with_mnemonic() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: name of the stock item.
+//    - accelGroup to add the menu items accelerator to, or NULL.
+//
 func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMenuItem {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GtkAccelGroup // out
@@ -150,6 +156,11 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 // NewImageMenuItemWithLabel creates a new ImageMenuItem containing a label.
 //
 // Deprecated: Use gtk_menu_item_new_with_label() instead.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the menu item.
+//
 func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -172,6 +183,12 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 // in label indicate the mnemonic for the menu item.
 //
 // Deprecated: Use gtk_menu_item_new_with_mnemonic() instead.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the menu item, with an underscore in front of the
+//    mnemonic character.
+//
 func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

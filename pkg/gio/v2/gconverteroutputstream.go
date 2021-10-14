@@ -65,6 +65,12 @@ func marshalConverterOutputStreamer(p uintptr) (interface{}, error) {
 
 // NewConverterOutputStream creates a new converter output stream for the
 // base_stream.
+//
+// The function takes the following parameters:
+//
+//    - baseStream: Stream.
+//    - converter: #GConverter.
+//
 func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) *ConverterOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.GConverter    // out

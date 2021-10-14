@@ -73,6 +73,11 @@ func marshalTexturer(p uintptr) (interface{}, error) {
 }
 
 // NewTextureForPixbuf creates a new texture object representing the GdkPixbuf.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: GdkPixbuf.
+//
 func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GdkTexture // in
@@ -95,6 +100,11 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 // JPEG, though more formats might be available.
 //
 // If NULL is returned, then error will be set.
+//
+// The function takes the following parameters:
+//
+//    - file: GFile to load.
+//
 func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _arg1 *C.GFile      // out
 	var _cret *C.GdkTexture // in
@@ -125,6 +135,11 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 // It is a fatal error if resource_path does not specify a valid image resource
 // and the program will abort if that happens. If you are unsure about the
 // validity of a resource, use gdk.Texture.NewFromFile to load it.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: path of the resource file.
+//
 func NewTextureFromResource(resourcePath string) *Texture {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkTexture // in

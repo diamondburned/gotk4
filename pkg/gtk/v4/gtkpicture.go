@@ -121,6 +121,11 @@ func NewPicture() *Picture {
 //
 // If you need to detect failures to load the file, use gdk.Texture.NewFromFile
 // to load the file yourself, then create the GtkPicture from the texture.
+//
+// The function takes the following parameters:
+//
+//    - file: GFile.
+//
 func NewPictureForFile(file gio.Filer) *Picture {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
@@ -143,6 +148,11 @@ func NewPictureForFile(file gio.Filer) *Picture {
 //
 // This is a utility function that calls gtk.Picture.NewForFile. See that
 // function for details.
+//
+// The function takes the following parameters:
+//
+//    - filename: filename.
+//
 func NewPictureForFilename(filename string) *Picture {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -166,6 +176,11 @@ func NewPictureForFilename(filename string) *Picture {
 //
 // The GtkPicture will track changes to the paintable and update its size and
 // contents in response to it.
+//
+// The function takes the following parameters:
+//
+//    - paintable: GdkPaintable, or NULL.
+//
 func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
@@ -190,6 +205,11 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 // function for details.
 //
 // The pixbuf must not be modified after passing it to this function.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: GdkPixbuf, or NULL.
+//
 func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
@@ -213,6 +233,11 @@ func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 //
 // This is a utility function that calls gtk.Picture.NewForFile. See that
 // function for details.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path to play back.
+//
 func NewPictureForResource(resourcePath string) *Picture {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

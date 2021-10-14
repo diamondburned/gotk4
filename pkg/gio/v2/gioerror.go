@@ -27,6 +27,11 @@ import "C"
 //
 // As errno is global and may be modified by intermediate function calls, you
 // should save its value as soon as the call which sets it.
+//
+// The function takes the following parameters:
+//
+//    - errNo: error number as defined in errno.h.
+//
 func IOErrorFromErrno(errNo int) IOErrorEnum {
 	var _arg1 C.gint         // out
 	var _cret C.GIOErrorEnum // in

@@ -85,6 +85,18 @@ func marshalConstrainter(p uintptr) (interface{}, error) {
 
 // NewConstraint creates a new constraint representing a relation between a
 // layout attribute on a source and a layout attribute on a target.
+//
+// The function takes the following parameters:
+//
+//    - target of the constraint.
+//    - targetAttribute: attribute of target to be set.
+//    - relation equivalence between target_attribute and source_attribute.
+//    - source of the constraint.
+//    - sourceAttribute: attribute of source to be read.
+//    - multiplier: multiplication factor to be applied to source_attribute.
+//    - constant factor to be added to source_attribute.
+//    - strength of the constraint.
+//
 func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
@@ -128,6 +140,15 @@ func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribu
 
 // NewConstraintConstant creates a new constraint representing a relation
 // between a layout attribute on a target and a constant value.
+//
+// The function takes the following parameters:
+//
+//    - target: the target of the constraint.
+//    - targetAttribute: attribute of target to be set.
+//    - relation equivalence between target_attribute and constant.
+//    - constant factor to be set on target_attribute.
+//    - strength of the constraint.
+//
 func NewConstraintConstant(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out

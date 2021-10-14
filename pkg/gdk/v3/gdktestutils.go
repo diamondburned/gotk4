@@ -17,6 +17,11 @@ import "C"
 //
 // This function is intended to be used to synchronize with rendering pipelines,
 // to benchmark windowing system rendering operations.
+//
+// The function takes the following parameters:
+//
+//    - window: mapped Window.
+//
 func TestRenderSync(window Windower) {
 	var _arg1 *C.GdkWindow // out
 
@@ -37,6 +42,16 @@ func TestRenderSync(window Windower) {
 // testing purposes, gtk_test_widget_click() is the right function to call which
 // will generate a button press event followed by its accompanying button
 // release event.
+//
+// The function takes the following parameters:
+//
+//    - window to simulate a button event for.
+//    - x coordinate within window for the button event.
+//    - y coordinate within window for the button event.
+//    - button: number of the pointer button for the event, usually 1, 2 or 3.
+//    - modifiers: keyboard modifiers the event is setup with.
+//    - buttonPressrelease: either GDK_BUTTON_PRESS or GDK_BUTTON_RELEASE.
+//
 func TestSimulateButton(window Windower, x, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.gint            // out
@@ -84,6 +99,16 @@ func TestSimulateButton(window Windower, x, y int, button uint, modifiers Modifi
 // testing purposes, gtk_test_widget_send_key() is the right function to call
 // which will generate a key press event followed by its accompanying key
 // release event.
+//
+// The function takes the following parameters:
+//
+//    - window to simulate a key event for.
+//    - x coordinate within window for the key event.
+//    - y coordinate within window for the key event.
+//    - keyval: GDK keyboard value.
+//    - modifiers: keyboard modifiers the event is setup with.
+//    - keyPressrelease: either GDK_KEY_PRESS or GDK_KEY_RELEASE.
+//
 func TestSimulateKey(window Windower, x, y int, keyval uint, modifiers ModifierType, keyPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.gint            // out

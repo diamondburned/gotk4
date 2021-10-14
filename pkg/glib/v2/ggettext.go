@@ -16,6 +16,14 @@ import "C"
 // category instead of always using LC_MESSAGES. See g_dgettext() for more
 // information about how this functions differs from calling dcgettext()
 // directly.
+//
+// The function takes the following parameters:
+//
+//    - domain: translation domain to use, or NULL to use the domain set with
+//    textdomain().
+//    - msgid: message to translate.
+//    - category: locale category.
+//
 func Dcgettext(domain, msgid string, category int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -73,6 +81,13 @@ func Dcgettext(domain, msgid string, category int) string {
 //
 // Applications should normally not use this function directly, but use the _()
 // macro for translations.
+//
+// The function takes the following parameters:
+//
+//    - domain: translation domain to use, or NULL to use the domain set with
+//    textdomain().
+//    - msgid: message to translate.
+//
 func Dgettext(domain, msgid string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -101,6 +116,15 @@ func Dgettext(domain, msgid string) string {
 // translations for the current locale.
 //
 // See g_dgettext() for details of how this differs from dngettext() proper.
+//
+// The function takes the following parameters:
+//
+//    - domain: translation domain to use, or NULL to use the domain set with
+//    textdomain().
+//    - msgid: message to translate.
+//    - msgidPlural: plural form of the message.
+//    - n: quantity for which translation is needed.
+//
 func Dngettext(domain, msgid, msgidPlural string, n uint32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -142,6 +166,15 @@ func Dngettext(domain, msgid, msgidPlural string, n uint32) string {
 //
 // Applications should normally not use this function directly, but use the C_()
 // macro for translations with context.
+//
+// The function takes the following parameters:
+//
+//    - domain: translation domain to use, or NULL to use the domain set with
+//    textdomain().
+//    - msgctxtid: combined message context and message id, separated by a \004
+//    character.
+//    - msgidoffset: offset of the message id in msgctxid.
+//
 func Dpgettext(domain, msgctxtid string, msgidoffset uint) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -177,6 +210,14 @@ func Dpgettext(domain, msgctxtid string, msgidoffset uint) string {
 //
 // This function differs from C_() in that it is not a macro and thus you may
 // use non-string-literals as context and msgid arguments.
+//
+// The function takes the following parameters:
+//
+//    - domain: translation domain to use, or NULL to use the domain set with
+//    textdomain().
+//    - context: message context.
+//    - msgid: message.
+//
 func Dpgettext2(domain, context, msgid string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -205,6 +246,12 @@ func Dpgettext2(domain, context, msgid string) string {
 }
 
 // StripContext: auxiliary function for gettext() support (see Q_()).
+//
+// The function takes the following parameters:
+//
+//    - msgid: string.
+//    - msgval: another string.
+//
 func StripContext(msgid, msgval string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out

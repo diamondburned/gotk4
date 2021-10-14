@@ -25,6 +25,11 @@ import "C"
 
 // DBusMessageBytesNeeded: utility function to calculate how many bytes are
 // needed to completely deserialize the D-Bus message stored at blob.
+//
+// The function takes the following parameters:
+//
+//    - blob representing a binary D-Bus message.
+//
 func DBusMessageBytesNeeded(blob []byte) (int, error) {
 	var _arg1 *C.guchar // out
 	var _arg2 C.gsize

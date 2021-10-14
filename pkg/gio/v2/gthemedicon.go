@@ -58,6 +58,11 @@ func marshalThemedIconner(p uintptr) (interface{}, error) {
 }
 
 // NewThemedIcon creates a new themed icon for iconname.
+//
+// The function takes the following parameters:
+//
+//    - iconname: string containing an icon name.
+//
 func NewThemedIcon(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
@@ -76,6 +81,11 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 }
 
 // NewThemedIconFromNames creates a new themed icon for iconnames.
+//
+// The function takes the following parameters:
+//
+//    - iconnames: array of strings containing icon names.
+//
 func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	var _arg1 **C.char // out
 	var _arg2 C.int
@@ -116,6 +126,11 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 //
 //    icon1 = g_themed_icon_new_from_names (names, 4);
 //    icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");.
+//
+// The function takes the following parameters:
+//
+//    - iconname: string containing an icon name.
+//
 func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in

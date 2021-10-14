@@ -57,6 +57,11 @@ func marshalEmblemmer(p uintptr) (interface{}, error) {
 }
 
 // NewEmblem creates a new emblem for icon.
+//
+// The function takes the following parameters:
+//
+//    - icon: GIcon containing the icon.
+//
 func NewEmblem(icon Iconner) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
@@ -74,6 +79,12 @@ func NewEmblem(icon Iconner) *Emblem {
 }
 
 // NewEmblemWithOrigin creates a new emblem for icon.
+//
+// The function takes the following parameters:
+//
+//    - icon: GIcon containing the icon.
+//    - origin: GEmblemOrigin enum defining the emblem's origin.
+//
 func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 	var _arg1 *C.GIcon        // out
 	var _arg2 C.GEmblemOrigin // out

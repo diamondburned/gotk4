@@ -150,6 +150,11 @@ func NewText() *Text {
 }
 
 // NewTextWithBuffer creates a new GtkText with the specified text buffer.
+//
+// The function takes the following parameters:
+//
+//    - buffer to use for the new GtkText.
+//
 func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 	var _arg1 *C.GtkEntryBuffer // out
 	var _cret *C.GtkWidget      // in

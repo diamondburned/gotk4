@@ -1034,6 +1034,11 @@ func DisplayGetDefault() *Display {
 }
 
 // DisplayOpen opens a display.
+//
+// The function takes the following parameters:
+//
+//    - displayName: name of the display to open.
+//
 func DisplayOpen(displayName string) *Display {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GdkDisplay // in

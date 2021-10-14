@@ -121,6 +121,13 @@ func marshalSocketter(p uintptr) (interface{}, error) {
 //
 // The protocol id is passed directly to the operating system, so you can use
 // protocols not listed in Protocol if you know the protocol number used for it.
+//
+// The function takes the following parameters:
+//
+//    - family: socket family to use, e.g. G_SOCKET_FAMILY_IPV4.
+//    - typ: socket type to use.
+//    - protocol: id of the protocol to use, or 0 for default.
+//
 func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*Socket, error) {
 	var _arg1 C.GSocketFamily   // out
 	var _arg2 C.GSocketType     // out
@@ -160,6 +167,11 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*S
 //
 // Since GLib 2.46, it is no longer a fatal error to call this on a non-socket
 // descriptor. Instead, a GError will be set with code G_IO_ERROR_FAILED.
+//
+// The function takes the following parameters:
+//
+//    - fd: native socket file descriptor.
+//
 func NewSocketFromFd(fd int) (*Socket, error) {
 	var _arg1 C.gint     // out
 	var _cret *C.GSocket // in

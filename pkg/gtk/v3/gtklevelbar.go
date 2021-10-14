@@ -126,6 +126,12 @@ func NewLevelBar() *LevelBar {
 
 // NewLevelBarForInterval: utility constructor that creates a new LevelBar for
 // the specified interval.
+//
+// The function takes the following parameters:
+//
+//    - minValue: positive value.
+//    - maxValue: positive value.
+//
 func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out

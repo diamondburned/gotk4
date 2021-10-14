@@ -233,6 +233,13 @@ func marshalTasker(p uintptr) (interface{}, error) {
 // cancellation may imply that other objects that the task depends on have been
 // destroyed. If you do not want this behavior, you can use
 // g_task_set_check_cancellable() to change it.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - sourceObject that owns this task, or NULL.
+//    - callback: ReadyCallback.
+//
 func NewTask(ctx context.Context, sourceObject *externglib.Object, callback AsyncReadyCallback) *Task {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.gpointer            // out
@@ -871,6 +878,12 @@ func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 // TaskIsValid checks that result is a #GTask, and that source_object is its
 // source object (or that source_object is NULL and result has no source
 // object). This can be used in g_return_if_fail() checks.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//    - sourceObject: source object expected to be associated with the task.
+//
 func TaskIsValid(result AsyncResulter, sourceObject *externglib.Object) bool {
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
@@ -900,6 +913,14 @@ func TaskIsValid(result AsyncResulter, sourceObject *externglib.Object) bool {
 // method, and deal with it appropriately if so.
 //
 // See also g_task_report_new_error().
+//
+// The function takes the following parameters:
+//
+//    - sourceObject that owns this task, or NULL.
+//    - callback: ReadyCallback.
+//    - sourceTag: opaque pointer indicating the source of this task.
+//    - err: error to report.
+//
 func TaskReportError(sourceObject *externglib.Object, callback AsyncReadyCallback, sourceTag cgo.Handle, err error) {
 	var _arg1 C.gpointer            // out
 	var _arg2 C.GAsyncReadyCallback // out

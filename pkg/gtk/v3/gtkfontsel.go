@@ -456,6 +456,11 @@ func marshalFontSelectionDialogger(p uintptr) (interface{}, error) {
 // NewFontSelectionDialog creates a new FontSelectionDialog.
 //
 // Deprecated: Use FontChooserDialog.
+//
+// The function takes the following parameters:
+//
+//    - title of the dialog window.
+//
 func NewFontSelectionDialog(title string) *FontSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

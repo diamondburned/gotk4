@@ -61,6 +61,11 @@ func marshalListStorer(p uintptr) (interface{}, error) {
 
 // NewListStore creates a new Store with items of type item_type. item_type must
 // be a subclass of #GObject.
+//
+// The function takes the following parameters:
+//
+//    - itemType of items in the list.
+//
 func NewListStore(itemType externglib.Type) *ListStore {
 	var _arg1 C.GType       // out
 	var _cret *C.GListStore // in

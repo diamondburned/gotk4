@@ -134,6 +134,12 @@ func (f FormatSizeFlags) Has(other FormatSizeFlags) bool {
 // (but not including) nth_bit upwards. Bits are numbered from 0 (least
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the 0th bit, set nth_bit to -1.
+//
+// The function takes the following parameters:
+//
+//    - mask containing flags.
+//    - nthBit: index of the bit to start the search from.
+//
 func BitNthLSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
@@ -157,6 +163,12 @@ func BitNthLSF(mask uint32, nthBit int) int {
 // (but not including) nth_bit downwards. Bits are numbered from 0 (least
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the last bit, set nth_bit to -1 or GLIB_SIZEOF_LONG * 8.
+//
+// The function takes the following parameters:
+//
+//    - mask containing flags.
+//    - nthBit: index of the bit to start the search from.
+//
 func BitNthMSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
@@ -178,6 +190,11 @@ func BitNthMSF(mask uint32, nthBit int) int {
 
 // BitStorage gets the number of bits used to hold number, e.g. if number is 4,
 // 3 bits are needed.
+//
+// The function takes the following parameters:
+//
+//    - number: #guint.
+//
 func BitStorage(number uint32) uint {
 	var _arg1 C.gulong // out
 	var _cret C.guint  // in
@@ -208,6 +225,11 @@ func BitStorage(number uint32) uint {
 // directory, then in the Windows directory, and finally in the directories in
 // the PATH environment variable. If the program is found, the return value
 // contains the full name including the type suffix.
+//
+// The function takes the following parameters:
+//
+//    - program name in the GLib file name encoding.
+//
 func FindProgramInPath(program string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -241,6 +263,11 @@ func FindProgramInPath(program string) string {
 //
 // See g_format_size_full() for more options about how the size might be
 // formatted.
+//
+// The function takes the following parameters:
+//
+//    - size in bytes.
+//
 func FormatSize(size uint64) string {
 	var _arg1 C.guint64 // out
 	var _cret *C.gchar  // in
@@ -269,6 +296,11 @@ func FormatSize(size uint64) string {
 //
 // Deprecated: This function is broken due to its use of SI suffixes to denote
 // IEC units. Use g_format_size() instead.
+//
+// The function takes the following parameters:
+//
+//    - size in bytes.
+//
 func FormatSizeForDisplay(size int64) string {
 	var _arg1 C.goffset // out
 	var _cret *C.gchar  // in
@@ -290,6 +322,12 @@ func FormatSizeForDisplay(size int64) string {
 //
 // This function is similar to g_format_size() but allows for flags that modify
 // the output. See SizeFlags.
+//
+// The function takes the following parameters:
+//
+//    - size in bytes.
+//    - flags to modify the output.
+//
 func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	var _arg1 C.guint64          // out
 	var _arg2 C.GFormatSizeFlags // out
@@ -394,6 +432,12 @@ func GetHostName() string {
 // /etc/os-release provides a number of other less commonly used values that may
 // be useful. No key is guaranteed to be provided, so the caller should always
 // check if the result is NULL.
+//
+// The function takes the following parameters:
+//
+//    - keyName: key for the OS info being requested, for example
+//    G_OS_INFO_KEY_NAME.
+//
 func GetOsInfo(keyName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -710,6 +754,11 @@ func GetUserRuntimeDir() string {
 // Depending on the platform, the user might be able to change the path of the
 // special directory without requiring the session to restart; GLib will not
 // reflect any change once the special directories are loaded.
+//
+// The function takes the following parameters:
+//
+//    - directory: logical id of special directory.
+//
 func GetUserSpecialDir(directory UserDirectory) string {
 	var _arg1 C.GUserDirectory // out
 	var _cret *C.gchar         // in
@@ -736,6 +785,14 @@ func GetUserSpecialDir(directory UserDirectory) string {
 //
 // If string is equal to "help", all the available keys in keys are printed out
 // to standard error.
+//
+// The function takes the following parameters:
+//
+//    - str: list of debug options separated by colons, spaces, or commas, or
+//    NULL.
+//    - keys: pointer to an array of Key which associate strings with bit
+//    flags.
+//
 func ParseDebugString(str string, keys []DebugKey) uint {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GDebugKey // out
@@ -789,6 +846,11 @@ func ReloadUserSpecialDirsCache() {
 //
 // The application name will be used in contexts such as error messages, or when
 // displaying an application's name in the task list.
+//
+// The function takes the following parameters:
+//
+//    - applicationName: localized name of the application.
+//
 func SetApplicationName(applicationName string) {
 	var _arg1 *C.gchar // out
 
@@ -808,6 +870,11 @@ func SetApplicationName(applicationName string) {
 // is found by taking the last component of argv[0].
 //
 // Note that for thread-safety reasons this function can only be called once.
+//
+// The function takes the following parameters:
+//
+//    - prgname: name of the program.
+//
 func SetPrgname(prgname string) {
 	var _arg1 *C.gchar // out
 

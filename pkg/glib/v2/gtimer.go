@@ -23,6 +23,11 @@ const USEC_PER_SEC = 1000000
 // There are 1 million microseconds per second (represented by the USEC_PER_SEC
 // macro). g_usleep() may have limited precision, depending on hardware and
 // operating system; don't rely on the exact length of the sleep.
+//
+// The function takes the following parameters:
+//
+//    - microseconds: number of microseconds to pause.
+//
 func Usleep(microseconds uint32) {
 	var _arg1 C.gulong // out
 
@@ -51,6 +56,11 @@ func Usleep(microseconds uint32) {
 //
 // Deprecated: Val is not year-2038-safe. Use g_date_time_new_from_iso8601()
 // instead.
+//
+// The function takes the following parameters:
+//
+//    - isoDate: ISO 8601 encoded date string.
+//
 func TimeValFromISO8601(isoDate string) (TimeVal, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.GTimeVal // in

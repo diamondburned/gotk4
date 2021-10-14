@@ -199,6 +199,12 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 //
 // If no application ID is given then some features (most notably application
 // uniqueness) will be disabled.
+//
+// The function takes the following parameters:
+//
+//    - applicationId: application ID.
+//    - flags: application flags.
+//
 func NewApplication(applicationId string, flags gio.ApplicationFlags) *Application {
 	var _arg1 *C.char             // out
 	var _arg2 C.GApplicationFlags // out

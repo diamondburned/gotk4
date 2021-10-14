@@ -193,6 +193,11 @@ func (self *NativeSurface) Unrealize() {
 }
 
 // NativeSurfaceGetForSurface finds the GtkNative associated with the surface.
+//
+// The function takes the following parameters:
+//
+//    - surface: GdkSurface.
+//
 func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GtkNative  // in

@@ -1450,6 +1450,11 @@ func (regex *Regex) Split(str string, matchOptions RegexMatchFlags) []string {
 // references. For instance, replacement text 'foo\n' does not contain
 // references and may be evaluated without information about actual match, but
 // '\0\1' (whole match followed by first subpattern) requires valid Info object.
+//
+// The function takes the following parameters:
+//
+//    - replacement string.
+//
 func RegexCheckReplacement(replacement string) (bool, error) {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.gboolean // in
@@ -1479,6 +1484,12 @@ func RegexCheckReplacement(replacement string) (bool, error) {
 //
 // For completeness, length can be -1 for a nul-terminated string. In this case
 // the output string will be of course equal to string.
+//
+// The function takes the following parameters:
+//
+//    - str: string to escape.
+//    - length of string.
+//
 func RegexEscapeNUL(str string, length int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
@@ -1510,6 +1521,14 @@ func RegexEscapeNUL(str string, length int) string {
 // If this function is to be called on the same pattern more than once, it's
 // more efficient to compile the pattern once with g_regex_new() and then use
 // g_regex_match().
+//
+// The function takes the following parameters:
+//
+//    - pattern: regular expression.
+//    - str: string to scan for matches.
+//    - compileOptions: compile options for the regular expression, or 0.
+//    - matchOptions: match options, or 0.
+//
 func RegexMatchSimple(pattern, str string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) bool {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
@@ -1563,6 +1582,14 @@ func RegexMatchSimple(pattern, str string, compileOptions RegexCompileFlags, mat
 // A pattern that can match empty strings splits string into separate characters
 // wherever it matches the empty string between characters. For example
 // splitting "ab c" using as a separator "\s*", you will get "a", "b" and "c".
+//
+// The function takes the following parameters:
+//
+//    - pattern: regular expression.
+//    - str: string to scan for matches.
+//    - compileOptions: compile options for the regular expression, or 0.
+//    - matchOptions: match options, or 0.
+//
 func RegexSplitSimple(pattern, str string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out

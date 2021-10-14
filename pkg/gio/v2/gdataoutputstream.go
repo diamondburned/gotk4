@@ -61,6 +61,11 @@ func marshalDataOutputStreamer(p uintptr) (interface{}, error) {
 }
 
 // NewDataOutputStream creates a new data output stream for base_stream.
+//
+// The function takes the following parameters:
+//
+//    - baseStream: Stream.
+//
 func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 	var _arg1 *C.GOutputStream     // out
 	var _cret *C.GDataOutputStream // in

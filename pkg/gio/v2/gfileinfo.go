@@ -1039,6 +1039,33 @@ func (info *FileInfo) ContentType() string {
 	return _utf8
 }
 
+// DeletionDate returns the Time representing the deletion date of the file, as
+// available in G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
+// G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, NULL is returned.
+func (info *FileInfo) DeletionDate() *glib.DateTime {
+	var _arg0 *C.GFileInfo // out
+	var _cret *C.GDateTime // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+
+	_cret = C.g_file_info_get_deletion_date(_arg0)
+	runtime.KeepAlive(info)
+
+	var _dateTime *glib.DateTime // out
+
+	if _cret != nil {
+		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_dateTime)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_date_time_unref((*C.GDateTime)(intern.C))
+			},
+		)
+	}
+
+	return _dateTime
+}
+
 // DisplayName gets a display name for a file. This is guaranteed to always be
 // set.
 func (info *FileInfo) DisplayName() string {
@@ -1196,6 +1223,36 @@ func (info *FileInfo) IsSymlink() bool {
 	}
 
 	return _ok
+}
+
+// ModificationDateTime gets the modification time of the current info and
+// returns it as a Time.
+//
+// This requires the G_FILE_ATTRIBUTE_TIME_MODIFIED attribute. If
+// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is provided, the resulting Time will have
+// microsecond precision.
+func (info *FileInfo) ModificationDateTime() *glib.DateTime {
+	var _arg0 *C.GFileInfo // out
+	var _cret *C.GDateTime // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+
+	_cret = C.g_file_info_get_modification_date_time(_arg0)
+	runtime.KeepAlive(info)
+
+	var _dateTime *glib.DateTime // out
+
+	if _cret != nil {
+		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_dateTime)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_date_time_unref((*C.GDateTime)(intern.C))
+			},
+		)
+	}
+
+	return _dateTime
 }
 
 // ModificationTime gets the modification time of the current info and sets it
@@ -1896,6 +1953,26 @@ func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 	C.g_file_info_set_is_symlink(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(isSymlink)
+}
+
+// SetModificationDateTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
+// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the given
+// date/time value.
+//
+// The function takes the following parameters:
+//
+//    - mtime: Time.
+//
+func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
+	var _arg0 *C.GFileInfo // out
+	var _arg1 *C.GDateTime // out
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg1 = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(mtime)))
+
+	C.g_file_info_set_modification_date_time(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(mtime)
 }
 
 // SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and

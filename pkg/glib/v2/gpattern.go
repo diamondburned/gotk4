@@ -16,6 +16,12 @@ import "C"
 // this function is to be called in a loop, it's more efficient to compile the
 // pattern once with g_pattern_spec_new() and call g_pattern_match_string()
 // repeatedly.
+//
+// The function takes the following parameters:
+//
+//    - pattern: UTF-8 encoded pattern.
+//    - str: UTF-8 encoded string to match.
+//
 func PatternMatchSimple(pattern, str string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out

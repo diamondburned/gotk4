@@ -76,6 +76,11 @@ func (g Gravity) String() string {
 
 // GravityGetForMatrix finds the gravity that best matches the rotation
 // component in a PangoMatrix.
+//
+// The function takes the following parameters:
+//
+//    - matrix: PangoMatrix.
+//
 func GravityGetForMatrix(matrix *Matrix) Gravity {
 	var _arg1 *C.PangoMatrix // out
 	var _cret C.PangoGravity // in
@@ -101,6 +106,13 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 // If base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
 // preferred gravity of script. To get the preferred gravity of a script, pass
 // PANGO_GRAVITY_AUTO and PANGO_GRAVITY_HINT_STRONG in.
+//
+// The function takes the following parameters:
+//
+//    - script to query.
+//    - baseGravity: base gravity of the paragraph.
+//    - hint: orientation hint.
+//
 func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out
 	var _arg2 C.PangoGravity     // out
@@ -137,6 +149,14 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 //
 // If base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
 // preferred gravity of script.
+//
+// The function takes the following parameters:
+//
+//    - script to query.
+//    - wide: TRUE for wide characters as returned by g_unichar_iswide().
+//    - baseGravity: base gravity of the paragraph.
+//    - hint: orientation hint.
+//
 func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out
 	var _arg2 C.gboolean         // out
@@ -170,6 +190,11 @@ func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, 
 // Note that pango.Matrix.Rotate() takes angle in degrees, not radians. So, to
 // call pango.Matrix,rotate with the output of this function you should multiply
 // it by (180. / G_PI).
+//
+// The function takes the following parameters:
+//
+//    - gravity to query, should not be PANGO_GRAVITY_AUTO.
+//
 func GravityToRotation(gravity Gravity) float64 {
 	var _arg1 C.PangoGravity // out
 	var _cret C.double       // in

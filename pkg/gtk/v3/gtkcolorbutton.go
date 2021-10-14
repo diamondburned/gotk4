@@ -122,6 +122,11 @@ func NewColorButton() *ColorButton {
 // NewColorButtonWithColor creates a new color button.
 //
 // Deprecated: Use gtk_color_button_new_with_rgba() instead.
+//
+// The function takes the following parameters:
+//
+//    - color to set the current color with.
+//
 func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 	var _arg1 *C.GdkColor  // out
 	var _cret *C.GtkWidget // in
@@ -139,6 +144,11 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 }
 
 // NewColorButtonWithRGBA creates a new color button.
+//
+// The function takes the following parameters:
+//
+//    - rgba to set the current color with.
+//
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in

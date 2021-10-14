@@ -23,6 +23,11 @@ func init() {
 
 // RelationTypeForName: get the RelationType type corresponding to a relation
 // name.
+//
+// The function takes the following parameters:
+//
+//    - name: string which is the (non-localized) name of an ATK relation type.
+//
 func RelationTypeForName(name string) RelationType {
 	var _arg1 *C.gchar          // out
 	var _cret C.AtkRelationType // in
@@ -42,6 +47,11 @@ func RelationTypeForName(name string) RelationType {
 
 // RelationTypeGetName gets the description string describing the RelationType
 // type.
+//
+// The function takes the following parameters:
+//
+//    - typ whose name is required.
+//
 func RelationTypeGetName(typ RelationType) string {
 	var _arg1 C.AtkRelationType // out
 	var _cret *C.gchar          // in
@@ -59,6 +69,11 @@ func RelationTypeGetName(typ RelationType) string {
 }
 
 // RelationTypeRegister: associate name with a new RelationType.
+//
+// The function takes the following parameters:
+//
+//    - name string.
+//
 func RelationTypeRegister(name string) RelationType {
 	var _arg1 *C.gchar          // out
 	var _cret C.AtkRelationType // in
@@ -97,6 +112,12 @@ func marshalRelationer(p uintptr) (interface{}, error) {
 
 // NewRelation: create a new relation for the specified key and the specified
 // list of targets. See also atk_object_add_relationship().
+//
+// The function takes the following parameters:
+//
+//    - targets: array of pointers to Objects.
+//    - relationship with which to create the new Relation.
+//
 func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 	var _arg1 **C.AtkObject // out
 	var _arg2 C.gint

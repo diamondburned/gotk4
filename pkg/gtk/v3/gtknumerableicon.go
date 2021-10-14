@@ -313,6 +313,11 @@ func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 // NewNumerableIcon creates a new unthemed NumerableIcon.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - baseIcon to overlay on.
+//
 func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 	var _arg1 *C.GIcon // out
 	var _cret *C.GIcon // in
@@ -346,6 +351,12 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 // constructor that calls gtk_numerable_icon_set_style_context() internally.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - baseIcon to overlay on.
+//    - context: StyleContext.
+//
 func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContext) gio.Iconner {
 	var _arg1 *C.GIcon           // out
 	var _arg2 *C.GtkStyleContext // out

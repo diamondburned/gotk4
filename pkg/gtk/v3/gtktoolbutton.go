@@ -110,6 +110,12 @@ func marshalToolButtonner(p uintptr) (interface{}, error) {
 
 // NewToolButton creates a new ToolButton using icon_widget as contents and
 // label as label.
+//
+// The function takes the following parameters:
+//
+//    - iconWidget: widget that will be used as the button contents, or NULL.
+//    - label: string that will be used as label, or NULL.
+//
 func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
@@ -142,6 +148,11 @@ func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 //
 // Deprecated: Use gtk_tool_button_new() together with
 // gtk_image_new_from_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: name of the stock item.
+//
 func NewToolButtonFromStock(stockId string) *ToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in

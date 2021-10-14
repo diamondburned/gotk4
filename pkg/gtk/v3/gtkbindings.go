@@ -22,6 +22,13 @@ import "C"
 
 // BindingsActivate: find a key binding matching keyval and modifiers and
 // activate the binding on object.
+//
+// The function takes the following parameters:
+//
+//    - object to activate when binding found.
+//    - keyval: key value of the binding.
+//    - modifiers: key modifier of the binding.
+//
 func BindingsActivate(object *externglib.Object, keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GObject        // out
 	var _arg2 C.guint           // out
@@ -48,6 +55,12 @@ func BindingsActivate(object *externglib.Object, keyval uint, modifiers gdk.Modi
 
 // BindingsActivateEvent looks up key bindings for object to find one matching
 // event, and if one was found, activate it.
+//
+// The function takes the following parameters:
+//
+//    - object (generally must be a widget).
+//    - event: EventKey.
+//
 func BindingsActivateEvent(object *externglib.Object, event *gdk.EventKey) bool {
 	var _arg1 *C.GObject     // out
 	var _arg2 *C.GdkEventKey // out
@@ -160,6 +173,12 @@ func (b *BindingEntry) Signals() *BindingSignal {
 //
 // Key combinations must be in a format that can be parsed by
 // gtk_accelerator_parse().
+//
+// The function takes the following parameters:
+//
+//    - bindingSet: BindingSet.
+//    - signalDesc: signal description.
+//
 func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) glib.TokenType {
 	var _arg1 *C.GtkBindingSet // out
 	var _arg2 *C.gchar         // out
@@ -182,6 +201,15 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 
 // BindingEntryAddSignall: override or install a new key binding for keyval with
 // modifiers on binding_set.
+//
+// The function takes the following parameters:
+//
+//    - bindingSet to add a signal to.
+//    - keyval: key value.
+//    - modifiers: key modifier.
+//    - signalName: signal name to be bound.
+//    - bindingArgs: list of BindingArg signal arguments.
+//
 func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType, signalName string, bindingArgs []BindingArg) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
@@ -212,6 +240,13 @@ func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.M
 
 // BindingEntryRemove: remove a binding previously installed via
 // gtk_binding_entry_add_signal() on binding_set.
+//
+// The function takes the following parameters:
+//
+//    - bindingSet to remove an entry of.
+//    - keyval: key value of binding to remove.
+//    - modifiers: key modifier of binding to remove.
+//
 func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
@@ -229,6 +264,13 @@ func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.Modif
 
 // BindingEntrySkip: install a binding on binding_set which causes key lookups
 // to be aborted, to prevent bindings from lower priority sets to be activated.
+//
+// The function takes the following parameters:
+//
+//    - bindingSet to skip an entry of.
+//    - keyval: key value of binding to skip.
+//    - modifiers: key modifier of binding to skip.
+//
 func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
@@ -346,6 +388,11 @@ func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, pri
 //
 // The set_name can either be a name used for gtk_binding_set_new() or the type
 // name of a class used in gtk_binding_set_by_class().
+//
+// The function takes the following parameters:
+//
+//    - setName: unique binding set name.
+//
 func BindingSetFind(setName string) *BindingSet {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GtkBindingSet // in

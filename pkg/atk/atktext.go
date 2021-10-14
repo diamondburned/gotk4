@@ -194,6 +194,12 @@ func (t TextAttribute) String() string {
 
 // TextAttributeForName: get the TextAttribute type corresponding to a text
 // attribute name.
+//
+// The function takes the following parameters:
+//
+//    - name: string which is the (non-localized) name of an ATK text
+//    attribute.
+//
 func TextAttributeForName(name string) TextAttribute {
 	var _arg1 *C.gchar           // out
 	var _cret C.AtkTextAttribute // in
@@ -212,6 +218,11 @@ func TextAttributeForName(name string) TextAttribute {
 }
 
 // TextAttributeGetName gets the name corresponding to the TextAttribute.
+//
+// The function takes the following parameters:
+//
+//    - attr whose name is required.
+//
 func TextAttributeGetName(attr TextAttribute) string {
 	var _arg1 C.AtkTextAttribute // out
 	var _cret *C.gchar           // in
@@ -229,6 +240,12 @@ func TextAttributeGetName(attr TextAttribute) string {
 }
 
 // TextAttributeGetValue gets the value for the index of the TextAttribute.
+//
+// The function takes the following parameters:
+//
+//    - attr for which a value is required.
+//    - index_: index of the required value.
+//
 func TextAttributeGetValue(attr TextAttribute, index_ int) string {
 	var _arg1 C.AtkTextAttribute // out
 	var _arg2 C.gint             // out
@@ -251,6 +268,11 @@ func TextAttributeGetValue(attr TextAttribute, index_ int) string {
 }
 
 // TextAttributeRegister: associate name with a new TextAttribute.
+//
+// The function takes the following parameters:
+//
+//    - name string.
+//
 func TextAttributeRegister(name string) TextAttribute {
 	var _arg1 *C.gchar           // out
 	var _cret C.AtkTextAttribute // in

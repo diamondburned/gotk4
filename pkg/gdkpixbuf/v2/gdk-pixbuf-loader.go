@@ -122,6 +122,11 @@ func NewPixbufLoader() *PixbufLoader {
 // "image/x-xpixmap" are among the supported mime types. To obtain the full list
 // of supported mime types, call gdk_pixbuf_format_get_mime_types() on each of
 // the PixbufFormat structs returned by gdk_pixbuf_get_formats().
+//
+// The function takes the following parameters:
+//
+//    - mimeType: mime type to be loaded.
+//
 func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in
@@ -157,6 +162,11 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 // supported formats. To obtain the full list of supported image formats, call
 // gdk_pixbuf_format_get_name() on each of the PixbufFormat structs returned by
 // gdk_pixbuf_get_formats().
+//
+// The function takes the following parameters:
+//
+//    - imageType: name of the image format to be loaded with the image.
+//
 func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in

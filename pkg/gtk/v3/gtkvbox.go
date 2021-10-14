@@ -88,6 +88,13 @@ func marshalVBoxer(p uintptr) (interface{}, error) {
 // which is a quick and easy change. But the recommendation is to switch to
 // Grid, since Box is going to go away eventually. See [Migrating from other
 // containers to GtkGrid][gtk-migrating-GtkGrid].
+//
+// The function takes the following parameters:
+//
+//    - homogeneous: TRUE if all children are to be given equal space
+//    allotments.
+//    - spacing: number of pixels to place by default between children.
+//
 func NewVBox(homogeneous bool, spacing int) *VBox {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out

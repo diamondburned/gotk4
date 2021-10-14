@@ -180,6 +180,12 @@ func NewLevelBar() *LevelBar {
 }
 
 // NewLevelBarForInterval creates a new GtkLevelBar for the specified interval.
+//
+// The function takes the following parameters:
+//
+//    - minValue: positive value.
+//    - maxValue: positive value.
+//
 func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out

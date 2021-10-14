@@ -61,6 +61,17 @@ func marshalAspectFramer(p uintptr) (interface{}, error) {
 }
 
 // NewAspectFrame: create a new GtkAspectFrame.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment of the child within the parent. Ranges
+//    from 0.0 (left aligned) to 1.0 (right aligned).
+//    - yalign: vertical alignment of the child within the parent. Ranges from
+//    0.0 (top aligned) to 1.0 (bottom aligned).
+//    - ratio: desired aspect ratio.
+//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken
+//    from the requistion of the child.
+//
 func NewAspectFrame(xalign, yalign, ratio float32, obeyChild bool) *AspectFrame {
 	var _arg1 C.float      // out
 	var _arg2 C.float      // out

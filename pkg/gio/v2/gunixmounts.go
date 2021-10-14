@@ -37,6 +37,11 @@ func init() {
 // implementation of the OS. This is primarily used for hiding mountable and
 // mounted volumes that only are used in the OS and has little to no relevance
 // to the casual user.
+//
+// The function takes the following parameters:
+//
+//    - mountPath: mount path, e.g. /media/disk or /usr.
+//
 func UnixIsMountPathSystemInternal(mountPath string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
@@ -63,6 +68,11 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 // example, appear in a GUI. For example, the Linux /proc filesystem.
 //
 // The list of device paths considered ‘system’ ones may change over time.
+//
+// The function takes the following parameters:
+//
+//    - devicePath: device path, e.g. /dev/loop0 or nfsd.
+//
 func UnixIsSystemDevicePath(devicePath string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
@@ -89,6 +99,11 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 // example, appear in a GUI. For example, the Linux /proc filesystem.
 //
 // The list of file system types considered ‘system’ ones may change over time.
+//
+// The function takes the following parameters:
+//
+//    - fsType: file system type, e.g. procfs or tmpfs.
+//
 func UnixIsSystemFSType(fsType string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
@@ -113,6 +128,11 @@ func UnixIsSystemFSType(fsType string) bool {
 // since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
+//
+// The function takes the following parameters:
+//
+//    - mountPath: path for a possible unix mount.
+//
 func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
 	var _arg1 *C.char            // out
 	var _arg2 C.guint64          // in
@@ -140,6 +160,12 @@ func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
 }
 
 // UnixMountCompare compares two unix mounts.
+//
+// The function takes the following parameters:
+//
+//    - mount1: first MountEntry to compare.
+//    - mount2: second MountEntry to compare.
+//
 func UnixMountCompare(mount1, mount2 *UnixMountEntry) int {
 	var _arg1 *C.GUnixMountEntry // out
 	var _arg2 *C.GUnixMountEntry // out
@@ -160,6 +186,11 @@ func UnixMountCompare(mount1, mount2 *UnixMountEntry) int {
 }
 
 // UnixMountCopy makes a copy of mount_entry.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: MountEntry.
+//
 func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.GUnixMountEntry // in
@@ -187,6 +218,11 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 // since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
+//
+// The function takes the following parameters:
+//
+//    - filePath: file path on some unix mount.
+//
 func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
 	var _arg1 *C.char            // out
 	var _arg2 C.guint64          // in
@@ -214,6 +250,11 @@ func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
 }
 
 // UnixMountGetDevicePath gets the device path for a unix mount.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: Mount.
+//
 func UnixMountGetDevicePath(mountEntry *UnixMountEntry) string {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.char            // in
@@ -231,6 +272,11 @@ func UnixMountGetDevicePath(mountEntry *UnixMountEntry) string {
 }
 
 // UnixMountGetFSType gets the filesystem type for the unix mount.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: Mount.
+//
 func UnixMountGetFSType(mountEntry *UnixMountEntry) string {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.char            // in
@@ -248,6 +294,11 @@ func UnixMountGetFSType(mountEntry *UnixMountEntry) string {
 }
 
 // UnixMountGetMountPath gets the mount path for a unix mount.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: input MountEntry to get the mount path for.
+//
 func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.char            // in
@@ -269,6 +320,11 @@ func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
 //
 // This is similar to g_unix_mount_point_get_options(), but it takes a
 // MountEntry as an argument.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: MountEntry.
+//
 func UnixMountGetOptions(mountEntry *UnixMountEntry) string {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.char            // in
@@ -292,6 +348,11 @@ func UnixMountGetOptions(mountEntry *UnixMountEntry) string {
 //
 // For example, the root path is equal to "/" for mount created by "mount
 // /dev/sda1 /mnt/foo" and "/bar" for "mount --bind /mnt/foo/bar /mnt/bar".
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: MountEntry.
+//
 func UnixMountGetRootPath(mountEntry *UnixMountEntry) string {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.char            // in
@@ -311,6 +372,11 @@ func UnixMountGetRootPath(mountEntry *UnixMountEntry) string {
 }
 
 // UnixMountGuessCanEject guesses whether a Unix mount can be ejected.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: MountEntry.
+//
 func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret C.gboolean         // in
@@ -330,6 +396,11 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 }
 
 // UnixMountGuessIcon guesses the icon of a Unix mount.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: MountEntry.
+//
 func UnixMountGuessIcon(mountEntry *UnixMountEntry) Iconner {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.GIcon           // in
@@ -360,6 +431,11 @@ func UnixMountGuessIcon(mountEntry *UnixMountEntry) Iconner {
 
 // UnixMountGuessName guesses the name of a Unix mount. The result is a
 // translated string.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: MountEntry.
+//
 func UnixMountGuessName(mountEntry *UnixMountEntry) string {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.char            // in
@@ -379,6 +455,11 @@ func UnixMountGuessName(mountEntry *UnixMountEntry) string {
 
 // UnixMountGuessShouldDisplay guesses whether a Unix mount should be displayed
 // in the UI.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: MountEntry.
+//
 func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret C.gboolean         // in
@@ -398,6 +479,11 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 }
 
 // UnixMountGuessSymbolicIcon guesses the symbolic icon of a Unix mount.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: MountEntry.
+//
 func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Iconner {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.GIcon           // in
@@ -427,6 +513,11 @@ func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Iconner {
 }
 
 // UnixMountIsReadonly checks if a unix mount is mounted read only.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: Mount.
+//
 func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret C.gboolean         // in
@@ -451,6 +542,11 @@ func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 //
 // The definition of what a ‘system’ mount entry is may change over time as new
 // file system types and device paths are ignored.
+//
+// The function takes the following parameters:
+//
+//    - mountEntry: Mount.
+//
 func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret C.gboolean         // in
@@ -471,6 +567,11 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 
 // UnixMountPointsChangedSince checks if the unix mount points have changed
 // since a given unix time.
+//
+// The function takes the following parameters:
+//
+//    - time: guint64 to contain a timestamp.
+//
 func UnixMountPointsChangedSince(time uint64) bool {
 	var _arg1 C.guint64  // out
 	var _cret C.gboolean // in
@@ -522,6 +623,11 @@ func UnixMountPointsGet() (uint64, []*UnixMountPoint) {
 
 // UnixMountsChangedSince checks if the unix mounts have changed since a given
 // unix time.
+//
+// The function takes the following parameters:
+//
+//    - time: guint64 to contain a timestamp.
+//
 func UnixMountsChangedSince(time uint64) bool {
 	var _arg1 C.guint64  // out
 	var _cret C.gboolean // in
@@ -967,6 +1073,11 @@ func (mountPoint *UnixMountPoint) IsUserMountable() bool {
 //
 // If more mount points have the same mount path, the last matching mount point
 // is returned.
+//
+// The function takes the following parameters:
+//
+//    - mountPath: path for a possible unix mount point.
+//
 func UnixMountPointAt(mountPath string) (uint64, *UnixMountPoint) {
 	var _arg1 *C.char            // out
 	var _arg2 C.guint64          // in

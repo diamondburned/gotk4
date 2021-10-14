@@ -526,6 +526,11 @@ func marshalSettingser(p uintptr) (interface{}, error) {
 // thread-default Context in effect at the time of the call to g_settings_new().
 // The new #GSettings will hold a reference on the context. See
 // g_main_context_push_thread_default().
+//
+// The function takes the following parameters:
+//
+//    - schemaId: id of the schema.
+//
 func NewSettings(schemaId string) *Settings {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GSettings // in
@@ -555,6 +560,12 @@ func NewSettings(schemaId string) *Settings {
 //
 // It is a programmer error if path is not a valid path. A valid path begins and
 // ends with '/' and does not contain two consecutive '/' characters.
+//
+// The function takes the following parameters:
+//
+//    - schemaId: id of the schema.
+//    - path to use.
+//
 func NewSettingsWithPath(schemaId, path string) *Settings {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -2106,6 +2117,12 @@ func SettingsSync() {
 //
 // Note that bindings are automatically removed when the object is finalized, so
 // it is rarely necessary to call this function.
+//
+// The function takes the following parameters:
+//
+//    - object: object.
+//    - property whose binding is removed.
+//
 func SettingsUnbind(object *externglib.Object, property string) {
 	var _arg1 C.gpointer // out
 	var _arg2 *C.gchar   // out

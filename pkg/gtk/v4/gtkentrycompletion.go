@@ -137,6 +137,11 @@ func NewEntryCompletion() *EntryCompletion {
 //
 // The GtkCellArea is used to layout cells in the underlying GtkTreeViewColumn
 // for the drop-down menu.
+//
+// The function takes the following parameters:
+//
+//    - area used to layout cells.
+//
 func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 	var _arg1 *C.GtkCellArea        // out
 	var _cret *C.GtkEntryCompletion // in

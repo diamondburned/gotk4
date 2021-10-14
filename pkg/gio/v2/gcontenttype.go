@@ -27,6 +27,11 @@ import "C"
 // ContentTypeCanBeExecutable checks if a content type can be executable. Note
 // that for instance things like text files can be executables (i.e. scripts and
 // batch files).
+//
+// The function takes the following parameters:
+//
+//    - typ: content type string.
+//
 func ContentTypeCanBeExecutable(typ string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -47,6 +52,12 @@ func ContentTypeCanBeExecutable(typ string) bool {
 }
 
 // ContentTypeEquals compares two content types for equality.
+//
+// The function takes the following parameters:
+//
+//    - type1: content type string.
+//    - type2: content type string.
+//
 func ContentTypeEquals(type1, type2 string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -72,6 +83,11 @@ func ContentTypeEquals(type1, type2 string) bool {
 
 // ContentTypeFromMIMEType tries to find a content type based on the mime type
 // name.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: mime type string.
+//
 func ContentTypeFromMIMEType(mimeType string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -94,6 +110,11 @@ func ContentTypeFromMIMEType(mimeType string) string {
 
 // ContentTypeGetDescription gets the human readable description of the content
 // type.
+//
+// The function takes the following parameters:
+//
+//    - typ: content type string.
+//
 func ContentTypeGetDescription(typ string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -117,6 +138,11 @@ func ContentTypeGetDescription(typ string) string {
 // See the shared-mime-info
 // (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
 // specification for more on the generic icon name.
+//
+// The function takes the following parameters:
+//
+//    - typ: content type string.
+//
 func ContentTypeGetGenericIconName(typ string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -138,6 +164,11 @@ func ContentTypeGetGenericIconName(typ string) string {
 }
 
 // ContentTypeGetIcon gets the icon for a content type.
+//
+// The function takes the following parameters:
+//
+//    - typ: content type string.
+//
 func ContentTypeGetIcon(typ string) Iconner {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
@@ -195,6 +226,11 @@ func ContentTypeGetMIMEDirs() []string {
 
 // ContentTypeGetMIMEType gets the mime type for the content type, if one is
 // registered.
+//
+// The function takes the following parameters:
+//
+//    - typ: content type string.
+//
 func ContentTypeGetMIMEType(typ string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -216,6 +252,11 @@ func ContentTypeGetMIMEType(typ string) string {
 }
 
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
+//
+// The function takes the following parameters:
+//
+//    - typ: content type string.
+//
 func ContentTypeGetSymbolicIcon(typ string) Iconner {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
@@ -249,6 +290,12 @@ func ContentTypeGetSymbolicIcon(typ string) Iconner {
 // function is uncertain, result_uncertain will be set to TRUE. Either filename
 // or data may be NULL, in which case the guess will be based solely on the
 // other argument.
+//
+// The function takes the following parameters:
+//
+//    - filename: string, or NULL.
+//    - data: stream of data, or NULL.
+//
 func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.guchar // out
@@ -293,6 +340,11 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 //
 // This function is useful in the implementation of
 // g_mount_guess_content_type().
+//
+// The function takes the following parameters:
+//
+//    - root of the tree to guess a type for.
+//
 func ContentTypeGuessForTree(root Filer) []string {
 	var _arg1 *C.GFile  // out
 	var _cret **C.gchar // in
@@ -324,6 +376,12 @@ func ContentTypeGuessForTree(root Filer) []string {
 }
 
 // ContentTypeIsA determines if type is a subset of supertype.
+//
+// The function takes the following parameters:
+//
+//    - typ: content type string.
+//    - supertype: content type string.
+//
 func ContentTypeIsA(typ, supertype string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -349,6 +407,12 @@ func ContentTypeIsA(typ, supertype string) bool {
 
 // ContentTypeIsMIMEType determines if type is a subset of mime_type.
 // Convenience wrapper around g_content_type_is_a().
+//
+// The function takes the following parameters:
+//
+//    - typ: content type string.
+//    - mimeType: mime type string.
+//
 func ContentTypeIsMIMEType(typ, mimeType string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -375,6 +439,11 @@ func ContentTypeIsMIMEType(typ, mimeType string) bool {
 // ContentTypeIsUnknown checks if the content type is the generic "unknown"
 // type. On UNIX this is the "application/octet-stream" mimetype, while on win32
 // it is "*" and on OSX it is a dynamic type or octet-stream.
+//
+// The function takes the following parameters:
+//
+//    - typ: content type string.
+//
 func ContentTypeIsUnknown(typ string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -415,6 +484,13 @@ func ContentTypeIsUnknown(typ string) bool {
 //      …
 //
 //      return g_test_run ();.
+//
+// The function takes the following parameters:
+//
+//    - dirs: NULL-terminated list of directories to load MIME data from,
+//    including any mime/ subdirectory, and with the first directory to try
+//    listed first.
+//
 func ContentTypeSetMIMEDirs(dirs []string) {
 	var _arg1 **C.gchar // out
 

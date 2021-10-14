@@ -215,6 +215,11 @@ func (language *Language) String() string {
 //
 // Use pango.Language.GetDefault if you want to get the PangoLanguage for the
 // current locale of the process.
+//
+// The function takes the following parameters:
+//
+//    - language: string representing a language tag, or NULL.
+//
 func LanguageFromString(language string) *Language {
 	var _arg1 *C.char          // out
 	var _cret *C.PangoLanguage // in

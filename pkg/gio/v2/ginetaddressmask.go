@@ -58,6 +58,12 @@ func marshalInetAddressMasker(p uintptr) (interface{}, error) {
 
 // NewInetAddressMask creates a new AddressMask representing all addresses whose
 // first length bits match addr.
+//
+// The function takes the following parameters:
+//
+//    - addr: Address.
+//    - length: number of bits of addr to use.
+//
 func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error) {
 	var _arg1 *C.GInetAddress     // out
 	var _arg2 C.guint             // out
@@ -86,6 +92,11 @@ func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error
 // (optional) length, and creates a new AddressMask. The length, if present, is
 // delimited by a "/". If it is not present, then the length is assumed to be
 // the full length of the address.
+//
+// The function takes the following parameters:
+//
+//    - maskString: IP address or address/length string.
+//
 func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GInetAddressMask // in

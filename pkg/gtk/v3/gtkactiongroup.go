@@ -112,6 +112,11 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 // is used when associating [keybindings][Action-Accel] with the actions.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - name of the action group.
+//
 func NewActionGroup(name string) *ActionGroup {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkActionGroup // in

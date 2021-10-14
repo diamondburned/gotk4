@@ -46,6 +46,11 @@ func marshalMountOperationer(p uintptr) (interface{}, error) {
 }
 
 // NewMountOperation creates a new MountOperation.
+//
+// The function takes the following parameters:
+//
+//    - parent: transient parent of the window, or NULL.
+//
 func NewMountOperation(parent *Window) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in

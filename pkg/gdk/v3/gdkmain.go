@@ -19,6 +19,11 @@ import "C"
 // group. This is not public API and must not be used by applications.
 //
 // Deprecated: This symbol was never meant to be used outside of GTK+.
+//
+// The function takes the following parameters:
+//
+//    - group: option group.
+//
 func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
 	var _arg1 *C.GOptionGroup // out
 
@@ -166,6 +171,19 @@ func GetProgramClass() string {
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_device_grab() instead.
+//
+// The function takes the following parameters:
+//
+//    - window which will own the grab (the grab window).
+//    - ownerEvents: if FALSE then all keyboard events are reported with
+//    respect to window. If TRUE then keyboard events for this application are
+//    reported as normal, but keyboard events outside this application are
+//    reported with respect to window. Both key press and key release events
+//    are always reported, independant of the event mask set by the
+//    application.
+//    - time_: timestamp from a Event, or GDK_CURRENT_TIME if no timestamp is
+//    available.
+//
 func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
 	var _arg2 C.gboolean      // out
@@ -194,6 +212,12 @@ func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 // by this application.
 //
 // Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab() instead.
+//
+// The function takes the following parameters:
+//
+//    - time_: timestamp from a Event, or GDK_CURRENT_TIME if no timestamp is
+//    available.
+//
 func KeyboardUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
 
@@ -220,6 +244,12 @@ func NotifyStartupComplete() {
 // GTK+ will call this function automatically for Window with custom
 // startup-notification identifier unless
 // gtk_window_set_auto_startup_notification() is called to disable that feature.
+//
+// The function takes the following parameters:
+//
+//    - startupId: startup-notification identifier, for which notification
+//    process should be completed.
+//
 func NotifyStartupCompleteWithID(startupId string) {
 	var _arg1 *C.gchar // out
 
@@ -252,6 +282,30 @@ func NotifyStartupCompleteWithID(startupId string) {
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_device_grab() instead.
+//
+// The function takes the following parameters:
+//
+//    - window which will own the grab (the grab window).
+//    - ownerEvents: if FALSE then all pointer events are reported with respect
+//    to window and are only reported if selected by event_mask. If TRUE then
+//    pointer events for this application are reported as normal, but pointer
+//    events outside this application are reported with respect to window and
+//    only if selected by event_mask. In either mode, unreported events are
+//    discarded.
+//    - eventMask specifies the event mask, which is used in accordance with
+//    owner_events. Note that only pointer events (i.e. button and motion
+//    events) may be selected.
+//    - confineTo: if non-NULL, the pointer will be confined to this window
+//    during the grab. If the pointer is outside confine_to, it will
+//    automatically be moved to the closest edge of confine_to and enter and
+//    leave events will be generated as necessary.
+//    - cursor to display while the grab is active. If this is NULL then the
+//    normal cursors are used for window and its descendants, and the cursor
+//    for window is used for all other windows.
+//    - time_: timestamp of the event which led to this pointer grab. This
+//    usually comes from a EventButton struct, though GDK_CURRENT_TIME can be
+//    used if the time isn’t known.
+//
 func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confineTo Windower, cursor Cursorrer, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
 	var _arg2 C.gboolean      // out
@@ -314,6 +368,12 @@ func PointerIsGrabbed() bool {
 // this application.
 //
 // Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab() instead.
+//
+// The function takes the following parameters:
+//
+//    - time_: timestamp from a Event, or GDK_CURRENT_TIME if no timestamp is
+//    available.
+//
 func PointerUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
 
@@ -354,6 +414,11 @@ func PreParseLibgtkOnly() {
 //
 // This call must happen prior to gdk_display_open(), gtk_init(),
 // gtk_init_with_args() or gtk_init_check() in order to take effect.
+//
+// The function takes the following parameters:
+//
+//    - backends: comma-separated list of backends.
+//
 func SetAllowedBackends(backends string) {
 	var _arg1 *C.gchar // out
 
@@ -368,6 +433,11 @@ func SetAllowedBackends(backends string) {
 // gdk_display_set_double_click_time(). See also
 // gdk_display_set_double_click_distance(). Applications should not set this, it
 // is a global user-configured setting.
+//
+// The function takes the following parameters:
+//
+//    - msec: double click time in milliseconds (thousandths of a second).
+//
 func SetDoubleClickTime(msec uint) {
 	var _arg1 C.guint // out
 
@@ -383,6 +453,11 @@ func SetDoubleClickTime(msec uint) {
 //
 // The program class can still be overridden with the --class command line
 // option.
+//
+// The function takes the following parameters:
+//
+//    - programClass: string.
+//
 func SetProgramClass(programClass string) {
 	var _arg1 *C.gchar // out
 

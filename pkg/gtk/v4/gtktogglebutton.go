@@ -164,6 +164,11 @@ func NewToggleButton() *ToggleButton {
 }
 
 // NewToggleButtonWithLabel creates a new toggle button with a text label.
+//
+// The function takes the following parameters:
+//
+//    - label: string containing the message to be placed in the toggle button.
+//
 func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -185,6 +190,12 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 //
 // The label will be created using gtk.Label.NewWithMnemonic, so underscores in
 // label indicate the mnemonic for the button.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the button, with an underscore in front of the mnemonic
+//    character.
+//
 func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

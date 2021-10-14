@@ -124,6 +124,12 @@ func (iter *BitsetIter) Previous() (uint, bool) {
 //
 // If target is not found, finds the next value after it. If no value >= target
 // exists in set, this function returns FALSE.
+//
+// The function takes the following parameters:
+//
+//    - set: GtkBitset.
+//    - target value to start iterating at.
+//
 func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out
@@ -155,6 +161,11 @@ func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
 // first value in set.
 //
 // If set is empty, FALSE is returned and value is set to G_MAXUINT.
+//
+// The function takes the following parameters:
+//
+//    - set: GtkBitset.
+//
 func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out
@@ -183,6 +194,11 @@ func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
 // value in set.
 //
 // If set is empty, FALSE is returned.
+//
+// The function takes the following parameters:
+//
+//    - set: GtkBitset.
+//
 func BitsetIterInitLast(set *Bitset) (BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out

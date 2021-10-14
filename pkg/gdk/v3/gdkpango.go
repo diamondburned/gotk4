@@ -58,6 +58,11 @@ func PangoContextGet() *pango.Context {
 // be updated. Using gtk_widget_get_pango_context() is more convenient if you
 // want to keep a context around and track changes to the font rendering
 // settings.
+//
+// The function takes the following parameters:
+//
+//    - display for which the context is to be created.
+//
 func PangoContextGetForDisplay(display *Display) *pango.Context {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.PangoContext // in
@@ -92,6 +97,11 @@ func PangoContextGetForDisplay(display *Display) *pango.Context {
 // updated. Using gtk_widget_get_pango_context() is more convenient if you want
 // to keep a context around and track changes to the screen’s font rendering
 // settings.
+//
+// The function takes the following parameters:
+//
+//    - screen for which the context is to be created.
+//
 func PangoContextGetForScreen(screen *Screen) *pango.Context {
 	var _arg1 *C.GdkScreen    // out
 	var _cret *C.PangoContext // in

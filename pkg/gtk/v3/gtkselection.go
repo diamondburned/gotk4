@@ -90,6 +90,11 @@ func (t TargetFlags) Has(other TargetFlags) bool {
 // SelectionRemoveAll removes all handlers and unsets ownership of all
 // selections for a widget. Called when widget is being destroyed. This function
 // will not generally be called by applications.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func SelectionRemoveAll(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
@@ -103,6 +108,11 @@ func SelectionRemoveAll(widget Widgetter) {
 // contains the same targets as the passed list. The returned table is newly
 // allocated and should be freed using gtk_target_table_free() when no longer
 // needed.
+//
+// The function takes the following parameters:
+//
+//    - list: TargetList.
+//
 func TargetTableNewFromList(list *TargetList) []TargetEntry {
 	var _arg1 *C.GtkTargetList  // out
 	var _cret *C.GtkTargetEntry // in

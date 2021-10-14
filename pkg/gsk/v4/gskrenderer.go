@@ -82,6 +82,11 @@ func marshalRendererer(p uintptr) (interface{}, error) {
 // the cairo renderer.
 //
 // The renderer will be realized before it is returned.
+//
+// The function takes the following parameters:
+//
+//    - surface: GdkSurface.
+//
 func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 	var _arg1 *C.GdkSurface  // out
 	var _cret *C.GskRenderer // in

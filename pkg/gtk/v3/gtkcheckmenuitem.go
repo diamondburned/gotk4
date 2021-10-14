@@ -114,6 +114,11 @@ func NewCheckMenuItem() *CheckMenuItem {
 }
 
 // NewCheckMenuItemWithLabel creates a new CheckMenuItem with a label.
+//
+// The function takes the following parameters:
+//
+//    - label: string to use for the label.
+//
 func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -134,6 +139,12 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 // NewCheckMenuItemWithMnemonic creates a new CheckMenuItem containing a label.
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
 // in label indicate the mnemonic for the menu item.
+//
+// The function takes the following parameters:
+//
+//    - label: text of the button, with an underscore in front of the
+//    character.
+//
 func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

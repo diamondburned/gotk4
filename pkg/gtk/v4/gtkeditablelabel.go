@@ -98,6 +98,11 @@ func marshalEditableLabeller(p uintptr) (interface{}, error) {
 }
 
 // NewEditableLabel creates a new GtkEditableLabel widget.
+//
+// The function takes the following parameters:
+//
+//    - str: text for the label.
+//
 func NewEditableLabel(str string) *EditableLabel {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in

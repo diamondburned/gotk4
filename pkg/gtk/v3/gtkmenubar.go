@@ -82,6 +82,11 @@ func NewMenuBar() *MenuBar {
 // The created menu items are connected to actions found in the
 // ApplicationWindow to which the menu bar belongs - typically by means of being
 // contained within the ApplicationWindows widget hierarchy.
+//
+// The function takes the following parameters:
+//
+//    - model: Model.
+//
 func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in

@@ -14,7 +14,7 @@ import (
 
 func (conv *Converter) gocConvert(value *ValueConverted) bool {
 	// Both a callback or a pointer can be nil.
-	if value.Resolved.CanNil() && (value.Optional || value.Nullable) {
+	if value.Resolved.CanNil() && value.IsOptional() {
 		value.p.Linef("if %s != nil {", value.In.Name)
 		defer value.p.Ascend()
 	}
@@ -90,7 +90,11 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// Only hand over Go memory if we don't have to reallocate.
 		if !value.MustRealloc() && !array.IsZeroTerminated() {
 			value.header.Import("unsafe")
-			value.p.Linef("if len(%s) > 0 {", value.InName)
+
+			if value.IsOptional() {
+				value.p.Linef("if len(%s) > 0 {", value.InName)
+				defer value.p.Linef("}")
+			}
 
 			if !isString {
 				value.p.Linef(
@@ -105,7 +109,6 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 				)
 			}
 
-			value.p.Linef("}")
 			return true
 		}
 

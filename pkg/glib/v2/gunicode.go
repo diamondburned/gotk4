@@ -3077,9 +3077,7 @@ func UTF8Validate(str string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg2 = (C.gssize)(len(str))
-	if len(str) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
-	}
+	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
 
 	_cret = C.g_utf8_validate(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(str)
@@ -3113,9 +3111,7 @@ func UTF8ValidateLen(str string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg2 = (C.gsize)(len(str))
-	if len(str) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
-	}
+	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
 
 	_cret = C.g_utf8_validate_len(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(str)

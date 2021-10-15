@@ -544,9 +544,7 @@ func (channel *IOChannel) ReadChars(buf []byte) (uint, IOStatus, error) {
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 	_arg2 = (C.gsize)(len(buf))
-	if len(buf) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&buf[0]))
-	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(&buf[0]))
 
 	_cret = C.g_io_channel_read_chars(_arg0, _arg1, _arg2, &_arg3, &_cerr)
 	runtime.KeepAlive(channel)
@@ -948,9 +946,7 @@ func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, err
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-	if len(buf) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buf)).Data))
-	}
+	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buf)).Data))
 	_arg2 = C.gssize(count)
 
 	_cret = C.g_io_channel_write_chars(_arg0, _arg1, _arg2, &_arg3, &_cerr)

@@ -252,3 +252,8 @@ func (prop *ConversionValue) ownershipIsTransferring() bool {
 		prop.TransferOwnership.TransferOwnership == "full" ||
 		prop.TransferOwnership.TransferOwnership == "container"
 }
+
+// IsOptional returns true if either Optional or Nullable is true.
+func (value *ConversionValue) IsOptional() bool {
+	return value.Optional || value.Nullable
+}

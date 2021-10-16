@@ -15,7 +15,7 @@ const FrameSize = 3
 // caller trace for debugging.
 type FuncStack struct {
 	Func   interface{}
-	Frames []uintptr
+	Frames [FrameSize]uintptr
 }
 
 // NewFuncStack creates a new FuncStack. It panics if fn is not a function. The
@@ -30,13 +30,9 @@ func NewFuncStack(fn interface{}, frameSkip int) *FuncStack {
 }
 
 func newFuncStack(fn interface{}, frameSkip int) *FuncStack {
-	frames := make([]uintptr, FrameSize)
-	frames = frames[:runtime.Callers(frameSkip+3, frames)]
-
-	return &FuncStack{
-		Func:   fn,
-		Frames: frames,
-	}
+	fs := FuncStack{Func: fn}
+	runtime.Callers(frameSkip+3, fs.Frames[:])
+	return &fs
 }
 
 // NewIdleFuncStack works akin to NewFuncStack, but it also validates the given
@@ -62,7 +58,16 @@ func (fs *FuncStack) Value() reflect.Value {
 
 // IsValid returns true if the given FuncStack is not a zero-value i.e.  valid.
 func (fs *FuncStack) IsValid() bool {
-	return fs != nil && fs.Frames != nil
+	return fs != nil && fs.Frames != [FrameSize]uintptr{}
+}
+
+// ValidFrames returns non-zero frames.
+func (fs *FuncStack) ValidFrames() []uintptr {
+	var i int
+	for i < FrameSize && fs.Frames[i] != 0 {
+		i++
+	}
+	return fs.Frames[:i]
 }
 
 const headerSignature = "closure error: "
@@ -75,7 +80,7 @@ func (fs *FuncStack) Panicf(msgf string, v ...interface{}) {
 
 	msg.WriteString("\n\nClosure added at:")
 
-	frames := runtime.CallersFrames(fs.Frames)
+	frames := runtime.CallersFrames(fs.ValidFrames())
 	for {
 		frame, more := frames.Next()
 		msg.WriteString("\n\t")

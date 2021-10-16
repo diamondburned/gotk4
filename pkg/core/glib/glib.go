@@ -334,6 +334,15 @@ func IdleAddPriority(priority Priority, f interface{}) SourceHandle {
 	return idleAdd(priority, f)
 }
 
+/*
+	Playing unsafe will get you in trouble...
+
+	runtime: bad pointer in frame github.com/diamondburned/gotk4/pkg/core/glib.idleAdd.func1 at 0xc000e20e68: 0x87
+	fatal error: invalid pointer found on stack
+*/
+
+//go:nosplit
+//go:nocheckptr
 func idleAdd(priority Priority, f interface{}) SourceHandle {
 	fs := closure.NewIdleFuncStack(f, 2)
 	id := C.gpointer(gbox.Assign(fs))
@@ -369,6 +378,8 @@ func TimeoutSecondsAddPriority(seconds uint, priority Priority, f interface{}) S
 	return timeoutAdd(seconds, true, priority, f)
 }
 
+//go:nosplit
+//go:nocheckptr
 func timeoutAdd(time uint, sec bool, priority Priority, f interface{}) SourceHandle {
 	fs := closure.NewIdleFuncStack(f, 2)
 	id := C.gpointer(gbox.Assign(fs))

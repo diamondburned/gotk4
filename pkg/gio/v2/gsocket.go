@@ -1541,7 +1541,11 @@ func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(buffer))
-	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buffer)).Data))
+	if buffer == "" {
+		_arg1 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buffer)).Data))
+	}
 
 	_cret = C.g_socket_send(_arg0, _arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(socket)
@@ -1873,7 +1877,11 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	}
 	_arg3 = (C.gsize)(len(buffer))
-	_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buffer)).Data))
+	if buffer == "" {
+		_arg2 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buffer)).Data))
+	}
 
 	_cret = C.g_socket_send_to(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 	runtime.KeepAlive(socket)
@@ -1918,7 +1926,11 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, block
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(buffer))
-	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buffer)).Data))
+	if buffer == "" {
+		_arg1 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buffer)).Data))
+	}
 	if blocking {
 		_arg3 = C.TRUE
 	}

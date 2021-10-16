@@ -10,6 +10,14 @@ import (
 	"unsafe"
 )
 
+// ZeroString points to a null-terminated string of length 0.
+var ZeroString unsafe.Pointer
+
+func init() {
+	ZeroString = unsafe.Pointer(C.malloc(1))
+	*(*byte)(ZeroString) = 0
+}
+
 type record struct{ intern *internRecord }
 
 type internRecord struct{ c unsafe.Pointer }

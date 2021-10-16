@@ -103,6 +103,20 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 				)
 			} else {
 				value.header.Import("reflect")
+				if !value.Nullable {
+					value.header.ImportCore("gextras")
+					// Be careful with taking the pointer of a string if the
+					// function doesn't like a null pointer: an empty string
+					// will have a null pointer.
+					// TextBuffer, for example, will complain with an "assertion
+					// 'text != NULL' failed."
+					value.p.Linef(`if %s == "" {`, value.InName)
+					// Length 0, so this shouldn't read.
+					value.p.Linef(`  %s = (%s)(gextras.ZeroString)`, value.Out.Set, value.Out.Type)
+					value.p.Linef(`} else {`)
+					defer value.p.Linef("}")
+				}
+
 				value.p.Linef(
 					"%s = (%s)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&%s)).Data))",
 					value.Out.Set, value.Out.Type, value.InName,

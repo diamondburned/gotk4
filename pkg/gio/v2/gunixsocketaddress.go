@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -106,7 +107,11 @@ func NewUnixSocketAddressAbstract(path string) *UnixSocketAddress {
 	var _cret *C.GSocketAddress // in
 
 	_arg2 = (C.gint)(len(path))
-	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&path)).Data))
+	if path == "" {
+		_arg1 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&path)).Data))
+	}
 
 	_cret = C.g_unix_socket_address_new_abstract(_arg1, _arg2)
 	runtime.KeepAlive(path)
@@ -161,7 +166,11 @@ func NewUnixSocketAddressWithType(path string, typ UnixSocketAddressType) *UnixS
 	var _cret *C.GSocketAddress        // in
 
 	_arg2 = (C.gint)(len(path))
-	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&path)).Data))
+	if path == "" {
+		_arg1 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&path)).Data))
+	}
 	_arg3 = C.GUnixSocketAddressType(typ)
 
 	_cret = C.g_unix_socket_address_new_with_type(_arg1, _arg2, _arg3)

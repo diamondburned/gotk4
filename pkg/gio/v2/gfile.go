@@ -5087,7 +5087,11 @@ func (file *File) ReplaceContents(ctx context.Context, contents, etag string, ma
 		_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(contents))
-	_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
+	if contents == "" {
+		_arg1 = (*C.char)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
+	}
 	if etag != "" {
 		_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
 		defer C.free(unsafe.Pointer(_arg3))
@@ -5165,7 +5169,11 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents, etag strin
 		_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(contents))
-	_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
+	if contents == "" {
+		_arg1 = (*C.char)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
+	}
 	if etag != "" {
 		_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
 		defer C.free(unsafe.Pointer(_arg3))

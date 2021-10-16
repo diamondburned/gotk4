@@ -946,7 +946,11 @@ func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, err
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buf)).Data))
+	if buf == "" {
+		_arg1 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buf)).Data))
+	}
 	_arg2 = C.gssize(count)
 
 	_cret = C.g_io_channel_write_chars(_arg0, _arg1, _arg2, &_arg3, &_cerr)

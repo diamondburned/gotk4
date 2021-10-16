@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -3077,7 +3078,11 @@ func UTF8Validate(str string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg2 = (C.gssize)(len(str))
-	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
+	if str == "" {
+		_arg1 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
+	}
 
 	_cret = C.g_utf8_validate(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(str)
@@ -3111,7 +3116,11 @@ func UTF8ValidateLen(str string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg2 = (C.gsize)(len(str))
-	_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
+	if str == "" {
+		_arg1 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
+	}
 
 	_cret = C.g_utf8_validate_len(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(str)

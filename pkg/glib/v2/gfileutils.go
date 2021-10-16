@@ -10,6 +10,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -622,7 +623,11 @@ func FileSetContents(filename, contents string) error {
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.gssize)(len(contents))
-	_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
+	if contents == "" {
+		_arg2 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
+	}
 
 	C.g_file_set_contents(_arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(filename)
@@ -712,7 +717,11 @@ func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.gssize)(len(contents))
-	_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
+	if contents == "" {
+		_arg2 = (*C.gchar)(gextras.ZeroString)
+	} else {
+		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
+	}
 	_arg4 = C.GFileSetContentsFlags(flags)
 	_arg5 = C.int(mode)
 

@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -99,7 +100,11 @@ func (cssProvider *CSSProvider) LoadFromData(data string) {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg2 = (C.gssize)(len(data))
-	_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&data)).Data))
+	if data == "" {
+		_arg1 = (*C.char)(gextras.ZeroString)
+	} else {
+		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&data)).Data))
+	}
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(cssProvider)

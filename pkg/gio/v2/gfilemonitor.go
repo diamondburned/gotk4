@@ -79,9 +79,7 @@ func wrapFileMonitor(obj *externglib.Object) *FileMonitor {
 }
 
 func marshalFileMonitorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileMonitor(obj), nil
+	return wrapFileMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Cancel cancels a file monitor.

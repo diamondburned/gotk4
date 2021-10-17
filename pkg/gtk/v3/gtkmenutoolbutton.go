@@ -100,9 +100,7 @@ func wrapMenuToolButton(obj *externglib.Object) *MenuToolButton {
 }
 
 func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuToolButton(obj), nil
+	return wrapMenuToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMenuToolButton creates a new MenuToolButton using icon_widget as icon and

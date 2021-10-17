@@ -52,9 +52,7 @@ func wrapThemedIcon(obj *externglib.Object) *ThemedIcon {
 }
 
 func marshalThemedIconner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapThemedIcon(obj), nil
+	return wrapThemedIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewThemedIcon creates a new themed icon for iconname.

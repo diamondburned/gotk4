@@ -89,7 +89,7 @@ const (
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
-	return CrossingMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CrossingMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CrossingMode.
@@ -266,7 +266,7 @@ const (
 )
 
 func marshalEventType(p uintptr) (interface{}, error) {
-	return EventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EventType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EventType.
@@ -389,7 +389,7 @@ const (
 )
 
 func marshalFilterReturn(p uintptr) (interface{}, error) {
-	return FilterReturn(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FilterReturn(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FilterReturn.
@@ -434,7 +434,7 @@ const (
 )
 
 func marshalNotifyType(p uintptr) (interface{}, error) {
-	return NotifyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return NotifyType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NotifyType.
@@ -470,7 +470,7 @@ const (
 )
 
 func marshalOwnerChange(p uintptr) (interface{}, error) {
-	return OwnerChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return OwnerChange(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for OwnerChange.
@@ -498,7 +498,7 @@ const (
 )
 
 func marshalPropertyState(p uintptr) (interface{}, error) {
-	return PropertyState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PropertyState(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PropertyState.
@@ -531,7 +531,7 @@ const (
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
-	return ScrollDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ScrollDirection(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollDirection.
@@ -566,7 +566,7 @@ const (
 )
 
 func marshalSettingAction(p uintptr) (interface{}, error) {
-	return SettingAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SettingAction(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SettingAction.
@@ -617,7 +617,7 @@ const (
 )
 
 func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
-	return TouchpadGesturePhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TouchpadGesturePhase(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TouchpadGesturePhase.
@@ -650,7 +650,7 @@ const (
 )
 
 func marshalVisibilityState(p uintptr) (interface{}, error) {
-	return VisibilityState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return VisibilityState(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for VisibilityState.
@@ -714,7 +714,7 @@ const (
 )
 
 func marshalWindowState(p uintptr) (interface{}, error) {
-	return WindowState(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowState(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for WindowState.
@@ -724,7 +724,7 @@ func (w WindowState) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(360)
+	builder.Grow(256)
 
 	for w != 0 {
 		next := w & (w - 1)
@@ -2299,8 +2299,8 @@ type eventSequence struct {
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &EventSequence{&eventSequence{(*C.GdkEventSequence)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &EventSequence{&eventSequence{(*C.GdkEventSequence)(b)}}, nil
 }
 
 // EventSetting: generated when a setting is modified.

@@ -109,9 +109,7 @@ func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 }
 
 func marshalDBusInterfaceSkeletonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusInterfaceSkeleton(obj), nil
+	return wrapDBusInterfaceSkeleton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Export exports interface_ at object_path on connection.

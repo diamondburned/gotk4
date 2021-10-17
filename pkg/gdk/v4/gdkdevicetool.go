@@ -47,7 +47,7 @@ const (
 )
 
 func marshalDeviceToolType(p uintptr) (interface{}, error) {
-	return DeviceToolType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DeviceToolType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DeviceToolType.
@@ -86,9 +86,7 @@ func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 }
 
 func marshalDeviceTooler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDeviceTool(obj), nil
+	return wrapDeviceTool(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Axes gets the axes of the tool.

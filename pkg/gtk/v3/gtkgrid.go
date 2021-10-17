@@ -72,9 +72,7 @@ func wrapGrid(obj *externglib.Object) *Grid {
 }
 
 func marshalGridder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGrid(obj), nil
+	return wrapGrid(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGrid creates a new grid widget.

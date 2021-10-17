@@ -49,9 +49,7 @@ func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
 }
 
 func marshalDBusObjectProxier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectProxy(obj), nil
+	return wrapDBusObjectProxy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDBusObjectProxy creates a new BusObjectProxy for the given connection and

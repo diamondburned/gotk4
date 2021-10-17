@@ -36,9 +36,7 @@ func wrapCairoRenderer(obj *externglib.Object) *CairoRenderer {
 }
 
 func marshalCairoRendererer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCairoRenderer(obj), nil
+	return wrapCairoRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCairoRenderer creates a new Cairo renderer.

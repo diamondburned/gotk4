@@ -37,7 +37,7 @@ const (
 )
 
 func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
-	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CellRendererAccelMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CellRendererAccelMode.
@@ -74,9 +74,7 @@ func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
 }
 
 func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererAccel(obj), nil
+	return wrapCellRendererAccel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererAccel creates a new CellRendererAccel.

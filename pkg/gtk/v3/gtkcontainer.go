@@ -358,9 +358,7 @@ func wrapContainer(obj *externglib.Object) *Container {
 }
 
 func marshalContainerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContainer(obj), nil
+	return wrapContainer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Add adds widget to container. Typically used for simple containers such as

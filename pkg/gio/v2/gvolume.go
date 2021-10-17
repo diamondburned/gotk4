@@ -248,9 +248,7 @@ func wrapVolume(obj *externglib.Object) *Volume {
 }
 
 func marshalVolumer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolume(obj), nil
+	return wrapVolume(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CanEject checks if a volume can be ejected.

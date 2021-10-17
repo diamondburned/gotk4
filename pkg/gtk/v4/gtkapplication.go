@@ -46,7 +46,7 @@ const (
 )
 
 func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
-	return ApplicationInhibitFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ApplicationInhibitFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ApplicationInhibitFlags.
@@ -176,9 +176,7 @@ func wrapApplication(obj *externglib.Object) *Application {
 }
 
 func marshalApplicationer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplication(obj), nil
+	return wrapApplication(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewApplication creates a new GtkApplication instance.

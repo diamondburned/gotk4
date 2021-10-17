@@ -51,7 +51,7 @@ const (
 )
 
 func marshalAlignment(p uintptr) (interface{}, error) {
-	return Alignment(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Alignment(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Alignment.
@@ -87,7 +87,7 @@ const (
 )
 
 func marshalEllipsizeMode(p uintptr) (interface{}, error) {
-	return EllipsizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EllipsizeMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EllipsizeMode.
@@ -121,7 +121,7 @@ const (
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
-	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WrapMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WrapMode.
@@ -172,9 +172,7 @@ func wrapLayout(obj *externglib.Object) *Layout {
 }
 
 func marshalLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLayout(obj), nil
+	return wrapLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLayout: create a new PangoLayout object with attributes initialized to
@@ -1749,8 +1747,8 @@ type layoutIter struct {
 }
 
 func marshalLayoutIter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &LayoutIter{&layoutIter{(*C.PangoLayoutIter)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &LayoutIter{&layoutIter{(*C.PangoLayoutIter)(b)}}, nil
 }
 
 // AtLastLine determines whether iter is on the last line of the layout.
@@ -2191,8 +2189,8 @@ type layoutLine struct {
 }
 
 func marshalLayoutLine(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &LayoutLine{&layoutLine{(*C.PangoLayoutLine)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &LayoutLine{&layoutLine{(*C.PangoLayoutLine)(b)}}, nil
 }
 
 // Layout: layout this line belongs to, might be NULL.

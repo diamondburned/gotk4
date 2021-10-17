@@ -276,9 +276,7 @@ func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 }
 
 func marshalDatagramBasedder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDatagramBased(obj), nil
+	return wrapDatagramBased(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConditionCheck checks on the readiness of datagram_based to perform

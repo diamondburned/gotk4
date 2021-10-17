@@ -90,9 +90,7 @@ func wrapCellEditable(obj *externglib.Object) *CellEditable {
 }
 
 func marshalCellEditabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellEditable(obj), nil
+	return wrapCellEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // EditingDone emits the CellEditable::editing-done signal.

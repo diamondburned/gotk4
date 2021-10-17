@@ -57,9 +57,7 @@ func wrapDataInputStream(obj *externglib.Object) *DataInputStream {
 }
 
 func marshalDataInputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDataInputStream(obj), nil
+	return wrapDataInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDataInputStream creates a new data input stream for the base_stream.

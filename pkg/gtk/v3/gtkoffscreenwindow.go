@@ -70,9 +70,7 @@ func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 }
 
 func marshalOffscreenWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOffscreenWindow(obj), nil
+	return wrapOffscreenWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewOffscreenWindow creates a toplevel container widget that is used to

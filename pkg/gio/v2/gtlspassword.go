@@ -55,9 +55,7 @@ func wrapTLSPassword(obj *externglib.Object) *TLSPassword {
 }
 
 func marshalTLSPassworder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSPassword(obj), nil
+	return wrapTLSPassword(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTLSPassword: create a new Password object.

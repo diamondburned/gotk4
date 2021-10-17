@@ -95,9 +95,7 @@ func wrapCheckMenuItem(obj *externglib.Object) *CheckMenuItem {
 }
 
 func marshalCheckMenuItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckMenuItem(obj), nil
+	return wrapCheckMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCheckMenuItem creates a new CheckMenuItem.

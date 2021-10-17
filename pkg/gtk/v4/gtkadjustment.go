@@ -53,9 +53,7 @@ func wrapAdjustment(obj *externglib.Object) *Adjustment {
 }
 
 func marshalAdjustmenter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAdjustment(obj), nil
+	return wrapAdjustment(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAdjustment creates a new GtkAdjustment.

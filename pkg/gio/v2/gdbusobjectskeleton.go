@@ -59,9 +59,7 @@ func wrapDBusObjectSkeleton(obj *externglib.Object) *DBusObjectSkeleton {
 }
 
 func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectSkeleton(obj), nil
+	return wrapDBusObjectSkeleton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDBusObjectSkeleton creates a new BusObjectSkeleton.

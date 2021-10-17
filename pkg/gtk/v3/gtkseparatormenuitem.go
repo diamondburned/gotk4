@@ -77,9 +77,7 @@ func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 }
 
 func marshalSeparatorMenuItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparatorMenuItem(obj), nil
+	return wrapSeparatorMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSeparatorMenuItem creates a new SeparatorMenuItem.

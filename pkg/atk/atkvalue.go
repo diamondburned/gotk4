@@ -49,7 +49,7 @@ const (
 )
 
 func marshalValueType(p uintptr) (interface{}, error) {
-	return ValueType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ValueType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ValueType.
@@ -329,9 +329,7 @@ func wrapValue(obj *externglib.Object) *Value {
 }
 
 func marshalValueer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapValue(obj), nil
+	return wrapValue(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CurrentValue gets the value of this object.

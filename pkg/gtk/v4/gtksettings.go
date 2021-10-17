@@ -64,9 +64,7 @@ func wrapSettings(obj *externglib.Object) *Settings {
 }
 
 func marshalSettingser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSettings(obj), nil
+	return wrapSettings(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ResetProperty undoes the effect of calling g_object_set() to install an

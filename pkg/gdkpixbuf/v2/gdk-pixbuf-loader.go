@@ -91,9 +91,7 @@ func wrapPixbufLoader(obj *externglib.Object) *PixbufLoader {
 }
 
 func marshalPixbufLoaderer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufLoader(obj), nil
+	return wrapPixbufLoader(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPixbufLoader creates a new pixbuf loader object.

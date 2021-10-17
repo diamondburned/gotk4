@@ -88,9 +88,7 @@ func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 }
 
 func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioToolButton(obj), nil
+	return wrapRadioToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRadioToolButton creates a new RadioToolButton, adding it to group.

@@ -101,9 +101,7 @@ func wrapTreeModelSort(obj *externglib.Object) *TreeModelSort {
 }
 
 func marshalTreeModelSorter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeModelSort(obj), nil
+	return wrapTreeModelSort(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTreeModelSortWithModel creates a new TreeModelSort, with child_model as

@@ -66,7 +66,7 @@ const (
 )
 
 func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
-	return PlacesOpenFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PlacesOpenFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for PlacesOpenFlags.
@@ -170,9 +170,7 @@ func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 }
 
 func marshalPlacesSidebarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlacesSidebar(obj), nil
+	return wrapPlacesSidebar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPlacesSidebar creates a new PlacesSidebar widget.

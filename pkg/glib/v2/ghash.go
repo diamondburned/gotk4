@@ -371,8 +371,8 @@ type hashTable struct {
 }
 
 func marshalHashTable(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &HashTable{&hashTable{(*C.GHashTable)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &HashTable{&hashTable{(*C.GHashTable)(b)}}, nil
 }
 
 // HashTableAdd: this is a convenience function for using a Table as a set. It

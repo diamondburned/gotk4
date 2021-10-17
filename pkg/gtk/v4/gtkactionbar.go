@@ -62,9 +62,7 @@ func wrapActionBar(obj *externglib.Object) *ActionBar {
 }
 
 func marshalActionBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionBar(obj), nil
+	return wrapActionBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewActionBar creates a new GtkActionBar widget.

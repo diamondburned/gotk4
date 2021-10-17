@@ -61,9 +61,7 @@ func wrapSpinner(obj *externglib.Object) *Spinner {
 }
 
 func marshalSpinnerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinner(obj), nil
+	return wrapSpinner(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSpinner returns a new spinner widget. Not yet started.

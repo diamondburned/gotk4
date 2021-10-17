@@ -121,7 +121,7 @@ const (
 )
 
 func marshalTextAttribute(p uintptr) (interface{}, error) {
-	return TextAttribute(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextAttribute(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextAttribute.
@@ -320,7 +320,7 @@ const (
 )
 
 func marshalTextBoundary(p uintptr) (interface{}, error) {
-	return TextBoundary(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextBoundary(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextBoundary.
@@ -360,7 +360,7 @@ const (
 )
 
 func marshalTextClipType(p uintptr) (interface{}, error) {
-	return TextClipType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextClipType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextClipType.
@@ -406,7 +406,7 @@ const (
 )
 
 func marshalTextGranularity(p uintptr) (interface{}, error) {
-	return TextGranularity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextGranularity(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextGranularity.
@@ -646,9 +646,7 @@ func wrapText(obj *externglib.Object) *Text {
 }
 
 func marshalTexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapText(obj), nil
+	return wrapText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddSelection adds a selection bounded by the specified offsets.
@@ -1453,8 +1451,8 @@ type textRange struct {
 }
 
 func marshalTextRange(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TextRange{&textRange{(*C.AtkTextRange)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TextRange{&textRange{(*C.AtkTextRange)(b)}}, nil
 }
 
 // Bounds: rectangle giving the bounds of the text range.

@@ -47,9 +47,7 @@ func wrapZlibDecompressor(obj *externglib.Object) *ZlibDecompressor {
 }
 
 func marshalZlibDecompressorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapZlibDecompressor(obj), nil
+	return wrapZlibDecompressor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewZlibDecompressor creates a new Decompressor.

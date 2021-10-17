@@ -48,9 +48,7 @@ func wrapShortcut(obj *externglib.Object) *Shortcut {
 }
 
 func marshalShortcutter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcut(obj), nil
+	return wrapShortcut(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewShortcut creates a new GtkShortcut that is triggered by trigger and then

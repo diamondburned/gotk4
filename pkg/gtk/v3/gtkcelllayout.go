@@ -264,9 +264,7 @@ func wrapCellLayout(obj *externglib.Object) *CellLayout {
 }
 
 func marshalCellLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellLayout(obj), nil
+	return wrapCellLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddAttribute adds an attribute mapping to the list in cell_layout.

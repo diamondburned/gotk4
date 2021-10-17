@@ -90,9 +90,7 @@ func wrapColorChooser(obj *externglib.Object) *ColorChooser {
 }
 
 func marshalColorChooserer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorChooser(obj), nil
+	return wrapColorChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddPalette adds a palette to the color chooser.

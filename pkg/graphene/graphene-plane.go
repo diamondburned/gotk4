@@ -38,8 +38,8 @@ type plane struct {
 }
 
 func marshalPlane(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Plane{&plane{(*C.graphene_plane_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Plane{&plane{(*C.graphene_plane_t)(b)}}, nil
 }
 
 // NewPlaneAlloc constructs a struct Plane.

@@ -150,9 +150,7 @@ func wrapListView(obj *externglib.Object) *ListView {
 }
 
 func marshalListViewer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListView(obj), nil
+	return wrapListView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewListView creates a new GtkListView that uses the given factory for mapping

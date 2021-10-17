@@ -44,9 +44,7 @@ func wrapNotebookPageAccessible(obj *externglib.Object) *NotebookPageAccessible 
 }
 
 func marshalNotebookPageAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotebookPageAccessible(obj), nil
+	return wrapNotebookPageAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //

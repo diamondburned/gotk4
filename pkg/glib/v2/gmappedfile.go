@@ -37,8 +37,8 @@ type mappedFile struct {
 }
 
 func marshalMappedFile(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MappedFile{&mappedFile{(*C.GMappedFile)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &MappedFile{&mappedFile{(*C.GMappedFile)(b)}}, nil
 }
 
 // NewMappedFile constructs a struct MappedFile.

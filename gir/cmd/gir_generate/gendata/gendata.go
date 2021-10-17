@@ -680,6 +680,7 @@ func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
 	}
 
 	h := fg.Header()
+	h.Import("unsafe")
 	h.Import("runtime")
 	h.AddCBlock(cGTKDialogNew2)
 
@@ -690,18 +691,18 @@ func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
 		// constructor-only dialog flags.
 		//
 		// It is a wrapper around Gtk.Dialog.new_with_buttons in C.
-		func NewDialogWithFlags(title string, parent *gtk.Window, flags gtk.DialogFlags) *gtk.Dialog {
+		func NewDialogWithFlags(title string, parent *Window, flags DialogFlags) *Dialog {
 			ctitle := C.CString(title)
 			defer C.free(unsafe.Pointer(ctitle))
 
 			w := C._gotk4_gtk_dialog_new2(
-				(*C.gchar)(ctitle),
-				(*C.GtkWindow)(parent.Native()),
+				(*C.gchar)(unsafe.Pointer(ctitle)),
+				(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
 				(C.GtkDialogFlags)(flags),
 			)
 			runtime.KeepAlive(parent)
 
-			return wrapDialog(externglib.Take(unsafe.Pointer(c)))
+			return wrapDialog(externglib.Take(unsafe.Pointer(w)))
 		}
 	`)
 

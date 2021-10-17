@@ -1343,9 +1343,7 @@ func wrapFile(obj *externglib.Object) *File {
 }
 
 func marshalFiler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFile(obj), nil
+	return wrapFile(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AppendTo gets an output stream for appending data to the file. If the file

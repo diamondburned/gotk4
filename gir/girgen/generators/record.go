@@ -45,10 +45,10 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 		native *C.{{.CType}}
 	}
 
-	{{ if .GLibGetType }}
+	{{ if .Marshaler }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
-		b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-		return &{{ .GoName }}{&{{ $impl }}{(*C.{{.CType}})(unsafe.Pointer(b))}}, nil
+		b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+		return &{{ .GoName }}{&{{ $impl }}{(*C.{{.CType}})(b)}}, nil
 	}
 	{{ end }}
 
@@ -161,6 +161,8 @@ func GenerateRecord(gen FileGeneratorWriter, record *gir.Record) bool {
 	writer := FileWriterFromType(gen, record)
 
 	if record.GLibGetType != "" && !types.FilterCType(gen, record.GLibGetType) {
+		recordGen.Marshaler = true
+		writer.Header().NeedsExternGLib()
 		writer.Header().AddMarshaler(record.GLibGetType, recordGen.GoName)
 	}
 
@@ -173,7 +175,8 @@ func GenerateRecord(gen FileGeneratorWriter, record *gir.Record) bool {
 
 type RecordGenerator struct {
 	*gir.Record
-	GoName string
+	GoName    string
+	Marshaler bool
 
 	// TODO: move these out of here.
 	Methods []callable.Generator
@@ -228,14 +231,10 @@ func (rg *RecordGenerator) Header() *file.Header {
 
 func (rg *RecordGenerator) Use(rec *gir.Record) bool {
 	rg.hdr.Reset()
+	rg.Marshaler = false
 
 	if !CanGenerateRecord(rg.gen, rec) {
 		return false
-	}
-
-	if rec.GLibGetType != "" {
-		// Need this for g_value_get_boxed().
-		rg.hdr.NeedsGLibObject()
 	}
 
 	rg.typ.NamespaceFindResult = rg.gen.Namespace()

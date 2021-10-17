@@ -48,7 +48,7 @@ const (
 )
 
 func marshalTreeModelFlags(p uintptr) (interface{}, error) {
-	return TreeModelFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TreeModelFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TreeModelFlags.
@@ -461,9 +461,7 @@ func wrapTreeModel(obj *externglib.Object) *TreeModel {
 }
 
 func marshalTreeModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeModel(obj), nil
+	return wrapTreeModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFilter creates a new TreeModel, with child_model as the child_model and
@@ -1253,8 +1251,8 @@ type treeIter struct {
 }
 
 func marshalTreeIter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TreeIter{&treeIter{(*C.GtkTreeIter)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TreeIter{&treeIter{(*C.GtkTreeIter)(b)}}, nil
 }
 
 // Stamp: unique stamp to catch invalid iterators.
@@ -1323,8 +1321,8 @@ type treePath struct {
 }
 
 func marshalTreePath(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TreePath{&treePath{(*C.GtkTreePath)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TreePath{&treePath{(*C.GtkTreePath)(b)}}, nil
 }
 
 // NewTreePath constructs a struct TreePath.
@@ -1680,8 +1678,8 @@ type treeRowReference struct {
 }
 
 func marshalTreeRowReference(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TreeRowReference{&treeRowReference{(*C.GtkTreeRowReference)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TreeRowReference{&treeRowReference{(*C.GtkTreeRowReference)(b)}}, nil
 }
 
 // NewTreeRowReference constructs a struct TreeRowReference.

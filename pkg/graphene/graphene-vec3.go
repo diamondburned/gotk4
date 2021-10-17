@@ -39,8 +39,8 @@ type vec3 struct {
 }
 
 func marshalVec3(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Vec3{&vec3{(*C.graphene_vec3_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Vec3{&vec3{(*C.graphene_vec3_t)(b)}}, nil
 }
 
 // NewVec3Alloc constructs a struct Vec3.

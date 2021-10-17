@@ -136,9 +136,7 @@ func wrapExpander(obj *externglib.Object) *Expander {
 }
 
 func marshalExpanderer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapExpander(obj), nil
+	return wrapExpander(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewExpander creates a new expander using label as the text of the label.

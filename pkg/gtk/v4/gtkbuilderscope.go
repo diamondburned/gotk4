@@ -40,7 +40,7 @@ const (
 )
 
 func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
-	return BuilderClosureFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return BuilderClosureFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for BuilderClosureFlags.
@@ -117,9 +117,7 @@ func wrapBuilderScope(obj *externglib.Object) *BuilderScope {
 }
 
 func marshalBuilderScoper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderScope(obj), nil
+	return wrapBuilderScope(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*BuilderScope) privateBuilderScope() {}
@@ -154,9 +152,7 @@ func wrapBuilderCScope(obj *externglib.Object) *BuilderCScope {
 }
 
 func marshalBuilderCScoper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderCScope(obj), nil
+	return wrapBuilderCScope(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBuilderCScope creates a new GtkBuilderCScope object to use with future

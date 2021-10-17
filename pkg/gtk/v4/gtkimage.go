@@ -49,7 +49,7 @@ const (
 )
 
 func marshalImageType(p uintptr) (interface{}, error) {
-	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ImageType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ImageType.
@@ -131,9 +131,7 @@ func wrapImage(obj *externglib.Object) *Image {
 }
 
 func marshalImager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImage(obj), nil
+	return wrapImage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewImage creates a new empty GtkImage widget.

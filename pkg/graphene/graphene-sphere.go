@@ -35,8 +35,8 @@ type sphere struct {
 }
 
 func marshalSphere(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Sphere{&sphere{(*C.graphene_sphere_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Sphere{&sphere{(*C.graphene_sphere_t)(b)}}, nil
 }
 
 // NewSphereAlloc constructs a struct Sphere.

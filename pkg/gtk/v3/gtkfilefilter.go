@@ -48,7 +48,7 @@ const (
 )
 
 func marshalFileFilterFlags(p uintptr) (interface{}, error) {
-	return FileFilterFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileFilterFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileFilterFlags.
@@ -170,9 +170,7 @@ func wrapFileFilter(obj *externglib.Object) *FileFilter {
 }
 
 func marshalFileFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileFilter(obj), nil
+	return wrapFileFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileFilter creates a new FileFilter with no rules added to it. Such a

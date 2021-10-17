@@ -37,9 +37,7 @@ func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 }
 
 func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerKey(obj), nil
+	return wrapEventControllerKey(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEventControllerKey creates a new event controller that will handle key

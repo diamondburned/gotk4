@@ -49,7 +49,7 @@ const (
 )
 
 func marshalIconThemeError(p uintptr) (interface{}, error) {
-	return IconThemeError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IconThemeError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IconThemeError.
@@ -102,7 +102,7 @@ const (
 )
 
 func marshalIconLookupFlags(p uintptr) (interface{}, error) {
-	return IconLookupFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IconLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for IconLookupFlags.
@@ -164,9 +164,7 @@ func wrapIconInfo(obj *externglib.Object) *IconInfo {
 }
 
 func marshalIconInfor(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconInfo(obj), nil
+	return wrapIconInfo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewIconInfoForPixbuf creates a IconInfo for a Pixbuf.
@@ -1047,9 +1045,7 @@ func wrapIconTheme(obj *externglib.Object) *IconTheme {
 }
 
 func marshalIconThemer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconTheme(obj), nil
+	return wrapIconTheme(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewIconTheme creates a new icon theme object. Icon theme objects are used to

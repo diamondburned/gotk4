@@ -38,7 +38,7 @@ const (
 )
 
 func marshalButtonRole(p uintptr) (interface{}, error) {
-	return ButtonRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ButtonRole(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ButtonRole.
@@ -170,9 +170,7 @@ func wrapModelButton(obj *externglib.Object) *ModelButton {
 }
 
 func marshalModelButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapModelButton(obj), nil
+	return wrapModelButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewModelButton creates a new GtkModelButton.

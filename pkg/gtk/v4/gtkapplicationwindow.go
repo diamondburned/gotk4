@@ -149,9 +149,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 }
 
 func marshalApplicationWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationWindow(obj), nil
+	return wrapApplicationWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewApplicationWindow creates a new GtkApplicationWindow.

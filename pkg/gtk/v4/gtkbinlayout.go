@@ -40,9 +40,7 @@ func wrapBinLayout(obj *externglib.Object) *BinLayout {
 }
 
 func marshalBinLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBinLayout(obj), nil
+	return wrapBinLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBinLayout creates a new GtkBinLayout instance.

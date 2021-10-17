@@ -51,9 +51,7 @@ func wrapInetAddressMask(obj *externglib.Object) *InetAddressMask {
 }
 
 func marshalInetAddressMasker(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInetAddressMask(obj), nil
+	return wrapInetAddressMask(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewInetAddressMask creates a new AddressMask representing all addresses whose

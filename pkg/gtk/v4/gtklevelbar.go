@@ -161,9 +161,7 @@ func wrapLevelBar(obj *externglib.Object) *LevelBar {
 }
 
 func marshalLevelBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLevelBar(obj), nil
+	return wrapLevelBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLevelBar creates a new GtkLevelBar.

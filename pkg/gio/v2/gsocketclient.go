@@ -66,9 +66,7 @@ func wrapSocketClient(obj *externglib.Object) *SocketClient {
 }
 
 func marshalSocketClienter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketClient(obj), nil
+	return wrapSocketClient(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSocketClient creates a new Client with the default options.

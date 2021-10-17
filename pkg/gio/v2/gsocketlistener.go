@@ -66,9 +66,7 @@ func wrapSocketListener(obj *externglib.Object) *SocketListener {
 }
 
 func marshalSocketListenerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketListener(obj), nil
+	return wrapSocketListener(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSocketListener creates a new Listener with no sockets to listen for. New

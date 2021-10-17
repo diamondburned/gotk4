@@ -211,8 +211,8 @@ type euler struct {
 }
 
 func marshalEuler(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Euler{&euler{(*C.graphene_euler_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Euler{&euler{(*C.graphene_euler_t)(b)}}, nil
 }
 
 // NewEulerAlloc constructs a struct Euler.

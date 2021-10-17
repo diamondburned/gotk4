@@ -45,9 +45,7 @@ func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
 }
 
 func marshalTreeListRowSorterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeListRowSorter(obj), nil
+	return wrapTreeListRowSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTreeListRowSorter: create a special-purpose sorter that applies the

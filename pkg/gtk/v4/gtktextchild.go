@@ -36,9 +36,7 @@ func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 }
 
 func marshalTextChildAnchorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextChildAnchor(obj), nil
+	return wrapTextChildAnchor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextChildAnchor creates a new GtkTextChildAnchor.

@@ -168,9 +168,7 @@ func wrapTreeSortable(obj *externglib.Object) *TreeSortable {
 }
 
 func marshalTreeSortabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeSortable(obj), nil
+	return wrapTreeSortable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // SortColumnID fills in sort_column_id and order with the current sort column

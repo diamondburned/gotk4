@@ -232,9 +232,7 @@ func wrapTable(obj *externglib.Object) *Table {
 }
 
 func marshalTabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTable(obj), nil
+	return wrapTable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddColumnSelection adds the specified column to the selection.

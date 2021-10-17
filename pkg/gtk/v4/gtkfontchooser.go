@@ -51,7 +51,7 @@ const (
 )
 
 func marshalFontChooserLevel(p uintptr) (interface{}, error) {
-	return FontChooserLevel(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FontChooserLevel(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FontChooserLevel.
@@ -263,9 +263,7 @@ func wrapFontChooser(obj *externglib.Object) *FontChooser {
 }
 
 func marshalFontChooserer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontChooser(obj), nil
+	return wrapFontChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Font gets the currently-selected font name.

@@ -142,9 +142,7 @@ func wrapComboBox(obj *externglib.Object) *ComboBox {
 }
 
 func marshalComboBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComboBox(obj), nil
+	return wrapComboBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewComboBox creates a new empty GtkComboBox.

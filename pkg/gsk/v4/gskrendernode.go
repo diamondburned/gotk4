@@ -96,9 +96,7 @@ func wrapRenderNode(obj *externglib.Object) *RenderNode {
 }
 
 func marshalRenderNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRenderNode(obj), nil
+	return wrapRenderNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Draw the contents of node to the given cairo context.

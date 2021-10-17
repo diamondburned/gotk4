@@ -66,9 +66,7 @@ func wrapThreadedSocketService(obj *externglib.Object) *ThreadedSocketService {
 }
 
 func marshalThreadedSocketServicer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapThreadedSocketService(obj), nil
+	return wrapThreadedSocketService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewThreadedSocketService creates a new SocketService with no listeners.

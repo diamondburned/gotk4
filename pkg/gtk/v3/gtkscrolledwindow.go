@@ -48,7 +48,7 @@ const (
 )
 
 func marshalCornerType(p uintptr) (interface{}, error) {
-	return CornerType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CornerType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CornerType.
@@ -88,7 +88,7 @@ const (
 )
 
 func marshalPolicyType(p uintptr) (interface{}, error) {
-	return PolicyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PolicyType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PolicyType.
@@ -217,9 +217,7 @@ func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 }
 
 func marshalScrolledWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrolledWindow(obj), nil
+	return wrapScrolledWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewScrolledWindow creates a new scrolled window.

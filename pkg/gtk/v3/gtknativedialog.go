@@ -102,9 +102,7 @@ func wrapNativeDialog(obj *externglib.Object) *NativeDialog {
 }
 
 func marshalNativeDialogger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNativeDialog(obj), nil
+	return wrapNativeDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Destroy destroys a dialog.

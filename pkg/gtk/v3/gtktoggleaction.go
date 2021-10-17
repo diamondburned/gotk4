@@ -52,9 +52,7 @@ func wrapToggleAction(obj *externglib.Object) *ToggleAction {
 }
 
 func marshalToggleActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleAction(obj), nil
+	return wrapToggleAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewToggleAction creates a new ToggleAction object. To add the action to a

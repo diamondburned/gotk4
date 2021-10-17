@@ -93,9 +93,7 @@ func wrapEmojiChooser(obj *externglib.Object) *EmojiChooser {
 }
 
 func marshalEmojiChooserer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEmojiChooser(obj), nil
+	return wrapEmojiChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEmojiChooser creates a new GtkEmojiChooser.

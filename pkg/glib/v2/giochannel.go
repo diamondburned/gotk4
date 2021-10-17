@@ -304,8 +304,8 @@ type ioChannel struct {
 }
 
 func marshalIOChannel(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &IOChannel{&ioChannel{(*C.GIOChannel)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &IOChannel{&ioChannel{(*C.GIOChannel)(b)}}, nil
 }
 
 // NewIOChannelFile constructs a struct IOChannel.

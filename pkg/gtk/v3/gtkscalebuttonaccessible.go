@@ -61,9 +61,7 @@ func wrapScaleButtonAccessible(obj *externglib.Object) *ScaleButtonAccessible {
 }
 
 func marshalScaleButtonAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScaleButtonAccessible(obj), nil
+	return wrapScaleButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ScaleButtonAccessible) privateScaleButtonAccessible() {}

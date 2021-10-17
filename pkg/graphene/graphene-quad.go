@@ -38,8 +38,8 @@ type quad struct {
 }
 
 func marshalQuad(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Quad{&quad{(*C.graphene_quad_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Quad{&quad{(*C.graphene_quad_t)(b)}}, nil
 }
 
 // NewQuadAlloc constructs a struct Quad.

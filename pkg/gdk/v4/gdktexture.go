@@ -67,9 +67,7 @@ func wrapTexture(obj *externglib.Object) *Texture {
 }
 
 func marshalTexturer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTexture(obj), nil
+	return wrapTexture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextureForPixbuf creates a new texture object representing the GdkPixbuf.

@@ -304,8 +304,8 @@ type optionGroup struct {
 }
 
 func marshalOptionGroup(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &OptionGroup{&optionGroup{(*C.GOptionGroup)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &OptionGroup{&optionGroup{(*C.GOptionGroup)(b)}}, nil
 }
 
 // AddEntries adds the options specified in entries to group.

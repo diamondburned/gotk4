@@ -96,7 +96,7 @@ const (
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
-	return CrossingMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CrossingMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CrossingMode.
@@ -196,7 +196,7 @@ const (
 )
 
 func marshalEventType(p uintptr) (interface{}, error) {
-	return EventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EventType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EventType.
@@ -281,7 +281,7 @@ const (
 )
 
 func marshalKeyMatch(p uintptr) (interface{}, error) {
-	return KeyMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return KeyMatch(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for KeyMatch.
@@ -326,7 +326,7 @@ const (
 )
 
 func marshalNotifyType(p uintptr) (interface{}, error) {
-	return NotifyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return NotifyType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NotifyType.
@@ -367,7 +367,7 @@ const (
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
-	return ScrollDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ScrollDirection(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollDirection.
@@ -421,7 +421,7 @@ const (
 )
 
 func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
-	return TouchpadGesturePhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TouchpadGesturePhase(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TouchpadGesturePhase.
@@ -563,9 +563,7 @@ func wrapButtonEvent(obj *externglib.Object) *ButtonEvent {
 }
 
 func marshalButtonEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButtonEvent(obj), nil
+	return wrapButtonEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Button: extract the button number from a button event.
@@ -599,9 +597,7 @@ func wrapCrossingEvent(obj *externglib.Object) *CrossingEvent {
 }
 
 func marshalCrossingEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCrossingEvent(obj), nil
+	return wrapCrossingEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Detail extracts the notify detail from a crossing event.
@@ -671,9 +667,7 @@ func wrapDNDEvent(obj *externglib.Object) *DNDEvent {
 }
 
 func marshalDNDEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDNDEvent(obj), nil
+	return wrapDNDEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Drop gets the GdkDrop object from a DND event.
@@ -718,9 +712,7 @@ func wrapDeleteEvent(obj *externglib.Object) *DeleteEvent {
 }
 
 func marshalDeleteEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDeleteEvent(obj), nil
+	return wrapDeleteEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*DeleteEvent) privateDeleteEvent() {}
@@ -786,9 +778,7 @@ func wrapEvent(obj *externglib.Object) *Event {
 }
 
 func marshalEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEvent(obj), nil
+	return wrapEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Axes extracts all axis values from an event.
@@ -1170,9 +1160,7 @@ func wrapFocusEvent(obj *externglib.Object) *FocusEvent {
 }
 
 func marshalFocusEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFocusEvent(obj), nil
+	return wrapFocusEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // In extracts whether this event is about focus entering or leaving the
@@ -1209,9 +1197,7 @@ func wrapGrabBrokenEvent(obj *externglib.Object) *GrabBrokenEvent {
 }
 
 func marshalGrabBrokenEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGrabBrokenEvent(obj), nil
+	return wrapGrabBrokenEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // GrabSurface extracts the grab surface from a grab broken event.
@@ -1276,9 +1262,7 @@ func wrapKeyEvent(obj *externglib.Object) *KeyEvent {
 }
 
 func marshalKeyEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapKeyEvent(obj), nil
+	return wrapKeyEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConsumedModifiers extracts the consumed modifiers from a key event.
@@ -1462,9 +1446,7 @@ func wrapMotionEvent(obj *externglib.Object) *MotionEvent {
 }
 
 func marshalMotionEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMotionEvent(obj), nil
+	return wrapMotionEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*MotionEvent) privateMotionEvent() {}
@@ -1483,9 +1465,7 @@ func wrapPadEvent(obj *externglib.Object) *PadEvent {
 }
 
 func marshalPadEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPadEvent(obj), nil
+	return wrapPadEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AxisValue extracts the information from a pad strip or ring event.
@@ -1559,9 +1539,7 @@ func wrapProximityEvent(obj *externglib.Object) *ProximityEvent {
 }
 
 func marshalProximityEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProximityEvent(obj), nil
+	return wrapProximityEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ProximityEvent) privateProximityEvent() {}
@@ -1580,9 +1558,7 @@ func wrapScrollEvent(obj *externglib.Object) *ScrollEvent {
 }
 
 func marshalScrollEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrollEvent(obj), nil
+	return wrapScrollEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Deltas extracts the scroll deltas of a scroll event.
@@ -1664,9 +1640,7 @@ func wrapTouchEvent(obj *externglib.Object) *TouchEvent {
 }
 
 func marshalTouchEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTouchEvent(obj), nil
+	return wrapTouchEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // EmulatingPointer extracts whether a touch event is emulating a pointer event.
@@ -1707,9 +1681,7 @@ func wrapTouchpadEvent(obj *externglib.Object) *TouchpadEvent {
 }
 
 func marshalTouchpadEventer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTouchpadEvent(obj), nil
+	return wrapTouchpadEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Deltas extracts delta information from a touchpad event.
@@ -1814,6 +1786,6 @@ type eventSequence struct {
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &EventSequence{&eventSequence{(*C.GdkEventSequence)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &EventSequence{&eventSequence{(*C.GdkEventSequence)(b)}}, nil
 }

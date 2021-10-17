@@ -74,9 +74,7 @@ func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 }
 
 func marshalToolItemGrouper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolItemGroup(obj), nil
+	return wrapToolItemGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewToolItemGroup creates a new tool item group with label label.

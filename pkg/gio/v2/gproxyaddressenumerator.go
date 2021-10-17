@@ -50,9 +50,7 @@ func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator 
 }
 
 func marshalProxyAddressEnumeratorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProxyAddressEnumerator(obj), nil
+	return wrapProxyAddressEnumerator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ProxyAddressEnumerator) privateProxyAddressEnumerator() {}

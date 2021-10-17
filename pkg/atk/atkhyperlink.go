@@ -33,7 +33,7 @@ const (
 )
 
 func marshalHyperlinkStateFlags(p uintptr) (interface{}, error) {
-	return HyperlinkStateFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return HyperlinkStateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for HyperlinkStateFlags.
@@ -124,9 +124,7 @@ func wrapHyperlink(obj *externglib.Object) *Hyperlink {
 }
 
 func marshalHyperlinker(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHyperlink(obj), nil
+	return wrapHyperlink(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // EndIndex gets the index with the hypertext document at which this link ends.

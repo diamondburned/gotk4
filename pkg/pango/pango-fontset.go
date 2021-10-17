@@ -128,9 +128,7 @@ func wrapFontset(obj *externglib.Object) *Fontset {
 }
 
 func marshalFontsetter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontset(obj), nil
+	return wrapFontset(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Foreach iterates through all the fonts in a fontset, calling func for each
@@ -236,9 +234,7 @@ func wrapFontsetSimple(obj *externglib.Object) *FontsetSimple {
 }
 
 func marshalFontsetSimpler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontsetSimple(obj), nil
+	return wrapFontsetSimple(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFontsetSimple creates a new PangoFontsetSimple for the given language.

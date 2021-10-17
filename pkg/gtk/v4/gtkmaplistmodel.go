@@ -97,9 +97,7 @@ func wrapMapListModel(obj *externglib.Object) *MapListModel {
 }
 
 func marshalMapListModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMapListModel(obj), nil
+	return wrapMapListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMapListModel creates a new GtkMapListModel for the given arguments.

@@ -139,9 +139,7 @@ func wrapMenuShell(obj *externglib.Object) *MenuShell {
 }
 
 func marshalMenuSheller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuShell(obj), nil
+	return wrapMenuShell(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ActivateItem activates the menu item within the menu shell.

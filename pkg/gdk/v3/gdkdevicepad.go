@@ -36,7 +36,7 @@ const (
 )
 
 func marshalDevicePadFeature(p uintptr) (interface{}, error) {
-	return DevicePadFeature(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DevicePadFeature(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DevicePadFeature.
@@ -99,9 +99,7 @@ func wrapDevicePad(obj *externglib.Object) *DevicePad {
 }
 
 func marshalDevicePadder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDevicePad(obj), nil
+	return wrapDevicePad(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // FeatureGroup returns the group the given feature and idx belong to, or -1 if

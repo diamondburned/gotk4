@@ -55,9 +55,7 @@ func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
 }
 
 func marshalNetworkAddresser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNetworkAddress(obj), nil
+	return wrapNetworkAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNetworkAddress creates a new Connectable for connecting to the given

@@ -38,8 +38,8 @@ type frustum struct {
 }
 
 func marshalFrustum(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Frustum{&frustum{(*C.graphene_frustum_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Frustum{&frustum{(*C.graphene_frustum_t)(b)}}, nil
 }
 
 // NewFrustumAlloc constructs a struct Frustum.

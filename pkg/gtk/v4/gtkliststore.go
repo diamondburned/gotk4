@@ -90,9 +90,7 @@ func wrapListStore(obj *externglib.Object) *ListStore {
 }
 
 func marshalListStorer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListStore(obj), nil
+	return wrapListStore(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewListStore: non-vararg creation function. Used primarily by language

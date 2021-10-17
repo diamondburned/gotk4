@@ -66,9 +66,7 @@ func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
 }
 
 func marshalFixedLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixedLayout(obj), nil
+	return wrapFixedLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFixedLayout creates a new GtkFixedLayout.
@@ -100,9 +98,7 @@ func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
 }
 
 func marshalFixedLayoutChilder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixedLayoutChild(obj), nil
+	return wrapFixedLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Transform retrieves the transformation of the child.

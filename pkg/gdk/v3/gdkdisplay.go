@@ -49,9 +49,7 @@ func wrapDisplay(obj *externglib.Object) *Display {
 }
 
 func marshalDisplayer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDisplay(obj), nil
+	return wrapDisplay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Beep emits a short beep on display.

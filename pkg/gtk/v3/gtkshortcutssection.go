@@ -63,9 +63,7 @@ func wrapShortcutsSection(obj *externglib.Object) *ShortcutsSection {
 }
 
 func marshalShortcutsSectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsSection(obj), nil
+	return wrapShortcutsSection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ShortcutsSection) privateShortcutsSection() {}

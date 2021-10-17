@@ -69,9 +69,7 @@ func wrapThemingEngine(obj *externglib.Object) *ThemingEngine {
 }
 
 func marshalThemingEnginer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapThemingEngine(obj), nil
+	return wrapThemingEngine(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BackgroundColor gets the background color for a given state.

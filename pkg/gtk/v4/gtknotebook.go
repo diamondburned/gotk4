@@ -36,7 +36,7 @@ const (
 )
 
 func marshalNotebookTab(p uintptr) (interface{}, error) {
-	return NotebookTab(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return NotebookTab(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NotebookTab.
@@ -166,9 +166,7 @@ func wrapNotebook(obj *externglib.Object) *Notebook {
 }
 
 func marshalNotebooker(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotebook(obj), nil
+	return wrapNotebook(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNotebook creates a new GtkNotebook widget with no pages.
@@ -1412,9 +1410,7 @@ func wrapNotebookPage(obj *externglib.Object) *NotebookPage {
 }
 
 func marshalNotebookPager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotebookPage(obj), nil
+	return wrapNotebookPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Child returns the notebook child to which page belongs.

@@ -48,7 +48,7 @@ const (
 )
 
 func marshalSeatCapabilities(p uintptr) (interface{}, error) {
-	return SeatCapabilities(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SeatCapabilities(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for SeatCapabilities.
@@ -129,9 +129,7 @@ func wrapSeat(obj *externglib.Object) *Seat {
 }
 
 func marshalSeater(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeat(obj), nil
+	return wrapSeat(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Capabilities returns the capabilities this GdkSeat currently has.

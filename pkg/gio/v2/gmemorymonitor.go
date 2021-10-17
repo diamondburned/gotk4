@@ -114,9 +114,7 @@ func wrapMemoryMonitor(obj *externglib.Object) *MemoryMonitor {
 }
 
 func marshalMemoryMonitorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryMonitor(obj), nil
+	return wrapMemoryMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*MemoryMonitor) privateMemoryMonitor() {}

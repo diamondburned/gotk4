@@ -93,9 +93,7 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 }
 
 func marshalSwitcher(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSwitch(obj), nil
+	return wrapSwitch(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSwitch creates a new GtkSwitch widget.

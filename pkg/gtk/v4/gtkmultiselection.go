@@ -42,9 +42,7 @@ func wrapMultiSelection(obj *externglib.Object) *MultiSelection {
 }
 
 func marshalMultiSelectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMultiSelection(obj), nil
+	return wrapMultiSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMultiSelection creates a new selection to handle model.

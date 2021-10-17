@@ -41,8 +41,8 @@ type toplevelLayout struct {
 }
 
 func marshalToplevelLayout(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ToplevelLayout{&toplevelLayout{(*C.GdkToplevelLayout)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &ToplevelLayout{&toplevelLayout{(*C.GdkToplevelLayout)(b)}}, nil
 }
 
 // NewToplevelLayout constructs a struct ToplevelLayout.

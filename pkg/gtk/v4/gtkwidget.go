@@ -985,9 +985,7 @@ func wrapWidget(obj *externglib.Object) *Widget {
 }
 
 func marshalWidgetter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return wrapWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ActionSetEnabled: enable or disable an action installed with
@@ -5324,8 +5322,8 @@ type requisition struct {
 }
 
 func marshalRequisition(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Requisition{&requisition{(*C.GtkRequisition)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Requisition{&requisition{(*C.GtkRequisition)(b)}}, nil
 }
 
 // NewRequisition constructs a struct Requisition.

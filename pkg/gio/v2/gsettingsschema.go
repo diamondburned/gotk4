@@ -75,8 +75,8 @@ type settingsSchema struct {
 }
 
 func marshalSettingsSchema(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &SettingsSchema{&settingsSchema{(*C.GSettingsSchema)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &SettingsSchema{&settingsSchema{(*C.GSettingsSchema)(b)}}, nil
 }
 
 // ID: get the ID of schema.
@@ -258,8 +258,8 @@ type settingsSchemaKey struct {
 }
 
 func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &SettingsSchemaKey{&settingsSchemaKey{(*C.GSettingsSchemaKey)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &SettingsSchemaKey{&settingsSchemaKey{(*C.GSettingsSchemaKey)(b)}}, nil
 }
 
 // DefaultValue gets the default value for key.
@@ -477,8 +477,8 @@ type settingsSchemaSource struct {
 }
 
 func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &SettingsSchemaSource{&settingsSchemaSource{(*C.GSettingsSchemaSource)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &SettingsSchemaSource{&settingsSchemaSource{(*C.GSettingsSchemaSource)(b)}}, nil
 }
 
 // NewSettingsSchemaSourceFromDirectory constructs a struct SettingsSchemaSource.

@@ -40,9 +40,7 @@ func wrapCustomSorter(obj *externglib.Object) *CustomSorter {
 }
 
 func marshalCustomSorterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCustomSorter(obj), nil
+	return wrapCustomSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCustomSorter creates a new GtkSorter that works by calling sort_func to

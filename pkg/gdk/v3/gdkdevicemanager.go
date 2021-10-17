@@ -153,9 +153,7 @@ func wrapDeviceManager(obj *externglib.Object) *DeviceManager {
 }
 
 func marshalDeviceManagerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDeviceManager(obj), nil
+	return wrapDeviceManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ClientPointer returns the client pointer, that is, the master pointer that

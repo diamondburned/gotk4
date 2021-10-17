@@ -101,9 +101,7 @@ func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
 }
 
 func marshalSizeGrouper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSizeGroup(obj), nil
+	return wrapSizeGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSizeGroup: create a new GtkSizeGroup.

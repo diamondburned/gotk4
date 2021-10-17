@@ -51,7 +51,7 @@ const (
 )
 
 func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
-	return ButtonBoxStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ButtonBoxStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ButtonBoxStyle.
@@ -104,9 +104,7 @@ func wrapButtonBox(obj *externglib.Object) *ButtonBox {
 }
 
 func marshalButtonBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButtonBox(obj), nil
+	return wrapButtonBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewButtonBox creates a new ButtonBox.

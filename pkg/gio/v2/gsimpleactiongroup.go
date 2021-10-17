@@ -54,9 +54,7 @@ func wrapSimpleActionGroup(obj *externglib.Object) *SimpleActionGroup {
 }
 
 func marshalSimpleActionGrouper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleActionGroup(obj), nil
+	return wrapSimpleActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSimpleActionGroup creates a new, empty, ActionGroup.

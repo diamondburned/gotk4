@@ -51,9 +51,7 @@ func wrapMediaControls(obj *externglib.Object) *MediaControls {
 }
 
 func marshalMediaControlser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMediaControls(obj), nil
+	return wrapMediaControls(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMediaControls creates a new GtkMediaControls managing the stream passed to

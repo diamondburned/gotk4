@@ -100,9 +100,7 @@ func wrapBox(obj *externglib.Object) *Box {
 }
 
 func marshalBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBox(obj), nil
+	return wrapBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBox creates a new Box.

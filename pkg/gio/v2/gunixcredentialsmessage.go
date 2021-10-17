@@ -52,9 +52,7 @@ func wrapUnixCredentialsMessage(obj *externglib.Object) *UnixCredentialsMessage 
 }
 
 func marshalUnixCredentialsMessager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixCredentialsMessage(obj), nil
+	return wrapUnixCredentialsMessage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewUnixCredentialsMessage creates a new CredentialsMessage with credentials

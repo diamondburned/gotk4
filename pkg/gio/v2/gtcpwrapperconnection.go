@@ -51,9 +51,7 @@ func wrapTCPWrapperConnection(obj *externglib.Object) *TCPWrapperConnection {
 }
 
 func marshalTCPWrapperConnectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTCPWrapperConnection(obj), nil
+	return wrapTCPWrapperConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTCPWrapperConnection wraps base_io_stream and socket together as a

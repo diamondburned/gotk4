@@ -36,9 +36,7 @@ func wrapBoolFilter(obj *externglib.Object) *BoolFilter {
 }
 
 func marshalBoolFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBoolFilter(obj), nil
+	return wrapBoolFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBoolFilter creates a new bool filter.

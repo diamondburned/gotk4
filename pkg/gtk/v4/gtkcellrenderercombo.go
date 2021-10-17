@@ -49,9 +49,7 @@ func wrapCellRendererCombo(obj *externglib.Object) *CellRendererCombo {
 }
 
 func marshalCellRendererCombor(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererCombo(obj), nil
+	return wrapCellRendererCombo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is

@@ -242,9 +242,7 @@ func wrapDrive(obj *externglib.Object) *Drive {
 }
 
 func marshalDriver(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrive(obj), nil
+	return wrapDrive(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CanEject checks if a drive can be ejected.

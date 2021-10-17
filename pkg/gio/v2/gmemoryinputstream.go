@@ -62,9 +62,7 @@ func wrapMemoryInputStream(obj *externglib.Object) *MemoryInputStream {
 }
 
 func marshalMemoryInputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryInputStream(obj), nil
+	return wrapMemoryInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMemoryInputStream creates a new empty InputStream.

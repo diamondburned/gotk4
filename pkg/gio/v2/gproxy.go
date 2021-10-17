@@ -99,9 +99,7 @@ func wrapProxy(obj *externglib.Object) *Proxy {
 }
 
 func marshalProxier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProxy(obj), nil
+	return wrapProxy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConnectProxy: given connection to communicate with a proxy (eg, a Connection

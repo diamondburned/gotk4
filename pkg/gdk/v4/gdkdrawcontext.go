@@ -65,9 +65,7 @@ func wrapDrawContext(obj *externglib.Object) *DrawContext {
 }
 
 func marshalDrawContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrawContext(obj), nil
+	return wrapDrawContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BeginFrame indicates that you are beginning the process of redrawing region

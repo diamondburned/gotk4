@@ -41,9 +41,7 @@ func wrapStringSorter(obj *externglib.Object) *StringSorter {
 }
 
 func marshalStringSorterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStringSorter(obj), nil
+	return wrapStringSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStringSorter creates a new string sorter that compares items using the

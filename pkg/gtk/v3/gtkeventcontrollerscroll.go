@@ -46,7 +46,7 @@ const (
 )
 
 func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
-	return EventControllerScrollFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EventControllerScrollFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for EventControllerScrollFlags.
@@ -137,9 +137,7 @@ func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
 }
 
 func marshalEventControllerScroller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerScroll(obj), nil
+	return wrapEventControllerScroll(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEventControllerScroll creates a new event controller that will handle

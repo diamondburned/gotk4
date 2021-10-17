@@ -60,9 +60,7 @@ func wrapIMContextSimple(obj *externglib.Object) *IMContextSimple {
 }
 
 func marshalIMContextSimpler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIMContextSimple(obj), nil
+	return wrapIMContextSimple(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewIMContextSimple creates a new IMContextSimple.

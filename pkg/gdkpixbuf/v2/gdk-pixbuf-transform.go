@@ -60,7 +60,7 @@ const (
 )
 
 func marshalInterpType(p uintptr) (interface{}, error) {
-	return InterpType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return InterpType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for InterpType.
@@ -97,7 +97,7 @@ const (
 )
 
 func marshalPixbufRotation(p uintptr) (interface{}, error) {
-	return PixbufRotation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PixbufRotation(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PixbufRotation.

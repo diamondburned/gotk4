@@ -38,8 +38,8 @@ type tree struct {
 }
 
 func marshalTree(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Tree{&tree{(*C.GTree)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Tree{&tree{(*C.GTree)(b)}}, nil
 }
 
 // Destroy removes all keys and values from the #GTree and decreases its

@@ -85,9 +85,7 @@ func wrapSocketAddress(obj *externglib.Object) *SocketAddress {
 }
 
 func marshalSocketAddresser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketAddress(obj), nil
+	return wrapSocketAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSocketAddressFromNative creates a Address subclass corresponding to the

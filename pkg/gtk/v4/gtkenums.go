@@ -106,7 +106,7 @@ const (
 )
 
 func marshalAccessibleAutocomplete(p uintptr) (interface{}, error) {
-	return AccessibleAutocomplete(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccessibleAutocomplete(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AccessibleAutocomplete.
@@ -144,7 +144,7 @@ const (
 )
 
 func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
-	return AccessibleInvalidState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccessibleInvalidState(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AccessibleInvalidState.
@@ -236,7 +236,7 @@ const (
 )
 
 func marshalAccessibleProperty(p uintptr) (interface{}, error) {
-	return AccessibleProperty(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccessibleProperty(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AccessibleProperty.
@@ -357,7 +357,7 @@ const (
 )
 
 func marshalAccessibleRelation(p uintptr) (interface{}, error) {
-	return AccessibleRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccessibleRelation(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AccessibleRelation.
@@ -593,7 +593,7 @@ const (
 )
 
 func marshalAccessibleRole(p uintptr) (interface{}, error) {
-	return AccessibleRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccessibleRole(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AccessibleRole.
@@ -779,7 +779,7 @@ const (
 )
 
 func marshalAccessibleSort(p uintptr) (interface{}, error) {
-	return AccessibleSort(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccessibleSort(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AccessibleSort.
@@ -831,7 +831,7 @@ const (
 )
 
 func marshalAccessibleState(p uintptr) (interface{}, error) {
-	return AccessibleState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccessibleState(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AccessibleState.
@@ -875,7 +875,7 @@ const (
 )
 
 func marshalAccessibleTristate(p uintptr) (interface{}, error) {
-	return AccessibleTristate(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccessibleTristate(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AccessibleTristate.
@@ -923,7 +923,7 @@ const (
 )
 
 func marshalAlign(p uintptr) (interface{}, error) {
-	return Align(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Align(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Align.
@@ -961,7 +961,7 @@ const (
 )
 
 func marshalArrowType(p uintptr) (interface{}, error) {
-	return ArrowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ArrowType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ArrowType.
@@ -1001,7 +1001,7 @@ const (
 )
 
 func marshalBaselinePosition(p uintptr) (interface{}, error) {
-	return BaselinePosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return BaselinePosition(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BaselinePosition.
@@ -1045,7 +1045,7 @@ const (
 )
 
 func marshalBorderStyle(p uintptr) (interface{}, error) {
-	return BorderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return BorderStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BorderStyle.
@@ -1114,7 +1114,7 @@ const (
 )
 
 func marshalConstraintAttribute(p uintptr) (interface{}, error) {
-	return ConstraintAttribute(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ConstraintAttribute(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ConstraintAttribute.
@@ -1162,7 +1162,7 @@ const (
 )
 
 func marshalConstraintRelation(p uintptr) (interface{}, error) {
-	return ConstraintRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ConstraintRelation(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ConstraintRelation.
@@ -1199,7 +1199,7 @@ const (
 )
 
 func marshalConstraintStrength(p uintptr) (interface{}, error) {
-	return ConstraintStrength(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ConstraintStrength(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ConstraintStrength.
@@ -1237,7 +1237,7 @@ const (
 )
 
 func marshalConstraintVflParserError(p uintptr) (interface{}, error) {
-	return ConstraintVflParserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ConstraintVflParserError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ConstraintVflParserError.
@@ -1288,7 +1288,7 @@ const (
 )
 
 func marshalDeleteType(p uintptr) (interface{}, error) {
-	return DeleteType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DeleteType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DeleteType.
@@ -1334,7 +1334,7 @@ const (
 )
 
 func marshalDirectionType(p uintptr) (interface{}, error) {
-	return DirectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DirectionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DirectionType.
@@ -1370,7 +1370,7 @@ const (
 )
 
 func marshalEventSequenceState(p uintptr) (interface{}, error) {
-	return EventSequenceState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EventSequenceState(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EventSequenceState.
@@ -1407,7 +1407,7 @@ const (
 )
 
 func marshalIconSize(p uintptr) (interface{}, error) {
-	return IconSize(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IconSize(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IconSize.
@@ -1471,7 +1471,7 @@ const (
 )
 
 func marshalInputPurpose(p uintptr) (interface{}, error) {
-	return InputPurpose(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return InputPurpose(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for InputPurpose.
@@ -1519,7 +1519,7 @@ const (
 )
 
 func marshalJustification(p uintptr) (interface{}, error) {
-	return Justification(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Justification(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Justification.
@@ -1552,7 +1552,7 @@ const (
 )
 
 func marshalLevelBarMode(p uintptr) (interface{}, error) {
-	return LevelBarMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return LevelBarMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for LevelBarMode.
@@ -1584,7 +1584,7 @@ const (
 )
 
 func marshalMessageType(p uintptr) (interface{}, error) {
-	return MessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return MessageType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MessageType.
@@ -1633,7 +1633,7 @@ const (
 )
 
 func marshalMovementStep(p uintptr) (interface{}, error) {
-	return MovementStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return MovementStep(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MovementStep.
@@ -1688,7 +1688,7 @@ const (
 )
 
 func marshalNumberUpLayout(p uintptr) (interface{}, error) {
-	return NumberUpLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return NumberUpLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NumberUpLayout.
@@ -1732,7 +1732,7 @@ const (
 )
 
 func marshalOrdering(p uintptr) (interface{}, error) {
-	return Ordering(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Ordering(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Ordering.
@@ -1785,7 +1785,7 @@ const (
 )
 
 func marshalOrientation(p uintptr) (interface{}, error) {
-	return Orientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Orientation(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Orientation.
@@ -1816,7 +1816,7 @@ const (
 )
 
 func marshalOverflow(p uintptr) (interface{}, error) {
-	return Overflow(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Overflow(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Overflow.
@@ -1844,7 +1844,7 @@ const (
 )
 
 func marshalPackType(p uintptr) (interface{}, error) {
-	return PackType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PackType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PackType.
@@ -1874,7 +1874,7 @@ const (
 )
 
 func marshalPageOrientation(p uintptr) (interface{}, error) {
-	return PageOrientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PageOrientation(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PageOrientation.
@@ -1906,7 +1906,7 @@ const (
 )
 
 func marshalPageSet(p uintptr) (interface{}, error) {
-	return PageSet(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PageSet(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PageSet.
@@ -1938,7 +1938,7 @@ const (
 )
 
 func marshalPanDirection(p uintptr) (interface{}, error) {
-	return PanDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PanDirection(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PanDirection.
@@ -1975,7 +1975,7 @@ const (
 )
 
 func marshalPositionType(p uintptr) (interface{}, error) {
-	return PositionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PositionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PositionType.
@@ -2007,7 +2007,7 @@ const (
 )
 
 func marshalPrintDuplex(p uintptr) (interface{}, error) {
-	return PrintDuplex(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PrintDuplex(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintDuplex.
@@ -2039,7 +2039,7 @@ const (
 )
 
 func marshalPrintPages(p uintptr) (interface{}, error) {
-	return PrintPages(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PrintPages(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintPages.
@@ -2073,7 +2073,7 @@ const (
 )
 
 func marshalPrintQuality(p uintptr) (interface{}, error) {
-	return PrintQuality(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PrintQuality(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintQuality.
@@ -2106,7 +2106,7 @@ const (
 )
 
 func marshalPropagationLimit(p uintptr) (interface{}, error) {
-	return PropagationLimit(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PropagationLimit(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PropagationLimit.
@@ -2144,7 +2144,7 @@ const (
 )
 
 func marshalPropagationPhase(p uintptr) (interface{}, error) {
-	return PropagationPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PropagationPhase(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PropagationPhase.
@@ -2182,7 +2182,7 @@ const (
 )
 
 func marshalScrollStep(p uintptr) (interface{}, error) {
-	return ScrollStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ScrollStep(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollStep.
@@ -2244,7 +2244,7 @@ const (
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
-	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ScrollType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollType.
@@ -2299,7 +2299,7 @@ const (
 )
 
 func marshalScrollablePolicy(p uintptr) (interface{}, error) {
-	return ScrollablePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ScrollablePolicy(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollablePolicy.
@@ -2336,7 +2336,7 @@ const (
 )
 
 func marshalSelectionMode(p uintptr) (interface{}, error) {
-	return SelectionMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SelectionMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SelectionMode.
@@ -2370,7 +2370,7 @@ const (
 )
 
 func marshalSensitivityType(p uintptr) (interface{}, error) {
-	return SensitivityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SensitivityType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SensitivityType.
@@ -2403,7 +2403,7 @@ const (
 )
 
 func marshalShortcutScope(p uintptr) (interface{}, error) {
-	return ShortcutScope(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ShortcutScope(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ShortcutScope.
@@ -2436,7 +2436,7 @@ const (
 )
 
 func marshalSizeGroupMode(p uintptr) (interface{}, error) {
-	return SizeGroupMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SizeGroupMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SizeGroupMode.
@@ -2470,7 +2470,7 @@ const (
 )
 
 func marshalSizeRequestMode(p uintptr) (interface{}, error) {
-	return SizeRequestMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SizeRequestMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SizeRequestMode.
@@ -2498,7 +2498,7 @@ const (
 )
 
 func marshalSortType(p uintptr) (interface{}, error) {
-	return SortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SortType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SortType.
@@ -2543,7 +2543,7 @@ const (
 )
 
 func marshalSystemSetting(p uintptr) (interface{}, error) {
-	return SystemSetting(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SystemSetting(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SystemSetting.
@@ -2577,7 +2577,7 @@ const (
 )
 
 func marshalTextDirection(p uintptr) (interface{}, error) {
-	return TextDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextDirection(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextDirection.
@@ -2609,7 +2609,7 @@ const (
 )
 
 func marshalTreeViewGridLines(p uintptr) (interface{}, error) {
-	return TreeViewGridLines(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TreeViewGridLines(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TreeViewGridLines.
@@ -2643,7 +2643,7 @@ const (
 )
 
 func marshalUnit(p uintptr) (interface{}, error) {
-	return Unit(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Unit(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Unit.
@@ -2680,7 +2680,7 @@ const (
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
-	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WrapMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WrapMode.
@@ -2746,7 +2746,7 @@ const (
 )
 
 func marshalInputHints(p uintptr) (interface{}, error) {
-	return InputHints(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return InputHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for InputHints.
@@ -2756,7 +2756,7 @@ func (i InputHints) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(268)
+	builder.Grow(256)
 
 	for i != 0 {
 		next := i & (i - 1)
@@ -2818,7 +2818,7 @@ const (
 )
 
 func marshalPickFlags(p uintptr) (interface{}, error) {
-	return PickFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PickFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for PickFlags.
@@ -2898,7 +2898,7 @@ const (
 )
 
 func marshalStateFlags(p uintptr) (interface{}, error) {
-	return StateFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return StateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for StateFlags.
@@ -2908,7 +2908,7 @@ func (s StateFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(288)
+	builder.Grow(256)
 
 	for s != 0 {
 		next := s & (s - 1)

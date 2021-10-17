@@ -94,9 +94,7 @@ func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 }
 
 func marshalImageMenuItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImageMenuItem(obj), nil
+	return wrapImageMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewImageMenuItem creates a new ImageMenuItem with an empty label.

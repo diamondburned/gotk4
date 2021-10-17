@@ -53,9 +53,7 @@ func wrapEventBox(obj *externglib.Object) *EventBox {
 }
 
 func marshalEventBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventBox(obj), nil
+	return wrapEventBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEventBox creates a new EventBox.

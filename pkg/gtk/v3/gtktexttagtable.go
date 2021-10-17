@@ -85,9 +85,7 @@ func wrapTextTagTable(obj *externglib.Object) *TextTagTable {
 }
 
 func marshalTextTagTabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextTagTable(obj), nil
+	return wrapTextTagTable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextTagTable creates a new TextTagTable. The table contains no tags by

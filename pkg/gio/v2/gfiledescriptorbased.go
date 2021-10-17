@@ -66,9 +66,7 @@ func wrapFileDescriptorBased(obj *externglib.Object) *FileDescriptorBased {
 }
 
 func marshalFileDescriptorBasedder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileDescriptorBased(obj), nil
+	return wrapFileDescriptorBased(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Fd gets the underlying file descriptor.

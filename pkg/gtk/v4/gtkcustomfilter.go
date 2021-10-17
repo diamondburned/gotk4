@@ -67,9 +67,7 @@ func wrapCustomFilter(obj *externglib.Object) *CustomFilter {
 }
 
 func marshalCustomFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCustomFilter(obj), nil
+	return wrapCustomFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCustomFilter creates a new filter using the given match_func to filter

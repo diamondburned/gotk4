@@ -159,9 +159,7 @@ func wrapEditable(obj *externglib.Object) *Editable {
 }
 
 func marshalEditabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEditable(obj), nil
+	return wrapEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CopyClipboard copies the contents of the currently selected content in the

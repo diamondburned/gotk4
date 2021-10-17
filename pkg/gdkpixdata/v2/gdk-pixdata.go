@@ -18,7 +18,6 @@ import (
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixdata.h>
-// #include <glib-object.h>
 import "C"
 
 // PIXBUF_MAGIC_NUMBER: magic number for Pixdata structures.

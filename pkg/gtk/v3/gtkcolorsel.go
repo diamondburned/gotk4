@@ -64,9 +64,7 @@ func wrapColorSelection(obj *externglib.Object) *ColorSelection {
 }
 
 func marshalColorSelectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorSelection(obj), nil
+	return wrapColorSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColorSelection creates a new GtkColorSelection.

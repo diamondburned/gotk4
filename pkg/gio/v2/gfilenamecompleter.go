@@ -52,9 +52,7 @@ func wrapFilenameCompleter(obj *externglib.Object) *FilenameCompleter {
 }
 
 func marshalFilenameCompleterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilenameCompleter(obj), nil
+	return wrapFilenameCompleter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFilenameCompleter creates a new filename completer.

@@ -58,9 +58,7 @@ func wrapMenuBar(obj *externglib.Object) *MenuBar {
 }
 
 func marshalMenuBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuBar(obj), nil
+	return wrapMenuBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMenuBar creates a new MenuBar.

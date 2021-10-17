@@ -39,7 +39,7 @@ const (
 )
 
 func marshalDragCancelReason(p uintptr) (interface{}, error) {
-	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DragCancelReason(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DragCancelReason.
@@ -81,7 +81,7 @@ const (
 )
 
 func marshalDragProtocol(p uintptr) (interface{}, error) {
-	return DragProtocol(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DragProtocol(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DragProtocol.
@@ -131,7 +131,7 @@ const (
 )
 
 func marshalDragAction(p uintptr) (interface{}, error) {
-	return DragAction(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DragAction(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DragAction.

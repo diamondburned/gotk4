@@ -53,7 +53,7 @@ const (
 )
 
 func marshalWidgetHelpType(p uintptr) (interface{}, error) {
-	return WidgetHelpType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WidgetHelpType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WidgetHelpType.
@@ -1278,9 +1278,7 @@ func wrapWidget(obj *externglib.Object) *Widget {
 }
 
 func marshalWidgetter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return wrapWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Activate: for widgets that can be “activated” (buttons, menu items, etc.)
@@ -8383,8 +8381,8 @@ type requisition struct {
 }
 
 func marshalRequisition(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Requisition{&requisition{(*C.GtkRequisition)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Requisition{&requisition{(*C.GtkRequisition)(b)}}, nil
 }
 
 // NewRequisition constructs a struct Requisition.

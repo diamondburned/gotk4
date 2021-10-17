@@ -192,8 +192,8 @@ type variantType struct {
 }
 
 func marshalVariantType(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &VariantType{&variantType{(*C.GVariantType)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &VariantType{&variantType{(*C.GVariantType)(b)}}, nil
 }
 
 // NewVariantType constructs a struct VariantType.

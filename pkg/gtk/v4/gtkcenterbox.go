@@ -87,9 +87,7 @@ func wrapCenterBox(obj *externglib.Object) *CenterBox {
 }
 
 func marshalCenterBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCenterBox(obj), nil
+	return wrapCenterBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCenterBox creates a new GtkCenterBox.

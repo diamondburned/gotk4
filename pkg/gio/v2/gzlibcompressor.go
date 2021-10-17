@@ -47,9 +47,7 @@ func wrapZlibCompressor(obj *externglib.Object) *ZlibCompressor {
 }
 
 func marshalZlibCompressorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapZlibCompressor(obj), nil
+	return wrapZlibCompressor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewZlibCompressor creates a new Compressor.

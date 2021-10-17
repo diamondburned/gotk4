@@ -42,8 +42,8 @@ type matrix struct {
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Matrix{&matrix{(*C.PangoMatrix)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Matrix{&matrix{(*C.PangoMatrix)(b)}}, nil
 }
 
 // NewMatrix creates a new Matrix instance from the given

@@ -81,9 +81,7 @@ func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 }
 
 func marshalRecentChooserMenuer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooserMenu(obj), nil
+	return wrapRecentChooserMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRecentChooserMenu creates a new RecentChooserMenu widget.

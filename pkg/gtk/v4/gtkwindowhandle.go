@@ -60,9 +60,7 @@ func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 }
 
 func marshalWindowHandler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowHandle(obj), nil
+	return wrapWindowHandle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindowHandle creates a new GtkWindowHandle.

@@ -256,9 +256,7 @@ func wrapKeymap(obj *externglib.Object) *Keymap {
 }
 
 func marshalKeymapper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapKeymap(obj), nil
+	return wrapKeymap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CapsLockState returns whether the Caps Lock modifer is locked.

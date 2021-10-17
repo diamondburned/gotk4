@@ -57,9 +57,7 @@ func wrapInetAddress(obj *externglib.Object) *InetAddress {
 }
 
 func marshalInetAddresser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInetAddress(obj), nil
+	return wrapInetAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewInetAddressAny creates a Address for the "any" address (unassigned/"don't

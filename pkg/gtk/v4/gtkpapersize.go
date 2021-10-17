@@ -67,8 +67,8 @@ type paperSize struct {
 }
 
 func marshalPaperSize(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &PaperSize{&paperSize{(*C.GtkPaperSize)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &PaperSize{&paperSize{(*C.GtkPaperSize)(b)}}, nil
 }
 
 // NewPaperSize constructs a struct PaperSize.

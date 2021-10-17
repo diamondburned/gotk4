@@ -53,9 +53,7 @@ func wrapNativeVolumeMonitor(obj *externglib.Object) *NativeVolumeMonitor {
 }
 
 func marshalNativeVolumeMonitorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNativeVolumeMonitor(obj), nil
+	return wrapNativeVolumeMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*NativeVolumeMonitor) privateNativeVolumeMonitor() {}

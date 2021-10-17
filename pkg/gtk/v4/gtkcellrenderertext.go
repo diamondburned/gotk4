@@ -52,9 +52,7 @@ func wrapCellRendererText(obj *externglib.Object) *CellRendererText {
 }
 
 func marshalCellRendererTexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererText(obj), nil
+	return wrapCellRendererText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererText creates a new CellRendererText. Adjust how text is drawn

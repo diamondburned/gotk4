@@ -68,9 +68,7 @@ func wrapLayout(obj *externglib.Object) *Layout {
 }
 
 func marshalLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLayout(obj), nil
+	return wrapLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLayout creates a new Layout. Unless you have a specific adjustment you’d

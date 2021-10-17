@@ -125,7 +125,7 @@ const (
 )
 
 func marshalBusType(p uintptr) (interface{}, error) {
-	return BusType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return BusType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BusType.
@@ -159,7 +159,7 @@ const (
 )
 
 func marshalConverterResult(p uintptr) (interface{}, error) {
-	return ConverterResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ConverterResult(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ConverterResult.
@@ -205,7 +205,7 @@ const (
 )
 
 func marshalCredentialsType(p uintptr) (interface{}, error) {
-	return CredentialsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CredentialsType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CredentialsType.
@@ -363,7 +363,7 @@ const (
 )
 
 func marshalDBusError(p uintptr) (interface{}, error) {
-	return DBusError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DBusError.
@@ -476,7 +476,7 @@ const (
 )
 
 func marshalDBusMessageByteOrder(p uintptr) (interface{}, error) {
-	return DBusMessageByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusMessageByteOrder(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DBusMessageByteOrder.
@@ -521,7 +521,7 @@ const (
 )
 
 func marshalDBusMessageHeaderField(p uintptr) (interface{}, error) {
-	return DBusMessageHeaderField(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusMessageHeaderField(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DBusMessageHeaderField.
@@ -569,7 +569,7 @@ const (
 )
 
 func marshalDBusMessageType(p uintptr) (interface{}, error) {
-	return DBusMessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusMessageType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DBusMessageType.
@@ -605,7 +605,7 @@ const (
 )
 
 func marshalDataStreamByteOrder(p uintptr) (interface{}, error) {
-	return DataStreamByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DataStreamByteOrder(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DataStreamByteOrder.
@@ -641,7 +641,7 @@ const (
 )
 
 func marshalDataStreamNewlineType(p uintptr) (interface{}, error) {
-	return DataStreamNewlineType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DataStreamNewlineType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DataStreamNewlineType.
@@ -683,7 +683,7 @@ const (
 )
 
 func marshalDriveStartStopType(p uintptr) (interface{}, error) {
-	return DriveStartStopType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DriveStartStopType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DriveStartStopType.
@@ -722,7 +722,7 @@ const (
 )
 
 func marshalEmblemOrigin(p uintptr) (interface{}, error) {
-	return EmblemOrigin(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EmblemOrigin(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EmblemOrigin.
@@ -755,7 +755,7 @@ const (
 )
 
 func marshalFileAttributeStatus(p uintptr) (interface{}, error) {
-	return FileAttributeStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileAttributeStatus(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileAttributeStatus.
@@ -799,7 +799,7 @@ const (
 )
 
 func marshalFileAttributeType(p uintptr) (interface{}, error) {
-	return FileAttributeType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileAttributeType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileAttributeType.
@@ -866,7 +866,7 @@ const (
 )
 
 func marshalFileMonitorEvent(p uintptr) (interface{}, error) {
-	return FileMonitorEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileMonitorEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileMonitorEvent.
@@ -931,7 +931,7 @@ const (
 )
 
 func marshalFileType(p uintptr) (interface{}, error) {
-	return FileType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileType.
@@ -973,7 +973,7 @@ const (
 )
 
 func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
-	return FilesystemPreviewType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FilesystemPreviewType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FilesystemPreviewType.
@@ -1124,7 +1124,7 @@ const (
 )
 
 func marshalIOErrorEnum(p uintptr) (interface{}, error) {
-	return IOErrorEnum(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IOErrorEnum(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IOErrorEnum.
@@ -1242,7 +1242,7 @@ const (
 )
 
 func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
-	return IOModuleScopeFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IOModuleScopeFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IOModuleScopeFlags.
@@ -1283,7 +1283,7 @@ const (
 )
 
 func marshalMemoryMonitorWarningLevel(p uintptr) (interface{}, error) {
-	return MemoryMonitorWarningLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return MemoryMonitorWarningLevel(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MemoryMonitorWarningLevel.
@@ -1315,7 +1315,7 @@ const (
 )
 
 func marshalMountOperationResult(p uintptr) (interface{}, error) {
-	return MountOperationResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return MountOperationResult(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MountOperationResult.
@@ -1353,7 +1353,7 @@ const (
 )
 
 func marshalNetworkConnectivity(p uintptr) (interface{}, error) {
-	return NetworkConnectivity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return NetworkConnectivity(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NetworkConnectivity.
@@ -1395,7 +1395,7 @@ const (
 )
 
 func marshalNotificationPriority(p uintptr) (interface{}, error) {
-	return NotificationPriority(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return NotificationPriority(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NotificationPriority.
@@ -1430,7 +1430,7 @@ const (
 )
 
 func marshalPasswordSave(p uintptr) (interface{}, error) {
-	return PasswordSave(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PasswordSave(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PasswordSave.
@@ -1469,7 +1469,7 @@ const (
 )
 
 func marshalPollableReturn(p uintptr) (interface{}, error) {
-	return PollableReturn(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PollableReturn(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PollableReturn.
@@ -1501,7 +1501,7 @@ const (
 )
 
 func marshalResolverError(p uintptr) (interface{}, error) {
-	return ResolverError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ResolverError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ResolverError.
@@ -1564,7 +1564,7 @@ const (
 )
 
 func marshalResolverRecordType(p uintptr) (interface{}, error) {
-	return ResolverRecordType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ResolverRecordType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ResolverRecordType.
@@ -1597,7 +1597,7 @@ const (
 )
 
 func marshalResourceError(p uintptr) (interface{}, error) {
-	return ResourceError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ResourceError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ResourceError.
@@ -1642,7 +1642,7 @@ const (
 )
 
 func marshalSocketClientEvent(p uintptr) (interface{}, error) {
-	return SocketClientEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SocketClientEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketClientEvent.
@@ -1687,7 +1687,7 @@ const (
 )
 
 func marshalSocketFamily(p uintptr) (interface{}, error) {
-	return SocketFamily(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SocketFamily(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketFamily.
@@ -1725,7 +1725,7 @@ const (
 )
 
 func marshalSocketListenerEvent(p uintptr) (interface{}, error) {
-	return SocketListenerEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SocketListenerEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketListenerEvent.
@@ -1767,7 +1767,7 @@ const (
 )
 
 func marshalSocketProtocol(p uintptr) (interface{}, error) {
-	return SocketProtocol(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SocketProtocol(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketProtocol.
@@ -1806,7 +1806,7 @@ const (
 )
 
 func marshalSocketType(p uintptr) (interface{}, error) {
-	return SocketType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SocketType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketType.
@@ -1838,7 +1838,7 @@ const (
 )
 
 func marshalTLSAuthenticationMode(p uintptr) (interface{}, error) {
-	return TLSAuthenticationMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSAuthenticationMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSAuthenticationMode.
@@ -1866,7 +1866,7 @@ const (
 )
 
 func marshalTLSCertificateRequestFlags(p uintptr) (interface{}, error) {
-	return TLSCertificateRequestFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSCertificateRequestFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSCertificateRequestFlags.
@@ -1906,7 +1906,7 @@ const (
 )
 
 func marshalTLSChannelBindingError(p uintptr) (interface{}, error) {
-	return TLSChannelBindingError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSChannelBindingError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSChannelBindingError.
@@ -1943,7 +1943,7 @@ const (
 )
 
 func marshalTLSChannelBindingType(p uintptr) (interface{}, error) {
-	return TLSChannelBindingType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSChannelBindingType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSChannelBindingType.
@@ -1973,7 +1973,7 @@ const (
 )
 
 func marshalTLSDatabaseLookupFlags(p uintptr) (interface{}, error) {
-	return TLSDatabaseLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSDatabaseLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSDatabaseLookupFlags.
@@ -2020,7 +2020,7 @@ const (
 )
 
 func marshalTLSError(p uintptr) (interface{}, error) {
-	return TLSError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSError.
@@ -2064,7 +2064,7 @@ const (
 )
 
 func marshalTLSInteractionResult(p uintptr) (interface{}, error) {
-	return TLSInteractionResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSInteractionResult(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSInteractionResult.
@@ -2099,7 +2099,7 @@ const (
 )
 
 func marshalTLSRehandshakeMode(p uintptr) (interface{}, error) {
-	return TLSRehandshakeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSRehandshakeMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSRehandshakeMode.
@@ -2145,7 +2145,7 @@ const (
 )
 
 func marshalUnixSocketAddressType(p uintptr) (interface{}, error) {
-	return UnixSocketAddressType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return UnixSocketAddressType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for UnixSocketAddressType.
@@ -2180,7 +2180,7 @@ const (
 )
 
 func marshalZlibCompressorFormat(p uintptr) (interface{}, error) {
-	return ZlibCompressorFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ZlibCompressorFormat(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ZlibCompressorFormat.
@@ -2213,7 +2213,7 @@ const (
 )
 
 func marshalAppInfoCreateFlags(p uintptr) (interface{}, error) {
-	return AppInfoCreateFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AppInfoCreateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AppInfoCreateFlags.
@@ -2302,7 +2302,7 @@ const (
 )
 
 func marshalApplicationFlags(p uintptr) (interface{}, error) {
-	return ApplicationFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ApplicationFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ApplicationFlags.
@@ -2374,7 +2374,7 @@ const (
 )
 
 func marshalAskPasswordFlags(p uintptr) (interface{}, error) {
-	return AskPasswordFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AskPasswordFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AskPasswordFlags.
@@ -2438,7 +2438,7 @@ const (
 )
 
 func marshalBusNameOwnerFlags(p uintptr) (interface{}, error) {
-	return BusNameOwnerFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return BusNameOwnerFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for BusNameOwnerFlags.
@@ -2490,7 +2490,7 @@ const (
 )
 
 func marshalBusNameWatcherFlags(p uintptr) (interface{}, error) {
-	return BusNameWatcherFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return BusNameWatcherFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for BusNameWatcherFlags.
@@ -2539,7 +2539,7 @@ const (
 )
 
 func marshalConverterFlags(p uintptr) (interface{}, error) {
-	return ConverterFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ConverterFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ConverterFlags.
@@ -2592,7 +2592,7 @@ const (
 )
 
 func marshalDBusCallFlags(p uintptr) (interface{}, error) {
-	return DBusCallFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusCallFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusCallFlags.
@@ -2642,7 +2642,7 @@ const (
 )
 
 func marshalDBusCapabilityFlags(p uintptr) (interface{}, error) {
-	return DBusCapabilityFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusCapabilityFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusCapabilityFlags.
@@ -2708,7 +2708,7 @@ const (
 )
 
 func marshalDBusConnectionFlags(p uintptr) (interface{}, error) {
-	return DBusConnectionFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusConnectionFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusConnectionFlags.
@@ -2718,7 +2718,7 @@ func (d DBusConnectionFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(282)
+	builder.Grow(256)
 
 	for d != 0 {
 		next := d & (d - 1)
@@ -2770,7 +2770,7 @@ const (
 )
 
 func marshalDBusInterfaceSkeletonFlags(p uintptr) (interface{}, error) {
-	return DBusInterfaceSkeletonFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusInterfaceSkeletonFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusInterfaceSkeletonFlags.
@@ -2824,7 +2824,7 @@ const (
 )
 
 func marshalDBusMessageFlags(p uintptr) (interface{}, error) {
-	return DBusMessageFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusMessageFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusMessageFlags.
@@ -2879,7 +2879,7 @@ const (
 )
 
 func marshalDBusObjectManagerClientFlags(p uintptr) (interface{}, error) {
-	return DBusObjectManagerClientFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusObjectManagerClientFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusObjectManagerClientFlags.
@@ -2929,7 +2929,7 @@ const (
 )
 
 func marshalDBusPropertyInfoFlags(p uintptr) (interface{}, error) {
-	return DBusPropertyInfoFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusPropertyInfoFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusPropertyInfoFlags.
@@ -3002,7 +3002,7 @@ const (
 )
 
 func marshalDBusProxyFlags(p uintptr) (interface{}, error) {
-	return DBusProxyFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusProxyFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusProxyFlags.
@@ -3058,7 +3058,7 @@ const (
 )
 
 func marshalDBusSendMessageFlags(p uintptr) (interface{}, error) {
-	return DBusSendMessageFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusSendMessageFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusSendMessageFlags.
@@ -3113,7 +3113,7 @@ const (
 )
 
 func marshalDBusServerFlags(p uintptr) (interface{}, error) {
-	return DBusServerFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusServerFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusServerFlags.
@@ -3174,7 +3174,7 @@ const (
 )
 
 func marshalDBusSignalFlags(p uintptr) (interface{}, error) {
-	return DBusSignalFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusSignalFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusSignalFlags.
@@ -3227,7 +3227,7 @@ const (
 )
 
 func marshalDBusSubtreeFlags(p uintptr) (interface{}, error) {
-	return DBusSubtreeFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DBusSubtreeFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusSubtreeFlags.
@@ -3272,7 +3272,7 @@ const (
 )
 
 func marshalDriveStartFlags(p uintptr) (interface{}, error) {
-	return DriveStartFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DriveStartFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DriveStartFlags.
@@ -3321,7 +3321,7 @@ const (
 )
 
 func marshalFileAttributeInfoFlags(p uintptr) (interface{}, error) {
-	return FileAttributeInfoFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileAttributeInfoFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileAttributeInfoFlags.
@@ -3383,7 +3383,7 @@ const (
 )
 
 func marshalFileCopyFlags(p uintptr) (interface{}, error) {
-	return FileCopyFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileCopyFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileCopyFlags.
@@ -3450,7 +3450,7 @@ const (
 )
 
 func marshalFileCreateFlags(p uintptr) (interface{}, error) {
-	return FileCreateFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileCreateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileCreateFlags.
@@ -3509,7 +3509,7 @@ const (
 )
 
 func marshalFileMeasureFlags(p uintptr) (interface{}, error) {
-	return FileMeasureFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileMeasureFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileMeasureFlags.
@@ -3574,7 +3574,7 @@ const (
 )
 
 func marshalFileMonitorFlags(p uintptr) (interface{}, error) {
-	return FileMonitorFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileMonitorFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileMonitorFlags.
@@ -3627,7 +3627,7 @@ const (
 )
 
 func marshalFileQueryInfoFlags(p uintptr) (interface{}, error) {
-	return FileQueryInfoFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileQueryInfoFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileQueryInfoFlags.
@@ -3679,7 +3679,7 @@ const (
 )
 
 func marshalIOStreamSpliceFlags(p uintptr) (interface{}, error) {
-	return IOStreamSpliceFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IOStreamSpliceFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for IOStreamSpliceFlags.
@@ -3728,7 +3728,7 @@ const (
 )
 
 func marshalMountMountFlags(p uintptr) (interface{}, error) {
-	return MountMountFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return MountMountFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for MountMountFlags.
@@ -3774,7 +3774,7 @@ const (
 )
 
 func marshalMountUnmountFlags(p uintptr) (interface{}, error) {
-	return MountUnmountFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return MountUnmountFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for MountUnmountFlags.
@@ -3823,7 +3823,7 @@ const (
 )
 
 func marshalOutputStreamSpliceFlags(p uintptr) (interface{}, error) {
-	return OutputStreamSpliceFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return OutputStreamSpliceFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for OutputStreamSpliceFlags.
@@ -3873,7 +3873,7 @@ const (
 )
 
 func marshalResourceFlags(p uintptr) (interface{}, error) {
-	return ResourceFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ResourceFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ResourceFlags.
@@ -3918,7 +3918,7 @@ const (
 )
 
 func marshalResourceLookupFlags(p uintptr) (interface{}, error) {
-	return ResourceLookupFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ResourceLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ResourceLookupFlags.
@@ -3973,7 +3973,7 @@ const (
 )
 
 func marshalSocketMsgFlags(p uintptr) (interface{}, error) {
-	return SocketMsgFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SocketMsgFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for SocketMsgFlags.
@@ -4056,7 +4056,7 @@ const (
 )
 
 func marshalSubprocessFlags(p uintptr) (interface{}, error) {
-	return SubprocessFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SubprocessFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for SubprocessFlags.
@@ -4115,7 +4115,7 @@ const (
 )
 
 func marshalTestDBusFlags(p uintptr) (interface{}, error) {
-	return TestDBusFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TestDBusFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TestDBusFlags.
@@ -4179,7 +4179,7 @@ const (
 )
 
 func marshalTLSCertificateFlags(p uintptr) (interface{}, error) {
-	return TLSCertificateFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSCertificateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TLSCertificateFlags.
@@ -4236,7 +4236,7 @@ const (
 )
 
 func marshalTLSDatabaseVerifyFlags(p uintptr) (interface{}, error) {
-	return TLSDatabaseVerifyFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSDatabaseVerifyFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TLSDatabaseVerifyFlags.
@@ -4287,7 +4287,7 @@ const (
 )
 
 func marshalTLSPasswordFlags(p uintptr) (interface{}, error) {
-	return TLSPasswordFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TLSPasswordFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TLSPasswordFlags.

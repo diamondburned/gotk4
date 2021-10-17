@@ -47,9 +47,7 @@ func wrapTCPConnection(obj *externglib.Object) *TCPConnection {
 }
 
 func marshalTCPConnectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTCPConnection(obj), nil
+	return wrapTCPConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // GracefulDisconnect checks if graceful disconnects are used. See

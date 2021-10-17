@@ -47,7 +47,7 @@ const (
 )
 
 func marshalTargetFlags(p uintptr) (interface{}, error) {
-	return TargetFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TargetFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TargetFlags.
@@ -157,8 +157,8 @@ type targetEntry struct {
 }
 
 func marshalTargetEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TargetEntry{&targetEntry{(*C.GtkTargetEntry)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TargetEntry{&targetEntry{(*C.GtkTargetEntry)(b)}}, nil
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
@@ -251,8 +251,8 @@ type targetList struct {
 }
 
 func marshalTargetList(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TargetList{&targetList{(*C.GtkTargetList)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TargetList{&targetList{(*C.GtkTargetList)(b)}}, nil
 }
 
 // NewTargetList constructs a struct TargetList.

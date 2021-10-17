@@ -55,9 +55,7 @@ func wrapHButtonBox(obj *externglib.Object) *HButtonBox {
 }
 
 func marshalHButtonBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHButtonBox(obj), nil
+	return wrapHButtonBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHButtonBox creates a new horizontal button box.

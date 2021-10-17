@@ -149,9 +149,7 @@ func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
 }
 
 func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppInfoMonitor(obj), nil
+	return wrapAppInfoMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*AppInfoMonitor) privateAppInfoMonitor() {}
@@ -182,9 +180,7 @@ func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 }
 
 func marshalBytesIconner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBytesIcon(obj), nil
+	return wrapBytesIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBytesIcon creates a new icon for a bytes.
@@ -257,9 +253,7 @@ func wrapDBusActionGroup(obj *externglib.Object) *DBusActionGroup {
 }
 
 func marshalDBusActionGrouper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusActionGroup(obj), nil
+	return wrapDBusActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*DBusActionGroup) privateDBusActionGroup() {}
@@ -309,9 +303,7 @@ func wrapDBusAuthObserver(obj *externglib.Object) *DBusAuthObserver {
 }
 
 func marshalDBusAuthObserverer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusAuthObserver(obj), nil
+	return wrapDBusAuthObserver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDBusAuthObserver creates a new BusAuthObserver object.
@@ -471,9 +463,7 @@ func wrapDBusConnection(obj *externglib.Object) *DBusConnection {
 }
 
 func marshalDBusConnectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusConnection(obj), nil
+	return wrapDBusConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDBusConnectionFinish finishes an operation started with
@@ -2370,9 +2360,7 @@ func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 }
 
 func marshalDBusMenuModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusMenuModel(obj), nil
+	return wrapDBusMenuModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*DBusMenuModel) privateDBusMenuModel() {}
@@ -2390,9 +2378,7 @@ func wrapDBusMessage(obj *externglib.Object) *DBusMessage {
 }
 
 func marshalDBusMessager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusMessage(obj), nil
+	return wrapDBusMessage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDBusMessage creates a new empty BusMessage.
@@ -3487,9 +3473,7 @@ func wrapDBusMethodInvocation(obj *externglib.Object) *DBusMethodInvocation {
 }
 
 func marshalDBusMethodInvocationer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusMethodInvocation(obj), nil
+	return wrapDBusMethodInvocation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Connection gets the BusConnection the method was invoked on.
@@ -3898,9 +3882,7 @@ func wrapDBusServer(obj *externglib.Object) *DBusServer {
 }
 
 func marshalDBusServerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusServer(obj), nil
+	return wrapDBusServer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDBusServerSync creates a new D-Bus server that listens on the first
@@ -4108,9 +4090,7 @@ func wrapMenu(obj *externglib.Object) *Menu {
 }
 
 func marshalMenuer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenu(obj), nil
+	return wrapMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMenu creates a new #GMenu.
@@ -4535,9 +4515,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 }
 
 func marshalMenuItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuItem(obj), nil
+	return wrapMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMenuItem creates a new Item.
@@ -5104,9 +5082,7 @@ func wrapNotification(obj *externglib.Object) *Notification {
 }
 
 func marshalNotificationer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotification(obj), nil
+	return wrapNotification(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNotification creates a new #GNotification with title as its title.
@@ -5425,9 +5401,7 @@ func wrapPropertyAction(obj *externglib.Object) *PropertyAction {
 }
 
 func marshalPropertyActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPropertyAction(obj), nil
+	return wrapPropertyAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPropertyAction creates a #GAction corresponding to the value of property
@@ -5492,9 +5466,7 @@ func wrapSimpleAction(obj *externglib.Object) *SimpleAction {
 }
 
 func marshalSimpleActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleAction(obj), nil
+	return wrapSimpleAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSimpleAction creates a new action.
@@ -5713,9 +5685,7 @@ func wrapSimpleIOStream(obj *externglib.Object) *SimpleIOStream {
 }
 
 func marshalSimpleIOStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleIOStream(obj), nil
+	return wrapSimpleIOStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSimpleIOStream creates a new IOStream wrapping input_stream and
@@ -5765,9 +5735,7 @@ func wrapSimplePermission(obj *externglib.Object) *SimplePermission {
 }
 
 func marshalSimplePermissioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimplePermission(obj), nil
+	return wrapSimplePermission(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSimplePermission creates a new #GPermission instance that represents an
@@ -5861,9 +5829,7 @@ func wrapSubprocess(obj *externglib.Object) *Subprocess {
 }
 
 func marshalSubprocesser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSubprocess(obj), nil
+	return wrapSubprocess(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSubprocess: create a new process with the given flags and argument list.
@@ -6737,9 +6703,7 @@ func wrapSubprocessLauncher(obj *externglib.Object) *SubprocessLauncher {
 }
 
 func marshalSubprocessLauncherer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSubprocessLauncher(obj), nil
+	return wrapSubprocessLauncher(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSubprocessLauncher creates a new Launcher.
@@ -7330,9 +7294,7 @@ func wrapTestDBus(obj *externglib.Object) *TestDBus {
 }
 
 func marshalTestDBusser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTestDBus(obj), nil
+	return wrapTestDBus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTestDBus: create a new DBus object.

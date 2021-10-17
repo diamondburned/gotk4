@@ -46,9 +46,7 @@ func wrapConstraintTarget(obj *externglib.Object) *ConstraintTarget {
 }
 
 func marshalConstraintTargetter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstraintTarget(obj), nil
+	return wrapConstraintTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ConstraintTarget) privateConstraintTarget() {}
@@ -78,9 +76,7 @@ func wrapConstraint(obj *externglib.Object) *Constraint {
 }
 
 func marshalConstrainter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstraint(obj), nil
+	return wrapConstraint(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewConstraint creates a new constraint representing a relation between a

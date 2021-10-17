@@ -95,9 +95,7 @@ func wrapFileInputStream(obj *externglib.Object) *FileInputStream {
 }
 
 func marshalFileInputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileInputStream(obj), nil
+	return wrapFileInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // QueryInfo queries a file input stream the given attributes. This function

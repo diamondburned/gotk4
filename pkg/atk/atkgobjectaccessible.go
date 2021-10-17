@@ -38,9 +38,7 @@ func wrapGObjectAccessible(obj *externglib.Object) *GObjectAccessible {
 }
 
 func marshalGObjectAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGObjectAccessible(obj), nil
+	return wrapGObjectAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Object gets the GObject for which obj is the accessible object.

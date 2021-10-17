@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <glib.h>
 // extern void callbackDelete(gpointer);
 import "C"
@@ -28,11 +27,6 @@ type Array struct {
 // array is the struct that's finalized.
 type array struct {
 	native *C.GArray
-}
-
-func marshalArray(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Array{&array{(*C.GArray)(unsafe.Pointer(b))}}, nil
 }
 
 // Data: pointer to the element data. The data may be moved as elements are
@@ -61,11 +55,6 @@ type ByteArray struct {
 // byteArray is the struct that's finalized.
 type byteArray struct {
 	native *C.GByteArray
-}
-
-func marshalByteArray(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ByteArray{&byteArray{(*C.GByteArray)(unsafe.Pointer(b))}}, nil
 }
 
 // Data: pointer to the element data. The data may be moved as elements are
@@ -115,11 +104,6 @@ type Bytes struct {
 // bytes is the struct that's finalized.
 type bytes struct {
 	native *C.GBytes
-}
-
-func marshalBytes(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Bytes{&bytes{(*C.GBytes)(unsafe.Pointer(b))}}, nil
 }
 
 // NewBytes constructs a struct Bytes.
@@ -316,11 +300,6 @@ type PtrArray struct {
 // ptrArray is the struct that's finalized.
 type ptrArray struct {
 	native *C.GPtrArray
-}
-
-func marshalPtrArray(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &PtrArray{&ptrArray{(*C.GPtrArray)(unsafe.Pointer(b))}}, nil
 }
 
 // Pdata points to the array of pointers, which may be moved when the array

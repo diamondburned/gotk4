@@ -54,7 +54,7 @@ const (
 )
 
 func marshalFrameClockPhase(p uintptr) (interface{}, error) {
-	return FrameClockPhase(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FrameClockPhase(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FrameClockPhase.
@@ -175,9 +175,7 @@ func wrapFrameClock(obj *externglib.Object) *FrameClock {
 }
 
 func marshalFrameClocker(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFrameClock(obj), nil
+	return wrapFrameClock(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BeginUpdating starts updates for an animation. Until a matching call to

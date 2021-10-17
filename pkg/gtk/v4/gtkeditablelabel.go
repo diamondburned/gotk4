@@ -92,9 +92,7 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 }
 
 func marshalEditableLabeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEditableLabel(obj), nil
+	return wrapEditableLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEditableLabel creates a new GtkEditableLabel widget.

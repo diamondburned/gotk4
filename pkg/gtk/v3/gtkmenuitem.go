@@ -114,9 +114,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 }
 
 func marshalMenuItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuItem(obj), nil
+	return wrapMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMenuItem creates a new MenuItem.

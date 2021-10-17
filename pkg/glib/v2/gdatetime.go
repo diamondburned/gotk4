@@ -55,8 +55,8 @@ type dateTime struct {
 }
 
 func marshalDateTime(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &DateTime{&dateTime{(*C.GDateTime)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &DateTime{&dateTime{(*C.GDateTime)(b)}}, nil
 }
 
 // NewDateTime constructs a struct DateTime.

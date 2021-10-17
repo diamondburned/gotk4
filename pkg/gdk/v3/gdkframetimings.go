@@ -40,8 +40,8 @@ type frameTimings struct {
 }
 
 func marshalFrameTimings(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &FrameTimings{&frameTimings{(*C.GdkFrameTimings)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &FrameTimings{&frameTimings{(*C.GdkFrameTimings)(b)}}, nil
 }
 
 // Complete: timing information in a FrameTimings is filled in incrementally as

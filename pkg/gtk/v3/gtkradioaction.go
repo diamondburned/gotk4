@@ -52,9 +52,7 @@ func wrapRadioAction(obj *externglib.Object) *RadioAction {
 }
 
 func marshalRadioActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioAction(obj), nil
+	return wrapRadioAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRadioAction creates a new RadioAction object. To add the action to a

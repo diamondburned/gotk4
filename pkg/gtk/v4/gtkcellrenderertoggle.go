@@ -41,9 +41,7 @@ func wrapCellRendererToggle(obj *externglib.Object) *CellRendererToggle {
 }
 
 func marshalCellRendererToggler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererToggle(obj), nil
+	return wrapCellRendererToggle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererToggle creates a new CellRendererToggle. Adjust rendering

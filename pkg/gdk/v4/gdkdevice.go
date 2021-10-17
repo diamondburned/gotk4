@@ -49,7 +49,7 @@ const (
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {
-	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return InputSource(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for InputSource.
@@ -139,9 +139,7 @@ func wrapDevice(obj *externglib.Object) *Device {
 }
 
 func marshalDevicer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDevice(obj), nil
+	return wrapDevice(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CapsLockState retrieves whether the Caps Lock modifier of the keyboard is

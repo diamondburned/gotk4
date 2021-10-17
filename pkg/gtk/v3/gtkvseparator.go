@@ -56,9 +56,7 @@ func wrapVSeparator(obj *externglib.Object) *VSeparator {
 }
 
 func marshalVSeparatorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVSeparator(obj), nil
+	return wrapVSeparator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVSeparator creates a new VSeparator.

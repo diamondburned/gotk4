@@ -37,9 +37,7 @@ func wrapNumericSorter(obj *externglib.Object) *NumericSorter {
 }
 
 func marshalNumericSorterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNumericSorter(obj), nil
+	return wrapNumericSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNumericSorter creates a new numeric sorter using the given expression.

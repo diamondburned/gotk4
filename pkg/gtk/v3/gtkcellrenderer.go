@@ -46,7 +46,7 @@ const (
 )
 
 func marshalCellRendererMode(p uintptr) (interface{}, error) {
-	return CellRendererMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CellRendererMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CellRendererMode.
@@ -85,7 +85,7 @@ const (
 )
 
 func marshalCellRendererState(p uintptr) (interface{}, error) {
-	return CellRendererState(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CellRendererState(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for CellRendererState.
@@ -282,9 +282,7 @@ func wrapCellRenderer(obj *externglib.Object) *CellRenderer {
 }
 
 func marshalCellRendererer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRenderer(obj), nil
+	return wrapCellRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AlignedArea gets the aligned area used by cell inside cell_area. Used for

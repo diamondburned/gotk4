@@ -48,9 +48,7 @@ func wrapSpinnerAccessible(obj *externglib.Object) *SpinnerAccessible {
 }
 
 func marshalSpinnerAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinnerAccessible(obj), nil
+	return wrapSpinnerAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*SpinnerAccessible) privateSpinnerAccessible() {}

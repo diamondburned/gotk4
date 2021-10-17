@@ -39,7 +39,7 @@ const (
 )
 
 func marshalPaintableFlags(p uintptr) (interface{}, error) {
-	return PaintableFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PaintableFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for PaintableFlags.
@@ -231,9 +231,7 @@ func wrapPaintable(obj *externglib.Object) *Paintable {
 }
 
 func marshalPaintabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPaintable(obj), nil
+	return wrapPaintable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ComputeConcreteSize: compute a concrete size for the GdkPaintable.

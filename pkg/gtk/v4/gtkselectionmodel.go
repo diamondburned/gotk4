@@ -165,9 +165,7 @@ func wrapSelectionModel(obj *externglib.Object) *SelectionModel {
 }
 
 func marshalSelectionModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSelectionModel(obj), nil
+	return wrapSelectionModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Selection gets the set containing all currently selected items in the model.

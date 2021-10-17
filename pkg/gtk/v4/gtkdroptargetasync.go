@@ -68,9 +68,7 @@ func wrapDropTargetAsync(obj *externglib.Object) *DropTargetAsync {
 }
 
 func marshalDropTargetAsyncer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropTargetAsync(obj), nil
+	return wrapDropTargetAsync(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDropTargetAsync creates a new GtkDropTargetAsync object.

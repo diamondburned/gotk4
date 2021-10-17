@@ -93,7 +93,7 @@ const (
 )
 
 func marshalMovementStep(p uintptr) (interface{}, error) {
-	return MovementStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return MovementStep(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MovementStep.
@@ -132,7 +132,7 @@ const (
 )
 
 func marshalNotebookTab(p uintptr) (interface{}, error) {
-	return NotebookTab(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return NotebookTab(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NotebookTab.
@@ -183,7 +183,7 @@ const (
 )
 
 func marshalResizeMode(p uintptr) (interface{}, error) {
-	return ResizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ResizeMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ResizeMode.
@@ -218,7 +218,7 @@ const (
 )
 
 func marshalScrollStep(p uintptr) (interface{}, error) {
-	return ScrollStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ScrollStep(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollStep.
@@ -269,7 +269,7 @@ const (
 )
 
 func marshalDebugFlag(p uintptr) (interface{}, error) {
-	return DebugFlag(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DebugFlag(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DebugFlag.
@@ -279,7 +279,7 @@ func (d DebugFlag) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(312)
+	builder.Grow(256)
 
 	for d != 0 {
 		next := d & (d - 1)
@@ -369,9 +369,7 @@ func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 }
 
 func marshalEntryIconAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryIconAccessible(obj), nil
+	return wrapEntryIconAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*EntryIconAccessible) privateEntryIconAccessible() {}

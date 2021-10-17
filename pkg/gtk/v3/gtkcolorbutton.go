@@ -96,9 +96,7 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 }
 
 func marshalColorButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorButton(obj), nil
+	return wrapColorButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColorButton creates a new color button.

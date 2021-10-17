@@ -46,9 +46,7 @@ func wrapColumnViewColumn(obj *externglib.Object) *ColumnViewColumn {
 }
 
 func marshalColumnViewColumner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColumnViewColumn(obj), nil
+	return wrapColumnViewColumn(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColumnViewColumn creates a new GtkColumnViewColumn that uses the given

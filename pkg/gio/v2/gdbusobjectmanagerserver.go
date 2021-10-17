@@ -66,9 +66,7 @@ func wrapDBusObjectManagerServer(obj *externglib.Object) *DBusObjectManagerServe
 }
 
 func marshalDBusObjectManagerServerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectManagerServer(obj), nil
+	return wrapDBusObjectManagerServer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDBusObjectManagerServer creates a new BusObjectManagerServer object.

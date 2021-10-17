@@ -291,9 +291,7 @@ func wrapAppInfo(obj *externglib.Object) *AppInfo {
 }
 
 func marshalAppInfor(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppInfo(obj), nil
+	return wrapAppInfo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddSupportsType adds a content type to the application information to
@@ -1486,9 +1484,7 @@ func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 }
 
 func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppLaunchContext(obj), nil
+	return wrapAppLaunchContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAppLaunchContext creates a new application launch context. This is not

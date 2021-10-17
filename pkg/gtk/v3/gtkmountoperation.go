@@ -40,9 +40,7 @@ func wrapMountOperation(obj *externglib.Object) *MountOperation {
 }
 
 func marshalMountOperationer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMountOperation(obj), nil
+	return wrapMountOperation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMountOperation creates a new MountOperation.

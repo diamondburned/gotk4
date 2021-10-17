@@ -193,9 +193,7 @@ func wrapGesture(obj *externglib.Object) *Gesture {
 }
 
 func marshalGesturer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGesture(obj), nil
+	return wrapGesture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BoundingBox: if there are touch sequences being currently handled by gesture,

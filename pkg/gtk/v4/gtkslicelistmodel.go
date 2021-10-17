@@ -44,9 +44,7 @@ func wrapSliceListModel(obj *externglib.Object) *SliceListModel {
 }
 
 func marshalSliceListModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSliceListModel(obj), nil
+	return wrapSliceListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSliceListModel creates a new slice model.

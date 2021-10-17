@@ -89,9 +89,7 @@ func wrapGridView(obj *externglib.Object) *GridView {
 }
 
 func marshalGridViewer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGridView(obj), nil
+	return wrapGridView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGridView creates a new GtkGridView that uses the given factory for mapping

@@ -139,9 +139,7 @@ func wrapGLShader(obj *externglib.Object) *GLShader {
 }
 
 func marshalGLShaderer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLShader(obj), nil
+	return wrapGLShader(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGLShaderFromBytes creates a GskGLShader that will render pixels using the
@@ -654,8 +652,8 @@ type shaderArgsBuilder struct {
 }
 
 func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ShaderArgsBuilder{&shaderArgsBuilder{(*C.GskShaderArgsBuilder)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &ShaderArgsBuilder{&shaderArgsBuilder{(*C.GskShaderArgsBuilder)(b)}}, nil
 }
 
 // NewShaderArgsBuilder constructs a struct ShaderArgsBuilder.

@@ -42,7 +42,7 @@ const (
 )
 
 func marshalColorspace(p uintptr) (interface{}, error) {
-	return Colorspace(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Colorspace(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Colorspace.
@@ -84,7 +84,7 @@ const (
 )
 
 func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
-	return PixbufAlphaMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PixbufAlphaMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PixbufAlphaMode.
@@ -124,7 +124,7 @@ const (
 )
 
 func marshalPixbufError(p uintptr) (interface{}, error) {
-	return PixbufError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PixbufError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PixbufError.

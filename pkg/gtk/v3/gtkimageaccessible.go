@@ -48,9 +48,7 @@ func wrapImageAccessible(obj *externglib.Object) *ImageAccessible {
 }
 
 func marshalImageAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImageAccessible(obj), nil
+	return wrapImageAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ImageAccessible) privateImageAccessible() {}

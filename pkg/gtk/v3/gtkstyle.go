@@ -47,7 +47,7 @@ const (
 )
 
 func marshalExpanderStyle(p uintptr) (interface{}, error) {
-	return ExpanderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ExpanderStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ExpanderStyle.
@@ -1331,9 +1331,7 @@ func wrapStyle(obj *externglib.Object) *Style {
 }
 
 func marshalStyler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyle(obj), nil
+	return wrapStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStyle creates a new Style.

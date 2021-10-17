@@ -45,7 +45,7 @@ const (
 )
 
 func marshalSorterChange(p uintptr) (interface{}, error) {
-	return SorterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SorterChange(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SorterChange.
@@ -80,7 +80,7 @@ const (
 )
 
 func marshalSorterOrder(p uintptr) (interface{}, error) {
-	return SorterOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SorterOrder(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SorterOrder.
@@ -153,9 +153,7 @@ func wrapSorter(obj *externglib.Object) *Sorter {
 }
 
 func marshalSorterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSorter(obj), nil
+	return wrapSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Changed emits the gtk.Sorter::changed signal to notify all users of the

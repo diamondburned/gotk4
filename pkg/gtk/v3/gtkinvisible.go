@@ -52,9 +52,7 @@ func wrapInvisible(obj *externglib.Object) *Invisible {
 }
 
 func marshalInvisibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInvisible(obj), nil
+	return wrapInvisible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewInvisible creates a new Invisible.

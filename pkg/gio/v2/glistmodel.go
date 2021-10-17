@@ -124,9 +124,7 @@ func wrapListModel(obj *externglib.Object) *ListModel {
 }
 
 func marshalListModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListModel(obj), nil
+	return wrapListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ItemType gets the type of the items in list. All items returned from

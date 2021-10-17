@@ -46,9 +46,7 @@ func wrapSocketAccessible(obj *externglib.Object) *SocketAccessible {
 }
 
 func marshalSocketAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketAccessible(obj), nil
+	return wrapSocketAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //

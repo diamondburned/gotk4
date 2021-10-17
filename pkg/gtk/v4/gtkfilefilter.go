@@ -81,9 +81,7 @@ func wrapFileFilter(obj *externglib.Object) *FileFilter {
 }
 
 func marshalFileFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileFilter(obj), nil
+	return wrapFileFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileFilter creates a new GtkFileFilter with no rules added to it.

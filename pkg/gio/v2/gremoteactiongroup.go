@@ -101,9 +101,7 @@ func wrapRemoteActionGroup(obj *externglib.Object) *RemoteActionGroup {
 }
 
 func marshalRemoteActionGrouper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRemoteActionGroup(obj), nil
+	return wrapRemoteActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ActivateActionFull activates the remote action.

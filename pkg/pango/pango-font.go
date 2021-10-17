@@ -59,7 +59,7 @@ const (
 )
 
 func marshalStretch(p uintptr) (interface{}, error) {
-	return Stretch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Stretch(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Stretch.
@@ -101,7 +101,7 @@ const (
 )
 
 func marshalStyle(p uintptr) (interface{}, error) {
-	return Style(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Style(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Style.
@@ -130,7 +130,7 @@ const (
 )
 
 func marshalVariant(p uintptr) (interface{}, error) {
-	return Variant(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Variant(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Variant.
@@ -179,7 +179,7 @@ const (
 )
 
 func marshalWeight(p uintptr) (interface{}, error) {
-	return Weight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Weight(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Weight.
@@ -238,7 +238,7 @@ const (
 )
 
 func marshalFontMask(p uintptr) (interface{}, error) {
-	return FontMask(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FontMask(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FontMask.
@@ -371,9 +371,7 @@ func wrapFont(obj *externglib.Object) *Font {
 }
 
 func marshalFonter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFont(obj), nil
+	return wrapFont(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Describe returns a description of the font, with font size set in points.
@@ -696,9 +694,7 @@ func wrapFontFace(obj *externglib.Object) *FontFace {
 }
 
 func marshalFontFacer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontFace(obj), nil
+	return wrapFontFace(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Describe returns the family, style, variant, weight and stretch of a
@@ -899,9 +895,7 @@ func wrapFontFamily(obj *externglib.Object) *FontFamily {
 }
 
 func marshalFontFamilier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontFamily(obj), nil
+	return wrapFontFamily(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Face gets the PangoFontFace of family with the given name.
@@ -1075,8 +1069,8 @@ type fontDescription struct {
 }
 
 func marshalFontDescription(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &FontDescription{&fontDescription{(*C.PangoFontDescription)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &FontDescription{&fontDescription{(*C.PangoFontDescription)(b)}}, nil
 }
 
 // NewFontDescription constructs a struct FontDescription.
@@ -1843,8 +1837,8 @@ type fontMetrics struct {
 }
 
 func marshalFontMetrics(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &FontMetrics{&fontMetrics{(*C.PangoFontMetrics)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &FontMetrics{&fontMetrics{(*C.PangoFontMetrics)(b)}}, nil
 }
 
 // ApproximateCharWidth gets the approximate character width for a font metrics

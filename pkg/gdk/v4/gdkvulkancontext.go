@@ -59,9 +59,7 @@ func wrapVulkanContext(obj *externglib.Object) *VulkanContext {
 }
 
 func marshalVulkanContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVulkanContext(obj), nil
+	return wrapVulkanContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*VulkanContext) privateVulkanContext() {}

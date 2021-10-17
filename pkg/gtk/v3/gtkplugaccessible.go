@@ -53,9 +53,7 @@ func wrapPlugAccessible(obj *externglib.Object) *PlugAccessible {
 }
 
 func marshalPlugAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlugAccessible(obj), nil
+	return wrapPlugAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (plug *PlugAccessible) ID() string {

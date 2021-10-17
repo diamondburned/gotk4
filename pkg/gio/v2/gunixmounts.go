@@ -688,9 +688,7 @@ func wrapUnixMountMonitor(obj *externglib.Object) *UnixMountMonitor {
 }
 
 func marshalUnixMountMonitorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixMountMonitor(obj), nil
+	return wrapUnixMountMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewUnixMountMonitor: deprecated alias for g_unix_mount_monitor_get().
@@ -779,8 +777,8 @@ type unixMountEntry struct {
 }
 
 func marshalUnixMountEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &UnixMountEntry{&unixMountEntry{(*C.GUnixMountEntry)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &UnixMountEntry{&unixMountEntry{(*C.GUnixMountEntry)(b)}}, nil
 }
 
 // UnixMountPoint defines a Unix mount point (e.g. <filename>/dev</filename>).
@@ -797,8 +795,8 @@ type unixMountPoint struct {
 }
 
 func marshalUnixMountPoint(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &UnixMountPoint{&unixMountPoint{(*C.GUnixMountPoint)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &UnixMountPoint{&unixMountPoint{(*C.GUnixMountPoint)(b)}}, nil
 }
 
 // Compare compares two unix mount points.

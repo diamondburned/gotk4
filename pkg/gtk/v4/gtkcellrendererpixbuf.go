@@ -48,9 +48,7 @@ func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
 }
 
 func marshalCellRendererPixbuffer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererPixbuf(obj), nil
+	return wrapCellRendererPixbuf(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererPixbuf creates a new CellRendererPixbuf. Adjust rendering

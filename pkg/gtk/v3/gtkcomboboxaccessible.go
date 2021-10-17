@@ -56,9 +56,7 @@ func wrapComboBoxAccessible(obj *externglib.Object) *ComboBoxAccessible {
 }
 
 func marshalComboBoxAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComboBoxAccessible(obj), nil
+	return wrapComboBoxAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ComboBoxAccessible) privateComboBoxAccessible() {}

@@ -45,7 +45,7 @@ const (
 )
 
 func marshalDeviceToolType(p uintptr) (interface{}, error) {
-	return DeviceToolType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DeviceToolType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DeviceToolType.

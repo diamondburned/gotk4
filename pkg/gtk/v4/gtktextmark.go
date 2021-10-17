@@ -62,9 +62,7 @@ func wrapTextMark(obj *externglib.Object) *TextMark {
 }
 
 func marshalTextMarker(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextMark(obj), nil
+	return wrapTextMark(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextMark creates a text mark.

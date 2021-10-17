@@ -48,9 +48,7 @@ func wrapConstraintGuide(obj *externglib.Object) *ConstraintGuide {
 }
 
 func marshalConstraintGuider(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstraintGuide(obj), nil
+	return wrapConstraintGuide(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewConstraintGuide creates a new GtkConstraintGuide object.

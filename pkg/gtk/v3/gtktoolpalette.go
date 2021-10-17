@@ -40,7 +40,7 @@ const (
 )
 
 func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
-	return ToolPaletteDragTargets(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ToolPaletteDragTargets(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ToolPaletteDragTargets.
@@ -159,9 +159,7 @@ func wrapToolPalette(obj *externglib.Object) *ToolPalette {
 }
 
 func marshalToolPaletter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolPalette(obj), nil
+	return wrapToolPalette(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewToolPalette creates a new tool palette.

@@ -88,9 +88,7 @@ func wrapActionMap(obj *externglib.Object) *ActionMap {
 }
 
 func marshalActionMapper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionMap(obj), nil
+	return wrapActionMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddAction adds an action to the action_map.

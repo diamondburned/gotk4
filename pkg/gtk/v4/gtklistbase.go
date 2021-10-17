@@ -66,9 +66,7 @@ func wrapListBase(obj *externglib.Object) *ListBase {
 }
 
 func marshalListBaser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBase(obj), nil
+	return wrapListBase(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ListBase) privateListBase() {}

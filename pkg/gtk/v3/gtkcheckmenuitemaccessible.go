@@ -54,9 +54,7 @@ func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessibl
 }
 
 func marshalCheckMenuItemAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckMenuItemAccessible(obj), nil
+	return wrapCheckMenuItemAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*CheckMenuItemAccessible) privateCheckMenuItemAccessible() {}

@@ -50,9 +50,7 @@ func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
 }
 
 func marshalExpanderAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapExpanderAccessible(obj), nil
+	return wrapExpanderAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ExpanderAccessible) privateExpanderAccessible() {}

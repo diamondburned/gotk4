@@ -58,9 +58,7 @@ func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 }
 
 func marshalEntryAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryAccessible(obj), nil
+	return wrapEntryAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*EntryAccessible) privateEntryAccessible() {}

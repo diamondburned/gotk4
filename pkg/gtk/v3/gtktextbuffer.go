@@ -45,7 +45,7 @@ const (
 )
 
 func marshalTextBufferTargetInfo(p uintptr) (interface{}, error) {
-	return TextBufferTargetInfo(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextBufferTargetInfo(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextBufferTargetInfo.
@@ -138,9 +138,7 @@ func wrapTextBuffer(obj *externglib.Object) *TextBuffer {
 }
 
 func marshalTextBufferer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextBuffer(obj), nil
+	return wrapTextBuffer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextBuffer creates a new text buffer.

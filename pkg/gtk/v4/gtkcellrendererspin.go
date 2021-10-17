@@ -52,9 +52,7 @@ func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
 }
 
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererSpin(obj), nil
+	return wrapCellRendererSpin(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererSpin creates a new CellRendererSpin.

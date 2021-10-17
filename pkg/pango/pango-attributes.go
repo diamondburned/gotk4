@@ -125,7 +125,7 @@ const (
 )
 
 func marshalAttrType(p uintptr) (interface{}, error) {
-	return AttrType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AttrType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AttrType.
@@ -267,7 +267,7 @@ const (
 )
 
 func marshalOverline(p uintptr) (interface{}, error) {
-	return Overline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Overline(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Overline.
@@ -318,7 +318,7 @@ const (
 )
 
 func marshalUnderline(p uintptr) (interface{}, error) {
-	return Underline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Underline(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Underline.
@@ -361,7 +361,7 @@ const (
 )
 
 func marshalShowFlags(p uintptr) (interface{}, error) {
-	return ShowFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ShowFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ShowFlags.
@@ -1572,8 +1572,8 @@ type attrIterator struct {
 }
 
 func marshalAttrIterator(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &AttrIterator{&attrIterator{(*C.PangoAttrIterator)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &AttrIterator{&attrIterator{(*C.PangoAttrIterator)(b)}}, nil
 }
 
 // Copy a PangoAttrIterator.
@@ -1782,8 +1782,8 @@ type attrList struct {
 }
 
 func marshalAttrList(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &AttrList{&attrList{(*C.PangoAttrList)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &AttrList{&attrList{(*C.PangoAttrList)(b)}}, nil
 }
 
 // NewAttrList constructs a struct AttrList.
@@ -2233,8 +2233,8 @@ type attribute struct {
 }
 
 func marshalAttribute(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Attribute{&attribute{(*C.PangoAttribute)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Attribute{&attribute{(*C.PangoAttribute)(b)}}, nil
 }
 
 // Copy: make a copy of an attribute.
@@ -2307,8 +2307,8 @@ type color struct {
 }
 
 func marshalColor(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Color{&color{(*C.PangoColor)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Color{&color{(*C.PangoColor)(b)}}, nil
 }
 
 // NewColor creates a new Color instance from the given

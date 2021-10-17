@@ -112,9 +112,7 @@ func wrapGLArea(obj *externglib.Object) *GLArea {
 }
 
 func marshalGLAreaer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLArea(obj), nil
+	return wrapGLArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGLArea creates a new GLArea widget.

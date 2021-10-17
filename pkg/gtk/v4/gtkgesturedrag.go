@@ -45,9 +45,7 @@ func wrapGestureDrag(obj *externglib.Object) *GestureDrag {
 }
 
 func marshalGestureDragger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureDrag(obj), nil
+	return wrapGestureDrag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGestureDrag returns a newly created GtkGesture that recognizes drags.

@@ -100,9 +100,7 @@ func wrapStyleProvider(obj *externglib.Object) *StyleProvider {
 }
 
 func marshalStyleProviderer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleProvider(obj), nil
+	return wrapStyleProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // IconFactory returns the IconFactory defined to be in use for path, or NULL if

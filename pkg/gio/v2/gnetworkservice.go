@@ -53,9 +53,7 @@ func wrapNetworkService(obj *externglib.Object) *NetworkService {
 }
 
 func marshalNetworkServicer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNetworkService(obj), nil
+	return wrapNetworkService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNetworkService creates a new Service representing the given service,

@@ -84,9 +84,7 @@ func wrapEventController(obj *externglib.Object) *EventController {
 }
 
 func marshalEventControllerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventController(obj), nil
+	return wrapEventController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CurrentEvent returns the event that is currently being handled by the

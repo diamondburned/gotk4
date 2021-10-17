@@ -45,9 +45,7 @@ func wrapStackAccessible(obj *externglib.Object) *StackAccessible {
 }
 
 func marshalStackAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStackAccessible(obj), nil
+	return wrapStackAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*StackAccessible) privateStackAccessible() {}

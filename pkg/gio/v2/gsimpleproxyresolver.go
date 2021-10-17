@@ -53,9 +53,7 @@ func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
 }
 
 func marshalSimpleProxyResolverer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleProxyResolver(obj), nil
+	return wrapSimpleProxyResolver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // SetDefaultProxy sets the default proxy on resolver, to be used for any URIs

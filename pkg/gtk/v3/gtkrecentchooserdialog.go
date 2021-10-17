@@ -100,9 +100,7 @@ func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 }
 
 func marshalRecentChooserDialogger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooserDialog(obj), nil
+	return wrapRecentChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*RecentChooserDialog) privateRecentChooserDialog() {}

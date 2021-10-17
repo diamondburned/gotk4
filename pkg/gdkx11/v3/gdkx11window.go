@@ -58,9 +58,7 @@ func wrapX11Window(obj *externglib.Object) *X11Window {
 }
 
 func marshalX11Windower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Window(obj), nil
+	return wrapX11Window(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Desktop gets the number of the workspace window is on.

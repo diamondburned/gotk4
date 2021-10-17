@@ -54,9 +54,7 @@ func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
 }
 
 func marshalBoxLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBoxLayout(obj), nil
+	return wrapBoxLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBoxLayout creates a new GtkBoxLayout.

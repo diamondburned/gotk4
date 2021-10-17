@@ -120,9 +120,7 @@ func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 }
 
 func marshalPopoverMenuer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopoverMenu(obj), nil
+	return wrapPopoverMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPopoverMenu creates a new popover menu.

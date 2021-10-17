@@ -203,9 +203,7 @@ func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 }
 
 func marshalConstraintLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstraintLayout(obj), nil
+	return wrapConstraintLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewConstraintLayout creates a new GtkConstraintLayout layout manager.
@@ -558,9 +556,7 @@ func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
 }
 
 func marshalConstraintLayoutChilder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConstraintLayoutChild(obj), nil
+	return wrapConstraintLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ConstraintLayoutChild) privateConstraintLayoutChild() {}

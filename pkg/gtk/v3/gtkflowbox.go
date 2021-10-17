@@ -214,9 +214,7 @@ func wrapFlowBox(obj *externglib.Object) *FlowBox {
 }
 
 func marshalFlowBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlowBox(obj), nil
+	return wrapFlowBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFlowBox creates a GtkFlowBox.
@@ -974,9 +972,7 @@ func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 }
 
 func marshalFlowBoxChilder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlowBoxChild(obj), nil
+	return wrapFlowBoxChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFlowBoxChild creates a new FlowBoxChild, to be used as a child of a

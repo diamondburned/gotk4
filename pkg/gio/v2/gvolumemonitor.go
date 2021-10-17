@@ -95,9 +95,7 @@ func wrapVolumeMonitor(obj *externglib.Object) *VolumeMonitor {
 }
 
 func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolumeMonitor(obj), nil
+	return wrapVolumeMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConnectedDrives gets a list of drives connected to the system.

@@ -129,9 +129,7 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 }
 
 func marshalMenuButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuButton(obj), nil
+	return wrapMenuButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMenuButton creates a new GtkMenuButton widget with downwards-pointing

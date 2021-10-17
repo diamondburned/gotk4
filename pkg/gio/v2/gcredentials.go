@@ -73,9 +73,7 @@ func wrapCredentials(obj *externglib.Object) *Credentials {
 }
 
 func marshalCredentialser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCredentials(obj), nil
+	return wrapCredentials(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCredentials creates a new #GCredentials object with credentials matching

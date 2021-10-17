@@ -52,9 +52,7 @@ func wrapCharsetConverter(obj *externglib.Object) *CharsetConverter {
 }
 
 func marshalCharsetConverterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCharsetConverter(obj), nil
+	return wrapCharsetConverter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCharsetConverter creates a new Converter.

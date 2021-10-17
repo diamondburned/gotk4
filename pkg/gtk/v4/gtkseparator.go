@@ -70,9 +70,7 @@ func wrapSeparator(obj *externglib.Object) *Separator {
 }
 
 func marshalSeparatorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparator(obj), nil
+	return wrapSeparator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSeparator creates a new GtkSeparator with the given orientation.

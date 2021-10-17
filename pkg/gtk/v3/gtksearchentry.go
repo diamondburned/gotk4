@@ -99,9 +99,7 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 }
 
 func marshalSearchEntrier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSearchEntry(obj), nil
+	return wrapSearchEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSearchEntry creates a SearchEntry, with a find icon when the search field

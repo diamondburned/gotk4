@@ -49,7 +49,7 @@ const (
 )
 
 func marshalPrintError(p uintptr) (interface{}, error) {
-	return PrintError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PrintError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintError.
@@ -99,7 +99,7 @@ const (
 )
 
 func marshalPrintOperationAction(p uintptr) (interface{}, error) {
-	return PrintOperationAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PrintOperationAction(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintOperationAction.
@@ -136,7 +136,7 @@ const (
 )
 
 func marshalPrintOperationResult(p uintptr) (interface{}, error) {
-	return PrintOperationResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PrintOperationResult(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintOperationResult.
@@ -186,7 +186,7 @@ const (
 )
 
 func marshalPrintStatus(p uintptr) (interface{}, error) {
-	return PrintStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PrintStatus(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintStatus.
@@ -405,9 +405,7 @@ func wrapPrintOperation(obj *externglib.Object) *PrintOperation {
 }
 
 func marshalPrintOperationer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPrintOperation(obj), nil
+	return wrapPrintOperation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPrintOperation creates a new PrintOperation.

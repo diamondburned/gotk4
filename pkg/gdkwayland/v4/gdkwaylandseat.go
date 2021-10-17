@@ -38,9 +38,7 @@ func wrapWaylandSeat(obj *externglib.Object) *WaylandSeat {
 }
 
 func marshalWaylandSeater(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandSeat(obj), nil
+	return wrapWaylandSeat(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*WaylandSeat) privateWaylandSeat() {}

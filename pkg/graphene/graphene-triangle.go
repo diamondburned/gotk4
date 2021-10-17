@@ -35,8 +35,8 @@ type triangle struct {
 }
 
 func marshalTriangle(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Triangle{&triangle{(*C.graphene_triangle_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Triangle{&triangle{(*C.graphene_triangle_t)(b)}}, nil
 }
 
 // NewTriangleAlloc constructs a struct Triangle.

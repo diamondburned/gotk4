@@ -53,9 +53,7 @@ func wrapClipboard(obj *externglib.Object) *Clipboard {
 }
 
 func marshalClipboarder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapClipboard(obj), nil
+	return wrapClipboard(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Content returns the GdkContentProvider currently set on clipboard.

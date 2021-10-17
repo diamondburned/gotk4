@@ -155,9 +155,7 @@ func wrapPermission(obj *externglib.Object) *Permission {
 }
 
 func marshalPermissioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPermission(obj), nil
+	return wrapPermission(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Acquire attempts to acquire the permission represented by permission.

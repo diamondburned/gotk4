@@ -60,9 +60,7 @@ func wrapX11Display(obj *externglib.Object) *X11Display {
 }
 
 func marshalX11Displayer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Display(obj), nil
+	return wrapX11Display(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ErrorTrapPop pops the error trap pushed by gdk_x11_display_error_trap_push().

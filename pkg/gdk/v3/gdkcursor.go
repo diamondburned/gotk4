@@ -199,7 +199,7 @@ const (
 )
 
 func marshalCursorType(p uintptr) (interface{}, error) {
-	return CursorType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CursorType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CursorType.
@@ -399,9 +399,7 @@ func wrapCursor(obj *externglib.Object) *Cursor {
 }
 
 func marshalCursorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCursor(obj), nil
+	return wrapCursor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCursor creates a new cursor from the set of builtin cursors for the

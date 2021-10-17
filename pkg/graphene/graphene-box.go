@@ -36,8 +36,8 @@ type box struct {
 }
 
 func marshalBox(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Box{&box{(*C.graphene_box_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Box{&box{(*C.graphene_box_t)(b)}}, nil
 }
 
 // NewBoxAlloc constructs a struct Box.

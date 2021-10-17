@@ -581,9 +581,7 @@ func wrapFont(obj *externglib.Object) *Font {
 }
 
 func marshalFonter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFont(obj), nil
+	return wrapFont(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*Font) privateFont() {}
@@ -620,9 +618,7 @@ func wrapFontMap(obj *externglib.Object) *FontMap {
 }
 
 func marshalFontMapper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontMap(obj), nil
+	return wrapFontMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Resolution gets the resolution for the fontmap.

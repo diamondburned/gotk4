@@ -37,7 +37,7 @@ const (
 )
 
 func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
-	return StringFilterMatchMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return StringFilterMatchMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for StringFilterMatchMode.
@@ -80,9 +80,7 @@ func wrapStringFilter(obj *externglib.Object) *StringFilter {
 }
 
 func marshalStringFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStringFilter(obj), nil
+	return wrapStringFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStringFilter creates a new string filter.

@@ -95,9 +95,7 @@ func wrapContentProvider(obj *externglib.Object) *ContentProvider {
 }
 
 func marshalContentProviderer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContentProvider(obj), nil
+	return wrapContentProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewContentProviderForBytes: create a content provider that provides the given

@@ -48,9 +48,7 @@ func wrapSortListModel(obj *externglib.Object) *SortListModel {
 }
 
 func marshalSortListModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSortListModel(obj), nil
+	return wrapSortListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSortListModel creates a new sort list model that uses the sorter to sort

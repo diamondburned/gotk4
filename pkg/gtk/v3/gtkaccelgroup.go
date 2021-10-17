@@ -42,7 +42,7 @@ const (
 )
 
 func marshalAccelFlags(p uintptr) (interface{}, error) {
-	return AccelFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccelFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AccelFlags.
@@ -474,9 +474,7 @@ func wrapAccelGroup(obj *externglib.Object) *AccelGroup {
 }
 
 func marshalAccelGrouper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccelGroup(obj), nil
+	return wrapAccelGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAccelGroup creates a new AccelGroup.

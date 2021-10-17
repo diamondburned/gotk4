@@ -49,7 +49,7 @@ const (
 )
 
 func marshalTreeViewDropPosition(p uintptr) (interface{}, error) {
-	return TreeViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TreeViewDropPosition(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TreeViewDropPosition.
@@ -355,9 +355,7 @@ func wrapTreeView(obj *externglib.Object) *TreeView {
 }
 
 func marshalTreeViewer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeView(obj), nil
+	return wrapTreeView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTreeView creates a new TreeView widget.

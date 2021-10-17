@@ -450,8 +450,8 @@ type mainContext struct {
 }
 
 func marshalMainContext(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MainContext{&mainContext{(*C.GMainContext)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &MainContext{&mainContext{(*C.GMainContext)(b)}}, nil
 }
 
 // NewMainContext constructs a struct MainContext.
@@ -1009,8 +1009,8 @@ type mainLoop struct {
 }
 
 func marshalMainLoop(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MainLoop{&mainLoop{(*C.GMainLoop)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &MainLoop{&mainLoop{(*C.GMainLoop)(b)}}, nil
 }
 
 // NewMainLoop constructs a struct MainLoop.
@@ -1126,8 +1126,8 @@ type source struct {
 }
 
 func marshalSource(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Source{&source{(*C.GSource)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Source{&source{(*C.GSource)(b)}}, nil
 }
 
 // NewSource constructs a struct Source.

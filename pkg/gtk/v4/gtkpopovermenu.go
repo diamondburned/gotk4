@@ -36,7 +36,7 @@ const (
 )
 
 func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
-	return PopoverMenuFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PopoverMenuFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for PopoverMenuFlags.
@@ -226,9 +226,7 @@ func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 }
 
 func marshalPopoverMenuer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopoverMenu(obj), nil
+	return wrapPopoverMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPopoverMenuFromModel creates a GtkPopoverMenu and populates it according

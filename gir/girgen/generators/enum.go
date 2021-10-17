@@ -38,9 +38,9 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 	)
 	{{ end }}
 
-	{{ if .GLibGetType }}
+	{{ if .Marshaler }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
-		return {{ .GoName }}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+		return {{ .GoName }}(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 	}
 	{{ end }}
 
@@ -58,8 +58,9 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 
 type enumData struct {
 	*gir.Enum
-	GoName string
-	IsIota bool
+	GoName    string
+	IsIota    bool
+	Marshaler bool
 }
 
 var numberMap = map[rune]string{
@@ -137,23 +138,26 @@ func GenerateEnum(gen FileGeneratorWriter, enum *gir.Enum) bool {
 	goName := strcases.PascalToGo(enum.Name)
 	writer := FileWriterFromType(gen, enum)
 
+	data := enumData{
+		Enum:   enum,
+		GoName: goName,
+		IsIota: true,
+	}
+
 	if enum.GLibGetType != "" && !types.FilterCType(gen, enum.GLibGetType) {
+		data.Marshaler = true
+		writer.Header().NeedsExternGLib()
 		writer.Header().AddMarshaler(enum.GLibGetType, goName)
 	}
 
-	isIota := true
 	for i := 0; i < len(enum.Members); i++ {
 		if enum.Members[i].Value != strconv.Itoa(i) {
-			isIota = false
+			data.IsIota = false
 			break
 		}
 	}
 
 	writer.Header().Import("fmt")
-	writer.Pen().WriteTmpl(enumTmpl, &enumData{
-		Enum:   enum,
-		GoName: goName,
-		IsIota: isIota,
-	})
+	writer.Pen().WriteTmpl(enumTmpl, &data)
 	return true
 }

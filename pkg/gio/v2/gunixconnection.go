@@ -59,9 +59,7 @@ func wrapUnixConnection(obj *externglib.Object) *UnixConnection {
 }
 
 func marshalUnixConnectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixConnection(obj), nil
+	return wrapUnixConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ReceiveCredentials receives credentials from the sending end of the

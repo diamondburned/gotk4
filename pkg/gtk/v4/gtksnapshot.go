@@ -53,9 +53,7 @@ func wrapSnapshot(obj *externglib.Object) *Snapshot {
 }
 
 func marshalSnapshotter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSnapshot(obj), nil
+	return wrapSnapshot(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSnapshot creates a new GtkSnapshot.

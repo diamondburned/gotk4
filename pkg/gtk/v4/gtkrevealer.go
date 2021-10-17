@@ -51,7 +51,7 @@ const (
 )
 
 func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
-	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RevealerTransitionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RevealerTransitionType.
@@ -130,9 +130,7 @@ func wrapRevealer(obj *externglib.Object) *Revealer {
 }
 
 func marshalRevealerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRevealer(obj), nil
+	return wrapRevealer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRevealer creates a new GtkRevealer.

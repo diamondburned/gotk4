@@ -46,7 +46,7 @@ const (
 )
 
 func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
-	return IconViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IconViewDropPosition(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IconViewDropPosition.
@@ -149,9 +149,7 @@ func wrapIconView(obj *externglib.Object) *IconView {
 }
 
 func marshalIconViewer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconView(obj), nil
+	return wrapIconView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewIconView creates a new IconView widget.

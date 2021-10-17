@@ -36,9 +36,7 @@ func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
 }
 
 func marshalIMMulticontexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIMMulticontext(obj), nil
+	return wrapIMMulticontext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewIMMulticontext creates a new IMMulticontext.

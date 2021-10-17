@@ -54,7 +54,7 @@ const (
 )
 
 func marshalResolverNameLookupFlags(p uintptr) (interface{}, error) {
-	return ResolverNameLookupFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ResolverNameLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ResolverNameLookupFlags.
@@ -284,9 +284,7 @@ func wrapResolver(obj *externglib.Object) *Resolver {
 }
 
 func marshalResolverer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapResolver(obj), nil
+	return wrapResolver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // LookupByAddress: synchronously reverse-resolves address to determine its

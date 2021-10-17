@@ -295,9 +295,7 @@ func wrapIconFactory(obj *externglib.Object) *IconFactory {
 }
 
 func marshalIconFactorier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconFactory(obj), nil
+	return wrapIconFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewIconFactory creates a new IconFactory. An icon factory manages a

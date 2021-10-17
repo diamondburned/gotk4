@@ -152,9 +152,7 @@ func wrapConverter(obj *externglib.Object) *Converter {
 }
 
 func marshalConverterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConverter(obj), nil
+	return wrapConverter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Convert: this is the main operation used when converting data. It is to be

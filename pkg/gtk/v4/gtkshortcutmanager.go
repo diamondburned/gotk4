@@ -61,9 +61,7 @@ func wrapShortcutManager(obj *externglib.Object) *ShortcutManager {
 }
 
 func marshalShortcutManagerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutManager(obj), nil
+	return wrapShortcutManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ShortcutManager) privateShortcutManager() {}

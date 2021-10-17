@@ -50,9 +50,7 @@ func wrapPlug(obj *externglib.Object) *Plug {
 }
 
 func marshalPlugger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPlug(obj), nil
+	return wrapPlug(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPlug creates a new Plug instance.

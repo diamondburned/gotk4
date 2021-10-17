@@ -76,9 +76,7 @@ func wrapDropDown(obj *externglib.Object) *DropDown {
 }
 
 func marshalDropDowner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropDown(obj), nil
+	return wrapDropDown(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDropDown creates a new GtkDropDown.

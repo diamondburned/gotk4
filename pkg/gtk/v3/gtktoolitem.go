@@ -79,9 +79,7 @@ func wrapToolItem(obj *externglib.Object) *ToolItem {
 }
 
 func marshalToolItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolItem(obj), nil
+	return wrapToolItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewToolItem creates a new ToolItem.

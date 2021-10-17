@@ -38,8 +38,8 @@ type vec2 struct {
 }
 
 func marshalVec2(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Vec2{&vec2{(*C.graphene_vec2_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Vec2{&vec2{(*C.graphene_vec2_t)(b)}}, nil
 }
 
 // NewVec2Alloc constructs a struct Vec2.

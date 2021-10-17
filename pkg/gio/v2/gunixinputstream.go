@@ -64,9 +64,7 @@ func wrapUnixInputStream(obj *externglib.Object) *UnixInputStream {
 }
 
 func marshalUnixInputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixInputStream(obj), nil
+	return wrapUnixInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewUnixInputStream creates a new InputStream for the given fd.

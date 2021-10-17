@@ -56,7 +56,7 @@ const (
 )
 
 func marshalPathPriorityType(p uintptr) (interface{}, error) {
-	return PathPriorityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PathPriorityType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PathPriorityType.
@@ -94,7 +94,7 @@ const (
 )
 
 func marshalPathType(p uintptr) (interface{}, error) {
-	return PathType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PathType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PathType.
@@ -202,7 +202,7 @@ const (
 )
 
 func marshalRCTokenType(p uintptr) (interface{}, error) {
-	return RCTokenType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RCTokenType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RCTokenType.
@@ -308,7 +308,7 @@ const (
 )
 
 func marshalRCFlags(p uintptr) (interface{}, error) {
-	return RCFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RCFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for RCFlags.
@@ -877,9 +877,7 @@ func wrapRCStyle(obj *externglib.Object) *RCStyle {
 }
 
 func marshalRCStyler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRCStyle(obj), nil
+	return wrapRCStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRCStyle creates a new RcStyle with no fields set and a reference count of

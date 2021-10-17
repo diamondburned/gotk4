@@ -101,9 +101,7 @@ func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 }
 
 func marshalPasswordEntrier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPasswordEntry(obj), nil
+	return wrapPasswordEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPasswordEntry creates a GtkPasswordEntry.

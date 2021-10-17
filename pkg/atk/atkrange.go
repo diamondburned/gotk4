@@ -38,8 +38,8 @@ type _range struct {
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Range{&_range{(*C.AtkRange)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Range{&_range{(*C.AtkRange)(b)}}, nil
 }
 
 // NewRange constructs a struct Range.

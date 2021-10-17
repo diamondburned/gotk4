@@ -50,9 +50,7 @@ func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 }
 
 func marshalShortcutLabeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutLabel(obj), nil
+	return wrapShortcutLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewShortcutLabel creates a new GtkShortcutLabel with accelerator set.

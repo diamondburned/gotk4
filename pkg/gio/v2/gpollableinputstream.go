@@ -112,9 +112,7 @@ func wrapPollableInputStream(obj *externglib.Object) *PollableInputStream {
 }
 
 func marshalPollableInputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPollableInputStream(obj), nil
+	return wrapPollableInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CanPoll checks if stream is actually pollable. Some classes may implement

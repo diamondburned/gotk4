@@ -448,11 +448,6 @@ type variant struct {
 	native *C.GVariant
 }
 
-func marshalVariant(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Variant{&variant{(*C.GVariant)(unsafe.Pointer(b))}}, nil
-}
-
 // NewVariantArray constructs a struct Variant.
 func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 	var _arg1 *C.GVariantType // out
@@ -2491,8 +2486,8 @@ type variantBuilder struct {
 }
 
 func marshalVariantBuilder(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &VariantBuilder{&variantBuilder{(*C.GVariantBuilder)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &VariantBuilder{&variantBuilder{(*C.GVariantBuilder)(b)}}, nil
 }
 
 // NewVariantBuilder constructs a struct VariantBuilder.
@@ -2708,8 +2703,8 @@ type variantDict struct {
 }
 
 func marshalVariantDict(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &VariantDict{&variantDict{(*C.GVariantDict)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &VariantDict{&variantDict{(*C.GVariantDict)(b)}}, nil
 }
 
 // NewVariantDict constructs a struct VariantDict.

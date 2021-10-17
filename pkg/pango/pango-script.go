@@ -277,7 +277,7 @@ const (
 )
 
 func marshalScript(p uintptr) (interface{}, error) {
-	return Script(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Script(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Script.
@@ -624,8 +624,8 @@ type scriptIter struct {
 }
 
 func marshalScriptIter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ScriptIter{&scriptIter{(*C.PangoScriptIter)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &ScriptIter{&scriptIter{(*C.PangoScriptIter)(b)}}, nil
 }
 
 // NewScriptIter constructs a struct ScriptIter.

@@ -116,9 +116,7 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 }
 
 func marshalHeaderBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHeaderBar(obj), nil
+	return wrapHeaderBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHeaderBar creates a new GtkHeaderBar widget.

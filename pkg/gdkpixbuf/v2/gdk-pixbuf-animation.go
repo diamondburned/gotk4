@@ -113,9 +113,7 @@ func wrapPixbufAnimation(obj *externglib.Object) *PixbufAnimation {
 }
 
 func marshalPixbufAnimationer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufAnimation(obj), nil
+	return wrapPixbufAnimation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPixbufAnimationFromFile creates a new animation by loading it from a file.
@@ -520,9 +518,7 @@ func wrapPixbufAnimationIter(obj *externglib.Object) *PixbufAnimationIter {
 }
 
 func marshalPixbufAnimationIterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufAnimationIter(obj), nil
+	return wrapPixbufAnimationIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Advance: possibly advances an animation to a new frame.

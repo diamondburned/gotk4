@@ -37,9 +37,7 @@ func wrapX11AppLaunchContext(obj *externglib.Object) *X11AppLaunchContext {
 }
 
 func marshalX11AppLaunchContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11AppLaunchContext(obj), nil
+	return wrapX11AppLaunchContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*X11AppLaunchContext) privateX11AppLaunchContext() {}

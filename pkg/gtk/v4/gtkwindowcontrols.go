@@ -94,9 +94,7 @@ func wrapWindowControls(obj *externglib.Object) *WindowControls {
 }
 
 func marshalWindowControlser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowControls(obj), nil
+	return wrapWindowControls(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindowControls creates a new GtkWindowControls.

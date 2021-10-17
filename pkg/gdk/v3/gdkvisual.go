@@ -54,7 +54,7 @@ const (
 )
 
 func marshalVisualType(p uintptr) (interface{}, error) {
-	return VisualType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return VisualType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for VisualType.
@@ -169,9 +169,7 @@ func wrapVisual(obj *externglib.Object) *Visual {
 }
 
 func marshalVisualer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVisual(obj), nil
+	return wrapVisual(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BitsPerRGB returns the number of significant bits per red, green and blue

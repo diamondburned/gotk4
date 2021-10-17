@@ -76,9 +76,7 @@ func wrapLabel(obj *externglib.Object) *Label {
 }
 
 func marshalLabeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLabel(obj), nil
+	return wrapLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLabel creates a new label with the given text inside it. You can pass NULL

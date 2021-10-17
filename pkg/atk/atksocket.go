@@ -77,9 +77,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 }
 
 func marshalSocketter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocket(obj), nil
+	return wrapSocket(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSocket creates a new Socket.

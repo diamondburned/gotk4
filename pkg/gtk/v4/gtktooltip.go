@@ -58,9 +58,7 @@ func wrapTooltip(obj *externglib.Object) *Tooltip {
 }
 
 func marshalTooltipper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTooltip(obj), nil
+	return wrapTooltip(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // SetCustom replaces the widget packed into the tooltip with custom_widget.

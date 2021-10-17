@@ -58,9 +58,7 @@ func wrapX11Surface(obj *externglib.Object) *X11Surface {
 }
 
 func marshalX11Surfacer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Surface(obj), nil
+	return wrapX11Surface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Desktop gets the number of the workspace surface is on.

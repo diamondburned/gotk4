@@ -81,9 +81,7 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 }
 
 func marshalDragIconner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragIcon(obj), nil
+	return wrapDragIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Child gets the widget currently used as drag icon.

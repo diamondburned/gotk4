@@ -83,9 +83,7 @@ func wrapEditableText(obj *externglib.Object) *EditableText {
 }
 
 func marshalEditableTexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEditableText(obj), nil
+	return wrapEditableText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CopyText: copy text from start_pos up to, but not including end_pos to the

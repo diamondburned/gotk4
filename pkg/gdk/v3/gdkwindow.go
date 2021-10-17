@@ -52,7 +52,7 @@ const (
 )
 
 func marshalFullscreenMode(p uintptr) (interface{}, error) {
-	return FullscreenMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FullscreenMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FullscreenMode.
@@ -99,7 +99,7 @@ const (
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
-	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Gravity(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Gravity.
@@ -153,7 +153,7 @@ const (
 )
 
 func marshalWindowEdge(p uintptr) (interface{}, error) {
-	return WindowEdge(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowEdge(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WindowEdge.
@@ -205,7 +205,7 @@ const (
 )
 
 func marshalWindowType(p uintptr) (interface{}, error) {
-	return WindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WindowType.
@@ -245,7 +245,7 @@ const (
 )
 
 func marshalWindowWindowClass(p uintptr) (interface{}, error) {
-	return WindowWindowClass(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowWindowClass(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WindowWindowClass.
@@ -299,7 +299,7 @@ const (
 )
 
 func marshalAnchorHints(p uintptr) (interface{}, error) {
-	return AnchorHints(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AnchorHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AnchorHints.
@@ -372,7 +372,7 @@ const (
 )
 
 func marshalWMDecoration(p uintptr) (interface{}, error) {
-	return WMDecoration(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WMDecoration(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for WMDecoration.
@@ -439,7 +439,7 @@ const (
 )
 
 func marshalWMFunction(p uintptr) (interface{}, error) {
-	return WMFunction(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WMFunction(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for WMFunction.
@@ -511,7 +511,7 @@ const (
 )
 
 func marshalWindowAttributesType(p uintptr) (interface{}, error) {
-	return WindowAttributesType(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowAttributesType(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for WindowAttributesType.
@@ -593,7 +593,7 @@ const (
 )
 
 func marshalWindowHints(p uintptr) (interface{}, error) {
-	return WindowHints(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for WindowHints.
@@ -1240,9 +1240,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 }
 
 func marshalWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindow(obj), nil
+	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindow creates a new Window using the attributes from attributes. See

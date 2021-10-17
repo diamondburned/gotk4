@@ -45,9 +45,7 @@ func wrapListBoxRowAccessible(obj *externglib.Object) *ListBoxRowAccessible {
 }
 
 func marshalListBoxRowAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBoxRowAccessible(obj), nil
+	return wrapListBoxRowAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ListBoxRowAccessible) privateListBoxRowAccessible() {}

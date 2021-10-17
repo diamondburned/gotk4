@@ -87,9 +87,7 @@ func wrapTLSCertificate(obj *externglib.Object) *TLSCertificate {
 }
 
 func marshalTLSCertificater(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSCertificate(obj), nil
+	return wrapTLSCertificate(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTLSCertificateFromFile creates a Certificate from the PEM-encoded data in

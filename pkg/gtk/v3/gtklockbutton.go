@@ -101,9 +101,7 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 }
 
 func marshalLockButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLockButton(obj), nil
+	return wrapLockButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLockButton creates a new lock button which reflects the permission.

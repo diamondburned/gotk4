@@ -110,9 +110,7 @@ func wrapFileOutputStream(obj *externglib.Object) *FileOutputStream {
 }
 
 func marshalFileOutputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileOutputStream(obj), nil
+	return wrapFileOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ETag gets the entity tag for the file when it has been written. This must be

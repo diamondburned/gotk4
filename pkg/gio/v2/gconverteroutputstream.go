@@ -58,9 +58,7 @@ func wrapConverterOutputStream(obj *externglib.Object) *ConverterOutputStream {
 }
 
 func marshalConverterOutputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConverterOutputStream(obj), nil
+	return wrapConverterOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewConverterOutputStream creates a new converter output stream for the

@@ -63,7 +63,7 @@ const (
 )
 
 func marshalEditableProperties(p uintptr) (interface{}, error) {
-	return EditableProperties(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EditableProperties(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EditableProperties.
@@ -141,7 +141,7 @@ const (
 )
 
 func marshalDebugFlags(p uintptr) (interface{}, error) {
-	return DebugFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DebugFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DebugFlags.
@@ -151,7 +151,7 @@ func (d DebugFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(276)
+	builder.Grow(256)
 
 	for d != 0 {
 		next := d & (d - 1)

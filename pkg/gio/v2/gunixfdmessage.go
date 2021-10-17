@@ -55,9 +55,7 @@ func wrapUnixFDMessage(obj *externglib.Object) *UnixFDMessage {
 }
 
 func marshalUnixFDMessager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixFDMessage(obj), nil
+	return wrapUnixFDMessage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewUnixFDMessage creates a new FDMessage containing an empty file descriptor

@@ -107,9 +107,7 @@ func wrapSurface(obj *externglib.Object) *Surface {
 }
 
 func marshalSurfacer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSurface(obj), nil
+	return wrapSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSurfacePopup: create a new popup surface.

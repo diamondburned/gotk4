@@ -45,9 +45,7 @@ func wrapStatusbarAccessible(obj *externglib.Object) *StatusbarAccessible {
 }
 
 func marshalStatusbarAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStatusbarAccessible(obj), nil
+	return wrapStatusbarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*StatusbarAccessible) privateStatusbarAccessible() {}

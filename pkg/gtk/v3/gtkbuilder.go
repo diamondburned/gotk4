@@ -73,7 +73,7 @@ const (
 )
 
 func marshalBuilderError(p uintptr) (interface{}, error) {
-	return BuilderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return BuilderError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BuilderError.
@@ -305,9 +305,7 @@ func wrapBuilder(obj *externglib.Object) *Builder {
 }
 
 func marshalBuilderer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilder(obj), nil
+	return wrapBuilder(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBuilder creates a new empty builder object.

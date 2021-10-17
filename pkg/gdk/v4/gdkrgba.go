@@ -42,8 +42,8 @@ type rgbA struct {
 }
 
 func marshalRGBA(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &RGBA{&rgbA{(*C.GdkRGBA)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &RGBA{&rgbA{(*C.GdkRGBA)(b)}}, nil
 }
 
 // NewRGBA creates a new RGBA instance from the given

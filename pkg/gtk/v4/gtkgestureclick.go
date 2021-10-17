@@ -44,9 +44,7 @@ func wrapGestureClick(obj *externglib.Object) *GestureClick {
 }
 
 func marshalGestureClicker(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureClick(obj), nil
+	return wrapGestureClick(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGestureClick returns a newly created GtkGesture that recognizes single and

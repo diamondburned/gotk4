@@ -44,7 +44,7 @@ const (
 )
 
 func marshalSubpixelLayout(p uintptr) (interface{}, error) {
-	return SubpixelLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SubpixelLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SubpixelLayout.
@@ -84,9 +84,7 @@ func wrapMonitor(obj *externglib.Object) *Monitor {
 }
 
 func marshalMonitorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMonitor(obj), nil
+	return wrapMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Connector gets the name of the monitor's connector, if available.

@@ -122,9 +122,7 @@ func wrapInitable(obj *externglib.Object) *Initable {
 }
 
 func marshalInitabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInitable(obj), nil
+	return wrapInitable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Init initializes the object implementing the interface.

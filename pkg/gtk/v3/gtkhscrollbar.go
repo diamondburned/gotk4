@@ -61,9 +61,7 @@ func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 }
 
 func marshalHScrollbarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHScrollbar(obj), nil
+	return wrapHScrollbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHScrollbar creates a new horizontal scrollbar.

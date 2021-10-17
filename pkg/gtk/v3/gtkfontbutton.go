@@ -93,9 +93,7 @@ func wrapFontButton(obj *externglib.Object) *FontButton {
 }
 
 func marshalFontButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontButton(obj), nil
+	return wrapFontButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFontButton creates a new font picker widget.

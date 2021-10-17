@@ -49,9 +49,7 @@ func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 }
 
 func marshalWindowGrouper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowGroup(obj), nil
+	return wrapWindowGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindowGroup creates a new WindowGroup object. Grabs added with

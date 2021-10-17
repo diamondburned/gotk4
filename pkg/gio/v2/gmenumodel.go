@@ -131,9 +131,7 @@ func wrapMenuAttributeIter(obj *externglib.Object) *MenuAttributeIter {
 }
 
 func marshalMenuAttributeIterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuAttributeIter(obj), nil
+	return wrapMenuAttributeIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Name gets the name of the attribute at the current iterator position, as a
@@ -305,9 +303,7 @@ func wrapMenuLinkIter(obj *externglib.Object) *MenuLinkIter {
 }
 
 func marshalMenuLinkIterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuLinkIter(obj), nil
+	return wrapMenuLinkIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Name gets the name of the link at the current iterator position.
@@ -642,9 +638,7 @@ func wrapMenuModel(obj *externglib.Object) *MenuModel {
 }
 
 func marshalMenuModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenuModel(obj), nil
+	return wrapMenuModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ItemAttributeValue queries the item at position item_index in model for the

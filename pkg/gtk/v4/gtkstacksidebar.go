@@ -61,9 +61,7 @@ func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 }
 
 func marshalStackSidebarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStackSidebar(obj), nil
+	return wrapStackSidebar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStackSidebar creates a new GtkStackSidebar.

@@ -45,7 +45,7 @@ const (
 )
 
 func marshalDeviceType(p uintptr) (interface{}, error) {
-	return DeviceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DeviceType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DeviceType.
@@ -79,7 +79,7 @@ const (
 )
 
 func marshalInputMode(p uintptr) (interface{}, error) {
-	return InputMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return InputMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for InputMode.
@@ -128,7 +128,7 @@ const (
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {
-	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return InputSource(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for InputSource.
@@ -251,9 +251,7 @@ func wrapDevice(obj *externglib.Object) *Device {
 }
 
 func marshalDevicer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDevice(obj), nil
+	return wrapDevice(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AssociatedDevice returns the associated device to device, if device is of

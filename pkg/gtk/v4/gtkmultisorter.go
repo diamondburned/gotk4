@@ -50,9 +50,7 @@ func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 }
 
 func marshalMultiSorterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMultiSorter(obj), nil
+	return wrapMultiSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMultiSorter creates a new multi sorter.

@@ -47,7 +47,7 @@ const (
 )
 
 func marshalCoverageLevel(p uintptr) (interface{}, error) {
-	return CoverageLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CoverageLevel(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CoverageLevel.
@@ -83,9 +83,7 @@ func wrapCoverage(obj *externglib.Object) *Coverage {
 }
 
 func marshalCoverager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCoverage(obj), nil
+	return wrapCoverage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCoverage: create a new PangoCoverage.

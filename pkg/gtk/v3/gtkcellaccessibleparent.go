@@ -72,9 +72,7 @@ func wrapCellAccessibleParent(obj *externglib.Object) *CellAccessibleParent {
 }
 
 func marshalCellAccessibleParenter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellAccessibleParent(obj), nil
+	return wrapCellAccessibleParent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //

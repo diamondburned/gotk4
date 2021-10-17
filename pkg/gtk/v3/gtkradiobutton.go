@@ -143,9 +143,7 @@ func wrapRadioButton(obj *externglib.Object) *RadioButton {
 }
 
 func marshalRadioButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioButton(obj), nil
+	return wrapRadioButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRadioButton creates a new RadioButton. To be of any practical value, a

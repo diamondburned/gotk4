@@ -61,9 +61,7 @@ func wrapUnixSocketAddress(obj *externglib.Object) *UnixSocketAddress {
 }
 
 func marshalUnixSocketAddresser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUnixSocketAddress(obj), nil
+	return wrapUnixSocketAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewUnixSocketAddress creates a new SocketAddress for path.

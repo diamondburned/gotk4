@@ -69,7 +69,7 @@ const (
 )
 
 func marshalLicense(p uintptr) (interface{}, error) {
-	return License(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return License(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for License.
@@ -213,9 +213,7 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 }
 
 func marshalAboutDialogger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAboutDialog(obj), nil
+	return wrapAboutDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAboutDialog creates a new GtkAboutDialog.

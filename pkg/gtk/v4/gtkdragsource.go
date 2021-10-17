@@ -109,9 +109,7 @@ func wrapDragSource(obj *externglib.Object) *DragSource {
 }
 
 func marshalDragSourcer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragSource(obj), nil
+	return wrapDragSource(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDragSource creates a new GtkDragSource object.

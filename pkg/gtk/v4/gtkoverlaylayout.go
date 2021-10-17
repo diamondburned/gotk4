@@ -41,9 +41,7 @@ func wrapOverlayLayout(obj *externglib.Object) *OverlayLayout {
 }
 
 func marshalOverlayLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOverlayLayout(obj), nil
+	return wrapOverlayLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewOverlayLayout creates a new GtkOverlayLayout instance.
@@ -76,9 +74,7 @@ func wrapOverlayLayoutChild(obj *externglib.Object) *OverlayLayoutChild {
 }
 
 func marshalOverlayLayoutChilder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOverlayLayoutChild(obj), nil
+	return wrapOverlayLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ClipOverlay retrieves whether the child is clipped.

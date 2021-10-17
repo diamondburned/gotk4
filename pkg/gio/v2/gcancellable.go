@@ -54,9 +54,7 @@ func wrapCancellable(obj *externglib.Object) *Cancellable {
 }
 
 func marshalCancellabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCancellable(obj), nil
+	return wrapCancellable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCancellable creates a new #GCancellable object.

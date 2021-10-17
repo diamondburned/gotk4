@@ -100,9 +100,7 @@ func wrapFileChooserButton(obj *externglib.Object) *FileChooserButton {
 }
 
 func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserButton(obj), nil
+	return wrapFileChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileChooserButton creates a new file-selecting button widget.

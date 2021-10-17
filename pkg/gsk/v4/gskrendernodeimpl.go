@@ -66,9 +66,7 @@ func wrapBlendNode(obj *externglib.Object) *BlendNode {
 }
 
 func marshalBlendNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBlendNode(obj), nil
+	return wrapBlendNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBlendNode creates a GskRenderNode that will use blend_mode to blend the
@@ -191,9 +189,7 @@ func wrapBlurNode(obj *externglib.Object) *BlurNode {
 }
 
 func marshalBlurNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBlurNode(obj), nil
+	return wrapBlurNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBlurNode creates a render node that blurs the child.
@@ -282,9 +278,7 @@ func wrapBorderNode(obj *externglib.Object) *BorderNode {
 }
 
 func marshalBorderNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBorderNode(obj), nil
+	return wrapBorderNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBorderNode creates a GskRenderNode that will stroke a border rectangle
@@ -386,9 +380,7 @@ func wrapCairoNode(obj *externglib.Object) *CairoNode {
 }
 
 func marshalCairoNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCairoNode(obj), nil
+	return wrapCairoNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCairoNode creates a GskRenderNode that will render a cairo surface into
@@ -475,9 +467,7 @@ func wrapClipNode(obj *externglib.Object) *ClipNode {
 }
 
 func marshalClipNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapClipNode(obj), nil
+	return wrapClipNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewClipNode creates a GskRenderNode that will clip the child to the area
@@ -568,9 +558,7 @@ func wrapColorMatrixNode(obj *externglib.Object) *ColorMatrixNode {
 }
 
 func marshalColorMatrixNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorMatrixNode(obj), nil
+	return wrapColorMatrixNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColorMatrixNode creates a GskRenderNode that will drawn the child with
@@ -688,9 +676,7 @@ func wrapColorNode(obj *externglib.Object) *ColorNode {
 }
 
 func marshalColorNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorNode(obj), nil
+	return wrapColorNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColorNode creates a GskRenderNode that will render the color specified by
@@ -751,9 +737,7 @@ func wrapConicGradientNode(obj *externglib.Object) *ConicGradientNode {
 }
 
 func marshalConicGradientNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapConicGradientNode(obj), nil
+	return wrapConicGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewConicGradientNode creates a GskRenderNode that draws a conic gradient.
@@ -907,9 +891,7 @@ func wrapContainerNode(obj *externglib.Object) *ContainerNode {
 }
 
 func marshalContainerNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContainerNode(obj), nil
+	return wrapContainerNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewContainerNode creates a new GskRenderNode instance for holding the given
@@ -1014,9 +996,7 @@ func wrapCrossFadeNode(obj *externglib.Object) *CrossFadeNode {
 }
 
 func marshalCrossFadeNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCrossFadeNode(obj), nil
+	return wrapCrossFadeNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCrossFadeNode creates a GskRenderNode that will do a cross-fade between
@@ -1142,9 +1122,7 @@ func wrapDebugNode(obj *externglib.Object) *DebugNode {
 }
 
 func marshalDebugNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDebugNode(obj), nil
+	return wrapDebugNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDebugNode creates a GskRenderNode that will add debug information about
@@ -1236,9 +1214,7 @@ func wrapGLShaderNode(obj *externglib.Object) *GLShaderNode {
 }
 
 func marshalGLShaderNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLShaderNode(obj), nil
+	return wrapGLShaderNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGLShaderNode creates a GskRenderNode that will render the given shader
@@ -1410,9 +1386,7 @@ func wrapInsetShadowNode(obj *externglib.Object) *InsetShadowNode {
 }
 
 func marshalInsetShadowNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInsetShadowNode(obj), nil
+	return wrapInsetShadowNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewInsetShadowNode creates a GskRenderNode that will render an inset shadow
@@ -1574,9 +1548,7 @@ func wrapLinearGradientNode(obj *externglib.Object) *LinearGradientNode {
 }
 
 func marshalLinearGradientNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLinearGradientNode(obj), nil
+	return wrapLinearGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLinearGradientNode creates a GskRenderNode that will create a linear
@@ -1705,9 +1677,7 @@ func wrapOpacityNode(obj *externglib.Object) *OpacityNode {
 }
 
 func marshalOpacityNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOpacityNode(obj), nil
+	return wrapOpacityNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewOpacityNode creates a GskRenderNode that will drawn the child with reduced
@@ -1797,9 +1767,7 @@ func wrapOutsetShadowNode(obj *externglib.Object) *OutsetShadowNode {
 }
 
 func marshalOutsetShadowNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOutsetShadowNode(obj), nil
+	return wrapOutsetShadowNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewOutsetShadowNode creates a GskRenderNode that will render an outset shadow
@@ -1961,9 +1929,7 @@ func wrapRadialGradientNode(obj *externglib.Object) *RadialGradientNode {
 }
 
 func marshalRadialGradientNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadialGradientNode(obj), nil
+	return wrapRadialGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRadialGradientNode creates a GskRenderNode that draws a radial gradient.
@@ -2159,9 +2125,7 @@ func wrapRepeatNode(obj *externglib.Object) *RepeatNode {
 }
 
 func marshalRepeatNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRepeatNode(obj), nil
+	return wrapRepeatNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRepeatNode creates a GskRenderNode that will repeat the drawing of child
@@ -2258,9 +2222,7 @@ func wrapRepeatingLinearGradientNode(obj *externglib.Object) *RepeatingLinearGra
 }
 
 func marshalRepeatingLinearGradientNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRepeatingLinearGradientNode(obj), nil
+	return wrapRepeatingLinearGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRepeatingLinearGradientNode creates a GskRenderNode that will create a
@@ -2321,9 +2283,7 @@ func wrapRepeatingRadialGradientNode(obj *externglib.Object) *RepeatingRadialGra
 }
 
 func marshalRepeatingRadialGradientNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRepeatingRadialGradientNode(obj), nil
+	return wrapRepeatingRadialGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRepeatingRadialGradientNode creates a GskRenderNode that draws a repeating
@@ -2402,9 +2362,7 @@ func wrapRoundedClipNode(obj *externglib.Object) *RoundedClipNode {
 }
 
 func marshalRoundedClipNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRoundedClipNode(obj), nil
+	return wrapRoundedClipNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRoundedClipNode creates a GskRenderNode that will clip the child to the
@@ -2495,9 +2453,7 @@ func wrapShadowNode(obj *externglib.Object) *ShadowNode {
 }
 
 func marshalShadowNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShadowNode(obj), nil
+	return wrapShadowNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewShadowNode creates a GskRenderNode that will draw a child with the given
@@ -2616,9 +2572,7 @@ func wrapTextNode(obj *externglib.Object) *TextNode {
 }
 
 func marshalTextNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextNode(obj), nil
+	return wrapTextNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextNode creates a render node that renders the given glyphs.
@@ -2796,9 +2750,7 @@ func wrapTextureNode(obj *externglib.Object) *TextureNode {
 }
 
 func marshalTextureNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextureNode(obj), nil
+	return wrapTextureNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextureNode creates a GskRenderNode that will render the given texture
@@ -2871,9 +2823,7 @@ func wrapTransformNode(obj *externglib.Object) *TransformNode {
 }
 
 func marshalTransformNoder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTransformNode(obj), nil
+	return wrapTransformNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTransformNode creates a GskRenderNode that will transform the given child

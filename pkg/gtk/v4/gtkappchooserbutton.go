@@ -95,9 +95,7 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 }
 
 func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooserButton(obj), nil
+	return wrapAppChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAppChooserButton creates a new GtkAppChooserButton for applications that

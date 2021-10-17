@@ -61,9 +61,7 @@ func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 }
 
 func marshalTextCellAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextCellAccessible(obj), nil
+	return wrapTextCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*TextCellAccessible) privateTextCellAccessible() {}

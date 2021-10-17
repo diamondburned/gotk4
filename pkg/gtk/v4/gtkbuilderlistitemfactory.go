@@ -58,9 +58,7 @@ func wrapBuilderListItemFactory(obj *externglib.Object) *BuilderListItemFactory 
 }
 
 func marshalBuilderListItemFactorier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuilderListItemFactory(obj), nil
+	return wrapBuilderListItemFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBuilderListItemFactoryFromBytes creates a new GtkBuilderListItemFactory

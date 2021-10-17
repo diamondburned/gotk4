@@ -54,9 +54,7 @@ func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
 }
 
 func marshalLabelAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLabelAccessible(obj), nil
+	return wrapLabelAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*LabelAccessible) privateLabelAccessible() {}

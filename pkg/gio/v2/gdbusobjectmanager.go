@@ -86,9 +86,7 @@ func wrapDBusObjectManager(obj *externglib.Object) *DBusObjectManager {
 }
 
 func marshalDBusObjectManagerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectManager(obj), nil
+	return wrapDBusObjectManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Interface gets the interface proxy for interface_name at object_path, if any.

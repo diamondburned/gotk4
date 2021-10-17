@@ -68,7 +68,7 @@ const (
 )
 
 func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
-	return SettingsBindFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SettingsBindFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for SettingsBindFlags.
@@ -508,9 +508,7 @@ func wrapSettings(obj *externglib.Object) *Settings {
 }
 
 func marshalSettingser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSettings(obj), nil
+	return wrapSettings(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSettings creates a new #GSettings object with the schema specified by

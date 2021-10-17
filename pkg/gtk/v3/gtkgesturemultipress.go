@@ -51,9 +51,7 @@ func wrapGestureMultiPress(obj *externglib.Object) *GestureMultiPress {
 }
 
 func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureMultiPress(obj), nil
+	return wrapGestureMultiPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGestureMultiPress returns a newly created Gesture that recognizes single

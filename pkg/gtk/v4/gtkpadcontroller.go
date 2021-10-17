@@ -39,7 +39,7 @@ const (
 )
 
 func marshalPadActionType(p uintptr) (interface{}, error) {
-	return PadActionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PadActionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PadActionType.
@@ -113,9 +113,7 @@ func wrapPadController(obj *externglib.Object) *PadController {
 }
 
 func marshalPadControllerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPadController(obj), nil
+	return wrapPadController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPadController creates a new GtkPadController that will associate events

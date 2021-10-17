@@ -119,9 +119,7 @@ func wrapPopover(obj *externglib.Object) *Popover {
 }
 
 func marshalPopoverer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopover(obj), nil
+	return wrapPopover(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPopover creates a new popover to point to relative_to.

@@ -88,9 +88,7 @@ func wrapImage(obj *externglib.Object) *Image {
 }
 
 func marshalImager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImage(obj), nil
+	return wrapImage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ImageDescription: get a textual description of this image.

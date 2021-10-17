@@ -67,7 +67,7 @@ const (
 )
 
 func marshalMemoryFormat(p uintptr) (interface{}, error) {
-	return MemoryFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return MemoryFormat(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MemoryFormat.
@@ -115,9 +115,7 @@ func wrapMemoryTexture(obj *externglib.Object) *MemoryTexture {
 }
 
 func marshalMemoryTexturer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryTexture(obj), nil
+	return wrapMemoryTexture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMemoryTexture creates a new texture for a blob of image data.

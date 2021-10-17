@@ -35,8 +35,8 @@ type point3D struct {
 }
 
 func marshalPoint3D(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Point3D{&point3D{(*C.graphene_point3d_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Point3D{&point3D{(*C.graphene_point3d_t)(b)}}, nil
 }
 
 // NewPoint3DAlloc constructs a struct Point3D.

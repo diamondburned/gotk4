@@ -43,8 +43,8 @@ type iconSet struct {
 }
 
 func marshalIconSet(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &IconSet{&iconSet{(*C.GtkIconSet)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &IconSet{&iconSet{(*C.GtkIconSet)(b)}}, nil
 }
 
 // NewIconSet constructs a struct IconSet.
@@ -329,8 +329,8 @@ type iconSource struct {
 }
 
 func marshalIconSource(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &IconSource{&iconSource{(*C.GtkIconSource)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &IconSource{&iconSource{(*C.GtkIconSource)(b)}}, nil
 }
 
 // NewIconSource constructs a struct IconSource.
@@ -779,8 +779,8 @@ type selectionData struct {
 }
 
 func marshalSelectionData(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &SelectionData{&selectionData{(*C.GtkSelectionData)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &SelectionData{&selectionData{(*C.GtkSelectionData)(b)}}, nil
 }
 
 // Copy makes a copy of a SelectionData-struct and its data.
@@ -1177,8 +1177,8 @@ type widgetPath struct {
 }
 
 func marshalWidgetPath(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &WidgetPath{&widgetPath{(*C.GtkWidgetPath)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &WidgetPath{&widgetPath{(*C.GtkWidgetPath)(b)}}, nil
 }
 
 // NewWidgetPath constructs a struct WidgetPath.

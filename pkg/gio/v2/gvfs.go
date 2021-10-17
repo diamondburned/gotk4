@@ -107,9 +107,7 @@ func wrapVFS(obj *externglib.Object) *VFS {
 }
 
 func marshalVFSer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVFS(obj), nil
+	return wrapVFS(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // FileForPath gets a #GFile for path.

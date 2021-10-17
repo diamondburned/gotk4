@@ -44,7 +44,7 @@ const (
 )
 
 func marshalArrowPlacement(p uintptr) (interface{}, error) {
-	return ArrowPlacement(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ArrowPlacement(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ArrowPlacement.
@@ -113,9 +113,7 @@ func wrapMenu(obj *externglib.Object) *Menu {
 }
 
 func marshalMenuer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMenu(obj), nil
+	return wrapMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMenu creates a new Menu.

@@ -61,9 +61,7 @@ func wrapHScale(obj *externglib.Object) *HScale {
 }
 
 func marshalHScaler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHScale(obj), nil
+	return wrapHScale(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHScale creates a new HScale.

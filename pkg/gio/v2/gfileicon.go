@@ -49,9 +49,7 @@ func wrapFileIcon(obj *externglib.Object) *FileIcon {
 }
 
 func marshalFileIconner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileIcon(obj), nil
+	return wrapFileIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileIcon creates a new icon for a file.

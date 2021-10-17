@@ -73,9 +73,7 @@ func wrapSignalListItemFactory(obj *externglib.Object) *SignalListItemFactory {
 }
 
 func marshalSignalListItemFactorier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSignalListItemFactory(obj), nil
+	return wrapSignalListItemFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSignalListItemFactory creates a new GtkSignalListItemFactory.

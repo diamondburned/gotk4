@@ -69,9 +69,7 @@ func wrapRenderer(obj *externglib.Object) *Renderer {
 }
 
 func marshalRendererer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRenderer(obj), nil
+	return wrapRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRendererForSurface creates an appropriate GskRenderer instance for the

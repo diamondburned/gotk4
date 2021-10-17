@@ -208,9 +208,7 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 }
 
 func marshalFileChooserDialogger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserDialog(obj), nil
+	return wrapFileChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*FileChooserDialog) privateFileChooserDialog() {}

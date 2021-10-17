@@ -58,9 +58,7 @@ func wrapVPaned(obj *externglib.Object) *VPaned {
 }
 
 func marshalVPanedder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVPaned(obj), nil
+	return wrapVPaned(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVPaned: create a new VPaned

@@ -63,9 +63,7 @@ func wrapFilterInputStream(obj *externglib.Object) *FilterInputStream {
 }
 
 func marshalFilterInputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilterInputStream(obj), nil
+	return wrapFilterInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BaseStream gets the base stream for the filter stream.

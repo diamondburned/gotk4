@@ -120,9 +120,7 @@ func wrapAction(obj *externglib.Object) *Action {
 }
 
 func marshalActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAction(obj), nil
+	return wrapAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAction creates a new Action object. To add the action to a ActionGroup and

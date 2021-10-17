@@ -178,9 +178,7 @@ func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 }
 
 func marshalPixbuffer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbuf(obj), nil
+	return wrapPixbuf(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPixbuf creates a new GdkPixbuf structure and allocates a buffer for it.

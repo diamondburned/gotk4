@@ -35,9 +35,7 @@ func wrapX11Keymap(obj *externglib.Object) *X11Keymap {
 }
 
 func marshalX11Keymapper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Keymap(obj), nil
+	return wrapX11Keymap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // GroupForState extracts the group from the state field sent in an X Key event.

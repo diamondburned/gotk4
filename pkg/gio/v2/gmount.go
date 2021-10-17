@@ -245,9 +245,7 @@ func wrapMount(obj *externglib.Object) *Mount {
 }
 
 func marshalMounter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMount(obj), nil
+	return wrapMount(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CanEject checks if mount can be ejected.

@@ -131,9 +131,7 @@ func wrapText(obj *externglib.Object) *Text {
 }
 
 func marshalTexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapText(obj), nil
+	return wrapText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewText creates a new GtkText.

@@ -75,9 +75,7 @@ func wrapEntryBuffer(obj *externglib.Object) *EntryBuffer {
 }
 
 func marshalEntryBufferer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryBuffer(obj), nil
+	return wrapEntryBuffer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEntryBuffer: create a new GtkEntryBuffer object.

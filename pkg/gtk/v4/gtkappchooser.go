@@ -79,9 +79,7 @@ func wrapAppChooser(obj *externglib.Object) *AppChooser {
 }
 
 func marshalAppChooserer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooser(obj), nil
+	return wrapAppChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AppInfo returns the currently selected application.

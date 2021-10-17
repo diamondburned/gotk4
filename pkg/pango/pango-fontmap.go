@@ -100,9 +100,7 @@ func wrapFontMap(obj *externglib.Object) *FontMap {
 }
 
 func marshalFontMapper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontMap(obj), nil
+	return wrapFontMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Changed forces a change in the context, which will cause any PangoContext

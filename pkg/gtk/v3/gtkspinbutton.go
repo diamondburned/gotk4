@@ -47,7 +47,7 @@ const (
 )
 
 func marshalSpinButtonUpdatePolicy(p uintptr) (interface{}, error) {
-	return SpinButtonUpdatePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SpinButtonUpdatePolicy(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SpinButtonUpdatePolicy.
@@ -84,7 +84,7 @@ const (
 )
 
 func marshalSpinType(p uintptr) (interface{}, error) {
-	return SpinType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SpinType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SpinType.
@@ -213,9 +213,7 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 }
 
 func marshalSpinButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinButton(obj), nil
+	return wrapSpinButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSpinButton creates a new SpinButton.

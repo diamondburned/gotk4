@@ -107,9 +107,7 @@ func wrapButton(obj *externglib.Object) *Button {
 }
 
 func marshalButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapButton(obj), nil
+	return wrapButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewButton creates a new GtkButton widget.

@@ -55,9 +55,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .HasMarshaler }}
 	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
-		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-		obj := externglib.Take(unsafe.Pointer(val))
-		return {{ $wrapper }}(obj), nil
+		return {{ $wrapper }}(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 	}
 	{{ end }}
 

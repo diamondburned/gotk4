@@ -141,9 +141,7 @@ func wrapNotebook(obj *externglib.Object) *Notebook {
 }
 
 func marshalNotebooker(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotebook(obj), nil
+	return wrapNotebook(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNotebook creates a new Notebook widget with no pages.

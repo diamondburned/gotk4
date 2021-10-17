@@ -42,7 +42,7 @@ const (
 )
 
 func marshalRenderPart(p uintptr) (interface{}, error) {
-	return RenderPart(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RenderPart(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RenderPart.
@@ -199,9 +199,7 @@ func wrapRenderer(obj *externglib.Object) *Renderer {
 }
 
 func marshalRendererer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRenderer(obj), nil
+	return wrapRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Activate does initial setup before rendering operations on renderer.

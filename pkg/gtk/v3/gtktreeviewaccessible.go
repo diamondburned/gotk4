@@ -60,9 +60,7 @@ func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 }
 
 func marshalTreeViewAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeViewAccessible(obj), nil
+	return wrapTreeViewAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*TreeViewAccessible) privateTreeViewAccessible() {}

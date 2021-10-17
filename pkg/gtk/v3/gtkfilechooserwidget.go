@@ -69,9 +69,7 @@ func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 }
 
 func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserWidget(obj), nil
+	return wrapFileChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileChooserWidget creates a new FileChooserWidget. This is a file chooser

@@ -75,9 +75,7 @@ func wrapPrintOperationPreview(obj *externglib.Object) *PrintOperationPreview {
 }
 
 func marshalPrintOperationPreviewer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPrintOperationPreview(obj), nil
+	return wrapPrintOperationPreview(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // EndPreview ends a preview.

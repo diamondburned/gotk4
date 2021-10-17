@@ -40,9 +40,7 @@ func wrapGestureZoom(obj *externglib.Object) *GestureZoom {
 }
 
 func marshalGestureZoomer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureZoom(obj), nil
+	return wrapGestureZoom(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGestureZoom returns a newly created GtkGesture that recognizes pinch/zoom

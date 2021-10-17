@@ -85,9 +85,7 @@ func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
 }
 
 func marshalTreeExpanderer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeExpander(obj), nil
+	return wrapTreeExpander(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTreeExpander creates a new GtkTreeExpander.

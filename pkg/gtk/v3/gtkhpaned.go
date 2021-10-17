@@ -58,9 +58,7 @@ func wrapHPaned(obj *externglib.Object) *HPaned {
 }
 
 func marshalHPanedder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHPaned(obj), nil
+	return wrapHPaned(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHPaned: create a new HPaned

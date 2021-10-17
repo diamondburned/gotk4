@@ -164,9 +164,7 @@ func wrapTLSConnection(obj *externglib.Object) *TLSConnection {
 }
 
 func marshalTLSConnectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSConnection(obj), nil
+	return wrapTLSConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // EmitAcceptCertificate: used by Connection implementations to emit the

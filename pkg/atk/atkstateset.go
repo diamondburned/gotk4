@@ -35,9 +35,7 @@ func wrapStateSet(obj *externglib.Object) *StateSet {
 }
 
 func marshalStateSetter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStateSet(obj), nil
+	return wrapStateSet(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStateSet creates a new empty state set.

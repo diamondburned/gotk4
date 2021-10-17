@@ -50,9 +50,7 @@ func wrapPanedAccessible(obj *externglib.Object) *PanedAccessible {
 }
 
 func marshalPanedAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPanedAccessible(obj), nil
+	return wrapPanedAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*PanedAccessible) privatePanedAccessible() {}

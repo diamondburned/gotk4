@@ -38,8 +38,8 @@ type color struct {
 }
 
 func marshalColor(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Color{&color{(*C.GdkColor)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Color{&color{(*C.GdkColor)(b)}}, nil
 }
 
 // NewColor creates a new Color instance from the given

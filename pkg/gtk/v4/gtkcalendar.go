@@ -94,9 +94,7 @@ func wrapCalendar(obj *externglib.Object) *Calendar {
 }
 
 func marshalCalendarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCalendar(obj), nil
+	return wrapCalendar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCalendar creates a new calendar, with the current date being selected.

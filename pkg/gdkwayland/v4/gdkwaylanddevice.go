@@ -42,9 +42,7 @@ func wrapWaylandDevice(obj *externglib.Object) *WaylandDevice {
 }
 
 func marshalWaylandDevicer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandDevice(obj), nil
+	return wrapWaylandDevice(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NodePath returns the /dev/input/event* path of this device.

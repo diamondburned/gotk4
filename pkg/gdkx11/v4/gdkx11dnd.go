@@ -34,9 +34,7 @@ func wrapX11Drag(obj *externglib.Object) *X11Drag {
 }
 
 func marshalX11Dragger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Drag(obj), nil
+	return wrapX11Drag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*X11Drag) privateX11Drag() {}

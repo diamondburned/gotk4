@@ -132,9 +132,7 @@ func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 }
 
 func marshalFileEnumeratorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileEnumerator(obj), nil
+	return wrapFileEnumerator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Close releases all resources used by this enumerator, making the enumerator

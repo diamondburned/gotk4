@@ -63,7 +63,7 @@ const (
 )
 
 func marshalCSSSectionType(p uintptr) (interface{}, error) {
-	return CSSSectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CSSSectionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CSSSectionType.
@@ -107,8 +107,8 @@ type cssSection struct {
 }
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &CSSSection{&cssSection{(*C.GtkCssSection)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &CSSSection{&cssSection{(*C.GtkCssSection)(b)}}, nil
 }
 
 // EndLine returns the line in the CSS document where this section end. The line

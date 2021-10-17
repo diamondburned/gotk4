@@ -419,8 +419,8 @@ type urI struct {
 }
 
 func marshalURI(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &URI{&urI{(*C.GUri)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &URI{&urI{(*C.GUri)(b)}}, nil
 }
 
 // AuthParams gets uri's authentication parameters, which may contain

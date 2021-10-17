@@ -39,8 +39,8 @@ type cssSection struct {
 }
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &CSSSection{&cssSection{(*C.GtkCssSection)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &CSSSection{&cssSection{(*C.GtkCssSection)(b)}}, nil
 }
 
 // NewCSSSection constructs a struct CSSSection.

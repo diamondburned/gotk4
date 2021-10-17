@@ -103,9 +103,7 @@ func wrapScrollable(obj *externglib.Object) *Scrollable {
 }
 
 func marshalScrollabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrollable(obj), nil
+	return wrapScrollable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Border returns the size of a non-scrolling border around the outside of the

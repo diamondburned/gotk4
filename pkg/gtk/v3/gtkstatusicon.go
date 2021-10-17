@@ -86,9 +86,7 @@ func wrapStatusIcon(obj *externglib.Object) *StatusIcon {
 }
 
 func marshalStatusIconner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStatusIcon(obj), nil
+	return wrapStatusIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStatusIcon creates an empty status icon object.

@@ -42,9 +42,7 @@ func wrapCenterLayout(obj *externglib.Object) *CenterLayout {
 }
 
 func marshalCenterLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCenterLayout(obj), nil
+	return wrapCenterLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCenterLayout creates a new GtkCenterLayout.

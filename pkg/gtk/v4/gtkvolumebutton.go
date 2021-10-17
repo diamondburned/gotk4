@@ -55,9 +55,7 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 }
 
 func marshalVolumeButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolumeButton(obj), nil
+	return wrapVolumeButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVolumeButton creates a GtkVolumeButton.

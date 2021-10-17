@@ -43,9 +43,7 @@ func wrapWidgetAccessible(obj *externglib.Object) *WidgetAccessible {
 }
 
 func marshalWidgetAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidgetAccessible(obj), nil
+	return wrapWidgetAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*WidgetAccessible) privateWidgetAccessible() {}

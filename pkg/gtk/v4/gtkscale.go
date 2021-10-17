@@ -174,9 +174,7 @@ func wrapScale(obj *externglib.Object) *Scale {
 }
 
 func marshalScaler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScale(obj), nil
+	return wrapScale(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewScale creates a new GtkScale.

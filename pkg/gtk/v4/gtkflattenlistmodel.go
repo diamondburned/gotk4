@@ -43,9 +43,7 @@ func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
 }
 
 func marshalFlattenListModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFlattenListModel(obj), nil
+	return wrapFlattenListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFlattenListModel creates a new GtkFlattenListModel that flattens list.

@@ -106,9 +106,7 @@ func wrapProxyResolver(obj *externglib.Object) *ProxyResolver {
 }
 
 func marshalProxyResolverer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProxyResolver(obj), nil
+	return wrapProxyResolver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // IsSupported checks if resolver can be used on this system. (This is used

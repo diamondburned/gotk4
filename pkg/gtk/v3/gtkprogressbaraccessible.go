@@ -48,9 +48,7 @@ func wrapProgressBarAccessible(obj *externglib.Object) *ProgressBarAccessible {
 }
 
 func marshalProgressBarAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProgressBarAccessible(obj), nil
+	return wrapProgressBarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ProgressBarAccessible) privateProgressBarAccessible() {}

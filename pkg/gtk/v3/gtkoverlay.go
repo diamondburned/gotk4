@@ -86,9 +86,7 @@ func wrapOverlay(obj *externglib.Object) *Overlay {
 }
 
 func marshalOverlayer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOverlay(obj), nil
+	return wrapOverlay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewOverlay creates a new Overlay.

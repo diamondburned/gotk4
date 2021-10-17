@@ -43,7 +43,7 @@ const (
 )
 
 func marshalCoordType(p uintptr) (interface{}, error) {
-	return CoordType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CoordType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CoordType.
@@ -73,7 +73,7 @@ const (
 )
 
 func marshalKeyEventType(p uintptr) (interface{}, error) {
-	return KeyEventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return KeyEventType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for KeyEventType.
@@ -281,9 +281,7 @@ func wrapUtil(obj *externglib.Object) *Util {
 }
 
 func marshalUtiller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUtil(obj), nil
+	return wrapUtil(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*Util) privateUtil() {}

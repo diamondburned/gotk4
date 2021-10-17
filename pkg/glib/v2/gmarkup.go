@@ -264,8 +264,8 @@ type markupParseContext struct {
 }
 
 func marshalMarkupParseContext(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MarkupParseContext{&markupParseContext{(*C.GMarkupParseContext)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &MarkupParseContext{&markupParseContext{(*C.GMarkupParseContext)(b)}}, nil
 }
 
 // EndParse signals to the ParseContext that all data has been fed into the

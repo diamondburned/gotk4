@@ -77,9 +77,7 @@ func wrapTreeStore(obj *externglib.Object) *TreeStore {
 }
 
 func marshalTreeStorer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeStore(obj), nil
+	return wrapTreeStore(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTreeStore: non vararg creation function. Used primarily by language

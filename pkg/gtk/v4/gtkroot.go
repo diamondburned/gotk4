@@ -77,9 +77,7 @@ func wrapRoot(obj *externglib.Object) *Root {
 }
 
 func marshalRooter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRoot(obj), nil
+	return wrapRoot(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Display returns the display that this GtkRoot is on.

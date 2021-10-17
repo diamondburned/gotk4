@@ -101,9 +101,7 @@ func wrapDocument(obj *externglib.Object) *Document {
 }
 
 func marshalDocumenter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDocument(obj), nil
+	return wrapDocument(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AttributeValue retrieves the value of the given attribute_name inside

@@ -45,9 +45,7 @@ func wrapDragSurface(obj *externglib.Object) *DragSurface {
 }
 
 func marshalDragSurfacer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragSurface(obj), nil
+	return wrapDragSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Present drag_surface.

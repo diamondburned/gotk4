@@ -41,8 +41,8 @@ type glyphItem struct {
 }
 
 func marshalGlyphItem(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &GlyphItem{&glyphItem{(*C.PangoGlyphItem)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &GlyphItem{&glyphItem{(*C.PangoGlyphItem)(b)}}, nil
 }
 
 // Item: corresponding PangoItem.
@@ -226,8 +226,8 @@ type glyphItemIter struct {
 }
 
 func marshalGlyphItemIter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &GlyphItemIter{&glyphItemIter{(*C.PangoGlyphItemIter)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &GlyphItemIter{&glyphItemIter{(*C.PangoGlyphItemIter)(b)}}, nil
 }
 
 func (g *GlyphItemIter) GlyphItem() *GlyphItem {

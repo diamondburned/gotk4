@@ -21,9 +21,9 @@ var bitfieldTmpl = gotmpl.NewGoTemplate(`
 		{{ end -}}
 	)
 
-	{{ if .GLibGetType }}
+	{{ if .Marshaler }}
 	func marshal{{.GoName}}(p uintptr) (interface{}, error) {
-		return {{.GoName}}(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+		return {{ .GoName }}(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 	}
 	{{ end }}
 
@@ -62,8 +62,9 @@ var bitfieldTmpl = gotmpl.NewGoTemplate(`
 
 type bitfieldData struct {
 	*gir.Bitfield
-	GoName string
-	StrLen int // length of all enum strings concatenated
+	GoName    string
+	StrLen    int // length of all enum strings concatenated
+	Marshaler bool
 
 	gen FileGenerator
 }
@@ -104,21 +105,21 @@ func GenerateBitfield(gen FileGeneratorWriter, bitfield *gir.Bitfield) bool {
 	goName := strcases.PascalToGo(bitfield.Name)
 	writer := FileWriterFromType(gen, bitfield)
 
-	if bitfield.GLibGetType != "" && !types.FilterCType(gen, bitfield.GLibGetType) {
-		writer.Header().AddMarshaler(bitfield.GLibGetType, goName)
-	}
-
-	// Need GLibObject for g_value_*.
-	writer.Header().NeedsGLibObject()
-	// Need this for String().
-	writer.Header().Import("strings")
-	writer.Header().Import("fmt")
-
-	data := &bitfieldData{
+	data := bitfieldData{
 		Bitfield: bitfield,
 		GoName:   goName,
 		gen:      gen,
 	}
+
+	if bitfield.GLibGetType != "" && !types.FilterCType(gen, bitfield.GLibGetType) {
+		data.Marshaler = true
+		writer.Header().NeedsExternGLib()
+		writer.Header().AddMarshaler(bitfield.GLibGetType, goName)
+	}
+
+	// Need this for String().
+	writer.Header().Import("strings")
+	writer.Header().Import("fmt")
 
 	for i, member := range bitfield.Members {
 		data.StrLen += len(data.FormatMember(member))
@@ -127,7 +128,11 @@ func GenerateBitfield(gen FileGeneratorWriter, bitfield *gir.Bitfield) bool {
 		}
 	}
 
-	writer.Pen().WriteTmpl(bitfieldTmpl, data)
+	// Cap the StrLen.
+	if data.StrLen > 256 {
+		data.StrLen = 256
+	}
 
+	writer.Pen().WriteTmpl(bitfieldTmpl, &data)
 	return true
 }

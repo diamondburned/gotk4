@@ -49,7 +49,7 @@ const (
 )
 
 func marshalTextSearchFlags(p uintptr) (interface{}, error) {
-	return TextSearchFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextSearchFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TextSearchFlags.
@@ -129,8 +129,8 @@ type textIter struct {
 }
 
 func marshalTextIter(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TextIter{&textIter{(*C.GtkTextIter)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TextIter{&textIter{(*C.GtkTextIter)(b)}}, nil
 }
 
 // Assign assigns the value of other to iter.

@@ -57,9 +57,7 @@ func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
 }
 
 func marshalWidgetPaintabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidgetPaintable(obj), nil
+	return wrapWidgetPaintable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.

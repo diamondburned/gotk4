@@ -52,7 +52,7 @@ const (
 )
 
 func marshalWindowPosition(p uintptr) (interface{}, error) {
-	return WindowPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowPosition(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WindowPosition.
@@ -95,7 +95,7 @@ const (
 )
 
 func marshalWindowType(p uintptr) (interface{}, error) {
-	return WindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WindowType.
@@ -205,9 +205,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 }
 
 func marshalWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindow(obj), nil
+	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindow creates a new Window, which is a toplevel window that can contain

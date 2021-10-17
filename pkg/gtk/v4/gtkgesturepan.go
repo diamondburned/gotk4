@@ -53,9 +53,7 @@ func wrapGesturePan(obj *externglib.Object) *GesturePan {
 }
 
 func marshalGesturePanner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGesturePan(obj), nil
+	return wrapGesturePan(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGesturePan returns a newly created GtkGesture that recognizes pan

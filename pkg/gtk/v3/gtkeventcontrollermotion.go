@@ -40,9 +40,7 @@ func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
 }
 
 func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerMotion(obj), nil
+	return wrapEventControllerMotion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEventControllerMotion creates a new event controller that will handle

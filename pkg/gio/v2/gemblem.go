@@ -51,9 +51,7 @@ func wrapEmblem(obj *externglib.Object) *Emblem {
 }
 
 func marshalEmblemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEmblem(obj), nil
+	return wrapEmblem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEmblem creates a new emblem for icon.

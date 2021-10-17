@@ -114,9 +114,7 @@ func wrapTextBuffer(obj *externglib.Object) *TextBuffer {
 }
 
 func marshalTextBufferer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextBuffer(obj), nil
+	return wrapTextBuffer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextBuffer creates a new text buffer.

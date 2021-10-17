@@ -90,9 +90,7 @@ func wrapDrop(obj *externglib.Object) *Drop {
 }
 
 func marshalDropper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrop(obj), nil
+	return wrapDrop(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Finish ends the drag operation after a drop.

@@ -83,9 +83,7 @@ func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 }
 
 func marshalTearoffMenuItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTearoffMenuItem(obj), nil
+	return wrapTearoffMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTearoffMenuItem creates a new TearoffMenuItem.

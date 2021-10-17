@@ -38,8 +38,8 @@ type matrix struct {
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Matrix{&matrix{(*C.graphene_matrix_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Matrix{&matrix{(*C.graphene_matrix_t)(b)}}, nil
 }
 
 // NewMatrixAlloc constructs a struct Matrix.

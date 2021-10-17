@@ -46,7 +46,7 @@ const (
 )
 
 func marshalFilterChange(p uintptr) (interface{}, error) {
-	return FilterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FilterChange(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FilterChange.
@@ -83,7 +83,7 @@ const (
 )
 
 func marshalFilterMatch(p uintptr) (interface{}, error) {
-	return FilterMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FilterMatch(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FilterMatch.
@@ -146,9 +146,7 @@ func wrapFilter(obj *externglib.Object) *Filter {
 }
 
 func marshalFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilter(obj), nil
+	return wrapFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Changed emits the Filter::changed signal to notify all users of the filter

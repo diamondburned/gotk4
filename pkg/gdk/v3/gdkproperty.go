@@ -36,7 +36,7 @@ const (
 )
 
 func marshalPropMode(p uintptr) (interface{}, error) {
-	return PropMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PropMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PropMode.

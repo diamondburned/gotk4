@@ -52,9 +52,7 @@ func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
 }
 
 func marshalGestureLongPresser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureLongPress(obj), nil
+	return wrapGestureLongPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGestureLongPress returns a newly created GtkGesture that recognizes long

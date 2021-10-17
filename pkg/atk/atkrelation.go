@@ -105,9 +105,7 @@ func wrapRelation(obj *externglib.Object) *Relation {
 }
 
 func marshalRelationer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRelation(obj), nil
+	return wrapRelation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRelation: create a new relation for the specified key and the specified

@@ -42,9 +42,7 @@ func wrapEventControllerFocus(obj *externglib.Object) *EventControllerFocus {
 }
 
 func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventControllerFocus(obj), nil
+	return wrapEventControllerFocus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEventControllerFocus creates a new event controller that will handle focus

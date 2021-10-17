@@ -35,8 +35,8 @@ type point struct {
 }
 
 func marshalPoint(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Point{&point{(*C.graphene_point_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Point{&point{(*C.graphene_point_t)(b)}}, nil
 }
 
 // NewPointAlloc constructs a struct Point.

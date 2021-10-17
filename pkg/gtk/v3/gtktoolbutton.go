@@ -103,9 +103,7 @@ func wrapToolButton(obj *externglib.Object) *ToolButton {
 }
 
 func marshalToolButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolButton(obj), nil
+	return wrapToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewToolButton creates a new ToolButton using icon_widget as contents and

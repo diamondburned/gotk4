@@ -48,7 +48,7 @@ const (
 )
 
 func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
-	return ShortcutActionFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ShortcutActionFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ShortcutActionFlags.
@@ -143,9 +143,7 @@ func wrapActivateAction(obj *externglib.Object) *ActivateAction {
 }
 
 func marshalActivateActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActivateAction(obj), nil
+	return wrapActivateAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ActivateAction) privateActivateAction() {}
@@ -180,9 +178,7 @@ func wrapCallbackAction(obj *externglib.Object) *CallbackAction {
 }
 
 func marshalCallbackActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCallbackAction(obj), nil
+	return wrapCallbackAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCallbackAction: create a custom action that calls the given callback when
@@ -230,9 +226,7 @@ func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
 }
 
 func marshalMnemonicActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMnemonicAction(obj), nil
+	return wrapMnemonicAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*MnemonicAction) privateMnemonicAction() {}
@@ -267,9 +261,7 @@ func wrapNamedAction(obj *externglib.Object) *NamedAction {
 }
 
 func marshalNamedActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNamedAction(obj), nil
+	return wrapNamedAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNamedAction creates an action that when activated, activates the named
@@ -331,9 +323,7 @@ func wrapNothingAction(obj *externglib.Object) *NothingAction {
 }
 
 func marshalNothingActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNothingAction(obj), nil
+	return wrapNothingAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*NothingAction) privateNothingAction() {}
@@ -403,9 +393,7 @@ func wrapShortcutAction(obj *externglib.Object) *ShortcutAction {
 }
 
 func marshalShortcutActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutAction(obj), nil
+	return wrapShortcutAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewShortcutActionParseString tries to parse the given string into an action.
@@ -529,9 +517,7 @@ func wrapSignalAction(obj *externglib.Object) *SignalAction {
 }
 
 func marshalSignalActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSignalAction(obj), nil
+	return wrapSignalAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSignalAction creates an action that when activated, emits the given action

@@ -125,9 +125,7 @@ func wrapActionable(obj *externglib.Object) *Actionable {
 }
 
 func marshalActionabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActionable(obj), nil
+	return wrapActionable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ActionName gets the action name for actionable.

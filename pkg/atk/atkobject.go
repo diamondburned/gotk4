@@ -60,7 +60,7 @@ const (
 )
 
 func marshalLayer(p uintptr) (interface{}, error) {
-	return Layer(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Layer(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Layer.
@@ -516,7 +516,7 @@ const (
 )
 
 func marshalRole(p uintptr) (interface{}, error) {
-	return Role(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Role(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Role.
@@ -923,9 +923,7 @@ func wrapImplementorIface(obj *externglib.Object) *ImplementorIface {
 }
 
 func marshalImplementorIfacer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapImplementorIface(obj), nil
+	return wrapImplementorIface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ImplementorIface) privateImplementorIface() {}
@@ -1030,9 +1028,7 @@ func wrapObject(obj *externglib.Object) *ObjectClass {
 }
 
 func marshalObjectClasser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapObject(obj), nil
+	return wrapObject(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddRelationship adds a relationship of the specified type with the specified

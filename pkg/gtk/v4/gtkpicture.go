@@ -96,9 +96,7 @@ func wrapPicture(obj *externglib.Object) *Picture {
 }
 
 func marshalPicturer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPicture(obj), nil
+	return wrapPicture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPicture creates a new empty GtkPicture widget.

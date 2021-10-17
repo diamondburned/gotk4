@@ -75,9 +75,7 @@ func wrapDBusInterface(obj *externglib.Object) *DBusInterface {
 }
 
 func marshalDBusInterfacer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusInterface(obj), nil
+	return wrapDBusInterface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // GetObject gets the BusObject that interface_ belongs to, if any.

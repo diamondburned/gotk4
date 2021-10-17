@@ -65,7 +65,7 @@ const (
 )
 
 func marshalAnchorHints(p uintptr) (interface{}, error) {
-	return AnchorHints(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AnchorHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AnchorHints.
@@ -158,8 +158,8 @@ type popupLayout struct {
 }
 
 func marshalPopupLayout(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &PopupLayout{&popupLayout{(*C.GdkPopupLayout)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &PopupLayout{&popupLayout{(*C.GdkPopupLayout)(b)}}, nil
 }
 
 // NewPopupLayout constructs a struct PopupLayout.

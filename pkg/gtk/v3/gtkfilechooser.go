@@ -51,7 +51,7 @@ const (
 )
 
 func marshalFileChooserAction(p uintptr) (interface{}, error) {
-	return FileChooserAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileChooserAction(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileChooserAction.
@@ -89,7 +89,7 @@ const (
 )
 
 func marshalFileChooserConfirmation(p uintptr) (interface{}, error) {
-	return FileChooserConfirmation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileChooserConfirmation(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileChooserConfirmation.
@@ -124,7 +124,7 @@ const (
 )
 
 func marshalFileChooserError(p uintptr) (interface{}, error) {
-	return FileChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileChooserError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileChooserError.
@@ -424,9 +424,7 @@ func wrapFileChooser(obj *externglib.Object) *FileChooser {
 }
 
 func marshalFileChooserer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooser(obj), nil
+	return wrapFileChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddChoice adds a 'choice' to the file chooser. This is typically implemented

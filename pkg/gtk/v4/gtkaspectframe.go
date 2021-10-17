@@ -55,9 +55,7 @@ func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 }
 
 func marshalAspectFramer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAspectFrame(obj), nil
+	return wrapAspectFrame(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAspectFrame: create a new GtkAspectFrame.

@@ -34,9 +34,7 @@ func wrapX11Monitor(obj *externglib.Object) *X11Monitor {
 }
 
 func marshalX11Monitorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Monitor(obj), nil
+	return wrapX11Monitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*X11Monitor) privateX11Monitor() {}

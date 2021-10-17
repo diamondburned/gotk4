@@ -107,9 +107,7 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 }
 
 func marshalAppChooserDialogger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppChooserDialog(obj), nil
+	return wrapAppChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAppChooserDialog creates a new GtkAppChooserDialog for the provided GFile.

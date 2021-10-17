@@ -76,9 +76,7 @@ func wrapViewport(obj *externglib.Object) *Viewport {
 }
 
 func marshalViewporter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapViewport(obj), nil
+	return wrapViewport(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewViewport creates a new Viewport with the given adjustments, or with

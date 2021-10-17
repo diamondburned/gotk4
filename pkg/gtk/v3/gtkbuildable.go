@@ -123,9 +123,7 @@ func wrapBuildable(obj *externglib.Object) *Buildable {
 }
 
 func marshalBuildabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBuildable(obj), nil
+	return wrapBuildable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddChild adds a child to buildable. type is an optional string describing how

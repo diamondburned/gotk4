@@ -169,9 +169,7 @@ func wrapMediaStream(obj *externglib.Object) *MediaStream {
 }
 
 func marshalMediaStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMediaStream(obj), nil
+	return wrapMediaStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Ended pauses the media stream and marks it as ended.

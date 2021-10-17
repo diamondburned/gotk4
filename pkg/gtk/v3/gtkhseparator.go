@@ -61,9 +61,7 @@ func wrapHSeparator(obj *externglib.Object) *HSeparator {
 }
 
 func marshalHSeparatorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHSeparator(obj), nil
+	return wrapHSeparator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHSeparator creates a new HSeparator.

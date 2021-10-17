@@ -92,9 +92,7 @@ func wrapAccelMap(obj *externglib.Object) *AccelMap {
 }
 
 func marshalAccelMapper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccelMap(obj), nil
+	return wrapAccelMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*AccelMap) privateAccelMap() {}

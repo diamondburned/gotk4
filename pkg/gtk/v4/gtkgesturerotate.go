@@ -40,9 +40,7 @@ func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 }
 
 func marshalGestureRotater(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureRotate(obj), nil
+	return wrapGestureRotate(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGestureRotate returns a newly created GtkGesture that recognizes 2-touch

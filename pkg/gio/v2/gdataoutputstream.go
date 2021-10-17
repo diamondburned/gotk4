@@ -55,9 +55,7 @@ func wrapDataOutputStream(obj *externglib.Object) *DataOutputStream {
 }
 
 func marshalDataOutputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDataOutputStream(obj), nil
+	return wrapDataOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDataOutputStream creates a new data output stream for base_stream.

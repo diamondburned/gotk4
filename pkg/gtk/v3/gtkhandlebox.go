@@ -81,9 +81,7 @@ func wrapHandleBox(obj *externglib.Object) *HandleBox {
 }
 
 func marshalHandleBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHandleBox(obj), nil
+	return wrapHandleBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHandleBox: create a new handle box.

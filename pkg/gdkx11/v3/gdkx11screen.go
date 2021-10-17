@@ -48,9 +48,7 @@ func wrapX11Screen(obj *externglib.Object) *X11Screen {
 }
 
 func marshalX11Screener(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Screen(obj), nil
+	return wrapX11Screen(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CurrentDesktop returns the current workspace for screen when running under a

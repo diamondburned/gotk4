@@ -56,9 +56,7 @@ func wrapRadioButtonAccessible(obj *externglib.Object) *RadioButtonAccessible {
 }
 
 func marshalRadioButtonAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioButtonAccessible(obj), nil
+	return wrapRadioButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*RadioButtonAccessible) privateRadioButtonAccessible() {}

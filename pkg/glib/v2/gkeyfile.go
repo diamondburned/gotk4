@@ -249,8 +249,8 @@ type keyFile struct {
 }
 
 func marshalKeyFile(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &KeyFile{&keyFile{(*C.GKeyFile)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &KeyFile{&keyFile{(*C.GKeyFile)(b)}}, nil
 }
 
 // NewKeyFile constructs a struct KeyFile.

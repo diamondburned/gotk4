@@ -119,9 +119,7 @@ func wrapDisplayManager(obj *externglib.Object) *DisplayManager {
 }
 
 func marshalDisplayManagerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDisplayManager(obj), nil
+	return wrapDisplayManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DefaultDisplay gets the default GdkDisplay.

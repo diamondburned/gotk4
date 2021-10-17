@@ -50,9 +50,7 @@ func wrapIconViewAccessible(obj *externglib.Object) *IconViewAccessible {
 }
 
 func marshalIconViewAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIconViewAccessible(obj), nil
+	return wrapIconViewAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*IconViewAccessible) privateIconViewAccessible() {}

@@ -85,9 +85,7 @@ func wrapFixed(obj *externglib.Object) *Fixed {
 }
 
 func marshalFixedder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFixed(obj), nil
+	return wrapFixed(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFixed creates a new Fixed.

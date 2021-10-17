@@ -311,9 +311,7 @@ func wrapActivatable(obj *externglib.Object) *Activatable {
 }
 
 func marshalActivatabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapActivatable(obj), nil
+	return wrapActivatable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DoSetRelatedAction: this is a utility function for Activatable implementors.

@@ -38,9 +38,7 @@ func wrapCustomLayout(obj *externglib.Object) *CustomLayout {
 }
 
 func marshalCustomLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCustomLayout(obj), nil
+	return wrapCustomLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*CustomLayout) privateCustomLayout() {}

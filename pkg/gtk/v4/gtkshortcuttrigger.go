@@ -44,9 +44,7 @@ func wrapAlternativeTrigger(obj *externglib.Object) *AlternativeTrigger {
 }
 
 func marshalAlternativeTriggerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAlternativeTrigger(obj), nil
+	return wrapAlternativeTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAlternativeTrigger creates a GtkShortcutTrigger that will trigger whenever
@@ -158,9 +156,7 @@ func wrapKeyvalTrigger(obj *externglib.Object) *KeyvalTrigger {
 }
 
 func marshalKeyvalTriggerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapKeyvalTrigger(obj), nil
+	return wrapKeyvalTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewKeyvalTrigger creates a GtkShortcutTrigger that will trigger whenever the
@@ -242,9 +238,7 @@ func wrapMnemonicTrigger(obj *externglib.Object) *MnemonicTrigger {
 }
 
 func marshalMnemonicTriggerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMnemonicTrigger(obj), nil
+	return wrapMnemonicTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMnemonicTrigger creates a GtkShortcutTrigger that will trigger whenever
@@ -304,9 +298,7 @@ func wrapNeverTrigger(obj *externglib.Object) *NeverTrigger {
 }
 
 func marshalNeverTriggerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNeverTrigger(obj), nil
+	return wrapNeverTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*NeverTrigger) privateNeverTrigger() {}
@@ -371,9 +363,7 @@ func wrapShortcutTrigger(obj *externglib.Object) *ShortcutTrigger {
 }
 
 func marshalShortcutTriggerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutTrigger(obj), nil
+	return wrapShortcutTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewShortcutTriggerParseString tries to parse the given string into a trigger.

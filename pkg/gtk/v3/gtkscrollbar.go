@@ -90,9 +90,7 @@ func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 }
 
 func marshalScrollbarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScrollbar(obj), nil
+	return wrapScrollbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewScrollbar creates a new scrollbar with the given orientation.

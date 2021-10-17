@@ -61,9 +61,7 @@ func wrapLinkButtonAccessible(obj *externglib.Object) *LinkButtonAccessible {
 }
 
 func marshalLinkButtonAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLinkButtonAccessible(obj), nil
+	return wrapLinkButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*LinkButtonAccessible) privateLinkButtonAccessible() {}

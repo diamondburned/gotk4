@@ -105,9 +105,7 @@ func wrapDropTarget(obj *externglib.Object) *DropTarget {
 }
 
 func marshalDropTargetter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDropTarget(obj), nil
+	return wrapDropTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDropTarget creates a new GtkDropTarget object.

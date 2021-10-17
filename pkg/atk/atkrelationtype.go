@@ -121,7 +121,7 @@ const (
 )
 
 func marshalRelationType(p uintptr) (interface{}, error) {
-	return RelationType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RelationType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RelationType.

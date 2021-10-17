@@ -82,7 +82,7 @@ const (
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
-	return AxisUse(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AxisUse(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AxisUse.
@@ -136,7 +136,7 @@ const (
 )
 
 func marshalGLError(p uintptr) (interface{}, error) {
-	return GLError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return GLError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GLError.
@@ -185,7 +185,7 @@ const (
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
-	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Gravity(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Gravity.
@@ -228,7 +228,7 @@ const (
 )
 
 func marshalVulkanError(p uintptr) (interface{}, error) {
-	return VulkanError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return VulkanError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for VulkanError.
@@ -272,7 +272,7 @@ const (
 )
 
 func marshalAxisFlags(p uintptr) (interface{}, error) {
-	return AxisFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AxisFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AxisFlags.
@@ -345,7 +345,7 @@ const (
 )
 
 func marshalDragAction(p uintptr) (interface{}, error) {
-	return DragAction(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DragAction(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DragAction.
@@ -427,7 +427,7 @@ const (
 )
 
 func marshalModifierType(p uintptr) (interface{}, error) {
-	return ModifierType(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ModifierType(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ModifierType.
@@ -525,8 +525,8 @@ type contentFormats struct {
 }
 
 func marshalContentFormats(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ContentFormats{&contentFormats{(*C.GdkContentFormats)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &ContentFormats{&contentFormats{(*C.GdkContentFormats)(b)}}, nil
 }
 
 // NewContentFormats constructs a struct ContentFormats.
@@ -988,8 +988,8 @@ type rectangle struct {
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Rectangle{&rectangle{(*C.GdkRectangle)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Rectangle{&rectangle{(*C.GdkRectangle)(b)}}, nil
 }
 
 // NewRectangle creates a new Rectangle instance from the given

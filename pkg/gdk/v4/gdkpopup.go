@@ -63,9 +63,7 @@ func wrapPopup(obj *externglib.Object) *Popup {
 }
 
 func marshalPopupper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopup(obj), nil
+	return wrapPopup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Autohide returns whether this popup is set to hide on outside clicks.

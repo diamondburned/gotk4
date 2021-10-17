@@ -122,9 +122,7 @@ func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 }
 
 func marshalComboBoxTexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComboBoxText(obj), nil
+	return wrapComboBoxText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewComboBoxText creates a new GtkComboBoxText.

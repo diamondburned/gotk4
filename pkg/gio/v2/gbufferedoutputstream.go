@@ -64,9 +64,7 @@ func wrapBufferedOutputStream(obj *externglib.Object) *BufferedOutputStream {
 }
 
 func marshalBufferedOutputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBufferedOutputStream(obj), nil
+	return wrapBufferedOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBufferedOutputStream creates a new buffered output stream for a base

@@ -114,9 +114,7 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 }
 
 func marshalShortcutsWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsWindow(obj), nil
+	return wrapShortcutsWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ShortcutsWindow) privateShortcutsWindow() {}

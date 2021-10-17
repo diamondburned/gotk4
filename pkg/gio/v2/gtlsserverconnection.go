@@ -57,9 +57,7 @@ func wrapTLSServerConnection(obj *externglib.Object) *TLSServerConnection {
 }
 
 func marshalTLSServerConnectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTLSServerConnection(obj), nil
+	return wrapTLSServerConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*TLSServerConnection) privateTLSServerConnection() {}

@@ -59,9 +59,7 @@ func wrapMisc(obj *externglib.Object) *Misc {
 }
 
 func marshalMiscer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMisc(obj), nil
+	return wrapMisc(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists. (This

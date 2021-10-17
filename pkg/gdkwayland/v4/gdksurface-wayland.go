@@ -52,9 +52,7 @@ func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 }
 
 func marshalWaylandPopupper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandPopup(obj), nil
+	return wrapWaylandPopup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*WaylandPopup) privateWaylandPopup() {}
@@ -76,9 +74,7 @@ func wrapWaylandSurface(obj *externglib.Object) *WaylandSurface {
 }
 
 func marshalWaylandSurfacer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandSurface(obj), nil
+	return wrapWaylandSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*WaylandSurface) privateWaylandSurface() {}
@@ -113,9 +109,7 @@ func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 }
 
 func marshalWaylandTopleveller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandToplevel(obj), nil
+	return wrapWaylandToplevel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ExportHandle: asynchronously obtains a handle for a surface that can be

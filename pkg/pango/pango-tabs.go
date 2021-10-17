@@ -34,7 +34,7 @@ const (
 )
 
 func marshalTabAlign(p uintptr) (interface{}, error) {
-	return TabAlign(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TabAlign(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TabAlign.
@@ -63,8 +63,8 @@ type tabArray struct {
 }
 
 func marshalTabArray(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TabArray{&tabArray{(*C.PangoTabArray)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TabArray{&tabArray{(*C.PangoTabArray)(b)}}, nil
 }
 
 // NewTabArray constructs a struct TabArray.

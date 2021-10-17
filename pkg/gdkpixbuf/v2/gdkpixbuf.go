@@ -47,9 +47,7 @@ func wrapPixbufSimpleAnimIter(obj *externglib.Object) *PixbufSimpleAnimIter {
 }
 
 func marshalPixbufSimpleAnimIterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufSimpleAnimIter(obj), nil
+	return wrapPixbufSimpleAnimIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*PixbufSimpleAnimIter) privatePixbufSimpleAnimIter() {}

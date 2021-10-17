@@ -53,9 +53,7 @@ func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible 
 }
 
 func marshalRendererCellAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRendererCellAccessible(obj), nil
+	return wrapRendererCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //

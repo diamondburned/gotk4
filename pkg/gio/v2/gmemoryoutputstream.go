@@ -64,9 +64,7 @@ func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 }
 
 func marshalMemoryOutputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMemoryOutputStream(obj), nil
+	return wrapMemoryOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMemoryOutputStreamResizable creates a new OutputStream, using g_realloc()

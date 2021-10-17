@@ -53,7 +53,7 @@ const (
 )
 
 func marshalRecentManagerError(p uintptr) (interface{}, error) {
-	return RecentManagerError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RecentManagerError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RecentManagerError.
@@ -148,9 +148,7 @@ func wrapRecentManager(obj *externglib.Object) *RecentManager {
 }
 
 func marshalRecentManagerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentManager(obj), nil
+	return wrapRecentManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRecentManager creates a new recent manager object.
@@ -566,8 +564,8 @@ type recentInfo struct {
 }
 
 func marshalRecentInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &RecentInfo{&recentInfo{(*C.GtkRecentInfo)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &RecentInfo{&recentInfo{(*C.GtkRecentInfo)(b)}}, nil
 }
 
 // CreateAppInfo creates a GAppInfo for the specified GtkRecentInfo.

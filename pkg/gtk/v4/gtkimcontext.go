@@ -242,9 +242,7 @@ func wrapIMContext(obj *externglib.Object) *IMContext {
 }
 
 func marshalIMContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapIMContext(obj), nil
+	return wrapIMContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DeleteSurrounding asks the widget that the input context is attached to

@@ -130,9 +130,7 @@ func wrapEntryCompletion(obj *externglib.Object) *EntryCompletion {
 }
 
 func marshalEntryCompletioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntryCompletion(obj), nil
+	return wrapEntryCompletion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEntryCompletion creates a new EntryCompletion object.

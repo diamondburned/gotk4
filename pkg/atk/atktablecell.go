@@ -82,9 +82,7 @@ func wrapTableCell(obj *externglib.Object) *TableCell {
 }
 
 func marshalTableCeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTableCell(obj), nil
+	return wrapTableCell(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ColumnSpan returns the number of columns occupied by this cell accessible.

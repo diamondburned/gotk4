@@ -110,9 +110,7 @@ func wrapSelection(obj *externglib.Object) *Selection {
 }
 
 func marshalSelectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSelection(obj), nil
+	return wrapSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddSelection adds the specified accessible child of the object to the

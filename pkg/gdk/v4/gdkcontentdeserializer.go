@@ -134,9 +134,7 @@ func wrapContentDeserializer(obj *externglib.Object) *ContentDeserializer {
 }
 
 func marshalContentDeserializerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContentDeserializer(obj), nil
+	return wrapContentDeserializer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Cancellable gets the cancellable for the current operation.

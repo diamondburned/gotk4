@@ -472,9 +472,7 @@ func wrapCellArea(obj *externglib.Object) *CellArea {
 }
 
 func marshalCellAreaer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellArea(obj), nil
+	return wrapCellArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Activate activates area, usually by activating the currently focused cell,

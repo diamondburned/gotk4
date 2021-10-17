@@ -56,9 +56,7 @@ func wrapFontSelection(obj *externglib.Object) *FontSelection {
 }
 
 func marshalFontSelectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontSelection(obj), nil
+	return wrapFontSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFontSelection creates a new FontSelection.
@@ -448,9 +446,7 @@ func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 }
 
 func marshalFontSelectionDialogger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFontSelectionDialog(obj), nil
+	return wrapFontSelectionDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFontSelectionDialog creates a new FontSelectionDialog.

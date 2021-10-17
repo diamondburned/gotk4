@@ -78,8 +78,8 @@ type fileAttributeInfoList struct {
 }
 
 func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &FileAttributeInfoList{&fileAttributeInfoList{(*C.GFileAttributeInfoList)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &FileAttributeInfoList{&fileAttributeInfoList{(*C.GFileAttributeInfoList)(b)}}, nil
 }
 
 // NewFileAttributeInfoList constructs a struct FileAttributeInfoList.

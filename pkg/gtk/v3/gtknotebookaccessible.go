@@ -50,9 +50,7 @@ func wrapNotebookAccessible(obj *externglib.Object) *NotebookAccessible {
 }
 
 func marshalNotebookAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNotebookAccessible(obj), nil
+	return wrapNotebookAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*NotebookAccessible) privateNotebookAccessible() {}

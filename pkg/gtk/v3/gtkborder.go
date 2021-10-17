@@ -38,8 +38,8 @@ type border struct {
 }
 
 func marshalBorder(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Border{&border{(*C.GtkBorder)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Border{&border{(*C.GtkBorder)(b)}}, nil
 }
 
 // NewBorder constructs a struct Border.

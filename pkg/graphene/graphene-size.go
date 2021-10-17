@@ -35,8 +35,8 @@ type size struct {
 }
 
 func marshalSize(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Size{&size{(*C.graphene_size_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Size{&size{(*C.graphene_size_t)(b)}}, nil
 }
 
 // NewSizeAlloc constructs a struct Size.

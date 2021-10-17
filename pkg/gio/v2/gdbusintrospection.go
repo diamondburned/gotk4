@@ -51,8 +51,8 @@ type dBusAnnotationInfo struct {
 }
 
 func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &DBusAnnotationInfo{&dBusAnnotationInfo{(*C.GDBusAnnotationInfo)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &DBusAnnotationInfo{&dBusAnnotationInfo{(*C.GDBusAnnotationInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
@@ -160,8 +160,8 @@ type dBusArgInfo struct {
 }
 
 func marshalDBusArgInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &DBusArgInfo{&dBusArgInfo{(*C.GDBusArgInfo)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &DBusArgInfo{&dBusArgInfo{(*C.GDBusArgInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
@@ -225,8 +225,8 @@ type dBusInterfaceInfo struct {
 }
 
 func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &DBusInterfaceInfo{&dBusInterfaceInfo{(*C.GDBusInterfaceInfo)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &DBusInterfaceInfo{&dBusInterfaceInfo{(*C.GDBusInterfaceInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
@@ -493,8 +493,8 @@ type dBusMethodInfo struct {
 }
 
 func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &DBusMethodInfo{&dBusMethodInfo{(*C.GDBusMethodInfo)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &DBusMethodInfo{&dBusMethodInfo{(*C.GDBusMethodInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
@@ -605,8 +605,8 @@ type dBusNodeInfo struct {
 }
 
 func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &DBusNodeInfo{&dBusNodeInfo{(*C.GDBusNodeInfo)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &DBusNodeInfo{&dBusNodeInfo{(*C.GDBusNodeInfo)(b)}}, nil
 }
 
 // NewDBusNodeInfoForXML constructs a struct DBusNodeInfo.
@@ -779,8 +779,8 @@ type dBusPropertyInfo struct {
 }
 
 func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &DBusPropertyInfo{&dBusPropertyInfo{(*C.GDBusPropertyInfo)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &DBusPropertyInfo{&dBusPropertyInfo{(*C.GDBusPropertyInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
@@ -851,8 +851,8 @@ type dBusSignalInfo struct {
 }
 
 func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &DBusSignalInfo{&dBusSignalInfo{(*C.GDBusSignalInfo)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &DBusSignalInfo{&dBusSignalInfo{(*C.GDBusSignalInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.

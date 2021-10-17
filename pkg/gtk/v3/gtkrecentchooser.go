@@ -43,7 +43,7 @@ const (
 )
 
 func marshalRecentChooserError(p uintptr) (interface{}, error) {
-	return RecentChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RecentChooserError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RecentChooserError.
@@ -77,7 +77,7 @@ const (
 )
 
 func marshalRecentSortType(p uintptr) (interface{}, error) {
-	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RecentSortType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RecentSortType.
@@ -289,9 +289,7 @@ func wrapRecentChooser(obj *externglib.Object) *RecentChooser {
 }
 
 func marshalRecentChooserer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentChooser(obj), nil
+	return wrapRecentChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddFilter adds filter to the list of RecentFilter objects held by chooser.

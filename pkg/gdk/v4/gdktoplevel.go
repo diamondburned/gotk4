@@ -39,7 +39,7 @@ const (
 )
 
 func marshalFullscreenMode(p uintptr) (interface{}, error) {
-	return FullscreenMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FullscreenMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FullscreenMode.
@@ -77,7 +77,7 @@ const (
 )
 
 func marshalSurfaceEdge(p uintptr) (interface{}, error) {
-	return SurfaceEdge(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SurfaceEdge(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SurfaceEdge.
@@ -150,7 +150,7 @@ const (
 )
 
 func marshalToplevelState(p uintptr) (interface{}, error) {
-	return ToplevelState(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ToplevelState(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ToplevelState.
@@ -160,7 +160,7 @@ func (t ToplevelState) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(371)
+	builder.Grow(256)
 
 	for t != 0 {
 		next := t & (t - 1)
@@ -280,9 +280,7 @@ func wrapToplevel(obj *externglib.Object) *Toplevel {
 }
 
 func marshalTopleveller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToplevel(obj), nil
+	return wrapToplevel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BeginMove begins an interactive move operation.

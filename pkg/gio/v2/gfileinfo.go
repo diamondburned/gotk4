@@ -567,9 +567,7 @@ func wrapFileInfo(obj *externglib.Object) *FileInfo {
 }
 
 func marshalFileInfor(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileInfo(obj), nil
+	return wrapFileInfo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileInfo creates a new file info structure.

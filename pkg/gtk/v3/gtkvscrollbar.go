@@ -61,9 +61,7 @@ func wrapVScrollbar(obj *externglib.Object) *VScrollbar {
 }
 
 func marshalVScrollbarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVScrollbar(obj), nil
+	return wrapVScrollbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVScrollbar creates a new vertical scrollbar.

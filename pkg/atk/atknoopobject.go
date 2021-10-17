@@ -92,9 +92,7 @@ func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 }
 
 func marshalNoOpObjector(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoOpObject(obj), nil
+	return wrapNoOpObject(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNoOpObject provides a default (non-functioning stub) Object. Application

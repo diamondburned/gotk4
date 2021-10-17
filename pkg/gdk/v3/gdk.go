@@ -48,7 +48,7 @@ const (
 )
 
 func marshalStatus(p uintptr) (interface{}, error) {
-	return Status(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Status(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Status.
@@ -80,9 +80,7 @@ func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 }
 
 func marshalDeviceTooler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDeviceTool(obj), nil
+	return wrapDeviceTool(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // HardwareID gets the hardware ID of this tool, or 0 if it's not known. When
@@ -156,9 +154,7 @@ func wrapDragContext(obj *externglib.Object) *DragContext {
 }
 
 func marshalDragContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDragContext(obj), nil
+	return wrapDragContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Actions determines the bitmask of actions proposed by the source if

@@ -44,8 +44,8 @@ type transform struct {
 }
 
 func marshalTransform(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Transform{&transform{(*C.GskTransform)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Transform{&transform{(*C.GskTransform)(b)}}, nil
 }
 
 // NewTransform constructs a struct Transform.

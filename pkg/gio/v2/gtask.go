@@ -213,9 +213,7 @@ func wrapTask(obj *externglib.Object) *Task {
 }
 
 func marshalTasker(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTask(obj), nil
+	return wrapTask(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTask creates a #GTask acting on source_object, which will eventually be

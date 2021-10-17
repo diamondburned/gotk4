@@ -47,7 +47,7 @@ const (
 )
 
 func marshalTextExtendSelection(p uintptr) (interface{}, error) {
-	return TextExtendSelection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextExtendSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextExtendSelection.
@@ -75,7 +75,7 @@ const (
 )
 
 func marshalTextViewLayer(p uintptr) (interface{}, error) {
-	return TextViewLayer(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextViewLayer(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextViewLayer.
@@ -109,7 +109,7 @@ const (
 )
 
 func marshalTextWindowType(p uintptr) (interface{}, error) {
-	return TextWindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextWindowType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextWindowType.
@@ -217,9 +217,7 @@ func wrapTextView(obj *externglib.Object) *TextView {
 }
 
 func marshalTextViewer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextView(obj), nil
+	return wrapTextView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextView creates a new GtkTextView.

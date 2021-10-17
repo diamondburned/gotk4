@@ -58,9 +58,7 @@ func wrapStyleProperties(obj *externglib.Object) *StyleProperties {
 }
 
 func marshalStylePropertieser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleProperties(obj), nil
+	return wrapStyleProperties(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStyleProperties returns a newly created StyleProperties
@@ -300,8 +298,8 @@ type gradient struct {
 }
 
 func marshalGradient(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Gradient{&gradient{(*C.GtkGradient)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Gradient{&gradient{(*C.GtkGradient)(b)}}, nil
 }
 
 // NewGradientLinear constructs a struct Gradient.
@@ -498,8 +496,8 @@ type symbolicColor struct {
 }
 
 func marshalSymbolicColor(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &SymbolicColor{&symbolicColor{(*C.GtkSymbolicColor)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &SymbolicColor{&symbolicColor{(*C.GtkSymbolicColor)(b)}}, nil
 }
 
 // NewSymbolicColorAlpha constructs a struct SymbolicColor.

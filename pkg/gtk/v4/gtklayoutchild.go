@@ -54,9 +54,7 @@ func wrapLayoutChild(obj *externglib.Object) *LayoutChild {
 }
 
 func marshalLayoutChilder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLayoutChild(obj), nil
+	return wrapLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ChildWidget retrieves the GtkWidget associated to the given layout_child.

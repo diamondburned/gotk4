@@ -46,8 +46,8 @@ type rect struct {
 }
 
 func marshalRect(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Rect{&rect{(*C.graphene_rect_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Rect{&rect{(*C.graphene_rect_t)(b)}}, nil
 }
 
 // Origin coordinates of the origin of the rectangle.

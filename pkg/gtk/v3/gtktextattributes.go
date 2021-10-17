@@ -73,8 +73,8 @@ type textAttributes struct {
 }
 
 func marshalTextAttributes(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TextAttributes{&textAttributes{(*C.GtkTextAttributes)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TextAttributes{&textAttributes{(*C.GtkTextAttributes)(b)}}, nil
 }
 
 // NewTextAttributes constructs a struct TextAttributes.

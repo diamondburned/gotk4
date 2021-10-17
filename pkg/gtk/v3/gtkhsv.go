@@ -61,9 +61,7 @@ func wrapHSV(obj *externglib.Object) *HSV {
 }
 
 func marshalHSVer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHSV(obj), nil
+	return wrapHSV(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHSV creates a new HSV color selector.

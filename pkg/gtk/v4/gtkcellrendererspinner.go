@@ -46,9 +46,7 @@ func wrapCellRendererSpinner(obj *externglib.Object) *CellRendererSpinner {
 }
 
 func marshalCellRendererSpinnerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererSpinner(obj), nil
+	return wrapCellRendererSpinner(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererSpinner returns a new cell renderer which will show a spinner

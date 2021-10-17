@@ -46,9 +46,7 @@ func wrapListItem(obj *externglib.Object) *ListItem {
 }
 
 func marshalListItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListItem(obj), nil
+	return wrapListItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Activatable checks if a list item has been set to be activatable via

@@ -48,9 +48,7 @@ func wrapLevelBarAccessible(obj *externglib.Object) *LevelBarAccessible {
 }
 
 func marshalLevelBarAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLevelBarAccessible(obj), nil
+	return wrapLevelBarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*LevelBarAccessible) privateLevelBarAccessible() {}

@@ -53,7 +53,7 @@ const (
 )
 
 func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
-	return RecentFilterFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RecentFilterFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for RecentFilterFlags.
@@ -188,9 +188,7 @@ func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
 }
 
 func marshalRecentFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentFilter(obj), nil
+	return wrapRecentFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRecentFilter creates a new RecentFilter with no rules added to it. Such

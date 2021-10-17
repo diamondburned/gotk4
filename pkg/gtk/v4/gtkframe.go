@@ -96,9 +96,7 @@ func wrapFrame(obj *externglib.Object) *Frame {
 }
 
 func marshalFramer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFrame(obj), nil
+	return wrapFrame(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFrame creates a new GtkFrame, with optional label label.

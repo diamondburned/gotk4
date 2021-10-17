@@ -199,9 +199,7 @@ func wrapFileChooserNative(obj *externglib.Object) *FileChooserNative {
 }
 
 func marshalFileChooserNativer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFileChooserNative(obj), nil
+	return wrapFileChooserNative(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileChooserNative creates a new FileChooserNative.

@@ -62,9 +62,7 @@ func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 }
 
 func marshalSpinButtonAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSpinButtonAccessible(obj), nil
+	return wrapSpinButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*SpinButtonAccessible) privateSpinButtonAccessible() {}

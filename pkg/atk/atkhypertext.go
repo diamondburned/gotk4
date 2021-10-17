@@ -69,9 +69,7 @@ func wrapHypertext(obj *externglib.Object) *Hypertext {
 }
 
 func marshalHypertexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHypertext(obj), nil
+	return wrapHypertext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Link gets the link in this hypertext document at index link_index.

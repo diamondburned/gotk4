@@ -52,9 +52,7 @@ func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 }
 
 func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAppLaunchContext(obj), nil
+	return wrapAppLaunchContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAppLaunchContext creates a new AppLaunchContext.

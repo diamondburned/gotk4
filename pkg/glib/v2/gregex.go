@@ -408,7 +408,7 @@ func (r RegexCompileFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(277)
+	builder.Grow(256)
 
 	for r != 0 {
 		next := r & (r - 1)
@@ -550,7 +550,7 @@ func (r RegexMatchFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(305)
+	builder.Grow(256)
 
 	for r != 0 {
 		next := r & (r - 1)
@@ -613,8 +613,8 @@ type matchInfo struct {
 }
 
 func marshalMatchInfo(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MatchInfo{&matchInfo{(*C.GMatchInfo)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &MatchInfo{&matchInfo{(*C.GMatchInfo)(b)}}, nil
 }
 
 // ExpandReferences returns a new string containing the text in string_to_expand
@@ -1077,8 +1077,8 @@ type regex struct {
 }
 
 func marshalRegex(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Regex{&regex{(*C.GRegex)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Regex{&regex{(*C.GRegex)(b)}}, nil
 }
 
 // NewRegex constructs a struct Regex.

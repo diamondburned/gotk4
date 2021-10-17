@@ -200,9 +200,7 @@ func wrapClipboard(obj *externglib.Object) *Clipboard {
 }
 
 func marshalClipboarder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapClipboard(obj), nil
+	return wrapClipboard(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Clear clears the contents of the clipboard. Generally this should only be

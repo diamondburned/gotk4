@@ -466,6 +466,8 @@ func newObject(ptr unsafe.Pointer, take bool) *Object {
 }
 
 // Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).
+//go:nosplit
+//go:nocheckptr
 func (v *Object) Cast() Objector {
 	if v == nil {
 		// nil-typed interface != non-nil-typed nil-value interface
@@ -1204,6 +1206,36 @@ func (v *Value) Pointer() unsafe.Pointer {
 	p := unsafe.Pointer(C.g_value_get_pointer(v.native()))
 	runtime.KeepAlive(v)
 	return p
+}
+
+// Boxed is a wrapper around g_value_get_boxed().
+func (v *Value) Boxed() unsafe.Pointer {
+	p := unsafe.Pointer(C.g_value_get_boxed(v.native()))
+	runtime.KeepAlive(v)
+	return p
+}
+
+// Object is a wrapper around g_value_get_object(). The returned object is taken
+// its own reference.
+func (v *Value) Object() *Object {
+	p := unsafe.Pointer(C.g_value_get_object(v.native()))
+	o := Take(unsafe.Pointer(p))
+	runtime.KeepAlive(v)
+	return o
+}
+
+// Enum is a wrapper around g_value_get_enum().
+func (v *Value) Enum() int {
+	i := int(C.g_value_get_enum(v.native()))
+	runtime.KeepAlive(v)
+	return i
+}
+
+// Flags is a wrapper around g_value_get_flags().
+func (v *Value) Flags() uint {
+	u := uint(C.g_value_get_flags(v.native()))
+	runtime.KeepAlive(v)
+	return u
 }
 
 // String is a wrapper around g_value_get_string().  String() returns a non-nil

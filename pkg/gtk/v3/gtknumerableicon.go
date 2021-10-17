@@ -47,9 +47,7 @@ func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 }
 
 func marshalNumerableIconner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNumerableIcon(obj), nil
+	return wrapNumerableIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BackgroundGIcon returns the #GIcon that was set as the base background image,

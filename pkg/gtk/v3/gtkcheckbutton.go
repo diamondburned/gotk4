@@ -97,9 +97,7 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 }
 
 func marshalCheckButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCheckButton(obj), nil
+	return wrapCheckButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCheckButton creates a new CheckButton.

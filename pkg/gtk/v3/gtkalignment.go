@@ -67,9 +67,7 @@ func wrapAlignment(obj *externglib.Object) *Alignment {
 }
 
 func marshalAlignmenter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAlignment(obj), nil
+	return wrapAlignment(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAlignment creates a new Alignment.

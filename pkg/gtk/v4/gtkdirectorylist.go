@@ -61,9 +61,7 @@ func wrapDirectoryList(obj *externglib.Object) *DirectoryList {
 }
 
 func marshalDirectoryLister(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDirectoryList(obj), nil
+	return wrapDirectoryList(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDirectoryList creates a new GtkDirectoryList.

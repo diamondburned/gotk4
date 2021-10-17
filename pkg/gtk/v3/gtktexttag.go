@@ -48,9 +48,7 @@ func wrapTextTag(obj *externglib.Object) *TextTag {
 }
 
 func marshalTextTagger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTextTag(obj), nil
+	return wrapTextTag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextTag creates a TextTag. Configure the tag using object arguments, i.e.

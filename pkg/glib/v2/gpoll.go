@@ -80,8 +80,8 @@ type pollFD struct {
 }
 
 func marshalPollFD(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &PollFD{&pollFD{(*C.GPollFD)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &PollFD{&pollFD{(*C.GPollFD)(b)}}, nil
 }
 
 // NewPollFD creates a new PollFD instance from the given

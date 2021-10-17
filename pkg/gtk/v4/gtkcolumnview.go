@@ -118,9 +118,7 @@ func wrapColumnView(obj *externglib.Object) *ColumnView {
 }
 
 func marshalColumnViewer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColumnView(obj), nil
+	return wrapColumnView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColumnView creates a new GtkColumnView.

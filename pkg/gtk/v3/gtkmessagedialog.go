@@ -51,7 +51,7 @@ const (
 )
 
 func marshalButtonsType(p uintptr) (interface{}, error) {
-	return ButtonsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ButtonsType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ButtonsType.
@@ -140,9 +140,7 @@ func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 }
 
 func marshalMessageDialogger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMessageDialog(obj), nil
+	return wrapMessageDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Image gets the dialog’s image.

@@ -49,7 +49,7 @@ const (
 )
 
 func marshalShapeFlags(p uintptr) (interface{}, error) {
-	return ShapeFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ShapeFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ShapeFlags.
@@ -365,8 +365,8 @@ type glyphString struct {
 }
 
 func marshalGlyphString(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &GlyphString{&glyphString{(*C.PangoGlyphString)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &GlyphString{&glyphString{(*C.PangoGlyphString)(b)}}, nil
 }
 
 // NewGlyphString constructs a struct GlyphString.

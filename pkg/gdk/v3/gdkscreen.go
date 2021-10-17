@@ -44,9 +44,7 @@ func wrapScreen(obj *externglib.Object) *Screen {
 }
 
 func marshalScreener(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapScreen(obj), nil
+	return wrapScreen(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ActiveWindow returns the screen’s currently active window.

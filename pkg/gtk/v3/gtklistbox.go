@@ -235,9 +235,7 @@ func wrapListBox(obj *externglib.Object) *ListBox {
 }
 
 func marshalListBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBox(obj), nil
+	return wrapListBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewListBox creates a new ListBox container.
@@ -946,9 +944,7 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 }
 
 func marshalListBoxRower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapListBoxRow(obj), nil
+	return wrapListBoxRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewListBoxRow creates a new ListBoxRow, to be used as a child of a ListBox.

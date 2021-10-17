@@ -110,9 +110,7 @@ func wrapBufferedInputStream(obj *externglib.Object) *BufferedInputStream {
 }
 
 func marshalBufferedInputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBufferedInputStream(obj), nil
+	return wrapBufferedInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBufferedInputStream creates a new Stream from the given base_stream, with

@@ -77,9 +77,7 @@ func wrapCellView(obj *externglib.Object) *CellView {
 }
 
 func marshalCellViewer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellView(obj), nil
+	return wrapCellView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellView creates a new CellView widget.

@@ -75,9 +75,7 @@ func wrapPageSetup(obj *externglib.Object) *PageSetup {
 }
 
 func marshalPageSetupper(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPageSetup(obj), nil
+	return wrapPageSetup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPageSetup creates a new GtkPageSetup.

@@ -88,9 +88,7 @@ func wrapShortcutController(obj *externglib.Object) *ShortcutController {
 }
 
 func marshalShortcutControllerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutController(obj), nil
+	return wrapShortcutController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewShortcutController creates a new shortcut controller.

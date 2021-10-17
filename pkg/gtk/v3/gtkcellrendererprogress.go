@@ -48,9 +48,7 @@ func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 }
 
 func marshalCellRendererProgresser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererProgress(obj), nil
+	return wrapCellRendererProgress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererProgress creates a new CellRendererProgress.

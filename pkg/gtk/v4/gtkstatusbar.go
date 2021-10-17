@@ -82,9 +82,7 @@ func wrapStatusbar(obj *externglib.Object) *Statusbar {
 }
 
 func marshalStatusbarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStatusbar(obj), nil
+	return wrapStatusbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStatusbar creates a new GtkStatusbar ready for messages.

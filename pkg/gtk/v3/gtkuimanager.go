@@ -61,7 +61,7 @@ const (
 )
 
 func marshalUIManagerItemType(p uintptr) (interface{}, error) {
-	return UIManagerItemType(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return UIManagerItemType(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for UIManagerItemType.
@@ -385,9 +385,7 @@ func wrapUIManager(obj *externglib.Object) *UIManager {
 }
 
 func marshalUIManagerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapUIManager(obj), nil
+	return wrapUIManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewUIManager creates a new ui manager object.

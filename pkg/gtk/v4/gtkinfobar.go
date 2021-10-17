@@ -119,9 +119,7 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 }
 
 func marshalInfoBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapInfoBar(obj), nil
+	return wrapInfoBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewInfoBar creates a new GtkInfoBar object.

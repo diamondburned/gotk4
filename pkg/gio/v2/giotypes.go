@@ -341,8 +341,8 @@ type fileAttributeMatcher struct {
 }
 
 func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &FileAttributeMatcher{&fileAttributeMatcher{(*C.GFileAttributeMatcher)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &FileAttributeMatcher{&fileAttributeMatcher{(*C.GFileAttributeMatcher)(b)}}, nil
 }
 
 // NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
@@ -788,8 +788,8 @@ type resource struct {
 }
 
 func marshalResource(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Resource{&resource{(*C.GResource)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Resource{&resource{(*C.GResource)(b)}}, nil
 }
 
 // NewResourceFromData constructs a struct Resource.
@@ -1019,8 +1019,8 @@ type srvTarget struct {
 }
 
 func marshalSrvTarget(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &SrvTarget{&srvTarget{(*C.GSrvTarget)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &SrvTarget{&srvTarget{(*C.GSrvTarget)(b)}}, nil
 }
 
 // NewSrvTarget constructs a struct SrvTarget.

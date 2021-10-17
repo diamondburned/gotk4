@@ -50,9 +50,7 @@ func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 }
 
 func marshalAnyFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAnyFilter(obj), nil
+	return wrapAnyFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAnyFilter creates a new empty "any" filter.
@@ -101,9 +99,7 @@ func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 }
 
 func marshalEveryFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEveryFilter(obj), nil
+	return wrapEveryFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEveryFilter creates a new empty "every" filter.
@@ -166,9 +162,7 @@ func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
 }
 
 func marshalMultiFilterer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapMultiFilter(obj), nil
+	return wrapMultiFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Append adds a filter to self to use for matching.

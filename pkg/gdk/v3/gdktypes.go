@@ -77,7 +77,7 @@ const (
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
-	return AxisUse(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AxisUse(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AxisUse.
@@ -126,7 +126,7 @@ const (
 )
 
 func marshalByteOrder(p uintptr) (interface{}, error) {
-	return ByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ByteOrder(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ByteOrder.
@@ -154,7 +154,7 @@ const (
 )
 
 func marshalGLError(p uintptr) (interface{}, error) {
-	return GLError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return GLError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GLError.
@@ -185,7 +185,7 @@ const (
 )
 
 func marshalGrabOwnership(p uintptr) (interface{}, error) {
-	return GrabOwnership(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return GrabOwnership(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GrabOwnership.
@@ -224,7 +224,7 @@ const (
 )
 
 func marshalGrabStatus(p uintptr) (interface{}, error) {
-	return GrabStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return GrabStatus(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GrabStatus.
@@ -287,7 +287,7 @@ const (
 )
 
 func marshalModifierIntent(p uintptr) (interface{}, error) {
-	return ModifierIntent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ModifierIntent(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ModifierIntent.
@@ -359,7 +359,7 @@ const (
 )
 
 func marshalWindowTypeHint(p uintptr) (interface{}, error) {
-	return WindowTypeHint(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowTypeHint(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WindowTypeHint.
@@ -423,7 +423,7 @@ const (
 )
 
 func marshalAxisFlags(p uintptr) (interface{}, error) {
-	return AxisFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AxisFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AxisFlags.
@@ -560,7 +560,7 @@ const (
 )
 
 func marshalEventMask(p uintptr) (interface{}, error) {
-	return EventMask(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EventMask(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for EventMask.
@@ -570,7 +570,7 @@ func (e EventMask) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(423)
+	builder.Grow(256)
 
 	for e != 0 {
 		next := e & (e - 1)
@@ -739,7 +739,7 @@ const (
 )
 
 func marshalModifierType(p uintptr) (interface{}, error) {
-	return ModifierType(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ModifierType(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ModifierType.
@@ -749,7 +749,7 @@ func (m ModifierType) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(511)
+	builder.Grow(256)
 
 	for m != 0 {
 		next := m & (m - 1)
@@ -891,8 +891,8 @@ type rectangle struct {
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Rectangle{&rectangle{(*C.GdkRectangle)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Rectangle{&rectangle{(*C.GdkRectangle)(b)}}, nil
 }
 
 // NewRectangle creates a new Rectangle instance from the given

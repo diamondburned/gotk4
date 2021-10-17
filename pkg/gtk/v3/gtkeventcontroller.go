@@ -55,9 +55,7 @@ func wrapEventController(obj *externglib.Object) *EventController {
 }
 
 func marshalEventControllerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEventController(obj), nil
+	return wrapEventController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // PropagationPhase gets the propagation phase at which controller handles

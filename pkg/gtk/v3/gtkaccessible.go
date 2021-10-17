@@ -60,9 +60,7 @@ func wrapAccessible(obj *externglib.Object) *Accessible {
 }
 
 func marshalAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAccessible(obj), nil
+	return wrapAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConnectWidgetDestroyed: this function specifies the callback function to be

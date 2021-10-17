@@ -61,7 +61,7 @@ const (
 )
 
 func marshalShortcutType(p uintptr) (interface{}, error) {
-	return ShortcutType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ShortcutType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ShortcutType.
@@ -121,9 +121,7 @@ func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 }
 
 func marshalShortcutsShortcutter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapShortcutsShortcut(obj), nil
+	return wrapShortcutsShortcut(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ShortcutsShortcut) privateShortcutsShortcut() {}

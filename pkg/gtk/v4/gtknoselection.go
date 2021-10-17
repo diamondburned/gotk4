@@ -45,9 +45,7 @@ func wrapNoSelection(obj *externglib.Object) *NoSelection {
 }
 
 func marshalNoSelectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoSelection(obj), nil
+	return wrapNoSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNoSelection creates a new selection to handle model.

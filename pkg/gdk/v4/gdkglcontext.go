@@ -128,9 +128,7 @@ func wrapGLContext(obj *externglib.Object) *GLContext {
 }
 
 func marshalGLContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGLContext(obj), nil
+	return wrapGLContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DebugEnabled retrieves whether the context is doing extra validations and

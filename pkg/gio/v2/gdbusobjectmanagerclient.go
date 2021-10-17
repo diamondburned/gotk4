@@ -133,9 +133,7 @@ func wrapDBusObjectManagerClient(obj *externglib.Object) *DBusObjectManagerClien
 }
 
 func marshalDBusObjectManagerClienter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectManagerClient(obj), nil
+	return wrapDBusObjectManagerClient(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDBusObjectManagerClientFinish finishes an operation started with

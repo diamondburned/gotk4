@@ -49,9 +49,7 @@ func wrapProxyAddress(obj *externglib.Object) *ProxyAddress {
 }
 
 func marshalProxyAddresser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProxyAddress(obj), nil
+	return wrapProxyAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewProxyAddress creates a new Address for inetaddr with protocol that should

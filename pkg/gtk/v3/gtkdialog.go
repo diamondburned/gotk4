@@ -64,7 +64,7 @@ const (
 )
 
 func marshalResponseType(p uintptr) (interface{}, error) {
-	return ResponseType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ResponseType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ResponseType.
@@ -113,7 +113,7 @@ const (
 )
 
 func marshalDialogFlags(p uintptr) (interface{}, error) {
-	return DialogFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DialogFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DialogFlags.
@@ -339,9 +339,7 @@ func wrapDialog(obj *externglib.Object) *Dialog {
 }
 
 func marshalDialogger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDialog(obj), nil
+	return wrapDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDialog creates a new dialog box.
@@ -732,16 +730,16 @@ func (dialog *Dialog) ConnectResponse(f func(responseId int)) externglib.SignalH
 // constructor-only dialog flags.
 //
 // It is a wrapper around Gtk.Dialog.new_with_buttons in C.
-func NewDialogWithFlags(title string, parent *gtk.Window, flags gtk.DialogFlags) *gtk.Dialog {
+func NewDialogWithFlags(title string, parent *Window, flags DialogFlags) *Dialog {
 	ctitle := C.CString(title)
 	defer C.free(unsafe.Pointer(ctitle))
 
 	w := C._gotk4_gtk_dialog_new2(
-		(*C.gchar)(ctitle),
-		(*C.GtkWindow)(parent.Native()),
+		(*C.gchar)(unsafe.Pointer(ctitle)),
+		(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
 		(C.GtkDialogFlags)(flags),
 	)
 	runtime.KeepAlive(parent)
 
-	return wrapDialog(externglib.Take(unsafe.Pointer(c)))
+	return wrapDialog(externglib.Take(unsafe.Pointer(w)))
 }

@@ -346,8 +346,8 @@ type pixbufFormat struct {
 }
 
 func marshalPixbufFormat(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &PixbufFormat{&pixbufFormat{(*C.GdkPixbufFormat)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &PixbufFormat{&pixbufFormat{(*C.GdkPixbufFormat)(b)}}, nil
 }
 
 // Copy creates a copy of format.

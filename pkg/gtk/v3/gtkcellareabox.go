@@ -67,9 +67,7 @@ func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 }
 
 func marshalCellAreaBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellAreaBox(obj), nil
+	return wrapCellAreaBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellAreaBox creates a new CellAreaBox.

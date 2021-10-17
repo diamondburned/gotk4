@@ -77,9 +77,7 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 }
 
 func marshalVolumeButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVolumeButton(obj), nil
+	return wrapVolumeButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVolumeButton creates a VolumeButton, with a range between 0.0 and 1.0,

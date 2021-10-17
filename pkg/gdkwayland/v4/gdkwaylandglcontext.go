@@ -37,9 +37,7 @@ func wrapWaylandGLContext(obj *externglib.Object) *WaylandGLContext {
 }
 
 func marshalWaylandGLContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandGLContext(obj), nil
+	return wrapWaylandGLContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*WaylandGLContext) privateWaylandGLContext() {}

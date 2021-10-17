@@ -115,9 +115,7 @@ func wrapPrintSettings(obj *externglib.Object) *PrintSettings {
 }
 
 func marshalPrintSettingser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPrintSettings(obj), nil
+	return wrapPrintSettings(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPrintSettings creates a new GtkPrintSettings object.

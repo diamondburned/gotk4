@@ -77,9 +77,7 @@ func wrapVBox(obj *externglib.Object) *VBox {
 }
 
 func marshalVBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVBox(obj), nil
+	return wrapVBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVBox creates a new VBox.

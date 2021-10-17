@@ -53,9 +53,7 @@ func wrapRecentAction(obj *externglib.Object) *RecentAction {
 }
 
 func marshalRecentActioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRecentAction(obj), nil
+	return wrapRecentAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRecentAction creates a new RecentAction object. To add the action to a

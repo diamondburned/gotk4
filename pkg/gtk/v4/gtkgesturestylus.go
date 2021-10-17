@@ -43,9 +43,7 @@ func wrapGestureStylus(obj *externglib.Object) *GestureStylus {
 }
 
 func marshalGestureStylusser(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureStylus(obj), nil
+	return wrapGestureStylus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGestureStylus creates a new GtkGestureStylus.

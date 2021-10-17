@@ -89,7 +89,7 @@ const (
 )
 
 func marshalStackTransitionType(p uintptr) (interface{}, error) {
-	return StackTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return StackTransitionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for StackTransitionType.
@@ -179,9 +179,7 @@ func wrapStack(obj *externglib.Object) *Stack {
 }
 
 func marshalStacker(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStack(obj), nil
+	return wrapStack(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStack creates a new Stack container.

@@ -64,7 +64,7 @@ const (
 )
 
 func marshalAssistantPageType(p uintptr) (interface{}, error) {
-	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AssistantPageType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AssistantPageType.
@@ -202,9 +202,7 @@ func wrapAssistant(obj *externglib.Object) *Assistant {
 }
 
 func marshalAssistanter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAssistant(obj), nil
+	return wrapAssistant(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAssistant creates a new GtkAssistant.
@@ -804,9 +802,7 @@ func wrapAssistantPage(obj *externglib.Object) *AssistantPage {
 }
 
 func marshalAssistantPager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAssistantPage(obj), nil
+	return wrapAssistantPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Child returns the child to which page belongs.

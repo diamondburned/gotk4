@@ -55,7 +55,7 @@ const (
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
-	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ScrollType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollType.
@@ -221,9 +221,7 @@ func wrapComponent(obj *externglib.Object) *Component {
 }
 
 func marshalComponenter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapComponent(obj), nil
+	return wrapComponent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Contains checks whether the specified point is within the extent of the
@@ -701,8 +699,8 @@ type rectangle struct {
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Rectangle{&rectangle{(*C.AtkRectangle)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Rectangle{&rectangle{(*C.AtkRectangle)(b)}}, nil
 }
 
 // NewRectangle creates a new Rectangle instance from the given

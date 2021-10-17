@@ -75,9 +75,7 @@ func wrapTreeListModel(obj *externglib.Object) *TreeListModel {
 }
 
 func marshalTreeListModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeListModel(obj), nil
+	return wrapTreeListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTreeListModel creates a new empty GtkTreeListModel displaying root with
@@ -324,9 +322,7 @@ func wrapTreeListRow(obj *externglib.Object) *TreeListRow {
 }
 
 func marshalTreeListRower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeListRow(obj), nil
+	return wrapTreeListRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ChildRow: if self is not expanded or position is greater than the number of

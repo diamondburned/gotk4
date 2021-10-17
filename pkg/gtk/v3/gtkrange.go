@@ -156,9 +156,7 @@ func wrapRange(obj *externglib.Object) *Range {
 }
 
 func marshalRanger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRange(obj), nil
+	return wrapRange(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Adjustment: get the Adjustment which is the “model” object for Range. See

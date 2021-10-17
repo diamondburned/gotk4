@@ -121,9 +121,7 @@ func wrapToolShell(obj *externglib.Object) *ToolShell {
 }
 
 func marshalToolSheller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolShell(obj), nil
+	return wrapToolShell(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // EllipsizeMode retrieves the current ellipsize mode for the tool shell. Tool

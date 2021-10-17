@@ -115,9 +115,7 @@ func wrapPaned(obj *externglib.Object) *Paned {
 }
 
 func marshalPanedder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPaned(obj), nil
+	return wrapPaned(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPaned creates a new GtkPaned widget.

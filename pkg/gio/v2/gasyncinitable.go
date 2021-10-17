@@ -207,9 +207,7 @@ func wrapAsyncInitable(obj *externglib.Object) *AsyncInitable {
 }
 
 func marshalAsyncInitabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapAsyncInitable(obj), nil
+	return wrapAsyncInitable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // InitAsync starts asynchronous initialization of the object implementing the

@@ -51,9 +51,7 @@ func wrapGestureSingle(obj *externglib.Object) *GestureSingle {
 }
 
 func marshalGestureSingler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGestureSingle(obj), nil
+	return wrapGestureSingle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Button returns the button number gesture listens for.

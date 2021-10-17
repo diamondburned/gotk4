@@ -67,9 +67,7 @@ func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
 }
 
 func marshalCSSProviderer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCSSProvider(obj), nil
+	return wrapCSSProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCSSProvider returns a newly created GtkCssProvider.

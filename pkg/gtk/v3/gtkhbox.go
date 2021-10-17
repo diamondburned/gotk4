@@ -71,9 +71,7 @@ func wrapHBox(obj *externglib.Object) *HBox {
 }
 
 func marshalHBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapHBox(obj), nil
+	return wrapHBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHBox creates a new HBox.

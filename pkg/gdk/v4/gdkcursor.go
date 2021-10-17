@@ -64,9 +64,7 @@ func wrapCursor(obj *externglib.Object) *Cursor {
 }
 
 func marshalCursorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCursor(obj), nil
+	return wrapCursor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCursorFromName creates a new cursor by looking up name in the current

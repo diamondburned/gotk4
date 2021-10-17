@@ -54,9 +54,7 @@ func wrapColorSelectionDialog(obj *externglib.Object) *ColorSelectionDialog {
 }
 
 func marshalColorSelectionDialogger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorSelectionDialog(obj), nil
+	return wrapColorSelectionDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColorSelectionDialog creates a new ColorSelectionDialog.

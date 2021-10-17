@@ -303,9 +303,7 @@ func wrapOutputStream(obj *externglib.Object) *OutputStream {
 }
 
 func marshalOutputStreamer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOutputStream(obj), nil
+	return wrapOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ClearPending clears the pending flag on stream.

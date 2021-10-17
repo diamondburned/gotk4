@@ -66,9 +66,7 @@ func wrapArrow(obj *externglib.Object) *Arrow {
 }
 
 func marshalArrower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapArrow(obj), nil
+	return wrapArrow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewArrow creates a new Arrow widget.

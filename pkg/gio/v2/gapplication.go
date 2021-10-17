@@ -204,9 +204,7 @@ func wrapApplication(obj *externglib.Object) *Application {
 }
 
 func marshalApplicationer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplication(obj), nil
+	return wrapApplication(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewApplication creates a new #GApplication instance.

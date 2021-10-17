@@ -43,9 +43,7 @@ func wrapContainerAccessible(obj *externglib.Object) *ContainerAccessible {
 }
 
 func marshalContainerAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapContainerAccessible(obj), nil
+	return wrapContainerAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*ContainerAccessible) privateContainerAccessible() {}

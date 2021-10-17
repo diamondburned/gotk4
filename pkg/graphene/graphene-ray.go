@@ -65,8 +65,8 @@ type ray struct {
 }
 
 func marshalRay(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Ray{&ray{(*C.graphene_ray_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Ray{&ray{(*C.graphene_ray_t)(b)}}, nil
 }
 
 // NewRayAlloc constructs a struct Ray.

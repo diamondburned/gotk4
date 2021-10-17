@@ -94,9 +94,7 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 }
 
 func marshalLinkButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLinkButton(obj), nil
+	return wrapLinkButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLinkButton creates a new GtkLinkButton with the URI as its text.

@@ -60,9 +60,7 @@ func wrapVideo(obj *externglib.Object) *Video {
 }
 
 func marshalVideoer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVideo(obj), nil
+	return wrapVideo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVideo creates a new empty GtkVideo.

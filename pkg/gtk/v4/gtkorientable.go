@@ -49,9 +49,7 @@ func wrapOrientable(obj *externglib.Object) *Orientable {
 }
 
 func marshalOrientabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapOrientable(obj), nil
+	return wrapOrientable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Orientation retrieves the orientation of the orientable.

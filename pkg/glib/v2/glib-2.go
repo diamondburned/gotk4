@@ -43,7 +43,7 @@ const (
 )
 
 func marshalIOCondition(p uintptr) (interface{}, error) {
-	return IOCondition(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IOCondition(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for IOCondition.

@@ -36,9 +36,7 @@ func wrapNoOpObjectFactory(obj *externglib.Object) *NoOpObjectFactory {
 }
 
 func marshalNoOpObjectFactorier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapNoOpObjectFactory(obj), nil
+	return wrapNoOpObjectFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNoOpObjectFactory creates an instance of an ObjectFactory which generates

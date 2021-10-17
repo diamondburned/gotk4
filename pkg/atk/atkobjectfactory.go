@@ -48,9 +48,7 @@ func wrapObjectFactory(obj *externglib.Object) *ObjectFactory {
 }
 
 func marshalObjectFactorier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapObjectFactory(obj), nil
+	return wrapObjectFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CreateAccessible provides an Object that implements an accessibility

@@ -53,7 +53,7 @@ const (
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
-	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Gravity(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Gravity.
@@ -234,7 +234,7 @@ const (
 )
 
 func marshalGravityHint(p uintptr) (interface{}, error) {
-	return GravityHint(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return GravityHint(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GravityHint.

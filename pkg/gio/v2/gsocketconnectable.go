@@ -135,9 +135,7 @@ func wrapSocketConnectable(obj *externglib.Object) *SocketConnectable {
 }
 
 func marshalSocketConnectabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketConnectable(obj), nil
+	return wrapSocketConnectable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Enumerate creates a AddressEnumerator for connectable.

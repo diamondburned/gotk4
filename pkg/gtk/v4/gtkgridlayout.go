@@ -49,9 +49,7 @@ func wrapGridLayout(obj *externglib.Object) *GridLayout {
 }
 
 func marshalGridLayouter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGridLayout(obj), nil
+	return wrapGridLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewGridLayout creates a new GtkGridLayout.
@@ -323,9 +321,7 @@ func wrapGridLayoutChild(obj *externglib.Object) *GridLayoutChild {
 }
 
 func marshalGridLayoutChilder(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapGridLayoutChild(obj), nil
+	return wrapGridLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Column retrieves the column number to which child attaches its left side.

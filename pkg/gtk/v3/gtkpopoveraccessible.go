@@ -45,9 +45,7 @@ func wrapPopoverAccessible(obj *externglib.Object) *PopoverAccessible {
 }
 
 func marshalPopoverAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPopoverAccessible(obj), nil
+	return wrapPopoverAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*PopoverAccessible) privatePopoverAccessible() {}

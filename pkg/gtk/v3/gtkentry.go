@@ -44,7 +44,7 @@ const (
 )
 
 func marshalEntryIconPosition(p uintptr) (interface{}, error) {
-	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EntryIconPosition(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EntryIconPosition.
@@ -190,9 +190,7 @@ func wrapEntry(obj *externglib.Object) *Entry {
 }
 
 func marshalEntrier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapEntry(obj), nil
+	return wrapEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEntry creates a new entry.

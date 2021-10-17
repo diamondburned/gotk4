@@ -133,9 +133,7 @@ func wrapApplicationCommandLine(obj *externglib.Object) *ApplicationCommandLine 
 }
 
 func marshalApplicationCommandLiner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapApplicationCommandLine(obj), nil
+	return wrapApplicationCommandLine(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CreateFileForArg creates a #GFile corresponding to a filename that was given

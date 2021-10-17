@@ -55,9 +55,7 @@ func wrapVButtonBox(obj *externglib.Object) *VButtonBox {
 }
 
 func marshalVButtonBoxer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVButtonBox(obj), nil
+	return wrapVButtonBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVButtonBox creates a new vertical button box.

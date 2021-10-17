@@ -38,9 +38,7 @@ func wrapRelationSet(obj *externglib.Object) *RelationSet {
 }
 
 func marshalRelationSetter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRelationSet(obj), nil
+	return wrapRelationSet(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRelationSet creates a new empty relation set.

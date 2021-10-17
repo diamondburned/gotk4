@@ -37,7 +37,7 @@ const (
 )
 
 func marshalDragCancelReason(p uintptr) (interface{}, error) {
-	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DragCancelReason(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DragCancelReason.
@@ -133,9 +133,7 @@ func wrapDrag(obj *externglib.Object) *Drag {
 }
 
 func marshalDragger(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrag(obj), nil
+	return wrapDrag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DropDone informs GDK that the drop ended.

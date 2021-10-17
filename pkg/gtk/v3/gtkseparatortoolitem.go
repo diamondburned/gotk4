@@ -70,9 +70,7 @@ func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 }
 
 func marshalSeparatorToolItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSeparatorToolItem(obj), nil
+	return wrapSeparatorToolItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSeparatorToolItem: create a new SeparatorToolItem.

@@ -45,9 +45,7 @@ func wrapBookmarkList(obj *externglib.Object) *BookmarkList {
 }
 
 func marshalBookmarkLister(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBookmarkList(obj), nil
+	return wrapBookmarkList(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBookmarkList creates a new GtkBookmarkList with the given attributes.

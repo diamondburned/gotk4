@@ -35,9 +35,7 @@ func wrapPixbufSimpleAnim(obj *externglib.Object) *PixbufSimpleAnim {
 }
 
 func marshalPixbufSimpleAnimmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapPixbufSimpleAnim(obj), nil
+	return wrapPixbufSimpleAnim(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPixbufSimpleAnim creates a new, empty animation.

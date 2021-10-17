@@ -63,9 +63,7 @@ func wrapSocketConnection(obj *externglib.Object) *SocketConnection {
 }
 
 func marshalSocketConnectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketConnection(obj), nil
+	return wrapSocketConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConnectSocketConnection: connect connection to the specified remote address.

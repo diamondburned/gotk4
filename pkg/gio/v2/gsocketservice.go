@@ -73,9 +73,7 @@ func wrapSocketService(obj *externglib.Object) *SocketService {
 }
 
 func marshalSocketServicer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSocketService(obj), nil
+	return wrapSocketService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSocketService creates a new Service with no sockets to listen for. New

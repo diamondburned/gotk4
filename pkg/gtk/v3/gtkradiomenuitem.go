@@ -98,9 +98,7 @@ func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 }
 
 func marshalRadioMenuItemmer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRadioMenuItem(obj), nil
+	return wrapRadioMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRadioMenuItem creates a new RadioMenuItem.

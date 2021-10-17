@@ -52,9 +52,7 @@ func wrapWindowAccessible(obj *externglib.Object) *WindowAccessible {
 }
 
 func marshalWindowAccessibler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindowAccessible(obj), nil
+	return wrapWindowAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*WindowAccessible) privateWindowAccessible() {}

@@ -91,9 +91,7 @@ func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 }
 
 func marshalProgressBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProgressBar(obj), nil
+	return wrapProgressBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewProgressBar creates a new ProgressBar.

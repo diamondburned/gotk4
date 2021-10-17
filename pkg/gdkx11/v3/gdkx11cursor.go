@@ -34,9 +34,7 @@ func wrapX11Cursor(obj *externglib.Object) *X11Cursor {
 }
 
 func marshalX11Cursorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapX11Cursor(obj), nil
+	return wrapX11Cursor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*X11Cursor) privateX11Cursor() {}

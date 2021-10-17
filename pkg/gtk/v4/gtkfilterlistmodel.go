@@ -47,9 +47,7 @@ func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
 }
 
 func marshalFilterListModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapFilterListModel(obj), nil
+	return wrapFilterListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFilterListModel creates a new GtkFilterListModel that will filter model

@@ -145,9 +145,7 @@ func wrapTreeSelection(obj *externglib.Object) *TreeSelection {
 }
 
 func marshalTreeSelectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTreeSelection(obj), nil
+	return wrapTreeSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CountSelectedRows returns the number of rows that have been selected in tree.

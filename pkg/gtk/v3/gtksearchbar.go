@@ -74,9 +74,7 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 }
 
 func marshalSearchBarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSearchBar(obj), nil
+	return wrapSearchBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSearchBar creates a SearchBar. You will need to tell it about which widget

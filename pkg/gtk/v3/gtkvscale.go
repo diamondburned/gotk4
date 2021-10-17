@@ -61,9 +61,7 @@ func wrapVScale(obj *externglib.Object) *VScale {
 }
 
 func marshalVScaler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapVScale(obj), nil
+	return wrapVScale(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVScale creates a new VScale.

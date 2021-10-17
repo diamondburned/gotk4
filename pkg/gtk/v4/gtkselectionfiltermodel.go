@@ -40,9 +40,7 @@ func wrapSelectionFilterModel(obj *externglib.Object) *SelectionFilterModel {
 }
 
 func marshalSelectionFilterModeller(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSelectionFilterModel(obj), nil
+	return wrapSelectionFilterModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSelectionFilterModel creates a new GtkSelectionFilterModel that will

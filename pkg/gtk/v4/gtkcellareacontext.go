@@ -94,9 +94,7 @@ func wrapCellAreaContext(obj *externglib.Object) *CellAreaContext {
 }
 
 func marshalCellAreaContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellAreaContext(obj), nil
+	return wrapCellAreaContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Allocate allocates a width and/or a height for all rows which are to be

@@ -38,9 +38,7 @@ func wrapWaylandMonitor(obj *externglib.Object) *WaylandMonitor {
 }
 
 func marshalWaylandMonitorrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandMonitor(obj), nil
+	return wrapWaylandMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*WaylandMonitor) privateWaylandMonitor() {}

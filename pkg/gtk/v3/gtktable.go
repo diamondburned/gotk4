@@ -42,7 +42,7 @@ const (
 )
 
 func marshalAttachOptions(p uintptr) (interface{}, error) {
-	return AttachOptions(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AttachOptions(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AttachOptions.
@@ -127,9 +127,7 @@ func wrapTable(obj *externglib.Object) *Table {
 }
 
 func marshalTabler(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapTable(obj), nil
+	return wrapTable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTable: used to create a new table widget. An initial size must be given by

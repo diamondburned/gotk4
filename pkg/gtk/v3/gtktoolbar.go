@@ -39,7 +39,7 @@ const (
 )
 
 func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {
-	return ToolbarSpaceStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ToolbarSpaceStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ToolbarSpaceStyle.
@@ -134,9 +134,7 @@ func wrapToolbar(obj *externglib.Object) *Toolbar {
 }
 
 func marshalToolbarrer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToolbar(obj), nil
+	return wrapToolbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewToolbar creates a new toolbar.

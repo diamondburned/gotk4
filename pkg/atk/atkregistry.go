@@ -55,9 +55,7 @@ func wrapRegistry(obj *externglib.Object) *Registry {
 }
 
 func marshalRegistrier(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapRegistry(obj), nil
+	return wrapRegistry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Factory gets an ObjectFactory appropriate for creating Objects appropriate

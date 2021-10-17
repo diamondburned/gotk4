@@ -143,9 +143,7 @@ func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 }
 
 func marshalToggleButtonner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapToggleButton(obj), nil
+	return wrapToggleButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewToggleButton creates a new toggle button.

@@ -57,9 +57,7 @@ func wrapDTLSServerConnection(obj *externglib.Object) *DTLSServerConnection {
 }
 
 func marshalDTLSServerConnectioner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDTLSServerConnection(obj), nil
+	return wrapDTLSServerConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (*DTLSServerConnection) privateDTLSServerConnection() {}

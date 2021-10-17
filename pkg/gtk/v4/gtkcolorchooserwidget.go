@@ -77,9 +77,7 @@ func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 }
 
 func marshalColorChooserWidgetter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapColorChooserWidget(obj), nil
+	return wrapColorChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColorChooserWidget creates a new GtkColorChooserWidget.

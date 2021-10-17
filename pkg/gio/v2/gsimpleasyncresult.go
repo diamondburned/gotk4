@@ -242,9 +242,7 @@ func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
 }
 
 func marshalSimpleAsyncResulter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleAsyncResult(obj), nil
+	return wrapSimpleAsyncResult(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSimpleAsyncResult creates a AsyncResult.

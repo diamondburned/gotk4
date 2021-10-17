@@ -47,7 +47,7 @@ const (
 )
 
 func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
-	return StyleContextPrintFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
+	return StyleContextPrintFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for StyleContextPrintFlags.
@@ -144,9 +144,7 @@ func wrapStyleContext(obj *externglib.Object) *StyleContext {
 }
 
 func marshalStyleContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapStyleContext(obj), nil
+	return wrapStyleContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddClass adds a style class to context, so later uses of the style context

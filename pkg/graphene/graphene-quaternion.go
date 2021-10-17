@@ -38,8 +38,8 @@ type quaternion struct {
 }
 
 func marshalQuaternion(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Quaternion{&quaternion{(*C.graphene_quaternion_t)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Quaternion{&quaternion{(*C.graphene_quaternion_t)(b)}}, nil
 }
 
 // NewQuaternionAlloc constructs a struct Quaternion.

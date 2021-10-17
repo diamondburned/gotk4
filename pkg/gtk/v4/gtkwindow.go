@@ -136,9 +136,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 }
 
 func marshalWindower(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWindow(obj), nil
+	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindow creates a new GtkWindow.

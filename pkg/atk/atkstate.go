@@ -253,7 +253,7 @@ const (
 )
 
 func marshalStateType(p uintptr) (interface{}, error) {
-	return StateType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return StateType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for StateType.

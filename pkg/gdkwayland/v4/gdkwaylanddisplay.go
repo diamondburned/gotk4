@@ -44,9 +44,7 @@ func wrapWaylandDisplay(obj *externglib.Object) *WaylandDisplay {
 }
 
 func marshalWaylandDisplayer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWaylandDisplay(obj), nil
+	return wrapWaylandDisplay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // StartupNotificationID gets the startup notification ID for a Wayland display,

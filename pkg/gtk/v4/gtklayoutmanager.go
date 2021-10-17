@@ -125,9 +125,7 @@ func wrapLayoutManager(obj *externglib.Object) *LayoutManager {
 }
 
 func marshalLayoutManagerer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapLayoutManager(obj), nil
+	return wrapLayoutManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Allocate assigns the given width, height, and baseline to a widget, and

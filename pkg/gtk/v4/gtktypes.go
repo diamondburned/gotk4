@@ -50,8 +50,8 @@ type bitset struct {
 }
 
 func marshalBitset(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Bitset{&bitset{(*C.GtkBitset)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Bitset{&bitset{(*C.GtkBitset)(b)}}, nil
 }
 
 // NewBitsetEmpty constructs a struct Bitset.

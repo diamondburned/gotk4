@@ -85,7 +85,7 @@ const (
 )
 
 func marshalBlendMode(p uintptr) (interface{}, error) {
-	return BlendMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return BlendMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BlendMode.
@@ -143,7 +143,7 @@ const (
 )
 
 func marshalCorner(p uintptr) (interface{}, error) {
-	return Corner(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return Corner(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Corner.
@@ -189,7 +189,7 @@ const (
 )
 
 func marshalGLUniformType(p uintptr) (interface{}, error) {
-	return GLUniformType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return GLUniformType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GLUniformType.
@@ -278,7 +278,7 @@ const (
 )
 
 func marshalRenderNodeType(p uintptr) (interface{}, error) {
-	return RenderNodeType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RenderNodeType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RenderNodeType.
@@ -358,7 +358,7 @@ const (
 )
 
 func marshalScalingFilter(p uintptr) (interface{}, error) {
-	return ScalingFilter(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ScalingFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScalingFilter.
@@ -389,7 +389,7 @@ const (
 )
 
 func marshalSerializationError(p uintptr) (interface{}, error) {
-	return SerializationError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return SerializationError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SerializationError.
@@ -442,7 +442,7 @@ const (
 )
 
 func marshalTransformCategory(p uintptr) (interface{}, error) {
-	return TransformCategory(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TransformCategory(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TransformCategory.

@@ -38,8 +38,8 @@ type language struct {
 }
 
 func marshalLanguage(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Language{&language{(*C.PangoLanguage)(unsafe.Pointer(b))}}, nil
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Language{&language{(*C.PangoLanguage)(b)}}, nil
 }
 
 // SampleString: get a string that is representative of the characters needed to

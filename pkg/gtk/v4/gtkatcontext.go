@@ -51,9 +51,7 @@ func wrapATContext(obj *externglib.Object) *ATContext {
 }
 
 func marshalATContexter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapATContext(obj), nil
+	return wrapATContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewATContextCreate creates a new GtkATContext instance for the given

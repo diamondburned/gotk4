@@ -121,9 +121,7 @@ func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 }
 
 func marshalDrawingAreaer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDrawingArea(obj), nil
+	return wrapDrawingArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDrawingArea creates a new drawing area.

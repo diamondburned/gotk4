@@ -132,7 +132,7 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 
 	if len(f.header.Callbacks) > 0 {
 		for _, callback := range f.header.SortedCallbackHeaders() {
-			fpen.Words("//", callback)
+			fpen.Words(makeComment(callback))
 		}
 	}
 
@@ -158,6 +158,14 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 	}
 
 	return b, nil
+}
+
+func makeComment(block string) string {
+	lines := strings.Split(block, "\n")
+	for i := range lines {
+		lines[i] = "// " + lines[i]
+	}
+	return strings.Join(lines, "\n")
 }
 
 func makeImport(importPath, alias string) string {

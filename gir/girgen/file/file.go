@@ -215,6 +215,36 @@ func CallbackCHeader(source *gir.NamespaceFindResult, callback *gir.Callback) st
 	)
 }
 
+// AddCBlock adds a block of C code into the Cgo preamble.
+func (h *Header) AddCBlock(block string) {
+	if block == "" {
+		// Bound check to prevent panic in line logic.
+		return
+	}
+
+	block = strings.TrimSpace(block)
+
+	// Guess the indentation: grab the last line and count its leading tabs.
+	lines := strings.Split(block, "\n")
+	lastLine := lines[len(lines)-1]
+
+	var tabs int
+	for tabs < len(lastLine) && lastLine[tabs] == '\t' {
+		tabs++
+	}
+
+	// Trim all lines except for the first, since TrimSpace will take care of
+	// that.
+	indent := strings.Repeat("\t", tabs)
+	for i := 1; i < len(lines); i++ {
+		lines[i] = strings.TrimPrefix(lines[i], indent)
+	}
+
+	// Rejoin and add.
+	block = strings.Join(lines, "\n")
+	h.AddCallbackHeader(block)
+}
+
 // AddCallbackHeader adds a callback header raw.
 func (h *Header) AddCallbackHeader(header string) {
 	if h.stop {

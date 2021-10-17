@@ -667,13 +667,54 @@ func GtkTextBufferInsert(nsgen *girgen.NamespaceGenerator) error {
 	return nil
 }
 
+const cGTKDialogNew2 = `
+	GtkWidget* _gotk4_gtk_dialog_new2(const gchar* title, GtkWindow* parent, GtkDialogFlags flags) {
+		return gtk_dialog_new_with_buttons(title, parent, flags, NULL, NULL);
+	}
+`
+
+func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
+	fg, ok := nsgen.Files["gtkdialog.go"]
+	if !ok {
+		return nil
+	}
+
+	h := fg.Header()
+	h.Import("runtime")
+	h.AddCBlock(cGTKDialogNew2)
+
+	p := fg.Pen()
+	p.Line(`
+		// NewDialogWithFlags is a slightly more advanced version of NewDialog,
+		// allowing the user to construct a new dialog with the given
+		// constructor-only dialog flags.
+		//
+		// It is a wrapper around Gtk.Dialog.new_with_buttons in C.
+		func NewDialogWithFlags(title string, parent *gtk.Window, flags gtk.DialogFlags) *gtk.Dialog {
+			ctitle := C.CString(title)
+			defer C.free(unsafe.Pointer(ctitle))
+
+			w := C._gotk4_gtk_dialog_new2(
+				(*C.gchar)(ctitle),
+				(*C.GtkWindow)(parent.Native()),
+				(C.GtkDialogFlags)(flags),
+			)
+			runtime.KeepAlive(parent)
+
+			return wrapDialog(externglib.Take(unsafe.Pointer(c)))
+		}
+	`)
+
+	return nil
+}
+
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
-	"GLib-2": {GioArrayUseBytes, GLibAliases, GLibLogs, GLibDateTime},
+	"GLib-2": {ImportGError, GioArrayUseBytes, GLibAliases, GLibLogs, GLibDateTime},
 	"Gio-2":  {ImportGError},
-	"Gtk-3":  {ImportGError},
-	"Gtk-4":  {ImportGError}, // for the marshaler
+	"Gtk-3":  {ImportGError, GtkNewDialog},
+	"Gtk-4":  {ImportGError, GtkNewDialog},
 }
 
 // Appends contains the contents of files that are appended into generated

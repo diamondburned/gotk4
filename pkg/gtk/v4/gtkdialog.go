@@ -15,6 +15,9 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// GtkWidget* _gotk4_gtk_dialog_new2(const gchar* title, GtkWindow* parent, GtkDialogFlags flags) {
+// 	return gtk_dialog_new_with_buttons(title, parent, flags, NULL, NULL);
+// }
 import "C"
 
 func init() {
@@ -605,4 +608,23 @@ func (dialog *Dialog) ConnectClose(f func()) externglib.SignalHandle {
 // clicked.
 func (dialog *Dialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
 	return dialog.Connect("response", f)
+}
+
+// NewDialogWithFlags is a slightly more advanced version of NewDialog,
+// allowing the user to construct a new dialog with the given
+// constructor-only dialog flags.
+//
+// It is a wrapper around Gtk.Dialog.new_with_buttons in C.
+func NewDialogWithFlags(title string, parent *gtk.Window, flags gtk.DialogFlags) *gtk.Dialog {
+	ctitle := C.CString(title)
+	defer C.free(unsafe.Pointer(ctitle))
+
+	w := C._gotk4_gtk_dialog_new2(
+		(*C.gchar)(ctitle),
+		(*C.GtkWindow)(parent.Native()),
+		(C.GtkDialogFlags)(flags),
+	)
+	runtime.KeepAlive(parent)
+
+	return wrapDialog(externglib.Take(unsafe.Pointer(c)))
 }

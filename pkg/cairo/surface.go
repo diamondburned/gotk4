@@ -4,11 +4,15 @@ package cairo
 // #include <cairo.h>
 // #include <cairo-gobject.h>
 // #include <cairo-pdf.h>
+// cairo_status_t _gotk4_cairo_write_func(void*, unsigned char*, unsigned int);
 import "C"
 
 import (
+	"io"
 	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 )
 
 /*
@@ -267,6 +271,46 @@ func (v *Surface) WriteToPNG(fileName string) error {
 	defer C.free(unsafe.Pointer(cstr))
 
 	status := Status(C.cairo_surface_write_to_png(v.surface, cstr))
+
+	if status != STATUS_SUCCESS {
+		return ErrorStatus(status)
+	}
+
+	return nil
+}
+
+type writerBox struct {
+	w io.Writer
+}
+
+//export _gotk4_cairo_write_func
+func _gotk4_cairo_write_func(userdata unsafe.Pointer, data *C.uchar, len C.uint) C.cairo_status_t {
+	wb, ok := gbox.Get(uintptr(unsafe.Pointer(userdata))).(writerBox)
+	if !ok {
+		return C.CAIRO_STATUS_WRITE_ERROR
+	}
+
+	bytes := unsafe.Slice((*byte)(unsafe.Pointer(data)), uint(len))
+
+	_, err := wb.w.Write(bytes)
+	if err != nil {
+		return C.CAIRO_STATUS_WRITE_ERROR
+	}
+
+	return C.CAIRO_STATUS_SUCCESS
+}
+
+// WriteToPNGWriter is a wrapper around cairo_surface_write_png_stream(). It
+// writes the Cairo surface to the given io.Writer in PNG format.
+func (v *Surface) WriteToPNGWriter(w io.Writer) error {
+	dataptr := gbox.Assign(writerBox{w})
+	defer gbox.Delete(dataptr)
+
+	status := Status(C.cairo_surface_write_to_png_stream(
+		v.surface,
+		(*[0]byte)(C._gotk4_cairo_write_func),
+		unsafe.Pointer(dataptr),
+	))
 
 	if status != STATUS_SUCCESS {
 		return ErrorStatus(status)

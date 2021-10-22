@@ -85,7 +85,7 @@ func NewUnixFDListFromArray(fds []int) *UnixFDList {
 	var _cret *C.GUnixFDList // in
 
 	_arg2 = (C.gint)(len(fds))
-	_arg1 = (*C.gint)(C.malloc(C.ulong(len(fds)) * C.ulong(C.sizeof_gint)))
+	_arg1 = (*C.gint)(C.malloc(C.size_t(len(fds)) * C.size_t(C.sizeof_gint)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.gint)(_arg1), len(fds))

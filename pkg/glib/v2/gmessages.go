@@ -445,7 +445,7 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
@@ -537,7 +537,7 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Ha
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
@@ -663,7 +663,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
@@ -744,7 +744,7 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.H
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
@@ -795,7 +795,7 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))

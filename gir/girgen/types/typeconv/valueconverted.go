@@ -465,7 +465,7 @@ func (value *ValueConverted) cmalloc(lenOf string, add1 bool) string {
 		lenOf += "+1"
 	}
 
-	return fmt.Sprintf("C.malloc(C.ulong(%s) * C.ulong(%s))", lenOf, value.csizeof())
+	return fmt.Sprintf("C.malloc(C.size_t(%s) * C.size_t(%s))", lenOf, value.csizeof())
 }
 
 func (value *ValueConverted) csizeof() string {
@@ -476,7 +476,7 @@ func (value *ValueConverted) csizeof() string {
 
 	if value.Resolved == nil {
 		// Erroneous case.
-		return value.ptrsz()
+		return "/* uncertain */" + value.ptrsz()
 	}
 
 	return "C.sizeof_" + types.CleanCType(value.Resolved.CType, true)

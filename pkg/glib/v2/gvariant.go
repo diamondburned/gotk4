@@ -538,7 +538,7 @@ func NewVariantBytestring(str []byte) *Variant {
 	var _arg1 *C.gchar    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (*C.gchar)(C.malloc(C.ulong(len(str) + 1)))
+	_arg1 = (*C.gchar)(C.malloc(C.size_t(len(str)+1) * C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
 
 	_cret = C.g_variant_new_bytestring(_arg1)
@@ -565,7 +565,7 @@ func NewVariantBytestringArray(strv []string) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg2 = (C.gssize)(len(strv))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.size_t(len(strv)) * C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(strv))
@@ -867,7 +867,7 @@ func NewVariantObjv(strv []string) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg2 = (C.gssize)(len(strv))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.size_t(len(strv)) * C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(strv))
@@ -951,7 +951,7 @@ func NewVariantStrv(strv []string) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg2 = (C.gssize)(len(strv))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.size_t(len(strv)) * C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(strv))

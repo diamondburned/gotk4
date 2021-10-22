@@ -163,7 +163,7 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg2 = (C.gint)(len(entries))
-	_arg1 = (*C.GActionEntry)(C.malloc(C.ulong(len(entries)) * C.ulong(C.sizeof_GActionEntry)))
+	_arg1 = (*C.GActionEntry)(C.malloc(C.size_t(len(entries)) * C.size_t(C.sizeof_GActionEntry)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GActionEntry)(_arg1), len(entries))

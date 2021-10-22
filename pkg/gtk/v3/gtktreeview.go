@@ -753,7 +753,7 @@ func (treeView *TreeView) EnableModelDragDest(targets []TargetEntry, actions gdk
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
 	_arg2 = (C.gint)(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(C.malloc(C.ulong(len(targets)) * C.ulong(C.sizeof_GtkTargetEntry)))
+	_arg1 = (*C.GtkTargetEntry)(C.malloc(C.size_t(len(targets)) * C.size_t(C.sizeof_GtkTargetEntry)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))
@@ -788,7 +788,7 @@ func (treeView *TreeView) EnableModelDragSource(startButtonMask gdk.ModifierType
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg3 = (C.gint)(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.ulong(len(targets)) * C.ulong(C.sizeof_GtkTargetEntry)))
+	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.size_t(len(targets)) * C.size_t(C.sizeof_GtkTargetEntry)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GtkTargetEntry)(_arg2), len(targets))

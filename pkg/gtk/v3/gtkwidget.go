@@ -1292,7 +1292,7 @@ func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, act
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkDestDefaults(flags)
 	_arg3 = (C.gint)(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.ulong(len(targets)) * C.ulong(C.sizeof_GtkTargetEntry)))
+	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.size_t(len(targets)) * C.size_t(C.sizeof_GtkTargetEntry)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GtkTargetEntry)(_arg2), len(targets))
@@ -1496,7 +1496,7 @@ func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg3 = (C.gint)(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.ulong(len(targets)) * C.ulong(C.sizeof_GtkTargetEntry)))
+	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.size_t(len(targets)) * C.size_t(C.sizeof_GtkTargetEntry)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GtkTargetEntry)(_arg2), len(targets))

@@ -38,7 +38,7 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 
 	_arg1 = C.int(extraSpace)
 	_arg2 = (C.guint)(len(sizes))
-	_arg3 = (*C.GtkRequestedSize)(C.malloc(C.ulong(len(sizes)) * C.ulong(C.sizeof_GtkRequestedSize)))
+	_arg3 = (*C.GtkRequestedSize)(C.malloc(C.size_t(len(sizes)) * C.size_t(C.sizeof_GtkRequestedSize)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.GtkRequestedSize)(_arg3), len(sizes))

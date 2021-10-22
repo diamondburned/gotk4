@@ -140,8 +140,8 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// Over-malloc once to have the zero terminator.
 		value.header.Import("unsafe")
 		value.p.Linef(
-			"%s = (%s)(C.malloc(C.ulong(len(%s) + 1)))",
-			value.Out.Set, value.Out.Type, value.InName,
+			"%s = (%s)(%s)",
+			value.Out.Set, value.Out.Type, inner.cmalloc(value.InName, true),
 		)
 		value.p.Linef(
 			"copy(unsafe.Slice((*byte)(unsafe.Pointer(%s)), len(%s)), %[2]s)",

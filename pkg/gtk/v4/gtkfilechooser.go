@@ -266,7 +266,7 @@ func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
-		_arg3 = (**C.char)(C.malloc(C.ulong(len(options)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		_arg3 = (**C.char)(C.malloc(C.size_t(len(options)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(options)+1)
@@ -279,7 +279,7 @@ func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []
 		}
 	}
 	{
-		_arg4 = (**C.char)(C.malloc(C.ulong(len(optionLabels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		_arg4 = (**C.char)(C.malloc(C.size_t(len(optionLabels)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionLabels)+1)

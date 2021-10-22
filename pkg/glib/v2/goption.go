@@ -315,7 +315,7 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 
 	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 	{
-		_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong(len(entries)+1) * C.ulong(C.sizeof_GOptionEntry)))
+		_arg1 = (*C.GOptionEntry)(C.malloc(C.size_t(len(entries)+1) * C.size_t(C.sizeof_GOptionEntry)))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(entries)+1)

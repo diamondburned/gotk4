@@ -841,7 +841,7 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedActionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(accels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.gchar)(C.malloc(C.size_t(len(accels)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(accels)+1)

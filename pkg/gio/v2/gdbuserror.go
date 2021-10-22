@@ -225,7 +225,7 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *ui
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gsize)(unsafe.Pointer(quarkVolatile))
 	_arg4 = (C.guint)(len(entries))
-	_arg3 = (*C.GDBusErrorEntry)(C.malloc(C.ulong(len(entries)) * C.ulong(C.sizeof_GDBusErrorEntry)))
+	_arg3 = (*C.GDBusErrorEntry)(C.malloc(C.size_t(len(entries)) * C.size_t(C.sizeof_GDBusErrorEntry)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.GDBusErrorEntry)(_arg3), len(entries))

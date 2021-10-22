@@ -324,7 +324,7 @@ func (self *DropTarget) SetGTypes(types []externglib.Type) {
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 	_arg2 = (C.gsize)(len(types))
-	_arg1 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
+	_arg1 = (*C.GType)(C.malloc(C.size_t(len(types)) * C.size_t(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GType)(_arg1), len(types))

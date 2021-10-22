@@ -176,7 +176,7 @@ func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, i
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	{
-		_arg1 = (**C.char)(C.malloc(C.ulong(len(mimeTypes)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.char)(C.malloc(C.size_t(len(mimeTypes)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(mimeTypes)+1)

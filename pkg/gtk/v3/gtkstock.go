@@ -633,7 +633,7 @@ func StockAdd(items []StockItem) {
 	var _arg2 C.guint
 
 	_arg2 = (C.guint)(len(items))
-	_arg1 = (*C.GtkStockItem)(C.malloc(C.ulong(len(items)) * C.ulong(C.sizeof_GtkStockItem)))
+	_arg1 = (*C.GtkStockItem)(C.malloc(C.size_t(len(items)) * C.size_t(C.sizeof_GtkStockItem)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkStockItem)(_arg1), len(items))
@@ -660,7 +660,7 @@ func StockAddStatic(items []StockItem) {
 	var _arg2 C.guint
 
 	_arg2 = (C.guint)(len(items))
-	_arg1 = (*C.GtkStockItem)(C.malloc(C.ulong(len(items)) * C.ulong(C.sizeof_GtkStockItem)))
+	_arg1 = (*C.GtkStockItem)(C.malloc(C.size_t(len(items)) * C.size_t(C.sizeof_GtkStockItem)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkStockItem)(_arg1), len(items))

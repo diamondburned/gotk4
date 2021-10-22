@@ -383,7 +383,7 @@ func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry)
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	{
-		_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong(len(entries)+1) * C.ulong(C.sizeof_GOptionEntry)))
+		_arg1 = (*C.GOptionEntry)(C.malloc(C.size_t(len(entries)+1) * C.size_t(C.sizeof_GOptionEntry)))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(entries)+1)
@@ -740,7 +740,7 @@ func (application *Application) Open(files []Filer, hint string) {
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg2 = (C.gint)(len(files))
-	_arg1 = (**C.GFile)(C.malloc(C.ulong(len(files)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.GFile)(C.malloc(C.size_t(len(files)) * C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.GFile)(_arg1), len(files))
@@ -934,7 +934,7 @@ func (application *Application) Run(argv []string) int {
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (C.int)(len(argv))
-	_arg2 = (**C.char)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	_arg2 = (**C.char)(C.malloc(C.size_t(len(argv)) * C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((**C.char)(_arg2), len(argv))

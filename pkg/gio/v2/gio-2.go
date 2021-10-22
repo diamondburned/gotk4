@@ -5836,7 +5836,7 @@ func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 	var _cerr *C.GError          // in
 
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(argv)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(argv)+1)
@@ -6824,7 +6824,7 @@ func (self *SubprocessLauncher) SetEnviron(env []string) {
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(self.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(env)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(env)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(env)+1)
@@ -7015,7 +7015,7 @@ func (self *SubprocessLauncher) Spawnv(argv []string) (*Subprocess, error) {
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(self.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(argv)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(argv)+1)

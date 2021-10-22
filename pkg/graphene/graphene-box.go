@@ -467,7 +467,7 @@ func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 	_arg1 = (C.uint)(len(vectors))
-	_arg2 = (*C.graphene_vec3_t)(C.malloc(C.ulong(len(vectors)) * C.ulong(C.sizeof_graphene_vec3_t)))
+	_arg2 = (*C.graphene_vec3_t)(C.malloc(C.size_t(len(vectors)) * C.size_t(C.sizeof_graphene_vec3_t)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.graphene_vec3_t)(_arg2), len(vectors))

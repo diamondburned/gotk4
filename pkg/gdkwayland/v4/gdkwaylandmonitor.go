@@ -40,5 +40,3 @@ func wrapWaylandMonitor(obj *externglib.Object) *WaylandMonitor {
 func marshalWaylandMonitorrer(p uintptr) (interface{}, error) {
 	return wrapWaylandMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*WaylandMonitor) privateWaylandMonitor() {}

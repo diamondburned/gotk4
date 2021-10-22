@@ -105,21 +105,14 @@ type MenuAttributeIter struct {
 	*externglib.Object
 }
 
-// MenuAttributeIterer describes MenuAttributeIter's abstract methods.
+// MenuAttributeIterer describes types inherited from class MenuAttributeIter.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type MenuAttributeIterer interface {
 	externglib.Objector
 
-	// Name gets the name of the attribute at the current iterator position, as
-	// a string.
-	Name() string
-	// GetNext: this function combines g_menu_attribute_iter_next() with
-	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
-	GetNext() (string, *glib.Variant, bool)
-	// Value gets the value of the attribute at the current iterator position.
-	Value() *glib.Variant
-	// Next attempts to advance the iterator to the next (possibly first)
-	// attribute.
-	Next() bool
+	// BaseMenuAttributeIter returns the underlying base class.
+	BaseMenuAttributeIter() *MenuAttributeIter
 }
 
 var _ MenuAttributeIterer = (*MenuAttributeIter)(nil)
@@ -251,6 +244,11 @@ func (iter *MenuAttributeIter) Next() bool {
 	return _ok
 }
 
+// BaseMenuAttributeIter returns iter.
+func (iter *MenuAttributeIter) BaseMenuAttributeIter() *MenuAttributeIter {
+	return iter
+}
+
 // MenuLinkIterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -279,19 +277,14 @@ type MenuLinkIter struct {
 	*externglib.Object
 }
 
-// MenuLinkIterer describes MenuLinkIter's abstract methods.
+// MenuLinkIterer describes types inherited from class MenuLinkIter.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type MenuLinkIterer interface {
 	externglib.Objector
 
-	// Name gets the name of the link at the current iterator position.
-	Name() string
-	// GetNext: this function combines g_menu_link_iter_next() with
-	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
-	GetNext() (string, MenuModeller, bool)
-	// Value gets the linked Model at the current iterator position.
-	Value() MenuModeller
-	// Next attempts to advance the iterator to the next (possibly first) link.
-	Next() bool
+	// BaseMenuLinkIter returns the underlying base class.
+	BaseMenuLinkIter() *MenuLinkIter
 }
 
 var _ MenuLinkIterer = (*MenuLinkIter)(nil)
@@ -428,6 +421,11 @@ func (iter *MenuLinkIter) Next() bool {
 	}
 
 	return _ok
+}
+
+// BaseMenuLinkIter returns iter.
+func (iter *MenuLinkIter) BaseMenuLinkIter() *MenuLinkIter {
+	return iter
 }
 
 // MenuModelOverrider contains methods that are overridable.
@@ -604,29 +602,14 @@ type MenuModel struct {
 	*externglib.Object
 }
 
-// MenuModeller describes MenuModel's abstract methods.
+// MenuModeller describes types inherited from class MenuModel.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type MenuModeller interface {
 	externglib.Objector
 
-	// ItemAttributeValue queries the item at position item_index in model for
-	// the attribute specified by attribute.
-	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
-	// ItemLink queries the item at position item_index in model for the link
-	// specified by link.
-	ItemLink(itemIndex int, link string) MenuModeller
-	// NItems: query the number of items in model.
-	NItems() int
-	// IsMutable queries if model is mutable.
-	IsMutable() bool
-	// ItemsChanged requests emission of the Model::items-changed signal on
-	// model.
-	ItemsChanged(position, removed, added int)
-	// IterateItemAttributes creates a AttributeIter to iterate over the
-	// attributes of the item at position item_index in model.
-	IterateItemAttributes(itemIndex int) MenuAttributeIterer
-	// IterateItemLinks creates a LinkIter to iterate over the links of the item
-	// at position item_index in model.
-	IterateItemLinks(itemIndex int) MenuLinkIterer
+	// BaseMenuModel returns the underlying base class.
+	BaseMenuModel() *MenuModel
 }
 
 var _ MenuModeller = (*MenuModel)(nil)
@@ -897,6 +880,11 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	}
 
 	return _menuLinkIter
+}
+
+// BaseMenuModel returns model.
+func (model *MenuModel) BaseMenuModel() *MenuModel {
+	return model
 }
 
 // ConnectItemsChanged: emitted when a change has occurred to the menu.

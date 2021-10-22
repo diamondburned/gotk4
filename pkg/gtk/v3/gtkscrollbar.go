@@ -120,5 +120,3 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 
 	return _scrollbar
 }
-
-func (*Scrollbar) privateScrollbar() {}

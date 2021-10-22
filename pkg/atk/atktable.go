@@ -145,7 +145,7 @@ type Table struct {
 	*externglib.Object
 }
 
-// Tabler describes Table's abstract methods.
+// Tabler describes Table's interface methods.
 type Tabler interface {
 	externglib.Objector
 

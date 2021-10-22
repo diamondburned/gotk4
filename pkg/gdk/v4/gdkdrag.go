@@ -95,33 +95,14 @@ type Drag struct {
 	*externglib.Object
 }
 
-// Dragger describes Drag's abstract methods.
+// Dragger describes types inherited from class Drag.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Dragger interface {
 	externglib.Objector
 
-	// DropDone informs GDK that the drop ended.
-	DropDone(success bool)
-	// Actions determines the bitmask of possible actions proposed by the
-	// source.
-	Actions() DragAction
-	// Content returns the GdkContentProvider associated to the GdkDrag object.
-	Content() *ContentProvider
-	// Device returns the GdkDevice associated to the GdkDrag object.
-	Device() Devicer
-	// Display gets the GdkDisplay that the drag object was created for.
-	Display() *Display
-	// DragSurface returns the surface on which the drag icon should be rendered
-	// during the drag operation.
-	DragSurface() Surfacer
-	// Formats retrieves the formats supported by this GdkDrag object.
-	Formats() *ContentFormats
-	// SelectedAction determines the action chosen by the drag destination.
-	SelectedAction() DragAction
-	// Surface returns the GdkSurface where the drag originates.
-	Surface() Surfacer
-	// SetHotspot sets the position of the drag surface that will be kept under
-	// the cursor hotspot.
-	SetHotspot(hotX, hotY int)
+	// BaseDrag returns the underlying base class.
+	BaseDrag() *Drag
 }
 
 var _ Dragger = (*Drag)(nil)
@@ -374,16 +355,21 @@ func (drag *Drag) SetHotspot(hotX, hotY int) {
 	runtime.KeepAlive(hotY)
 }
 
+// BaseDrag returns drag.
+func (drag *Drag) BaseDrag() *Drag {
+	return drag
+}
+
 // ConnectCancel: emitted when the drag operation is cancelled.
 func (drag *Drag) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
 	return drag.Connect("cancel", f)
 }
 
-// ConnectDndFinished: emitted when the destination side has finished reading
+// ConnectDNDFinished: emitted when the destination side has finished reading
 // all data.
 //
 // The drag object can now free all miscellaneous data.
-func (drag *Drag) ConnectDndFinished(f func()) externglib.SignalHandle {
+func (drag *Drag) ConnectDNDFinished(f func()) externglib.SignalHandle {
 	return drag.Connect("dnd-finished", f)
 }
 

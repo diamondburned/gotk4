@@ -50,5 +50,3 @@ func wrapRangeAccessible(obj *externglib.Object) *RangeAccessible {
 func marshalRangeAccessibler(p uintptr) (interface{}, error) {
 	return wrapRangeAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*RangeAccessible) privateRangeAccessible() {}

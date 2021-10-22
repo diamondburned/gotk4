@@ -117,8 +117,6 @@ func marshalShortcutsWindower(p uintptr) (interface{}, error) {
 	return wrapShortcutsWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*ShortcutsWindow) privateShortcutsWindow() {}
-
 // ConnectClose: emitted when the user uses a keybinding to close the window.
 //
 // This is a keybinding signal (class.SignalAction.html).

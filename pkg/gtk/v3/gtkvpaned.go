@@ -75,5 +75,3 @@ func NewVPaned() *VPaned {
 
 	return _vPaned
 }
-
-func (*VPaned) privateVPaned() {}

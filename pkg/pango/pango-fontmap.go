@@ -68,27 +68,14 @@ type FontMap struct {
 	*externglib.Object
 }
 
-// FontMapper describes FontMap's abstract methods.
+// FontMapper describes types inherited from class FontMap.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type FontMapper interface {
 	externglib.Objector
 
-	// Changed forces a change in the context, which will cause any PangoContext
-	// using this fontmap to change.
-	Changed()
-	// CreateContext creates a PangoContext connected to fontmap.
-	CreateContext() *Context
-	// Family gets a font family by name.
-	Family(name string) FontFamilier
-	// Serial returns the current serial number of fontmap.
-	Serial() uint
-	// ListFamilies: list all families for a fontmap.
-	ListFamilies() []FontFamilier
-	// LoadFont: load the font in the fontmap that is the closest match for
-	// desc.
-	LoadFont(context *Context, desc *FontDescription) Fonter
-	// LoadFontset: load a set of fonts in the fontmap that can be used to
-	// render a font matching desc.
-	LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter
+	// BaseFontMap returns the underlying base class.
+	BaseFontMap() *FontMap
 }
 
 var _ FontMapper = (*FontMap)(nil)
@@ -328,4 +315,9 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 	}
 
 	return _fontset
+}
+
+// BaseFontMap returns fontmap.
+func (fontmap *FontMap) BaseFontMap() *FontMap {
+	return fontmap
 }

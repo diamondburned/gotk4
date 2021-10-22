@@ -52,7 +52,7 @@ type PrintOperationPreview struct {
 	*externglib.Object
 }
 
-// PrintOperationPreviewer describes PrintOperationPreview's abstract methods.
+// PrintOperationPreviewer describes PrintOperationPreview's interface methods.
 type PrintOperationPreviewer interface {
 	externglib.Objector
 

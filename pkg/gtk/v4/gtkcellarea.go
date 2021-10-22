@@ -342,122 +342,14 @@ type CellArea struct {
 	*externglib.Object
 }
 
-// CellAreaer describes CellArea's abstract methods.
+// CellAreaer describes types inherited from class CellArea.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type CellAreaer interface {
 	externglib.Objector
 
-	// Activate activates area, usually by activating the currently focused
-	// cell, however some subclasses which embed widgets in the area can also
-	// activate a widget if it currently has the focus.
-	Activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
-	// ActivateCell: this is used by CellArea subclasses when handling events to
-	// activate cells, the base CellArea class activates cells for keyboard
-	// events for free in its own GtkCellArea->activate() implementation.
-	ActivateCell(widget Widgetter, renderer CellRendererer, event gdk.Eventer, cellArea *gdk.Rectangle, flags CellRendererState) bool
-	// Add adds renderer to area with the default child cell properties.
-	Add(renderer CellRendererer)
-	// AddFocusSibling adds sibling to renderer’s focusable area, focus will be
-	// drawn around renderer and all of its siblings if renderer can focus for a
-	// given row.
-	AddFocusSibling(renderer, sibling CellRendererer)
-	// ApplyAttributes applies any connected attributes to the renderers in area
-	// by pulling the values from tree_model.
-	ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
-	// AttributeConnect connects an attribute to apply values from column for
-	// the TreeModel in use.
-	AttributeConnect(renderer CellRendererer, attribute string, column int)
-	// AttributeDisconnect disconnects attribute for the renderer in area so
-	// that attribute will no longer be updated with values from the model.
-	AttributeDisconnect(renderer CellRendererer, attribute string)
-	// AttributeGetColumn returns the model column that an attribute has been
-	// mapped to, or -1 if the attribute is not mapped.
-	AttributeGetColumn(renderer CellRendererer, attribute string) int
-	// CellGetProperty gets the value of a cell property for renderer in area.
-	CellGetProperty(renderer CellRendererer, propertyName string, value *externglib.Value)
-	// CellSetProperty sets a cell property for renderer in area.
-	CellSetProperty(renderer CellRendererer, propertyName string, value *externglib.Value)
-	// CopyContext: this is sometimes needed for cases where rows need to share
-	// alignments in one orientation but may be separately grouped in the
-	// opposing orientation.
-	CopyContext(context *CellAreaContext) *CellAreaContext
-	// CreateContext creates a CellAreaContext to be used with area for all
-	// purposes.
-	CreateContext() *CellAreaContext
-	// Event delegates event handling to a CellArea.
-	Event(context *CellAreaContext, widget Widgetter, event gdk.Eventer, cellArea *gdk.Rectangle, flags CellRendererState) int
-	// Focus: this should be called by the area’s owning layout widget when
-	// focus is to be passed to area, or moved within area for a given direction
-	// and row data.
-	Focus(direction DirectionType) bool
-	// Foreach calls callback for every CellRenderer in area.
-	Foreach(callback CellCallback)
-	// ForeachAlloc calls callback for every CellRenderer in area with the
-	// allocated rectangle inside cell_area.
-	ForeachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
-	// CellAllocation derives the allocation of renderer inside area if area
-	// were to be renderered in cell_area.
-	CellAllocation(context *CellAreaContext, widget Widgetter, renderer CellRendererer, cellArea *gdk.Rectangle) gdk.Rectangle
-	// CellAtPosition gets the CellRenderer at x and y coordinates inside area
-	// and optionally returns the full cell allocation for it inside cell_area.
-	CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x, y int) (gdk.Rectangle, CellRendererer)
-	// CurrentPathString gets the current TreePath string for the currently
-	// applied TreeIter, this is implicitly updated when
-	// gtk_cell_area_apply_attributes() is called and can be used to interact
-	// with renderers from CellArea subclasses.
-	CurrentPathString() string
-	// EditWidget gets the CellEditable widget currently used to edit the
-	// currently edited cell.
-	EditWidget() CellEditabler
-	// EditedCell gets the CellRenderer in area that is currently being edited.
-	EditedCell() CellRendererer
-	// FocusCell retrieves the currently focused cell for area.
-	FocusCell() CellRendererer
-	// FocusFromSibling gets the CellRenderer which is expected to be focusable
-	// for which renderer is, or may be a sibling.
-	FocusFromSibling(renderer CellRendererer) CellRendererer
-	// FocusSiblings gets the focus sibling cell renderers for renderer.
-	FocusSiblings(renderer CellRendererer) []CellRendererer
-	// PreferredHeight retrieves a cell area’s initial minimum and natural
-	// height.
-	PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int, naturalHeight int)
-	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
-	// height if it would be given the specified width.
-	PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight int, naturalHeight int)
-	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
-	PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth int, naturalWidth int)
-	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
-	// if it would be given the specified height.
-	PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth int, naturalWidth int)
-	// RequestMode gets whether the area prefers a height-for-width layout or a
-	// width-for-height layout.
-	RequestMode() SizeRequestMode
-	// HasRenderer checks if area contains renderer.
-	HasRenderer(renderer CellRendererer) bool
-	// InnerCellArea: this is a convenience function for CellArea
-	// implementations to get the inner area where a given CellRenderer will be
-	// rendered.
-	InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) gdk.Rectangle
-	// IsActivatable returns whether the area can do anything when activated,
-	// after applying new attributes to area.
-	IsActivatable() bool
-	// IsFocusSibling returns whether sibling is one of renderer’s focus
-	// siblings (see gtk_cell_area_add_focus_sibling()).
-	IsFocusSibling(renderer, sibling CellRendererer) bool
-	// Remove removes renderer from area.
-	Remove(renderer CellRendererer)
-	// RemoveFocusSibling removes sibling from renderer’s focus sibling list
-	// (see gtk_cell_area_add_focus_sibling()).
-	RemoveFocusSibling(renderer, sibling CellRendererer)
-	// RequestRenderer: this is a convenience function for CellArea
-	// implementations to request size for cell renderers.
-	RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgetter, forSize int) (minimumSize int, naturalSize int)
-	// SetFocusCell: explicitly sets the currently focused cell to renderer.
-	SetFocusCell(renderer CellRendererer)
-	// Snapshot snapshots area’s cells according to area’s layout onto at the
-	// given coordinates.
-	Snapshot(context *CellAreaContext, widget Widgetter, snapshot *Snapshot, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
-	// StopEditing: explicitly stops the editing of the currently edited cell.
-	StopEditing(canceled bool)
+	// BaseCellArea returns the underlying base class.
+	BaseCellArea() *CellArea
 }
 
 var _ CellAreaer = (*CellArea)(nil)
@@ -1742,6 +1634,11 @@ func (area *CellArea) StopEditing(canceled bool) {
 	C.gtk_cell_area_stop_editing(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(canceled)
+}
+
+// BaseCellArea returns area.
+func (area *CellArea) BaseCellArea() *CellArea {
+	return area
 }
 
 // ConnectAddEditable indicates that editing has started on renderer and that

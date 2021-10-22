@@ -150,43 +150,14 @@ type IMContext struct {
 	*externglib.Object
 }
 
-// IMContexter describes IMContext's abstract methods.
+// IMContexter describes types inherited from class IMContext.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type IMContexter interface {
 	externglib.Objector
 
-	// DeleteSurrounding asks the widget that the input context is attached to
-	// to delete characters around the cursor position by emitting the
-	// GtkIMContext::delete_surrounding signal.
-	DeleteSurrounding(offset, nChars int) bool
-	// FilterKeypress: allow an input method to internally handle key press and
-	// release events.
-	FilterKeypress(event *gdk.EventKey) bool
-	// FocusIn: notify the input method that the widget to which this input
-	// context corresponds has gained focus.
-	FocusIn()
-	// FocusOut: notify the input method that the widget to which this input
-	// context corresponds has lost focus.
-	FocusOut()
-	// PreeditString: retrieve the current preedit string for the input context,
-	// and a list of attributes to apply to the string.
-	PreeditString() (string, *pango.AttrList, int)
-	// Surrounding retrieves context around the insertion point.
-	Surrounding() (string, int, bool)
-	// Reset: notify the input method that a change such as a change in cursor
-	// position has been made.
-	Reset()
-	// SetClientWindow: set the client window for the input context; this is the
-	// Window in which the input appears.
-	SetClientWindow(window gdk.Windower)
-	// SetCursorLocation: notify the input method that a change in cursor
-	// position has been made.
-	SetCursorLocation(area *gdk.Rectangle)
-	// SetSurrounding sets surrounding context around the insertion point and
-	// preedit string.
-	SetSurrounding(text string, len, cursorIndex int)
-	// SetUsePreedit sets whether the IM context should use the preedit string
-	// to display feedback.
-	SetUsePreedit(usePreedit bool)
+	// BaseIMContext returns the underlying base class.
+	BaseIMContext() *IMContext
 }
 
 var _ IMContexter = (*IMContext)(nil)
@@ -476,6 +447,11 @@ func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	C.gtk_im_context_set_use_preedit(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(usePreedit)
+}
+
+// BaseIMContext returns context.
+func (context *IMContext) BaseIMContext() *IMContext {
+	return context
 }
 
 // ConnectCommit signal is emitted when a complete input sequence has been

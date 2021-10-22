@@ -46,24 +46,14 @@ type MediaFile struct {
 	MediaStream
 }
 
-// MediaFiler describes MediaFile's abstract methods.
+// MediaFiler describes types inherited from class MediaFile.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type MediaFiler interface {
 	externglib.Objector
 
-	// Clear resets the media file to be empty.
-	Clear()
-	// File returns the file that self is currently playing from.
-	File() gio.Filer
-	// InputStream returns the stream that self is currently playing from.
-	InputStream() gio.InputStreamer
-	// SetFile sets the GtkMediaFile to play the given file.
-	SetFile(file gio.Filer)
-	// SetFilename sets the `GtkMediaFile to play the given file.
-	SetFilename(filename string)
-	// SetInputStream sets the GtkMediaFile to play the given stream.
-	SetInputStream(stream gio.InputStreamer)
-	// SetResource sets the `GtkMediaFile to play the given resource.
-	SetResource(resourcePath string)
+	// BaseMediaFile returns the underlying base class.
+	BaseMediaFile() *MediaFile
 }
 
 var _ MediaFiler = (*MediaFile)(nil)
@@ -358,4 +348,9 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	C.gtk_media_file_set_resource(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resourcePath)
+}
+
+// BaseMediaFile returns self.
+func (self *MediaFile) BaseMediaFile() *MediaFile {
+	return self
 }

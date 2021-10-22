@@ -206,7 +206,7 @@ type FontChooser struct {
 	*externglib.Object
 }
 
-// FontChooserer describes FontChooser's abstract methods.
+// FontChooserer describes FontChooser's interface methods.
 type FontChooserer interface {
 	externglib.Objector
 

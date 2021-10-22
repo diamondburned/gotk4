@@ -52,5 +52,3 @@ func wrapIconViewAccessible(obj *externglib.Object) *IconViewAccessible {
 func marshalIconViewAccessibler(p uintptr) (interface{}, error) {
 	return wrapIconViewAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*IconViewAccessible) privateIconViewAccessible() {}

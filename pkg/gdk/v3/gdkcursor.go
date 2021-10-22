@@ -375,19 +375,14 @@ type Cursor struct {
 	*externglib.Object
 }
 
-// Cursorrer describes Cursor's abstract methods.
+// Cursorrer describes types inherited from class Cursor.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Cursorrer interface {
 	externglib.Objector
 
-	// CursorType returns the cursor type for this cursor.
-	CursorType() CursorType
-	// Display returns the display on which the Cursor is defined.
-	Display() *Display
-	// Image returns a Pixbuf with the image used to display the cursor.
-	Image() *gdkpixbuf.Pixbuf
-	// Surface returns a cairo image surface with the image used to display the
-	// cursor.
-	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
+	// BaseCursor returns the underlying base class.
+	BaseCursor() *Cursor
 }
 
 var _ Cursorrer = (*Cursor)(nil)
@@ -750,4 +745,9 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	}
 
 	return _xHot, _yHot, _surface
+}
+
+// BaseCursor returns cursor.
+func (cursor *Cursor) BaseCursor() *Cursor {
+	return cursor
 }

@@ -52,5 +52,3 @@ func wrapListBoxAccessible(obj *externglib.Object) *ListBoxAccessible {
 func marshalListBoxAccessibler(p uintptr) (interface{}, error) {
 	return wrapListBoxAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ListBoxAccessible) privateListBoxAccessible() {}

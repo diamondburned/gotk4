@@ -50,5 +50,3 @@ func wrapSpinnerAccessible(obj *externglib.Object) *SpinnerAccessible {
 func marshalSpinnerAccessibler(p uintptr) (interface{}, error) {
 	return wrapSpinnerAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*SpinnerAccessible) privateSpinnerAccessible() {}

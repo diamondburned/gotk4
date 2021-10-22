@@ -118,58 +118,14 @@ type InputStream struct {
 	*externglib.Object
 }
 
-// InputStreamer describes InputStream's abstract methods.
+// InputStreamer describes types inherited from class InputStream.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type InputStreamer interface {
 	externglib.Objector
 
-	// ClearPending clears the pending flag on stream.
-	ClearPending()
-	// Close closes the stream, releasing resources related to it.
-	Close(ctx context.Context) error
-	// CloseAsync requests an asynchronous closes of the stream, releasing
-	// resources related to it.
-	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
-	// CloseFinish finishes closing a stream asynchronously, started from
-	// g_input_stream_close_async().
-	CloseFinish(result AsyncResulter) error
-	// HasPending checks if an input stream has pending actions.
-	HasPending() bool
-	// IsClosed checks if an input stream is closed.
-	IsClosed() bool
-	// Read tries to read count bytes from the stream into the buffer starting
-	// at buffer.
-	Read(ctx context.Context, buffer []byte) (int, error)
-	// ReadAll tries to read count bytes from the stream into the buffer
-	// starting at buffer.
-	ReadAll(ctx context.Context, buffer []byte) (uint, error)
-	// ReadAllAsync: request an asynchronous read of count bytes from the stream
-	// into the buffer starting at buffer.
-	ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
-	// ReadAllFinish finishes an asynchronous stream read operation started with
-	// g_input_stream_read_all_async().
-	ReadAllFinish(result AsyncResulter) (uint, error)
-	// ReadAsync: request an asynchronous read of count bytes from the stream
-	// into the buffer starting at buffer.
-	ReadAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
-	// ReadBytes: like g_input_stream_read(), this tries to read count bytes
-	// from the stream in a blocking fashion.
-	ReadBytes(ctx context.Context, count uint) (*glib.Bytes, error)
-	// ReadBytesAsync: request an asynchronous read of count bytes from the
-	// stream into a new #GBytes.
-	ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
-	// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
-	// operation.
-	ReadBytesFinish(result AsyncResulter) (*glib.Bytes, error)
-	// ReadFinish finishes an asynchronous stream read operation.
-	ReadFinish(result AsyncResulter) (int, error)
-	// SetPending sets stream to have actions pending.
-	SetPending() error
-	// Skip tries to skip count bytes from the stream.
-	Skip(ctx context.Context, count uint) (int, error)
-	// SkipAsync: request an asynchronous skip of count bytes from the stream.
-	SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
-	// SkipFinish finishes a stream skip operation.
-	SkipFinish(result AsyncResulter) (int, error)
+	// BaseInputStream returns the underlying base class.
+	BaseInputStream() *InputStream
 }
 
 var _ InputStreamer = (*InputStream)(nil)
@@ -982,4 +938,9 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	}
 
 	return _gssize, _goerr
+}
+
+// BaseInputStream returns stream.
+func (stream *InputStream) BaseInputStream() *InputStream {
+	return stream
 }

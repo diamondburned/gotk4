@@ -76,5 +76,3 @@ func NewNativeSocketAddress(native cgo.Handle, len uint) *NativeSocketAddress {
 
 	return _nativeSocketAddress
 }
-
-func (*NativeSocketAddress) privateNativeSocketAddress() {}

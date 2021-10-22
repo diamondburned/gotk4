@@ -89,5 +89,3 @@ func NewVScrollbar(adjustment *Adjustment) *VScrollbar {
 
 	return _vScrollbar
 }
-
-func (*VScrollbar) privateVScrollbar() {}

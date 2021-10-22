@@ -58,7 +58,7 @@ type LoadableIcon struct {
 	Icon
 }
 
-// LoadableIconner describes LoadableIcon's abstract methods.
+// LoadableIconner describes LoadableIcon's interface methods.
 type LoadableIconner interface {
 	externglib.Objector
 

@@ -43,18 +43,14 @@ type Misc struct {
 	Widget
 }
 
-// Miscer describes Misc's abstract methods.
+// Miscer describes types inherited from class Misc.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Miscer interface {
 	externglib.Objector
 
-	// Alignment gets the X and Y alignment of the widget within its allocation.
-	Alignment() (xalign float32, yalign float32)
-	// Padding gets the padding in the X and Y directions of the widget.
-	Padding() (xpad int, ypad int)
-	// SetAlignment sets the alignment of the widget.
-	SetAlignment(xalign, yalign float32)
-	// SetPadding sets the amount of space to add around the widget.
-	SetPadding(xpad, ypad int)
+	// BaseMisc returns the underlying base class.
+	BaseMisc() *Misc
 }
 
 var _ Miscer = (*Misc)(nil)
@@ -175,4 +171,9 @@ func (misc *Misc) SetPadding(xpad, ypad int) {
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xpad)
 	runtime.KeepAlive(ypad)
+}
+
+// BaseMisc returns misc.
+func (misc *Misc) BaseMisc() *Misc {
+	return misc
 }

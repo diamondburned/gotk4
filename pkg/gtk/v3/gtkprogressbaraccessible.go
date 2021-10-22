@@ -50,5 +50,3 @@ func wrapProgressBarAccessible(obj *externglib.Object) *ProgressBarAccessible {
 func marshalProgressBarAccessibler(p uintptr) (interface{}, error) {
 	return wrapProgressBarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ProgressBarAccessible) privateProgressBarAccessible() {}

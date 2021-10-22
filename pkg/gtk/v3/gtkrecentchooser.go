@@ -191,7 +191,7 @@ type RecentChooser struct {
 	*externglib.Object
 }
 
-// RecentChooserer describes RecentChooser's abstract methods.
+// RecentChooserer describes RecentChooser's interface methods.
 type RecentChooserer interface {
 	externglib.Objector
 

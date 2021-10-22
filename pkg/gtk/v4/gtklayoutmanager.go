@@ -94,26 +94,14 @@ type LayoutManager struct {
 	*externglib.Object
 }
 
-// LayoutManagerer describes LayoutManager's abstract methods.
+// LayoutManagerer describes types inherited from class LayoutManager.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type LayoutManagerer interface {
 	externglib.Objector
 
-	// Allocate assigns the given width, height, and baseline to a widget, and
-	// computes the position and sizes of the children of the widget using the
-	// layout management policy of manager.
-	Allocate(widget Widgetter, width, height, baseline int)
-	// LayoutChild retrieves a GtkLayoutChild instance for the GtkLayoutManager,
-	// creating one if necessary.
-	LayoutChild(child Widgetter) LayoutChilder
-	// RequestMode retrieves the request mode of manager.
-	RequestMode() SizeRequestMode
-	// Widget retrieves the GtkWidget using the given GtkLayoutManager.
-	Widget() Widgetter
-	// LayoutChanged queues a resize on the GtkWidget using manager, if any.
-	LayoutChanged()
-	// Measure measures the size of the widget using manager, for the given
-	// orientation and size.
-	Measure(widget Widgetter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	// BaseLayoutManager returns the underlying base class.
+	BaseLayoutManager() *LayoutManager
 }
 
 var _ LayoutManagerer = (*LayoutManager)(nil)
@@ -309,4 +297,9 @@ func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation,
 	_naturalBaseline = int(_arg7)
 
 	return _minimum, _natural, _minimumBaseline, _naturalBaseline
+}
+
+// BaseLayoutManager returns manager.
+func (manager *LayoutManager) BaseLayoutManager() *LayoutManager {
+	return manager
 }

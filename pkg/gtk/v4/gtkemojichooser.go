@@ -109,8 +109,6 @@ func NewEmojiChooser() *EmojiChooser {
 	return _emojiChooser
 }
 
-func (*EmojiChooser) privateEmojiChooser() {}
-
 // ConnectEmojiPicked: emitted when the user selects an Emoji.
 func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) externglib.SignalHandle {
 	return v.Connect("emoji-picked", f)

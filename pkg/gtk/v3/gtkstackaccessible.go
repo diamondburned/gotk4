@@ -47,5 +47,3 @@ func wrapStackAccessible(obj *externglib.Object) *StackAccessible {
 func marshalStackAccessibler(p uintptr) (interface{}, error) {
 	return wrapStackAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*StackAccessible) privateStackAccessible() {}

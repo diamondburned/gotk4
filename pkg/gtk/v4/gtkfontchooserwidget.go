@@ -85,5 +85,3 @@ func NewFontChooserWidget() *FontChooserWidget {
 
 	return _fontChooserWidget
 }
-
-func (*FontChooserWidget) privateFontChooserWidget() {}

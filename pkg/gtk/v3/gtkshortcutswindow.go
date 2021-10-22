@@ -106,8 +106,6 @@ func marshalShortcutsWindower(p uintptr) (interface{}, error) {
 	return wrapShortcutsWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*ShortcutsWindow) privateShortcutsWindow() {}
-
 // ConnectClose signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user uses a keybinding to close the window.
 //

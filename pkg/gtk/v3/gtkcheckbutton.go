@@ -162,5 +162,3 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 
 	return _checkButton
 }
-
-func (*CheckButton) privateCheckButton() {}

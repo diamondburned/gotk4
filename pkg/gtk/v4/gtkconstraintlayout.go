@@ -558,5 +558,3 @@ func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
 func marshalConstraintLayoutChilder(p uintptr) (interface{}, error) {
 	return wrapConstraintLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ConstraintLayoutChild) privateConstraintLayoutChild() {}

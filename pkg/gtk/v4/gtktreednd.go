@@ -133,7 +133,7 @@ type TreeDragDest struct {
 	*externglib.Object
 }
 
-// TreeDragDester describes TreeDragDest's abstract methods.
+// TreeDragDester describes TreeDragDest's interface methods.
 type TreeDragDester interface {
 	externglib.Objector
 
@@ -252,7 +252,7 @@ type TreeDragSource struct {
 	*externglib.Object
 }
 
-// TreeDragSourcer describes TreeDragSource's abstract methods.
+// TreeDragSourcer describes TreeDragSource's interface methods.
 type TreeDragSourcer interface {
 	externglib.Objector
 

@@ -137,57 +137,14 @@ type Renderer struct {
 	*externglib.Object
 }
 
-// Rendererer describes Renderer's abstract methods.
+// Rendererer describes types inherited from class Renderer.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Rendererer interface {
 	externglib.Objector
 
-	// Activate does initial setup before rendering operations on renderer.
-	Activate()
-	// Deactivate cleans up after rendering operations on renderer.
-	Deactivate()
-	// DrawErrorUnderline: draw a squiggly line that approximately covers the
-	// given rectangle in the style of an underline used to indicate a spelling
-	// error.
-	DrawErrorUnderline(x, y, width, height int)
-	// DrawGlyph draws a single glyph with coordinates in device space.
-	DrawGlyph(font Fonter, glyph Glyph, x, y float64)
-	// DrawGlyphItem draws the glyphs in glyph_item with the specified
-	// PangoRenderer, embedding the text associated with the glyphs in the
-	// output if the output format supports it.
-	DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
-	// DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
-	DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
-	// DrawLayout draws layout with the specified PangoRenderer.
-	DrawLayout(layout *Layout, x, y int)
-	// DrawLayoutLine draws line with the specified PangoRenderer.
-	DrawLayoutLine(line *LayoutLine, x, y int)
-	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
-	// with the specified PangoRenderer.
-	DrawRectangle(part RenderPart, x, y, width, height int)
-	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
-	// X axis using the given PangoRenderer; coordinates are in device space.
-	DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
-	// Alpha gets the current alpha for the specified part.
-	Alpha(part RenderPart) uint16
-	// Color gets the current rendering color for the specified part.
-	Color(part RenderPart) *Color
-	// Layout gets the layout currently being rendered using renderer.
-	Layout() *Layout
-	// LayoutLine gets the layout line currently being rendered using renderer.
-	LayoutLine() *LayoutLine
-	// Matrix gets the transformation matrix that will be applied when
-	// rendering.
-	Matrix() *Matrix
-	// PartChanged informs Pango that the way that the rendering is done for
-	// part has changed.
-	PartChanged(part RenderPart)
-	// SetAlpha sets the alpha for part of the rendering.
-	SetAlpha(part RenderPart, alpha uint16)
-	// SetColor sets the color for part of the rendering.
-	SetColor(part RenderPart, color *Color)
-	// SetMatrix sets the transformation matrix that will be applied when
-	// rendering.
-	SetMatrix(matrix *Matrix)
+	// BaseRenderer returns the underlying base class.
+	BaseRenderer() *Renderer
 }
 
 var _ Rendererer = (*Renderer)(nil)
@@ -743,4 +700,9 @@ func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	C.pango_renderer_set_matrix(_arg0, _arg1)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(matrix)
+}
+
+// BaseRenderer returns renderer.
+func (renderer *Renderer) BaseRenderer() *Renderer {
+	return renderer
 }

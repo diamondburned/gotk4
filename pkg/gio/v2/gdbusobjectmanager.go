@@ -62,7 +62,7 @@ type DBusObjectManager struct {
 	*externglib.Object
 }
 
-// DBusObjectManagerer describes DBusObjectManager's abstract methods.
+// DBusObjectManagerer describes DBusObjectManager's interface methods.
 type DBusObjectManagerer interface {
 	externglib.Objector
 

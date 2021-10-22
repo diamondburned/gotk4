@@ -89,68 +89,14 @@ type TLSConnection struct {
 	IOStream
 }
 
-// TLSConnectioner describes TLSConnection's abstract methods.
+// TLSConnectioner describes types inherited from class TLSConnection.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type TLSConnectioner interface {
 	externglib.Objector
 
-	// EmitAcceptCertificate: used by Connection implementations to emit the
-	// Connection::accept-certificate signal.
-	EmitAcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
-	// Certificate gets conn's certificate, as set by
-	// g_tls_connection_set_certificate().
-	Certificate() TLSCertificater
-	// ChannelBindingData: query the TLS backend for TLS channel binding data of
-	// type for conn.
-	ChannelBindingData(typ TLSChannelBindingType) ([]byte, error)
-	// Database gets the certificate database that conn uses to verify peer
-	// certificates.
-	Database() TLSDatabaser
-	// Interaction: get the object that will be used to interact with the user.
-	Interaction() *TLSInteraction
-	// NegotiatedProtocol gets the name of the application-layer protocol
-	// negotiated during the handshake.
-	NegotiatedProtocol() string
-	// PeerCertificate gets conn's peer's certificate after the handshake has
-	// completed or failed.
-	PeerCertificate() TLSCertificater
-	// PeerCertificateErrors gets the errors associated with validating conn's
-	// peer's certificate, after the handshake has completed or failed.
-	PeerCertificateErrors() TLSCertificateFlags
-	// RehandshakeMode gets conn rehandshaking mode.
-	RehandshakeMode() TLSRehandshakeMode
-	// RequireCloseNotify tests whether or not conn expects a proper TLS close
-	// notification when the connection is closed.
-	RequireCloseNotify() bool
-	// UseSystemCertDB gets whether conn uses the system certificate database to
-	// verify peer certificates.
-	UseSystemCertDB() bool
-	// Handshake attempts a TLS handshake on conn.
-	Handshake(ctx context.Context) error
-	// HandshakeAsync: asynchronously performs a TLS handshake on conn.
-	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
-	// HandshakeFinish: finish an asynchronous TLS handshake operation.
-	HandshakeFinish(result AsyncResulter) error
-	// SetAdvertisedProtocols sets the list of application-layer protocols to
-	// advertise that the caller is willing to speak on this connection.
-	SetAdvertisedProtocols(protocols []string)
-	// SetCertificate: this sets the certificate that conn will present to its
-	// peer during the TLS handshake.
-	SetCertificate(certificate TLSCertificater)
-	// SetDatabase sets the certificate database that is used to verify peer
-	// certificates.
-	SetDatabase(database TLSDatabaser)
-	// SetInteraction: set the object that will be used to interact with the
-	// user.
-	SetInteraction(interaction *TLSInteraction)
-	// SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
-	// longer supported and will have no effect.
-	SetRehandshakeMode(mode TLSRehandshakeMode)
-	// SetRequireCloseNotify sets whether or not conn expects a proper TLS close
-	// notification before the connection is closed.
-	SetRequireCloseNotify(requireCloseNotify bool)
-	// SetUseSystemCertDB sets whether conn uses the system certificate database
-	// to verify peer certificates.
-	SetUseSystemCertDB(useSystemCertdb bool)
+	// BaseTLSConnection returns the underlying base class.
+	BaseTLSConnection() *TLSConnection
 }
 
 var _ TLSConnectioner = (*TLSConnection)(nil)
@@ -798,6 +744,11 @@ func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 	C.g_tls_connection_set_use_system_certdb(_arg0, _arg1)
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(useSystemCertdb)
+}
+
+// BaseTLSConnection returns conn.
+func (conn *TLSConnection) BaseTLSConnection() *TLSConnection {
+	return conn
 }
 
 // ConnectAcceptCertificate: emitted during the TLS handshake after the peer

@@ -107,5 +107,3 @@ func NewHBox(homogeneous bool, spacing int) *HBox {
 
 	return _hBox
 }
-
-func (*HBox) privateHBox() {}

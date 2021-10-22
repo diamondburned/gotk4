@@ -291,7 +291,7 @@ type Value struct {
 	*externglib.Object
 }
 
-// Valueer describes Value's abstract methods.
+// Valueer describes Value's interface methods.
 type Valueer interface {
 	externglib.Objector
 

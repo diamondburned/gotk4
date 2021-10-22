@@ -136,5 +136,3 @@ func NewDrawingArea() *DrawingArea {
 
 	return _drawingArea
 }
-
-func (*DrawingArea) privateDrawingArea() {}

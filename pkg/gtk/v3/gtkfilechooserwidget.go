@@ -96,8 +96,6 @@ func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	return _fileChooserWidget
 }
 
-func (*FileChooserWidget) privateFileChooserWidget() {}
-
 // ConnectDesktopFolder signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted when the user asks for it.
 //

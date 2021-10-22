@@ -39,7 +39,7 @@ func NewInputReader(r io.Reader) (gio.InputStreamer, error) {
 
 // StreamReader wraps around a gio.InputStreamer.
 type StreamReader struct {
-	s   gio.InputStreamer
+	s   *gio.InputStream
 	ctx context.Context
 }
 
@@ -47,7 +47,7 @@ type StreamReader struct {
 // context allows the caller to cancel all ongoing operations done on the new
 // ReadCloser.
 func Reader(ctx context.Context, s gio.InputStreamer) *StreamReader {
-	return &StreamReader{s, ctx}
+	return &StreamReader{s.BaseInputStream(), ctx}
 }
 
 // Read implements io.Reader.
@@ -69,14 +69,14 @@ func (r *StreamReader) Close() error {
 
 // StreamWriter wraps around a gio.OutputStreamer.
 type StreamWriter struct {
-	s   gio.OutputStreamer
+	s   *gio.OutputStream
 	ctx context.Context
 }
 
 // Writer wraps a gio.OutputStreamer to provide an io.WriteCloser with flushing
 // capability.
 func Writer(ctx context.Context, s gio.OutputStreamer) *StreamWriter {
-	return &StreamWriter{s, ctx}
+	return &StreamWriter{s.BaseOutputStream(), ctx}
 }
 
 // Write implements io.Writer.

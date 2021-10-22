@@ -52,5 +52,3 @@ func NewNoOpObjectFactory() *NoOpObjectFactory {
 
 	return _noOpObjectFactory
 }
-
-func (*NoOpObjectFactory) privateNoOpObjectFactory() {}

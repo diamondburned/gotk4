@@ -345,7 +345,7 @@ func (context *DragContext) SuggestedAction() DragAction {
 	return _dragAction
 }
 
-// ManageDnd requests the drag and drop operation to be managed by context. When
+// ManageDND requests the drag and drop operation to be managed by context. When
 // a drag and drop operation becomes managed, the DragContext will internally
 // handle all input and source-side EventDND events as required by the windowing
 // system.
@@ -371,7 +371,7 @@ func (context *DragContext) SuggestedAction() DragAction {
 //    - ipcWindow: window to use for IPC messaging/events.
 //    - actions supported by the drag source.
 //
-func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bool {
+func (context *DragContext) ManageDND(ipcWindow Windower, actions DragAction) bool {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.GdkDragAction   // out
@@ -455,13 +455,13 @@ func (context *DragContext) ConnectCancel(f func(reason DragCancelReason)) exter
 	return context.Connect("cancel", f)
 }
 
-// ConnectDndFinished: drag and drop operation was finished, the drag
+// ConnectDNDFinished: drag and drop operation was finished, the drag
 // destination finished reading all data. The drag source can now free all
 // miscellaneous data.
 //
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
-func (context *DragContext) ConnectDndFinished(f func()) externglib.SignalHandle {
+func (context *DragContext) ConnectDNDFinished(f func()) externglib.SignalHandle {
 	return context.Connect("dnd-finished", f)
 }
 

@@ -40,5 +40,3 @@ func wrapWaylandSeat(obj *externglib.Object) *WaylandSeat {
 func marshalWaylandSeater(p uintptr) (interface{}, error) {
 	return wrapWaylandSeat(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*WaylandSeat) privateWaylandSeat() {}

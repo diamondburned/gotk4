@@ -52,5 +52,3 @@ func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
 func marshalExpanderAccessibler(p uintptr) (interface{}, error) {
 	return wrapExpanderAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ExpanderAccessible) privateExpanderAccessible() {}

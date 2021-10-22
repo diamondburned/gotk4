@@ -63,5 +63,3 @@ func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 func marshalImageCellAccessibler(p uintptr) (interface{}, error) {
 	return wrapImageCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ImageCellAccessible) privateImageCellAccessible() {}

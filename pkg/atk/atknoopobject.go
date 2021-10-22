@@ -117,5 +117,3 @@ func NewNoOpObject(obj *externglib.Object) *NoOpObject {
 
 	return _noOpObject
 }
-
-func (*NoOpObject) privateNoOpObject() {}

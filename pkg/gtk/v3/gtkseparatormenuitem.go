@@ -92,5 +92,3 @@ func NewSeparatorMenuItem() *SeparatorMenuItem {
 
 	return _separatorMenuItem
 }
-
-func (*SeparatorMenuItem) privateSeparatorMenuItem() {}

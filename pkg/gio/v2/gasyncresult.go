@@ -130,7 +130,7 @@ type AsyncResult struct {
 	*externglib.Object
 }
 
-// AsyncResulter describes AsyncResult's abstract methods.
+// AsyncResulter describes AsyncResult's interface methods.
 type AsyncResulter interface {
 	externglib.Objector
 

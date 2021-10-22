@@ -58,5 +58,3 @@ func wrapRadioButtonAccessible(obj *externglib.Object) *RadioButtonAccessible {
 func marshalRadioButtonAccessibler(p uintptr) (interface{}, error) {
 	return wrapRadioButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*RadioButtonAccessible) privateRadioButtonAccessible() {}

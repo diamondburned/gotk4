@@ -62,39 +62,14 @@ type DBusInterfaceSkeleton struct {
 	DBusInterface
 }
 
-// DBusInterfaceSkeletonner describes DBusInterfaceSkeleton's abstract methods.
+// DBusInterfaceSkeletonner describes types inherited from class DBusInterfaceSkeleton.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type DBusInterfaceSkeletonner interface {
 	externglib.Objector
 
-	// Export exports interface_ at object_path on connection.
-	Export(connection *DBusConnection, objectPath string) error
-	// Flush: if interface_ has outstanding changes, request for these changes
-	// to be emitted immediately.
-	Flush()
-	// Connection gets the first connection that interface_ is exported on, if
-	// any.
-	Connection() *DBusConnection
-	// Connections gets a list of the connections that interface_ is exported
-	// on.
-	Connections() []DBusConnection
-	// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
-	// of interface_.
-	Flags() DBusInterfaceSkeletonFlags
-	// Info gets D-Bus introspection information for the D-Bus interface
-	// implemented by interface_.
-	Info() *DBusInterfaceInfo
-	// ObjectPath gets the object path that interface_ is exported on, if any.
-	ObjectPath() string
-	// Properties gets all D-Bus properties for interface_.
-	Properties() *glib.Variant
-	// HasConnection checks if interface_ is exported on connection.
-	HasConnection(connection *DBusConnection) bool
-	// SetFlags sets flags describing what the behavior of skeleton should be.
-	SetFlags(flags DBusInterfaceSkeletonFlags)
-	// Unexport stops exporting interface_ on all connections it is exported on.
-	Unexport()
-	// UnexportFromConnection stops exporting interface_ on connection.
-	UnexportFromConnection(connection *DBusConnection)
+	// BaseDBusInterfaceSkeleton returns the underlying base class.
+	BaseDBusInterfaceSkeleton() *DBusInterfaceSkeleton
 }
 
 var _ DBusInterfaceSkeletonner = (*DBusInterfaceSkeleton)(nil)
@@ -370,6 +345,11 @@ func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBus
 	C.g_dbus_interface_skeleton_unexport_from_connection(_arg0, _arg1)
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)
+}
+
+// BaseDBusInterfaceSkeleton returns interface_.
+func (interface_ *DBusInterfaceSkeleton) BaseDBusInterfaceSkeleton() *DBusInterfaceSkeleton {
+	return interface_
 }
 
 // ConnectGAuthorizeMethod: emitted when a method is invoked by a remote caller

@@ -47,7 +47,7 @@ type CellAccessibleParent struct {
 	*externglib.Object
 }
 
-// CellAccessibleParenter describes CellAccessibleParent's abstract methods.
+// CellAccessibleParenter describes CellAccessibleParent's interface methods.
 type CellAccessibleParenter interface {
 	externglib.Objector
 

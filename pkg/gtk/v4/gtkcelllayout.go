@@ -228,7 +228,7 @@ type CellLayout struct {
 	*externglib.Object
 }
 
-// CellLayouter describes CellLayout's abstract methods.
+// CellLayouter describes CellLayout's interface methods.
 type CellLayouter interface {
 	externglib.Objector
 

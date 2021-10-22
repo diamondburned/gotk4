@@ -66,8 +66,6 @@ func marshalShortcutsSectioner(p uintptr) (interface{}, error) {
 	return wrapShortcutsSection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*ShortcutsSection) privateShortcutsSection() {}
-
 func (v *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) bool) externglib.SignalHandle {
 	return v.Connect("change-current-page", f)
 }

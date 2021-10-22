@@ -64,7 +64,7 @@ type ColorChooser struct {
 	*externglib.Object
 }
 
-// ColorChooserer describes ColorChooser's abstract methods.
+// ColorChooserer describes ColorChooser's interface methods.
 type ColorChooserer interface {
 	externglib.Objector
 

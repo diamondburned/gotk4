@@ -32,7 +32,7 @@ type Popup struct {
 	Surface
 }
 
-// Popupper describes Popup's abstract methods.
+// Popupper describes Popup's interface methods.
 type Popupper interface {
 	externglib.Objector
 

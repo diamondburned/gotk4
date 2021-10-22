@@ -57,8 +57,6 @@ func NewOverlayLayout() *OverlayLayout {
 	return _overlayLayout
 }
 
-func (*OverlayLayout) privateOverlayLayout() {}
-
 // OverlayLayoutChild: GtkLayoutChild subclass for children in a
 // GtkOverlayLayout.
 type OverlayLayoutChild struct {

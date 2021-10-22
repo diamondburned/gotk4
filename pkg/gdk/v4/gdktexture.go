@@ -43,16 +43,14 @@ type Texture struct {
 	Paintable
 }
 
-// Texturer describes Texture's abstract methods.
+// Texturer describes types inherited from class Texture.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Texturer interface {
 	externglib.Objector
 
-	// Height returns the height of the texture, in pixels.
-	Height() int
-	// Width returns the width of texture, in pixels.
-	Width() int
-	// SaveToPng: store the given texture to the filename as a PNG file.
-	SaveToPng(filename string) bool
+	// BaseTexture returns the underlying base class.
+	BaseTexture() *Texture
 }
 
 var _ Texturer = (*Texture)(nil)
@@ -219,4 +217,9 @@ func (texture *Texture) SaveToPng(filename string) bool {
 	}
 
 	return _ok
+}
+
+// BaseTexture returns texture.
+func (texture *Texture) BaseTexture() *Texture {
+	return texture
 }

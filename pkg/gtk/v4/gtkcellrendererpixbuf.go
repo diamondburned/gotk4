@@ -68,5 +68,3 @@ func NewCellRendererPixbuf() *CellRendererPixbuf {
 
 	return _cellRendererPixbuf
 }
-
-func (*CellRendererPixbuf) privateCellRendererPixbuf() {}

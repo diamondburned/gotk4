@@ -110,33 +110,14 @@ type IOStream struct {
 	*externglib.Object
 }
 
-// IOStreamer describes IOStream's abstract methods.
+// IOStreamer describes types inherited from class IOStream.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type IOStreamer interface {
 	externglib.Objector
 
-	// ClearPending clears the pending flag on stream.
-	ClearPending()
-	// Close closes the stream, releasing resources related to it.
-	Close(ctx context.Context) error
-	// CloseAsync requests an asynchronous close of the stream, releasing
-	// resources related to it.
-	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
-	// CloseFinish closes a stream.
-	CloseFinish(result AsyncResulter) error
-	// InputStream gets the input stream for this object.
-	InputStream() InputStreamer
-	// OutputStream gets the output stream for this object.
-	OutputStream() OutputStreamer
-	// HasPending checks if a stream has pending actions.
-	HasPending() bool
-	// IsClosed checks if a stream is closed.
-	IsClosed() bool
-	// SetPending sets stream to have actions pending.
-	SetPending() error
-	// SpliceAsync: asynchronously splice the output stream of stream1 to the
-	// input stream of stream2, and splice the output stream of stream2 to the
-	// input stream of stream1.
-	SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback)
+	// BaseIOStream returns the underlying base class.
+	BaseIOStream() *IOStream
 }
 
 var _ IOStreamer = (*IOStream)(nil)
@@ -454,6 +435,11 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(ioPriority)
 	runtime.KeepAlive(callback)
+}
+
+// BaseIOStream returns stream.
+func (stream *IOStream) BaseIOStream() *IOStream {
+	return stream
 }
 
 // IOStreamSpliceFinish finishes an asynchronous io stream splice operation.

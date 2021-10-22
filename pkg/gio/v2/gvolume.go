@@ -192,7 +192,7 @@ type Volume struct {
 	*externglib.Object
 }
 
-// Volumer describes Volume's abstract methods.
+// Volumer describes Volume's interface methods.
 type Volumer interface {
 	externglib.Objector
 

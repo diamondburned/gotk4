@@ -75,7 +75,7 @@ type ToolShell struct {
 	Widget
 }
 
-// ToolSheller describes ToolShell's abstract methods.
+// ToolSheller describes ToolShell's interface methods.
 type ToolSheller interface {
 	externglib.Objector
 

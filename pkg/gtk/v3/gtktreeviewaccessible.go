@@ -62,5 +62,3 @@ func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 func marshalTreeViewAccessibler(p uintptr) (interface{}, error) {
 	return wrapTreeViewAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*TreeViewAccessible) privateTreeViewAccessible() {}

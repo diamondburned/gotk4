@@ -29,11 +29,14 @@ type ListBase struct {
 	*externglib.Object
 }
 
-// ListBaser describes ListBase's abstract methods.
+// ListBaser describes types inherited from class ListBase.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type ListBaser interface {
 	externglib.Objector
 
-	privateListBase()
+	// BaseListBase returns the underlying base class.
+	BaseListBase() *ListBase
 }
 
 var _ ListBaser = (*ListBase)(nil)
@@ -69,4 +72,7 @@ func marshalListBaser(p uintptr) (interface{}, error) {
 	return wrapListBase(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*ListBase) privateListBase() {}
+// BaseListBase returns v.
+func (v *ListBase) BaseListBase() *ListBase {
+	return v
+}

@@ -115,35 +115,14 @@ type Permission struct {
 	*externglib.Object
 }
 
-// Permissioner describes Permission's abstract methods.
+// Permissioner describes types inherited from class Permission.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Permissioner interface {
 	externglib.Objector
 
-	// Acquire attempts to acquire the permission represented by permission.
-	Acquire(ctx context.Context) error
-	// AcquireAsync attempts to acquire the permission represented by
-	// permission.
-	AcquireAsync(ctx context.Context, callback AsyncReadyCallback)
-	// AcquireFinish collects the result of attempting to acquire the permission
-	// represented by permission.
-	AcquireFinish(result AsyncResulter) error
-	// Allowed gets the value of the 'allowed' property.
-	Allowed() bool
-	// CanAcquire gets the value of the 'can-acquire' property.
-	CanAcquire() bool
-	// CanRelease gets the value of the 'can-release' property.
-	CanRelease() bool
-	// ImplUpdate: this function is called by the #GPermission implementation to
-	// update the properties of the permission.
-	ImplUpdate(allowed, canAcquire, canRelease bool)
-	// Release attempts to release the permission represented by permission.
-	Release(ctx context.Context) error
-	// ReleaseAsync attempts to release the permission represented by
-	// permission.
-	ReleaseAsync(ctx context.Context, callback AsyncReadyCallback)
-	// ReleaseFinish collects the result of attempting to release the permission
-	// represented by permission.
-	ReleaseFinish(result AsyncResulter) error
+	// BasePermission returns the underlying base class.
+	BasePermission() *Permission
 }
 
 var _ Permissioner = (*Permission)(nil)
@@ -471,4 +450,9 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// BasePermission returns permission.
+func (permission *Permission) BasePermission() *Permission {
+	return permission
 }

@@ -81,7 +81,7 @@ type ProxyResolver struct {
 	*externglib.Object
 }
 
-// ProxyResolverer describes ProxyResolver's abstract methods.
+// ProxyResolverer describes ProxyResolver's interface methods.
 type ProxyResolverer interface {
 	externglib.Objector
 

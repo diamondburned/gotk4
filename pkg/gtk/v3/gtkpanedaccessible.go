@@ -52,5 +52,3 @@ func wrapPanedAccessible(obj *externglib.Object) *PanedAccessible {
 func marshalPanedAccessibler(p uintptr) (interface{}, error) {
 	return wrapPanedAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*PanedAccessible) privatePanedAccessible() {}

@@ -39,7 +39,7 @@ type Root struct {
 	NativeSurface
 }
 
-// Rooter describes Root's abstract methods.
+// Rooter describes Root's interface methods.
 type Rooter interface {
 	externglib.Objector
 

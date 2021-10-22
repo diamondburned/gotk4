@@ -90,8 +90,6 @@ func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	return _fileChooserWidget
 }
 
-func (*FileChooserWidget) privateFileChooserWidget() {}
-
 // ConnectDesktopFolder: emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).

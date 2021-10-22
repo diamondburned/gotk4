@@ -62,5 +62,3 @@ func wrapTextViewAccessible(obj *externglib.Object) *TextViewAccessible {
 func marshalTextViewAccessibler(p uintptr) (interface{}, error) {
 	return wrapTextViewAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*TextViewAccessible) privateTextViewAccessible() {}

@@ -36,5 +36,3 @@ func wrapX11Drag(obj *externglib.Object) *X11Drag {
 func marshalX11Dragger(p uintptr) (interface{}, error) {
 	return wrapX11Drag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*X11Drag) privateX11Drag() {}

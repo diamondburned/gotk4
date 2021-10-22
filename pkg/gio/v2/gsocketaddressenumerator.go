@@ -82,19 +82,14 @@ type SocketAddressEnumerator struct {
 	*externglib.Object
 }
 
-// SocketAddressEnumeratorrer describes SocketAddressEnumerator's abstract methods.
+// SocketAddressEnumeratorrer describes types inherited from class SocketAddressEnumerator.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type SocketAddressEnumeratorrer interface {
 	externglib.Objector
 
-	// Next retrieves the next Address from enumerator.
-	Next(ctx context.Context) (SocketAddresser, error)
-	// NextAsync: asynchronously retrieves the next Address from enumerator and
-	// then calls callback, which must call
-	// g_socket_address_enumerator_next_finish() to get the result.
-	NextAsync(ctx context.Context, callback AsyncReadyCallback)
-	// NextFinish retrieves the result of a completed call to
-	// g_socket_address_enumerator_next_async().
-	NextFinish(result AsyncResulter) (SocketAddresser, error)
+	// BaseSocketAddressEnumerator returns the underlying base class.
+	BaseSocketAddressEnumerator() *SocketAddressEnumerator
 }
 
 var _ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
@@ -242,4 +237,9 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 	}
 
 	return _socketAddress, _goerr
+}
+
+// BaseSocketAddressEnumerator returns enumerator.
+func (enumerator *SocketAddressEnumerator) BaseSocketAddressEnumerator() *SocketAddressEnumerator {
+	return enumerator
 }

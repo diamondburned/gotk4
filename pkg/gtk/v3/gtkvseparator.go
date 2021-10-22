@@ -73,5 +73,3 @@ func NewVSeparator() *VSeparator {
 
 	return _vSeparator
 }
-
-func (*VSeparator) privateVSeparator() {}

@@ -63,5 +63,3 @@ func NewCellRendererProgress() *CellRendererProgress {
 
 	return _cellRendererProgress
 }
-
-func (*CellRendererProgress) privateCellRendererProgress() {}

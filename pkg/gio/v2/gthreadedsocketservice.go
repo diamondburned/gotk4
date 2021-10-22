@@ -93,8 +93,6 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	return _threadedSocketService
 }
 
-func (*ThreadedSocketService) privateThreadedSocketService() {}
-
 // ConnectRun signal is emitted in a worker thread in response to an incoming
 // connection. This thread is dedicated to handling connection and may perform
 // blocking IO. The signal handler need not return until the connection is

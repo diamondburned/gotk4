@@ -47,5 +47,3 @@ func wrapPopoverAccessible(obj *externglib.Object) *PopoverAccessible {
 func marshalPopoverAccessibler(p uintptr) (interface{}, error) {
 	return wrapPopoverAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*PopoverAccessible) privatePopoverAccessible() {}

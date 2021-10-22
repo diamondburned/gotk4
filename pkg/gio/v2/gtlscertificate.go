@@ -65,17 +65,14 @@ type TLSCertificate struct {
 	*externglib.Object
 }
 
-// TLSCertificater describes TLSCertificate's abstract methods.
+// TLSCertificater describes types inherited from class TLSCertificate.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type TLSCertificater interface {
 	externglib.Objector
 
-	// Issuer gets the Certificate representing cert's issuer, if known.
-	Issuer() TLSCertificater
-	// IsSame: check if two Certificate objects represent the same certificate.
-	IsSame(certTwo TLSCertificater) bool
-	// Verify: this verifies cert and returns a set of CertificateFlags
-	// indicating any problems found with it.
-	Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
+	// BaseTLSCertificate returns the underlying base class.
+	BaseTLSCertificate() *TLSCertificate
 }
 
 var _ TLSCertificater = (*TLSCertificate)(nil)
@@ -380,6 +377,11 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 	_tlsCertificateFlags = TLSCertificateFlags(_cret)
 
 	return _tlsCertificateFlags
+}
+
+// BaseTLSCertificate returns cert.
+func (cert *TLSCertificate) BaseTLSCertificate() *TLSCertificate {
+	return cert
 }
 
 // TLSCertificateListNewFromFile creates one or more Certificates from the

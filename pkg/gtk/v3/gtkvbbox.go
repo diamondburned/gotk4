@@ -72,5 +72,3 @@ func NewVButtonBox() *VButtonBox {
 
 	return _vButtonBox
 }
-
-func (*VButtonBox) privateVButtonBox() {}

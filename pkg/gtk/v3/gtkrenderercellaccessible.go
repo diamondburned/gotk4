@@ -76,5 +76,3 @@ func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible 
 
 	return _rendererCellAccessible
 }
-
-func (*RendererCellAccessible) privateRendererCellAccessible() {}

@@ -53,83 +53,14 @@ type Range struct {
 	*externglib.Object
 }
 
-// Ranger describes Range's abstract methods.
+// Ranger describes types inherited from class Range.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Ranger interface {
 	externglib.Objector
 
-	// Adjustment: get the Adjustment which is the “model” object for Range.
-	Adjustment() *Adjustment
-	// FillLevel gets the current position of the fill level indicator.
-	FillLevel() float64
-	// Flippable gets the value set by gtk_range_set_flippable().
-	Flippable() bool
-	// Inverted gets the value set by gtk_range_set_inverted().
-	Inverted() bool
-	// LowerStepperSensitivity gets the sensitivity policy for the stepper that
-	// points to the 'lower' end of the GtkRange’s adjustment.
-	LowerStepperSensitivity() SensitivityType
-	// MinSliderSize: this function is useful mainly for Range subclasses.
-	MinSliderSize() int
-	// RangeRect: this function returns the area that contains the range’s
-	// trough and its steppers, in widget->window coordinates.
-	RangeRect() gdk.Rectangle
-	// RestrictToFillLevel gets whether the range is restricted to the fill
-	// level.
-	RestrictToFillLevel() bool
-	// RoundDigits gets the number of digits to round the value to when it
-	// changes.
-	RoundDigits() int
-	// ShowFillLevel gets whether the range displays the fill level graphically.
-	ShowFillLevel() bool
-	// SliderRange: this function returns sliders range along the long
-	// dimension, in widget->window coordinates.
-	SliderRange() (sliderStart int, sliderEnd int)
-	// SliderSizeFixed: this function is useful mainly for Range subclasses.
-	SliderSizeFixed() bool
-	// UpperStepperSensitivity gets the sensitivity policy for the stepper that
-	// points to the 'upper' end of the GtkRange’s adjustment.
-	UpperStepperSensitivity() SensitivityType
-	// Value gets the current value of the range.
-	Value() float64
-	// SetAdjustment sets the adjustment to be used as the “model” object for
-	// this range widget.
-	SetAdjustment(adjustment *Adjustment)
-	// SetFillLevel: set the new position of the fill level indicator.
-	SetFillLevel(fillLevel float64)
-	// SetFlippable: if a range is flippable, it will switch its direction if it
-	// is horizontal and its direction is GTK_TEXT_DIR_RTL.
-	SetFlippable(flippable bool)
-	// SetIncrements sets the step and page sizes for the range.
-	SetIncrements(step, page float64)
-	// SetInverted ranges normally move from lower to higher values as the
-	// slider moves from top to bottom or left to right.
-	SetInverted(setting bool)
-	// SetLowerStepperSensitivity sets the sensitivity policy for the stepper
-	// that points to the 'lower' end of the GtkRange’s adjustment.
-	SetLowerStepperSensitivity(sensitivity SensitivityType)
-	// SetMinSliderSize sets the minimum size of the range’s slider.
-	SetMinSliderSize(minSize int)
-	// SetRange sets the allowable values in the Range, and clamps the range
-	// value to be between min and max.
-	SetRange(min, max float64)
-	// SetRestrictToFillLevel sets whether the slider is restricted to the fill
-	// level.
-	SetRestrictToFillLevel(restrictToFillLevel bool)
-	// SetRoundDigits sets the number of digits to round the value to when it
-	// changes.
-	SetRoundDigits(roundDigits int)
-	// SetShowFillLevel sets whether a graphical fill level is show on the
-	// trough.
-	SetShowFillLevel(showFillLevel bool)
-	// SetSliderSizeFixed sets whether the range’s slider has a fixed size, or a
-	// size that depends on its adjustment’s page size.
-	SetSliderSizeFixed(sizeFixed bool)
-	// SetUpperStepperSensitivity sets the sensitivity policy for the stepper
-	// that points to the 'upper' end of the GtkRange’s adjustment.
-	SetUpperStepperSensitivity(sensitivity SensitivityType)
-	// SetValue sets the current value of the range; if the value is outside the
-	// minimum or maximum range values, it will be clamped to fit inside them.
-	SetValue(value float64)
+	// BaseRange returns the underlying base class.
+	BaseRange() *Range
 }
 
 var _ Ranger = (*Range)(nil)
@@ -741,6 +672,11 @@ func (_range *Range) SetValue(value float64) {
 	C.gtk_range_set_value(_arg0, _arg1)
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(value)
+}
+
+// BaseRange returns _range.
+func (_range *Range) BaseRange() *Range {
+	return _range
 }
 
 // ConnectAdjustBounds: emitted before clamping a value, to give the application

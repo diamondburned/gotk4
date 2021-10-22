@@ -72,8 +72,6 @@ func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	return _gestureLongPress
 }
 
-func (*GestureLongPress) privateGestureLongPress() {}
-
 // ConnectCancelled: this signal is emitted whenever a press moved too far, or
 // was released before GestureLongPress::pressed happened.
 func (v *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {

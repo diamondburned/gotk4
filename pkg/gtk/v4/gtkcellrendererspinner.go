@@ -62,5 +62,3 @@ func NewCellRendererSpinner() *CellRendererSpinner {
 
 	return _cellRendererSpinner
 }
-
-func (*CellRendererSpinner) privateCellRendererSpinner() {}

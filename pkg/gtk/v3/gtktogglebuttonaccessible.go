@@ -56,5 +56,3 @@ func wrapToggleButtonAccessible(obj *externglib.Object) *ToggleButtonAccessible 
 func marshalToggleButtonAccessibler(p uintptr) (interface{}, error) {
 	return wrapToggleButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ToggleButtonAccessible) privateToggleButtonAccessible() {}

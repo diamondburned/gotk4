@@ -127,5 +127,3 @@ func NewVScaleWithRange(min, max, step float64) *VScale {
 
 	return _vScale
 }
-
-func (*VScale) privateVScale() {}

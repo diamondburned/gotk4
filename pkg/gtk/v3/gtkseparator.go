@@ -87,5 +87,3 @@ func NewSeparator(orientation Orientation) *Separator {
 
 	return _separator
 }
-
-func (*Separator) privateSeparator() {}

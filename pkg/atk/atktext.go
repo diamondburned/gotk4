@@ -586,7 +586,7 @@ type Text struct {
 	*externglib.Object
 }
 
-// Texter describes Text's abstract methods.
+// Texter describes Text's interface methods.
 type Texter interface {
 	externglib.Objector
 

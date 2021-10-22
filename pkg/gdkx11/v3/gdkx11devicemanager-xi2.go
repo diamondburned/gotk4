@@ -38,5 +38,3 @@ func wrapX11DeviceManagerXI2(obj *externglib.Object) *X11DeviceManagerXI2 {
 func marshalX11DeviceManagerXI2er(p uintptr) (interface{}, error) {
 	return wrapX11DeviceManagerXI2(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*X11DeviceManagerXI2) privateX11DeviceManagerXI2() {}

@@ -210,5 +210,3 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 func marshalFileChooserDialogger(p uintptr) (interface{}, error) {
 	return wrapFileChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*FileChooserDialog) privateFileChooserDialog() {}

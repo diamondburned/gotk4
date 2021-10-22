@@ -81,7 +81,7 @@ type Icon struct {
 	*externglib.Object
 }
 
-// Iconner describes Icon's abstract methods.
+// Iconner describes Icon's interface methods.
 type Iconner interface {
 	externglib.Objector
 

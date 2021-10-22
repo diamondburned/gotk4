@@ -34,13 +34,14 @@ type Bin struct {
 	Container
 }
 
-// Binner describes Bin's abstract methods.
+// Binner describes types inherited from class Bin.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Binner interface {
 	externglib.Objector
 
-	// Child gets the child of the Bin, or NULL if the bin contains no child
-	// widget.
-	Child() Widgetter
+	// BaseBin returns the underlying base class.
+	BaseBin() *Bin
 }
 
 var _ Binner = (*Bin)(nil)
@@ -96,4 +97,9 @@ func (bin *Bin) Child() Widgetter {
 	}
 
 	return _widget
+}
+
+// BaseBin returns bin.
+func (bin *Bin) BaseBin() *Bin {
+	return bin
 }

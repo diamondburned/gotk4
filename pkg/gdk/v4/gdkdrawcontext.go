@@ -35,25 +35,14 @@ type DrawContext struct {
 	*externglib.Object
 }
 
-// DrawContexter describes DrawContext's abstract methods.
+// DrawContexter describes types inherited from class DrawContext.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type DrawContexter interface {
 	externglib.Objector
 
-	// BeginFrame indicates that you are beginning the process of redrawing
-	// region on the context's surface.
-	BeginFrame(region *cairo.Region)
-	// EndFrame ends a drawing operation started with
-	// gdk_draw_context_begin_frame().
-	EndFrame()
-	// Display retrieves the GdkDisplay the context is created for.
-	Display() *Display
-	// FrameRegion retrieves the region that is currently being repainted.
-	FrameRegion() *cairo.Region
-	// Surface retrieves the surface that context is bound to.
-	Surface() Surfacer
-	// IsInFrame returns TRUE if context is in the process of drawing to its
-	// surface.
-	IsInFrame() bool
+	// BaseDrawContext returns the underlying base class.
+	BaseDrawContext() *DrawContext
 }
 
 var _ DrawContexter = (*DrawContext)(nil)
@@ -227,4 +216,9 @@ func (context *DrawContext) IsInFrame() bool {
 	}
 
 	return _ok
+}
+
+// BaseDrawContext returns context.
+func (context *DrawContext) BaseDrawContext() *DrawContext {
+	return context
 }

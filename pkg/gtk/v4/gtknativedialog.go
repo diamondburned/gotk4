@@ -62,31 +62,14 @@ type NativeDialog struct {
 	*externglib.Object
 }
 
-// NativeDialogger describes NativeDialog's abstract methods.
+// NativeDialogger describes types inherited from class NativeDialog.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type NativeDialogger interface {
 	externglib.Objector
 
-	// Destroy destroys a dialog.
-	Destroy()
-	// Modal returns whether the dialog is modal.
-	Modal() bool
-	// Title gets the title of the GtkNativeDialog.
-	Title() string
-	// TransientFor fetches the transient parent for this window.
-	TransientFor() *Window
-	// Visible determines whether the dialog is visible.
-	Visible() bool
-	// Hide hides the dialog if it is visible, aborting any interaction.
-	Hide()
-	// SetModal sets a dialog modal or non-modal.
-	SetModal(modal bool)
-	// SetTitle sets the title of the GtkNativeDialog.
-	SetTitle(title string)
-	// SetTransientFor: dialog windows should be set transient for the main
-	// application window they were spawned from.
-	SetTransientFor(parent *Window)
-	// Show shows the dialog on the display.
-	Show()
+	// BaseNativeDialog returns the underlying base class.
+	BaseNativeDialog() *NativeDialog
 }
 
 var _ NativeDialogger = (*NativeDialog)(nil)
@@ -297,6 +280,11 @@ func (self *NativeDialog) Show() {
 
 	C.gtk_native_dialog_show(_arg0)
 	runtime.KeepAlive(self)
+}
+
+// BaseNativeDialog returns self.
+func (self *NativeDialog) BaseNativeDialog() *NativeDialog {
+	return self
 }
 
 // ConnectResponse: emitted when the user responds to the dialog.

@@ -214,65 +214,14 @@ type Resolver struct {
 	*externglib.Object
 }
 
-// Resolverer describes Resolver's abstract methods.
+// Resolverer describes types inherited from class Resolver.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Resolverer interface {
 	externglib.Objector
 
-	// LookupByAddress: synchronously reverse-resolves address to determine its
-	// associated hostname.
-	LookupByAddress(ctx context.Context, address *InetAddress) (string, error)
-	// LookupByAddressAsync begins asynchronously reverse-resolving address to
-	// determine its associated hostname, and eventually calls callback, which
-	// must call g_resolver_lookup_by_address_finish() to get the final result.
-	LookupByAddressAsync(ctx context.Context, address *InetAddress, callback AsyncReadyCallback)
-	// LookupByAddressFinish retrieves the result of a previous call to
-	// g_resolver_lookup_by_address_async().
-	LookupByAddressFinish(result AsyncResulter) (string, error)
-	// LookupByName: synchronously resolves hostname to determine its associated
-	// IP address(es).
-	LookupByName(ctx context.Context, hostname string) ([]InetAddress, error)
-	// LookupByNameAsync begins asynchronously resolving hostname to determine
-	// its associated IP address(es), and eventually calls callback, which must
-	// call g_resolver_lookup_by_name_finish() to get the result.
-	LookupByNameAsync(ctx context.Context, hostname string, callback AsyncReadyCallback)
-	// LookupByNameFinish retrieves the result of a call to
-	// g_resolver_lookup_by_name_async().
-	LookupByNameFinish(result AsyncResulter) ([]InetAddress, error)
-	// LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
-	// that you can modify the lookup behavior with flags.
-	LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error)
-	// LookupByNameWithFlagsAsync begins asynchronously resolving hostname to
-	// determine its associated IP address(es), and eventually calls callback,
-	// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
-	// result.
-	LookupByNameWithFlagsAsync(ctx context.Context, hostname string, flags ResolverNameLookupFlags, callback AsyncReadyCallback)
-	// LookupByNameWithFlagsFinish retrieves the result of a call to
-	// g_resolver_lookup_by_name_with_flags_async().
-	LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error)
-	// LookupRecords: synchronously performs a DNS record lookup for the given
-	// rrname and returns a list of records as #GVariant tuples.
-	LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error)
-	// LookupRecordsAsync begins asynchronously performing a DNS lookup for the
-	// given rrname, and eventually calls callback, which must call
-	// g_resolver_lookup_records_finish() to get the final result.
-	LookupRecordsAsync(ctx context.Context, rrname string, recordType ResolverRecordType, callback AsyncReadyCallback)
-	// LookupRecordsFinish retrieves the result of a previous call to
-	// g_resolver_lookup_records_async().
-	LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error)
-	// LookupService: synchronously performs a DNS SRV lookup for the given
-	// service and protocol in the given domain and returns an array of Target.
-	LookupService(ctx context.Context, service, protocol, domain string) ([]*SrvTarget, error)
-	// LookupServiceAsync begins asynchronously performing a DNS SRV lookup for
-	// the given service and protocol in the given domain, and eventually calls
-	// callback, which must call g_resolver_lookup_service_finish() to get the
-	// final result.
-	LookupServiceAsync(ctx context.Context, service, protocol, domain string, callback AsyncReadyCallback)
-	// LookupServiceFinish retrieves the result of a previous call to
-	// g_resolver_lookup_service_async().
-	LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error)
-	// SetDefault sets resolver to be the application's default resolver
-	// (reffing resolver, and unreffing the previous default resolver, if any).
-	SetDefault()
+	// BaseResolver returns the underlying base class.
+	BaseResolver() *Resolver
 }
 
 var _ Resolverer = (*Resolver)(nil)
@@ -1024,6 +973,11 @@ func (resolver *Resolver) SetDefault() {
 
 	C.g_resolver_set_default(_arg0)
 	runtime.KeepAlive(resolver)
+}
+
+// BaseResolver returns resolver.
+func (resolver *Resolver) BaseResolver() *Resolver {
+	return resolver
 }
 
 // ConnectReload: emitted when the resolver notices that the system resolver

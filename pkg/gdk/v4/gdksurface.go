@@ -36,66 +36,14 @@ type Surface struct {
 	*externglib.Object
 }
 
-// Surfacer describes Surface's abstract methods.
+// Surfacer describes types inherited from class Surface.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Surfacer interface {
 	externglib.Objector
 
-	// Beep emits a short beep associated to surface.
-	Beep()
-	// CreateCairoContext creates a new GdkCairoContext for rendering on
-	// surface.
-	CreateCairoContext() CairoContexter
-	// CreateGLContext creates a new GdkGLContext for the GdkSurface.
-	CreateGLContext() (GLContexter, error)
-	// CreateSimilarSurface: create a new Cairo surface that is as compatible as
-	// possible with the given surface.
-	CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface
-	// CreateVulkanContext creates a new GdkVulkanContext for rendering on
-	// surface.
-	CreateVulkanContext() (VulkanContexter, error)
-	// Destroy destroys the window system resources associated with surface and
-	// decrements surface's reference count.
-	Destroy()
-	// Cursor retrieves a GdkCursor pointer for the cursor currently set on the
-	// GdkSurface.
-	Cursor() *Cursor
-	// DeviceCursor retrieves a GdkCursor pointer for the device currently set
-	// on the specified GdkSurface.
-	DeviceCursor(device Devicer) *Cursor
-	// DevicePosition obtains the current device position and modifier state.
-	DevicePosition(device Devicer) (x float64, y float64, mask ModifierType, ok bool)
-	// Display gets the GdkDisplay associated with a GdkSurface.
-	Display() *Display
-	// FrameClock gets the frame clock for the surface.
-	FrameClock() FrameClocker
-	// Height returns the height of the given surface.
-	Height() int
-	// Mapped checks whether the surface has been mapped.
-	Mapped() bool
-	// ScaleFactor returns the internal scale factor that maps from surface
-	// coordinates to the actual device pixels.
-	ScaleFactor() int
-	// Width returns the width of the given surface.
-	Width() int
-	// Hide the surface.
-	Hide()
-	// IsDestroyed: check to see if a surface is destroyed.
-	IsDestroyed() bool
-	// QueueRender forces a gdk.Surface::render signal emission for surface to
-	// be scheduled.
-	QueueRender()
-	// RequestLayout: request a layout phase from the surface's frame clock.
-	RequestLayout()
-	// SetCursor sets the default mouse pointer for a GdkSurface.
-	SetCursor(cursor *Cursor)
-	// SetDeviceCursor sets a specific GdkCursor for a given device when it gets
-	// inside surface.
-	SetDeviceCursor(device Devicer, cursor *Cursor)
-	// SetInputRegion: apply the region to the surface for the purpose of event
-	// handling.
-	SetInputRegion(region *cairo.Region)
-	// SetOpaqueRegion marks a region of the GdkSurface as opaque.
-	SetOpaqueRegion(region *cairo.Region)
+	// BaseSurface returns the underlying base class.
+	BaseSurface() *Surface
 }
 
 var _ Surfacer = (*Surface)(nil)
@@ -752,6 +700,11 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	C.gdk_surface_set_opaque_region(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(region)
+}
+
+// BaseSurface returns surface.
+func (surface *Surface) BaseSurface() *Surface {
+	return surface
 }
 
 // ConnectEnterMonitor: emitted when surface starts being present on the

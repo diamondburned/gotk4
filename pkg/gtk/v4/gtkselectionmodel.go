@@ -124,7 +124,7 @@ type SelectionModel struct {
 	gio.ListModel
 }
 
-// SelectionModeller describes SelectionModel's abstract methods.
+// SelectionModeller describes SelectionModel's interface methods.
 type SelectionModeller interface {
 	externglib.Objector
 

@@ -54,7 +54,7 @@ type DBusObject struct {
 	*externglib.Object
 }
 
-// DBusObjector describes DBusObject's abstract methods.
+// DBusObjector describes DBusObject's interface methods.
 type DBusObjector interface {
 	externglib.Objector
 

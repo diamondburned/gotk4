@@ -62,7 +62,7 @@ type Image struct {
 	*externglib.Object
 }
 
-// Imager describes Image's abstract methods.
+// Imager describes Image's interface methods.
 type Imager interface {
 	externglib.Objector
 

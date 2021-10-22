@@ -56,5 +56,3 @@ func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 func marshalBooleanCellAccessibler(p uintptr) (interface{}, error) {
 	return wrapBooleanCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*BooleanCellAccessible) privateBooleanCellAccessible() {}

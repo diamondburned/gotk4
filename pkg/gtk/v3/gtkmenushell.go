@@ -76,45 +76,14 @@ type MenuShell struct {
 	Container
 }
 
-// MenuSheller describes MenuShell's abstract methods.
+// MenuSheller describes types inherited from class MenuShell.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type MenuSheller interface {
 	externglib.Objector
 
-	// ActivateItem activates the menu item within the menu shell.
-	ActivateItem(menuItem Widgetter, forceDeactivate bool)
-	// Append adds a new MenuItem to the end of the menu shell's item list.
-	Append(child *MenuItem)
-	// BindModel establishes a binding between a MenuShell and a Model.
-	BindModel(model gio.MenuModeller, actionNamespace string, withSeparators bool)
-	// Cancel cancels the selection within the menu shell.
-	Cancel()
-	// Deactivate deactivates the menu shell.
-	Deactivate()
-	// Deselect deselects the currently selected item from the menu shell, if
-	// any.
-	Deselect()
-	// ParentShell gets the parent menu shell.
-	ParentShell() Widgetter
-	// SelectedItem gets the currently selected item.
-	SelectedItem() Widgetter
-	// TakeFocus returns TRUE if the menu shell will take the keyboard focus on
-	// popup.
-	TakeFocus() bool
-	// Insert adds a new MenuItem to the menu shell’s item list at the position
-	// indicated by position.
-	Insert(child Widgetter, position int)
-	// Prepend adds a new MenuItem to the beginning of the menu shell's item
-	// list.
-	Prepend(child Widgetter)
-	// SelectFirst: select the first visible or selectable child of the menu
-	// shell; don’t select tearoff items unless the only item is a tearoff item.
-	SelectFirst(searchSensitive bool)
-	// SelectItem selects the menu item from the menu shell.
-	SelectItem(menuItem Widgetter)
-	// SetTakeFocus: if take_focus is TRUE (the default) the menu shell will
-	// take the keyboard focus so that it will receive all keyboard events which
-	// is needed to enable keyboard navigation in menus.
-	SetTakeFocus(takeFocus bool)
+	// BaseMenuShell returns the underlying base class.
+	BaseMenuShell() *MenuShell
 }
 
 var _ MenuSheller = (*MenuShell)(nil)
@@ -484,6 +453,11 @@ func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	C.gtk_menu_shell_set_take_focus(_arg0, _arg1)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(takeFocus)
+}
+
+// BaseMenuShell returns menuShell.
+func (menuShell *MenuShell) BaseMenuShell() *MenuShell {
+	return menuShell
 }
 
 // ConnectActivateCurrent: action signal that activates the current menu item

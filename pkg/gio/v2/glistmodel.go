@@ -101,7 +101,7 @@ type ListModel struct {
 	*externglib.Object
 }
 
-// ListModeller describes ListModel's abstract methods.
+// ListModeller describes ListModel's interface methods.
 type ListModeller interface {
 	externglib.Objector
 

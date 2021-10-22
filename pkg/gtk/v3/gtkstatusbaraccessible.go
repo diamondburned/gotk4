@@ -47,5 +47,3 @@ func wrapStatusbarAccessible(obj *externglib.Object) *StatusbarAccessible {
 func marshalStatusbarAccessibler(p uintptr) (interface{}, error) {
 	return wrapStatusbarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*StatusbarAccessible) privateStatusbarAccessible() {}

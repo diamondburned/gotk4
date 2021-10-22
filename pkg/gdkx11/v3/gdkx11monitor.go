@@ -36,5 +36,3 @@ func wrapX11Monitor(obj *externglib.Object) *X11Monitor {
 func marshalX11Monitorrer(p uintptr) (interface{}, error) {
 	return wrapX11Monitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*X11Monitor) privateX11Monitor() {}

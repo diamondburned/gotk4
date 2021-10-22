@@ -96,11 +96,12 @@ type MemoryMonitor struct {
 	Initable
 }
 
-// MemoryMonitorrer describes MemoryMonitor's abstract methods.
+// MemoryMonitorrer describes MemoryMonitor's interface methods.
 type MemoryMonitorrer interface {
 	externglib.Objector
 
-	privateMemoryMonitor()
+	// BaseMemoryMonitor returns the underlying base object.
+	BaseMemoryMonitor() *MemoryMonitor
 }
 
 var _ MemoryMonitorrer = (*MemoryMonitor)(nil)
@@ -117,7 +118,10 @@ func marshalMemoryMonitorrer(p uintptr) (interface{}, error) {
 	return wrapMemoryMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*MemoryMonitor) privateMemoryMonitor() {}
+// BaseMemoryMonitor returns monitor.
+func (monitor *MemoryMonitor) BaseMemoryMonitor() *MemoryMonitor {
+	return monitor
+}
 
 // ConnectLowMemoryWarning: emitted when the system is running low on free
 // memory. The signal handler should then take the appropriate action depending

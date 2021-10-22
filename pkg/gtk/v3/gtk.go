@@ -372,8 +372,6 @@ func marshalEntryIconAccessibler(p uintptr) (interface{}, error) {
 	return wrapEntryIconAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*EntryIconAccessible) privateEntryIconAccessible() {}
-
 // Init binds to the gtk_init() function. Argument parsing is not
 // supported.
 func Init() {

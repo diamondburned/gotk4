@@ -101,8 +101,6 @@ func NewCellRendererAccel() *CellRendererAccel {
 	return _cellRendererAccel
 }
 
-func (*CellRendererAccel) privateCellRendererAccel() {}
-
 // ConnectAccelCleared gets emitted when the user has removed the accelerator.
 func (accel *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) externglib.SignalHandle {
 	return accel.Connect("accel-cleared", f)

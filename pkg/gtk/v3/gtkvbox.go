@@ -113,5 +113,3 @@ func NewVBox(homogeneous bool, spacing int) *VBox {
 
 	return _vBox
 }
-
-func (*VBox) privateVBox() {}

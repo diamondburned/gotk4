@@ -157,5 +157,3 @@ func NewMemoryTexture(width, height int, format MemoryFormat, bytes *glib.Bytes,
 
 	return _memoryTexture
 }
-
-func (*MemoryTexture) privateMemoryTexture() {}

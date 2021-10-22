@@ -32,8 +32,22 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{ end }}
 	}
 
+	{{ $needsPrivate := false }}
+
 	{{ if .Abstract }}
-	// {{ .InterfaceName }} describes {{ .StructName }}'s abstract methods.
+
+	{{ if .IsClass }}
+	// {{ .InterfaceName }} describes types inherited from class {{ .StructName }}.
+	// To get the original type, the caller must assert this to an interface or
+	// another type.
+	type {{ .InterfaceName }} interface {
+		externglib.Objector
+		{{ $needsPrivate = true }}
+		// Base{{ .StructName }} returns the underlying base class.
+		Base{{ .StructName }}() *{{ .StructName }}
+	}
+	{{ else }}
+	// {{ .InterfaceName }} describes {{ .StructName }}'s interface methods.
 	type {{ .InterfaceName }} interface {
 		externglib.Objector
 
@@ -41,9 +55,12 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{- Synopsis . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
 		{{ else }}
-		private{{ .StructName }}()
+		{{ $needsPrivate = true }}
+		// Base{{ .StructName }} returns the underlying base object.
+		Base{{ .StructName }}() *{{ .StructName }}
 		{{ end -}}
 	}
+	{{ end }}
 
 	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
 	{{ end }}
@@ -85,8 +102,13 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	//
 	{{- end }}
 	func ({{ .Recv }} *{{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
-	{{ else }}
-	func (*{{ .StructName }}) private{{ $.StructName }}() {}
+	{{ end }}
+
+	{{ if $needsPrivate }}
+	// Base{{ .StructName }} returns {{ .Recv }}.
+	func ({{ .Recv }} *{{ .StructName }}) Base{{ .StructName }}() *{{ .StructName }} {
+		return {{ .Recv }}
+	}
 	{{ end }}
 
 	{{ range .Signals }}

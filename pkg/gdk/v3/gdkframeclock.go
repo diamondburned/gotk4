@@ -135,35 +135,14 @@ type FrameClock struct {
 	*externglib.Object
 }
 
-// FrameClocker describes FrameClock's abstract methods.
+// FrameClocker describes types inherited from class FrameClock.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type FrameClocker interface {
 	externglib.Objector
 
-	// BeginUpdating starts updates for an animation.
-	BeginUpdating()
-	// EndUpdating stops updates for an animation.
-	EndUpdating()
-	// CurrentTimings gets the frame timings for the current frame.
-	CurrentTimings() *FrameTimings
-	// FrameCounter maintains a 64-bit counter that increments for each frame
-	// drawn.
-	FrameCounter() int64
-	// FrameTime gets the time that should currently be used for animations.
-	FrameTime() int64
-	// HistoryStart internally keeps a history of FrameTimings objects for
-	// recent frames that can be retrieved with gdk_frame_clock_get_timings().
-	HistoryStart() int64
-	// RefreshInfo: using the frame history stored in the frame clock, finds the
-	// last known presentation time and refresh interval, and assuming that
-	// presentation times are separated by the refresh interval, predicts a
-	// presentation time that is a multiple of the refresh interval after the
-	// last presentation time, and later than base_time.
-	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
-	// Timings retrieves a FrameTimings object holding timing information for
-	// the current frame or a recent frame.
-	Timings(frameCounter int64) *FrameTimings
-	// RequestPhase asks the frame clock to run a particular phase.
-	RequestPhase(phase FrameClockPhase)
+	// BaseFrameClock returns the underlying base class.
+	BaseFrameClock() *FrameClock
 }
 
 var _ FrameClocker = (*FrameClock)(nil)
@@ -379,6 +358,11 @@ func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 	C.gdk_frame_clock_request_phase(_arg0, _arg1)
 	runtime.KeepAlive(frameClock)
 	runtime.KeepAlive(phase)
+}
+
+// BaseFrameClock returns frameClock.
+func (frameClock *FrameClock) BaseFrameClock() *FrameClock {
+	return frameClock
 }
 
 // ConnectAfterPaint: this signal ends processing of the frame. Applications

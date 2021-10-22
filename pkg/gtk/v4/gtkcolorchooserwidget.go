@@ -92,5 +92,3 @@ func NewColorChooserWidget() *ColorChooserWidget {
 
 	return _colorChooserWidget
 }
-
-func (*ColorChooserWidget) privateColorChooserWidget() {}

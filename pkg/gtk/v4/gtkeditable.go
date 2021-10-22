@@ -197,7 +197,7 @@ type Editable struct {
 	Widget
 }
 
-// Editabler describes Editable's abstract methods.
+// Editabler describes Editable's interface methods.
 type Editabler interface {
 	externglib.Objector
 

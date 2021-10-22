@@ -30,11 +30,12 @@ type ConstraintTarget struct {
 	*externglib.Object
 }
 
-// ConstraintTargetter describes ConstraintTarget's abstract methods.
+// ConstraintTargetter describes ConstraintTarget's interface methods.
 type ConstraintTargetter interface {
 	externglib.Objector
 
-	privateConstraintTarget()
+	// BaseConstraintTarget returns the underlying base object.
+	BaseConstraintTarget() *ConstraintTarget
 }
 
 var _ ConstraintTargetter = (*ConstraintTarget)(nil)
@@ -49,7 +50,10 @@ func marshalConstraintTargetter(p uintptr) (interface{}, error) {
 	return wrapConstraintTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*ConstraintTarget) privateConstraintTarget() {}
+// BaseConstraintTarget returns v.
+func (v *ConstraintTarget) BaseConstraintTarget() *ConstraintTarget {
+	return v
+}
 
 // Constraint: GtkConstraint describes a constraint between attributes of two
 // widgets, expressed as a linear equation.

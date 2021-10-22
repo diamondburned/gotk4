@@ -72,7 +72,7 @@ type Proxy struct {
 	*externglib.Object
 }
 
-// Proxier describes Proxy's abstract methods.
+// Proxier describes Proxy's interface methods.
 type Proxier interface {
 	externglib.Objector
 

@@ -45,5 +45,3 @@ func wrapWidgetAccessible(obj *externglib.Object) *WidgetAccessible {
 func marshalWidgetAccessibler(p uintptr) (interface{}, error) {
 	return wrapWidgetAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*WidgetAccessible) privateWidgetAccessible() {}

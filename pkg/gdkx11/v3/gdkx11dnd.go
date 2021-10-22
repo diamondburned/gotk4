@@ -36,5 +36,3 @@ func wrapX11DragContext(obj *externglib.Object) *X11DragContext {
 func marshalX11DragContexter(p uintptr) (interface{}, error) {
 	return wrapX11DragContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*X11DragContext) privateX11DragContext() {}

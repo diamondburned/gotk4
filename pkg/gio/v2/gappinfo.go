@@ -214,7 +214,7 @@ type AppInfo struct {
 	*externglib.Object
 }
 
-// AppInfor describes AppInfo's abstract methods.
+// AppInfor describes AppInfo's interface methods.
 type AppInfor interface {
 	externglib.Objector
 

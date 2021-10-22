@@ -89,7 +89,7 @@ type Seekable struct {
 	*externglib.Object
 }
 
-// Seekabler describes Seekable's abstract methods.
+// Seekabler describes Seekable's interface methods.
 type Seekabler interface {
 	externglib.Objector
 

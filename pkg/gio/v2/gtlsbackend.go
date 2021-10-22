@@ -54,7 +54,7 @@ type TLSBackend struct {
 	*externglib.Object
 }
 
-// TLSBackender describes TLSBackend's abstract methods.
+// TLSBackender describes TLSBackend's interface methods.
 type TLSBackender interface {
 	externglib.Objector
 

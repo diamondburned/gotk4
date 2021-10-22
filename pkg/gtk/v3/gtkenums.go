@@ -505,8 +505,8 @@ const (
 	IconSizeLargeToolbar
 	// IconSizeButton: size appropriate for buttons (16px).
 	IconSizeButton
-	// IconSizeDnd: size appropriate for drag and drop (32px).
-	IconSizeDnd
+	// IconSizeDND: size appropriate for drag and drop (32px).
+	IconSizeDND
 	// IconSizeDialog: size appropriate for dialogs (48px).
 	IconSizeDialog
 )
@@ -528,8 +528,8 @@ func (i IconSize) String() string {
 		return "LargeToolbar"
 	case IconSizeButton:
 		return "Button"
-	case IconSizeDnd:
-		return "Dnd"
+	case IconSizeDND:
+		return "DND"
 	case IconSizeDialog:
 		return "Dialog"
 	default:

@@ -43,7 +43,7 @@ type NativeSurface struct {
 	Widget
 }
 
-// NativeSurfacer describes NativeSurface's abstract methods.
+// NativeSurfacer describes NativeSurface's interface methods.
 type NativeSurfacer interface {
 	externglib.Objector
 

@@ -65,7 +65,7 @@ type Scrollable struct {
 	*externglib.Object
 }
 
-// Scrollabler describes Scrollable's abstract methods.
+// Scrollabler describes Scrollable's interface methods.
 type Scrollabler interface {
 	externglib.Objector
 

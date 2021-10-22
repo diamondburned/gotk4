@@ -38,41 +38,14 @@ type EventController struct {
 	*externglib.Object
 }
 
-// EventControllerer describes EventController's abstract methods.
+// EventControllerer describes types inherited from class EventController.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type EventControllerer interface {
 	externglib.Objector
 
-	// CurrentEvent returns the event that is currently being handled by the
-	// controller, and NULL at other times.
-	CurrentEvent() gdk.Eventer
-	// CurrentEventDevice returns the device of the event that is currently
-	// being handled by the controller, and NULL otherwise.
-	CurrentEventDevice() gdk.Devicer
-	// CurrentEventState returns the modifier state of the event that is
-	// currently being handled by the controller, and 0 otherwise.
-	CurrentEventState() gdk.ModifierType
-	// CurrentEventTime returns the timestamp of the event that is currently
-	// being handled by the controller, and 0 otherwise.
-	CurrentEventTime() uint32
-	// Name gets the name of controller.
-	Name() string
-	// PropagationLimit gets the propagation limit of the event controller.
-	PropagationLimit() PropagationLimit
-	// PropagationPhase gets the propagation phase at which controller handles
-	// events.
-	PropagationPhase() PropagationPhase
-	// Widget returns the Widget this controller relates to.
-	Widget() Widgetter
-	// Reset resets the controller to a clean state.
-	Reset()
-	// SetName sets a name on the controller that can be used for debugging.
-	SetName(name string)
-	// SetPropagationLimit sets the event propagation limit on the event
-	// controller.
-	SetPropagationLimit(limit PropagationLimit)
-	// SetPropagationPhase sets the propagation phase at which a controller
-	// handles events.
-	SetPropagationPhase(phase PropagationPhase)
+	// BaseEventController returns the underlying base class.
+	BaseEventController() *EventController
 }
 
 var _ EventControllerer = (*EventController)(nil)
@@ -332,4 +305,9 @@ func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(phase)
+}
+
+// BaseEventController returns controller.
+func (controller *EventController) BaseEventController() *EventController {
+	return controller
 }

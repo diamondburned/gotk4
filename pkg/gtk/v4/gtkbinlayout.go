@@ -55,5 +55,3 @@ func NewBinLayout() *BinLayout {
 
 	return _binLayout
 }
-
-func (*BinLayout) privateBinLayout() {}

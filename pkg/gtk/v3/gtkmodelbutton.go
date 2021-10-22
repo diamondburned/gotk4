@@ -185,5 +185,3 @@ func NewModelButton() *ModelButton {
 
 	return _modelButton
 }
-
-func (*ModelButton) privateModelButton() {}

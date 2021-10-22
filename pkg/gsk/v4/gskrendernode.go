@@ -69,22 +69,14 @@ type RenderNode struct {
 	*externglib.Object
 }
 
-// RenderNoder describes RenderNode's abstract methods.
+// RenderNoder describes types inherited from class RenderNode.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type RenderNoder interface {
 	externglib.Objector
 
-	// Draw the contents of node to the given cairo context.
-	Draw(cr *cairo.Context)
-	// Bounds retrieves the boundaries of the node.
-	Bounds() graphene.Rect
-	// NodeType returns the type of the node.
-	NodeType() RenderNodeType
-	// Serialize serializes the node for later deserialization via
-	// gsk_render_node_deserialize().
-	Serialize() *glib.Bytes
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	WriteToFile(filename string) error
+	// BaseRenderNode returns the underlying base class.
+	BaseRenderNode() *RenderNode
 }
 
 var _ RenderNoder = (*RenderNode)(nil)
@@ -223,6 +215,11 @@ func (node *RenderNode) WriteToFile(filename string) error {
 	}
 
 	return _goerr
+}
+
+// BaseRenderNode returns node.
+func (node *RenderNode) BaseRenderNode() *RenderNode {
+	return node
 }
 
 // RenderNodeDeserialize loads data previously created via

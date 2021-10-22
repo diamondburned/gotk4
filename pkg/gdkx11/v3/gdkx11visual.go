@@ -36,5 +36,3 @@ func wrapX11Visual(obj *externglib.Object) *X11Visual {
 func marshalX11Visualer(p uintptr) (interface{}, error) {
 	return wrapX11Visual(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*X11Visual) privateX11Visual() {}

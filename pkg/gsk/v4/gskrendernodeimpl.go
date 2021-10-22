@@ -2267,8 +2267,6 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start, end *graphene.
 	return _repeatingLinearGradientNode
 }
 
-func (*RepeatingLinearGradientNode) privateRepeatingLinearGradientNode() {}
-
 // RepeatingRadialGradientNode: render node for a repeating radial gradient.
 type RepeatingRadialGradientNode struct {
 	RenderNode
@@ -2344,8 +2342,6 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 
 	return _repeatingRadialGradientNode
 }
-
-func (*RepeatingRadialGradientNode) privateRepeatingRadialGradientNode() {}
 
 // RoundedClipNode: render node applying a rounded rectangle clip to its single
 // child.

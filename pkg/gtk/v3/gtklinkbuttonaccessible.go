@@ -63,5 +63,3 @@ func wrapLinkButtonAccessible(obj *externglib.Object) *LinkButtonAccessible {
 func marshalLinkButtonAccessibler(p uintptr) (interface{}, error) {
 	return wrapLinkButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*LinkButtonAccessible) privateLinkButtonAccessible() {}

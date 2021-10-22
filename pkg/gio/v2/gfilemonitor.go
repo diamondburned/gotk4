@@ -55,19 +55,14 @@ type FileMonitor struct {
 	*externglib.Object
 }
 
-// FileMonitorrer describes FileMonitor's abstract methods.
+// FileMonitorrer describes types inherited from class FileMonitor.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type FileMonitorrer interface {
 	externglib.Objector
 
-	// Cancel cancels a file monitor.
-	Cancel() bool
-	// EmitEvent emits the Monitor::changed signal if a change has taken place.
-	EmitEvent(child, otherFile Filer, eventType FileMonitorEvent)
-	// IsCancelled returns whether the monitor is canceled.
-	IsCancelled() bool
-	// SetRateLimit sets the rate limit to which the monitor will report
-	// consecutive change events to the same file.
-	SetRateLimit(limitMsecs int)
+	// BaseFileMonitor returns the underlying base class.
+	BaseFileMonitor() *FileMonitor
 }
 
 var _ FileMonitorrer = (*FileMonitor)(nil)
@@ -169,6 +164,11 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	C.g_file_monitor_set_rate_limit(_arg0, _arg1)
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(limitMsecs)
+}
+
+// BaseFileMonitor returns monitor.
+func (monitor *FileMonitor) BaseFileMonitor() *FileMonitor {
+	return monitor
 }
 
 // ConnectChanged: emitted when file has been changed.

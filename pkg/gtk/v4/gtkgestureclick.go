@@ -61,8 +61,6 @@ func NewGestureClick() *GestureClick {
 	return _gestureClick
 }
 
-func (*GestureClick) privateGestureClick() {}
-
 // ConnectPressed: emitted whenever a button or touch press happens.
 func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
 	return v.Connect("pressed", f)

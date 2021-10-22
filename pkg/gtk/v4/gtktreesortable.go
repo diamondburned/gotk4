@@ -135,7 +135,7 @@ type TreeSortable struct {
 	TreeModel
 }
 
-// TreeSortabler describes TreeSortable's abstract methods.
+// TreeSortabler describes TreeSortable's interface methods.
 type TreeSortabler interface {
 	externglib.Objector
 

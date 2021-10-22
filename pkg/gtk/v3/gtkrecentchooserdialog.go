@@ -102,5 +102,3 @@ func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 func marshalRecentChooserDialogger(p uintptr) (interface{}, error) {
 	return wrapRecentChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*RecentChooserDialog) privateRecentChooserDialog() {}

@@ -156,7 +156,7 @@ type FileChooser struct {
 	*externglib.Object
 }
 
-// FileChooserer describes FileChooser's abstract methods.
+// FileChooserer describes FileChooser's interface methods.
 type FileChooserer interface {
 	externglib.Objector
 

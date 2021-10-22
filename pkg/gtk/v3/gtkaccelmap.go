@@ -95,8 +95,6 @@ func marshalAccelMapper(p uintptr) (interface{}, error) {
 	return wrapAccelMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*AccelMap) privateAccelMap() {}
-
 // ConnectChanged notifies of a change in the global accelerator map. The path
 // is also used as the detail for the signal, so it is possible to connect to
 // changed::accel_path.

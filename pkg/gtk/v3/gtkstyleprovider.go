@@ -79,7 +79,7 @@ type StyleProvider struct {
 	*externglib.Object
 }
 
-// StyleProviderer describes StyleProvider's abstract methods.
+// StyleProviderer describes StyleProvider's interface methods.
 type StyleProviderer interface {
 	externglib.Objector
 

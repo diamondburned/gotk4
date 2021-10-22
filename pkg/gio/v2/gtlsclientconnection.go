@@ -72,7 +72,7 @@ type TLSClientConnection struct {
 	TLSConnection
 }
 
-// TLSClientConnectioner describes TLSClientConnection's abstract methods.
+// TLSClientConnectioner describes TLSClientConnection's interface methods.
 type TLSClientConnectioner interface {
 	externglib.Objector
 

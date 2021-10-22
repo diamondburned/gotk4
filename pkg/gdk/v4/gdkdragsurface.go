@@ -26,7 +26,7 @@ type DragSurface struct {
 	Surface
 }
 
-// DragSurfacer describes DragSurface's abstract methods.
+// DragSurfacer describes DragSurface's interface methods.
 type DragSurfacer interface {
 	externglib.Objector
 

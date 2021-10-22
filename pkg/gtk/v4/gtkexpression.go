@@ -175,8 +175,6 @@ func marshalCClosureExpressioner(p uintptr) (interface{}, error) {
 	return wrapCClosureExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*CClosureExpression) privateCClosureExpression() {}
-
 // ClosureExpression: expression using a custom GClosure to compute the value
 // from its parameters.
 type ClosureExpression struct {
@@ -194,8 +192,6 @@ func wrapClosureExpression(obj *externglib.Object) *ClosureExpression {
 func marshalClosureExpressioner(p uintptr) (interface{}, error) {
 	return wrapClosureExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ClosureExpression) privateClosureExpression() {}
 
 // ConstantExpression: constant value in a GtkExpression.
 type ConstantExpression struct {
@@ -379,22 +375,14 @@ type Expression struct {
 	*externglib.Object
 }
 
-// Expressioner describes Expression's abstract methods.
+// Expressioner describes types inherited from class Expression.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Expressioner interface {
 	externglib.Objector
 
-	// Bind target's property named property to self.
-	Bind(target *externglib.Object, property string, this_ *externglib.Object) *ExpressionWatch
-	// Evaluate evaluates the given expression and on success stores the result
-	// in value.
-	Evaluate(this_ *externglib.Object, value *externglib.Value) bool
-	// ValueType gets the GType that this expression evaluates to.
-	ValueType() externglib.Type
-	// IsStatic checks if the expression is static.
-	IsStatic() bool
-	// Watch installs a watch for the given expression that calls the notify
-	// function whenever the evaluation of self may have changed.
-	Watch(this_ *externglib.Object, notify ExpressionNotify) *ExpressionWatch
+	// BaseExpression returns the underlying base class.
+	BaseExpression() *Expression
 }
 
 var _ Expressioner = (*Expression)(nil)
@@ -587,6 +575,11 @@ func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify)
 	)
 
 	return _expressionWatch
+}
+
+// BaseExpression returns self.
+func (self *Expression) BaseExpression() *Expression {
+	return self
 }
 
 // ObjectExpression: GObject value in a GtkExpression.

@@ -390,7 +390,7 @@ type TreeModel struct {
 	*externglib.Object
 }
 
-// TreeModeller describes TreeModel's abstract methods.
+// TreeModeller describes TreeModel's interface methods.
 type TreeModeller interface {
 	externglib.Objector
 

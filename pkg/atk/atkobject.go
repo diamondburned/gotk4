@@ -907,11 +907,12 @@ type ImplementorIface struct {
 	*externglib.Object
 }
 
-// ImplementorIfacer describes ImplementorIface's abstract methods.
+// ImplementorIfacer describes ImplementorIface's interface methods.
 type ImplementorIfacer interface {
 	externglib.Objector
 
-	privateImplementorIface()
+	// BaseImplementorIface returns the underlying base object.
+	BaseImplementorIface() *ImplementorIface
 }
 
 var _ ImplementorIfacer = (*ImplementorIface)(nil)
@@ -926,7 +927,10 @@ func marshalImplementorIfacer(p uintptr) (interface{}, error) {
 	return wrapImplementorIface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*ImplementorIface) privateImplementorIface() {}
+// BaseImplementorIface returns v.
+func (v *ImplementorIface) BaseImplementorIface() *ImplementorIface {
+	return v
+}
 
 // ObjectClassOverrider contains methods that are overridable.
 //

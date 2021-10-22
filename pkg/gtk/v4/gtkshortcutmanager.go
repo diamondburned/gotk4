@@ -45,11 +45,12 @@ type ShortcutManager struct {
 	*externglib.Object
 }
 
-// ShortcutManagerer describes ShortcutManager's abstract methods.
+// ShortcutManagerer describes ShortcutManager's interface methods.
 type ShortcutManagerer interface {
 	externglib.Objector
 
-	privateShortcutManager()
+	// BaseShortcutManager returns the underlying base object.
+	BaseShortcutManager() *ShortcutManager
 }
 
 var _ ShortcutManagerer = (*ShortcutManager)(nil)
@@ -64,4 +65,7 @@ func marshalShortcutManagerer(p uintptr) (interface{}, error) {
 	return wrapShortcutManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*ShortcutManager) privateShortcutManager() {}
+// BaseShortcutManager returns self.
+func (self *ShortcutManager) BaseShortcutManager() *ShortcutManager {
+	return self
+}

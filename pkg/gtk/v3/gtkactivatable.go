@@ -273,7 +273,7 @@ type Activatable struct {
 	*externglib.Object
 }
 
-// Activatabler describes Activatable's abstract methods.
+// Activatabler describes Activatable's interface methods.
 type Activatabler interface {
 	externglib.Objector
 

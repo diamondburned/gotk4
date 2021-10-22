@@ -96,5 +96,3 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 
 	return _colorChooserDialog
 }
-
-func (*ColorChooserDialog) privateColorChooserDialog() {}

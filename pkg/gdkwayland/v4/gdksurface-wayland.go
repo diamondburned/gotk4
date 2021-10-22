@@ -55,8 +55,6 @@ func marshalWaylandPopupper(p uintptr) (interface{}, error) {
 	return wrapWaylandPopup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*WaylandPopup) privateWaylandPopup() {}
-
 // WaylandSurface: wayland implementation of GdkSurface.
 //
 // Beyond the gdk.Surface API, the Wayland implementation offers access to the
@@ -76,8 +74,6 @@ func wrapWaylandSurface(obj *externglib.Object) *WaylandSurface {
 func marshalWaylandSurfacer(p uintptr) (interface{}, error) {
 	return wrapWaylandSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*WaylandSurface) privateWaylandSurface() {}
 
 // WaylandToplevel: wayland implementation of GdkToplevel.
 //

@@ -123,5 +123,3 @@ func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 func marshalShortcutsShortcutter(p uintptr) (interface{}, error) {
 	return wrapShortcutsShortcut(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ShortcutsShortcut) privateShortcutsShortcut() {}

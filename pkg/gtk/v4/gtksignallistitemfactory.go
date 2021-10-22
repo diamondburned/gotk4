@@ -91,8 +91,6 @@ func NewSignalListItemFactory() *SignalListItemFactory {
 	return _signalListItemFactory
 }
 
-func (*SignalListItemFactory) privateSignalListItemFactory() {}
-
 // ConnectBind: emitted when a new gtk.ListItem:item has been set on the
 // listitem and should be bound for use.
 //

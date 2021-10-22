@@ -102,5 +102,3 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 
 	return _fontChooserDialog
 }
-
-func (*FontChooserDialog) privateFontChooserDialog() {}

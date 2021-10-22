@@ -27,11 +27,14 @@ type Snapshot struct {
 	*externglib.Object
 }
 
-// Snapshotter describes Snapshot's abstract methods.
+// Snapshotter describes types inherited from class Snapshot.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Snapshotter interface {
 	externglib.Objector
 
-	privateSnapshot()
+	// BaseSnapshot returns the underlying base class.
+	BaseSnapshot() *Snapshot
 }
 
 var _ Snapshotter = (*Snapshot)(nil)
@@ -46,4 +49,7 @@ func marshalSnapshotter(p uintptr) (interface{}, error) {
 	return wrapSnapshot(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*Snapshot) privateSnapshot() {}
+// BaseSnapshot returns v.
+func (v *Snapshot) BaseSnapshot() *Snapshot {
+	return v
+}

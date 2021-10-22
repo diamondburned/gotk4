@@ -43,7 +43,7 @@ type AppChooser struct {
 	Widget
 }
 
-// AppChooserer describes AppChooser's abstract methods.
+// AppChooserer describes AppChooser's interface methods.
 type AppChooserer interface {
 	externglib.Objector
 

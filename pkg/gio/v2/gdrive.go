@@ -167,7 +167,7 @@ type Drive struct {
 	*externglib.Object
 }
 
-// Driver describes Drive's abstract methods.
+// Driver describes Drive's interface methods.
 type Driver interface {
 	externglib.Objector
 

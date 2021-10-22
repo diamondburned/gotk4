@@ -50,5 +50,3 @@ func wrapArrowAccessible(obj *externglib.Object) *ArrowAccessible {
 func marshalArrowAccessibler(p uintptr) (interface{}, error) {
 	return wrapArrowAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ArrowAccessible) privateArrowAccessible() {}

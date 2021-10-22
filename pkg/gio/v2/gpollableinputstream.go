@@ -85,7 +85,7 @@ type PollableInputStream struct {
 	InputStream
 }
 
-// PollableInputStreamer describes PollableInputStream's abstract methods.
+// PollableInputStreamer describes PollableInputStream's interface methods.
 type PollableInputStreamer interface {
 	externglib.Objector
 

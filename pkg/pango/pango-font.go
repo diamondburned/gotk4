@@ -339,27 +339,14 @@ type Font struct {
 	*externglib.Object
 }
 
-// Fonter describes Font's abstract methods.
+// Fonter describes types inherited from class Font.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Fonter interface {
 	externglib.Objector
 
-	// Describe returns a description of the font, with font size set in points.
-	Describe() *FontDescription
-	// DescribeWithAbsoluteSize returns a description of the font, with absolute
-	// font size set in device units.
-	DescribeWithAbsoluteSize() *FontDescription
-	// Coverage computes the coverage map for a given font and language tag.
-	Coverage(language *Language) *Coverage
-	// Face gets the PangoFontFace to which font belongs.
-	Face() FontFacer
-	// FontMap gets the font map for which the font was created.
-	FontMap() FontMapper
-	// GlyphExtents gets the logical and ink extents of a glyph within a font.
-	GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle)
-	// Metrics gets overall metric information for a font.
-	Metrics(language *Language) *FontMetrics
-	// HasChar returns whether the font provides a glyph for this character.
-	HasChar(wc uint32) bool
+	// BaseFont returns the underlying base class.
+	BaseFont() *Font
 }
 
 var _ Fonter = (*Font)(nil)
@@ -631,6 +618,11 @@ func (font *Font) HasChar(wc uint32) bool {
 	return _ok
 }
 
+// BaseFont returns font.
+func (font *Font) BaseFont() *Font {
+	return font
+}
+
 // FontFaceOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -665,24 +657,14 @@ type FontFace struct {
 	*externglib.Object
 }
 
-// FontFacer describes FontFace's abstract methods.
+// FontFacer describes types inherited from class FontFace.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type FontFacer interface {
 	externglib.Objector
 
-	// Describe returns the family, style, variant, weight and stretch of a
-	// PangoFontFace.
-	Describe() *FontDescription
-	// FaceName gets a name representing the style of this face among the
-	// different faces in the PangoFontFamily for the face.
-	FaceName() string
-	// Family gets the PangoFontFamily that face belongs to.
-	Family() FontFamilier
-	// IsSynthesized returns whether a PangoFontFace is synthesized by the
-	// underlying font rendering engine from another face, perhaps by shearing,
-	// emboldening, or lightening it.
-	IsSynthesized() bool
-	// ListSizes: list the available sizes for a font.
-	ListSizes() []int
+	// BaseFontFace returns the underlying base class.
+	BaseFontFace() *FontFace
 }
 
 var _ FontFacer = (*FontFace)(nil)
@@ -822,6 +804,11 @@ func (face *FontFace) ListSizes() []int {
 	return _sizes
 }
 
+// BaseFontFace returns face.
+func (face *FontFace) BaseFontFace() *FontFace {
+	return face
+}
+
 // FontFamilyOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -868,22 +855,14 @@ type FontFamily struct {
 	*externglib.Object
 }
 
-// FontFamilier describes FontFamily's abstract methods.
+// FontFamilier describes types inherited from class FontFamily.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type FontFamilier interface {
 	externglib.Objector
 
-	// Face gets the PangoFontFace of family with the given name.
-	Face(name string) FontFacer
-	// Name gets the name of the family.
-	Name() string
-	// IsMonospace: monospace font is a font designed for text display where the
-	// the characters form a regular grid.
-	IsMonospace() bool
-	// IsVariable: variable font is a font which has axes that can be modified
-	// to produce different faces.
-	IsVariable() bool
-	// ListFaces lists the different font faces that make up family.
-	ListFaces() []FontFacer
+	// BaseFontFamily returns the underlying base class.
+	BaseFontFamily() *FontFamily
 }
 
 var _ FontFamilier = (*FontFamily)(nil)
@@ -1049,6 +1028,11 @@ func (family *FontFamily) ListFaces() []FontFacer {
 	}
 
 	return _faces
+}
+
+// BaseFontFamily returns family.
+func (family *FontFamily) BaseFontFamily() *FontFamily {
+	return family
 }
 
 // FontDescription: PangoFontDescription describes a font in an

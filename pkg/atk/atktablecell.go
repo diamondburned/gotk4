@@ -53,7 +53,7 @@ type TableCell struct {
 	ObjectClass
 }
 
-// TableCeller describes TableCell's abstract methods.
+// TableCeller describes TableCell's interface methods.
 type TableCeller interface {
 	externglib.Objector
 

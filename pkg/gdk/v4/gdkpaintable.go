@@ -192,7 +192,7 @@ type Paintable struct {
 	*externglib.Object
 }
 
-// Paintabler describes Paintable's abstract methods.
+// Paintabler describes Paintable's interface methods.
 type Paintabler interface {
 	externglib.Objector
 

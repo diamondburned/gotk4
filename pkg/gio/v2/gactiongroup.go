@@ -245,7 +245,7 @@ type ActionGroup struct {
 	*externglib.Object
 }
 
-// ActionGrouper describes ActionGroup's abstract methods.
+// ActionGrouper describes ActionGroup's interface methods.
 type ActionGrouper interface {
 	externglib.Objector
 

@@ -105,6 +105,18 @@ func (g *Generator) Abstract() bool {
 	}
 }
 
+// IsClass returns true if the generator is generating a class.
+func (g *Generator) IsClass() bool {
+	switch g.Root.Type.(type) {
+	case *gir.Class:
+		return true
+	case *gir.Interface:
+		return false
+	default:
+		panic("unknown root type")
+	}
+}
+
 // Header returns the callback generator's current header.
 func (g *Generator) Header() *file.Header {
 	return &g.header
@@ -256,6 +268,11 @@ func (g *Generator) hasMethod(name string) bool {
 		if parent.Name() == name {
 			return true
 		}
+	}
+
+	// Don't override the Go name's base method, if any.
+	if name == "Base"+g.StructName {
+		return true
 	}
 
 	// Never override Object's methods.

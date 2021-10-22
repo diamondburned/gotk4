@@ -72,7 +72,7 @@ type Selection struct {
 	*externglib.Object
 }
 
-// Selectioner describes Selection's abstract methods.
+// Selectioner describes Selection's interface methods.
 type Selectioner interface {
 	externglib.Objector
 

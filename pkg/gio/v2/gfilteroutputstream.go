@@ -38,18 +38,14 @@ type FilterOutputStream struct {
 	OutputStream
 }
 
-// FilterOutputStreamer describes FilterOutputStream's abstract methods.
+// FilterOutputStreamer describes types inherited from class FilterOutputStream.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type FilterOutputStreamer interface {
 	externglib.Objector
 
-	// BaseStream gets the base stream for the filter stream.
-	BaseStream() OutputStreamer
-	// CloseBaseStream returns whether the base stream will be closed when
-	// stream is closed.
-	CloseBaseStream() bool
-	// SetCloseBaseStream sets whether the base stream will be closed when
-	// stream is closed.
-	SetCloseBaseStream(closeBase bool)
+	// BaseFilterOutputStream returns the underlying base class.
+	BaseFilterOutputStream() *FilterOutputStream
 }
 
 var _ FilterOutputStreamer = (*FilterOutputStream)(nil)
@@ -134,4 +130,9 @@ func (stream *FilterOutputStream) SetCloseBaseStream(closeBase bool) {
 	C.g_filter_output_stream_set_close_base_stream(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(closeBase)
+}
+
+// BaseFilterOutputStream returns stream.
+func (stream *FilterOutputStream) BaseFilterOutputStream() *FilterOutputStream {
+	return stream
 }

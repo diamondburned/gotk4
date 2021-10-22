@@ -101,5 +101,3 @@ func NewTearoffMenuItem() *TearoffMenuItem {
 
 	return _tearoffMenuItem
 }
-
-func (*TearoffMenuItem) privateTearoffMenuItem() {}

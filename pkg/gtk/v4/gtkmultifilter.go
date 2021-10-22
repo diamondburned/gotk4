@@ -72,8 +72,6 @@ func NewAnyFilter() *AnyFilter {
 	return _anyFilter
 }
 
-func (*AnyFilter) privateAnyFilter() {}
-
 // EveryFilter: GtkEveryFilter matches an item when each of its filters matches.
 //
 // To add filters to a GtkEveryFilter, use gtk.MultiFilter.Append().
@@ -121,8 +119,6 @@ func NewEveryFilter() *EveryFilter {
 	return _everyFilter
 }
 
-func (*EveryFilter) privateEveryFilter() {}
-
 // MultiFilter: GtkMultiFilter is the base class for filters that combine
 // multiple filters.
 type MultiFilter struct {
@@ -133,15 +129,14 @@ type MultiFilter struct {
 	*externglib.Object
 }
 
-// MultiFilterer describes MultiFilter's abstract methods.
+// MultiFilterer describes types inherited from class MultiFilter.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type MultiFilterer interface {
 	externglib.Objector
 
-	// Append adds a filter to self to use for matching.
-	Append(filter *Filter)
-	// Remove removes the filter at the given position from the list of filters
-	// used by self.
-	Remove(position uint)
+	// BaseMultiFilter returns the underlying base class.
+	BaseMultiFilter() *MultiFilter
 }
 
 var _ MultiFilterer = (*MultiFilter)(nil)
@@ -204,4 +199,9 @@ func (self *MultiFilter) Remove(position uint) {
 	C.gtk_multi_filter_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
+}
+
+// BaseMultiFilter returns self.
+func (self *MultiFilter) BaseMultiFilter() *MultiFilter {
+	return self
 }

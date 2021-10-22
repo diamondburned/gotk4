@@ -176,7 +176,7 @@ type Mount struct {
 	*externglib.Object
 }
 
-// Mounter describes Mount's abstract methods.
+// Mounter describes Mount's interface methods.
 type Mounter interface {
 	externglib.Objector
 

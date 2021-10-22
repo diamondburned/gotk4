@@ -105,18 +105,14 @@ type Fontset struct {
 	*externglib.Object
 }
 
-// Fontsetter describes Fontset's abstract methods.
+// Fontsetter describes types inherited from class Fontset.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Fontsetter interface {
 	externglib.Objector
 
-	// Foreach iterates through all the fonts in a fontset, calling func for
-	// each one.
-	Foreach(fn FontsetForeachFunc)
-	// Font returns the font in the fontset that contains the best glyph for a
-	// Unicode character.
-	Font(wc uint) Fonter
-	// Metrics: get overall metric information for the fonts in the fontset.
-	Metrics() *FontMetrics
+	// BaseFontset returns the underlying base class.
+	BaseFontset() *Fontset
 }
 
 var _ Fontsetter = (*Fontset)(nil)
@@ -214,6 +210,11 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	)
 
 	return _fontMetrics
+}
+
+// BaseFontset returns fontset.
+func (fontset *Fontset) BaseFontset() *Fontset {
+	return fontset
 }
 
 // FontsetSimple: PangoFontsetSimple is a implementation of the abstract

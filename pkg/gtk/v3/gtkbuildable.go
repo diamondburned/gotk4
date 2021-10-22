@@ -83,7 +83,7 @@ type Buildable struct {
 	*externglib.Object
 }
 
-// Buildabler describes Buildable's abstract methods.
+// Buildabler describes Buildable's interface methods.
 type Buildabler interface {
 	externglib.Objector
 

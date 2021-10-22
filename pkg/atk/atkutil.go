@@ -284,8 +284,6 @@ func marshalUtiller(p uintptr) (interface{}, error) {
 	return wrapUtil(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*Util) privateUtil() {}
-
 // KeyEventStruct encapsulates information about a key event.
 //
 // An instance of this type is always passed by reference.

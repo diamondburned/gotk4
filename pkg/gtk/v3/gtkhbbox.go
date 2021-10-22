@@ -72,5 +72,3 @@ func NewHButtonBox() *HButtonBox {
 
 	return _hButtonBox
 }
-
-func (*HButtonBox) privateHButtonBox() {}

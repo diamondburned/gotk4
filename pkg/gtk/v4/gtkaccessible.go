@@ -93,7 +93,7 @@ type Accessible struct {
 	*externglib.Object
 }
 
-// Accessibler describes Accessible's abstract methods.
+// Accessibler describes Accessible's interface methods.
 type Accessibler interface {
 	externglib.Objector
 

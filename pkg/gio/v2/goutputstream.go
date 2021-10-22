@@ -217,81 +217,14 @@ type OutputStream struct {
 	*externglib.Object
 }
 
-// OutputStreamer describes OutputStream's abstract methods.
+// OutputStreamer describes types inherited from class OutputStream.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type OutputStreamer interface {
 	externglib.Objector
 
-	// ClearPending clears the pending flag on stream.
-	ClearPending()
-	// Close closes the stream, releasing resources related to it.
-	Close(ctx context.Context) error
-	// CloseAsync requests an asynchronous close of the stream, releasing
-	// resources related to it.
-	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
-	// CloseFinish closes an output stream.
-	CloseFinish(result AsyncResulter) error
-	// Flush forces a write of all user-space buffered data for the given
-	// stream.
-	Flush(ctx context.Context) error
-	// FlushAsync forces an asynchronous write of all user-space buffered data
-	// for the given stream.
-	FlushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
-	// FlushFinish finishes flushing an output stream.
-	FlushFinish(result AsyncResulter) error
-	// HasPending checks if an output stream has pending actions.
-	HasPending() bool
-	// IsClosed checks if an output stream has already been closed.
-	IsClosed() bool
-	// IsClosing checks if an output stream is being closed.
-	IsClosing() bool
-	// SetPending sets stream to have actions pending.
-	SetPending() error
-	// Splice splices an input stream into an output stream.
-	Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
-	// SpliceAsync splices a stream asynchronously.
-	SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback)
-	// SpliceFinish finishes an asynchronous stream splice operation.
-	SpliceFinish(result AsyncResulter) (int, error)
-	// Write tries to write count bytes from buffer into the stream.
-	Write(ctx context.Context, buffer []byte) (int, error)
-	// WriteAll tries to write count bytes from buffer into the stream.
-	WriteAll(ctx context.Context, buffer []byte) (uint, error)
-	// WriteAllAsync: request an asynchronous write of count bytes from buffer
-	// into the stream.
-	WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
-	// WriteAllFinish finishes an asynchronous stream write operation started
-	// with g_output_stream_write_all_async().
-	WriteAllFinish(result AsyncResulter) (uint, error)
-	// WriteAsync: request an asynchronous write of count bytes from buffer into
-	// the stream.
-	WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
-	// WriteBytes: wrapper function for g_output_stream_write() which takes a
-	// #GBytes as input.
-	WriteBytes(ctx context.Context, bytes *glib.Bytes) (int, error)
-	// WriteBytesAsync: this function is similar to
-	// g_output_stream_write_async(), but takes a #GBytes as input.
-	WriteBytesAsync(ctx context.Context, bytes *glib.Bytes, ioPriority int, callback AsyncReadyCallback)
-	// WriteBytesFinish finishes a stream write-from-#GBytes operation.
-	WriteBytesFinish(result AsyncResulter) (int, error)
-	// WriteFinish finishes a stream write operation.
-	WriteFinish(result AsyncResulter) (int, error)
-	// Writev tries to write the bytes contained in the n_vectors vectors into
-	// the stream.
-	Writev(ctx context.Context, vectors []OutputVector) (uint, error)
-	// WritevAll tries to write the bytes contained in the n_vectors vectors
-	// into the stream.
-	WritevAll(ctx context.Context, vectors []OutputVector) (uint, error)
-	// WritevAllAsync: request an asynchronous write of the bytes contained in
-	// the n_vectors vectors into the stream.
-	WritevAllAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback)
-	// WritevAllFinish finishes an asynchronous stream write operation started
-	// with g_output_stream_writev_all_async().
-	WritevAllFinish(result AsyncResulter) (uint, error)
-	// WritevAsync: request an asynchronous write of the bytes contained in
-	// n_vectors vectors into the stream.
-	WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback)
-	// WritevFinish finishes a stream writev operation.
-	WritevFinish(result AsyncResulter) (uint, error)
+	// BaseOutputStream returns the underlying base class.
+	BaseOutputStream() *OutputStream
 }
 
 var _ OutputStreamer = (*OutputStream)(nil)
@@ -1530,4 +1463,9 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	}
 
 	return _bytesWritten, _goerr
+}
+
+// BaseOutputStream returns stream.
+func (stream *OutputStream) BaseOutputStream() *OutputStream {
+	return stream
 }

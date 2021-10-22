@@ -94,5 +94,3 @@ func NewVolumeButton() *VolumeButton {
 
 	return _volumeButton
 }
-
-func (*VolumeButton) privateVolumeButton() {}

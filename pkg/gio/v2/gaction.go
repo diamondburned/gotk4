@@ -145,7 +145,7 @@ type Action struct {
 	*externglib.Object
 }
 
-// Actioner describes Action's abstract methods.
+// Actioner describes Action's interface methods.
 type Actioner interface {
 	externglib.Objector
 

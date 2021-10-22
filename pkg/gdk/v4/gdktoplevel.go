@@ -223,7 +223,7 @@ type Toplevel struct {
 	Surface
 }
 
-// Topleveller describes Toplevel's abstract methods.
+// Topleveller describes Toplevel's interface methods.
 type Topleveller interface {
 	externglib.Objector
 

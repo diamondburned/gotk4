@@ -61,5 +61,3 @@ func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
 func marshalShortcutsGrouper(p uintptr) (interface{}, error) {
 	return wrapShortcutsGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ShortcutsGroup) privateShortcutsGroup() {}

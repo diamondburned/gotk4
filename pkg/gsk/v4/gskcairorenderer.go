@@ -57,5 +57,3 @@ func NewCairoRenderer() *CairoRenderer {
 
 	return _cairoRenderer
 }
-
-func (*CairoRenderer) privateCairoRenderer() {}

@@ -58,5 +58,3 @@ func wrapRadioMenuItemAccessible(obj *externglib.Object) *RadioMenuItemAccessibl
 func marshalRadioMenuItemAccessibler(p uintptr) (interface{}, error) {
 	return wrapRadioMenuItemAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*RadioMenuItemAccessible) privateRadioMenuItemAccessible() {}

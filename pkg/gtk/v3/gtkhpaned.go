@@ -75,5 +75,3 @@ func NewHPaned() *HPaned {
 
 	return _hPaned
 }
-
-func (*HPaned) privateHPaned() {}

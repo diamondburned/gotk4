@@ -39,25 +39,14 @@ type Renderer struct {
 	*externglib.Object
 }
 
-// Rendererer describes Renderer's abstract methods.
+// Rendererer describes types inherited from class Renderer.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Rendererer interface {
 	externglib.Objector
 
-	// Surface retrieves the GdkSurface set using gsk_enderer_realize().
-	Surface() gdk.Surfacer
-	// IsRealized checks whether the renderer is realized or not.
-	IsRealized() bool
-	// Realize creates the resources needed by the renderer to render the scene
-	// graph.
-	Realize(surface gdk.Surfacer) error
-	// Render renders the scene graph, described by a tree of GskRenderNode
-	// instances, ensuring that the given region gets redrawn.
-	Render(root RenderNoder, region *cairo.Region)
-	// RenderTexture renders the scene graph, described by a tree of
-	// GskRenderNode instances, to a GdkTexture.
-	RenderTexture(root RenderNoder, viewport *graphene.Rect) gdk.Texturer
-	// Unrealize releases all the resources created by gsk_renderer_realize().
-	Unrealize()
+	// BaseRenderer returns the underlying base class.
+	BaseRenderer() *Renderer
 }
 
 var _ Rendererer = (*Renderer)(nil)
@@ -272,4 +261,9 @@ func (renderer *Renderer) Unrealize() {
 
 	C.gsk_renderer_unrealize(_arg0)
 	runtime.KeepAlive(renderer)
+}
+
+// BaseRenderer returns renderer.
+func (renderer *Renderer) BaseRenderer() *Renderer {
+	return renderer
 }

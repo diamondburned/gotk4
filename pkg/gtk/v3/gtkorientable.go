@@ -34,7 +34,7 @@ type Orientable struct {
 	*externglib.Object
 }
 
-// Orientabler describes Orientable's abstract methods.
+// Orientabler describes Orientable's interface methods.
 type Orientabler interface {
 	externglib.Objector
 

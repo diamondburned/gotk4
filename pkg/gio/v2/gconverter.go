@@ -132,7 +132,7 @@ type Converter struct {
 	*externglib.Object
 }
 
-// Converterer describes Converter's abstract methods.
+// Converterer describes Converter's interface methods.
 type Converterer interface {
 	externglib.Objector
 

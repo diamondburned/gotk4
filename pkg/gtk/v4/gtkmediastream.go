@@ -87,74 +87,14 @@ type MediaStream struct {
 	gdk.Paintable
 }
 
-// MediaStreamer describes MediaStream's abstract methods.
+// MediaStreamer describes types inherited from class MediaStream.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type MediaStreamer interface {
 	externglib.Objector
 
-	// Ended pauses the media stream and marks it as ended.
-	Ended()
-	// GError sets self into an error state.
-	GError(err error)
-	// Duration gets the duration of the stream.
-	Duration() int64
-	// GetEnded returns whether the streams playback is finished.
-	GetEnded() bool
-	// Error: if the stream is in an error state, returns the GError explaining
-	// that state.
-	Error() error
-	// Loop returns whether the stream is set to loop.
-	Loop() bool
-	// Muted returns whether the audio for the stream is muted.
-	Muted() bool
-	// Playing: return whether the stream is currently playing.
-	Playing() bool
-	// Timestamp returns the current presentation timestamp in microseconds.
-	Timestamp() int64
-	// Volume returns the volume of the audio for the stream.
-	Volume() float64
-	// HasAudio returns whether the stream has audio.
-	HasAudio() bool
-	// HasVideo returns whether the stream has video.
-	HasVideo() bool
-	// IsPrepared returns whether the stream has finished initializing.
-	IsPrepared() bool
-	// IsSeekable checks if a stream may be seekable.
-	IsSeekable() bool
-	// IsSeeking checks if there is currently a seek operation going on.
-	IsSeeking() bool
-	// Pause pauses playback of the stream.
-	Pause()
-	// Play starts playing the stream.
-	Play()
-	// Prepared: called by GtkMediaStream implementations to advertise the
-	// stream being ready to play and providing details about the stream.
-	Prepared(hasAudio, hasVideo, seekable bool, duration int64)
-	// Realize: called by users to attach the media stream to a GdkSurface they
-	// manage.
-	Realize(surface gdk.Surfacer)
-	// Seek: start a seek operation on self to timestamp.
-	Seek(timestamp int64)
-	// SeekFailed ends a seek operation started via GtkMediaStream.seek() as a
-	// failure.
-	SeekFailed()
-	// SeekSuccess ends a seek operation started via GtkMediaStream.seek()
-	// successfully.
-	SeekSuccess()
-	// SetLoop sets whether the stream should loop.
-	SetLoop(loop bool)
-	// SetMuted sets whether the audio stream should be muted.
-	SetMuted(muted bool)
-	// SetPlaying starts or pauses playback of the stream.
-	SetPlaying(playing bool)
-	// SetVolume sets the volume of the audio stream.
-	SetVolume(volume float64)
-	// Unprepared resets a given media stream implementation.
-	Unprepared()
-	// Unrealize undoes a previous call to gtk_media_stream_realize().
-	Unrealize(surface gdk.Surfacer)
-	// Update: media stream implementations should regularly call this function
-	// to update the timestamp reported by the stream.
-	Update(timestamp int64)
+	// BaseMediaStream returns the underlying base class.
+	BaseMediaStream() *MediaStream
 }
 
 var _ MediaStreamer = (*MediaStream)(nil)
@@ -800,4 +740,9 @@ func (self *MediaStream) Update(timestamp int64) {
 	C.gtk_media_stream_update(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(timestamp)
+}
+
+// BaseMediaStream returns self.
+func (self *MediaStream) BaseMediaStream() *MediaStream {
+	return self
 }

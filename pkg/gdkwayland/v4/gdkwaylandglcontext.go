@@ -39,5 +39,3 @@ func wrapWaylandGLContext(obj *externglib.Object) *WaylandGLContext {
 func marshalWaylandGLContexter(p uintptr) (interface{}, error) {
 	return wrapWaylandGLContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*WaylandGLContext) privateWaylandGLContext() {}

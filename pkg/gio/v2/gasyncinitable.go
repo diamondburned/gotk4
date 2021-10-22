@@ -183,7 +183,7 @@ type AsyncInitable struct {
 	*externglib.Object
 }
 
-// AsyncInitabler describes AsyncInitable's abstract methods.
+// AsyncInitabler describes AsyncInitable's interface methods.
 type AsyncInitabler interface {
 	externglib.Objector
 

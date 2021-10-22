@@ -212,63 +212,14 @@ type CellRenderer struct {
 	externglib.InitiallyUnowned
 }
 
-// CellRendererer describes CellRenderer's abstract methods.
+// CellRendererer describes types inherited from class CellRenderer.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type CellRendererer interface {
 	externglib.Objector
 
-	// AlignedArea gets the aligned area used by cell inside cell_area.
-	AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
-	// Alignment fills in xalign and yalign with the appropriate values of cell.
-	Alignment() (xalign float32, yalign float32)
-	// FixedSize fills in width and height with the appropriate size of cell.
-	FixedSize() (width int, height int)
-	// Padding fills in xpad and ypad with the appropriate values of cell.
-	Padding() (xpad int, ypad int)
-	// PreferredHeight retreives a renderer’s natural size when rendered to
-	// widget.
-	PreferredHeight(widget Widgetter) (minimumSize int, naturalSize int)
-	// PreferredHeightForWidth retreives a cell renderers’s minimum and natural
-	// height if it were rendered to widget with the specified width.
-	PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight int, naturalHeight int)
-	// PreferredSize retrieves the minimum and natural size of a cell taking
-	// into account the widget’s preference for height-for-width management.
-	PreferredSize(widget Widgetter) (minimumSize Requisition, naturalSize Requisition)
-	// PreferredWidth retreives a renderer’s natural size when rendered to
-	// widget.
-	PreferredWidth(widget Widgetter) (minimumSize int, naturalSize int)
-	// PreferredWidthForHeight retreives a cell renderers’s minimum and natural
-	// width if it were rendered to widget with the specified height.
-	PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth int, naturalWidth int)
-	// RequestMode gets whether the cell renderer prefers a height-for-width
-	// layout or a width-for-height layout.
-	RequestMode() SizeRequestMode
-	// Sensitive returns the cell renderer’s sensitivity.
-	Sensitive() bool
-	// Size obtains the width and height needed to render the cell.
-	Size(widget Widgetter, cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int)
-	// State translates the cell renderer state to StateFlags, based on the cell
-	// renderer and widget sensitivity, and the given CellRendererState.
-	State(widget Widgetter, cellState CellRendererState) StateFlags
-	// Visible returns the cell renderer’s visibility.
-	Visible() bool
-	// IsActivatable checks whether the cell renderer can do something when
-	// activated.
-	IsActivatable() bool
-	// Render invokes the virtual render function of the CellRenderer.
-	Render(cr *cairo.Context, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState)
-	// SetAlignment sets the renderer’s alignment within its available space.
-	SetAlignment(xalign, yalign float32)
-	// SetFixedSize sets the renderer size to be explicit, independent of the
-	// properties set.
-	SetFixedSize(width, height int)
-	// SetPadding sets the renderer’s padding.
-	SetPadding(xpad, ypad int)
-	// SetSensitive sets the cell renderer’s sensitivity.
-	SetSensitive(sensitive bool)
-	// SetVisible sets the cell renderer’s visibility.
-	SetVisible(visible bool)
-	// StopEditing informs the cell renderer that the editing is stopped.
-	StopEditing(canceled bool)
+	// BaseCellRenderer returns the underlying base class.
+	BaseCellRenderer() *CellRenderer
 }
 
 var _ CellRendererer = (*CellRenderer)(nil)
@@ -860,6 +811,11 @@ func (cell *CellRenderer) StopEditing(canceled bool) {
 	C.gtk_cell_renderer_stop_editing(_arg0, _arg1)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(canceled)
+}
+
+// BaseCellRenderer returns cell.
+func (cell *CellRenderer) BaseCellRenderer() *CellRenderer {
+	return cell
 }
 
 // ConnectEditingCanceled: this signal gets emitted when the user cancels the

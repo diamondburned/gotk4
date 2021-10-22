@@ -166,80 +166,14 @@ type Device struct {
 	*externglib.Object
 }
 
-// Devicer describes Device's abstract methods.
+// Devicer describes types inherited from class Device.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Devicer interface {
 	externglib.Objector
 
-	// AssociatedDevice returns the associated device to device, if device is of
-	// type GDK_DEVICE_TYPE_MASTER, it will return the paired pointer or
-	// keyboard.
-	AssociatedDevice() Devicer
-	// Axes returns the axes currently available on the device.
-	Axes() AxisFlags
-	// AxisUse returns the axis use for index_.
-	AxisUse(index_ uint) AxisUse
-	// DeviceType returns the device type for device.
-	DeviceType() DeviceType
-	// Display returns the Display to which device pertains.
-	Display() *Display
-	// HasCursor determines whether the pointer follows device motion.
-	HasCursor() bool
-	// Key: if index_ has a valid keyval, this function will return TRUE and
-	// fill in keyval and modifiers with the keyval settings.
-	Key(index_ uint) (uint, ModifierType, bool)
-	// LastEventWindow gets information about which window the given pointer
-	// device is in, based on events that have been received so far from the
-	// display server.
-	LastEventWindow() Windower
-	// Mode determines the mode of the device.
-	Mode() InputMode
-	// NAxes returns the number of axes the device currently has.
-	NAxes() int
-	// NKeys returns the number of keys the device currently has.
-	NKeys() int
-	// Name determines the name of the device.
-	Name() string
-	// Position gets the current location of device.
-	Position() (screen *Screen, x int, y int)
-	// PositionDouble gets the current location of device in double precision.
-	PositionDouble() (screen *Screen, x float64, y float64)
-	// ProductID returns the product ID of this device, or NULL if this
-	// information couldn't be obtained.
-	ProductID() string
-	// Seat returns the Seat the device belongs to.
-	Seat() Seater
-	// Source determines the type of the device.
-	Source() InputSource
-	// VendorID returns the vendor ID of this device, or NULL if this
-	// information couldn't be obtained.
-	VendorID() string
-	// WindowAtPosition obtains the window underneath device, returning the
-	// location of the device in win_x and win_y.
-	WindowAtPosition() (winX int, winY int, window Windower)
-	// WindowAtPositionDouble obtains the window underneath device, returning
-	// the location of the device in win_x and win_y in double precision.
-	WindowAtPositionDouble() (winX float64, winY float64, window Windower)
-	// Grab grabs the device so that all events coming from this device are
-	// passed to this application until the device is ungrabbed with
-	// gdk_device_ungrab(), or the window becomes unviewable.
-	Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus
-	// ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it
-	// will return the list of slave devices attached to it, otherwise it will
-	// return NULL.
-	ListSlaveDevices() []Devicer
-	// SetAxisUse specifies how an axis of a device is used.
-	SetAxisUse(index_ uint, use AxisUse)
-	// SetKey specifies the X key event to generate when a macro button of a
-	// device is pressed.
-	SetKey(index_, keyval uint, modifiers ModifierType)
-	// SetMode sets a the mode of an input device.
-	SetMode(mode InputMode) bool
-	// Ungrab: release any grab on device.
-	Ungrab(time_ uint32)
-	// Warp warps device in display to the point x,y on the screen screen,
-	// unless the device is confined to a window by a grab, in which case it
-	// will be moved as far as allowed by the grab.
-	Warp(screen *Screen, x, y int)
+	// BaseDevice returns the underlying base class.
+	BaseDevice() *Device
 }
 
 var _ Devicer = (*Device)(nil)
@@ -1018,6 +952,11 @@ func (device *Device) Warp(screen *Screen, x, y int) {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
+}
+
+// BaseDevice returns device.
+func (device *Device) BaseDevice() *Device {
+	return device
 }
 
 // ConnectChanged signal is emitted either when the Device has changed the

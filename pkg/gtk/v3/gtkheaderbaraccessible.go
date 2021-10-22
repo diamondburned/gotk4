@@ -34,5 +34,3 @@ func wrapHeaderBarAccessible(obj *externglib.Object) *HeaderBarAccessible {
 		},
 	}
 }
-
-func (*HeaderBarAccessible) privateHeaderBarAccessible() {}

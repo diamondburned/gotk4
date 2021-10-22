@@ -70,8 +70,6 @@ func NewCellRendererCombo() *CellRendererCombo {
 	return _cellRendererCombo
 }
 
-func (*CellRendererCombo) privateCellRendererCombo() {}
-
 // ConnectChanged: this signal is emitted each time after the user selected an
 // item in the combo box, either by using the mouse or the arrow keys. Contrary
 // to GtkComboBox, GtkCellRendererCombo::changed is not emitted for changes made

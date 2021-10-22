@@ -42,7 +42,7 @@ type CellEditable struct {
 	Widget
 }
 
-// CellEditabler describes CellEditable's abstract methods.
+// CellEditabler describes CellEditable's interface methods.
 type CellEditabler interface {
 	externglib.Objector
 

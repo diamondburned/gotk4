@@ -50,5 +50,3 @@ func wrapSwitchAccessible(obj *externglib.Object) *SwitchAccessible {
 func marshalSwitchAccessibler(p uintptr) (interface{}, error) {
 	return wrapSwitchAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*SwitchAccessible) privateSwitchAccessible() {}

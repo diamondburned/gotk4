@@ -37,7 +37,7 @@ type DTLSClientConnection struct {
 	DTLSConnection
 }
 
-// DTLSClientConnectioner describes DTLSClientConnection's abstract methods.
+// DTLSClientConnectioner describes DTLSClientConnection's interface methods.
 type DTLSClientConnectioner interface {
 	externglib.Objector
 

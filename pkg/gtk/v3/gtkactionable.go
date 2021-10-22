@@ -87,7 +87,7 @@ type Actionable struct {
 	Widget
 }
 
-// Actionabler describes Actionable's abstract methods.
+// Actionabler describes Actionable's interface methods.
 type Actionabler interface {
 	externglib.Objector
 

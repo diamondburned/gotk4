@@ -47,5 +47,3 @@ func wrapFrameAccessible(obj *externglib.Object) *FrameAccessible {
 func marshalFrameAccessibler(p uintptr) (interface{}, error) {
 	return wrapFrameAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*FrameAccessible) privateFrameAccessible() {}

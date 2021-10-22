@@ -67,5 +67,3 @@ func NewCellRendererSpin() *CellRendererSpin {
 
 	return _cellRendererSpin
 }
-
-func (*CellRendererSpin) privateCellRendererSpin() {}

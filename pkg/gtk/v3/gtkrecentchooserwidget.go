@@ -112,5 +112,3 @@ func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidg
 
 	return _recentChooserWidget
 }
-
-func (*RecentChooserWidget) privateRecentChooserWidget() {}

@@ -146,8 +146,6 @@ func marshalActivateActioner(p uintptr) (interface{}, error) {
 	return wrapActivateAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*ActivateAction) privateActivateAction() {}
-
 // ActivateActionGet gets the activate action.
 //
 // This is an action that calls gtk_widget_activate() on the given widget upon
@@ -210,8 +208,6 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	return _callbackAction
 }
 
-func (*CallbackAction) privateCallbackAction() {}
-
 // MnemonicAction: GtkShortcutAction that calls gtk_widget_mnemonic_activate().
 type MnemonicAction struct {
 	ShortcutAction
@@ -228,8 +224,6 @@ func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
 func marshalMnemonicActioner(p uintptr) (interface{}, error) {
 	return wrapMnemonicAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*MnemonicAction) privateMnemonicAction() {}
 
 // MnemonicActionGet gets the mnemonic action.
 //
@@ -326,8 +320,6 @@ func marshalNothingActioner(p uintptr) (interface{}, error) {
 	return wrapNothingAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*NothingAction) privateNothingAction() {}
-
 // NothingActionGet gets the nothing action.
 //
 // This is an action that does nothing and where activating it always fails.
@@ -374,14 +366,14 @@ type ShortcutAction struct {
 	*externglib.Object
 }
 
-// ShortcutActioner describes ShortcutAction's abstract methods.
+// ShortcutActioner describes types inherited from class ShortcutAction.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type ShortcutActioner interface {
 	externglib.Objector
 
-	// Activate activates the action on the widget with the given args.
-	Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool
-	// String prints the given action into a human-readable string.
-	String() string
+	// BaseShortcutAction returns the underlying base class.
+	BaseShortcutAction() *ShortcutAction
 }
 
 var _ ShortcutActioner = (*ShortcutAction)(nil)
@@ -498,6 +490,11 @@ func (self *ShortcutAction) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// BaseShortcutAction returns self.
+func (self *ShortcutAction) BaseShortcutAction() *ShortcutAction {
+	return self
 }
 
 // SignalAction: GtkShortcutAction that emits a signal.

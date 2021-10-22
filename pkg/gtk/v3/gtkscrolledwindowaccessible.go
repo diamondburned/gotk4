@@ -47,5 +47,3 @@ func wrapScrolledWindowAccessible(obj *externglib.Object) *ScrolledWindowAccessi
 func marshalScrolledWindowAccessibler(p uintptr) (interface{}, error) {
 	return wrapScrolledWindowAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ScrolledWindowAccessible) privateScrolledWindowAccessible() {}

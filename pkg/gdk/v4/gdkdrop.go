@@ -46,39 +46,14 @@ type Drop struct {
 	*externglib.Object
 }
 
-// Dropper describes Drop's abstract methods.
+// Dropper describes types inherited from class Drop.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Dropper interface {
 	externglib.Objector
 
-	// Finish ends the drag operation after a drop.
-	Finish(action DragAction)
-	// Actions returns the possible actions for this GdkDrop.
-	Actions() DragAction
-	// Device returns the GdkDevice performing the drop.
-	Device() Devicer
-	// Display gets the GdkDisplay that self was created for.
-	Display() *Display
-	// Drag: if this is an in-app drag-and-drop operation, returns the GdkDrag
-	// that corresponds to this drop.
-	Drag() Dragger
-	// Formats returns the GdkContentFormats that the drop offers the data to be
-	// read in.
-	Formats() *ContentFormats
-	// Surface returns the GdkSurface performing the drop.
-	Surface() Surfacer
-	// ReadAsync: asynchronously read the dropped data from a GdkDrop in a
-	// format that complies with one of the mime types.
-	ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback)
-	// ReadFinish finishes an async drop read operation.
-	ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error)
-	// ReadValueAsync: asynchronously request the drag operation's contents
-	// converted to the given type.
-	ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback)
-	// ReadValueFinish finishes an async drop read.
-	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
-	// Status selects all actions that are potentially supported by the
-	// destination.
-	Status(actions, preferred DragAction)
+	// BaseDrop returns the underlying base class.
+	BaseDrop() *Drop
 }
 
 var _ Dropper = (*Drop)(nil)
@@ -489,4 +464,9 @@ func (self *Drop) Status(actions, preferred DragAction) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(actions)
 	runtime.KeepAlive(preferred)
+}
+
+// BaseDrop returns self.
+func (self *Drop) BaseDrop() *Drop {
+	return self
 }

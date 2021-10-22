@@ -74,7 +74,7 @@ type DevicePad struct {
 	Device
 }
 
-// DevicePadder describes DevicePad's abstract methods.
+// DevicePadder describes DevicePad's interface methods.
 type DevicePadder interface {
 	externglib.Objector
 

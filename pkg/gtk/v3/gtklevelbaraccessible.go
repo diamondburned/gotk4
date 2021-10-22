@@ -50,5 +50,3 @@ func wrapLevelBarAccessible(obj *externglib.Object) *LevelBarAccessible {
 func marshalLevelBarAccessibler(p uintptr) (interface{}, error) {
 	return wrapLevelBarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*LevelBarAccessible) privateLevelBarAccessible() {}

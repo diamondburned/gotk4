@@ -56,5 +56,3 @@ func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessibl
 func marshalCheckMenuItemAccessibler(p uintptr) (interface{}, error) {
 	return wrapCheckMenuItemAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*CheckMenuItemAccessible) privateCheckMenuItemAccessible() {}

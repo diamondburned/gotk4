@@ -54,7 +54,7 @@ type EditableText struct {
 	*externglib.Object
 }
 
-// EditableTexter describes EditableText's abstract methods.
+// EditableTexter describes EditableText's interface methods.
 type EditableTexter interface {
 	externglib.Objector
 

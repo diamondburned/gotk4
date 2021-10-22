@@ -188,46 +188,14 @@ type TLSDatabase struct {
 	*externglib.Object
 }
 
-// TLSDatabaser describes TLSDatabase's abstract methods.
+// TLSDatabaser describes types inherited from class TLSDatabase.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type TLSDatabaser interface {
 	externglib.Objector
 
-	// CreateCertificateHandle: create a handle string for the certificate.
-	CreateCertificateHandle(certificate TLSCertificater) string
-	// LookupCertificateForHandle: look up a certificate by its handle.
-	LookupCertificateForHandle(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
-	// LookupCertificateForHandleAsync: asynchronously look up a certificate by
-	// its handle in the database.
-	LookupCertificateForHandleAsync(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback)
-	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
-	// certificate by its handle.
-	LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error)
-	// LookupCertificateIssuer: look up the issuer of certificate in the
-	// database.
-	LookupCertificateIssuer(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
-	// LookupCertificateIssuerAsync: asynchronously look up the issuer of
-	// certificate in the database.
-	LookupCertificateIssuerAsync(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback)
-	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
-	// operation.
-	LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error)
-	// LookupCertificatesIssuedBy: look up certificates issued by this issuer in
-	// the database.
-	LookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error)
-	// LookupCertificatesIssuedByAsync: asynchronously look up certificates
-	// issued by this issuer in the database.
-	LookupCertificatesIssuedByAsync(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback)
-	// LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
-	// certificates.
-	LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error)
-	// VerifyChain determines the validity of a certificate chain after looking
-	// up and adding any missing certificates to the chain.
-	VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
-	// VerifyChainAsync: asynchronously determines the validity of a certificate
-	// chain after looking up and adding any missing certificates to the chain.
-	VerifyChainAsync(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags, callback AsyncReadyCallback)
-	// VerifyChainFinish: finish an asynchronous verify chain operation.
-	VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
+	// BaseTLSDatabase returns the underlying base class.
+	BaseTLSDatabase() *TLSDatabase
 }
 
 var _ TLSDatabaser = (*TLSDatabase)(nil)
@@ -963,4 +931,9 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 	}
 
 	return _tlsCertificateFlags, _goerr
+}
+
+// BaseTLSDatabase returns self.
+func (self *TLSDatabase) BaseTLSDatabase() *TLSDatabase {
+	return self
 }

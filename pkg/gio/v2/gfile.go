@@ -1024,7 +1024,7 @@ type File struct {
 	*externglib.Object
 }
 
-// Filer describes File's abstract methods.
+// Filer describes File's interface methods.
 type Filer interface {
 	externglib.Objector
 

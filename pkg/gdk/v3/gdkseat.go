@@ -144,22 +144,14 @@ type Seat struct {
 	*externglib.Object
 }
 
-// Seater describes Seat's abstract methods.
+// Seater describes types inherited from class Seat.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Seater interface {
 	externglib.Objector
 
-	// Capabilities returns the capabilities this Seat currently has.
-	Capabilities() SeatCapabilities
-	// Display returns the Display this seat belongs to.
-	Display() *Display
-	// Keyboard returns the master device that routes keyboard events.
-	Keyboard() Devicer
-	// Pointer returns the master device that routes pointer events.
-	Pointer() Devicer
-	// Slaves returns the slave devices that match the given capabilities.
-	Slaves(capabilities SeatCapabilities) []Devicer
-	// Ungrab releases a grab added through gdk_seat_grab().
-	Ungrab()
+	// BaseSeat returns the underlying base class.
+	BaseSeat() *Seat
 }
 
 var _ Seater = (*Seat)(nil)
@@ -315,6 +307,11 @@ func (seat *Seat) Ungrab() {
 
 	C.gdk_seat_ungrab(_arg0)
 	runtime.KeepAlive(seat)
+}
+
+// BaseSeat returns seat.
+func (seat *Seat) BaseSeat() *Seat {
+	return seat
 }
 
 // ConnectDeviceAdded signal is emitted when a new input device is related to

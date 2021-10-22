@@ -38,11 +38,12 @@ type TLSFileDatabase struct {
 	TLSDatabase
 }
 
-// TLSFileDatabaser describes TLSFileDatabase's abstract methods.
+// TLSFileDatabaser describes TLSFileDatabase's interface methods.
 type TLSFileDatabaser interface {
 	externglib.Objector
 
-	privateTLSFileDatabase()
+	// BaseTLSFileDatabase returns the underlying base object.
+	BaseTLSFileDatabase() *TLSFileDatabase
 }
 
 var _ TLSFileDatabaser = (*TLSFileDatabase)(nil)
@@ -59,7 +60,10 @@ func marshalTLSFileDatabaser(p uintptr) (interface{}, error) {
 	return wrapTLSFileDatabase(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*TLSFileDatabase) privateTLSFileDatabase() {}
+// BaseTLSFileDatabase returns v.
+func (v *TLSFileDatabase) BaseTLSFileDatabase() *TLSFileDatabase {
+	return v
+}
 
 // NewTLSFileDatabase creates a new FileDatabase which uses anchor certificate
 // authorities in anchors to verify certificate chains.

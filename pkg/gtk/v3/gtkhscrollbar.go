@@ -89,5 +89,3 @@ func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
 
 	return _hScrollbar
 }
-
-func (*HScrollbar) privateHScrollbar() {}

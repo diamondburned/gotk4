@@ -78,5 +78,3 @@ func NewHSeparator() *HSeparator {
 
 	return _hSeparator
 }
-
-func (*HSeparator) privateHSeparator() {}

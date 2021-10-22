@@ -49,7 +49,7 @@ type FileDescriptorBased struct {
 	*externglib.Object
 }
 
-// FileDescriptorBasedder describes FileDescriptorBased's abstract methods.
+// FileDescriptorBasedder describes FileDescriptorBased's interface methods.
 type FileDescriptorBasedder interface {
 	externglib.Objector
 

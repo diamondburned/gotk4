@@ -715,8 +715,6 @@ func marshalDeleteEventer(p uintptr) (interface{}, error) {
 	return wrapDeleteEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*DeleteEvent) privateDeleteEvent() {}
-
 // Event GdkEvents are immutable data structures, created by GDK to represent
 // windowing system events.
 //
@@ -727,46 +725,14 @@ type Event struct {
 	*externglib.Object
 }
 
-// Eventer describes Event's abstract methods.
+// Eventer describes types inherited from class Event.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Eventer interface {
 	externglib.Objector
 
-	// Axes extracts all axis values from an event.
-	Axes() ([]float64, bool)
-	// Axis: extract the axis value for a particular axis use from an event
-	// structure.
-	Axis(axisUse AxisUse) (float64, bool)
-	// Device returns the device of an event.
-	Device() Devicer
-	// DeviceTool returns a GdkDeviceTool representing the tool that caused the
-	// event.
-	DeviceTool() *DeviceTool
-	// Display retrieves the display associated to the event.
-	Display() *Display
-	// EventSequence retuns the event sequence to which the event belongs.
-	EventSequence() *EventSequence
-	// EventType retrieves the type of the event.
-	EventType() EventType
-	// History retrieves the history of the device that event is for, as a list
-	// of time and coordinates.
-	History() []TimeCoord
-	// ModifierState returns the modifier state field of an event.
-	ModifierState() ModifierType
-	// PointerEmulated returns whether this event is an 'emulated' pointer
-	// event.
-	PointerEmulated() bool
-	// Position: extract the event surface relative x/y coordinates from an
-	// event.
-	Position() (x float64, y float64, ok bool)
-	// Seat returns the seat that originated the event.
-	Seat() Seater
-	// Surface extracts the surface associated with an event.
-	Surface() Surfacer
-	// Time returns the timestamp of event.
-	Time() uint32
-	// TriggersContextMenu returns whether a GdkEvent should trigger a context
-	// menu, according to platform conventions.
-	TriggersContextMenu() bool
+	// BaseEvent returns the underlying base class.
+	BaseEvent() *Event
 }
 
 var _ Eventer = (*Event)(nil)
@@ -1146,6 +1112,11 @@ func (event *Event) TriggersContextMenu() bool {
 	return _ok
 }
 
+// BaseEvent returns event.
+func (event *Event) BaseEvent() *Event {
+	return event
+}
+
 // FocusEvent: event related to a keyboard focus change.
 type FocusEvent struct {
 	Event
@@ -1449,8 +1420,6 @@ func marshalMotionEventer(p uintptr) (interface{}, error) {
 	return wrapMotionEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*MotionEvent) privateMotionEvent() {}
-
 // PadEvent: event related to a pad-based device.
 type PadEvent struct {
 	Event
@@ -1541,8 +1510,6 @@ func wrapProximityEvent(obj *externglib.Object) *ProximityEvent {
 func marshalProximityEventer(p uintptr) (interface{}, error) {
 	return wrapProximityEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ProximityEvent) privateProximityEvent() {}
 
 // ScrollEvent: event related to a scrolling motion.
 type ScrollEvent struct {

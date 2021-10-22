@@ -139,7 +139,7 @@ type DTLSConnection struct {
 	DatagramBased
 }
 
-// DTLSConnectioner describes DTLSConnection's abstract methods.
+// DTLSConnectioner describes DTLSConnection's interface methods.
 type DTLSConnectioner interface {
 	externglib.Objector
 

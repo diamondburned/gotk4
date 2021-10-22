@@ -130,18 +130,14 @@ type DeviceManager struct {
 	*externglib.Object
 }
 
-// DeviceManagerer describes DeviceManager's abstract methods.
+// DeviceManagerer describes types inherited from class DeviceManager.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type DeviceManagerer interface {
 	externglib.Objector
 
-	// ClientPointer returns the client pointer, that is, the master pointer
-	// that acts as the core pointer for this application.
-	ClientPointer() Devicer
-	// Display gets the Display associated to device_manager.
-	Display() *Display
-	// ListDevices returns the list of devices of type type currently attached
-	// to device_manager.
-	ListDevices(typ DeviceType) []Devicer
+	// BaseDeviceManager returns the underlying base class.
+	BaseDeviceManager() *DeviceManager
 }
 
 var _ DeviceManagerer = (*DeviceManager)(nil)
@@ -257,6 +253,11 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	})
 
 	return _list
+}
+
+// BaseDeviceManager returns deviceManager.
+func (deviceManager *DeviceManager) BaseDeviceManager() *DeviceManager {
+	return deviceManager
 }
 
 // ConnectDeviceAdded signal is emitted either when a new master pointer is

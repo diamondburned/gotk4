@@ -106,7 +106,7 @@ type PollableOutputStream struct {
 	OutputStream
 }
 
-// PollableOutputStreamer describes PollableOutputStream's abstract methods.
+// PollableOutputStreamer describes PollableOutputStream's interface methods.
 type PollableOutputStreamer interface {
 	externglib.Objector
 

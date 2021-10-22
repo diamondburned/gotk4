@@ -129,5 +129,3 @@ func NewHScaleWithRange(min, max, step float64) *HScale {
 
 	return _hScale
 }
-
-func (*HScale) privateHScale() {}

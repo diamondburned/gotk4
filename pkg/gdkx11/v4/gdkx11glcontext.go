@@ -38,5 +38,3 @@ func wrapX11GLContext(obj *externglib.Object) *X11GLContext {
 func marshalX11GLContexter(p uintptr) (interface{}, error) {
 	return wrapX11GLContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*X11GLContext) privateX11GLContext() {}

@@ -261,81 +261,14 @@ type Container struct {
 	Widget
 }
 
-// Containerer describes Container's abstract methods.
+// Containerer describes types inherited from class Container.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Containerer interface {
 	externglib.Objector
 
-	// Add adds widget to container.
-	Add(widget Widgetter)
-	CheckResize()
-	// ChildGetProperty gets the value of a child property for child and
-	// container.
-	ChildGetProperty(child Widgetter, propertyName string, value *externglib.Value)
-	// ChildNotify emits a Widget::child-notify signal for the [child
-	// property][child-properties] child_property on the child.
-	ChildNotify(child Widgetter, childProperty string)
-	// ChildSetProperty sets a child property for child and container.
-	ChildSetProperty(child Widgetter, propertyName string, value *externglib.Value)
-	// ChildType returns the type of the children supported by the container.
-	ChildType() externglib.Type
-	// Forall invokes callback on each direct child of container, including
-	// children that are considered “internal” (implementation details of the
-	// container).
-	Forall(callback Callback)
-	// Foreach invokes callback on each non-internal child of container.
-	Foreach(callback Callback)
-	// BorderWidth retrieves the border width of the container.
-	BorderWidth() uint
-	// Children returns the container’s non-internal children.
-	Children() []Widgetter
-	// FocusChain retrieves the focus chain of the container, if one has been
-	// set explicitly.
-	FocusChain() ([]Widgetter, bool)
-	// FocusChild returns the current focus child widget inside container.
-	FocusChild() Widgetter
-	// FocusHAdjustment retrieves the horizontal focus adjustment for the
-	// container.
-	FocusHAdjustment() *Adjustment
-	// FocusVAdjustment retrieves the vertical focus adjustment for the
-	// container.
-	FocusVAdjustment() *Adjustment
-	// PathForChild returns a newly created widget path representing all the
-	// widget hierarchy from the toplevel down to and including child.
-	PathForChild(child Widgetter) *WidgetPath
-	// ResizeMode returns the resize mode for the container.
-	ResizeMode() ResizeMode
-	// PropagateDraw: when a container receives a call to the draw function, it
-	// must send synthetic Widget::draw calls to all children that don’t have
-	// their own Windows.
-	PropagateDraw(child Widgetter, cr *cairo.Context)
-	// Remove removes widget from container.
-	Remove(widget Widgetter)
-	// ResizeChildren: deprecated: since version 3.10.
-	ResizeChildren()
-	// SetBorderWidth sets the border width of the container.
-	SetBorderWidth(borderWidth uint)
-	// SetFocusChain sets a focus chain, overriding the one computed
-	// automatically by GTK+.
-	SetFocusChain(focusableWidgets []Widgetter)
-	// SetFocusChild: sets, or unsets if child is NULL, the focused child of
-	// container.
-	SetFocusChild(child Widgetter)
-	// SetFocusHAdjustment hooks up an adjustment to focus handling in a
-	// container, so when a child of the container is focused, the adjustment is
-	// scrolled to show that widget.
-	SetFocusHAdjustment(adjustment *Adjustment)
-	// SetFocusVAdjustment hooks up an adjustment to focus handling in a
-	// container, so when a child of the container is focused, the adjustment is
-	// scrolled to show that widget.
-	SetFocusVAdjustment(adjustment *Adjustment)
-	// SetReallocateRedraws sets the reallocate_redraws flag of the container to
-	// the given value.
-	SetReallocateRedraws(needsRedraws bool)
-	// SetResizeMode sets the resize mode for the container.
-	SetResizeMode(resizeMode ResizeMode)
-	// UnsetFocusChain removes a focus chain explicitly set with
-	// gtk_container_set_focus_chain().
-	UnsetFocusChain()
+	// BaseContainer returns the underlying base class.
+	BaseContainer() *Container
 }
 
 var _ Containerer = (*Container)(nil)
@@ -1058,6 +991,11 @@ func (container *Container) UnsetFocusChain() {
 
 	C.gtk_container_unset_focus_chain(_arg0)
 	runtime.KeepAlive(container)
+}
+
+// BaseContainer returns container.
+func (container *Container) BaseContainer() *Container {
+	return container
 }
 
 func (container *Container) ConnectAdd(f func(object Widgetter)) externglib.SignalHandle {

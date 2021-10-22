@@ -37,11 +37,12 @@ type TLSServerConnection struct {
 	TLSConnection
 }
 
-// TLSServerConnectioner describes TLSServerConnection's abstract methods.
+// TLSServerConnectioner describes TLSServerConnection's interface methods.
 type TLSServerConnectioner interface {
 	externglib.Objector
 
-	privateTLSServerConnection()
+	// BaseTLSServerConnection returns the underlying base object.
+	BaseTLSServerConnection() *TLSServerConnection
 }
 
 var _ TLSServerConnectioner = (*TLSServerConnection)(nil)
@@ -60,7 +61,10 @@ func marshalTLSServerConnectioner(p uintptr) (interface{}, error) {
 	return wrapTLSServerConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*TLSServerConnection) privateTLSServerConnection() {}
+// BaseTLSServerConnection returns v.
+func (v *TLSServerConnection) BaseTLSServerConnection() *TLSServerConnection {
+	return v
+}
 
 // NewTLSServerConnection creates a new ServerConnection wrapping base_io_stream
 // (which must have pollable input and output streams).

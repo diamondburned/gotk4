@@ -246,7 +246,7 @@ type DatagramBased struct {
 	*externglib.Object
 }
 
-// DatagramBasedder describes DatagramBased's abstract methods.
+// DatagramBasedder describes DatagramBased's interface methods.
 type DatagramBasedder interface {
 	externglib.Objector
 

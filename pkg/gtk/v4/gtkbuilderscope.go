@@ -101,11 +101,12 @@ type BuilderScope struct {
 	*externglib.Object
 }
 
-// BuilderScoper describes BuilderScope's abstract methods.
+// BuilderScoper describes BuilderScope's interface methods.
 type BuilderScoper interface {
 	externglib.Objector
 
-	privateBuilderScope()
+	// BaseBuilderScope returns the underlying base object.
+	BaseBuilderScope() *BuilderScope
 }
 
 var _ BuilderScoper = (*BuilderScope)(nil)
@@ -120,7 +121,10 @@ func marshalBuilderScoper(p uintptr) (interface{}, error) {
 	return wrapBuilderScope(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*BuilderScope) privateBuilderScope() {}
+// BaseBuilderScope returns self.
+func (self *BuilderScope) BaseBuilderScope() *BuilderScope {
+	return self
+}
 
 // BuilderCScope: GtkBuilderScope implementation for the C language.
 //
@@ -171,5 +175,3 @@ func NewBuilderCScope() *BuilderCScope {
 
 	return _builderCScope
 }
-
-func (*BuilderCScope) privateBuilderCScope() {}

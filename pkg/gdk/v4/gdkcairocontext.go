@@ -32,13 +32,14 @@ type CairoContext struct {
 	DrawContext
 }
 
-// CairoContexter describes CairoContext's abstract methods.
+// CairoContexter describes types inherited from class CairoContext.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type CairoContexter interface {
 	externglib.Objector
 
-	// CairoCreate retrieves a Cairo context to be used to draw on the
-	// GdkSurface of context.
-	CairoCreate() *cairo.Context
+	// BaseCairoContext returns the underlying base class.
+	BaseCairoContext() *CairoContext
 }
 
 var _ CairoContexter = (*CairoContext)(nil)
@@ -82,4 +83,9 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 	}
 
 	return _context
+}
+
+// BaseCairoContext returns self.
+func (self *CairoContext) BaseCairoContext() *CairoContext {
+	return self
 }

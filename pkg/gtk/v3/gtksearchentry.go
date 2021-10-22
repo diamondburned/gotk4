@@ -116,8 +116,6 @@ func NewSearchEntry() *SearchEntry {
 	return _searchEntry
 }
 
-func (*SearchEntry) privateSearchEntry() {}
-
 // ConnectNextMatch signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user initiates a move to the next match for the current
 // search string.

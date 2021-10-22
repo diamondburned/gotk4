@@ -52,5 +52,3 @@ func wrapFlowBoxAccessible(obj *externglib.Object) *FlowBoxAccessible {
 func marshalFlowBoxAccessibler(p uintptr) (interface{}, error) {
 	return wrapFlowBoxAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*FlowBoxAccessible) privateFlowBoxAccessible() {}

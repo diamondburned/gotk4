@@ -301,8 +301,6 @@ func marshalNeverTriggerer(p uintptr) (interface{}, error) {
 	return wrapNeverTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*NeverTrigger) privateNeverTrigger() {}
-
 // NeverTriggerGet gets the never trigger.
 //
 // This is a singleton for a trigger that never triggers. Use this trigger
@@ -335,23 +333,14 @@ type ShortcutTrigger struct {
 	*externglib.Object
 }
 
-// ShortcutTriggerer describes ShortcutTrigger's abstract methods.
+// ShortcutTriggerer describes types inherited from class ShortcutTrigger.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type ShortcutTriggerer interface {
 	externglib.Objector
 
-	// Compare types of trigger1 and trigger2 are #gconstpointer only to allow
-	// use of this function as a Func.
-	Compare(trigger2 ShortcutTriggerer) int
-	// Equal checks if trigger1 and trigger2 trigger under the same conditions.
-	Equal(trigger2 ShortcutTriggerer) bool
-	// Hash generates a hash value for a GtkShortcutTrigger.
-	Hash() uint
-	// ToLabel gets textual representation for the given trigger.
-	ToLabel(display *gdk.Display) string
-	// String prints the given trigger into a human-readable string.
-	String() string
-	// Trigger checks if the given event triggers self.
-	Trigger(event gdk.Eventer, enableMnemonics bool) gdk.KeyMatch
+	// BaseShortcutTrigger returns the underlying base class.
+	BaseShortcutTrigger() *ShortcutTrigger
 }
 
 var _ ShortcutTriggerer = (*ShortcutTrigger)(nil)
@@ -576,4 +565,9 @@ func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gd
 	_keyMatch = gdk.KeyMatch(_cret)
 
 	return _keyMatch
+}
+
+// BaseShortcutTrigger returns trigger1.
+func (trigger1 *ShortcutTrigger) BaseShortcutTrigger() *ShortcutTrigger {
+	return trigger1
 }

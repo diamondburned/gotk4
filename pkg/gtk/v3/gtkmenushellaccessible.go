@@ -52,5 +52,3 @@ func wrapMenuShellAccessible(obj *externglib.Object) *MenuShellAccessible {
 func marshalMenuShellAccessibler(p uintptr) (interface{}, error) {
 	return wrapMenuShellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*MenuShellAccessible) privateMenuShellAccessible() {}

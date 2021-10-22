@@ -83,51 +83,14 @@ type Device struct {
 	*externglib.Object
 }
 
-// Devicer describes Device's abstract methods.
+// Devicer describes types inherited from class Device.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type Devicer interface {
 	externglib.Objector
 
-	// CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
-	// locked.
-	CapsLockState() bool
-	// DeviceTool retrieves the current tool for device.
-	DeviceTool() *DeviceTool
-	// Direction returns the direction of effective layout of the keyboard.
-	Direction() pango.Direction
-	// Display returns the GdkDisplay to which device pertains.
-	Display() *Display
-	// HasCursor determines whether the pointer follows device motion.
-	HasCursor() bool
-	// ModifierState retrieves the current modifier state of the keyboard.
-	ModifierState() ModifierType
-	// Name: name of the device, suitable for showing in a user interface.
-	Name() string
-	// NumLockState retrieves whether the Num Lock modifier of the keyboard is
-	// locked.
-	NumLockState() bool
-	// NumTouches retrieves the number of touch points associated to device.
-	NumTouches() uint
-	// ProductID returns the product ID of this device.
-	ProductID() string
-	// ScrollLockState retrieves whether the Scroll Lock modifier of the
-	// keyboard is locked.
-	ScrollLockState() bool
-	// Seat returns the GdkSeat the device belongs to.
-	Seat() Seater
-	// Source determines the type of the device.
-	Source() InputSource
-	// SurfaceAtPosition obtains the surface underneath device, returning the
-	// location of the device in win_x and win_y Returns NULL if the surface
-	// tree under device is not known to GDK (for example, belongs to another
-	// application).
-	SurfaceAtPosition() (winX float64, winY float64, surface Surfacer)
-	// Timestamp returns the timestamp of the last activity for this device.
-	Timestamp() uint32
-	// VendorID returns the vendor ID of this device.
-	VendorID() string
-	// HasBidiLayouts determines if layouts for both right-to-left and
-	// left-to-right languages are in use on the keyboard.
-	HasBidiLayouts() bool
+	// BaseDevice returns the underlying base class.
+	BaseDevice() *Device
 }
 
 var _ Devicer = (*Device)(nil)
@@ -527,6 +490,11 @@ func (device *Device) HasBidiLayouts() bool {
 	}
 
 	return _ok
+}
+
+// BaseDevice returns device.
+func (device *Device) BaseDevice() *Device {
+	return device
 }
 
 // ConnectChanged: emitted either when the the number of either axes or keys

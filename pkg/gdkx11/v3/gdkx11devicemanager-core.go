@@ -36,5 +36,3 @@ func wrapX11DeviceManagerCore(obj *externglib.Object) *X11DeviceManagerCore {
 func marshalX11DeviceManagerCorer(p uintptr) (interface{}, error) {
 	return wrapX11DeviceManagerCore(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*X11DeviceManagerCore) privateX11DeviceManagerCore() {}

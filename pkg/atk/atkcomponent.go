@@ -169,7 +169,7 @@ type Component struct {
 	*externglib.Object
 }
 
-// Componenter describes Component's abstract methods.
+// Componenter describes Component's interface methods.
 type Componenter interface {
 	externglib.Objector
 

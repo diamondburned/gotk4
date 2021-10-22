@@ -112,7 +112,7 @@ type SocketConnectable struct {
 	*externglib.Object
 }
 
-// SocketConnectabler describes SocketConnectable's abstract methods.
+// SocketConnectabler describes SocketConnectable's interface methods.
 type SocketConnectabler interface {
 	externglib.Objector
 

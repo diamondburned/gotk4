@@ -66,8 +66,6 @@ func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	return _eventControllerMotion
 }
 
-func (*EventControllerMotion) privateEventControllerMotion() {}
-
 // ConnectEnter signals that the pointer has entered the widget.
 func (v *EventControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
 	return v.Connect("enter", f)

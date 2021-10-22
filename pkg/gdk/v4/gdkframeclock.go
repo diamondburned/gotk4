@@ -140,34 +140,14 @@ type FrameClock struct {
 	*externglib.Object
 }
 
-// FrameClocker describes FrameClock's abstract methods.
+// FrameClocker describes types inherited from class FrameClock.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type FrameClocker interface {
 	externglib.Objector
 
-	// BeginUpdating starts updates for an animation.
-	BeginUpdating()
-	// EndUpdating stops updates for an animation.
-	EndUpdating()
-	// CurrentTimings gets the frame timings for the current frame.
-	CurrentTimings() *FrameTimings
-	// Fps calculates the current frames-per-second, based on the frame timings
-	// of frame_clock.
-	Fps() float64
-	// FrameCounter: GdkFrameClock maintains a 64-bit counter that increments
-	// for each frame drawn.
-	FrameCounter() int64
-	// FrameTime gets the time that should currently be used for animations.
-	FrameTime() int64
-	// HistoryStart returns the frame counter for the oldest frame available in
-	// history.
-	HistoryStart() int64
-	// RefreshInfo predicts a presentation time, based on history.
-	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
-	// Timings retrieves a GdkFrameTimings object holding timing information for
-	// the current frame or a recent frame.
-	Timings(frameCounter int64) *FrameTimings
-	// RequestPhase asks the frame clock to run a particular phase.
-	RequestPhase(phase FrameClockPhase)
+	// BaseFrameClock returns the underlying base class.
+	BaseFrameClock() *FrameClock
 }
 
 var _ FrameClocker = (*FrameClock)(nil)
@@ -414,6 +394,11 @@ func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 	C.gdk_frame_clock_request_phase(_arg0, _arg1)
 	runtime.KeepAlive(frameClock)
 	runtime.KeepAlive(phase)
+}
+
+// BaseFrameClock returns frameClock.
+func (frameClock *FrameClock) BaseFrameClock() *FrameClock {
+	return frameClock
 }
 
 // ConnectAfterPaint: this signal ends processing of the frame.

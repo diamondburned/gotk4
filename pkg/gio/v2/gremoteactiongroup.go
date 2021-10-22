@@ -80,7 +80,7 @@ type RemoteActionGroup struct {
 	ActionGroup
 }
 
-// RemoteActionGrouper describes RemoteActionGroup's abstract methods.
+// RemoteActionGrouper describes RemoteActionGroup's interface methods.
 type RemoteActionGrouper interface {
 	externglib.Objector
 

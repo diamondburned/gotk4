@@ -34,15 +34,14 @@ type LayoutChild struct {
 	*externglib.Object
 }
 
-// LayoutChilder describes LayoutChild's abstract methods.
+// LayoutChilder describes types inherited from class LayoutChild.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type LayoutChilder interface {
 	externglib.Objector
 
-	// ChildWidget retrieves the GtkWidget associated to the given layout_child.
-	ChildWidget() Widgetter
-	// LayoutManager retrieves the GtkLayoutManager instance that created the
-	// given layout_child.
-	LayoutManager() LayoutManagerer
+	// BaseLayoutChild returns the underlying base class.
+	BaseLayoutChild() *LayoutChild
 }
 
 var _ LayoutChilder = (*LayoutChild)(nil)
@@ -114,4 +113,9 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	}
 
 	return _layoutManager
+}
+
+// BaseLayoutChild returns layoutChild.
+func (layoutChild *LayoutChild) BaseLayoutChild() *LayoutChild {
+	return layoutChild
 }

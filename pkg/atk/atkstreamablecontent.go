@@ -65,7 +65,7 @@ type StreamableContent struct {
 	*externglib.Object
 }
 
-// StreamableContenter describes StreamableContent's abstract methods.
+// StreamableContenter describes StreamableContent's interface methods.
 type StreamableContenter interface {
 	externglib.Objector
 

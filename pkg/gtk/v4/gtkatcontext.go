@@ -32,14 +32,14 @@ type ATContext struct {
 	*externglib.Object
 }
 
-// ATContexter describes ATContext's abstract methods.
+// ATContexter describes types inherited from class ATContext.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type ATContexter interface {
 	externglib.Objector
 
-	// Accessible retrieves the GtkAccessible using this context.
-	Accessible() Accessibler
-	// AccessibleRole retrieves the accessible role of this context.
-	AccessibleRole() AccessibleRole
+	// BaseATContext returns the underlying base class.
+	BaseATContext() *ATContext
 }
 
 var _ ATContexter = (*ATContext)(nil)
@@ -134,6 +134,11 @@ func (self *ATContext) AccessibleRole() AccessibleRole {
 	_accessibleRole = AccessibleRole(_cret)
 
 	return _accessibleRole
+}
+
+// BaseATContext returns self.
+func (self *ATContext) BaseATContext() *ATContext {
+	return self
 }
 
 // ConnectStateChange: emitted when the attributes of the accessible for the

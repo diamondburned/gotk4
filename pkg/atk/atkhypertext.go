@@ -47,7 +47,7 @@ type Hypertext struct {
 	*externglib.Object
 }
 
-// Hypertexter describes Hypertext's abstract methods.
+// Hypertexter describes Hypertext's interface methods.
 type Hypertexter interface {
 	externglib.Objector
 

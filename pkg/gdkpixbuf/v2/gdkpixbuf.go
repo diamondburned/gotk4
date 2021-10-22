@@ -49,5 +49,3 @@ func wrapPixbufSimpleAnimIter(obj *externglib.Object) *PixbufSimpleAnimIter {
 func marshalPixbufSimpleAnimIterer(p uintptr) (interface{}, error) {
 	return wrapPixbufSimpleAnimIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*PixbufSimpleAnimIter) privatePixbufSimpleAnimIter() {}

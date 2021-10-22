@@ -72,46 +72,14 @@ type GLContext struct {
 	*externglib.Object
 }
 
-// GLContexter describes GLContext's abstract methods.
+// GLContexter describes types inherited from class GLContext.
+// To get the original type, the caller must assert this to an interface or
+// another type.
 type GLContexter interface {
 	externglib.Objector
 
-	// DebugEnabled retrieves the value set using
-	// gdk_gl_context_set_debug_enabled().
-	DebugEnabled() bool
-	// Display retrieves the Display the context is created for.
-	Display() *Display
-	// ForwardCompatible retrieves the value set using
-	// gdk_gl_context_set_forward_compatible().
-	ForwardCompatible() bool
-	// RequiredVersion retrieves the major and minor version requested by
-	// calling gdk_gl_context_set_required_version().
-	RequiredVersion() (major int, minor int)
-	// SharedContext retrieves the GLContext that this context share data with.
-	SharedContext() GLContexter
-	// UseES checks whether the context is using an OpenGL or OpenGL ES profile.
-	UseES() bool
-	// Version retrieves the OpenGL version of the context.
-	Version() (major int, minor int)
-	// Window retrieves the Window used by the context.
-	Window() Windower
-	// IsLegacy: whether the GLContext is in legacy mode or not.
-	IsLegacy() bool
-	// MakeCurrent makes the context the current one.
-	MakeCurrent()
-	// Realize realizes the given GLContext.
-	Realize() error
-	// SetDebugEnabled sets whether the GLContext should perform extra
-	// validations and run time checking.
-	SetDebugEnabled(enabled bool)
-	// SetForwardCompatible sets whether the GLContext should be forward
-	// compatible.
-	SetForwardCompatible(compatible bool)
-	// SetRequiredVersion sets the major and minor version of OpenGL to request.
-	SetRequiredVersion(major, minor int)
-	// SetUseES requests that GDK create a OpenGL ES context instead of an
-	// OpenGL one, if the platform and windowing system allows it.
-	SetUseES(useEs int)
+	// BaseGLContext returns the underlying base class.
+	BaseGLContext() *GLContext
 }
 
 var _ GLContexter = (*GLContext)(nil)
@@ -475,6 +443,11 @@ func (context *GLContext) SetUseES(useEs int) {
 	C.gdk_gl_context_set_use_es(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(useEs)
+}
+
+// BaseGLContext returns context.
+func (context *GLContext) BaseGLContext() *GLContext {
+	return context
 }
 
 // GLContextClearCurrent clears the current GLContext.

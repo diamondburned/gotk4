@@ -115,7 +115,7 @@ type Editable struct {
 	*externglib.Object
 }
 
-// Editabler describes Editable's abstract methods.
+// Editabler describes Editable's interface methods.
 type Editabler interface {
 	externglib.Objector
 

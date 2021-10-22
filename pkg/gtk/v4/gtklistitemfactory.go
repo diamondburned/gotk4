@@ -81,5 +81,3 @@ func wrapListItemFactory(obj *externglib.Object) *ListItemFactory {
 func marshalListItemFactorier(p uintptr) (interface{}, error) {
 	return wrapListItemFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*ListItemFactory) privateListItemFactory() {}

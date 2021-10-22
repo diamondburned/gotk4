@@ -69,7 +69,7 @@ type Document struct {
 	*externglib.Object
 }
 
-// Documenter describes Document's abstract methods.
+// Documenter describes Document's interface methods.
 type Documenter interface {
 	externglib.Objector
 

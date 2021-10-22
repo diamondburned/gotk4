@@ -37,11 +37,12 @@ type DTLSServerConnection struct {
 	DTLSConnection
 }
 
-// DTLSServerConnectioner describes DTLSServerConnection's abstract methods.
+// DTLSServerConnectioner describes DTLSServerConnection's interface methods.
 type DTLSServerConnectioner interface {
 	externglib.Objector
 
-	privateDTLSServerConnection()
+	// BaseDTLSServerConnection returns the underlying base object.
+	BaseDTLSServerConnection() *DTLSServerConnection
 }
 
 var _ DTLSServerConnectioner = (*DTLSServerConnection)(nil)
@@ -60,7 +61,10 @@ func marshalDTLSServerConnectioner(p uintptr) (interface{}, error) {
 	return wrapDTLSServerConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*DTLSServerConnection) privateDTLSServerConnection() {}
+// BaseDTLSServerConnection returns v.
+func (v *DTLSServerConnection) BaseDTLSServerConnection() *DTLSServerConnection {
+	return v
+}
 
 // NewDTLSServerConnection creates a new ServerConnection wrapping base_socket.
 //

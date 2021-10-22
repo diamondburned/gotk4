@@ -354,8 +354,8 @@ const (
 	WindowTypeHintNotification
 	// WindowTypeHintCombo: popup from a combo box.
 	WindowTypeHintCombo
-	// WindowTypeHintDnd: window that is used to implement a DND cursor.
-	WindowTypeHintDnd
+	// WindowTypeHintDND: window that is used to implement a DND cursor.
+	WindowTypeHintDND
 )
 
 func marshalWindowTypeHint(p uintptr) (interface{}, error) {
@@ -391,8 +391,8 @@ func (w WindowTypeHint) String() string {
 		return "Notification"
 	case WindowTypeHintCombo:
 		return "Combo"
-	case WindowTypeHintDnd:
-		return "Dnd"
+	case WindowTypeHintDND:
+		return "DND"
 	default:
 		return fmt.Sprintf("WindowTypeHint(%d)", w)
 	}

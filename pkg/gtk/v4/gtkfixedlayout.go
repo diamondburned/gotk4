@@ -82,8 +82,6 @@ func NewFixedLayout() *FixedLayout {
 	return _fixedLayout
 }
 
-func (*FixedLayout) privateFixedLayout() {}
-
 // FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.
 type FixedLayoutChild struct {
 	LayoutChild

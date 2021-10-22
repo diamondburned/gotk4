@@ -58,7 +58,7 @@ type HyperlinkImpl struct {
 	*externglib.Object
 }
 
-// HyperlinkImpler describes HyperlinkImpl's abstract methods.
+// HyperlinkImpler describes HyperlinkImpl's interface methods.
 type HyperlinkImpler interface {
 	externglib.Objector
 

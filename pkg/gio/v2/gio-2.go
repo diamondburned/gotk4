@@ -152,8 +152,6 @@ func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
 	return wrapAppInfoMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (*AppInfoMonitor) privateAppInfoMonitor() {}
-
 // ConnectChanged: signal emitted when the app info database for changes (ie:
 // newly installed or removed applications).
 func (v *AppInfoMonitor) ConnectChanged(f func()) externglib.SignalHandle {
@@ -255,8 +253,6 @@ func wrapDBusActionGroup(obj *externglib.Object) *DBusActionGroup {
 func marshalDBusActionGrouper(p uintptr) (interface{}, error) {
 	return wrapDBusActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*DBusActionGroup) privateDBusActionGroup() {}
 
 // DBusAuthObserver type provides a mechanism for participating in how a
 // BusServer (or a BusConnection) authenticates remote peers. Simply instantiate
@@ -2362,8 +2358,6 @@ func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 func marshalDBusMenuModeller(p uintptr) (interface{}, error) {
 	return wrapDBusMenuModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*DBusMenuModel) privateDBusMenuModel() {}
 
 // DBusMessage: type for representing D-Bus messages that can be sent or
 // received on a BusConnection.
@@ -5443,8 +5437,6 @@ func NewPropertyAction(name string, object *externglib.Object, propertyName stri
 	return _propertyAction
 }
 
-func (*PropertyAction) privatePropertyAction() {}
-
 // SimpleAction is the obvious simple implementation of the #GAction interface.
 // This is the easiest way to create an action for purposes of adding it to a
 // ActionGroup.
@@ -5715,8 +5707,6 @@ func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *
 	return _simpleIOStream
 }
 
-func (*SimpleIOStream) privateSimpleIOStream() {}
-
 // SimplePermission is a trivial implementation of #GPermission that represents
 // a permission that is either always or never allowed. The value is given at
 // construction and doesn't change.
@@ -5762,8 +5752,6 @@ func NewSimplePermission(allowed bool) *SimplePermission {
 
 	return _simplePermission
 }
-
-func (*SimplePermission) privateSimplePermission() {}
 
 // Subprocess allows the creation of and interaction with child processes.
 //

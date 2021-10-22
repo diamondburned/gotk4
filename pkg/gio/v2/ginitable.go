@@ -105,7 +105,7 @@ type Initable struct {
 	*externglib.Object
 }
 
-// Initabler describes Initable's abstract methods.
+// Initabler describes Initable's interface methods.
 type Initabler interface {
 	externglib.Objector
 

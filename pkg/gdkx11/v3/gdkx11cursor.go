@@ -36,5 +36,3 @@ func wrapX11Cursor(obj *externglib.Object) *X11Cursor {
 func marshalX11Cursorrer(p uintptr) (interface{}, error) {
 	return wrapX11Cursor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
-
-func (*X11Cursor) privateX11Cursor() {}

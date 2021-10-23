@@ -25,7 +25,7 @@ func init() {
 }
 
 // DragCancelReason: used in GdkDrag to the reason of a cancelled DND operation.
-type DragCancelReason int
+type DragCancelReason C.gint
 
 const (
 	// DragCancelNoTarget: there is no suitable drop target.

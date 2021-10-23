@@ -224,7 +224,7 @@ func (filter *TreeModelFilter) ClearCache() {
 //
 //    - childIter: valid TreeIter pointing to a row on the child model.
 //
-func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
+func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
 	var _arg2 *C.GtkTreeIter        // out
@@ -237,10 +237,10 @@ func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (Tree
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(childIter)
 
-	var _filterIter TreeIter // out
-	var _ok bool             // out
+	var _filterIter *TreeIter // out
+	var _ok bool              // out
 
-	_filterIter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_filterIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -292,7 +292,7 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 //
 //    - filterIter: valid TreeIter pointing to a row on filter.
 //
-func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
+func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) *TreeIter {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
 	var _arg2 *C.GtkTreeIter        // out
@@ -304,9 +304,9 @@ func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) Tree
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(filterIter)
 
-	var _childIter TreeIter // out
+	var _childIter *TreeIter // out
 
-	_childIter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_childIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _childIter
 }
@@ -413,7 +413,7 @@ func (filter *TreeModelFilter) SetModifyFunc(types []externglib.Type, fn TreeMod
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (C.int)(len(types))
-	_arg2 = (*C.GType)(C.malloc(C.size_t(len(types)) * C.size_t(C.sizeof_GType)))
+	_arg2 = (*C.GType)(C.malloc(C.size_t(uint(len(types)) * uint(C.sizeof_GType))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))

@@ -139,10 +139,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 		// Over-malloc once to have the zero terminator.
 		value.header.Import("unsafe")
-		value.p.Linef(
-			"%s = (%s)(%s)",
-			value.Out.Set, value.Out.Type, inner.cmalloc(value.InName, true),
-		)
+		value.writeMalloc(inner, value.InName, true)
 		value.p.Linef(
 			"copy(unsafe.Slice((*byte)(unsafe.Pointer(%s)), len(%s)), %[2]s)",
 			value.Out.Set, value.InName,
@@ -178,7 +175,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			value.p.Linef("var out [%d]%s", array.FixedSize, inner.Out.Type)
 			value.p.Linef("%s = &out[0]", value.Out.Set)
 		} else {
-			value.p.Linef("%s = %s", value.Out.Set, inner.cmalloc(value.InName, false))
+			value.writeMalloc(inner, value.InName, false)
 			if value.ShouldFree() {
 				value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.Out.Set)
 			}
@@ -207,10 +204,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 		value.header.Import("unsafe")
 
-		value.p.Linef(
-			"%s = (%s)(%s)",
-			value.Out.Set, value.Out.Type, inner.cmalloc(value.InName, false),
-		)
+		value.writeMalloc(inner, value.InName, false)
 		if value.ShouldFree() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 
@@ -306,9 +300,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			return true
 		}
 
-		value.p.Linef(
-			"%s = (%s)(%s)",
-			value.Out.Set, value.Out.Type, inner.cmalloc(value.InName, true))
+		value.writeMalloc(inner, value.InName, true)
 		if value.ShouldFree() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 		}
@@ -529,18 +521,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		return true
 
 	case value.Resolved.IsPrimitive():
-		// Don't use the convertRef routine, because we might want to preserve
-		// the pointer in case the API is weird.
-		if value.Resolved.Ptr > 0 {
-			value.header.Import("unsafe")
-			value.p.Linef(
-				"%s = (%s)(unsafe.Pointer(%s))",
-				value.Out.Set, value.Out.Type, value.InName,
-			)
-		} else {
-			value.p.Linef("%s = %s(%s)", value.Out.Set, value.Out.Type, value.InName)
-		}
-		return true
+		return value.castPrimitive()
 	}
 
 	switch value.Resolved.GType {
@@ -583,8 +564,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
-		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
-		return true
+		return value.castPrimitive()
 
 	case *gir.Class, *gir.Interface:
 		value.header.Import("unsafe")

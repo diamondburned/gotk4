@@ -46,7 +46,7 @@ type BuildableOverrider interface {
 	// the buildable.
 	CustomTagEnd(builder *Builder, child *externglib.Object, tagname string, data *cgo.Handle)
 	// CustomTagStart: this is called for each unknown element under <child>.
-	CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (glib.MarkupParser, cgo.Handle, bool)
+	CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (*glib.MarkupParser, cgo.Handle, bool)
 	// InternalChild: get the internal child called childname of the buildable
 	// object.
 	InternalChild(builder *Builder, childname string) *externglib.Object
@@ -98,7 +98,7 @@ type Buildabler interface {
 	// the buildable.
 	CustomTagEnd(builder *Builder, child *externglib.Object, tagname string, data *cgo.Handle)
 	// CustomTagStart: this is called for each unknown element under <child>.
-	CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (glib.MarkupParser, cgo.Handle, bool)
+	CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (*glib.MarkupParser, cgo.Handle, bool)
 	// InternalChild: get the internal child called childname of the buildable
 	// object.
 	InternalChild(builder *Builder, childname string) *externglib.Object
@@ -267,7 +267,7 @@ func (buildable *Buildable) CustomTagEnd(builder *Builder, child *externglib.Obj
 //    - child object or NULL for non-child tags.
 //    - tagname: name of tag.
 //
-func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (glib.MarkupParser, cgo.Handle, bool) {
+func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (*glib.MarkupParser, cgo.Handle, bool) {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.GObject      // out
@@ -290,11 +290,11 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.O
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(tagname)
 
-	var _parser glib.MarkupParser // out
-	var _data cgo.Handle          // out
-	var _ok bool                  // out
+	var _parser *glib.MarkupParser // out
+	var _data cgo.Handle           // out
+	var _ok bool                   // out
 
-	_parser = *(*glib.MarkupParser)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+	_parser = (*glib.MarkupParser)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
 	_data = (cgo.Handle)(unsafe.Pointer(_arg5))
 	if _cret != 0 {
 		_ok = true

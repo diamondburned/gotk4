@@ -26,7 +26,7 @@ func init() {
 
 // SubpixelLayout: this enumeration describes how the red, green and blue
 // components of physical pixels on an output device are laid out.
-type SubpixelLayout int
+type SubpixelLayout C.gint
 
 const (
 	// SubpixelLayoutUnknown: layout is not known.
@@ -109,7 +109,7 @@ func (monitor *Monitor) Display() *Display {
 // Geometry retrieves the size and position of an individual monitor within the
 // display coordinate space. The returned geometry is in ”application pixels”,
 // not in ”device pixels” (see gdk_monitor_get_scale_factor()).
-func (monitor *Monitor) Geometry() Rectangle {
+func (monitor *Monitor) Geometry() *Rectangle {
 	var _arg0 *C.GdkMonitor  // out
 	var _arg1 C.GdkRectangle // in
 
@@ -118,9 +118,9 @@ func (monitor *Monitor) Geometry() Rectangle {
 	C.gdk_monitor_get_geometry(_arg0, &_arg1)
 	runtime.KeepAlive(monitor)
 
-	var _geometry Rectangle // out
+	var _geometry *Rectangle // out
 
-	_geometry = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_geometry = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _geometry
 }
@@ -272,7 +272,7 @@ func (monitor *Monitor) WidthMm() int {
 // Note that not all backends may have a concept of workarea. This function will
 // return the monitor geometry if a workarea is not available, or does not
 // apply.
-func (monitor *Monitor) Workarea() Rectangle {
+func (monitor *Monitor) Workarea() *Rectangle {
 	var _arg0 *C.GdkMonitor  // out
 	var _arg1 C.GdkRectangle // in
 
@@ -281,9 +281,9 @@ func (monitor *Monitor) Workarea() Rectangle {
 	C.gdk_monitor_get_workarea(_arg0, &_arg1)
 	runtime.KeepAlive(monitor)
 
-	var _workarea Rectangle // out
+	var _workarea *Rectangle // out
 
-	_workarea = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_workarea = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _workarea
 }

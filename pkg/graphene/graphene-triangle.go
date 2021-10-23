@@ -136,7 +136,7 @@ func (t *Triangle) Area() float32 {
 //
 //    - res.x = u
 //    - res.y = v.
-func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
+func (t *Triangle) Barycoords(p *Point3D) (*Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
 	var _arg2 C.graphene_vec2_t      // in
@@ -151,10 +151,10 @@ func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
 	runtime.KeepAlive(t)
 	runtime.KeepAlive(p)
 
-	var _res Vec2 // out
-	var _ok bool  // out
+	var _res *Vec2 // out
+	var _ok bool   // out
 
-	_res = *(*Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret {
 		_ok = true
 	}
@@ -163,7 +163,7 @@ func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
 }
 
 // BoundingBox computes the bounding box of the given #graphene_triangle_t.
-func (t *Triangle) BoundingBox() Box {
+func (t *Triangle) BoundingBox() *Box {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_box_t       // in
 
@@ -172,9 +172,9 @@ func (t *Triangle) BoundingBox() Box {
 	C.graphene_triangle_get_bounding_box(_arg0, &_arg1)
 	runtime.KeepAlive(t)
 
-	var _res Box // out
+	var _res *Box // out
 
-	_res = *(*Box)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Box)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
@@ -185,7 +185,7 @@ func (t *Triangle) BoundingBox() Box {
 // The midpoint G is the centroid
 // (https://en.wikipedia.org/wiki/Centroid#Triangle_centroid) of the triangle,
 // i.e. the intersection of its medians.
-func (t *Triangle) Midpoint() Point3D {
+func (t *Triangle) Midpoint() *Point3D {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_point3d_t   // in
 
@@ -194,15 +194,15 @@ func (t *Triangle) Midpoint() Point3D {
 	C.graphene_triangle_get_midpoint(_arg0, &_arg1)
 	runtime.KeepAlive(t)
 
-	var _res Point3D // out
+	var _res *Point3D // out
 
-	_res = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // Normal computes the normal vector of the given #graphene_triangle_t.
-func (t *Triangle) Normal() Vec3 {
+func (t *Triangle) Normal() *Vec3 {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_vec3_t      // in
 
@@ -211,16 +211,16 @@ func (t *Triangle) Normal() Vec3 {
 	C.graphene_triangle_get_normal(_arg0, &_arg1)
 	runtime.KeepAlive(t)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // Plane computes the plane based on the vertices of the given
 // #graphene_triangle_t.
-func (t *Triangle) Plane() Plane {
+func (t *Triangle) Plane() *Plane {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_plane_t     // in
 
@@ -229,16 +229,16 @@ func (t *Triangle) Plane() Plane {
 	C.graphene_triangle_get_plane(_arg0, &_arg1)
 	runtime.KeepAlive(t)
 
-	var _res Plane // out
+	var _res *Plane // out
 
-	_res = *(*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // Points retrieves the three vertices of the given #graphene_triangle_t and
 // returns their coordinates as #graphene_point3d_t.
-func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
+func (t *Triangle) Points() (a *Point3D, b *Point3D, c *Point3D) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_point3d_t   // in
 	var _arg2 C.graphene_point3d_t   // in
@@ -249,13 +249,13 @@ func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
 	C.graphene_triangle_get_points(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(t)
 
-	var _a Point3D // out
-	var _b Point3D // out
-	var _c Point3D // out
+	var _a *Point3D // out
+	var _b *Point3D // out
+	var _c *Point3D // out
 
-	_a = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_b = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	_c = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_a = (*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_b = (*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_c = (*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _a, _b, _c
 }
@@ -272,7 +272,7 @@ func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
 //    - res.y = v
 //
 // See also: graphene_triangle_get_barycoords().
-func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) {
+func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (*Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
 	var _arg2 *C.graphene_vec2_t     // out
@@ -296,10 +296,10 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) 
 	runtime.KeepAlive(uvB)
 	runtime.KeepAlive(uvC)
 
-	var _res Vec2 // out
-	var _ok bool  // out
+	var _res *Vec2 // out
+	var _ok bool   // out
 
-	_res = *(*Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg5))))
+	_res = (*Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg5))))
 	if _cret {
 		_ok = true
 	}
@@ -308,7 +308,7 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) 
 }
 
 // Vertices retrieves the three vertices of the given #graphene_triangle_t.
-func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
+func (t *Triangle) Vertices() (a *Vec3, b *Vec3, c *Vec3) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_vec3_t      // in
 	var _arg2 C.graphene_vec3_t      // in
@@ -319,13 +319,13 @@ func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
 	C.graphene_triangle_get_vertices(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(t)
 
-	var _a Vec3 // out
-	var _b Vec3 // out
-	var _c Vec3 // out
+	var _a *Vec3 // out
+	var _b *Vec3 // out
+	var _c *Vec3 // out
 
-	_a = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_b = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	_c = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_a = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_b = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_c = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _a, _b, _c
 }

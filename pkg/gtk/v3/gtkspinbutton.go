@@ -34,7 +34,7 @@ const INPUT_ERROR = -1
 // SpinButtonUpdatePolicy: spin button update policy determines whether the spin
 // button displays values even if they are outside the bounds of its adjustment.
 // See gtk_spin_button_set_update_policy().
-type SpinButtonUpdatePolicy int
+type SpinButtonUpdatePolicy C.gint
 
 const (
 	// UpdateAlways: when refreshing your SpinButton, the value is always
@@ -64,7 +64,7 @@ func (s SpinButtonUpdatePolicy) String() string {
 
 // SpinType values of the GtkSpinType enumeration are used to specify the change
 // to make in gtk_spin_button_spin().
-type SpinType int
+type SpinType C.gint
 
 const (
 	// SpinStepForward: increment by the adjustments step increment.

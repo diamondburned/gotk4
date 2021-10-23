@@ -27,7 +27,7 @@ func init() {
 // StackTransitionType: possible transitions between pages in a GtkStack widget.
 //
 // New values may be added to this enumeration over time.
-type StackTransitionType int
+type StackTransitionType C.gint
 
 const (
 	// StackTransitionTypeNone: no transition.

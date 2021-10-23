@@ -50,7 +50,7 @@ const MODIFIER_MASK = 469769999
 // Note that the X and Y axes are not really needed; pointer devices report
 // their location via the x/y members of events regardless. Whether X and Y are
 // present as axes depends on the GDK backend.
-type AxisUse int
+type AxisUse C.gint
 
 const (
 	// AxisIgnore axis is ignored.
@@ -120,7 +120,7 @@ func (a AxisUse) String() string {
 }
 
 // GLError: error enumeration for GdkGLContext.
-type GLError int
+type GLError C.gint
 
 const (
 	// GLErrorNotAvailable: openGL support is not available.
@@ -158,7 +158,7 @@ func (g GLError) String() string {
 }
 
 // Gravity defines the reference point of a surface and is used in PopupLayout.
-type Gravity int
+type Gravity C.gint
 
 const (
 	// GravityNorthWest: reference point is at the top left corner.
@@ -217,7 +217,7 @@ func (g Gravity) String() string {
 }
 
 // VulkanError: error enumeration for VulkanContext.
-type VulkanError int
+type VulkanError C.gint
 
 const (
 	// VulkanErrorUnsupported: vulkan is not supported on this backend or has
@@ -244,7 +244,7 @@ func (v VulkanError) String() string {
 }
 
 // AxisFlags flags describing the current capabilities of a device/tool.
-type AxisFlags int
+type AxisFlags C.guint
 
 const (
 	// AxisFlagX: x axis is present.
@@ -328,7 +328,7 @@ func (a AxisFlags) Has(other AxisFlags) bool {
 
 // DragAction: used in GdkDrop and GdkDrag to indicate the actions that the
 // destination can and should do with the dropped data.
-type DragAction int
+type DragAction C.guint
 
 const (
 	// ActionCopy: copy the data.
@@ -394,7 +394,7 @@ func (d DragAction) Has(other DragAction) bool {
 // Note that GDK may add internal values to events which include values outside
 // of this enumeration. Your code should preserve and ignore them. You can use
 // GDK_MODIFIER_MASK to remove all private values.
-type ModifierType int
+type ModifierType C.guint
 
 const (
 	// ShiftMask: shift key.
@@ -536,7 +536,7 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var _cret *C.GdkContentFormats // in
 
 	_arg2 = (C.guint)(len(mimeTypes))
-	_arg1 = (**C.char)(C.malloc(C.size_t(len(mimeTypes)) * C.size_t(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.char)(C.malloc(C.size_t(uint(len(mimeTypes)) * uint(unsafe.Sizeof(uint(0))))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.char)(_arg1), len(mimeTypes))
@@ -1096,7 +1096,7 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 // and y values are undefined. If you are only interested in whether the
 // rectangles intersect, but not in the intersecting area itself, pass NULL for
 // dest.
-func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
+func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _arg2 C.GdkRectangle  // in
@@ -1109,10 +1109,10 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
 
-	var _dest Rectangle // out
-	var _ok bool        // out
+	var _dest *Rectangle // out
+	var _ok bool         // out
 
-	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1128,7 +1128,7 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
-func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
+func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _arg2 C.GdkRectangle  // in
@@ -1140,9 +1140,9 @@ func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
 
-	var _dest Rectangle // out
+	var _dest *Rectangle // out
 
-	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }

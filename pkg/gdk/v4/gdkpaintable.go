@@ -27,7 +27,7 @@ func init() {
 // PaintableFlags flags about a paintable object.
 //
 // Implementations use these for optimizations such as caching.
-type PaintableFlags int
+type PaintableFlags C.guint
 
 const (
 	// PaintableStaticSize: size is immutable. The gdkpaintable::invalidate-size

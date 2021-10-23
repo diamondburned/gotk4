@@ -29,7 +29,7 @@ func init() {
 // ToolbarSpaceStyle: whether spacers are vertical lines or just blank.
 //
 // Deprecated: since version 3.20.
-type ToolbarSpaceStyle int
+type ToolbarSpaceStyle C.gint
 
 const (
 	// ToolbarSpaceEmpty: use blank spacers.

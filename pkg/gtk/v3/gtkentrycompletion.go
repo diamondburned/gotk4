@@ -717,7 +717,7 @@ func (completion *EntryCompletion) ConnectActionActivated(f func(index int)) ext
 //
 // Note that model is the model that was passed to
 // gtk_entry_completion_set_model().
-func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter TreeIter) bool) externglib.SignalHandle {
+func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter *TreeIter) bool) externglib.SignalHandle {
 	return completion.Connect("cursor-on-match", f)
 }
 
@@ -738,7 +738,7 @@ func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) boo
 //
 // Note that model is the model that was passed to
 // gtk_entry_completion_set_model().
-func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter TreeIter) bool) externglib.SignalHandle {
+func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter *TreeIter) bool) externglib.SignalHandle {
 	return completion.Connect("match-selected", f)
 }
 

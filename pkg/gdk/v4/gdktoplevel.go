@@ -29,7 +29,7 @@ func init() {
 
 // FullscreenMode indicates which monitor a surface should span over when in
 // fullscreen mode.
-type FullscreenMode int
+type FullscreenMode C.gint
 
 const (
 	// FullscreenOnCurrentMonitor: fullscreen on current monitor only.
@@ -55,7 +55,7 @@ func (f FullscreenMode) String() string {
 }
 
 // SurfaceEdge determines a surface edge or corner.
-type SurfaceEdge int
+type SurfaceEdge C.gint
 
 const (
 	// SurfaceEdgeNorthWest: top left corner.
@@ -111,7 +111,7 @@ func (s SurfaceEdge) String() string {
 // tiled states is set. On platforms that lack that support, the tiled state
 // will give an indication of tiledness without any of the per-edge states being
 // set.
-type ToplevelState int
+type ToplevelState C.guint
 
 const (
 	// ToplevelStateMinimized: surface is minimized.

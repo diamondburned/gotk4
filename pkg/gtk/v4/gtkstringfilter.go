@@ -24,7 +24,7 @@ func init() {
 }
 
 // StringFilterMatchMode specifies how search strings are matched inside text.
-type StringFilterMatchMode int
+type StringFilterMatchMode C.gint
 
 const (
 	// StringFilterMatchModeExact: search string and text must match exactly.

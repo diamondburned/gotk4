@@ -80,29 +80,56 @@ func methodCanCallDirectly(method *gir.Method) bool {
 
 // RecordHasFree returns the free/unref method if it has one.
 func RecordHasFree(record *gir.Record) *gir.Method {
-	if m := findMethodName(record, "free"); m != nil {
+	if m := FindMethodName(record.Methods, "free"); m != nil {
 		return m
 	}
-	if m := findMethodName(record, "destroy"); m != nil {
+	if m := FindMethodName(record.Methods, "destroy"); m != nil {
 		return m
 	}
 	return nil
 }
 
+// RecordPrintFree prints the call to the record's free function OR an empty
+// string.
+func RecordPrintFree(record *gir.Record, value string) string {
+	free := RecordHasFree(record)
+	if free == nil {
+		return ""
+	}
+	return RecordPrintFreeMethod(free, value)
+}
+
+// RecordPrintFreeMethod generates a call with 1 argument for either free or
+// unref. If method is nil, then a C.free call is generated. Value is assumed to
+// be an unsafe.Pointer.
+func RecordPrintFreeMethod(method *gir.Method, value string) string {
+	if method == nil {
+		return fmt.Sprintf("C.free(%s)", value)
+	}
+
+	return fmt.Sprintf(
+		"C.%s((%s)(%s))",
+		method.CIdentifier,
+		AnyTypeCGo(method.Parameters.InstanceParameter.AnyType),
+		value,
+	)
+}
+
 // RecordHasUnref returns the unref method if it has one.
 func RecordHasUnref(record *gir.Record) *gir.Method {
-	return findMethodName(record, "unref")
+	return FindMethodName(record.Methods, "unref")
 }
 
 // RecordHasRef returns the ref method if it has one.
 func RecordHasRef(record *gir.Record) *gir.Method {
-	return findMethodName(record, "ref")
+	return FindMethodName(record.Methods, "ref")
 }
 
-func findMethodName(record *gir.Record, name string) *gir.Method {
-	for i, method := range record.Methods {
+// FindMethodName finds from the method the given name.
+func FindMethodName(methods []gir.Method, name string) *gir.Method {
+	for i, method := range methods {
 		if method.Name == name && methodCanCallDirectly(&method) {
-			return &record.Methods[i]
+			return &methods[i]
 		}
 	}
 	return nil

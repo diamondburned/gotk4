@@ -207,7 +207,7 @@ func (_range *Range) MinSliderSize() int {
 // and its steppers, in widget->window coordinates.
 //
 // This function is useful mainly for Range subclasses.
-func (_range *Range) RangeRect() gdk.Rectangle {
+func (_range *Range) RangeRect() *gdk.Rectangle {
 	var _arg0 *C.GtkRange    // out
 	var _arg1 C.GdkRectangle // in
 
@@ -216,9 +216,9 @@ func (_range *Range) RangeRect() gdk.Rectangle {
 	C.gtk_range_get_range_rect(_arg0, &_arg1)
 	runtime.KeepAlive(_range)
 
-	var _rangeRect gdk.Rectangle // out
+	var _rangeRect *gdk.Rectangle // out
 
-	_rangeRect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_rangeRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _rangeRect
 }

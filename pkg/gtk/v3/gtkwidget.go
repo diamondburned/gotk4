@@ -43,7 +43,7 @@ func init() {
 type Allocation = gdk.Rectangle
 
 // WidgetHelpType kinds of widget-specific help. Used by the ::show-help signal.
-type WidgetHelpType int
+type WidgetHelpType C.gint
 
 const (
 	// WidgetHelpTooltip: tooltip.
@@ -1292,7 +1292,7 @@ func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, act
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkDestDefaults(flags)
 	_arg3 = (C.gint)(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.size_t(len(targets)) * C.size_t(C.sizeof_GtkTargetEntry)))
+	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.size_t(uint(len(targets)) * uint(C.sizeof_GtkTargetEntry))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GtkTargetEntry)(_arg2), len(targets))
@@ -1496,7 +1496,7 @@ func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg3 = (C.gint)(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.size_t(len(targets)) * C.size_t(C.sizeof_GtkTargetEntry)))
+	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.size_t(uint(len(targets)) * uint(C.sizeof_GtkTargetEntry))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GtkTargetEntry)(_arg2), len(targets))
@@ -1836,7 +1836,7 @@ func (widget *Widget) AllocatedHeight() int {
 // by this function.
 //
 // If a widget is not visible, its allocated size is 0.
-func (widget *Widget) AllocatedSize() (Allocation, int) {
+func (widget *Widget) AllocatedSize() (*Allocation, int) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkAllocation // in
 	var _arg2 C.int           // in
@@ -1846,10 +1846,10 @@ func (widget *Widget) AllocatedSize() (Allocation, int) {
 	C.gtk_widget_get_allocated_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _allocation Allocation // out
-	var _baseline int          // out
+	var _allocation *Allocation // out
+	var _baseline int           // out
 
-	_allocation = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_baseline = int(_arg2)
 
 	return _allocation, _baseline
@@ -1888,7 +1888,7 @@ func (widget *Widget) AllocatedWidth() int {
 // assigned. There is no way to get the original allocation assigned by
 // gtk_widget_size_allocate(), since it isn’t stored; if a container
 // implementation needs that information it will have to track it itself.
-func (widget *Widget) Allocation() Allocation {
+func (widget *Widget) Allocation() *Allocation {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkAllocation // in
 
@@ -1897,9 +1897,9 @@ func (widget *Widget) Allocation() Allocation {
 	C.gtk_widget_get_allocation(_arg0, &_arg1)
 	runtime.KeepAlive(widget)
 
-	var _allocation Allocation // out
+	var _allocation *Allocation // out
 
-	_allocation = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _allocation
 }
@@ -2027,7 +2027,7 @@ func (widget *Widget) CanFocus() bool {
 // applications should use gtk_widget_size_request().
 //
 // Deprecated: Use gtk_widget_get_preferred_size() instead.
-func (widget *Widget) ChildRequisition() Requisition {
+func (widget *Widget) ChildRequisition() *Requisition {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkRequisition // in
 
@@ -2036,9 +2036,9 @@ func (widget *Widget) ChildRequisition() Requisition {
 	C.gtk_widget_get_child_requisition(_arg0, &_arg1)
 	runtime.KeepAlive(widget)
 
-	var _requisition Requisition // out
+	var _requisition *Requisition // out
 
-	_requisition = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _requisition
 }
@@ -2073,7 +2073,7 @@ func (widget *Widget) ChildVisible() bool {
 //
 // Historically, in GTK+ the clip area has been equal to the allocation
 // retrieved via gtk_widget_get_allocation().
-func (widget *Widget) Clip() Allocation {
+func (widget *Widget) Clip() *Allocation {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkAllocation // in
 
@@ -2082,9 +2082,9 @@ func (widget *Widget) Clip() Allocation {
 	C.gtk_widget_get_clip(_arg0, &_arg1)
 	runtime.KeepAlive(widget)
 
-	var _clip Allocation // out
+	var _clip *Allocation // out
 
-	_clip = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_clip = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _clip
 }
@@ -2980,7 +2980,7 @@ func (widget *Widget) PreferredHeightForWidth(width int) (minimumHeight int, nat
 //
 // Use gtk_widget_get_preferred_height_and_baseline_for_width() if you want to
 // support baseline alignment.
-func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition) {
+func (widget *Widget) PreferredSize() (minimumSize *Requisition, naturalSize *Requisition) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkRequisition // in
 	var _arg2 C.GtkRequisition // in
@@ -2990,11 +2990,11 @@ func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requ
 	C.gtk_widget_get_preferred_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _minimumSize Requisition // out
-	var _naturalSize Requisition // out
+	var _minimumSize *Requisition // out
+	var _naturalSize *Requisition // out
 
-	_minimumSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_naturalSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _minimumSize, _naturalSize
 }
@@ -3136,7 +3136,7 @@ func (widget *Widget) RequestMode() SizeRequestMode {
 // Deprecated: The Requisition cache on the widget was removed, If you need to
 // cache sizes across requests and allocations, add an explicit cache to the
 // widget in question instead.
-func (widget *Widget) Requisition() Requisition {
+func (widget *Widget) Requisition() *Requisition {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkRequisition // in
 
@@ -3145,9 +3145,9 @@ func (widget *Widget) Requisition() Requisition {
 	C.gtk_widget_get_requisition(_arg0, &_arg1)
 	runtime.KeepAlive(widget)
 
-	var _requisition Requisition // out
+	var _requisition *Requisition // out
 
-	_requisition = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _requisition
 }
@@ -4055,7 +4055,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 //
 //    - area: rectangle.
 //
-func (widget *Widget) Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool) {
+func (widget *Widget) Intersect(area *gdk.Rectangle) (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.GdkRectangle // out
 	var _arg2 C.GdkRectangle  // in
@@ -4068,10 +4068,10 @@ func (widget *Widget) Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool) {
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(area)
 
-	var _intersection gdk.Rectangle // out
-	var _ok bool                    // out
+	var _intersection *gdk.Rectangle // out
+	var _ok bool                     // out
 
-	_intersection = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_intersection = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -6802,7 +6802,7 @@ func (widget *Widget) SizeAllocateWithBaseline(allocation *Allocation, baseline 
 // actually be allocated.
 //
 // Deprecated: Use gtk_widget_get_preferred_size() instead.
-func (widget *Widget) SizeRequest() Requisition {
+func (widget *Widget) SizeRequest() *Requisition {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkRequisition // in
 
@@ -6811,9 +6811,9 @@ func (widget *Widget) SizeRequest() Requisition {
 	C.gtk_widget_size_request(_arg0, &_arg1)
 	runtime.KeepAlive(widget)
 
-	var _requisition Requisition // out
+	var _requisition *Requisition // out
 
-	_requisition = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _requisition
 }
@@ -7020,7 +7020,7 @@ func (widget *Widget) ConnectAccelClosuresChanged(f func()) externglib.SignalHan
 // the K_BUTTON_PRESS_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectButtonPressEvent(f func(event gdk.EventButton) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectButtonPressEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
 	return widget.Connect("button-press-event", f)
 }
 
@@ -7031,7 +7031,7 @@ func (widget *Widget) ConnectButtonPressEvent(f func(event gdk.EventButton) bool
 // the K_BUTTON_RELEASE_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectButtonReleaseEvent(f func(event gdk.EventButton) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
 	return widget.Connect("button-release-event", f)
 }
 
@@ -7055,14 +7055,14 @@ func (widget *Widget) ConnectCompositedChanged(f func()) externglib.SignalHandle
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
-func (widget *Widget) ConnectConfigureEvent(f func(event gdk.EventConfigure) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectConfigureEvent(f func(event *gdk.EventConfigure) bool) externglib.SignalHandle {
 	return widget.Connect("configure-event", f)
 }
 
 // ConnectDamageEvent: emitted when a redirected window belonging to widget gets
 // drawn into. The region/area members of the event shows what area of the
 // redirected drawable was drawn into.
-func (widget *Widget) ConnectDamageEvent(f func(event gdk.EventExpose) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectDamageEvent(f func(event *gdk.EventExpose) bool) externglib.SignalHandle {
 	return widget.Connect("damage-event", f)
 }
 
@@ -7312,7 +7312,7 @@ func (widget *Widget) ConnectDragMotion(f func(context gdk.DragContext, x, y int
 // extents of the clip region with gdk_cairo_get_clip_rectangle(), or they can
 // get a finer-grained representation of the dirty region with
 // cairo_copy_clip_rectangle_list().
-func (widget *Widget) ConnectDraw(f func(cr cairo.Context) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectDraw(f func(cr *cairo.Context) bool) externglib.SignalHandle {
 	return widget.Connect("draw", f)
 }
 
@@ -7323,7 +7323,7 @@ func (widget *Widget) ConnectDraw(f func(cr cairo.Context) bool) externglib.Sign
 // the K_ENTER_NOTIFY_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectEnterNotifyEvent(f func(event gdk.EventCrossing) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectEnterNotifyEvent(f func(event *gdk.EventCrossing) bool) externglib.SignalHandle {
 	return widget.Connect("enter-notify-event", f)
 }
 
@@ -7336,7 +7336,7 @@ func (widget *Widget) ConnectFocus(f func(direction DirectionType) bool) externg
 //
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_FOCUS_CHANGE_MASK mask.
-func (widget *Widget) ConnectFocusInEvent(f func(event gdk.EventFocus) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectFocusInEvent(f func(event *gdk.EventFocus) bool) externglib.SignalHandle {
 	return widget.Connect("focus-in-event", f)
 }
 
@@ -7345,7 +7345,7 @@ func (widget *Widget) ConnectFocusInEvent(f func(event gdk.EventFocus) bool) ext
 //
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_FOCUS_CHANGE_MASK mask.
-func (widget *Widget) ConnectFocusOutEvent(f func(event gdk.EventFocus) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectFocusOutEvent(f func(event *gdk.EventFocus) bool) externglib.SignalHandle {
 	return widget.Connect("focus-out-event", f)
 }
 
@@ -7355,7 +7355,7 @@ func (widget *Widget) ConnectFocusOutEvent(f func(event gdk.EventFocus) bool) ex
 // On X11, this happens when the grab window becomes unviewable (i.e. it or one
 // of its ancestors is unmapped), or if the same application grabs the pointer
 // or keyboard again.
-func (widget *Widget) ConnectGrabBrokenEvent(f func(event gdk.EventGrabBroken) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectGrabBrokenEvent(f func(event *gdk.EventGrabBroken) bool) externglib.SignalHandle {
 	return widget.Connect("grab-broken-event", f)
 }
 
@@ -7394,7 +7394,7 @@ func (widget *Widget) ConnectHierarchyChanged(f func(previousToplevel Widgetter)
 // the K_KEY_PRESS_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectKeyPressEvent(f func(event gdk.EventKey) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectKeyPressEvent(f func(event *gdk.EventKey) bool) externglib.SignalHandle {
 	return widget.Connect("key-press-event", f)
 }
 
@@ -7404,7 +7404,7 @@ func (widget *Widget) ConnectKeyPressEvent(f func(event gdk.EventKey) bool) exte
 // the K_KEY_RELEASE_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectKeyReleaseEvent(f func(event gdk.EventKey) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectKeyReleaseEvent(f func(event *gdk.EventKey) bool) externglib.SignalHandle {
 	return widget.Connect("key-release-event", f)
 }
 
@@ -7421,7 +7421,7 @@ func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) 
 // the K_LEAVE_NOTIFY_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectLeaveNotifyEvent(f func(event gdk.EventCrossing) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectLeaveNotifyEvent(f func(event *gdk.EventCrossing) bool) externglib.SignalHandle {
 	return widget.Connect("leave-notify-event", f)
 }
 
@@ -7443,7 +7443,7 @@ func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
-func (widget *Widget) ConnectMapEvent(f func(event gdk.EventAny) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectMapEvent(f func(event *gdk.EventAny) bool) externglib.SignalHandle {
 	return widget.Connect("map-event", f)
 }
 
@@ -7461,7 +7461,7 @@ func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) ex
 // the K_POINTER_MOTION_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectMotionNotifyEvent(f func(event gdk.EventMotion) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectMotionNotifyEvent(f func(event *gdk.EventMotion) bool) externglib.SignalHandle {
 	return widget.Connect("motion-notify-event", f)
 }
 
@@ -7490,7 +7490,7 @@ func (widget *Widget) ConnectPopupMenu(f func() bool) externglib.SignalHandle {
 //
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_PROPERTY_CHANGE_MASK mask.
-func (widget *Widget) ConnectPropertyNotifyEvent(f func(event gdk.EventProperty) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectPropertyNotifyEvent(f func(event *gdk.EventProperty) bool) externglib.SignalHandle {
 	return widget.Connect("property-notify-event", f)
 }
 
@@ -7498,7 +7498,7 @@ func (widget *Widget) ConnectPropertyNotifyEvent(f func(event gdk.EventProperty)
 // widget needs to enable the K_PROXIMITY_IN_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectProximityInEvent(f func(event gdk.EventProximity) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectProximityInEvent(f func(event *gdk.EventProximity) bool) externglib.SignalHandle {
 	return widget.Connect("proximity-in-event", f)
 }
 
@@ -7506,7 +7506,7 @@ func (widget *Widget) ConnectProximityInEvent(f func(event gdk.EventProximity) b
 // widget needs to enable the K_PROXIMITY_OUT_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectProximityOutEvent(f func(event gdk.EventProximity) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectProximityOutEvent(f func(event *gdk.EventProximity) bool) externglib.SignalHandle {
 	return widget.Connect("proximity-out-event", f)
 }
 
@@ -7546,13 +7546,13 @@ func (widget *Widget) ConnectScreenChanged(f func(previousScreen gdk.Screen)) ex
 // the K_SCROLL_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectScrollEvent(f func(event gdk.EventScroll) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectScrollEvent(f func(event *gdk.EventScroll) bool) externglib.SignalHandle {
 	return widget.Connect("scroll-event", f)
 }
 
 // ConnectSelectionClearEvent signal will be emitted when the the widget's
 // window has lost ownership of a selection.
-func (widget *Widget) ConnectSelectionClearEvent(f func(event gdk.EventSelection) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectSelectionClearEvent(f func(event *gdk.EventSelection) bool) externglib.SignalHandle {
 	return widget.Connect("selection-clear-event", f)
 }
 
@@ -7560,7 +7560,7 @@ func (widget *Widget) ConnectSelectionGet(f func(data *SelectionData, info, time
 	return widget.Connect("selection-get", f)
 }
 
-func (widget *Widget) ConnectSelectionNotifyEvent(f func(event gdk.EventSelection) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectSelectionNotifyEvent(f func(event *gdk.EventSelection) bool) externglib.SignalHandle {
 	return widget.Connect("selection-notify-event", f)
 }
 
@@ -7570,7 +7570,7 @@ func (widget *Widget) ConnectSelectionReceived(f func(data *SelectionData, time 
 
 // ConnectSelectionRequestEvent signal will be emitted when another client
 // requests ownership of the selection owned by the widget's window.
-func (widget *Widget) ConnectSelectionRequestEvent(f func(event gdk.EventSelection) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectSelectionRequestEvent(f func(event *gdk.EventSelection) bool) externglib.SignalHandle {
 	return widget.Connect("selection-request-event", f)
 }
 
@@ -7584,7 +7584,7 @@ func (widget *Widget) ConnectShowHelp(f func(helpType WidgetHelpType) bool) exte
 	return widget.Connect("show-help", f)
 }
 
-func (widget *Widget) ConnectSizeAllocate(f func(allocation Allocation)) externglib.SignalHandle {
+func (widget *Widget) ConnectSizeAllocate(f func(allocation *Allocation)) externglib.SignalHandle {
 	return widget.Connect("size-allocate", f)
 }
 
@@ -7637,7 +7637,7 @@ func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
-func (widget *Widget) ConnectUnmapEvent(f func(event gdk.EventAny) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectUnmapEvent(f func(event *gdk.EventAny) bool) externglib.SignalHandle {
 	return widget.Connect("unmap-event", f)
 }
 
@@ -7653,7 +7653,7 @@ func (widget *Widget) ConnectUnrealize(f func()) externglib.SignalHandle {
 //
 // To receive this signal the Window associated to the widget needs to enable
 // the K_VISIBILITY_NOTIFY_MASK mask.
-func (widget *Widget) ConnectVisibilityNotifyEvent(f func(event gdk.EventVisibility) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectVisibilityNotifyEvent(f func(event *gdk.EventVisibility) bool) externglib.SignalHandle {
 	return widget.Connect("visibility-notify-event", f)
 }
 
@@ -7663,7 +7663,7 @@ func (widget *Widget) ConnectVisibilityNotifyEvent(f func(event gdk.EventVisibil
 // To receive this signal the Window associated to the widget needs to enable
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
-func (widget *Widget) ConnectWindowStateEvent(f func(event gdk.EventWindowState) bool) externglib.SignalHandle {
+func (widget *Widget) ConnectWindowStateEvent(f func(event *gdk.EventWindowState) bool) externglib.SignalHandle {
 	return widget.Connect("window-state-event", f)
 }
 

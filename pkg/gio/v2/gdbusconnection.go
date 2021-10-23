@@ -339,7 +339,7 @@ func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar
 	utf8s := fn(connection, sender, objectPath)
 
 	{
-		cret = (**C.gchar)(C.malloc(C.size_t(len(utf8s)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		cret = (**C.gchar)(C.malloc(C.size_t(uint((len(utf8s) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		{
 			out := unsafe.Slice(cret, len(utf8s)+1)
 			var zero *C.gchar
@@ -395,7 +395,7 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gcha
 
 	if dBusInterfaceInfos != nil {
 		{
-			cret = (**C.GDBusInterfaceInfo)(C.malloc(C.size_t(len(dBusInterfaceInfos)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+			cret = (**C.GDBusInterfaceInfo)(C.malloc(C.size_t(uint((len(dBusInterfaceInfos) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 			{
 				out := unsafe.Slice(cret, len(dBusInterfaceInfos)+1)
 				var zero *C.GDBusInterfaceInfo

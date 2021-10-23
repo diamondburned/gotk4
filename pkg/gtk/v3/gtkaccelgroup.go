@@ -30,7 +30,7 @@ func init() {
 }
 
 // AccelFlags: accelerator flags used with gtk_accel_group_connect().
-type AccelFlags int
+type AccelFlags C.guint
 
 const (
 	// AccelVisible: accelerator is visible.
@@ -682,9 +682,9 @@ type accelGroupEntry struct {
 	native *C.GtkAccelGroupEntry
 }
 
-func (a *AccelGroupEntry) Key() AccelKey {
-	var v AccelKey // out
-	v = *(*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&a.native.key))))
+func (a *AccelGroupEntry) Key() *AccelKey {
+	var v *AccelKey // out
+	v = (*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&a.native.key))))
 	return v
 }
 

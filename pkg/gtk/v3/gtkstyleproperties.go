@@ -390,42 +390,6 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	runtime.KeepAlive(color)
 }
 
-// Resolve: if gradient is resolvable, resolved_gradient will be filled in with
-// the resolved gradient as a cairo_pattern_t, and TRUE will be returned.
-// Generally, if gradient can’t be resolved, it is due to it being defined on
-// top of a named color that doesn't exist in props.
-//
-// Deprecated: Gradient is deprecated.
-func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool) {
-	var _arg0 *C.GtkGradient        // out
-	var _arg1 *C.GtkStyleProperties // out
-	var _arg2 *C.cairo_pattern_t    // in
-	var _cret C.gboolean            // in
-
-	_arg0 = (*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(gradient)))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
-
-	_cret = C.gtk_gradient_resolve(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(gradient)
-	runtime.KeepAlive(props)
-
-	var _resolvedGradient *cairo.Pattern // out
-	var _ok bool                         // out
-
-	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_arg2)}
-		_resolvedGradient = (*cairo.Pattern)(unsafe.Pointer(_pp))
-	}
-	runtime.SetFinalizer(_resolvedGradient, func(v *cairo.Pattern) {
-		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
-	})
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _resolvedGradient, _ok
-}
-
 func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Pattern {
 	var _arg0 *C.GtkGradient     // out
 	var _arg1 *C.GtkStyleContext // out
@@ -664,7 +628,7 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 // or references such a color, this function will return FALSE.
 //
 // Deprecated: SymbolicColor is deprecated.
-func (color *SymbolicColor) Resolve(props *StyleProperties) (gdk.RGBA, bool) {
+func (color *SymbolicColor) Resolve(props *StyleProperties) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkSymbolicColor   // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 C.GdkRGBA             // in
@@ -679,10 +643,10 @@ func (color *SymbolicColor) Resolve(props *StyleProperties) (gdk.RGBA, bool) {
 	runtime.KeepAlive(color)
 	runtime.KeepAlive(props)
 
-	var _resolvedColor gdk.RGBA // out
-	var _ok bool                // out
+	var _resolvedColor *gdk.RGBA // out
+	var _ok bool                 // out
 
-	_resolvedColor = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_resolvedColor = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

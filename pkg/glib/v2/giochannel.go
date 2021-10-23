@@ -29,7 +29,7 @@ func init() {
 const WIN32_MSG_HANDLE = 19981206
 
 // IOChannelError: error codes returned by OChannel operations.
-type IOChannelError int
+type IOChannelError C.gint
 
 const (
 	// IOChannelErrorFbig: file too large.
@@ -80,7 +80,7 @@ func (i IOChannelError) String() string {
 
 // IOError is only used by the deprecated functions g_io_channel_read(),
 // g_io_channel_write(), and g_io_channel_seek().
-type IOError int
+type IOError C.gint
 
 const (
 	// IOErrorNone: no error.
@@ -110,7 +110,7 @@ func (i IOError) String() string {
 }
 
 // IOStatus statuses returned by most of the OFuncs functions.
-type IOStatus int
+type IOStatus C.gint
 
 const (
 	// IOStatusError: error occurred.
@@ -141,7 +141,7 @@ func (i IOStatus) String() string {
 
 // SeekType: enumeration specifying the base position for a
 // g_io_channel_seek_position() operation.
-type SeekType int
+type SeekType C.gint
 
 const (
 	// SeekCur: current position in the file.
@@ -169,7 +169,7 @@ func (s SeekType) String() string {
 // IOFlags specifies properties of a OChannel. Some of the flags can only be
 // read with g_io_channel_get_flags(), but not changed with
 // g_io_channel_set_flags().
-type IOFlags int
+type IOFlags C.guint
 
 const (
 	// IOFlagAppend turns on append mode, corresponds to O_APPEND (see the

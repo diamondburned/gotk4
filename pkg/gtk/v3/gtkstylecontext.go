@@ -568,7 +568,7 @@ const STYLE_REGION_TAB = "tab"
 
 // StyleContextPrintFlags flags that modify the behavior of
 // gtk_style_context_to_string(). New values may be added to this enumeration.
-type StyleContextPrintFlags int
+type StyleContextPrintFlags C.guint
 
 const (
 	StyleContextPrintNone StyleContextPrintFlags = 0b0
@@ -947,7 +947,7 @@ func (context *StyleContext) CancelAnimations(regionId cgo.Handle) {
 //
 //    - state to retrieve the color for.
 //
-func (context *StyleContext) BackgroundColor(state StateFlags) gdk.RGBA {
+func (context *StyleContext) BackgroundColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
 	var _arg2 C.GdkRGBA          // in
@@ -959,9 +959,9 @@ func (context *StyleContext) BackgroundColor(state StateFlags) gdk.RGBA {
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(state)
 
-	var _color gdk.RGBA // out
+	var _color *gdk.RGBA // out
 
-	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _color
 }
@@ -975,7 +975,7 @@ func (context *StyleContext) BackgroundColor(state StateFlags) gdk.RGBA {
 //
 //    - state to retrieve the border for.
 //
-func (context *StyleContext) Border(state StateFlags) Border {
+func (context *StyleContext) Border(state StateFlags) *Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
 	var _arg2 C.GtkBorder        // in
@@ -987,9 +987,9 @@ func (context *StyleContext) Border(state StateFlags) Border {
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(state)
 
-	var _border Border // out
+	var _border *Border // out
 
-	_border = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _border
 }
@@ -1002,7 +1002,7 @@ func (context *StyleContext) Border(state StateFlags) Border {
 //
 //    - state to retrieve the color for.
 //
-func (context *StyleContext) BorderColor(state StateFlags) gdk.RGBA {
+func (context *StyleContext) BorderColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
 	var _arg2 C.GdkRGBA          // in
@@ -1014,9 +1014,9 @@ func (context *StyleContext) BorderColor(state StateFlags) gdk.RGBA {
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(state)
 
-	var _color gdk.RGBA // out
+	var _color *gdk.RGBA // out
 
-	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _color
 }
@@ -1029,7 +1029,7 @@ func (context *StyleContext) BorderColor(state StateFlags) gdk.RGBA {
 //
 //    - state to retrieve the color for.
 //
-func (context *StyleContext) Color(state StateFlags) gdk.RGBA {
+func (context *StyleContext) Color(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
 	var _arg2 C.GdkRGBA          // in
@@ -1041,9 +1041,9 @@ func (context *StyleContext) Color(state StateFlags) gdk.RGBA {
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(state)
 
-	var _color gdk.RGBA // out
+	var _color *gdk.RGBA // out
 
-	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _color
 }
@@ -1149,7 +1149,7 @@ func (context *StyleContext) JunctionSides() JunctionSides {
 //
 //    - state to retrieve the border for.
 //
-func (context *StyleContext) Margin(state StateFlags) Border {
+func (context *StyleContext) Margin(state StateFlags) *Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
 	var _arg2 C.GtkBorder        // in
@@ -1161,9 +1161,9 @@ func (context *StyleContext) Margin(state StateFlags) Border {
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(state)
 
-	var _margin Border // out
+	var _margin *Border // out
 
-	_margin = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_margin = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _margin
 }
@@ -1175,7 +1175,7 @@ func (context *StyleContext) Margin(state StateFlags) Border {
 //
 //    - state to retrieve the padding for.
 //
-func (context *StyleContext) Padding(state StateFlags) Border {
+func (context *StyleContext) Padding(state StateFlags) *Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
 	var _arg2 C.GtkBorder        // in
@@ -1187,9 +1187,9 @@ func (context *StyleContext) Padding(state StateFlags) Border {
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(state)
 
-	var _padding Border // out
+	var _padding *Border // out
 
-	_padding = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_padding = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _padding
 }
@@ -1546,7 +1546,7 @@ func (context *StyleContext) ListRegions() []string {
 //
 //    - colorName: color name to lookup.
 //
-func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
+func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GdkRGBA          // in
@@ -1560,10 +1560,10 @@ func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(colorName)
 
-	var _color gdk.RGBA // out
-	var _ok bool        // out
+	var _color *gdk.RGBA // out
+	var _ok bool         // out
 
-	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

@@ -33,7 +33,7 @@ func init() {
 
 // ExpanderStyle: used to specify the style of the expanders drawn by a
 // TreeView.
-type ExpanderStyle int
+type ExpanderStyle C.gint
 
 const (
 	// ExpanderCollapsed: style used for a collapsed subtree.
@@ -1478,7 +1478,7 @@ func (style *Style) HasContext() bool {
 //
 //    - colorName: name of the logical color to look up.
 //
-func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
+func (style *Style) LookupColor(colorName string) (*gdk.Color, bool) {
 	var _arg0 *C.GtkStyle // out
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GdkColor  // in
@@ -1492,10 +1492,10 @@ func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 	runtime.KeepAlive(style)
 	runtime.KeepAlive(colorName)
 
-	var _color gdk.Color // out
-	var _ok bool         // out
+	var _color *gdk.Color // out
+	var _ok bool          // out
 
-	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

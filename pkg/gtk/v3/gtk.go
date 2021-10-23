@@ -67,7 +67,7 @@ func IconThemeErrorQuark() glib.Quark {
 	return _quark
 }
 
-type MovementStep int
+type MovementStep C.gint
 
 const (
 	// MovementLogicalPositions: move forward or back by graphemes.
@@ -124,7 +124,7 @@ func (m MovementStep) String() string {
 	}
 }
 
-type NotebookTab int
+type NotebookTab C.gint
 
 const (
 	NotebookTabFirst NotebookTab = iota
@@ -171,7 +171,7 @@ func RecentManagerErrorQuark() glib.Quark {
 	return _quark
 }
 
-type ResizeMode int
+type ResizeMode C.gint
 
 const (
 	// ResizeParent pass resize request to the parent.
@@ -200,7 +200,7 @@ func (r ResizeMode) String() string {
 	}
 }
 
-type ScrollStep int
+type ScrollStep C.gint
 
 const (
 	// ScrollSteps: scroll in steps.
@@ -241,7 +241,7 @@ func (s ScrollStep) String() string {
 	}
 }
 
-type DebugFlag int
+type DebugFlag C.guint
 
 const (
 	DebugMisc         DebugFlag = 0b1

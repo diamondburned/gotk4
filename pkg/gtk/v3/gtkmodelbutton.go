@@ -26,7 +26,7 @@ func init() {
 }
 
 // ButtonRole: role specifies the desired appearance of a ModelButton.
-type ButtonRole int
+type ButtonRole C.gint
 
 const (
 	// ButtonRoleNormal: plain button.

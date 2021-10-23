@@ -29,7 +29,7 @@ func init() {
 
 // AttachOptions denotes the expansion properties that a widget will have when
 // it (or its parent) is resized.
-type AttachOptions int
+type AttachOptions C.guint
 
 const (
 	// Expand: widget should expand to take up any extra space in its container

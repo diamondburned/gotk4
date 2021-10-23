@@ -17,6 +17,7 @@ type Resolved struct {
 	// either or
 	Extern  *gir.TypeFindResult // optional
 	Builtin *string             // optional
+	Aliased *Resolved           // optional
 
 	// TODO: move file.Header over to types.Header.
 	// TODO: replace {Publ,Impl}Import with types.Header to allow HashTable.
@@ -251,50 +252,84 @@ func (typ *Resolved) CanNil() bool {
 	return typ.Ptr > 0
 }
 
+func (typ *Resolved) externType() *gir.TypeFindResult {
+	if typ.Aliased != nil {
+		return typ.Aliased.Extern
+	}
+	return typ.Extern
+}
+
 // IsCallback returns true if the current ResolvedType is a callback.
 func (typ *Resolved) IsCallback() bool {
-	if typ.Extern == nil {
+	t := typ.externType()
+	if t == nil {
 		return false
 	}
-	_, ok := typ.Extern.Type.(*gir.Callback)
+
+	_, ok := t.Type.(*gir.Callback)
 	return ok
 }
 
 // IsRecord returns true if the current ResolvedType is a record.
 func (typ *Resolved) IsRecord() bool {
-	if typ.Extern == nil {
+	t := typ.externType()
+	if t == nil {
 		return false
 	}
-	_, ok := typ.Extern.Type.(*gir.Record)
+
+	_, ok := t.Type.(*gir.Record)
 	return ok
 }
 
 // IsInterface returns true if the current ResolvedType is an interface.
 func (typ *Resolved) IsInterface() bool {
-	if typ.Extern == nil {
+	t := typ.externType()
+	if t == nil {
 		return false
 	}
-	_, ok := typ.Extern.Type.(*gir.Interface)
+
+	_, ok := t.Type.(*gir.Interface)
 	return ok
 }
 
 // IsClass returns true if the current ResolvedType is a class.
 func (typ *Resolved) IsClass() bool {
-	if typ.Extern == nil {
+	t := typ.externType()
+	if t == nil {
 		return false
 	}
-	_, ok := typ.Extern.Type.(*gir.Class)
+
+	_, ok := t.Type.(*gir.Class)
 	return ok
 }
 
 // IsAbstract returns true if the resolved type is an interface or an abstract
 // class.
 func (typ *Resolved) IsAbstract() bool {
-	return typ.IsInterface() ||
-		(typ.IsClass() && typ.Extern.Type.(*gir.Class).Abstract)
+	if typ.IsInterface() {
+		return true
+	}
+
+	if typ.IsClass() {
+		return typ.externType().Type.(*gir.Class).Abstract
+	}
+
+	return false
 }
 
-// PublicIsInterface returns true if the type is a class or interface.
+// IsEnumOrBitfield returns true if the resolved type is an external enum or
+// bitfield type.
+func (typ *Resolved) IsEnumOrBitfield() bool {
+	t := typ.externType()
+	if t == nil {
+		return false
+	}
+
+	_, ok1 := t.Type.(*gir.Enum)
+	_, ok2 := t.Type.(*gir.Bitfield)
+	return ok1 || ok2
+}
+
 func (typ *Resolved) PublicIsInterface() bool {
 	if typ.Builtin != nil {
 		return typ.IsExternGLib("Object") || typ.IsExternGLib("InitiallyUnowned")
@@ -303,7 +338,7 @@ func (typ *Resolved) PublicIsInterface() bool {
 }
 
 // IsPrimitive returns true if the resolved type is a builtin type that can be
-// directly casted to an equivalent C type OR a record..
+// directly casted to an equivalent C type OR a record.
 func (typ *Resolved) IsPrimitive() bool {
 	if typ.Builtin == nil {
 		return false
@@ -348,6 +383,10 @@ func (typ *Resolved) CanCast(gen FileGenerator) bool {
 		return !ok
 	}
 
+	if typ.IsEnumOrBitfield() {
+		return true
+	}
+
 	// We can only directly cast the struct if it only contains primitives.
 	return typ.IsRecord() && !typ.HasPointer(gen)
 }
@@ -377,6 +416,9 @@ func (typ *Resolved) HasPointer(gen FileGenerator) bool {
 
 	switch v := typ.Extern.Type.(type) {
 	case *gir.Alias:
+		if typ.Aliased != nil {
+			return typ.Aliased.HasPointer(gen)
+		}
 		return ResolveName(gen, v.Name).HasPointer(gen)
 
 	case
@@ -728,6 +770,10 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	if !gen.CanGenerate(resolved) {
 		gen.Logln(logger.Debug, "cannot generate type", typ.Name, resolved.PublicType(true))
 		return nil
+	}
+
+	if alias, ok := resolved.Extern.Type.(*gir.Alias); ok {
+		resolved.Aliased = Resolve(gen, alias.Type)
 	}
 
 	return resolved

@@ -16,7 +16,7 @@ import (
 import "C"
 
 // ShellError: error codes returned by shell functions.
-type ShellError int
+type ShellError C.gint
 
 const (
 	// ShellErrorBadQuoting: mismatched or otherwise mangled quoting.

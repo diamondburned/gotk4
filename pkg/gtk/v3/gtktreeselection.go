@@ -194,7 +194,7 @@ func (selection *TreeSelection) Mode() SelectionMode {
 // to test if selection has any selected nodes. model is filled with the current
 // model as a convenience. This function will not work if you use selection is
 // K_SELECTION_MULTIPLE.
-func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
+func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
 	var _arg2 C.GtkTreeIter       // in
@@ -206,7 +206,7 @@ func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
 	runtime.KeepAlive(selection)
 
 	var _model TreeModeller // out
-	var _iter TreeIter      // out
+	var _iter *TreeIter     // out
 	var _ok bool            // out
 
 	if _arg1 != nil {
@@ -221,7 +221,7 @@ func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
 			_model = rv
 		}
 	}
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

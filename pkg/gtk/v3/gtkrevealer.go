@@ -28,7 +28,7 @@ func init() {
 
 // RevealerTransitionType: these enumeration values describe the possible
 // transitions when the child of a Revealer widget is shown or hidden.
-type RevealerTransitionType int
+type RevealerTransitionType C.gint
 
 const (
 	// RevealerTransitionTypeNone: no transition.

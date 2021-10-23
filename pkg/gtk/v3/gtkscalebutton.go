@@ -125,7 +125,7 @@ func NewScaleButton(size int, min, max, step float64, icons []string) *ScaleButt
 	_arg3 = C.gdouble(max)
 	_arg4 = C.gdouble(step)
 	{
-		_arg5 = (**C.gchar)(C.malloc(C.size_t(len(icons)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg5 = (**C.gchar)(C.malloc(C.size_t(uint((len(icons) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg5))
 		{
 			out := unsafe.Slice(_arg5, len(icons)+1)
@@ -282,7 +282,7 @@ func (button *ScaleButton) SetIcons(icons []string) {
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(icons)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(icons) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(icons)+1)

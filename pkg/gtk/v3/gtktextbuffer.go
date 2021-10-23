@@ -33,7 +33,7 @@ func init() {
 //
 // The values counts down from -1 to avoid clashes with application added drag
 // destinations which usually start at 0.
-type TextBufferTargetInfo int
+type TextBufferTargetInfo C.gint
 
 const (
 	// TextBufferTargetInfoBufferContents: buffer contents.
@@ -627,7 +627,7 @@ func (buffer *TextBuffer) EndUserAction() {
 
 // Bounds retrieves the first and last iterators in the buffer, i.e. the entire
 // buffer lies within the range [start,end).
-func (buffer *TextBuffer) Bounds() (start TextIter, end TextIter) {
+func (buffer *TextBuffer) Bounds() (start *TextIter, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.GtkTextIter    // in
@@ -637,11 +637,11 @@ func (buffer *TextBuffer) Bounds() (start TextIter, end TextIter) {
 	C.gtk_text_buffer_get_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(buffer)
 
-	var _start TextIter // out
-	var _end TextIter   // out
+	var _start *TextIter // out
+	var _end *TextIter   // out
 
-	_start = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_end = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _start, _end
 }
@@ -700,7 +700,7 @@ func (buffer *TextBuffer) CopyTargetList() *TargetList {
 // range from the first position in the buffer (call
 // gtk_text_buffer_get_start_iter() to get character position 0) to the end
 // iterator.
-func (buffer *TextBuffer) EndIter() TextIter {
+func (buffer *TextBuffer) EndIter() *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 
@@ -709,9 +709,9 @@ func (buffer *TextBuffer) EndIter() TextIter {
 	C.gtk_text_buffer_get_end_iter(_arg0, &_arg1)
 	runtime.KeepAlive(buffer)
 
-	var _iter TextIter // out
+	var _iter *TextIter // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -760,7 +760,7 @@ func (buffer *TextBuffer) GetInsert() *TextMark {
 //
 //    - anchor: child anchor that appears in buffer.
 //
-func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) TextIter {
+func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) *TextIter {
 	var _arg0 *C.GtkTextBuffer      // out
 	var _arg1 C.GtkTextIter         // in
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -772,9 +772,9 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) TextIter {
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(anchor)
 
-	var _iter TextIter // out
+	var _iter *TextIter // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -786,7 +786,7 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) TextIter {
 //
 //    - lineNumber: line number counting from 0.
 //
-func (buffer *TextBuffer) IterAtLine(lineNumber int) TextIter {
+func (buffer *TextBuffer) IterAtLine(lineNumber int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -798,9 +798,9 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int) TextIter {
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(lineNumber)
 
-	var _iter TextIter // out
+	var _iter *TextIter // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -820,7 +820,7 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int) TextIter {
 //    - lineNumber: line number counting from 0.
 //    - byteIndex: byte index from start of line.
 //
-func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int) TextIter {
+func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -835,9 +835,9 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int) TextIter {
 	runtime.KeepAlive(lineNumber)
 	runtime.KeepAlive(byteIndex)
 
-	var _iter TextIter // out
+	var _iter *TextIter // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -857,7 +857,7 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int) TextIter {
 //    - lineNumber: line number counting from 0.
 //    - charOffset: char offset from start of line.
 //
-func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int) TextIter {
+func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -872,9 +872,9 @@ func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int) TextIter 
 	runtime.KeepAlive(lineNumber)
 	runtime.KeepAlive(charOffset)
 
-	var _iter TextIter // out
+	var _iter *TextIter // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -885,7 +885,7 @@ func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int) TextIter 
 //
 //    - mark in buffer.
 //
-func (buffer *TextBuffer) IterAtMark(mark *TextMark) TextIter {
+func (buffer *TextBuffer) IterAtMark(mark *TextMark) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 *C.GtkTextMark   // out
@@ -897,9 +897,9 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) TextIter {
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(mark)
 
-	var _iter TextIter // out
+	var _iter *TextIter // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -913,7 +913,7 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) TextIter {
 //
 //    - charOffset: char offset from start of buffer, counting from 0, or -1.
 //
-func (buffer *TextBuffer) IterAtOffset(charOffset int) TextIter {
+func (buffer *TextBuffer) IterAtOffset(charOffset int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -925,9 +925,9 @@ func (buffer *TextBuffer) IterAtOffset(charOffset int) TextIter {
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(charOffset)
 
-	var _iter TextIter // out
+	var _iter *TextIter // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -1060,7 +1060,7 @@ func (buffer *TextBuffer) SelectionBound() *TextMark {
 // end are filled in with the same value). start and end will be in ascending
 // order. If start and end are NULL, then they are not filled in, but the return
 // value still indicates whether text is selected.
-func (buffer *TextBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
+func (buffer *TextBuffer) SelectionBounds() (start *TextIter, end *TextIter, ok bool) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.GtkTextIter    // in
@@ -1071,12 +1071,12 @@ func (buffer *TextBuffer) SelectionBounds() (start TextIter, end TextIter, ok bo
 	_cret = C.gtk_text_buffer_get_selection_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(buffer)
 
-	var _start TextIter // out
-	var _end TextIter   // out
-	var _ok bool        // out
+	var _start *TextIter // out
+	var _end *TextIter   // out
+	var _ok bool         // out
 
-	_start = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_end = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1130,7 +1130,7 @@ func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) s
 // StartIter: initialized iter with the first position in the text buffer. This
 // is the same as using gtk_text_buffer_get_iter_at_offset() to get the iter at
 // character offset 0.
-func (buffer *TextBuffer) StartIter() TextIter {
+func (buffer *TextBuffer) StartIter() *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 
@@ -1139,9 +1139,9 @@ func (buffer *TextBuffer) StartIter() TextIter {
 	C.gtk_text_buffer_get_start_iter(_arg0, &_arg1)
 	runtime.KeepAlive(buffer)
 
-	var _iter TextIter // out
+	var _iter *TextIter // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -1810,7 +1810,7 @@ func (buffer *TextBuffer) SetText(text string, len int) {
 //
 // See also: gtk_text_buffer_apply_tag(), gtk_text_buffer_insert_with_tags(),
 // gtk_text_buffer_insert_range().
-func (buffer *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end TextIter)) externglib.SignalHandle {
+func (buffer *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end *TextIter)) externglib.SignalHandle {
 	return buffer.Connect("apply-tag", f)
 }
 
@@ -1841,7 +1841,7 @@ func (buffer *TextBuffer) ConnectChanged(f func()) externglib.SignalHandle {
 // (see g_signal_connect_after()) do not have access to the deleted text.
 //
 // See also: gtk_text_buffer_delete().
-func (buffer *TextBuffer) ConnectDeleteRange(f func(start, end TextIter)) externglib.SignalHandle {
+func (buffer *TextBuffer) ConnectDeleteRange(f func(start, end *TextIter)) externglib.SignalHandle {
 	return buffer.Connect("delete-range", f)
 }
 
@@ -1865,7 +1865,7 @@ func (buffer *TextBuffer) ConnectEndUserAction(f func()) externglib.SignalHandle
 // handler revalidates it to be placed after the inserted anchor.
 //
 // See also: gtk_text_buffer_insert_child_anchor().
-func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location TextIter, anchor TextChildAnchor)) externglib.SignalHandle {
+func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location *TextIter, anchor TextChildAnchor)) externglib.SignalHandle {
 	return buffer.Connect("insert-child-anchor", f)
 }
 
@@ -1877,7 +1877,7 @@ func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location TextIter, anc
 // handler revalidates it to be placed after the inserted pixbuf.
 //
 // See also: gtk_text_buffer_insert_pixbuf().
-func (buffer *TextBuffer) ConnectInsertPixbuf(f func(location TextIter, pixbuf gdkpixbuf.Pixbuf)) externglib.SignalHandle {
+func (buffer *TextBuffer) ConnectInsertPixbuf(f func(location *TextIter, pixbuf gdkpixbuf.Pixbuf)) externglib.SignalHandle {
 	return buffer.Connect("insert-pixbuf", f)
 }
 
@@ -1889,7 +1889,7 @@ func (buffer *TextBuffer) ConnectInsertPixbuf(f func(location TextIter, pixbuf g
 // handler revalidates it to point to the end of the inserted text.
 //
 // See also: gtk_text_buffer_insert(), gtk_text_buffer_insert_range().
-func (buffer *TextBuffer) ConnectInsertText(f func(location TextIter, text string, len int)) externglib.SignalHandle {
+func (buffer *TextBuffer) ConnectInsertText(f func(location *TextIter, text string, len int)) externglib.SignalHandle {
 	return buffer.Connect("insert-text", f)
 }
 
@@ -1904,7 +1904,7 @@ func (buffer *TextBuffer) ConnectMarkDeleted(f func(mark TextMark)) externglib.S
 // ConnectMarkSet signal is emitted as notification after a TextMark is set.
 //
 // See also: gtk_text_buffer_create_mark(), gtk_text_buffer_move_mark().
-func (buffer *TextBuffer) ConnectMarkSet(f func(location TextIter, mark TextMark)) externglib.SignalHandle {
+func (buffer *TextBuffer) ConnectMarkSet(f func(location *TextIter, mark TextMark)) externglib.SignalHandle {
 	return buffer.Connect("mark-set", f)
 }
 
@@ -1931,6 +1931,6 @@ func (buffer *TextBuffer) ConnectPasteDone(f func(clipboard Clipboard)) externgl
 // invalidate the start and end iters (or has to revalidate them).
 //
 // See also: gtk_text_buffer_remove_tag().
-func (buffer *TextBuffer) ConnectRemoveTag(f func(tag TextTag, start, end TextIter)) externglib.SignalHandle {
+func (buffer *TextBuffer) ConnectRemoveTag(f func(tag TextTag, start, end *TextIter)) externglib.SignalHandle {
 	return buffer.Connect("remove-tag", f)
 }

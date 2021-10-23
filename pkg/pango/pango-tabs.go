@@ -26,7 +26,7 @@ func init() {
 
 // TabAlign: PangoTabAlign specifies where a tab stop appears relative to the
 // text.
-type TabAlign int
+type TabAlign C.gint
 
 const (
 	// TabLeft: tab stop appears to the left of the text.

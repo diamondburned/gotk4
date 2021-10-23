@@ -362,7 +362,7 @@ func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg2 = (C.gint)(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(C.malloc(C.size_t(len(targets)) * C.size_t(C.sizeof_GtkTargetEntry)))
+	_arg1 = (*C.GtkTargetEntry)(C.malloc(C.size_t(uint(len(targets)) * uint(C.sizeof_GtkTargetEntry))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))
@@ -637,7 +637,7 @@ func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
 // ConnectOwnerChange signal is emitted when GTK+ receives an event that
 // indicates that the ownership of the selection associated with clipboard has
 // changed.
-func (clipboard *Clipboard) ConnectOwnerChange(f func(event gdk.EventOwnerChange)) externglib.SignalHandle {
+func (clipboard *Clipboard) ConnectOwnerChange(f func(event *gdk.EventOwnerChange)) externglib.SignalHandle {
 	return clipboard.Connect("owner-change", f)
 }
 

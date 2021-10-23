@@ -185,7 +185,7 @@ func (button *ColorButton) Alpha() uint16 {
 // Color sets color to be the current color in the ColorButton widget.
 //
 // Deprecated: Use gtk_color_chooser_get_rgba() instead.
-func (button *ColorButton) Color() gdk.Color {
+func (button *ColorButton) Color() *gdk.Color {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.GdkColor        // in
 
@@ -194,9 +194,9 @@ func (button *ColorButton) Color() gdk.Color {
 	C.gtk_color_button_get_color(_arg0, &_arg1)
 	runtime.KeepAlive(button)
 
-	var _color gdk.Color // out
+	var _color *gdk.Color // out
 
-	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _color
 }

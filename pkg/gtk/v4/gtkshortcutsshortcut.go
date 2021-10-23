@@ -25,7 +25,7 @@ func init() {
 // ShortcutType specifies the kind of shortcut that is being described.
 //
 // More values may be added to this enumeration over time.
-type ShortcutType int
+type ShortcutType C.gint
 
 const (
 	// ShortcutAccelerator: shortcut is a keyboard accelerator. The

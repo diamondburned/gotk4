@@ -26,7 +26,7 @@ func init() {
 
 // EventControllerScrollFlags describes the behavior of a
 // GtkEventControllerScroll.
-type EventControllerScrollFlags int
+type EventControllerScrollFlags C.guint
 
 const (
 	// EventControllerScrollNone: don't emit scroll.

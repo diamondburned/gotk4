@@ -34,7 +34,7 @@ func init() {
 // the gdk-pixbuf library.
 //
 // Currently only RGB is supported.
-type Colorspace int
+type Colorspace C.gint
 
 const (
 	// ColorspaceRGB indicates a red/green/blue additive color space.
@@ -70,7 +70,7 @@ func (c Colorspace) String() string {
 //
 // Deprecated: There is no user of GdkPixbufAlphaMode in GdkPixbuf, and the Xlib
 // utility functions have been split out to their own library, gdk-pixbuf-xlib.
-type PixbufAlphaMode int
+type PixbufAlphaMode C.gint
 
 const (
 	// PixbufAlphaBilevel: bilevel clipping mask (black and white) will be
@@ -103,7 +103,7 @@ func (p PixbufAlphaMode) String() string {
 //
 // Many gdk-pixbuf operations can cause errors in this domain, or in the
 // G_FILE_ERROR domain.
-type PixbufError int
+type PixbufError C.gint
 
 const (
 	// PixbufErrorCorruptImage: image file was broken somehow.

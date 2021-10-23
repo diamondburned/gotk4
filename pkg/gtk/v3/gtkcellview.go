@@ -302,7 +302,7 @@ func (cellView *CellView) Model() TreeModeller {
 //
 //    - path: TreePath.
 //
-func (cellView *CellView) SizeOfRow(path *TreePath) (Requisition, bool) {
+func (cellView *CellView) SizeOfRow(path *TreePath) (*Requisition, bool) {
 	var _arg0 *C.GtkCellView   // out
 	var _arg1 *C.GtkTreePath   // out
 	var _arg2 C.GtkRequisition // in
@@ -315,10 +315,10 @@ func (cellView *CellView) SizeOfRow(path *TreePath) (Requisition, bool) {
 	runtime.KeepAlive(cellView)
 	runtime.KeepAlive(path)
 
-	var _requisition Requisition // out
-	var _ok bool                 // out
+	var _requisition *Requisition // out
+	var _ok bool                  // out
 
-	_requisition = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

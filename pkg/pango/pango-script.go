@@ -34,7 +34,7 @@ func init() {
 // values in newer versions of the Unicode standard. Applications should use the
 // GUnicodeScript enumeration instead, whose values are interchangeable with
 // PangoScript.
-type Script int
+type Script C.gint
 
 const (
 	// ScriptInvalidCode: value never returned from pango_script_for_unichar().

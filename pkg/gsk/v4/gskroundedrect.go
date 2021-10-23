@@ -40,9 +40,9 @@ type roundedRect struct {
 }
 
 // Bounds bounds of the rectangle.
-func (r *RoundedRect) Bounds() graphene.Rect {
-	var v graphene.Rect // out
-	v = *(*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&r.native.bounds))))
+func (r *RoundedRect) Bounds() *graphene.Rect {
+	var v *graphene.Rect // out
+	v = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&r.native.bounds))))
 	return v
 }
 

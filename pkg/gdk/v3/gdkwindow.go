@@ -42,7 +42,7 @@ func init() {
 
 // FullscreenMode indicates which monitor (in a multi-head setup) a window
 // should span over when in fullscreen mode.
-type FullscreenMode int
+type FullscreenMode C.gint
 
 const (
 	// FullscreenOnCurrentMonitor: fullscreen on current monitor only.
@@ -72,7 +72,7 @@ func (f FullscreenMode) String() string {
 // "implementation notes" section of the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) specification for more
 // details.
-type Gravity int
+type Gravity C.gint
 
 const (
 	// GravityNorthWest: reference point is at the top left corner.
@@ -131,7 +131,7 @@ func (g Gravity) String() string {
 }
 
 // WindowEdge determines a window edge or corner.
-type WindowEdge int
+type WindowEdge C.gint
 
 const (
 	// WindowEdgeNorthWest: top left corner.
@@ -181,7 +181,7 @@ func (w WindowEdge) String() string {
 }
 
 // WindowType describes the kind of window.
-type WindowType int
+type WindowType C.gint
 
 const (
 	// WindowRoot: root window; this window has no parent, covers the entire
@@ -235,7 +235,7 @@ func (w WindowType) String() string {
 // screen. GDK_INPUT_ONLY windows are invisible; they are usually placed above
 // other windows in order to trap or filter the events. You can’t draw on
 // GDK_INPUT_ONLY windows.
-type WindowWindowClass int
+type WindowWindowClass C.gint
 
 const (
 	// InputOutput: window for graphics and events.
@@ -275,7 +275,7 @@ func (w WindowWindowClass) String() string {
 //
 // In general, when multiple flags are set, flipping should take precedence over
 // sliding, which should take precedence over resizing.
-type AnchorHints int
+type AnchorHints C.guint
 
 const (
 	// AnchorFlipX: allow flipping anchors horizontally.
@@ -352,7 +352,7 @@ func (a AnchorHints) Has(other AnchorHints) bool {
 // WMDecoration: these are hints originally defined by the Motif toolkit. The
 // window manager can use them when determining how to decorate the window. The
 // hint must be set before mapping the window.
-type WMDecoration int
+type WMDecoration C.guint
 
 const (
 	// DecorAll: all decorations should be applied.
@@ -421,7 +421,7 @@ func (w WMDecoration) Has(other WMDecoration) bool {
 // WMFunction: these are hints originally defined by the Motif toolkit. The
 // window manager can use them when determining the functions to offer for the
 // window. The hint must be set before mapping the window.
-type WMFunction int
+type WMFunction C.guint
 
 const (
 	// FuncAll: all functions should be offered.
@@ -489,7 +489,7 @@ func (w WMFunction) Has(other WMFunction) bool {
 // WindowAttr not covered by a bit in this enum are required; for example, the
 // width/height, wclass, and window_type fields are required, they have no
 // corresponding flag in WindowAttributesType.
-type WindowAttributesType int
+type WindowAttributesType C.guint
 
 const (
 	// WaTitle: honor the title field.
@@ -567,7 +567,7 @@ func (w WindowAttributesType) Has(other WindowAttributesType) bool {
 // GDK_HINT_USER_SIZE should be set if the user specified a size/position using
 // a --geometry command-line argument; gtk_window_parse_geometry() automatically
 // sets these flags.
-type WindowHints int
+type WindowHints C.guint
 
 const (
 	// HintPos indicates that the program has positioned the window.
@@ -2241,7 +2241,7 @@ func (window *Window) FrameClock() FrameClocker {
 // titlebar/borders if any. The frame position is given in root window
 // coordinates. To get the position of the window itself (rather than the frame)
 // in root window coordinates, use gdk_window_get_origin().
-func (window *Window) FrameExtents() Rectangle {
+func (window *Window) FrameExtents() *Rectangle {
 	var _arg0 *C.GdkWindow   // out
 	var _arg1 C.GdkRectangle // in
 
@@ -2250,9 +2250,9 @@ func (window *Window) FrameExtents() Rectangle {
 	C.gdk_window_get_frame_extents(_arg0, &_arg1)
 	runtime.KeepAlive(window)
 
-	var _rect Rectangle // out
+	var _rect *Rectangle // out
 
-	_rect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _rect
 }
@@ -4899,7 +4899,7 @@ func (window *Window) BaseWindow() *Window {
 // Note that it is not possible to access the window's previous surface from
 // within any callback of this signal. Calling
 // gdk_offscreen_window_get_surface() will lead to a crash.
-func (window *Window) ConnectCreateSurface(f func(width, height int) cairo.Surface) externglib.SignalHandle {
+func (window *Window) ConnectCreateSurface(f func(width, height int) *cairo.Surface) externglib.SignalHandle {
 	return window.Connect("create-surface", f)
 }
 

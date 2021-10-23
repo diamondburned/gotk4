@@ -15,7 +15,7 @@ import "C"
 //
 // These errors are unexpected and will cause parts of the given CSS to be
 // ignored.
-type CSSParserError int
+type CSSParserError C.gint
 
 const (
 	// CSSParserErrorFailed: unknown failure.
@@ -52,7 +52,7 @@ func (c CSSParserError) String() string {
 //
 // Unlike CssParserErrors, warnings do not cause the parser to skip any input,
 // but they indicate issues that should be fixed.
-type CSSParserWarning int
+type CSSParserWarning C.gint
 
 const (
 	// CSSParserWarningDeprecated: given construct is deprecated and will be

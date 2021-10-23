@@ -27,7 +27,7 @@ func init() {
 }
 
 // RegexError: error codes returned by regular expressions functions.
-type RegexError int
+type RegexError C.gint
 
 const (
 	// RegexErrorCompile: compilation of the regular expression failed.
@@ -314,7 +314,7 @@ func (r RegexError) String() string {
 }
 
 // RegexCompileFlags flags specifying compile-time options.
-type RegexCompileFlags int
+type RegexCompileFlags C.guint
 
 const (
 	// RegexCaseless letters in the pattern match both upper- and lowercase
@@ -467,7 +467,7 @@ func (r RegexCompileFlags) Has(other RegexCompileFlags) bool {
 }
 
 // RegexMatchFlags flags specifying match-time options.
-type RegexMatchFlags int
+type RegexMatchFlags C.guint
 
 const (
 	// RegexMatchAnchored: pattern is forced to be "anchored", that is, it is
@@ -1266,128 +1266,6 @@ func (regex *Regex) StringNumber(name string) int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// Match scans for a match in string for the pattern in regex. The match_options
-// are combined with the match options specified when the regex structure was
-// created, letting you have more flexibility in reusing #GRegex structures.
-//
-// Unless G_REGEX_RAW is specified in the options, string must be valid UTF-8.
-//
-// A Info structure, used to get information on the match, is stored in
-// match_info if not NULL. Note that if match_info is not NULL then it is
-// created even if the function returns FALSE, i.e. you must free it regardless
-// if regular expression actually matched.
-//
-// To retrieve all the non-overlapping matches of the pattern in string you can
-// use g_match_info_next().
-//
-//    static void
-//    print_uppercase_words (const gchar *string)
-//    {
-//      // Print all uppercase-only words.
-//      GRegex *regex;
-//      GMatchInfo *match_info;
-//
-//      regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
-//      g_regex_match (regex, string, 0, &match_info);
-//      while (g_match_info_matches (match_info))
-//        {
-//          gchar *word = g_match_info_fetch (match_info, 0);
-//          g_print ("Found: s\n", word);
-//          g_free (word);
-//          g_match_info_next (match_info, NULL);
-//        }
-//      g_match_info_free (match_info);
-//      g_regex_unref (regex);
-//    }
-//
-// string is not copied and is used in Info internally. If you use any Info
-// method (except g_match_info_free()) after freeing or modifying string then
-// the behaviour is undefined.
-func (regex *Regex) Match(str string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
-	var _arg0 *C.GRegex          // out
-	var _arg1 *C.gchar           // out
-	var _arg2 C.GRegexMatchFlags // out
-	var _arg3 *C.GMatchInfo      // in
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GRegexMatchFlags(matchOptions)
-
-	_cret = C.g_regex_match(_arg0, _arg1, _arg2, &_arg3)
-	runtime.KeepAlive(regex)
-	runtime.KeepAlive(str)
-	runtime.KeepAlive(matchOptions)
-
-	var _matchInfo *MatchInfo // out
-	var _ok bool              // out
-
-	if _arg3 != nil {
-		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_matchInfo)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_match_info_unref((*C.GMatchInfo)(intern.C))
-			},
-		)
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _matchInfo, _ok
-}
-
-// MatchAll: using the standard algorithm for regular expression matching only
-// the longest match in the string is retrieved. This function uses a different
-// algorithm so it can retrieve all the possible matches. For more documentation
-// see g_regex_match_all_full().
-//
-// A Info structure, used to get information on the match, is stored in
-// match_info if not NULL. Note that if match_info is not NULL then it is
-// created even if the function returns FALSE, i.e. you must free it regardless
-// if regular expression actually matched.
-//
-// string is not copied and is used in Info internally. If you use any Info
-// method (except g_match_info_free()) after freeing or modifying string then
-// the behaviour is undefined.
-func (regex *Regex) MatchAll(str string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
-	var _arg0 *C.GRegex          // out
-	var _arg1 *C.gchar           // out
-	var _arg2 C.GRegexMatchFlags // out
-	var _arg3 *C.GMatchInfo      // in
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GRegexMatchFlags(matchOptions)
-
-	_cret = C.g_regex_match_all(_arg0, _arg1, _arg2, &_arg3)
-	runtime.KeepAlive(regex)
-	runtime.KeepAlive(str)
-	runtime.KeepAlive(matchOptions)
-
-	var _matchInfo *MatchInfo // out
-	var _ok bool              // out
-
-	if _arg3 != nil {
-		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_matchInfo)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_match_info_unref((*C.GMatchInfo)(intern.C))
-			},
-		)
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _matchInfo, _ok
 }
 
 // Split breaks the string on the pattern, and returns an array of the tokens.

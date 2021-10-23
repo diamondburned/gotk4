@@ -27,7 +27,7 @@ func init() {
 }
 
 // SeatCapabilities flags describing the seat capabilities.
-type SeatCapabilities int
+type SeatCapabilities C.guint
 
 const (
 	// SeatCapabilityNone: no input capabilities.

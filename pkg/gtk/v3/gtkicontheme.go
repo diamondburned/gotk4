@@ -39,7 +39,7 @@ func init() {
 }
 
 // IconThemeError: error codes for GtkIconTheme operations.
-type IconThemeError int
+type IconThemeError C.gint
 
 const (
 	// IconThemeNotFound: icon specified does not exist in the theme.
@@ -65,7 +65,7 @@ func (i IconThemeError) String() string {
 }
 
 // IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon().
-type IconLookupFlags int
+type IconLookupFlags C.guint
 
 const (
 	// IconLookupNoSvg: never get SVG icons, even if gdk-pixbuf supports them.
@@ -321,7 +321,7 @@ func (iconInfo *IconInfo) DisplayName() string {
 // EmbeddedRect: this function is deprecated and always returns FALSE.
 //
 // Deprecated: Embedded rectangles are deprecated.
-func (iconInfo *IconInfo) EmbeddedRect() (gdk.Rectangle, bool) {
+func (iconInfo *IconInfo) EmbeddedRect() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkIconInfo // out
 	var _arg1 C.GdkRectangle // in
 	var _cret C.gboolean     // in
@@ -331,10 +331,10 @@ func (iconInfo *IconInfo) EmbeddedRect() (gdk.Rectangle, bool) {
 	_cret = C.gtk_icon_info_get_embedded_rect(_arg0, &_arg1)
 	runtime.KeepAlive(iconInfo)
 
-	var _rectangle gdk.Rectangle // out
-	var _ok bool                 // out
+	var _rectangle *gdk.Rectangle // out
+	var _ok bool                  // out
 
-	_rectangle = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_rectangle = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1135,7 +1135,7 @@ func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int, flags IconL
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(iconNames)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(iconNames) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(iconNames)+1)
@@ -1191,7 +1191,7 @@ func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size, scale i
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(iconNames)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(iconNames) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(iconNames)+1)
@@ -1884,7 +1884,7 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg2 = (C.gint)(len(path))
-	_arg1 = (**C.gchar)(C.malloc(C.size_t(len(path)) * C.size_t(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.gchar)(C.malloc(C.size_t(uint(len(path)) * uint(unsafe.Sizeof(uint(0))))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(path))

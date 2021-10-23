@@ -23,7 +23,7 @@ import "C"
 //
 // The Directory enumeration can be extended at later date. Not every platform
 // has a directory for every logical id in this enumeration.
-type UserDirectory int
+type UserDirectory C.gint
 
 const (
 	// UserDirectoryDesktop user's Desktop directory.
@@ -74,7 +74,7 @@ func (u UserDirectory) String() string {
 
 // FormatSizeFlags flags to modify the format of the string returned by
 // g_format_size_full().
-type FormatSizeFlags int
+type FormatSizeFlags C.guint
 
 const (
 	// FormatSizeDefault: behave the same as g_format_size().
@@ -803,7 +803,7 @@ func ParseDebugString(str string, keys []DebugKey) uint {
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	_arg3 = (C.guint)(len(keys))
-	_arg2 = (*C.GDebugKey)(C.malloc(C.size_t(len(keys)) * C.size_t(C.sizeof_GDebugKey)))
+	_arg2 = (*C.GDebugKey)(C.malloc(C.size_t(uint(len(keys)) * uint(C.sizeof_GDebugKey))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GDebugKey)(_arg2), len(keys))

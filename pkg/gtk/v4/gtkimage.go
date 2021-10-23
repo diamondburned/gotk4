@@ -35,7 +35,7 @@ func init() {
 //
 // For empty images, you can request any storage type (call any of the "get"
 // functions), but they will all return NULL values.
-type ImageType int
+type ImageType C.gint
 
 const (
 	// ImageEmpty: there is no image displayed by the widget.

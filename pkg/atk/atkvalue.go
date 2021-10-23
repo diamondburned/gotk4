@@ -27,7 +27,7 @@ func init() {
 // ValueType: default types for a given value. Those are defined in order to
 // easily get localized strings to describe a given value or a given subrange,
 // using atk_value_type_get_localized_name().
-type ValueType int
+type ValueType C.gint
 
 const (
 	ValueVeryWeak ValueType = iota

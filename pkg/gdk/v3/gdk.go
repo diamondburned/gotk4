@@ -37,7 +37,7 @@ func GLErrorQuark() glib.Quark {
 	return _quark
 }
 
-type Status int
+type Status C.gint
 
 const (
 	OK         Status = 0

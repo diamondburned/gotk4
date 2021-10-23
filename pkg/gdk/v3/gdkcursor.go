@@ -32,7 +32,7 @@ func init() {
 // these cursors are either not useful, or are not available on other platforms.
 //
 // The recommended way to create cursors is to use gdk_cursor_new_from_name().
-type CursorType int
+type CursorType C.gint
 
 const (
 	// XCursor: ! (X_cursor.png).

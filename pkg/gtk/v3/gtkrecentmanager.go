@@ -31,7 +31,7 @@ func init() {
 }
 
 // RecentManagerError: error codes for RecentManager operations.
-type RecentManagerError int
+type RecentManagerError C.gint
 
 const (
 	// RecentManagerErrorNotFound: URI specified does not exists in the recently

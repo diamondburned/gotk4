@@ -130,7 +130,7 @@ func (iter *BitsetIter) Previous() (uint, bool) {
 //    - set: GtkBitset.
 //    - target value to start iterating at.
 //
-func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
+func BitsetIterInitAt(set *Bitset, target uint) (*BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out
 	var _arg3 C.guint         // out
@@ -144,11 +144,11 @@ func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(target)
 
-	var _iter BitsetIter // out
-	var _value uint      // out
-	var _ok bool         // out
+	var _iter *BitsetIter // out
+	var _value uint       // out
+	var _ok bool          // out
 
-	_iter = *(*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_value = uint(_arg4)
 	if _cret != 0 {
 		_ok = true
@@ -166,7 +166,7 @@ func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
 //
 //    - set: GtkBitset.
 //
-func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
+func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out
 	var _arg3 C.guint         // in
@@ -177,11 +177,11 @@ func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
 	_cret = C.gtk_bitset_iter_init_first(&_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(set)
 
-	var _iter BitsetIter // out
-	var _value uint      // out
-	var _ok bool         // out
+	var _iter *BitsetIter // out
+	var _value uint       // out
+	var _ok bool          // out
 
-	_iter = *(*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_value = uint(_arg3)
 	if _cret != 0 {
 		_ok = true
@@ -199,7 +199,7 @@ func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
 //
 //    - set: GtkBitset.
 //
-func BitsetIterInitLast(set *Bitset) (BitsetIter, uint, bool) {
+func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out
 	var _arg3 C.guint         // in
@@ -210,11 +210,11 @@ func BitsetIterInitLast(set *Bitset) (BitsetIter, uint, bool) {
 	_cret = C.gtk_bitset_iter_init_last(&_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(set)
 
-	var _iter BitsetIter // out
-	var _value uint      // out
-	var _ok bool         // out
+	var _iter *BitsetIter // out
+	var _value uint       // out
+	var _ok bool          // out
 
-	_iter = *(*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_value = uint(_arg3)
 	if _cret != 0 {
 		_ok = true

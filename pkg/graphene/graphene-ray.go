@@ -24,7 +24,7 @@ func init() {
 }
 
 // RayIntersectionKind: type of intersection.
-type RayIntersectionKind int
+type RayIntersectionKind C.gint
 
 const (
 	// RayIntersectionKindNone: no intersection.
@@ -112,7 +112,7 @@ func (a *Ray) Equal(b *Ray) bool {
 
 // ClosestPointToPoint computes the point on the given #graphene_ray_t that is
 // closest to the given point p.
-func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
+func (r *Ray) ClosestPointToPoint(p *Point3D) *Point3D {
 	var _arg0 *C.graphene_ray_t     // out
 	var _arg1 *C.graphene_point3d_t // out
 	var _arg2 C.graphene_point3d_t  // in
@@ -124,15 +124,15 @@ func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(p)
 
-	var _res Point3D // out
+	var _res *Point3D // out
 
-	_res = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
 
 // Direction retrieves the direction of the given #graphene_ray_t.
-func (r *Ray) Direction() Vec3 {
+func (r *Ray) Direction() *Vec3 {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 C.graphene_vec3_t // in
 
@@ -141,9 +141,9 @@ func (r *Ray) Direction() Vec3 {
 	C.graphene_ray_get_direction(_arg0, &_arg1)
 	runtime.KeepAlive(r)
 
-	var _direction Vec3 // out
+	var _direction *Vec3 // out
 
-	_direction = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_direction = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _direction
 }
@@ -196,7 +196,7 @@ func (r *Ray) DistanceToPoint(p *Point3D) float32 {
 }
 
 // Origin retrieves the origin of the given #graphene_ray_t.
-func (r *Ray) Origin() Point3D {
+func (r *Ray) Origin() *Point3D {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 C.graphene_point3d_t // in
 
@@ -205,16 +205,16 @@ func (r *Ray) Origin() Point3D {
 	C.graphene_ray_get_origin(_arg0, &_arg1)
 	runtime.KeepAlive(r)
 
-	var _origin Point3D // out
+	var _origin *Point3D // out
 
-	_origin = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_origin = (*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _origin
 }
 
 // PositionAt retrieves the coordinates of a point at the distance t along the
 // given #graphene_ray_t.
-func (r *Ray) PositionAt(t float32) Point3D {
+func (r *Ray) PositionAt(t float32) *Point3D {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 C.float              // out
 	var _arg2 C.graphene_point3d_t // in
@@ -226,9 +226,9 @@ func (r *Ray) PositionAt(t float32) Point3D {
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(t)
 
-	var _position Point3D // out
+	var _position *Point3D // out
 
-	_position = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_position = (*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _position
 }

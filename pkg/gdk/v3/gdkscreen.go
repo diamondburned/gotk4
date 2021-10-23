@@ -247,7 +247,7 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 //
 //    - monitorNum: monitor number.
 //
-func (screen *Screen) MonitorGeometry(monitorNum int) Rectangle {
+func (screen *Screen) MonitorGeometry(monitorNum int) *Rectangle {
 	var _arg0 *C.GdkScreen   // out
 	var _arg1 C.gint         // out
 	var _arg2 C.GdkRectangle // in
@@ -259,9 +259,9 @@ func (screen *Screen) MonitorGeometry(monitorNum int) Rectangle {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
-	var _dest Rectangle // out
+	var _dest *Rectangle // out
 
-	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }
@@ -411,7 +411,7 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 //
 //    - monitorNum: monitor number.
 //
-func (screen *Screen) MonitorWorkarea(monitorNum int) Rectangle {
+func (screen *Screen) MonitorWorkarea(monitorNum int) *Rectangle {
 	var _arg0 *C.GdkScreen   // out
 	var _arg1 C.gint         // out
 	var _arg2 C.GdkRectangle // in
@@ -423,9 +423,9 @@ func (screen *Screen) MonitorWorkarea(monitorNum int) Rectangle {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
-	var _dest Rectangle // out
+	var _dest *Rectangle // out
 
-	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }

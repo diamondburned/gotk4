@@ -177,9 +177,9 @@ func (i *Item) NumChars() int {
 }
 
 // Analysis analysis results for the item.
-func (i *Item) Analysis() Analysis {
-	var v Analysis // out
-	v = *(*Analysis)(gextras.NewStructNative(unsafe.Pointer((&i.native.analysis))))
+func (i *Item) Analysis() *Analysis {
+	var v *Analysis // out
+	v = (*Analysis)(gextras.NewStructNative(unsafe.Pointer((&i.native.analysis))))
 	return v
 }
 

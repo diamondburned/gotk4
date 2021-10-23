@@ -746,7 +746,7 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(protocols)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(protocols) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(protocols)+1)

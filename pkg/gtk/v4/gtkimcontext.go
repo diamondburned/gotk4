@@ -9,7 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config: gtk4
@@ -66,11 +65,6 @@ type IMContextOverrider interface {
 	// The input method may, for example, change the displayed feedback or reset
 	// the contexts state to reflect this change.
 	FocusOut()
-	// PreeditString: retrieve the current preedit string for the input context,
-	// and a list of attributes to apply to the string.
-	//
-	// This string should be displayed inserted at the insertion point.
-	PreeditString() (string, *pango.AttrList, int)
 	// Surrounding retrieves context around the insertion point.
 	//
 	// Input methods typically want context in order to constrain input text
@@ -368,39 +362,6 @@ func (context *IMContext) FocusOut() {
 
 	C.gtk_im_context_focus_out(_arg0)
 	runtime.KeepAlive(context)
-}
-
-// PreeditString: retrieve the current preedit string for the input context, and
-// a list of attributes to apply to the string.
-//
-// This string should be displayed inserted at the insertion point.
-func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
-	var _arg0 *C.GtkIMContext  // out
-	var _arg1 *C.char          // in
-	var _arg2 *C.PangoAttrList // in
-	var _arg3 C.int            // in
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
-
-	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(context)
-
-	var _str string            // out
-	var _attrs *pango.AttrList // out
-	var _cursorPos int         // out
-
-	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attrs)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-		},
-	)
-	_cursorPos = int(_arg3)
-
-	return _str, _attrs, _cursorPos
 }
 
 // Surrounding retrieves context around the insertion point.

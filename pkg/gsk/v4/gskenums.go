@@ -33,7 +33,7 @@ func init() {
 //
 // See https://www.w3.org/TR/compositing-1/#blending for more information on
 // blending and blend modes.
-type BlendMode int
+type BlendMode C.gint
 
 const (
 	// BlendModeDefault: default blend mode, which specifies no blending.
@@ -129,7 +129,7 @@ func (b BlendMode) String() string {
 }
 
 // Corner: corner indices used by RoundedRect.
-type Corner int
+type Corner C.gint
 
 const (
 	// CornerTopLeft: top left corner.
@@ -167,7 +167,7 @@ func (c Corner) String() string {
 //
 // It defines both what the type is called in the GLSL shader code, and what the
 // corresponding C type is on the Gtk side.
-type GLUniformType int
+type GLUniformType C.gint
 
 const (
 	// GLUniformTypeNone: no type, used for uninitialized or unspecified values.
@@ -217,7 +217,7 @@ func (g GLUniformType) String() string {
 }
 
 // RenderNodeType: type of a node determines what the node is rendering.
-type RenderNodeType int
+type RenderNodeType C.gint
 
 const (
 	// NotARenderNodeType: error type. No node will ever have this type.
@@ -345,7 +345,7 @@ func (r RenderNodeType) String() string {
 //
 // The actual implementation of each filter is deferred to the rendering
 // pipeline.
-type ScalingFilter int
+type ScalingFilter C.gint
 
 const (
 	// ScalingFilterLinear: linear interpolation filter.
@@ -376,7 +376,7 @@ func (s ScalingFilter) String() string {
 }
 
 // SerializationError errors that can happen during (de)serialization.
-type SerializationError int
+type SerializationError C.gint
 
 const (
 	// SerializationUnsupportedFormat: format can not be identified.
@@ -416,7 +416,7 @@ func (s SerializationError) String() string {
 // their categories. Otherwise, matrix operations done via multiplication will
 // not worsen categories. So for the matrix multiplication C = A * B,
 // category(C) = MIN (category(A), category(B)).
-type TransformCategory int
+type TransformCategory C.gint
 
 const (
 	// TransformCategoryUnknown: category of the matrix has not been determined.

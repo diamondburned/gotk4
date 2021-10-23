@@ -41,7 +41,7 @@ func init() {
 //
 // In general, when multiple flags are set, flipping should take precedence over
 // sliding, which should take precedence over resizing.
-type AnchorHints int
+type AnchorHints C.guint
 
 const (
 	// AnchorFlipX: allow flipping anchors horizontally.

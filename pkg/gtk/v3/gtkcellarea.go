@@ -794,7 +794,7 @@ func (area *CellArea) ForeachAlloc(context *CellAreaContext, widget Widgetter, c
 //    - renderer to get the allocation for.
 //    - cellArea: whole allocated area for area in widget for this row.
 //
-func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter, renderer CellRendererer, cellArea *gdk.Rectangle) gdk.Rectangle {
+func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter, renderer CellRendererer, cellArea *gdk.Rectangle) *gdk.Rectangle {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -815,9 +815,9 @@ func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter,
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(cellArea)
 
-	var _allocation gdk.Rectangle // out
+	var _allocation *gdk.Rectangle // out
 
-	_allocation = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg5))))
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg5))))
 
 	return _allocation
 }
@@ -833,7 +833,7 @@ func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter,
 //    - x position.
 //    - y position.
 //
-func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x, y int) (gdk.Rectangle, CellRendererer) {
+func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x, y int) (*gdk.Rectangle, CellRendererer) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -858,10 +858,10 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _allocArea gdk.Rectangle     // out
+	var _allocArea *gdk.Rectangle    // out
 	var _cellRenderer CellRendererer // out
 
-	_allocArea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
+	_allocArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
 	{
 		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
@@ -1296,7 +1296,7 @@ func (area *CellArea) HasRenderer(renderer CellRendererer) bool {
 //    - cellArea: widget relative coordinates where one of area’s cells is to
 //    be placed.
 //
-func (area *CellArea) InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) gdk.Rectangle {
+func (area *CellArea) InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) *gdk.Rectangle {
 	var _arg0 *C.GtkCellArea  // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GdkRectangle // out
@@ -1311,9 +1311,9 @@ func (area *CellArea) InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) g
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(cellArea)
 
-	var _innerArea gdk.Rectangle // out
+	var _innerArea *gdk.Rectangle // out
 
-	_innerArea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_innerArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _innerArea
 }
@@ -1556,13 +1556,13 @@ func (area *CellArea) BaseCellArea() *CellArea {
 
 // ConnectAddEditable indicates that editing has started on renderer and that
 // editable should be added to the owning cell-layouting widget at cell_area.
-func (area *CellArea) ConnectAddEditable(f func(renderer CellRendererer, editable CellEditabler, cellArea gdk.Rectangle, path string)) externglib.SignalHandle {
+func (area *CellArea) ConnectAddEditable(f func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string)) externglib.SignalHandle {
 	return area.Connect("add-editable", f)
 }
 
 // ConnectApplyAttributes: this signal is emitted whenever applying attributes
 // to area from model.
-func (area *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter TreeIter, isExpander, isExpanded bool)) externglib.SignalHandle {
+func (area *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter *TreeIter, isExpander, isExpanded bool)) externglib.SignalHandle {
 	return area.Connect("apply-attributes", f)
 }
 

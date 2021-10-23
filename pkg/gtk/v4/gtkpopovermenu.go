@@ -27,7 +27,7 @@ func init() {
 
 // PopoverMenuFlags flags that affect how popover menus are created from a menu
 // model.
-type PopoverMenuFlags int
+type PopoverMenuFlags C.guint
 
 const (
 	// PopoverMenuNested: create submenus as nested popovers. Without this flag,

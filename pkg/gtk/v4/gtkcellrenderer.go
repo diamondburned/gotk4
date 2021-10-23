@@ -28,7 +28,7 @@ func init() {
 }
 
 // CellRendererMode identifies how the user can interact with a particular cell.
-type CellRendererMode int
+type CellRendererMode C.gint
 
 const (
 	// CellRendererModeInert: cell is just for display and cannot be interacted
@@ -61,7 +61,7 @@ func (c CellRendererMode) String() string {
 }
 
 // CellRendererState tells how a cell is to be rendered.
-type CellRendererState int
+type CellRendererState C.guint
 
 const (
 	// CellRendererSelected: cell is currently selected, and probably has a
@@ -141,7 +141,7 @@ type CellRendererOverrider interface {
 	EditingStarted(editable CellEditabler, path string)
 	// AlignedArea gets the aligned area used by cell inside cell_area. Used for
 	// finding the appropriate edit and focus rectangle.
-	AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
+	AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) *gdk.Rectangle
 	// PreferredHeight retrieves a renderer’s natural size when rendered to
 	// widget.
 	PreferredHeight(widget Widgetter) (minimumSize int, naturalSize int)
@@ -295,7 +295,7 @@ func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgetter, path str
 //    - cellArea: cell area which would be passed to
 //    gtk_cell_renderer_render().
 //
-func (cell *CellRenderer) AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle {
+func (cell *CellRenderer) AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) *gdk.Rectangle {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkWidget           // out
 	var _arg2 C.GtkCellRendererState // out
@@ -313,9 +313,9 @@ func (cell *CellRenderer) AlignedArea(widget Widgetter, flags CellRendererState,
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(cellArea)
 
-	var _alignedArea gdk.Rectangle // out
+	var _alignedArea *gdk.Rectangle // out
 
-	_alignedArea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+	_alignedArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
 
 	return _alignedArea
 }
@@ -486,7 +486,7 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int) (
 //
 //    - widget this cell will be rendering to.
 //
-func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize Requisition, naturalSize Requisition) {
+func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize *Requisition, naturalSize *Requisition) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.GtkRequisition   // in
@@ -499,11 +499,11 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize Requisiti
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(widget)
 
-	var _minimumSize Requisition // out
-	var _naturalSize Requisition // out
+	var _minimumSize *Requisition // out
+	var _naturalSize *Requisition // out
 
-	_minimumSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	_naturalSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _minimumSize, _naturalSize
 }

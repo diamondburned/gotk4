@@ -32,7 +32,7 @@ func init() {
 
 // RecentFilterFlags: these flags indicate what parts of a RecentFilterInfo
 // struct are filled or need to be filled.
-type RecentFilterFlags int
+type RecentFilterFlags C.guint
 
 const (
 	// RecentFilterURI: URI of the file being tested.

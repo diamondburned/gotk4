@@ -26,7 +26,7 @@ func init() {
 
 // RenderPart defines different items to render for such purposes as setting
 // colors.
-type RenderPart int
+type RenderPart C.gint
 
 const (
 	// RenderPartForeground: text itself.

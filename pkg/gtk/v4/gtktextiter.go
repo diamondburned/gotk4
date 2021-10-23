@@ -34,7 +34,7 @@ func init() {
 // If neither GTK_TEXT_SEARCH_VISIBLE_ONLY nor GTK_TEXT_SEARCH_TEXT_ONLY are
 // enabled, the match must be exact; the special 0xFFFC character will match
 // embedded paintables or child widgets.
-type TextSearchFlags int
+type TextSearchFlags C.guint
 
 const (
 	// TextSearchVisibleOnly: search only visible data. A search match may have
@@ -339,7 +339,7 @@ func (iter *TextIter) BackwardLines(count int) bool {
 //
 // match_end will never be set to a GtkTextIter located after iter, even if
 // there is a possible match_start before or at iter.
-func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
+func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart *TextIter, matchEnd *TextIter, ok bool) {
 	var _arg0 *C.GtkTextIter       // out
 	var _arg1 *C.char              // out
 	var _arg2 C.GtkTextSearchFlags // out
@@ -362,12 +362,12 @@ func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *T
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(limit)
 
-	var _matchStart TextIter // out
-	var _matchEnd TextIter   // out
-	var _ok bool             // out
+	var _matchStart *TextIter // out
+	var _matchEnd *TextIter   // out
+	var _ok bool              // out
 
-	_matchStart = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
-	_matchEnd = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+	_matchStart = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_matchEnd = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1105,7 +1105,7 @@ func (iter *TextIter) ForwardLines(count int) bool {
 //
 // match_start will never be set to a GtkTextIter located before iter, even if
 // there is a possible match_end after or at iter.
-func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
+func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart *TextIter, matchEnd *TextIter, ok bool) {
 	var _arg0 *C.GtkTextIter       // out
 	var _arg1 *C.char              // out
 	var _arg2 C.GtkTextSearchFlags // out
@@ -1128,12 +1128,12 @@ func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *Te
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(limit)
 
-	var _matchStart TextIter // out
-	var _matchEnd TextIter   // out
-	var _ok bool             // out
+	var _matchStart *TextIter // out
+	var _matchEnd *TextIter   // out
+	var _ok bool              // out
 
-	_matchStart = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
-	_matchEnd = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+	_matchStart = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_matchEnd = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
 	if _cret != 0 {
 		_ok = true
 	}

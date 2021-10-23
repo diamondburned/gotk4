@@ -176,7 +176,7 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 
 	if providers != nil {
 		_arg2 = (C.gsize)(len(providers))
-		_arg1 = (**C.GdkContentProvider)(C.malloc(C.size_t(len(providers)) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.GdkContentProvider)(C.malloc(C.size_t(uint(len(providers)) * uint(unsafe.Sizeof(uint(0))))))
 		{
 			out := unsafe.Slice((**C.GdkContentProvider)(_arg1), len(providers))
 			for i := range providers {

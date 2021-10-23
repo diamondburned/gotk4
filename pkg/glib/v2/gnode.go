@@ -29,7 +29,7 @@ import "C"
 //
 // - Level order: F, B, G, A, D, I, C, E, H !
 // (Sorted_binary_tree_breadth-first_traversal.svg).
-type TraverseType int
+type TraverseType C.gint
 
 const (
 	// InOrder vists a node's left child first, then the node itself, then its
@@ -65,7 +65,7 @@ func (t TraverseType) String() string {
 
 // TraverseFlags specifies which nodes are visited during several of the tree
 // functions, including g_node_traverse() and g_node_find().
-type TraverseFlags int
+type TraverseFlags C.guint
 
 const (
 	// TraverseLeaves: only leaf nodes should be visited. This name has been

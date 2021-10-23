@@ -29,7 +29,7 @@ import "C"
 // errors will be returned from a given operation. Some errors don't occur on
 // some systems, etc., sometimes there are subtle differences in when a system
 // will report a given error, etc.
-type FileError int
+type FileError C.gint
 
 const (
 	// FileErrorExist: operation not permitted; only the owner of the file (or
@@ -180,7 +180,7 @@ func (f FileError) String() string {
 
 // FileSetContentsFlags flags to pass to g_file_set_contents_full() to affect
 // its safety and performance.
-type FileSetContentsFlags int
+type FileSetContentsFlags C.guint
 
 const (
 	// FileSetContentsNone: no guarantees about file consistency or durability.
@@ -243,7 +243,7 @@ func (f FileSetContentsFlags) Has(other FileSetContentsFlags) bool {
 }
 
 // FileTest: test to perform on a file using g_file_test().
-type FileTest int
+type FileTest C.guint
 
 const (
 	// FileTestIsRegular: TRUE if the file is a regular file (not a directory).
@@ -341,7 +341,7 @@ func BuildFilenamev(args []string) string {
 	var _cret *C.gchar  // in
 
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(args)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(args) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(args)+1)
@@ -382,7 +382,7 @@ func BuildPathv(separator string, args []string) string {
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(separator)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(len(args)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(args) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(args)+1)

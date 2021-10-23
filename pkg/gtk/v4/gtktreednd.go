@@ -56,58 +56,6 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 	return _contentProvider
 }
 
-// TreeGetRowDragData obtains a tree_model and path from value of target type
-// GTK_TYPE_TREE_ROW_DATA.
-//
-// The returned path must be freed with gtk_tree_path_free().
-//
-// The function takes the following parameters:
-//
-//    - value: #GValue.
-//
-func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool) {
-	var _arg1 *C.GValue       // out
-	var _arg2 *C.GtkTreeModel // in
-	var _arg3 *C.GtkTreePath  // in
-	var _cret C.gboolean      // in
-
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
-
-	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(value)
-
-	var _treeModel TreeModeller // out
-	var _path *TreePath         // out
-	var _ok bool                // out
-
-	if _arg2 != nil {
-		{
-			objptr := unsafe.Pointer(_arg2)
-
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TreeModeller)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
-			}
-			_treeModel = rv
-		}
-	}
-	if _arg3 != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
-		)
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _treeModel, _path, _ok
-}
-
 // TreeDragDestOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

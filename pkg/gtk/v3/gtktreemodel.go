@@ -38,7 +38,7 @@ func init() {
 // They are returned by gtk_tree_model_get_flags(), and must be static for the
 // lifetime of the object. A more complete description of
 // K_TREE_MODEL_ITERS_PERSIST can be found in the overview of this section.
-type TreeModelFlags int
+type TreeModelFlags C.guint
 
 const (
 	// TreeModelItersPersist iterators survive all signals emitted by the tree.
@@ -139,7 +139,7 @@ type TreeModelOverrider interface {
 	Flags() TreeModelFlags
 	// Iter sets iter to a valid iterator pointing to path. If path does not
 	// exist, iter is set to an invalid iterator and FALSE is returned.
-	Iter(path *TreePath) (TreeIter, bool)
+	Iter(path *TreePath) (*TreeIter, bool)
 	// NColumns returns the number of columns supported by tree_model.
 	NColumns() int
 	// Path returns a newly-created TreePath-struct referenced by iter.
@@ -159,7 +159,7 @@ type TreeModelOverrider interface {
 	//
 	// If parent is NULL returns the first node, equivalent to
 	// gtk_tree_model_get_iter_first (tree_model, iter);.
-	IterChildren(parent *TreeIter) (TreeIter, bool)
+	IterChildren(parent *TreeIter) (*TreeIter, bool)
 	// IterHasChild returns TRUE if iter has children, FALSE otherwise.
 	IterHasChild(iter *TreeIter) bool
 	// IterNChildren returns the number of children that iter has.
@@ -179,7 +179,7 @@ type TreeModelOverrider interface {
 	// set to an invalid iterator and FALSE is returned. parent will remain a
 	// valid node after this function has been called. As a special case, if
 	// parent is NULL, then the n-th root node is set.
-	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
+	IterNthChild(parent *TreeIter, n int) (*TreeIter, bool)
 	// IterParent sets iter to be the parent of child.
 	//
 	// If child is at the toplevel, and doesn’t have a parent, then iter is set
@@ -188,7 +188,7 @@ type TreeModelOverrider interface {
 	//
 	// iter will be initialized before the lookup is performed, so child and
 	// iter cannot point to the same memory location.
-	IterParent(child *TreeIter) (TreeIter, bool)
+	IterParent(child *TreeIter) (*TreeIter, bool)
 	// IterPrevious sets iter to point to the previous node at the current
 	// level.
 	//
@@ -404,13 +404,13 @@ type TreeModeller interface {
 	// Flags returns a set of flags supported by this interface.
 	Flags() TreeModelFlags
 	// Iter sets iter to a valid iterator pointing to path.
-	Iter(path *TreePath) (TreeIter, bool)
+	Iter(path *TreePath) (*TreeIter, bool)
 	// IterFirst initializes iter with the first iterator in the tree (the one
 	// at the path "0") and returns TRUE.
-	IterFirst() (TreeIter, bool)
+	IterFirst() (*TreeIter, bool)
 	// IterFromString sets iter to a valid iterator pointing to path_string, if
 	// it exists.
-	IterFromString(pathString string) (TreeIter, bool)
+	IterFromString(pathString string) (*TreeIter, bool)
 	// NColumns returns the number of columns supported by tree_model.
 	NColumns() int
 	// Path returns a newly-created TreePath-struct referenced by iter.
@@ -420,7 +420,7 @@ type TreeModeller interface {
 	// Value initializes and sets value to that at column.
 	Value(iter *TreeIter, column int) externglib.Value
 	// IterChildren sets iter to point to the first child of parent.
-	IterChildren(parent *TreeIter) (TreeIter, bool)
+	IterChildren(parent *TreeIter) (*TreeIter, bool)
 	// IterHasChild returns TRUE if iter has children, FALSE otherwise.
 	IterHasChild(iter *TreeIter) bool
 	// IterNChildren returns the number of children that iter has.
@@ -429,9 +429,9 @@ type TreeModeller interface {
 	// level.
 	IterNext(iter *TreeIter) bool
 	// IterNthChild sets iter to be the child of parent, using the given index.
-	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
+	IterNthChild(parent *TreeIter, n int) (*TreeIter, bool)
 	// IterParent sets iter to be the parent of child.
-	IterParent(child *TreeIter) (TreeIter, bool)
+	IterParent(child *TreeIter) (*TreeIter, bool)
 	// IterPrevious sets iter to point to the previous node at the current
 	// level.
 	IterPrevious(iter *TreeIter) bool
@@ -580,7 +580,7 @@ func (treeModel *TreeModel) Flags() TreeModelFlags {
 //
 //    - path: TreePath-struct.
 //
-func (treeModel *TreeModel) Iter(path *TreePath) (TreeIter, bool) {
+func (treeModel *TreeModel) Iter(path *TreePath) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreePath  // out
@@ -593,10 +593,10 @@ func (treeModel *TreeModel) Iter(path *TreePath) (TreeIter, bool) {
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
 
-	var _iter TreeIter // out
-	var _ok bool       // out
+	var _iter *TreeIter // out
+	var _ok bool        // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -606,7 +606,7 @@ func (treeModel *TreeModel) Iter(path *TreePath) (TreeIter, bool) {
 
 // IterFirst initializes iter with the first iterator in the tree (the one at
 // the path "0") and returns TRUE. Returns FALSE if the tree is empty.
-func (treeModel *TreeModel) IterFirst() (TreeIter, bool) {
+func (treeModel *TreeModel) IterFirst() (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
 	var _cret C.gboolean      // in
@@ -616,10 +616,10 @@ func (treeModel *TreeModel) IterFirst() (TreeIter, bool) {
 	_cret = C.gtk_tree_model_get_iter_first(_arg0, &_arg1)
 	runtime.KeepAlive(treeModel)
 
-	var _iter TreeIter // out
-	var _ok bool       // out
+	var _iter *TreeIter // out
+	var _ok bool        // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -634,7 +634,7 @@ func (treeModel *TreeModel) IterFirst() (TreeIter, bool) {
 //
 //    - pathString: string representation of a TreePath-struct.
 //
-func (treeModel *TreeModel) IterFromString(pathString string) (TreeIter, bool) {
+func (treeModel *TreeModel) IterFromString(pathString string) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.gchar        // out
@@ -648,10 +648,10 @@ func (treeModel *TreeModel) IterFromString(pathString string) (TreeIter, bool) {
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(pathString)
 
-	var _iter TreeIter // out
-	var _ok bool       // out
+	var _iter *TreeIter // out
+	var _ok bool        // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -782,7 +782,7 @@ func (treeModel *TreeModel) Value(iter *TreeIter, column int) externglib.Value {
 //
 //    - parent or NULL.
 //
-func (treeModel *TreeModel) IterChildren(parent *TreeIter) (TreeIter, bool) {
+func (treeModel *TreeModel) IterChildren(parent *TreeIter) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -797,10 +797,10 @@ func (treeModel *TreeModel) IterChildren(parent *TreeIter) (TreeIter, bool) {
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(parent)
 
-	var _iter TreeIter // out
-	var _ok bool       // out
+	var _iter *TreeIter // out
+	var _ok bool        // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -906,7 +906,7 @@ func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 //    - parent to get the child from, or NULL.
 //    - n: index of the desired child.
 //
-func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
+func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -924,10 +924,10 @@ func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int) (TreeIter, boo
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(n)
 
-	var _iter TreeIter // out
-	var _ok bool       // out
+	var _iter *TreeIter // out
+	var _ok bool        // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -948,7 +948,7 @@ func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int) (TreeIter, boo
 //
 //    - child: TreeIter-struct.
 //
-func (treeModel *TreeModel) IterParent(child *TreeIter) (TreeIter, bool) {
+func (treeModel *TreeModel) IterParent(child *TreeIter) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -961,10 +961,10 @@ func (treeModel *TreeModel) IterParent(child *TreeIter) (TreeIter, bool) {
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(child)
 
-	var _iter TreeIter // out
-	var _ok bool       // out
+	var _iter *TreeIter // out
+	var _ok bool        // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1153,7 +1153,7 @@ func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrd
 		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
 	_arg4 = (C.gint)(len(newOrder))
-	_arg3 = (*C.gint)(C.malloc(C.size_t(len(newOrder)) * C.size_t(C.sizeof_gint)))
+	_arg3 = (*C.gint)(C.malloc(C.size_t(uint(len(newOrder)) * uint(C.sizeof_gint))))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.gint)(_arg3), len(newOrder))
@@ -1195,7 +1195,7 @@ func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 
 // ConnectRowChanged: this signal is emitted when a row in the model has
 // changed.
-func (childModel *TreeModel) ConnectRowChanged(f func(path *TreePath, iter TreeIter)) externglib.SignalHandle {
+func (childModel *TreeModel) ConnectRowChanged(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
 	return childModel.Connect("row-changed", f)
 }
 
@@ -1213,7 +1213,7 @@ func (childModel *TreeModel) ConnectRowDeleted(f func(path *TreePath)) externgli
 
 // ConnectRowHasChildToggled: this signal is emitted when a row has gotten the
 // first child row or lost its last child row.
-func (childModel *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, iter TreeIter)) externglib.SignalHandle {
+func (childModel *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
 	return childModel.Connect("row-has-child-toggled", f)
 }
 
@@ -1223,7 +1223,7 @@ func (childModel *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, it
 // Note that the row may still be empty at this point, since it is a common
 // pattern to first insert an empty row, and then fill it with the desired
 // values.
-func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter TreeIter)) externglib.SignalHandle {
+func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
 	return childModel.Connect("row-inserted", f)
 }
 
@@ -1232,7 +1232,7 @@ func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter Tree
 //
 // Note that this signal is not emitted when rows are reordered by DND, since
 // this is implemented by removing and then reinserting the row.
-func (childModel *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter TreeIter, newOrder cgo.Handle)) externglib.SignalHandle {
+func (childModel *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter *TreeIter, newOrder cgo.Handle)) externglib.SignalHandle {
 	return childModel.Connect("rows-reordered", f)
 }
 
@@ -1370,7 +1370,7 @@ func NewTreePathFromIndices(indices []int) *TreePath {
 	var _cret *C.GtkTreePath // in
 
 	_arg2 = (C.gsize)(len(indices))
-	_arg1 = (*C.gint)(C.malloc(C.size_t(len(indices)) * C.size_t(C.sizeof_gint)))
+	_arg1 = (*C.gint)(C.malloc(C.size_t(uint(len(indices)) * uint(C.sizeof_gint))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.gint)(_arg1), len(indices))

@@ -48,7 +48,7 @@ const PARENT_RELATIVE = 1
 // Note that the X and Y axes are not really needed; pointer devices report
 // their location via the x/y members of events regardless. Whether X and Y are
 // present as axes depends on the GDK backend.
-type AxisUse int
+type AxisUse C.gint
 
 const (
 	// AxisIgnore axis is ignored.
@@ -112,7 +112,7 @@ func (a AxisUse) String() string {
 
 // ByteOrder: set of values describing the possible byte-orders for storing
 // pixel values in memory.
-type ByteOrder int
+type ByteOrder C.gint
 
 const (
 	// LsbFirst values are stored with the least-significant byte first. For
@@ -142,7 +142,7 @@ func (b ByteOrder) String() string {
 }
 
 // GLError: error enumeration for GLContext.
-type GLError int
+type GLError C.gint
 
 const (
 	// GLErrorNotAvailable: openGL support is not available.
@@ -172,7 +172,7 @@ func (g GLError) String() string {
 }
 
 // GrabOwnership defines how device grabs interact with other devices.
-type GrabOwnership int
+type GrabOwnership C.gint
 
 const (
 	// OwnershipNone: all other devices’ events are allowed.
@@ -205,7 +205,7 @@ func (g GrabOwnership) String() string {
 // GrabStatus: returned by gdk_device_grab(), gdk_pointer_grab() and
 // gdk_keyboard_grab() to indicate success or the reason for the failure of the
 // grab attempt.
-type GrabStatus int
+type GrabStatus C.gint
 
 const (
 	// GrabSuccess: resource was successfully grabbed.
@@ -253,7 +253,7 @@ func (g GrabStatus) String() string {
 // used for invoking menu shortcuts (accelerators), whereas on Apple computers
 // it’s the Command key (which correspond to GDK_CONTROL_MASK and GDK_MOD2_MASK,
 // respectively).
-type ModifierIntent int
+type ModifierIntent C.gint
 
 const (
 	// ModifierIntentPrimaryAccelerator: primary modifier used to invoke menu
@@ -320,7 +320,7 @@ func (m ModifierIntent) String() string {
 // See the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) specification for more details
 // about window types.
-type WindowTypeHint int
+type WindowTypeHint C.gint
 
 const (
 	// WindowTypeHintNormal: normal toplevel window.
@@ -399,7 +399,7 @@ func (w WindowTypeHint) String() string {
 }
 
 // AxisFlags flags describing the current capabilities of a device/tool.
-type AxisFlags int
+type AxisFlags C.guint
 
 const (
 	// AxisFlagX: x axis is present.
@@ -497,7 +497,7 @@ func (a AxisFlags) Has(other AxisFlags) bool {
 // GDK_TOUCH_END (or GDK_TOUCH_CANCEL). gdk_event_get_event_sequence() returns
 // the event sequence for these events, so different sequences may be
 // distinguished.
-type EventMask int
+type EventMask C.guint
 
 const (
 	// ExposureMask: receive expose events.
@@ -661,7 +661,7 @@ func (e EventMask) Has(other EventMask) bool {
 // Also note that the GDK X backend interprets button press events for button
 // 4-7 as scroll events, so GDK_BUTTON4_MASK and GDK_BUTTON5_MASK will never be
 // set.
-type ModifierType int
+type ModifierType C.guint
 
 const (
 	// ShiftMask: shift key.
@@ -968,7 +968,7 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 // intersect, dest’s width and height is set to 0 and its x and y values are
 // undefined. If you are only interested in whether the rectangles intersect,
 // but not in the intersecting area itself, pass NULL for dest.
-func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
+func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _arg2 C.GdkRectangle  // in
@@ -981,10 +981,10 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
 
-	var _dest Rectangle // out
-	var _ok bool        // out
+	var _dest *Rectangle // out
+	var _ok bool         // out
 
-	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -998,7 +998,7 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
-func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
+func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
 	var _arg2 C.GdkRectangle  // in
@@ -1010,9 +1010,9 @@ func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
 
-	var _dest Rectangle // out
+	var _dest *Rectangle // out
 
-	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }

@@ -41,8 +41,9 @@ type ValueConverted struct {
 	outDecl *pen.PaperString
 	header  file.Header
 
-	fail  bool
-	final bool
+	inArray bool // decides if record is ptr or not
+	fail    bool
+	final   bool
 }
 
 // ValueType contains the type information for one value.
@@ -141,6 +142,8 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	// Ensure that the array type matches the inner type. Some functions violate
 	// this, e.g. g_spawn_command_line_sync().
 	if value.Array != nil {
+		value.inArray = true
+
 		if value.Array.Type == nil {
 			value.Logln(logger.Debug, "nested array not supported")
 			return false
@@ -215,7 +218,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		cgoType = value.Resolved.CGoType()
 	}
 
-	if value.InContainer && !strings.Contains(cgoType, "*") {
+	if !strings.Contains(cgoType, "*") && value.InContainer {
 		// The inner type inside a container must always be a pointer, so if
 		// it's not, then make it one.
 		cgoType = "*" + cgoType
@@ -256,13 +259,13 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		}
 
 		value.GoType = fmt.Sprintf("[]%s", value.Inner[0].GoType)
-	}
-
-	if value.Array != nil {
-		if value.Array.FixedSize > 0 {
-			value.GoType = fmt.Sprintf("[%d]%s", value.Array.FixedSize, value.GoType)
-		} else {
-			value.GoType = fmt.Sprintf("[]%s", value.GoType)
+	default:
+		if value.Array != nil {
+			if value.Array.FixedSize > 0 {
+				value.GoType = fmt.Sprintf("[%d]%s", value.Array.FixedSize, value.GoType)
+			} else {
+				value.GoType = fmt.Sprintf("[]%s", value.GoType)
+			}
 		}
 	}
 
@@ -287,10 +290,23 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		}
 	}
 
+	if value.GoType == "Allocation" {
+		value.Logln(logger.Error, "2: allocation value while record, ptr =", value.Resolved.Ptr)
+	}
+
 	value.inDecl.Linef("var %s %s // in", value.InName, value.In.Type)
 	value.outDecl.Linef("var %s %s // out", value.OutName, value.Out.Type)
 
 	return true
+}
+
+// manualTypes is a set of GTypes that are manually converted internally, so
+// they don't actually reference the package that they belong to.
+var manualTypes = map[string]func() bool{
+	"GLib.HashTable": nil,
+	"GLib.ByteArray": nil,
+	"GLib.List":      nil,
+	"GLib.SList":     nil,
 }
 
 func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (ValueType, bool) {
@@ -332,18 +348,54 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 		NeedsNamespace: resolved.NeedsNamespace(conv.fgen.Namespace()),
 	}
 
+	var intentionalPtr bool
+	var needsImporting bool
+
+	// HashTable's handling doesn't import the glib package's implementation, so
+	// we don't import it if that's the case. Ideally, HashTable should be
+	// resolved to a map directly in types/resolved.go, but that requires a
+	// refactor.
+	f, ok := manualTypes[vType.Resolved.GType]
+	if ok && (f == nil || f()) {
+		// Hack so the caller doesn't add the import.
+		vType.NeedsNamespace = false
+		needsImporting = false
+	} else {
+		needsImporting = true
+
+		// TODO: do the same thing for classes as well.
+		if !value.inArray && vType.Resolved.IsRecord() {
+			// Fix the mismatch that would happen if the parameter is a C output
+			// parameter, since we normalize that elsewhere.
+			intentionalPtr = true
+
+			// Records are implicitly pointers, and methods of records have
+			// pointer receivers, so it's more correct this way. Only do this if
+			// it's not in an array, though.
+			//
+			// TODO: REMOVE ME IF THINGS DON'T BUILD BECAUSE OF RECORD POINTERS.
+			if vType.Resolved.Ptr == 0 {
+				vType.Resolved.Ptr = 1
+			}
+		}
+	}
+
 	// If this is the output parameter, then the pointer count should be less.
 	// This only affects the Go type.
-	if value.ParameterIsOutput() && resolved.Ptr > 0 {
-		resolved.Ptr--
+	if value.ParameterIsOutput() && vType.Resolved.Ptr > 0 && !intentionalPtr {
+		vType.Resolved.Ptr--
 	}
 
 	switch {
 	case !value.KeepType && resolved.IsAbstract():
-		vType.GoType = resolved.PublicType(vType.NeedsNamespace)
+		vType.GoType = vType.Resolved.PublicType(vType.NeedsNamespace)
 		vType.IsPublic = true
 	default:
 		vType.GoType = vType.Resolved.ImplType(vType.NeedsNamespace)
+	}
+
+	if needsImporting {
+		vType.Import(&value.header, value.IsPublic)
 	}
 
 	if vType.Resolved.IsCallback() {
@@ -353,28 +405,6 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 		)
 	}
 
-	// HashTable's handling doesn't import the glib package's implementation, so
-	// we don't import it if that's the case. Ideally, HashTable should be
-	// resolved to a map directly in types/resolved.go, but that requires a
-	// refactor.
-
-	// manualTypes is a set of GTypes that are manually converted internally, so
-	// they don't actually reference the package that they belong to.
-	var manualTypes = map[string]func() bool{
-		"GLib.HashTable": nil,
-		"GLib.ByteArray": nil,
-		"GLib.List":      nil,
-		"GLib.SList":     nil,
-	}
-
-	f, ok := manualTypes[vType.Resolved.GType]
-	if ok && (f == nil || f()) {
-		// Hack so the caller doesn't add the import.
-		vType.NeedsNamespace = false
-		return vType, true
-	}
-
-	vType.Import(&value.header, value.IsPublic)
 	return vType, true
 }
 
@@ -459,13 +489,28 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	return false
 }
 
-func (value *ValueConverted) cmalloc(lenOf string, add1 bool) string {
+// writeMalloc ensures bound-checking.
+func (value *ValueConverted) writeMalloc(inner *ValueConverted, lenOf string, add1 bool) {
 	lenOf = "len(" + lenOf + ")"
 	if add1 {
-		lenOf += "+1"
+		lenOf = "(" + lenOf + " + 1)"
 	}
 
-	return fmt.Sprintf("C.malloc(C.size_t(%s) * C.size_t(%s))", lenOf, value.csizeof())
+	value.p.Linef(
+		"%s = (%s)(C.malloc(C.size_t(uint(%s) * uint(%s))))",
+		value.Out.Set, value.Out.Type, lenOf, inner.csizeof(),
+	)
+
+	// I give up.
+
+	// value.header.Import("strconv")
+	// value.header.IncludeC("stdint.h") // for SIZE_MAX
+
+	// value.p.Linef("if size := uint(%s) * %s; size > C.SIZE_MAX {", lenOf, inner.csizeof())
+	// value.p.Linef(`  panic("malloc overflow: " + strconv.FormatUint(uint64(size), 10))`)
+	// value.p.Linef("} else {")
+	// value.p.Linef("  %s = (%s)(C.malloc(C.size_t(size)))", value.Out.Set, value.Out.Type)
+	// value.p.Linef("}")
 }
 
 func (value *ValueConverted) csizeof() string {
@@ -514,6 +559,67 @@ func (value *ValueConverted) logPrefix() string {
 	return prefix
 }
 
+// castPrimitive is used to cast primitives of any pointer level from C to Go or
+// vice-versa. It is useful for casting enums and bitfields.
+func (value *ValueConverted) castPrimitive() bool {
+	// if value.Resolved.Ptr == 0 {
+	// 	value.p.Linef("%s = %s(%s)", value.Out.Set, value.Out.Type, value.InName)
+	// 	return true
+	// }
+
+	// // BEWARE: We cannot just cast the unsafe.Pointer of this type, because Go's
+	// // integer types might be different from C. We MUST dereference and copy it
+	// // back, if needed.
+	// if value.Resolved.Ptr == 1 {
+	// 	value.p.Descend()
+	// 	defer value.p.Ascend()
+
+	// 	// We know this is a pointer of depth 1, so we can trim a pointer from
+	// 	// the C type.
+	// 	valueCType := strings.Replace(value.Out.Type, "*", "", 1)
+
+	// 	value.p.Linef("tmp := %s(*%s)", valueCType, value.InName)
+	// 	value.p.Linef("%s = &tmp", value.Out.Set)
+	// }
+
+	// return false
+
+	hasIn := value.InNPtr()
+	hasOut := value.OutNPtr()
+
+	if value._ptr(hasIn, hasOut) == "" && value.fail {
+		return false
+	}
+
+	// With the way enums and bitfields are generated, this cast is completely
+	// safe, since we're casting back and forth the same exact types.
+	if hasIn == hasOut {
+		if value.Resolved.Ptr > 0 {
+			value.header.Import("unsafe")
+			value.p.Linef(
+				"%s = (%s)(unsafe.Pointer(%s))",
+				value.Out.Set, value.Out.Type, value.In.Name,
+			)
+		} else {
+			value.p.Linef("%s = %s(%s)", value.Out.Set, value.Out.Type, value.In.Name)
+		}
+		return true
+	}
+
+	// Difference is 1. Let the code figure it out.
+	value.p.Linef(
+		"%s = %s(unsafe.Pointer(%s))",
+		value.Out.Set,
+		// What have I done?! I think this only works if in is a pointer. It
+		// will explode otherwise. Which is fine, I guess. OutCast will fail
+		// otherwise.
+		value.OutCast(1),
+		value.InName,
+	)
+
+	return !value.fail
+}
+
 // isPtr checks pointer coherency for C types and Go types. It's mostly used to
 // guarantee that conversion routines get what they expect.
 func (value *ValueConverted) isPtr(wantC int) bool {
@@ -559,13 +665,17 @@ func (value *ValueConverted) InNamePtr(want int) string {
 	return fmt.Sprintf("(%s%s)", ptr, value.InName)
 }
 
-func (value *ValueConverted) InPtr(want int) string {
+func (value *ValueConverted) InNPtr() int {
 	// Account for gpointer.
 	has := types.CountPtr(value.In.Type)
 	if value.Direction == ConvertCToGo && value.Resolved.IsGpointer() {
 		has++
 	}
+	return has
+}
 
+func (value *ValueConverted) InPtr(want int) string {
+	has := value.InNPtr()
 	return value._ptr(has, want)
 }
 
@@ -595,12 +705,17 @@ func (value *ValueConverted) OutInPtr(want int) string {
 	return value._ptr(has, want)
 }
 
-func (value *ValueConverted) OutPtr(want int) string {
+func (value *ValueConverted) OutNPtr() int {
 	has := types.CountPtr(value.Out.Type)
 	// Account for gpointer.
 	if value.Direction == ConvertGoToC && value.Resolved.IsGpointer() {
 		has++
 	}
+	return has
+}
+
+func (value *ValueConverted) OutPtr(want int) string {
+	has := value.OutNPtr()
 
 	ptr := value._ptr(want, has)
 	if ptr == "&" {

@@ -35,7 +35,7 @@ func init() {
 // WindowPosition: window placement can be influenced using this enumeration.
 // Note that using K_WIN_POS_CENTER_ALWAYS is almost always a bad idea. It won’t
 // necessarily work well with all window managers or on all windowing systems.
-type WindowPosition int
+type WindowPosition C.gint
 
 const (
 	// WinPosNone: no influence is made on placement.
@@ -85,7 +85,7 @@ func (w WindowPosition) String() string {
 // Nearly all windows should be K_WINDOW_TOPLEVEL. In particular, do not use
 // K_WINDOW_POPUP just to turn off the window borders; use
 // gtk_window_set_decorated() for that.
-type WindowType int
+type WindowType C.gint
 
 const (
 	// WindowToplevel: regular window, such as a dialog.
@@ -1069,7 +1069,7 @@ func (window *Window) Resizable() bool {
 // position, width and height into the specified Rectangle.
 //
 // Deprecated: Resize grips have been removed.
-func (window *Window) ResizeGripArea() (gdk.Rectangle, bool) {
+func (window *Window) ResizeGripArea() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkWindow   // out
 	var _arg1 C.GdkRectangle // in
 	var _cret C.gboolean     // in
@@ -1079,10 +1079,10 @@ func (window *Window) ResizeGripArea() (gdk.Rectangle, bool) {
 	_cret = C.gtk_window_get_resize_grip_area(_arg0, &_arg1)
 	runtime.KeepAlive(window)
 
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
+	var _rect *gdk.Rectangle // out
+	var _ok bool             // out
 
-	_rect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}

@@ -41,7 +41,7 @@ func init() {
 }
 
 // ResolverNameLookupFlags flags to modify lookup behavior.
-type ResolverNameLookupFlags int
+type ResolverNameLookupFlags C.guint
 
 const (
 	// ResolverNameLookupFlagsDefault: default behavior (same as

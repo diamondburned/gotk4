@@ -38,7 +38,7 @@ func init() {
 // ShortcutActionFlags: list of flags that can be passed to action activation.
 //
 // More flags may be added in the future.
-type ShortcutActionFlags int
+type ShortcutActionFlags C.guint
 
 const (
 	// ShortcutActionExclusive: action is the only action that can be activated.

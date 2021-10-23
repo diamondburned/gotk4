@@ -34,7 +34,7 @@ type CellAccessibleParentOverrider interface {
 	Activate(cell *CellAccessible)
 	Edit(cell *CellAccessible)
 	ExpandCollapse(cell *CellAccessible)
-	CellArea(cell *CellAccessible) gdk.Rectangle
+	CellArea(cell *CellAccessible) *gdk.Rectangle
 	CellExtents(cell *CellAccessible, coordType atk.CoordType) (x int, y int, width int, height int)
 	CellPosition(cell *CellAccessible) (row int, column int)
 	ChildIndex(cell *CellAccessible) int
@@ -54,7 +54,7 @@ type CellAccessibleParenter interface {
 	Activate(cell *CellAccessible)
 	Edit(cell *CellAccessible)
 	ExpandCollapse(cell *CellAccessible)
-	CellArea(cell *CellAccessible) gdk.Rectangle
+	CellArea(cell *CellAccessible) *gdk.Rectangle
 	CellExtents(cell *CellAccessible, coordType atk.CoordType) (x int, y int, width int, height int)
 	CellPosition(cell *CellAccessible) (row int, column int)
 	ChildIndex(cell *CellAccessible) int
@@ -131,7 +131,7 @@ func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
 //
 
 //
-func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) gdk.Rectangle {
+func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) *gdk.Rectangle {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 	var _arg2 C.GdkRectangle             // in
@@ -143,9 +143,9 @@ func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) gdk.Rectangle
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 
-	var _cellRect gdk.Rectangle // out
+	var _cellRect *gdk.Rectangle // out
 
-	_cellRect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_cellRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _cellRect
 }

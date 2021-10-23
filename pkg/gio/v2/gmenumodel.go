@@ -77,28 +77,6 @@ const MENU_LINK_SECTION = "section"
 // See also g_menu_item_set_link().
 const MENU_LINK_SUBMENU = "submenu"
 
-// MenuAttributeIterOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type MenuAttributeIterOverrider interface {
-	// Next: this function combines g_menu_attribute_iter_next() with
-	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
-	//
-	// First the iterator is advanced to the next (possibly first) attribute. If
-	// that fails, then FALSE is returned and there are no other effects.
-	//
-	// If successful, name and value are set to the name and value of the
-	// attribute that has just been advanced to. At this point,
-	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value()
-	// will return the same values again.
-	//
-	// The value returned in name remains valid for as long as the iterator
-	// remains at the current position. The value returned in value must be
-	// unreffed using g_variant_unref() when it is no longer in use.
-	Next() (string, *glib.Variant, bool)
-}
-
 // MenuAttributeIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuAttributeIter struct {
@@ -145,54 +123,6 @@ func (iter *MenuAttributeIter) Name() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// GetNext: this function combines g_menu_attribute_iter_next() with
-// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
-//
-// First the iterator is advanced to the next (possibly first) attribute. If
-// that fails, then FALSE is returned and there are no other effects.
-//
-// If successful, name and value are set to the name and value of the attribute
-// that has just been advanced to. At this point,
-// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value() will
-// return the same values again.
-//
-// The value returned in name remains valid for as long as the iterator remains
-// at the current position. The value returned in value must be unreffed using
-// g_variant_unref() when it is no longer in use.
-func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
-	var _arg0 *C.GMenuAttributeIter // out
-	var _arg1 *C.gchar              // in
-	var _arg2 *C.GVariant           // in
-	var _cret C.gboolean            // in
-
-	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(iter.Native()))
-
-	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(iter)
-
-	var _outName string      // out
-	var _value *glib.Variant // out
-	var _ok bool             // out
-
-	if _arg1 != nil {
-		_outName = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	}
-	if _arg2 != nil {
-		_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_value)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
-		)
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _outName, _value, _ok
 }
 
 // Value gets the value of the attribute at the current iterator position.
@@ -447,7 +377,7 @@ type MenuModelOverrider interface {
 	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemAttributes gets all the attributes associated with the item in the
 	// menu model.
-	ItemAttributes(itemIndex int) map[string]glib.Variant
+	ItemAttributes(itemIndex int) map[string]*glib.Variant
 	// ItemLink queries the item at position item_index in model for the link
 	// specified by link.
 	//

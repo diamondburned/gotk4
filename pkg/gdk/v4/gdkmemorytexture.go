@@ -37,7 +37,7 @@ func init() {
 // Its naming is modelled after VkFormat (see
 // https://www.khronos.org/registry/vulkan/specs/1.0/html/vkspec.htmlFormat for
 // details).
-type MemoryFormat int
+type MemoryFormat C.gint
 
 const (
 	// MemoryB8G8R8A8Premultiplied: 4 bytes; for blue, green, red, alpha. The

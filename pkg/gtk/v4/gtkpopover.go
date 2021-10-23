@@ -304,7 +304,7 @@ func (popover *Popover) Offset() (xOffset int, yOffset int) {
 // If a rectangle to point to has been set, this function will return TRUE and
 // fill in rect with such rectangle, otherwise it will return FALSE and fill in
 // rect with the parent widget coordinates.
-func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
+func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkPopover  // out
 	var _arg1 C.GdkRectangle // in
 	var _cret C.gboolean     // in
@@ -314,10 +314,10 @@ func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
 	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
 	runtime.KeepAlive(popover)
 
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
+	var _rect *gdk.Rectangle // out
+	var _ok bool             // out
 
-	_rect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}

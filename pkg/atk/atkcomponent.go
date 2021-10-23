@@ -27,7 +27,7 @@ func init() {
 
 // ScrollType specifies where an object should be placed on the screen when
 // using scroll_to.
-type ScrollType int
+type ScrollType C.gint
 
 const (
 	// ScrollTopLeft: scroll the object vertically and horizontally to bring its
@@ -681,7 +681,7 @@ func (component *Component) SetSize(width, height int) bool {
 
 // ConnectBoundsChanged: 'bounds-changed" signal is emitted when the bposition
 // or size of the component changes.
-func (component *Component) ConnectBoundsChanged(f func(arg1 Rectangle)) externglib.SignalHandle {
+func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) externglib.SignalHandle {
 	return component.Connect("bounds-changed", f)
 }
 

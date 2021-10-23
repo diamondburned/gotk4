@@ -28,7 +28,7 @@ func init() {
 // FrameClockPhase is used to represent the different paint clock phases that
 // can be requested. The elements of the enumeration correspond to the signals
 // of FrameClock.
-type FrameClockPhase int
+type FrameClockPhase C.guint
 
 const (
 	// FrameClockPhaseNone: no phase.

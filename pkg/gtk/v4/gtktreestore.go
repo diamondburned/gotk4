@@ -93,7 +93,7 @@ func NewTreeStore(types []externglib.Type) *TreeStore {
 	var _cret *C.GtkTreeStore // in
 
 	_arg1 = (C.int)(len(types))
-	_arg2 = (*C.GType)(C.malloc(C.size_t(len(types)) * C.size_t(C.sizeof_GType)))
+	_arg2 = (*C.GType)(C.malloc(C.size_t(uint(len(types)) * uint(C.sizeof_GType))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))
@@ -122,7 +122,7 @@ func NewTreeStore(types []externglib.Type) *TreeStore {
 //
 //    - parent: valid TreeIter, or NULL.
 //
-func (treeStore *TreeStore) Append(parent *TreeIter) TreeIter {
+func (treeStore *TreeStore) Append(parent *TreeIter) *TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -136,9 +136,9 @@ func (treeStore *TreeStore) Append(parent *TreeIter) TreeIter {
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(parent)
 
-	var _iter TreeIter // out
+	var _iter *TreeIter // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -166,7 +166,7 @@ func (treeStore *TreeStore) Clear() {
 //    - parent: valid TreeIter, or NULL.
 //    - position to insert the new row, or -1 for last.
 //
-func (treeStore *TreeStore) Insert(parent *TreeIter, position int) TreeIter {
+func (treeStore *TreeStore) Insert(parent *TreeIter, position int) *TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -183,9 +183,9 @@ func (treeStore *TreeStore) Insert(parent *TreeIter, position int) TreeIter {
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(position)
 
-	var _iter TreeIter // out
+	var _iter *TreeIter // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -205,7 +205,7 @@ func (treeStore *TreeStore) Insert(parent *TreeIter, position int) TreeIter {
 //    - parent: valid TreeIter, or NULL.
 //    - sibling: valid TreeIter, or NULL.
 //
-func (treeStore *TreeStore) InsertAfter(parent, sibling *TreeIter) TreeIter {
+func (treeStore *TreeStore) InsertAfter(parent, sibling *TreeIter) *TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -224,9 +224,9 @@ func (treeStore *TreeStore) InsertAfter(parent, sibling *TreeIter) TreeIter {
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(sibling)
 
-	var _iter TreeIter // out
+	var _iter *TreeIter // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -246,7 +246,7 @@ func (treeStore *TreeStore) InsertAfter(parent, sibling *TreeIter) TreeIter {
 //    - parent: valid TreeIter, or NULL.
 //    - sibling: valid TreeIter, or NULL.
 //
-func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) TreeIter {
+func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) *TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -265,9 +265,9 @@ func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) TreeIter {
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(sibling)
 
-	var _iter TreeIter // out
+	var _iter *TreeIter // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -283,7 +283,7 @@ func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) TreeIter {
 //    - columns: array of column numbers.
 //    - values: array of GValues.
 //
-func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter {
+func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, columns []int, values []externglib.Value) *TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -298,7 +298,7 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, col
 	}
 	_arg3 = C.int(position)
 	_arg6 = (C.int)(len(columns))
-	_arg4 = (*C.int)(C.malloc(C.size_t(len(columns)) * C.size_t(C.sizeof_int)))
+	_arg4 = (*C.int)(C.malloc(C.size_t(uint(len(columns)) * uint(C.sizeof_int))))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.int)(_arg4), len(columns))
@@ -307,7 +307,7 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, col
 		}
 	}
 	_arg6 = (C.int)(len(values))
-	_arg5 = (*C.GValue)(C.malloc(C.size_t(len(values)) * C.size_t(C.sizeof_GValue)))
+	_arg5 = (*C.GValue)(C.malloc(C.size_t(uint(len(values)) * uint(C.sizeof_GValue))))
 	defer C.free(unsafe.Pointer(_arg5))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg5), len(values))
@@ -323,9 +323,9 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, col
 	runtime.KeepAlive(columns)
 	runtime.KeepAlive(values)
 
-	var _iter TreeIter // out
+	var _iter *TreeIter // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -482,7 +482,7 @@ func (treeStore *TreeStore) MoveBefore(iter, position *TreeIter) {
 //
 //    - parent: valid TreeIter, or NULL.
 //
-func (treeStore *TreeStore) Prepend(parent *TreeIter) TreeIter {
+func (treeStore *TreeStore) Prepend(parent *TreeIter) *TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -496,9 +496,9 @@ func (treeStore *TreeStore) Prepend(parent *TreeIter) TreeIter {
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(parent)
 
-	var _iter TreeIter // out
+	var _iter *TreeIter // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -548,7 +548,7 @@ func (treeStore *TreeStore) SetColumnTypes(types []externglib.Type) {
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
 	_arg1 = (C.int)(len(types))
-	_arg2 = (*C.GType)(C.malloc(C.size_t(len(types)) * C.size_t(C.sizeof_GType)))
+	_arg2 = (*C.GType)(C.malloc(C.size_t(uint(len(types)) * uint(C.sizeof_GType))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))
@@ -610,7 +610,7 @@ func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []externgl
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg4 = (C.int)(len(columns))
-	_arg2 = (*C.int)(C.malloc(C.size_t(len(columns)) * C.size_t(C.sizeof_int)))
+	_arg2 = (*C.int)(C.malloc(C.size_t(uint(len(columns)) * uint(C.sizeof_int))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.int)(_arg2), len(columns))
@@ -619,7 +619,7 @@ func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []externgl
 		}
 	}
 	_arg4 = (C.int)(len(values))
-	_arg3 = (*C.GValue)(C.malloc(C.size_t(len(values)) * C.size_t(C.sizeof_GValue)))
+	_arg3 = (*C.GValue)(C.malloc(C.size_t(uint(len(values)) * uint(C.sizeof_GValue))))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))

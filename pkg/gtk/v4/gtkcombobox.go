@@ -270,7 +270,7 @@ func (comboBox *ComboBox) ActiveID() string {
 // ActiveIter sets iter to point to the currently active item.
 //
 // If no item is active, iter is left unchanged.
-func (comboBox *ComboBox) ActiveIter() (TreeIter, bool) {
+func (comboBox *ComboBox) ActiveIter() (*TreeIter, bool) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.GtkTreeIter  // in
 	var _cret C.gboolean     // in
@@ -280,10 +280,10 @@ func (comboBox *ComboBox) ActiveIter() (TreeIter, bool) {
 	_cret = C.gtk_combo_box_get_active_iter(_arg0, &_arg1)
 	runtime.KeepAlive(comboBox)
 
-	var _iter TreeIter // out
-	var _ok bool       // out
+	var _iter *TreeIter // out
+	var _ok bool        // out
 
-	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}

@@ -35,7 +35,7 @@ const URI_RESERVED_CHARS_GENERIC_DELIMITERS = ":/?#[]@"
 const URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS = "!$&'()*+,;="
 
 // URIError: error codes returned by #GUri methods.
-type URIError int
+type URIError C.gint
 
 const (
 	// URIErrorFailed: generic error if no more specific error is available. See
@@ -95,7 +95,7 @@ func (u URIError) String() string {
 // When parsing a URI, if you need to choose different flags based on the type
 // of URI, you can use g_uri_peek_scheme() on the URI string to check the scheme
 // first, and use that to decide what flags to parse it with.
-type URIFlags int
+type URIFlags C.guint
 
 const (
 	// URIFlagsNone: no flags set.
@@ -190,7 +190,7 @@ func (u URIFlags) Has(other URIFlags) bool {
 // g_uri_to_string_partial(). Note that G_URI_HIDE_PASSWORD and
 // G_URI_HIDE_AUTH_PARAMS will only work if the #GUri was parsed with the
 // corresponding flags.
-type URIHideFlags int
+type URIHideFlags C.guint
 
 const (
 	// URIHideNone: no flags set.
@@ -250,7 +250,7 @@ func (u URIHideFlags) Has(other URIHideFlags) bool {
 
 // URIParamsFlags flags modifying the way parameters are handled by
 // g_uri_parse_params() and ParamsIter.
-type URIParamsFlags int
+type URIParamsFlags C.guint
 
 const (
 	// URIParamsNone: no flags set.

@@ -61,7 +61,7 @@ func Usleep(microseconds uint32) {
 //
 //    - isoDate: ISO 8601 encoded date string.
 //
-func TimeValFromISO8601(isoDate string) (TimeVal, bool) {
+func TimeValFromISO8601(isoDate string) (*TimeVal, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.GTimeVal // in
 	var _cret C.gboolean // in
@@ -72,10 +72,10 @@ func TimeValFromISO8601(isoDate string) (TimeVal, bool) {
 	_cret = C.g_time_val_from_iso8601(_arg1, &_arg2)
 	runtime.KeepAlive(isoDate)
 
-	var _time_ TimeVal // out
-	var _ok bool       // out
+	var _time_ *TimeVal // out
+	var _ok bool        // out
 
-	_time_ = *(*TimeVal)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_time_ = (*TimeVal)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

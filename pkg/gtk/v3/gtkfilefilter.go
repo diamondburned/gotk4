@@ -33,7 +33,7 @@ func init() {
 
 // FileFilterFlags: these flags indicate what parts of a FileFilterInfo struct
 // are filled or need to be filled.
-type FileFilterFlags int
+type FileFilterFlags C.guint
 
 const (
 	// FileFilterFilename: filename of the file being tested.

@@ -152,7 +152,7 @@ func marshalGesturer(p uintptr) (interface{}, error) {
 // there is no correlation between physical and pixel distances, these will look
 // as if constrained in an infinitely small area, rect width and height will
 // thus be 0 regardless of the number of touchpoints.
-func (gesture *Gesture) BoundingBox() (gdk.Rectangle, bool) {
+func (gesture *Gesture) BoundingBox() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGesture  // out
 	var _arg1 C.GdkRectangle // in
 	var _cret C.gboolean     // in
@@ -162,10 +162,10 @@ func (gesture *Gesture) BoundingBox() (gdk.Rectangle, bool) {
 	_cret = C.gtk_gesture_get_bounding_box(_arg0, &_arg1)
 	runtime.KeepAlive(gesture)
 
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
+	var _rect *gdk.Rectangle // out
+	var _ok bool             // out
 
-	_rect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}

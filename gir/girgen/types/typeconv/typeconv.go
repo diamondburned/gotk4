@@ -308,6 +308,12 @@ func (conv *Converter) convertTypeExisting(
 		InContainer:    of.Type != nil && len(of.Type.Types) > 0, // is container type
 	})
 
+	if of.Array != nil || result.InContainer {
+		// inArray is used for deciding whether or not record should be a
+		// pointer, and it shouldn't be inside an array.
+		result.inArray = true
+	}
+
 	if existing != nil {
 		result.ValueType = *existing
 	}

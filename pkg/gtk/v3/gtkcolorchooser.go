@@ -49,7 +49,7 @@ type ColorChooserOverrider interface {
 	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
 	ColorActivated(color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
-	RGBA() gdk.RGBA
+	RGBA() *gdk.RGBA
 	// SetRGBA sets the color.
 	SetRGBA(color *gdk.RGBA)
 }
@@ -71,7 +71,7 @@ type ColorChooserer interface {
 	// AddPalette adds a palette to the color chooser.
 	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
 	// RGBA gets the currently-selected color.
-	RGBA() gdk.RGBA
+	RGBA() *gdk.RGBA
 	// UseAlpha returns whether the color chooser shows the alpha channel.
 	UseAlpha() bool
 	// SetRGBA sets the color.
@@ -138,7 +138,7 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 }
 
 // RGBA gets the currently-selected color.
-func (chooser *ColorChooser) RGBA() gdk.RGBA {
+func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GdkRGBA          // in
 
@@ -147,9 +147,9 @@ func (chooser *ColorChooser) RGBA() gdk.RGBA {
 	C.gtk_color_chooser_get_rgba(_arg0, &_arg1)
 	runtime.KeepAlive(chooser)
 
-	var _color gdk.RGBA // out
+	var _color *gdk.RGBA // out
 
-	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _color
 }
@@ -216,6 +216,6 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 // chooser. This usually happens when the user clicks a color swatch, or a color
 // is selected and the user presses one of the keys Space, Shift+Space, Return
 // or Enter.
-func (chooser *ColorChooser) ConnectColorActivated(f func(color gdk.RGBA)) externglib.SignalHandle {
+func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) externglib.SignalHandle {
 	return chooser.Connect("color-activated", f)
 }

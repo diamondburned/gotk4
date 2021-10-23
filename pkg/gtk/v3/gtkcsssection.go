@@ -33,7 +33,7 @@ func init() {
 //
 // More types might be added in the future as the parser incorporates more
 // features.
-type CSSSectionType int
+type CSSSectionType C.gint
 
 const (
 	// CSSSectionDocument: section describes a complete document. This section

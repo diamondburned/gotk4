@@ -86,7 +86,7 @@ func init() {
 // GTK_ALIGN_BASELINE support for it is optional for containers and widgets, and
 // it is only supported for vertical alignment. When its not supported by a
 // child or a container it is treated as GTK_ALIGN_FILL.
-type Align int
+type Align C.gint
 
 const (
 	// AlignFill: stretch to fill all space if possible, center if no meaningful
@@ -125,7 +125,7 @@ func (a Align) String() string {
 }
 
 // ArrowType: used to indicate the direction in which an arrow should point.
-type ArrowType int
+type ArrowType C.gint
 
 const (
 	// ArrowUp represents an upward pointing arrow.
@@ -167,7 +167,7 @@ func (a ArrowType) String() string {
 // amount of verical space in the row is taller than the total requested height
 // of the baseline-aligned children then it can use a BaselinePosition to select
 // where to put the baseline inside the extra availible space.
-type BaselinePosition int
+type BaselinePosition C.gint
 
 const (
 	// BaselinePositionTop: align the baseline at the top.
@@ -197,7 +197,7 @@ func (b BaselinePosition) String() string {
 }
 
 // BorderStyle describes how the border of a UI element should be rendered.
-type BorderStyle int
+type BorderStyle C.gint
 
 const (
 	// BorderStyleNone: no visible border.
@@ -255,7 +255,7 @@ func (b BorderStyle) String() string {
 }
 
 // DeleteType: see also: Entry::delete-from-cursor.
-type DeleteType int
+type DeleteType C.gint
 
 const (
 	// DeleteChars: delete characters.
@@ -310,7 +310,7 @@ func (d DeleteType) String() string {
 }
 
 // DirectionType focus movement types.
-type DirectionType int
+type DirectionType C.gint
 
 const (
 	// DirTabForward: move forward.
@@ -353,7 +353,7 @@ func (d DirectionType) String() string {
 
 // DragResult gives an indication why a drag operation failed. The value can by
 // obtained by connecting to the Widget::drag-failed signal.
-type DragResult int
+type DragResult C.gint
 
 const (
 	// DragResultSuccess: drag operation was successful.
@@ -396,7 +396,7 @@ func (d DragResult) String() string {
 }
 
 // EventSequenceState describes the state of a EventSequence in a Gesture.
-type EventSequenceState int
+type EventSequenceState C.gint
 
 const (
 	// EventSequenceNone: sequence is handled, but not grabbed.
@@ -429,7 +429,7 @@ func (e EventSequenceState) String() string {
 // Settings:gtk-im-preedit-style
 //
 // Deprecated: since version 3.10.
-type IMPreeditStyle int
+type IMPreeditStyle C.gint
 
 const (
 	// ImPreeditNothing: deprecated.
@@ -462,7 +462,7 @@ func (i IMPreeditStyle) String() string {
 // Settings:gtk-im-status-style
 //
 // Deprecated: since version 3.10.
-type IMStatusStyle int
+type IMStatusStyle C.gint
 
 const (
 	// ImStatusNothing: deprecated.
@@ -492,7 +492,7 @@ func (i IMStatusStyle) String() string {
 }
 
 // IconSize: built-in stock icon sizes.
-type IconSize int
+type IconSize C.gint
 
 const (
 	// IconSizeInvalid: invalid size.
@@ -553,7 +553,7 @@ func (i IconSize) String() string {
 //
 // This enumeration may be extended in the future; input methods should
 // interpret unknown values as “free form”.
-type InputPurpose int
+type InputPurpose C.gint
 
 const (
 	// InputPurposeFreeForm: allow any character.
@@ -618,7 +618,7 @@ func (i InputPurpose) String() string {
 
 // Justification: used for justifying the text inside a Label widget. (See also
 // Alignment).
-type Justification int
+type Justification C.gint
 
 const (
 	// JustifyLeft: text is placed at the left edge of the label.
@@ -653,7 +653,7 @@ func (j Justification) String() string {
 
 // LevelBarMode describes how LevelBar contents should be rendered. Note that
 // this enumeration could be extended with additional modes in the future.
-type LevelBarMode int
+type LevelBarMode C.gint
 
 const (
 	// LevelBarModeContinuous: bar has a continuous mode.
@@ -680,7 +680,7 @@ func (l LevelBarMode) String() string {
 
 // MenuDirectionType: enumeration representing directional movements within a
 // menu.
-type MenuDirectionType int
+type MenuDirectionType C.gint
 
 const (
 	// MenuDirParent: to the parent menu shell.
@@ -714,7 +714,7 @@ func (m MenuDirectionType) String() string {
 }
 
 // MessageType: type of message being displayed in the dialog.
-type MessageType int
+type MessageType C.gint
 
 const (
 	// MessageInfo: informational message.
@@ -753,7 +753,7 @@ func (m MessageType) String() string {
 
 // NumberUpLayout: used to determine the layout of pages on a sheet when
 // printing multiple pages per sheet.
-type NumberUpLayout int
+type NumberUpLayout C.gint
 
 const (
 	// NumberUpLayoutLeftToRightTopToBottom: ! (layout-lrtb.png).
@@ -805,7 +805,7 @@ func (n NumberUpLayout) String() string {
 // Orientation represents the orientation of widgets and other objects which can
 // be switched between horizontal and vertical orientation on the fly, like
 // Toolbar or GesturePan.
-type Orientation int
+type Orientation C.gint
 
 const (
 	// OrientationHorizontal: element is in horizontal orientation.
@@ -832,7 +832,7 @@ func (o Orientation) String() string {
 
 // PackDirection determines how widgets should be packed inside menubars and
 // menuitems contained in menubars.
-type PackDirection int
+type PackDirection C.gint
 
 const (
 	// PackDirectionLTR widgets are packed left-to-right.
@@ -867,7 +867,7 @@ func (p PackDirection) String() string {
 
 // PackType represents the packing location Box children. (See: VBox, HBox, and
 // ButtonBox).
-type PackType int
+type PackType C.gint
 
 const (
 	// PackStart: child is packed into the start of the box.
@@ -893,7 +893,7 @@ func (p PackType) String() string {
 }
 
 // PageOrientation: see also gtk_print_settings_set_orientation().
-type PageOrientation int
+type PageOrientation C.gint
 
 const (
 	// PageOrientationPortrait: portrait mode.
@@ -927,7 +927,7 @@ func (p PageOrientation) String() string {
 }
 
 // PageSet: see also gtk_print_job_set_page_set().
-type PageSet int
+type PageSet C.gint
 
 const (
 	// PageSetAll: all pages.
@@ -957,7 +957,7 @@ func (p PageSet) String() string {
 }
 
 // PanDirection describes the panning direction of a GesturePan.
-type PanDirection int
+type PanDirection C.gint
 
 const (
 	// PanDirectionLeft: panned towards the left.
@@ -992,7 +992,7 @@ func (p PanDirection) String() string {
 
 // PopoverConstraint describes constraints to positioning of popovers. More
 // values may be added to this enumeration in the future.
-type PopoverConstraint int
+type PopoverConstraint C.gint
 
 const (
 	// PopoverConstraintNone: don't constrain the popover position beyond what
@@ -1022,7 +1022,7 @@ func (p PopoverConstraint) String() string {
 // PositionType describes which edge of a widget a certain feature is positioned
 // at, e.g. the tabs of a Notebook, the handle of a HandleBox or the label of a
 // Scale.
-type PositionType int
+type PositionType C.gint
 
 const (
 	// PosLeft: feature is at the left edge.
@@ -1056,7 +1056,7 @@ func (p PositionType) String() string {
 }
 
 // PrintDuplex: see also gtk_print_settings_set_duplex().
-type PrintDuplex int
+type PrintDuplex C.gint
 
 const (
 	// PrintDuplexSimplex: no duplex.
@@ -1086,7 +1086,7 @@ func (p PrintDuplex) String() string {
 }
 
 // PrintPages: see also gtk_print_job_set_pages().
-type PrintPages int
+type PrintPages C.gint
 
 const (
 	// PrintPagesAll: all pages.
@@ -1120,7 +1120,7 @@ func (p PrintPages) String() string {
 }
 
 // PrintQuality: see also gtk_print_settings_set_quality().
-type PrintQuality int
+type PrintQuality C.gint
 
 const (
 	// PrintQualityLow: low quality.
@@ -1155,7 +1155,7 @@ func (p PrintQuality) String() string {
 
 // PropagationPhase describes the stage at which events are fed into a
 // EventController.
-type PropagationPhase int
+type PropagationPhase C.gint
 
 const (
 	// PhaseNone events are not delivered automatically. Those can be manually
@@ -1199,7 +1199,7 @@ func (p PropagationPhase) String() string {
 }
 
 // ReliefStyle: indicated the relief to be drawn around a Button.
-type ReliefStyle int
+type ReliefStyle C.gint
 
 const (
 	// ReliefNormal: draw a normal relief.
@@ -1230,7 +1230,7 @@ func (r ReliefStyle) String() string {
 }
 
 // ScrollType: scrolling types.
-type ScrollType int
+type ScrollType C.gint
 
 const (
 	// ScrollNone: no scrolling.
@@ -1313,7 +1313,7 @@ func (s ScrollType) String() string {
 
 // ScrollablePolicy defines the policy to be used in a scrollable widget when
 // updating the scrolled window adjustments in a given orientation.
-type ScrollablePolicy int
+type ScrollablePolicy C.gint
 
 const (
 	// ScrollMinimum: scrollable adjustments are based on the minimum size.
@@ -1339,7 +1339,7 @@ func (s ScrollablePolicy) String() string {
 }
 
 // SelectionMode: used to control what selections users are allowed to make.
-type SelectionMode int
+type SelectionMode C.gint
 
 const (
 	// SelectionNone: no selection is possible.
@@ -1381,7 +1381,7 @@ func (s SelectionMode) String() string {
 
 // SensitivityType determines how GTK+ handles the sensitivity of stepper arrows
 // at the end of range widgets.
-type SensitivityType int
+type SensitivityType C.gint
 
 const (
 	// SensitivityAuto: arrow is made insensitive if the thumb is at the end.
@@ -1416,7 +1416,7 @@ func (s SensitivityType) String() string {
 // Note that many themes do not differentiate the appearance of the various
 // shadow types: Either their is no visible shadow (GTK_SHADOW_NONE), or there
 // is (any other value).
-type ShadowType int
+type ShadowType C.gint
 
 const (
 	// ShadowNone: no outline.
@@ -1455,7 +1455,7 @@ func (s ShadowType) String() string {
 
 // SizeGroupMode: mode of the size group determines the directions in which the
 // size group affects the requested sizes of its component widgets.
-type SizeGroupMode int
+type SizeGroupMode C.gint
 
 const (
 	// SizeGroupNone: group has no effect.
@@ -1490,7 +1490,7 @@ func (s SizeGroupMode) String() string {
 
 // SizeRequestMode specifies a preference for height-for-width or
 // width-for-height geometry management.
-type SizeRequestMode int
+type SizeRequestMode C.gint
 
 const (
 	// SizeRequestHeightForWidth: prefer height-for-width geometry management.
@@ -1521,7 +1521,7 @@ func (s SizeRequestMode) String() string {
 }
 
 // SortType determines the direction of a sort.
-type SortType int
+type SortType C.gint
 
 const (
 	// SortAscending: sorting is in ascending order.
@@ -1553,7 +1553,7 @@ func (s SortType) String() string {
 //
 // Deprecated: All APIs that are using this enumeration have been deprecated in
 // favor of alternatives using StateFlags.
-type StateType int
+type StateType C.gint
 
 const (
 	// StateNormal: state during normal operation.
@@ -1604,7 +1604,7 @@ func (s StateType) String() string {
 }
 
 // TextDirection: reading directions for text.
-type TextDirection int
+type TextDirection C.gint
 
 const (
 	// TextDirNone: no direction.
@@ -1637,7 +1637,7 @@ func (t TextDirection) String() string {
 // setting the toolbar style overrides the user’s preferences for the default
 // toolbar style. Note that if the button has only a label set and
 // GTK_TOOLBAR_ICONS is used, the label will be visible, and vice versa.
-type ToolbarStyle int
+type ToolbarStyle C.gint
 
 const (
 	// ToolbarIcons buttons display only icons in the toolbar.
@@ -1672,7 +1672,7 @@ func (t ToolbarStyle) String() string {
 }
 
 // TreeViewGridLines: used to indicate which grid lines to draw in a tree view.
-type TreeViewGridLines int
+type TreeViewGridLines C.gint
 
 const (
 	// TreeViewGridLinesNone: no grid lines.
@@ -1706,7 +1706,7 @@ func (t TreeViewGridLines) String() string {
 }
 
 // Unit: see also gtk_print_settings_set_paper_width().
-type Unit int
+type Unit C.gint
 
 const (
 	// UnitNone: no units.
@@ -1740,7 +1740,7 @@ func (u Unit) String() string {
 }
 
 // WrapMode describes a type of line wrapping.
-type WrapMode int
+type WrapMode C.gint
 
 const (
 	// WrapNone: do not wrap lines; just make the text area wider.
@@ -1785,7 +1785,7 @@ func (w WrapMode) String() string {
 //
 // This enumeration may be extended in the future; input methods should ignore
 // unknown values.
-type InputHints int
+type InputHints C.guint
 
 const (
 	// InputHintNone: no special behaviour suggested.
@@ -1875,7 +1875,7 @@ func (i InputHints) Has(other InputHints) bool {
 }
 
 // JunctionSides describes how a rendered element connects to adjacent elements.
-type JunctionSides int
+type JunctionSides C.guint
 
 const (
 	// JunctionNone: no junctions.
@@ -1950,7 +1950,7 @@ func (j JunctionSides) Has(other JunctionSides) bool {
 }
 
 // RegionFlags describes a region within a widget.
-type RegionFlags int
+type RegionFlags C.guint
 
 const (
 	// RegionEven: region has an even number within a set.
@@ -2015,7 +2015,7 @@ func (r RegionFlags) Has(other RegionFlags) bool {
 // StateFlags describes a widget state. Widget states are used to match the
 // widget against CSS pseudo-classes. Note that GTK extends the regular CSS
 // classes and sometimes uses different names.
-type StateFlags int
+type StateFlags C.guint
 
 const (
 	// StateFlagNormal: state during normal operation.

@@ -26,7 +26,7 @@ func init() {
 
 // InputSource: enumeration describing the type of an input device in general
 // terms.
-type InputSource int
+type InputSource C.gint
 
 const (
 	// SourceMouse: device is a mouse. (This will be reported for the core

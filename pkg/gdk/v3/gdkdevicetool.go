@@ -23,7 +23,7 @@ func init() {
 
 // DeviceToolType indicates the specific type of tool being used being a tablet.
 // Such as an airbrush, pencil, etc.
-type DeviceToolType int
+type DeviceToolType C.gint
 
 const (
 	// DeviceToolTypeUnknown: tool is of an unknown type.

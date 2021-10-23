@@ -60,7 +60,7 @@ const LOG_LEVEL_USER_SHIFT = 8
 // error in handling it (and hence a fallback writer should be used).
 //
 // If a WriterFunc ignores a log entry, it should return G_LOG_WRITER_HANDLED.
-type LogWriterOutput int
+type LogWriterOutput C.gint
 
 const (
 	// LogWriterHandled: log writer has handled the log entry.
@@ -85,7 +85,7 @@ func (l LogWriterOutput) String() string {
 //
 // It is possible to change how GLib treats messages of the various levels using
 // g_log_set_handler() and g_log_set_fatal_mask().
-type LogLevelFlags int
+type LogLevelFlags C.guint
 
 const (
 	// LogFlagRecursion: internal flag.
@@ -107,8 +107,6 @@ const (
 	LogLevelInfo LogLevelFlags = 0b1000000
 	// LogLevelDebug: log level for debug messages, see g_debug().
 	LogLevelDebug LogLevelFlags = 0b10000000
-	// LogLevelMask: mask including all log levels.
-	LogLevelMask LogLevelFlags = -4
 )
 
 // String returns the names in string for LogLevelFlags.
@@ -118,7 +116,7 @@ func (l LogLevelFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(132)
+	builder.Grow(119)
 
 	for l != 0 {
 		next := l & (l - 1)
@@ -141,8 +139,6 @@ func (l LogLevelFlags) String() string {
 			builder.WriteString("LevelInfo|")
 		case LogLevelDebug:
 			builder.WriteString("LevelDebug|")
-		case LogLevelMask:
-			builder.WriteString("LevelMask|")
 		default:
 			builder.WriteString(fmt.Sprintf("LogLevelFlags(0b%b)|", bit))
 		}
@@ -445,7 +441,7 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(uint(len(fields)) * uint(C.sizeof_GLogField))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
@@ -537,7 +533,7 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Ha
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(uint(len(fields)) * uint(C.sizeof_GLogField))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
@@ -663,7 +659,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(uint(len(fields)) * uint(C.sizeof_GLogField))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
@@ -744,7 +740,7 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.H
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(uint(len(fields)) * uint(C.sizeof_GLogField))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
@@ -795,7 +791,7 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.malloc(C.size_t(len(fields)) * C.size_t(C.sizeof_GLogField)))
+	_arg2 = (*C.GLogField)(C.malloc(C.size_t(uint(len(fields)) * uint(C.sizeof_GLogField))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))

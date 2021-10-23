@@ -22,7 +22,7 @@ func init() {
 }
 
 // RelationType describes the type of the relation.
-type RelationType int
+type RelationType C.gint
 
 const (
 	// RelationNull: not used, represens "no relationship" or an error

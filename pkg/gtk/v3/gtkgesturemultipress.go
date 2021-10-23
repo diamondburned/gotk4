@@ -81,7 +81,7 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 // function will return TRUE and fill in rect with the press area. See
 // gtk_gesture_multi_press_set_area() for more details on what the press area
 // represents.
-func (gesture *GestureMultiPress) Area() (gdk.Rectangle, bool) {
+func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGestureMultiPress // out
 	var _arg1 C.GdkRectangle          // in
 	var _cret C.gboolean              // in
@@ -91,10 +91,10 @@ func (gesture *GestureMultiPress) Area() (gdk.Rectangle, bool) {
 	_cret = C.gtk_gesture_multi_press_get_area(_arg0, &_arg1)
 	runtime.KeepAlive(gesture)
 
-	var _rect gdk.Rectangle // out
-	var _ok bool            // out
+	var _rect *gdk.Rectangle // out
+	var _ok bool             // out
 
-	_rect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}

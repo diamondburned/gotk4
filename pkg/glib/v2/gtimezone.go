@@ -30,7 +30,7 @@ func init() {
 // Second, if the time is in local time, specifies if it is local standard time
 // or local daylight time. This is important for the case where the same local
 // time occurs twice (during daylight savings time transitions, for example).
-type TimeType int
+type TimeType C.gint
 
 const (
 	// TimeTypeStandard: time is in local standard time.

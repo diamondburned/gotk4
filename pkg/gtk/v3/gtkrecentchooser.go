@@ -33,7 +33,7 @@ func init() {
 
 // RecentChooserError: these identify the various errors that can occur while
 // calling RecentChooser functions.
-type RecentChooserError int
+type RecentChooserError C.gint
 
 const (
 	// RecentChooserErrorNotFound indicates that a file does not exist.
@@ -60,7 +60,7 @@ func (r RecentChooserError) String() string {
 
 // RecentSortType: used to specify the sorting method to be applyed to the
 // recently used resource list.
-type RecentSortType int
+type RecentSortType C.gint
 
 const (
 	// RecentSortNone: do not sort the returned list of recently used resources.

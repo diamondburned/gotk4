@@ -19,7 +19,7 @@ import (
 import "C"
 
 // SpawnError: error codes returned by spawning processes.
-type SpawnError int
+type SpawnError C.gint
 
 const (
 	// SpawnErrorFork: fork failed due to lack of memory.
@@ -118,7 +118,7 @@ func (s SpawnError) String() string {
 
 // SpawnFlags flags passed to g_spawn_sync(), g_spawn_async() and
 // g_spawn_async_with_pipes().
-type SpawnFlags int
+type SpawnFlags C.guint
 
 const (
 	// SpawnDefault: no flags, default behaviour.
@@ -282,7 +282,7 @@ func SpawnAsync(workingDirectory string, argv, envp []string, flags SpawnFlags, 
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(len(argv)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(argv) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(argv)+1)
@@ -295,7 +295,7 @@ func SpawnAsync(workingDirectory string, argv, envp []string, flags SpawnFlags, 
 		}
 	}
 	{
-		_arg3 = (**C.gchar)(C.malloc(C.size_t(len(envp)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg3 = (**C.gchar)(C.malloc(C.size_t(uint((len(envp) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(envp)+1)
@@ -365,7 +365,7 @@ func SpawnAsyncWithFds(workingDirectory string, argv, envp []string, flags Spawn
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(len(argv)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(argv) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(argv)+1)
@@ -378,7 +378,7 @@ func SpawnAsyncWithFds(workingDirectory string, argv, envp []string, flags Spawn
 		}
 	}
 	{
-		_arg3 = (**C.gchar)(C.malloc(C.size_t(len(envp)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg3 = (**C.gchar)(C.malloc(C.size_t(uint((len(envp) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(envp)+1)
@@ -451,7 +451,7 @@ func SpawnAsyncWithPipes(workingDirectory string, argv, envp []string, flags Spa
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(len(argv)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(argv) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(argv)+1)
@@ -464,7 +464,7 @@ func SpawnAsyncWithPipes(workingDirectory string, argv, envp []string, flags Spa
 		}
 	}
 	{
-		_arg3 = (**C.gchar)(C.malloc(C.size_t(len(envp)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg3 = (**C.gchar)(C.malloc(C.size_t(uint((len(envp) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(envp)+1)
@@ -721,7 +721,7 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv, envp []string, fla
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(len(argv)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(argv) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(argv)+1)
@@ -734,7 +734,7 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv, envp []string, fla
 		}
 	}
 	{
-		_arg3 = (**C.gchar)(C.malloc(C.size_t(len(envp)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg3 = (**C.gchar)(C.malloc(C.size_t(uint((len(envp) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(envp)+1)
@@ -755,7 +755,7 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv, envp []string, fla
 	_arg8 = C.gint(stdoutFd)
 	_arg9 = C.gint(stderrFd)
 	_arg12 = (C.gsize)(len(sourceFds))
-	_arg10 = (*C.gint)(C.malloc(C.size_t(len(sourceFds)) * C.size_t(C.sizeof_gint)))
+	_arg10 = (*C.gint)(C.malloc(C.size_t(uint(len(sourceFds)) * uint(C.sizeof_gint))))
 	defer C.free(unsafe.Pointer(_arg10))
 	{
 		out := unsafe.Slice((*C.gint)(_arg10), len(sourceFds))
@@ -764,7 +764,7 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv, envp []string, fla
 		}
 	}
 	_arg12 = (C.gsize)(len(targetFds))
-	_arg11 = (*C.gint)(C.malloc(C.size_t(len(targetFds)) * C.size_t(C.sizeof_gint)))
+	_arg11 = (*C.gint)(C.malloc(C.size_t(uint(len(targetFds)) * uint(C.sizeof_gint))))
 	defer C.free(unsafe.Pointer(_arg11))
 	{
 		out := unsafe.Slice((*C.gint)(_arg11), len(targetFds))
@@ -1039,7 +1039,7 @@ func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, c
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(len(argv)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(argv) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(argv)+1)
@@ -1052,7 +1052,7 @@ func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, c
 		}
 	}
 	{
-		_arg3 = (**C.gchar)(C.malloc(C.size_t(len(envp)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg3 = (**C.gchar)(C.malloc(C.size_t(uint((len(envp) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(envp)+1)

@@ -119,7 +119,7 @@ func (node *RenderNode) Draw(cr *cairo.Context) {
 // Bounds retrieves the boundaries of the node.
 //
 // The node will not draw outside of its boundaries.
-func (node *RenderNode) Bounds() graphene.Rect {
+func (node *RenderNode) Bounds() *graphene.Rect {
 	var _arg0 *C.GskRenderNode  // out
 	var _arg1 C.graphene_rect_t // in
 
@@ -128,9 +128,9 @@ func (node *RenderNode) Bounds() graphene.Rect {
 	C.gsk_render_node_get_bounds(_arg0, &_arg1)
 	runtime.KeepAlive(node)
 
-	var _bounds graphene.Rect // out
+	var _bounds *graphene.Rect // out
 
-	_bounds = *(*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_bounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _bounds
 }
@@ -287,9 +287,9 @@ func (c *ColorStop) Offset() float32 {
 }
 
 // Color: color at the given offset.
-func (c *ColorStop) Color() gdk.RGBA {
-	var v gdk.RGBA // out
-	v = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&c.native.color))))
+func (c *ColorStop) Color() *gdk.RGBA {
+	var v *gdk.RGBA // out
+	v = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&c.native.color))))
 	return v
 }
 
@@ -378,9 +378,9 @@ type shadow struct {
 }
 
 // Color: color of the shadow.
-func (s *Shadow) Color() gdk.RGBA {
-	var v gdk.RGBA // out
-	v = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&s.native.color))))
+func (s *Shadow) Color() *gdk.RGBA {
+	var v *gdk.RGBA // out
+	v = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&s.native.color))))
 	return v
 }
 

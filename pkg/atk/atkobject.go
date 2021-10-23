@@ -38,7 +38,7 @@ type AttributeSet = externglib.SList
 // These enumerated "layer values" are used when determining which UI rendering
 // layer a component is drawn into, which can help in making determinations of
 // when components occlude one another.
-type Layer int
+type Layer C.gint
 
 const (
 	// LayerInvalid: object does not have a layer.
@@ -92,7 +92,7 @@ func (l Layer) String() string {
 // These are the built-in enumerated roles that UI components can have in ATK.
 // Other roles may be added at runtime, so an AtkRole >= ATK_ROLE_LAST_DEFINED
 // is not necessarily an error.
-type Role int
+type Role C.gint
 
 const (
 	// RoleInvalid: invalid role.

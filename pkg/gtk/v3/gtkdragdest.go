@@ -26,7 +26,7 @@ func init() {
 
 // DestDefaults enumeration specifies the various types of action that will be
 // taken on behalf of the user for a drag destination site.
-type DestDefaults int
+type DestDefaults C.guint
 
 const (
 	// DestDefaultMotion: if set for a widget, GTK+, during a drag over this

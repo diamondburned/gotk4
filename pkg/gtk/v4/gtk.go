@@ -48,7 +48,7 @@ func ConstraintVflParserErrorQuark() glib.Quark {
 	return _quark
 }
 
-type EditableProperties int
+type EditableProperties C.gint
 
 const (
 	EditablePropText EditableProperties = iota
@@ -116,7 +116,7 @@ func RecentManagerErrorQuark() glib.Quark {
 	return _quark
 }
 
-type DebugFlags int
+type DebugFlags C.guint
 
 const (
 	DebugText           DebugFlags = 0b1

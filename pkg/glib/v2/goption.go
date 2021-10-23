@@ -38,7 +38,7 @@ const OPTION_REMAINING = ""
 // expect to find. If an option expects an extra argument, it can be specified
 // in several ways; with a short option: -x arg, with a long option: --name arg
 // or combined in a single argument: --name=arg.
-type OptionArg int
+type OptionArg C.gint
 
 const (
 	// OptionArgNone: no extra argument. This is useful for simple flags.
@@ -95,7 +95,7 @@ func (o OptionArg) String() string {
 }
 
 // OptionError: error codes returned by option parsing.
-type OptionError int
+type OptionError C.gint
 
 const (
 	// OptionErrorUnknownOption: option was not known to the parser. This error
@@ -123,7 +123,7 @@ func (o OptionError) String() string {
 }
 
 // OptionFlags flags which modify individual options.
-type OptionFlags int
+type OptionFlags C.guint
 
 const (
 	// OptionFlagNone: no flags. Since: 2.42.
@@ -315,7 +315,7 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 
 	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 	{
-		_arg1 = (*C.GOptionEntry)(C.malloc(C.size_t(len(entries)+1) * C.size_t(C.sizeof_GOptionEntry)))
+		_arg1 = (*C.GOptionEntry)(C.malloc(C.size_t(uint((len(entries) + 1)) * uint(C.sizeof_GOptionEntry))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(entries)+1)

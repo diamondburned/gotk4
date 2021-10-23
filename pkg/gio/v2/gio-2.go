@@ -5836,7 +5836,7 @@ func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 	var _cerr *C.GError          // in
 
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(argv)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(argv) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(argv)+1)
@@ -5863,103 +5863,6 @@ func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 	}
 
 	return _subprocess, _goerr
-}
-
-// Communicate with the subprocess until it terminates, and all input and output
-// has been completed.
-//
-// If stdin_buf is given, the subprocess must have been created with
-// G_SUBPROCESS_FLAGS_STDIN_PIPE. The given data is fed to the stdin of the
-// subprocess and the pipe is closed (ie: EOF).
-//
-// At the same time (as not to cause blocking when dealing with large amounts of
-// data), if G_SUBPROCESS_FLAGS_STDOUT_PIPE or G_SUBPROCESS_FLAGS_STDERR_PIPE
-// were used, reads from those streams. The data that was read is returned in
-// stdout and/or the stderr.
-//
-// If the subprocess was created with G_SUBPROCESS_FLAGS_STDOUT_PIPE, stdout_buf
-// will contain the data read from stdout. Otherwise, for subprocesses not
-// created with G_SUBPROCESS_FLAGS_STDOUT_PIPE, stdout_buf will be set to NULL.
-// Similar provisions apply to stderr_buf and G_SUBPROCESS_FLAGS_STDERR_PIPE.
-//
-// As usual, any output variable may be given as NULL to ignore it.
-//
-// If you desire the stdout and stderr data to be interleaved, create the
-// subprocess with G_SUBPROCESS_FLAGS_STDOUT_PIPE and
-// G_SUBPROCESS_FLAGS_STDERR_MERGE. The merged result will be returned in
-// stdout_buf and stderr_buf will be set to NULL.
-//
-// In case of any error (including cancellation), FALSE will be returned with
-// error set. Some or all of the stdin data may have been written. Any stdout or
-// stderr data that has been read will be discarded. None of the out variables
-// (aside from error) will have been set to anything in particular and should
-// not be inspected.
-//
-// In the case that TRUE is returned, the subprocess has exited and the exit
-// status inspection APIs (eg: g_subprocess_get_if_exited(),
-// g_subprocess_get_exit_status()) may be used.
-//
-// You should not attempt to use any of the subprocess pipes after starting this
-// function, since they may be left in strange states, even if the operation was
-// cancelled. You should especially not attempt to interact with the pipes while
-// the operation is in progress (either from another thread or if using the
-// asynchronous version).
-//
-// The function takes the following parameters:
-//
-//    - ctx: #GCancellable.
-//    - stdinBuf: data to send to the stdin of the subprocess, or NULL.
-//
-func (subprocess *Subprocess) Communicate(ctx context.Context, stdinBuf *glib.Bytes) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, goerr error) {
-	var _arg0 *C.GSubprocess  // out
-	var _arg2 *C.GCancellable // out
-	var _arg1 *C.GBytes       // out
-	var _arg3 *C.GBytes       // in
-	var _arg4 *C.GBytes       // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if stdinBuf != nil {
-		_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(stdinBuf)))
-	}
-
-	C.g_subprocess_communicate(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
-	runtime.KeepAlive(subprocess)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stdinBuf)
-
-	var _stdoutBuf *glib.Bytes // out
-	var _stderrBuf *glib.Bytes // out
-	var _goerr error           // out
-
-	if _arg3 != nil {
-		_stdoutBuf = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_stdoutBuf)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_bytes_unref((*C.GBytes)(intern.C))
-			},
-		)
-	}
-	if _arg4 != nil {
-		_stderrBuf = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_stderrBuf)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_bytes_unref((*C.GBytes)(intern.C))
-			},
-		)
-	}
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _stdoutBuf, _stderrBuf, _goerr
 }
 
 // CommunicateAsync asynchronous version of g_subprocess_communicate(). Complete
@@ -5997,56 +5900,6 @@ func (subprocess *Subprocess) CommunicateAsync(ctx context.Context, stdinBuf *gl
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stdinBuf)
 	runtime.KeepAlive(callback)
-}
-
-// CommunicateFinish: complete an invocation of
-// g_subprocess_communicate_async().
-//
-// The function takes the following parameters:
-//
-//    - result: result.
-//
-func (subprocess *Subprocess) CommunicateFinish(result AsyncResulter) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, goerr error) {
-	var _arg0 *C.GSubprocess  // out
-	var _arg1 *C.GAsyncResult // out
-	var _arg2 *C.GBytes       // in
-	var _arg3 *C.GBytes       // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	C.g_subprocess_communicate_finish(_arg0, _arg1, &_arg2, &_arg3, &_cerr)
-	runtime.KeepAlive(subprocess)
-	runtime.KeepAlive(result)
-
-	var _stdoutBuf *glib.Bytes // out
-	var _stderrBuf *glib.Bytes // out
-	var _goerr error           // out
-
-	if _arg2 != nil {
-		_stdoutBuf = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_stdoutBuf)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_bytes_unref((*C.GBytes)(intern.C))
-			},
-		)
-	}
-	if _arg3 != nil {
-		_stderrBuf = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_stderrBuf)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_bytes_unref((*C.GBytes)(intern.C))
-			},
-		)
-	}
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _stdoutBuf, _stderrBuf, _goerr
 }
 
 // CommunicateUTF8: like g_subprocess_communicate(), but validates the output of
@@ -6824,7 +6677,7 @@ func (self *SubprocessLauncher) SetEnviron(env []string) {
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(self.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(env)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(env) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(env)+1)
@@ -7015,7 +6868,7 @@ func (self *SubprocessLauncher) Spawnv(argv []string) (*Subprocess, error) {
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(self.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(argv)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(argv) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(argv)+1)

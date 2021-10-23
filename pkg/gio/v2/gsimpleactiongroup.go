@@ -88,7 +88,7 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg2 = (C.gint)(len(entries))
-	_arg1 = (*C.GActionEntry)(C.malloc(C.size_t(len(entries)) * C.size_t(C.sizeof_GActionEntry)))
+	_arg1 = (*C.GActionEntry)(C.malloc(C.size_t(uint(len(entries)) * uint(C.sizeof_GActionEntry))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GActionEntry)(_arg1), len(entries))

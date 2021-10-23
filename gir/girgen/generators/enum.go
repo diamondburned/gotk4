@@ -14,7 +14,7 @@ import (
 
 var enumTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 (OverrideSelfName .GoName) }}
-	type {{ .GoName }} int
+	type {{ .GoName }} C.gint
 
 	{{ if .IsIota }}
 	const (

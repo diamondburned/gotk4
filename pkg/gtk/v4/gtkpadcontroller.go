@@ -27,7 +27,7 @@ func init() {
 }
 
 // PadActionType: type of a pad action.
-type PadActionType int
+type PadActionType C.gint
 
 const (
 	// PadActionButton: action is triggered by a pad button.
@@ -219,7 +219,7 @@ func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 
 	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))
 	_arg2 = (C.int)(len(entries))
-	_arg1 = (*C.GtkPadActionEntry)(C.malloc(C.size_t(len(entries)) * C.size_t(C.sizeof_GtkPadActionEntry)))
+	_arg1 = (*C.GtkPadActionEntry)(C.malloc(C.size_t(uint(len(entries)) * uint(C.sizeof_GtkPadActionEntry))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkPadActionEntry)(_arg1), len(entries))

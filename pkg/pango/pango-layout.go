@@ -39,7 +39,7 @@ type LayoutRun = GlyphItem
 //
 // If the PangoLayout is set to justify using pango.Layout.SetJustify(), this
 // only has effect for partial lines.
-type Alignment int
+type Alignment C.gint
 
 const (
 	// AlignLeft: put all available space on the right.
@@ -73,7 +73,7 @@ func (a Alignment) String() string {
 //
 // In the ellipsization process characters are removed from the text in order to
 // make it fit to a given width and replaced with an ellipsis.
-type EllipsizeMode int
+type EllipsizeMode C.gint
 
 const (
 	// EllipsizeNone: no ellipsization.
@@ -108,7 +108,7 @@ func (e EllipsizeMode) String() string {
 
 // WrapMode: PangoWrapMode describes how to wrap the lines of a PangoLayout to
 // the desired width.
-type WrapMode int
+type WrapMode C.gint
 
 const (
 	// WrapWord: wrap lines at word boundaries.
@@ -363,7 +363,7 @@ func (layout *Layout) Context() *Context {
 //
 //    - index_: byte index of the cursor.
 //
-func (layout *Layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
+func (layout *Layout) CursorPos(index_ int) (strongPos *Rectangle, weakPos *Rectangle) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
 	var _arg2 C.PangoRectangle // in
@@ -376,11 +376,11 @@ func (layout *Layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectan
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(index_)
 
-	var _strongPos Rectangle // out
-	var _weakPos Rectangle   // out
+	var _strongPos *Rectangle // out
+	var _weakPos *Rectangle   // out
 
-	_strongPos = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	_weakPos = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_strongPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_weakPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _strongPos, _weakPos
 }
@@ -442,7 +442,7 @@ func (layout *Layout) Ellipsize() EllipsizeMode {
 //
 // The extents are given in layout coordinates and in Pango units; layout
 // coordinates begin at the top left corner of the layout.
-func (layout *Layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
+func (layout *Layout) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.PangoRectangle // in
 	var _arg2 C.PangoRectangle // in
@@ -452,11 +452,11 @@ func (layout *Layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 	C.pango_layout_get_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
+	var _inkRect *Rectangle     // out
+	var _logicalRect *Rectangle // out
 
-	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -677,7 +677,7 @@ func (layout *Layout) LineSpacing() float32 {
 //
 // Use the faster pango.Layout.GetLinesReadonly() if you do not plan to modify
 // the contents of the lines (glyphs, glyph widths, etc.).
-func (layout *Layout) Lines() []LayoutLine {
+func (layout *Layout) Lines() []*LayoutLine {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.GSList      // in
 
@@ -686,13 +686,20 @@ func (layout *Layout) Lines() []LayoutLine {
 	_cret = C.pango_layout_get_lines(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _sList []LayoutLine // out
+	var _sList []*LayoutLine // out
 
-	_sList = make([]LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.PangoLayoutLine)(v)
-		var dst LayoutLine // out
-		dst = *(*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+		var dst *LayoutLine // out
+		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+		C.pango_layout_line_ref(src)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+			},
+		)
 		_sList = append(_sList, dst)
 	})
 
@@ -703,7 +710,7 @@ func (layout *Layout) Lines() []LayoutLine {
 //
 // This is a faster alternative to pango.Layout.GetLines(), but the user is not
 // expected to modify the contents of the lines (glyphs, glyph widths, etc.).
-func (layout *Layout) LinesReadonly() []LayoutLine {
+func (layout *Layout) LinesReadonly() []*LayoutLine {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.GSList      // in
 
@@ -712,13 +719,20 @@ func (layout *Layout) LinesReadonly() []LayoutLine {
 	_cret = C.pango_layout_get_lines_readonly(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _sList []LayoutLine // out
+	var _sList []*LayoutLine // out
 
-	_sList = make([]LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.PangoLayoutLine)(v)
-		var dst LayoutLine // out
-		dst = *(*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+		var dst *LayoutLine // out
+		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+		C.pango_layout_line_ref(src)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+			},
+		)
 		_sList = append(_sList, dst)
 	})
 
@@ -791,7 +805,7 @@ func (layout *Layout) LogAttrsReadonly() []LogAttr {
 // extents_to_pixels calls, rounding ink_rect and logical_rect such that the
 // rounded rectangles fully contain the unrounded one (that is, passes them as
 // first argument to pango_extents_to_pixels()).
-func (layout *Layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (layout *Layout) PixelExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.PangoRectangle // in
 	var _arg2 C.PangoRectangle // in
@@ -801,11 +815,11 @@ func (layout *Layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) 
 	C.pango_layout_get_pixel_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
+	var _inkRect *Rectangle     // out
+	var _logicalRect *Rectangle // out
 
-	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -1079,7 +1093,7 @@ func (layout *Layout) IndexToLineX(index_ int, trailing bool) (line int, xPos in
 //
 //    - index_: byte index within layout.
 //
-func (layout *Layout) IndexToPos(index_ int) Rectangle {
+func (layout *Layout) IndexToPos(index_ int) *Rectangle {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
 	var _arg2 C.PangoRectangle // in
@@ -1091,9 +1105,9 @@ func (layout *Layout) IndexToPos(index_ int) Rectangle {
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(index_)
 
-	var _pos Rectangle // out
+	var _pos *Rectangle // out
 
-	_pos = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_pos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _pos
 }
@@ -1819,7 +1833,7 @@ func (iter *LayoutIter) Baseline() int {
 // (origin is the top left of the entire layout). Only logical extents can
 // sensibly be obtained for characters; ink extents make sense only down to the
 // level of clusters.
-func (iter *LayoutIter) CharExtents() Rectangle {
+func (iter *LayoutIter) CharExtents() *Rectangle {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
 
@@ -1828,16 +1842,16 @@ func (iter *LayoutIter) CharExtents() Rectangle {
 	C.pango_layout_iter_get_char_extents(_arg0, &_arg1)
 	runtime.KeepAlive(iter)
 
-	var _logicalRect Rectangle // out
+	var _logicalRect *Rectangle // out
 
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _logicalRect
 }
 
 // ClusterExtents gets the extents of the current cluster, in layout coordinates
 // (origin is the top left of the entire layout).
-func (iter *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (iter *LayoutIter) ClusterExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
 	var _arg2 C.PangoRectangle   // in
@@ -1847,11 +1861,11 @@ func (iter *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectang
 	C.pango_layout_iter_get_cluster_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
+	var _inkRect *Rectangle     // out
+	var _logicalRect *Rectangle // out
 
-	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -1895,7 +1909,7 @@ func (iter *LayoutIter) Layout() *Layout {
 
 // LayoutExtents obtains the extents of the PangoLayout being iterated over.
 // ink_rect or logical_rect can be NULL if you aren't interested in them.
-func (iter *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (iter *LayoutIter) LayoutExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
 	var _arg2 C.PangoRectangle   // in
@@ -1905,11 +1919,11 @@ func (iter *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangl
 	C.pango_layout_iter_get_layout_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
+	var _inkRect *Rectangle     // out
+	var _logicalRect *Rectangle // out
 
-	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -1946,7 +1960,7 @@ func (iter *LayoutIter) Line() *LayoutLine {
 // coordinates (origin is the top-left corner of the entire PangoLayout). Thus
 // the extents returned by this function will be the same width/height but not
 // at the same x/y as the extents returned from pango.LayoutLine.GetExtents().
-func (iter *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (iter *LayoutIter) LineExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
 	var _arg2 C.PangoRectangle   // in
@@ -1956,11 +1970,11 @@ func (iter *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle)
 	C.pango_layout_iter_get_line_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
+	var _inkRect *Rectangle     // out
+	var _logicalRect *Rectangle // out
 
-	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -2047,7 +2061,7 @@ func (iter *LayoutIter) Run() *LayoutRun {
 
 // RunExtents gets the extents of the current run in layout coordinates (origin
 // is the top left of the entire layout).
-func (iter *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (iter *LayoutIter) RunExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
 	var _arg2 C.PangoRectangle   // in
@@ -2057,11 +2071,11 @@ func (iter *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) 
 	C.pango_layout_iter_get_run_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
+	var _inkRect *Rectangle     // out
+	var _logicalRect *Rectangle // out
 
-	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -2217,7 +2231,7 @@ func (l *LayoutLine) Length() int {
 // Extents computes the logical and ink extents of a layout line. See
 // pango.Font.GetGlyphExtents() for details about the interpretation of the
 // rectangles.
-func (line *LayoutLine) Extents() (inkRect Rectangle, logicalRect Rectangle) {
+func (line *LayoutLine) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.PangoRectangle   // in
 	var _arg2 C.PangoRectangle   // in
@@ -2227,11 +2241,11 @@ func (line *LayoutLine) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 	C.pango_layout_line_get_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(line)
 
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
+	var _inkRect *Rectangle     // out
+	var _logicalRect *Rectangle // out
 
-	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -2261,7 +2275,7 @@ func (line *LayoutLine) Height() int {
 // extents_to_pixels calls, rounding ink_rect and logical_rect such that the
 // rounded rectangles fully contain the unrounded one (that is, passes them as
 // first argument to extents_to_pixels).
-func (layoutLine *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (layoutLine *LayoutLine) PixelExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.PangoRectangle   // in
 	var _arg2 C.PangoRectangle   // in
@@ -2271,11 +2285,11 @@ func (layoutLine *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rec
 	C.pango_layout_line_get_pixel_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layoutLine)
 
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
+	var _inkRect *Rectangle     // out
+	var _logicalRect *Rectangle // out
 
-	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }

@@ -32,7 +32,7 @@ func init() {
 
 // PixbufFormatFlags flags which allow a module to specify further details about
 // the supported operations.
-type PixbufFormatFlags int
+type PixbufFormatFlags C.guint
 
 const (
 	// PixbufFormatWritable: module can write out images in the format.
@@ -275,18 +275,18 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height i
 
 // PixbufGetFormats obtains the available information about the image formats
 // supported by GdkPixbuf.
-func PixbufGetFormats() []PixbufFormat {
+func PixbufGetFormats() []*PixbufFormat {
 	var _cret *C.GSList // in
 
 	_cret = C.gdk_pixbuf_get_formats()
 
-	var _sList []PixbufFormat // out
+	var _sList []*PixbufFormat // out
 
-	_sList = make([]PixbufFormat, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*PixbufFormat, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkPixbufFormat)(v)
-		var dst PixbufFormat // out
-		dst = *(*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(src)))
+		var dst *PixbufFormat // out
+		dst = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 

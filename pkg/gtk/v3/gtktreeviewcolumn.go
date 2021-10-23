@@ -33,7 +33,7 @@ func init() {
 // TreeViewColumnSizing: sizing method the column uses to determine its width.
 // Please note that GTK_TREE_VIEW_COLUMN_AUTOSIZE are inefficient for large
 // views, and can make columns appear choppy.
-type TreeViewColumnSizing int
+type TreeViewColumnSizing C.gint
 
 const (
 	// TreeViewColumnGrowOnly columns only get bigger in reaction to changes in

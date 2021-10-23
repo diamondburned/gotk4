@@ -10,7 +10,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -50,7 +49,7 @@ const ATTR_INDEX_TO_TEXT_END = 4294967295
 // values for custom attributes using attr_type_register. The predefined values
 // are given below. The type of structure used to store the attribute is listed
 // in parentheses after the description.
-type AttrType int
+type AttrType C.gint
 
 const (
 	// AttrTypeInvalid does not happen.
@@ -256,7 +255,7 @@ func AttrTypeRegister(name string) AttrType {
 
 // Overline: PangoOverline enumeration is used to specify whether text should be
 // overlined, and if so, the type of line.
-type Overline int
+type Overline C.gint
 
 const (
 	// OverlineNone: no overline should be drawn.
@@ -284,7 +283,7 @@ func (o Overline) String() string {
 
 // Underline: PangoUnderline enumeration is used to specify whether text should
 // be underlined, and if so, the type of underlining.
-type Underline int
+type Underline C.gint
 
 const (
 	// UnderlineNone: no underline should be drawn.
@@ -347,7 +346,7 @@ func (u Underline) String() string {
 
 // ShowFlags: these flags affect how Pango treats characters that are normally
 // not visible in the output.
-type ShowFlags int
+type ShowFlags C.guint
 
 const (
 	// ShowNone: no special treatment for invisible characters.
@@ -1191,55 +1190,6 @@ func NewAttrWeight(weight Weight) *Attribute {
 	return _attribute
 }
 
-// MarkupParserFinish finishes parsing markup.
-//
-// After feeding a Pango markup parser some data with
-// g_markup_parse_context_parse(), use this function to get the list of
-// attributes and text out of the markup. This function will not free context,
-// use g_markup_parse_context_free() to do so.
-//
-// The function takes the following parameters:
-//
-//    - context: valid parse context that was returned from markup_parser_new.
-//
-func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
-	var _arg1 *C.GMarkupParseContext // out
-	var _arg2 *C.PangoAttrList       // in
-	var _arg3 *C.char                // in
-	var _arg4 C.gunichar             // in
-	var _cerr *C.GError              // in
-
-	_arg1 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
-
-	C.pango_markup_parser_finish(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
-	runtime.KeepAlive(context)
-
-	var _attrList *AttrList // out
-	var _text string        // out
-	var _accelChar uint32   // out
-	var _goerr error        // out
-
-	if _arg2 != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
-		)
-	}
-	if _arg3 != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-	_accelChar = uint32(_arg4)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _attrList, _text, _accelChar, _goerr
-}
-
 // NewMarkupParser: incrementally parses marked-up text to create a plain-text
 // string and an attribute list.
 //
@@ -1290,75 +1240,6 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	return _markupParseContext
 }
 
-// ParseMarkup parses marked-up text to create a plain-text string and an
-// attribute list.
-//
-// See the Pango Markup (pango_markup.html) docs for details about the supported
-// markup.
-//
-// If accel_marker is nonzero, the given character will mark the character
-// following it as an accelerator. For example, accel_marker might be an
-// ampersand or underscore. All characters marked as an accelerator will receive
-// a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
-// returned in accel_char. Two accel_marker characters following each other
-// produce a single literal accel_marker character.
-//
-// To parse a stream of pango markup incrementally, use markup_parser_new.
-//
-// If any error happens, none of the output arguments are touched except for
-// error.
-//
-// The function takes the following parameters:
-//
-//    - markupText: markup to parse (see the Pango Markup docs).
-//    - length of markup_text, or -1 if nul-terminated.
-//    - accelMarker: character that precedes an accelerator, or 0 for none.
-//
-func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
-	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
-	var _arg3 C.gunichar       // out
-	var _arg4 *C.PangoAttrList // in
-	var _arg5 *C.char          // in
-	var _arg6 C.gunichar       // in
-	var _cerr *C.GError        // in
-
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markupText)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = C.gunichar(accelMarker)
-
-	C.pango_parse_markup(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_cerr)
-	runtime.KeepAlive(markupText)
-	runtime.KeepAlive(length)
-	runtime.KeepAlive(accelMarker)
-
-	var _attrList *AttrList // out
-	var _text string        // out
-	var _accelChar uint32   // out
-	var _goerr error        // out
-
-	if _arg4 != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
-		)
-	}
-	if _arg5 != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
-		defer C.free(unsafe.Pointer(_arg5))
-	}
-	_accelChar = uint32(_arg6)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _attrList, _text, _accelChar, _goerr
-}
-
 // AttrColor: PangoAttrColor structure is used to represent attributes that are
 // colors.
 //
@@ -1373,16 +1254,16 @@ type attrColor struct {
 }
 
 // Attr: common portion of the attribute.
-func (a *AttrColor) Attr() Attribute {
-	var v Attribute // out
-	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
+func (a *AttrColor) Attr() *Attribute {
+	var v *Attribute // out
+	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
 // Color: PangoColor which is the value of the attribute.
-func (a *AttrColor) Color() Color {
-	var v Color // out
-	v = *(*Color)(gextras.NewStructNative(unsafe.Pointer((&a.native.color))))
+func (a *AttrColor) Color() *Color {
+	var v *Color // out
+	v = (*Color)(gextras.NewStructNative(unsafe.Pointer((&a.native.color))))
 	return v
 }
 
@@ -1400,9 +1281,9 @@ type attrFloat struct {
 }
 
 // Attr: common portion of the attribute.
-func (a *AttrFloat) Attr() Attribute {
-	var v Attribute // out
-	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
+func (a *AttrFloat) Attr() *Attribute {
+	var v *Attribute // out
+	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
@@ -1427,9 +1308,9 @@ type attrFontDesc struct {
 }
 
 // Attr: common portion of the attribute.
-func (a *AttrFontDesc) Attr() Attribute {
-	var v Attribute // out
-	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
+func (a *AttrFontDesc) Attr() *Attribute {
+	var v *Attribute // out
+	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
@@ -1485,9 +1366,9 @@ type attrFontFeatures struct {
 }
 
 // Attr: common portion of the attribute.
-func (a *AttrFontFeatures) Attr() Attribute {
-	var v Attribute // out
-	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
+func (a *AttrFontFeatures) Attr() *Attribute {
+	var v *Attribute // out
+	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
@@ -1541,9 +1422,9 @@ type attrInt struct {
 }
 
 // Attr: common portion of the attribute.
-func (a *AttrInt) Attr() Attribute {
-	var v Attribute // out
-	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
+func (a *AttrInt) Attr() *Attribute {
+	var v *Attribute // out
+	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
@@ -1634,7 +1515,7 @@ func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 }
 
 // Attrs gets a list of all attributes at the current position of the iterator.
-func (iterator *AttrIterator) Attrs() []Attribute {
+func (iterator *AttrIterator) Attrs() []*Attribute {
 	var _arg0 *C.PangoAttrIterator // out
 	var _cret *C.GSList            // in
 
@@ -1643,15 +1524,15 @@ func (iterator *AttrIterator) Attrs() []Attribute {
 	_cret = C.pango_attr_iterator_get_attrs(_arg0)
 	runtime.KeepAlive(iterator)
 
-	var _sList []Attribute // out
+	var _sList []*Attribute // out
 
-	_sList = make([]Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.PangoAttribute)(v)
-		var dst Attribute // out
-		dst = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
+		var dst *Attribute // out
+		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(&dst)),
+			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
 			},
@@ -1718,9 +1599,9 @@ type attrLanguage struct {
 }
 
 // Attr: common portion of the attribute.
-func (a *AttrLanguage) Attr() Attribute {
-	var v Attribute // out
-	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
+func (a *AttrLanguage) Attr() *Attribute {
+	var v *Attribute // out
+	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
@@ -1911,7 +1792,7 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 }
 
 // Attributes gets a list of all attributes in list.
-func (list *AttrList) Attributes() []Attribute {
+func (list *AttrList) Attributes() []*Attribute {
 	var _arg0 *C.PangoAttrList // out
 	var _cret *C.GSList        // in
 
@@ -1920,15 +1801,15 @@ func (list *AttrList) Attributes() []Attribute {
 	_cret = C.pango_attr_list_get_attributes(_arg0)
 	runtime.KeepAlive(list)
 
-	var _sList []Attribute // out
+	var _sList []*Attribute // out
 
-	_sList = make([]Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.PangoAttribute)(v)
-		var dst Attribute // out
-		dst = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
+		var dst *Attribute // out
+		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(&dst)),
+			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
 			},
@@ -2116,9 +1997,9 @@ type attrSize struct {
 }
 
 // Attr: common portion of the attribute.
-func (a *AttrSize) Attr() Attribute {
-	var v Attribute // out
-	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
+func (a *AttrSize) Attr() *Attribute {
+	var v *Attribute // out
+	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
@@ -2200,9 +2081,9 @@ type attrString struct {
 }
 
 // Attr: common portion of the attribute.
-func (a *AttrString) Attr() Attribute {
-	var v Attribute // out
-	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
+func (a *AttrString) Attr() *Attribute {
+	var v *Attribute // out
+	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 

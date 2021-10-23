@@ -62,7 +62,7 @@ func NewQuadAlloc() *Quad {
 }
 
 // Bounds computes the bounding rectangle of q and places it into r.
-func (q *Quad) Bounds() Rect {
+func (q *Quad) Bounds() *Rect {
 	var _arg0 *C.graphene_quad_t // out
 	var _arg1 C.graphene_rect_t  // in
 
@@ -71,9 +71,9 @@ func (q *Quad) Bounds() Rect {
 	C.graphene_quad_bounds(_arg0, &_arg1)
 	runtime.KeepAlive(q)
 
-	var _r Rect // out
+	var _r *Rect // out
 
-	_r = *(*Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_r = (*Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _r
 }

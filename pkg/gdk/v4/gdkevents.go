@@ -67,7 +67,7 @@ const EVENT_STOP = true
 const PRIORITY_REDRAW = 120
 
 // CrossingMode specifies the crossing mode for enter and leave events.
-type CrossingMode int
+type CrossingMode C.gint
 
 const (
 	// CrossingNormal: crossing because of pointer motion.
@@ -126,7 +126,7 @@ func (c CrossingMode) String() string {
 }
 
 // EventType specifies the type of the event.
-type EventType int
+type EventType C.gint
 
 const (
 	// Delete: window manager has requested that the toplevel surface be hidden
@@ -268,7 +268,7 @@ func (e EventType) String() string {
 // KeyMatch describes how well an event matches a given keyval and modifiers.
 //
 // GdkKeyMatch values are returned by gdk.KeyEvent.Matches().
-type KeyMatch int
+type KeyMatch C.gint
 
 const (
 	// KeyMatchNone: key event does not match.
@@ -302,7 +302,7 @@ func (k KeyMatch) String() string {
 //
 // See the X11 protocol specification of LeaveNotify for full details of
 // crossing event generation.
-type NotifyType int
+type NotifyType C.gint
 
 const (
 	// NotifyAncestor: surface is entered from an ancestor or left towards an
@@ -350,7 +350,7 @@ func (n NotifyType) String() string {
 }
 
 // ScrollDirection specifies the direction for scroll events.
-type ScrollDirection int
+type ScrollDirection C.gint
 
 const (
 	// ScrollUp: surface is scrolled up.
@@ -405,7 +405,7 @@ func (s ScrollDirection) String() string {
 // GDK_TOUCHPAD_GESTURE_PHASE_CANCEL, this should be used as a hint to undo any
 // visible/permanent changes that were done throughout the progress of the
 // gesture.
-type TouchpadGesturePhase int
+type TouchpadGesturePhase C.gint
 
 const (
 	// TouchpadGesturePhaseBegin: gesture has begun.

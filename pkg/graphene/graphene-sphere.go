@@ -126,7 +126,7 @@ func (a *Sphere) Equal(b *Sphere) bool {
 
 // BoundingBox computes the bounding box capable of containing the given
 // #graphene_sphere_t.
-func (s *Sphere) BoundingBox() Box {
+func (s *Sphere) BoundingBox() *Box {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 C.graphene_box_t     // in
 
@@ -135,15 +135,15 @@ func (s *Sphere) BoundingBox() Box {
 	C.graphene_sphere_get_bounding_box(_arg0, &_arg1)
 	runtime.KeepAlive(s)
 
-	var _box Box // out
+	var _box *Box // out
 
-	_box = *(*Box)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_box = (*Box)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _box
 }
 
 // Center retrieves the coordinates of the center of a #graphene_sphere_t.
-func (s *Sphere) Center() Point3D {
+func (s *Sphere) Center() *Point3D {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 C.graphene_point3d_t // in
 
@@ -152,9 +152,9 @@ func (s *Sphere) Center() Point3D {
 	C.graphene_sphere_get_center(_arg0, &_arg1)
 	runtime.KeepAlive(s)
 
-	var _center Point3D // out
+	var _center *Point3D // out
 
-	_center = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_center = (*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _center
 }
@@ -249,7 +249,7 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 
 	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 	_arg1 = (C.uint)(len(vectors))
-	_arg2 = (*C.graphene_vec3_t)(C.malloc(C.size_t(len(vectors)) * C.size_t(C.sizeof_graphene_vec3_t)))
+	_arg2 = (*C.graphene_vec3_t)(C.malloc(C.size_t(uint(len(vectors)) * uint(C.sizeof_graphene_vec3_t))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.graphene_vec3_t)(_arg2), len(vectors))
@@ -294,7 +294,7 @@ func (s *Sphere) IsEmpty() bool {
 
 // Translate translates the center of the given #graphene_sphere_t using the
 // point coordinates as the delta of the translation.
-func (s *Sphere) Translate(point *Point3D) Sphere {
+func (s *Sphere) Translate(point *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
 	var _arg2 C.graphene_sphere_t   // in
@@ -306,9 +306,9 @@ func (s *Sphere) Translate(point *Point3D) Sphere {
 	runtime.KeepAlive(s)
 	runtime.KeepAlive(point)
 
-	var _res Sphere // out
+	var _res *Sphere // out
 
-	_res = *(*Sphere)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Sphere)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }

@@ -33,6 +33,7 @@ func init() {
 		{T: externglib.Type(C.gdk_visibility_state_get_type()), F: marshalVisibilityState},
 		{T: externglib.Type(C.gdk_window_state_get_type()), F: marshalWindowState},
 		{T: externglib.Type(C.gdk_event_sequence_get_type()), F: marshalEventSequence},
+		{T: externglib.Type(C.gdk_event_get_type()), F: marshalEvent},
 	})
 }
 
@@ -60,7 +61,7 @@ const EVENT_STOP = true
 const PRIORITY_REDRAW = 120
 
 // CrossingMode specifies the crossing mode for EventCrossing.
-type CrossingMode int
+type CrossingMode C.gint
 
 const (
 	// CrossingNormal: crossing because of pointer motion.
@@ -129,7 +130,7 @@ func (c CrossingMode) String() string {
 // Gdk.EventType.2ButtonPress, where a symbol is not allowed to start with a
 // number). In that case, the aliases GDK_DOUBLE_BUTTON_PRESS and
 // GDK_TRIPLE_BUTTON_PRESS can be used instead.
-type EventType int
+type EventType C.gint
 
 const (
 	// NothingType: special code to indicate a null event.
@@ -376,7 +377,7 @@ func (e EventType) String() string {
 }
 
 // FilterReturn specifies the result of applying a FilterFunc to a native event.
-type FilterReturn int
+type FilterReturn C.gint
 
 const (
 	// FilterContinue: event not handled, continue processing.
@@ -410,7 +411,7 @@ func (f FilterReturn) String() string {
 //
 // See the X11 protocol specification of LeaveNotify for full details of
 // crossing event generation.
-type NotifyType int
+type NotifyType C.gint
 
 const (
 	// NotifyAncestor: window is entered from an ancestor or left towards an
@@ -458,7 +459,7 @@ func (n NotifyType) String() string {
 }
 
 // OwnerChange specifies why a selection ownership was changed.
-type OwnerChange int
+type OwnerChange C.gint
 
 const (
 	// OwnerChangeNewOwner: some other app claimed the ownership.
@@ -488,7 +489,7 @@ func (o OwnerChange) String() string {
 }
 
 // PropertyState specifies the type of a property change for a EventProperty.
-type PropertyState int
+type PropertyState C.gint
 
 const (
 	// PropertyNewValue: property value was changed.
@@ -514,7 +515,7 @@ func (p PropertyState) String() string {
 }
 
 // ScrollDirection specifies the direction for EventScroll.
-type ScrollDirection int
+type ScrollDirection C.gint
 
 const (
 	// ScrollUp: window is scrolled up.
@@ -554,7 +555,7 @@ func (s ScrollDirection) String() string {
 
 // SettingAction specifies the kind of modification applied to a setting in a
 // EventSetting.
-type SettingAction int
+type SettingAction C.gint
 
 const (
 	// NewSettingAction: setting was added.
@@ -601,7 +602,7 @@ func (s SettingAction) String() string {
 // gesture.
 //
 // See also EventTouchpadSwipe and EventTouchpadPinch.
-type TouchpadGesturePhase int
+type TouchpadGesturePhase C.gint
 
 const (
 	// TouchpadGesturePhaseBegin: gesture has begun.
@@ -638,7 +639,7 @@ func (t TouchpadGesturePhase) String() string {
 
 // VisibilityState specifies the visiblity status of a window for a
 // EventVisibility.
-type VisibilityState int
+type VisibilityState C.gint
 
 const (
 	// VisibilityUnobscured: window is completely visible.
@@ -668,7 +669,7 @@ func (v VisibilityState) String() string {
 }
 
 // WindowState specifies the state of a toplevel window.
-type WindowState int
+type WindowState C.guint
 
 const (
 	// WindowStateWithdrawn: window is not shown.
@@ -1406,9 +1407,9 @@ func (e *EventExpose) SendEvent() int8 {
 }
 
 // Area: bounding box of region.
-func (e *EventExpose) Area() Rectangle {
-	var v Rectangle // out
-	v = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&e.native.area))))
+func (e *EventExpose) Area() *Rectangle {
+	var v *Rectangle // out
+	v = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&e.native.area))))
 	return v
 }
 
@@ -2866,4 +2867,478 @@ func (e *EventWindowState) NewWindowState() WindowState {
 	var v WindowState // out
 	v = WindowState(e.native.new_window_state)
 	return v
+}
+
+// Event contains a union of all of the event types, and allows access to the
+// data fields in a number of ways.
+//
+// The event type is always the first field in all of the event types, and can
+// always be accessed with the following code, no matter what type of event it
+// is:
+//
+//      GdkEvent *event;
+//      gdouble x;
+//
+//      x = event->button.x;.
+type Event struct {
+	*event
+}
+
+// event has the finalizer attached to it.
+type event struct {
+	native *C.GdkEvent
+}
+
+func marshalEvent(p uintptr) (interface{}, error) {
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Event{&event{(*C.GdkEvent)(b)}}, nil
+}
+
+// AsType returns a copy of e as the struct EventType.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsType() EventType {
+	cpy := e.event.native
+	var dst EventType
+	dst = *(*EventType)(unsafe.Pointer(cpy))
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsAny returns a copy of e as the struct *EventAny.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsAny() *EventAny {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventAny
+	dst = (*EventAny)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsExpose returns a copy of e as the struct *EventExpose.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsExpose() *EventExpose {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventExpose
+	dst = (*EventExpose)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsVisibility returns a copy of e as the struct *EventVisibility.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsVisibility() *EventVisibility {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventVisibility
+	dst = (*EventVisibility)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsMotion returns a copy of e as the struct *EventMotion.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsMotion() *EventMotion {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventMotion
+	dst = (*EventMotion)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsButton returns a copy of e as the struct *EventButton.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsButton() *EventButton {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventButton
+	dst = (*EventButton)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsTouch returns a copy of e as the struct *EventTouch.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsTouch() *EventTouch {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventTouch
+	dst = (*EventTouch)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsScroll returns a copy of e as the struct *EventScroll.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsScroll() *EventScroll {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventScroll
+	dst = (*EventScroll)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsKey returns a copy of e as the struct *EventKey.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsKey() *EventKey {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventKey
+	dst = (*EventKey)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsCrossing returns a copy of e as the struct *EventCrossing.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsCrossing() *EventCrossing {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventCrossing
+	dst = (*EventCrossing)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsFocusChange returns a copy of e as the struct *EventFocus.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsFocusChange() *EventFocus {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventFocus
+	dst = (*EventFocus)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsConfigure returns a copy of e as the struct *EventConfigure.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsConfigure() *EventConfigure {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventConfigure
+	dst = (*EventConfigure)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsProperty returns a copy of e as the struct *EventProperty.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsProperty() *EventProperty {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventProperty
+	dst = (*EventProperty)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsSelection returns a copy of e as the struct *EventSelection.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsSelection() *EventSelection {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventSelection
+	dst = (*EventSelection)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsOwnerChange returns a copy of e as the struct *EventOwnerChange.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsOwnerChange() *EventOwnerChange {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventOwnerChange
+	dst = (*EventOwnerChange)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsProximity returns a copy of e as the struct *EventProximity.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsProximity() *EventProximity {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventProximity
+	dst = (*EventProximity)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsDND returns a copy of e as the struct *EventDND.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsDND() *EventDND {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventDND
+	dst = (*EventDND)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsWindowState returns a copy of e as the struct *EventWindowState.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsWindowState() *EventWindowState {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventWindowState
+	dst = (*EventWindowState)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsSetting returns a copy of e as the struct *EventSetting.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsSetting() *EventSetting {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventSetting
+	dst = (*EventSetting)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsGrabBroken returns a copy of e as the struct *EventGrabBroken.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsGrabBroken() *EventGrabBroken {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventGrabBroken
+	dst = (*EventGrabBroken)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsTouchpadSwipe returns a copy of e as the struct *EventTouchpadSwipe.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsTouchpadSwipe() *EventTouchpadSwipe {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventTouchpadSwipe
+	dst = (*EventTouchpadSwipe)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsTouchpadPinch returns a copy of e as the struct *EventTouchpadPinch.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsTouchpadPinch() *EventTouchpadPinch {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventTouchpadPinch
+	dst = (*EventTouchpadPinch)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsPadButton returns a copy of e as the struct *EventPadButton.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsPadButton() *EventPadButton {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventPadButton
+	dst = (*EventPadButton)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsPadAxis returns a copy of e as the struct *EventPadAxis.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsPadAxis() *EventPadAxis {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventPadAxis
+	dst = (*EventPadAxis)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// AsPadGroupMode returns a copy of e as the struct *EventPadGroupMode.
+// It does this without any knowledge on the actual type of the value, so
+// the caller must take care of type-checking beforehand.
+func (e *Event) AsPadGroupMode() *EventPadGroupMode {
+	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
+	var dst *EventPadGroupMode
+	dst = (*EventPadGroupMode)(gextras.NewStructNative(unsafe.Pointer(cpy)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	runtime.KeepAlive(e.event)
+	return dst
+}
+
+// EventRequestMotions: request more motion notifies if event is a motion notify
+// hint event.
+//
+// This function should be used instead of gdk_window_get_pointer() to request
+// further motion notifies, because it also works for extension events where
+// motion notifies are provided for devices other than the core pointer.
+// Coordinate extraction, processing and requesting more motion events from a
+// GDK_MOTION_NOTIFY event usually works like this:
+//
+//    {
+//      // motion_event handler
+//      x = motion_event->x;
+//      y = motion_event->y;
+//      // handle (x,y) motion
+//      gdk_event_request_motions (motion_event); // handles is_hint events
+//    }.
+//
+// The function takes the following parameters:
+//
+//    - event: valid Event.
+//
+func EventRequestMotions(event *EventMotion) {
+	var _arg1 *C.GdkEventMotion // out
+
+	_arg1 = (*C.GdkEventMotion)(gextras.StructNative(unsafe.Pointer(event)))
+
+	C.gdk_event_request_motions(_arg1)
+	runtime.KeepAlive(event)
 }

@@ -126,7 +126,7 @@ func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, buf
 //
 //    - cr: cairo context.
 //
-func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
+func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 	var _arg1 *C.cairo_t     // out
 	var _arg2 C.GdkRectangle // in
 	var _cret C.gboolean     // in
@@ -136,10 +136,10 @@ func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
 	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, &_arg2)
 	runtime.KeepAlive(cr)
 
-	var _rect Rectangle // out
-	var _ok bool        // out
+	var _rect *Rectangle // out
+	var _ok bool         // out
 
-	_rect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

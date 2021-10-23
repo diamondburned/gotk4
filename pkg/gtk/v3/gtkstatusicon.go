@@ -260,7 +260,7 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as the
 // platform is responsible for the presentation of notifications.
-func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientation, bool) {
+func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientation, bool) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkScreen     // in
 	var _arg2 C.GdkRectangle   // in
@@ -273,7 +273,7 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 	runtime.KeepAlive(statusIcon)
 
 	var _screen *gdk.Screen      // out
-	var _area gdk.Rectangle      // out
+	var _area *gdk.Rectangle     // out
 	var _orientation Orientation // out
 	var _ok bool                 // out
 
@@ -285,7 +285,7 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 			}
 		}
 	}
-	_area = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_area = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	_orientation = Orientation(_arg3)
 	if _cret != 0 {
 		_ok = true
@@ -969,7 +969,7 @@ func (statusIcon *StatusIcon) ConnectActivate(f func()) externglib.SignalHandle 
 //
 // Whether this event is emitted is platform-dependent. Use the ::activate and
 // ::popup-menu signals in preference.
-func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event gdk.EventButton) bool) externglib.SignalHandle {
+func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
 	return statusIcon.Connect("button-press-event", f)
 }
 
@@ -978,7 +978,7 @@ func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event gdk.EventButt
 //
 // Whether this event is emitted is platform-dependent. Use the ::activate and
 // ::popup-menu signals in preference.
-func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event gdk.EventButton) bool) externglib.SignalHandle {
+func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
 	return statusIcon.Connect("button-release-event", f)
 }
 
@@ -1018,7 +1018,7 @@ func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode 
 // for buttons 4 and 5 when the wheel is turned.
 //
 // Whether this event is emitted is platform-dependent.
-func (statusIcon *StatusIcon) ConnectScrollEvent(f func(event gdk.EventScroll) bool) externglib.SignalHandle {
+func (statusIcon *StatusIcon) ConnectScrollEvent(f func(event *gdk.EventScroll) bool) externglib.SignalHandle {
 	return statusIcon.Connect("scroll-event", f)
 }
 

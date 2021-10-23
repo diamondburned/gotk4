@@ -33,7 +33,7 @@ func init() {
 //
 // All predefined values are negative; GTK leaves values of 0 or greater for
 // application-defined response ids.
-type ResponseType int
+type ResponseType C.gint
 
 const (
 	// ResponseNone: returned if an action widget has no response id, or if the
@@ -96,7 +96,7 @@ func (r ResponseType) String() string {
 }
 
 // DialogFlags flags used to influence dialog construction.
-type DialogFlags int
+type DialogFlags C.guint
 
 const (
 	// DialogModal: make the constructed dialog modal.

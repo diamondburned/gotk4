@@ -37,7 +37,7 @@ const PIXDATA_HEADER_LENGTH = 24
 // can be freely added.
 //
 // Deprecated: since version 2.32.
-type PixdataDumpType int
+type PixdataDumpType C.guint
 
 const (
 	// PixdataDumpPixdataStream: generate pixbuf data stream (a single string
@@ -116,7 +116,7 @@ func (p PixdataDumpType) Has(other PixdataDumpType) bool {
 // encoding of the pixel data.
 //
 // Deprecated: since version 2.32.
-type PixdataType int
+type PixdataType C.guint
 
 const (
 	// PixdataColorTypeRGB: each pixel has red, green and blue samples.

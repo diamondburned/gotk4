@@ -46,7 +46,7 @@ func init() {
 // If the application never calls gtk_places_sidebar_set_open_flags(), then the
 // sidebar will only use K_PLACES_OPEN_NORMAL in the
 // PlacesSidebar::open-location signal. This is the default mode of operation.
-type PlacesOpenFlags int
+type PlacesOpenFlags C.guint
 
 const (
 	// PlacesOpenNormal: this is the default mode that PlacesSidebar uses if no

@@ -102,13 +102,8 @@ func (set *StateSet) AddStates(types []StateType) {
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
 	_arg2 = (C.gint)(len(types))
-	_arg1 = (*C.AtkStateType)(C.malloc(C.size_t(len(types)) * C.size_t(C.sizeof_AtkStateType)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((*C.AtkStateType)(_arg1), len(types))
-		for i := range types {
-			out[i] = C.AtkStateType(types[i])
-		}
+	if len(types) > 0 {
+		_arg1 = (*C.AtkStateType)(unsafe.Pointer(&types[0]))
 	}
 
 	C.atk_state_set_add_states(_arg0, _arg1, _arg2)
@@ -195,13 +190,8 @@ func (set *StateSet) ContainsStates(types []StateType) bool {
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
 	_arg2 = (C.gint)(len(types))
-	_arg1 = (*C.AtkStateType)(C.malloc(C.size_t(len(types)) * C.size_t(C.sizeof_AtkStateType)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((*C.AtkStateType)(_arg1), len(types))
-		for i := range types {
-			out[i] = C.AtkStateType(types[i])
-		}
+	if len(types) > 0 {
+		_arg1 = (*C.AtkStateType)(unsafe.Pointer(&types[0]))
 	}
 
 	_cret = C.atk_state_set_contains_states(_arg0, _arg1, _arg2)

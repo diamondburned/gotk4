@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-type X11DeviceType int
+type X11DeviceType C.gint
 
 const (
 	X11DeviceTypeLogical X11DeviceType = iota

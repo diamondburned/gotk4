@@ -29,7 +29,7 @@ func init() {
 // be requested.
 //
 // The elements of the enumeration correspond to the signals of GdkFrameClock.
-type FrameClockPhase int
+type FrameClockPhase C.guint
 
 const (
 	// FrameClockPhaseNone: no phase.

@@ -115,6 +115,8 @@ func (n *NamespaceGenerator) CanGenerate(r *types.Resolved) bool {
 		canResolve = generators.GenerateCallback(generators.StubFileGeneratorWriter(ngen), v)
 	case *gir.Function:
 		canResolve = generators.GenerateFunction(generators.StubFileGeneratorWriter(ngen), v)
+	case *gir.Union:
+		canResolve = generators.GenerateUnion(generators.StubFileGeneratorWriter(ngen), v)
 	}
 
 	// Actually store the correct value once we're done.
@@ -250,6 +252,13 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	for _, v := range n.current.Namespace.Records {
 		if !generators.GenerateRecord(n, &v) {
 			n.logIfSkipped(false, "record "+v.Name)
+			continue
+		}
+		generateFunctions(v.Name, v.Functions)
+	}
+	for _, v := range n.current.Namespace.Unions {
+		if !generators.GenerateUnion(n, &v) {
+			n.logIfSkipped(false, "union "+v.Name)
 			continue
 		}
 		generateFunctions(v.Name, v.Functions)

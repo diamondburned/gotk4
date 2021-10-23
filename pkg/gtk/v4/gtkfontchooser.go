@@ -34,7 +34,7 @@ func init() {
 //
 // This enumeration may be extended in the future; applications should ignore
 // unknown values.
-type FontChooserLevel int
+type FontChooserLevel C.guint
 
 const (
 	// FontChooserLevelFamily: allow selecting a font family.

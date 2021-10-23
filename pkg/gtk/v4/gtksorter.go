@@ -26,7 +26,7 @@ func init() {
 
 // SorterChange describes changes in a sorter in more detail and allows users to
 // optimize resorting.
-type SorterChange int
+type SorterChange C.gint
 
 const (
 	// SorterChangeDifferent: sorter change cannot be described by any of the
@@ -65,7 +65,7 @@ func (s SorterChange) String() string {
 }
 
 // SorterOrder describes the type of order that a GtkSorter may produce.
-type SorterOrder int
+type SorterOrder C.gint
 
 const (
 	// SorterOrderPartial: partial order. Any Ordering is possible.

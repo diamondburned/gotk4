@@ -11,7 +11,7 @@ import (
 
 var bitfieldTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 (OverrideSelfName .GoName) }}
-	type {{ .GoName }} int
+	type {{ .GoName }} C.guint
 
 	const (
 		{{ range .Members -}}
@@ -65,6 +65,7 @@ type bitfieldData struct {
 	GoName    string
 	StrLen    int // length of all enum strings concatenated
 	Marshaler bool
+	Members   []gir.Member
 
 	gen FileGenerator
 }
@@ -108,6 +109,7 @@ func GenerateBitfield(gen FileGeneratorWriter, bitfield *gir.Bitfield) bool {
 	data := bitfieldData{
 		Bitfield: bitfield,
 		GoName:   goName,
+		Members:  make([]gir.Member, 0, len(bitfield.Members)),
 		gen:      gen,
 	}
 
@@ -122,6 +124,12 @@ func GenerateBitfield(gen FileGeneratorWriter, bitfield *gir.Bitfield) bool {
 	writer.Header().Import("fmt")
 
 	for i, member := range bitfield.Members {
+		if v, _ := strconv.ParseInt(member.Value, 10, 64); v < 0 {
+			// Ignore negative values that are bodged by GIR.
+			continue
+		}
+
+		data.Members = append(data.Members, member)
 		data.StrLen += len(data.FormatMember(member))
 		if i > 0 {
 			data.StrLen++ // account for '|'

@@ -63,7 +63,7 @@ func NewVec3Alloc() *Vec3 {
 }
 
 // Add adds each component of the two given vectors.
-func (a *Vec3) Add(b *Vec3) Vec3 {
+func (a *Vec3) Add(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.graphene_vec3_t  // in
@@ -75,15 +75,15 @@ func (a *Vec3) Add(b *Vec3) Vec3 {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
 
 // Cross computes the cross product of the two given vectors.
-func (a *Vec3) Cross(b *Vec3) Vec3 {
+func (a *Vec3) Cross(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.graphene_vec3_t  // in
@@ -95,9 +95,9 @@ func (a *Vec3) Cross(b *Vec3) Vec3 {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -105,7 +105,7 @@ func (a *Vec3) Cross(b *Vec3) Vec3 {
 // Divide divides each component of the first operand a by the corresponding
 // component of the second operand b, and places the results into the vector
 // res.
-func (a *Vec3) Divide(b *Vec3) Vec3 {
+func (a *Vec3) Divide(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.graphene_vec3_t  // in
@@ -117,9 +117,9 @@ func (a *Vec3) Divide(b *Vec3) Vec3 {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -185,7 +185,7 @@ func (v *Vec3) X() float32 {
 
 // XY creates a #graphene_vec2_t that contains the first and second components
 // of the given #graphene_vec3_t.
-func (v *Vec3) XY() Vec2 {
+func (v *Vec3) XY() *Vec2 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec2_t  // in
 
@@ -194,16 +194,16 @@ func (v *Vec3) XY() Vec2 {
 	C.graphene_vec3_get_xy(_arg0, &_arg1)
 	runtime.KeepAlive(v)
 
-	var _res Vec2 // out
+	var _res *Vec2 // out
 
-	_res = *(*Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // XY0 creates a #graphene_vec3_t that contains the first two components of the
 // given #graphene_vec3_t, and the third component set to 0.
-func (v *Vec3) XY0() Vec3 {
+func (v *Vec3) XY0() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec3_t  // in
 
@@ -212,16 +212,16 @@ func (v *Vec3) XY0() Vec3 {
 	C.graphene_vec3_get_xy0(_arg0, &_arg1)
 	runtime.KeepAlive(v)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // XYZ0 converts a #graphene_vec3_t in a #graphene_vec4_t using 0.0 as the value
 // for the fourth component of the resulting vector.
-func (v *Vec3) XYZ0() Vec4 {
+func (v *Vec3) XYZ0() *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec4_t  // in
 
@@ -230,16 +230,16 @@ func (v *Vec3) XYZ0() Vec4 {
 	C.graphene_vec3_get_xyz0(_arg0, &_arg1)
 	runtime.KeepAlive(v)
 
-	var _res Vec4 // out
+	var _res *Vec4 // out
 
-	_res = *(*Vec4)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Vec4)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // XYZ1 converts a #graphene_vec3_t in a #graphene_vec4_t using 1.0 as the value
 // for the fourth component of the resulting vector.
-func (v *Vec3) XYZ1() Vec4 {
+func (v *Vec3) XYZ1() *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec4_t  // in
 
@@ -248,16 +248,16 @@ func (v *Vec3) XYZ1() Vec4 {
 	C.graphene_vec3_get_xyz1(_arg0, &_arg1)
 	runtime.KeepAlive(v)
 
-	var _res Vec4 // out
+	var _res *Vec4 // out
 
-	_res = *(*Vec4)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Vec4)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // Xyzw converts a #graphene_vec3_t in a #graphene_vec4_t using w as the value
 // of the fourth component of the resulting vector.
-func (v *Vec3) Xyzw(w float32) Vec4 {
+func (v *Vec3) Xyzw(w float32) *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.graphene_vec4_t  // in
@@ -269,9 +269,9 @@ func (v *Vec3) Xyzw(w float32) Vec4 {
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(w)
 
-	var _res Vec4 // out
+	var _res *Vec4 // out
 
-	_res = *(*Vec4)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec4)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -380,7 +380,7 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 }
 
 // Interpolate: linearly interpolates v1 and v2 using the given factor.
-func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
+func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.double           // out
@@ -395,9 +395,9 @@ func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
 	runtime.KeepAlive(v2)
 	runtime.KeepAlive(factor)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _res
 }
@@ -421,7 +421,7 @@ func (v *Vec3) Length() float32 {
 
 // Max compares each component of the two given vectors and creates a vector
 // that contains the maximum values.
-func (a *Vec3) Max(b *Vec3) Vec3 {
+func (a *Vec3) Max(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.graphene_vec3_t  // in
@@ -433,16 +433,16 @@ func (a *Vec3) Max(b *Vec3) Vec3 {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
 
 // Min compares each component of the two given vectors and creates a vector
 // that contains the minimum values.
-func (a *Vec3) Min(b *Vec3) Vec3 {
+func (a *Vec3) Min(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.graphene_vec3_t  // in
@@ -454,15 +454,15 @@ func (a *Vec3) Min(b *Vec3) Vec3 {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
 
 // Multiply multiplies each component of the two given vectors.
-func (a *Vec3) Multiply(b *Vec3) Vec3 {
+func (a *Vec3) Multiply(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.graphene_vec3_t  // in
@@ -474,9 +474,9 @@ func (a *Vec3) Multiply(b *Vec3) Vec3 {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -508,7 +508,7 @@ func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 }
 
 // Negate negates the given #graphene_vec3_t.
-func (v *Vec3) Negate() Vec3 {
+func (v *Vec3) Negate() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec3_t  // in
 
@@ -517,15 +517,15 @@ func (v *Vec3) Negate() Vec3 {
 	C.graphene_vec3_negate(_arg0, &_arg1)
 	runtime.KeepAlive(v)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // Normalize normalizes the given #graphene_vec3_t.
-func (v *Vec3) Normalize() Vec3 {
+func (v *Vec3) Normalize() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec3_t  // in
 
@@ -534,16 +534,16 @@ func (v *Vec3) Normalize() Vec3 {
 	C.graphene_vec3_normalize(_arg0, &_arg1)
 	runtime.KeepAlive(v)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // Scale multiplies all components of the given vector with the given scalar
 // factor.
-func (v *Vec3) Scale(factor float32) Vec3 {
+func (v *Vec3) Scale(factor float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.graphene_vec3_t  // in
@@ -555,9 +555,9 @@ func (v *Vec3) Scale(factor float32) Vec3 {
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(factor)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -565,7 +565,7 @@ func (v *Vec3) Scale(factor float32) Vec3 {
 // Subtract subtracts from each component of the first operand a the
 // corresponding component of the second operand b and places each result into
 // the components of res.
-func (a *Vec3) Subtract(b *Vec3) Vec3 {
+func (a *Vec3) Subtract(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.graphene_vec3_t  // in
@@ -577,9 +577,9 @@ func (a *Vec3) Subtract(b *Vec3) Vec3 {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }

@@ -31,7 +31,7 @@ const MAX_TIMECOORD_AXES = 128
 // DeviceType indicates the device type. See
 // [above][GdkDeviceManager.description] for more information about the meaning
 // of these device types.
-type DeviceType int
+type DeviceType C.gint
 
 const (
 	// DeviceTypeMaster: device is a master (or virtual) device. There will be
@@ -63,7 +63,7 @@ func (d DeviceType) String() string {
 }
 
 // InputMode: enumeration that describes the mode of an input device.
-type InputMode int
+type InputMode C.gint
 
 const (
 	// ModeDisabled: device is disabled and will not report any events.
@@ -98,7 +98,7 @@ func (i InputMode) String() string {
 
 // InputSource: enumeration describing the type of an input device in general
 // terms.
-type InputSource int
+type InputSource C.gint
 
 const (
 	// SourceMouse: device is a mouse. (This will be reported for the core

@@ -35,7 +35,7 @@ func init() {
 // ResponseType: predefined values for use as response ids in
 // gtk_dialog_add_button(). All predefined values are negative; GTK+ leaves
 // values of 0 or greater for application-defined response ids.
-type ResponseType int
+type ResponseType C.gint
 
 const (
 	// ResponseNone: returned if an action widget has no response id, or if the
@@ -98,7 +98,7 @@ func (r ResponseType) String() string {
 }
 
 // DialogFlags flags used to influence dialog construction.
-type DialogFlags int
+type DialogFlags C.guint
 
 const (
 	// DialogModal: make the constructed dialog modal, see
@@ -648,7 +648,7 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (C.gint)(len(newOrder))
-	_arg2 = (*C.gint)(C.malloc(C.size_t(len(newOrder)) * C.size_t(C.sizeof_gint)))
+	_arg2 = (*C.gint)(C.malloc(C.size_t(uint(len(newOrder)) * uint(C.sizeof_gint))))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.gint)(_arg2), len(newOrder))

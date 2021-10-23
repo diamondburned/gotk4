@@ -32,7 +32,7 @@ func init() {
 
 // PrintError: error codes that identify various errors that can occur while
 // using the GTK printing support.
-type PrintError int
+type PrintError C.gint
 
 const (
 	// PrintErrorGeneral: unspecified error occurred.
@@ -83,7 +83,7 @@ func PrintErrorQuark() glib.Quark {
 // perform.
 //
 // A parameter of this typs is passed to gtk.PrintOperation.Run().
-type PrintOperationAction int
+type PrintOperationAction C.gint
 
 const (
 	// PrintOperationActionPrintDialog: show the print dialog.
@@ -121,7 +121,7 @@ func (p PrintOperationAction) String() string {
 // PrintOperationResult: result of a print operation.
 //
 // A value of this type is returned by gtk.PrintOperation.Run().
-type PrintOperationResult int
+type PrintOperationResult C.gint
 
 const (
 	// PrintOperationResultError: error has occurred.
@@ -158,7 +158,7 @@ func (p PrintOperationResult) String() string {
 
 // PrintStatus status gives a rough indication of the completion of a running
 // print operation.
-type PrintStatus int
+type PrintStatus C.gint
 
 const (
 	// PrintStatusInitial: printing has not started yet; this status is set

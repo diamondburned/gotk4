@@ -149,7 +149,7 @@ func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, hei
 //    - width: rectangle width.
 //    - height: rectangle height.
 //
-func RenderBackgroundGetClip(context *StyleContext, x, y, width, height float64) gdk.Rectangle {
+func RenderBackgroundGetClip(context *StyleContext, x, y, width, height float64) *gdk.Rectangle {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.gdouble          // out
 	var _arg3 C.gdouble          // out
@@ -170,9 +170,9 @@ func RenderBackgroundGetClip(context *StyleContext, x, y, width, height float64)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
 
-	var _outClip gdk.Rectangle // out
+	var _outClip *gdk.Rectangle // out
 
-	_outClip = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
+	_outClip = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
 
 	return _outClip
 }

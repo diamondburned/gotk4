@@ -24,7 +24,7 @@ func init() {
 
 // IOCondition: bitwise combination representing a condition to watch for on an
 // event source.
-type IOCondition int
+type IOCondition C.guint
 
 const (
 	// IOIn: there is data to read.

@@ -633,7 +633,7 @@ func StockAdd(items []StockItem) {
 	var _arg2 C.guint
 
 	_arg2 = (C.guint)(len(items))
-	_arg1 = (*C.GtkStockItem)(C.malloc(C.size_t(len(items)) * C.size_t(C.sizeof_GtkStockItem)))
+	_arg1 = (*C.GtkStockItem)(C.malloc(C.size_t(uint(len(items)) * uint(C.sizeof_GtkStockItem))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkStockItem)(_arg1), len(items))
@@ -660,7 +660,7 @@ func StockAddStatic(items []StockItem) {
 	var _arg2 C.guint
 
 	_arg2 = (C.guint)(len(items))
-	_arg1 = (*C.GtkStockItem)(C.malloc(C.size_t(len(items)) * C.size_t(C.sizeof_GtkStockItem)))
+	_arg1 = (*C.GtkStockItem)(C.malloc(C.size_t(uint(len(items)) * uint(C.sizeof_GtkStockItem))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkStockItem)(_arg1), len(items))
@@ -706,7 +706,7 @@ func StockListIds() []string {
 //
 //    - stockId: stock item name.
 //
-func StockLookup(stockId string) (StockItem, bool) {
+func StockLookup(stockId string) (*StockItem, bool) {
 	var _arg1 *C.gchar       // out
 	var _arg2 C.GtkStockItem // in
 	var _cret C.gboolean     // in
@@ -717,10 +717,10 @@ func StockLookup(stockId string) (StockItem, bool) {
 	_cret = C.gtk_stock_lookup(_arg1, &_arg2)
 	runtime.KeepAlive(stockId)
 
-	var _item StockItem // out
-	var _ok bool        // out
+	var _item *StockItem // out
+	var _ok bool         // out
 
-	_item = *(*StockItem)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_item = (*StockItem)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

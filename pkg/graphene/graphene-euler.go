@@ -27,7 +27,7 @@ func init() {
 //
 // The GRAPHENE_EULER_ORDER_DEFAULT value is special, and is used as an alias
 // for one of the other orders.
-type EulerOrder int
+type EulerOrder C.gint
 
 const (
 	// EulerOrderDefault: rotate in the default order; the default order is one
@@ -595,7 +595,7 @@ func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder)
 // This function is equivalent to creating a #graphene_quaternion_t from the
 // given #graphene_euler_t, and then converting the quaternion into another
 // #graphene_euler_t.
-func (e *Euler) Reorder(order EulerOrder) Euler {
+func (e *Euler) Reorder(order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.graphene_euler_order_t // out
 	var _arg2 C.graphene_euler_t       // in
@@ -607,9 +607,9 @@ func (e *Euler) Reorder(order EulerOrder) Euler {
 	runtime.KeepAlive(e)
 	runtime.KeepAlive(order)
 
-	var _res Euler // out
+	var _res *Euler // out
 
-	_res = *(*Euler)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Euler)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -630,7 +630,7 @@ func (e *Euler) Reorder(order EulerOrder) Euler {
 //
 // The rotation sign convention is right-handed, to preserve compatibility
 // between Euler-based, quaternion-based, and angle-axis-based rotations.
-func (e *Euler) ToMatrix() Matrix {
+func (e *Euler) ToMatrix() *Matrix {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 C.graphene_matrix_t // in
 
@@ -639,15 +639,15 @@ func (e *Euler) ToMatrix() Matrix {
 	C.graphene_euler_to_matrix(_arg0, &_arg1)
 	runtime.KeepAlive(e)
 
-	var _res Matrix // out
+	var _res *Matrix // out
 
-	_res = *(*Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // ToQuaternion converts a #graphene_euler_t into a #graphene_quaternion_t.
-func (e *Euler) ToQuaternion() Quaternion {
+func (e *Euler) ToQuaternion() *Quaternion {
 	var _arg0 *C.graphene_euler_t     // out
 	var _arg1 C.graphene_quaternion_t // in
 
@@ -656,16 +656,16 @@ func (e *Euler) ToQuaternion() Quaternion {
 	C.graphene_euler_to_quaternion(_arg0, &_arg1)
 	runtime.KeepAlive(e)
 
-	var _res Quaternion // out
+	var _res *Quaternion // out
 
-	_res = *(*Quaternion)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Quaternion)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // ToVec3 retrieves the angles of a #graphene_euler_t and initializes a
 // #graphene_vec3_t with them.
-func (e *Euler) ToVec3() Vec3 {
+func (e *Euler) ToVec3() *Vec3 {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 C.graphene_vec3_t   // in
 
@@ -674,9 +674,9 @@ func (e *Euler) ToVec3() Vec3 {
 	C.graphene_euler_to_vec3(_arg0, &_arg1)
 	runtime.KeepAlive(e)
 
-	var _res Vec3 // out
+	var _res *Vec3 // out
 
-	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }

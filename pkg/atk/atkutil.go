@@ -29,7 +29,7 @@ func init() {
 // CoordType specifies how xy coordinates are to be interpreted. Used by
 // functions such as atk_component_get_position() and
 // atk_text_get_character_extents().
-type CoordType int
+type CoordType C.gint
 
 const (
 	// XYScreen specifies xy coordinates relative to the screen.
@@ -61,7 +61,7 @@ func (c CoordType) String() string {
 }
 
 // KeyEventType specifies the type of a keyboard evemt.
-type KeyEventType int
+type KeyEventType C.gint
 
 const (
 	// KeyEventPress specifies a key press event.

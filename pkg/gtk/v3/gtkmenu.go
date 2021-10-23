@@ -32,7 +32,7 @@ func init() {
 
 // ArrowPlacement: used to specify the placement of scroll arrows in scrolling
 // menus.
-type ArrowPlacement int
+type ArrowPlacement C.gint
 
 const (
 	// ArrowsBoth: place one arrow on each end of the menu.

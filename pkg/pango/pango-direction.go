@@ -39,7 +39,7 @@ func init() {
 // If you are interested in text direction, you should really use fribidi
 // directly. PangoDirection is only retained because it is used in some public
 // apis.
-type Direction int
+type Direction C.gint
 
 const (
 	// DirectionLTR: strong left-to-right direction.

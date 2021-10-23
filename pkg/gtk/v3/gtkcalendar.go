@@ -32,7 +32,7 @@ func init() {
 
 // CalendarDisplayOptions: these options can be used to influence the display
 // and behaviour of a Calendar.
-type CalendarDisplayOptions int
+type CalendarDisplayOptions C.guint
 
 const (
 	// CalendarShowHeading specifies that the month and year should be

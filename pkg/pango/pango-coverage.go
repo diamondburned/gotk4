@@ -28,7 +28,7 @@ func init() {
 //
 // Since 1.44, only PANGO_COVERAGE_NONE and PANGO_COVERAGE_EXACT will be
 // returned.
-type CoverageLevel int
+type CoverageLevel C.gint
 
 const (
 	// CoverageNone: character is not representable with the font.

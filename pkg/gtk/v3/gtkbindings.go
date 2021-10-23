@@ -210,7 +210,7 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 //    - signalName: signal name to be bound.
 //    - bindingArgs: list of BindingArg signal arguments.
 //
-func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType, signalName string, bindingArgs []BindingArg) {
+func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType, signalName string, bindingArgs []*BindingArg) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -225,7 +225,7 @@ func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.M
 	for i := len(bindingArgs) - 1; i >= 0; i-- {
 		src := bindingArgs[i]
 		var dst *C.GtkBindingArg // out
-		dst = (*C.GtkBindingArg)(gextras.StructNative(unsafe.Pointer((&src))))
+		dst = (*C.GtkBindingArg)(gextras.StructNative(unsafe.Pointer(src)))
 		_arg5 = C.g_slist_prepend(_arg5, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_slist_free(_arg5)

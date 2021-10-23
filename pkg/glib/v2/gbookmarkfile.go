@@ -12,7 +12,7 @@ import (
 import "C"
 
 // BookmarkFileError: error codes returned by bookmark file parsing.
-type BookmarkFileError int
+type BookmarkFileError C.gint
 
 const (
 	// BookmarkFileErrorInvalidURI: URI was ill-formed.

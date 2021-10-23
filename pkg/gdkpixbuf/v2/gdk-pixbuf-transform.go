@@ -30,7 +30,7 @@ func init() {
 //
 // **Note**: Cubic filtering is missing from the list; hyperbolic interpolation
 // is just as fast and results in higher quality.
-type InterpType int
+type InterpType C.gint
 
 const (
 	// InterpNearest: nearest neighbor sampling; this is the fastest and lowest
@@ -83,7 +83,7 @@ func (i InterpType) String() string {
 // gdk_pixbuf_rotate_simple().
 //
 // To make them easier to use, their numerical values are the actual degrees.
-type PixbufRotation int
+type PixbufRotation C.gint
 
 const (
 	// PixbufRotateNone: no rotation.

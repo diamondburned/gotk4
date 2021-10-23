@@ -909,7 +909,7 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 	var _cret *C.GskRenderNode // in
 
 	_arg2 = (C.guint)(len(children))
-	_arg1 = (**C.GskRenderNode)(C.malloc(C.size_t(len(children)) * C.size_t(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.GskRenderNode)(C.malloc(C.size_t(uint(len(children)) * uint(unsafe.Sizeof(uint(0))))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.GskRenderNode)(_arg1), len(children))
@@ -1255,7 +1255,7 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 	_arg3 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg5 = (C.guint)(len(children))
-	_arg4 = (**C.GskRenderNode)(C.malloc(C.size_t(len(children)) * C.size_t(unsafe.Sizeof(uint(0)))))
+	_arg4 = (**C.GskRenderNode)(C.malloc(C.size_t(uint(len(children)) * uint(unsafe.Sizeof(uint(0))))))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((**C.GskRenderNode)(_arg4), len(children))

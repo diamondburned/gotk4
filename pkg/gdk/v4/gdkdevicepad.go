@@ -24,7 +24,7 @@ func init() {
 }
 
 // DevicePadFeature: pad feature.
-type DevicePadFeature int
+type DevicePadFeature C.gint
 
 const (
 	// DevicePadFeatureButton: button.

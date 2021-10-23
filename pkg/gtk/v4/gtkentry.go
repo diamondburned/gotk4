@@ -28,7 +28,7 @@ func init() {
 }
 
 // EntryIconPosition specifies the side of the entry at which an icon is placed.
-type EntryIconPosition int
+type EntryIconPosition C.gint
 
 const (
 	// EntryIconPrimary: at the beginning of the entry (depending on the text
@@ -456,7 +456,7 @@ func (entry *Entry) IconActivatable(iconPos EntryIconPosition) bool {
 //
 //    - iconPos: icon position.
 //
-func (entry *Entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
+func (entry *Entry) IconArea(iconPos EntryIconPosition) *gdk.Rectangle {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 C.GdkRectangle         // in
@@ -468,9 +468,9 @@ func (entry *Entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(iconPos)
 
-	var _iconArea gdk.Rectangle // out
+	var _iconArea *gdk.Rectangle // out
 
-	_iconArea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_iconArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _iconArea
 }

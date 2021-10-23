@@ -76,7 +76,7 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 //
 // This function takes ownership of glyph_item; it will be reused as one of the
 // elements in the list.
-func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []GlyphItem {
+func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.PangoAttrList  // out
@@ -92,15 +92,15 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []GlyphItem 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(list)
 
-	var _sList []GlyphItem // out
+	var _sList []*GlyphItem // out
 
-	_sList = make([]GlyphItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*GlyphItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.PangoGlyphItem)(v)
-		var dst GlyphItem // out
-		dst = *(*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(src)))
+		var dst *GlyphItem // out
+		dst = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(&dst)),
+			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
 			},

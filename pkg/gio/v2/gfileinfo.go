@@ -1258,7 +1258,7 @@ func (info *FileInfo) ModificationDateTime() *glib.DateTime {
 //
 // Deprecated: Use g_file_info_get_modification_date_time() instead, as Val is
 // deprecated due to the year 2038 problem.
-func (info *FileInfo) ModificationTime() glib.TimeVal {
+func (info *FileInfo) ModificationTime() *glib.TimeVal {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.GTimeVal   // in
 
@@ -1267,9 +1267,9 @@ func (info *FileInfo) ModificationTime() glib.TimeVal {
 	C.g_file_info_get_modification_time(_arg0, &_arg1)
 	runtime.KeepAlive(info)
 
-	var _result glib.TimeVal // out
+	var _result *glib.TimeVal // out
 
-	_result = *(*glib.TimeVal)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_result = (*glib.TimeVal)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _result
 }
@@ -1747,7 +1747,7 @@ func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.char)(C.malloc(C.size_t(len(attrValue)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.char)(C.malloc(C.size_t(uint((len(attrValue) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(attrValue)+1)

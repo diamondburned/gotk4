@@ -38,7 +38,7 @@ const PATH_PRIO_MASK = 15
 // gtk_binding_set_add_path().
 //
 // Deprecated: since version 3.0.
-type PathPriorityType int
+type PathPriorityType C.gint
 
 const (
 	// PathPrioLowest: deprecated.
@@ -82,7 +82,7 @@ func (p PathPriorityType) String() string {
 // PathType: widget path types. See also gtk_binding_set_add_path().
 //
 // Deprecated: since version 3.0.
-type PathType int
+type PathType C.gint
 
 const (
 	// PathWidget: deprecated.
@@ -116,7 +116,7 @@ func (p PathType) String() string {
 // specific portions of a RC file.
 //
 // Deprecated: Use CssProvider instead.
-type RCTokenType int
+type RCTokenType C.gint
 
 const (
 	// RCTokenInvalid: deprecated.
@@ -294,7 +294,7 @@ func (r RCTokenType) String() string {
 }
 
 // RCFlags: deprecated.
-type RCFlags int
+type RCFlags C.guint
 
 const (
 	// RCFg: deprecated.
@@ -648,7 +648,7 @@ func RCParse(filename string) {
 //
 //    - scanner: #GScanner.
 //
-func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
+func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
 	var _arg2 C.GdkColor  // in
 	var _cret C.guint     // in
@@ -658,10 +658,10 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	_cret = C.gtk_rc_parse_color(_arg1, &_arg2)
 	runtime.KeepAlive(scanner)
 
-	var _color gdk.Color // out
-	var _guint uint      // out
+	var _color *gdk.Color // out
+	var _guint uint       // out
 
-	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	_guint = uint(_cret)
 
 	return _color, _guint
@@ -677,7 +677,7 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 //    - scanner: #GScanner.
 //    - style or NULL.
 //
-func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
+func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
 	var _arg3 C.GdkColor    // in
@@ -692,13 +692,43 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(style)
 
-	var _color gdk.Color // out
-	var _guint uint      // out
+	var _color *gdk.Color // out
+	var _guint uint       // out
 
-	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 	_guint = uint(_cret)
 
 	return _color, _guint
+}
+
+// RCParsePriority parses a PathPriorityType variable from the format expected
+// in a RC file.
+//
+// Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - scanner (must be initialized for parsing an RC file).
+//    - priority: pointer to PathPriorityType variable in which to store the
+//    result.
+//
+func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
+	var _arg1 *C.GScanner            // out
+	var _arg2 *C.GtkPathPriorityType // out
+	var _cret C.guint                // in
+
+	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
+	_arg2 = (*C.GtkPathPriorityType)(unsafe.Pointer(priority))
+
+	_cret = C.gtk_rc_parse_priority(_arg1, _arg2)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(priority)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }
 
 // RCParseState parses a StateType variable from the format expected in a RC
@@ -837,7 +867,7 @@ func RCSetDefaultFiles(filenames []string) {
 	var _arg1 **C.gchar // out
 
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(len(filenames)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(filenames) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(filenames)+1)

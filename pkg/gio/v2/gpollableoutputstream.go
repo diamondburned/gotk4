@@ -323,7 +323,7 @@ func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vecto
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(vectors))
-	_arg1 = (*C.GOutputVector)(C.malloc(C.size_t(len(vectors)) * C.size_t(C.sizeof_GOutputVector)))
+	_arg1 = (*C.GOutputVector)(C.malloc(C.size_t(uint(len(vectors)) * uint(C.sizeof_GOutputVector))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GOutputVector)(_arg1), len(vectors))

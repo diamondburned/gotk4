@@ -35,7 +35,7 @@ const TEXT_VIEW_PRIORITY_VALIDATE = 125
 
 // TextExtendSelection: granularity types that extend the text selection. Use
 // the TextView::extend-selection signal to customize the selection.
-type TextExtendSelection int
+type TextExtendSelection C.gint
 
 const (
 	// TextExtendSelectionWord selects the current word. It is triggered by a
@@ -64,7 +64,7 @@ func (t TextExtendSelection) String() string {
 
 // TextViewLayer: used to reference the layers of TextView for the purpose of
 // customized drawing with the ::snapshot_layer vfunc.
-type TextViewLayer int
+type TextViewLayer C.gint
 
 const (
 	// TextViewLayerBelowText: layer rendered below the text (but above the
@@ -91,7 +91,7 @@ func (t TextViewLayer) String() string {
 }
 
 // TextWindowType: used to reference the parts of TextView.
-type TextWindowType int
+type TextWindowType C.gint
 
 const (
 	// TextWindowWidget: window that floats over scrolling areas.
@@ -580,7 +580,7 @@ func (textView *TextView) Buffer() *TextBuffer {
 //
 //    - iter: GtkTextIter.
 //
-func (textView *TextView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle) {
+func (textView *TextView) CursorLocations(iter *TextIter) (strong *gdk.Rectangle, weak *gdk.Rectangle) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 C.GdkRectangle // in
@@ -595,11 +595,11 @@ func (textView *TextView) CursorLocations(iter *TextIter) (strong gdk.Rectangle,
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
 
-	var _strong gdk.Rectangle // out
-	var _weak gdk.Rectangle   // out
+	var _strong *gdk.Rectangle // out
+	var _weak *gdk.Rectangle   // out
 
-	_strong = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	_weak = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_strong = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_weak = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _strong, _weak
 }
@@ -781,7 +781,7 @@ func (textView *TextView) InputPurpose() InputPurpose {
 //    - x position, in buffer coordinates.
 //    - y position, in buffer coordinates.
 //
-func (textView *TextView) IterAtLocation(x, y int) (TextIter, bool) {
+func (textView *TextView) IterAtLocation(x, y int) (*TextIter, bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkTextIter  // in
 	var _arg2 C.int          // out
@@ -797,10 +797,10 @@ func (textView *TextView) IterAtLocation(x, y int) (TextIter, bool) {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _iter TextIter // out
-	var _ok bool       // out
+	var _iter *TextIter // out
+	var _ok bool        // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -824,7 +824,7 @@ func (textView *TextView) IterAtLocation(x, y int) (TextIter, bool) {
 //    - x position, in buffer coordinates.
 //    - y position, in buffer coordinates.
 //
-func (textView *TextView) IterAtPosition(x, y int) (TextIter, int, bool) {
+func (textView *TextView) IterAtPosition(x, y int) (*TextIter, int, bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkTextIter  // in
 	var _arg2 C.int          // in
@@ -841,11 +841,11 @@ func (textView *TextView) IterAtPosition(x, y int) (TextIter, int, bool) {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _iter TextIter // out
-	var _trailing int  // out
-	var _ok bool       // out
+	var _iter *TextIter // out
+	var _trailing int   // out
+	var _ok bool        // out
 
-	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_trailing = int(_arg2)
 	if _cret != 0 {
 		_ok = true
@@ -864,7 +864,7 @@ func (textView *TextView) IterAtPosition(x, y int) (TextIter, int, bool) {
 //
 //    - iter: GtkTextIter.
 //
-func (textView *TextView) IterLocation(iter *TextIter) gdk.Rectangle {
+func (textView *TextView) IterLocation(iter *TextIter) *gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 C.GdkRectangle // in
@@ -876,9 +876,9 @@ func (textView *TextView) IterLocation(iter *TextIter) gdk.Rectangle {
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
 
-	var _location gdk.Rectangle // out
+	var _location *gdk.Rectangle // out
 
-	_location = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_location = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _location
 }
@@ -932,7 +932,7 @@ func (textView *TextView) LeftMargin() int {
 //
 //    - y coordinate.
 //
-func (textView *TextView) LineAtY(y int) (TextIter, int) {
+func (textView *TextView) LineAtY(y int) (*TextIter, int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkTextIter  // in
 	var _arg2 C.int          // out
@@ -945,10 +945,10 @@ func (textView *TextView) LineAtY(y int) (TextIter, int) {
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(y)
 
-	var _targetIter TextIter // out
-	var _lineTop int         // out
+	var _targetIter *TextIter // out
+	var _lineTop int          // out
 
-	_targetIter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_targetIter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_lineTop = int(_arg3)
 
 	return _targetIter, _lineTop
@@ -1151,7 +1151,7 @@ func (textView *TextView) TopMargin() int {
 // buffer, in buffer coordinates.
 //
 // Convert to window coordinates with gtk.TextView.BufferToWindowCoords().
-func (textView *TextView) VisibleRect() gdk.Rectangle {
+func (textView *TextView) VisibleRect() *gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GdkRectangle // in
 
@@ -1160,9 +1160,9 @@ func (textView *TextView) VisibleRect() gdk.Rectangle {
 	C.gtk_text_view_get_visible_rect(_arg0, &_arg1)
 	runtime.KeepAlive(textView)
 
-	var _visibleRect gdk.Rectangle // out
+	var _visibleRect *gdk.Rectangle // out
 
-	_visibleRect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_visibleRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _visibleRect
 }
@@ -2098,7 +2098,7 @@ func (textView *TextView) ConnectDeleteFromCursor(f func(typ DeleteType, count i
 
 // ConnectExtendSelection: emitted when the selection needs to be extended at
 // location.
-func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end TextIter) bool) externglib.SignalHandle {
+func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end *TextIter) bool) externglib.SignalHandle {
 	return textView.Connect("extend-selection", f)
 }
 

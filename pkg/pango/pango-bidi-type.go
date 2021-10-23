@@ -28,7 +28,7 @@ func init() {
 // algorithm</ulink>.
 //
 // Deprecated: Use fribidi for this information.
-type BidiType int
+type BidiType C.gint
 
 const (
 	// BidiTypeL: left-to-Right.

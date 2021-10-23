@@ -26,7 +26,7 @@ func init() {
 }
 
 // NotebookTab: parameter used in the action signals of GtkNotebook.
-type NotebookTab int
+type NotebookTab C.gint
 
 const (
 	// NotebookTabFirst: first tab in the notebook.

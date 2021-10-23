@@ -37,7 +37,7 @@ func init() {
 // pango.Context.GetBaseGravity().
 //
 // See also: pango.GravityHint.
-type Gravity int
+type Gravity C.gint
 
 const (
 	// GravitySouth glyphs stand upright (default).
@@ -217,7 +217,7 @@ func GravityToRotation(gravity Gravity) float64 {
 // That is, English excerpts in a vertical paragraph for example.
 //
 // See also pango.Gravity.
-type GravityHint int
+type GravityHint C.gint
 
 const (
 	// GravityHintNatural scripts will take their natural gravity based on the

@@ -30,7 +30,7 @@ func init() {
 // CornerType specifies which corner a child widget should be placed in when
 // packed into a ScrolledWindow. This is effectively the opposite of where the
 // scroll bars are placed.
-type CornerType int
+type CornerType C.gint
 
 const (
 	// CornerTopLeft: place the scrollbars on the right and bottom of the widget
@@ -69,7 +69,7 @@ func (c CornerType) String() string {
 
 // PolicyType determines how the size should be computed to achieve the one of
 // the visibility mode for the scrollbars.
-type PolicyType int
+type PolicyType C.gint
 
 const (
 	// PolicyAlways: scrollbar is always visible. The view size is independent

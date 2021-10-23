@@ -31,7 +31,7 @@ func init() {
 // implementations of gtk.BuilderScope should test the flags for unknown values
 // and raise a GTK_BUILDER_ERROR_INVALID_ATTRIBUTE error when they encounter
 // one.
-type BuilderClosureFlags int
+type BuilderClosureFlags C.guint
 
 const (
 	// BuilderClosureSwapped: closure should be created swapped. See

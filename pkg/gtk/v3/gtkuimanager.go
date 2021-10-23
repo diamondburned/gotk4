@@ -32,7 +32,7 @@ func init() {
 // gtk_ui_manager_add_ui() to determine what UI element to create.
 //
 // Deprecated: since version 3.10.
-type UIManagerItemType int
+type UIManagerItemType C.guint
 
 const (
 	// UiManagerAuto: pick the type of the UI element according to context.

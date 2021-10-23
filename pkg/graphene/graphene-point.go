@@ -192,7 +192,7 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 
 // Interpolate: linearly interpolates the coordinates of a and b using the given
 // factor.
-func (a *Point) Interpolate(b *Point, factor float64) Point {
+func (a *Point) Interpolate(b *Point, factor float64) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
 	var _arg2 C.double            // out
@@ -207,9 +207,9 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 	runtime.KeepAlive(b)
 	runtime.KeepAlive(factor)
 
-	var _res Point // out
+	var _res *Point // out
 
-	_res = *(*Point)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_res = (*Point)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _res
 }
@@ -242,7 +242,7 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 
 // ToVec2 stores the coordinates of the given #graphene_point_t into a
 // #graphene_vec2_t.
-func (p *Point) ToVec2() Vec2 {
+func (p *Point) ToVec2() *Vec2 {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 C.graphene_vec2_t   // in
 
@@ -251,9 +251,9 @@ func (p *Point) ToVec2() Vec2 {
 	C.graphene_point_to_vec2(_arg0, &_arg1)
 	runtime.KeepAlive(p)
 
-	var _v Vec2 // out
+	var _v *Vec2 // out
 
-	_v = *(*Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_v = (*Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _v
 }

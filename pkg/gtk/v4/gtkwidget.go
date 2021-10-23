@@ -936,7 +936,7 @@ func (widget *Widget) ChildFocus(direction DirectionType) bool {
 //
 //    - target: GtkWidget.
 //
-func (widget *Widget) ComputeBounds(target Widgetter) (graphene.Rect, bool) {
+func (widget *Widget) ComputeBounds(target Widgetter) (*graphene.Rect, bool) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.graphene_rect_t // in
@@ -949,10 +949,10 @@ func (widget *Widget) ComputeBounds(target Widgetter) (graphene.Rect, bool) {
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(target)
 
-	var _outBounds graphene.Rect // out
-	var _ok bool                 // out
+	var _outBounds *graphene.Rect // out
+	var _ok bool                  // out
 
-	_outBounds = *(*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_outBounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1009,7 +1009,7 @@ func (widget *Widget) ComputeExpand(orientation Orientation) bool {
 //    - target: GtkWidget to transform into.
 //    - point in widget's coordinate system.
 //
-func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (graphene.Point, bool) {
+func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (*graphene.Point, bool) {
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 *C.graphene_point_t // out
@@ -1025,10 +1025,10 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (gra
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(point)
 
-	var _outPoint graphene.Point // out
-	var _ok bool                 // out
+	var _outPoint *graphene.Point // out
+	var _ok bool                  // out
 
-	_outPoint = *(*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1043,7 +1043,7 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (gra
 //
 //    - target widget that the matrix will transform to.
 //
-func (widget *Widget) ComputeTransform(target Widgetter) (graphene.Matrix, bool) {
+func (widget *Widget) ComputeTransform(target Widgetter) (*graphene.Matrix, bool) {
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.graphene_matrix_t // in
@@ -1056,10 +1056,10 @@ func (widget *Widget) ComputeTransform(target Widgetter) (graphene.Matrix, bool)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(target)
 
-	var _outTransform graphene.Matrix // out
-	var _ok bool                      // out
+	var _outTransform *graphene.Matrix // out
+	var _ok bool                       // out
 
-	_outTransform = *(*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_outTransform = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1293,7 +1293,7 @@ func (widget *Widget) AllocatedWidth() int {
 // So a layout container is guaranteed that its children stay inside the
 // assigned bounds, but not that they have exactly the bounds the container
 // assigned.
-func (widget *Widget) Allocation() Allocation {
+func (widget *Widget) Allocation() *Allocation {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkAllocation // in
 
@@ -1302,9 +1302,9 @@ func (widget *Widget) Allocation() Allocation {
 	C.gtk_widget_get_allocation(_arg0, &_arg1)
 	runtime.KeepAlive(widget)
 
-	var _allocation Allocation // out
+	var _allocation *Allocation // out
 
-	_allocation = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _allocation
 }
@@ -2224,7 +2224,7 @@ func (widget *Widget) Parent() Widgetter {
 // for the minimum width.
 //
 // Use gtk_widget_measure if you want to support baseline alignment.
-func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition) {
+func (widget *Widget) PreferredSize() (minimumSize *Requisition, naturalSize *Requisition) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkRequisition // in
 	var _arg2 C.GtkRequisition // in
@@ -2234,11 +2234,11 @@ func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requ
 	C.gtk_widget_get_preferred_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _minimumSize Requisition // out
-	var _naturalSize Requisition // out
+	var _minimumSize *Requisition // out
+	var _naturalSize *Requisition // out
 
-	_minimumSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_naturalSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _minimumSize, _naturalSize
 }
@@ -3747,7 +3747,7 @@ func (widget *Widget) SetCSSClasses(classes []string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	{
-		_arg1 = (**C.char)(C.malloc(C.size_t(len(classes)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.char)(C.malloc(C.size_t(uint((len(classes) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(classes)+1)

@@ -26,7 +26,7 @@ func init() {
 
 // VisualType: set of values that describe the manner in which the pixel values
 // for a visual are converted into RGB values for display.
-type VisualType int
+type VisualType C.gint
 
 const (
 	// VisualStaticGray: each pixel value indexes a grayscale value directly.
@@ -146,13 +146,8 @@ func QueryVisualTypes() []VisualType {
 
 	var _visualTypes []VisualType // out
 
-	{
-		src := unsafe.Slice(_arg1, _arg2)
-		_visualTypes = make([]VisualType, _arg2)
-		for i := 0; i < int(_arg2); i++ {
-			_visualTypes[i] = VisualType(src[i])
-		}
-	}
+	_visualTypes = make([]VisualType, _arg2)
+	copy(_visualTypes, unsafe.Slice((*VisualType)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _visualTypes
 }

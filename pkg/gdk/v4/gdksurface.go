@@ -733,6 +733,6 @@ func (surface *Surface) ConnectLeaveMonitor(f func(monitor Monitor)) externglib.
 }
 
 // ConnectRender: emitted when part of the surface needs to be redrawn.
-func (surface *Surface) ConnectRender(f func(region cairo.Region) bool) externglib.SignalHandle {
+func (surface *Surface) ConnectRender(f func(region *cairo.Region) bool) externglib.SignalHandle {
 	return surface.Connect("render", f)
 }

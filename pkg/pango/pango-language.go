@@ -112,13 +112,8 @@ func (language *Language) Scripts() []Script {
 	var _scripts []Script // out
 
 	if _cret != nil {
-		{
-			src := unsafe.Slice(_cret, _arg1)
-			_scripts = make([]Script, _arg1)
-			for i := 0; i < int(_arg1); i++ {
-				_scripts[i] = Script(src[i])
-			}
-		}
+		_scripts = make([]Script, _arg1)
+		copy(_scripts, unsafe.Slice((*Script)(unsafe.Pointer(_cret)), _arg1))
 	}
 
 	return _scripts

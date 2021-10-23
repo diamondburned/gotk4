@@ -27,7 +27,7 @@ func init() {
 
 // DragCancelReason: used in DragContext to the reason of a cancelled DND
 // operation.
-type DragCancelReason int
+type DragCancelReason C.gint
 
 const (
 	// DragCancelNoTarget: there is no suitable drop target.
@@ -58,7 +58,7 @@ func (d DragCancelReason) String() string {
 
 // DragProtocol: used in DragContext to indicate the protocol according to which
 // DND is done.
-type DragProtocol int
+type DragProtocol C.gint
 
 const (
 	// DragProtoNone: no protocol.
@@ -110,7 +110,7 @@ func (d DragProtocol) String() string {
 
 // DragAction: used in DragContext to indicate what the destination should do
 // with the dropped data.
-type DragAction int
+type DragAction C.guint
 
 const (
 	// ActionDefault means nothing, and should not be used.

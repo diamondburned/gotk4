@@ -28,7 +28,7 @@ func init() {
 
 // ButtonBoxStyle: used to dictate the style that a ButtonBox uses to layout the
 // buttons it contains.
-type ButtonBoxStyle int
+type ButtonBoxStyle C.gint
 
 const (
 	// ButtonboxSpread buttons are evenly spread across the box.

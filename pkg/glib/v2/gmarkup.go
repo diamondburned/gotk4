@@ -27,7 +27,7 @@ func init() {
 }
 
 // MarkupError: error codes returned by markup parsing.
-type MarkupError int
+type MarkupError C.gint
 
 const (
 	// MarkupErrorBadUTF8: text being parsed was not valid UTF-8.
@@ -78,7 +78,7 @@ func (m MarkupError) String() string {
 //
 // It is likely that this enum will be extended in the future to support other
 // types.
-type MarkupCollectType int
+type MarkupCollectType C.guint
 
 const (
 	// MarkupCollectInvalid: used to terminate the list of attributes to
@@ -150,7 +150,7 @@ func (m MarkupCollectType) Has(other MarkupCollectType) bool {
 }
 
 // MarkupParseFlags flags that affect the behaviour of the parser.
-type MarkupParseFlags int
+type MarkupParseFlags C.guint
 
 const (
 	// MarkupDoNotUseThisUnsupportedFlag: flag you should not use.

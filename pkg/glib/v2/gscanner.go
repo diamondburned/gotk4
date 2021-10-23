@@ -30,7 +30,7 @@ const CSET_a_2_z = "abcdefghijklmnopqrstuvwxyz"
 
 // ErrorType: possible errors, used in the v_error field of Value, when the
 // token is a G_TOKEN_ERROR.
-type ErrorType int
+type ErrorType C.gint
 
 const (
 	// ErrUnknown: unknown error.
@@ -77,7 +77,7 @@ func (e ErrorType) String() string {
 
 // TokenType: possible types of token returned from each
 // g_scanner_get_next_token() call.
-type TokenType int
+type TokenType C.gint
 
 const (
 	// TokenEOF: end of the file.

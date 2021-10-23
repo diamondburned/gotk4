@@ -306,7 +306,7 @@ func AccelMapLockPath(accelPath string) {
 //
 //    - accelPath: valid accelerator path.
 //
-func AccelMapLookupEntry(accelPath string) (AccelKey, bool) {
+func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkAccelKey // in
 	var _cret C.gboolean    // in
@@ -317,10 +317,10 @@ func AccelMapLookupEntry(accelPath string) (AccelKey, bool) {
 	_cret = C.gtk_accel_map_lookup_entry(_arg1, &_arg2)
 	runtime.KeepAlive(accelPath)
 
-	var _key AccelKey // out
-	var _ok bool      // out
+	var _key *AccelKey // out
+	var _ok bool       // out
 
-	_key = *(*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_key = (*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

@@ -428,19 +428,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		return true
 
 	case value.Resolved.IsPrimitive():
-		// Don't use the convertRef routine, because we might want to preserve
-		// the pointer in case the API is weird.
-		if value.Resolved.Ptr > 0 {
-			value.header.Import("unsafe")
-			value.p.Linef(
-				"%s = (%s)(unsafe.Pointer(%s))",
-				value.Out.Set, value.Out.Type, value.InName,
-			)
-		} else {
-			value.p.Linef("%s = %s(%s)", value.Out.Set, value.Out.Type, value.InName)
-		}
-
-		return true
+		return value.castPrimitive()
 	}
 
 	// Resolve special-case GLib types.
@@ -547,8 +535,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
-		value.vtmpl("<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
-		return true
+		return value.castPrimitive()
 
 	case *gir.Class, *gir.Interface:
 		return value.cgoSetObject(conv)
@@ -593,15 +580,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 				value.Logln(logger.Debug, "SetFinalizer set fail")
 			}
 
-			if free != nil {
-				value.p.Linef(
-					"C.%s((%s)(intern.C))",
-					free.CIdentifier, types.AnyTypeCGo(free.Parameters.InstanceParameter.AnyType),
-				)
-			} else {
-				value.p.Linef("C.free(intern.C)")
-			}
-
+			value.p.Linef(types.RecordPrintFreeMethod(free, "intern.C"))
 			value.p.Linef("},")
 			value.p.Linef(")")
 		}

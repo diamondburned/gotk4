@@ -37,16 +37,16 @@ type textAppearance struct {
 }
 
 // BgColor: background Color.
-func (t *TextAppearance) BgColor() gdk.Color {
-	var v gdk.Color // out
-	v = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&t.native.bg_color))))
+func (t *TextAppearance) BgColor() *gdk.Color {
+	var v *gdk.Color // out
+	v = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&t.native.bg_color))))
 	return v
 }
 
 // FgColor: foreground Color.
-func (t *TextAppearance) FgColor() gdk.Color {
-	var v gdk.Color // out
-	v = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&t.native.fg_color))))
+func (t *TextAppearance) FgColor() *gdk.Color {
+	var v *gdk.Color // out
+	v = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&t.native.fg_color))))
 	return v
 }
 
@@ -97,9 +97,9 @@ func NewTextAttributes() *TextAttributes {
 }
 
 // Appearance for text.
-func (t *TextAttributes) Appearance() TextAppearance {
-	var v TextAppearance // out
-	v = *(*TextAppearance)(gextras.NewStructNative(unsafe.Pointer((&t.native.appearance))))
+func (t *TextAttributes) Appearance() *TextAppearance {
+	var v *TextAppearance // out
+	v = (*TextAppearance)(gextras.NewStructNative(unsafe.Pointer((&t.native.appearance))))
 	return v
 }
 

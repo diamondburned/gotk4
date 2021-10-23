@@ -37,7 +37,7 @@ type BuildableOverrider interface {
 	// buildable.
 	CustomTagEnd(builder *Builder, child *externglib.Object, tagname string, data cgo.Handle)
 	// CustomTagStart: called for each unknown element under <child>.
-	CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (BuildableParser, cgo.Handle, bool)
+	CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (*BuildableParser, cgo.Handle, bool)
 	ID() string
 	// InternalChild retrieves the internal child called childname of the
 	// buildable object.

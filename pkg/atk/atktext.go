@@ -29,7 +29,7 @@ func init() {
 }
 
 // TextAttribute describes the text attributes supported.
-type TextAttribute int
+type TextAttribute C.gint
 
 const (
 	// TextAttrInvalid: invalid attribute, like bad spelling or grammar.
@@ -293,7 +293,7 @@ func TextAttributeRegister(name string) TextAttribute {
 // TextBoundary: text boundary types used for specifying boundaries for regions
 // of text. This enumeration is deprecated since 2.9.4 and should not be used.
 // Use AtkTextGranularity with #atk_text_get_string_at_offset instead.
-type TextBoundary int
+type TextBoundary C.gint
 
 const (
 	// TextBoundaryChar: boundary is the boundary between characters (including
@@ -346,7 +346,7 @@ func (t TextBoundary) String() string {
 }
 
 // TextClipType describes the type of clipping required.
-type TextClipType int
+type TextClipType C.gint
 
 const (
 	// TextClipNone: no clipping to be done.
@@ -381,7 +381,7 @@ func (t TextClipType) String() string {
 
 // TextGranularity: text granularity types used for specifying the granularity
 // of the region of text we are interested in.
-type TextGranularity int
+type TextGranularity C.gint
 
 const (
 	// TextGranularityChar: granularity is defined by the boundaries between
@@ -458,7 +458,7 @@ type TextOverrider interface {
 	//
 	// If the extents can not be obtained (e.g. or missing support), the
 	// rectangle fields are set to -1.
-	RangeExtents(startOffset, endOffset int, coordType CoordType) TextRectangle
+	RangeExtents(startOffset, endOffset int, coordType CoordType) *TextRectangle
 	// Selection gets the text from the specified selection.
 	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
 	// StringAtOffset gets a portion of the text exposed through an Text
@@ -608,7 +608,7 @@ type Texter interface {
 	// and y.
 	OffsetAtPoint(x, y int, coords CoordType) int
 	// RangeExtents: get the bounding box for text within the specified range.
-	RangeExtents(startOffset, endOffset int, coordType CoordType) TextRectangle
+	RangeExtents(startOffset, endOffset int, coordType CoordType) *TextRectangle
 	// Selection gets the text from the specified selection.
 	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
 	// StringAtOffset gets a portion of the text exposed through an Text
@@ -907,7 +907,7 @@ func (text *Text) OffsetAtPoint(x, y int, coords CoordType) int {
 //    - coordType: specify whether coordinates are relative to the screen or
 //    widget window.
 //
-func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) TextRectangle {
+func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) *TextRectangle {
 	var _arg0 *C.AtkText         // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -925,9 +925,9 @@ func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) 
 	runtime.KeepAlive(endOffset)
 	runtime.KeepAlive(coordType)
 
-	var _rect TextRectangle // out
+	var _rect *TextRectangle // out
 
-	_rect = *(*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+	_rect = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
 
 	return _rect
 }
@@ -1456,9 +1456,9 @@ func marshalTextRange(p uintptr) (interface{}, error) {
 }
 
 // Bounds: rectangle giving the bounds of the text range.
-func (t *TextRange) Bounds() TextRectangle {
-	var v TextRectangle // out
-	v = *(*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&t.native.bounds))))
+func (t *TextRange) Bounds() *TextRectangle {
+	var v *TextRectangle // out
+	v = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&t.native.bounds))))
 	return v
 }
 

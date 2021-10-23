@@ -28,7 +28,7 @@ func init() {
 //
 // Note that the Type enumeration may be extended at a later date to include new
 // hashing algorithm types.
-type ChecksumType int
+type ChecksumType C.gint
 
 const (
 	// ChecksumMD5: use the MD5 hashing algorithm.

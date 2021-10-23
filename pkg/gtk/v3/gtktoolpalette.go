@@ -30,7 +30,7 @@ func init() {
 }
 
 // ToolPaletteDragTargets flags used to specify the supported drag targets.
-type ToolPaletteDragTargets int
+type ToolPaletteDragTargets C.guint
 
 const (
 	// ToolPaletteDragItems: support drag of items.

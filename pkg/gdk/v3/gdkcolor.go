@@ -204,7 +204,7 @@ func (color *Color) String() string {
 //
 //    - spec: string specifying the color.
 //
-func ColorParse(spec string) (Color, bool) {
+func ColorParse(spec string) (*Color, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.GdkColor // in
 	var _cret C.gboolean // in
@@ -215,10 +215,10 @@ func ColorParse(spec string) (Color, bool) {
 	_cret = C.gdk_color_parse(_arg1, &_arg2)
 	runtime.KeepAlive(spec)
 
-	var _color Color // out
-	var _ok bool     // out
+	var _color *Color // out
+	var _ok bool      // out
 
-	_color = *(*Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_color = (*Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

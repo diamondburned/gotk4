@@ -25,7 +25,7 @@ func init() {
 type State = uint64
 
 // StateType: possible types of states of an object.
-type StateType int
+type StateType C.gint
 
 const (
 	// StateInvalid indicates an invalid state - probably an error condition.

@@ -33,7 +33,7 @@ type ScrollableOverrider interface {
 	// An example for this would be treeview headers. GTK can use this
 	// information to display overlaid graphics, like the overshoot indication,
 	// at the right position.
-	Border() (Border, bool)
+	Border() (*Border, bool)
 }
 
 // Scrollable: GtkScrollable is an interface for widgets with native scrolling
@@ -73,7 +73,7 @@ type Scrollabler interface {
 
 	// Border returns the size of a non-scrolling border around the outside of
 	// the scrollable.
-	Border() (Border, bool)
+	Border() (*Border, bool)
 	// HAdjustment retrieves the GtkAdjustment used for horizontal scrolling.
 	HAdjustment() *Adjustment
 	// HScrollPolicy gets the horizontal GtkScrollablePolicy.
@@ -110,7 +110,7 @@ func marshalScrollabler(p uintptr) (interface{}, error) {
 // An example for this would be treeview headers. GTK can use this information
 // to display overlaid graphics, like the overshoot indication, at the right
 // position.
-func (scrollable *Scrollable) Border() (Border, bool) {
+func (scrollable *Scrollable) Border() (*Border, bool) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 C.GtkBorder      // in
 	var _cret C.gboolean       // in
@@ -120,10 +120,10 @@ func (scrollable *Scrollable) Border() (Border, bool) {
 	_cret = C.gtk_scrollable_get_border(_arg0, &_arg1)
 	runtime.KeepAlive(scrollable)
 
-	var _border Border // out
-	var _ok bool       // out
+	var _border *Border // out
+	var _ok bool        // out
 
-	_border = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}

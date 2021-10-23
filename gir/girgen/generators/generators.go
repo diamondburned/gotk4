@@ -1,9 +1,9 @@
 package generators
 
 import (
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -35,12 +35,12 @@ type FileWriter interface {
 	Pen() *pen.Pen
 }
 
-// headeredFileGenerator is used to overried a Header to be used inside
-// callable.FileGenerator.
-type headeredFileGenerator struct {
-	types.FileGenerator
-	file.Headerer
-}
+// // headeredFileGenerator is used to overried a Header to be used inside
+// // callable.FileGenerator.
+// type headeredFileGenerator struct {
+// 	types.FileGenerator
+// 	file.Headerer
+// }
 
 // StubFileGeneratorWriterWriter wraps an existing FileGenerator around a stub
 // file writer. This is useful for using existing functions that expect to write

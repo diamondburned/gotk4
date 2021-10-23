@@ -30,7 +30,7 @@ func init() {
 // GtkApplication.
 //
 // See gtk.Application.Inhibit().
-type ApplicationInhibitFlags int
+type ApplicationInhibitFlags C.guint
 
 const (
 	// ApplicationInhibitLogout: inhibit ending the user session by logging out
@@ -650,7 +650,7 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.char)(C.malloc(C.size_t(len(accels)+1) * C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.char)(C.malloc(C.size_t(uint((len(accels) + 1)) * uint(unsafe.Sizeof(uint(0))))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(accels)+1)

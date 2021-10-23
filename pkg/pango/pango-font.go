@@ -35,7 +35,7 @@ func init() {
 
 // Stretch: enumeration specifying the width of the font relative to other
 // designs within a family.
-type Stretch int
+type Stretch C.gint
 
 const (
 	// StretchUltraCondensed: ultra condensed width.
@@ -89,7 +89,7 @@ func (s Stretch) String() string {
 }
 
 // Style: enumeration specifying the various slant styles possible for a font.
-type Style int
+type Style C.gint
 
 const (
 	// StyleNormal: font is upright.
@@ -119,7 +119,7 @@ func (s Style) String() string {
 }
 
 // Variant: enumeration specifying capitalization variant of the font.
-type Variant int
+type Variant C.gint
 
 const (
 	// VariantNormal: normal font.
@@ -149,7 +149,7 @@ func (v Variant) String() string {
 //
 // This is a numerical value ranging from 100 to 1000, but there are some
 // predefined values.
-type Weight int
+type Weight C.gint
 
 const (
 	// WeightThin: thin weight (= 100; Since: 1.24).
@@ -216,7 +216,7 @@ func (w Weight) String() string {
 
 // FontMask bits in a PangoFontMask correspond to the set fields in a
 // PangoFontDescription.
-type FontMask int
+type FontMask C.guint
 
 const (
 	// FontMaskFamily: font family is specified.
@@ -321,7 +321,7 @@ type FontOverrider interface {
 	//
 	// If font is NULL, this function gracefully sets some sane values in the
 	// output variables and returns.
-	GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle)
+	GlyphExtents(glyph Glyph) (inkRect *Rectangle, logicalRect *Rectangle)
 	// Metrics gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts, a
@@ -522,7 +522,7 @@ func (font *Font) FontMap() FontMapper {
 //
 //    - glyph index.
 //
-func (font *Font) GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle) {
+func (font *Font) GlyphExtents(glyph Glyph) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoFont     // out
 	var _arg1 C.PangoGlyph     // out
 	var _arg2 C.PangoRectangle // in
@@ -537,11 +537,11 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rect
 	runtime.KeepAlive(font)
 	runtime.KeepAlive(glyph)
 
-	var _inkRect Rectangle     // out
-	var _logicalRect Rectangle // out
+	var _inkRect *Rectangle     // out
+	var _logicalRect *Rectangle // out
 
-	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _inkRect, _logicalRect
 }

@@ -40,7 +40,7 @@ func init() {
 //
 // The Cancel button will only be shown if the page isn’t “committed”. See
 // gtk_assistant_commit() for details.
-type AssistantPageType int
+type AssistantPageType C.gint
 
 const (
 	// AssistantPageContent: page has regular contents. Both the Back and

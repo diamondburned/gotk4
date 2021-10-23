@@ -24,7 +24,7 @@ func init() {
 
 // PropMode describes how existing data is combined with new data when using
 // gdk_property_change().
-type PropMode int
+type PropMode C.gint
 
 const (
 	// PropModeReplace: new data replaces the existing data.

@@ -30,7 +30,7 @@ func init() {
 }
 
 // CSSProviderError: error codes for GTK_CSS_PROVIDER_ERROR.
-type CSSProviderError int
+type CSSProviderError C.gint
 
 const (
 	// CSSProviderErrorFailed: failed.

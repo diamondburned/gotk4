@@ -140,7 +140,7 @@ func (s *Size) InitFromSize(src *Size) *Size {
 
 // Interpolate: linearly interpolates the two given #graphene_size_t using the
 // given interpolation factor.
-func (a *Size) Interpolate(b *Size, factor float64) Size {
+func (a *Size) Interpolate(b *Size, factor float64) *Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 *C.graphene_size_t // out
 	var _arg2 C.double           // out
@@ -155,15 +155,15 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 	runtime.KeepAlive(b)
 	runtime.KeepAlive(factor)
 
-	var _res Size // out
+	var _res *Size // out
 
-	_res = *(*Size)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_res = (*Size)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _res
 }
 
 // Scale scales the components of a #graphene_size_t using the given factor.
-func (s *Size) Scale(factor float32) Size {
+func (s *Size) Scale(factor float32) *Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.graphene_size_t  // in
@@ -175,9 +175,9 @@ func (s *Size) Scale(factor float32) Size {
 	runtime.KeepAlive(s)
 	runtime.KeepAlive(factor)
 
-	var _res Size // out
+	var _res *Size // out
 
-	_res = *(*Size)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_res = (*Size)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }

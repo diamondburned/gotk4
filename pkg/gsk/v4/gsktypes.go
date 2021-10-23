@@ -409,7 +409,7 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 // ToMatrix computes the actual value of self and stores it in out_matrix.
 //
 // The previous value of out_matrix will be ignored.
-func (self *Transform) ToMatrix() graphene.Matrix {
+func (self *Transform) ToMatrix() *graphene.Matrix {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 C.graphene_matrix_t // in
 
@@ -420,9 +420,9 @@ func (self *Transform) ToMatrix() graphene.Matrix {
 	C.gsk_transform_to_matrix(_arg0, &_arg1)
 	runtime.KeepAlive(self)
 
-	var _outMatrix graphene.Matrix // out
+	var _outMatrix *graphene.Matrix // out
 
-	_outMatrix = *(*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_outMatrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _outMatrix
 }
@@ -507,7 +507,7 @@ func (next *Transform) Transform(other *Transform) *Transform {
 // TransformBounds transforms a graphene_rect_t using the given transform self.
 //
 // The result is the bounding box containing the coplanar quad.
-func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
+func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 	var _arg0 *C.GskTransform    // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 C.graphene_rect_t  // in
@@ -519,15 +519,15 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(rect)
 
-	var _outRect graphene.Rect // out
+	var _outRect *graphene.Rect // out
 
-	_outRect = *(*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_outRect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _outRect
 }
 
 // TransformPoint transforms a graphene_point_t using the given transform self.
-func (self *Transform) TransformPoint(point *graphene.Point) graphene.Point {
+func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 *C.graphene_point_t // out
 	var _arg2 C.graphene_point_t  // in
@@ -539,9 +539,9 @@ func (self *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(point)
 
-	var _outPoint graphene.Point // out
+	var _outPoint *graphene.Point // out
 
-	_outPoint = *(*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _outPoint
 }

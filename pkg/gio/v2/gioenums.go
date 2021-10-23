@@ -110,7 +110,7 @@ func init() {
 }
 
 // BusType: enumeration for well-known message buses.
-type BusType int
+type BusType C.gint
 
 const (
 	// BusTypeStarter alias for the message bus that activated the process, if
@@ -145,7 +145,7 @@ func (b BusType) String() string {
 }
 
 // ConverterResult results returned from g_converter_convert().
-type ConverterResult int
+type ConverterResult C.gint
 
 const (
 	// ConverterError: there was an error during conversion.
@@ -180,7 +180,7 @@ func (c ConverterResult) String() string {
 
 // CredentialsType: enumeration describing different kinds of native credential
 // types.
-type CredentialsType int
+type CredentialsType C.gint
 
 const (
 	// CredentialsTypeInvalid indicates an invalid native credential type.
@@ -231,7 +231,7 @@ func (c CredentialsType) String() string {
 }
 
 // DBusError: error codes for the G_DBUS_ERROR error domain.
-type DBusError int
+type DBusError C.gint
 
 const (
 	// DBusErrorFailed: generic error; "something went wrong" - see the error
@@ -466,7 +466,7 @@ func (d DBusError) String() string {
 
 // DBusMessageByteOrder: enumeration used to describe the byte order of a D-Bus
 // message.
-type DBusMessageByteOrder int
+type DBusMessageByteOrder C.gint
 
 const (
 	// DBusMessageByteOrderBigEndian: byte order is big endian.
@@ -492,7 +492,7 @@ func (d DBusMessageByteOrder) String() string {
 }
 
 // DBusMessageHeaderField: header fields used in BusMessage.
-type DBusMessageHeaderField int
+type DBusMessageHeaderField C.gint
 
 const (
 	// DBusMessageHeaderFieldInvalid: not a valid header field.
@@ -553,7 +553,7 @@ func (d DBusMessageHeaderField) String() string {
 }
 
 // DBusMessageType: message types used in BusMessage.
-type DBusMessageType int
+type DBusMessageType C.gint
 
 const (
 	// DBusMessageTypeInvalid: message is of invalid type.
@@ -592,7 +592,7 @@ func (d DBusMessageType) String() string {
 
 // DataStreamByteOrder is used to ensure proper endianness of streaming data
 // sources across various machine architectures.
-type DataStreamByteOrder int
+type DataStreamByteOrder C.gint
 
 const (
 	// DataStreamByteOrderBigEndian selects Big Endian byte order.
@@ -624,7 +624,7 @@ func (d DataStreamByteOrder) String() string {
 
 // DataStreamNewlineType is used when checking for or setting the line endings
 // for a given file.
-type DataStreamNewlineType int
+type DataStreamNewlineType C.gint
 
 const (
 	// DataStreamNewlineTypeLf selects "LF" line endings, common on most modern
@@ -662,7 +662,7 @@ func (d DataStreamNewlineType) String() string {
 
 // DriveStartStopType: enumeration describing how a drive can be
 // started/stopped.
-type DriveStartStopType int
+type DriveStartStopType C.gint
 
 const (
 	// DriveStartStopTypeUnknown: unknown or drive doesn't support start/stop.
@@ -706,7 +706,7 @@ func (d DriveStartStopType) String() string {
 
 // EmblemOrigin is used to add information about the origin of the emblem to
 // #GEmblem.
-type EmblemOrigin int
+type EmblemOrigin C.gint
 
 const (
 	// EmblemOriginUnknown: emblem of unknown origin.
@@ -743,7 +743,7 @@ func (e EmblemOrigin) String() string {
 
 // FileAttributeStatus: used by g_file_set_attributes_from_info() when setting
 // file attributes.
-type FileAttributeStatus int
+type FileAttributeStatus C.gint
 
 const (
 	// FileAttributeStatusUnset: attribute value is unset (empty).
@@ -773,7 +773,7 @@ func (f FileAttributeStatus) String() string {
 }
 
 // FileAttributeType: data types for file attributes.
-type FileAttributeType int
+type FileAttributeType C.gint
 
 const (
 	// FileAttributeTypeInvalid indicates an invalid or uninitialized type.
@@ -831,7 +831,7 @@ func (f FileAttributeType) String() string {
 }
 
 // FileMonitorEvent specifies what type of event a monitor event is.
-type FileMonitorEvent int
+type FileMonitorEvent C.gint
 
 const (
 	// FileMonitorEventChanged: file changed.
@@ -909,7 +909,7 @@ func (f FileMonitorEvent) String() string {
 // precisely represent this important distinction, which is why all Windows
 // symlinks will continue to be reported as G_FILE_TYPE_REGULAR or
 // G_FILE_TYPE_DIRECTORY.
-type FileType int
+type FileType C.gint
 
 const (
 	// FileTypeUnknown file's type is unknown.
@@ -959,7 +959,7 @@ func (f FileType) String() string {
 // FilesystemPreviewType indicates a hint from the file system whether files
 // should be previewed in a file manager. Returned as the value of the key
 // FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
-type FilesystemPreviewType int
+type FilesystemPreviewType C.gint
 
 const (
 	// FilesystemPreviewTypeIfAlways: only preview files if user has explicitly
@@ -1008,7 +1008,7 @@ func (f FilesystemPreviewType) String() string {
 //
 // See also Return for a cheaper way of returning G_IO_ERROR_WOULD_BLOCK to
 // callers without allocating a #GError.
-type IOErrorEnum int
+type IOErrorEnum C.gint
 
 const (
 	// IOErrorFailed: generic error condition for when an operation fails and no
@@ -1230,7 +1230,7 @@ func (i IOErrorEnum) String() string {
 }
 
 // IOModuleScopeFlags flags for use with g_io_module_scope_new().
-type IOModuleScopeFlags int
+type IOModuleScopeFlags C.gint
 
 const (
 	// IOModuleScopeNone: no module scan flags.
@@ -1264,7 +1264,7 @@ func (i IOModuleScopeFlags) String() string {
 //
 //    if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
 //      drop_caches ();.
-type MemoryMonitorWarningLevel int
+type MemoryMonitorWarningLevel C.gint
 
 const (
 	// MemoryMonitorWarningLevelLow: memory on the device is low, processes
@@ -1302,7 +1302,7 @@ func (m MemoryMonitorWarningLevel) String() string {
 
 // MountOperationResult is returned as a result when a request for information
 // is send by the mounting operation.
-type MountOperationResult int
+type MountOperationResult C.gint
 
 const (
 	// MountOperationHandled: request was fulfilled and the user specified data
@@ -1334,7 +1334,7 @@ func (m MountOperationResult) String() string {
 
 // NetworkConnectivity host's network connectivity state, as reported by
 // Monitor.
-type NetworkConnectivity int
+type NetworkConnectivity C.gint
 
 const (
 	// NetworkConnectivityLocal: host is not configured with a route to the
@@ -1373,7 +1373,7 @@ func (n NetworkConnectivity) String() string {
 }
 
 // NotificationPriority: priority levels for #GNotifications.
-type NotificationPriority int
+type NotificationPriority C.gint
 
 const (
 	// NotificationPriorityNormal: default priority, to be used for the majority
@@ -1418,7 +1418,7 @@ func (n NotificationPriority) String() string {
 //
 // #Gvfs stores passwords in the Gnome keyring when this flag allows it to, and
 // later retrieves it again from there.
-type PasswordSave int
+type PasswordSave C.gint
 
 const (
 	// PasswordSaveNever: never save a password.
@@ -1456,7 +1456,7 @@ func (p PasswordSave) String() string {
 //
 // In case of G_POLLABLE_RETURN_FAILED a #GError should be set for the operation
 // to give details about the error that happened.
-type PollableReturn int
+type PollableReturn C.gint
 
 const (
 	// PollableReturnFailed: generic error condition for when an operation
@@ -1488,7 +1488,7 @@ func (p PollableReturn) String() string {
 
 // ResolverError: error code used with G_RESOLVER_ERROR in a #GError returned
 // from a #GResolver routine.
-type ResolverError int
+type ResolverError C.gint
 
 const (
 	// ResolverErrorNotFound: requested name/address/service was not found.
@@ -1548,7 +1548,7 @@ func (r ResolverError) String() string {
 //
 // G_RESOLVER_RECORD_NS records are returned as variants with the signature (s),
 // representing a string of the hostname of the name server.
-type ResolverRecordType int
+type ResolverRecordType C.gint
 
 const (
 	// ResolverRecordSrv: look up DNS SRV records for a domain.
@@ -1587,7 +1587,7 @@ func (r ResolverRecordType) String() string {
 
 // ResourceError: error code used with G_RESOURCE_ERROR in a #GError returned
 // from a #GResource routine.
-type ResourceError int
+type ResourceError C.gint
 
 const (
 	// ResourceErrorNotFound: no file was found at the requested path.
@@ -1616,7 +1616,7 @@ func (r ResourceError) String() string {
 // Client::event signal for more details.
 //
 // Additional values may be added to this type in the future.
-type SocketClientEvent int
+type SocketClientEvent C.gint
 
 const (
 	// SocketClientResolving: client is doing a DNS lookup.
@@ -1673,7 +1673,7 @@ func (s SocketClientEvent) String() string {
 
 // SocketFamily: protocol family of a Address. (These values are identical to
 // the system defines AF_INET, AF_INET6 and AF_UNIX, if available.).
-type SocketFamily int
+type SocketFamily C.gint
 
 const (
 	// SocketFamilyInvalid: no address family.
@@ -1710,7 +1710,7 @@ func (s SocketFamily) String() string {
 // Listener::event signal for more details.
 //
 // Additional values may be added to this type in the future.
-type SocketListenerEvent int
+type SocketListenerEvent C.gint
 
 const (
 	// SocketListenerBinding: listener is about to bind a socket.
@@ -1751,7 +1751,7 @@ func (s SocketListenerEvent) String() string {
 // This enum contains a set of commonly available and used protocols. You can
 // also pass any other identifiers handled by the platform in order to use
 // protocols not listed here.
-type SocketProtocol int
+type SocketProtocol C.gint
 
 const (
 	// SocketProtocolUnknown: protocol type is unknown.
@@ -1790,7 +1790,7 @@ func (s SocketProtocol) String() string {
 
 // SocketType flags used when creating a #GSocket. Some protocols may not
 // implement all the socket types.
-type SocketType int
+type SocketType C.gint
 
 const (
 	// SocketTypeInvalid: type unknown or wrong.
@@ -1826,7 +1826,7 @@ func (s SocketType) String() string {
 }
 
 // TLSAuthenticationMode: client authentication mode for a ServerConnection.
-type TLSAuthenticationMode int
+type TLSAuthenticationMode C.gint
 
 const (
 	// TLSAuthenticationNone: client authentication not required.
@@ -1858,7 +1858,7 @@ func (t TLSAuthenticationMode) String() string {
 // TLSCertificateRequestFlags flags for g_tls_interaction_request_certificate(),
 // g_tls_interaction_request_certificate_async(), and
 // g_tls_interaction_invoke_request_certificate().
-type TLSCertificateRequestFlags int
+type TLSCertificateRequestFlags C.gint
 
 const (
 	// TLSCertificateRequestNone: no flags.
@@ -1881,7 +1881,7 @@ func (t TLSCertificateRequestFlags) String() string {
 
 // TLSChannelBindingError: error code used with G_TLS_CHANNEL_BINDING_ERROR in a
 // #GError to indicate a TLS channel binding retrieval error.
-type TLSChannelBindingError int
+type TLSChannelBindingError C.gint
 
 const (
 	// TLSChannelBindingErrorNotImplemented: either entire binding retrieval
@@ -1931,7 +1931,7 @@ func (t TLSChannelBindingError) String() string {
 // Connection or Connection, as documented by RFC 5929. The
 // tls-unique-for-telnet (https://tools.ietf.org/html/rfc5929#section-5) binding
 // type is not currently implemented.
-type TLSChannelBindingType int
+type TLSChannelBindingType C.gint
 
 const (
 	// TLSChannelBindingTLSUnique: tls-unique
@@ -1962,7 +1962,7 @@ func (t TLSChannelBindingType) String() string {
 // g_tls_database_lookup_certificate_for_handle(),
 // g_tls_database_lookup_certificate_issuer(), and
 // g_tls_database_lookup_certificates_issued_by().
-type TLSDatabaseLookupFlags int
+type TLSDatabaseLookupFlags C.gint
 
 const (
 	// TLSDatabaseLookupNone: no lookup flags.
@@ -1990,7 +1990,7 @@ func (t TLSDatabaseLookupFlags) String() string {
 
 // TLSError: error code used with G_TLS_ERROR in a #GError returned from a
 // TLS-related routine.
-type TLSError int
+type TLSError C.gint
 
 const (
 	// TLSErrorUnavailable: no TLS provider is available.
@@ -2049,7 +2049,7 @@ func (t TLSError) String() string {
 
 // TLSInteractionResult is returned by various functions in Interaction when
 // finishing an interaction request.
-type TLSInteractionResult int
+type TLSInteractionResult C.gint
 
 const (
 	// TLSInteractionUnhandled: interaction was unhandled (i.e. not
@@ -2087,7 +2087,7 @@ func (t TLSInteractionResult) String() string {
 // Deprecated: Changing the rehandshake mode is no longer required for
 // compatibility. Also, rehandshaking has been removed from the TLS protocol in
 // TLS 1.3.
-type TLSRehandshakeMode int
+type TLSRehandshakeMode C.gint
 
 const (
 	// TLSRehandshakeNever: never allow rehandshaking.
@@ -2128,7 +2128,7 @@ func (t TLSRehandshakeMode) String() string {
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED. However, many programs instead just
 // use a portion of sun_path, and pass an appropriate smaller length to bind()
 // or connect(). This is G_UNIX_SOCKET_ADDRESS_ABSTRACT.
-type UnixSocketAddressType int
+type UnixSocketAddressType C.gint
 
 const (
 	// UnixSocketAddressInvalid: invalid.
@@ -2168,7 +2168,7 @@ func (u UnixSocketAddressType) String() string {
 
 // ZlibCompressorFormat: used to select the type of data format to use for
 // Decompressor and Compressor.
-type ZlibCompressorFormat int
+type ZlibCompressorFormat C.gint
 
 const (
 	// ZlibCompressorFormatZlib: deflate compression with zlib header.
@@ -2198,7 +2198,7 @@ func (z ZlibCompressorFormat) String() string {
 }
 
 // AppInfoCreateFlags flags used when creating a Info.
-type AppInfoCreateFlags int
+type AppInfoCreateFlags C.guint
 
 const (
 	// AppInfoCreateNone: no flags.
@@ -2254,7 +2254,7 @@ func (a AppInfoCreateFlags) Has(other AppInfoCreateFlags) bool {
 }
 
 // ApplicationFlags flags used to define the behaviour of a #GApplication.
-type ApplicationFlags int
+type ApplicationFlags C.guint
 
 const (
 	// ApplicationFlagsNone: default.
@@ -2356,7 +2356,7 @@ func (a ApplicationFlags) Has(other ApplicationFlags) bool {
 
 // AskPasswordFlags are used to request specific information from the user, or
 // to notify the user of their choices in an authentication situation.
-type AskPasswordFlags int
+type AskPasswordFlags C.guint
 
 const (
 	// AskPasswordNeedPassword: operation requires a password.
@@ -2419,7 +2419,7 @@ func (a AskPasswordFlags) Has(other AskPasswordFlags) bool {
 }
 
 // BusNameOwnerFlags flags used in g_bus_own_name().
-type BusNameOwnerFlags int
+type BusNameOwnerFlags C.guint
 
 const (
 	// BusNameOwnerFlagsNone: no flags set.
@@ -2479,7 +2479,7 @@ func (b BusNameOwnerFlags) Has(other BusNameOwnerFlags) bool {
 }
 
 // BusNameWatcherFlags flags used in g_bus_watch_name().
-type BusNameWatcherFlags int
+type BusNameWatcherFlags C.guint
 
 const (
 	// BusNameWatcherFlagsNone: no flags set.
@@ -2527,7 +2527,7 @@ func (b BusNameWatcherFlags) Has(other BusNameWatcherFlags) bool {
 }
 
 // ConverterFlags flags used when calling a g_converter_convert().
-type ConverterFlags int
+type ConverterFlags C.guint
 
 const (
 	// ConverterNoFlags: no flags.
@@ -2578,7 +2578,7 @@ func (c ConverterFlags) Has(other ConverterFlags) bool {
 }
 
 // DBusCallFlags flags used in g_dbus_connection_call() and similar APIs.
-type DBusCallFlags int
+type DBusCallFlags C.guint
 
 const (
 	// DBusCallFlagsNone: no flags set.
@@ -2631,7 +2631,7 @@ func (d DBusCallFlags) Has(other DBusCallFlags) bool {
 }
 
 // DBusCapabilityFlags capabilities negotiated with the remote peer.
-type DBusCapabilityFlags int
+type DBusCapabilityFlags C.guint
 
 const (
 	// DBusCapabilityFlagsNone: no flags set.
@@ -2679,7 +2679,7 @@ func (d DBusCapabilityFlags) Has(other DBusCapabilityFlags) bool {
 }
 
 // DBusConnectionFlags flags used when creating a new BusConnection.
-type DBusConnectionFlags int
+type DBusConnectionFlags C.guint
 
 const (
 	// DBusConnectionFlagsNone: no flags set.
@@ -2756,7 +2756,7 @@ func (d DBusConnectionFlags) Has(other DBusConnectionFlags) bool {
 
 // DBusInterfaceSkeletonFlags flags describing the behavior of a
 // BusInterfaceSkeleton instance.
-type DBusInterfaceSkeletonFlags int
+type DBusInterfaceSkeletonFlags C.guint
 
 const (
 	// DBusInterfaceSkeletonFlagsNone: no flags set.
@@ -2807,7 +2807,7 @@ func (d DBusInterfaceSkeletonFlags) Has(other DBusInterfaceSkeletonFlags) bool {
 }
 
 // DBusMessageFlags: message flags used in BusMessage.
-type DBusMessageFlags int
+type DBusMessageFlags C.guint
 
 const (
 	// DBusMessageFlagsNone: no flags set.
@@ -2866,7 +2866,7 @@ func (d DBusMessageFlags) Has(other DBusMessageFlags) bool {
 
 // DBusObjectManagerClientFlags flags used when constructing a
 // BusObjectManagerClient.
-type DBusObjectManagerClientFlags int
+type DBusObjectManagerClientFlags C.guint
 
 const (
 	// DBusObjectManagerClientFlagsNone: no flags set.
@@ -2917,7 +2917,7 @@ func (d DBusObjectManagerClientFlags) Has(other DBusObjectManagerClientFlags) bo
 
 // DBusPropertyInfoFlags flags describing the access control of a D-Bus
 // property.
-type DBusPropertyInfoFlags int
+type DBusPropertyInfoFlags C.guint
 
 const (
 	// DBusPropertyInfoFlagsNone: no flags set.
@@ -2969,7 +2969,7 @@ func (d DBusPropertyInfoFlags) Has(other DBusPropertyInfoFlags) bool {
 
 // DBusProxyFlags flags used when constructing an instance of a BusProxy derived
 // class.
-type DBusProxyFlags int
+type DBusProxyFlags C.guint
 
 const (
 	// DBusProxyFlagsNone: no flags set.
@@ -3047,7 +3047,7 @@ func (d DBusProxyFlags) Has(other DBusProxyFlags) bool {
 }
 
 // DBusSendMessageFlags flags used when sending BusMessages on a BusConnection.
-type DBusSendMessageFlags int
+type DBusSendMessageFlags C.guint
 
 const (
 	// DBusSendMessageFlagsNone: no flags set.
@@ -3095,7 +3095,7 @@ func (d DBusSendMessageFlags) Has(other DBusSendMessageFlags) bool {
 }
 
 // DBusServerFlags flags used when creating a BusServer.
-type DBusServerFlags int
+type DBusServerFlags C.guint
 
 const (
 	// DBusServerFlagsNone: no flags set.
@@ -3155,7 +3155,7 @@ func (d DBusServerFlags) Has(other DBusServerFlags) bool {
 
 // DBusSignalFlags flags used when subscribing to signals via
 // g_dbus_connection_signal_subscribe().
-type DBusSignalFlags int
+type DBusSignalFlags C.guint
 
 const (
 	// DBusSignalFlagsNone: no flags set.
@@ -3215,7 +3215,7 @@ func (d DBusSignalFlags) Has(other DBusSignalFlags) bool {
 }
 
 // DBusSubtreeFlags flags passed to g_dbus_connection_register_subtree().
-type DBusSubtreeFlags int
+type DBusSubtreeFlags C.guint
 
 const (
 	// DBusSubtreeFlagsNone: no flags set.
@@ -3264,7 +3264,7 @@ func (d DBusSubtreeFlags) Has(other DBusSubtreeFlags) bool {
 }
 
 // DriveStartFlags flags used when starting a drive.
-type DriveStartFlags int
+type DriveStartFlags C.guint
 
 const (
 	// DriveStartNone: no flags set.
@@ -3307,7 +3307,7 @@ func (d DriveStartFlags) Has(other DriveStartFlags) bool {
 }
 
 // FileAttributeInfoFlags flags specifying the behaviour of an attribute.
-type FileAttributeInfoFlags int
+type FileAttributeInfoFlags C.guint
 
 const (
 	// FileAttributeInfoNone: no flags set.
@@ -3360,7 +3360,7 @@ func (f FileAttributeInfoFlags) Has(other FileAttributeInfoFlags) bool {
 }
 
 // FileCopyFlags flags used when copying or moving files.
-type FileCopyFlags int
+type FileCopyFlags C.guint
 
 const (
 	// FileCopyNone: no flags set.
@@ -3430,7 +3430,7 @@ func (f FileCopyFlags) Has(other FileCopyFlags) bool {
 }
 
 // FileCreateFlags flags used when an operation may create a file.
-type FileCreateFlags int
+type FileCreateFlags C.guint
 
 const (
 	// FileCreateNone: no flags set.
@@ -3489,7 +3489,7 @@ func (f FileCreateFlags) Has(other FileCreateFlags) bool {
 }
 
 // FileMeasureFlags flags that can be used with g_file_measure_disk_usage().
-type FileMeasureFlags int
+type FileMeasureFlags C.guint
 
 const (
 	// FileMeasureNone: no flags set.
@@ -3550,7 +3550,7 @@ func (f FileMeasureFlags) Has(other FileMeasureFlags) bool {
 }
 
 // FileMonitorFlags flags used to set what a Monitor will watch for.
-type FileMonitorFlags int
+type FileMonitorFlags C.guint
 
 const (
 	// FileMonitorNone: no flags set.
@@ -3617,7 +3617,7 @@ func (f FileMonitorFlags) Has(other FileMonitorFlags) bool {
 }
 
 // FileQueryInfoFlags flags used when querying a Info.
-type FileQueryInfoFlags int
+type FileQueryInfoFlags C.guint
 
 const (
 	// FileQueryInfoNone: no flags set.
@@ -3664,7 +3664,7 @@ func (f FileQueryInfoFlags) Has(other FileQueryInfoFlags) bool {
 }
 
 // IOStreamSpliceFlags determine how streams should be spliced.
-type IOStreamSpliceFlags int
+type IOStreamSpliceFlags C.guint
 
 const (
 	// IOStreamSpliceNone: do not close either stream.
@@ -3720,7 +3720,7 @@ func (i IOStreamSpliceFlags) Has(other IOStreamSpliceFlags) bool {
 }
 
 // MountMountFlags flags used when mounting a mount.
-type MountMountFlags int
+type MountMountFlags C.guint
 
 const (
 	// MountMountNone: no flags set.
@@ -3763,7 +3763,7 @@ func (m MountMountFlags) Has(other MountMountFlags) bool {
 }
 
 // MountUnmountFlags flags used when an unmounting a mount.
-type MountUnmountFlags int
+type MountUnmountFlags C.guint
 
 const (
 	// MountUnmountNone: no flags set.
@@ -3811,7 +3811,7 @@ func (m MountUnmountFlags) Has(other MountUnmountFlags) bool {
 }
 
 // OutputStreamSpliceFlags determine how streams should be spliced.
-type OutputStreamSpliceFlags int
+type OutputStreamSpliceFlags C.guint
 
 const (
 	// OutputStreamSpliceNone: do not close either stream.
@@ -3863,7 +3863,7 @@ func (o OutputStreamSpliceFlags) Has(other OutputStreamSpliceFlags) bool {
 
 // ResourceFlags give information about a particular file inside a resource
 // bundle.
-type ResourceFlags int
+type ResourceFlags C.guint
 
 const (
 	// ResourceFlagsNone: no flags set.
@@ -3910,7 +3910,7 @@ func (r ResourceFlags) Has(other ResourceFlags) bool {
 }
 
 // ResourceLookupFlags determine how resource path lookups are handled.
-type ResourceLookupFlags int
+type ResourceLookupFlags C.guint
 
 const (
 	// ResourceLookupFlagsNone: no flags set.
@@ -3957,7 +3957,7 @@ func (r ResourceLookupFlags) Has(other ResourceLookupFlags) bool {
 // available flags, but the values used for them are the same as on the
 // platform, and any other flags are passed in/out as is. So to use a platform
 // specific flag, just include the right system header and pass in the flag.
-type SocketMsgFlags int
+type SocketMsgFlags C.guint
 
 const (
 	// SocketMsgNone: no flags.
@@ -4022,7 +4022,7 @@ func (s SocketMsgFlags) Has(other SocketMsgFlags) bool {
 // Note that it is a programmer error to mix 'incompatible' flags. For example,
 // you may not request both G_SUBPROCESS_FLAGS_STDOUT_PIPE and
 // G_SUBPROCESS_FLAGS_STDOUT_SILENCE.
-type SubprocessFlags int
+type SubprocessFlags C.guint
 
 const (
 	// SubprocessFlagsNone: no flags.
@@ -4107,7 +4107,7 @@ func (s SubprocessFlags) Has(other SubprocessFlags) bool {
 }
 
 // TestDBusFlags flags to define future DBus behaviour.
-type TestDBusFlags int
+type TestDBusFlags C.guint
 
 const (
 	// TestDBusNone: no flags.
@@ -4153,7 +4153,7 @@ func (t TestDBusFlags) Has(other TestDBusFlags) bool {
 // This can be used to set which validation steps to perform (eg, with
 // g_tls_client_connection_set_validation_flags()), or to describe why a
 // particular certificate was rejected (eg, in Connection::accept-certificate).
-type TLSCertificateFlags int
+type TLSCertificateFlags C.guint
 
 const (
 	// TLSCertificateUnknownCa: signing certificate authority is not known.
@@ -4228,7 +4228,7 @@ func (t TLSCertificateFlags) Has(other TLSCertificateFlags) bool {
 }
 
 // TLSDatabaseVerifyFlags flags for g_tls_database_verify_chain().
-type TLSDatabaseVerifyFlags int
+type TLSDatabaseVerifyFlags C.guint
 
 const (
 	// TLSDatabaseVerifyNone: no verification flags.
@@ -4271,7 +4271,7 @@ func (t TLSDatabaseVerifyFlags) Has(other TLSDatabaseVerifyFlags) bool {
 }
 
 // TLSPasswordFlags various flags for the password.
-type TLSPasswordFlags int
+type TLSPasswordFlags C.guint
 
 const (
 	// TLSPasswordNone: no flags.

@@ -29,7 +29,7 @@ func init() {
 //
 // If you are writing an implementation and are not sure which value to pass,
 // GTK_FILTER_CHANGE_DIFFERENT is always a correct choice.
-type FilterChange int
+type FilterChange C.gint
 
 const (
 	// FilterChangeDifferent: filter change cannot be described with any of the
@@ -68,7 +68,7 @@ func (f FilterChange) String() string {
 // Note that for filters where the strictness is not known,
 // GTK_FILTER_MATCH_SOME is always an acceptable value, even if a filter does
 // match all or no items.
-type FilterMatch int
+type FilterMatch C.gint
 
 const (
 	// FilterMatchSome: filter matches some items, gtk_filter_match() may return

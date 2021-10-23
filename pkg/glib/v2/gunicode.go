@@ -28,7 +28,7 @@ const UNICHAR_MAX_DECOMPOSITION_LENGTH = 18
 // represented as a base character and combining accent or as a single
 // precomposed character. Unicode strings should generally be normalized before
 // comparing them.
-type NormalizeMode int
+type NormalizeMode C.gint
 
 const (
 	// NormalizeDefault: standardize differences that do not affect the text
@@ -80,7 +80,7 @@ func (n NormalizeMode) String() string {
 //
 // See Unicode Line Breaking Algorithm
 // (http://www.unicode.org/unicode/reports/tr14/).
-type UnicodeBreakType int
+type UnicodeBreakType C.gint
 
 const (
 	// UnicodeBreakMandatory: mandatory Break (BK).
@@ -274,7 +274,7 @@ func (u UnicodeBreakType) String() string {
 // Note that new types may be added in the future. Applications should be ready
 // to handle unknown values. See Unicode Standard Annex #24: Script names
 // (http://www.unicode.org/reports/tr24/).
-type UnicodeScript int
+type UnicodeScript C.gint
 
 const (
 	// UnicodeScriptInvalidCode: value never returned from
@@ -924,7 +924,7 @@ func (u UnicodeScript) String() string {
 // UnicodeType: these are the possible character classifications from the
 // Unicode specification. See Unicode Character Database
 // (http://www.unicode.org/reports/tr44/Category_Values).
-type UnicodeType int
+type UnicodeType C.gint
 
 const (
 	// UnicodeControl: general category "Other, Control" (Cc).

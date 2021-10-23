@@ -123,7 +123,7 @@ func (p *Plane) Constant() float32 {
 
 // Normal retrieves the normal vector pointing towards the origin of the given
 // #graphene_plane_t.
-func (p *Plane) Normal() Vec3 {
+func (p *Plane) Normal() *Vec3 {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 C.graphene_vec3_t   // in
 
@@ -132,9 +132,9 @@ func (p *Plane) Normal() Vec3 {
 	C.graphene_plane_get_normal(_arg0, &_arg1)
 	runtime.KeepAlive(p)
 
-	var _normal Vec3 // out
+	var _normal *Vec3 // out
 
-	_normal = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_normal = (*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _normal
 }
@@ -263,7 +263,7 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 
 // Negate negates the normal vector and constant of a #graphene_plane_t,
 // effectively mirroring the plane across the origin.
-func (p *Plane) Negate() Plane {
+func (p *Plane) Negate() *Plane {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 C.graphene_plane_t  // in
 
@@ -272,16 +272,16 @@ func (p *Plane) Negate() Plane {
 	C.graphene_plane_negate(_arg0, &_arg1)
 	runtime.KeepAlive(p)
 
-	var _res Plane // out
+	var _res *Plane // out
 
-	_res = *(*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
 
 // Normalize normalizes the vector of the given #graphene_plane_t, and adjusts
 // the constant accordingly.
-func (p *Plane) Normalize() Plane {
+func (p *Plane) Normalize() *Plane {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 C.graphene_plane_t  // in
 
@@ -290,9 +290,9 @@ func (p *Plane) Normalize() Plane {
 	C.graphene_plane_normalize(_arg0, &_arg1)
 	runtime.KeepAlive(p)
 
-	var _res Plane // out
+	var _res *Plane // out
 
-	_res = *(*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_res = (*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
@@ -304,7 +304,7 @@ func (p *Plane) Normalize() Plane {
 // be computed from matrix. If you are transforming multiple planes using the
 // same matrix it's recommended to compute the normal matrix beforehand to avoid
 // incurring in the cost of recomputing it every time.
-func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
+func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) *Plane {
 	var _arg0 *C.graphene_plane_t  // out
 	var _arg1 *C.graphene_matrix_t // out
 	var _arg2 *C.graphene_matrix_t // out
@@ -321,9 +321,9 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 	runtime.KeepAlive(matrix)
 	runtime.KeepAlive(normalMatrix)
 
-	var _res Plane // out
+	var _res *Plane // out
 
-	_res = *(*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_res = (*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _res
 }

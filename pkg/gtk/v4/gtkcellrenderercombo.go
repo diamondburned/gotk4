@@ -81,6 +81,6 @@ func NewCellRendererCombo() *CellRendererCombo {
 // tree view will immediately cease the editing operating. This means that you
 // most probably want to refrain from changing the model until the combo cell
 // renderer emits the edited or editing_canceled signal.
-func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter TreeIter)) externglib.SignalHandle {
+func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *TreeIter)) externglib.SignalHandle {
 	return v.Connect("changed", f)
 }

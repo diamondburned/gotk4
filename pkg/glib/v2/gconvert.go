@@ -18,7 +18,7 @@ import (
 import "C"
 
 // ConvertError: error codes returned by character set conversion routines.
-type ConvertError int
+type ConvertError C.gint
 
 const (
 	// ConvertErrorNoConversion: conversion between the requested character sets

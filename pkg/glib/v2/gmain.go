@@ -1208,41 +1208,6 @@ func (source *Source) AddPoll(fd *PollFD) {
 	runtime.KeepAlive(fd)
 }
 
-// AddUnixFd monitors fd for the IO events in events.
-//
-// The tag returned by this function can be used to remove or modify the
-// monitoring of the fd using g_source_remove_unix_fd() or
-// g_source_modify_unix_fd().
-//
-// It is not necessary to remove the fd before destroying the source; it will be
-// cleaned up automatically.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-//
-// As the name suggests, this function is not available on Windows.
-func (source *Source) AddUnixFd(fd int, events IOCondition) cgo.Handle {
-	var _arg0 *C.GSource     // out
-	var _arg1 C.gint         // out
-	var _arg2 C.GIOCondition // out
-	var _cret C.gpointer     // in
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = C.gint(fd)
-	_arg2 = C.GIOCondition(events)
-
-	_cret = C.g_source_add_unix_fd(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(fd)
-	runtime.KeepAlive(events)
-
-	var _gpointer cgo.Handle // out
-
-	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
-
-	return _gpointer
-}
-
 // Attach adds a #GSource to a context so that it will be executed within that
 // context. Remove it by calling g_source_destroy().
 //
@@ -1505,61 +1470,6 @@ func (source *Source) IsDestroyed() bool {
 	return _ok
 }
 
-// ModifyUnixFd updates the event mask to watch for the fd identified by tag.
-//
-// tag is the tag returned from g_source_add_unix_fd().
-//
-// If you want to remove a fd, don't set its event mask to zero. Instead, call
-// g_source_remove_unix_fd().
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-//
-// As the name suggests, this function is not available on Windows.
-func (source *Source) ModifyUnixFd(tag cgo.Handle, newEvents IOCondition) {
-	var _arg0 *C.GSource     // out
-	var _arg1 C.gpointer     // out
-	var _arg2 C.GIOCondition // out
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
-	_arg2 = C.GIOCondition(newEvents)
-
-	C.g_source_modify_unix_fd(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(tag)
-	runtime.KeepAlive(newEvents)
-}
-
-// QueryUnixFd queries the events reported for the fd corresponding to tag on
-// source during the last poll.
-//
-// The return value of this function is only defined when the function is called
-// from the check or dispatch functions for source.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-//
-// As the name suggests, this function is not available on Windows.
-func (source *Source) QueryUnixFd(tag cgo.Handle) IOCondition {
-	var _arg0 *C.GSource     // out
-	var _arg1 C.gpointer     // out
-	var _cret C.GIOCondition // in
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
-
-	_cret = C.g_source_query_unix_fd(_arg0, _arg1)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(tag)
-
-	var _ioCondition IOCondition // out
-
-	_ioCondition = IOCondition(_cret)
-
-	return _ioCondition
-}
-
 // RemoveChildSource detaches child_source from source and destroys it.
 //
 // This API is only intended to be used by implementations of #GSource. Do not
@@ -1591,29 +1501,6 @@ func (source *Source) RemovePoll(fd *PollFD) {
 	C.g_source_remove_poll(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(fd)
-}
-
-// RemoveUnixFd reverses the effect of a previous call to
-// g_source_add_unix_fd().
-//
-// You only need to call this if you want to remove an fd from being watched
-// while keeping the same source around. In the normal case you will just want
-// to destroy the source.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-//
-// As the name suggests, this function is not available on Windows.
-func (source *Source) RemoveUnixFd(tag cgo.Handle) {
-	var _arg0 *C.GSource // out
-	var _arg1 C.gpointer // out
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
-
-	C.g_source_remove_unix_fd(_arg0, _arg1)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(tag)
 }
 
 // SetCallbackIndirect sets the callback function storing the data as a

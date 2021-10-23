@@ -246,6 +246,8 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GLib.Bytes.new_static"),
 	AbsoluteFilter("GLib.Bytes.unref_to_data"),
 	AbsoluteFilter("GLib.Bytes.unref_to_array"),
+	// Not available on Windows.
+	RegexFilter(`GLib.Source\..*unix.*`),
 
 	FileFilter("gasyncqueue."),
 	FileFilter("gatomic."),

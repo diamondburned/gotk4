@@ -17,6 +17,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 // gboolean _gotk4_gtk4_TextCharPredicate(gunichar, gpointer);

@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: gtk4-x11 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 import "C"

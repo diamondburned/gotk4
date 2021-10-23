@@ -15,6 +15,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <gtk/gtk.h>
 // void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"

@@ -16,6 +16,7 @@ import (
 
 // #cgo pkg-config: pangocairo pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pangocairo.h>
 // extern void callbackDelete(gpointer);

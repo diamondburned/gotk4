@@ -11,6 +11,7 @@ import (
 
 // #cgo pkg-config: gtk4-wayland gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <gdk/wayland/gdkwayland.h>
 // #include <glib-object.h>
 import "C"

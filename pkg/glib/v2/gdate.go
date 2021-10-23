@@ -4,6 +4,7 @@ package glib
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <glib.h>
 import "C"
 

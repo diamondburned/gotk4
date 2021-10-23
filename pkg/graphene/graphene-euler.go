@@ -13,6 +13,7 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"

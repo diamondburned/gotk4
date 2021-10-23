@@ -11,6 +11,7 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <pango/pango.h>
 import "C"
 

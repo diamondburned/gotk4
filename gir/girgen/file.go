@@ -123,6 +123,7 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 
 	fpen.Words("// #cgo pkg-config:", f.Pkgconfig())
 	fpen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
+	fpen.Words("// #include <stdlib.h>")
 
 	if incls := f.CIncludes(); len(incls) > 0 {
 		for _, incl := range incls {

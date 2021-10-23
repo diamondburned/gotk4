@@ -5,6 +5,7 @@ package gerror
 // #include <glib-object.h>
 // #include <gmodule.h>
 // #include <glib.h>
+// #include <stdlib.h>
 import "C"
 
 import (

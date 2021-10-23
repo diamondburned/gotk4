@@ -18,6 +18,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
 // void _gotk4_gsk4_ParseErrorFunc(GskParseLocation*, GskParseLocation*, GError*, gpointer);

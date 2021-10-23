@@ -590,7 +590,7 @@ func (v *Object) Emit(s string, args ...interface{}) interface{} {
 	defer C.free(unsafe.Pointer(cstr))
 
 	// Create array of this instance and arguments
-	valv := (*C.GValue)(C.malloc(C.sizeof_GValue * C.ulong(len(args)+1)))
+	valv := (*C.GValue)(C.malloc(C.sizeof_GValue * C.size_t(len(args)+1)))
 	defer C.free(unsafe.Pointer(valv))
 
 	// Add args and valv

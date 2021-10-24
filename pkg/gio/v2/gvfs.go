@@ -37,7 +37,7 @@ func init() {
 
 // VFS_EXTENSION_POINT_NAME: extension point for #GVfs functionality. See
 // [Extending GIO][extending-gio].
-const VFS_EXTENSION_POINT_NAME = "gio-vfs"
+const VFS_EXTENSION_POINT_NAME = C.VFS_EXTENSION_POINT_NAME
 
 // VFSFileLookupFunc: this function type is used by g_vfs_register_uri_scheme()
 // to make it possible for a client to associate an URI scheme to a different

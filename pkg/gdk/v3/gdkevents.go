@@ -39,27 +39,27 @@ func init() {
 }
 
 // BUTTON_MIDDLE: middle button.
-const BUTTON_MIDDLE = 2
+const BUTTON_MIDDLE = C.BUTTON_MIDDLE
 
 // BUTTON_PRIMARY: primary button. This is typically the left mouse button, or
 // the right button in a left-handed setup.
-const BUTTON_PRIMARY = 1
+const BUTTON_PRIMARY = C.BUTTON_PRIMARY
 
 // BUTTON_SECONDARY: secondary button. This is typically the right mouse button,
 // or the left button in a left-handed setup.
-const BUTTON_SECONDARY = 3
+const BUTTON_SECONDARY = C.BUTTON_SECONDARY
 
 // EVENT_PROPAGATE: use this macro as the return value for continuing the
 // propagation of an event handler.
-const EVENT_PROPAGATE = false
+const EVENT_PROPAGATE = C.EVENT_PROPAGATE
 
 // EVENT_STOP: use this macro as the return value for stopping the propagation
 // of an event handler.
-const EVENT_STOP = true
+const EVENT_STOP = C.EVENT_STOP
 
 // PRIORITY_REDRAW: this is the priority that the idle handler processing window
 // updates is given in the [GLib Main Loop][glib-The-Main-Event-Loop].
-const PRIORITY_REDRAW = 120
+const PRIORITY_REDRAW = C.PRIORITY_REDRAW
 
 // CrossingMode specifies the crossing mode for EventCrossing.
 type CrossingMode C.gint

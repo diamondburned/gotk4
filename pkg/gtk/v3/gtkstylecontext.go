@@ -35,256 +35,256 @@ func init() {
 // STYLE_CLASS_ACCELERATOR: CSS class to match an accelerator.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_ACCELERATOR = "accelerator"
+const STYLE_CLASS_ACCELERATOR = C.STYLE_CLASS_ACCELERATOR
 
 // STYLE_CLASS_ARROW: CSS class used when rendering an arrow element.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_ARROW = "arrow"
+const STYLE_CLASS_ARROW = C.STYLE_CLASS_ARROW
 
 // STYLE_CLASS_BACKGROUND: CSS class to match the window background.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_BACKGROUND = "background"
+const STYLE_CLASS_BACKGROUND = C.STYLE_CLASS_BACKGROUND
 
 // STYLE_CLASS_BOTTOM: CSS class to indicate an area at the bottom of a widget.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_BOTTOM = "bottom"
+const STYLE_CLASS_BOTTOM = C.STYLE_CLASS_BOTTOM
 
 // STYLE_CLASS_BUTTON: CSS class to match buttons.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_BUTTON = "button"
+const STYLE_CLASS_BUTTON = C.STYLE_CLASS_BUTTON
 
 // STYLE_CLASS_CALENDAR: CSS class to match calendars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_CALENDAR = "calendar"
+const STYLE_CLASS_CALENDAR = C.STYLE_CLASS_CALENDAR
 
 // STYLE_CLASS_CELL: CSS class to match content rendered in cell views.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_CELL = "cell"
+const STYLE_CLASS_CELL = C.STYLE_CLASS_CELL
 
 // STYLE_CLASS_CHECK: CSS class to match check boxes.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_CHECK = "check"
+const STYLE_CLASS_CHECK = C.STYLE_CLASS_CHECK
 
 // STYLE_CLASS_COMBOBOX_ENTRY: CSS class to match combobox entries.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_COMBOBOX_ENTRY = "combobox-entry"
+const STYLE_CLASS_COMBOBOX_ENTRY = C.STYLE_CLASS_COMBOBOX_ENTRY
 
 // STYLE_CLASS_CONTEXT_MENU: CSS class to match context menus.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_CONTEXT_MENU = "context-menu"
+const STYLE_CLASS_CONTEXT_MENU = C.STYLE_CLASS_CONTEXT_MENU
 
 // STYLE_CLASS_CSD: CSS class that gets added to windows which have client-side
 // decorations.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_CSD = "csd"
+const STYLE_CLASS_CSD = C.STYLE_CLASS_CSD
 
 // STYLE_CLASS_CURSOR_HANDLE: CSS class used when rendering a drag handle for
 // text selection.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_CURSOR_HANDLE = "cursor-handle"
+const STYLE_CLASS_CURSOR_HANDLE = C.STYLE_CLASS_CURSOR_HANDLE
 
 // STYLE_CLASS_DEFAULT: CSS class to match the default widget.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_DEFAULT = "default"
+const STYLE_CLASS_DEFAULT = C.STYLE_CLASS_DEFAULT
 
 // STYLE_CLASS_DESTRUCTIVE_ACTION: CSS class used when an action (usually a
 // button) is one that is expected to remove or destroy something visible to the
 // user.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_DESTRUCTIVE_ACTION = "destructive-action"
+const STYLE_CLASS_DESTRUCTIVE_ACTION = C.STYLE_CLASS_DESTRUCTIVE_ACTION
 
 // STYLE_CLASS_DIM_LABEL: CSS class to match dimmed labels.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_DIM_LABEL = "dim-label"
+const STYLE_CLASS_DIM_LABEL = C.STYLE_CLASS_DIM_LABEL
 
 // STYLE_CLASS_DND: CSS class for a drag-and-drop indicator.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_DND = "dnd"
+const STYLE_CLASS_DND = C.STYLE_CLASS_DND
 
 // STYLE_CLASS_DOCK: CSS class defining a dock area.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_DOCK = "dock"
+const STYLE_CLASS_DOCK = C.STYLE_CLASS_DOCK
 
 // STYLE_CLASS_ENTRY: CSS class to match text entries.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_ENTRY = "entry"
+const STYLE_CLASS_ENTRY = C.STYLE_CLASS_ENTRY
 
 // STYLE_CLASS_ERROR: CSS class for an area displaying an error message, such as
 // those in infobars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_ERROR = "error"
+const STYLE_CLASS_ERROR = C.STYLE_CLASS_ERROR
 
 // STYLE_CLASS_EXPANDER: CSS class defining an expander, such as those in
 // treeviews.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_EXPANDER = "expander"
+const STYLE_CLASS_EXPANDER = C.STYLE_CLASS_EXPANDER
 
 // STYLE_CLASS_FLAT: CSS class that is added when widgets that usually have a
 // frame or border (like buttons or entries) should appear without it.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_FLAT = "flat"
+const STYLE_CLASS_FLAT = C.STYLE_CLASS_FLAT
 
 // STYLE_CLASS_FRAME: CSS class defining a frame delimiting content, such as
 // Frame or the scrolled window frame around the scrollable area.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_FRAME = "frame"
+const STYLE_CLASS_FRAME = C.STYLE_CLASS_FRAME
 
 // STYLE_CLASS_GRIP: CSS class defining a resize grip.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_GRIP = "grip"
+const STYLE_CLASS_GRIP = C.STYLE_CLASS_GRIP
 
 // STYLE_CLASS_HEADER: CSS class to match a header element.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_HEADER = "header"
+const STYLE_CLASS_HEADER = C.STYLE_CLASS_HEADER
 
 // STYLE_CLASS_HIGHLIGHT: CSS class defining a highlighted area, such as
 // headings in assistants and calendars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_HIGHLIGHT = "highlight"
+const STYLE_CLASS_HIGHLIGHT = C.STYLE_CLASS_HIGHLIGHT
 
 // STYLE_CLASS_HORIZONTAL: CSS class for horizontally layered widgets.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_HORIZONTAL = "horizontal"
+const STYLE_CLASS_HORIZONTAL = C.STYLE_CLASS_HORIZONTAL
 
 // STYLE_CLASS_IMAGE: CSS class defining an image, such as the icon in an entry.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_IMAGE = "image"
+const STYLE_CLASS_IMAGE = C.STYLE_CLASS_IMAGE
 
 // STYLE_CLASS_INFO: CSS class for an area displaying an informational message,
 // such as those in infobars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_INFO = "info"
+const STYLE_CLASS_INFO = C.STYLE_CLASS_INFO
 
 // STYLE_CLASS_INLINE_TOOLBAR: CSS class to match inline toolbars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_INLINE_TOOLBAR = "inline-toolbar"
+const STYLE_CLASS_INLINE_TOOLBAR = C.STYLE_CLASS_INLINE_TOOLBAR
 
 // STYLE_CLASS_INSERTION_CURSOR: CSS class used when rendering a drag handle for
 // the insertion cursor position.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_INSERTION_CURSOR = "insertion-cursor"
+const STYLE_CLASS_INSERTION_CURSOR = C.STYLE_CLASS_INSERTION_CURSOR
 
 // STYLE_CLASS_LABEL: CSS class to match labels.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_LABEL = "label"
+const STYLE_CLASS_LABEL = C.STYLE_CLASS_LABEL
 
 // STYLE_CLASS_LEFT: CSS class to indicate an area at the left of a widget.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_LEFT = "left"
+const STYLE_CLASS_LEFT = C.STYLE_CLASS_LEFT
 
 // STYLE_CLASS_LEVEL_BAR: CSS class used when rendering a level indicator, such
 // as a battery charge level, or a password strength.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_LEVEL_BAR = "level-bar"
+const STYLE_CLASS_LEVEL_BAR = C.STYLE_CLASS_LEVEL_BAR
 
 // STYLE_CLASS_LINKED: CSS class to match a linked area, such as a box
 // containing buttons belonging to the same control.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_LINKED = "linked"
+const STYLE_CLASS_LINKED = C.STYLE_CLASS_LINKED
 
 // STYLE_CLASS_LIST: CSS class to match lists.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_LIST = "list"
+const STYLE_CLASS_LIST = C.STYLE_CLASS_LIST
 
 // STYLE_CLASS_LIST_ROW: CSS class to match list rows.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_LIST_ROW = "list-row"
+const STYLE_CLASS_LIST_ROW = C.STYLE_CLASS_LIST_ROW
 
 // STYLE_CLASS_MARK: CSS class defining marks in a widget, such as in scales.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_MARK = "mark"
+const STYLE_CLASS_MARK = C.STYLE_CLASS_MARK
 
 // STYLE_CLASS_MENU: CSS class to match menus.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_MENU = "menu"
+const STYLE_CLASS_MENU = C.STYLE_CLASS_MENU
 
 // STYLE_CLASS_MENUBAR: CSS class to menubars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_MENUBAR = "menubar"
+const STYLE_CLASS_MENUBAR = C.STYLE_CLASS_MENUBAR
 
 // STYLE_CLASS_MENUITEM: CSS class to match menu items.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_MENUITEM = "menuitem"
+const STYLE_CLASS_MENUITEM = C.STYLE_CLASS_MENUITEM
 
 // STYLE_CLASS_MESSAGE_DIALOG: CSS class that is added to message dialogs.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_MESSAGE_DIALOG = "message-dialog"
+const STYLE_CLASS_MESSAGE_DIALOG = C.STYLE_CLASS_MESSAGE_DIALOG
 
 // STYLE_CLASS_MONOSPACE: CSS class that is added to text view that should use a
 // monospace font.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_MONOSPACE = "monospace"
+const STYLE_CLASS_MONOSPACE = C.STYLE_CLASS_MONOSPACE
 
 // STYLE_CLASS_NEEDS_ATTENTION: CSS class used when an element needs the user
 // attention, for instance a button in a stack switcher corresponding to a
 // hidden page that changed state.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_NEEDS_ATTENTION = "needs-attention"
+const STYLE_CLASS_NEEDS_ATTENTION = C.STYLE_CLASS_NEEDS_ATTENTION
 
 // STYLE_CLASS_NOTEBOOK: CSS class defining a notebook.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_NOTEBOOK = "notebook"
+const STYLE_CLASS_NOTEBOOK = C.STYLE_CLASS_NOTEBOOK
 
 // STYLE_CLASS_OSD: CSS class used when rendering an OSD (On Screen Display)
 // element, on top of another container.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_OSD = "osd"
+const STYLE_CLASS_OSD = C.STYLE_CLASS_OSD
 
 // STYLE_CLASS_OVERSHOOT: CSS class that is added on the visual hints that
 // happen when scrolling is attempted past the limits of a scrollable area.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_OVERSHOOT = "overshoot"
+const STYLE_CLASS_OVERSHOOT = C.STYLE_CLASS_OVERSHOOT
 
 // STYLE_CLASS_PANE_SEPARATOR: CSS class for a pane separator, such as those in
 // Paned.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_PANE_SEPARATOR = "pane-separator"
+const STYLE_CLASS_PANE_SEPARATOR = C.STYLE_CLASS_PANE_SEPARATOR
 
 // STYLE_CLASS_PAPER: CSS class that is added to areas that should look like
 // paper.
@@ -293,228 +293,228 @@ const STYLE_CLASS_PANE_SEPARATOR = "pane-separator"
 // text on white background.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_PAPER = "paper"
+const STYLE_CLASS_PAPER = C.STYLE_CLASS_PAPER
 
 // STYLE_CLASS_POPOVER: CSS class that matches popovers.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_POPOVER = "popover"
+const STYLE_CLASS_POPOVER = C.STYLE_CLASS_POPOVER
 
 // STYLE_CLASS_POPUP: CSS class that is added to the toplevel windows used for
 // menus.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_POPUP = "popup"
+const STYLE_CLASS_POPUP = C.STYLE_CLASS_POPUP
 
 // STYLE_CLASS_PRIMARY_TOOLBAR: CSS class to match primary toolbars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_PRIMARY_TOOLBAR = "primary-toolbar"
+const STYLE_CLASS_PRIMARY_TOOLBAR = C.STYLE_CLASS_PRIMARY_TOOLBAR
 
 // STYLE_CLASS_PROGRESSBAR: CSS class to use when rendering activity as a
 // progressbar.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_PROGRESSBAR = "progressbar"
+const STYLE_CLASS_PROGRESSBAR = C.STYLE_CLASS_PROGRESSBAR
 
 // STYLE_CLASS_PULSE: CSS class to use when rendering a pulse in an
 // indeterminate progress bar.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_PULSE = "pulse"
+const STYLE_CLASS_PULSE = C.STYLE_CLASS_PULSE
 
 // STYLE_CLASS_QUESTION: CSS class for an area displaying a question to the
 // user, such as those in infobars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_QUESTION = "question"
+const STYLE_CLASS_QUESTION = C.STYLE_CLASS_QUESTION
 
 // STYLE_CLASS_RADIO: CSS class to match radio buttons.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_RADIO = "radio"
+const STYLE_CLASS_RADIO = C.STYLE_CLASS_RADIO
 
 // STYLE_CLASS_RAISED: CSS class to match a raised control, such as a raised
 // button on a toolbar.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_RAISED = "raised"
+const STYLE_CLASS_RAISED = C.STYLE_CLASS_RAISED
 
 // STYLE_CLASS_READ_ONLY: CSS class used to indicate a read-only state.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_READ_ONLY = "read-only"
+const STYLE_CLASS_READ_ONLY = C.STYLE_CLASS_READ_ONLY
 
 // STYLE_CLASS_RIGHT: CSS class to indicate an area at the right of a widget.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_RIGHT = "right"
+const STYLE_CLASS_RIGHT = C.STYLE_CLASS_RIGHT
 
 // STYLE_CLASS_RUBBERBAND: CSS class to match the rubberband selection
 // rectangle.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_RUBBERBAND = "rubberband"
+const STYLE_CLASS_RUBBERBAND = C.STYLE_CLASS_RUBBERBAND
 
 // STYLE_CLASS_SCALE: CSS class to match scale widgets.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SCALE = "scale"
+const STYLE_CLASS_SCALE = C.STYLE_CLASS_SCALE
 
 // STYLE_CLASS_SCALE_HAS_MARKS_ABOVE: CSS class to match scale widgets with
 // marks attached, all the marks are above for horizontal Scale. left for
 // vertical Scale.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SCALE_HAS_MARKS_ABOVE = "scale-has-marks-above"
+const STYLE_CLASS_SCALE_HAS_MARKS_ABOVE = C.STYLE_CLASS_SCALE_HAS_MARKS_ABOVE
 
 // STYLE_CLASS_SCALE_HAS_MARKS_BELOW: CSS class to match scale widgets with
 // marks attached, all the marks are below for horizontal Scale, right for
 // vertical Scale.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SCALE_HAS_MARKS_BELOW = "scale-has-marks-below"
+const STYLE_CLASS_SCALE_HAS_MARKS_BELOW = C.STYLE_CLASS_SCALE_HAS_MARKS_BELOW
 
 // STYLE_CLASS_SCROLLBAR: CSS class to match scrollbars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SCROLLBAR = "scrollbar"
+const STYLE_CLASS_SCROLLBAR = C.STYLE_CLASS_SCROLLBAR
 
 // STYLE_CLASS_SCROLLBARS_JUNCTION: CSS class to match the junction area between
 // an horizontal and vertical scrollbar, when they’re both shown.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SCROLLBARS_JUNCTION = "scrollbars-junction"
+const STYLE_CLASS_SCROLLBARS_JUNCTION = C.STYLE_CLASS_SCROLLBARS_JUNCTION
 
 // STYLE_CLASS_SEPARATOR: CSS class for a separator.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SEPARATOR = "separator"
+const STYLE_CLASS_SEPARATOR = C.STYLE_CLASS_SEPARATOR
 
 // STYLE_CLASS_SIDEBAR: CSS class defining a sidebar, such as the left side in a
 // file chooser.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SIDEBAR = "sidebar"
+const STYLE_CLASS_SIDEBAR = C.STYLE_CLASS_SIDEBAR
 
 // STYLE_CLASS_SLIDER: CSS class to match sliders.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SLIDER = "slider"
+const STYLE_CLASS_SLIDER = C.STYLE_CLASS_SLIDER
 
 // STYLE_CLASS_SPINBUTTON: CSS class defining an spinbutton.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SPINBUTTON = "spinbutton"
+const STYLE_CLASS_SPINBUTTON = C.STYLE_CLASS_SPINBUTTON
 
 // STYLE_CLASS_SPINNER: CSS class to use when rendering activity as a “spinner”.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SPINNER = "spinner"
+const STYLE_CLASS_SPINNER = C.STYLE_CLASS_SPINNER
 
 // STYLE_CLASS_STATUSBAR: CSS class to match statusbars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_STATUSBAR = "statusbar"
+const STYLE_CLASS_STATUSBAR = C.STYLE_CLASS_STATUSBAR
 
 // STYLE_CLASS_SUBTITLE: CSS class used for the subtitle label in a titlebar in
 // a toplevel window.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SUBTITLE = "subtitle"
+const STYLE_CLASS_SUBTITLE = C.STYLE_CLASS_SUBTITLE
 
 // STYLE_CLASS_SUGGESTED_ACTION: CSS class used when an action (usually a
 // button) is the primary suggested action in a specific context.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_SUGGESTED_ACTION = "suggested-action"
+const STYLE_CLASS_SUGGESTED_ACTION = C.STYLE_CLASS_SUGGESTED_ACTION
 
 // STYLE_CLASS_TITLE: CSS class used for the title label in a titlebar in a
 // toplevel window.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_TITLE = "title"
+const STYLE_CLASS_TITLE = C.STYLE_CLASS_TITLE
 
 // STYLE_CLASS_TITLEBAR: CSS class used when rendering a titlebar in a toplevel
 // window.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_TITLEBAR = "titlebar"
+const STYLE_CLASS_TITLEBAR = C.STYLE_CLASS_TITLEBAR
 
 // STYLE_CLASS_TOOLBAR: CSS class to match toolbars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_TOOLBAR = "toolbar"
+const STYLE_CLASS_TOOLBAR = C.STYLE_CLASS_TOOLBAR
 
 // STYLE_CLASS_TOOLTIP: CSS class to match tooltip windows.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_TOOLTIP = "tooltip"
+const STYLE_CLASS_TOOLTIP = C.STYLE_CLASS_TOOLTIP
 
 // STYLE_CLASS_TOP: CSS class to indicate an area at the top of a widget.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_TOP = "top"
+const STYLE_CLASS_TOP = C.STYLE_CLASS_TOP
 
 // STYLE_CLASS_TOUCH_SELECTION: CSS class for touch selection popups on entries
 // and text views.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_TOUCH_SELECTION = "touch-selection"
+const STYLE_CLASS_TOUCH_SELECTION = C.STYLE_CLASS_TOUCH_SELECTION
 
 // STYLE_CLASS_TROUGH: CSS class to match troughs, as in scrollbars and
 // progressbars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_TROUGH = "trough"
+const STYLE_CLASS_TROUGH = C.STYLE_CLASS_TROUGH
 
 // STYLE_CLASS_UNDERSHOOT: CSS class that is added on the visual hints that
 // happen where content is 'scrolled off' and can be made visible by scrolling.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_UNDERSHOOT = "undershoot"
+const STYLE_CLASS_UNDERSHOOT = C.STYLE_CLASS_UNDERSHOOT
 
 // STYLE_CLASS_VERTICAL: CSS class for vertically layered widgets.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_VERTICAL = "vertical"
+const STYLE_CLASS_VERTICAL = C.STYLE_CLASS_VERTICAL
 
 // STYLE_CLASS_VIEW: CSS class defining a view, such as iconviews or treeviews.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_VIEW = "view"
+const STYLE_CLASS_VIEW = C.STYLE_CLASS_VIEW
 
 // STYLE_CLASS_WARNING: CSS class for an area displaying a warning message, such
 // as those in infobars.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_WARNING = "warning"
+const STYLE_CLASS_WARNING = C.STYLE_CLASS_WARNING
 
 // STYLE_CLASS_WIDE: CSS class to indicate that a UI element should be 'wide'.
 // Used by Paned.
 //
 // Refer to individual widget documentation for used style classes.
-const STYLE_CLASS_WIDE = "wide"
+const STYLE_CLASS_WIDE = C.STYLE_CLASS_WIDE
 
 // STYLE_PROPERTY_BACKGROUND_COLOR: property holding the background color of
 // rendered elements as a RGBA.
-const STYLE_PROPERTY_BACKGROUND_COLOR = "background-color"
+const STYLE_PROPERTY_BACKGROUND_COLOR = C.STYLE_PROPERTY_BACKGROUND_COLOR
 
 // STYLE_PROPERTY_BACKGROUND_IMAGE: property holding the element’s background as
 // a #cairo_pattern_t.
-const STYLE_PROPERTY_BACKGROUND_IMAGE = "background-image"
+const STYLE_PROPERTY_BACKGROUND_IMAGE = C.STYLE_PROPERTY_BACKGROUND_IMAGE
 
 // STYLE_PROPERTY_BORDER_COLOR: property holding the element’s border color as a
 // RGBA.
-const STYLE_PROPERTY_BORDER_COLOR = "border-color"
+const STYLE_PROPERTY_BORDER_COLOR = C.STYLE_PROPERTY_BORDER_COLOR
 
 // STYLE_PROPERTY_BORDER_RADIUS: property holding the rendered element’s border
 // radius in pixels as a #gint.
-const STYLE_PROPERTY_BORDER_RADIUS = "border-radius"
+const STYLE_PROPERTY_BORDER_RADIUS = C.STYLE_PROPERTY_BORDER_RADIUS
 
 // STYLE_PROPERTY_BORDER_STYLE: property holding the element’s border style as a
 // BorderStyle.
-const STYLE_PROPERTY_BORDER_STYLE = "border-style"
+const STYLE_PROPERTY_BORDER_STYLE = C.STYLE_PROPERTY_BORDER_STYLE
 
 // STYLE_PROPERTY_BORDER_WIDTH: property holding the rendered element’s border
 // width in pixels as a Border. The border is the intermediary spacing property
@@ -523,49 +523,49 @@ const STYLE_PROPERTY_BORDER_STYLE = "border-style"
 // gtk_render_frame() uses this property to find out the frame line width, so
 // Widgets rendering frames may need to add up this padding when requesting
 // size.
-const STYLE_PROPERTY_BORDER_WIDTH = "border-width"
+const STYLE_PROPERTY_BORDER_WIDTH = C.STYLE_PROPERTY_BORDER_WIDTH
 
 // STYLE_PROPERTY_COLOR: property holding the foreground color of rendered
 // elements as a RGBA.
-const STYLE_PROPERTY_COLOR = "color"
+const STYLE_PROPERTY_COLOR = C.STYLE_PROPERTY_COLOR
 
 // STYLE_PROPERTY_FONT: property holding the font properties used when rendering
 // text as a FontDescription.
-const STYLE_PROPERTY_FONT = "font"
+const STYLE_PROPERTY_FONT = C.STYLE_PROPERTY_FONT
 
 // STYLE_PROPERTY_MARGIN: property holding the rendered element’s margin as a
 // Border. The margin is defined as the spacing between the border of the
 // element and its surrounding elements. It is external to Widget's size
 // allocations, and the most external spacing property of the
 // padding/border/margin series.
-const STYLE_PROPERTY_MARGIN = "margin"
+const STYLE_PROPERTY_MARGIN = C.STYLE_PROPERTY_MARGIN
 
 // STYLE_PROPERTY_PADDING: property holding the rendered element’s padding as a
 // Border. The padding is defined as the spacing between the inner part of the
 // element border and its child. It’s the innermost spacing property of the
 // padding/border/margin series.
-const STYLE_PROPERTY_PADDING = "padding"
+const STYLE_PROPERTY_PADDING = C.STYLE_PROPERTY_PADDING
 
 // STYLE_REGION_COLUMN: widget region name to define a treeview column.
 //
 // Deprecated: Don't use regions.
-const STYLE_REGION_COLUMN = "column"
+const STYLE_REGION_COLUMN = C.STYLE_REGION_COLUMN
 
 // STYLE_REGION_COLUMN_HEADER: widget region name to define a treeview column
 // header.
 //
 // Deprecated: Don't use regions.
-const STYLE_REGION_COLUMN_HEADER = "column-header"
+const STYLE_REGION_COLUMN_HEADER = C.STYLE_REGION_COLUMN_HEADER
 
 // STYLE_REGION_ROW: widget region name to define a treeview row.
 //
 // Deprecated: Don't use regions.
-const STYLE_REGION_ROW = "row"
+const STYLE_REGION_ROW = C.STYLE_REGION_ROW
 
 // STYLE_REGION_TAB: widget region name to define a notebook tab.
 //
 // Deprecated: Don't use regions.
-const STYLE_REGION_TAB = "tab"
+const STYLE_REGION_TAB = C.STYLE_REGION_TAB
 
 // StyleContextPrintFlags flags that modify the behavior of
 // gtk_style_context_to_string(). New values may be added to this enumeration.

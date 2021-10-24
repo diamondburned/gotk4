@@ -41,11 +41,11 @@ func init() {
 // "app." for application-wide actions.
 //
 // See also g_menu_model_get_item_attribute() and g_menu_item_set_attribute().
-const MENU_ATTRIBUTE_ACTION = "action"
+const MENU_ATTRIBUTE_ACTION = C.MENU_ATTRIBUTE_ACTION
 
 // MENU_ATTRIBUTE_ACTION_NAMESPACE: menu item attribute that holds the namespace
 // for all action names in menus that are linked from this item.
-const MENU_ATTRIBUTE_ACTION_NAMESPACE = "action-namespace"
+const MENU_ATTRIBUTE_ACTION_NAMESPACE = C.MENU_ATTRIBUTE_ACTION_NAMESPACE
 
 // MENU_ATTRIBUTE_ICON: menu item attribute which holds the icon of the item.
 //
@@ -54,29 +54,29 @@ const MENU_ATTRIBUTE_ACTION_NAMESPACE = "action-namespace"
 // This attribute is intended only to represent 'noun' icons such as favicons
 // for a webpage, or application icons. It should not be used for 'verbs' (ie:
 // stock icons).
-const MENU_ATTRIBUTE_ICON = "icon"
+const MENU_ATTRIBUTE_ICON = C.MENU_ATTRIBUTE_ICON
 
 // MENU_ATTRIBUTE_LABEL: menu item attribute which holds the label of the item.
-const MENU_ATTRIBUTE_LABEL = "label"
+const MENU_ATTRIBUTE_LABEL = C.MENU_ATTRIBUTE_LABEL
 
 // MENU_ATTRIBUTE_TARGET: menu item attribute which holds the target with which
 // the item's action will be activated.
 //
 // See also g_menu_item_set_action_and_target().
-const MENU_ATTRIBUTE_TARGET = "target"
+const MENU_ATTRIBUTE_TARGET = C.MENU_ATTRIBUTE_TARGET
 
 // MENU_LINK_SECTION: name of the link that associates a menu item with a
 // section. The linked menu will usually be shown in place of the menu item,
 // using the item's label as a header.
 //
 // See also g_menu_item_set_link().
-const MENU_LINK_SECTION = "section"
+const MENU_LINK_SECTION = C.MENU_LINK_SECTION
 
 // MENU_LINK_SUBMENU: name of the link that associates a menu item with a
 // submenu.
 //
 // See also g_menu_item_set_link().
-const MENU_LINK_SUBMENU = "submenu"
+const MENU_LINK_SUBMENU = C.MENU_LINK_SUBMENU
 
 // MenuAttributeIter is an opaque structure type. You must access it using the
 // functions below.

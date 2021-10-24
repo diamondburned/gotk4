@@ -28,12 +28,12 @@ func init() {
 
 // URI_RESERVED_CHARS_GENERIC_DELIMITERS: generic delimiters characters as
 // defined in RFC 3986 (https://tools.ietf.org/html/rfc3986). Includes :/?#[]@.
-const URI_RESERVED_CHARS_GENERIC_DELIMITERS = ":/?#[]@"
+const URI_RESERVED_CHARS_GENERIC_DELIMITERS = C.URI_RESERVED_CHARS_GENERIC_DELIMITERS
 
 // URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS: subcomponent delimiter characters
 // as defined in RFC 3986 (https://tools.ietf.org/html/rfc3986). Includes
 // !$&'()*+,;=.
-const URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS = "!$&'()*+,;="
+const URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS = C.URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS
 
 // URIError: error codes returned by #GUri methods.
 type URIError C.gint

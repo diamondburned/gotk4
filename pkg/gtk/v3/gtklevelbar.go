@@ -27,15 +27,15 @@ func init() {
 
 // LEVEL_BAR_OFFSET_FULL: name used for the stock full offset included by
 // LevelBar.
-const LEVEL_BAR_OFFSET_FULL = "full"
+const LEVEL_BAR_OFFSET_FULL = C.LEVEL_BAR_OFFSET_FULL
 
 // LEVEL_BAR_OFFSET_HIGH: name used for the stock high offset included by
 // LevelBar.
-const LEVEL_BAR_OFFSET_HIGH = "high"
+const LEVEL_BAR_OFFSET_HIGH = C.LEVEL_BAR_OFFSET_HIGH
 
 // LEVEL_BAR_OFFSET_LOW: name used for the stock low offset included by
 // LevelBar.
-const LEVEL_BAR_OFFSET_LOW = "low"
+const LEVEL_BAR_OFFSET_LOW = C.LEVEL_BAR_OFFSET_LOW
 
 // LevelBarOverrider contains methods that are overridable.
 //

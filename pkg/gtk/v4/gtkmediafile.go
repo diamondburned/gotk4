@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-const MEDIA_FILE_EXTENSION_POINT_NAME = "gtk-media-file"
+const MEDIA_FILE_EXTENSION_POINT_NAME = C.MEDIA_FILE_EXTENSION_POINT_NAME
 
 // MediaFileOverrider contains methods that are overridable.
 //

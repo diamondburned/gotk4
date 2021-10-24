@@ -38,11 +38,11 @@ func init() {
 
 // ATTR_INDEX_FROM_TEXT_BEGINNING: value for start_index in PangoAttribute that
 // indicates the beginning of the text.
-const ATTR_INDEX_FROM_TEXT_BEGINNING = 0
+const ATTR_INDEX_FROM_TEXT_BEGINNING = C.ATTR_INDEX_FROM_TEXT_BEGINNING
 
 // ATTR_INDEX_TO_TEXT_END: value for end_index in PangoAttribute that indicates
 // the end of the text.
-const ATTR_INDEX_TO_TEXT_END = 4294967295
+const ATTR_INDEX_TO_TEXT_END = C.ATTR_INDEX_TO_TEXT_END
 
 // AttrType: PangoAttrType distinguishes between different types of attributes.
 //

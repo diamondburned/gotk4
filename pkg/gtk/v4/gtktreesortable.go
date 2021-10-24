@@ -30,12 +30,12 @@ func init() {
 // gtk.TreeSortable.
 //
 // See also: gtk.TreeSortable.SetSortColumnID().
-const TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID = -1
+const TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID = C.TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID
 
 // TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID disables sorting in a gtk.TreeSortable.
 //
 // See also: gtk.TreeSortable.SetSortColumnID().
-const TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID = -2
+const TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID = C.TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID
 
 // TreeIterCompareFunc should return a negative integer, zero, or a positive
 // integer if a sorts before b, a sorts with b, or a sorts after b respectively.

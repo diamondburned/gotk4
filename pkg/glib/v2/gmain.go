@@ -31,17 +31,17 @@ func init() {
 //
 // In GLib this priority is used when adding timeout functions with
 // g_timeout_add(). In GDK this priority is used for events from the X server.
-const PRIORITY_DEFAULT = 0
+const PRIORITY_DEFAULT = C.PRIORITY_DEFAULT
 
 // PRIORITY_DEFAULT_IDLE: use this for default priority idle functions.
 //
 // In GLib this priority is used when adding idle functions with g_idle_add().
-const PRIORITY_DEFAULT_IDLE = 200
+const PRIORITY_DEFAULT_IDLE = C.PRIORITY_DEFAULT_IDLE
 
 // PRIORITY_HIGH: use this for high priority event sources.
 //
 // It is not used within GLib or GTK+.
-const PRIORITY_HIGH = -100
+const PRIORITY_HIGH = C.PRIORITY_HIGH
 
 // PRIORITY_HIGH_IDLE: use this for high priority idle functions.
 //
@@ -49,42 +49,20 @@ const PRIORITY_HIGH = -100
 // PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is done to ensure
 // that any pending resizes are processed before any pending redraws, so that
 // widgets are not redrawn twice unnecessarily.).
-const PRIORITY_HIGH_IDLE = 100
+const PRIORITY_HIGH_IDLE = C.PRIORITY_HIGH_IDLE
 
 // PRIORITY_LOW: use this for very low priority background tasks.
 //
 // It is not used within GLib or GTK+.
-const PRIORITY_LOW = 300
+const PRIORITY_LOW = C.PRIORITY_LOW
 
 // SOURCE_CONTINUE: use this macro as the return value of a Func to leave the
 // #GSource in the main loop.
-const SOURCE_CONTINUE = true
+const SOURCE_CONTINUE = C.SOURCE_CONTINUE
 
 // SOURCE_REMOVE: use this macro as the return value of a Func to remove the
 // #GSource from the main loop.
-const SOURCE_REMOVE = false
-
-// ChildWatchFunc: prototype of a WatchSource callback, called when a child
-// process has exited. To interpret status, see the documentation for
-// g_spawn_check_exit_status().
-type ChildWatchFunc func(pid Pid, status int)
-
-//export _gotk4_glib2_ChildWatchFunc
-func _gotk4_glib2_ChildWatchFunc(arg0 C.GPid, arg1 C.gint, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var pid Pid    // out
-	var status int // out
-
-	pid = int(arg0)
-	status = int(arg1)
-
-	fn := v.(ChildWatchFunc)
-	fn(pid, status)
-}
+const SOURCE_REMOVE = C.SOURCE_REMOVE
 
 // SourceFunc specifies the type of function passed to g_timeout_add(),
 // g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
@@ -109,62 +87,6 @@ func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 	}
 
 	return cret
-}
-
-// NewChildWatchSource creates a new child_watch source.
-//
-// The source will not initially be associated with any Context and must be
-// added to one with g_source_attach() before it will be executed.
-//
-// Note that child watch sources can only be used in conjunction with g_spawn...
-// when the G_SPAWN_DO_NOT_REAP_CHILD flag is used.
-//
-// Note that on platforms where #GPid must be explicitly closed (see
-// g_spawn_close_pid()) pid must not be closed while the source is still active.
-// Typically, you will want to call g_spawn_close_pid() in the callback function
-// for the source.
-//
-// On POSIX platforms, the following restrictions apply to this API due to
-// limitations in POSIX process interfaces:
-//
-// * pid must be a child of this process * pid must be positive * the
-// application must not call waitpid with a non-positive first argument, for
-// instance in another thread * the application must not wait for pid to exit by
-// any other mechanism, including waitpid(pid, ...) or a second child-watch
-// source for the same pid * the application must not ignore SIGCHLD
-//
-// If any of those conditions are not met, this and related APIs will not work
-// correctly. This can often be diagnosed via a GLib warning stating that ECHILD
-// was received by waitpid.
-//
-// Calling waitpid for specific processes other than pid remains a valid thing
-// to do.
-//
-// The function takes the following parameters:
-//
-//    - pid process to watch. On POSIX the positive pid of a child process. On
-//    Windows a handle for a process (which doesn't have to be a child).
-//
-func NewChildWatchSource(pid Pid) *Source {
-	var _arg1 C.GPid     // out
-	var _cret *C.GSource // in
-
-	_arg1 = C.int(pid)
-
-	_cret = C.g_child_watch_source_new(_arg1)
-	runtime.KeepAlive(pid)
-
-	var _source *Source // out
-
-	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
-	)
-
-	return _source
 }
 
 // GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
@@ -501,61 +423,6 @@ func (context *MainContext) Acquire() bool {
 	return _ok
 }
 
-// AddPoll adds a file descriptor to the set of file descriptors polled for this
-// context. This will very seldom be used directly. Instead a typical event
-// source will use g_source_add_unix_fd() instead.
-func (context *MainContext) AddPoll(fd *PollFD, priority int) {
-	var _arg0 *C.GMainContext // out
-	var _arg1 *C.GPollFD      // out
-	var _arg2 C.gint          // out
-
-	if context != nil {
-		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
-	}
-	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
-	_arg2 = C.gint(priority)
-
-	C.g_main_context_add_poll(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(fd)
-	runtime.KeepAlive(priority)
-}
-
-// Check passes the results of polling back to the main loop. You should be
-// careful to pass fds and its length n_fds as received from
-// g_main_context_query(), as this functions relies on assumptions on how fds is
-// filled.
-//
-// You must have successfully acquired the context with g_main_context_acquire()
-// before you may call this function.
-func (context *MainContext) Check(maxPriority int, fds []PollFD) bool {
-	var _arg0 *C.GMainContext // out
-	var _arg1 C.gint          // out
-	var _arg2 *C.GPollFD      // out
-	var _arg3 C.gint
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
-	_arg1 = C.gint(maxPriority)
-	_arg3 = (C.gint)(len(fds))
-	if len(fds) > 0 {
-		_arg2 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
-	}
-
-	_cret = C.g_main_context_check(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(maxPriority)
-	runtime.KeepAlive(fds)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Dispatch dispatches all pending sources.
 //
 // You must have successfully acquired the context with g_main_context_acquire()
@@ -831,42 +698,6 @@ func (context *MainContext) PushThreadDefault() {
 	runtime.KeepAlive(context)
 }
 
-// Query determines information necessary to poll this main loop. You should be
-// careful to pass the resulting fds array and its length n_fds as is when
-// calling g_main_context_check(), as this function relies on assumptions made
-// when the array is filled.
-//
-// You must have successfully acquired the context with g_main_context_acquire()
-// before you may call this function.
-func (context *MainContext) Query(maxPriority int, fds []PollFD) (timeout_ int, gint int) {
-	var _arg0 *C.GMainContext // out
-	var _arg1 C.gint          // out
-	var _arg2 C.gint          // in
-	var _arg3 *C.GPollFD      // out
-	var _arg4 C.gint
-	var _cret C.gint // in
-
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
-	_arg1 = C.gint(maxPriority)
-	_arg4 = (C.gint)(len(fds))
-	if len(fds) > 0 {
-		_arg3 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
-	}
-
-	_cret = C.g_main_context_query(_arg0, _arg1, &_arg2, _arg3, _arg4)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(maxPriority)
-	runtime.KeepAlive(fds)
-
-	var _timeout_ int // out
-	var _gint int     // out
-
-	_timeout_ = int(_arg2)
-	_gint = int(_cret)
-
-	return _timeout_, _gint
-}
-
 // Release releases ownership of a context previously acquired by this thread
 // with g_main_context_acquire(). If the context was acquired multiple times,
 // the ownership will be released only when g_main_context_release() is called
@@ -878,20 +709,6 @@ func (context *MainContext) Release() {
 
 	C.g_main_context_release(_arg0)
 	runtime.KeepAlive(context)
-}
-
-// RemovePoll removes file descriptor from the set of file descriptors to be
-// polled for a particular context.
-func (context *MainContext) RemovePoll(fd *PollFD) {
-	var _arg0 *C.GMainContext // out
-	var _arg1 *C.GPollFD      // out
-
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
-	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
-
-	C.g_main_context_remove_poll(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(fd)
 }
 
 // Wakeup: if context is currently blocking in g_main_context_iteration()
@@ -1185,29 +1002,6 @@ func (source *Source) AddChildSource(childSource *Source) {
 	runtime.KeepAlive(childSource)
 }
 
-// AddPoll adds a file descriptor to the set of file descriptors polled for this
-// source. This is usually combined with g_source_new() to add an event source.
-// The event source's check function will typically test the revents field in
-// the FD struct and return TRUE if events need to be processed.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-//
-// Using this API forces the linear scanning of event sources on each main loop
-// iteration. Newly-written event sources should try to use
-// g_source_add_unix_fd() instead of this API.
-func (source *Source) AddPoll(fd *PollFD) {
-	var _arg0 *C.GSource // out
-	var _arg1 *C.GPollFD // out
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
-
-	C.g_source_add_poll(_arg0, _arg1)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(fd)
-}
-
 // Attach adds a #GSource to a context so that it will be executed within that
 // context. Remove it by calling g_source_destroy().
 //
@@ -1484,23 +1278,6 @@ func (source *Source) RemoveChildSource(childSource *Source) {
 	C.g_source_remove_child_source(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(childSource)
-}
-
-// RemovePoll removes a file descriptor from the set of file descriptors polled
-// for this source.
-//
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
-func (source *Source) RemovePoll(fd *PollFD) {
-	var _arg0 *C.GSource // out
-	var _arg1 *C.GPollFD // out
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
-
-	C.g_source_remove_poll(_arg0, _arg1)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(fd)
 }
 
 // SetCallbackIndirect sets the callback function storing the data as a

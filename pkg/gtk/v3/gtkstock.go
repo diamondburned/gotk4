@@ -25,570 +25,570 @@ import "C"
 //
 // Deprecated: Use named icon &quot;help-about&quot; or the label
 // &quot;_About&quot;.
-const STOCK_ABOUT = "gtk-about"
+const STOCK_ABOUT = C.STOCK_ABOUT
 
 // STOCK_ADD: “Add” item and icon.
 //
 // Deprecated: Use named icon &quot;list-add&quot; or the label
 // &quot;_Add&quot;.
-const STOCK_ADD = "gtk-add"
+const STOCK_ADD = C.STOCK_ADD
 
 // STOCK_APPLY: “Apply” item and icon.
 //
 // Deprecated: Do not use an icon. Use label &quot;_Apply&quot;.
-const STOCK_APPLY = "gtk-apply"
+const STOCK_APPLY = C.STOCK_APPLY
 
 // STOCK_BOLD: “Bold” item and icon.
 //
 // Deprecated: Use named icon &quot;format-text-bold&quot;.
-const STOCK_BOLD = "gtk-bold"
+const STOCK_BOLD = C.STOCK_BOLD
 
 // STOCK_CANCEL: “Cancel” item and icon.
 //
 // Deprecated: Do not use an icon. Use label &quot;_Cancel&quot;.
-const STOCK_CANCEL = "gtk-cancel"
+const STOCK_CANCEL = C.STOCK_CANCEL
 
 // STOCK_CAPS_LOCK_WARNING “Caps Lock Warning” icon.
 //
 // Deprecated: Use named icon &quot;dialog-warning-symbolic&quot;.
-const STOCK_CAPS_LOCK_WARNING = "gtk-caps-lock-warning"
+const STOCK_CAPS_LOCK_WARNING = C.STOCK_CAPS_LOCK_WARNING
 
 // STOCK_CDROM: “CD-Rom” item and icon.
 //
 // Deprecated: Use named icon &quot;media-optical&quot;.
-const STOCK_CDROM = "gtk-cdrom"
+const STOCK_CDROM = C.STOCK_CDROM
 
 // STOCK_CLEAR: “Clear” item and icon.
 //
 // Deprecated: Use named icon &quot;edit-clear&quot;.
-const STOCK_CLEAR = "gtk-clear"
+const STOCK_CLEAR = C.STOCK_CLEAR
 
 // STOCK_CLOSE: “Close” item and icon.
 //
 // Deprecated: Use named icon &quot;window-close&quot; or the label
 // &quot;_Close&quot;.
-const STOCK_CLOSE = "gtk-close"
+const STOCK_CLOSE = C.STOCK_CLOSE
 
 // STOCK_COLOR_PICKER: “Color Picker” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_COLOR_PICKER = "gtk-color-picker"
+const STOCK_COLOR_PICKER = C.STOCK_COLOR_PICKER
 
 // STOCK_CONNECT: “Connect” icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_CONNECT = "gtk-connect"
+const STOCK_CONNECT = C.STOCK_CONNECT
 
 // STOCK_CONVERT: “Convert” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_CONVERT = "gtk-convert"
+const STOCK_CONVERT = C.STOCK_CONVERT
 
 // STOCK_COPY: “Copy” item and icon.
 //
 // Deprecated: Use the named icon &quot;edit-copy&quot; or the label
 // &quot;_Copy&quot;.
-const STOCK_COPY = "gtk-copy"
+const STOCK_COPY = C.STOCK_COPY
 
 // STOCK_CUT: “Cut” item and icon.
 //
 // Deprecated: Use the named icon &quot;edit-cut&quot; or the label
 // &quot;Cu_t&quot;.
-const STOCK_CUT = "gtk-cut"
+const STOCK_CUT = C.STOCK_CUT
 
 // STOCK_DELETE: “Delete” item and icon.
 //
 // Deprecated: Use the named icon &quot;edit-delete&quot; or the label
 // &quot;_Delete&quot;.
-const STOCK_DELETE = "gtk-delete"
+const STOCK_DELETE = C.STOCK_DELETE
 
 // STOCK_DIALOG_AUTHENTICATION: “Authentication” item and icon.
 //
 // Deprecated: Use named icon &quot;dialog-password&quot;.
-const STOCK_DIALOG_AUTHENTICATION = "gtk-dialog-authentication"
+const STOCK_DIALOG_AUTHENTICATION = C.STOCK_DIALOG_AUTHENTICATION
 
 // STOCK_DIALOG_ERROR: “Error” item and icon.
 //
 // Deprecated: Use named icon &quot;dialog-error&quot;.
-const STOCK_DIALOG_ERROR = "gtk-dialog-error"
+const STOCK_DIALOG_ERROR = C.STOCK_DIALOG_ERROR
 
 // STOCK_DIALOG_INFO: “Information” item and icon.
 //
 // Deprecated: Use named icon &quot;dialog-information&quot;.
-const STOCK_DIALOG_INFO = "gtk-dialog-info"
+const STOCK_DIALOG_INFO = C.STOCK_DIALOG_INFO
 
 // STOCK_DIALOG_QUESTION: “Question” item and icon.
 //
 // Deprecated: Use named icon &quot;dialog-question&quot;.
-const STOCK_DIALOG_QUESTION = "gtk-dialog-question"
+const STOCK_DIALOG_QUESTION = C.STOCK_DIALOG_QUESTION
 
 // STOCK_DIALOG_WARNING: “Warning” item and icon.
 //
 // Deprecated: Use named icon &quot;dialog-warning&quot;.
-const STOCK_DIALOG_WARNING = "gtk-dialog-warning"
+const STOCK_DIALOG_WARNING = C.STOCK_DIALOG_WARNING
 
 // STOCK_DIRECTORY: “Directory” icon.
 //
 // Deprecated: Use named icon &quot;folder&quot;.
-const STOCK_DIRECTORY = "gtk-directory"
+const STOCK_DIRECTORY = C.STOCK_DIRECTORY
 
 // STOCK_DISCARD: “Discard” item.
 //
 // Deprecated: since version 3.10.
-const STOCK_DISCARD = "gtk-discard"
+const STOCK_DISCARD = C.STOCK_DISCARD
 
 // STOCK_DISCONNECT: “Disconnect” icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_DISCONNECT = "gtk-disconnect"
+const STOCK_DISCONNECT = C.STOCK_DISCONNECT
 
 // STOCK_DND: “Drag-And-Drop” icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_DND = "gtk-dnd"
+const STOCK_DND = C.STOCK_DND
 
 // STOCK_DND_MULTIPLE: “Drag-And-Drop multiple” icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_DND_MULTIPLE = "gtk-dnd-multiple"
+const STOCK_DND_MULTIPLE = C.STOCK_DND_MULTIPLE
 
 // STOCK_EDIT: “Edit” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_EDIT = "gtk-edit"
+const STOCK_EDIT = C.STOCK_EDIT
 
 // STOCK_EXECUTE: “Execute” item and icon.
 //
 // Deprecated: Use named icon &quot;system-run&quot;.
-const STOCK_EXECUTE = "gtk-execute"
+const STOCK_EXECUTE = C.STOCK_EXECUTE
 
 // STOCK_FILE: “File” item and icon.
 //
 // Since 3.0, this item has a label, before it only had an icon.
 //
 // Deprecated: Use named icon &quot;text-x-generic&quot;.
-const STOCK_FILE = "gtk-file"
+const STOCK_FILE = C.STOCK_FILE
 
 // STOCK_FIND: “Find” item and icon.
 //
 // Deprecated: Use named icon &quot;edit-find&quot;.
-const STOCK_FIND = "gtk-find"
+const STOCK_FIND = C.STOCK_FIND
 
 // STOCK_FIND_AND_REPLACE: “Find and Replace” item and icon.
 //
 // Deprecated: Use named icon &quot;edit-find-replace&quot;.
-const STOCK_FIND_AND_REPLACE = "gtk-find-and-replace"
+const STOCK_FIND_AND_REPLACE = C.STOCK_FIND_AND_REPLACE
 
 // STOCK_FLOPPY: “Floppy” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_FLOPPY = "gtk-floppy"
+const STOCK_FLOPPY = C.STOCK_FLOPPY
 
 // STOCK_FULLSCREEN: “Fullscreen” item and icon.
 //
 // Deprecated: Use named icon &quot;view-fullscreen&quot;.
-const STOCK_FULLSCREEN = "gtk-fullscreen"
+const STOCK_FULLSCREEN = C.STOCK_FULLSCREEN
 
 // STOCK_GOTO_BOTTOM: “Bottom” item and icon.
 //
 // Deprecated: Use named icon &quot;go-bottom&quot;.
-const STOCK_GOTO_BOTTOM = "gtk-goto-bottom"
+const STOCK_GOTO_BOTTOM = C.STOCK_GOTO_BOTTOM
 
 // STOCK_GOTO_FIRST: “First” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;go-first&quot;.
-const STOCK_GOTO_FIRST = "gtk-goto-first"
+const STOCK_GOTO_FIRST = C.STOCK_GOTO_FIRST
 
 // STOCK_GOTO_LAST: “Last” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;go-last&quot;.
-const STOCK_GOTO_LAST = "gtk-goto-last"
+const STOCK_GOTO_LAST = C.STOCK_GOTO_LAST
 
 // STOCK_GOTO_TOP: “Top” item and icon.
 //
 // Deprecated: Use named icon &quot;go-top&quot;.
-const STOCK_GOTO_TOP = "gtk-goto-top"
+const STOCK_GOTO_TOP = C.STOCK_GOTO_TOP
 
 // STOCK_GO_BACK: “Back” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;go-previous&quot;.
-const STOCK_GO_BACK = "gtk-go-back"
+const STOCK_GO_BACK = C.STOCK_GO_BACK
 
 // STOCK_GO_DOWN: “Down” item and icon.
 //
 // Deprecated: Use named icon &quot;go-down&quot;.
-const STOCK_GO_DOWN = "gtk-go-down"
+const STOCK_GO_DOWN = C.STOCK_GO_DOWN
 
 // STOCK_GO_FORWARD: “Forward” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;go-next&quot;.
-const STOCK_GO_FORWARD = "gtk-go-forward"
+const STOCK_GO_FORWARD = C.STOCK_GO_FORWARD
 
 // STOCK_GO_UP: “Up” item and icon.
 //
 // Deprecated: Use named icon &quot;go-up&quot;.
-const STOCK_GO_UP = "gtk-go-up"
+const STOCK_GO_UP = C.STOCK_GO_UP
 
 // STOCK_HARDDISK: “Harddisk” item and icon.
 //
 // Deprecated: Use named icon &quot;drive-harddisk&quot;.
-const STOCK_HARDDISK = "gtk-harddisk"
+const STOCK_HARDDISK = C.STOCK_HARDDISK
 
 // STOCK_HELP: “Help” item and icon.
 //
 // Deprecated: Use named icon &quot;help-browser&quot;.
-const STOCK_HELP = "gtk-help"
+const STOCK_HELP = C.STOCK_HELP
 
 // STOCK_HOME: “Home” item and icon.
 //
 // Deprecated: Use named icon &quot;go-home&quot;.
-const STOCK_HOME = "gtk-home"
+const STOCK_HOME = C.STOCK_HOME
 
 // STOCK_INDENT: “Indent” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;format-indent-more&quot;.
-const STOCK_INDENT = "gtk-indent"
+const STOCK_INDENT = C.STOCK_INDENT
 
 // STOCK_INDEX: “Index” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_INDEX = "gtk-index"
+const STOCK_INDEX = C.STOCK_INDEX
 
 // STOCK_INFO: “Info” item and icon.
 //
 // Deprecated: Use named icon &quot;dialog-information&quot;.
-const STOCK_INFO = "gtk-info"
+const STOCK_INFO = C.STOCK_INFO
 
 // STOCK_ITALIC: “Italic” item and icon.
 //
 // Deprecated: Use named icon &quot;format-text-italic&quot;.
-const STOCK_ITALIC = "gtk-italic"
+const STOCK_ITALIC = C.STOCK_ITALIC
 
 // STOCK_JUMP_TO: “Jump to” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;go-jump&quot;.
-const STOCK_JUMP_TO = "gtk-jump-to"
+const STOCK_JUMP_TO = C.STOCK_JUMP_TO
 
 // STOCK_JUSTIFY_CENTER: “Center” item and icon.
 //
 // Deprecated: Use named icon &quot;format-justify-center&quot;.
-const STOCK_JUSTIFY_CENTER = "gtk-justify-center"
+const STOCK_JUSTIFY_CENTER = C.STOCK_JUSTIFY_CENTER
 
 // STOCK_JUSTIFY_FILL: “Fill” item and icon.
 //
 // Deprecated: Use named icon &quot;format-justify-fill&quot;.
-const STOCK_JUSTIFY_FILL = "gtk-justify-fill"
+const STOCK_JUSTIFY_FILL = C.STOCK_JUSTIFY_FILL
 
 // STOCK_JUSTIFY_LEFT: “Left” item and icon.
 //
 // Deprecated: Use named icon &quot;format-justify-left&quot;.
-const STOCK_JUSTIFY_LEFT = "gtk-justify-left"
+const STOCK_JUSTIFY_LEFT = C.STOCK_JUSTIFY_LEFT
 
 // STOCK_JUSTIFY_RIGHT: “Right” item and icon.
 //
 // Deprecated: Use named icon &quot;format-justify-right&quot;.
-const STOCK_JUSTIFY_RIGHT = "gtk-justify-right"
+const STOCK_JUSTIFY_RIGHT = C.STOCK_JUSTIFY_RIGHT
 
 // STOCK_LEAVE_FULLSCREEN: “Leave Fullscreen” item and icon.
 //
 // Deprecated: Use named icon &quot;view-restore&quot;.
-const STOCK_LEAVE_FULLSCREEN = "gtk-leave-fullscreen"
+const STOCK_LEAVE_FULLSCREEN = C.STOCK_LEAVE_FULLSCREEN
 
 // STOCK_MEDIA_FORWARD: “Media Forward” item and icon. The icon has an RTL
 // variant.
 //
 // Deprecated: Use named icon &quot;media-seek-forward&quot; or the label
 // &quot;_Forward&quot;.
-const STOCK_MEDIA_FORWARD = "gtk-media-forward"
+const STOCK_MEDIA_FORWARD = C.STOCK_MEDIA_FORWARD
 
 // STOCK_MEDIA_NEXT: “Media Next” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;media-skip-forward&quot; or the label
 // &quot;_Next&quot;.
-const STOCK_MEDIA_NEXT = "gtk-media-next"
+const STOCK_MEDIA_NEXT = C.STOCK_MEDIA_NEXT
 
 // STOCK_MEDIA_PAUSE: “Media Pause” item and icon.
 //
 // Deprecated: Use named icon &quot;media-playback-pause&quot; or the label
 // &quot;P_ause&quot;.
-const STOCK_MEDIA_PAUSE = "gtk-media-pause"
+const STOCK_MEDIA_PAUSE = C.STOCK_MEDIA_PAUSE
 
 // STOCK_MEDIA_PLAY: “Media Play” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;media-playback-start&quot; or the label
 // &quot;_Play&quot;.
-const STOCK_MEDIA_PLAY = "gtk-media-play"
+const STOCK_MEDIA_PLAY = C.STOCK_MEDIA_PLAY
 
 // STOCK_MEDIA_PREVIOUS: “Media Previous” item and icon. The icon has an RTL
 // variant.
 //
 // Deprecated: Use named icon &quot;media-skip-backward&quot; or the label
 // &quot;Pre_vious&quot;.
-const STOCK_MEDIA_PREVIOUS = "gtk-media-previous"
+const STOCK_MEDIA_PREVIOUS = C.STOCK_MEDIA_PREVIOUS
 
 // STOCK_MEDIA_RECORD: “Media Record” item and icon.
 //
 // Deprecated: Use named icon &quot;media-record&quot; or the label
 // &quot;_Record&quot;.
-const STOCK_MEDIA_RECORD = "gtk-media-record"
+const STOCK_MEDIA_RECORD = C.STOCK_MEDIA_RECORD
 
 // STOCK_MEDIA_REWIND: “Media Rewind” item and icon. The icon has an RTL
 // variant.
 //
 // Deprecated: Use named icon &quot;media-seek-backward&quot; or the label
 // &quot;R_ewind&quot;.
-const STOCK_MEDIA_REWIND = "gtk-media-rewind"
+const STOCK_MEDIA_REWIND = C.STOCK_MEDIA_REWIND
 
 // STOCK_MEDIA_STOP: “Media Stop” item and icon.
 //
 // Deprecated: Use named icon &quot;media-playback-stop&quot; or the label
 // &quot;_Stop&quot;.
-const STOCK_MEDIA_STOP = "gtk-media-stop"
+const STOCK_MEDIA_STOP = C.STOCK_MEDIA_STOP
 
 // STOCK_MISSING_IMAGE: “Missing image” icon.
 //
 // Deprecated: Use named icon &quot;image-missing&quot;.
-const STOCK_MISSING_IMAGE = "gtk-missing-image"
+const STOCK_MISSING_IMAGE = C.STOCK_MISSING_IMAGE
 
 // STOCK_NETWORK: “Network” item and icon.
 //
 // Deprecated: Use named icon &quot;network-workgroup&quot;.
-const STOCK_NETWORK = "gtk-network"
+const STOCK_NETWORK = C.STOCK_NETWORK
 
 // STOCK_NEW: “New” item and icon.
 //
 // Deprecated: Use named icon &quot;document-new&quot; or the label
 // &quot;_New&quot;.
-const STOCK_NEW = "gtk-new"
+const STOCK_NEW = C.STOCK_NEW
 
 // STOCK_NO: “No” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_NO = "gtk-no"
+const STOCK_NO = C.STOCK_NO
 
 // STOCK_OK: “OK” item and icon.
 //
 // Deprecated: Do not use an icon. Use label &quot;_OK&quot;.
-const STOCK_OK = "gtk-ok"
+const STOCK_OK = C.STOCK_OK
 
 // STOCK_OPEN: “Open” item and icon.
 //
 // Deprecated: Use named icon &quot;document-open&quot; or the label
 // &quot;_Open&quot;.
-const STOCK_OPEN = "gtk-open"
+const STOCK_OPEN = C.STOCK_OPEN
 
 // STOCK_ORIENTATION_LANDSCAPE: “Landscape Orientation” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_ORIENTATION_LANDSCAPE = "gtk-orientation-landscape"
+const STOCK_ORIENTATION_LANDSCAPE = C.STOCK_ORIENTATION_LANDSCAPE
 
 // STOCK_ORIENTATION_PORTRAIT: “Portrait Orientation” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_ORIENTATION_PORTRAIT = "gtk-orientation-portrait"
+const STOCK_ORIENTATION_PORTRAIT = C.STOCK_ORIENTATION_PORTRAIT
 
 // STOCK_ORIENTATION_REVERSE_LANDSCAPE: “Reverse Landscape Orientation” item and
 // icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_ORIENTATION_REVERSE_LANDSCAPE = "gtk-orientation-reverse-landscape"
+const STOCK_ORIENTATION_REVERSE_LANDSCAPE = C.STOCK_ORIENTATION_REVERSE_LANDSCAPE
 
 // STOCK_ORIENTATION_REVERSE_PORTRAIT: “Reverse Portrait Orientation” item and
 // icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_ORIENTATION_REVERSE_PORTRAIT = "gtk-orientation-reverse-portrait"
+const STOCK_ORIENTATION_REVERSE_PORTRAIT = C.STOCK_ORIENTATION_REVERSE_PORTRAIT
 
 // STOCK_PAGE_SETUP: “Page Setup” item and icon.
 //
 // Deprecated: Use named icon &quot;document-page-setup&quot; or the label
 // &quot;Page Set_up&quot;.
-const STOCK_PAGE_SETUP = "gtk-page-setup"
+const STOCK_PAGE_SETUP = C.STOCK_PAGE_SETUP
 
 // STOCK_PASTE: “Paste” item and icon.
 //
 // Deprecated: Use named icon &quot;edit-paste&quot; or the label
 // &quot;_Paste&quot;.
-const STOCK_PASTE = "gtk-paste"
+const STOCK_PASTE = C.STOCK_PASTE
 
 // STOCK_PREFERENCES: “Preferences” item and icon.
 //
 // Deprecated: Use named icon &quot;preferences-system&quot; or the label
 // &quot;_Preferences&quot;.
-const STOCK_PREFERENCES = "gtk-preferences"
+const STOCK_PREFERENCES = C.STOCK_PREFERENCES
 
 // STOCK_PRINT: “Print” item and icon.
 //
 // Deprecated: Use named icon &quot;document-print&quot; or the label
 // &quot;_Print&quot;.
-const STOCK_PRINT = "gtk-print"
+const STOCK_PRINT = C.STOCK_PRINT
 
 // STOCK_PRINT_ERROR: “Print Error” icon.
 //
 // Deprecated: Use named icon &quot;printer-error&quot;.
-const STOCK_PRINT_ERROR = "gtk-print-error"
+const STOCK_PRINT_ERROR = C.STOCK_PRINT_ERROR
 
 // STOCK_PRINT_PAUSED: “Print Paused” icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_PRINT_PAUSED = "gtk-print-paused"
+const STOCK_PRINT_PAUSED = C.STOCK_PRINT_PAUSED
 
 // STOCK_PRINT_PREVIEW: “Print Preview” item and icon.
 //
 // Deprecated: Use label &quot;Pre_view&quot;.
-const STOCK_PRINT_PREVIEW = "gtk-print-preview"
+const STOCK_PRINT_PREVIEW = C.STOCK_PRINT_PREVIEW
 
 // STOCK_PRINT_REPORT: “Print Report” icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_PRINT_REPORT = "gtk-print-report"
+const STOCK_PRINT_REPORT = C.STOCK_PRINT_REPORT
 
 // STOCK_PRINT_WARNING: “Print Warning” icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_PRINT_WARNING = "gtk-print-warning"
+const STOCK_PRINT_WARNING = C.STOCK_PRINT_WARNING
 
 // STOCK_PROPERTIES: “Properties” item and icon.
 //
 // Deprecated: Use named icon &quot;document-properties&quot; or the label
 // &quot;_Properties&quot;.
-const STOCK_PROPERTIES = "gtk-properties"
+const STOCK_PROPERTIES = C.STOCK_PROPERTIES
 
 // STOCK_QUIT: “Quit” item and icon.
 //
 // Deprecated: Use named icon &quot;application-exit&quot; or the label
 // &quot;_Quit&quot;.
-const STOCK_QUIT = "gtk-quit"
+const STOCK_QUIT = C.STOCK_QUIT
 
 // STOCK_REDO: “Redo” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;edit-redo&quot; or the label
 // &quot;_Redo&quot;.
-const STOCK_REDO = "gtk-redo"
+const STOCK_REDO = C.STOCK_REDO
 
 // STOCK_REFRESH: “Refresh” item and icon.
 //
 // Deprecated: Use named icon &quot;view-refresh&quot; or the label
 // &quot;_Refresh&quot;.
-const STOCK_REFRESH = "gtk-refresh"
+const STOCK_REFRESH = C.STOCK_REFRESH
 
 // STOCK_REMOVE: “Remove” item and icon.
 //
 // Deprecated: Use named icon &quot;list-remove&quot; or the label
 // &quot;_Remove&quot;.
-const STOCK_REMOVE = "gtk-remove"
+const STOCK_REMOVE = C.STOCK_REMOVE
 
 // STOCK_REVERT_TO_SAVED: “Revert” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;document-revert&quot; or the label
 // &quot;_Revert&quot;.
-const STOCK_REVERT_TO_SAVED = "gtk-revert-to-saved"
+const STOCK_REVERT_TO_SAVED = C.STOCK_REVERT_TO_SAVED
 
 // STOCK_SAVE: “Save” item and icon.
 //
 // Deprecated: Use named icon &quot;document-save&quot; or the label
 // &quot;_Save&quot;.
-const STOCK_SAVE = "gtk-save"
+const STOCK_SAVE = C.STOCK_SAVE
 
 // STOCK_SAVE_AS: “Save As” item and icon.
 //
 // Deprecated: Use named icon &quot;document-save-as&quot; or the label
 // &quot;Save _As&quot;.
-const STOCK_SAVE_AS = "gtk-save-as"
+const STOCK_SAVE_AS = C.STOCK_SAVE_AS
 
 // STOCK_SELECT_ALL: “Select All” item and icon.
 //
 // Deprecated: Use named icon &quot;edit-select-all&quot; or the label
 // &quot;Select _All&quot;.
-const STOCK_SELECT_ALL = "gtk-select-all"
+const STOCK_SELECT_ALL = C.STOCK_SELECT_ALL
 
 // STOCK_SELECT_COLOR: “Color” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_SELECT_COLOR = "gtk-select-color"
+const STOCK_SELECT_COLOR = C.STOCK_SELECT_COLOR
 
 // STOCK_SELECT_FONT: “Font” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_SELECT_FONT = "gtk-select-font"
+const STOCK_SELECT_FONT = C.STOCK_SELECT_FONT
 
 // STOCK_SORT_ASCENDING: “Ascending” item and icon.
 //
 // Deprecated: Use named icon &quot;view-sort-ascending&quot;.
-const STOCK_SORT_ASCENDING = "gtk-sort-ascending"
+const STOCK_SORT_ASCENDING = C.STOCK_SORT_ASCENDING
 
 // STOCK_SORT_DESCENDING: “Descending” item and icon.
 //
 // Deprecated: Use named icon &quot;view-sort-descending&quot;.
-const STOCK_SORT_DESCENDING = "gtk-sort-descending"
+const STOCK_SORT_DESCENDING = C.STOCK_SORT_DESCENDING
 
 // STOCK_SPELL_CHECK: “Spell Check” item and icon.
 //
 // Deprecated: Use named icon &quot;tools-check-spelling&quot;.
-const STOCK_SPELL_CHECK = "gtk-spell-check"
+const STOCK_SPELL_CHECK = C.STOCK_SPELL_CHECK
 
 // STOCK_STOP: “Stop” item and icon.
 //
 // Deprecated: Use named icon &quot;process-stop&quot; or the label
 // &quot;_Stop&quot;.
-const STOCK_STOP = "gtk-stop"
+const STOCK_STOP = C.STOCK_STOP
 
 // STOCK_STRIKETHROUGH: “Strikethrough” item and icon.
 //
 // Deprecated: Use named icon &quot;format-text-strikethrough&quot; or the label
 // &quot;_Strikethrough&quot;.
-const STOCK_STRIKETHROUGH = "gtk-strikethrough"
+const STOCK_STRIKETHROUGH = C.STOCK_STRIKETHROUGH
 
 // STOCK_UNDELETE: “Undelete” item and icon. The icon has an RTL variant.
 //
 // Deprecated: since version 3.10.
-const STOCK_UNDELETE = "gtk-undelete"
+const STOCK_UNDELETE = C.STOCK_UNDELETE
 
 // STOCK_UNDERLINE: “Underline” item and icon.
 //
 // Deprecated: Use named icon &quot;format-text-underline&quot; or the label
 // &quot;_Underline&quot;.
-const STOCK_UNDERLINE = "gtk-underline"
+const STOCK_UNDERLINE = C.STOCK_UNDERLINE
 
 // STOCK_UNDO: “Undo” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;edit-undo&quot; or the label
 // &quot;_Undo&quot;.
-const STOCK_UNDO = "gtk-undo"
+const STOCK_UNDO = C.STOCK_UNDO
 
 // STOCK_UNINDENT: “Unindent” item and icon. The icon has an RTL variant.
 //
 // Deprecated: Use named icon &quot;format-indent-less&quot;.
-const STOCK_UNINDENT = "gtk-unindent"
+const STOCK_UNINDENT = C.STOCK_UNINDENT
 
 // STOCK_YES: “Yes” item and icon.
 //
 // Deprecated: since version 3.10.
-const STOCK_YES = "gtk-yes"
+const STOCK_YES = C.STOCK_YES
 
 // STOCK_ZOOM_100: “Zoom 100%” item and icon.
 //
 // Deprecated: Use named icon &quot;zoom-original&quot; or the label
 // &quot;_Normal Size&quot;.
-const STOCK_ZOOM_100 = "gtk-zoom-100"
+const STOCK_ZOOM_100 = C.STOCK_ZOOM_100
 
 // STOCK_ZOOM_FIT: “Zoom to Fit” item and icon.
 //
 // Deprecated: Use named icon &quot;zoom-fit-best&quot; or the label &quot;Best
 // _Fit&quot;.
-const STOCK_ZOOM_FIT = "gtk-zoom-fit"
+const STOCK_ZOOM_FIT = C.STOCK_ZOOM_FIT
 
 // STOCK_ZOOM_IN: “Zoom In” item and icon.
 //
 // Deprecated: Use named icon &quot;zoom-in&quot; or the label &quot;Zoom
 // _In&quot;.
-const STOCK_ZOOM_IN = "gtk-zoom-in"
+const STOCK_ZOOM_IN = C.STOCK_ZOOM_IN
 
 // STOCK_ZOOM_OUT: “Zoom Out” item and icon.
 //
 // Deprecated: Use named icon &quot;zoom-out&quot; or the label &quot;Zoom
 // _Out&quot;.
-const STOCK_ZOOM_OUT = "gtk-zoom-out"
+const STOCK_ZOOM_OUT = C.STOCK_ZOOM_OUT
 
 type Stock = string
 

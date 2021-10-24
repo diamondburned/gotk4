@@ -17,7 +17,7 @@ import "C"
 //      char buf[G_ASCII_DTOSTR_BUF_SIZE];
 //
 //      fprintf (out, "value=s\n", g_ascii_dtostr (buf, sizeof (buf), value));.
-const ASCII_DTOSTR_BUF_SIZE = 39
+const ASCII_DTOSTR_BUF_SIZE = C.ASCII_DTOSTR_BUF_SIZE
 
 // STR_DELIMITERS: standard delimiters, used in g_strdelimit().
-const STR_DELIMITERS = "_-|> <."
+const STR_DELIMITERS = C.STR_DELIMITERS

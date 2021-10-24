@@ -10,16 +10,16 @@ import "C"
 
 // VERSION_MAJOR: major component of the version of Pango available at
 // compile-time.
-const VERSION_MAJOR = 1
+const VERSION_MAJOR = C.VERSION_MAJOR
 
 // VERSION_MICRO: micro component of the version of Pango available at
 // compile-time.
-const VERSION_MICRO = 4
+const VERSION_MICRO = C.VERSION_MICRO
 
 // VERSION_MINOR: minor component of the version of Pango available at
 // compile-time.
-const VERSION_MINOR = 48
+const VERSION_MINOR = C.VERSION_MINOR
 
 // VERSION_STRING: string literal containing the version of Pango available at
 // compile-time.
-const VERSION_STRING = "1.48.4"
+const VERSION_STRING = C.VERSION_STRING

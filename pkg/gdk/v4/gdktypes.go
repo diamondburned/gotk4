@@ -37,14 +37,14 @@ func init() {
 //
 // This can be used in gdk.Drop.Status() messages when any drop can be accepted
 // or a more specific drop method is not yet known.
-const ACTION_ALL = 7
+const ACTION_ALL = C.ACTION_ALL
 
 // CURRENT_TIME represents the current time, and can be used anywhere a time is
 // expected.
-const CURRENT_TIME = 0
+const CURRENT_TIME = C.CURRENT_TIME
 
 // MODIFIER_MASK: mask covering all entries in GdkModifierType.
-const MODIFIER_MASK = 469769999
+const MODIFIER_MASK = C.MODIFIER_MASK
 
 // AxisUse defines how device axes are interpreted by GTK.
 //

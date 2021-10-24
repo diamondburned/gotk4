@@ -11,27 +11,27 @@ import "C"
 // BINARY_AGE: like atk_get_binary_age(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const BINARY_AGE = 23610
+const BINARY_AGE = C.BINARY_AGE
 
 // INTERFACE_AGE: like atk_get_interface_age(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const INTERFACE_AGE = 1
+const INTERFACE_AGE = C.INTERFACE_AGE
 
 // MAJOR_VERSION: like atk_get_major_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MAJOR_VERSION = 2
+const MAJOR_VERSION = C.MAJOR_VERSION
 
 // MICRO_VERSION: like atk_get_micro_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MICRO_VERSION = 0
+const MICRO_VERSION = C.MICRO_VERSION
 
 // MINOR_VERSION: like atk_get_minor_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MINOR_VERSION = 36
+const MINOR_VERSION = C.MINOR_VERSION
 
 // VERSION_MIN_REQUIRED: macro that should be defined by the user prior to
 // including the atk/atk.h header. The definition should be one of the
@@ -44,7 +44,7 @@ const MINOR_VERSION = 36
 // then using functions that were deprecated in version ATK_VERSION_MIN_REQUIRED
 // or earlier will cause warnings (but using functions deprecated in later
 // releases will not).
-const VERSION_MIN_REQUIRED = 2
+const VERSION_MIN_REQUIRED = C.VERSION_MIN_REQUIRED
 
 // GetBinaryAge returns the binary age as passed to libtool when building the
 // ATK library the process is running against.

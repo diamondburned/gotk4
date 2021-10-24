@@ -28,25 +28,25 @@ func init() {
 }
 
 // PAPER_NAME_A3: name for the A3 paper size.
-const PAPER_NAME_A3 = "iso_a3"
+const PAPER_NAME_A3 = C.PAPER_NAME_A3
 
 // PAPER_NAME_A4: name for the A4 paper size.
-const PAPER_NAME_A4 = "iso_a4"
+const PAPER_NAME_A4 = C.PAPER_NAME_A4
 
 // PAPER_NAME_A5: name for the A5 paper size.
-const PAPER_NAME_A5 = "iso_a5"
+const PAPER_NAME_A5 = C.PAPER_NAME_A5
 
 // PAPER_NAME_B5: name for the B5 paper size.
-const PAPER_NAME_B5 = "iso_b5"
+const PAPER_NAME_B5 = C.PAPER_NAME_B5
 
 // PAPER_NAME_EXECUTIVE: name for the Executive paper size.
-const PAPER_NAME_EXECUTIVE = "na_executive"
+const PAPER_NAME_EXECUTIVE = C.PAPER_NAME_EXECUTIVE
 
 // PAPER_NAME_LEGAL: name for the Legal paper size.
-const PAPER_NAME_LEGAL = "na_legal"
+const PAPER_NAME_LEGAL = C.PAPER_NAME_LEGAL
 
 // PAPER_NAME_LETTER: name for the Letter paper size.
-const PAPER_NAME_LETTER = "na_letter"
+const PAPER_NAME_LETTER = C.PAPER_NAME_LETTER
 
 // PaperSize handles paper sizes. It uses the standard called PWG 5101.1-2002
 // PWG: Standard for Media Standardized Names

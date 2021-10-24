@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -43,8 +42,6 @@ type MountOperationOverrider interface {
 	AskQuestion(message string, choices []string)
 	// Reply emits the Operation::reply signal.
 	Reply(result MountOperationResult)
-	// ShowProcesses: virtual implementation of Operation::show-processes.
-	ShowProcesses(message string, processes []glib.Pid, choices []string)
 	ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
 }
 
@@ -491,20 +488,6 @@ func (op *MountOperation) ConnectAskQuestion(f func(message string, choices []st
 // ConnectReply: emitted when the user has replied to the mount operation.
 func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) externglib.SignalHandle {
 	return op.Connect("reply", f)
-}
-
-// ConnectShowProcesses: emitted when one or more processes are blocking an
-// operation e.g. unmounting/ejecting a #GMount or stopping a #GDrive.
-//
-// Note that this signal may be emitted several times to update the list of
-// blocking processes as processes close files. The application should only
-// respond with g_mount_operation_reply() to the latest signal (setting
-// Operation:choice to the choice the user made).
-//
-// If the message contains a line break, the first line should be presented as a
-// heading. For example, it may be used as the primary text in a MessageDialog.
-func (op *MountOperation) ConnectShowProcesses(f func(message string, processes []glib.Pid, choices []string)) externglib.SignalHandle {
-	return op.Connect("show-processes", f)
 }
 
 // ConnectShowUnmountProgress: emitted when an unmount operation has been busy

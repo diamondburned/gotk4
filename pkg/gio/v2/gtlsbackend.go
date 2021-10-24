@@ -33,7 +33,7 @@ func init() {
 
 // TLS_BACKEND_EXTENSION_POINT_NAME: extension point for TLS functionality via
 // Backend. See [Extending GIO][extending-gio].
-const TLS_BACKEND_EXTENSION_POINT_NAME = "gio-tls-backend"
+const TLS_BACKEND_EXTENSION_POINT_NAME = C.TLS_BACKEND_EXTENSION_POINT_NAME
 
 // TLSBackendOverrider contains methods that are overridable.
 //

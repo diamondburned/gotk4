@@ -32,7 +32,7 @@ func init() {
 
 // MEMORY_MONITOR_EXTENSION_POINT_NAME: extension point for memory usage
 // monitoring functionality. See [Extending GIO][extending-gio].
-const MEMORY_MONITOR_EXTENSION_POINT_NAME = "gio-memory-monitor"
+const MEMORY_MONITOR_EXTENSION_POINT_NAME = C.MEMORY_MONITOR_EXTENSION_POINT_NAME
 
 // MemoryMonitorOverrider contains methods that are overridable.
 //

@@ -28,14 +28,14 @@ func init() {
 // center around the baseline.
 //
 // This is mainly used in vertical writing directions.
-const ANALYSIS_FLAG_CENTERED_BASELINE = 1
+const ANALYSIS_FLAG_CENTERED_BASELINE = C.ANALYSIS_FLAG_CENTERED_BASELINE
 
 // ANALYSIS_FLAG_IS_ELLIPSIS: whether this run holds ellipsized text.
-const ANALYSIS_FLAG_IS_ELLIPSIS = 2
+const ANALYSIS_FLAG_IS_ELLIPSIS = C.ANALYSIS_FLAG_IS_ELLIPSIS
 
 // ANALYSIS_FLAG_NEED_HYPHEN: whether to add a hyphen at the end of the run
 // during shaping.
-const ANALYSIS_FLAG_NEED_HYPHEN = 4
+const ANALYSIS_FLAG_NEED_HYPHEN = C.ANALYSIS_FLAG_NEED_HYPHEN
 
 // Analysis: PangoAnalysis structure stores information about the properties of
 // a segment of text.

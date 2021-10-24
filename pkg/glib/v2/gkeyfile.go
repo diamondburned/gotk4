@@ -30,121 +30,121 @@ func init() {
 // defined in the Desktop Entry Specification
 // (http://freedesktop.org/Standards/desktop-entry-spec). Consult the
 // specification for more details about the meanings of the keys below.
-const KEY_FILE_DESKTOP_GROUP = "Desktop Entry"
+const KEY_FILE_DESKTOP_GROUP = C.KEY_FILE_DESKTOP_GROUP
 
 // KEY_FILE_DESKTOP_KEY_ACTIONS: key under KEY_FILE_DESKTOP_GROUP, whose value
 // is a string list giving the available application actions.
-const KEY_FILE_DESKTOP_KEY_ACTIONS = "Actions"
+const KEY_FILE_DESKTOP_KEY_ACTIONS = C.KEY_FILE_DESKTOP_KEY_ACTIONS
 
 // KEY_FILE_DESKTOP_KEY_CATEGORIES: key under KEY_FILE_DESKTOP_GROUP, whose
 // value is a list of strings giving the categories in which the desktop entry
 // should be shown in a menu.
-const KEY_FILE_DESKTOP_KEY_CATEGORIES = "Categories"
+const KEY_FILE_DESKTOP_KEY_CATEGORIES = C.KEY_FILE_DESKTOP_KEY_CATEGORIES
 
 // KEY_FILE_DESKTOP_KEY_COMMENT: key under KEY_FILE_DESKTOP_GROUP, whose value
 // is a localized string giving the tooltip for the desktop entry.
-const KEY_FILE_DESKTOP_KEY_COMMENT = "Comment"
+const KEY_FILE_DESKTOP_KEY_COMMENT = C.KEY_FILE_DESKTOP_KEY_COMMENT
 
 // KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE: key under KEY_FILE_DESKTOP_GROUP,
 // whose value is a boolean set to true if the application is D-Bus activatable.
-const KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE = "DBusActivatable"
+const KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE = C.KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE
 
 // KEY_FILE_DESKTOP_KEY_EXEC: key under KEY_FILE_DESKTOP_GROUP, whose value is a
 // string giving the command line to execute. It is only valid for desktop
 // entries with the Application type.
-const KEY_FILE_DESKTOP_KEY_EXEC = "Exec"
+const KEY_FILE_DESKTOP_KEY_EXEC = C.KEY_FILE_DESKTOP_KEY_EXEC
 
 // KEY_FILE_DESKTOP_KEY_GENERIC_NAME: key under KEY_FILE_DESKTOP_GROUP, whose
 // value is a localized string giving the generic name of the desktop entry.
-const KEY_FILE_DESKTOP_KEY_GENERIC_NAME = "GenericName"
+const KEY_FILE_DESKTOP_KEY_GENERIC_NAME = C.KEY_FILE_DESKTOP_KEY_GENERIC_NAME
 
 // KEY_FILE_DESKTOP_KEY_HIDDEN: key under KEY_FILE_DESKTOP_GROUP, whose value is
 // a boolean stating whether the desktop entry has been deleted by the user.
-const KEY_FILE_DESKTOP_KEY_HIDDEN = "Hidden"
+const KEY_FILE_DESKTOP_KEY_HIDDEN = C.KEY_FILE_DESKTOP_KEY_HIDDEN
 
 // KEY_FILE_DESKTOP_KEY_ICON: key under KEY_FILE_DESKTOP_GROUP, whose value is a
 // localized string giving the name of the icon to be displayed for the desktop
 // entry.
-const KEY_FILE_DESKTOP_KEY_ICON = "Icon"
+const KEY_FILE_DESKTOP_KEY_ICON = C.KEY_FILE_DESKTOP_KEY_ICON
 
 // KEY_FILE_DESKTOP_KEY_MIME_TYPE: key under KEY_FILE_DESKTOP_GROUP, whose value
 // is a list of strings giving the MIME types supported by this desktop entry.
-const KEY_FILE_DESKTOP_KEY_MIME_TYPE = "MimeType"
+const KEY_FILE_DESKTOP_KEY_MIME_TYPE = C.KEY_FILE_DESKTOP_KEY_MIME_TYPE
 
 // KEY_FILE_DESKTOP_KEY_NAME: key under KEY_FILE_DESKTOP_GROUP, whose value is a
 // localized string giving the specific name of the desktop entry.
-const KEY_FILE_DESKTOP_KEY_NAME = "Name"
+const KEY_FILE_DESKTOP_KEY_NAME = C.KEY_FILE_DESKTOP_KEY_NAME
 
 // KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN: key under KEY_FILE_DESKTOP_GROUP, whose
 // value is a list of strings identifying the environments that should not
 // display the desktop entry.
-const KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN = "NotShowIn"
+const KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN = C.KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN
 
 // KEY_FILE_DESKTOP_KEY_NO_DISPLAY: key under KEY_FILE_DESKTOP_GROUP, whose
 // value is a boolean stating whether the desktop entry should be shown in
 // menus.
-const KEY_FILE_DESKTOP_KEY_NO_DISPLAY = "NoDisplay"
+const KEY_FILE_DESKTOP_KEY_NO_DISPLAY = C.KEY_FILE_DESKTOP_KEY_NO_DISPLAY
 
 // KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN: key under KEY_FILE_DESKTOP_GROUP, whose
 // value is a list of strings identifying the environments that should display
 // the desktop entry.
-const KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN = "OnlyShowIn"
+const KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN = C.KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN
 
 // KEY_FILE_DESKTOP_KEY_PATH: key under KEY_FILE_DESKTOP_GROUP, whose value is a
 // string containing the working directory to run the program in. It is only
 // valid for desktop entries with the Application type.
-const KEY_FILE_DESKTOP_KEY_PATH = "Path"
+const KEY_FILE_DESKTOP_KEY_PATH = C.KEY_FILE_DESKTOP_KEY_PATH
 
 // KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY: key under KEY_FILE_DESKTOP_GROUP, whose
 // value is a boolean stating whether the application supports the Startup
 // Notification Protocol Specification
 // (http://www.freedesktop.org/Standards/startup-notification-spec).
-const KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY = "StartupNotify"
+const KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY = C.KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY
 
 // KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS: key under KEY_FILE_DESKTOP_GROUP,
 // whose value is string identifying the WM class or name hint of a window that
 // the application will create, which can be used to emulate Startup
 // Notification with older applications.
-const KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS = "StartupWMClass"
+const KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS = C.KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS
 
 // KEY_FILE_DESKTOP_KEY_TERMINAL: key under KEY_FILE_DESKTOP_GROUP, whose value
 // is a boolean stating whether the program should be run in a terminal window.
 // It is only valid for desktop entries with the Application type.
-const KEY_FILE_DESKTOP_KEY_TERMINAL = "Terminal"
+const KEY_FILE_DESKTOP_KEY_TERMINAL = C.KEY_FILE_DESKTOP_KEY_TERMINAL
 
 // KEY_FILE_DESKTOP_KEY_TRY_EXEC: key under KEY_FILE_DESKTOP_GROUP, whose value
 // is a string giving the file name of a binary on disk used to determine if the
 // program is actually installed. It is only valid for desktop entries with the
 // Application type.
-const KEY_FILE_DESKTOP_KEY_TRY_EXEC = "TryExec"
+const KEY_FILE_DESKTOP_KEY_TRY_EXEC = C.KEY_FILE_DESKTOP_KEY_TRY_EXEC
 
 // KEY_FILE_DESKTOP_KEY_TYPE: key under KEY_FILE_DESKTOP_GROUP, whose value is a
 // string giving the type of the desktop entry. Usually
 // KEY_FILE_DESKTOP_TYPE_APPLICATION, KEY_FILE_DESKTOP_TYPE_LINK, or
 // KEY_FILE_DESKTOP_TYPE_DIRECTORY.
-const KEY_FILE_DESKTOP_KEY_TYPE = "Type"
+const KEY_FILE_DESKTOP_KEY_TYPE = C.KEY_FILE_DESKTOP_KEY_TYPE
 
 // KEY_FILE_DESKTOP_KEY_URL: key under KEY_FILE_DESKTOP_GROUP, whose value is a
 // string giving the URL to access. It is only valid for desktop entries with
 // the Link type.
-const KEY_FILE_DESKTOP_KEY_URL = "URL"
+const KEY_FILE_DESKTOP_KEY_URL = C.KEY_FILE_DESKTOP_KEY_URL
 
 // KEY_FILE_DESKTOP_KEY_VERSION: key under KEY_FILE_DESKTOP_GROUP, whose value
 // is a string giving the version of the Desktop Entry Specification used for
 // the desktop entry file.
-const KEY_FILE_DESKTOP_KEY_VERSION = "Version"
+const KEY_FILE_DESKTOP_KEY_VERSION = C.KEY_FILE_DESKTOP_KEY_VERSION
 
 // KEY_FILE_DESKTOP_TYPE_APPLICATION: value of the KEY_FILE_DESKTOP_KEY_TYPE,
 // key for desktop entries representing applications.
-const KEY_FILE_DESKTOP_TYPE_APPLICATION = "Application"
+const KEY_FILE_DESKTOP_TYPE_APPLICATION = C.KEY_FILE_DESKTOP_TYPE_APPLICATION
 
 // KEY_FILE_DESKTOP_TYPE_DIRECTORY: value of the KEY_FILE_DESKTOP_KEY_TYPE, key
 // for desktop entries representing directories.
-const KEY_FILE_DESKTOP_TYPE_DIRECTORY = "Directory"
+const KEY_FILE_DESKTOP_TYPE_DIRECTORY = C.KEY_FILE_DESKTOP_TYPE_DIRECTORY
 
 // KEY_FILE_DESKTOP_TYPE_LINK: value of the KEY_FILE_DESKTOP_KEY_TYPE, key for
 // desktop entries representing links to documents.
-const KEY_FILE_DESKTOP_TYPE_LINK = "Link"
+const KEY_FILE_DESKTOP_TYPE_LINK = C.KEY_FILE_DESKTOP_TYPE_LINK
 
 // KeyFileError: error codes returned by key file parsing.
 type KeyFileError C.gint

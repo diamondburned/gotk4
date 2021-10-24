@@ -46,29 +46,29 @@ func init() {
 // into different sections - for example a file manager or file chooser can use
 // this information to show network volumes under a "Network" heading and device
 // volumes under a "Devices" heading.
-const VOLUME_IDENTIFIER_KIND_CLASS = "class"
+const VOLUME_IDENTIFIER_KIND_CLASS = C.VOLUME_IDENTIFIER_KIND_CLASS
 
 // VOLUME_IDENTIFIER_KIND_HAL_UDI: string used to obtain a Hal UDI with
 // g_volume_get_identifier().
 //
 // Deprecated: Do not use, HAL is deprecated.
-const VOLUME_IDENTIFIER_KIND_HAL_UDI = "hal-udi"
+const VOLUME_IDENTIFIER_KIND_HAL_UDI = C.VOLUME_IDENTIFIER_KIND_HAL_UDI
 
 // VOLUME_IDENTIFIER_KIND_LABEL: string used to obtain a filesystem label with
 // g_volume_get_identifier().
-const VOLUME_IDENTIFIER_KIND_LABEL = "label"
+const VOLUME_IDENTIFIER_KIND_LABEL = C.VOLUME_IDENTIFIER_KIND_LABEL
 
 // VOLUME_IDENTIFIER_KIND_NFS_MOUNT: string used to obtain a NFS mount with
 // g_volume_get_identifier().
-const VOLUME_IDENTIFIER_KIND_NFS_MOUNT = "nfs-mount"
+const VOLUME_IDENTIFIER_KIND_NFS_MOUNT = C.VOLUME_IDENTIFIER_KIND_NFS_MOUNT
 
 // VOLUME_IDENTIFIER_KIND_UNIX_DEVICE: string used to obtain a Unix device path
 // with g_volume_get_identifier().
-const VOLUME_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
+const VOLUME_IDENTIFIER_KIND_UNIX_DEVICE = C.VOLUME_IDENTIFIER_KIND_UNIX_DEVICE
 
 // VOLUME_IDENTIFIER_KIND_UUID: string used to obtain a UUID with
 // g_volume_get_identifier().
-const VOLUME_IDENTIFIER_KIND_UUID = "uuid"
+const VOLUME_IDENTIFIER_KIND_UUID = C.VOLUME_IDENTIFIER_KIND_UUID
 
 // VolumeOverrider contains methods that are overridable.
 //

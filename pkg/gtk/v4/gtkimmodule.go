@@ -8,4 +8,4 @@ package gtk
 // #include <gtk/gtk.h>
 import "C"
 
-const IM_MODULE_EXTENSION_POINT_NAME = "gtk-im-module"
+const IM_MODULE_EXTENSION_POINT_NAME = C.IM_MODULE_EXTENSION_POINT_NAME

@@ -81,7 +81,7 @@ func init() {
 
 // ACCESSIBLE_VALUE_UNDEFINED: undefined value. The accessible attribute is
 // either unset, or its value is undefined.
-const ACCESSIBLE_VALUE_UNDEFINED = -1
+const ACCESSIBLE_VALUE_UNDEFINED = C.ACCESSIBLE_VALUE_UNDEFINED
 
 // AccessibleAutocomplete: possible values for the
 // GTK_ACCESSIBLE_PROPERTY_AUTOCOMPLETE accessible property.

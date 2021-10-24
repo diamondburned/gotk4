@@ -19,4 +19,4 @@ import "C"
 // then using functions that were deprecated in version
 // GLIB_VERSION_MIN_REQUIRED or earlier will cause warnings (but using functions
 // deprecated in later releases will not).
-const VERSION_MIN_REQUIRED = 2
+const VERSION_MIN_REQUIRED = C.VERSION_MIN_REQUIRED

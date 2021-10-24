@@ -22,7 +22,7 @@ import "C"
 // compatibility or canonical decomposition of a single Unicode character.
 //
 // This is as defined by Unicode 6.1.
-const UNICHAR_MAX_DECOMPOSITION_LENGTH = 18
+const UNICHAR_MAX_DECOMPOSITION_LENGTH = C.UNICHAR_MAX_DECOMPOSITION_LENGTH
 
 // NormalizeMode defines how a Unicode string is transformed in a canonical
 // form, standardizing such issues as whether a character with an accent is

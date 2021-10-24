@@ -21,7 +21,7 @@ import "C"
 // It is used internally by GTK+ to compute the sizes of widgets. This priority
 // is higher than GDK_PRIORITY_REDRAW to avoid resizing a widget which was just
 // redrawn.
-const PRIORITY_RESIZE = 110
+const PRIORITY_RESIZE = C.PRIORITY_RESIZE
 
 // DisableSetlocale prevents gtk_init and gtk_init_check from automatically
 // calling setlocale (LC_ALL, "").

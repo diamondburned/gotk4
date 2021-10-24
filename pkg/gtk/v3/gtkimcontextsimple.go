@@ -25,7 +25,7 @@ func init() {
 }
 
 // MAX_COMPOSE_LEN: maximum length of sequences in compose tables.
-const MAX_COMPOSE_LEN = 7
+const MAX_COMPOSE_LEN = C.MAX_COMPOSE_LEN
 
 // IMContextSimple is a simple input method context supporting table-based input
 // methods. It has a built-in table of compose sequences that is derived from

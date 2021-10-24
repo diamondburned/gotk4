@@ -8,5 +8,5 @@ package graphene
 // #include <graphene-gobject.h>
 import "C"
 
-const PI = 3.141593
-const PI_2 = 1.570796
+const PI = C.PI
+const PI_2 = C.PI_2

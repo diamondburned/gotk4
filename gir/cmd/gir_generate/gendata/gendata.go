@@ -248,6 +248,12 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GLib.Bytes.unref_to_array"),
 	// Not available on Windows.
 	RegexFilter(`GLib.Source\..*unix.*`),
+	// Type is different across platforms, which the generator isn't prepared
+	// for. Use os/exec instead.
+	AbsoluteFilter("GLib.Pid"),
+	// PollFD needs fd to be int on Unix and syscall.Handle on Windows, We can
+	// handle this later. Go doesn't need this.
+	AbsoluteFilter("GLib.PollFD"),
 
 	FileFilter("gasyncqueue."),
 	FileFilter("gatomic."),

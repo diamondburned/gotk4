@@ -8,16 +8,16 @@ package glib
 // #include <glib.h>
 import "C"
 
-const ANALYZER_ANALYZING = 1
+const ANALYZER_ANALYZING = C.ANALYZER_ANALYZING
 
 // GNUC_FUNCTION expands to "" on all modern compilers, and to __FUNCTION__ on
 // gcc version 2.x. Don't use it.
 //
 // Deprecated: Use G_STRFUNC() instead.
-const GNUC_FUNCTION = ""
+const GNUC_FUNCTION = C.GNUC_FUNCTION
 
 // GNUC_PRETTY_FUNCTION expands to "" on all modern compilers, and to
 // __PRETTY_FUNCTION__ on gcc version 2.x. Don't use it.
 //
 // Deprecated: Use G_STRFUNC() instead.
-const GNUC_PRETTY_FUNCTION = ""
+const GNUC_PRETTY_FUNCTION = C.GNUC_PRETTY_FUNCTION

@@ -44,17 +44,17 @@ import "C"
 //
 // Applications can choose to leave it as the default NULL (or "") domain.
 // However, defining the domain offers the same advantages as above.
-const LOG_DOMAIN = C.LOG_DOMAIN
+const LOG_DOMAIN = 0
 
 // LOG_FATAL_MASK: GLib log levels that are considered fatal by default.
 //
 // This is not used if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
-const LOG_FATAL_MASK = C.LOG_FATAL_MASK
+const LOG_FATAL_MASK = 5
 
 // LOG_LEVEL_USER_SHIFT: log levels below 1<<G_LOG_LEVEL_USER_SHIFT are used by
 // GLib. Higher bits can be used for user-defined log levels.
-const LOG_LEVEL_USER_SHIFT = C.LOG_LEVEL_USER_SHIFT
+const LOG_LEVEL_USER_SHIFT = 8
 
 // LogWriterOutput: return values from WriterFuncs to indicate whether the given
 // log entry was successfully handled by the writer, or whether there was an

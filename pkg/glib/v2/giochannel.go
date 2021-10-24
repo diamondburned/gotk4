@@ -27,7 +27,7 @@ func init() {
 	})
 }
 
-const WIN32_MSG_HANDLE = C.WIN32_MSG_HANDLE
+const WIN32_MSG_HANDLE = 19981206
 
 // IOChannelError: error codes returned by OChannel operations.
 type IOChannelError C.gint

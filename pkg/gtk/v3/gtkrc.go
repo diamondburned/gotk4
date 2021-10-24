@@ -33,7 +33,7 @@ func init() {
 	})
 }
 
-const PATH_PRIO_MASK = C.PATH_PRIO_MASK
+const PATH_PRIO_MASK = 15
 
 // PathPriorityType priorities for path lookups. See also
 // gtk_binding_set_add_path().

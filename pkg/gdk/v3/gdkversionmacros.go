@@ -8,6 +8,6 @@ package gdk
 // #include <gdk/gdk.h>
 import "C"
 
-const MAJOR_VERSION = C.MAJOR_VERSION
-const MICRO_VERSION = C.MICRO_VERSION
-const MINOR_VERSION = C.MINOR_VERSION
+const MAJOR_VERSION = 3
+const MICRO_VERSION = 27
+const MINOR_VERSION = 24

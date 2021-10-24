@@ -39,12 +39,12 @@ func init() {
 
 // TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT: purpose used to verify the client
 // certificate in a TLS connection. Used by TLS servers.
-const TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT = C.TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT
+const TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT = "1.3.6.1.5.5.7.3.2"
 
 // TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER: purpose used to verify the server
 // certificate in a TLS connection. This is the most common purpose in use. Used
 // by TLS clients.
-const TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER = C.TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER
+const TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER = "1.3.6.1.5.5.7.3.1"
 
 // TLSDatabaseOverrider contains methods that are overridable.
 //

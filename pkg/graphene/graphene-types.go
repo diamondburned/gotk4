@@ -20,7 +20,7 @@ import "C"
 //
 //      for (int i = 0; i < GRAPHENE_VEC2_LEN; i++)
 //        fprintf (stdout, "component d: g\n", i, v[i]);.
-const VEC2_LEN = C.VEC2_LEN
+const VEC2_LEN = 2
 
 // VEC3_LEN evaluates to the number of components of a #graphene_vec3_t.
 //
@@ -34,7 +34,7 @@ const VEC2_LEN = C.VEC2_LEN
 //
 //      for (int i = 0; i < GRAPHENE_VEC2_LEN; i++)
 //        fprintf (stdout, "component d: g\n", i, v[i]);.
-const VEC3_LEN = C.VEC3_LEN
+const VEC3_LEN = 3
 
 // VEC4_LEN evaluates to the number of components of a #graphene_vec4_t.
 //
@@ -48,4 +48,4 @@ const VEC3_LEN = C.VEC3_LEN
 //
 //      for (int i = 0; i < GRAPHENE_VEC4_LEN; i++)
 //        fprintf (stdout, "component d: g\n", i, v[i]);.
-const VEC4_LEN = C.VEC4_LEN
+const VEC4_LEN = 4

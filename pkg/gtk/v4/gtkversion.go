@@ -16,27 +16,27 @@ import "C"
 // BINARY_AGE: like gtk_get_binary_age(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const BINARY_AGE = C.BINARY_AGE
+const BINARY_AGE = 201
 
 // INTERFACE_AGE: like gtk_get_interface_age(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const INTERFACE_AGE = C.INTERFACE_AGE
+const INTERFACE_AGE = 1
 
 // MAJOR_VERSION: like gtk_get_major_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MAJOR_VERSION = C.MAJOR_VERSION
+const MAJOR_VERSION = 4
 
 // MICRO_VERSION: like gtk_get_micro_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MICRO_VERSION = C.MICRO_VERSION
+const MICRO_VERSION = 1
 
 // MINOR_VERSION: like gtk_get_minor_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MINOR_VERSION = C.MINOR_VERSION
+const MINOR_VERSION = 2
 
 // CheckVersion checks that the GTK library in use is compatible with the given
 // version.

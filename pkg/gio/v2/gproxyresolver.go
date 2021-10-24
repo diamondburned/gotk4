@@ -38,7 +38,7 @@ func init() {
 
 // PROXY_RESOLVER_EXTENSION_POINT_NAME: extension point for proxy resolving
 // functionality. See [Extending GIO][extending-gio].
-const PROXY_RESOLVER_EXTENSION_POINT_NAME = C.PROXY_RESOLVER_EXTENSION_POINT_NAME
+const PROXY_RESOLVER_EXTENSION_POINT_NAME = "gio-proxy-resolver"
 
 // ProxyResolverOverrider contains methods that are overridable.
 //

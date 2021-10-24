@@ -33,7 +33,7 @@ func init() {
 // G_OPTION_ARG_FILENAME_ARRAY.
 //
 //    Using OPTION_REMAINING instead of simply scanning argv for leftover arguments has the advantage that GOption takes care of necessary encoding conversions for strings or filenames.
-const OPTION_REMAINING = C.OPTION_REMAINING
+const OPTION_REMAINING = ""
 
 // OptionArg enum values determine which type of extra argument the options
 // expect to find. If an option expects an extra argument, it can be specified

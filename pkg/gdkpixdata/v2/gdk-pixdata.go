@@ -22,13 +22,13 @@ import (
 import "C"
 
 // PIXBUF_MAGIC_NUMBER: magic number for Pixdata structures.
-const PIXBUF_MAGIC_NUMBER = C.PIXBUF_MAGIC_NUMBER
+const PIXBUF_MAGIC_NUMBER = 1197763408
 
 // PIXDATA_HEADER_LENGTH: length of a Pixdata structure without the pixel_data
 // pointer.
 //
 // Deprecated: since version 2.32.
-const PIXDATA_HEADER_LENGTH = C.PIXDATA_HEADER_LENGTH
+const PIXDATA_HEADER_LENGTH = 24
 
 // PixdataDumpType: enumeration which is used by gdk_pixdata_to_csource() to
 // determine the form of C source to be generated. The three values

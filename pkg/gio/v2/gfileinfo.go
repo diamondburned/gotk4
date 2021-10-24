@@ -38,43 +38,43 @@ func init() {
 // deletion privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to delete the file.
-const FILE_ATTRIBUTE_ACCESS_CAN_DELETE = C.FILE_ATTRIBUTE_ACCESS_CAN_DELETE
+const FILE_ATTRIBUTE_ACCESS_CAN_DELETE = "access::can-delete"
 
 // FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE: key in the "access" namespace for getting
 // execution privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to execute the file.
-const FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE = C.FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE
+const FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE = "access::can-execute"
 
 // FILE_ATTRIBUTE_ACCESS_CAN_READ: key in the "access" namespace for getting
 // read privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to read the file.
-const FILE_ATTRIBUTE_ACCESS_CAN_READ = C.FILE_ATTRIBUTE_ACCESS_CAN_READ
+const FILE_ATTRIBUTE_ACCESS_CAN_READ = "access::can-read"
 
 // FILE_ATTRIBUTE_ACCESS_CAN_RENAME: key in the "access" namespace for checking
 // renaming privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to rename the file.
-const FILE_ATTRIBUTE_ACCESS_CAN_RENAME = C.FILE_ATTRIBUTE_ACCESS_CAN_RENAME
+const FILE_ATTRIBUTE_ACCESS_CAN_RENAME = "access::can-rename"
 
 // FILE_ATTRIBUTE_ACCESS_CAN_TRASH: key in the "access" namespace for checking
 // trashing privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to move the file to the trash.
-const FILE_ATTRIBUTE_ACCESS_CAN_TRASH = C.FILE_ATTRIBUTE_ACCESS_CAN_TRASH
+const FILE_ATTRIBUTE_ACCESS_CAN_TRASH = "access::can-trash"
 
 // FILE_ATTRIBUTE_ACCESS_CAN_WRITE: key in the "access" namespace for getting
 // write privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to write to the file.
-const FILE_ATTRIBUTE_ACCESS_CAN_WRITE = C.FILE_ATTRIBUTE_ACCESS_CAN_WRITE
+const FILE_ATTRIBUTE_ACCESS_CAN_WRITE = "access::can-write"
 
 // FILE_ATTRIBUTE_DOS_IS_ARCHIVE: key in the "dos" namespace for checking if the
 // file's archive flag is set. This attribute is TRUE if the archive flag is
 // set. This attribute is only available for DOS file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_DOS_IS_ARCHIVE = C.FILE_ATTRIBUTE_DOS_IS_ARCHIVE
+const FILE_ATTRIBUTE_DOS_IS_ARCHIVE = "dos::is-archive"
 
 // FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT: key in the "dos" namespace for checking if
 // the file is a NTFS mount point (a volume mount or a junction point). This
@@ -83,13 +83,13 @@ const FILE_ATTRIBUTE_DOS_IS_ARCHIVE = C.FILE_ATTRIBUTE_DOS_IS_ARCHIVE
 // (https://msdn.microsoft.com/en-us/library/dd541667.aspx). This attribute is
 // only available for DOS file systems. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT = C.FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT
+const FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT = "dos::is-mountpoint"
 
 // FILE_ATTRIBUTE_DOS_IS_SYSTEM: key in the "dos" namespace for checking if the
 // file's backup flag is set. This attribute is TRUE if the backup flag is set.
 // This attribute is only available for DOS file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_DOS_IS_SYSTEM = C.FILE_ATTRIBUTE_DOS_IS_SYSTEM
+const FILE_ATTRIBUTE_DOS_IS_SYSTEM = "dos::is-system"
 
 // FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG: key in the "dos" namespace for getting
 // the file NTFS reparse tag. This value is 0 for files that are not reparse
@@ -97,171 +97,171 @@ const FILE_ATTRIBUTE_DOS_IS_SYSTEM = C.FILE_ATTRIBUTE_DOS_IS_SYSTEM
 // (https://msdn.microsoft.com/en-us/library/dd541667.aspx) page for possible
 // reparse tag values. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG = C.FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG
+const FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG = "dos::reparse-point-tag"
 
 // FILE_ATTRIBUTE_ETAG_VALUE: key in the "etag" namespace for getting the value
 // of the file's entity tag. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_ETAG_VALUE = C.FILE_ATTRIBUTE_ETAG_VALUE
+const FILE_ATTRIBUTE_ETAG_VALUE = "etag::value"
 
 // FILE_ATTRIBUTE_FILESYSTEM_FREE: key in the "filesystem" namespace for getting
 // the number of bytes of free space left on the file system. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT64.
-const FILE_ATTRIBUTE_FILESYSTEM_FREE = C.FILE_ATTRIBUTE_FILESYSTEM_FREE
+const FILE_ATTRIBUTE_FILESYSTEM_FREE = "filesystem::free"
 
 // FILE_ATTRIBUTE_FILESYSTEM_READONLY: key in the "filesystem" namespace for
 // checking if the file system is read only. Is set to TRUE if the file system
 // is read only. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_FILESYSTEM_READONLY = C.FILE_ATTRIBUTE_FILESYSTEM_READONLY
+const FILE_ATTRIBUTE_FILESYSTEM_READONLY = "filesystem::readonly"
 
 // FILE_ATTRIBUTE_FILESYSTEM_REMOTE: key in the "filesystem" namespace for
 // checking if the file system is remote. Is set to TRUE if the file system is
 // remote. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_FILESYSTEM_REMOTE = C.FILE_ATTRIBUTE_FILESYSTEM_REMOTE
+const FILE_ATTRIBUTE_FILESYSTEM_REMOTE = "filesystem::remote"
 
 // FILE_ATTRIBUTE_FILESYSTEM_SIZE: key in the "filesystem" namespace for getting
 // the total size (in bytes) of the file system, used in
 // g_file_query_filesystem_info(). Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64.
-const FILE_ATTRIBUTE_FILESYSTEM_SIZE = C.FILE_ATTRIBUTE_FILESYSTEM_SIZE
+const FILE_ATTRIBUTE_FILESYSTEM_SIZE = "filesystem::size"
 
 // FILE_ATTRIBUTE_FILESYSTEM_TYPE: key in the "filesystem" namespace for getting
 // the file system's type. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_FILESYSTEM_TYPE = C.FILE_ATTRIBUTE_FILESYSTEM_TYPE
+const FILE_ATTRIBUTE_FILESYSTEM_TYPE = "filesystem::type"
 
 // FILE_ATTRIBUTE_FILESYSTEM_USED: key in the "filesystem" namespace for getting
 // the number of bytes of used on the file system. Corresponding AttributeType
 // is G_FILE_ATTRIBUTE_TYPE_UINT64.
-const FILE_ATTRIBUTE_FILESYSTEM_USED = C.FILE_ATTRIBUTE_FILESYSTEM_USED
+const FILE_ATTRIBUTE_FILESYSTEM_USED = "filesystem::used"
 
 // FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW: key in the "filesystem" namespace for
 // hinting a file manager application whether it should preview (e.g. thumbnail)
 // files on the file system. The value for this key contain a PreviewType.
-const FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW = C.FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW
+const FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW = "filesystem::use-preview"
 
 // FILE_ATTRIBUTE_GVFS_BACKEND: key in the "gvfs" namespace that gets the name
 // of the current GVFS backend in use. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_GVFS_BACKEND = C.FILE_ATTRIBUTE_GVFS_BACKEND
+const FILE_ATTRIBUTE_GVFS_BACKEND = "gvfs::backend"
 
 // FILE_ATTRIBUTE_ID_FILE: key in the "id" namespace for getting a file
 // identifier. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING. An
 // example use would be during listing files, to avoid recursive directory
 // scanning.
-const FILE_ATTRIBUTE_ID_FILE = C.FILE_ATTRIBUTE_ID_FILE
+const FILE_ATTRIBUTE_ID_FILE = "id::file"
 
 // FILE_ATTRIBUTE_ID_FILESYSTEM: key in the "id" namespace for getting the file
 // system identifier. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING. An example use would be during drag and drop to
 // see if the source and target are on the same filesystem (default to move) or
 // not (default to copy).
-const FILE_ATTRIBUTE_ID_FILESYSTEM = C.FILE_ATTRIBUTE_ID_FILESYSTEM
+const FILE_ATTRIBUTE_ID_FILESYSTEM = "id::filesystem"
 
 // FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT: key in the "mountable" namespace for
 // checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be ejected.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT = C.FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT
+const FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT = "mountable::can-eject"
 
 // FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT: key in the "mountable" namespace for
 // checking if a file (of type G_FILE_TYPE_MOUNTABLE) is mountable.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT = C.FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT
+const FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT = "mountable::can-mount"
 
 // FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL: key in the "mountable" namespace for
 // checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be polled.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL = C.FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL
+const FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL = "mountable::can-poll"
 
 // FILE_ATTRIBUTE_MOUNTABLE_CAN_START: key in the "mountable" namespace for
 // checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be started.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_START = C.FILE_ATTRIBUTE_MOUNTABLE_CAN_START
+const FILE_ATTRIBUTE_MOUNTABLE_CAN_START = "mountable::can-start"
 
 // FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED: key in the "mountable" namespace
 // for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be started
 // degraded. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED = C.FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED
+const FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED = "mountable::can-start-degraded"
 
 // FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP: key in the "mountable" namespace for
 // checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be stopped.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP = C.FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP
+const FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP = "mountable::can-stop"
 
 // FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT: key in the "mountable" namespace for
 // checking if a file (of type G_FILE_TYPE_MOUNTABLE) is unmountable.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT = C.FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT
+const FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT = "mountable::can-unmount"
 
 // FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI: key in the "mountable" namespace for
 // getting the HAL UDI for the mountable file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI = C.FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI
+const FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI = "mountable::hal-udi"
 
 // FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC: key in the "mountable"
 // namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) is
 // automatically polled for media. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC = C.FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC
+const FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC = "mountable::is-media-check-automatic"
 
 // FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE: key in the "mountable" namespace
 // for getting the StartStopType. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE = C.FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE
+const FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE = "mountable::start-stop-type"
 
 // FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE: key in the "mountable" namespace for
 // getting the unix device. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE = C.FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE
+const FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE = "mountable::unix-device"
 
 // FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE: key in the "mountable" namespace
 // for getting the unix device file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE = C.FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE
+const FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE = "mountable::unix-device-file"
 
 // FILE_ATTRIBUTE_OWNER_GROUP: key in the "owner" namespace for getting the file
 // owner's group. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_OWNER_GROUP = C.FILE_ATTRIBUTE_OWNER_GROUP
+const FILE_ATTRIBUTE_OWNER_GROUP = "owner::group"
 
 // FILE_ATTRIBUTE_OWNER_USER: key in the "owner" namespace for getting the user
 // name of the file's owner. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_OWNER_USER = C.FILE_ATTRIBUTE_OWNER_USER
+const FILE_ATTRIBUTE_OWNER_USER = "owner::user"
 
 // FILE_ATTRIBUTE_OWNER_USER_REAL: key in the "owner" namespace for getting the
 // real name of the user that owns the file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_OWNER_USER_REAL = C.FILE_ATTRIBUTE_OWNER_USER_REAL
+const FILE_ATTRIBUTE_OWNER_USER_REAL = "owner::user-real"
 
 // FILE_ATTRIBUTE_PREVIEW_ICON: key in the "preview" namespace for getting a
 // #GIcon that can be used to get preview of the file. For example, it may be a
 // low resolution thumbnail without metadata. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_OBJECT. The value for this key should contain a #GIcon.
-const FILE_ATTRIBUTE_PREVIEW_ICON = C.FILE_ATTRIBUTE_PREVIEW_ICON
+const FILE_ATTRIBUTE_PREVIEW_ICON = "preview::icon"
 
 // FILE_ATTRIBUTE_RECENT_MODIFIED: key in the "recent" namespace for getting
 // time, when the metadata for the file in recent:/// was last changed.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_INT64.
-const FILE_ATTRIBUTE_RECENT_MODIFIED = C.FILE_ATTRIBUTE_RECENT_MODIFIED
+const FILE_ATTRIBUTE_RECENT_MODIFIED = "recent::modified"
 
 // FILE_ATTRIBUTE_SELINUX_CONTEXT: key in the "selinux" namespace for getting
 // the file's SELinux context. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING. Note that this attribute is only available if
 // GLib has been built with SELinux support.
-const FILE_ATTRIBUTE_SELINUX_CONTEXT = C.FILE_ATTRIBUTE_SELINUX_CONTEXT
+const FILE_ATTRIBUTE_SELINUX_CONTEXT = "selinux::context"
 
 // FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE: key in the "standard" namespace for
 // getting the amount of disk space that is consumed by the file (in bytes).
 // This will generally be larger than the file size (due to block size overhead)
 // but can occasionally be smaller (for example, for sparse files).
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT64.
-const FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE = C.FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE
+const FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE = "standard::allocated-size"
 
 // FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE: key in the "standard" namespace for
 // getting the content type of the file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING. The value for this key should contain a valid
 // content type.
-const FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE = C.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE
+const FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE = "standard::content-type"
 
 // FILE_ATTRIBUTE_STANDARD_COPY_NAME: key in the "standard" namespace for
 // getting the copy name of the file. The copy name is an optional version of
@@ -272,7 +272,7 @@ const FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE = C.FILE_ATTRIBUTE_STANDARD_CONTENT_T
 // filesystem it is in then the copy name will not be set.
 //
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_STANDARD_COPY_NAME = C.FILE_ATTRIBUTE_STANDARD_COPY_NAME
+const FILE_ATTRIBUTE_STANDARD_COPY_NAME = "standard::copy-name"
 
 // FILE_ATTRIBUTE_STANDARD_DESCRIPTION: key in the "standard" namespace for
 // getting the description of the file. The description is a utf8 string that
@@ -283,13 +283,13 @@ const FILE_ATTRIBUTE_STANDARD_COPY_NAME = C.FILE_ATTRIBUTE_STANDARD_COPY_NAME
 // bookmarks menu.
 //
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_STANDARD_DESCRIPTION = C.FILE_ATTRIBUTE_STANDARD_DESCRIPTION
+const FILE_ATTRIBUTE_STANDARD_DESCRIPTION = "standard::description"
 
 // FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME: key in the "standard" namespace for
 // getting the display name of the file. A display name is guaranteed to be in
 // UTF-8 and can thus be displayed in the UI. It is guaranteed to be set on
 // every file. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME = C.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
+const FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME = "standard::display-name"
 
 // FILE_ATTRIBUTE_STANDARD_EDIT_NAME: key in the "standard" namespace for edit
 // name of the file. An edit name is similar to the display name, but it is
@@ -298,41 +298,41 @@ const FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME = C.FILE_ATTRIBUTE_STANDARD_DISPLAY_N
 // "(invalid unicode)" if the filename was in an invalid encoding).
 //
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_STANDARD_EDIT_NAME = C.FILE_ATTRIBUTE_STANDARD_EDIT_NAME
+const FILE_ATTRIBUTE_STANDARD_EDIT_NAME = "standard::edit-name"
 
 // FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE: key in the "standard" namespace
 // for getting the fast content type. The fast content type isn't as reliable as
 // the regular one, as it only uses the filename to guess it, but it is faster
 // to calculate than the regular content type. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE = C.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE
+const FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE = "standard::fast-content-type"
 
 // FILE_ATTRIBUTE_STANDARD_ICON: key in the "standard" namespace for getting the
 // icon for the file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_OBJECT. The value for this key should contain a #GIcon.
-const FILE_ATTRIBUTE_STANDARD_ICON = C.FILE_ATTRIBUTE_STANDARD_ICON
+const FILE_ATTRIBUTE_STANDARD_ICON = "standard::icon"
 
 // FILE_ATTRIBUTE_STANDARD_IS_BACKUP: key in the "standard" namespace for
 // checking if a file is a backup file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_STANDARD_IS_BACKUP = C.FILE_ATTRIBUTE_STANDARD_IS_BACKUP
+const FILE_ATTRIBUTE_STANDARD_IS_BACKUP = "standard::is-backup"
 
 // FILE_ATTRIBUTE_STANDARD_IS_HIDDEN: key in the "standard" namespace for
 // checking if a file is hidden. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_STANDARD_IS_HIDDEN = C.FILE_ATTRIBUTE_STANDARD_IS_HIDDEN
+const FILE_ATTRIBUTE_STANDARD_IS_HIDDEN = "standard::is-hidden"
 
 // FILE_ATTRIBUTE_STANDARD_IS_SYMLINK: key in the "standard" namespace for
 // checking if the file is a symlink. Typically the actual type is something
 // else, if we followed the symlink to get the type. On Windows NTFS mountpoints
 // are considered to be symlinks as well. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_STANDARD_IS_SYMLINK = C.FILE_ATTRIBUTE_STANDARD_IS_SYMLINK
+const FILE_ATTRIBUTE_STANDARD_IS_SYMLINK = "standard::is-symlink"
 
 // FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL: key in the "standard" namespace for
 // checking if a file is virtual. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL = C.FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL
+const FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL = "standard::is-virtual"
 
 // FILE_ATTRIBUTE_STANDARD_IS_VOLATILE: key in the "standard" namespace for
 // checking if a file is volatile. This is meant for opaque, non-POSIX-like
@@ -340,7 +340,7 @@ const FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL = C.FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL
 // at FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET for the persistent URI.
 //
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_STANDARD_IS_VOLATILE = C.FILE_ATTRIBUTE_STANDARD_IS_VOLATILE
+const FILE_ATTRIBUTE_STANDARD_IS_VOLATILE = "standard::is-volatile"
 
 // FILE_ATTRIBUTE_STANDARD_NAME: key in the "standard" namespace for getting the
 // name of the file. The name is the on-disk filename which may not be in any
@@ -348,12 +348,12 @@ const FILE_ATTRIBUTE_STANDARD_IS_VOLATILE = C.FILE_ATTRIBUTE_STANDARD_IS_VOLATIL
 // guaranteed to be set on every file. Use FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
 // if you need to display the name in a user interface. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
-const FILE_ATTRIBUTE_STANDARD_NAME = C.FILE_ATTRIBUTE_STANDARD_NAME
+const FILE_ATTRIBUTE_STANDARD_NAME = "standard::name"
 
 // FILE_ATTRIBUTE_STANDARD_SIZE: key in the "standard" namespace for getting the
 // file's size (in bytes). Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64.
-const FILE_ATTRIBUTE_STANDARD_SIZE = C.FILE_ATTRIBUTE_STANDARD_SIZE
+const FILE_ATTRIBUTE_STANDARD_SIZE = "standard::size"
 
 // FILE_ATTRIBUTE_STANDARD_SORT_ORDER: key in the "standard" namespace for
 // setting the sort order of a file. Corresponding AttributeType is
@@ -361,33 +361,33 @@ const FILE_ATTRIBUTE_STANDARD_SIZE = C.FILE_ATTRIBUTE_STANDARD_SIZE
 // would use this key to set the order files are displayed. Files with smaller
 // sort order should be sorted first, and files without sort order as if sort
 // order was zero.
-const FILE_ATTRIBUTE_STANDARD_SORT_ORDER = C.FILE_ATTRIBUTE_STANDARD_SORT_ORDER
+const FILE_ATTRIBUTE_STANDARD_SORT_ORDER = "standard::sort-order"
 
 // FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON: key in the "standard" namespace for
 // getting the symbolic icon for the file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_OBJECT. The value for this key should contain a #GIcon.
-const FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON = C.FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON
+const FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON = "standard::symbolic-icon"
 
 // FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET: key in the "standard" namespace for
 // getting the symlink target, if the file is a symlink. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
-const FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET = C.FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET
+const FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET = "standard::symlink-target"
 
 // FILE_ATTRIBUTE_STANDARD_TARGET_URI: key in the "standard" namespace for
 // getting the target URI for the file, in the case of G_FILE_TYPE_SHORTCUT or
 // G_FILE_TYPE_MOUNTABLE files. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_STANDARD_TARGET_URI = C.FILE_ATTRIBUTE_STANDARD_TARGET_URI
+const FILE_ATTRIBUTE_STANDARD_TARGET_URI = "standard::target-uri"
 
 // FILE_ATTRIBUTE_STANDARD_TYPE: key in the "standard" namespace for storing
 // file types. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32. The
 // value for this key should contain a Type.
-const FILE_ATTRIBUTE_STANDARD_TYPE = C.FILE_ATTRIBUTE_STANDARD_TYPE
+const FILE_ATTRIBUTE_STANDARD_TYPE = "standard::type"
 
 // FILE_ATTRIBUTE_THUMBNAILING_FAILED: key in the "thumbnail" namespace for
 // checking if thumbnailing failed. This attribute is TRUE if thumbnailing
 // failed. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_THUMBNAILING_FAILED = C.FILE_ATTRIBUTE_THUMBNAILING_FAILED
+const FILE_ATTRIBUTE_THUMBNAILING_FAILED = "thumbnail::failed"
 
 // FILE_ATTRIBUTE_THUMBNAIL_IS_VALID: key in the "thumbnail" namespace for
 // checking whether the thumbnail is outdated. This attribute is TRUE if the
@@ -398,24 +398,24 @@ const FILE_ATTRIBUTE_THUMBNAILING_FAILED = C.FILE_ATTRIBUTE_THUMBNAILING_FAILED
 // it indicates that thumbnailing may be attempted again and may succeed.
 //
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_THUMBNAIL_IS_VALID = C.FILE_ATTRIBUTE_THUMBNAIL_IS_VALID
+const FILE_ATTRIBUTE_THUMBNAIL_IS_VALID = "thumbnail::is-valid"
 
 // FILE_ATTRIBUTE_THUMBNAIL_PATH: key in the "thumbnail" namespace for getting
 // the path to the thumbnail image. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
-const FILE_ATTRIBUTE_THUMBNAIL_PATH = C.FILE_ATTRIBUTE_THUMBNAIL_PATH
+const FILE_ATTRIBUTE_THUMBNAIL_PATH = "thumbnail::path"
 
 // FILE_ATTRIBUTE_TIME_ACCESS: key in the "time" namespace for getting the time
 // the file was last accessed. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the time since the file was last
 // accessed, in seconds since the UNIX epoch.
-const FILE_ATTRIBUTE_TIME_ACCESS = C.FILE_ATTRIBUTE_TIME_ACCESS
+const FILE_ATTRIBUTE_TIME_ACCESS = "time::access"
 
 // FILE_ATTRIBUTE_TIME_ACCESS_USEC: key in the "time" namespace for getting the
 // microseconds of the time the file was last accessed. This should be used in
 // conjunction with FILE_ATTRIBUTE_TIME_ACCESS. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_TIME_ACCESS_USEC = C.FILE_ATTRIBUTE_TIME_ACCESS_USEC
+const FILE_ATTRIBUTE_TIME_ACCESS_USEC = "time::access-usec"
 
 // FILE_ATTRIBUTE_TIME_CHANGED: key in the "time" namespace for getting the time
 // the file was last changed. Corresponding AttributeType is
@@ -423,13 +423,13 @@ const FILE_ATTRIBUTE_TIME_ACCESS_USEC = C.FILE_ATTRIBUTE_TIME_ACCESS_USEC
 // changed, in seconds since the UNIX epoch.
 //
 // This corresponds to the traditional UNIX ctime.
-const FILE_ATTRIBUTE_TIME_CHANGED = C.FILE_ATTRIBUTE_TIME_CHANGED
+const FILE_ATTRIBUTE_TIME_CHANGED = "time::changed"
 
 // FILE_ATTRIBUTE_TIME_CHANGED_USEC: key in the "time" namespace for getting the
 // microseconds of the time the file was last changed. This should be used in
 // conjunction with FILE_ATTRIBUTE_TIME_CHANGED. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_TIME_CHANGED_USEC = C.FILE_ATTRIBUTE_TIME_CHANGED_USEC
+const FILE_ATTRIBUTE_TIME_CHANGED_USEC = "time::changed-usec"
 
 // FILE_ATTRIBUTE_TIME_CREATED: key in the "time" namespace for getting the time
 // the file was created. Corresponding AttributeType is
@@ -438,76 +438,76 @@ const FILE_ATTRIBUTE_TIME_CHANGED_USEC = C.FILE_ATTRIBUTE_TIME_CHANGED_USEC
 //
 // This may correspond to Linux stx_btime, FreeBSD st_birthtim, NetBSD
 // st_birthtime or NTFS ctime.
-const FILE_ATTRIBUTE_TIME_CREATED = C.FILE_ATTRIBUTE_TIME_CREATED
+const FILE_ATTRIBUTE_TIME_CREATED = "time::created"
 
 // FILE_ATTRIBUTE_TIME_CREATED_USEC: key in the "time" namespace for getting the
 // microseconds of the time the file was created. This should be used in
 // conjunction with FILE_ATTRIBUTE_TIME_CREATED. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_TIME_CREATED_USEC = C.FILE_ATTRIBUTE_TIME_CREATED_USEC
+const FILE_ATTRIBUTE_TIME_CREATED_USEC = "time::created-usec"
 
 // FILE_ATTRIBUTE_TIME_MODIFIED: key in the "time" namespace for getting the
 // time the file was last modified. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the time since the file was
 // modified, in seconds since the UNIX epoch.
-const FILE_ATTRIBUTE_TIME_MODIFIED = C.FILE_ATTRIBUTE_TIME_MODIFIED
+const FILE_ATTRIBUTE_TIME_MODIFIED = "time::modified"
 
 // FILE_ATTRIBUTE_TIME_MODIFIED_USEC: key in the "time" namespace for getting
 // the microseconds of the time the file was last modified. This should be used
 // in conjunction with FILE_ATTRIBUTE_TIME_MODIFIED. Corresponding AttributeType
 // is G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_TIME_MODIFIED_USEC = C.FILE_ATTRIBUTE_TIME_MODIFIED_USEC
+const FILE_ATTRIBUTE_TIME_MODIFIED_USEC = "time::modified-usec"
 
 // FILE_ATTRIBUTE_TRASH_DELETION_DATE: key in the "trash" namespace. When
 // requested against items in trash:///, will return the date and time when the
 // file was trashed. The format of the returned string is YYYY-MM-DDThh:mm:ss.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_TRASH_DELETION_DATE = C.FILE_ATTRIBUTE_TRASH_DELETION_DATE
+const FILE_ATTRIBUTE_TRASH_DELETION_DATE = "trash::deletion-date"
 
 // FILE_ATTRIBUTE_TRASH_ITEM_COUNT: key in the "trash" namespace. When requested
 // against trash:/// returns the number of (toplevel) items in the trash folder.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_TRASH_ITEM_COUNT = C.FILE_ATTRIBUTE_TRASH_ITEM_COUNT
+const FILE_ATTRIBUTE_TRASH_ITEM_COUNT = "trash::item-count"
 
 // FILE_ATTRIBUTE_TRASH_ORIG_PATH: key in the "trash" namespace. When requested
 // against items in trash:///, will return the original path to the file before
 // it was trashed. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
-const FILE_ATTRIBUTE_TRASH_ORIG_PATH = C.FILE_ATTRIBUTE_TRASH_ORIG_PATH
+const FILE_ATTRIBUTE_TRASH_ORIG_PATH = "trash::orig-path"
 
 // FILE_ATTRIBUTE_UNIX_BLOCKS: key in the "unix" namespace for getting the
 // number of blocks allocated for the file. This attribute is only available for
 // UNIX file systems. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64.
-const FILE_ATTRIBUTE_UNIX_BLOCKS = C.FILE_ATTRIBUTE_UNIX_BLOCKS
+const FILE_ATTRIBUTE_UNIX_BLOCKS = "unix::blocks"
 
 // FILE_ATTRIBUTE_UNIX_BLOCK_SIZE: key in the "unix" namespace for getting the
 // block size for the file system. This attribute is only available for UNIX
 // file systems. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_UNIX_BLOCK_SIZE = C.FILE_ATTRIBUTE_UNIX_BLOCK_SIZE
+const FILE_ATTRIBUTE_UNIX_BLOCK_SIZE = "unix::block-size"
 
 // FILE_ATTRIBUTE_UNIX_DEVICE: key in the "unix" namespace for getting the
 // device id of the device the file is located on (see stat() documentation).
 // This attribute is only available for UNIX file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_UNIX_DEVICE = C.FILE_ATTRIBUTE_UNIX_DEVICE
+const FILE_ATTRIBUTE_UNIX_DEVICE = "unix::device"
 
 // FILE_ATTRIBUTE_UNIX_GID: key in the "unix" namespace for getting the group ID
 // for the file. This attribute is only available for UNIX file systems.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_UNIX_GID = C.FILE_ATTRIBUTE_UNIX_GID
+const FILE_ATTRIBUTE_UNIX_GID = "unix::gid"
 
 // FILE_ATTRIBUTE_UNIX_INODE: key in the "unix" namespace for getting the inode
 // of the file. This attribute is only available for UNIX file systems.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT64.
-const FILE_ATTRIBUTE_UNIX_INODE = C.FILE_ATTRIBUTE_UNIX_INODE
+const FILE_ATTRIBUTE_UNIX_INODE = "unix::inode"
 
 // FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT: key in the "unix" namespace for checking
 // if the file represents a UNIX mount point. This attribute is TRUE if the file
 // is a UNIX mount point. Since 2.58, / is considered to be a mount point. This
 // attribute is only available for UNIX file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT = C.FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT
+const FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT = "unix::is-mountpoint"
 
 // FILE_ATTRIBUTE_UNIX_MODE: key in the "unix" namespace for getting the mode of
 // the file (e.g. whether the file is a regular file, symlink, etc). See the
@@ -515,24 +515,24 @@ const FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT = C.FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT
 // of struct stat, and includes both the file type and permissions. This
 // attribute is only available for UNIX file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_UNIX_MODE = C.FILE_ATTRIBUTE_UNIX_MODE
+const FILE_ATTRIBUTE_UNIX_MODE = "unix::mode"
 
 // FILE_ATTRIBUTE_UNIX_NLINK: key in the "unix" namespace for getting the number
 // of hard links for a file. See lstat() documentation. This attribute is only
 // available for UNIX file systems. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_UNIX_NLINK = C.FILE_ATTRIBUTE_UNIX_NLINK
+const FILE_ATTRIBUTE_UNIX_NLINK = "unix::nlink"
 
 // FILE_ATTRIBUTE_UNIX_RDEV: key in the "unix" namespace for getting the device
 // ID for the file (if it is a special file). See lstat() documentation. This
 // attribute is only available for UNIX file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_UNIX_RDEV = C.FILE_ATTRIBUTE_UNIX_RDEV
+const FILE_ATTRIBUTE_UNIX_RDEV = "unix::rdev"
 
 // FILE_ATTRIBUTE_UNIX_UID: key in the "unix" namespace for getting the user ID
 // for the file. This attribute is only available for UNIX file systems.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_UNIX_UID = C.FILE_ATTRIBUTE_UNIX_UID
+const FILE_ATTRIBUTE_UNIX_UID = "unix::uid"
 
 // FileInfo: functionality for manipulating basic metadata for files. Info
 // implements methods for getting information that all files should contain, and

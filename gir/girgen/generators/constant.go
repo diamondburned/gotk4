@@ -12,7 +12,7 @@ import (
 
 var constantTmpl = gotmpl.NewGoTemplate(strings.TrimSpace(`
 	{{- GoDoc . 0 TrailingNewLine (OverrideSelfName .Name) -}}
-	const {{ .Name }} = C.{{ .Name }}
+	const {{ .Name }} = {{ .Value }}
 `))
 
 type constantData struct {

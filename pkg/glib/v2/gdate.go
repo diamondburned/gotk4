@@ -9,10 +9,10 @@ package glib
 import "C"
 
 // DATE_BAD_DAY represents an invalid Day.
-const DATE_BAD_DAY = C.DATE_BAD_DAY
+const DATE_BAD_DAY = 0
 
 // DATE_BAD_JULIAN represents an invalid Julian day number.
-const DATE_BAD_JULIAN = C.DATE_BAD_JULIAN
+const DATE_BAD_JULIAN = 0
 
 // DATE_BAD_YEAR represents an invalid year.
-const DATE_BAD_YEAR = C.DATE_BAD_YEAR
+const DATE_BAD_YEAR = 0

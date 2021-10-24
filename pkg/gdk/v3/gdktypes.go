@@ -37,11 +37,11 @@ func init() {
 
 // CURRENT_TIME represents the current time, and can be used anywhere a time is
 // expected.
-const CURRENT_TIME = C.CURRENT_TIME
+const CURRENT_TIME = 0
 
 // PARENT_RELATIVE: special value, indicating that the background for a window
 // should be inherited from the parent window.
-const PARENT_RELATIVE = C.PARENT_RELATIVE
+const PARENT_RELATIVE = 1
 
 // AxisUse: enumeration describing the way in which a device axis (valuator)
 // maps onto the predefined valuator types that GTK+ understands.

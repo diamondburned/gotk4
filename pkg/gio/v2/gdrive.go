@@ -39,7 +39,7 @@ func init() {
 
 // DRIVE_IDENTIFIER_KIND_UNIX_DEVICE: string used to obtain a Unix device path
 // with g_drive_get_identifier().
-const DRIVE_IDENTIFIER_KIND_UNIX_DEVICE = C.DRIVE_IDENTIFIER_KIND_UNIX_DEVICE
+const DRIVE_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
 
 // DriveOverrider contains methods that are overridable.
 //

@@ -11,4 +11,4 @@ import "C"
 // HOOK_FLAG_USER_SHIFT: position of the first bit which is not reserved for
 // internal use be the #GHook implementation, i.e. 1 << G_HOOK_FLAG_USER_SHIFT
 // is the first bit which can be used for application-defined flags.
-const HOOK_FLAG_USER_SHIFT = C.HOOK_FLAG_USER_SHIFT
+const HOOK_FLAG_USER_SHIFT = 4

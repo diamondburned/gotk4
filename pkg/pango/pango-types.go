@@ -23,7 +23,7 @@ import "C"
 //
 // When setting font sizes, device units are always considered to be points (as
 // in "12 point font"), rather than pixels.
-const SCALE = C.SCALE
+const SCALE = 1024
 
 // Glyph: PangoGlyph represents a single glyph in the output form of a string.
 type Glyph = uint32

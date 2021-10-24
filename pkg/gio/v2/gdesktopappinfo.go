@@ -21,4 +21,4 @@ import "C"
 // handler to URI association. See [Extending GIO][extending-gio].
 //
 // Deprecated: The AppInfoLookup interface is deprecated and unused by GIO.
-const DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME = C.DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME
+const DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME = "gio-desktop-app-info-lookup"

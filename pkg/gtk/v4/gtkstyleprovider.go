@@ -23,7 +23,7 @@ func init() {
 
 // STYLE_PROVIDER_PRIORITY_APPLICATION: priority that can be used when adding a
 // GtkStyleProvider for application-specific style information.
-const STYLE_PROVIDER_PRIORITY_APPLICATION = C.STYLE_PROVIDER_PRIORITY_APPLICATION
+const STYLE_PROVIDER_PRIORITY_APPLICATION = 600
 
 // STYLE_PROVIDER_PRIORITY_FALLBACK: priority used for default style information
 // that is used in the absence of themes.
@@ -31,25 +31,25 @@ const STYLE_PROVIDER_PRIORITY_APPLICATION = C.STYLE_PROVIDER_PRIORITY_APPLICATIO
 // Note that this is not very useful for providing default styling for custom
 // style classes - themes are likely to override styling provided at this
 // priority with catch-all * {...} rules.
-const STYLE_PROVIDER_PRIORITY_FALLBACK = C.STYLE_PROVIDER_PRIORITY_FALLBACK
+const STYLE_PROVIDER_PRIORITY_FALLBACK = 1
 
 // STYLE_PROVIDER_PRIORITY_SETTINGS: priority used for style information
 // provided via GtkSettings.
 //
 // This priority is higher than K_STYLE_PROVIDER_PRIORITY_THEME to let settings
 // override themes.
-const STYLE_PROVIDER_PRIORITY_SETTINGS = C.STYLE_PROVIDER_PRIORITY_SETTINGS
+const STYLE_PROVIDER_PRIORITY_SETTINGS = 400
 
 // STYLE_PROVIDER_PRIORITY_THEME: priority used for style information provided
 // by themes.
-const STYLE_PROVIDER_PRIORITY_THEME = C.STYLE_PROVIDER_PRIORITY_THEME
+const STYLE_PROVIDER_PRIORITY_THEME = 200
 
 // STYLE_PROVIDER_PRIORITY_USER: priority used for the style information from
 // $XDG_CONFIG_HOME/gtk-4.0/gtk.css.
 //
 // You should not use priorities higher than this, to give the user the last
 // word.
-const STYLE_PROVIDER_PRIORITY_USER = C.STYLE_PROVIDER_PRIORITY_USER
+const STYLE_PROVIDER_PRIORITY_USER = 800
 
 // StyleProvider: GtkStyleProvider is an interface for style information used by
 // GtkStyleContext.

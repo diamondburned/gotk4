@@ -31,4 +31,4 @@ import "C"
 // The subdirectories may not be created by the test harness; as with normal
 // calls to functions like g_get_user_cache_dir(), the caller must be prepared
 // to create the directory if it doesn’t exist.
-const TEST_OPTION_ISOLATE_DIRS = C.TEST_OPTION_ISOLATE_DIRS
+const TEST_OPTION_ISOLATE_DIRS = "isolate_dirs"

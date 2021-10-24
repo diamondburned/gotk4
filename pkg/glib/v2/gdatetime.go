@@ -25,19 +25,19 @@ func init() {
 }
 
 // TIME_SPAN_DAY evaluates to a time span of one day.
-const TIME_SPAN_DAY = C.TIME_SPAN_DAY
+const TIME_SPAN_DAY = 86400000000
 
 // TIME_SPAN_HOUR evaluates to a time span of one hour.
-const TIME_SPAN_HOUR = C.TIME_SPAN_HOUR
+const TIME_SPAN_HOUR = 3600000000
 
 // TIME_SPAN_MILLISECOND evaluates to a time span of one millisecond.
-const TIME_SPAN_MILLISECOND = C.TIME_SPAN_MILLISECOND
+const TIME_SPAN_MILLISECOND = 1000
 
 // TIME_SPAN_MINUTE evaluates to a time span of one minute.
-const TIME_SPAN_MINUTE = C.TIME_SPAN_MINUTE
+const TIME_SPAN_MINUTE = 60000000
 
 // TIME_SPAN_SECOND evaluates to a time span of one second.
-const TIME_SPAN_SECOND = C.TIME_SPAN_SECOND
+const TIME_SPAN_SECOND = 1000000
 
 // TimeSpan: value representing an interval of time, in microseconds.
 type TimeSpan = int64

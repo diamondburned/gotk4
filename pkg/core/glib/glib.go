@@ -460,9 +460,11 @@ func newObject(ptr unsafe.Pointer, take bool) *Object {
 		return nil
 	}
 
-	return &Object{
-		box: intern.Get(ptr, take),
-	}
+	box := intern.Get(ptr, take)
+	box.Set(intern.ClosureIx, closure.NewRegistry())
+	box.Seal()
+
+	return &Object{box: box}
 }
 
 // Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).
@@ -678,22 +680,12 @@ func marshalValue(p uintptr) (interface{}, error) {
 	return &Value{v}, nil
 }
 
-var (
-	mustHeap interface{}
-	never    bool
-)
-
 // AllocateValue allocates a Value but does not initialize it. It sets a
 // runtime finalizer to call g_value_unset() on the underlying GValue after
 // leaving scope.
 func AllocateValue() *Value {
 	gvalue := new(C.GValue)
-	if never {
-		// Force the value to be on the Go heap, because we don't want it on the
-		// stack. The compiler will likely throw it on the heap without this
-		// anyway, but we'd like to be careful.
-		mustHeap = gvalue
-	}
+	intern.Escape(gvalue)
 
 	v := &value{gvalue}
 
@@ -709,14 +701,17 @@ func AllocateValue() *Value {
 	return &Value{v}
 }
 
-// InitValue is a wrapper around g_value_init() and allocates and initializes a
-// new Value with the Type t. A runtime finalizer is set to call g_value_unset()
-// on the underlying GValue after leaving scope.  ValueInit() returns a non-nil
-// error if the allocation failed.
-func InitValue(t Type) *Value {
-	v := AllocateValue()
+// InitValue is a wrapper around g_value_init() and initializes a new Value with
+// the Type t. If the given value is not created from a ValueFromNative pointer,
+// then a new value will be allocated. A runtime finalizer is set to call
+// g_value_unset() on the underlying GValue after leaving scope.
+func InitValue(v *Value, t Type) {
+	// Allocate if not already.
+	if v.value == nil {
+		v.value = AllocateValue().value
+	}
+
 	C.g_value_init(v.native(), C.GType(t))
-	return v
 }
 
 // ValueFromNative returns a type-asserted pointer to the Value. It does not add
@@ -730,18 +725,26 @@ func ValueFromNative(l unsafe.Pointer) *Value {
 // given type is unknown. Most Go primitive types and all Object types are
 // supported.
 func NewValue(v interface{}) *Value {
+	value := AllocateValue()
+	InitValueFromGo(value, v)
+	return value
+}
+
+// InitValueFromGo is like NewValue, except the value has to be preallocated.
+func InitValueFromGo(val *Value, v interface{}) {
 	if v == nil {
-		val := InitValue(TypePointer)
+		InitValue(val, TypePointer)
 		val.SetPointer(uintptr(unsafe.Pointer(nil)))
-		return val
+		return
 	}
 
-	if val := newValuePrimitive(v); val != nil {
-		return val
+	if initValuePrimitive(val, v) {
+		return
 	}
 
 	if v == InvalidValue {
-		return InitValue(TypeInvalid)
+		InitValue(val, TypeInvalid)
+		return
 	}
 
 	// Try this since above doesn't catch constants under other types.
@@ -749,85 +752,85 @@ func NewValue(v interface{}) *Value {
 
 	switch rval.Kind() {
 	case reflect.Bool:
-		return newValuePrimitive(rval.Bool())
+		initValuePrimitive(val, rval.Bool())
 	case reflect.Int8:
-		return newValuePrimitive(int8(rval.Int()))
+		initValuePrimitive(val, int8(rval.Int()))
 	case reflect.Int32:
-		return newValuePrimitive(int32(rval.Int()))
+		initValuePrimitive(val, int32(rval.Int()))
 	case reflect.Int64:
-		return newValuePrimitive(int64(rval.Int()))
+		initValuePrimitive(val, int64(rval.Int()))
 	case reflect.Int:
-		return newValuePrimitive(int(rval.Int()))
+		initValuePrimitive(val, int(rval.Int()))
 	case reflect.Uint8:
-		return newValuePrimitive(uint8(rval.Uint()))
+		initValuePrimitive(val, uint8(rval.Uint()))
 	case reflect.Uint32:
-		return newValuePrimitive(uint32(rval.Uint()))
+		initValuePrimitive(val, uint32(rval.Uint()))
 	case reflect.Uint64:
-		return newValuePrimitive(uint64(rval.Uint()))
+		initValuePrimitive(val, uint64(rval.Uint()))
 	case reflect.Uint:
-		return newValuePrimitive(uint(rval.Uint()))
+		initValuePrimitive(val, uint(rval.Uint()))
 	case reflect.Float32:
-		return newValuePrimitive(float32(rval.Float()))
+		initValuePrimitive(val, float32(rval.Float()))
 	case reflect.Float64:
-		return newValuePrimitive(float64(rval.Float()))
+		initValuePrimitive(val, float64(rval.Float()))
 	case reflect.String:
-		return newValuePrimitive(rval.String())
+		initValuePrimitive(val, rval.String())
+	default:
+		log.Panicf("type %T not implemented", v)
 	}
-
-	log.Panicf("type %T not implemented", v)
-	return nil
 }
 
-func newValuePrimitive(v interface{}) *Value {
-	var val *Value
+func initValuePrimitive(val *Value, v interface{}) bool {
 	switch e := v.(type) {
 	case *Value:
-		val = e
+		*val = *e
 	case bool:
-		val = InitValue(TypeBoolean)
+		InitValue(val, TypeBoolean)
 		val.SetBool(e)
 	case int8:
-		val = InitValue(TypeChar)
+		InitValue(val, TypeChar)
 		val.SetSchar(e)
 	case int32:
-		val = InitValue(TypeLong)
+		InitValue(val, TypeLong)
 		val.SetLong(e)
 	case int64:
-		val = InitValue(TypeInt64)
+		InitValue(val, TypeInt64)
 		val.SetInt64(e)
 	case int:
-		val = InitValue(TypeInt)
+		InitValue(val, TypeInt)
 		val.SetInt(e)
 	case uint8:
-		val = InitValue(TypeUchar)
+		InitValue(val, TypeUchar)
 		val.SetUchar(e)
 	case uint32:
-		val = InitValue(TypeUlong)
+		InitValue(val, TypeUlong)
 		val.SetUlong(e)
 	case uint64:
-		val = InitValue(TypeUint64)
+		InitValue(val, TypeUint64)
 		val.SetUint64(e)
 	case uint:
-		val = InitValue(TypeUint)
+		InitValue(val, TypeUint)
 		val.SetUint(e)
 	case float32:
-		val = InitValue(TypeFloat)
+		InitValue(val, TypeFloat)
 		val.SetFloat(e)
 	case float64:
-		val = InitValue(TypeDouble)
+		InitValue(val, TypeDouble)
 		val.SetDouble(e)
 	case string:
-		val = InitValue(TypeString)
+		InitValue(val, TypeString)
 		val.SetString(e)
 	case Objector:
-		val = InitValue(TypeObject)
+		InitValue(val, TypeObject)
 		val.SetInstance(uintptr(unsafe.Pointer(e.Native())))
 		// TODO: this likely won't work as intended: e might still be freed
 		// before the value is. The caller will have to somehow keep this one
 		// alive.
 		runtime.KeepAlive(e)
+	default:
+		return false
 	}
-	return val
+	return true
 }
 
 // goGValue is a convenient function that creates a Go value from the given

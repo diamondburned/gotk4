@@ -251,6 +251,8 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GLib.Bytes.unref_to_array"),
 	// Not available on Windows.
 	RegexFilter(`GLib.Source\..*unix.*`),
+	RegexFilter(`Gio.Subprocess`),
+	RegexFilter(`Gio.SubprocessLauncher`), // useless without Subprocess
 	// Nothing "Unix" is going to be available on Windows.
 	RegexFilter(`Gio..*[Uu]nix.*`),
 	// Type is different across platforms, which the generator isn't prepared

@@ -11,19 +11,10 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
-// #include <gio/gunixconnection.h>
-// #include <gio/gunixcredentialsmessage.h>
-// #include <gio/gunixfdlist.h>
-// #include <gio/gunixfdmessage.h>
-// #include <gio/gunixinputstream.h>
-// #include <gio/gunixmounts.h>
-// #include <gio/gunixoutputstream.h>
-// #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
 import "C"
 
@@ -91,59 +82,6 @@ func NewCredentials() *Credentials {
 	return _credentials
 }
 
-// UnixPid tries to get the UNIX process identifier from credentials. This
-// method is only available on UNIX platforms.
-//
-// This operation can fail if #GCredentials is not supported on the OS or if the
-// native credentials type does not contain information about the UNIX process
-// ID (for example this is the case for G_CREDENTIALS_TYPE_APPLE_XUCRED).
-func (credentials *Credentials) UnixPid() (int, error) {
-	var _arg0 *C.GCredentials // out
-	var _cret C.pid_t         // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
-
-	_cret = C.g_credentials_get_unix_pid(_arg0, &_cerr)
-	runtime.KeepAlive(credentials)
-
-	var _gint int    // out
-	var _goerr error // out
-
-	_gint = int(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _gint, _goerr
-}
-
-// UnixUser tries to get the UNIX user identifier from credentials. This method
-// is only available on UNIX platforms.
-//
-// This operation can fail if #GCredentials is not supported on the OS or if the
-// native credentials type does not contain information about the UNIX user.
-func (credentials *Credentials) UnixUser() (uint, error) {
-	var _arg0 *C.GCredentials // out
-	var _cret C.uid_t         // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
-
-	_cret = C.g_credentials_get_unix_user(_arg0, &_cerr)
-	runtime.KeepAlive(credentials)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = uint(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _guint, _goerr
-}
-
 // IsSameUser checks if credentials and other_credentials is the same user.
 //
 // This operation can fail if #GCredentials is not supported on the the OS.
@@ -198,38 +136,6 @@ func (credentials *Credentials) SetNative(nativeType CredentialsType, native cgo
 	runtime.KeepAlive(credentials)
 	runtime.KeepAlive(nativeType)
 	runtime.KeepAlive(native)
-}
-
-// SetUnixUser tries to set the UNIX user identifier on credentials. This method
-// is only available on UNIX platforms.
-//
-// This operation can fail if #GCredentials is not supported on the OS or if the
-// native credentials type does not contain information about the UNIX user. It
-// can also fail if the OS does not allow the use of "spoofed" credentials.
-//
-// The function takes the following parameters:
-//
-//    - uid: UNIX user identifier to set.
-//
-func (credentials *Credentials) SetUnixUser(uid uint) error {
-	var _arg0 *C.GCredentials // out
-	var _arg1 C.uid_t         // out
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
-	_arg1 = C.uid_t(uid)
-
-	C.g_credentials_set_unix_user(_arg0, _arg1, &_cerr)
-	runtime.KeepAlive(credentials)
-	runtime.KeepAlive(uid)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
 }
 
 // String creates a human-readable textual representation of credentials that

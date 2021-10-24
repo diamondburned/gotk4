@@ -15,19 +15,10 @@ import (
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
-// #include <gio/gunixconnection.h>
-// #include <gio/gunixcredentialsmessage.h>
-// #include <gio/gunixfdlist.h>
-// #include <gio/gunixfdmessage.h>
-// #include <gio/gunixinputstream.h>
-// #include <gio/gunixmounts.h>
-// #include <gio/gunixoutputstream.h>
-// #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
 // GDBusMessage* _gotk4_gio2_DBusMessageFilterFunction(GDBusConnection*, GDBusMessage*, gboolean, gpointer);
 // extern void callbackDelete(gpointer);
@@ -962,256 +953,6 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectP
 	}
 
 	return _variant, _goerr
-}
-
-// CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
-// object.
-//
-// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values in
-// the body of the message. For example, if a message contains two file
-// descriptors, fd_list would have length 2, and g_variant_new_handle (0) and
-// g_variant_new_handle (1) would appear somewhere in the body of the message
-// (not necessarily in that order!) to represent the file descriptors at indexes
-// 0 and 1 respectively.
-//
-// When designing D-Bus APIs that are intended to be interoperable, please note
-// that non-GDBus implementations of D-Bus can usually only access file
-// descriptors if they are referenced in this way by a value of type
-// G_VARIANT_TYPE_HANDLE in the body of the message.
-//
-// This method is only available on UNIX.
-//
-// The function takes the following parameters:
-//
-//    - ctx or NULL.
-//    - busName: unique or well-known bus name or NULL if connection is not a
-//    message bus connection.
-//    - objectPath: path of remote object.
-//    - interfaceName d-Bus interface to invoke method on.
-//    - methodName: name of the method to invoke.
-//    - parameters tuple with parameters for the method or NULL if not passing
-//    parameters.
-//    - replyType: expected type of the reply, or NULL.
-//    - flags from the BusCallFlags enumeration.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//    G_MAXINT for no timeout.
-//    - fdList or NULL.
-//    - callback to call when the request is satisfied or NULL if you don't *
-//    care about the result of the method invocation.
-//
-func (connection *DBusConnection) CallWithUnixFdList(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, callback AsyncReadyCallback) {
-	var _arg0 *C.GDBusConnection     // out
-	var _arg10 *C.GCancellable       // out
-	var _arg1 *C.gchar               // out
-	var _arg2 *C.gchar               // out
-	var _arg3 *C.gchar               // out
-	var _arg4 *C.gchar               // out
-	var _arg5 *C.GVariant            // out
-	var _arg6 *C.GVariantType        // out
-	var _arg7 C.GDBusCallFlags       // out
-	var _arg8 C.gint                 // out
-	var _arg9 *C.GUnixFDList         // out
-	var _arg11 C.GAsyncReadyCallback // out
-	var _arg12 C.gpointer
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg10 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if busName != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	defer C.free(unsafe.Pointer(_arg4))
-	if parameters != nil {
-		_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
-	}
-	if replyType != nil {
-		_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
-	}
-	_arg7 = C.GDBusCallFlags(flags)
-	_arg8 = C.gint(timeoutMsec)
-	if fdList != nil {
-		_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-	}
-	if callback != nil {
-		_arg11 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg12 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_dbus_connection_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(busName)
-	runtime.KeepAlive(objectPath)
-	runtime.KeepAlive(interfaceName)
-	runtime.KeepAlive(methodName)
-	runtime.KeepAlive(parameters)
-	runtime.KeepAlive(replyType)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(timeoutMsec)
-	runtime.KeepAlive(fdList)
-	runtime.KeepAlive(callback)
-}
-
-// CallWithUnixFdListFinish finishes an operation started with
-// g_dbus_connection_call_with_unix_fd_list().
-//
-// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values in
-// the body of the message. For example, if g_variant_get_handle() returns 5,
-// that is intended to be a reference to the file descriptor that can be
-// accessed by g_unix_fd_list_get (*out_fd_list, 5, ...).
-//
-// When designing D-Bus APIs that are intended to be interoperable, please note
-// that non-GDBus implementations of D-Bus can usually only access file
-// descriptors if they are referenced in this way by a value of type
-// G_VARIANT_TYPE_HANDLE in the body of the message.
-//
-// The function takes the following parameters:
-//
-//    - res obtained from the ReadyCallback passed to
-//    g_dbus_connection_call_with_unix_fd_list().
-//
-func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList, *glib.Variant, error) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 *C.GUnixFDList     // in
-	var _arg2 *C.GAsyncResult    // out
-	var _cret *C.GVariant        // in
-	var _cerr *C.GError          // in
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	_cret = C.g_dbus_connection_call_with_unix_fd_list_finish(_arg0, &_arg1, _arg2, &_cerr)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(res)
-
-	var _outFdList *UnixFDList // out
-	var _variant *glib.Variant // out
-	var _goerr error           // out
-
-	if _arg1 != nil {
-		_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
-	}
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _outFdList, _variant, _goerr
-}
-
-// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes and
-// returns FDList objects. See g_dbus_connection_call_with_unix_fd_list() and
-// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
-//
-// This method is only available on UNIX.
-//
-// The function takes the following parameters:
-//
-//    - ctx or NULL.
-//    - busName: unique or well-known bus name or NULL if connection is not a
-//    message bus connection.
-//    - objectPath: path of remote object.
-//    - interfaceName d-Bus interface to invoke method on.
-//    - methodName: name of the method to invoke.
-//    - parameters tuple with parameters for the method or NULL if not passing
-//    parameters.
-//    - replyType: expected type of the reply, or NULL.
-//    - flags from the BusCallFlags enumeration.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//    G_MAXINT for no timeout.
-//    - fdList or NULL.
-//
-func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList) (*UnixFDList, *glib.Variant, error) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg11 *C.GCancellable   // out
-	var _arg1 *C.gchar           // out
-	var _arg2 *C.gchar           // out
-	var _arg3 *C.gchar           // out
-	var _arg4 *C.gchar           // out
-	var _arg5 *C.GVariant        // out
-	var _arg6 *C.GVariantType    // out
-	var _arg7 C.GDBusCallFlags   // out
-	var _arg8 C.gint             // out
-	var _arg9 *C.GUnixFDList     // out
-	var _arg10 *C.GUnixFDList    // in
-	var _cret *C.GVariant        // in
-	var _cerr *C.GError          // in
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg11 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if busName != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	defer C.free(unsafe.Pointer(_arg4))
-	if parameters != nil {
-		_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
-	}
-	if replyType != nil {
-		_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
-	}
-	_arg7 = C.GDBusCallFlags(flags)
-	_arg8 = C.gint(timeoutMsec)
-	if fdList != nil {
-		_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-	}
-
-	_cret = C.g_dbus_connection_call_with_unix_fd_list_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, &_arg10, _arg11, &_cerr)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(busName)
-	runtime.KeepAlive(objectPath)
-	runtime.KeepAlive(interfaceName)
-	runtime.KeepAlive(methodName)
-	runtime.KeepAlive(parameters)
-	runtime.KeepAlive(replyType)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(timeoutMsec)
-	runtime.KeepAlive(fdList)
-
-	var _outFdList *UnixFDList // out
-	var _variant *glib.Variant // out
-	var _goerr error           // out
-
-	if _arg10 != nil {
-		_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg10)))
-	}
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _outFdList, _variant, _goerr
 }
 
 // Close closes connection. Note that this never causes the process to exit
@@ -2794,24 +2535,6 @@ func (message *DBusMessage) MessageType() DBusMessageType {
 	return _dBusMessageType
 }
 
-// NumUnixFds: convenience getter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-func (message *DBusMessage) NumUnixFds() uint32 {
-	var _arg0 *C.GDBusMessage // out
-	var _cret C.guint32       // in
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
-
-	_cret = C.g_dbus_message_get_num_unix_fds(_arg0)
-	runtime.KeepAlive(message)
-
-	var _guint32 uint32 // out
-
-	_guint32 = uint32(_cret)
-
-	return _guint32
-}
-
 // Path: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
 // field.
 func (message *DBusMessage) Path() string {
@@ -2903,32 +2626,6 @@ func (message *DBusMessage) Signature() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// UnixFdList gets the UNIX file descriptors associated with message, if any.
-//
-// This method is only available on UNIX.
-//
-// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values in
-// the body of the message. For example, if g_variant_get_handle() returns 5,
-// that is intended to be a reference to the file descriptor that can be
-// accessed by g_unix_fd_list_get (list, 5, ...).
-func (message *DBusMessage) UnixFdList() *UnixFDList {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.GUnixFDList  // in
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
-
-	_cret = C.g_dbus_message_get_unix_fd_list(_arg0)
-	runtime.KeepAlive(message)
-
-	var _unixFDList *UnixFDList // out
-
-	if _cret != nil {
-		_unixFDList = wrapUnixFDList(externglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _unixFDList
 }
 
 // Lock: if message is locked, does nothing. Otherwise locks the message.
@@ -3240,25 +2937,6 @@ func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
 	runtime.KeepAlive(typ)
 }
 
-// SetNumUnixFds: convenience setter for the
-// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-//
-// The function takes the following parameters:
-//
-//    - value to set.
-//
-func (message *DBusMessage) SetNumUnixFds(value uint32) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 C.guint32       // out
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
-	_arg1 = C.guint32(value)
-
-	C.g_dbus_message_set_num_unix_fds(_arg0, _arg1)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(value)
-}
-
 // SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
 // field.
 //
@@ -3360,35 +3038,6 @@ func (message *DBusMessage) SetSignature(value string) {
 	C.g_dbus_message_set_signature(_arg0, _arg1)
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
-}
-
-// SetUnixFdList sets the UNIX file descriptors associated with message. As a
-// side-effect the G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field is set
-// to the number of fds in fd_list (or cleared if fd_list is NULL).
-//
-// This method is only available on UNIX.
-//
-// When designing D-Bus APIs that are intended to be interoperable, please note
-// that non-GDBus implementations of D-Bus can usually only access file
-// descriptors if they are referenced by a value of type G_VARIANT_TYPE_HANDLE
-// in the body of the message.
-//
-// The function takes the following parameters:
-//
-//    - fdList or NULL.
-//
-func (message *DBusMessage) SetUnixFdList(fdList *UnixFDList) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.GUnixFDList  // out
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
-	if fdList != nil {
-		_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-	}
-
-	C.g_dbus_message_set_unix_fd_list(_arg0, _arg1)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(fdList)
 }
 
 // ToBlob serializes message to a blob. The byte order returned by
@@ -3806,40 +3455,6 @@ func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	C.g_dbus_method_invocation_return_value(_arg0, _arg1)
 	runtime.KeepAlive(invocation)
 	runtime.KeepAlive(parameters)
-}
-
-// ReturnValueWithUnixFdList: like g_dbus_method_invocation_return_value() but
-// also takes a FDList.
-//
-// This method is only available on UNIX.
-//
-// This method will take ownership of invocation. See BusInterfaceVTable for
-// more information about the ownership of invocation.
-//
-// The function takes the following parameters:
-//
-//    - parameters tuple with out parameters for the method or NULL if not
-//    passing any parameters.
-//    - fdList or NULL.
-//
-func (invocation *DBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList *UnixFDList) {
-	var _arg0 *C.GDBusMethodInvocation // out
-	var _arg1 *C.GVariant              // out
-	var _arg2 *C.GUnixFDList           // out
-
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
-	C.g_object_ref(C.gpointer(invocation.Native()))
-	if parameters != nil {
-		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
-	}
-	if fdList != nil {
-		_arg2 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-	}
-
-	C.g_dbus_method_invocation_return_value_with_unix_fd_list(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(invocation)
-	runtime.KeepAlive(parameters)
-	runtime.KeepAlive(fdList)
 }
 
 // DBusServer is a helper for listening to and accepting D-Bus connections. This

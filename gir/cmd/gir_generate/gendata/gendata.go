@@ -109,6 +109,9 @@ var Preprocessors = []Preprocessor{
 	RenameEnumMembers("Gdk-3.EventType", ".*", "${0}_TYPE"),
 	// See #28.
 	RemoveCIncludes("Gio-2.0.gir", "gio/gdesktopappinfo.h"),
+	// These probably shouldn't be built on Windows.
+	RemovePkgconfig("Gio-2.0.gir", "gio-unix-2.0"),
+	RemoveCIncludes("Gio-2.0.gir", "gio/gfiledescriptorbased.h", `/gio/gunix.*\.h/`),
 
 	// Length and Value are invalid in Go. We manually handle them in GLibLogs.
 	RemoveRecordFields("GLib-2.LogField", "length", "value"),
@@ -248,12 +251,17 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GLib.Bytes.unref_to_array"),
 	// Not available on Windows.
 	RegexFilter(`GLib.Source\..*unix.*`),
+	// Nothing "Unix" is going to be available on Windows.
+	RegexFilter(`Gio..*[Uu]nix.*`),
 	// Type is different across platforms, which the generator isn't prepared
 	// for. Use os/exec instead.
 	AbsoluteFilter("GLib.Pid"),
 	// PollFD needs fd to be int on Unix and syscall.Handle on Windows, We can
 	// handle this later. Go doesn't need this.
 	AbsoluteFilter("GLib.PollFD"),
+	// These are removed in Preprocessors.
+	FileFilter("gfiledescriptorbased."),
+	FileFilter("gunix"),
 
 	FileFilter("gasyncqueue."),
 	FileFilter("gatomic."),

@@ -37,8 +37,38 @@ func (f PreprocessorFunc) Preprocess(repos gir.Repositories) {
 	f(repos)
 }
 
+// RemovePkgconfig removes the given pkgconfig packages from the given
+// repository.
+func RemovePkgconfig(girFile string, pkgs ...string) Preprocessor {
+	matchers := makeMatchers(pkgs)
+
+	return PreprocessorFunc(func(repos gir.Repositories) {
+		repo := repos.FromGIRFile(girFile)
+		if repo == nil {
+			log.Printf("RemoveCIncludes: gir file %s not found", girFile)
+			return
+		}
+
+		packages := repo.Packages[:0]
+
+	findPkg:
+		for _, pkg := range repo.Packages {
+			for _, match := range matchers {
+				if match(pkg.Name) {
+					continue findPkg
+				}
+			}
+			packages = append(packages, pkg)
+		}
+
+		repo.Packages = packages
+	})
+}
+
 // RemoveCIncludes removes the given C includes from the given repository.
 func RemoveCIncludes(girFile string, cincls ...string) Preprocessor {
+	matchers := makeMatchers(cincls)
+
 	return PreprocessorFunc(func(repos gir.Repositories) {
 		repo := repos.FromGIRFile(girFile)
 		if repo == nil {
@@ -50,8 +80,8 @@ func RemoveCIncludes(girFile string, cincls ...string) Preprocessor {
 
 	findCIncl:
 		for _, cincl := range repo.CIncludes {
-			for _, remove := range cincls {
-				if remove == cincl.Name {
+			for _, match := range matchers {
+				if match(cincl.Name) {
 					continue findCIncl
 				}
 			}
@@ -60,6 +90,23 @@ func RemoveCIncludes(girFile string, cincls ...string) Preprocessor {
 
 		repo.CIncludes = cIncludes
 	})
+}
+
+func makeMatchers(inputs []string) []func(string) bool {
+	fns := make([]func(string) bool, len(inputs))
+
+	for i, input := range inputs {
+		if strings.HasPrefix(input, "/") && strings.HasSuffix(input, "/") {
+			input = strings.Trim(input, "/")
+			re := regexp.MustCompile(input)
+			fns[i] = re.MatchString
+		} else {
+			input := input
+			fns[i] = func(v string) bool { return v == input }
+		}
+	}
+
+	return fns
 }
 
 func girTypeMustBeVersioned(girType string) {

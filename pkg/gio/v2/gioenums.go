@@ -10,19 +10,10 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
-// #include <gio/gunixconnection.h>
-// #include <gio/gunixcredentialsmessage.h>
-// #include <gio/gunixfdlist.h>
-// #include <gio/gunixfdmessage.h>
-// #include <gio/gunixinputstream.h>
-// #include <gio/gunixmounts.h>
-// #include <gio/gunixoutputstream.h>
-// #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
 import "C"
 
@@ -68,7 +59,6 @@ func init() {
 		{T: externglib.Type(C.g_tls_error_get_type()), F: marshalTLSError},
 		{T: externglib.Type(C.g_tls_interaction_result_get_type()), F: marshalTLSInteractionResult},
 		{T: externglib.Type(C.g_tls_rehandshake_mode_get_type()), F: marshalTLSRehandshakeMode},
-		{T: externglib.Type(C.g_unix_socket_address_type_get_type()), F: marshalUnixSocketAddressType},
 		{T: externglib.Type(C.g_zlib_compressor_format_get_type()), F: marshalZlibCompressorFormat},
 		{T: externglib.Type(C.g_app_info_create_flags_get_type()), F: marshalAppInfoCreateFlags},
 		{T: externglib.Type(C.g_application_flags_get_type()), F: marshalApplicationFlags},
@@ -2114,56 +2104,6 @@ func (t TLSRehandshakeMode) String() string {
 		return "Unsafely"
 	default:
 		return fmt.Sprintf("TLSRehandshakeMode(%d)", t)
-	}
-}
-
-// UnixSocketAddressType: type of name used by a SocketAddress.
-// G_UNIX_SOCKET_ADDRESS_PATH indicates a traditional unix domain socket bound
-// to a filesystem path. G_UNIX_SOCKET_ADDRESS_ANONYMOUS indicates a socket not
-// bound to any name (eg, a client-side socket, or a socket created with
-// socketpair()).
-//
-// For abstract sockets, there are two incompatible ways of naming them; the man
-// pages suggest using the entire struct sockaddr_un as the name, padding the
-// unused parts of the sun_path field with zeroes; this corresponds to
-// G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED. However, many programs instead just
-// use a portion of sun_path, and pass an appropriate smaller length to bind()
-// or connect(). This is G_UNIX_SOCKET_ADDRESS_ABSTRACT.
-type UnixSocketAddressType C.gint
-
-const (
-	// UnixSocketAddressInvalid: invalid.
-	UnixSocketAddressInvalid UnixSocketAddressType = iota
-	// UnixSocketAddressAnonymous: anonymous.
-	UnixSocketAddressAnonymous
-	// UnixSocketAddressPath: filesystem path.
-	UnixSocketAddressPath
-	// UnixSocketAddressAbstract: abstract name.
-	UnixSocketAddressAbstract
-	// UnixSocketAddressAbstractPadded: abstract name, 0-padded to the full
-	// length of a unix socket name.
-	UnixSocketAddressAbstractPadded
-)
-
-func marshalUnixSocketAddressType(p uintptr) (interface{}, error) {
-	return UnixSocketAddressType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for UnixSocketAddressType.
-func (u UnixSocketAddressType) String() string {
-	switch u {
-	case UnixSocketAddressInvalid:
-		return "Invalid"
-	case UnixSocketAddressAnonymous:
-		return "Anonymous"
-	case UnixSocketAddressPath:
-		return "Path"
-	case UnixSocketAddressAbstract:
-		return "Abstract"
-	case UnixSocketAddressAbstractPadded:
-		return "AbstractPadded"
-	default:
-		return fmt.Sprintf("UnixSocketAddressType(%d)", u)
 	}
 }
 

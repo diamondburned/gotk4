@@ -27,6 +27,13 @@ func (conv *Converter) cgoConvert(value *ValueConverted) bool {
 	}
 }
 
+var utf8Matches = []string{
+	"UTF-8",
+	"utf-8",
+	"UTF8",
+	"utf8",
+}
+
 func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 	array := *value.AnyType.Array
 
@@ -71,6 +78,66 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		value.In.Call = fmt.Sprintf("&%s", value.InName)
 	}
 
+	var length *ValueConverted
+	if array.Length != nil {
+		length = conv.convertParam(*array.Length)
+		if length == nil {
+			value.Logln(logger.Debug, "length parameter", *array.Length, "not found")
+			return false
+		}
+
+		// Multiple arrays may use the same length value.
+		if length.finalize() {
+			value.header.ApplyFrom(length.Header())
+			value.inDecl.Linef("var %s %s // in", length.InName, length.In.Type)
+			// Length has no outDecl.
+		}
+	}
+
+	switch types.CleanCType(array.CType, false) {
+	case "char*", "gchar*":
+		// Hack to only allow certain special types.
+		if !strings.Contains(array.CType, "const") || value.Doc == nil {
+			break // fallback to []byte if not const
+		}
+		if array.Length == nil && !array.IsZeroTerminated() {
+			break // unknown case, handle elsewhere
+		}
+
+		var match bool
+		for _, m := range utf8Matches {
+			if strings.Contains(value.Doc.String, m) {
+				match = true
+				break
+			}
+		}
+		if !match {
+			break // probably a []byte
+		}
+
+		if value.ShouldFree() {
+			// Free the string pointer once we're done, if needed.
+			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
+		}
+
+		value.Out.Type = "string"
+		value.outDecl.Reset()
+		value.outDecl.Linef("var %s string", value.InName)
+
+		value.header.Import("strings")
+		value.header.Import("unsafe")
+
+		switch {
+		case array.IsZeroTerminated():
+			value.p.Linef("%s = C.GoString(%s)", value.Out.Set, value.In.Name)
+		case array.Length != nil:
+			value.p.Linef("%s = C.GoStringN(%s, C.int(%s))",
+				value.Out.Set, value.In.Name, length.Out.Name)
+		}
+
+		return true
+	}
+
 	switch {
 	case array.FixedSize > 0:
 		value.header.Import("unsafe")
@@ -100,19 +167,6 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 	case array.Length != nil:
 		value.header.Import("unsafe")
-
-		length := conv.convertParam(*array.Length)
-		if length == nil {
-			value.Logln(logger.Debug, "length parameter", *array.Length, "not found")
-			return false
-		}
-
-		// Multiple arrays may use the same length value.
-		if length.finalize() {
-			value.header.ApplyFrom(length.Header())
-			value.inDecl.Linef("var %s %s // in", length.InName, length.In.Type)
-			// Length has no outDecl.
-		}
 
 		// No realloc fast path available; setting a finalizer on a slice value
 		// is invalid.

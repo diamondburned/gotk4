@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"runtime"
 	"runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -1886,23 +1887,21 @@ func (value *Variant) Size() uint {
 // those three.
 //
 // The return value remains valid as long as value exists.
-func (value *Variant) String() (uint, string) {
+func (value *Variant) String() string {
 	var _arg0 *C.GVariant // out
-	var _arg1 C.gsize     // in
 	var _cret *C.gchar    // in
+	var _arg1 C.gsize     // in
 
 	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_string(_arg0, &_arg1)
 	runtime.KeepAlive(value)
 
-	var _length uint // out
-	var _utf8 string // out
+	var _cret string
 
-	_length = uint(_arg1)
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoStringN(_cret, C.int(_length))
 
-	return _length, _utf8
+	return _utf8
 }
 
 // Strv gets the contents of an array of strings #GVariant. This call makes a

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"runtime"
 	"runtime/cgo"
-	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -1897,9 +1896,9 @@ func (value *Variant) String() string {
 	_cret = C.g_variant_get_string(_arg0, &_arg1)
 	runtime.KeepAlive(value)
 
-	var _cret string
+	var _utf8 string
 
-	_utf8 = C.GoStringN(_cret, C.int(_length))
+	_utf8 = C.GoStringN(_cret, C.int(_arg1))
 
 	return _utf8
 }

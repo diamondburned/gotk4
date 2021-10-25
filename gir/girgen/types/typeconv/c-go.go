@@ -122,17 +122,14 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 		value.Out.Type = "string"
 		value.outDecl.Reset()
-		value.outDecl.Linef("var %s string", value.InName)
-
-		value.header.Import("strings")
-		value.header.Import("unsafe")
+		value.outDecl.Linef("var %s string", value.Out.Name)
 
 		switch {
 		case array.IsZeroTerminated():
 			value.p.Linef("%s = C.GoString(%s)", value.Out.Set, value.In.Name)
 		case array.Length != nil:
 			value.p.Linef("%s = C.GoStringN(%s, C.int(%s))",
-				value.Out.Set, value.In.Name, length.Out.Name)
+				value.Out.Set, value.In.Name, length.In.Name)
 		}
 
 		return true

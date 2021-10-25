@@ -318,12 +318,12 @@ func (p *PtrArray) Len() uint {
 	return v
 }
 
-// UseBytes is similar to NewBytes, except the given Go byte slice is
-// not copied, but will be kept alive for the lifetime of the GBytes.
+// NewBytesWithGo is similar to NewBytes, except the given Go byte slice
+// is not copied, but will be kept alive for the lifetime of the GBytes.
 // Note that the user must NOT modify data.
 //
 // Refer to g_bytes_new_with_free_func() for more information.
-func UseBytes(data []byte) *Bytes {
+func NewBytesWithGo(data []byte) *Bytes {
 	byteID := gbox.Assign(data)
 
 	v := C.g_bytes_new_with_free_func(

@@ -348,6 +348,57 @@ func ImportGError(nsgen *girgen.NamespaceGenerator) error {
 	return nil
 }
 
+func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
+	fg, ok := nsgen.Files["gvariant.go"]
+	if !ok {
+		return nil
+	}
+
+	h := fg.Header()
+	h.Import("unsafe")
+	h.Import("runtime")
+	h.ImportCore("gextras")
+
+	p := fg.Pen()
+	p.Line(`
+		// Foreach iterates over items in value. The iteration breaks out once f
+		// returns true. This method wraps around g_variant_iter_new.
+		func (value *Variant) Foreach(f func(*Variant) (stop bool)) {
+			valueNative := (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+			var iter C.GVariantIter
+			C.g_variant_iter_init(&iter, valueNative)
+
+			next := func() *Variant {
+				item := C.g_variant_iter_next_value(&iter)
+				if item == nil {
+					return nil
+				}
+
+				variant := (*Variant)(gextras.NewStructNative(unsafe.Pointer(item)))
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(variant)),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.g_variant_unref((*C.GVariant)(intern.C))
+					},
+				)
+
+				return variant
+			}
+
+			for item := next(); item != nil; item = next() {
+				if f(item) {
+					break
+				}
+			}
+
+			runtime.KeepAlive(value)
+		}
+	`)
+
+	return nil
+}
+
 // GLibDateTime generates NewTimeZoneFromGo and NewDateTimeFromGo.
 func GLibDateTime(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.Files["gdatetime.go"]
@@ -739,7 +790,7 @@ func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
-	"GLib-2": {ImportGError, GioArrayUseBytes, GLibAliases, GLibLogs, GLibDateTime},
+	"GLib-2": {ImportGError, GioArrayUseBytes, GLibVariantIter, GLibAliases, GLibLogs, GLibDateTime},
 	"Gio-2":  {ImportGError},
 	"Gtk-3":  {ImportGError, GtkNewDialog},
 	"Gtk-4":  {ImportGError, GtkNewDialog},

@@ -2887,3 +2887,37 @@ func (dict *VariantDict) Remove(key string) bool {
 
 	return _ok
 }
+
+// Foreach iterates over items in value. The iteration breaks out once f
+// returns true. This method wraps around g_variant_iter_new.
+func (value *Variant) Foreach(f func(*Variant) (stop bool)) {
+	valueNative := (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	var iter C.GVariantIter
+	C.g_variant_iter_init(&iter, valueNative)
+
+	next := func() *Variant {
+		item := C.g_variant_iter_next_value(&iter)
+		if item == nil {
+			return nil
+		}
+
+		variant := (*Variant)(gextras.NewStructNative(unsafe.Pointer(item)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(variant)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+
+		return variant
+	}
+
+	for item := next(); item != nil; item = next() {
+		if f(item) {
+			break
+		}
+	}
+
+	runtime.KeepAlive(value)
+}

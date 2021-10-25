@@ -462,12 +462,12 @@ func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 
 	p := fg.Pen()
 	p.Line(`
-		// UseBytes is similar to NewBytes, except the given Go byte slice is
-		// not copied, but will be kept alive for the lifetime of the GBytes.
+		// NewBytesWithGo is similar to NewBytes, except the given Go byte slice
+		// is not copied, but will be kept alive for the lifetime of the GBytes.
 		// Note that the user must NOT modify data.
 		//
 		// Refer to g_bytes_new_with_free_func() for more information.
-		func UseBytes(data []byte) *Bytes {
+		func NewBytesWithGo(data []byte) *Bytes {
 			byteID := gbox.Assign(data)
 
 			v := C.g_bytes_new_with_free_func(
@@ -710,35 +710,6 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 				f("%s: %s: %s:%s (%s): %s", lvl, domain, codeFile, codeLine, codeFunc, message)
 				return LogWriterHandled
 			}
-		}
-	`)
-
-	return nil
-}
-
-func GtkTextBufferInsert(nsgen *girgen.NamespaceGenerator) error {
-	fg, ok := nsgen.Files["gtktextbuffer.go"]
-	if !ok {
-		return errors.New("missing file gmessages.go")
-	}
-
-	h := fg.Header()
-	h.Import("reflect")
-	h.Import("runtime")
-	h.Import("unsafe")
-
-	p := fg.Pen()
-	p.Line(`
-		// Insert is a convenient method around InsertBytes.
-		func (buffer *TextBuffer) Insert(iter *TextIter, str string) {
-			var bytes []byte
-			bytesHeader := (*reflect.SliceHeader)(unsafe.Pointer(&bytes))
-			bytesHeader.Len = len(str)
-			bytesHeader.Cap = len(str)
-			bytesHeader.Data = (*reflect.StringHeader)(unsafe.Pointer(&str)).Data
-
-			buffer.InsertBytes(iter, bytes)
-			runtime.KeepAlive(str)
 		}
 	`)
 

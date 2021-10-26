@@ -148,6 +148,12 @@ func (conv *Converter) ConvertAll() []ValueConverted {
 				return nil
 			}
 		}
+
+		if !result.Skip {
+			// Prevent duplicated conversions when the parameter isn't skipped
+			// (thus written automatically).
+			result.finalize()
+		}
 	}
 
 	if proc, ok := conv.fgen.(ConversionProcessor); ok {
@@ -373,6 +379,22 @@ func (conv *Converter) convertParam(at int) *ValueConverted {
 	}
 
 	conv.Logln(logger.Debug, "conversion arg not found at", at)
+	return nil
+}
+
+func (conv *Converter) convertIx(ix ConversionValueIndex) *ValueConverted {
+	for i, res := range conv.Results {
+		if res.ParameterIndex != ix {
+			continue
+		}
+
+		if !conv.convert(&conv.Results[i]) {
+			return nil
+		}
+
+		return &conv.Results[i]
+	}
+
 	return nil
 }
 

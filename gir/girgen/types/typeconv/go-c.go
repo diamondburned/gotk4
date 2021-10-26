@@ -431,6 +431,56 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		defer value.p.Ascend()
 	}
 
+	switch value.Resolved.GType {
+	case "GObject.Type", "GType":
+		value.header.NeedsGLibObject()
+		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
+		return true
+
+	case "GObject.Value":
+		value.header.NeedsGLibObject()
+		value.p.LineTmpl(value,
+			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>.Native()))")
+		return true
+
+	case "GObject.Object", "GObject.InitiallyUnowned":
+		value.header.Import("unsafe")
+		value.p.LineTmpl(value,
+			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtrPubl 1>.Native()))")
+
+		if !value.ShouldFree() {
+			// Caller is taking ownership, which means it will steal our
+			// reference. Ensure that we take our own.
+			value.vtmpl("C.g_object_ref(C.gpointer(<.InNamePtrPubl 1>.Native()))")
+		}
+		return true
+
+	case "GObject.Closure":
+		// See if the instance parameter is an object.
+		instance := conv.convertIx(ReceiverValueIndex)
+		if instance == nil || !(instance.Resolved.IsClass() || instance.Resolved.IsInterface()) {
+			return false
+		}
+		// Weird and quirky side effects.
+		instance.finalize()
+
+		value.header.NeedsExternGLib()
+		value.p.Linef(
+			"%s = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(%s), %s))",
+			value.Out.Set, instance.In.Name, value.In.Name,
+		)
+
+		return true
+
+	case "cairo.Context", "cairo.Pattern", "cairo.Region", "cairo.Surface":
+		value.header.Import("unsafe")
+		value.p.Linef(
+			"%s = (%s)(unsafe.Pointer(%s.Native()))",
+			value.Out.Set, value.OutCast(1), value.InNamePtr(1),
+		)
+		return true
+	}
+
 	switch {
 	case value.Resolved.IsBuiltin("cgo.Handle"):
 		value.header.Import("runtime/cgo")
@@ -522,39 +572,6 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsPrimitive():
 		return value.castPrimitive()
-	}
-
-	switch value.Resolved.GType {
-	case "GObject.Type", "GType":
-		value.header.NeedsGLibObject()
-		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
-		return true
-
-	case "GObject.Value":
-		value.header.NeedsGLibObject()
-		value.p.LineTmpl(value,
-			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>.Native()))")
-		return true
-
-	case "GObject.Object", "GObject.InitiallyUnowned":
-		value.header.Import("unsafe")
-		value.p.LineTmpl(value,
-			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtrPubl 1>.Native()))")
-
-		if !value.ShouldFree() {
-			// Caller is taking ownership, which means it will steal our
-			// reference. Ensure that we take our own.
-			value.vtmpl("C.g_object_ref(C.gpointer(<.InNamePtrPubl 1>.Native()))")
-		}
-		return true
-
-	case "cairo.Context", "cairo.Pattern", "cairo.Region", "cairo.Surface":
-		value.header.Import("unsafe")
-		value.p.Linef(
-			"%s = (%s)(unsafe.Pointer(%s.Native()))",
-			value.Out.Set, value.OutCast(1), value.InNamePtr(1),
-		)
-		return true
 	}
 
 	if value.Resolved.Extern == nil {

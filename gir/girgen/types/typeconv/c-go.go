@@ -416,6 +416,99 @@ func (conv *Converter) cFree(value *ValueConverted, v string) string {
 func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	// TODO: make the freeing use cFree().
 
+	// Resolve special-case GLib types.
+	switch value.Resolved.GType {
+	case "GObject.Type", "GType":
+		value.header.NeedsExternGLib()
+		value.header.NeedsGLibObject()
+		value.p.LineTmpl(value, `<.Out.Set> = <.OutPtr 0>externglib.Type(<.InNamePtr 0>)`)
+		return true
+
+	case "GObject.Value":
+		value.header.Import("unsafe")
+		value.header.NeedsExternGLib()
+		value.header.NeedsGLibObject()
+
+		value.p.LineTmpl(value, `<.Out.Set> =
+			<- .OutPtr 1>externglib.ValueFromNative(unsafe.Pointer(<.InNamePtr 1>))`)
+
+		// Set this to be freed if we have the ownership now.
+		if value.ShouldFree() {
+			value.header.Import("runtime")
+
+			// https://pkg.go.dev/github.com/diamondburned/gotk4/pkg/core/glib?utm_source=godoc#Value
+			value.p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", value.OutName)
+			value.p.Linef("  C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))")
+			value.p.Linef("})")
+		}
+		return true
+
+	case "GObject.Object", "GObject.InitiallyUnowned":
+		return value.cgoSetObject(conv)
+
+	case "GObject.Closure":
+		// can't handle this.
+		return false
+
+	// These 4 cairo structs are found when grep -R-ing the codebase.
+	case "cairo.Context", "cairo.Pattern", "cairo.Region", "cairo.Surface":
+		var ref string
+		var unref string
+
+		value.header.Import("unsafe")
+		value.header.Import("runtime")
+
+		switch value.Resolved.GType {
+		case "cairo.Context":
+			ref = "cairo_reference"
+			unref = "cairo_destroy"
+			value.p.Linef(
+				"%s = cairo.WrapContext(uintptr(unsafe.Pointer(%s)))",
+				value.Out.Set, value.InNamePtr(1),
+			)
+
+		case "cairo.Surface":
+			ref = "cairo_surface_reference"
+			unref = "cairo_surface_destroy"
+			value.p.Linef(
+				"%s = cairo.WrapSurface(uintptr(unsafe.Pointer(%s)))",
+				value.Out.Set, value.InNamePtr(1),
+			)
+
+		case "cairo.Pattern":
+			ref = "cairo_pattern_reference"
+			unref = "cairo_pattern_destroy"
+			value.p.Descend()
+			// Hack to fit the Pattern type.
+			value.p.Linef("_pp:= &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
+			value.p.Linef("%s = (*cairo.Pattern)(unsafe.Pointer(_pp))", value.Out.Set)
+			value.p.Ascend()
+
+		case "cairo.Region":
+			ref = "cairo_region_reference"
+			unref = "cairo_region_destroy"
+			value.p.Descend()
+			// Hack to fit the Region type.
+			value.p.Linef("_pp:= &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
+			value.p.Linef("%s = (*cairo.Region)(unsafe.Pointer(_pp))", value.Out.Set)
+			value.p.Ascend()
+		}
+
+		// MustRealloc can also be used to check if we need to take a reference:
+		// instead of reallocating, we take our own reference.
+		if value.MustRealloc() {
+			value.p.Linef("C.%s(%s)", ref, value.InNamePtr(1))
+		}
+
+		value.p.Linef("runtime.SetFinalizer(%s%s, func(v %s%s) {",
+			value.OutInPtr(1), value.OutName, value.OutPtr(1), value.Out.Type)
+		value.p.Linef("C.%s((%s%s)(unsafe.Pointer(v.Native())))",
+			unref, value.InPtr(1), value.In.Type)
+		value.p.Linef("})")
+
+		return true
+	}
+
 	switch {
 	case value.Resolved.IsBuiltin("cgo.Handle"):
 		value.header.Import("runtime/cgo")
@@ -480,95 +573,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsPrimitive():
 		return value.castPrimitive()
-	}
-
-	// Resolve special-case GLib types.
-	switch value.Resolved.GType {
-	case "GObject.Type", "GType":
-		value.header.NeedsExternGLib()
-		value.header.NeedsGLibObject()
-		value.p.LineTmpl(value, `<.Out.Set> = <.OutPtr 0>externglib.Type(<.InNamePtr 0>)`)
-		return true
-
-	case "GObject.Value":
-		value.header.Import("unsafe")
-		value.header.NeedsExternGLib()
-		value.header.NeedsGLibObject()
-
-		value.p.LineTmpl(value, `<.Out.Set> =
-			<- .OutPtr 1>externglib.ValueFromNative(unsafe.Pointer(<.InNamePtr 1>))`)
-
-		// Set this to be freed if we have the ownership now.
-		if value.ShouldFree() {
-			value.header.Import("runtime")
-
-			// https://pkg.go.dev/github.com/diamondburned/gotk4/pkg/core/glib?utm_source=godoc#Value
-			value.p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", value.OutName)
-			value.p.Linef("  C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))")
-			value.p.Linef("})")
-		}
-		return true
-
-	case "GObject.Object", "GObject.InitiallyUnowned":
-		return value.cgoSetObject(conv)
-
-	// These 4 cairo structs are found when grep -R-ing the codebase.
-	case "cairo.Context", "cairo.Pattern", "cairo.Region", "cairo.Surface":
-		var ref string
-		var unref string
-
-		value.header.Import("unsafe")
-		value.header.Import("runtime")
-
-		switch value.Resolved.GType {
-		case "cairo.Context":
-			ref = "cairo_reference"
-			unref = "cairo_destroy"
-			value.p.Linef(
-				"%s = cairo.WrapContext(uintptr(unsafe.Pointer(%s)))",
-				value.Out.Set, value.InNamePtr(1),
-			)
-
-		case "cairo.Surface":
-			ref = "cairo_surface_reference"
-			unref = "cairo_surface_destroy"
-			value.p.Linef(
-				"%s = cairo.WrapSurface(uintptr(unsafe.Pointer(%s)))",
-				value.Out.Set, value.InNamePtr(1),
-			)
-
-		case "cairo.Pattern":
-			ref = "cairo_pattern_reference"
-			unref = "cairo_pattern_destroy"
-			value.p.Descend()
-			// Hack to fit the Pattern type.
-			value.p.Linef("_pp:= &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
-			value.p.Linef("%s = (*cairo.Pattern)(unsafe.Pointer(_pp))", value.Out.Set)
-			value.p.Ascend()
-
-		case "cairo.Region":
-			ref = "cairo_region_reference"
-			unref = "cairo_region_destroy"
-			value.p.Descend()
-			// Hack to fit the Region type.
-			value.p.Linef("_pp:= &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
-			value.p.Linef("%s = (*cairo.Region)(unsafe.Pointer(_pp))", value.Out.Set)
-			value.p.Ascend()
-		}
-
-		// MustRealloc can also be used to check if we need to take a reference:
-		// instead of reallocating, we take our own reference.
-		if value.MustRealloc() {
-			value.p.Linef("C.%s(%s)", ref, value.InNamePtr(1))
-		}
-
-		value.p.Linef("runtime.SetFinalizer(%s%s, func(v %s%s) {",
-			value.OutInPtr(1), value.OutName, value.OutPtr(1), value.Out.Type)
-		value.p.Linef("C.%s((%s%s)(unsafe.Pointer(v.Native())))",
-			unref, value.InPtr(1), value.In.Type)
-		value.p.Linef("})")
-
-		return true
 	}
 
 	// TODO: function

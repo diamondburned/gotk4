@@ -24,6 +24,7 @@ type ConversionValueIndex int8
 const (
 	_ ConversionValueIndex = -iota // 0
 	UnknownValueIndex
+	ReceiverValueIndex
 	ErrorValueIndex
 	ReturnValueIndex
 )
@@ -109,7 +110,7 @@ func NewReceiverValue(
 		InName:         in,
 		OutName:        out,
 		Direction:      dir,
-		ParameterIndex: UnknownValueIndex,
+		ParameterIndex: ReceiverValueIndex,
 		ParameterAttrs: param.ParameterAttrs,
 		KeepType:       true, // concrete method receivers
 	}

@@ -433,10 +433,13 @@ func CoalesceTail(tail string) string {
 }
 
 func splitParam(param string) (name, typ string) {
-	parts := strings.Split(strings.TrimSpace(param), " ")
+	param = strings.TrimSpace(param)
+
+	parts := strings.SplitN(param, " ", 2)
 	if len(parts) == 2 {
 		return parts[0], parts[1]
 	}
+
 	panic("splitParam: invalid non-two-part param " + strconv.Quote(param))
 }
 

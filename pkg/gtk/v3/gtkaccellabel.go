@@ -227,6 +227,27 @@ func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.
 	runtime.KeepAlive(acceleratorMods)
 }
 
+// SetAccelClosure sets the closure to be monitored by this accelerator label.
+// The closure must be connected to an accelerator group; see
+// gtk_accel_group_connect(). Passing NULL for accel_closure will dissociate
+// accel_label from its current closure, if any.
+//
+// The function takes the following parameters:
+//
+//    - accelClosure: closure to monitor for accelerator changes, or NULL.
+//
+func (accelLabel *AccelLabel) SetAccelClosure(accelClosure externglib.AnyClosure) {
+	var _arg0 *C.GtkAccelLabel // out
+	var _arg1 *C.GClosure      // out
+
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
+	_arg1 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(accelLabel), accelClosure))
+
+	C.gtk_accel_label_set_accel_closure(_arg0, _arg1)
+	runtime.KeepAlive(accelLabel)
+	runtime.KeepAlive(accelClosure)
+}
+
 // SetAccelWidget sets the widget to be monitored by this accelerator label.
 // Passing NULL for accel_widget will dissociate accel_label from its current
 // widget, if any.

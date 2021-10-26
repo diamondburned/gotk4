@@ -49,6 +49,11 @@ func (v *Object) connectClosure(after bool, detailedSignal string, f interface{}
 	return SignalHandle(c)
 }
 
+// NewClosure creates a new closure for the given object.
+func NewClosure(v *Object, f interface{}) unsafe.Pointer {
+	return unsafe.Pointer(closureNew(v, f))
+}
+
 // closureNew creates a new GClosure that's bound to the current object and adds
 // its callback function to the internal registry. It's exported for visibility
 // to other gotk3 packages and should not be used in a regular application.
@@ -61,6 +66,7 @@ func closureNew(v *Object, f interface{}) *C.GClosure {
 	gclosure := C.g_closure_new_simple(C.sizeof_GClosure, nil)
 	v.box.Closures.Register(unsafe.Pointer(gclosure), fs)
 
+	C.g_object_watch_closure(v.native(), gclosure)
 	C.g_closure_set_meta_marshal(gclosure, C.gpointer(v.Native()), (*[0]byte)(C.goMarshal))
 	C.g_closure_add_finalize_notifier(gclosure, C.gpointer(v.Native()), (*[0]byte)(C.removeClosure))
 

@@ -38,10 +38,10 @@ type ResolvedImport struct {
 
 // These types contain an internal pointer in Go, so the pointer count
 // should be decreased.
-var goContainerTypes = []string{
-	"error",
-	"string",
-	"interface{}",
+var goContainerTypes = map[string]struct{}{
+	"error":       {},
+	"string":      {},
+	"interface{}": {},
 }
 
 // BuiltinType is a convenient function to make a new built-in *Resolved.
@@ -62,12 +62,15 @@ func builtinType(imp, typ string, girType gir.Type) *Resolved {
 	ptr := countPtrs(girType, nil)
 
 	if ptr > 0 {
-		for _, iface := range goContainerTypes {
-			if iface == typ {
-				ptr--
-				break
-			}
+		if strings.HasPrefix(typ, "interface{") {
+			ptr--
+			goto subtracted
 		}
+		if _, ok := goContainerTypes[typ]; ok {
+			ptr--
+			goto subtracted
+		}
+	subtracted:
 	}
 
 	resolvedImport := ResolvedImport{
@@ -96,6 +99,18 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 		Package: "externglib",
 	}
 
+	var ptr uint8
+
+	if typ.CType != "" {
+		ptr = countPtrs(typ, nil)
+	} else {
+		ptr = uint8(strings.Count(ctyp, "*"))
+	}
+	// Edge case.
+	if ptr > 0 && goType == "AnyClosure" {
+		ptr--
+	}
+
 	goType = "externglib." + strings.TrimPrefix(goType, "*")
 
 	return &Resolved{
@@ -104,7 +119,7 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 		PublImport: imp,
 		GType:      typ.Name,
 		CType:      typ.CType,
-		Ptr:        countPtrs(typ, nil),
+		Ptr:        ptr,
 	}
 }
 
@@ -348,10 +363,9 @@ func (typ *Resolved) IsPrimitive() bool {
 		return false
 	}
 
-	for _, ctype := range goContainerTypes {
-		if ctype == *typ.Builtin {
-			return false
-		}
+	_, ok := goContainerTypes[*typ.Builtin]
+	if ok {
+		return false
 	}
 
 	return true
@@ -364,10 +378,9 @@ func (typ *Resolved) IsContainerBuiltin() bool {
 		return false
 	}
 
-	for _, con := range goContainerTypes {
-		if con == *typ.Builtin {
-			return true
-		}
+	_, ok := goContainerTypes[*typ.Builtin]
+	if ok {
+		return true
 	}
 
 	return false
@@ -737,6 +750,8 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		return externGLibType("*Object", typ, "GObject*")
 	case "GObject.InitiallyUnowned":
 		return externGLibType("InitiallyUnowned", typ, "GInitiallyUnowned*")
+	case "GObject.Closure":
+		return externGLibType("AnyClosure", typ, "GClosure*")
 	}
 
 	// CType is required here so we can properly account for pointers.

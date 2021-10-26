@@ -1518,6 +1518,54 @@ func (connection *DBusConnection) IsClosed() bool {
 	return _ok
 }
 
+// RegisterObject: version of g_dbus_connection_register_object() using closures
+// instead of a BusInterfaceVTable for easier binding in other languages.
+//
+// The function takes the following parameters:
+//
+//    - objectPath: object path to register at.
+//    - interfaceInfo: introspection data for the interface.
+//    - methodCallClosure for handling incoming method calls.
+//    - getPropertyClosure for getting a property.
+//    - setPropertyClosure for setting a property.
+//
+func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure externglib.AnyClosure) (uint, error) {
+	var _arg0 *C.GDBusConnection    // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GDBusInterfaceInfo // out
+	var _arg3 *C.GClosure           // out
+	var _arg4 *C.GClosure           // out
+	var _arg5 *C.GClosure           // out
+	var _cret C.guint               // in
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(interfaceInfo)))
+	_arg3 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(connection), methodCallClosure))
+	_arg4 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(connection), getPropertyClosure))
+	_arg5 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(connection), setPropertyClosure))
+
+	_cret = C.g_dbus_connection_register_object_with_closures(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(objectPath)
+	runtime.KeepAlive(interfaceInfo)
+	runtime.KeepAlive(methodCallClosure)
+	runtime.KeepAlive(getPropertyClosure)
+	runtime.KeepAlive(setPropertyClosure)
+
+	var _guint uint  // out
+	var _goerr error // out
+
+	_guint = uint(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _guint, _goerr
+}
+
 // RemoveFilter removes a filter.
 //
 // Note that since filters run in a different thread, there is a race condition

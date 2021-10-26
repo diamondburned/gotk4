@@ -451,6 +451,14 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	return _ok
 }
 
+// AccelGroupOverrider contains methods that are overridable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type AccelGroupOverrider interface {
+	AccelChanged(keyval uint, modifier gdk.ModifierType, accelClosure externglib.AnyClosure)
+}
+
 // AccelGroup represents a group of keyboard accelerators, typically attached to
 // a toplevel Window (with gtk_window_add_accel_group()). Usually you won’t need
 // to create a AccelGroup directly; instead, when using UIManager, GTK+
@@ -521,6 +529,109 @@ func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *ext
 	runtime.KeepAlive(acceleratable)
 	runtime.KeepAlive(accelKey)
 	runtime.KeepAlive(accelMods)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ConnectAccelGroup installs an accelerator in this group. When accel_group is
+// being activated in response to a call to gtk_accel_groups_activate(), closure
+// will be invoked if the accel_key and accel_mods from
+// gtk_accel_groups_activate() match those of this connection.
+//
+// The signature used for the closure is that of AccelGroupActivate.
+//
+// Note that, due to implementation details, a single closure can only be
+// connected to one accelerator group.
+//
+// The function takes the following parameters:
+//
+//    - accelKey: key value of the accelerator.
+//    - accelMods: modifier combination of the accelerator.
+//    - accelFlags: flag mask to configure this accelerator.
+//    - closure to be executed upon accelerator activation.
+//
+func (accelGroup *AccelGroup) ConnectAccelGroup(accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags, closure externglib.AnyClosure) {
+	var _arg0 *C.GtkAccelGroup  // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _arg3 C.GtkAccelFlags   // out
+	var _arg4 *C.GClosure       // out
+
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg1 = C.guint(accelKey)
+	_arg2 = C.GdkModifierType(accelMods)
+	_arg3 = C.GtkAccelFlags(accelFlags)
+	_arg4 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(accelGroup), closure))
+
+	C.gtk_accel_group_connect(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(accelGroup)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
+	runtime.KeepAlive(accelFlags)
+	runtime.KeepAlive(closure)
+}
+
+// ConnectByPath installs an accelerator in this group, using an accelerator
+// path to look up the appropriate key and modifiers (see
+// gtk_accel_map_add_entry()). When accel_group is being activated in response
+// to a call to gtk_accel_groups_activate(), closure will be invoked if the
+// accel_key and accel_mods from gtk_accel_groups_activate() match the key and
+// modifiers for the path.
+//
+// The signature used for the closure is that of AccelGroupActivate.
+//
+// Note that accel_path string will be stored in a #GQuark. Therefore, if you
+// pass a static string, you can save some memory by interning it first with
+// g_intern_static_string().
+//
+// The function takes the following parameters:
+//
+//    - accelPath: path used for determining key and modifiers.
+//    - closure to be executed upon accelerator activation.
+//
+func (accelGroup *AccelGroup) ConnectByPath(accelPath string, closure externglib.AnyClosure) {
+	var _arg0 *C.GtkAccelGroup // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GClosure      // out
+
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(accelGroup), closure))
+
+	C.gtk_accel_group_connect_by_path(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(accelGroup)
+	runtime.KeepAlive(accelPath)
+	runtime.KeepAlive(closure)
+}
+
+// Disconnect removes an accelerator previously installed through
+// gtk_accel_group_connect().
+//
+// Since 2.20 closure can be NULL.
+//
+// The function takes the following parameters:
+//
+//    - closure to remove from this accelerator group, or NULL to remove all
+//    closures.
+//
+func (accelGroup *AccelGroup) Disconnect(closure externglib.AnyClosure) bool {
+	var _arg0 *C.GtkAccelGroup // out
+	var _arg1 *C.GClosure      // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg1 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(accelGroup), closure))
+
+	_cret = C.gtk_accel_group_disconnect(_arg0, _arg1)
+	runtime.KeepAlive(accelGroup)
+	runtime.KeepAlive(closure)
 
 	var _ok bool // out
 

@@ -158,6 +158,10 @@ func TypeNextBase(leafType, rootType Type) Type {
 	return Type(C.g_type_next_base(C.GType(leafType), C.GType(rootType)))
 }
 
+// AnyClosure describes any function type. If AnyClosure does not contain a
+// function type, the consumer function is allowed to panic.
+type AnyClosure interface{}
+
 // goMarshal is called by the GLib runtime when a closure needs to be invoked.
 // The closure will be invoked with as many arguments as it can take, from 0 to
 // the full amount provided by the call. If the closure asks for more parameters

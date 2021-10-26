@@ -172,6 +172,13 @@ var Preprocessors = []Preprocessor{
 	modifyBufferInsert("Gtk-4.TextBuffer.insert_interactive"),
 	modifyBufferInsert("Gtk-4.TextBuffer.insert_interactive_at_cursor"),
 	modifyBufferInsert("Gtk-4.TextBuffer.set_text"),
+
+	modifyBufferInsert("Gtk-3.TextBuffer.insert"),
+	modifyBufferInsert("Gtk-3.TextBuffer.insert_markup"),
+	modifyBufferInsert("Gtk-3.TextBuffer.insert_at_cursor"),
+	modifyBufferInsert("Gtk-3.TextBuffer.insert_interactive"),
+	modifyBufferInsert("Gtk-3.TextBuffer.insert_interactive_at_cursor"),
+	modifyBufferInsert("Gtk-3.TextBuffer.set_text"),
 }
 
 func modifyBufferInsert(name string) Preprocessor {

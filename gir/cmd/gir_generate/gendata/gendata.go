@@ -166,6 +166,22 @@ var Preprocessors = []Preprocessor{
 		}
 	}),
 
+	// Fix up GVariant methods to have nullable returns.
+	PreprocessorFunc(func(repos gir.Repositories) {
+		variant := repos.FindFullType("GLib-2.Variant").Type.(*gir.Record)
+		for _, method := range variant.Methods {
+			returnsGVariant := true &&
+				method.ReturnValue != nil &&
+				method.ReturnValue.Type != nil &&
+				method.ReturnValue.Type.CType == "GVariant*"
+
+			if returnsGVariant && !method.ReturnValue.Nullable {
+				// GVariant pointers can be null.
+				method.ReturnValue.Nullable = true
+			}
+		}
+	}),
+
 	modifyBufferInsert("Gtk-4.TextBuffer.insert"),
 	modifyBufferInsert("Gtk-4.TextBuffer.insert_markup"),
 	modifyBufferInsert("Gtk-4.TextBuffer.insert_at_cursor"),

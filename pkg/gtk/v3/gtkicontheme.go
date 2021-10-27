@@ -213,8 +213,19 @@ func (iconInfo *IconInfo) AttachPoints() ([]gdk.Point, bool) {
 
 	if _arg1 != nil {
 		defer C.free(unsafe.Pointer(_arg1))
-		_points = make([]gdk.Point, _arg2)
-		copy(_points, unsafe.Slice((*gdk.Point)(unsafe.Pointer(_arg1)), _arg2))
+		{
+			src := unsafe.Slice(_arg1, _arg2)
+			_points = make([]gdk.Point, _arg2)
+			for i := 0; i < int(_arg2); i++ {
+				_points[i] = *(*gdk.Point)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(&_points[i])),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.free(intern.C)
+					},
+				)
+			}
+		}
 	}
 	if _cret != 0 {
 		_ok = true

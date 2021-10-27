@@ -302,7 +302,13 @@ func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]
 
 	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(outline)))
 	_arg2 = (*C.float)(unsafe.Pointer(&borderWidth))
-	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(&borderColor))
+	{
+		var out [4]C.GdkRGBA
+		_arg3 = &out[0]
+		for i := 0; i < 4; i++ {
+			out[i] = *(*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer((&borderColor[i]))))
+		}
+	}
 
 	_cret = C.gsk_border_node_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(outline)
@@ -768,8 +774,13 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg3 = C.float(rotation)
 	_arg5 = (C.gsize)(len(colorStops))
-	if len(colorStops) > 0 {
-		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	_arg4 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	defer C.free(unsafe.Pointer(_arg4))
+	{
+		out := unsafe.Slice((*C.GskColorStop)(_arg4), len(colorStops))
+		for i := range colorStops {
+			out[i] = *(*C.GskColorStop)(gextras.StructNative(unsafe.Pointer((&colorStops[i]))))
+		}
 	}
 
 	_cret = C.gsk_conic_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
@@ -838,8 +849,13 @@ func (node *ConicGradientNode) ColorStops() []ColorStop {
 
 	var _colorStops []ColorStop // out
 
-	_colorStops = make([]ColorStop, _arg1)
-	copy(_colorStops, unsafe.Slice((*ColorStop)(unsafe.Pointer(_cret)), _arg1))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_colorStops = make([]ColorStop, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_colorStops[i] = *(*ColorStop)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
 
 	return _colorStops
 }
@@ -1577,8 +1593,13 @@ func NewLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, co
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(end)))
 	_arg5 = (C.gsize)(len(colorStops))
-	if len(colorStops) > 0 {
-		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	_arg4 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	defer C.free(unsafe.Pointer(_arg4))
+	{
+		out := unsafe.Slice((*C.GskColorStop)(_arg4), len(colorStops))
+		for i := range colorStops {
+			out[i] = *(*C.GskColorStop)(gextras.StructNative(unsafe.Pointer((&colorStops[i]))))
+		}
 	}
 
 	_cret = C.gsk_linear_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
@@ -1607,8 +1628,13 @@ func (node *LinearGradientNode) ColorStops() []ColorStop {
 
 	var _colorStops []ColorStop // out
 
-	_colorStops = make([]ColorStop, _arg1)
-	copy(_colorStops, unsafe.Slice((*ColorStop)(unsafe.Pointer(_cret)), _arg1))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_colorStops = make([]ColorStop, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_colorStops[i] = *(*ColorStop)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
 
 	return _colorStops
 }
@@ -1971,8 +1997,13 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = (C.gsize)(len(colorStops))
-	if len(colorStops) > 0 {
-		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	_arg7 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	defer C.free(unsafe.Pointer(_arg7))
+	{
+		out := unsafe.Slice((*C.GskColorStop)(_arg7), len(colorStops))
+		for i := range colorStops {
+			out[i] = *(*C.GskColorStop)(gextras.StructNative(unsafe.Pointer((&colorStops[i]))))
+		}
 	}
 
 	_cret = C.gsk_radial_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
@@ -2021,8 +2052,13 @@ func (node *RadialGradientNode) ColorStops() []ColorStop {
 
 	var _colorStops []ColorStop // out
 
-	_colorStops = make([]ColorStop, _arg1)
-	copy(_colorStops, unsafe.Slice((*ColorStop)(unsafe.Pointer(_cret)), _arg1))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_colorStops = make([]ColorStop, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_colorStops[i] = *(*ColorStop)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
 
 	return _colorStops
 }
@@ -2251,8 +2287,13 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start, end *graphene.
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(end)))
 	_arg5 = (C.gsize)(len(colorStops))
-	if len(colorStops) > 0 {
-		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	_arg4 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	defer C.free(unsafe.Pointer(_arg4))
+	{
+		out := unsafe.Slice((*C.GskColorStop)(_arg4), len(colorStops))
+		for i := range colorStops {
+			out[i] = *(*C.GskColorStop)(gextras.StructNative(unsafe.Pointer((&colorStops[i]))))
+		}
 	}
 
 	_cret = C.gsk_repeating_linear_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
@@ -2324,8 +2365,13 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = (C.gsize)(len(colorStops))
-	if len(colorStops) > 0 {
-		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	_arg7 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	defer C.free(unsafe.Pointer(_arg7))
+	{
+		out := unsafe.Slice((*C.GskColorStop)(_arg7), len(colorStops))
+		for i := range colorStops {
+			out[i] = *(*C.GskColorStop)(gextras.StructNative(unsafe.Pointer((&colorStops[i]))))
+		}
 	}
 
 	_cret = C.gsk_repeating_radial_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
@@ -2469,8 +2515,13 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg3 = (C.gsize)(len(shadows))
-	if len(shadows) > 0 {
-		_arg2 = (*C.GskShadow)(unsafe.Pointer(&shadows[0]))
+	_arg2 = (*C.GskShadow)(C.malloc(C.size_t(uint(len(shadows)) * uint(C.sizeof_GskShadow))))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GskShadow)(_arg2), len(shadows))
+		for i := range shadows {
+			out[i] = *(*C.GskShadow)(gextras.StructNative(unsafe.Pointer((&shadows[i]))))
+		}
 	}
 
 	_cret = C.gsk_shadow_node_new(_arg1, _arg2, _arg3)

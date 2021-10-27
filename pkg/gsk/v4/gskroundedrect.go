@@ -50,7 +50,12 @@ func (r *RoundedRect) Bounds() *graphene.Rect {
 // Corner: size of the 4 rounded corners.
 func (r *RoundedRect) Corner() [4]graphene.Size {
 	var v [4]graphene.Size // out
-	v = *(*[4]graphene.Size)(unsafe.Pointer(&r.native.corner))
+	{
+		src := &r.native.corner
+		for i := 0; i < 4; i++ {
+			v[i] = *(*graphene.Size)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
 	return v
 }
 

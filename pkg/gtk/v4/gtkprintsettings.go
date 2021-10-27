@@ -681,8 +681,19 @@ func (settings *PrintSettings) PageRanges() []PageRange {
 	var _pageRanges []PageRange // out
 
 	defer C.free(unsafe.Pointer(_cret))
-	_pageRanges = make([]PageRange, _arg1)
-	copy(_pageRanges, unsafe.Slice((*PageRange)(unsafe.Pointer(_cret)), _arg1))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_pageRanges = make([]PageRange, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_pageRanges[i] = *(*PageRange)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(&_pageRanges[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
 
 	return _pageRanges
 }
@@ -1398,8 +1409,13 @@ func (settings *PrintSettings) SetPageRanges(pageRanges []PageRange) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = (C.int)(len(pageRanges))
-	if len(pageRanges) > 0 {
-		_arg1 = (*C.GtkPageRange)(unsafe.Pointer(&pageRanges[0]))
+	_arg1 = (*C.GtkPageRange)(C.malloc(C.size_t(uint(len(pageRanges)) * uint(C.sizeof_GtkPageRange))))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkPageRange)(_arg1), len(pageRanges))
+		for i := range pageRanges {
+			out[i] = *(*C.GtkPageRange)(gextras.StructNative(unsafe.Pointer((&pageRanges[i]))))
+		}
 	}
 
 	C.gtk_print_settings_set_page_ranges(_arg0, _arg1, _arg2)

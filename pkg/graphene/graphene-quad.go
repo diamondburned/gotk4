@@ -158,7 +158,13 @@ func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 	var _cret *C.graphene_quad_t  // in
 
 	_arg0 = (*C.graphene_quad_t)(gextras.StructNative(unsafe.Pointer(q)))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(&points))
+	{
+		var out [4]C.graphene_point_t
+		_arg1 = &out[0]
+		for i := 0; i < 4; i++ {
+			out[i] = *(*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer((&points[i]))))
+		}
+	}
 
 	_cret = C.graphene_quad_init_from_points(_arg0, _arg1)
 	runtime.KeepAlive(q)

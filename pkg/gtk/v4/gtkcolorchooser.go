@@ -129,8 +129,13 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 	_arg1 = C.GtkOrientation(orientation)
 	_arg2 = C.int(colorsPerLine)
 	_arg3 = (C.int)(len(colors))
-	if len(colors) > 0 {
-		_arg4 = (*C.GdkRGBA)(unsafe.Pointer(&colors[0]))
+	_arg4 = (*C.GdkRGBA)(C.malloc(C.size_t(uint(len(colors)) * uint(C.sizeof_GdkRGBA))))
+	defer C.free(unsafe.Pointer(_arg4))
+	{
+		out := unsafe.Slice((*C.GdkRGBA)(_arg4), len(colors))
+		for i := range colors {
+			out[i] = *(*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer((&colors[i]))))
+		}
 	}
 
 	C.gtk_color_chooser_add_palette(_arg0, _arg1, _arg2, _arg3, _arg4)

@@ -461,8 +461,13 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 	}
 	if children != nil {
 		_arg3 = (C.gsize)(len(children))
-		if len(children) > 0 {
-			_arg2 = (**C.GVariant)(unsafe.Pointer(&children[0]))
+		_arg2 = (**C.GVariant)(C.malloc(C.size_t(uint(len(children)) * uint(unsafe.Sizeof(uint(0))))))
+		defer C.free(unsafe.Pointer(_arg2))
+		{
+			out := unsafe.Slice((**C.GVariant)(_arg2), len(children))
+			for i := range children {
+				out[i] = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(children[i])))
+			}
 		}
 	}
 
@@ -986,8 +991,13 @@ func NewVariantTuple(children []*Variant) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg2 = (C.gsize)(len(children))
-	if len(children) > 0 {
-		_arg1 = (**C.GVariant)(unsafe.Pointer(&children[0]))
+	_arg1 = (**C.GVariant)(C.malloc(C.size_t(uint(len(children)) * uint(unsafe.Sizeof(uint(0))))))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((**C.GVariant)(_arg1), len(children))
+		for i := range children {
+			out[i] = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(children[i])))
+		}
 	}
 
 	_cret = C.g_variant_new_tuple(_arg1, _arg2)

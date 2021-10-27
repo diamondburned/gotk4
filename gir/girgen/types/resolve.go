@@ -411,8 +411,8 @@ func (typ *Resolved) CanCast(gen FileGenerator) bool {
 		return true
 	}
 
-	// We can only directly cast the struct if it only contains primitives.
-	return typ.IsRecord() && !typ.HasPointer(gen)
+	// We can't cast records!
+	return false
 }
 
 // IsBuiltin is a convenient function to compare the builtin type.

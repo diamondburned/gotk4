@@ -450,8 +450,19 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	var _ok bool            // out
 
 	defer C.free(unsafe.Pointer(_arg2))
-	_colors = make([]gdk.Color, _arg3)
-	copy(_colors, unsafe.Slice((*gdk.Color)(unsafe.Pointer(_arg2)), _arg3))
+	{
+		src := unsafe.Slice(_arg2, _arg3)
+		_colors = make([]gdk.Color, _arg3)
+		for i := 0; i < int(_arg3); i++ {
+			_colors[i] = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(&_colors[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.gdk_color_free((*C.GdkColor)(intern.C))
+				},
+			)
+		}
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -472,8 +483,13 @@ func ColorSelectionPaletteToString(colors []gdk.Color) string {
 	var _cret *C.gchar // in
 
 	_arg2 = (C.gint)(len(colors))
-	if len(colors) > 0 {
-		_arg1 = (*C.GdkColor)(unsafe.Pointer(&colors[0]))
+	_arg1 = (*C.GdkColor)(C.malloc(C.size_t(uint(len(colors)) * uint(C.sizeof_GdkColor))))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GdkColor)(_arg1), len(colors))
+		for i := range colors {
+			out[i] = *(*C.GdkColor)(gextras.StructNative(unsafe.Pointer((&colors[i]))))
+		}
 	}
 
 	_cret = C.gtk_color_selection_palette_to_string(_arg1, _arg2)

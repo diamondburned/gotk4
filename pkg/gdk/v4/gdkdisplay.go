@@ -485,8 +485,19 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 
 	if _arg2 != nil {
 		defer C.free(unsafe.Pointer(_arg2))
-		_keys = make([]KeymapKey, _arg4)
-		copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4))
+		{
+			src := unsafe.Slice(_arg2, _arg4)
+			_keys = make([]KeymapKey, _arg4)
+			for i := 0; i < int(_arg4); i++ {
+				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(&_keys[i])),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.free(intern.C)
+					},
+				)
+			}
+		}
 	}
 	if _arg3 != nil {
 		defer C.free(unsafe.Pointer(_arg3))
@@ -543,8 +554,19 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _ok bool          // out
 
 	defer C.free(unsafe.Pointer(_arg2))
-	_keys = make([]KeymapKey, _arg3)
-	copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3))
+	{
+		src := unsafe.Slice(_arg2, _arg3)
+		_keys = make([]KeymapKey, _arg3)
+		for i := 0; i < int(_arg3); i++ {
+			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(&_keys[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
 	if _cret != 0 {
 		_ok = true
 	}

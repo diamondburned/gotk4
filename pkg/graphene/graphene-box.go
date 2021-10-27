@@ -413,8 +413,13 @@ func (box *Box) InitFromPoints(points []Point3D) *Box {
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 	_arg1 = (C.uint)(len(points))
-	if len(points) > 0 {
-		_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
+	_arg2 = (*C.graphene_point3d_t)(C.malloc(C.size_t(uint(len(points)) * uint(C.sizeof_graphene_point3d_t))))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.graphene_point3d_t)(_arg2), len(points))
+		for i := range points {
+			out[i] = *(*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer((&points[i]))))
+		}
 	}
 
 	_cret = C.graphene_box_init_from_points(_arg0, _arg1, _arg2)

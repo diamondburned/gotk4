@@ -741,6 +741,25 @@ func (display *Display) PointerUngrab(time_ uint32) {
 	runtime.KeepAlive(time_)
 }
 
+// PutEvent appends a copy of the given event onto the front of the event queue
+// for display.
+//
+// The function takes the following parameters:
+//
+//    - event: Event.
+//
+func (display *Display) PutEvent(event *Event) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.GdkEvent   // out
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	C.gdk_display_put_event(_arg0, _arg1)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(event)
+}
+
 // SetDoubleClickDistance sets the double click distance (two clicks within this
 // distance count as a double click and result in a K_2BUTTON_PRESS event). See
 // also gdk_display_set_double_click_time(). Applications should not set this,

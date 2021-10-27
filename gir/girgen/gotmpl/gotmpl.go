@@ -22,6 +22,7 @@ func NewGoTemplate(block string) *template.Template {
 
 	t := template.New(base)
 	t.Funcs(template.FuncMap{
+		"Interfacify":    strcases.Interfacify,
 		"PascalToGo":     strcases.PascalToGo,
 		"UnexportPascal": strcases.UnexportPascal,
 		"KebabToGo":      strcases.KebabToGo,

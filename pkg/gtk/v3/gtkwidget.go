@@ -283,6 +283,14 @@ type WidgetOverrider interface {
 	DragMotion(context *gdk.DragContext, x, y int, time_ uint) bool
 	Draw(cr *cairo.Context) bool
 	EnterNotifyEvent(event *gdk.EventCrossing) bool
+	// Event: rarely-used function. This function is used to emit the event
+	// signals on a widget (those signals should never be emitted without using
+	// this function to do so). If you want to synthesize an event though, don’t
+	// use this function; instead, use gtk_main_do_event() so the event will
+	// behave as if it were in the event queue. Don’t synthesize expose events;
+	// instead, use gdk_window_invalidate_rect() to invalidate a region of the
+	// window.
+	Event(event *gdk.Event) bool
 	Focus(direction DirectionType) bool
 	FocusInEvent(event *gdk.EventFocus) bool
 	FocusOutEvent(event *gdk.EventFocus) bool
@@ -1107,6 +1115,135 @@ func (widget *Widget) DeviceIsShadowed(device gdk.Devicer) bool {
 	return _ok
 }
 
+// DragBegin: this function is equivalent to gtk_drag_begin_with_coordinates(),
+// passing -1, -1 as coordinates.
+//
+// Deprecated: Use gtk_drag_begin_with_coordinates() instead.
+//
+// The function takes the following parameters:
+//
+//    - targets (data formats) in which the source can provide the data.
+//    - actions: bitmask of the allowed drag actions for this drag.
+//    - button the user clicked to start the drag.
+//    - event that triggered the start of the drag, or NULL if none can be
+//    obtained.
+//
+func (widget *Widget) DragBegin(targets *TargetList, actions gdk.DragAction, button int, event *gdk.Event) *gdk.DragContext {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.GtkTargetList  // out
+	var _arg2 C.GdkDragAction   // out
+	var _arg3 C.gint            // out
+	var _arg4 *C.GdkEvent       // out
+	var _cret *C.GdkDragContext // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targets)))
+	_arg2 = C.GdkDragAction(actions)
+	_arg3 = C.gint(button)
+	if event != nil {
+		_arg4 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	}
+
+	_cret = C.gtk_drag_begin(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(targets)
+	runtime.KeepAlive(actions)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(event)
+
+	var _dragContext *gdk.DragContext // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_dragContext = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+
+	return _dragContext
+}
+
+// DragBeginWithCoordinates initiates a drag on the source side. The function
+// only needs to be used when the application is starting drags itself, and is
+// not needed when gtk_drag_source_set() is used.
+//
+// The event is used to retrieve the timestamp that will be used internally to
+// grab the pointer. If event is NULL, then GDK_CURRENT_TIME will be used.
+// However, you should try to pass a real event in all cases, since that can be
+// used to get information about the drag.
+//
+// Generally there are three cases when you want to start a drag by hand by
+// calling this function:
+//
+// 1. During a Widget::button-press-event handler, if you want to start a drag
+// immediately when the user presses the mouse button. Pass the event that you
+// have in your Widget::button-press-event handler.
+//
+// 2. During a Widget::motion-notify-event handler, if you want to start a drag
+// when the mouse moves past a certain threshold distance after a button-press.
+// Pass the event that you have in your Widget::motion-notify-event handler.
+//
+// 3. During a timeout handler, if you want to start a drag after the mouse
+// button is held down for some time. Try to save the last event that you got
+// from the mouse, using gdk_event_copy(), and pass it to this function
+// (remember to free the event with gdk_event_free() when you are done). If you
+// really cannot pass a real event, pass NULL instead.
+//
+// The function takes the following parameters:
+//
+//    - targets (data formats) in which the source can provide the data.
+//    - actions: bitmask of the allowed drag actions for this drag.
+//    - button the user clicked to start the drag.
+//    - event that triggered the start of the drag, or NULL if none can be
+//    obtained.
+//    - x: initial x coordinate to start dragging from, in the coordinate space
+//    of widget. If -1 is passed, the coordinates are retrieved from event or
+//    the current pointer position.
+//    - y: initial y coordinate to start dragging from, in the coordinate space
+//    of widget. If -1 is passed, the coordinates are retrieved from event or
+//    the current pointer position.
+//
+func (widget *Widget) DragBeginWithCoordinates(targets *TargetList, actions gdk.DragAction, button int, event *gdk.Event, x, y int) *gdk.DragContext {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.GtkTargetList  // out
+	var _arg2 C.GdkDragAction   // out
+	var _arg3 C.gint            // out
+	var _arg4 *C.GdkEvent       // out
+	var _arg5 C.gint            // out
+	var _arg6 C.gint            // out
+	var _cret *C.GdkDragContext // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targets)))
+	_arg2 = C.GdkDragAction(actions)
+	_arg3 = C.gint(button)
+	if event != nil {
+		_arg4 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	}
+	_arg5 = C.gint(x)
+	_arg6 = C.gint(y)
+
+	_cret = C.gtk_drag_begin_with_coordinates(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(targets)
+	runtime.KeepAlive(actions)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _dragContext *gdk.DragContext // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_dragContext = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+
+	return _dragContext
+}
+
 // DragCheckThreshold checks to see if a mouse drag starting at (start_x,
 // start_y) and ending at (current_x, current_y) has passed the GTK+ drag
 // threshold, and thus should trigger the beginning of a drag-and-drop
@@ -1701,6 +1838,38 @@ func (widget *Widget) ErrorBell() {
 
 	C.gtk_widget_error_bell(_arg0)
 	runtime.KeepAlive(widget)
+}
+
+// Event: rarely-used function. This function is used to emit the event signals
+// on a widget (those signals should never be emitted without using this
+// function to do so). If you want to synthesize an event though, don’t use this
+// function; instead, use gtk_main_do_event() so the event will behave as if it
+// were in the event queue. Don’t synthesize expose events; instead, use
+// gdk_window_invalidate_rect() to invalidate a region of the window.
+//
+// The function takes the following parameters:
+//
+//    - event: Event.
+//
+func (widget *Widget) Event(event *gdk.Event) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkEvent  // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_widget_event(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // FreezeChildNotify stops emission of Widget::child-notify signals on widget.
@@ -5325,6 +5494,91 @@ func (widget *Widget) ResetStyle() {
 	runtime.KeepAlive(widget)
 }
 
+// SendExpose: very rarely-used function. This function is used to emit an
+// expose event on a widget. This function is not normally used directly. The
+// only time it is used is when propagating an expose event to a windowless
+// child widget (gtk_widget_get_has_window() is FALSE), and that is normally
+// done using gtk_container_propagate_draw().
+//
+// If you want to force an area of a window to be redrawn, use
+// gdk_window_invalidate_rect() or gdk_window_invalidate_region(). To cause the
+// redraw to be done immediately, follow that call with a call to
+// gdk_window_process_updates().
+//
+// Deprecated: Application and widget code should not handle expose events
+// directly; invalidation should use the Widget API, and drawing should only
+// happen inside Widget::draw implementations.
+//
+// The function takes the following parameters:
+//
+//    - event: expose Event.
+//
+func (widget *Widget) SendExpose(event *gdk.Event) int {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkEvent  // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_widget_send_expose(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(event)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// SendFocusChange sends the focus change event to widget
+//
+// This function is not meant to be used by applications. The only time it
+// should be used is when it is necessary for a Widget to assign focus to a
+// widget that is semantically owned by the first widget even though it’s not a
+// direct child - for instance, a search entry in a floating window similar to
+// the quick search in TreeView.
+//
+// An example of its usage is:
+//
+//      GdkEvent *fevent = gdk_event_new (GDK_FOCUS_CHANGE);
+//
+//      fevent->focus_change.type = GDK_FOCUS_CHANGE;
+//      fevent->focus_change.in = TRUE;
+//      fevent->focus_change.window = _gtk_widget_get_window (widget);
+//      if (fevent->focus_change.window != NULL)
+//        g_object_ref (fevent->focus_change.window);
+//
+//      gtk_widget_send_focus_change (widget, fevent);
+//
+//      gdk_event_free (event);.
+//
+// The function takes the following parameters:
+//
+//    - event of type GDK_FOCUS_CHANGE.
+//
+func (widget *Widget) SendFocusChange(event *gdk.Event) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkEvent  // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_widget_send_focus_change(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // SetAccelPath: given an accelerator group, accel_group, and an accelerator
 // path, accel_path, sets up an accelerator in accel_group so whenever the key
 // binding that is defined for accel_path is pressed, widget will be activated.
@@ -7067,6 +7321,15 @@ func (widget *Widget) ConnectDamageEvent(f func(event *gdk.EventExpose) bool) ex
 	return widget.Connect("damage-event", f)
 }
 
+// ConnectDeleteEvent signal is emitted if a user requests that a toplevel
+// window is closed. The default handler for this signal destroys the window.
+// Connecting gtk_widget_hide_on_delete() to this signal will cause the window
+// to be hidden instead, so that it can later be shown again without
+// reconstructing it.
+func (widget *Widget) ConnectDeleteEvent(f func(event *gdk.Event) bool) externglib.SignalHandle {
+	return widget.Connect("delete-event", f)
+}
+
 // ConnectDestroy signals that all holders of a reference to the widget should
 // release the reference that they hold. May result in finalization of the
 // widget if all references are released.
@@ -7074,6 +7337,17 @@ func (widget *Widget) ConnectDamageEvent(f func(event *gdk.EventExpose) bool) ex
 // This signal is not suitable for saving widget state.
 func (widget *Widget) ConnectDestroy(f func()) externglib.SignalHandle {
 	return widget.Connect("destroy", f)
+}
+
+// ConnectDestroyEvent signal is emitted when a Window is destroyed. You rarely
+// get this signal, because most widgets disconnect themselves from their window
+// before they destroy it, so no widget owns the window at destroy time.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
+// new windows.
+func (widget *Widget) ConnectDestroyEvent(f func(event *gdk.Event) bool) externglib.SignalHandle {
+	return widget.Connect("destroy-event", f)
 }
 
 // ConnectDirectionChanged signal is emitted when the text direction of a widget
@@ -7326,6 +7600,21 @@ func (widget *Widget) ConnectDraw(f func(cr *cairo.Context) bool) externglib.Sig
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectEnterNotifyEvent(f func(event *gdk.EventCrossing) bool) externglib.SignalHandle {
 	return widget.Connect("enter-notify-event", f)
+}
+
+// ConnectEvent: GTK+ main loop will emit three signals for each GDK event
+// delivered to a widget: one generic ::event signal, another, more specific,
+// signal that matches the type of event delivered (e.g.
+// Widget::key-press-event) and finally a generic Widget::event-after signal.
+func (widget *Widget) ConnectEvent(f func(event *gdk.Event) bool) externglib.SignalHandle {
+	return widget.Connect("event", f)
+}
+
+// ConnectEventAfter: after the emission of the Widget::event signal and
+// (optionally) the second more specific signal, ::event-after will be emitted
+// regardless of the previous two signals handlers return values.
+func (widget *Widget) ConnectEventAfter(f func(event *gdk.Event)) externglib.SignalHandle {
+	return widget.Connect("event-after", f)
 }
 
 func (widget *Widget) ConnectFocus(f func(direction DirectionType) bool) externglib.SignalHandle {
@@ -7620,6 +7909,10 @@ func (widget *Widget) ConnectStyleSet(f func(previousStyle Style)) externglib.Si
 // cause this signal to be emitted.
 func (widget *Widget) ConnectStyleUpdated(f func()) externglib.SignalHandle {
 	return widget.Connect("style-updated", f)
+}
+
+func (widget *Widget) ConnectTouchEvent(f func(object *gdk.Event) bool) externglib.SignalHandle {
+	return widget.Connect("touch-event", f)
 }
 
 // ConnectUnmap signal is emitted when widget is going to be unmapped, which

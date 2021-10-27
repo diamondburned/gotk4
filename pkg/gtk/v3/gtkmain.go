@@ -311,6 +311,41 @@ func GetDefaultLanguage() *pango.Language {
 	return _language
 }
 
+// GetEventWidget: if event is NULL or the event was not associated with any
+// widget, returns NULL, otherwise returns the widget that received the event
+// originally.
+//
+// The function takes the following parameters:
+//
+//    - event: Event.
+//
+func GetEventWidget(event *gdk.Event) Widgetter {
+	var _arg1 *C.GdkEvent  // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_get_event_widget(_arg1)
+	runtime.KeepAlive(event)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
 // GetInterfaceAge returns the interface age as passed to libtool when building
 // the GTK+ library the process is running against. If libtool means nothing to
 // you, don't worry about it.
@@ -499,6 +534,53 @@ func Main() {
 	C.gtk_main()
 }
 
+// MainDoEvent processes a single GDK event.
+//
+// This is public only to allow filtering of events between GDK and GTK+. You
+// will not usually need to call this function directly.
+//
+// While you should not call this function directly, you might want to know how
+// exactly events are handled. So here is what this function does with the
+// event:
+//
+// 1. Compress enter/leave notify events. If the event passed build an
+// enter/leave pair together with the next event (peeked from GDK), both events
+// are thrown away. This is to avoid a backlog of (de-)highlighting widgets
+// crossed by the pointer.
+//
+// 2. Find the widget which got the event. If the widget can’t be determined the
+// event is thrown away unless it belongs to a INCR transaction.
+//
+// 3. Then the event is pushed onto a stack so you can query the currently
+// handled event with gtk_get_current_event().
+//
+// 4. The event is sent to a widget. If a grab is active all events for widgets
+// that are not in the contained in the grab widget are sent to the latter with
+// a few exceptions: - Deletion and destruction events are still sent to the
+// event widget for obvious reasons. - Events which directly relate to the
+// visual representation of the event widget. - Leave events are delivered to
+// the event widget if there was an enter event delivered to it before without
+// the paired leave event. - Drag events are not redirected because it is
+// unclear what the semantics of that would be. Another point of interest might
+// be that all key events are first passed through the key snooper functions if
+// there are any. Read the description of gtk_key_snooper_install() if you need
+// this feature.
+//
+// 5. After finishing the delivery the event is popped from the event stack.
+//
+// The function takes the following parameters:
+//
+//    - event to process (normally passed by GDK).
+//
+func MainDoEvent(event *gdk.Event) {
+	var _arg1 *C.GdkEvent // out
+
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	C.gtk_main_do_event(_arg1)
+	runtime.KeepAlive(event)
+}
+
 // MainIteration runs a single iteration of the mainloop.
 //
 // If no events are waiting to be processed GTK+ will block until the next event
@@ -562,6 +644,41 @@ func MainLevel() uint {
 // regains control.
 func MainQuit() {
 	C.gtk_main_quit()
+}
+
+// PropagateEvent sends an event to a widget, propagating the event to parent
+// widgets if the event remains unhandled.
+//
+// Events received by GTK+ from GDK normally begin in gtk_main_do_event().
+// Depending on the type of event, existence of modal dialogs, grabs, etc., the
+// event may be propagated; if so, this function is used.
+//
+// gtk_propagate_event() calls gtk_widget_event() on each widget it decides to
+// send the event to. So gtk_widget_event() is the lowest-level function; it
+// simply emits the Widget::event and possibly an event-specific signal on a
+// widget. gtk_propagate_event() is a bit higher-level, and gtk_main_do_event()
+// is the highest level.
+//
+// All that said, you most likely don’t want to use any of these functions;
+// synthesizing events is rarely needed. There are almost certainly better ways
+// to achieve your goals. For example, use gdk_window_invalidate_rect() or
+// gtk_widget_queue_draw() instead of making up expose events.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//    - event: event.
+//
+func PropagateEvent(widget Widgetter, event *gdk.Event) {
+	var _arg1 *C.GtkWidget // out
+	var _arg2 *C.GdkEvent  // out
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	C.gtk_propagate_event(_arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(event)
 }
 
 // True: all this function does it to return TRUE.

@@ -6,7 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -98,6 +100,34 @@ func (controller *EventController) Widget() Widgetter {
 	}
 
 	return _widget
+}
+
+// HandleEvent feeds an events into controller, so it can be interpreted and the
+// controller actions triggered.
+//
+// The function takes the following parameters:
+//
+//    - event: Event.
+//
+func (controller *EventController) HandleEvent(event *gdk.Event) bool {
+	var _arg0 *C.GtkEventController // out
+	var _arg1 *C.GdkEvent           // out
+	var _cret C.gboolean            // in
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_event_controller_handle_event(_arg0, _arg1)
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Reset resets the controller to a clean state. Every interaction the

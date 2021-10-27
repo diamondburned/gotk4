@@ -137,6 +137,10 @@ func (c CellRendererState) Has(other CellRendererState) bool {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellRendererOverrider interface {
+	// Activate passes an activate event to the cell renderer for possible
+	// processing. Some cell renderers may use events; for example,
+	// CellRendererToggle toggles when it gets a mouse click.
+	Activate(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool
 	EditingCanceled()
 	EditingStarted(editable CellEditabler, path string)
 	// AlignedArea gets the aligned area used by cell inside cell_area. Used for
@@ -175,6 +179,10 @@ type CellRendererOverrider interface {
 	// expander; so the background_area rectangles for all cells tile to cover
 	// the entire window.
 	Render(cr *cairo.Context, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState)
+	// StartEditing starts editing the contents of this cell, through a new
+	// CellEditable widget created by the CellRendererClass.start_editing
+	// virtual function.
+	StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
 }
 
 // CellRenderer is a base class of a set of objects used for rendering a cell to
@@ -235,6 +243,58 @@ func wrapCellRenderer(obj *externglib.Object) *CellRenderer {
 
 func marshalCellRendererer(p uintptr) (interface{}, error) {
 	return wrapCellRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Activate passes an activate event to the cell renderer for possible
+// processing. Some cell renderers may use events; for example,
+// CellRendererToggle toggles when it gets a mouse click.
+//
+// The function takes the following parameters:
+//
+//    - event: Event.
+//    - widget that received the event.
+//    - path: widget-dependent string representation of the event location;
+//    e.g. for TreeView, a string representation of TreePath.
+//    - backgroundArea: background area as passed to
+//    gtk_cell_renderer_render().
+//    - cellArea: cell area as passed to gtk_cell_renderer_render().
+//    - flags: render flags.
+//
+func (cell *CellRenderer) Activate(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool {
+	var _arg0 *C.GtkCellRenderer     // out
+	var _arg1 *C.GdkEvent            // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.gchar               // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 *C.GdkRectangle        // out
+	var _arg6 C.GtkCellRendererState // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
+	_arg5 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg6 = C.GtkCellRendererState(flags)
+
+	_cret = C.gtk_cell_renderer_activate(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(backgroundArea)
+	runtime.KeepAlive(cellArea)
+	runtime.KeepAlive(flags)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // AlignedArea gets the aligned area used by cell inside cell_area. Used for
@@ -787,6 +847,69 @@ func (cell *CellRenderer) SetVisible(visible bool) {
 	C.gtk_cell_renderer_set_visible(_arg0, _arg1)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(visible)
+}
+
+// StartEditing starts editing the contents of this cell, through a new
+// CellEditable widget created by the CellRendererClass.start_editing virtual
+// function.
+//
+// The function takes the following parameters:
+//
+//    - event: Event.
+//    - widget that received the event.
+//    - path: widget-dependent string representation of the event location;
+//    e.g. for TreeView, a string representation of TreePath.
+//    - backgroundArea: background area as passed to
+//    gtk_cell_renderer_render().
+//    - cellArea: cell area as passed to gtk_cell_renderer_render().
+//    - flags: render flags.
+//
+func (cell *CellRenderer) StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler {
+	var _arg0 *C.GtkCellRenderer     // out
+	var _arg1 *C.GdkEvent            // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.gchar               // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 *C.GdkRectangle        // out
+	var _arg6 C.GtkCellRendererState // out
+	var _cret *C.GtkCellEditable     // in
+
+	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	if event != nil {
+		_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	}
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
+	_arg5 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg6 = C.GtkCellRendererState(flags)
+
+	_cret = C.gtk_cell_renderer_start_editing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(backgroundArea)
+	runtime.KeepAlive(cellArea)
+	runtime.KeepAlive(flags)
+
+	var _cellEditable CellEditabler // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			rv, ok := (externglib.CastObject(object)).(CellEditabler)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellEditabler")
+			}
+			_cellEditable = rv
+		}
+	}
+
+	return _cellEditable
 }
 
 // StopEditing informs the cell renderer that the editing is stopped. If

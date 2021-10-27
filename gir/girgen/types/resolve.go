@@ -285,6 +285,17 @@ func (typ *Resolved) IsCallback() bool {
 	return ok
 }
 
+// IsUnion returns true if the current ResolvedType is a union.
+func (typ *Resolved) IsUnion() bool {
+	t := typ.externType()
+	if t == nil {
+		return false
+	}
+
+	_, ok := t.Type.(*gir.Union)
+	return ok
+}
+
 // IsRecord returns true if the current ResolvedType is a record.
 func (typ *Resolved) IsRecord() bool {
 	t := typ.externType()

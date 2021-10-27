@@ -2034,6 +2034,17 @@ func (entry *Entry) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) e
 	return entry.Connect("delete-from-cursor", f)
 }
 
+// ConnectIconPress signal is emitted when an activatable icon is clicked.
+func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
+	return entry.Connect("icon-press", f)
+}
+
+// ConnectIconRelease signal is emitted on the button release from a mouse click
+// over an activatable icon.
+func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
+	return entry.Connect("icon-release", f)
+}
+
 // ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted when the user initiates the insertion of a fixed string at the
 // cursor.

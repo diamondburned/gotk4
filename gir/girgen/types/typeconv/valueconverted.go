@@ -363,8 +363,12 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 	} else {
 		needsImporting = true
 
+		alwaysPointer := false ||
+			vType.Resolved.IsUnion() ||
+			vType.Resolved.IsRecord()
+
 		// TODO: do the same thing for classes as well.
-		if !value.inArray && vType.Resolved.IsRecord() {
+		if !value.inArray && alwaysPointer {
 			// Fix the mismatch that would happen if the parameter is a C output
 			// parameter, since we normalize that elsewhere.
 			intentionalPtr = true

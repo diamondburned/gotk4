@@ -598,6 +598,33 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		return true
 
+	case *gir.Union:
+		value.header.Import("unsafe")
+		value.header.ImportCore("gextras")
+
+		if value.ShouldFree() {
+			// If we should free, then this is ours, so this code is correct. If
+			// we SHOULDN'T free, then see if we can copy. If not, bail.
+			value.vtmpl(
+				"<.Out.Set> = <.OutCast 1>(gextras.StructNative(unsafe.Pointer(<.InNamePtr 1>)))")
+			return true
+		}
+
+		copy := types.FindMethodName(v.Methods, "copy")
+		if copy == nil {
+			value.Logln(logger.Debug, "skipping because no copy()")
+			return false
+		}
+
+		value.p.Descend()
+		value.p.Linef(
+			"cpy := C.%s(gextras.StructNative(unsafe.Pointer(%s)))",
+			copy.CIdentifier, value.InNamePtr(1))
+		value.p.Linef("%s = %s(cpy)", value.Out.Set, value.OutCast(1))
+		value.p.Ascend()
+
+		return true
+
 	case *gir.Record:
 		value.header.Import("unsafe")
 		value.header.ImportCore("gextras")

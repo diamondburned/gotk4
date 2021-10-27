@@ -140,6 +140,8 @@ type CellAreaOverrider interface {
 	// the same CellAreaContext which was used to request the size of those rows
 	// of data).
 	CreateContext() *CellAreaContext
+	// Event delegates event handling to a CellArea.
+	Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
 	// Focus: this should be called by the area’s owning layout widget when
 	// focus is to be passed to area, or moved within area for a given direction
 	// and row data.
@@ -422,6 +424,52 @@ func (area *CellArea) Activate(context *CellAreaContext, widget Widgetter, cellA
 	return _ok
 }
 
+// ActivateCell: this is used by CellArea subclasses when handling events to
+// activate cells, the base CellArea class activates cells for keyboard events
+// for free in its own GtkCellArea->activate() implementation.
+//
+// The function takes the following parameters:
+//
+//    - widget that area is rendering onto.
+//    - renderer in area to activate.
+//    - event for which cell activation should occur.
+//    - cellArea in widget relative coordinates of renderer for the current
+//    row.
+//    - flags for renderer.
+//
+func (area *CellArea) ActivateCell(widget Widgetter, renderer CellRendererer, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) bool {
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkWidget           // out
+	var _arg2 *C.GtkCellRenderer     // out
+	var _arg3 *C.GdkEvent            // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 C.GtkCellRendererState // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg3 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg5 = C.GtkCellRendererState(flags)
+
+	_cret = C.gtk_cell_area_activate_cell(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(cellArea)
+	runtime.KeepAlive(flags)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Add adds renderer to area with the default child cell properties.
 //
 // The function takes the following parameters:
@@ -692,6 +740,47 @@ func (area *CellArea) CreateContext() *CellAreaContext {
 	_cellAreaContext = wrapCellAreaContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cellAreaContext
+}
+
+// Event delegates event handling to a CellArea.
+//
+// The function takes the following parameters:
+//
+//    - context for this row of data.
+//    - widget that area is rendering to.
+//    - event to handle.
+//    - cellArea: widget relative coordinates for area.
+//    - flags for area in this row.
+//
+func (area *CellArea) Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int {
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GdkEvent            // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 C.GtkCellRendererState // out
+	var _cret C.gint                 // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg5 = C.GtkCellRendererState(flags)
+
+	_cret = C.gtk_cell_area_event(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(cellArea)
+	runtime.KeepAlive(flags)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
 }
 
 // Focus: this should be called by the area’s owning layout widget when focus is

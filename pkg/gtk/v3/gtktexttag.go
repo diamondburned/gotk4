@@ -6,7 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -22,6 +24,15 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTagger},
 	})
+}
+
+// TextTagOverrider contains methods that are overridable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type TextTagOverrider interface {
+	// Event emits the “event” signal on the TextTag.
+	Event(eventObject *externglib.Object, event *gdk.Event, iter *TextIter) bool
 }
 
 // TextTag: you may wish to begin by reading the [text widget conceptual
@@ -102,6 +113,41 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 	runtime.KeepAlive(sizeChanged)
 }
 
+// Event emits the “event” signal on the TextTag.
+//
+// The function takes the following parameters:
+//
+//    - eventObject: object that received the event, such as a widget.
+//    - event: event.
+//    - iter: location where the event was received.
+//
+func (tag *TextTag) Event(eventObject *externglib.Object, event *gdk.Event, iter *TextIter) bool {
+	var _arg0 *C.GtkTextTag  // out
+	var _arg1 *C.GObject     // out
+	var _arg2 *C.GdkEvent    // out
+	var _arg3 *C.GtkTextIter // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(eventObject.Native()))
+	_arg2 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C.gtk_text_tag_event(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(eventObject)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Priority: get the tag priority.
 func (tag *TextTag) Priority() int {
 	var _arg0 *C.GtkTextTag // out
@@ -144,4 +190,10 @@ func (tag *TextTag) SetPriority(priority int) {
 	C.gtk_text_tag_set_priority(_arg0, _arg1)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)
+}
+
+// ConnectEvent signal is emitted when an event occurs on a region of the buffer
+// marked with this tag.
+func (tag *TextTag) ConnectEvent(f func(object *externglib.Object, event *gdk.Event, iter *TextIter) bool) externglib.SignalHandle {
+	return tag.Connect("event", f)
 }

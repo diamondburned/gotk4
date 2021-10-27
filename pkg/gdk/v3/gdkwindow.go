@@ -4783,6 +4783,37 @@ func (window *Window) ShowUnraised() {
 	runtime.KeepAlive(window)
 }
 
+// ShowWindowMenu asks the windowing system to show the window menu. The window
+// menu is the menu shown when right-clicking the titlebar on traditional
+// windows managed by the window manager. This is useful for windows using
+// client-side decorations, activating it with a right-click on the window
+// decorations.
+//
+// The function takes the following parameters:
+//
+//    - event to show the menu for.
+//
+func (window *Window) ShowWindowMenu(event *Event) bool {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkEvent  // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gdk_window_show_window_menu(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Stick: “Pins” a window such that it’s on all workspaces and does not scroll
 // with viewports, for window managers that have scrollable viewports. (When
 // using Window, gtk_window_stick() may be more useful.)

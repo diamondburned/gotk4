@@ -18,6 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// void _gotk4_gdk3_SeatGrabPrepareFunc(GdkSeat*, GdkWindow*, gpointer);
 import "C"
 
 func init() {
@@ -298,6 +299,92 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 	})
 
 	return _list
+}
+
+// Grab grabs the seat so that all events corresponding to the given
+// capabilities are passed to this application until the seat is ungrabbed with
+// gdk_seat_ungrab(), or the window becomes hidden. This overrides any previous
+// grab on the seat by this client.
+//
+// As a rule of thumb, if a grab is desired over GDK_SEAT_CAPABILITY_POINTER,
+// all other "pointing" capabilities (eg. GDK_SEAT_CAPABILITY_TOUCH) should be
+// grabbed too, so the user is able to interact with all of those while the grab
+// holds, you should thus use GDK_SEAT_CAPABILITY_ALL_POINTING most commonly.
+//
+// Grabs are used for operations which need complete control over the events
+// corresponding to the given capabilities. For example in GTK+ this is used for
+// Drag and Drop operations, popup menus and such.
+//
+// Note that if the event mask of a Window has selected both button press and
+// button release events, or touch begin and touch end, then a press event will
+// cause an automatic grab until the button is released, equivalent to a grab on
+// the window with owner_events set to TRUE. This is done because most
+// applications expect to receive paired press and release events.
+//
+// If you set up anything at the time you take the grab that needs to be cleaned
+// up when the grab ends, you should handle the EventGrabBroken events that are
+// emitted when the grab ends unvoluntarily.
+//
+// The function takes the following parameters:
+//
+//    - window which will own the grab.
+//    - capabilities that will be grabbed.
+//    - ownerEvents: if FALSE then all device events are reported with respect
+//    to window and are only reported if selected by event_mask. If TRUE then
+//    pointer events for this application are reported as normal, but pointer
+//    events outside this application are reported with respect to window and
+//    only if selected by event_mask. In either mode, unreported events are
+//    discarded.
+//    - cursor to display while the grab is active. If this is NULL then the
+//    normal cursors are used for window and its descendants, and the cursor
+//    for window is used elsewhere.
+//    - event that is triggering the grab, or NULL if none is available.
+//    - prepareFunc: function to prepare the window to be grabbed, it can be
+//    NULL if window is visible before this call.
+//
+func (seat *Seat) Grab(window Windower, capabilities SeatCapabilities, ownerEvents bool, cursor Cursorrer, event *Event, prepareFunc SeatGrabPrepareFunc) GrabStatus {
+	var _arg0 *C.GdkSeat               // out
+	var _arg1 *C.GdkWindow             // out
+	var _arg2 C.GdkSeatCapabilities    // out
+	var _arg3 C.gboolean               // out
+	var _arg4 *C.GdkCursor             // out
+	var _arg5 *C.GdkEvent              // out
+	var _arg6 C.GdkSeatGrabPrepareFunc // out
+	var _arg7 C.gpointer
+	var _cret C.GdkGrabStatus // in
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = C.GdkSeatCapabilities(capabilities)
+	if ownerEvents {
+		_arg3 = C.TRUE
+	}
+	if cursor != nil {
+		_arg4 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	}
+	if event != nil {
+		_arg5 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	}
+	if prepareFunc != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gdk3_SeatGrabPrepareFunc)
+		_arg7 = C.gpointer(gbox.Assign(prepareFunc))
+		defer gbox.Delete(uintptr(_arg7))
+	}
+
+	_cret = C.gdk_seat_grab(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(seat)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(capabilities)
+	runtime.KeepAlive(ownerEvents)
+	runtime.KeepAlive(cursor)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(prepareFunc)
+
+	var _grabStatus GrabStatus // out
+
+	_grabStatus = GrabStatus(_cret)
+
+	return _grabStatus
 }
 
 // Ungrab releases a grab added through gdk_seat_grab().

@@ -3,10 +3,13 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -115,6 +118,41 @@ func NewSearchEntry() *SearchEntry {
 	_searchEntry = wrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
+}
+
+// HandleEvent: this function should be called when the top-level window which
+// contains the search entry received a key event. If the entry is part of a
+// SearchBar, it is preferable to call gtk_search_bar_handle_event() instead,
+// which will reveal the entry in addition to passing the event to this
+// function.
+//
+// If the key event is handled by the search entry and starts or continues a
+// search, GDK_EVENT_STOP will be returned. The caller should ensure that the
+// entry is shown in this case, and not propagate the event further.
+//
+// The function takes the following parameters:
+//
+//    - event: key event.
+//
+func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
+	var _arg0 *C.GtkSearchEntry // out
+	var _arg1 *C.GdkEvent       // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_search_entry_handle_event(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // ConnectNextMatch signal is a [keybinding signal][GtkBindingSignal] which gets

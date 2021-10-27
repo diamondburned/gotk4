@@ -782,6 +782,108 @@ func (w WindowState) Has(other WindowState) bool {
 	return (w & other) == other
 }
 
+// EventsGetAngle: if both events contain X/Y information, this function will
+// return TRUE and return in angle the relative angle from event1 to event2. The
+// rotation direction for positive angles is from the positive X axis towards
+// the positive Y axis.
+//
+// The function takes the following parameters:
+//
+//    - event1: first Event.
+//    - event2: second Event.
+//
+func EventsGetAngle(event1, event2 *Event) (float64, bool) {
+	var _arg1 *C.GdkEvent // out
+	var _arg2 *C.GdkEvent // out
+	var _arg3 C.gdouble   // in
+	var _cret C.gboolean  // in
+
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event1)))
+	_arg2 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event2)))
+
+	_cret = C.gdk_events_get_angle(_arg1, _arg2, &_arg3)
+	runtime.KeepAlive(event1)
+	runtime.KeepAlive(event2)
+
+	var _angle float64 // out
+	var _ok bool       // out
+
+	_angle = float64(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _angle, _ok
+}
+
+// EventsGetCenter: if both events contain X/Y information, the center of both
+// coordinates will be returned in x and y.
+//
+// The function takes the following parameters:
+//
+//    - event1: first Event.
+//    - event2: second Event.
+//
+func EventsGetCenter(event1, event2 *Event) (x float64, y float64, ok bool) {
+	var _arg1 *C.GdkEvent // out
+	var _arg2 *C.GdkEvent // out
+	var _arg3 C.gdouble   // in
+	var _arg4 C.gdouble   // in
+	var _cret C.gboolean  // in
+
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event1)))
+	_arg2 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event2)))
+
+	_cret = C.gdk_events_get_center(_arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(event1)
+	runtime.KeepAlive(event2)
+
+	var _x float64 // out
+	var _y float64 // out
+	var _ok bool   // out
+
+	_x = float64(_arg3)
+	_y = float64(_arg4)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _x, _y, _ok
+}
+
+// EventsGetDistance: if both events have X/Y information, the distance between
+// both coordinates (as in a straight line going from event1 to event2) will be
+// returned.
+//
+// The function takes the following parameters:
+//
+//    - event1: first Event.
+//    - event2: second Event.
+//
+func EventsGetDistance(event1, event2 *Event) (float64, bool) {
+	var _arg1 *C.GdkEvent // out
+	var _arg2 *C.GdkEvent // out
+	var _arg3 C.gdouble   // in
+	var _cret C.gboolean  // in
+
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event1)))
+	_arg2 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event2)))
+
+	_cret = C.gdk_events_get_distance(_arg1, _arg2, &_arg3)
+	runtime.KeepAlive(event1)
+	runtime.KeepAlive(event2)
+
+	var _distance float64 // out
+	var _ok bool          // out
+
+	_distance = float64(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _distance, _ok
+}
+
 // EventsPending checks if any events are ready to be processed for any display.
 func EventsPending() bool {
 	var _cret C.gboolean // in
@@ -2890,9 +2992,62 @@ type event struct {
 	native *C.GdkEvent
 }
 
+// Eventer is used for all functions that accept any kind of Event.
+type Eventer interface {
+	// Implementing types:
+	//
+	//    *EventAny
+	//    *EventExpose
+	//    *EventVisibility
+	//    *EventMotion
+	//    *EventButton
+	//    *EventTouch
+	//    *EventScroll
+	//    *EventKey
+	//    *EventCrossing
+	//    *EventFocus
+	//    *EventConfigure
+	//    *EventProperty
+	//    *EventSelection
+	//    *EventOwnerChange
+	//    *EventProximity
+	//    *EventDND
+	//    *EventWindowState
+	//    *EventSetting
+	//    *EventGrabBroken
+	//    *EventTouchpadSwipe
+	//    *EventTouchpadPinch
+	//    *EventPadButton
+	//    *EventPadAxis
+	//    *EventPadGroupMode
+	//
+
+	underlyingEvent() unsafe.Pointer
+}
+
+// CopyEventer copies any type that belongs to a Event union
+// into a new Event instance. To see supported types, refer to
+// Eventer's documentation.
+func CopyEventer(e Eventer) *Event {
+	original := (*C.GdkEvent)(e.underlyingEvent())
+	copied := C.gdk_event_copy(original)
+	dst := (*Event)(gextras.NewStructNative(unsafe.Pointer(copied)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(dst)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		},
+	)
+	return dst
+}
+
 func marshalEvent(p uintptr) (interface{}, error) {
 	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Event{&event{(*C.GdkEvent)(b)}}, nil
+}
+
+func (v *Event) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsType returns a copy of e as the struct EventType.
@@ -2904,6 +3059,11 @@ func (e *Event) AsType() EventType {
 	dst = *(*EventType)(unsafe.Pointer(cpy))
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventAny) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsAny returns a copy of e as the struct *EventAny.
@@ -2923,6 +3083,11 @@ func (e *Event) AsAny() *EventAny {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventExpose) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsExpose returns a copy of e as the struct *EventExpose.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -2938,6 +3103,11 @@ func (e *Event) AsExpose() *EventExpose {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventVisibility) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsVisibility returns a copy of e as the struct *EventVisibility.
@@ -2957,6 +3127,11 @@ func (e *Event) AsVisibility() *EventVisibility {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventMotion) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsMotion returns a copy of e as the struct *EventMotion.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -2972,6 +3147,11 @@ func (e *Event) AsMotion() *EventMotion {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventButton) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsButton returns a copy of e as the struct *EventButton.
@@ -2991,6 +3171,11 @@ func (e *Event) AsButton() *EventButton {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventTouch) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsTouch returns a copy of e as the struct *EventTouch.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3006,6 +3191,11 @@ func (e *Event) AsTouch() *EventTouch {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventScroll) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsScroll returns a copy of e as the struct *EventScroll.
@@ -3025,6 +3215,11 @@ func (e *Event) AsScroll() *EventScroll {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventKey) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsKey returns a copy of e as the struct *EventKey.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3040,6 +3235,11 @@ func (e *Event) AsKey() *EventKey {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventCrossing) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsCrossing returns a copy of e as the struct *EventCrossing.
@@ -3059,6 +3259,11 @@ func (e *Event) AsCrossing() *EventCrossing {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventFocus) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsFocusChange returns a copy of e as the struct *EventFocus.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3074,6 +3279,11 @@ func (e *Event) AsFocusChange() *EventFocus {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventConfigure) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsConfigure returns a copy of e as the struct *EventConfigure.
@@ -3093,6 +3303,11 @@ func (e *Event) AsConfigure() *EventConfigure {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventProperty) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsProperty returns a copy of e as the struct *EventProperty.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3108,6 +3323,11 @@ func (e *Event) AsProperty() *EventProperty {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventSelection) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsSelection returns a copy of e as the struct *EventSelection.
@@ -3127,6 +3347,11 @@ func (e *Event) AsSelection() *EventSelection {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventOwnerChange) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsOwnerChange returns a copy of e as the struct *EventOwnerChange.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3142,6 +3367,11 @@ func (e *Event) AsOwnerChange() *EventOwnerChange {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventProximity) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsProximity returns a copy of e as the struct *EventProximity.
@@ -3161,6 +3391,11 @@ func (e *Event) AsProximity() *EventProximity {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventDND) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsDND returns a copy of e as the struct *EventDND.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3176,6 +3411,11 @@ func (e *Event) AsDND() *EventDND {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventWindowState) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsWindowState returns a copy of e as the struct *EventWindowState.
@@ -3195,6 +3435,11 @@ func (e *Event) AsWindowState() *EventWindowState {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventSetting) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsSetting returns a copy of e as the struct *EventSetting.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3210,6 +3455,11 @@ func (e *Event) AsSetting() *EventSetting {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventGrabBroken) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsGrabBroken returns a copy of e as the struct *EventGrabBroken.
@@ -3229,6 +3479,11 @@ func (e *Event) AsGrabBroken() *EventGrabBroken {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventTouchpadSwipe) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsTouchpadSwipe returns a copy of e as the struct *EventTouchpadSwipe.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3244,6 +3499,11 @@ func (e *Event) AsTouchpadSwipe() *EventTouchpadSwipe {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventTouchpadPinch) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsTouchpadPinch returns a copy of e as the struct *EventTouchpadPinch.
@@ -3263,6 +3523,11 @@ func (e *Event) AsTouchpadPinch() *EventTouchpadPinch {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventPadButton) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsPadButton returns a copy of e as the struct *EventPadButton.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3280,6 +3545,11 @@ func (e *Event) AsPadButton() *EventPadButton {
 	return dst
 }
 
+// underlyingEvent marks the struct for Eventer.
+func (v *EventPadAxis) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // AsPadAxis returns a copy of e as the struct *EventPadAxis.
 // It does this without any knowledge on the actual type of the value, so
 // the caller must take care of type-checking beforehand.
@@ -3295,6 +3565,11 @@ func (e *Event) AsPadAxis() *EventPadAxis {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// underlyingEvent marks the struct for Eventer.
+func (v *EventPadGroupMode) underlyingEvent() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // AsPadGroupMode returns a copy of e as the struct *EventPadGroupMode.

@@ -25,6 +25,27 @@ var unionTmpl = gotmpl.NewGoTemplate(`
 		native *C.{{ .CType }}
 	}
 
+	{{ $iface := Interfacify .GoName }}
+
+	// {{ $iface }} is used for all functions that accept any kind of {{ .GoName }}.
+	type {{ $iface }} interface {
+		// Implementing types:
+		//
+		{{- range .Fields }}
+		{{- if .Record }}
+		//    {{ .GoType }}
+		{{- end }}
+		{{- end }}
+		//
+
+		underlying{{ .GoName }}() unsafe.Pointer
+	}
+
+	// Copy{{ $iface }} copies any type that belongs to a {{ .GoName }} union
+	// into a new {{ .GoName }} instance. To see supported types, refer to
+	// {{ $iface }}'s documentation.
+	func Copy{{ $iface }}({{ .Recv }} {{ $iface }}) *{{ .GoName }} {{ .CastBlock }}
+
 	{{ if .Marshaler }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
 		b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
@@ -32,7 +53,17 @@ var unionTmpl = gotmpl.NewGoTemplate(`
 	}
 	{{ end }}
 
+	func (v *{{ .GoName }}) underlying{{ .GoName }}() unsafe.Pointer {
+		return unsafe.Pointer(v.native)
+	}
+
 	{{ range .Fields }}
+	{{ if .Record }}
+	// underlying{{ $.GoName }} marks the struct for {{ $iface }}.
+	func (v {{ .GoType }}) underlying{{ $.GoName }}() unsafe.Pointer {
+		return unsafe.Pointer(v.native)
+	}
+	{{ end }}
 	// As{{ .GoName }} returns a copy of {{ $.Recv }} as the struct {{ .GoType }}.
 	// It does this without any knowledge on the actual type of the value, so
 	// the caller must take care of type-checking beforehand.
@@ -45,6 +76,8 @@ type UnionGenerator struct {
 	GoName    string
 	ImplName  string
 	Marshaler bool
+
+	CastBlock string
 
 	Marshalers []UnionFieldMarshaler
 	Fields     []UnionField
@@ -63,6 +96,7 @@ type UnionField struct {
 	GoName string
 	GoType string
 	Block  string
+	Record bool
 }
 
 // GenerateUnion generates the union.
@@ -73,6 +107,10 @@ func GenerateUnion(gen FileGeneratorWriter, union *gir.Union) bool {
 	}
 
 	writer := FileWriterFromType(gen, union)
+
+	if len(unionGen.Fields) > 0 {
+		writer.Header().Import("unsafe")
+	}
 
 	if union.GLibGetType != "" && !types.FilterCType(gen, union.GLibGetType) {
 		unionGen.Marshaler = true
@@ -133,6 +171,25 @@ func (ug *UnionGenerator) Use(union *gir.Union) bool {
 
 	// We can optionally have a freeMethod.
 	freeMethod := types.RecordHasFree(&gir.Record{Methods: union.Methods})
+
+	{
+		ug.hdr.Import("unsafe")
+		ug.hdr.ImportCore("gextras")
+
+		p := pen.NewBlock()
+		p.Linef("original := (*C.%s)(%s.underlying%s())", union.CType, ug.Recv(), ug.GoName)
+		p.Linef("copied := C.%s(original)", copyMethod.CIdentifier)
+		p.Linef("dst := (*%s)(gextras.NewStructNative(unsafe.Pointer(copied)))", ug.GoName)
+		p.Linef("runtime.SetFinalizer(")
+		p.Linef("  gextras.StructIntern(unsafe.Pointer(dst)),")
+		p.Linef("  func(intern *struct{ C unsafe.Pointer }) {")
+		p.Linef(types.RecordPrintFreeMethod(freeMethod, "intern.C"))
+		p.Linef("},")
+		p.Linef(")")
+		p.Linef("return dst")
+
+		ug.CastBlock = p.String()
+	}
 
 	for i, field := range union.Fields {
 		if field.Type == nil || !field.IsReadable() {
@@ -217,6 +274,7 @@ func (ug *UnionGenerator) Use(union *gir.Union) bool {
 			GoName: strcases.SnakeToGo(true, field.Name),
 			GoType: srcRes.Out.Type,
 			Block:  p.String(),
+			Record: srcRes.Resolved.IsRecord(),
 		})
 	}
 

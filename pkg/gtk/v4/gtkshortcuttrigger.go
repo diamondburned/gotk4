@@ -36,6 +36,10 @@ type AlternativeTrigger struct {
 	ShortcutTrigger
 }
 
+var (
+	_ ShortcutTriggerer = (*AlternativeTrigger)(nil)
+)
+
 func wrapAlternativeTrigger(obj *externglib.Object) *AlternativeTrigger {
 	return &AlternativeTrigger{
 		ShortcutTrigger: ShortcutTrigger{
@@ -148,6 +152,10 @@ type KeyvalTrigger struct {
 	ShortcutTrigger
 }
 
+var (
+	_ ShortcutTriggerer = (*KeyvalTrigger)(nil)
+)
+
 func wrapKeyvalTrigger(obj *externglib.Object) *KeyvalTrigger {
 	return &KeyvalTrigger{
 		ShortcutTrigger: ShortcutTrigger{
@@ -230,6 +238,10 @@ type MnemonicTrigger struct {
 	ShortcutTrigger
 }
 
+var (
+	_ ShortcutTriggerer = (*MnemonicTrigger)(nil)
+)
+
 func wrapMnemonicTrigger(obj *externglib.Object) *MnemonicTrigger {
 	return &MnemonicTrigger{
 		ShortcutTrigger: ShortcutTrigger{
@@ -290,6 +302,10 @@ type NeverTrigger struct {
 	ShortcutTrigger
 }
 
+var (
+	_ ShortcutTriggerer = (*NeverTrigger)(nil)
+)
+
 func wrapNeverTrigger(obj *externglib.Object) *NeverTrigger {
 	return &NeverTrigger{
 		ShortcutTrigger: ShortcutTrigger{
@@ -334,14 +350,17 @@ type ShortcutTrigger struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ShortcutTrigger)(nil)
+)
+
 // ShortcutTriggerer describes types inherited from class ShortcutTrigger.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ShortcutTriggerer interface {
 	externglib.Objector
-
-	// BaseShortcutTrigger returns the underlying base class.
-	BaseShortcutTrigger() *ShortcutTrigger
+	baseShortcutTrigger() *ShortcutTrigger
 }
 
 var _ ShortcutTriggerer = (*ShortcutTrigger)(nil)
@@ -568,7 +587,11 @@ func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gd
 	return _keyMatch
 }
 
-// BaseShortcutTrigger returns trigger1.
-func (trigger1 *ShortcutTrigger) BaseShortcutTrigger() *ShortcutTrigger {
+func (trigger1 *ShortcutTrigger) baseShortcutTrigger() *ShortcutTrigger {
 	return trigger1
+}
+
+// BaseShortcutTrigger returns the underlying base object.
+func BaseShortcutTrigger(obj ShortcutTriggerer) *ShortcutTrigger {
+	return obj.baseShortcutTrigger()
 }

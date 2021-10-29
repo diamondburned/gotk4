@@ -51,6 +51,10 @@ type SocketListener struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*SocketListener)(nil)
+)
+
 func wrapSocketListener(obj *externglib.Object) *SocketListener {
 	return &SocketListener{
 		Object: obj,

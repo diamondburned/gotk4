@@ -62,6 +62,10 @@ type Statusbar struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Statusbar)(nil)
+)
+
 func wrapStatusbar(obj *externglib.Object) *Statusbar {
 	return &Statusbar{
 		Widget: Widget{

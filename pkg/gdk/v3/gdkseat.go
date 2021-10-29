@@ -146,14 +146,17 @@ type Seat struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Seat)(nil)
+)
+
 // Seater describes types inherited from class Seat.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Seater interface {
 	externglib.Objector
-
-	// BaseSeat returns the underlying base class.
-	BaseSeat() *Seat
+	baseSeat() *Seat
 }
 
 var _ Seater = (*Seat)(nil)
@@ -397,9 +400,13 @@ func (seat *Seat) Ungrab() {
 	runtime.KeepAlive(seat)
 }
 
-// BaseSeat returns seat.
-func (seat *Seat) BaseSeat() *Seat {
+func (seat *Seat) baseSeat() *Seat {
 	return seat
+}
+
+// BaseSeat returns the underlying base object.
+func BaseSeat(obj Seater) *Seat {
+	return obj.baseSeat()
 }
 
 // ConnectDeviceAdded signal is emitted when a new input device is related to

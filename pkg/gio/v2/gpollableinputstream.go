@@ -77,6 +77,10 @@ type PollableInputStream struct {
 	InputStream
 }
 
+var (
+	_ InputStreamer = (*PollableInputStream)(nil)
+)
+
 // PollableInputStreamer describes PollableInputStream's interface methods.
 type PollableInputStreamer interface {
 	externglib.Objector

@@ -63,6 +63,11 @@ type CenterBox struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*CenterBox)(nil)
+	_ externglib.Objector = (*CenterBox)(nil)
+)
+
 func wrapCenterBox(obj *externglib.Object) *CenterBox {
 	return &CenterBox{
 		Widget: Widget{

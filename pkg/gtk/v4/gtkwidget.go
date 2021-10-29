@@ -574,14 +574,17 @@ type Widget struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Widget)(nil)
+)
+
 // Widgetter describes types inherited from class Widget.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Widgetter interface {
 	externglib.Objector
-
-	// BaseWidget returns the underlying base class.
-	BaseWidget() *Widget
+	baseWidget() *Widget
 }
 
 var _ Widgetter = (*Widget)(nil)
@@ -4786,9 +4789,13 @@ func (widget *Widget) UnsetStateFlags(flags StateFlags) {
 	runtime.KeepAlive(flags)
 }
 
-// BaseWidget returns widget.
-func (widget *Widget) BaseWidget() *Widget {
+func (widget *Widget) baseWidget() *Widget {
 	return widget
+}
+
+// BaseWidget returns the underlying base object.
+func BaseWidget(obj Widgetter) *Widget {
+	return obj.baseWidget()
 }
 
 // ConnectDestroy signals that all holders of a reference to the widget should

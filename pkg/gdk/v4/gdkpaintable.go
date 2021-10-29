@@ -193,6 +193,10 @@ type Paintable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Paintable)(nil)
+)
+
 // Paintabler describes Paintable's interface methods.
 type Paintabler interface {
 	externglib.Objector

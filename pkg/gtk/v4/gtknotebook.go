@@ -146,6 +146,10 @@ type Notebook struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Notebook)(nil)
+)
+
 func wrapNotebook(obj *externglib.Object) *Notebook {
 	return &Notebook{
 		Widget: Widget{
@@ -1403,6 +1407,10 @@ func (notebook *Notebook) ConnectSwitchPage(f func(page Widgetter, pageNum uint)
 type NotebookPage struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*NotebookPage)(nil)
+)
 
 func wrapNotebookPage(obj *externglib.Object) *NotebookPage {
 	return &NotebookPage{

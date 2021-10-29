@@ -31,6 +31,10 @@ type GestureStylus struct {
 	GestureSingle
 }
 
+var (
+	_ Gesturer = (*GestureStylus)(nil)
+)
+
 func wrapGestureStylus(obj *externglib.Object) *GestureStylus {
 	return &GestureStylus{
 		GestureSingle: GestureSingle{

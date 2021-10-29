@@ -109,6 +109,10 @@ type CSSProvider struct {
 	StyleProvider
 }
 
+var (
+	_ externglib.Objector = (*CSSProvider)(nil)
+)
+
 func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
 	return &CSSProvider{
 		Object: obj,

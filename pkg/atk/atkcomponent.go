@@ -170,6 +170,10 @@ type Component struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Component)(nil)
+)
+
 // Componenter describes Component's interface methods.
 type Componenter interface {
 	externglib.Objector

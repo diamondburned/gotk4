@@ -74,6 +74,11 @@ type FileInputStream struct {
 	*externglib.Object
 }
 
+var (
+	_ InputStreamer       = (*FileInputStream)(nil)
+	_ externglib.Objector = (*FileInputStream)(nil)
+)
+
 func wrapFileInputStream(obj *externglib.Object) *FileInputStream {
 	return &FileInputStream{
 		InputStream: InputStream{

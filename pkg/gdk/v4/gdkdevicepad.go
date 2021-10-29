@@ -75,6 +75,10 @@ type DevicePad struct {
 	Device
 }
 
+var (
+	_ Devicer = (*DevicePad)(nil)
+)
+
 // DevicePadder describes DevicePad's interface methods.
 type DevicePadder interface {
 	externglib.Objector

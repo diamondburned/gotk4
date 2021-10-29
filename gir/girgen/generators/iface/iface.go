@@ -240,6 +240,21 @@ func (g *Generator) Use(typ interface{}) bool {
 	return true
 }
 
+func (g *Generator) ImplInterfaces() []string {
+	impls := g.Tree.ImplInterfaces()
+	names := make([]string, len(impls))
+
+	for i, resolved := range impls {
+		namespace := resolved.NeedsNamespace(g.gen.Namespace())
+		if namespace {
+			g.header.ImportPubl(resolved)
+		}
+		names[i] = resolved.PublicType(namespace)
+	}
+
+	return names
+}
+
 // Wrap creates a wrapper around the given object variable.
 func (g *Generator) Wrap(obj string) string {
 	return g.Tree.Wrap(obj, &g.header)

@@ -48,6 +48,10 @@ type WidgetPaintable struct {
 	gdk.Paintable
 }
 
+var (
+	_ externglib.Objector = (*WidgetPaintable)(nil)
+)
+
 func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
 	return &WidgetPaintable{
 		Object: obj,

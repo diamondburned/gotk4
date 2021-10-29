@@ -158,6 +158,10 @@ type IconInfo struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*IconInfo)(nil)
+)
+
 func wrapIconInfo(obj *externglib.Object) *IconInfo {
 	return &IconInfo{
 		Object: obj,
@@ -1049,6 +1053,10 @@ type IconThemeOverrider interface {
 type IconTheme struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*IconTheme)(nil)
+)
 
 func wrapIconTheme(obj *externglib.Object) *IconTheme {
 	return &IconTheme{

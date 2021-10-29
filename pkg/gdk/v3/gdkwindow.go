@@ -809,14 +809,17 @@ type Window struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Window)(nil)
+)
+
 // Windower describes types inherited from class Window.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Windower interface {
 	externglib.Objector
-
-	// BaseWindow returns the underlying base class.
-	BaseWindow() *Window
+	baseWindow() *Window
 }
 
 var _ Windower = (*Window)(nil)
@@ -4917,9 +4920,13 @@ func (window *Window) Withdraw() {
 	runtime.KeepAlive(window)
 }
 
-// BaseWindow returns window.
-func (window *Window) BaseWindow() *Window {
+func (window *Window) baseWindow() *Window {
 	return window
+}
+
+// BaseWindow returns the underlying base object.
+func BaseWindow(obj Windower) *Window {
+	return obj.baseWindow()
 }
 
 // ConnectCreateSurface signal is emitted when an offscreen window needs its

@@ -40,6 +40,10 @@ type WindowHandle struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*WindowHandle)(nil)
+)
+
 func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 	return &WindowHandle{
 		Widget: Widget{

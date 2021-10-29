@@ -77,14 +77,17 @@ type GLContext struct {
 	DrawContext
 }
 
+var (
+	_ DrawContexter = (*GLContext)(nil)
+)
+
 // GLContexter describes types inherited from class GLContext.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type GLContexter interface {
 	externglib.Objector
-
-	// BaseGLContext returns the underlying base class.
-	BaseGLContext() *GLContext
+	baseGLContext() *GLContext
 }
 
 var _ GLContexter = (*GLContext)(nil)
@@ -460,9 +463,13 @@ func (context *GLContext) SetUseES(useEs int) {
 	runtime.KeepAlive(useEs)
 }
 
-// BaseGLContext returns context.
-func (context *GLContext) BaseGLContext() *GLContext {
+func (context *GLContext) baseGLContext() *GLContext {
 	return context
+}
+
+// BaseGLContext returns the underlying base object.
+func BaseGLContext(obj GLContexter) *GLContext {
+	return obj.baseGLContext()
 }
 
 // GLContextClearCurrent clears the current GdkGLContext.

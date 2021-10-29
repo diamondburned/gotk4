@@ -52,6 +52,10 @@ type IMContextSimple struct {
 	IMContext
 }
 
+var (
+	_ IMContexter = (*IMContextSimple)(nil)
+)
+
 func wrapIMContextSimple(obj *externglib.Object) *IMContextSimple {
 	return &IMContextSimple{
 		IMContext: IMContext{

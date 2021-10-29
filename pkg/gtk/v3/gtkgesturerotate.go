@@ -31,6 +31,10 @@ type GestureRotate struct {
 	Gesture
 }
 
+var (
+	_ Gesturer = (*GestureRotate)(nil)
+)
+
 func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 	return &GestureRotate{
 		Gesture: Gesture{

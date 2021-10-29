@@ -30,6 +30,10 @@ type WindowAccessible struct {
 	atk.Window
 }
 
+var (
+	_ externglib.Objector = (*WindowAccessible)(nil)
+)
+
 func wrapWindowAccessible(obj *externglib.Object) *WindowAccessible {
 	return &WindowAccessible{
 		ContainerAccessible: ContainerAccessible{

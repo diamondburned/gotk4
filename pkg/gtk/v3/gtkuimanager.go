@@ -376,6 +376,10 @@ type UIManager struct {
 	Buildable
 }
 
+var (
+	_ externglib.Objector = (*UIManager)(nil)
+)
+
 func wrapUIManager(obj *externglib.Object) *UIManager {
 	return &UIManager{
 		Object: obj,

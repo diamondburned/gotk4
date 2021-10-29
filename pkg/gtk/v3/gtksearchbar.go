@@ -55,6 +55,10 @@ type SearchBar struct {
 	Bin
 }
 
+var (
+	_ Binner = (*SearchBar)(nil)
+)
+
 func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	return &SearchBar{
 		Bin: Bin{

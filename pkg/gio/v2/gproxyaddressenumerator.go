@@ -33,6 +33,10 @@ type ProxyAddressEnumerator struct {
 	SocketAddressEnumerator
 }
 
+var (
+	_ SocketAddressEnumeratorrer = (*ProxyAddressEnumerator)(nil)
+)
+
 func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator {
 	return &ProxyAddressEnumerator{
 		SocketAddressEnumerator: SocketAddressEnumerator{

@@ -48,6 +48,10 @@ type Hypertext struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Hypertext)(nil)
+)
+
 // Hypertexter describes Hypertext's interface methods.
 type Hypertexter interface {
 	externglib.Objector

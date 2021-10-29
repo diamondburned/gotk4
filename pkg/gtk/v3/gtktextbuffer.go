@@ -133,6 +133,10 @@ type TextBuffer struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TextBuffer)(nil)
+)
+
 func wrapTextBuffer(obj *externglib.Object) *TextBuffer {
 	return &TextBuffer{
 		Object: obj,

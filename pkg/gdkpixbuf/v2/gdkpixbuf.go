@@ -39,6 +39,10 @@ type PixbufSimpleAnimIter struct {
 	PixbufAnimationIter
 }
 
+var (
+	_ externglib.Objector = (*PixbufSimpleAnimIter)(nil)
+)
+
 func wrapPixbufSimpleAnimIter(obj *externglib.Object) *PixbufSimpleAnimIter {
 	return &PixbufSimpleAnimIter{
 		PixbufAnimationIter: PixbufAnimationIter{

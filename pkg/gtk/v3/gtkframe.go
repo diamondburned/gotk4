@@ -76,6 +76,10 @@ type Frame struct {
 	Bin
 }
 
+var (
+	_ Binner = (*Frame)(nil)
+)
+
 func wrapFrame(obj *externglib.Object) *Frame {
 	return &Frame{
 		Bin: Bin{

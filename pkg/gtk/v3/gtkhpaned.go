@@ -33,6 +33,11 @@ type HPaned struct {
 	Paned
 }
 
+var (
+	_ Containerer         = (*HPaned)(nil)
+	_ externglib.Objector = (*HPaned)(nil)
+)
+
 func wrapHPaned(obj *externglib.Object) *HPaned {
 	return &HPaned{
 		Paned: Paned{

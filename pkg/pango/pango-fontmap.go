@@ -69,14 +69,17 @@ type FontMap struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FontMap)(nil)
+)
+
 // FontMapper describes types inherited from class FontMap.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FontMapper interface {
 	externglib.Objector
-
-	// BaseFontMap returns the underlying base class.
-	BaseFontMap() *FontMap
+	baseFontMap() *FontMap
 }
 
 var _ FontMapper = (*FontMap)(nil)
@@ -318,7 +321,11 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 	return _fontset
 }
 
-// BaseFontMap returns fontmap.
-func (fontmap *FontMap) BaseFontMap() *FontMap {
+func (fontmap *FontMap) baseFontMap() *FontMap {
 	return fontmap
+}
+
+// BaseFontMap returns the underlying base object.
+func BaseFontMap(obj FontMapper) *FontMap {
+	return obj.baseFontMap()
 }

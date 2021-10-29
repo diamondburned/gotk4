@@ -116,6 +116,10 @@ type Expander struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Expander)(nil)
+)
+
 func wrapExpander(obj *externglib.Object) *Expander {
 	return &Expander{
 		Widget: Widget{

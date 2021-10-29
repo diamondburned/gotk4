@@ -28,6 +28,10 @@ type LockButtonAccessible struct {
 	ButtonAccessible
 }
 
+var (
+	_ externglib.Objector = (*LockButtonAccessible)(nil)
+)
+
 func wrapLockButtonAccessible(obj *externglib.Object) *LockButtonAccessible {
 	return &LockButtonAccessible{
 		ButtonAccessible: ButtonAccessible{

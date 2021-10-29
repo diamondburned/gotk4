@@ -176,6 +176,10 @@ type RecentFilter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*RecentFilter)(nil)
+)
+
 func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
 	return &RecentFilter{
 		InitiallyUnowned: externglib.InitiallyUnowned{

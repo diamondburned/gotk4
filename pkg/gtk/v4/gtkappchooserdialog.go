@@ -42,6 +42,11 @@ type AppChooserDialog struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*AppChooserDialog)(nil)
+	_ Widgetter           = (*AppChooserDialog)(nil)
+)
+
 func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 	return &AppChooserDialog{
 		Dialog: Dialog{

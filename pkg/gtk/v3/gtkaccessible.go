@@ -52,6 +52,10 @@ type Accessible struct {
 	atk.ObjectClass
 }
 
+var (
+	_ externglib.Objector = (*Accessible)(nil)
+)
+
 func wrapAccessible(obj *externglib.Object) *Accessible {
 	return &Accessible{
 		ObjectClass: atk.ObjectClass{

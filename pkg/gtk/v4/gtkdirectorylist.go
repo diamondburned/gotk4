@@ -52,6 +52,10 @@ type DirectoryList struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*DirectoryList)(nil)
+)
+
 func wrapDirectoryList(obj *externglib.Object) *DirectoryList {
 	return &DirectoryList{
 		Object: obj,

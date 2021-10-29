@@ -552,6 +552,10 @@ type FileInfo struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FileInfo)(nil)
+)
+
 func wrapFileInfo(obj *externglib.Object) *FileInfo {
 	return &FileInfo{
 		Object: obj,

@@ -109,6 +109,10 @@ type DBusObjectManagerClient struct {
 	Initable
 }
 
+var (
+	_ externglib.Objector = (*DBusObjectManagerClient)(nil)
+)
+
 func wrapDBusObjectManagerClient(obj *externglib.Object) *DBusObjectManagerClient {
 	return &DBusObjectManagerClient{
 		Object: obj,

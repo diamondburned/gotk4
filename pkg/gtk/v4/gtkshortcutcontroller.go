@@ -73,6 +73,11 @@ type ShortcutController struct {
 	*externglib.Object
 }
 
+var (
+	_ EventControllerer   = (*ShortcutController)(nil)
+	_ externglib.Objector = (*ShortcutController)(nil)
+)
+
 func wrapShortcutController(obj *externglib.Object) *ShortcutController {
 	return &ShortcutController{
 		EventController: EventController{

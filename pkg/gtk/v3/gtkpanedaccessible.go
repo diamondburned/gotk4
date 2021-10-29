@@ -30,6 +30,10 @@ type PanedAccessible struct {
 	atk.Value
 }
 
+var (
+	_ externglib.Objector = (*PanedAccessible)(nil)
+)
+
 func wrapPanedAccessible(obj *externglib.Object) *PanedAccessible {
 	return &PanedAccessible{
 		ContainerAccessible: ContainerAccessible{

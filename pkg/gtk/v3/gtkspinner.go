@@ -41,6 +41,10 @@ type Spinner struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Spinner)(nil)
+)
+
 func wrapSpinner(obj *externglib.Object) *Spinner {
 	return &Spinner{
 		Widget: Widget{

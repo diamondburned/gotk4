@@ -27,6 +27,10 @@ type PixbufSimpleAnim struct {
 	PixbufAnimation
 }
 
+var (
+	_ externglib.Objector = (*PixbufSimpleAnim)(nil)
+)
+
 func wrapPixbufSimpleAnim(obj *externglib.Object) *PixbufSimpleAnim {
 	return &PixbufSimpleAnim{
 		PixbufAnimation: PixbufAnimation{

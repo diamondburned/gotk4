@@ -46,6 +46,10 @@ type Alignment struct {
 	Bin
 }
 
+var (
+	_ Binner = (*Alignment)(nil)
+)
+
 func wrapAlignment(obj *externglib.Object) *Alignment {
 	return &Alignment{
 		Bin: Bin{

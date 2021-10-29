@@ -32,6 +32,10 @@ type CustomSorter struct {
 	Sorter
 }
 
+var (
+	_ externglib.Objector = (*CustomSorter)(nil)
+)
+
 func wrapCustomSorter(obj *externglib.Object) *CustomSorter {
 	return &CustomSorter{
 		Sorter: Sorter{

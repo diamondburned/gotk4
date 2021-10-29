@@ -80,6 +80,10 @@ type VolumeMonitor struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*VolumeMonitor)(nil)
+)
+
 func wrapVolumeMonitor(obj *externglib.Object) *VolumeMonitor {
 	return &VolumeMonitor{
 		Object: obj,

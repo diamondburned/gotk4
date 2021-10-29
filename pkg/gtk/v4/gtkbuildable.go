@@ -65,6 +65,10 @@ type Buildable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Buildable)(nil)
+)
+
 // Buildabler describes Buildable's interface methods.
 type Buildabler interface {
 	externglib.Objector

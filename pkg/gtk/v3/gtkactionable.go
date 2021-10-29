@@ -88,6 +88,10 @@ type Actionable struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Actionable)(nil)
+)
+
 // Actionabler describes Actionable's interface methods.
 type Actionabler interface {
 	externglib.Objector

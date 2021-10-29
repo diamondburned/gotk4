@@ -65,14 +65,17 @@ type SocketControlMessage struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*SocketControlMessage)(nil)
+)
+
 // SocketControlMessager describes types inherited from class SocketControlMessage.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type SocketControlMessager interface {
 	externglib.Objector
-
-	// BaseSocketControlMessage returns the underlying base class.
-	BaseSocketControlMessage() *SocketControlMessage
+	baseSocketControlMessage() *SocketControlMessage
 }
 
 var _ SocketControlMessager = (*SocketControlMessage)(nil)
@@ -162,9 +165,13 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 	runtime.KeepAlive(data)
 }
 
-// BaseSocketControlMessage returns message.
-func (message *SocketControlMessage) BaseSocketControlMessage() *SocketControlMessage {
+func (message *SocketControlMessage) baseSocketControlMessage() *SocketControlMessage {
 	return message
+}
+
+// BaseSocketControlMessage returns the underlying base object.
+func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
+	return obj.baseSocketControlMessage()
 }
 
 // SocketControlMessageDeserialize tries to deserialize a socket control message

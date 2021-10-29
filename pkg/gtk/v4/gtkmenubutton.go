@@ -109,6 +109,10 @@ type MenuButton struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*MenuButton)(nil)
+)
+
 func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	return &MenuButton{
 		Widget: Widget{

@@ -162,6 +162,10 @@ type Application struct {
 	gio.Application
 }
 
+var (
+	_ externglib.Objector = (*Application)(nil)
+)
+
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{
 		Application: gio.Application{

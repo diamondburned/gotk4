@@ -92,6 +92,10 @@ type Menu struct {
 	MenuShell
 }
 
+var (
+	_ MenuSheller = (*Menu)(nil)
+)
+
 func wrapMenu(obj *externglib.Object) *Menu {
 	return &Menu{
 		MenuShell: MenuShell{

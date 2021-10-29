@@ -53,6 +53,11 @@ type ColorChooserWidget struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*ColorChooserWidget)(nil)
+	_ externglib.Objector = (*ColorChooserWidget)(nil)
+)
+
 func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 	return &ColorChooserWidget{
 		Widget: Widget{

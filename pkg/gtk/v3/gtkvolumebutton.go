@@ -30,6 +30,11 @@ type VolumeButton struct {
 	ScaleButton
 }
 
+var (
+	_ externglib.Objector = (*VolumeButton)(nil)
+	_ Binner              = (*VolumeButton)(nil)
+)
+
 func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 	return &VolumeButton{
 		ScaleButton: ScaleButton{

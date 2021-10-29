@@ -30,14 +30,18 @@ type ListBase struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*ListBase)(nil)
+	_ externglib.Objector = (*ListBase)(nil)
+)
+
 // ListBaser describes types inherited from class ListBase.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ListBaser interface {
 	externglib.Objector
-
-	// BaseListBase returns the underlying base class.
-	BaseListBase() *ListBase
+	baseListBase() *ListBase
 }
 
 var _ ListBaser = (*ListBase)(nil)
@@ -73,7 +77,11 @@ func marshalListBaser(p uintptr) (interface{}, error) {
 	return wrapListBase(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// BaseListBase returns v.
-func (v *ListBase) BaseListBase() *ListBase {
+func (v *ListBase) baseListBase() *ListBase {
 	return v
+}
+
+// BaseListBase returns the underlying base object.
+func BaseListBase(obj ListBaser) *ListBase {
+	return obj.baseListBase()
 }

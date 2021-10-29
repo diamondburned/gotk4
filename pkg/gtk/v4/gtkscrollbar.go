@@ -69,6 +69,11 @@ type Scrollbar struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Scrollbar)(nil)
+	_ externglib.Objector = (*Scrollbar)(nil)
+)
+
 func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 	return &Scrollbar{
 		Widget: Widget{

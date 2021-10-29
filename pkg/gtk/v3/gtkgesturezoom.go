@@ -31,6 +31,10 @@ type GestureZoom struct {
 	Gesture
 }
 
+var (
+	_ Gesturer = (*GestureZoom)(nil)
+)
+
 func wrapGestureZoom(obj *externglib.Object) *GestureZoom {
 	return &GestureZoom{
 		Gesture: Gesture{

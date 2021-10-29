@@ -26,6 +26,10 @@ type X11Screen struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*X11Screen)(nil)
+)
+
 func wrapX11Screen(obj *externglib.Object) *X11Screen {
 	return &X11Screen{
 		Object: obj,

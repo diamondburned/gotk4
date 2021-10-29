@@ -58,6 +58,10 @@ type Credentials struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Credentials)(nil)
+)
+
 func wrapCredentials(obj *externglib.Object) *Credentials {
 	return &Credentials{
 		Object: obj,

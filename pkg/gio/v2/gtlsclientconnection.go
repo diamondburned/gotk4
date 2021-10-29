@@ -64,6 +64,10 @@ type TLSClientConnection struct {
 	TLSConnection
 }
 
+var (
+	_ TLSConnectioner = (*TLSClientConnection)(nil)
+)
+
 // TLSClientConnectioner describes TLSClientConnection's interface methods.
 type TLSClientConnectioner interface {
 	externglib.Objector

@@ -133,6 +133,11 @@ type ToolPalette struct {
 	*externglib.Object
 }
 
+var (
+	_ Containerer         = (*ToolPalette)(nil)
+	_ externglib.Objector = (*ToolPalette)(nil)
+)
+
 func wrapToolPalette(obj *externglib.Object) *ToolPalette {
 	return &ToolPalette{
 		Container: Container{

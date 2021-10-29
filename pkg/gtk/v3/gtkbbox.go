@@ -79,6 +79,11 @@ type ButtonBox struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*ButtonBox)(nil)
+	_ externglib.Objector = (*ButtonBox)(nil)
+)
+
 func wrapButtonBox(obj *externglib.Object) *ButtonBox {
 	return &ButtonBox{
 		Box: Box{

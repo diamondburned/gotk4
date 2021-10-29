@@ -201,6 +201,11 @@ type TextView struct {
 	*externglib.Object
 }
 
+var (
+	_ Containerer         = (*TextView)(nil)
+	_ externglib.Objector = (*TextView)(nil)
+)
+
 func wrapTextView(obj *externglib.Object) *TextView {
 	return &TextView{
 		Container: Container{

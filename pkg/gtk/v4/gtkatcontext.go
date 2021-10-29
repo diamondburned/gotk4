@@ -33,14 +33,17 @@ type ATContext struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ATContext)(nil)
+)
+
 // ATContexter describes types inherited from class ATContext.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ATContexter interface {
 	externglib.Objector
-
-	// BaseATContext returns the underlying base class.
-	BaseATContext() *ATContext
+	baseATContext() *ATContext
 }
 
 var _ ATContexter = (*ATContext)(nil)
@@ -137,9 +140,13 @@ func (self *ATContext) AccessibleRole() AccessibleRole {
 	return _accessibleRole
 }
 
-// BaseATContext returns self.
-func (self *ATContext) BaseATContext() *ATContext {
+func (self *ATContext) baseATContext() *ATContext {
 	return self
+}
+
+// BaseATContext returns the underlying base object.
+func BaseATContext(obj ATContexter) *ATContext {
+	return obj.baseATContext()
 }
 
 // ConnectStateChange: emitted when the attributes of the accessible for the

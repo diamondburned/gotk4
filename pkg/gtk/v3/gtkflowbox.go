@@ -191,6 +191,11 @@ type FlowBox struct {
 	*externglib.Object
 }
 
+var (
+	_ Containerer         = (*FlowBox)(nil)
+	_ externglib.Objector = (*FlowBox)(nil)
+)
+
 func wrapFlowBox(obj *externglib.Object) *FlowBox {
 	return &FlowBox{
 		Container: Container{
@@ -950,6 +955,10 @@ type FlowBoxChildOverrider interface {
 type FlowBoxChild struct {
 	Bin
 }
+
+var (
+	_ Binner = (*FlowBoxChild)(nil)
+)
 
 func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 	return &FlowBoxChild{

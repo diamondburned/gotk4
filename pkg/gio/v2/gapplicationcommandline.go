@@ -118,6 +118,10 @@ type ApplicationCommandLine struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ApplicationCommandLine)(nil)
+)
+
 func wrapApplicationCommandLine(obj *externglib.Object) *ApplicationCommandLine {
 	return &ApplicationCommandLine{
 		Object: obj,

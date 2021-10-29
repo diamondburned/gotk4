@@ -33,6 +33,10 @@ type TreeViewAccessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TreeViewAccessible)(nil)
+)
+
 func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 	return &TreeViewAccessible{
 		ContainerAccessible: ContainerAccessible{

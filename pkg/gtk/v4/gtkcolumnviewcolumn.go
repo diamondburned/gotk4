@@ -40,6 +40,10 @@ type ColumnViewColumn struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ColumnViewColumn)(nil)
+)
+
 func wrapColumnViewColumn(obj *externglib.Object) *ColumnViewColumn {
 	return &ColumnViewColumn{
 		Object: obj,

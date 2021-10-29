@@ -160,6 +160,10 @@ type Stack struct {
 	Container
 }
 
+var (
+	_ Containerer = (*Stack)(nil)
+)
+
 func wrapStack(obj *externglib.Object) *Stack {
 	return &Stack{
 		Container: Container{

@@ -62,6 +62,10 @@ type CellRendererAccel struct {
 	CellRendererText
 }
 
+var (
+	_ CellRendererer = (*CellRendererAccel)(nil)
+)
+
 func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
 	return &CellRendererAccel{
 		CellRendererText: CellRendererText{

@@ -172,6 +172,10 @@ type Context struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Context)(nil)
+)
+
 func wrapContext(obj *externglib.Object) *Context {
 	return &Context{
 		Object: obj,

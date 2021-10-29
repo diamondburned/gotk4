@@ -117,6 +117,10 @@ type FileEnumerator struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FileEnumerator)(nil)
+)
+
 func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 	return &FileEnumerator{
 		Object: obj,

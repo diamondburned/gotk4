@@ -63,14 +63,17 @@ type NativeDialog struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*NativeDialog)(nil)
+)
+
 // NativeDialogger describes types inherited from class NativeDialog.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type NativeDialogger interface {
 	externglib.Objector
-
-	// BaseNativeDialog returns the underlying base class.
-	BaseNativeDialog() *NativeDialog
+	baseNativeDialog() *NativeDialog
 }
 
 var _ NativeDialogger = (*NativeDialog)(nil)
@@ -283,9 +286,13 @@ func (self *NativeDialog) Show() {
 	runtime.KeepAlive(self)
 }
 
-// BaseNativeDialog returns self.
-func (self *NativeDialog) BaseNativeDialog() *NativeDialog {
+func (self *NativeDialog) baseNativeDialog() *NativeDialog {
 	return self
+}
+
+// BaseNativeDialog returns the underlying base object.
+func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
+	return obj.baseNativeDialog()
 }
 
 // ConnectResponse: emitted when the user responds to the dialog.

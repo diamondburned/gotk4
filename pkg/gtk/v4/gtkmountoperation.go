@@ -40,6 +40,10 @@ type MountOperation struct {
 	gio.MountOperation
 }
 
+var (
+	_ externglib.Objector = (*MountOperation)(nil)
+)
+
 func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{
 		MountOperation: gio.MountOperation{

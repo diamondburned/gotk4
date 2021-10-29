@@ -85,6 +85,11 @@ type LevelBar struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*LevelBar)(nil)
+	_ externglib.Objector = (*LevelBar)(nil)
+)
+
 func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	return &LevelBar{
 		Widget: Widget{

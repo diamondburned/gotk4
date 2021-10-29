@@ -176,6 +176,11 @@ type FileChooserNative struct {
 	*externglib.Object
 }
 
+var (
+	_ NativeDialogger     = (*FileChooserNative)(nil)
+	_ externglib.Objector = (*FileChooserNative)(nil)
+)
+
 func wrapFileChooserNative(obj *externglib.Object) *FileChooserNative {
 	return &FileChooserNative{
 		NativeDialog: NativeDialog{

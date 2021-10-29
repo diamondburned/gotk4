@@ -28,6 +28,11 @@ type VButtonBox struct {
 	ButtonBox
 }
 
+var (
+	_ Containerer         = (*VButtonBox)(nil)
+	_ externglib.Objector = (*VButtonBox)(nil)
+)
+
 func wrapVButtonBox(obj *externglib.Object) *VButtonBox {
 	return &VButtonBox{
 		ButtonBox: ButtonBox{

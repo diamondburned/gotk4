@@ -29,6 +29,10 @@ type NumericSorter struct {
 	Sorter
 }
 
+var (
+	_ externglib.Objector = (*NumericSorter)(nil)
+)
+
 func wrapNumericSorter(obj *externglib.Object) *NumericSorter {
 	return &NumericSorter{
 		Sorter: Sorter{

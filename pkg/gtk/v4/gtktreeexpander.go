@@ -65,6 +65,10 @@ type TreeExpander struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*TreeExpander)(nil)
+)
+
 func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
 	return &TreeExpander{
 		Widget: Widget{

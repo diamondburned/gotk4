@@ -109,6 +109,11 @@ type InfoBar struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*InfoBar)(nil)
+	_ externglib.Objector = (*InfoBar)(nil)
+)
+
 func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	return &InfoBar{
 		Box: Box{

@@ -147,6 +147,10 @@ type PlacesSidebar struct {
 	ScrolledWindow
 }
 
+var (
+	_ Binner = (*PlacesSidebar)(nil)
+)
+
 func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 	return &PlacesSidebar{
 		ScrolledWindow: ScrolledWindow{

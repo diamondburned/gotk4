@@ -55,6 +55,10 @@ type EditableText struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*EditableText)(nil)
+)
+
 // EditableTexter describes EditableText's interface methods.
 type EditableTexter interface {
 	externglib.Objector

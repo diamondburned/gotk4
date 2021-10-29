@@ -174,6 +174,10 @@ type AboutDialog struct {
 	Dialog
 }
 
+var (
+	_ Binner = (*AboutDialog)(nil)
+)
+
 func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 	return &AboutDialog{
 		Dialog: Dialog{

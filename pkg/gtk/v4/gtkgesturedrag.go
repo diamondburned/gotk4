@@ -33,6 +33,10 @@ type GestureDrag struct {
 	GestureSingle
 }
 
+var (
+	_ Gesturer = (*GestureDrag)(nil)
+)
+
 func wrapGestureDrag(obj *externglib.Object) *GestureDrag {
 	return &GestureDrag{
 		GestureSingle: GestureSingle{

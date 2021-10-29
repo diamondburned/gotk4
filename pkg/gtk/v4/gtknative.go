@@ -44,6 +44,10 @@ type NativeSurface struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*NativeSurface)(nil)
+)
+
 // NativeSurfacer describes NativeSurface's interface methods.
 type NativeSurfacer interface {
 	externglib.Objector

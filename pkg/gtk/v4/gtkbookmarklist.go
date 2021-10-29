@@ -36,6 +36,10 @@ type BookmarkList struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*BookmarkList)(nil)
+)
+
 func wrapBookmarkList(obj *externglib.Object) *BookmarkList {
 	return &BookmarkList{
 		Object: obj,

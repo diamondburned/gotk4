@@ -107,14 +107,17 @@ type Permission struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Permission)(nil)
+)
+
 // Permissioner describes types inherited from class Permission.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Permissioner interface {
 	externglib.Objector
-
-	// BasePermission returns the underlying base class.
-	BasePermission() *Permission
+	basePermission() *Permission
 }
 
 var _ Permissioner = (*Permission)(nil)
@@ -444,7 +447,11 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// BasePermission returns permission.
-func (permission *Permission) BasePermission() *Permission {
+func (permission *Permission) basePermission() *Permission {
 	return permission
+}
+
+// BasePermission returns the underlying base object.
+func BasePermission(obj Permissioner) *Permission {
+	return obj.basePermission()
 }

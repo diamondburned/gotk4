@@ -43,6 +43,10 @@ type Display struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Display)(nil)
+)
+
 func wrapDisplay(obj *externglib.Object) *Display {
 	return &Display{
 		Object: obj,

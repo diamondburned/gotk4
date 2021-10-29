@@ -104,6 +104,10 @@ type MemoryTexture struct {
 	Texture
 }
 
+var (
+	_ Texturer = (*MemoryTexture)(nil)
+)
+
 func wrapMemoryTexture(obj *externglib.Object) *MemoryTexture {
 	return &MemoryTexture{
 		Texture: Texture{

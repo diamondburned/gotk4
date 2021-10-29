@@ -36,6 +36,10 @@ type HScale struct {
 	Scale
 }
 
+var (
+	_ Ranger = (*HScale)(nil)
+)
+
 func wrapHScale(obj *externglib.Object) *HScale {
 	return &HScale{
 		Scale: Scale{

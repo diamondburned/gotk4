@@ -38,6 +38,10 @@ type RecentAction struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*RecentAction)(nil)
+)
+
 func wrapRecentAction(obj *externglib.Object) *RecentAction {
 	return &RecentAction{
 		Action: Action{

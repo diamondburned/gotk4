@@ -38,6 +38,11 @@ type ShortcutsSection struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*ShortcutsSection)(nil)
+	_ externglib.Objector = (*ShortcutsSection)(nil)
+)
+
 func wrapShortcutsSection(obj *externglib.Object) *ShortcutsSection {
 	return &ShortcutsSection{
 		Box: Box{

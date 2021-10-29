@@ -98,6 +98,11 @@ type ToggleButton struct {
 	Button
 }
 
+var (
+	_ Binner              = (*ToggleButton)(nil)
+	_ externglib.Objector = (*ToggleButton)(nil)
+)
+
 func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 	return &ToggleButton{
 		Button: Button{

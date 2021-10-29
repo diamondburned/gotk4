@@ -28,6 +28,10 @@ type CairoRenderer struct {
 	Renderer
 }
 
+var (
+	_ Rendererer = (*CairoRenderer)(nil)
+)
+
 func wrapCairoRenderer(obj *externglib.Object) *CairoRenderer {
 	return &CairoRenderer{
 		Renderer: Renderer{

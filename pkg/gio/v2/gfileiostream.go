@@ -95,6 +95,11 @@ type FileIOStream struct {
 	*externglib.Object
 }
 
+var (
+	_ IOStreamer          = (*FileIOStream)(nil)
+	_ externglib.Objector = (*FileIOStream)(nil)
+)
+
 func wrapFileIOStream(obj *externglib.Object) *FileIOStream {
 	return &FileIOStream{
 		IOStream: IOStream{

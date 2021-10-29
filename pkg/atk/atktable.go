@@ -146,6 +146,10 @@ type Table struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Table)(nil)
+)
+
 // Tabler describes Table's interface methods.
 type Tabler interface {
 	externglib.Objector

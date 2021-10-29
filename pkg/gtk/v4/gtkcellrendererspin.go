@@ -40,6 +40,10 @@ type CellRendererSpin struct {
 	CellRendererText
 }
 
+var (
+	_ CellRendererer = (*CellRendererSpin)(nil)
+)
+
 func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
 	return &CellRendererSpin{
 		CellRendererText: CellRendererText{

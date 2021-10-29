@@ -200,6 +200,10 @@ type Stack struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Stack)(nil)
+)
+
 func wrapStack(obj *externglib.Object) *Stack {
 	return &Stack{
 		Widget: Widget{
@@ -813,6 +817,10 @@ type StackPage struct {
 
 	Accessible
 }
+
+var (
+	_ externglib.Objector = (*StackPage)(nil)
+)
 
 func wrapStackPage(obj *externglib.Object) *StackPage {
 	return &StackPage{

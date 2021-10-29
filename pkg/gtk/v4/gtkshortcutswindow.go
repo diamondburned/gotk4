@@ -69,6 +69,11 @@ type ShortcutsWindow struct {
 	Window
 }
 
+var (
+	_ Widgetter           = (*ShortcutsWindow)(nil)
+	_ externglib.Objector = (*ShortcutsWindow)(nil)
+)
+
 func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	return &ShortcutsWindow{
 		Window: Window{

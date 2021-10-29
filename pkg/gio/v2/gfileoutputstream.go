@@ -89,6 +89,11 @@ type FileOutputStream struct {
 	*externglib.Object
 }
 
+var (
+	_ OutputStreamer      = (*FileOutputStream)(nil)
+	_ externglib.Objector = (*FileOutputStream)(nil)
+)
+
 func wrapFileOutputStream(obj *externglib.Object) *FileOutputStream {
 	return &FileOutputStream{
 		OutputStream: OutputStream{

@@ -43,6 +43,10 @@ type TextTag struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TextTag)(nil)
+)
+
 func wrapTextTag(obj *externglib.Object) *TextTag {
 	return &TextTag{
 		Object: obj,

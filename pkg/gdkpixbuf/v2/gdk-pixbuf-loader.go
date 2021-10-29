@@ -85,6 +85,10 @@ type PixbufLoader struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*PixbufLoader)(nil)
+)
+
 func wrapPixbufLoader(obj *externglib.Object) *PixbufLoader {
 	return &PixbufLoader{
 		Object: obj,

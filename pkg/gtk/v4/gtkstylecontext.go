@@ -138,6 +138,10 @@ type StyleContext struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*StyleContext)(nil)
+)
+
 func wrapStyleContext(obj *externglib.Object) *StyleContext {
 	return &StyleContext{
 		Object: obj,

@@ -104,6 +104,10 @@ type DrawingArea struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*DrawingArea)(nil)
+)
+
 func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 	return &DrawingArea{
 		Widget: Widget{

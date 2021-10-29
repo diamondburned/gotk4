@@ -28,6 +28,10 @@ type BoolFilter struct {
 	Filter
 }
 
+var (
+	_ externglib.Objector = (*BoolFilter)(nil)
+)
+
 func wrapBoolFilter(obj *externglib.Object) *BoolFilter {
 	return &BoolFilter{
 		Filter: Filter{

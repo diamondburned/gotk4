@@ -52,14 +52,17 @@ type SocketAddress struct {
 	SocketConnectable
 }
 
+var (
+	_ externglib.Objector = (*SocketAddress)(nil)
+)
+
 // SocketAddresser describes types inherited from class SocketAddress.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type SocketAddresser interface {
 	externglib.Objector
-
-	// BaseSocketAddress returns the underlying base class.
-	BaseSocketAddress() *SocketAddress
+	baseSocketAddress() *SocketAddress
 }
 
 var _ SocketAddresser = (*SocketAddress)(nil)
@@ -177,7 +180,11 @@ func (address *SocketAddress) ToNative(dest cgo.Handle, destlen uint) error {
 	return _goerr
 }
 
-// BaseSocketAddress returns address.
-func (address *SocketAddress) BaseSocketAddress() *SocketAddress {
+func (address *SocketAddress) baseSocketAddress() *SocketAddress {
 	return address
+}
+
+// BaseSocketAddress returns the underlying base object.
+func BaseSocketAddress(obj SocketAddresser) *SocketAddress {
+	return obj.baseSocketAddress()
 }

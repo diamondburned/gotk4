@@ -28,6 +28,10 @@ type FlowBoxChildAccessible struct {
 	ContainerAccessible
 }
 
+var (
+	_ externglib.Objector = (*FlowBoxChildAccessible)(nil)
+)
+
 func wrapFlowBoxChildAccessible(obj *externglib.Object) *FlowBoxChildAccessible {
 	return &FlowBoxChildAccessible{
 		ContainerAccessible: ContainerAccessible{

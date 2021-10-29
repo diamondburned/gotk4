@@ -29,6 +29,10 @@ type PlugAccessible struct {
 	WindowAccessible
 }
 
+var (
+	_ externglib.Objector = (*PlugAccessible)(nil)
+)
+
 func wrapPlugAccessible(obj *externglib.Object) *PlugAccessible {
 	return &PlugAccessible{
 		WindowAccessible: WindowAccessible{

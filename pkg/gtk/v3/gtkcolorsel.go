@@ -39,6 +39,11 @@ type ColorSelection struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*ColorSelection)(nil)
+	_ externglib.Objector = (*ColorSelection)(nil)
+)
+
 func wrapColorSelection(obj *externglib.Object) *ColorSelection {
 	return &ColorSelection{
 		Box: Box{

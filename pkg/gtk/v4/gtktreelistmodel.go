@@ -66,6 +66,10 @@ type TreeListModel struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*TreeListModel)(nil)
+)
+
 func wrapTreeListModel(obj *externglib.Object) *TreeListModel {
 	return &TreeListModel{
 		Object: obj,
@@ -315,6 +319,10 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 type TreeListRow struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*TreeListRow)(nil)
+)
 
 func wrapTreeListRow(obj *externglib.Object) *TreeListRow {
 	return &TreeListRow{

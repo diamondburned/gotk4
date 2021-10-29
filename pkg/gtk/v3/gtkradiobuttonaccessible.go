@@ -28,6 +28,10 @@ type RadioButtonAccessible struct {
 	ToggleButtonAccessible
 }
 
+var (
+	_ externglib.Objector = (*RadioButtonAccessible)(nil)
+)
+
 func wrapRadioButtonAccessible(obj *externglib.Object) *RadioButtonAccessible {
 	return &RadioButtonAccessible{
 		ToggleButtonAccessible: ToggleButtonAccessible{

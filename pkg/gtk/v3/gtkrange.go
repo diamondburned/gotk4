@@ -54,14 +54,18 @@ type Range struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Range)(nil)
+	_ externglib.Objector = (*Range)(nil)
+)
+
 // Ranger describes types inherited from class Range.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Ranger interface {
 	externglib.Objector
-
-	// BaseRange returns the underlying base class.
-	BaseRange() *Range
+	baseRange() *Range
 }
 
 var _ Ranger = (*Range)(nil)
@@ -675,9 +679,13 @@ func (_range *Range) SetValue(value float64) {
 	runtime.KeepAlive(value)
 }
 
-// BaseRange returns _range.
-func (_range *Range) BaseRange() *Range {
+func (_range *Range) baseRange() *Range {
 	return _range
+}
+
+// BaseRange returns the underlying base object.
+func BaseRange(obj Ranger) *Range {
+	return obj.baseRange()
 }
 
 // ConnectAdjustBounds: emitted before clamping a value, to give the application

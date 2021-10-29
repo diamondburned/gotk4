@@ -97,6 +97,10 @@ type DropTarget struct {
 	EventController
 }
 
+var (
+	_ EventControllerer = (*DropTarget)(nil)
+)
+
 func wrapDropTarget(obj *externglib.Object) *DropTarget {
 	return &DropTarget{
 		EventController: EventController{

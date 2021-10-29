@@ -38,6 +38,11 @@ type HSeparator struct {
 	Separator
 }
 
+var (
+	_ Widgetter           = (*HSeparator)(nil)
+	_ externglib.Objector = (*HSeparator)(nil)
+)
+
 func wrapHSeparator(obj *externglib.Object) *HSeparator {
 	return &HSeparator{
 		Separator: Separator{

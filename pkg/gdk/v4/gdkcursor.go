@@ -58,6 +58,10 @@ type Cursor struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Cursor)(nil)
+)
+
 func wrapCursor(obj *externglib.Object) *Cursor {
 	return &Cursor{
 		Object: obj,

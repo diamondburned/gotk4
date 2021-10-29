@@ -42,6 +42,10 @@ type CellRendererText struct {
 	CellRenderer
 }
 
+var (
+	_ CellRendererer = (*CellRendererText)(nil)
+)
+
 func wrapCellRendererText(obj *externglib.Object) *CellRendererText {
 	return &CellRendererText{
 		CellRenderer: CellRenderer{

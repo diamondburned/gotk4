@@ -37,14 +37,17 @@ type Surface struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Surface)(nil)
+)
+
 // Surfacer describes types inherited from class Surface.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Surfacer interface {
 	externglib.Objector
-
-	// BaseSurface returns the underlying base class.
-	BaseSurface() *Surface
+	baseSurface() *Surface
 }
 
 var _ Surfacer = (*Surface)(nil)
@@ -703,9 +706,13 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	runtime.KeepAlive(region)
 }
 
-// BaseSurface returns surface.
-func (surface *Surface) BaseSurface() *Surface {
+func (surface *Surface) baseSurface() *Surface {
 	return surface
+}
+
+// BaseSurface returns the underlying base object.
+func BaseSurface(obj Surfacer) *Surface {
+	return obj.baseSurface()
 }
 
 // ConnectEnterMonitor: emitted when surface starts being present on the

@@ -28,6 +28,10 @@ type MenuButtonAccessible struct {
 	ToggleButtonAccessible
 }
 
+var (
+	_ externglib.Objector = (*MenuButtonAccessible)(nil)
+)
+
 func wrapMenuButtonAccessible(obj *externglib.Object) *MenuButtonAccessible {
 	return &MenuButtonAccessible{
 		ToggleButtonAccessible: ToggleButtonAccessible{

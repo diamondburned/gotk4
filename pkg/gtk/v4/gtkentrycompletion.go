@@ -102,6 +102,10 @@ type EntryCompletion struct {
 	CellLayout
 }
 
+var (
+	_ externglib.Objector = (*EntryCompletion)(nil)
+)
+
 func wrapEntryCompletion(obj *externglib.Object) *EntryCompletion {
 	return &EntryCompletion{
 		Object: obj,

@@ -63,6 +63,11 @@ type PasswordEntry struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*PasswordEntry)(nil)
+	_ externglib.Objector = (*PasswordEntry)(nil)
+)
+
 func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 	return &PasswordEntry{
 		Widget: Widget{

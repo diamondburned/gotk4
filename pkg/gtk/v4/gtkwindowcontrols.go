@@ -74,6 +74,10 @@ type WindowControls struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*WindowControls)(nil)
+)
+
 func wrapWindowControls(obj *externglib.Object) *WindowControls {
 	return &WindowControls{
 		Widget: Widget{

@@ -94,6 +94,11 @@ type ColumnView struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*ColumnView)(nil)
+	_ externglib.Objector = (*ColumnView)(nil)
+)
+
 func wrapColumnView(obj *externglib.Object) *ColumnView {
 	return &ColumnView{
 		Widget: Widget{

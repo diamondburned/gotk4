@@ -33,8 +33,14 @@ type WaylandPopup struct {
 	WaylandSurface
 
 	gdk.Popup
+	gdk.Surface
 	*externglib.Object
 }
+
+var (
+	_ gdk.Surfacer        = (*WaylandPopup)(nil)
+	_ externglib.Objector = (*WaylandPopup)(nil)
+)
 
 func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 	return &WaylandPopup{
@@ -47,6 +53,9 @@ func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 			Surface: gdk.Surface{
 				Object: obj,
 			},
+		},
+		Surface: gdk.Surface{
+			Object: obj,
 		},
 		Object: obj,
 	}
@@ -63,6 +72,10 @@ func marshalWaylandPopupper(p uintptr) (interface{}, error) {
 type WaylandSurface struct {
 	gdk.Surface
 }
+
+var (
+	_ gdk.Surfacer = (*WaylandSurface)(nil)
+)
 
 func wrapWaylandSurface(obj *externglib.Object) *WaylandSurface {
 	return &WaylandSurface{
@@ -86,8 +99,14 @@ type WaylandToplevel struct {
 	WaylandSurface
 
 	gdk.Toplevel
+	gdk.Surface
 	*externglib.Object
 }
+
+var (
+	_ gdk.Surfacer        = (*WaylandToplevel)(nil)
+	_ externglib.Objector = (*WaylandToplevel)(nil)
+)
 
 func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 	return &WaylandToplevel{
@@ -100,6 +119,9 @@ func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 			Surface: gdk.Surface{
 				Object: obj,
 			},
+		},
+		Surface: gdk.Surface{
+			Object: obj,
 		},
 		Object: obj,
 	}

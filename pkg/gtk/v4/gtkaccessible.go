@@ -94,6 +94,10 @@ type Accessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Accessible)(nil)
+)
+
 // Accessibler describes Accessible's interface methods.
 type Accessibler interface {
 	externglib.Objector

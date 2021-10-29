@@ -36,6 +36,10 @@ type SingleSelection struct {
 	SelectionModel
 }
 
+var (
+	_ externglib.Objector = (*SingleSelection)(nil)
+)
+
 func wrapSingleSelection(obj *externglib.Object) *SingleSelection {
 	return &SingleSelection{
 		Object: obj,

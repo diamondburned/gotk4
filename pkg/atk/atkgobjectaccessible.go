@@ -30,6 +30,10 @@ type GObjectAccessible struct {
 	ObjectClass
 }
 
+var (
+	_ externglib.Objector = (*GObjectAccessible)(nil)
+)
+
 func wrapGObjectAccessible(obj *externglib.Object) *GObjectAccessible {
 	return &GObjectAccessible{
 		ObjectClass: ObjectClass{

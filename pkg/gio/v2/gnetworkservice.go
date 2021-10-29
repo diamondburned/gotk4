@@ -35,6 +35,10 @@ type NetworkService struct {
 	SocketConnectable
 }
 
+var (
+	_ externglib.Objector = (*NetworkService)(nil)
+)
+
 func wrapNetworkService(obj *externglib.Object) *NetworkService {
 	return &NetworkService{
 		Object: obj,

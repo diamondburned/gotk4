@@ -94,6 +94,10 @@ type ActionGroup struct {
 	Buildable
 }
 
+var (
+	_ externglib.Objector = (*ActionGroup)(nil)
+)
+
 func wrapActionGroup(obj *externglib.Object) *ActionGroup {
 	return &ActionGroup{
 		Object: obj,

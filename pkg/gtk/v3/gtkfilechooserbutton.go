@@ -71,6 +71,11 @@ type FileChooserButton struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FileChooserButton)(nil)
+	_ Containerer         = (*FileChooserButton)(nil)
+)
+
 func wrapFileChooserButton(obj *externglib.Object) *FileChooserButton {
 	return &FileChooserButton{
 		Box: Box{

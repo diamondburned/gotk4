@@ -77,6 +77,8 @@ type NetworkMonitor struct {
 	Initable
 }
 
+var ()
+
 // NetworkMonitorrer describes NetworkMonitor's interface methods.
 type NetworkMonitorrer interface {
 	externglib.Objector

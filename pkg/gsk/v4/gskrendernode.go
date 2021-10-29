@@ -70,14 +70,17 @@ type RenderNode struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*RenderNode)(nil)
+)
+
 // RenderNoder describes types inherited from class RenderNode.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type RenderNoder interface {
 	externglib.Objector
-
-	// BaseRenderNode returns the underlying base class.
-	BaseRenderNode() *RenderNode
+	baseRenderNode() *RenderNode
 }
 
 var _ RenderNoder = (*RenderNode)(nil)
@@ -218,9 +221,13 @@ func (node *RenderNode) WriteToFile(filename string) error {
 	return _goerr
 }
 
-// BaseRenderNode returns node.
-func (node *RenderNode) BaseRenderNode() *RenderNode {
+func (node *RenderNode) baseRenderNode() *RenderNode {
 	return node
+}
+
+// BaseRenderNode returns the underlying base object.
+func BaseRenderNode(obj RenderNoder) *RenderNode {
+	return obj.baseRenderNode()
 }
 
 // RenderNodeDeserialize loads data previously created via

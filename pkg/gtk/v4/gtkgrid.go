@@ -112,6 +112,11 @@ type Grid struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Grid)(nil)
+	_ externglib.Objector = (*Grid)(nil)
+)
+
 func wrapGrid(obj *externglib.Object) *Grid {
 	return &Grid{
 		Widget: Widget{

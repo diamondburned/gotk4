@@ -38,7 +38,17 @@ type ToolItemGroup struct {
 
 	ToolShell
 	*externglib.Object
+	atk.ImplementorIface
+	Buildable
+	Widget
+	externglib.InitiallyUnowned
 }
+
+var (
+	_ Containerer         = (*ToolItemGroup)(nil)
+	_ externglib.Objector = (*ToolItemGroup)(nil)
+	_ Widgetter           = (*ToolItemGroup)(nil)
+)
 
 func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 	return &ToolItemGroup{
@@ -71,6 +81,27 @@ func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 			},
 		},
 		Object: obj,
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
+		Buildable: Buildable{
+			Object: obj,
+		},
+		Widget: Widget{
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
+			Buildable: Buildable{
+				Object: obj,
+			},
+			Object: obj,
+		},
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
 	}
 }
 

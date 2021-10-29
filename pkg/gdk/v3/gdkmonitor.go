@@ -80,6 +80,10 @@ type Monitor struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Monitor)(nil)
+)
+
 func wrapMonitor(obj *externglib.Object) *Monitor {
 	return &Monitor{
 		Object: obj,

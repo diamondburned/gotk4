@@ -238,6 +238,10 @@ type DatagramBased struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*DatagramBased)(nil)
+)
+
 // DatagramBasedder describes DatagramBased's interface methods.
 type DatagramBasedder interface {
 	externglib.Objector

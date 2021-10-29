@@ -376,14 +376,17 @@ type Cursor struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Cursor)(nil)
+)
+
 // Cursorrer describes types inherited from class Cursor.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Cursorrer interface {
 	externglib.Objector
-
-	// BaseCursor returns the underlying base class.
-	BaseCursor() *Cursor
+	baseCursor() *Cursor
 }
 
 var _ Cursorrer = (*Cursor)(nil)
@@ -748,7 +751,11 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	return _xHot, _yHot, _surface
 }
 
-// BaseCursor returns cursor.
-func (cursor *Cursor) BaseCursor() *Cursor {
+func (cursor *Cursor) baseCursor() *Cursor {
 	return cursor
+}
+
+// BaseCursor returns the underlying base object.
+func BaseCursor(obj Cursorrer) *Cursor {
+	return obj.baseCursor()
 }

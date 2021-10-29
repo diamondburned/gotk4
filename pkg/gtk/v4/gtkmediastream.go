@@ -88,14 +88,17 @@ type MediaStream struct {
 	gdk.Paintable
 }
 
+var (
+	_ externglib.Objector = (*MediaStream)(nil)
+)
+
 // MediaStreamer describes types inherited from class MediaStream.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MediaStreamer interface {
 	externglib.Objector
-
-	// BaseMediaStream returns the underlying base class.
-	BaseMediaStream() *MediaStream
+	baseMediaStream() *MediaStream
 }
 
 var _ MediaStreamer = (*MediaStream)(nil)
@@ -743,7 +746,11 @@ func (self *MediaStream) Update(timestamp int64) {
 	runtime.KeepAlive(timestamp)
 }
 
-// BaseMediaStream returns self.
-func (self *MediaStream) BaseMediaStream() *MediaStream {
+func (self *MediaStream) baseMediaStream() *MediaStream {
 	return self
+}
+
+// BaseMediaStream returns the underlying base object.
+func BaseMediaStream(obj MediaStreamer) *MediaStream {
+	return obj.baseMediaStream()
 }

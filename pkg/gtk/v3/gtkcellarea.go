@@ -345,14 +345,17 @@ type CellArea struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*CellArea)(nil)
+)
+
 // CellAreaer describes types inherited from class CellArea.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type CellAreaer interface {
 	externglib.Objector
-
-	// BaseCellArea returns the underlying base class.
-	BaseCellArea() *CellArea
+	baseCellArea() *CellArea
 }
 
 var _ CellAreaer = (*CellArea)(nil)
@@ -1639,9 +1642,13 @@ func (area *CellArea) StopEditing(canceled bool) {
 	runtime.KeepAlive(canceled)
 }
 
-// BaseCellArea returns area.
-func (area *CellArea) BaseCellArea() *CellArea {
+func (area *CellArea) baseCellArea() *CellArea {
 	return area
+}
+
+// BaseCellArea returns the underlying base object.
+func BaseCellArea(obj CellAreaer) *CellArea {
+	return obj.baseCellArea()
 }
 
 // ConnectAddEditable indicates that editing has started on renderer and that

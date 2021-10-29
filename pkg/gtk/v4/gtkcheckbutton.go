@@ -90,6 +90,11 @@ type CheckButton struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*CheckButton)(nil)
+	_ externglib.Objector = (*CheckButton)(nil)
+)
+
 func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	return &CheckButton{
 		Widget: Widget{

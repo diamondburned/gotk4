@@ -274,6 +274,10 @@ type Activatable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Activatable)(nil)
+)
+
 // Activatabler describes Activatable's interface methods.
 type Activatabler interface {
 	externglib.Objector

@@ -54,6 +54,11 @@ type CheckButton struct {
 	ToggleButton
 }
 
+var (
+	_ Binner              = (*CheckButton)(nil)
+	_ externglib.Objector = (*CheckButton)(nil)
+)
+
 func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	return &CheckButton{
 		ToggleButton: ToggleButton{

@@ -81,14 +81,17 @@ type TLSConnection struct {
 	IOStream
 }
 
+var (
+	_ IOStreamer = (*TLSConnection)(nil)
+)
+
 // TLSConnectioner describes types inherited from class TLSConnection.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type TLSConnectioner interface {
 	externglib.Objector
-
-	// BaseTLSConnection returns the underlying base class.
-	BaseTLSConnection() *TLSConnection
+	baseTLSConnection() *TLSConnection
 }
 
 var _ TLSConnectioner = (*TLSConnection)(nil)
@@ -738,9 +741,13 @@ func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 	runtime.KeepAlive(useSystemCertdb)
 }
 
-// BaseTLSConnection returns conn.
-func (conn *TLSConnection) BaseTLSConnection() *TLSConnection {
+func (conn *TLSConnection) baseTLSConnection() *TLSConnection {
 	return conn
+}
+
+// BaseTLSConnection returns the underlying base object.
+func BaseTLSConnection(obj TLSConnectioner) *TLSConnection {
+	return obj.baseTLSConnection()
 }
 
 // ConnectAcceptCertificate: emitted during the TLS handshake after the peer

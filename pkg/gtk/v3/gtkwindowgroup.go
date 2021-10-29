@@ -43,6 +43,10 @@ type WindowGroup struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*WindowGroup)(nil)
+)
+
 func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 	return &WindowGroup{
 		Object: obj,

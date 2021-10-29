@@ -37,6 +37,10 @@ type TreeListRowSorter struct {
 	Sorter
 }
 
+var (
+	_ externglib.Objector = (*TreeListRowSorter)(nil)
+)
+
 func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
 	return &TreeListRowSorter{
 		Sorter: Sorter{

@@ -50,6 +50,8 @@ type LoadableIcon struct {
 	Icon
 }
 
+var ()
+
 // LoadableIconner describes LoadableIcon's interface methods.
 type LoadableIconner interface {
 	externglib.Objector

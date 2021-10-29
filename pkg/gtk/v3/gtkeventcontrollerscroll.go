@@ -129,6 +129,10 @@ type EventControllerScroll struct {
 	EventController
 }
 
+var (
+	_ EventControllerer = (*EventControllerScroll)(nil)
+)
+
 func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
 	return &EventControllerScroll{
 		EventController: EventController{

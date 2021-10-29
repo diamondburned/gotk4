@@ -41,6 +41,11 @@ type RecentChooserWidget struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*RecentChooserWidget)(nil)
+	_ Containerer         = (*RecentChooserWidget)(nil)
+)
+
 func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
 	return &RecentChooserWidget{
 		Box: Box{

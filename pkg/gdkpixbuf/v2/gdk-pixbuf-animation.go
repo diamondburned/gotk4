@@ -107,6 +107,10 @@ type PixbufAnimation struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*PixbufAnimation)(nil)
+)
+
 func wrapPixbufAnimation(obj *externglib.Object) *PixbufAnimation {
 	return &PixbufAnimation{
 		Object: obj,
@@ -511,6 +515,10 @@ type PixbufAnimationIterOverrider interface {
 type PixbufAnimationIter struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*PixbufAnimationIter)(nil)
+)
 
 func wrapPixbufAnimationIter(obj *externglib.Object) *PixbufAnimationIter {
 	return &PixbufAnimationIter{

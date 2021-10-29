@@ -54,6 +54,10 @@ type StackSwitcher struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*StackSwitcher)(nil)
+)
+
 func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 	return &StackSwitcher{
 		Widget: Widget{

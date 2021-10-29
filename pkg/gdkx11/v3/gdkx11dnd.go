@@ -26,6 +26,10 @@ type X11DragContext struct {
 	gdk.DragContext
 }
 
+var (
+	_ externglib.Objector = (*X11DragContext)(nil)
+)
+
 func wrapX11DragContext(obj *externglib.Object) *X11DragContext {
 	return &X11DragContext{
 		DragContext: gdk.DragContext{

@@ -122,6 +122,11 @@ type IconView struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*IconView)(nil)
+	_ externglib.Objector = (*IconView)(nil)
+)
+
 func wrapIconView(obj *externglib.Object) *IconView {
 	return &IconView{
 		Widget: Widget{

@@ -33,6 +33,10 @@ type Popup struct {
 	Surface
 }
 
+var (
+	_ Surfacer = (*Popup)(nil)
+)
+
 // Popupper describes Popup's interface methods.
 type Popupper interface {
 	externglib.Objector

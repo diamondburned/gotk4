@@ -50,6 +50,10 @@ type X11Surface struct {
 	gdk.Surface
 }
 
+var (
+	_ gdk.Surfacer = (*X11Surface)(nil)
+)
+
 func wrapX11Surface(obj *externglib.Object) *X11Surface {
 	return &X11Surface{
 		Surface: gdk.Surface{

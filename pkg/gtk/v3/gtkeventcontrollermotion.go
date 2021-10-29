@@ -32,6 +32,10 @@ type EventControllerMotion struct {
 	EventController
 }
 
+var (
+	_ EventControllerer = (*EventControllerMotion)(nil)
+)
+
 func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{
 		EventController: EventController{

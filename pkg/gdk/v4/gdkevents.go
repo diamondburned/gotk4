@@ -555,6 +555,10 @@ type ButtonEvent struct {
 	Event
 }
 
+var (
+	_ Eventer = (*ButtonEvent)(nil)
+)
+
 func wrapButtonEvent(obj *externglib.Object) *ButtonEvent {
 	return &ButtonEvent{
 		Event: Event{
@@ -588,6 +592,10 @@ func (event *ButtonEvent) Button() uint {
 type CrossingEvent struct {
 	Event
 }
+
+var (
+	_ Eventer = (*CrossingEvent)(nil)
+)
 
 func wrapCrossingEvent(obj *externglib.Object) *CrossingEvent {
 	return &CrossingEvent{
@@ -659,6 +667,10 @@ type DNDEvent struct {
 	Event
 }
 
+var (
+	_ Eventer = (*DNDEvent)(nil)
+)
+
 func wrapDNDEvent(obj *externglib.Object) *DNDEvent {
 	return &DNDEvent{
 		Event: Event{
@@ -704,6 +716,10 @@ type DeleteEvent struct {
 	Event
 }
 
+var (
+	_ Eventer = (*DeleteEvent)(nil)
+)
+
 func wrapDeleteEvent(obj *externglib.Object) *DeleteEvent {
 	return &DeleteEvent{
 		Event: Event{
@@ -726,14 +742,17 @@ type Event struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Event)(nil)
+)
+
 // Eventer describes types inherited from class Event.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Eventer interface {
 	externglib.Objector
-
-	// BaseEvent returns the underlying base class.
-	BaseEvent() *Event
+	baseEvent() *Event
 }
 
 var _ Eventer = (*Event)(nil)
@@ -1113,15 +1132,23 @@ func (event *Event) TriggersContextMenu() bool {
 	return _ok
 }
 
-// BaseEvent returns event.
-func (event *Event) BaseEvent() *Event {
+func (event *Event) baseEvent() *Event {
 	return event
+}
+
+// BaseEvent returns the underlying base object.
+func BaseEvent(obj Eventer) *Event {
+	return obj.baseEvent()
 }
 
 // FocusEvent: event related to a keyboard focus change.
 type FocusEvent struct {
 	Event
 }
+
+var (
+	_ Eventer = (*FocusEvent)(nil)
+)
 
 func wrapFocusEvent(obj *externglib.Object) *FocusEvent {
 	return &FocusEvent{
@@ -1159,6 +1186,10 @@ func (event *FocusEvent) In() bool {
 type GrabBrokenEvent struct {
 	Event
 }
+
+var (
+	_ Eventer = (*GrabBrokenEvent)(nil)
+)
 
 func wrapGrabBrokenEvent(obj *externglib.Object) *GrabBrokenEvent {
 	return &GrabBrokenEvent{
@@ -1224,6 +1255,10 @@ func (event *GrabBrokenEvent) Implicit() bool {
 type KeyEvent struct {
 	Event
 }
+
+var (
+	_ Eventer = (*KeyEvent)(nil)
+)
 
 func wrapKeyEvent(obj *externglib.Object) *KeyEvent {
 	return &KeyEvent{
@@ -1409,6 +1444,10 @@ type MotionEvent struct {
 	Event
 }
 
+var (
+	_ Eventer = (*MotionEvent)(nil)
+)
+
 func wrapMotionEvent(obj *externglib.Object) *MotionEvent {
 	return &MotionEvent{
 		Event: Event{
@@ -1425,6 +1464,10 @@ func marshalMotionEventer(p uintptr) (interface{}, error) {
 type PadEvent struct {
 	Event
 }
+
+var (
+	_ Eventer = (*PadEvent)(nil)
+)
 
 func wrapPadEvent(obj *externglib.Object) *PadEvent {
 	return &PadEvent{
@@ -1500,6 +1543,10 @@ type ProximityEvent struct {
 	Event
 }
 
+var (
+	_ Eventer = (*ProximityEvent)(nil)
+)
+
 func wrapProximityEvent(obj *externglib.Object) *ProximityEvent {
 	return &ProximityEvent{
 		Event: Event{
@@ -1516,6 +1563,10 @@ func marshalProximityEventer(p uintptr) (interface{}, error) {
 type ScrollEvent struct {
 	Event
 }
+
+var (
+	_ Eventer = (*ScrollEvent)(nil)
+)
 
 func wrapScrollEvent(obj *externglib.Object) *ScrollEvent {
 	return &ScrollEvent{
@@ -1599,6 +1650,10 @@ type TouchEvent struct {
 	Event
 }
 
+var (
+	_ Eventer = (*TouchEvent)(nil)
+)
+
 func wrapTouchEvent(obj *externglib.Object) *TouchEvent {
 	return &TouchEvent{
 		Event: Event{
@@ -1639,6 +1694,10 @@ func (event *TouchEvent) EmulatingPointer() bool {
 type TouchpadEvent struct {
 	Event
 }
+
+var (
+	_ Eventer = (*TouchpadEvent)(nil)
+)
 
 func wrapTouchpadEvent(obj *externglib.Object) *TouchpadEvent {
 	return &TouchpadEvent{

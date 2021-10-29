@@ -54,6 +54,11 @@ type LinkButton struct {
 	Button
 }
 
+var (
+	_ Widgetter           = (*LinkButton)(nil)
+	_ externglib.Objector = (*LinkButton)(nil)
+)
+
 func wrapLinkButton(obj *externglib.Object) *LinkButton {
 	return &LinkButton{
 		Button: Button{

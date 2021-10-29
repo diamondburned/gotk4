@@ -155,6 +155,11 @@ type Entry struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Entry)(nil)
+	_ externglib.Objector = (*Entry)(nil)
+)
+
 func wrapEntry(obj *externglib.Object) *Entry {
 	return &Entry{
 		Widget: Widget{

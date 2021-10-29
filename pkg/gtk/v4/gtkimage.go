@@ -111,6 +111,10 @@ type Image struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Image)(nil)
+)
+
 func wrapImage(obj *externglib.Object) *Image {
 	return &Image{
 		Widget: Widget{

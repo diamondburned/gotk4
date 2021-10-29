@@ -133,6 +133,10 @@ type GLShader struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*GLShader)(nil)
+)
+
 func wrapGLShader(obj *externglib.Object) *GLShader {
 	return &GLShader{
 		Object: obj,

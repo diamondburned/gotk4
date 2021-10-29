@@ -60,6 +60,10 @@ type DropTargetAsync struct {
 	EventController
 }
 
+var (
+	_ EventControllerer = (*DropTargetAsync)(nil)
+)
+
 func wrapDropTargetAsync(obj *externglib.Object) *DropTargetAsync {
 	return &DropTargetAsync{
 		EventController: EventController{

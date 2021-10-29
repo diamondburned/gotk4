@@ -193,6 +193,11 @@ type TextView struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*TextView)(nil)
+	_ externglib.Objector = (*TextView)(nil)
+)
+
 func wrapTextView(obj *externglib.Object) *TextView {
 	return &TextView{
 		Widget: Widget{

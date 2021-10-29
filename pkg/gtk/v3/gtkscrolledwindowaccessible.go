@@ -28,6 +28,10 @@ type ScrolledWindowAccessible struct {
 	ContainerAccessible
 }
 
+var (
+	_ externglib.Objector = (*ScrolledWindowAccessible)(nil)
+)
+
 func wrapScrolledWindowAccessible(obj *externglib.Object) *ScrolledWindowAccessible {
 	return &ScrolledWindowAccessible{
 		ContainerAccessible: ContainerAccessible{

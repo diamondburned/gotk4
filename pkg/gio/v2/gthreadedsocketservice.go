@@ -47,6 +47,10 @@ type ThreadedSocketService struct {
 	SocketService
 }
 
+var (
+	_ externglib.Objector = (*ThreadedSocketService)(nil)
+)
+
 func wrapThreadedSocketService(obj *externglib.Object) *ThreadedSocketService {
 	return &ThreadedSocketService{
 		SocketService: SocketService{

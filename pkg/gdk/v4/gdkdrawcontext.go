@@ -36,14 +36,17 @@ type DrawContext struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*DrawContext)(nil)
+)
+
 // DrawContexter describes types inherited from class DrawContext.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type DrawContexter interface {
 	externglib.Objector
-
-	// BaseDrawContext returns the underlying base class.
-	BaseDrawContext() *DrawContext
+	baseDrawContext() *DrawContext
 }
 
 var _ DrawContexter = (*DrawContext)(nil)
@@ -219,7 +222,11 @@ func (context *DrawContext) IsInFrame() bool {
 	return _ok
 }
 
-// BaseDrawContext returns context.
-func (context *DrawContext) BaseDrawContext() *DrawContext {
+func (context *DrawContext) baseDrawContext() *DrawContext {
 	return context
+}
+
+// BaseDrawContext returns the underlying base object.
+func BaseDrawContext(obj DrawContexter) *DrawContext {
+	return obj.baseDrawContext()
 }

@@ -49,6 +49,11 @@ type Grid struct {
 	*externglib.Object
 }
 
+var (
+	_ Containerer         = (*Grid)(nil)
+	_ externglib.Objector = (*Grid)(nil)
+)
+
 func wrapGrid(obj *externglib.Object) *Grid {
 	return &Grid{
 		Container: Container{

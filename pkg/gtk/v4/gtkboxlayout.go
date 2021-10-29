@@ -42,6 +42,11 @@ type BoxLayout struct {
 	*externglib.Object
 }
 
+var (
+	_ LayoutManagerer     = (*BoxLayout)(nil)
+	_ externglib.Objector = (*BoxLayout)(nil)
+)
+
 func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
 	return &BoxLayout{
 		LayoutManager: LayoutManager{

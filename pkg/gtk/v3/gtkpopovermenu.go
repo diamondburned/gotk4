@@ -97,6 +97,10 @@ type PopoverMenu struct {
 	Popover
 }
 
+var (
+	_ Binner = (*PopoverMenu)(nil)
+)
+
 func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 	return &PopoverMenu{
 		Popover: Popover{

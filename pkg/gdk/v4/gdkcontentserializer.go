@@ -122,6 +122,10 @@ type ContentSerializer struct {
 	gio.AsyncResult
 }
 
+var (
+	_ externglib.Objector = (*ContentSerializer)(nil)
+)
+
 func wrapContentSerializer(obj *externglib.Object) *ContentSerializer {
 	return &ContentSerializer{
 		Object: obj,

@@ -191,6 +191,11 @@ type ConstraintLayout struct {
 	*externglib.Object
 }
 
+var (
+	_ LayoutManagerer     = (*ConstraintLayout)(nil)
+	_ externglib.Objector = (*ConstraintLayout)(nil)
+)
+
 func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 	return &ConstraintLayout{
 		LayoutManager: LayoutManager{
@@ -547,6 +552,10 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 type ConstraintLayoutChild struct {
 	LayoutChild
 }
+
+var (
+	_ LayoutChilder = (*ConstraintLayoutChild)(nil)
+)
 
 func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
 	return &ConstraintLayoutChild{

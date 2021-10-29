@@ -29,6 +29,10 @@ type SocketAccessible struct {
 	ContainerAccessible
 }
 
+var (
+	_ externglib.Objector = (*SocketAccessible)(nil)
+)
+
 func wrapSocketAccessible(obj *externglib.Object) *SocketAccessible {
 	return &SocketAccessible{
 		ContainerAccessible: ContainerAccessible{

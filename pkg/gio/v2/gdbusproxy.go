@@ -81,6 +81,10 @@ type DBusProxy struct {
 	Initable
 }
 
+var (
+	_ externglib.Objector = (*DBusProxy)(nil)
+)
+
 func wrapDBusProxy(obj *externglib.Object) *DBusProxy {
 	return &DBusProxy{
 		Object: obj,

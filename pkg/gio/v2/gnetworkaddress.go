@@ -37,6 +37,10 @@ type NetworkAddress struct {
 	SocketConnectable
 }
 
+var (
+	_ externglib.Objector = (*NetworkAddress)(nil)
+)
+
 func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
 	return &NetworkAddress{
 		Object: obj,

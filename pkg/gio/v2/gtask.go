@@ -195,6 +195,10 @@ type Task struct {
 	AsyncResult
 }
 
+var (
+	_ externglib.Objector = (*Task)(nil)
+)
+
 func wrapTask(obj *externglib.Object) *Task {
 	return &Task{
 		Object: obj,

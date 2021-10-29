@@ -35,6 +35,10 @@ type MultiSorter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*MultiSorter)(nil)
+)
+
 func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 	return &MultiSorter{
 		Sorter: Sorter{

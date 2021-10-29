@@ -51,6 +51,11 @@ type Range struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Range)(nil)
+	_ externglib.Objector = (*Range)(nil)
+)
+
 func wrapRange(obj *externglib.Object) *Range {
 	return &Range{
 		Widget: Widget{

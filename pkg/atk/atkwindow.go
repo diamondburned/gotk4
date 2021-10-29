@@ -27,12 +27,15 @@ type Window struct {
 	ObjectClass
 }
 
+var (
+	_ externglib.Objector = (*Window)(nil)
+)
+
 // Windower describes Window's interface methods.
 type Windower interface {
 	externglib.Objector
 
-	// BaseWindow returns the underlying base object.
-	BaseWindow() *Window
+	baseWindow() *Window
 }
 
 var _ Windower = (*Window)(nil)
@@ -49,9 +52,13 @@ func marshalWindower(p uintptr) (interface{}, error) {
 	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// BaseWindow returns v.
-func (v *Window) BaseWindow() *Window {
+func (v *Window) baseWindow() *Window {
 	return v
+}
+
+// BaseWindow returns the underlying base object.
+func BaseWindow(obj Windower) *Window {
+	return obj.baseWindow()
 }
 
 // ConnectActivate: signal Window::activate is emitted when a window becomes the

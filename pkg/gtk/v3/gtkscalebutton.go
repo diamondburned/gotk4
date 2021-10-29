@@ -51,6 +51,11 @@ type ScaleButton struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ScaleButton)(nil)
+	_ Binner              = (*ScaleButton)(nil)
+)
+
 func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 	return &ScaleButton{
 		Button: Button{

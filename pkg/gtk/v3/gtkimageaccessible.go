@@ -30,6 +30,10 @@ type ImageAccessible struct {
 	atk.Image
 }
 
+var (
+	_ externglib.Objector = (*ImageAccessible)(nil)
+)
+
 func wrapImageAccessible(obj *externglib.Object) *ImageAccessible {
 	return &ImageAccessible{
 		WidgetAccessible: WidgetAccessible{

@@ -73,6 +73,10 @@ type ListItemFactory struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ListItemFactory)(nil)
+)
+
 func wrapListItemFactory(obj *externglib.Object) *ListItemFactory {
 	return &ListItemFactory{
 		Object: obj,

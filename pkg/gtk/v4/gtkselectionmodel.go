@@ -125,6 +125,8 @@ type SelectionModel struct {
 	gio.ListModel
 }
 
+var ()
+
 // SelectionModeller describes SelectionModel's interface methods.
 type SelectionModeller interface {
 	externglib.Objector

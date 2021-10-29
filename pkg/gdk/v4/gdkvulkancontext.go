@@ -38,14 +38,18 @@ type VulkanContext struct {
 	*externglib.Object
 }
 
+var (
+	_ DrawContexter       = (*VulkanContext)(nil)
+	_ externglib.Objector = (*VulkanContext)(nil)
+)
+
 // VulkanContexter describes types inherited from class VulkanContext.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type VulkanContexter interface {
 	externglib.Objector
-
-	// BaseVulkanContext returns the underlying base class.
-	BaseVulkanContext() *VulkanContext
+	baseVulkanContext() *VulkanContext
 }
 
 var _ VulkanContexter = (*VulkanContext)(nil)
@@ -66,9 +70,13 @@ func marshalVulkanContexter(p uintptr) (interface{}, error) {
 	return wrapVulkanContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// BaseVulkanContext returns v.
-func (v *VulkanContext) BaseVulkanContext() *VulkanContext {
+func (v *VulkanContext) baseVulkanContext() *VulkanContext {
 	return v
+}
+
+// BaseVulkanContext returns the underlying base object.
+func BaseVulkanContext(obj VulkanContexter) *VulkanContext {
+	return obj.baseVulkanContext()
 }
 
 // ConnectImagesUpdated: emitted when the images managed by this context have

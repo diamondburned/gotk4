@@ -141,14 +141,17 @@ type FrameClock struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FrameClock)(nil)
+)
+
 // FrameClocker describes types inherited from class FrameClock.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FrameClocker interface {
 	externglib.Objector
-
-	// BaseFrameClock returns the underlying base class.
-	BaseFrameClock() *FrameClock
+	baseFrameClock() *FrameClock
 }
 
 var _ FrameClocker = (*FrameClock)(nil)
@@ -397,9 +400,13 @@ func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 	runtime.KeepAlive(phase)
 }
 
-// BaseFrameClock returns frameClock.
-func (frameClock *FrameClock) BaseFrameClock() *FrameClock {
+func (frameClock *FrameClock) baseFrameClock() *FrameClock {
 	return frameClock
+}
+
+// BaseFrameClock returns the underlying base object.
+func BaseFrameClock(obj FrameClocker) *FrameClock {
+	return obj.baseFrameClock()
 }
 
 // ConnectAfterPaint: this signal ends processing of the frame.

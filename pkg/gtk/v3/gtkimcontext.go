@@ -146,14 +146,17 @@ type IMContext struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*IMContext)(nil)
+)
+
 // IMContexter describes types inherited from class IMContext.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type IMContexter interface {
 	externglib.Objector
-
-	// BaseIMContext returns the underlying base class.
-	BaseIMContext() *IMContext
+	baseIMContext() *IMContext
 }
 
 var _ IMContexter = (*IMContext)(nil)
@@ -413,9 +416,13 @@ func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	runtime.KeepAlive(usePreedit)
 }
 
-// BaseIMContext returns context.
-func (context *IMContext) BaseIMContext() *IMContext {
+func (context *IMContext) baseIMContext() *IMContext {
 	return context
+}
+
+// BaseIMContext returns the underlying base object.
+func BaseIMContext(obj IMContexter) *IMContext {
+	return obj.baseIMContext()
 }
 
 // ConnectCommit signal is emitted when a complete input sequence has been

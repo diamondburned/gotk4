@@ -38,6 +38,11 @@ type MemoryOutputStream struct {
 	*externglib.Object
 }
 
+var (
+	_ OutputStreamer      = (*MemoryOutputStream)(nil)
+	_ externglib.Objector = (*MemoryOutputStream)(nil)
+)
+
 func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 	return &MemoryOutputStream{
 		OutputStream: OutputStream{

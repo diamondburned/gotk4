@@ -93,6 +93,11 @@ type Text struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Text)(nil)
+	_ externglib.Objector = (*Text)(nil)
+)
+
 func wrapText(obj *externglib.Object) *Text {
 	return &Text{
 		Widget: Widget{

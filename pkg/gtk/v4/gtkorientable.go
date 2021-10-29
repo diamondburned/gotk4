@@ -31,6 +31,10 @@ type Orientable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Orientable)(nil)
+)
+
 // Orientabler describes Orientable's interface methods.
 type Orientabler interface {
 	externglib.Objector

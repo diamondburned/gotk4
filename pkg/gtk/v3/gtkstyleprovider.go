@@ -80,6 +80,10 @@ type StyleProvider struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*StyleProvider)(nil)
+)
+
 // StyleProviderer describes StyleProvider's interface methods.
 type StyleProviderer interface {
 	externglib.Objector

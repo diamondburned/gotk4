@@ -66,6 +66,10 @@ type StreamableContent struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*StreamableContent)(nil)
+)
+
 // StreamableContenter describes StreamableContent's interface methods.
 type StreamableContenter interface {
 	externglib.Objector

@@ -29,6 +29,10 @@ type FileIcon struct {
 	LoadableIcon
 }
 
+var (
+	_ externglib.Objector = (*FileIcon)(nil)
+)
+
 func wrapFileIcon(obj *externglib.Object) *FileIcon {
 	return &FileIcon{
 		Object: obj,

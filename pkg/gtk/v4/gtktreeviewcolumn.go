@@ -136,6 +136,10 @@ type TreeViewColumn struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TreeViewColumn)(nil)
+)
+
 func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
 	return &TreeViewColumn{
 		InitiallyUnowned: externglib.InitiallyUnowned{

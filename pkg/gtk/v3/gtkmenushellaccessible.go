@@ -30,6 +30,10 @@ type MenuShellAccessible struct {
 	atk.Selection
 }
 
+var (
+	_ externglib.Objector = (*MenuShellAccessible)(nil)
+)
+
 func wrapMenuShellAccessible(obj *externglib.Object) *MenuShellAccessible {
 	return &MenuShellAccessible{
 		ContainerAccessible: ContainerAccessible{

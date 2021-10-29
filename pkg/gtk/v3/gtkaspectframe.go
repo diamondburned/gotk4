@@ -39,6 +39,10 @@ type AspectFrame struct {
 	Frame
 }
 
+var (
+	_ Binner = (*AspectFrame)(nil)
+)
+
 func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	return &AspectFrame{
 		Frame: Frame{

@@ -39,6 +39,10 @@ type SortListModel struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*SortListModel)(nil)
+)
+
 func wrapSortListModel(obj *externglib.Object) *SortListModel {
 	return &SortListModel{
 		Object: obj,

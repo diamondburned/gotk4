@@ -250,6 +250,10 @@ type Keymap struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Keymap)(nil)
+)
+
 func wrapKeymap(obj *externglib.Object) *Keymap {
 	return &Keymap{
 		Object: obj,

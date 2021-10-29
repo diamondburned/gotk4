@@ -108,6 +108,10 @@ type Table struct {
 	Container
 }
 
+var (
+	_ Containerer = (*Table)(nil)
+)
+
 func wrapTable(obj *externglib.Object) *Table {
 	return &Table{
 		Container: Container{

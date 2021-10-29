@@ -76,6 +76,10 @@ type Picture struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Picture)(nil)
+)
+
 func wrapPicture(obj *externglib.Object) *Picture {
 	return &Picture{
 		Widget: Widget{

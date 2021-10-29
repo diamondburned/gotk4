@@ -70,6 +70,10 @@ type ListStore struct {
 	TreeSortable
 }
 
+var (
+	_ externglib.Objector = (*ListStore)(nil)
+)
+
 func wrapListStore(obj *externglib.Object) *ListStore {
 	return &ListStore{
 		Object: obj,

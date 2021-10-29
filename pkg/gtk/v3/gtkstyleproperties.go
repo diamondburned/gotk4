@@ -49,6 +49,10 @@ type StyleProperties struct {
 	StyleProvider
 }
 
+var (
+	_ externglib.Objector = (*StyleProperties)(nil)
+)
+
 func wrapStyleProperties(obj *externglib.Object) *StyleProperties {
 	return &StyleProperties{
 		Object: obj,

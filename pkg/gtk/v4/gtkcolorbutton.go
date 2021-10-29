@@ -48,6 +48,11 @@ type ColorButton struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*ColorButton)(nil)
+	_ externglib.Objector = (*ColorButton)(nil)
+)
+
 func wrapColorButton(obj *externglib.Object) *ColorButton {
 	return &ColorButton{
 		Widget: Widget{

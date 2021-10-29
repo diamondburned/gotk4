@@ -31,6 +31,10 @@ type ScaleButtonAccessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ScaleButtonAccessible)(nil)
+)
+
 func wrapScaleButtonAccessible(obj *externglib.Object) *ScaleButtonAccessible {
 	return &ScaleButtonAccessible{
 		ButtonAccessible: ButtonAccessible{

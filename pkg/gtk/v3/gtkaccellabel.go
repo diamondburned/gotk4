@@ -62,6 +62,10 @@ type AccelLabel struct {
 	Label
 }
 
+var (
+	_ Miscer = (*AccelLabel)(nil)
+)
+
 func wrapAccelLabel(obj *externglib.Object) *AccelLabel {
 	return &AccelLabel{
 		Label: Label{

@@ -52,6 +52,11 @@ type VBox struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*VBox)(nil)
+	_ externglib.Objector = (*VBox)(nil)
+)
+
 func wrapVBox(obj *externglib.Object) *VBox {
 	return &VBox{
 		Box: Box{

@@ -47,14 +47,17 @@ type Drop struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Drop)(nil)
+)
+
 // Dropper describes types inherited from class Drop.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Dropper interface {
 	externglib.Objector
-
-	// BaseDrop returns the underlying base class.
-	BaseDrop() *Drop
+	baseDrop() *Drop
 }
 
 var _ Dropper = (*Drop)(nil)
@@ -467,7 +470,11 @@ func (self *Drop) Status(actions, preferred DragAction) {
 	runtime.KeepAlive(preferred)
 }
 
-// BaseDrop returns self.
-func (self *Drop) BaseDrop() *Drop {
+func (self *Drop) baseDrop() *Drop {
 	return self
+}
+
+// BaseDrop returns the underlying base object.
+func BaseDrop(obj Dropper) *Drop {
+	return obj.baseDrop()
 }

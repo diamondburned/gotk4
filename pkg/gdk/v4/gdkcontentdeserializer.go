@@ -125,6 +125,10 @@ type ContentDeserializer struct {
 	gio.AsyncResult
 }
 
+var (
+	_ externglib.Objector = (*ContentDeserializer)(nil)
+)
+
 func wrapContentDeserializer(obj *externglib.Object) *ContentDeserializer {
 	return &ContentDeserializer{
 		Object: obj,

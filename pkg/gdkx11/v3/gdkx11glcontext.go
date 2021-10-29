@@ -57,6 +57,10 @@ type X11GLContext struct {
 	gdk.GLContext
 }
 
+var (
+	_ gdk.GLContexter = (*X11GLContext)(nil)
+)
+
 func wrapX11GLContext(obj *externglib.Object) *X11GLContext {
 	return &X11GLContext{
 		GLContext: gdk.GLContext{

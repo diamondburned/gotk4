@@ -47,14 +47,17 @@ type MediaFile struct {
 	MediaStream
 }
 
+var (
+	_ MediaStreamer = (*MediaFile)(nil)
+)
+
 // MediaFiler describes types inherited from class MediaFile.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MediaFiler interface {
 	externglib.Objector
-
-	// BaseMediaFile returns the underlying base class.
-	BaseMediaFile() *MediaFile
+	baseMediaFile() *MediaFile
 }
 
 var _ MediaFiler = (*MediaFile)(nil)
@@ -351,7 +354,11 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	runtime.KeepAlive(resourcePath)
 }
 
-// BaseMediaFile returns self.
-func (self *MediaFile) BaseMediaFile() *MediaFile {
+func (self *MediaFile) baseMediaFile() *MediaFile {
 	return self
+}
+
+// BaseMediaFile returns the underlying base object.
+func BaseMediaFile(obj MediaFiler) *MediaFile {
+	return obj.baseMediaFile()
 }

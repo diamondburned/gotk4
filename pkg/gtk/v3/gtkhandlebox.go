@@ -60,6 +60,10 @@ type HandleBox struct {
 	Bin
 }
 
+var (
+	_ Binner = (*HandleBox)(nil)
+)
+
 func wrapHandleBox(obj *externglib.Object) *HandleBox {
 	return &HandleBox{
 		Bin: Bin{

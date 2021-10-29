@@ -36,6 +36,10 @@ type WaylandDisplay struct {
 	gdk.Display
 }
 
+var (
+	_ externglib.Objector = (*WaylandDisplay)(nil)
+)
+
 func wrapWaylandDisplay(obj *externglib.Object) *WaylandDisplay {
 	return &WaylandDisplay{
 		Display: gdk.Display{

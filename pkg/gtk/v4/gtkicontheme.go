@@ -119,6 +119,10 @@ type IconPaintable struct {
 	gdk.Paintable
 }
 
+var (
+	_ externglib.Objector = (*IconPaintable)(nil)
+)
+
 func wrapIconPaintable(obj *externglib.Object) *IconPaintable {
 	return &IconPaintable{
 		Object: obj,
@@ -280,6 +284,10 @@ func (self *IconPaintable) IsSymbolic() bool {
 type IconTheme struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*IconTheme)(nil)
+)
 
 func wrapIconTheme(obj *externglib.Object) *IconTheme {
 	return &IconTheme{

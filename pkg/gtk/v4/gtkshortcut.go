@@ -42,6 +42,10 @@ type Shortcut struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Shortcut)(nil)
+)
+
 func wrapShortcut(obj *externglib.Object) *Shortcut {
 	return &Shortcut{
 		Object: obj,

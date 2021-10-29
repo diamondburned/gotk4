@@ -96,14 +96,17 @@ type Drag struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Drag)(nil)
+)
+
 // Dragger describes types inherited from class Drag.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Dragger interface {
 	externglib.Objector
-
-	// BaseDrag returns the underlying base class.
-	BaseDrag() *Drag
+	baseDrag() *Drag
 }
 
 var _ Dragger = (*Drag)(nil)
@@ -356,9 +359,13 @@ func (drag *Drag) SetHotspot(hotX, hotY int) {
 	runtime.KeepAlive(hotY)
 }
 
-// BaseDrag returns drag.
-func (drag *Drag) BaseDrag() *Drag {
+func (drag *Drag) baseDrag() *Drag {
 	return drag
+}
+
+// BaseDrag returns the underlying base object.
+func BaseDrag(obj Dragger) *Drag {
+	return obj.baseDrag()
 }
 
 // ConnectCancel: emitted when the drag operation is cancelled.

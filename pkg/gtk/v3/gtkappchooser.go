@@ -46,6 +46,10 @@ type AppChooser struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*AppChooser)(nil)
+)
+
 // AppChooserer describes AppChooser's interface methods.
 type AppChooserer interface {
 	externglib.Objector

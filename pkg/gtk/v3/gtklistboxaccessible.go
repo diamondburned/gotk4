@@ -30,6 +30,10 @@ type ListBoxAccessible struct {
 	atk.Selection
 }
 
+var (
+	_ externglib.Objector = (*ListBoxAccessible)(nil)
+)
+
 func wrapListBoxAccessible(obj *externglib.Object) *ListBoxAccessible {
 	return &ListBoxAccessible{
 		ContainerAccessible: ContainerAccessible{

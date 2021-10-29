@@ -27,6 +27,10 @@ type GLTexture struct {
 	Texture
 }
 
+var (
+	_ Texturer = (*GLTexture)(nil)
+)
+
 func wrapGLTexture(obj *externglib.Object) *GLTexture {
 	return &GLTexture{
 		Texture: Texture{

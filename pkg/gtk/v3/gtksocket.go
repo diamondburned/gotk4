@@ -85,6 +85,10 @@ type Socket struct {
 	Container
 }
 
+var (
+	_ Containerer = (*Socket)(nil)
+)
+
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
 		Container: Container{

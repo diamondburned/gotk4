@@ -40,6 +40,10 @@ type ListItem struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ListItem)(nil)
+)
+
 func wrapListItem(obj *externglib.Object) *ListItem {
 	return &ListItem{
 		Object: obj,

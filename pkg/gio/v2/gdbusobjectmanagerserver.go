@@ -48,6 +48,10 @@ type DBusObjectManagerServer struct {
 	DBusObjectManager
 }
 
+var (
+	_ externglib.Objector = (*DBusObjectManagerServer)(nil)
+)
+
 func wrapDBusObjectManagerServer(obj *externglib.Object) *DBusObjectManagerServer {
 	return &DBusObjectManagerServer{
 		Object: obj,

@@ -47,6 +47,10 @@ type OffscreenWindow struct {
 	Window
 }
 
+var (
+	_ Binner = (*OffscreenWindow)(nil)
+)
+
 func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 	return &OffscreenWindow{
 		Window: Window{

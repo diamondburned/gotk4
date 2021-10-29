@@ -33,14 +33,17 @@ type CairoContext struct {
 	DrawContext
 }
 
+var (
+	_ DrawContexter = (*CairoContext)(nil)
+)
+
 // CairoContexter describes types inherited from class CairoContext.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type CairoContexter interface {
 	externglib.Objector
-
-	// BaseCairoContext returns the underlying base class.
-	BaseCairoContext() *CairoContext
+	baseCairoContext() *CairoContext
 }
 
 var _ CairoContexter = (*CairoContext)(nil)
@@ -86,7 +89,11 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 	return _context
 }
 
-// BaseCairoContext returns self.
-func (self *CairoContext) BaseCairoContext() *CairoContext {
+func (self *CairoContext) baseCairoContext() *CairoContext {
 	return self
+}
+
+// BaseCairoContext returns the underlying base object.
+func BaseCairoContext(obj CairoContexter) *CairoContext {
+	return obj.baseCairoContext()
 }

@@ -152,8 +152,17 @@ type Entry struct {
 
 	CellEditable
 	Editable
+	ConstraintTarget
+	externglib.InitiallyUnowned
 	*externglib.Object
+	Accessible
+	Buildable
 }
+
+var (
+	_ Widgetter           = (*Entry)(nil)
+	_ externglib.Objector = (*Entry)(nil)
+)
 
 func wrapEntry(obj *externglib.Object) *Entry {
 	return &Entry{
@@ -206,7 +215,19 @@ func wrapEntry(obj *externglib.Object) *Entry {
 				Object: obj,
 			},
 		},
+		ConstraintTarget: ConstraintTarget{
+			Object: obj,
+		},
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
 		Object: obj,
+		Accessible: Accessible{
+			Object: obj,
+		},
+		Buildable: Buildable{
+			Object: obj,
+		},
 	}
 }
 

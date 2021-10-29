@@ -111,6 +111,11 @@ type MenuButton struct {
 	ToggleButton
 }
 
+var (
+	_ Binner              = (*MenuButton)(nil)
+	_ externglib.Objector = (*MenuButton)(nil)
+)
+
 func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	return &MenuButton{
 		ToggleButton: ToggleButton{

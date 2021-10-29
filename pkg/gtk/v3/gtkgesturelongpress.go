@@ -34,6 +34,10 @@ type GestureLongPress struct {
 	GestureSingle
 }
 
+var (
+	_ Gesturer = (*GestureLongPress)(nil)
+)
+
 func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
 	return &GestureLongPress{
 		GestureSingle: GestureSingle{

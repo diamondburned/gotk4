@@ -64,6 +64,10 @@ type Expander struct {
 	Bin
 }
 
+var (
+	_ Binner = (*Expander)(nil)
+)
+
 func wrapExpander(obj *externglib.Object) *Expander {
 	return &Expander{
 		Bin: Bin{

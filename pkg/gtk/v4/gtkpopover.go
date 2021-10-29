@@ -114,6 +114,11 @@ type Popover struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Popover)(nil)
+	_ externglib.Objector = (*Popover)(nil)
+)
+
 func wrapPopover(obj *externglib.Object) *Popover {
 	return &Popover{
 		Widget: Widget{

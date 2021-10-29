@@ -119,14 +119,17 @@ type Gesture struct {
 	EventController
 }
 
+var (
+	_ EventControllerer = (*Gesture)(nil)
+)
+
 // Gesturer describes types inherited from class Gesture.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Gesturer interface {
 	externglib.Objector
-
-	// BaseGesture returns the underlying base class.
-	BaseGesture() *Gesture
+	baseGesture() *Gesture
 }
 
 var _ Gesturer = (*Gesture)(nil)
@@ -655,9 +658,13 @@ func (gesture *Gesture) Ungroup() {
 	runtime.KeepAlive(gesture)
 }
 
-// BaseGesture returns gesture.
-func (gesture *Gesture) BaseGesture() *Gesture {
+func (gesture *Gesture) baseGesture() *Gesture {
 	return gesture
+}
+
+// BaseGesture returns the underlying base object.
+func BaseGesture(obj Gesturer) *Gesture {
+	return obj.baseGesture()
 }
 
 // ConnectBegin: emitted when the gesture is recognized.

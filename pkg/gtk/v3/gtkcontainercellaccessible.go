@@ -30,6 +30,10 @@ type ContainerCellAccessible struct {
 	CellAccessible
 }
 
+var (
+	_ externglib.Objector = (*ContainerCellAccessible)(nil)
+)
+
 func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessible {
 	return &ContainerCellAccessible{
 		CellAccessible: CellAccessible{
@@ -48,6 +52,9 @@ func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessibl
 				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
+			},
+			ObjectClass: atk.ObjectClass{
+				Object: obj,
 			},
 			Object: obj,
 		},

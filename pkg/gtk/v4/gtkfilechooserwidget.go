@@ -38,6 +38,11 @@ type FileChooserWidget struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*FileChooserWidget)(nil)
+	_ externglib.Objector = (*FileChooserWidget)(nil)
+)
+
 func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 	return &FileChooserWidget{
 		Widget: Widget{

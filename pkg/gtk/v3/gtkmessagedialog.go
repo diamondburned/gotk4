@@ -115,6 +115,10 @@ type MessageDialog struct {
 	Dialog
 }
 
+var (
+	_ Binner = (*MessageDialog)(nil)
+)
+
 func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	return &MessageDialog{
 		Dialog: Dialog{

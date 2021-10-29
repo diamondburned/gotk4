@@ -135,6 +135,10 @@ type ActivateAction struct {
 	ShortcutAction
 }
 
+var (
+	_ ShortcutActioner = (*ActivateAction)(nil)
+)
+
 func wrapActivateAction(obj *externglib.Object) *ActivateAction {
 	return &ActivateAction{
 		ShortcutAction: ShortcutAction{
@@ -167,6 +171,10 @@ func ActivateActionGet() *ActivateAction {
 type CallbackAction struct {
 	ShortcutAction
 }
+
+var (
+	_ ShortcutActioner = (*CallbackAction)(nil)
+)
 
 func wrapCallbackAction(obj *externglib.Object) *CallbackAction {
 	return &CallbackAction{
@@ -214,6 +222,10 @@ type MnemonicAction struct {
 	ShortcutAction
 }
 
+var (
+	_ ShortcutActioner = (*MnemonicAction)(nil)
+)
+
 func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
 	return &MnemonicAction{
 		ShortcutAction: ShortcutAction{
@@ -246,6 +258,10 @@ func MnemonicActionGet() *MnemonicAction {
 type NamedAction struct {
 	ShortcutAction
 }
+
+var (
+	_ ShortcutActioner = (*NamedAction)(nil)
+)
 
 func wrapNamedAction(obj *externglib.Object) *NamedAction {
 	return &NamedAction{
@@ -309,6 +325,10 @@ type NothingAction struct {
 	ShortcutAction
 }
 
+var (
+	_ ShortcutActioner = (*NothingAction)(nil)
+)
+
 func wrapNothingAction(obj *externglib.Object) *NothingAction {
 	return &NothingAction{
 		ShortcutAction: ShortcutAction{
@@ -367,14 +387,17 @@ type ShortcutAction struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ShortcutAction)(nil)
+)
+
 // ShortcutActioner describes types inherited from class ShortcutAction.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ShortcutActioner interface {
 	externglib.Objector
-
-	// BaseShortcutAction returns the underlying base class.
-	BaseShortcutAction() *ShortcutAction
+	baseShortcutAction() *ShortcutAction
 }
 
 var _ ShortcutActioner = (*ShortcutAction)(nil)
@@ -493,9 +516,13 @@ func (self *ShortcutAction) String() string {
 	return _utf8
 }
 
-// BaseShortcutAction returns self.
-func (self *ShortcutAction) BaseShortcutAction() *ShortcutAction {
+func (self *ShortcutAction) baseShortcutAction() *ShortcutAction {
 	return self
+}
+
+// BaseShortcutAction returns the underlying base object.
+func BaseShortcutAction(obj ShortcutActioner) *ShortcutAction {
+	return obj.baseShortcutAction()
 }
 
 // SignalAction: GtkShortcutAction that emits a signal.
@@ -505,6 +532,10 @@ func (self *ShortcutAction) BaseShortcutAction() *ShortcutAction {
 type SignalAction struct {
 	ShortcutAction
 }
+
+var (
+	_ ShortcutActioner = (*SignalAction)(nil)
+)
 
 func wrapSignalAction(obj *externglib.Object) *SignalAction {
 	return &SignalAction{

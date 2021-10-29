@@ -67,6 +67,10 @@ type Tooltip struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Tooltip)(nil)
+)
+
 func wrapTooltip(obj *externglib.Object) *Tooltip {
 	return &Tooltip{
 		Object: obj,

@@ -141,6 +141,10 @@ type TLSInteraction struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TLSInteraction)(nil)
+)
+
 func wrapTLSInteraction(obj *externglib.Object) *TLSInteraction {
 	return &TLSInteraction{
 		Object: obj,

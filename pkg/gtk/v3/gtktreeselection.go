@@ -145,6 +145,10 @@ type TreeSelection struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TreeSelection)(nil)
+)
+
 func wrapTreeSelection(obj *externglib.Object) *TreeSelection {
 	return &TreeSelection{
 		Object: obj,

@@ -36,6 +36,11 @@ type ShortcutsSection struct {
 	Box
 }
 
+var (
+	_ Widgetter           = (*ShortcutsSection)(nil)
+	_ externglib.Objector = (*ShortcutsSection)(nil)
+)
+
 func wrapShortcutsSection(obj *externglib.Object) *ShortcutsSection {
 	return &ShortcutsSection{
 		Box: Box{

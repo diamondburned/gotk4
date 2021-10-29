@@ -87,6 +87,10 @@ type TreeModelSort struct {
 	TreeSortable
 }
 
+var (
+	_ externglib.Objector = (*TreeModelSort)(nil)
+)
+
 func wrapTreeModelSort(obj *externglib.Object) *TreeModelSort {
 	return &TreeModelSort{
 		Object: obj,

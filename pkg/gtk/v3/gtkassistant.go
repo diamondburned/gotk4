@@ -157,6 +157,10 @@ type Assistant struct {
 	Window
 }
 
+var (
+	_ Binner = (*Assistant)(nil)
+)
+
 func wrapAssistant(obj *externglib.Object) *Assistant {
 	return &Assistant{
 		Window: Window{

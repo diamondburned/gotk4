@@ -61,6 +61,11 @@ type ToolButton struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ToolButton)(nil)
+	_ Binner              = (*ToolButton)(nil)
+)
+
 func wrapToolButton(obj *externglib.Object) *ToolButton {
 	return &ToolButton{
 		ToolItem: ToolItem{

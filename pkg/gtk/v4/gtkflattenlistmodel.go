@@ -34,6 +34,10 @@ type FlattenListModel struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*FlattenListModel)(nil)
+)
+
 func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
 	return &FlattenListModel{
 		Object: obj,

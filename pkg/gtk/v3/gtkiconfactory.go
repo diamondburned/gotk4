@@ -286,6 +286,10 @@ type IconFactory struct {
 	Buildable
 }
 
+var (
+	_ externglib.Objector = (*IconFactory)(nil)
+)
+
 func wrapIconFactory(obj *externglib.Object) *IconFactory {
 	return &IconFactory{
 		Object: obj,

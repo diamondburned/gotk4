@@ -31,6 +31,10 @@ type SelectionFilterModel struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*SelectionFilterModel)(nil)
+)
+
 func wrapSelectionFilterModel(obj *externglib.Object) *SelectionFilterModel {
 	return &SelectionFilterModel{
 		Object: obj,

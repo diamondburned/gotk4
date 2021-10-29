@@ -30,6 +30,10 @@ type SpinnerAccessible struct {
 	atk.Image
 }
 
+var (
+	_ externglib.Objector = (*SpinnerAccessible)(nil)
+)
+
 func wrapSpinnerAccessible(obj *externglib.Object) *SpinnerAccessible {
 	return &SpinnerAccessible{
 		WidgetAccessible: WidgetAccessible{

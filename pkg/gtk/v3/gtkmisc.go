@@ -44,14 +44,17 @@ type Misc struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Misc)(nil)
+)
+
 // Miscer describes types inherited from class Misc.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Miscer interface {
 	externglib.Objector
-
-	// BaseMisc returns the underlying base class.
-	BaseMisc() *Misc
+	baseMisc() *Misc
 }
 
 var _ Miscer = (*Misc)(nil)
@@ -174,7 +177,11 @@ func (misc *Misc) SetPadding(xpad, ypad int) {
 	runtime.KeepAlive(ypad)
 }
 
-// BaseMisc returns misc.
-func (misc *Misc) BaseMisc() *Misc {
+func (misc *Misc) baseMisc() *Misc {
 	return misc
+}
+
+// BaseMisc returns the underlying base object.
+func BaseMisc(obj Miscer) *Misc {
+	return obj.baseMisc()
 }

@@ -354,6 +354,10 @@ type EntryIconAccessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*EntryIconAccessible)(nil)
+)
+
 func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 	return &EntryIconAccessible{
 		ObjectClass: atk.ObjectClass{

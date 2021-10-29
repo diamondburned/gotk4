@@ -28,6 +28,10 @@ type InetSocketAddress struct {
 	SocketAddress
 }
 
+var (
+	_ SocketAddresser = (*InetSocketAddress)(nil)
+)
+
 func wrapInetSocketAddress(obj *externglib.Object) *InetSocketAddress {
 	return &InetSocketAddress{
 		SocketAddress: SocketAddress{

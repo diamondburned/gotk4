@@ -41,6 +41,10 @@ type GridLayout struct {
 	LayoutManager
 }
 
+var (
+	_ LayoutManagerer = (*GridLayout)(nil)
+)
+
 func wrapGridLayout(obj *externglib.Object) *GridLayout {
 	return &GridLayout{
 		LayoutManager: LayoutManager{
@@ -312,6 +316,10 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 type GridLayoutChild struct {
 	LayoutChild
 }
+
+var (
+	_ LayoutChilder = (*GridLayoutChild)(nil)
+)
 
 func wrapGridLayoutChild(obj *externglib.Object) *GridLayoutChild {
 	return &GridLayoutChild{

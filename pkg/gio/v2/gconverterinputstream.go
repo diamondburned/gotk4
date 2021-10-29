@@ -30,8 +30,15 @@ type ConverterInputStream struct {
 	FilterInputStream
 
 	PollableInputStream
+	InputStream
 	*externglib.Object
 }
+
+var (
+	_ FilterInputStreamer = (*ConverterInputStream)(nil)
+	_ InputStreamer       = (*ConverterInputStream)(nil)
+	_ externglib.Objector = (*ConverterInputStream)(nil)
+)
 
 func wrapConverterInputStream(obj *externglib.Object) *ConverterInputStream {
 	return &ConverterInputStream{
@@ -44,6 +51,9 @@ func wrapConverterInputStream(obj *externglib.Object) *ConverterInputStream {
 			InputStream: InputStream{
 				Object: obj,
 			},
+		},
+		InputStream: InputStream{
+			Object: obj,
 		},
 		Object: obj,
 	}

@@ -32,6 +32,10 @@ type ComboBoxAccessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ComboBoxAccessible)(nil)
+)
+
 func wrapComboBoxAccessible(obj *externglib.Object) *ComboBoxAccessible {
 	return &ComboBoxAccessible{
 		ContainerAccessible: ContainerAccessible{

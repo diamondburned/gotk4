@@ -122,6 +122,10 @@ type Notebook struct {
 	Container
 }
 
+var (
+	_ Containerer = (*Notebook)(nil)
+)
+
 func wrapNotebook(obj *externglib.Object) *Notebook {
 	return &Notebook{
 		Container: Container{

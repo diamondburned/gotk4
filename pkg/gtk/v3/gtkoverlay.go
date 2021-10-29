@@ -65,6 +65,10 @@ type Overlay struct {
 	Bin
 }
 
+var (
+	_ Binner = (*Overlay)(nil)
+)
+
 func wrapOverlay(obj *externglib.Object) *Overlay {
 	return &Overlay{
 		Bin: Bin{

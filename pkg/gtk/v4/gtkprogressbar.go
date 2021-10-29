@@ -76,6 +76,11 @@ type ProgressBar struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*ProgressBar)(nil)
+	_ externglib.Objector = (*ProgressBar)(nil)
+)
+
 func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 	return &ProgressBar{
 		Widget: Widget{

@@ -79,6 +79,11 @@ type ComboBoxText struct {
 	ComboBox
 }
 
+var (
+	_ Widgetter           = (*ComboBoxText)(nil)
+	_ externglib.Objector = (*ComboBoxText)(nil)
+)
+
 func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 	return &ComboBoxText{
 		ComboBox: ComboBox{

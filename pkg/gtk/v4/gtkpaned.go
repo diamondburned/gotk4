@@ -91,6 +91,11 @@ type Paned struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Paned)(nil)
+	_ externglib.Objector = (*Paned)(nil)
+)
+
 func wrapPaned(obj *externglib.Object) *Paned {
 	return &Paned{
 		Widget: Widget{

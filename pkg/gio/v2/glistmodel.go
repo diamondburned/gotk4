@@ -93,6 +93,10 @@ type ListModel struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ListModel)(nil)
+)
+
 // ListModeller describes ListModel's interface methods.
 type ListModeller interface {
 	externglib.Objector

@@ -493,6 +493,10 @@ type Settings struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Settings)(nil)
+)
+
 func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{
 		Object: obj,

@@ -30,6 +30,10 @@ type ShortcutLabel struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*ShortcutLabel)(nil)
+)
+
 func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 	return &ShortcutLabel{
 		Widget: Widget{

@@ -31,6 +31,11 @@ type ShortcutLabel struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*ShortcutLabel)(nil)
+	_ externglib.Objector = (*ShortcutLabel)(nil)
+)
+
 func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 	return &ShortcutLabel{
 		Box: Box{

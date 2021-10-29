@@ -28,6 +28,10 @@ type NoOpObjectFactory struct {
 	ObjectFactory
 }
 
+var (
+	_ externglib.Objector = (*NoOpObjectFactory)(nil)
+)
+
 func wrapNoOpObjectFactory(obj *externglib.Object) *NoOpObjectFactory {
 	return &NoOpObjectFactory{
 		ObjectFactory: ObjectFactory{

@@ -46,6 +46,11 @@ type HBox struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*HBox)(nil)
+	_ externglib.Objector = (*HBox)(nil)
+)
+
 func wrapHBox(obj *externglib.Object) *HBox {
 	return &HBox{
 		Box: Box{

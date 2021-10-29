@@ -30,6 +30,10 @@ type FlowBoxAccessible struct {
 	atk.Selection
 }
 
+var (
+	_ externglib.Objector = (*FlowBoxAccessible)(nil)
+)
+
 func wrapFlowBoxAccessible(obj *externglib.Object) *FlowBoxAccessible {
 	return &FlowBoxAccessible{
 		ContainerAccessible: ContainerAccessible{

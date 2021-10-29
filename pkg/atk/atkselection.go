@@ -73,6 +73,10 @@ type Selection struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Selection)(nil)
+)
+
 // Selectioner describes Selection's interface methods.
 type Selectioner interface {
 	externglib.Objector

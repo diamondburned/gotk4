@@ -58,6 +58,10 @@ type FixedLayout struct {
 	LayoutManager
 }
 
+var (
+	_ LayoutManagerer = (*FixedLayout)(nil)
+)
+
 func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
 	return &FixedLayout{
 		LayoutManager: LayoutManager{
@@ -87,6 +91,10 @@ func NewFixedLayout() *FixedLayout {
 type FixedLayoutChild struct {
 	LayoutChild
 }
+
+var (
+	_ LayoutChilder = (*FixedLayoutChild)(nil)
+)
 
 func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
 	return &FixedLayoutChild{

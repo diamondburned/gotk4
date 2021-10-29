@@ -63,6 +63,10 @@ type Fixed struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Fixed)(nil)
+)
+
 func wrapFixed(obj *externglib.Object) *Fixed {
 	return &Fixed{
 		Widget: Widget{

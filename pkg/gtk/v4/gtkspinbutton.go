@@ -226,8 +226,17 @@ type SpinButton struct {
 	CellEditable
 	Editable
 	Orientable
+	externglib.InitiallyUnowned
 	*externglib.Object
+	ConstraintTarget
+	Accessible
+	Buildable
 }
+
+var (
+	_ Widgetter           = (*SpinButton)(nil)
+	_ externglib.Objector = (*SpinButton)(nil)
+)
 
 func wrapSpinButton(obj *externglib.Object) *SpinButton {
 	return &SpinButton{
@@ -283,7 +292,19 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 		Orientable: Orientable{
 			Object: obj,
 		},
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
 		Object: obj,
+		ConstraintTarget: ConstraintTarget{
+			Object: obj,
+		},
+		Accessible: Accessible{
+			Object: obj,
+		},
+		Buildable: Buildable{
+			Object: obj,
+		},
 	}
 }
 

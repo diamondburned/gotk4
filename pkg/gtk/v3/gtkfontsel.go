@@ -31,6 +31,11 @@ type FontSelection struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*FontSelection)(nil)
+	_ externglib.Objector = (*FontSelection)(nil)
+)
+
 func wrapFontSelection(obj *externglib.Object) *FontSelection {
 	return &FontSelection{
 		Box: Box{
@@ -420,6 +425,10 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 type FontSelectionDialog struct {
 	Dialog
 }
+
+var (
+	_ Binner = (*FontSelectionDialog)(nil)
+)
 
 func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 	return &FontSelectionDialog{

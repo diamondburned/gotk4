@@ -62,6 +62,11 @@ type AppChooserWidget struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*AppChooserWidget)(nil)
+	_ Containerer         = (*AppChooserWidget)(nil)
+)
+
 func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 	return &AppChooserWidget{
 		Box: Box{

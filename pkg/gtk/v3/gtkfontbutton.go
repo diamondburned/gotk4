@@ -48,6 +48,11 @@ type FontButton struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FontButton)(nil)
+	_ Binner              = (*FontButton)(nil)
+)
+
 func wrapFontButton(obj *externglib.Object) *FontButton {
 	return &FontButton{
 		Button: Button{

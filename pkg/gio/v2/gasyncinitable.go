@@ -175,6 +175,10 @@ type AsyncInitable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*AsyncInitable)(nil)
+)
+
 // AsyncInitabler describes AsyncInitable's interface methods.
 type AsyncInitabler interface {
 	externglib.Objector

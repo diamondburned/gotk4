@@ -50,6 +50,10 @@ type BuilderListItemFactory struct {
 	ListItemFactory
 }
 
+var (
+	_ externglib.Objector = (*BuilderListItemFactory)(nil)
+)
+
 func wrapBuilderListItemFactory(obj *externglib.Object) *BuilderListItemFactory {
 	return &BuilderListItemFactory{
 		ListItemFactory: ListItemFactory{

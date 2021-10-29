@@ -105,6 +105,10 @@ type PadController struct {
 	EventController
 }
 
+var (
+	_ EventControllerer = (*PadController)(nil)
+)
+
 func wrapPadController(obj *externglib.Object) *PadController {
 	return &PadController{
 		EventController: EventController{

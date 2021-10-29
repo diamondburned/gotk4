@@ -36,6 +36,10 @@ type VScale struct {
 	Scale
 }
 
+var (
+	_ Ranger = (*VScale)(nil)
+)
+
 func wrapVScale(obj *externglib.Object) *VScale {
 	return &VScale{
 		Scale: Scale{

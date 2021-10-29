@@ -33,6 +33,10 @@ type InetAddressMask struct {
 	Initable
 }
 
+var (
+	_ externglib.Objector = (*InetAddressMask)(nil)
+)
+
 func wrapInetAddressMask(obj *externglib.Object) *InetAddressMask {
 	return &InetAddressMask{
 		Object: obj,

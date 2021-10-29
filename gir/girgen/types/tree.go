@@ -51,6 +51,11 @@ func (tree *Tree) Resolve(toplevel string) bool {
 	return tree.ResolveFromType(resolved)
 }
 
+var gobjectTreeType = externGLibType("*Object", gir.Type{
+	Name:  "GObject.Object",
+	CType: "GObject*",
+}, "GObject*")
+
 // ResolveFromType is like Resolve, but the caller directly supplies the
 // resolved top-level type.
 func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
@@ -61,7 +66,7 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 	if tree.Resolved.Builtin != nil {
 		switch {
 		case toplevel.IsExternGLib("InitiallyUnowned"):
-			return tree.resolveParents(externGLibType("*Object", gir.Type{}, "GObject*"))
+			return tree.resolveParents(gobjectTreeType)
 		case toplevel.IsExternGLib("Object"):
 			return true
 		}
@@ -113,7 +118,7 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 		if len(tree.Requires) == 0 {
 			// All interfaces are derived from GObjects, so we override the list
 			// if it's empty.
-			if !tree.resolveName("GObject.Object") {
+			if !tree.resolveFromType(gobjectTreeType) {
 				tree.gen.Logln(logger.Debug,
 					"can't resolve fallback prerequisite *GObject for interface", v.Name)
 				return false
@@ -146,9 +151,9 @@ func (tree *Tree) omitRedundant(ignoreFirst bool) {
 
 	tree.Requires = cleaned
 
-	if tree.HasAmbiguousSelector() {
-		// Add an Object if this is still the case.
-		tree.resolveName("GObject.Object")
+	// Resolve additional ambiguous types after omitting.
+	for _, ambiguity := range tree.AmbiguousSelectorTypes() {
+		tree.resolveFromType(ambiguity)
 	}
 }
 
@@ -170,93 +175,120 @@ func findInTree(reqs []Tree, girType string, ignore int) bool {
 	return false
 }
 
-// HasAmbiguousNative returns true if the Native method cannot be accessed
-// normally. This is usually because the type contains both the GObject and
-// GInitiallyUnowned fields.
-func (tree *Tree) HasAmbiguousNative() bool {
-	if len(tree.Requires) == 1 {
-		return false
+// AmbiguousSelectorTypes scans the whole tree and finds all types whose
+// selectors are ambiguous if directly referenced from the top-level type.
+func (tree *Tree) AmbiguousSelectorTypes() []*Resolved {
+	if len(tree.Requires) <= 1 {
+		return nil
 	}
 
-	var hasGInitiallyUnowned bool
-	var hasGObject bool
-
-	for _, req := range tree.Requires {
-		if req.IsExternGLib("InitiallyUnowned") {
-			hasGInitiallyUnowned = true
-		}
-		if req.IsExternGLib("Object") {
-			hasGObject = true
-		}
-
-		if hasGInitiallyUnowned && hasGObject {
-			return true
-		}
-	}
-
-	// If any of the child types have this as well, then the parent will have an
-	// ambiguity between either of this and the child type.
-	if hasGInitiallyUnowned || hasGObject {
-		for _, req := range tree.Requires {
-			if req.HasAmbiguousNative() {
-				return true
-			}
-		}
-	}
-
-	return false
+	depths := make(depthMap, len(tree.Requires)*2) // arbitrary growing
+	searchFullDepth(tree, depths, 0)
+	return depths.conflictingGTypes(tree)
 }
 
-// HasAmbiguousSelector returns true if the GObject methods cannot be accessed
-// normally.
-func (tree *Tree) HasAmbiguousSelector() bool {
-	if len(tree.Requires) == 1 {
-		return false
-	}
-
-	// If the fields already have a GObject field, then we're fine.
-	for _, req := range tree.Requires {
-		if req.IsExternGLib("Object") {
-			return false
-		}
-	}
-
-	depths := make(map[int]struct{}, 7) // arbitrarily 7 depth
-	return gobjectDepth(tree, depths, 0)
-}
-
-func gobjectDepth(tree *Tree, depths map[int]struct{}, current int) bool {
+// searchFullDepth searches the whole tree for all same-level depths.
+func searchFullDepth(tree *Tree, depths depthMap, current int) {
 	field := current + 1
 
 	for _, req := range tree.Requires {
 		switch {
 		case req.IsExternGLib("Object"):
-			_, ok := depths[field]
-			if ok {
-				return true
-			}
-			depths[field] = struct{}{}
+			depths.add(req.Resolved, field)
 			continue
 		case req.IsExternGLib("InitiallyUnowned"):
-			// Account for the current level and the children level as well,
-			// since InitiallyUnowned already contains an Object.
-			_, ok1 := depths[field]
-			_, ok2 := depths[field+1]
-			if ok1 || ok2 {
-				return true
+			// Since InitiallyUnowned already contains an Object, skip counting
+			// it and count the object directly. This is the only built-in that
+			// isn't Object that we'd care about having an embedded types.
+			depths.add(req.Resolved, field)
+			depths.add(gobjectTreeType, field+1)
+			continue
+		default:
+			if req.Underlying().Extern == nil {
+				// No other builtins have methods. Skip.
+				continue
 			}
-			depths[field] = struct{}{}
-			depths[field+1] = struct{}{}
+		}
+
+		// Register the current entity if it has a method. This isn't
+		// necessarily a class.
+		if req.IsClass() || req.IsInterface() || req.IsRecord() {
+			depths.add(req.Underlying(), field)
+		}
+
+		searchFullDepth(&req, depths, field)
+	}
+}
+
+// depthMap keeps track of the depths of all embedded classes/structs to resolve
+// for conflicts.
+type depthMap map[string]depthNode
+
+type depthNode struct {
+	*Resolved // do not assume equality
+	depths    map[int]int
+}
+
+func (depths depthMap) conflictingGTypes(toplevel *Tree) []*Resolved {
+	resolved := make([]*Resolved, 0, len(depths))
+
+	requires := make(map[string]struct{}, len(toplevel.Requires))
+	for _, req := range toplevel.Requires {
+		requires[req.GType] = struct{}{}
+	}
+
+	for _, node := range depths {
+		var repeating bool
+
+		for d, repeats := range node.depths {
+			// If the current depth is deeper than the top-level (that is, if
+			// it's inside a field of the current struct), and that this same
+			// depth on the same type occurs more than once, then count it as
+			// repeating.
+			if d > 1 && repeats > 1 {
+				repeating = true
+				break
+			}
+		}
+
+		if !repeating {
 			continue
 		}
 
-		if gobjectDepth(&req, depths, field) {
-			return true
+		// Exclude structs that are already top-level.
+		_, isToplevel := requires[node.GType]
+		if isToplevel {
+			continue
 		}
+
+		resolved = append(resolved, node.Resolved)
 	}
 
-	// No GObject found.
-	return false
+	return resolved
+}
+
+// add adds the given class and depth into the depths map. False is returned if
+// the depth is already in.
+func (depths depthMap) add(r *Resolved, depth int) {
+	gtype := r.GType
+
+	i, ok := depths[gtype].depths[depth]
+	if ok {
+		depths[gtype].depths[depth] = i + 1
+		return
+	}
+
+	depthMap, ok := depths[gtype]
+	if !ok {
+		depthMap = depthNode{
+			Resolved: r,
+			depths:   make(map[int]int),
+		}
+		depths[gtype] = depthMap
+	}
+
+	depthMap.depths[depth] = 1
+	return
 }
 
 // FirstGObjectSelector returns the selector path to the firts GObject field.
@@ -297,6 +329,21 @@ func (tree *Tree) resolveName(name string) bool {
 	}
 
 	if !parent.Resolve(name) {
+		return false
+	}
+
+	tree.Requires = append(tree.Requires, parent)
+	return true
+}
+
+// resolveFromType is a resolveName variant that accepts a resolved type.
+func (tree *Tree) resolveFromType(t *Resolved) bool {
+	parent := Tree{
+		gen: tree.gen,
+		src: tree.src,
+	}
+
+	if !parent.ResolveFromType(t) {
 		return false
 	}
 
@@ -360,14 +407,59 @@ func (tree *Tree) ImplTypes() []string {
 	return names
 }
 
+// ImplInterfaces returns the sorted list of all Go interfaces that this type
+// implements. The namespaces are appropriately prepended if needed.
+//
+// At the moment, the method will only care about abstract classes.
+func (tree *Tree) ImplInterfaces() []*Resolved {
+	gtypes := make(map[string]struct{}, len(tree.Requires))
+	gtypes[tree.GType] = struct{}{}
+	return tree.implInterfaces(make([]*Resolved, 0, len(tree.Requires)), gtypes)
+}
+
+func (tree *Tree) implInterfaces(in []*Resolved, gtypes map[string]struct{}) []*Resolved {
+	for _, req := range tree.Requires {
+		if req.IsExternGLib("Object") || (req.IsClass() && req.IsAbstract()) {
+			_, dupe := gtypes[req.GType]
+			if dupe {
+				continue
+			}
+			in = append(in, req.Underlying())
+			gtypes[req.GType] = struct{}{}
+		}
+	}
+
+	for _, req := range tree.Requires {
+		if req.IsClass() {
+			// Skip to avoid infinitely recursing.
+			_, dupe := gtypes[req.GType]
+			if dupe {
+				continue
+			}
+			in = req.implInterfaces(in, gtypes)
+			gtypes[req.GType] = struct{}{}
+		}
+	}
+
+	return in
+}
+
 // Walk walks the tree recursively on what the callback returns. The callback
 // will be called on the root (receiver) tree; it should then return the list of
 // parents of that tree. This process is then repeated for each tree returned.
+//
+// Example:
+//
+//    tree.Walk(func(t *Tree, root bool) []Tree {
+//        log.Println("currently at", t.Resolved.PublName())
+//        return t.Requires
+//    })
+//
 func (tree *Tree) Walk(f func(t *Tree, root bool) (traversed []Tree)) {
 	tree.walk(f, true)
 }
 
-func (tree *Tree) walk(f func(*Tree, bool) (traversed []Tree), isRoot bool) {
+func (tree *Tree) walk(f func(*Tree, bool) []Tree, isRoot bool) {
 	// Get the list of traversed tree nodes.
 	traversed := f(tree, isRoot)
 	// Traverse each of the nodes' own nodes.

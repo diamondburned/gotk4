@@ -80,6 +80,10 @@ type DeviceTool struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*DeviceTool)(nil)
+)
+
 func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 	return &DeviceTool{
 		Object: obj,

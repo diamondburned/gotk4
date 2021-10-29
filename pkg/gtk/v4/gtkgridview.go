@@ -60,6 +60,10 @@ type GridView struct {
 	ListBase
 }
 
+var (
+	_ ListBaser = (*GridView)(nil)
+)
+
 func wrapGridView(obj *externglib.Object) *GridView {
 	return &GridView{
 		ListBase: ListBase{

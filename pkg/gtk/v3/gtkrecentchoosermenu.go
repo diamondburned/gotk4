@@ -51,6 +51,11 @@ type RecentChooserMenu struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*RecentChooserMenu)(nil)
+	_ MenuSheller         = (*RecentChooserMenu)(nil)
+)
+
 func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 	return &RecentChooserMenu{
 		Menu: Menu{

@@ -97,6 +97,11 @@ type ApplicationWindow struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ApplicationWindow)(nil)
+	_ Widgetter           = (*ApplicationWindow)(nil)
+)
+
 func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
 		Window: Window{

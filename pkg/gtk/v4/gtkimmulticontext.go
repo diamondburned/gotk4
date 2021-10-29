@@ -32,6 +32,10 @@ type IMMulticontext struct {
 	IMContext
 }
 
+var (
+	_ IMContexter = (*IMMulticontext)(nil)
+)
+
 func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
 	return &IMMulticontext{
 		IMContext: IMContext{

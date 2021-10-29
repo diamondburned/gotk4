@@ -59,6 +59,10 @@ type CustomFilter struct {
 	Filter
 }
 
+var (
+	_ externglib.Objector = (*CustomFilter)(nil)
+)
+
 func wrapCustomFilter(obj *externglib.Object) *CustomFilter {
 	return &CustomFilter{
 		Filter: Filter{

@@ -80,6 +80,10 @@ type StatusIcon struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*StatusIcon)(nil)
+)
+
 func wrapStatusIcon(obj *externglib.Object) *StatusIcon {
 	return &StatusIcon{
 		Object: obj,

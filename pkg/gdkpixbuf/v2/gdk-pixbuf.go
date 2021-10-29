@@ -167,6 +167,10 @@ type Pixbuf struct {
 	gio.LoadableIcon
 }
 
+var (
+	_ externglib.Objector = (*Pixbuf)(nil)
+)
+
 func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 	return &Pixbuf{
 		Object: obj,

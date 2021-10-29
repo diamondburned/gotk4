@@ -30,6 +30,10 @@ type LevelBarAccessible struct {
 	atk.Value
 }
 
+var (
+	_ externglib.Objector = (*LevelBarAccessible)(nil)
+)
+
 func wrapLevelBarAccessible(obj *externglib.Object) *LevelBarAccessible {
 	return &LevelBarAccessible{
 		WidgetAccessible: WidgetAccessible{

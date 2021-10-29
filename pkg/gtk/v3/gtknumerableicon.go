@@ -36,6 +36,10 @@ type NumerableIcon struct {
 	gio.EmblemedIcon
 }
 
+var (
+	_ externglib.Objector = (*NumerableIcon)(nil)
+)
+
 func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 	return &NumerableIcon{
 		EmblemedIcon: gio.EmblemedIcon{

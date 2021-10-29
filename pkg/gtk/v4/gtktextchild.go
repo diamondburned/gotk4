@@ -30,6 +30,10 @@ type TextChildAnchor struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TextChildAnchor)(nil)
+)
+
 func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 	return &TextChildAnchor{
 		Object: obj,

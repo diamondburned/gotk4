@@ -159,6 +159,10 @@ type Drive struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Drive)(nil)
+)
+
 // Driver describes Drive's interface methods.
 type Driver interface {
 	externglib.Objector

@@ -33,6 +33,10 @@ type OverlayLayout struct {
 	LayoutManager
 }
 
+var (
+	_ LayoutManagerer = (*OverlayLayout)(nil)
+)
+
 func wrapOverlayLayout(obj *externglib.Object) *OverlayLayout {
 	return &OverlayLayout{
 		LayoutManager: LayoutManager{
@@ -63,6 +67,10 @@ func NewOverlayLayout() *OverlayLayout {
 type OverlayLayoutChild struct {
 	LayoutChild
 }
+
+var (
+	_ LayoutChilder = (*OverlayLayoutChild)(nil)
+)
 
 func wrapOverlayLayoutChild(obj *externglib.Object) *OverlayLayoutChild {
 	return &OverlayLayoutChild{

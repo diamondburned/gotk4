@@ -62,12 +62,15 @@ type StyleProvider struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*StyleProvider)(nil)
+)
+
 // StyleProviderer describes StyleProvider's interface methods.
 type StyleProviderer interface {
 	externglib.Objector
 
-	// BaseStyleProvider returns the underlying base object.
-	BaseStyleProvider() *StyleProvider
+	baseStyleProvider() *StyleProvider
 }
 
 var _ StyleProviderer = (*StyleProvider)(nil)
@@ -82,9 +85,13 @@ func marshalStyleProviderer(p uintptr) (interface{}, error) {
 	return wrapStyleProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// BaseStyleProvider returns v.
-func (v *StyleProvider) BaseStyleProvider() *StyleProvider {
+func (v *StyleProvider) baseStyleProvider() *StyleProvider {
 	return v
+}
+
+// BaseStyleProvider returns the underlying base object.
+func BaseStyleProvider(obj StyleProviderer) *StyleProvider {
+	return obj.baseStyleProvider()
 }
 
 func (v *StyleProvider) ConnectGTKPrivateChanged(f func()) externglib.SignalHandle {

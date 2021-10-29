@@ -33,6 +33,10 @@ type StringSorter struct {
 	Sorter
 }
 
+var (
+	_ externglib.Objector = (*StringSorter)(nil)
+)
+
 func wrapStringSorter(obj *externglib.Object) *StringSorter {
 	return &StringSorter{
 		Sorter: Sorter{

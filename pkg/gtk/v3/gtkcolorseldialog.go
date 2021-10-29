@@ -29,6 +29,10 @@ type ColorSelectionDialog struct {
 	Dialog
 }
 
+var (
+	_ Binner = (*ColorSelectionDialog)(nil)
+)
+
 func wrapColorSelectionDialog(obj *externglib.Object) *ColorSelectionDialog {
 	return &ColorSelectionDialog{
 		Dialog: Dialog{

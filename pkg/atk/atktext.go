@@ -587,6 +587,10 @@ type Text struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Text)(nil)
+)
+
 // Texter describes Text's interface methods.
 type Texter interface {
 	externglib.Objector

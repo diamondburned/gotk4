@@ -168,6 +168,10 @@ type Mount struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Mount)(nil)
+)
+
 // Mounter describes Mount's interface methods.
 type Mounter interface {
 	externglib.Objector

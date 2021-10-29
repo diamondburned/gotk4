@@ -29,6 +29,10 @@ type ZlibCompressor struct {
 	Converter
 }
 
+var (
+	_ externglib.Objector = (*ZlibCompressor)(nil)
+)
+
 func wrapZlibCompressor(obj *externglib.Object) *ZlibCompressor {
 	return &ZlibCompressor{
 		Object: obj,

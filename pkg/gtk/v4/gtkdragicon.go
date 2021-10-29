@@ -41,6 +41,11 @@ type DragIcon struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*DragIcon)(nil)
+	_ externglib.Objector = (*DragIcon)(nil)
+)
+
 func wrapDragIcon(obj *externglib.Object) *DragIcon {
 	return &DragIcon{
 		Widget: Widget{

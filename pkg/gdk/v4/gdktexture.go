@@ -44,14 +44,17 @@ type Texture struct {
 	Paintable
 }
 
+var (
+	_ externglib.Objector = (*Texture)(nil)
+)
+
 // Texturer describes types inherited from class Texture.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Texturer interface {
 	externglib.Objector
-
-	// BaseTexture returns the underlying base class.
-	BaseTexture() *Texture
+	baseTexture() *Texture
 }
 
 var _ Texturer = (*Texture)(nil)
@@ -220,7 +223,11 @@ func (texture *Texture) SaveToPng(filename string) bool {
 	return _ok
 }
 
-// BaseTexture returns texture.
-func (texture *Texture) BaseTexture() *Texture {
+func (texture *Texture) baseTexture() *Texture {
 	return texture
+}
+
+// BaseTexture returns the underlying base object.
+func BaseTexture(obj Texturer) *Texture {
+	return obj.baseTexture()
 }

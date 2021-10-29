@@ -71,6 +71,11 @@ type SearchEntry struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*SearchEntry)(nil)
+	_ externglib.Objector = (*SearchEntry)(nil)
+)
+
 func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 	return &SearchEntry{
 		Widget: Widget{

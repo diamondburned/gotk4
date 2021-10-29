@@ -47,6 +47,10 @@ type AppLaunchContext struct {
 	gio.AppLaunchContext
 }
 
+var (
+	_ externglib.Objector = (*AppLaunchContext)(nil)
+)
+
 func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{
 		AppLaunchContext: gio.AppLaunchContext{

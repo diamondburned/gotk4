@@ -54,6 +54,10 @@ type Plug struct {
 	Window
 }
 
+var (
+	_ Binner = (*Plug)(nil)
+)
+
 func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{
 		Window: Window{

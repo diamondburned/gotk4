@@ -132,6 +132,10 @@ type AppInfoMonitor struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*AppInfoMonitor)(nil)
+)
+
 func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
 	return &AppInfoMonitor{
 		Object: obj,
@@ -155,6 +159,10 @@ type BytesIcon struct {
 
 	LoadableIcon
 }
+
+var (
+	_ externglib.Objector = (*BytesIcon)(nil)
+)
 
 func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 	return &BytesIcon{
@@ -229,6 +237,10 @@ type DBusActionGroup struct {
 	RemoteActionGroup
 }
 
+var (
+	_ externglib.Objector = (*DBusActionGroup)(nil)
+)
+
 func wrapDBusActionGroup(obj *externglib.Object) *DBusActionGroup {
 	return &DBusActionGroup{
 		Object: obj,
@@ -281,6 +293,10 @@ func marshalDBusActionGrouper(p uintptr) (interface{}, error) {
 type DBusAuthObserver struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*DBusAuthObserver)(nil)
+)
 
 func wrapDBusAuthObserver(obj *externglib.Object) *DBusAuthObserver {
 	return &DBusAuthObserver{
@@ -435,6 +451,10 @@ type DBusConnection struct {
 	AsyncInitable
 	Initable
 }
+
+var (
+	_ externglib.Objector = (*DBusConnection)(nil)
+)
 
 func wrapDBusConnection(obj *externglib.Object) *DBusConnection {
 	return &DBusConnection{
@@ -2135,6 +2155,10 @@ type DBusMenuModel struct {
 	MenuModel
 }
 
+var (
+	_ MenuModeller = (*DBusMenuModel)(nil)
+)
+
 func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 	return &DBusMenuModel{
 		MenuModel: MenuModel{
@@ -2152,6 +2176,10 @@ func marshalDBusMenuModeller(p uintptr) (interface{}, error) {
 type DBusMessage struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*DBusMessage)(nil)
+)
 
 func wrapDBusMessage(obj *externglib.Object) *DBusMessage {
 	return &DBusMessage{
@@ -3156,6 +3184,10 @@ type DBusMethodInvocation struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*DBusMethodInvocation)(nil)
+)
+
 func wrapDBusMethodInvocation(obj *externglib.Object) *DBusMethodInvocation {
 	return &DBusMethodInvocation{
 		Object: obj,
@@ -3528,6 +3560,10 @@ type DBusServer struct {
 	Initable
 }
 
+var (
+	_ externglib.Objector = (*DBusServer)(nil)
+)
+
 func wrapDBusServer(obj *externglib.Object) *DBusServer {
 	return &DBusServer{
 		Object: obj,
@@ -3736,6 +3772,10 @@ func (server *DBusServer) ConnectNewConnection(f func(connection DBusConnection)
 type Menu struct {
 	MenuModel
 }
+
+var (
+	_ MenuModeller = (*Menu)(nil)
+)
 
 func wrapMenu(obj *externglib.Object) *Menu {
 	return &Menu{
@@ -4163,6 +4203,10 @@ func (menu *Menu) RemoveAll() {
 type MenuItem struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*MenuItem)(nil)
+)
 
 func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	return &MenuItem{
@@ -4731,6 +4775,10 @@ type Notification struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Notification)(nil)
+)
+
 func wrapNotification(obj *externglib.Object) *Notification {
 	return &Notification{
 		Object: obj,
@@ -5047,6 +5095,10 @@ type PropertyAction struct {
 	Action
 }
 
+var (
+	_ externglib.Objector = (*PropertyAction)(nil)
+)
+
 func wrapPropertyAction(obj *externglib.Object) *PropertyAction {
 	return &PropertyAction{
 		Object: obj,
@@ -5109,6 +5161,10 @@ type SimpleAction struct {
 
 	Action
 }
+
+var (
+	_ externglib.Objector = (*SimpleAction)(nil)
+)
 
 func wrapSimpleAction(obj *externglib.Object) *SimpleAction {
 	return &SimpleAction{
@@ -5330,6 +5386,10 @@ type SimpleIOStream struct {
 	IOStream
 }
 
+var (
+	_ IOStreamer = (*SimpleIOStream)(nil)
+)
+
 func wrapSimpleIOStream(obj *externglib.Object) *SimpleIOStream {
 	return &SimpleIOStream{
 		IOStream: IOStream{
@@ -5377,6 +5437,10 @@ func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *
 type SimplePermission struct {
 	Permission
 }
+
+var (
+	_ Permissioner = (*SimplePermission)(nil)
+)
 
 func wrapSimplePermission(obj *externglib.Object) *SimplePermission {
 	return &SimplePermission{
@@ -5489,6 +5553,10 @@ func NewSimplePermission(allowed bool) *SimplePermission {
 type TestDBus struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*TestDBus)(nil)
+)
 
 func wrapTestDBus(obj *externglib.Object) *TestDBus {
 	return &TestDBus{

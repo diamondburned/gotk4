@@ -41,6 +41,10 @@ type StackSidebar struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*StackSidebar)(nil)
+)
+
 func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 	return &StackSidebar{
 		Widget: Widget{

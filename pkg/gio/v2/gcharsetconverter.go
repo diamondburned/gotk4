@@ -31,6 +31,10 @@ type CharsetConverter struct {
 	Initable
 }
 
+var (
+	_ externglib.Objector = (*CharsetConverter)(nil)
+)
+
 func wrapCharsetConverter(obj *externglib.Object) *CharsetConverter {
 	return &CharsetConverter{
 		Object: obj,

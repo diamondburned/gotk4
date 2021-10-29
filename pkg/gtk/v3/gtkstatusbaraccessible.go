@@ -28,6 +28,10 @@ type StatusbarAccessible struct {
 	ContainerAccessible
 }
 
+var (
+	_ externglib.Objector = (*StatusbarAccessible)(nil)
+)
+
 func wrapStatusbarAccessible(obj *externglib.Object) *StatusbarAccessible {
 	return &StatusbarAccessible{
 		ContainerAccessible: ContainerAccessible{

@@ -70,6 +70,11 @@ type Statusbar struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*Statusbar)(nil)
+	_ externglib.Objector = (*Statusbar)(nil)
+)
+
 func wrapStatusbar(obj *externglib.Object) *Statusbar {
 	return &Statusbar{
 		Box: Box{

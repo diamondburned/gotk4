@@ -94,6 +94,10 @@ type SizeGroup struct {
 	Buildable
 }
 
+var (
+	_ externglib.Objector = (*SizeGroup)(nil)
+)
+
 func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
 	return &SizeGroup{
 		Object: obj,

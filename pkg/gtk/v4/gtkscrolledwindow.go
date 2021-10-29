@@ -194,6 +194,10 @@ type ScrolledWindow struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*ScrolledWindow)(nil)
+)
+
 func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 	return &ScrolledWindow{
 		Widget: Widget{

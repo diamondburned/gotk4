@@ -102,14 +102,17 @@ type IOStream struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*IOStream)(nil)
+)
+
 // IOStreamer describes types inherited from class IOStream.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type IOStreamer interface {
 	externglib.Objector
-
-	// BaseIOStream returns the underlying base class.
-	BaseIOStream() *IOStream
+	baseIOStream() *IOStream
 }
 
 var _ IOStreamer = (*IOStream)(nil)
@@ -429,9 +432,13 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 	runtime.KeepAlive(callback)
 }
 
-// BaseIOStream returns stream.
-func (stream *IOStream) BaseIOStream() *IOStream {
+func (stream *IOStream) baseIOStream() *IOStream {
 	return stream
+}
+
+// BaseIOStream returns the underlying base object.
+func BaseIOStream(obj IOStreamer) *IOStream {
+	return obj.baseIOStream()
 }
 
 // IOStreamSpliceFinish finishes an asynchronous io stream splice operation.

@@ -50,6 +50,10 @@ type X11Window struct {
 	gdk.Window
 }
 
+var (
+	_ gdk.Windower = (*X11Window)(nil)
+)
+
 func wrapX11Window(obj *externglib.Object) *X11Window {
 	return &X11Window{
 		Window: gdk.Window{

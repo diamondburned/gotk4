@@ -73,6 +73,10 @@ type Icon struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Icon)(nil)
+)
+
 // Iconner describes Icon's interface methods.
 type Iconner interface {
 	externglib.Objector

@@ -34,6 +34,10 @@ type EventControllerFocus struct {
 	EventController
 }
 
+var (
+	_ EventControllerer = (*EventControllerFocus)(nil)
+)
+
 func wrapEventControllerFocus(obj *externglib.Object) *EventControllerFocus {
 	return &EventControllerFocus{
 		EventController: EventController{

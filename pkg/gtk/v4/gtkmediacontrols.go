@@ -31,6 +31,10 @@ type MediaControls struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*MediaControls)(nil)
+)
+
 func wrapMediaControls(obj *externglib.Object) *MediaControls {
 	return &MediaControls{
 		Widget: Widget{

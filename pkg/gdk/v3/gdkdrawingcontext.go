@@ -37,6 +37,10 @@ type DrawingContext struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*DrawingContext)(nil)
+)
+
 func wrapDrawingContext(obj *externglib.Object) *DrawingContext {
 	return &DrawingContext{
 		Object: obj,

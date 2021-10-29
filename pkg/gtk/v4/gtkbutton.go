@@ -69,6 +69,11 @@ type Button struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Button)(nil)
+	_ externglib.Objector = (*Button)(nil)
+)
+
 func wrapButton(obj *externglib.Object) *Button {
 	return &Button{
 		Widget: Widget{

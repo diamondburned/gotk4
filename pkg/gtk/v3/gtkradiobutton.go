@@ -98,6 +98,11 @@ type RadioButton struct {
 	CheckButton
 }
 
+var (
+	_ Binner              = (*RadioButton)(nil)
+	_ externglib.Objector = (*RadioButton)(nil)
+)
+
 func wrapRadioButton(obj *externglib.Object) *RadioButton {
 	return &RadioButton{
 		CheckButton: CheckButton{

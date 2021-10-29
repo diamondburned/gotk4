@@ -184,6 +184,10 @@ type Window struct {
 	Bin
 }
 
+var (
+	_ Binner = (*Window)(nil)
+)
+
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
 		Bin: Bin{

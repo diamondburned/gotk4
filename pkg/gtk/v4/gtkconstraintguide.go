@@ -39,6 +39,10 @@ type ConstraintGuide struct {
 	ConstraintTarget
 }
 
+var (
+	_ externglib.Objector = (*ConstraintGuide)(nil)
+)
+
 func wrapConstraintGuide(obj *externglib.Object) *ConstraintGuide {
 	return &ConstraintGuide{
 		Object: obj,

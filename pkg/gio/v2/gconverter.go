@@ -124,6 +124,10 @@ type Converter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Converter)(nil)
+)
+
 // Converterer describes Converter's interface methods.
 type Converterer interface {
 	externglib.Objector

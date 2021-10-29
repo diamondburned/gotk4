@@ -262,14 +262,17 @@ type Container struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Container)(nil)
+)
+
 // Containerer describes types inherited from class Container.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Containerer interface {
 	externglib.Objector
-
-	// BaseContainer returns the underlying base class.
-	BaseContainer() *Container
+	baseContainer() *Container
 }
 
 var _ Containerer = (*Container)(nil)
@@ -994,9 +997,13 @@ func (container *Container) UnsetFocusChain() {
 	runtime.KeepAlive(container)
 }
 
-// BaseContainer returns container.
-func (container *Container) BaseContainer() *Container {
+func (container *Container) baseContainer() *Container {
 	return container
+}
+
+// BaseContainer returns the underlying base object.
+func BaseContainer(obj Containerer) *Container {
+	return obj.baseContainer()
 }
 
 func (container *Container) ConnectAdd(f func(object Widgetter)) externglib.SignalHandle {

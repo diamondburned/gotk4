@@ -101,6 +101,10 @@ type ShortcutsShortcut struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*ShortcutsShortcut)(nil)
+)
+
 func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 	return &ShortcutsShortcut{
 		Widget: Widget{

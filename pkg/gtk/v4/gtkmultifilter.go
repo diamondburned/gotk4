@@ -33,6 +33,10 @@ type AnyFilter struct {
 	MultiFilter
 }
 
+var (
+	_ MultiFilterer = (*AnyFilter)(nil)
+)
+
 func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 	return &AnyFilter{
 		MultiFilter: MultiFilter{
@@ -79,6 +83,10 @@ func NewAnyFilter() *AnyFilter {
 type EveryFilter struct {
 	MultiFilter
 }
+
+var (
+	_ MultiFilterer = (*EveryFilter)(nil)
+)
 
 func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 	return &EveryFilter{
@@ -130,14 +138,17 @@ type MultiFilter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*MultiFilter)(nil)
+)
+
 // MultiFilterer describes types inherited from class MultiFilter.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MultiFilterer interface {
 	externglib.Objector
-
-	// BaseMultiFilter returns the underlying base class.
-	BaseMultiFilter() *MultiFilter
+	baseMultiFilter() *MultiFilter
 }
 
 var _ MultiFilterer = (*MultiFilter)(nil)
@@ -202,7 +213,11 @@ func (self *MultiFilter) Remove(position uint) {
 	runtime.KeepAlive(position)
 }
 
-// BaseMultiFilter returns self.
-func (self *MultiFilter) BaseMultiFilter() *MultiFilter {
+func (self *MultiFilter) baseMultiFilter() *MultiFilter {
 	return self
+}
+
+// BaseMultiFilter returns the underlying base object.
+func BaseMultiFilter(obj MultiFilterer) *MultiFilter {
+	return obj.baseMultiFilter()
 }

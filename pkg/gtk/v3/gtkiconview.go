@@ -140,6 +140,11 @@ type IconView struct {
 	*externglib.Object
 }
 
+var (
+	_ Containerer         = (*IconView)(nil)
+	_ externglib.Objector = (*IconView)(nil)
+)
+
 func wrapIconView(obj *externglib.Object) *IconView {
 	return &IconView{
 		Container: Container{

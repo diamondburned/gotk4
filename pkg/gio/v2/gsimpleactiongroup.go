@@ -33,6 +33,10 @@ type SimpleActionGroup struct {
 	ActionMap
 }
 
+var (
+	_ externglib.Objector = (*SimpleActionGroup)(nil)
+)
+
 func wrapSimpleActionGroup(obj *externglib.Object) *SimpleActionGroup {
 	return &SimpleActionGroup{
 		Object: obj,

@@ -44,6 +44,10 @@ type StackSidebar struct {
 	Bin
 }
 
+var (
+	_ Binner = (*StackSidebar)(nil)
+)
+
 func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 	return &StackSidebar{
 		Bin: Bin{

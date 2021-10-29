@@ -29,6 +29,10 @@ type EventControllerKey struct {
 	EventController
 }
 
+var (
+	_ EventControllerer = (*EventControllerKey)(nil)
+)
+
 func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 	return &EventControllerKey{
 		EventController: EventController{

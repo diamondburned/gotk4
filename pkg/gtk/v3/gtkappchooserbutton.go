@@ -62,6 +62,11 @@ type AppChooserButton struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*AppChooserButton)(nil)
+	_ Binner              = (*AppChooserButton)(nil)
+)
+
 func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 	return &AppChooserButton{
 		ComboBox: ComboBox{

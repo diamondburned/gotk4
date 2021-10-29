@@ -38,8 +38,13 @@ type CellAccessible struct {
 	atk.Action
 	atk.Component
 	atk.TableCell
+	atk.ObjectClass
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*CellAccessible)(nil)
+)
 
 func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 	return &CellAccessible{
@@ -58,6 +63,9 @@ func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 			ObjectClass: atk.ObjectClass{
 				Object: obj,
 			},
+		},
+		ObjectClass: atk.ObjectClass{
+			Object: obj,
 		},
 		Object: obj,
 	}

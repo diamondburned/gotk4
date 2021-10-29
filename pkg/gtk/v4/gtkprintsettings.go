@@ -109,6 +109,10 @@ type PrintSettings struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*PrintSettings)(nil)
+)
+
 func wrapPrintSettings(obj *externglib.Object) *PrintSettings {
 	return &PrintSettings{
 		Object: obj,

@@ -136,6 +136,10 @@ type Action struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Action)(nil)
+)
+
 // Actioner describes Action's interface methods.
 type Actioner interface {
 	externglib.Objector

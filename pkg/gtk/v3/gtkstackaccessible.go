@@ -28,6 +28,10 @@ type StackAccessible struct {
 	ContainerAccessible
 }
 
+var (
+	_ externglib.Objector = (*StackAccessible)(nil)
+)
+
 func wrapStackAccessible(obj *externglib.Object) *StackAccessible {
 	return &StackAccessible{
 		ContainerAccessible: ContainerAccessible{

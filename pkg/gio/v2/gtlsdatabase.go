@@ -180,14 +180,17 @@ type TLSDatabase struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TLSDatabase)(nil)
+)
+
 // TLSDatabaser describes types inherited from class TLSDatabase.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type TLSDatabaser interface {
 	externglib.Objector
-
-	// BaseTLSDatabase returns the underlying base class.
-	BaseTLSDatabase() *TLSDatabase
+	baseTLSDatabase() *TLSDatabase
 }
 
 var _ TLSDatabaser = (*TLSDatabase)(nil)
@@ -925,7 +928,11 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 	return _tlsCertificateFlags, _goerr
 }
 
-// BaseTLSDatabase returns self.
-func (self *TLSDatabase) BaseTLSDatabase() *TLSDatabase {
+func (self *TLSDatabase) baseTLSDatabase() *TLSDatabase {
 	return self
+}
+
+// BaseTLSDatabase returns the underlying base object.
+func BaseTLSDatabase(obj TLSDatabaser) *TLSDatabase {
+	return obj.baseTLSDatabase()
 }

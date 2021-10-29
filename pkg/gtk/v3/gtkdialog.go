@@ -316,6 +316,10 @@ type Dialog struct {
 	Window
 }
 
+var (
+	_ Binner = (*Dialog)(nil)
+)
+
 func wrapDialog(obj *externglib.Object) *Dialog {
 	return &Dialog{
 		Window: Window{

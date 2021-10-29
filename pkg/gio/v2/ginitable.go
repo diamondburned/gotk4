@@ -97,6 +97,10 @@ type Initable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Initable)(nil)
+)
+
 // Initabler describes Initable's interface methods.
 type Initabler interface {
 	externglib.Objector

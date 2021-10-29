@@ -206,14 +206,17 @@ type Resolver struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Resolver)(nil)
+)
+
 // Resolverer describes types inherited from class Resolver.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Resolverer interface {
 	externglib.Objector
-
-	// BaseResolver returns the underlying base class.
-	BaseResolver() *Resolver
+	baseResolver() *Resolver
 }
 
 var _ Resolverer = (*Resolver)(nil)
@@ -967,9 +970,13 @@ func (resolver *Resolver) SetDefault() {
 	runtime.KeepAlive(resolver)
 }
 
-// BaseResolver returns resolver.
-func (resolver *Resolver) BaseResolver() *Resolver {
+func (resolver *Resolver) baseResolver() *Resolver {
 	return resolver
+}
+
+// BaseResolver returns the underlying base object.
+func BaseResolver(obj Resolverer) *Resolver {
+	return obj.baseResolver()
 }
 
 // ConnectReload: emitted when the resolver notices that the system resolver

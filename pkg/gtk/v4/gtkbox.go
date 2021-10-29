@@ -63,6 +63,11 @@ type Box struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Box)(nil)
+	_ externglib.Objector = (*Box)(nil)
+)
+
 func wrapBox(obj *externglib.Object) *Box {
 	return &Box{
 		Widget: Widget{

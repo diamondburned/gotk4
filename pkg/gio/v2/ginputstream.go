@@ -110,14 +110,17 @@ type InputStream struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*InputStream)(nil)
+)
+
 // InputStreamer describes types inherited from class InputStream.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type InputStreamer interface {
 	externglib.Objector
-
-	// BaseInputStream returns the underlying base class.
-	BaseInputStream() *InputStream
+	baseInputStream() *InputStream
 }
 
 var _ InputStreamer = (*InputStream)(nil)
@@ -932,7 +935,11 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	return _gssize, _goerr
 }
 
-// BaseInputStream returns stream.
-func (stream *InputStream) BaseInputStream() *InputStream {
+func (stream *InputStream) baseInputStream() *InputStream {
 	return stream
+}
+
+// BaseInputStream returns the underlying base object.
+func BaseInputStream(obj InputStreamer) *InputStream {
+	return obj.baseInputStream()
 }

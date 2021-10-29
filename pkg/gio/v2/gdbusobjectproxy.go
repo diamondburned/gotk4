@@ -31,6 +31,10 @@ type DBusObjectProxy struct {
 	DBusObject
 }
 
+var (
+	_ externglib.Objector = (*DBusObjectProxy)(nil)
+)
+
 func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
 	return &DBusObjectProxy{
 		Object: obj,

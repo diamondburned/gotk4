@@ -44,6 +44,10 @@ type HSV struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*HSV)(nil)
+)
+
 func wrapHSV(obj *externglib.Object) *HSV {
 	return &HSV{
 		Widget: Widget{

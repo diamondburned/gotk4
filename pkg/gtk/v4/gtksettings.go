@@ -55,6 +55,10 @@ type Settings struct {
 	StyleProvider
 }
 
+var (
+	_ externglib.Objector = (*Settings)(nil)
+)
+
 func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{
 		Object: obj,

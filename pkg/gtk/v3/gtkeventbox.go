@@ -32,6 +32,10 @@ type EventBox struct {
 	Bin
 }
 
+var (
+	_ Binner = (*EventBox)(nil)
+)
+
 func wrapEventBox(obj *externglib.Object) *EventBox {
 	return &EventBox{
 		Bin: Bin{

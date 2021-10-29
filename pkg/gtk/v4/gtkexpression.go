@@ -164,6 +164,10 @@ type CClosureExpression struct {
 	Expression
 }
 
+var (
+	_ Expressioner = (*CClosureExpression)(nil)
+)
+
 func wrapCClosureExpression(obj *externglib.Object) *CClosureExpression {
 	return &CClosureExpression{
 		Expression: Expression{
@@ -182,6 +186,10 @@ type ClosureExpression struct {
 	Expression
 }
 
+var (
+	_ Expressioner = (*ClosureExpression)(nil)
+)
+
 func wrapClosureExpression(obj *externglib.Object) *ClosureExpression {
 	return &ClosureExpression{
 		Expression: Expression{
@@ -198,6 +206,10 @@ func marshalClosureExpressioner(p uintptr) (interface{}, error) {
 type ConstantExpression struct {
 	Expression
 }
+
+var (
+	_ Expressioner = (*ConstantExpression)(nil)
+)
 
 func wrapConstantExpression(obj *externglib.Object) *ConstantExpression {
 	return &ConstantExpression{
@@ -376,14 +388,17 @@ type Expression struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Expression)(nil)
+)
+
 // Expressioner describes types inherited from class Expression.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Expressioner interface {
 	externglib.Objector
-
-	// BaseExpression returns the underlying base class.
-	BaseExpression() *Expression
+	baseExpression() *Expression
 }
 
 var _ Expressioner = (*Expression)(nil)
@@ -578,15 +593,23 @@ func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify)
 	return _expressionWatch
 }
 
-// BaseExpression returns self.
-func (self *Expression) BaseExpression() *Expression {
+func (self *Expression) baseExpression() *Expression {
 	return self
+}
+
+// BaseExpression returns the underlying base object.
+func BaseExpression(obj Expressioner) *Expression {
+	return obj.baseExpression()
 }
 
 // ObjectExpression: GObject value in a GtkExpression.
 type ObjectExpression struct {
 	Expression
 }
+
+var (
+	_ Expressioner = (*ObjectExpression)(nil)
+)
 
 func wrapObjectExpression(obj *externglib.Object) *ObjectExpression {
 	return &ObjectExpression{
@@ -652,6 +675,10 @@ func (expression *ObjectExpression) Object() *externglib.Object {
 type PropertyExpression struct {
 	Expression
 }
+
+var (
+	_ Expressioner = (*PropertyExpression)(nil)
+)
 
 func wrapPropertyExpression(obj *externglib.Object) *PropertyExpression {
 	return &PropertyExpression{

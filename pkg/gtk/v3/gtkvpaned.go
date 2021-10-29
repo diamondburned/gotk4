@@ -33,6 +33,11 @@ type VPaned struct {
 	Paned
 }
 
+var (
+	_ Containerer         = (*VPaned)(nil)
+	_ externglib.Objector = (*VPaned)(nil)
+)
+
 func wrapVPaned(obj *externglib.Object) *VPaned {
 	return &VPaned{
 		Paned: Paned{

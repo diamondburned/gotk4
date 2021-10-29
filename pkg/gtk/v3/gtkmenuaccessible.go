@@ -28,6 +28,10 @@ type MenuAccessible struct {
 	MenuShellAccessible
 }
 
+var (
+	_ externglib.Objector = (*MenuAccessible)(nil)
+)
+
 func wrapMenuAccessible(obj *externglib.Object) *MenuAccessible {
 	return &MenuAccessible{
 		MenuShellAccessible: MenuShellAccessible{

@@ -54,14 +54,17 @@ type DBusInterfaceSkeleton struct {
 	DBusInterface
 }
 
+var (
+	_ externglib.Objector = (*DBusInterfaceSkeleton)(nil)
+)
+
 // DBusInterfaceSkeletonner describes types inherited from class DBusInterfaceSkeleton.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type DBusInterfaceSkeletonner interface {
 	externglib.Objector
-
-	// BaseDBusInterfaceSkeleton returns the underlying base class.
-	BaseDBusInterfaceSkeleton() *DBusInterfaceSkeleton
+	baseDBusInterfaceSkeleton() *DBusInterfaceSkeleton
 }
 
 var _ DBusInterfaceSkeletonner = (*DBusInterfaceSkeleton)(nil)
@@ -339,9 +342,13 @@ func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBus
 	runtime.KeepAlive(connection)
 }
 
-// BaseDBusInterfaceSkeleton returns interface_.
-func (interface_ *DBusInterfaceSkeleton) BaseDBusInterfaceSkeleton() *DBusInterfaceSkeleton {
+func (interface_ *DBusInterfaceSkeleton) baseDBusInterfaceSkeleton() *DBusInterfaceSkeleton {
 	return interface_
+}
+
+// BaseDBusInterfaceSkeleton returns the underlying base object.
+func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkeleton {
+	return obj.baseDBusInterfaceSkeleton()
 }
 
 // ConnectGAuthorizeMethod: emitted when a method is invoked by a remote caller

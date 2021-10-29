@@ -60,6 +60,11 @@ type LockButton struct {
 	Button
 }
 
+var (
+	_ Binner              = (*LockButton)(nil)
+	_ externglib.Objector = (*LockButton)(nil)
+)
+
 func wrapLockButton(obj *externglib.Object) *LockButton {
 	return &LockButton{
 		Button: Button{

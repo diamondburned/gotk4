@@ -88,6 +88,10 @@ type BufferedInputStream struct {
 	Seekable
 }
 
+var (
+	_ FilterInputStreamer = (*BufferedInputStream)(nil)
+)
+
 func wrapBufferedInputStream(obj *externglib.Object) *BufferedInputStream {
 	return &BufferedInputStream{
 		FilterInputStream: FilterInputStream{

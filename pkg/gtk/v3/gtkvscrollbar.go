@@ -36,6 +36,10 @@ type VScrollbar struct {
 	Scrollbar
 }
 
+var (
+	_ Ranger = (*VScrollbar)(nil)
+)
+
 func wrapVScrollbar(obj *externglib.Object) *VScrollbar {
 	return &VScrollbar{
 		Scrollbar: Scrollbar{

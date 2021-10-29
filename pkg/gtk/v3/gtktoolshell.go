@@ -76,6 +76,10 @@ type ToolShell struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*ToolShell)(nil)
+)
+
 // ToolSheller describes ToolShell's interface methods.
 type ToolSheller interface {
 	externglib.Objector

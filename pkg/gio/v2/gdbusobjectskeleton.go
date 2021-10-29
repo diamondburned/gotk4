@@ -41,6 +41,10 @@ type DBusObjectSkeleton struct {
 	DBusObject
 }
 
+var (
+	_ externglib.Objector = (*DBusObjectSkeleton)(nil)
+)
+
 func wrapDBusObjectSkeleton(obj *externglib.Object) *DBusObjectSkeleton {
 	return &DBusObjectSkeleton{
 		Object: obj,

@@ -42,6 +42,10 @@ type InetAddress struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*InetAddress)(nil)
+)
+
 func wrapInetAddress(obj *externglib.Object) *InetAddress {
 	return &InetAddress{
 		Object: obj,

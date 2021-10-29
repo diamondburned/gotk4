@@ -28,6 +28,10 @@ type PopoverAccessible struct {
 	ContainerAccessible
 }
 
+var (
+	_ externglib.Objector = (*PopoverAccessible)(nil)
+)
+
 func wrapPopoverAccessible(obj *externglib.Object) *PopoverAccessible {
 	return &PopoverAccessible{
 		ContainerAccessible: ContainerAccessible{

@@ -202,6 +202,10 @@ type Label struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Label)(nil)
+)
+
 func wrapLabel(obj *externglib.Object) *Label {
 	return &Label{
 		Widget: Widget{

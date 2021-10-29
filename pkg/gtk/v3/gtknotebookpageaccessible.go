@@ -32,6 +32,10 @@ type NotebookPageAccessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*NotebookPageAccessible)(nil)
+)
+
 func wrapNotebookPageAccessible(obj *externglib.Object) *NotebookPageAccessible {
 	return &NotebookPageAccessible{
 		ObjectClass: atk.ObjectClass{

@@ -194,6 +194,10 @@ type Clipboard struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Clipboard)(nil)
+)
+
 func wrapClipboard(obj *externglib.Object) *Clipboard {
 	return &Clipboard{
 		Object: obj,

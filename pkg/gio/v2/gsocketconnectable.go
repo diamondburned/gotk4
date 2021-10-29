@@ -104,6 +104,10 @@ type SocketConnectable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*SocketConnectable)(nil)
+)
+
 // SocketConnectabler describes SocketConnectable's interface methods.
 type SocketConnectabler interface {
 	externglib.Objector

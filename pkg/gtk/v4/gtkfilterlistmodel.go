@@ -38,6 +38,10 @@ type FilterListModel struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*FilterListModel)(nil)
+)
+
 func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
 	return &FilterListModel{
 		Object: obj,

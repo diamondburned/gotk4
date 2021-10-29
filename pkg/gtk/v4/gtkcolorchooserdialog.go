@@ -40,6 +40,11 @@ type ColorChooserDialog struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ColorChooserDialog)(nil)
+	_ Widgetter           = (*ColorChooserDialog)(nil)
+)
+
 func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 	return &ColorChooserDialog{
 		Dialog: Dialog{

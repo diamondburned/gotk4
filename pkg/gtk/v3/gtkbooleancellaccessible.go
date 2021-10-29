@@ -28,6 +28,10 @@ type BooleanCellAccessible struct {
 	RendererCellAccessible
 }
 
+var (
+	_ externglib.Objector = (*BooleanCellAccessible)(nil)
+)
+
 func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 	return &BooleanCellAccessible{
 		RendererCellAccessible: RendererCellAccessible{
@@ -47,6 +51,9 @@ func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 					ObjectClass: atk.ObjectClass{
 						Object: obj,
 					},
+				},
+				ObjectClass: atk.ObjectClass{
+					Object: obj,
 				},
 				Object: obj,
 			},

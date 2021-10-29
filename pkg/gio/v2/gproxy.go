@@ -64,6 +64,10 @@ type Proxy struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Proxy)(nil)
+)
+
 // Proxier describes Proxy's interface methods.
 type Proxier interface {
 	externglib.Objector

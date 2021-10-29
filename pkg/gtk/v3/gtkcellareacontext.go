@@ -91,6 +91,10 @@ type CellAreaContext struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*CellAreaContext)(nil)
+)
+
 func wrapCellAreaContext(obj *externglib.Object) *CellAreaContext {
 	return &CellAreaContext{
 		Object: obj,

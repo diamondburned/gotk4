@@ -29,6 +29,11 @@ type VolumeButton struct {
 	ScaleButton
 }
 
+var (
+	_ Widgetter           = (*VolumeButton)(nil)
+	_ externglib.Objector = (*VolumeButton)(nil)
+)
+
 func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 	return &VolumeButton{
 		ScaleButton: ScaleButton{

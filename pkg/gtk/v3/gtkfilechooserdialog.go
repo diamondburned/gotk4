@@ -179,6 +179,11 @@ type FileChooserDialog struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FileChooserDialog)(nil)
+	_ Binner              = (*FileChooserDialog)(nil)
+)
+
 func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 	return &FileChooserDialog{
 		Dialog: Dialog{

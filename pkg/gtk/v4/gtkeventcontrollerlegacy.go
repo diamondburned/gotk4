@@ -31,6 +31,10 @@ type EventControllerLegacy struct {
 	EventController
 }
 
+var (
+	_ EventControllerer = (*EventControllerLegacy)(nil)
+)
+
 func wrapEventControllerLegacy(obj *externglib.Object) *EventControllerLegacy {
 	return &EventControllerLegacy{
 		EventController: EventController{

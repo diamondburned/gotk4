@@ -35,6 +35,10 @@ type SimpleProxyResolver struct {
 	ProxyResolver
 }
 
+var (
+	_ externglib.Objector = (*SimpleProxyResolver)(nil)
+)
+
 func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
 	return &SimpleProxyResolver{
 		Object: obj,

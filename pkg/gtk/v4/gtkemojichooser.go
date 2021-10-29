@@ -50,6 +50,11 @@ type EmojiChooser struct {
 	Popover
 }
 
+var (
+	_ Widgetter           = (*EmojiChooser)(nil)
+	_ externglib.Objector = (*EmojiChooser)(nil)
+)
+
 func wrapEmojiChooser(obj *externglib.Object) *EmojiChooser {
 	return &EmojiChooser{
 		Popover: Popover{

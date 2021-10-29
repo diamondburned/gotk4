@@ -224,6 +224,10 @@ type Toplevel struct {
 	Surface
 }
 
+var (
+	_ Surfacer = (*Toplevel)(nil)
+)
+
 // Topleveller describes Toplevel's interface methods.
 type Topleveller interface {
 	externglib.Objector

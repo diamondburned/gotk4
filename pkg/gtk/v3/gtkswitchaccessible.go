@@ -30,6 +30,10 @@ type SwitchAccessible struct {
 	atk.Action
 }
 
+var (
+	_ externglib.Objector = (*SwitchAccessible)(nil)
+)
+
 func wrapSwitchAccessible(obj *externglib.Object) *SwitchAccessible {
 	return &SwitchAccessible{
 		WidgetAccessible: WidgetAccessible{

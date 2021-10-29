@@ -85,6 +85,10 @@ type X11Display struct {
 	gdk.Display
 }
 
+var (
+	_ externglib.Objector = (*X11Display)(nil)
+)
+
 func wrapX11Display(obj *externglib.Object) *X11Display {
 	return &X11Display{
 		Display: gdk.Display{

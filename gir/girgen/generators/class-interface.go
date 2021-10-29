@@ -32,19 +32,24 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{ end }}
 	}
 
+	var (
+		{{ range .ImplInterfaces -}}
+		_ {{ . }} = (*{{ $.StructName }})(nil)
+		{{ end }}
+	)
+
 	{{ $needsPrivate := false }}
 
 	{{ if .Abstract }}
 
 	{{ if .IsClass }}
 	// {{ .InterfaceName }} describes types inherited from class {{ .StructName }}.
+	{{ $needsPrivate = true }}
 	// To get the original type, the caller must assert this to an interface or
 	// another type.
 	type {{ .InterfaceName }} interface {
 		externglib.Objector
-		{{ $needsPrivate = true }}
-		// Base{{ .StructName }} returns the underlying base class.
-		Base{{ .StructName }}() *{{ .StructName }}
+		base{{ .StructName }}() *{{ .StructName }}
 	}
 	{{ else }}
 	// {{ .InterfaceName }} describes {{ .StructName }}'s interface methods.
@@ -56,8 +61,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{- .Name }}{{ .Tail }}
 		{{ else }}
 		{{ $needsPrivate = true }}
-		// Base{{ .StructName }} returns the underlying base object.
-		Base{{ .StructName }}() *{{ .StructName }}
+		base{{ .StructName }}() *{{ .StructName }}
 		{{ end -}}
 	}
 	{{ end }}
@@ -105,9 +109,13 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	{{ if $needsPrivate }}
-	// Base{{ .StructName }} returns {{ .Recv }}.
-	func ({{ .Recv }} *{{ .StructName }}) Base{{ .StructName }}() *{{ .StructName }} {
+	func ({{ .Recv }} *{{ .StructName }}) base{{ .StructName }}() *{{ .StructName }} {
 		return {{ .Recv }}
+	}
+
+	// Base{{ .StructName }} returns the underlying base object.
+	func Base{{ .StructName }}(obj {{ .InterfaceName }}) *{{ .StructName }} {
+		return obj.base{{ .StructName }}()
 	}
 	{{ end }}
 
@@ -146,7 +154,8 @@ func GenerateClass(gen FileGeneratorWriter, class *gir.Class) bool {
 
 type ifacegenData struct {
 	*ifacegen.Generator
-	HasMarshaler bool
+	ImplInterfaces []string
+	HasMarshaler   bool
 }
 
 func (d ifacegenData) Recv() string {
@@ -169,8 +178,9 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 	}
 
 	data := ifacegenData{
-		Generator:    igen,
-		HasMarshaler: false,
+		Generator:      igen,
+		ImplInterfaces: igen.ImplInterfaces(),
+		HasMarshaler:   false,
 	}
 
 	if igen.GLibGetType != "" && !types.FilterCType(gen, igen.GLibGetType) {

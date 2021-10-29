@@ -51,6 +51,11 @@ type Viewport struct {
 	*externglib.Object
 }
 
+var (
+	_ Binner              = (*Viewport)(nil)
+	_ externglib.Objector = (*Viewport)(nil)
+)
+
 func wrapViewport(obj *externglib.Object) *Viewport {
 	return &Viewport{
 		Bin: Bin{

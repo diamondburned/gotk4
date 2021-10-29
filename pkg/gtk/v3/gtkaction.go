@@ -111,6 +111,10 @@ type Action struct {
 	Buildable
 }
 
+var (
+	_ externglib.Objector = (*Action)(nil)
+)
+
 func wrapAction(obj *externglib.Object) *Action {
 	return &Action{
 		Object: obj,

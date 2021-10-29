@@ -71,6 +71,11 @@ type RecentChooserDialog struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*RecentChooserDialog)(nil)
+	_ Binner              = (*RecentChooserDialog)(nil)
+)
+
 func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 	return &RecentChooserDialog{
 		Dialog: Dialog{

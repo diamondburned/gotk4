@@ -38,6 +38,10 @@ type Plug struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Plug)(nil)
+)
+
 func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{
 		ObjectClass: ObjectClass{

@@ -68,6 +68,10 @@ type Scrollable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Scrollable)(nil)
+)
+
 // Scrollabler describes Scrollable's interface methods.
 type Scrollabler interface {
 	externglib.Objector

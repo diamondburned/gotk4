@@ -131,6 +131,8 @@ type DTLSConnection struct {
 	DatagramBased
 }
 
+var ()
+
 // DTLSConnectioner describes DTLSConnection's interface methods.
 type DTLSConnectioner interface {
 	externglib.Objector

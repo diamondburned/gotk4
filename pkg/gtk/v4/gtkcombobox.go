@@ -101,6 +101,11 @@ type ComboBox struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*ComboBox)(nil)
+	_ externglib.Objector = (*ComboBox)(nil)
+)
+
 func wrapComboBox(obj *externglib.Object) *ComboBox {
 	return &ComboBox{
 		Widget: Widget{

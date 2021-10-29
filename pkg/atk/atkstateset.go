@@ -29,6 +29,10 @@ type StateSet struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*StateSet)(nil)
+)
+
 func wrapStateSet(obj *externglib.Object) *StateSet {
 	return &StateSet{
 		Object: obj,

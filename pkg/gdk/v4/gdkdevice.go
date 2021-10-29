@@ -84,14 +84,17 @@ type Device struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Device)(nil)
+)
+
 // Devicer describes types inherited from class Device.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Devicer interface {
 	externglib.Objector
-
-	// BaseDevice returns the underlying base class.
-	BaseDevice() *Device
+	baseDevice() *Device
 }
 
 var _ Devicer = (*Device)(nil)
@@ -493,9 +496,13 @@ func (device *Device) HasBidiLayouts() bool {
 	return _ok
 }
 
-// BaseDevice returns device.
-func (device *Device) BaseDevice() *Device {
+func (device *Device) baseDevice() *Device {
 	return device
+}
+
+// BaseDevice returns the underlying base object.
+func BaseDevice(obj Devicer) *Device {
+	return obj.baseDevice()
 }
 
 // ConnectChanged: emitted either when the the number of either axes or keys

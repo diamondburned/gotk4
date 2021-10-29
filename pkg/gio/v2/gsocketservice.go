@@ -56,6 +56,10 @@ type SocketService struct {
 	SocketListener
 }
 
+var (
+	_ externglib.Objector = (*SocketService)(nil)
+)
+
 func wrapSocketService(obj *externglib.Object) *SocketService {
 	return &SocketService{
 		SocketListener: SocketListener{

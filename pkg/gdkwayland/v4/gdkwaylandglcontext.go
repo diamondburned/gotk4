@@ -27,6 +27,10 @@ type WaylandGLContext struct {
 	gdk.GLContext
 }
 
+var (
+	_ gdk.GLContexter = (*WaylandGLContext)(nil)
+)
+
 func wrapWaylandGLContext(obj *externglib.Object) *WaylandGLContext {
 	return &WaylandGLContext{
 		GLContext: gdk.GLContext{

@@ -54,6 +54,10 @@ type DBusObjectManager struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*DBusObjectManager)(nil)
+)
+
 // DBusObjectManagerer describes DBusObjectManager's interface methods.
 type DBusObjectManagerer interface {
 	externglib.Objector

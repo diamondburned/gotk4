@@ -1325,6 +1325,10 @@ type Style struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Style)(nil)
+)
+
 func wrapStyle(obj *externglib.Object) *Style {
 	return &Style{
 		Object: obj,

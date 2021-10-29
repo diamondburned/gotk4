@@ -51,6 +51,11 @@ type ColorButton struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ColorButton)(nil)
+	_ Binner              = (*ColorButton)(nil)
+)
+
 func wrapColorButton(obj *externglib.Object) *ColorButton {
 	return &ColorButton{
 		Button: Button{

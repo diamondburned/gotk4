@@ -32,6 +32,10 @@ type LabelAccessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*LabelAccessible)(nil)
+)
+
 func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
 	return &LabelAccessible{
 		WidgetAccessible: WidgetAccessible{

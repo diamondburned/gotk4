@@ -34,6 +34,10 @@ type NoSelection struct {
 	SelectionModel
 }
 
+var (
+	_ externglib.Objector = (*NoSelection)(nil)
+)
+
 func wrapNoSelection(obj *externglib.Object) *NoSelection {
 	return &NoSelection{
 		Object: obj,

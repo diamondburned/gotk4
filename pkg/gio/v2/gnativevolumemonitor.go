@@ -27,14 +27,17 @@ type NativeVolumeMonitor struct {
 	VolumeMonitor
 }
 
+var (
+	_ externglib.Objector = (*NativeVolumeMonitor)(nil)
+)
+
 // NativeVolumeMonitorrer describes types inherited from class NativeVolumeMonitor.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type NativeVolumeMonitorrer interface {
 	externglib.Objector
-
-	// BaseNativeVolumeMonitor returns the underlying base class.
-	BaseNativeVolumeMonitor() *NativeVolumeMonitor
+	baseNativeVolumeMonitor() *NativeVolumeMonitor
 }
 
 var _ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
@@ -51,7 +54,11 @@ func marshalNativeVolumeMonitorrer(p uintptr) (interface{}, error) {
 	return wrapNativeVolumeMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// BaseNativeVolumeMonitor returns v.
-func (v *NativeVolumeMonitor) BaseNativeVolumeMonitor() *NativeVolumeMonitor {
+func (v *NativeVolumeMonitor) baseNativeVolumeMonitor() *NativeVolumeMonitor {
 	return v
+}
+
+// BaseNativeVolumeMonitor returns the underlying base object.
+func BaseNativeVolumeMonitor(obj NativeVolumeMonitorrer) *NativeVolumeMonitor {
+	return obj.baseNativeVolumeMonitor()
 }

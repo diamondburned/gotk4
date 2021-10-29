@@ -42,6 +42,11 @@ type Separator struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Separator)(nil)
+	_ externglib.Objector = (*Separator)(nil)
+)
+
 func wrapSeparator(obj *externglib.Object) *Separator {
 	return &Separator{
 		Widget: Widget{

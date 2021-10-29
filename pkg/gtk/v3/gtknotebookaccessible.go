@@ -30,6 +30,10 @@ type NotebookAccessible struct {
 	atk.Selection
 }
 
+var (
+	_ externglib.Objector = (*NotebookAccessible)(nil)
+)
+
 func wrapNotebookAccessible(obj *externglib.Object) *NotebookAccessible {
 	return &NotebookAccessible{
 		ContainerAccessible: ContainerAccessible{

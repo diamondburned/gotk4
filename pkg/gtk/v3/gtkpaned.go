@@ -85,6 +85,11 @@ type Paned struct {
 	*externglib.Object
 }
 
+var (
+	_ Containerer         = (*Paned)(nil)
+	_ externglib.Objector = (*Paned)(nil)
+)
+
 func wrapPaned(obj *externglib.Object) *Paned {
 	return &Paned{
 		Container: Container{

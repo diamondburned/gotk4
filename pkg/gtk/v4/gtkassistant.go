@@ -157,6 +157,11 @@ type Assistant struct {
 	Window
 }
 
+var (
+	_ Widgetter           = (*Assistant)(nil)
+	_ externglib.Objector = (*Assistant)(nil)
+)
+
 func wrapAssistant(obj *externglib.Object) *Assistant {
 	return &Assistant{
 		Window: Window{
@@ -795,6 +800,10 @@ func (assistant *Assistant) ConnectPrepare(f func(page Widgetter)) externglib.Si
 type AssistantPage struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*AssistantPage)(nil)
+)
 
 func wrapAssistantPage(obj *externglib.Object) *AssistantPage {
 	return &AssistantPage{

@@ -42,6 +42,10 @@ type GestureSingle struct {
 	Gesture
 }
 
+var (
+	_ Gesturer = (*GestureSingle)(nil)
+)
+
 func wrapGestureSingle(obj *externglib.Object) *GestureSingle {
 	return &GestureSingle{
 		Gesture: Gesture{

@@ -45,6 +45,10 @@ type Snapshot struct {
 	gdk.Snapshot
 }
 
+var (
+	_ gdk.Snapshotter = (*Snapshot)(nil)
+)
+
 func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	return &Snapshot{
 		Snapshot: gdk.Snapshot{

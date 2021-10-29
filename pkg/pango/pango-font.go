@@ -340,14 +340,17 @@ type Font struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Font)(nil)
+)
+
 // Fonter describes types inherited from class Font.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Fonter interface {
 	externglib.Objector
-
-	// BaseFont returns the underlying base class.
-	BaseFont() *Font
+	baseFont() *Font
 }
 
 var _ Fonter = (*Font)(nil)
@@ -619,9 +622,13 @@ func (font *Font) HasChar(wc uint32) bool {
 	return _ok
 }
 
-// BaseFont returns font.
-func (font *Font) BaseFont() *Font {
+func (font *Font) baseFont() *Font {
 	return font
+}
+
+// BaseFont returns the underlying base object.
+func BaseFont(obj Fonter) *Font {
+	return obj.baseFont()
 }
 
 // FontFaceOverrider contains methods that are overridable.
@@ -658,14 +665,17 @@ type FontFace struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FontFace)(nil)
+)
+
 // FontFacer describes types inherited from class FontFace.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FontFacer interface {
 	externglib.Objector
-
-	// BaseFontFace returns the underlying base class.
-	BaseFontFace() *FontFace
+	baseFontFace() *FontFace
 }
 
 var _ FontFacer = (*FontFace)(nil)
@@ -805,9 +815,13 @@ func (face *FontFace) ListSizes() []int {
 	return _sizes
 }
 
-// BaseFontFace returns face.
-func (face *FontFace) BaseFontFace() *FontFace {
+func (face *FontFace) baseFontFace() *FontFace {
 	return face
+}
+
+// BaseFontFace returns the underlying base object.
+func BaseFontFace(obj FontFacer) *FontFace {
+	return obj.baseFontFace()
 }
 
 // FontFamilyOverrider contains methods that are overridable.
@@ -856,14 +870,17 @@ type FontFamily struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FontFamily)(nil)
+)
+
 // FontFamilier describes types inherited from class FontFamily.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FontFamilier interface {
 	externglib.Objector
-
-	// BaseFontFamily returns the underlying base class.
-	BaseFontFamily() *FontFamily
+	baseFontFamily() *FontFamily
 }
 
 var _ FontFamilier = (*FontFamily)(nil)
@@ -1031,9 +1048,13 @@ func (family *FontFamily) ListFaces() []FontFacer {
 	return _faces
 }
 
-// BaseFontFamily returns family.
-func (family *FontFamily) BaseFontFamily() *FontFamily {
+func (family *FontFamily) baseFontFamily() *FontFamily {
 	return family
+}
+
+// BaseFontFamily returns the underlying base object.
+func BaseFontFamily(obj FontFamilier) *FontFamily {
+	return obj.baseFontFamily()
 }
 
 // FontDescription: PangoFontDescription describes a font in an

@@ -35,6 +35,10 @@ type AspectFrame struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*AspectFrame)(nil)
+)
+
 func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	return &AspectFrame{
 		Widget: Widget{

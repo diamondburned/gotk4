@@ -30,6 +30,10 @@ type WidgetAccessible struct {
 	atk.Component
 }
 
+var (
+	_ externglib.Objector = (*WidgetAccessible)(nil)
+)
+
 func wrapWidgetAccessible(obj *externglib.Object) *WidgetAccessible {
 	return &WidgetAccessible{
 		Accessible: Accessible{

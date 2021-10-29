@@ -30,14 +30,17 @@ type FilterOutputStream struct {
 	OutputStream
 }
 
+var (
+	_ OutputStreamer = (*FilterOutputStream)(nil)
+)
+
 // FilterOutputStreamer describes types inherited from class FilterOutputStream.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FilterOutputStreamer interface {
 	externglib.Objector
-
-	// BaseFilterOutputStream returns the underlying base class.
-	BaseFilterOutputStream() *FilterOutputStream
+	baseFilterOutputStream() *FilterOutputStream
 }
 
 var _ FilterOutputStreamer = (*FilterOutputStream)(nil)
@@ -124,7 +127,11 @@ func (stream *FilterOutputStream) SetCloseBaseStream(closeBase bool) {
 	runtime.KeepAlive(closeBase)
 }
 
-// BaseFilterOutputStream returns stream.
-func (stream *FilterOutputStream) BaseFilterOutputStream() *FilterOutputStream {
+func (stream *FilterOutputStream) baseFilterOutputStream() *FilterOutputStream {
 	return stream
+}
+
+// BaseFilterOutputStream returns the underlying base object.
+func BaseFilterOutputStream(obj FilterOutputStreamer) *FilterOutputStream {
+	return obj.baseFilterOutputStream()
 }

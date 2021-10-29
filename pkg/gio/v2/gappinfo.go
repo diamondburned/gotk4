@@ -206,6 +206,10 @@ type AppInfo struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*AppInfo)(nil)
+)
+
 // AppInfor describes AppInfo's interface methods.
 type AppInfor interface {
 	externglib.Objector
@@ -1468,6 +1472,10 @@ type AppLaunchContextOverrider interface {
 type AppLaunchContext struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*AppLaunchContext)(nil)
+)
 
 func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{

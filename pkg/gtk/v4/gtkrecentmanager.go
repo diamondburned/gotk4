@@ -142,6 +142,10 @@ type RecentManager struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*RecentManager)(nil)
+)
+
 func wrapRecentManager(obj *externglib.Object) *RecentManager {
 	return &RecentManager{
 		Object: obj,

@@ -901,6 +901,10 @@ type RCStyle struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*RCStyle)(nil)
+)
+
 func wrapRCStyle(obj *externglib.Object) *RCStyle {
 	return &RCStyle{
 		Object: obj,

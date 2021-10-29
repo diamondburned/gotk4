@@ -99,6 +99,10 @@ type Relation struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Relation)(nil)
+)
+
 func wrapRelation(obj *externglib.Object) *Relation {
 	return &Relation{
 		Object: obj,

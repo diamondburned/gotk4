@@ -76,6 +76,10 @@ type TextTagTable struct {
 	Buildable
 }
 
+var (
+	_ externglib.Objector = (*TextTagTable)(nil)
+)
+
 func wrapTextTagTable(obj *externglib.Object) *TextTagTable {
 	return &TextTagTable{
 		Object: obj,

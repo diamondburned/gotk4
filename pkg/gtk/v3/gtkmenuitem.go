@@ -75,6 +75,11 @@ type MenuItem struct {
 	*externglib.Object
 }
 
+var (
+	_ Binner              = (*MenuItem)(nil)
+	_ externglib.Objector = (*MenuItem)(nil)
+)
+
 func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	return &MenuItem{
 		Bin: Bin{

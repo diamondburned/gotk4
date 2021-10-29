@@ -426,6 +426,10 @@ type TreeModel struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TreeModel)(nil)
+)
+
 // TreeModeller describes TreeModel's interface methods.
 type TreeModeller interface {
 	externglib.Objector

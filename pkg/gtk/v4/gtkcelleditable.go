@@ -56,6 +56,10 @@ type CellEditable struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*CellEditable)(nil)
+)
+
 // CellEditabler describes CellEditable's interface methods.
 type CellEditabler interface {
 	externglib.Objector

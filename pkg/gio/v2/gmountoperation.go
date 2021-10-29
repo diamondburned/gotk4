@@ -60,6 +60,10 @@ type MountOperation struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*MountOperation)(nil)
+)
+
 func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{
 		Object: obj,

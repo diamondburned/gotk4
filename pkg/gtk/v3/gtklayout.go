@@ -45,6 +45,11 @@ type Layout struct {
 	*externglib.Object
 }
 
+var (
+	_ Containerer         = (*Layout)(nil)
+	_ externglib.Objector = (*Layout)(nil)
+)
+
 func wrapLayout(obj *externglib.Object) *Layout {
 	return &Layout{
 		Container: Container{

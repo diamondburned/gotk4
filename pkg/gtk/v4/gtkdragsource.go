@@ -97,6 +97,10 @@ type DragSource struct {
 	GestureSingle
 }
 
+var (
+	_ Gesturer = (*DragSource)(nil)
+)
+
 func wrapDragSource(obj *externglib.Object) *DragSource {
 	return &DragSource{
 		GestureSingle: GestureSingle{

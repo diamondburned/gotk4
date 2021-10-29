@@ -53,6 +53,10 @@ type PrintOperationPreview struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*PrintOperationPreview)(nil)
+)
+
 // PrintOperationPreviewer describes PrintOperationPreview's interface methods.
 type PrintOperationPreviewer interface {
 	externglib.Objector

@@ -51,6 +51,11 @@ type AppChooserWidget struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*AppChooserWidget)(nil)
+	_ externglib.Objector = (*AppChooserWidget)(nil)
+)
+
 func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 	return &AppChooserWidget{
 		Widget: Widget{

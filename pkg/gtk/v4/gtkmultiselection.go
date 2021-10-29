@@ -31,6 +31,10 @@ type MultiSelection struct {
 	SelectionModel
 }
 
+var (
+	_ externglib.Objector = (*MultiSelection)(nil)
+)
+
 func wrapMultiSelection(obj *externglib.Object) *MultiSelection {
 	return &MultiSelection{
 		Object: obj,

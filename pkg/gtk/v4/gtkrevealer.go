@@ -110,6 +110,10 @@ type Revealer struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Revealer)(nil)
+)
+
 func wrapRevealer(obj *externglib.Object) *Revealer {
 	return &Revealer{
 		Widget: Widget{

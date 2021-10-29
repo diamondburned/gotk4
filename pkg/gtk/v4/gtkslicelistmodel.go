@@ -35,6 +35,10 @@ type SliceListModel struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*SliceListModel)(nil)
+)
+
 func wrapSliceListModel(obj *externglib.Object) *SliceListModel {
 	return &SliceListModel{
 		Object: obj,

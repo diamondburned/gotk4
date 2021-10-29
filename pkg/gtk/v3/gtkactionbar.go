@@ -41,6 +41,10 @@ type ActionBar struct {
 	Bin
 }
 
+var (
+	_ Binner = (*ActionBar)(nil)
+)
+
 func wrapActionBar(obj *externglib.Object) *ActionBar {
 	return &ActionBar{
 		Bin: Bin{

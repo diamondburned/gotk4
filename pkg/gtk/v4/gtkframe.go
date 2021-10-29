@@ -76,6 +76,10 @@ type Frame struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Frame)(nil)
+)
+
 func wrapFrame(obj *externglib.Object) *Frame {
 	return &Frame{
 		Widget: Widget{

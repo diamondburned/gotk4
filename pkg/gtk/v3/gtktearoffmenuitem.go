@@ -42,6 +42,11 @@ type TearoffMenuItem struct {
 	MenuItem
 }
 
+var (
+	_ Binner              = (*TearoffMenuItem)(nil)
+	_ externglib.Objector = (*TearoffMenuItem)(nil)
+)
+
 func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 	return &TearoffMenuItem{
 		MenuItem: MenuItem{

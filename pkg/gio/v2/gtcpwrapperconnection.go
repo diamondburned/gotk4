@@ -30,6 +30,10 @@ type TCPWrapperConnection struct {
 	TCPConnection
 }
 
+var (
+	_ IOStreamer = (*TCPWrapperConnection)(nil)
+)
+
 func wrapTCPWrapperConnection(obj *externglib.Object) *TCPWrapperConnection {
 	return &TCPWrapperConnection{
 		TCPConnection: TCPConnection{

@@ -30,6 +30,10 @@ type CustomLayout struct {
 	LayoutManager
 }
 
+var (
+	_ LayoutManagerer = (*CustomLayout)(nil)
+)
+
 func wrapCustomLayout(obj *externglib.Object) *CustomLayout {
 	return &CustomLayout{
 		LayoutManager: LayoutManager{

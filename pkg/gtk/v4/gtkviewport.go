@@ -46,6 +46,11 @@ type Viewport struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Viewport)(nil)
+	_ externglib.Objector = (*Viewport)(nil)
+)
+
 func wrapViewport(obj *externglib.Object) *Viewport {
 	return &Viewport{
 		Widget: Widget{

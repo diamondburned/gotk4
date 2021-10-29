@@ -99,6 +99,10 @@ type InfoBar struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*InfoBar)(nil)
+)
+
 func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	return &InfoBar{
 		Widget: Widget{

@@ -84,6 +84,10 @@ type Socket struct {
 	Initable
 }
 
+var (
+	_ externglib.Objector = (*Socket)(nil)
+)
+
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
 		Object: obj,

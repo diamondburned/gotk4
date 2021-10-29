@@ -55,6 +55,11 @@ type Switch struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Switch)(nil)
+	_ externglib.Objector = (*Switch)(nil)
+)
+
 func wrapSwitch(obj *externglib.Object) *Switch {
 	return &Switch{
 		Widget: Widget{

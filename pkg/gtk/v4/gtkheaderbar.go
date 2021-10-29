@@ -96,6 +96,10 @@ type HeaderBar struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*HeaderBar)(nil)
+)
+
 func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 	return &HeaderBar{
 		Widget: Widget{

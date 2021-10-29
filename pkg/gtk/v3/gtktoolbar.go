@@ -95,7 +95,17 @@ type Toolbar struct {
 	Orientable
 	ToolShell
 	*externglib.Object
+	atk.ImplementorIface
+	Buildable
+	Widget
+	externglib.InitiallyUnowned
 }
+
+var (
+	_ Containerer         = (*Toolbar)(nil)
+	_ externglib.Objector = (*Toolbar)(nil)
+	_ Widgetter           = (*Toolbar)(nil)
+)
 
 func wrapToolbar(obj *externglib.Object) *Toolbar {
 	return &Toolbar{
@@ -131,6 +141,27 @@ func wrapToolbar(obj *externglib.Object) *Toolbar {
 			},
 		},
 		Object: obj,
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
+		Buildable: Buildable{
+			Object: obj,
+		},
+		Widget: Widget{
+			InitiallyUnowned: externglib.InitiallyUnowned{
+				Object: obj,
+			},
+			ImplementorIface: atk.ImplementorIface{
+				Object: obj,
+			},
+			Buildable: Buildable{
+				Object: obj,
+			},
+			Object: obj,
+		},
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
 	}
 }
 

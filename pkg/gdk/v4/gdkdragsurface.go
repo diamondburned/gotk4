@@ -27,6 +27,10 @@ type DragSurface struct {
 	Surface
 }
 
+var (
+	_ Surfacer = (*DragSurface)(nil)
+)
+
 // DragSurfacer describes DragSurface's interface methods.
 type DragSurfacer interface {
 	externglib.Objector

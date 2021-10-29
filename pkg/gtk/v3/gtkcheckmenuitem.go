@@ -54,6 +54,11 @@ type CheckMenuItem struct {
 	MenuItem
 }
 
+var (
+	_ Binner              = (*CheckMenuItem)(nil)
+	_ externglib.Objector = (*CheckMenuItem)(nil)
+)
+
 func wrapCheckMenuItem(obj *externglib.Object) *CheckMenuItem {
 	return &CheckMenuItem{
 		MenuItem: MenuItem{

@@ -133,6 +133,11 @@ type MessageDialog struct {
 	Dialog
 }
 
+var (
+	_ Widgetter           = (*MessageDialog)(nil)
+	_ externglib.Objector = (*MessageDialog)(nil)
+)
+
 func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	return &MessageDialog{
 		Dialog: Dialog{

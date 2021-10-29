@@ -88,6 +88,10 @@ type Revealer struct {
 	Bin
 }
 
+var (
+	_ Binner = (*Revealer)(nil)
+)
+
 func wrapRevealer(obj *externglib.Object) *Revealer {
 	return &Revealer{
 		Bin: Bin{

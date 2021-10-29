@@ -31,8 +31,11 @@ type CellRendererProgress struct {
 	CellRenderer
 
 	Orientable
-	*externglib.Object
 }
+
+var (
+	_ CellRendererer = (*CellRendererProgress)(nil)
+)
 
 func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 	return &CellRendererProgress{
@@ -44,7 +47,6 @@ func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

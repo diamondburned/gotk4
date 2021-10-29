@@ -121,6 +121,10 @@ type ListView struct {
 	ListBase
 }
 
+var (
+	_ ListBaser = (*ListView)(nil)
+)
+
 func wrapListView(obj *externglib.Object) *ListView {
 	return &ListView{
 		ListBase: ListBase{

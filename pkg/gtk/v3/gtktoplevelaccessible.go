@@ -30,6 +30,10 @@ type ToplevelAccessible struct {
 	atk.ObjectClass
 }
 
+var (
+	_ externglib.Objector = (*ToplevelAccessible)(nil)
+)
+
 func wrapToplevelAccessible(obj *externglib.Object) *ToplevelAccessible {
 	return &ToplevelAccessible{
 		ObjectClass: atk.ObjectClass{

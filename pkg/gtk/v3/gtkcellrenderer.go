@@ -221,14 +221,15 @@ type CellRenderer struct {
 	externglib.InitiallyUnowned
 }
 
+var ()
+
 // CellRendererer describes types inherited from class CellRenderer.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type CellRendererer interface {
 	externglib.Objector
-
-	// BaseCellRenderer returns the underlying base class.
-	BaseCellRenderer() *CellRenderer
+	baseCellRenderer() *CellRenderer
 }
 
 var _ CellRendererer = (*CellRenderer)(nil)
@@ -937,9 +938,13 @@ func (cell *CellRenderer) StopEditing(canceled bool) {
 	runtime.KeepAlive(canceled)
 }
 
-// BaseCellRenderer returns cell.
-func (cell *CellRenderer) BaseCellRenderer() *CellRenderer {
+func (cell *CellRenderer) baseCellRenderer() *CellRenderer {
 	return cell
+}
+
+// BaseCellRenderer returns the underlying base object.
+func BaseCellRenderer(obj CellRendererer) *CellRenderer {
+	return obj.baseCellRenderer()
 }
 
 // ConnectEditingCanceled: this signal gets emitted when the user cancels the

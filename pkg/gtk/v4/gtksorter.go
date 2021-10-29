@@ -147,6 +147,10 @@ type Sorter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Sorter)(nil)
+)
+
 func wrapSorter(obj *externglib.Object) *Sorter {
 	return &Sorter{
 		Object: obj,

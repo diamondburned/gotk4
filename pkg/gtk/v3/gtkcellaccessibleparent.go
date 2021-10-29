@@ -48,6 +48,10 @@ type CellAccessibleParent struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*CellAccessibleParent)(nil)
+)
+
 // CellAccessibleParenter describes CellAccessibleParent's interface methods.
 type CellAccessibleParenter interface {
 	externglib.Objector

@@ -157,6 +157,10 @@ type FileChooser struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FileChooser)(nil)
+)
+
 // FileChooserer describes FileChooser's interface methods.
 type FileChooserer interface {
 	externglib.Objector

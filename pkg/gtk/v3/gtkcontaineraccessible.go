@@ -28,6 +28,10 @@ type ContainerAccessible struct {
 	WidgetAccessible
 }
 
+var (
+	_ externglib.Objector = (*ContainerAccessible)(nil)
+)
+
 func wrapContainerAccessible(obj *externglib.Object) *ContainerAccessible {
 	return &ContainerAccessible{
 		WidgetAccessible: WidgetAccessible{

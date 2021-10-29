@@ -33,6 +33,10 @@ type DataInputStream struct {
 	BufferedInputStream
 }
 
+var (
+	_ FilterInputStreamer = (*DataInputStream)(nil)
+)
+
 func wrapDataInputStream(obj *externglib.Object) *DataInputStream {
 	return &DataInputStream{
 		BufferedInputStream: BufferedInputStream{

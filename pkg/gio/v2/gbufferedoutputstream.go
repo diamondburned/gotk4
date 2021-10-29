@@ -42,6 +42,10 @@ type BufferedOutputStream struct {
 	Seekable
 }
 
+var (
+	_ FilterOutputStreamer = (*BufferedOutputStream)(nil)
+)
+
 func wrapBufferedOutputStream(obj *externglib.Object) *BufferedOutputStream {
 	return &BufferedOutputStream{
 		FilterOutputStream: FilterOutputStream{

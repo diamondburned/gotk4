@@ -70,6 +70,10 @@ type SearchBar struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*SearchBar)(nil)
+)
+
 func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	return &SearchBar{
 		Widget: Widget{

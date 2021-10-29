@@ -42,6 +42,10 @@ type ActionBar struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*ActionBar)(nil)
+)
+
 func wrapActionBar(obj *externglib.Object) *ActionBar {
 	return &ActionBar{
 		Widget: Widget{

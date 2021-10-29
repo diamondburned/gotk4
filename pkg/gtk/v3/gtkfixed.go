@@ -66,6 +66,10 @@ type Fixed struct {
 	Container
 }
 
+var (
+	_ Containerer = (*Fixed)(nil)
+)
+
 func wrapFixed(obj *externglib.Object) *Fixed {
 	return &Fixed{
 		Container: Container{

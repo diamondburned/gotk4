@@ -30,6 +30,10 @@ type WaylandSeat struct {
 	gdk.Seat
 }
 
+var (
+	_ gdk.Seater = (*WaylandSeat)(nil)
+)
+
 func wrapWaylandSeat(obj *externglib.Object) *WaylandSeat {
 	return &WaylandSeat{
 		Seat: gdk.Seat{

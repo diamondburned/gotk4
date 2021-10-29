@@ -69,6 +69,10 @@ type FileFilter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FileFilter)(nil)
+)
+
 func wrapFileFilter(obj *externglib.Object) *FileFilter {
 	return &FileFilter{
 		Filter: Filter{

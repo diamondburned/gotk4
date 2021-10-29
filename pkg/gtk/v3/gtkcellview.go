@@ -53,6 +53,11 @@ type CellView struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*CellView)(nil)
+	_ externglib.Objector = (*CellView)(nil)
+)
+
 func wrapCellView(obj *externglib.Object) *CellView {
 	return &CellView{
 		Widget: Widget{

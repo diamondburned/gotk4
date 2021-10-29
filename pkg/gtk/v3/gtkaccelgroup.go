@@ -476,6 +476,10 @@ type AccelGroup struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*AccelGroup)(nil)
+)
+
 func wrapAccelGroup(obj *externglib.Object) *AccelGroup {
 	return &AccelGroup{
 		Object: obj,

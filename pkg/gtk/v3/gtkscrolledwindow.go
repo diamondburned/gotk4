@@ -196,6 +196,10 @@ type ScrolledWindow struct {
 	Bin
 }
 
+var (
+	_ Binner = (*ScrolledWindow)(nil)
+)
+
 func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 	return &ScrolledWindow{
 		Bin: Bin{

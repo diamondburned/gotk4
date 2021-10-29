@@ -46,6 +46,10 @@ type TLSBackend struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TLSBackend)(nil)
+)
+
 // TLSBackender describes TLSBackend's interface methods.
 type TLSBackender interface {
 	externglib.Objector

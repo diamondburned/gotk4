@@ -67,6 +67,10 @@ type Scrollbar struct {
 	Range
 }
 
+var (
+	_ Ranger = (*Scrollbar)(nil)
+)
+
 func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 	return &Scrollbar{
 		Range: Range{

@@ -48,6 +48,11 @@ type FontChooserWidget struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FontChooserWidget)(nil)
+	_ Containerer         = (*FontChooserWidget)(nil)
+)
+
 func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 	return &FontChooserWidget{
 		Box: Box{

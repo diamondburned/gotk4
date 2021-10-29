@@ -54,6 +54,11 @@ type EditableLabel struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*EditableLabel)(nil)
+	_ externglib.Objector = (*EditableLabel)(nil)
+)
+
 func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 	return &EditableLabel{
 		Widget: Widget{

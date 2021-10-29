@@ -30,6 +30,10 @@ type ExpanderAccessible struct {
 	atk.Action
 }
 
+var (
+	_ externglib.Objector = (*ExpanderAccessible)(nil)
+)
+
 func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
 	return &ExpanderAccessible{
 		ContainerAccessible: ContainerAccessible{

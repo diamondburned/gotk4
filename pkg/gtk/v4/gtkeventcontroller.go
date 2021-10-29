@@ -39,14 +39,17 @@ type EventController struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*EventController)(nil)
+)
+
 // EventControllerer describes types inherited from class EventController.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type EventControllerer interface {
 	externglib.Objector
-
-	// BaseEventController returns the underlying base class.
-	BaseEventController() *EventController
+	baseEventController() *EventController
 }
 
 var _ EventControllerer = (*EventController)(nil)
@@ -308,7 +311,11 @@ func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	runtime.KeepAlive(phase)
 }
 
-// BaseEventController returns controller.
-func (controller *EventController) BaseEventController() *EventController {
+func (controller *EventController) baseEventController() *EventController {
 	return controller
+}
+
+// BaseEventController returns the underlying base object.
+func BaseEventController(obj EventControllerer) *EventController {
+	return obj.baseEventController()
 }

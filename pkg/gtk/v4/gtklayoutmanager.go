@@ -95,14 +95,17 @@ type LayoutManager struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*LayoutManager)(nil)
+)
+
 // LayoutManagerer describes types inherited from class LayoutManager.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type LayoutManagerer interface {
 	externglib.Objector
-
-	// BaseLayoutManager returns the underlying base class.
-	BaseLayoutManager() *LayoutManager
+	baseLayoutManager() *LayoutManager
 }
 
 var _ LayoutManagerer = (*LayoutManager)(nil)
@@ -300,7 +303,11 @@ func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation,
 	return _minimum, _natural, _minimumBaseline, _naturalBaseline
 }
 
-// BaseLayoutManager returns manager.
-func (manager *LayoutManager) BaseLayoutManager() *LayoutManager {
+func (manager *LayoutManager) baseLayoutManager() *LayoutManager {
 	return manager
+}
+
+// BaseLayoutManager returns the underlying base object.
+func BaseLayoutManager(obj LayoutManagerer) *LayoutManager {
+	return obj.baseLayoutManager()
 }

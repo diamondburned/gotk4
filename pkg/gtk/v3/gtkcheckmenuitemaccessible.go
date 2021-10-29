@@ -28,6 +28,10 @@ type CheckMenuItemAccessible struct {
 	MenuItemAccessible
 }
 
+var (
+	_ externglib.Objector = (*CheckMenuItemAccessible)(nil)
+)
+
 func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessible {
 	return &CheckMenuItemAccessible{
 		MenuItemAccessible: MenuItemAccessible{

@@ -88,6 +88,10 @@ type MapListModel struct {
 	gio.ListModel
 }
 
+var (
+	_ externglib.Objector = (*MapListModel)(nil)
+)
+
 func wrapMapListModel(obj *externglib.Object) *MapListModel {
 	return &MapListModel{
 		Object: obj,

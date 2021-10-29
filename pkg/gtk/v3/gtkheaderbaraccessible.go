@@ -19,6 +19,10 @@ type HeaderBarAccessible struct {
 	ContainerAccessible
 }
 
+var (
+	_ externglib.Objector = (*HeaderBarAccessible)(nil)
+)
+
 func wrapHeaderBarAccessible(obj *externglib.Object) *HeaderBarAccessible {
 	return &HeaderBarAccessible{
 		ContainerAccessible: ContainerAccessible{

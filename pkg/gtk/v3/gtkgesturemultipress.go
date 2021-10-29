@@ -39,6 +39,10 @@ type GestureMultiPress struct {
 	GestureSingle
 }
 
+var (
+	_ Gesturer = (*GestureMultiPress)(nil)
+)
+
 func wrapGestureMultiPress(obj *externglib.Object) *GestureMultiPress {
 	return &GestureMultiPress{
 		GestureSingle: GestureSingle{

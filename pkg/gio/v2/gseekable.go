@@ -81,6 +81,10 @@ type Seekable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Seekable)(nil)
+)
+
 // Seekabler describes Seekable's interface methods.
 type Seekabler interface {
 	externglib.Objector

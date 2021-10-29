@@ -29,6 +29,10 @@ type RendererCellAccessible struct {
 	CellAccessible
 }
 
+var (
+	_ externglib.Objector = (*RendererCellAccessible)(nil)
+)
+
 func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible {
 	return &RendererCellAccessible{
 		CellAccessible: CellAccessible{
@@ -47,6 +51,9 @@ func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible 
 				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
+			},
+			ObjectClass: atk.ObjectClass{
+				Object: obj,
 			},
 			Object: obj,
 		},

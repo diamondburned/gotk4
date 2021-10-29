@@ -183,6 +183,10 @@ type Application struct {
 	ActionMap
 }
 
+var (
+	_ externglib.Objector = (*Application)(nil)
+)
+
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{
 		Object: obj,

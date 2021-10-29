@@ -36,6 +36,11 @@ type MemoryInputStream struct {
 	*externglib.Object
 }
 
+var (
+	_ InputStreamer       = (*MemoryInputStream)(nil)
+	_ externglib.Objector = (*MemoryInputStream)(nil)
+)
+
 func wrapMemoryInputStream(obj *externglib.Object) *MemoryInputStream {
 	return &MemoryInputStream{
 		InputStream: InputStream{

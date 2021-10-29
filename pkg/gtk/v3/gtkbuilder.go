@@ -299,6 +299,10 @@ type Builder struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Builder)(nil)
+)
+
 func wrapBuilder(obj *externglib.Object) *Builder {
 	return &Builder{
 		Object: obj,

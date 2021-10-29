@@ -40,14 +40,17 @@ type Renderer struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Renderer)(nil)
+)
+
 // Rendererer describes types inherited from class Renderer.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Rendererer interface {
 	externglib.Objector
-
-	// BaseRenderer returns the underlying base class.
-	BaseRenderer() *Renderer
+	baseRenderer() *Renderer
 }
 
 var _ Rendererer = (*Renderer)(nil)
@@ -264,7 +267,11 @@ func (renderer *Renderer) Unrealize() {
 	runtime.KeepAlive(renderer)
 }
 
-// BaseRenderer returns renderer.
-func (renderer *Renderer) BaseRenderer() *Renderer {
+func (renderer *Renderer) baseRenderer() *Renderer {
 	return renderer
+}
+
+// BaseRenderer returns the underlying base object.
+func BaseRenderer(obj Rendererer) *Renderer {
+	return obj.baseRenderer()
 }

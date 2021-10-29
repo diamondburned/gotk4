@@ -70,6 +70,10 @@ type Document struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Document)(nil)
+)
+
 // Documenter describes Document's interface methods.
 type Documenter interface {
 	externglib.Objector

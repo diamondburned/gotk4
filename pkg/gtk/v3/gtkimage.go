@@ -149,6 +149,10 @@ type Image struct {
 	Misc
 }
 
+var (
+	_ Miscer = (*Image)(nil)
+)
+
 func wrapImage(obj *externglib.Object) *Image {
 	return &Image{
 		Misc: Misc{

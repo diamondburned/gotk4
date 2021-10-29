@@ -93,6 +93,11 @@ type Window struct {
 	*externglib.Object
 }
 
+var (
+	_ Widgetter           = (*Window)(nil)
+	_ externglib.Objector = (*Window)(nil)
+)
+
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
 		Widget: Widget{

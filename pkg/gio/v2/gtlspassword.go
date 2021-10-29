@@ -40,6 +40,10 @@ type TLSPassword struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TLSPassword)(nil)
+)
+
 func wrapTLSPassword(obj *externglib.Object) *TLSPassword {
 	return &TLSPassword{
 		Object: obj,

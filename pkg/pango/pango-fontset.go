@@ -106,14 +106,17 @@ type Fontset struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Fontset)(nil)
+)
+
 // Fontsetter describes types inherited from class Fontset.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Fontsetter interface {
 	externglib.Objector
-
-	// BaseFontset returns the underlying base class.
-	BaseFontset() *Fontset
+	baseFontset() *Fontset
 }
 
 var _ Fontsetter = (*Fontset)(nil)
@@ -213,9 +216,13 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	return _fontMetrics
 }
 
-// BaseFontset returns fontset.
-func (fontset *Fontset) BaseFontset() *Fontset {
+func (fontset *Fontset) baseFontset() *Fontset {
 	return fontset
+}
+
+// BaseFontset returns the underlying base object.
+func BaseFontset(obj Fontsetter) *Fontset {
+	return obj.baseFontset()
 }
 
 // FontsetSimple: PangoFontsetSimple is a implementation of the abstract
@@ -226,6 +233,10 @@ func (fontset *Fontset) BaseFontset() *Fontset {
 type FontsetSimple struct {
 	Fontset
 }
+
+var (
+	_ Fontsetter = (*FontsetSimple)(nil)
+)
 
 func wrapFontsetSimple(obj *externglib.Object) *FontsetSimple {
 	return &FontsetSimple{

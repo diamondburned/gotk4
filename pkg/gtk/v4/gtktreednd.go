@@ -82,6 +82,10 @@ type TreeDragDest struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TreeDragDest)(nil)
+)
+
 // TreeDragDester describes TreeDragDest's interface methods.
 type TreeDragDester interface {
 	externglib.Objector
@@ -200,6 +204,10 @@ type TreeDragSourceOverrider interface {
 type TreeDragSource struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*TreeDragSource)(nil)
+)
 
 // TreeDragSourcer describes TreeDragSource's interface methods.
 type TreeDragSourcer interface {

@@ -89,6 +89,10 @@ type ContentProvider struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ContentProvider)(nil)
+)
+
 func wrapContentProvider(obj *externglib.Object) *ContentProvider {
 	return &ContentProvider{
 		Object: obj,

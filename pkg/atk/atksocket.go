@@ -65,6 +65,10 @@ type Socket struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Socket)(nil)
+)
+
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
 		ObjectClass: ObjectClass{

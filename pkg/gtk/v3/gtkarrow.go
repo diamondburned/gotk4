@@ -47,6 +47,10 @@ type Arrow struct {
 	Misc
 }
 
+var (
+	_ Miscer = (*Arrow)(nil)
+)
+
 func wrapArrow(obj *externglib.Object) *Arrow {
 	return &Arrow{
 		Misc: Misc{

@@ -58,6 +58,10 @@ type BlendNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*BlendNode)(nil)
+)
+
 func wrapBlendNode(obj *externglib.Object) *BlendNode {
 	return &BlendNode{
 		RenderNode: RenderNode{
@@ -181,6 +185,10 @@ type BlurNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*BlurNode)(nil)
+)
+
 func wrapBlurNode(obj *externglib.Object) *BlurNode {
 	return &BlurNode{
 		RenderNode: RenderNode{
@@ -269,6 +277,10 @@ func (node *BlurNode) Radius() float32 {
 type BorderNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*BorderNode)(nil)
+)
 
 func wrapBorderNode(obj *externglib.Object) *BorderNode {
 	return &BorderNode{
@@ -378,6 +390,10 @@ type CairoNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*CairoNode)(nil)
+)
+
 func wrapCairoNode(obj *externglib.Object) *CairoNode {
 	return &CairoNode{
 		RenderNode: RenderNode{
@@ -464,6 +480,10 @@ func (node *CairoNode) Surface() *cairo.Surface {
 type ClipNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*ClipNode)(nil)
+)
 
 func wrapClipNode(obj *externglib.Object) *ClipNode {
 	return &ClipNode{
@@ -555,6 +575,10 @@ func (node *ClipNode) Clip() *graphene.Rect {
 type ColorMatrixNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*ColorMatrixNode)(nil)
+)
 
 func wrapColorMatrixNode(obj *externglib.Object) *ColorMatrixNode {
 	return &ColorMatrixNode{
@@ -674,6 +698,10 @@ type ColorNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*ColorNode)(nil)
+)
+
 func wrapColorNode(obj *externglib.Object) *ColorNode {
 	return &ColorNode{
 		RenderNode: RenderNode{
@@ -734,6 +762,10 @@ func (node *ColorNode) Color() *gdk.RGBA {
 type ConicGradientNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*ConicGradientNode)(nil)
+)
 
 func wrapConicGradientNode(obj *externglib.Object) *ConicGradientNode {
 	return &ConicGradientNode{
@@ -899,6 +931,10 @@ type ContainerNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*ContainerNode)(nil)
+)
+
 func wrapContainerNode(obj *externglib.Object) *ContainerNode {
 	return &ContainerNode{
 		RenderNode: RenderNode{
@@ -1003,6 +1039,10 @@ func (node *ContainerNode) NChildren() uint {
 type CrossFadeNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*CrossFadeNode)(nil)
+)
 
 func wrapCrossFadeNode(obj *externglib.Object) *CrossFadeNode {
 	return &CrossFadeNode{
@@ -1130,6 +1170,10 @@ type DebugNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*DebugNode)(nil)
+)
+
 func wrapDebugNode(obj *externglib.Object) *DebugNode {
 	return &DebugNode{
 		RenderNode: RenderNode{
@@ -1221,6 +1265,10 @@ func (node *DebugNode) Message() string {
 type GLShaderNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*GLShaderNode)(nil)
+)
 
 func wrapGLShaderNode(obj *externglib.Object) *GLShaderNode {
 	return &GLShaderNode{
@@ -1394,6 +1442,10 @@ type InsetShadowNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*InsetShadowNode)(nil)
+)
+
 func wrapInsetShadowNode(obj *externglib.Object) *InsetShadowNode {
 	return &InsetShadowNode{
 		RenderNode: RenderNode{
@@ -1556,6 +1608,10 @@ type LinearGradientNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*LinearGradientNode)(nil)
+)
+
 func wrapLinearGradientNode(obj *externglib.Object) *LinearGradientNode {
 	return &LinearGradientNode{
 		RenderNode: RenderNode{
@@ -1695,6 +1751,10 @@ type OpacityNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*OpacityNode)(nil)
+)
+
 func wrapOpacityNode(obj *externglib.Object) *OpacityNode {
 	return &OpacityNode{
 		RenderNode: RenderNode{
@@ -1784,6 +1844,10 @@ func (node *OpacityNode) Opacity() float32 {
 type OutsetShadowNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*OutsetShadowNode)(nil)
+)
 
 func wrapOutsetShadowNode(obj *externglib.Object) *OutsetShadowNode {
 	return &OutsetShadowNode{
@@ -1946,6 +2010,10 @@ func (node *OutsetShadowNode) Spread() float32 {
 type RadialGradientNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*RadialGradientNode)(nil)
+)
 
 func wrapRadialGradientNode(obj *externglib.Object) *RadialGradientNode {
 	return &RadialGradientNode{
@@ -2153,6 +2221,10 @@ type RepeatNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*RepeatNode)(nil)
+)
+
 func wrapRepeatNode(obj *externglib.Object) *RepeatNode {
 	return &RepeatNode{
 		RenderNode: RenderNode{
@@ -2250,6 +2322,10 @@ type RepeatingLinearGradientNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*RepeatingLinearGradientNode)(nil)
+)
+
 func wrapRepeatingLinearGradientNode(obj *externglib.Object) *RepeatingLinearGradientNode {
 	return &RepeatingLinearGradientNode{
 		RenderNode: RenderNode{
@@ -2313,6 +2389,10 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start, end *graphene.
 type RepeatingRadialGradientNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*RepeatingRadialGradientNode)(nil)
+)
 
 func wrapRepeatingRadialGradientNode(obj *externglib.Object) *RepeatingRadialGradientNode {
 	return &RepeatingRadialGradientNode{
@@ -2395,6 +2475,10 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 type RoundedClipNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*RoundedClipNode)(nil)
+)
 
 func wrapRoundedClipNode(obj *externglib.Object) *RoundedClipNode {
 	return &RoundedClipNode{
@@ -2486,6 +2570,10 @@ func (node *RoundedClipNode) Clip() *RoundedRect {
 type ShadowNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*ShadowNode)(nil)
+)
 
 func wrapShadowNode(obj *externglib.Object) *ShadowNode {
 	return &ShadowNode{
@@ -2610,6 +2698,10 @@ func (node *ShadowNode) Shadow(i uint) *Shadow {
 type TextNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*TextNode)(nil)
+)
 
 func wrapTextNode(obj *externglib.Object) *TextNode {
 	return &TextNode{
@@ -2789,6 +2881,10 @@ type TextureNode struct {
 	RenderNode
 }
 
+var (
+	_ RenderNoder = (*TextureNode)(nil)
+)
+
 func wrapTextureNode(obj *externglib.Object) *TextureNode {
 	return &TextureNode{
 		RenderNode: RenderNode{
@@ -2861,6 +2957,10 @@ func (node *TextureNode) Texture() gdk.Texturer {
 type TransformNode struct {
 	RenderNode
 }
+
+var (
+	_ RenderNoder = (*TransformNode)(nil)
+)
 
 func wrapTransformNode(obj *externglib.Object) *TransformNode {
 	return &TransformNode{

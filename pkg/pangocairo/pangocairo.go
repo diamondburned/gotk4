@@ -564,12 +564,15 @@ type Font struct {
 	pango.Font
 }
 
+var (
+	_ pango.Fonter = (*Font)(nil)
+)
+
 // Fonter describes Font's interface methods.
 type Fonter interface {
 	externglib.Objector
 
-	// BaseFont returns the underlying base object.
-	BaseFont() *Font
+	baseFont() *Font
 }
 
 var _ Fonter = (*Font)(nil)
@@ -586,9 +589,13 @@ func marshalFonter(p uintptr) (interface{}, error) {
 	return wrapFont(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// BaseFont returns v.
-func (v *Font) BaseFont() *Font {
+func (v *Font) baseFont() *Font {
 	return v
+}
+
+// BaseFont returns the underlying base object.
+func BaseFont(obj Fonter) *Font {
+	return obj.baseFont()
 }
 
 // FontMap: PangoCairoFontMap is an interface exported by font maps for use with
@@ -599,6 +606,10 @@ func (v *Font) BaseFont() *Font {
 type FontMap struct {
 	pango.FontMap
 }
+
+var (
+	_ pango.FontMapper = (*FontMap)(nil)
+)
 
 // FontMapper describes FontMap's interface methods.
 type FontMapper interface {

@@ -49,6 +49,11 @@ type StackSwitcher struct {
 	Box
 }
 
+var (
+	_ Containerer         = (*StackSwitcher)(nil)
+	_ externglib.Objector = (*StackSwitcher)(nil)
+)
+
 func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 	return &StackSwitcher{
 		Box: Box{

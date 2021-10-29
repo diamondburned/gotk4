@@ -116,6 +116,10 @@ type Editable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Editable)(nil)
+)
+
 // Editabler describes Editable's interface methods.
 type Editabler interface {
 	externglib.Objector

@@ -209,14 +209,17 @@ type OutputStream struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*OutputStream)(nil)
+)
+
 // OutputStreamer describes types inherited from class OutputStream.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type OutputStreamer interface {
 	externglib.Objector
-
-	// BaseOutputStream returns the underlying base class.
-	BaseOutputStream() *OutputStream
+	baseOutputStream() *OutputStream
 }
 
 var _ OutputStreamer = (*OutputStream)(nil)
@@ -1457,7 +1460,11 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	return _bytesWritten, _goerr
 }
 
-// BaseOutputStream returns stream.
-func (stream *OutputStream) BaseOutputStream() *OutputStream {
+func (stream *OutputStream) baseOutputStream() *OutputStream {
 	return stream
+}
+
+// BaseOutputStream returns the underlying base object.
+func BaseOutputStream(obj OutputStreamer) *OutputStream {
+	return obj.baseOutputStream()
 }

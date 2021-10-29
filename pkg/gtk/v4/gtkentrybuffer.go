@@ -68,6 +68,10 @@ type EntryBuffer struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*EntryBuffer)(nil)
+)
+
 func wrapEntryBuffer(obj *externglib.Object) *EntryBuffer {
 	return &EntryBuffer{
 		Object: obj,

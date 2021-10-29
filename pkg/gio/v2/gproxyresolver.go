@@ -73,6 +73,10 @@ type ProxyResolver struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ProxyResolver)(nil)
+)
+
 // ProxyResolverer describes ProxyResolver's interface methods.
 type ProxyResolverer interface {
 	externglib.Objector

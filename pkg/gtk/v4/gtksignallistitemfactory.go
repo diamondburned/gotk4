@@ -65,6 +65,10 @@ type SignalListItemFactory struct {
 	ListItemFactory
 }
 
+var (
+	_ externglib.Objector = (*SignalListItemFactory)(nil)
+)
+
 func wrapSignalListItemFactory(obj *externglib.Object) *SignalListItemFactory {
 	return &SignalListItemFactory{
 		ListItemFactory: ListItemFactory{

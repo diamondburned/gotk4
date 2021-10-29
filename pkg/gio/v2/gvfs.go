@@ -92,6 +92,10 @@ type VFS struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*VFS)(nil)
+)
+
 func wrapVFS(obj *externglib.Object) *VFS {
 	return &VFS{
 		Object: obj,

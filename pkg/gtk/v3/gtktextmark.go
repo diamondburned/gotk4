@@ -55,6 +55,10 @@ type TextMark struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TextMark)(nil)
+)
+
 func wrapTextMark(obj *externglib.Object) *TextMark {
 	return &TextMark{
 		Object: obj,

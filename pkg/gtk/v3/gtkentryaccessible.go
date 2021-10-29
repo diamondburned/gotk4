@@ -33,6 +33,10 @@ type EntryAccessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*EntryAccessible)(nil)
+)
+
 func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 	return &EntryAccessible{
 		WidgetAccessible: WidgetAccessible{

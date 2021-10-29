@@ -205,6 +205,10 @@ type ListBox struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*ListBox)(nil)
+)
+
 func wrapListBox(obj *externglib.Object) *ListBox {
 	return &ListBox{
 		Widget: Widget{
@@ -1001,6 +1005,11 @@ type ListBoxRow struct {
 	Actionable
 	*externglib.Object
 }
+
+var (
+	_ Widgetter           = (*ListBoxRow)(nil)
+	_ externglib.Objector = (*ListBoxRow)(nil)
+)
 
 func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 	return &ListBoxRow{

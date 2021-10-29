@@ -267,16 +267,23 @@ func (typ *Resolved) CanNil() bool {
 	return typ.Ptr > 0
 }
 
-func (typ *Resolved) externType() *gir.TypeFindResult {
+// Underlying returns itself OR the alias' resolved type iff there's one.
+func (typ *Resolved) Underlying() *Resolved {
 	if typ.Aliased != nil {
-		return typ.Aliased.Extern
+		return typ.Aliased
 	}
-	return typ.Extern
+	return typ
+}
+
+// UnderlyingExtern returns the extern type OR the alias' extern type iff
+// there's one. Nil is returned if neither.
+func (typ *Resolved) UnderlyingExtern() *gir.TypeFindResult {
+	return typ.Underlying().Extern
 }
 
 // IsCallback returns true if the current ResolvedType is a callback.
 func (typ *Resolved) IsCallback() bool {
-	t := typ.externType()
+	t := typ.UnderlyingExtern()
 	if t == nil {
 		return false
 	}
@@ -287,7 +294,7 @@ func (typ *Resolved) IsCallback() bool {
 
 // IsUnion returns true if the current ResolvedType is a union.
 func (typ *Resolved) IsUnion() bool {
-	t := typ.externType()
+	t := typ.UnderlyingExtern()
 	if t == nil {
 		return false
 	}
@@ -298,7 +305,7 @@ func (typ *Resolved) IsUnion() bool {
 
 // IsRecord returns true if the current ResolvedType is a record.
 func (typ *Resolved) IsRecord() bool {
-	t := typ.externType()
+	t := typ.UnderlyingExtern()
 	if t == nil {
 		return false
 	}
@@ -309,7 +316,7 @@ func (typ *Resolved) IsRecord() bool {
 
 // IsInterface returns true if the current ResolvedType is an interface.
 func (typ *Resolved) IsInterface() bool {
-	t := typ.externType()
+	t := typ.UnderlyingExtern()
 	if t == nil {
 		return false
 	}
@@ -320,7 +327,7 @@ func (typ *Resolved) IsInterface() bool {
 
 // IsClass returns true if the current ResolvedType is a class.
 func (typ *Resolved) IsClass() bool {
-	t := typ.externType()
+	t := typ.UnderlyingExtern()
 	if t == nil {
 		return false
 	}
@@ -337,7 +344,7 @@ func (typ *Resolved) IsAbstract() bool {
 	}
 
 	if typ.IsClass() {
-		return typ.externType().Type.(*gir.Class).Abstract
+		return typ.UnderlyingExtern().Type.(*gir.Class).Abstract
 	}
 
 	return false
@@ -346,7 +353,7 @@ func (typ *Resolved) IsAbstract() bool {
 // IsEnumOrBitfield returns true if the resolved type is an external enum or
 // bitfield type.
 func (typ *Resolved) IsEnumOrBitfield() bool {
-	t := typ.externType()
+	t := typ.UnderlyingExtern()
 	if t == nil {
 		return false
 	}

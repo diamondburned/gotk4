@@ -33,6 +33,10 @@ type TextViewAccessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*TextViewAccessible)(nil)
+)
+
 func wrapTextViewAccessible(obj *externglib.Object) *TextViewAccessible {
 	return &TextViewAccessible{
 		ContainerAccessible: ContainerAccessible{

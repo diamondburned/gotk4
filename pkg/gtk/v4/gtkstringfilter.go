@@ -72,6 +72,10 @@ type StringFilter struct {
 	Filter
 }
 
+var (
+	_ externglib.Objector = (*StringFilter)(nil)
+)
+
 func wrapStringFilter(obj *externglib.Object) *StringFilter {
 	return &StringFilter{
 		Filter: Filter{

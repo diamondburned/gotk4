@@ -45,6 +45,8 @@ type Adjustment struct {
 	externglib.InitiallyUnowned
 }
 
+var ()
+
 func wrapAdjustment(obj *externglib.Object) *Adjustment {
 	return &Adjustment{
 		InitiallyUnowned: externglib.InitiallyUnowned{

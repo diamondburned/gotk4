@@ -158,6 +158,10 @@ type FileFilter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FileFilter)(nil)
+)
+
 func wrapFileFilter(obj *externglib.Object) *FileFilter {
 	return &FileFilter{
 		InitiallyUnowned: externglib.InitiallyUnowned{

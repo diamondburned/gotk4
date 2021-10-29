@@ -40,6 +40,8 @@ type Root struct {
 	NativeSurface
 }
 
+var ()
+
 // Rooter describes Root's interface methods.
 type Rooter interface {
 	externglib.Objector

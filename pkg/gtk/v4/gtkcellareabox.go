@@ -46,6 +46,11 @@ type CellAreaBox struct {
 	*externglib.Object
 }
 
+var (
+	_ CellAreaer          = (*CellAreaBox)(nil)
+	_ externglib.Objector = (*CellAreaBox)(nil)
+)
+
 func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 	return &CellAreaBox{
 		CellArea: CellArea{

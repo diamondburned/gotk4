@@ -40,6 +40,10 @@ type Video struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Video)(nil)
+)
+
 func wrapVideo(obj *externglib.Object) *Video {
 	return &Video{
 		Widget: Widget{

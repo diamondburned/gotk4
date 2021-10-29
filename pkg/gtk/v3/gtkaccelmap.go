@@ -86,6 +86,10 @@ type AccelMap struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*AccelMap)(nil)
+)
+
 func wrapAccelMap(obj *externglib.Object) *AccelMap {
 	return &AccelMap{
 		Object: obj,

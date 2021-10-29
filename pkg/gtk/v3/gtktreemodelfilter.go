@@ -186,6 +186,10 @@ type TreeModelFilter struct {
 	TreeModel
 }
 
+var (
+	_ externglib.Objector = (*TreeModelFilter)(nil)
+)
+
 func wrapTreeModelFilter(obj *externglib.Object) *TreeModelFilter {
 	return &TreeModelFilter{
 		Object: obj,

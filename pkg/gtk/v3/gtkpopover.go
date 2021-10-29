@@ -98,6 +98,10 @@ type Popover struct {
 	Bin
 }
 
+var (
+	_ Binner = (*Popover)(nil)
+)
+
 func wrapPopover(obj *externglib.Object) *Popover {
 	return &Popover{
 		Bin: Bin{

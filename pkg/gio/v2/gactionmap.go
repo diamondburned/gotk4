@@ -56,6 +56,10 @@ type ActionMap struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ActionMap)(nil)
+)
+
 // ActionMapper describes ActionMap's interface methods.
 type ActionMapper interface {
 	externglib.Objector

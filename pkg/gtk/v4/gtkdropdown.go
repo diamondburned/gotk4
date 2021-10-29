@@ -56,6 +56,10 @@ type DropDown struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*DropDown)(nil)
+)
+
 func wrapDropDown(obj *externglib.Object) *DropDown {
 	return &DropDown{
 		Widget: Widget{

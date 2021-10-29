@@ -27,6 +27,10 @@ type ProxyAddress struct {
 	InetSocketAddress
 }
 
+var (
+	_ SocketAddresser = (*ProxyAddress)(nil)
+)
+
 func wrapProxyAddress(obj *externglib.Object) *ProxyAddress {
 	return &ProxyAddress{
 		InetSocketAddress: InetSocketAddress{

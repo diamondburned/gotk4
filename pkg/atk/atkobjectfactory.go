@@ -42,6 +42,10 @@ type ObjectFactory struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ObjectFactory)(nil)
+)
+
 func wrapObjectFactory(obj *externglib.Object) *ObjectFactory {
 	return &ObjectFactory{
 		Object: obj,

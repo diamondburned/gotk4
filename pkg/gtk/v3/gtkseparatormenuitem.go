@@ -36,6 +36,11 @@ type SeparatorMenuItem struct {
 	MenuItem
 }
 
+var (
+	_ Binner              = (*SeparatorMenuItem)(nil)
+	_ externglib.Objector = (*SeparatorMenuItem)(nil)
+)
+
 func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 	return &SeparatorMenuItem{
 		MenuItem: MenuItem{

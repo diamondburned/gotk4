@@ -172,6 +172,11 @@ type SpinButton struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*SpinButton)(nil)
+	_ Widgetter           = (*SpinButton)(nil)
+)
+
 func wrapSpinButton(obj *externglib.Object) *SpinButton {
 	return &SpinButton{
 		Entry: Entry{

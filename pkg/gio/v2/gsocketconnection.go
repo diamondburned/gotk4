@@ -46,6 +46,10 @@ type SocketConnection struct {
 	IOStream
 }
 
+var (
+	_ IOStreamer = (*SocketConnection)(nil)
+)
+
 func wrapSocketConnection(obj *externglib.Object) *SocketConnection {
 	return &SocketConnection{
 		IOStream: IOStream{

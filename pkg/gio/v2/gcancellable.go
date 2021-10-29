@@ -39,6 +39,10 @@ type Cancellable struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Cancellable)(nil)
+)
+
 func wrapCancellable(obj *externglib.Object) *Cancellable {
 	return &Cancellable{
 		Object: obj,

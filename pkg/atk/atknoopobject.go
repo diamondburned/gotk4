@@ -43,6 +43,10 @@ type NoOpObject struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*NoOpObject)(nil)
+)
+
 func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 	return &NoOpObject{
 		ObjectClass: ObjectClass{

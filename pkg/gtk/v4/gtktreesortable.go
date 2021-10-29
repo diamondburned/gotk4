@@ -136,6 +136,8 @@ type TreeSortable struct {
 	TreeModel
 }
 
+var ()
+
 // TreeSortabler describes TreeSortable's interface methods.
 type TreeSortabler interface {
 	externglib.Objector

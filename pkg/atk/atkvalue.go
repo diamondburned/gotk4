@@ -292,6 +292,10 @@ type Value struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Value)(nil)
+)
+
 // Valueer describes Value's interface methods.
 type Valueer interface {
 	externglib.Objector

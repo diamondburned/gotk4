@@ -74,14 +74,17 @@ type SocketAddressEnumerator struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*SocketAddressEnumerator)(nil)
+)
+
 // SocketAddressEnumeratorrer describes types inherited from class SocketAddressEnumerator.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type SocketAddressEnumeratorrer interface {
 	externglib.Objector
-
-	// BaseSocketAddressEnumerator returns the underlying base class.
-	BaseSocketAddressEnumerator() *SocketAddressEnumerator
+	baseSocketAddressEnumerator() *SocketAddressEnumerator
 }
 
 var _ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
@@ -231,7 +234,11 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 	return _socketAddress, _goerr
 }
 
-// BaseSocketAddressEnumerator returns enumerator.
-func (enumerator *SocketAddressEnumerator) BaseSocketAddressEnumerator() *SocketAddressEnumerator {
+func (enumerator *SocketAddressEnumerator) baseSocketAddressEnumerator() *SocketAddressEnumerator {
 	return enumerator
+}
+
+// BaseSocketAddressEnumerator returns the underlying base object.
+func BaseSocketAddressEnumerator(obj SocketAddressEnumeratorrer) *SocketAddressEnumerator {
+	return obj.baseSocketAddressEnumerator()
 }

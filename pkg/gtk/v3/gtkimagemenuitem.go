@@ -53,6 +53,11 @@ type ImageMenuItem struct {
 	MenuItem
 }
 
+var (
+	_ Binner              = (*ImageMenuItem)(nil)
+	_ externglib.Objector = (*ImageMenuItem)(nil)
+)
+
 func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 	return &ImageMenuItem{
 		MenuItem: MenuItem{

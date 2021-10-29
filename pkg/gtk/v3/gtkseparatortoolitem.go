@@ -43,6 +43,11 @@ type SeparatorToolItem struct {
 	ToolItem
 }
 
+var (
+	_ Binner              = (*SeparatorToolItem)(nil)
+	_ externglib.Objector = (*SeparatorToolItem)(nil)
+)
+
 func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 	return &SeparatorToolItem{
 		ToolItem: ToolItem{

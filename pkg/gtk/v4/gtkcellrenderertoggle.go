@@ -31,6 +31,10 @@ type CellRendererToggle struct {
 	CellRenderer
 }
 
+var (
+	_ CellRendererer = (*CellRendererToggle)(nil)
+)
+
 func wrapCellRendererToggle(obj *externglib.Object) *CellRendererToggle {
 	return &CellRendererToggle{
 		CellRenderer: CellRenderer{

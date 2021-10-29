@@ -224,6 +224,10 @@ type SimpleAsyncResult struct {
 	AsyncResult
 }
 
+var (
+	_ externglib.Objector = (*SimpleAsyncResult)(nil)
+)
+
 func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
 	return &SimpleAsyncResult{
 		Object: obj,

@@ -35,14 +35,17 @@ type LayoutChild struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*LayoutChild)(nil)
+)
+
 // LayoutChilder describes types inherited from class LayoutChild.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type LayoutChilder interface {
 	externglib.Objector
-
-	// BaseLayoutChild returns the underlying base class.
-	BaseLayoutChild() *LayoutChild
+	baseLayoutChild() *LayoutChild
 }
 
 var _ LayoutChilder = (*LayoutChild)(nil)
@@ -116,7 +119,11 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	return _layoutManager
 }
 
-// BaseLayoutChild returns layoutChild.
-func (layoutChild *LayoutChild) BaseLayoutChild() *LayoutChild {
+func (layoutChild *LayoutChild) baseLayoutChild() *LayoutChild {
 	return layoutChild
+}
+
+// BaseLayoutChild returns the underlying base object.
+func BaseLayoutChild(obj LayoutChilder) *LayoutChild {
+	return obj.baseLayoutChild()
 }

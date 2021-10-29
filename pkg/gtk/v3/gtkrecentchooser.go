@@ -192,6 +192,10 @@ type RecentChooser struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*RecentChooser)(nil)
+)
+
 // RecentChooserer describes RecentChooser's interface methods.
 type RecentChooserer interface {
 	externglib.Objector

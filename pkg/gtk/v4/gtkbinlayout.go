@@ -32,6 +32,10 @@ type BinLayout struct {
 	LayoutManager
 }
 
+var (
+	_ LayoutManagerer = (*BinLayout)(nil)
+)
+
 func wrapBinLayout(obj *externglib.Object) *BinLayout {
 	return &BinLayout{
 		LayoutManager: LayoutManager{

@@ -31,6 +31,10 @@ type SpinButtonAccessible struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*SpinButtonAccessible)(nil)
+)
+
 func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 	return &SpinButtonAccessible{
 		EntryAccessible: EntryAccessible{

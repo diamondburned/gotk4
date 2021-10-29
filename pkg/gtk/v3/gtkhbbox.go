@@ -28,6 +28,11 @@ type HButtonBox struct {
 	ButtonBox
 }
 
+var (
+	_ Containerer         = (*HButtonBox)(nil)
+	_ externglib.Objector = (*HButtonBox)(nil)
+)
+
 func wrapHButtonBox(obj *externglib.Object) *HButtonBox {
 	return &HButtonBox{
 		ButtonBox: ButtonBox{

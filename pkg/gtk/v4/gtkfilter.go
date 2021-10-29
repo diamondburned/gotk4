@@ -140,6 +140,10 @@ type Filter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Filter)(nil)
+)
+
 func wrapFilter(obj *externglib.Object) *Filter {
 	return &Filter{
 		Object: obj,

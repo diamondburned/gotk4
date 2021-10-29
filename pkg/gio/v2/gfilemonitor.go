@@ -47,14 +47,17 @@ type FileMonitor struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FileMonitor)(nil)
+)
+
 // FileMonitorrer describes types inherited from class FileMonitor.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FileMonitorrer interface {
 	externglib.Objector
-
-	// BaseFileMonitor returns the underlying base class.
-	BaseFileMonitor() *FileMonitor
+	baseFileMonitor() *FileMonitor
 }
 
 var _ FileMonitorrer = (*FileMonitor)(nil)
@@ -158,9 +161,13 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	runtime.KeepAlive(limitMsecs)
 }
 
-// BaseFileMonitor returns monitor.
-func (monitor *FileMonitor) BaseFileMonitor() *FileMonitor {
+func (monitor *FileMonitor) baseFileMonitor() *FileMonitor {
 	return monitor
+}
+
+// BaseFileMonitor returns the underlying base object.
+func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
+	return obj.baseFileMonitor()
 }
 
 // ConnectChanged: emitted when file has been changed.

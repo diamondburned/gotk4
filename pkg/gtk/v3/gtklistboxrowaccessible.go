@@ -28,6 +28,10 @@ type ListBoxRowAccessible struct {
 	ContainerAccessible
 }
 
+var (
+	_ externglib.Objector = (*ListBoxRowAccessible)(nil)
+)
+
 func wrapListBoxRowAccessible(obj *externglib.Object) *ListBoxRowAccessible {
 	return &ListBoxRowAccessible{
 		ContainerAccessible: ContainerAccessible{

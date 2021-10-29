@@ -63,6 +63,10 @@ type Image struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Image)(nil)
+)
+
 // Imager describes Image's interface methods.
 type Imager interface {
 	externglib.Objector

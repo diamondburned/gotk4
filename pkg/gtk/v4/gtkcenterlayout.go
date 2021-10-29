@@ -34,6 +34,10 @@ type CenterLayout struct {
 	LayoutManager
 }
 
+var (
+	_ LayoutManagerer = (*CenterLayout)(nil)
+)
+
 func wrapCenterLayout(obj *externglib.Object) *CenterLayout {
 	return &CenterLayout{
 		LayoutManager: LayoutManager{

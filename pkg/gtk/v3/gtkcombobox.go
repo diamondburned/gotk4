@@ -84,6 +84,11 @@ type ComboBox struct {
 	*externglib.Object
 }
 
+var (
+	_ Binner              = (*ComboBox)(nil)
+	_ externglib.Objector = (*ComboBox)(nil)
+)
+
 func wrapComboBox(obj *externglib.Object) *ComboBox {
 	return &ComboBox{
 		Bin: Bin{

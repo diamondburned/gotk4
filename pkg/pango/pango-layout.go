@@ -166,6 +166,10 @@ type Layout struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Layout)(nil)
+)
+
 func wrapLayout(obj *externglib.Object) *Layout {
 	return &Layout{
 		Object: obj,

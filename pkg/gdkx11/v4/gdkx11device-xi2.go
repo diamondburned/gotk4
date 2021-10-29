@@ -49,6 +49,10 @@ type X11DeviceXI2 struct {
 	gdk.Device
 }
 
+var (
+	_ gdk.Devicer = (*X11DeviceXI2)(nil)
+)
+
 func wrapX11DeviceXI2(obj *externglib.Object) *X11DeviceXI2 {
 	return &X11DeviceXI2{
 		Device: gdk.Device{

@@ -31,12 +31,15 @@ type ConstraintTarget struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ConstraintTarget)(nil)
+)
+
 // ConstraintTargetter describes ConstraintTarget's interface methods.
 type ConstraintTargetter interface {
 	externglib.Objector
 
-	// BaseConstraintTarget returns the underlying base object.
-	BaseConstraintTarget() *ConstraintTarget
+	baseConstraintTarget() *ConstraintTarget
 }
 
 var _ ConstraintTargetter = (*ConstraintTarget)(nil)
@@ -51,9 +54,13 @@ func marshalConstraintTargetter(p uintptr) (interface{}, error) {
 	return wrapConstraintTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// BaseConstraintTarget returns v.
-func (v *ConstraintTarget) BaseConstraintTarget() *ConstraintTarget {
+func (v *ConstraintTarget) baseConstraintTarget() *ConstraintTarget {
 	return v
+}
+
+// BaseConstraintTarget returns the underlying base object.
+func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
+	return obj.baseConstraintTarget()
 }
 
 // Constraint: GtkConstraint describes a constraint between attributes of two
@@ -73,6 +80,10 @@ func (v *ConstraintTarget) BaseConstraintTarget() *ConstraintTarget {
 type Constraint struct {
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*Constraint)(nil)
+)
 
 func wrapConstraint(obj *externglib.Object) *Constraint {
 	return &Constraint{

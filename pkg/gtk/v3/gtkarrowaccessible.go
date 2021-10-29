@@ -30,6 +30,10 @@ type ArrowAccessible struct {
 	atk.Image
 }
 
+var (
+	_ externglib.Objector = (*ArrowAccessible)(nil)
+)
+
 func wrapArrowAccessible(obj *externglib.Object) *ArrowAccessible {
 	return &ArrowAccessible{
 		WidgetAccessible: WidgetAccessible{

@@ -54,6 +54,10 @@ type PopoverMenuBar struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*PopoverMenuBar)(nil)
+)
+
 func wrapPopoverMenuBar(obj *externglib.Object) *PopoverMenuBar {
 	return &PopoverMenuBar{
 		Widget: Widget{

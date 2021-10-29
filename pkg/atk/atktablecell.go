@@ -54,6 +54,10 @@ type TableCell struct {
 	ObjectClass
 }
 
+var (
+	_ externglib.Objector = (*TableCell)(nil)
+)
+
 // TableCeller describes TableCell's interface methods.
 type TableCeller interface {
 	externglib.Objector

@@ -35,6 +35,10 @@ type Invisible struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*Invisible)(nil)
+)
+
 func wrapInvisible(obj *externglib.Object) *Invisible {
 	return &Invisible{
 		Widget: Widget{

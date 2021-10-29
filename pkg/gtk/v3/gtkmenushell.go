@@ -77,14 +77,17 @@ type MenuShell struct {
 	Container
 }
 
+var (
+	_ Containerer = (*MenuShell)(nil)
+)
+
 // MenuSheller describes types inherited from class MenuShell.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MenuSheller interface {
 	externglib.Objector
-
-	// BaseMenuShell returns the underlying base class.
-	BaseMenuShell() *MenuShell
+	baseMenuShell() *MenuShell
 }
 
 var _ MenuSheller = (*MenuShell)(nil)
@@ -456,9 +459,13 @@ func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	runtime.KeepAlive(takeFocus)
 }
 
-// BaseMenuShell returns menuShell.
-func (menuShell *MenuShell) BaseMenuShell() *MenuShell {
+func (menuShell *MenuShell) baseMenuShell() *MenuShell {
 	return menuShell
+}
+
+// BaseMenuShell returns the underlying base object.
+func BaseMenuShell(obj MenuSheller) *MenuShell {
+	return obj.baseMenuShell()
 }
 
 // ConnectActivateCurrent: action signal that activates the current menu item

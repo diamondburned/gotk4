@@ -80,6 +80,10 @@ type ShortcutsWindow struct {
 	Window
 }
 
+var (
+	_ Binner = (*ShortcutsWindow)(nil)
+)
+
 func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	return &ShortcutsWindow{
 		Window: Window{

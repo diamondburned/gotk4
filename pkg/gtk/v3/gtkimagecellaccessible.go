@@ -28,8 +28,13 @@ type ImageCellAccessible struct {
 	RendererCellAccessible
 
 	atk.Image
+	atk.ObjectClass
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*ImageCellAccessible)(nil)
+)
 
 func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 	return &ImageCellAccessible{
@@ -51,10 +56,16 @@ func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 						Object: obj,
 					},
 				},
+				ObjectClass: atk.ObjectClass{
+					Object: obj,
+				},
 				Object: obj,
 			},
 		},
 		Image: atk.Image{
+			Object: obj,
+		},
+		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
 		Object: obj,

@@ -42,6 +42,11 @@ type RadioToolButton struct {
 	ToggleToolButton
 }
 
+var (
+	_ externglib.Objector = (*RadioToolButton)(nil)
+	_ Binner              = (*RadioToolButton)(nil)
+)
+
 func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 	return &RadioToolButton{
 		ToggleToolButton: ToggleToolButton{

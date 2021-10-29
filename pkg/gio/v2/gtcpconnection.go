@@ -28,6 +28,10 @@ type TCPConnection struct {
 	SocketConnection
 }
 
+var (
+	_ IOStreamer = (*TCPConnection)(nil)
+)
+
 func wrapTCPConnection(obj *externglib.Object) *TCPConnection {
 	return &TCPConnection{
 		SocketConnection: SocketConnection{

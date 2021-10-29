@@ -95,6 +95,10 @@ type GLArea struct {
 	Widget
 }
 
+var (
+	_ Widgetter = (*GLArea)(nil)
+)
+
 func wrapGLArea(obj *externglib.Object) *GLArea {
 	return &GLArea{
 		Widget: Widget{

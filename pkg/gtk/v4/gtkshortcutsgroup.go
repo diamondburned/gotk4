@@ -33,6 +33,11 @@ type ShortcutsGroup struct {
 	Box
 }
 
+var (
+	_ Widgetter           = (*ShortcutsGroup)(nil)
+	_ externglib.Objector = (*ShortcutsGroup)(nil)
+)
+
 func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
 	return &ShortcutsGroup{
 		Box: Box{

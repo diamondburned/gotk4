@@ -373,6 +373,11 @@ type TreeView struct {
 	*externglib.Object
 }
 
+var (
+	_ Containerer         = (*TreeView)(nil)
+	_ externglib.Objector = (*TreeView)(nil)
+)
+
 func wrapTreeView(obj *externglib.Object) *TreeView {
 	return &TreeView{
 		Container: Container{

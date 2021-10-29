@@ -55,6 +55,11 @@ type RadioMenuItem struct {
 	CheckMenuItem
 }
 
+var (
+	_ Binner              = (*RadioMenuItem)(nil)
+	_ externglib.Objector = (*RadioMenuItem)(nil)
+)
+
 func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 	return &RadioMenuItem{
 		CheckMenuItem: CheckMenuItem{

@@ -148,6 +148,11 @@ type Scale struct {
 	Range
 }
 
+var (
+	_ Widgetter           = (*Scale)(nil)
+	_ externglib.Objector = (*Scale)(nil)
+)
+
 func wrapScale(obj *externglib.Object) *Scale {
 	return &Scale{
 		Range: Range{

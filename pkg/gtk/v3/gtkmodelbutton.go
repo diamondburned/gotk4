@@ -129,6 +129,11 @@ type ModelButton struct {
 	Button
 }
 
+var (
+	_ Binner              = (*ModelButton)(nil)
+	_ externglib.Objector = (*ModelButton)(nil)
+)
+
 func wrapModelButton(obj *externglib.Object) *ModelButton {
 	return &ModelButton{
 		Button: Button{

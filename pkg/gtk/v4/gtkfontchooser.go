@@ -207,6 +207,10 @@ type FontChooser struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FontChooser)(nil)
+)
+
 // FontChooserer describes FontChooser's interface methods.
 type FontChooserer interface {
 	externglib.Objector

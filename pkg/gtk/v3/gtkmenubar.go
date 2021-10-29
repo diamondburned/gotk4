@@ -37,6 +37,10 @@ type MenuBar struct {
 	MenuShell
 }
 
+var (
+	_ MenuSheller = (*MenuBar)(nil)
+)
+
 func wrapMenuBar(obj *externglib.Object) *MenuBar {
 	return &MenuBar{
 		MenuShell: MenuShell{

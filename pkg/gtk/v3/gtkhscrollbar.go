@@ -36,6 +36,10 @@ type HScrollbar struct {
 	Scrollbar
 }
 
+var (
+	_ Ranger = (*HScrollbar)(nil)
+)
+
 func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 	return &HScrollbar{
 		Scrollbar: Scrollbar{

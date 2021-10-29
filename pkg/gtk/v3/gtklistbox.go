@@ -216,6 +216,10 @@ type ListBox struct {
 	Container
 }
 
+var (
+	_ Containerer = (*ListBox)(nil)
+)
+
 func wrapListBox(obj *externglib.Object) *ListBox {
 	return &ListBox{
 		Container: Container{
@@ -907,6 +911,11 @@ type ListBoxRow struct {
 	Actionable
 	*externglib.Object
 }
+
+var (
+	_ Binner              = (*ListBoxRow)(nil)
+	_ externglib.Objector = (*ListBoxRow)(nil)
+)
 
 func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 	return &ListBoxRow{

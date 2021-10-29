@@ -37,6 +37,10 @@ type GestureSwipe struct {
 	GestureSingle
 }
 
+var (
+	_ Gesturer = (*GestureSwipe)(nil)
+)
+
 func wrapGestureSwipe(obj *externglib.Object) *GestureSwipe {
 	return &GestureSwipe{
 		GestureSingle: GestureSingle{

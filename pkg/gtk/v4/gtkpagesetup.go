@@ -69,6 +69,10 @@ type PageSetup struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*PageSetup)(nil)
+)
+
 func wrapPageSetup(obj *externglib.Object) *PageSetup {
 	return &PageSetup{
 		Object: obj,

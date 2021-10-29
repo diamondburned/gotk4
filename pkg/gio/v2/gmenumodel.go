@@ -75,14 +75,17 @@ type MenuAttributeIter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*MenuAttributeIter)(nil)
+)
+
 // MenuAttributeIterer describes types inherited from class MenuAttributeIter.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MenuAttributeIterer interface {
 	externglib.Objector
-
-	// BaseMenuAttributeIter returns the underlying base class.
-	BaseMenuAttributeIter() *MenuAttributeIter
+	baseMenuAttributeIter() *MenuAttributeIter
 }
 
 var _ MenuAttributeIterer = (*MenuAttributeIter)(nil)
@@ -166,9 +169,13 @@ func (iter *MenuAttributeIter) Next() bool {
 	return _ok
 }
 
-// BaseMenuAttributeIter returns iter.
-func (iter *MenuAttributeIter) BaseMenuAttributeIter() *MenuAttributeIter {
+func (iter *MenuAttributeIter) baseMenuAttributeIter() *MenuAttributeIter {
 	return iter
+}
+
+// BaseMenuAttributeIter returns the underlying base object.
+func BaseMenuAttributeIter(obj MenuAttributeIterer) *MenuAttributeIter {
+	return obj.baseMenuAttributeIter()
 }
 
 // MenuLinkIterOverrider contains methods that are overridable.
@@ -199,14 +206,17 @@ type MenuLinkIter struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*MenuLinkIter)(nil)
+)
+
 // MenuLinkIterer describes types inherited from class MenuLinkIter.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MenuLinkIterer interface {
 	externglib.Objector
-
-	// BaseMenuLinkIter returns the underlying base class.
-	BaseMenuLinkIter() *MenuLinkIter
+	baseMenuLinkIter() *MenuLinkIter
 }
 
 var _ MenuLinkIterer = (*MenuLinkIter)(nil)
@@ -345,9 +355,13 @@ func (iter *MenuLinkIter) Next() bool {
 	return _ok
 }
 
-// BaseMenuLinkIter returns iter.
-func (iter *MenuLinkIter) BaseMenuLinkIter() *MenuLinkIter {
+func (iter *MenuLinkIter) baseMenuLinkIter() *MenuLinkIter {
 	return iter
+}
+
+// BaseMenuLinkIter returns the underlying base object.
+func BaseMenuLinkIter(obj MenuLinkIterer) *MenuLinkIter {
+	return obj.baseMenuLinkIter()
 }
 
 // MenuModelOverrider contains methods that are overridable.
@@ -524,14 +538,17 @@ type MenuModel struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*MenuModel)(nil)
+)
+
 // MenuModeller describes types inherited from class MenuModel.
+
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MenuModeller interface {
 	externglib.Objector
-
-	// BaseMenuModel returns the underlying base class.
-	BaseMenuModel() *MenuModel
+	baseMenuModel() *MenuModel
 }
 
 var _ MenuModeller = (*MenuModel)(nil)
@@ -804,9 +821,13 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	return _menuLinkIter
 }
 
-// BaseMenuModel returns model.
-func (model *MenuModel) BaseMenuModel() *MenuModel {
+func (model *MenuModel) baseMenuModel() *MenuModel {
 	return model
+}
+
+// BaseMenuModel returns the underlying base object.
+func BaseMenuModel(obj MenuModeller) *MenuModel {
+	return obj.baseMenuModel()
 }
 
 // ConnectItemsChanged: emitted when a change has occurred to the menu.

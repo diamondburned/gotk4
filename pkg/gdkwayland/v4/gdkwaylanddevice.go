@@ -34,6 +34,10 @@ type WaylandDevice struct {
 	gdk.Device
 }
 
+var (
+	_ gdk.Devicer = (*WaylandDevice)(nil)
+)
+
 func wrapWaylandDevice(obj *externglib.Object) *WaylandDevice {
 	return &WaylandDevice{
 		Device: gdk.Device{

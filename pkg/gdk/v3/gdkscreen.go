@@ -38,6 +38,10 @@ type Screen struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Screen)(nil)
+)
+
 func wrapScreen(obj *externglib.Object) *Screen {
 	return &Screen{
 		Object: obj,

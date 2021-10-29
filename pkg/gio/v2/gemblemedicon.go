@@ -35,6 +35,10 @@ type EmblemedIcon struct {
 	Icon
 }
 
+var (
+	_ externglib.Objector = (*EmblemedIcon)(nil)
+)
+
 func wrapEmblemedIcon(obj *externglib.Object) *EmblemedIcon {
 	return &EmblemedIcon{
 		Object: obj,

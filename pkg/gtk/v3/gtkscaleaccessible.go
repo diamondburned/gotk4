@@ -28,6 +28,10 @@ type ScaleAccessible struct {
 	RangeAccessible
 }
 
+var (
+	_ externglib.Objector = (*ScaleAccessible)(nil)
+)
+
 func wrapScaleAccessible(obj *externglib.Object) *ScaleAccessible {
 	return &ScaleAccessible{
 		RangeAccessible: RangeAccessible{

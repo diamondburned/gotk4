@@ -28,8 +28,13 @@ type TextCellAccessible struct {
 	RendererCellAccessible
 
 	atk.Text
+	atk.ObjectClass
 	*externglib.Object
 }
+
+var (
+	_ externglib.Objector = (*TextCellAccessible)(nil)
+)
 
 func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 	return &TextCellAccessible{
@@ -51,10 +56,16 @@ func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 						Object: obj,
 					},
 				},
+				ObjectClass: atk.ObjectClass{
+					Object: obj,
+				},
 				Object: obj,
 			},
 		},
 		Text: atk.Text{
+			Object: obj,
+		},
+		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
 		Object: obj,

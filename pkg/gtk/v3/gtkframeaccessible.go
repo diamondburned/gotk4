@@ -28,6 +28,10 @@ type FrameAccessible struct {
 	ContainerAccessible
 }
 
+var (
+	_ externglib.Objector = (*FrameAccessible)(nil)
+)
+
 func wrapFrameAccessible(obj *externglib.Object) *FrameAccessible {
 	return &FrameAccessible{
 		ContainerAccessible: ContainerAccessible{

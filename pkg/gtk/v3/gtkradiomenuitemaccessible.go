@@ -28,6 +28,10 @@ type RadioMenuItemAccessible struct {
 	CheckMenuItemAccessible
 }
 
+var (
+	_ externglib.Objector = (*RadioMenuItemAccessible)(nil)
+)
+
 func wrapRadioMenuItemAccessible(obj *externglib.Object) *RadioMenuItemAccessible {
 	return &RadioMenuItemAccessible{
 		CheckMenuItemAccessible: CheckMenuItemAccessible{

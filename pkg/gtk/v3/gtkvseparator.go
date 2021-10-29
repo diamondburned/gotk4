@@ -33,6 +33,11 @@ type VSeparator struct {
 	Separator
 }
 
+var (
+	_ Widgetter           = (*VSeparator)(nil)
+	_ externglib.Objector = (*VSeparator)(nil)
+)
+
 func wrapVSeparator(obj *externglib.Object) *VSeparator {
 	return &VSeparator{
 		Separator: Separator{

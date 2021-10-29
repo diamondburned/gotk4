@@ -63,6 +63,10 @@ type ThemingEngine struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ThemingEngine)(nil)
+)
+
 func wrapThemingEngine(obj *externglib.Object) *ThemingEngine {
 	return &ThemingEngine{
 		Object: obj,

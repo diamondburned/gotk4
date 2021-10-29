@@ -30,6 +30,10 @@ type RangeAccessible struct {
 	atk.Value
 }
 
+var (
+	_ externglib.Objector = (*RangeAccessible)(nil)
+)
+
 func wrapRangeAccessible(obj *externglib.Object) *RangeAccessible {
 	return &RangeAccessible{
 		WidgetAccessible: WidgetAccessible{

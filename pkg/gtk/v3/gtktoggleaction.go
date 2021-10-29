@@ -41,6 +41,10 @@ type ToggleAction struct {
 	Action
 }
 
+var (
+	_ externglib.Objector = (*ToggleAction)(nil)
+)
+
 func wrapToggleAction(obj *externglib.Object) *ToggleAction {
 	return &ToggleAction{
 		Action: Action{

@@ -59,6 +59,10 @@ type HyperlinkImpl struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*HyperlinkImpl)(nil)
+)
+
 // HyperlinkImpler describes HyperlinkImpl's interface methods.
 type HyperlinkImpler interface {
 	externglib.Objector

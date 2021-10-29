@@ -209,6 +209,10 @@ type ActionGroup struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*ActionGroup)(nil)
+)
+
 // ActionGrouper describes ActionGroup's interface methods.
 type ActionGrouper interface {
 	externglib.Objector

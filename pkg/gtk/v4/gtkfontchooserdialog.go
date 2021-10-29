@@ -44,6 +44,11 @@ type FontChooserDialog struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*FontChooserDialog)(nil)
+	_ Widgetter           = (*FontChooserDialog)(nil)
+)
+
 func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 	return &FontChooserDialog{
 		Dialog: Dialog{

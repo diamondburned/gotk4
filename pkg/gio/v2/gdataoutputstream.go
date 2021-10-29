@@ -33,6 +33,10 @@ type DataOutputStream struct {
 	Seekable
 }
 
+var (
+	_ FilterOutputStreamer = (*DataOutputStream)(nil)
+)
+
 func wrapDataOutputStream(obj *externglib.Object) *DataOutputStream {
 	return &DataOutputStream{
 		FilterOutputStream: FilterOutputStream{

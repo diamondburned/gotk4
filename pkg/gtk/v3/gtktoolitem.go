@@ -54,6 +54,11 @@ type ToolItem struct {
 	*externglib.Object
 }
 
+var (
+	_ Binner              = (*ToolItem)(nil)
+	_ externglib.Objector = (*ToolItem)(nil)
+)
+
 func wrapToolItem(obj *externglib.Object) *ToolItem {
 	return &ToolItem{
 		Bin: Bin{

@@ -82,6 +82,11 @@ type Button struct {
 	*externglib.Object
 }
 
+var (
+	_ Binner              = (*Button)(nil)
+	_ externglib.Objector = (*Button)(nil)
+)
+
 func wrapButton(obj *externglib.Object) *Button {
 	return &Button{
 		Bin: Bin{

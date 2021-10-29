@@ -158,6 +158,10 @@ type Visual struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Visual)(nil)
+)
+
 func wrapVisual(obj *externglib.Object) *Visual {
 	return &Visual{
 		Object: obj,

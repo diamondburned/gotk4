@@ -281,6 +281,11 @@ type Dialog struct {
 	Window
 }
 
+var (
+	_ Widgetter           = (*Dialog)(nil)
+	_ externglib.Objector = (*Dialog)(nil)
+)
+
 func wrapDialog(obj *externglib.Object) *Dialog {
 	return &Dialog{
 		Window: Window{

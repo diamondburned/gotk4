@@ -122,6 +122,10 @@ type AsyncResult struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*AsyncResult)(nil)
+)
+
 // AsyncResulter describes AsyncResult's interface methods.
 type AsyncResulter interface {
 	externglib.Objector

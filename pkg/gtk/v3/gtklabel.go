@@ -57,6 +57,10 @@ type Label struct {
 	Misc
 }
 
+var (
+	_ Miscer = (*Label)(nil)
+)
+
 func wrapLabel(obj *externglib.Object) *Label {
 	return &Label{
 		Misc: Misc{

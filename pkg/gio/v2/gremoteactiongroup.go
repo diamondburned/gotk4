@@ -72,6 +72,8 @@ type RemoteActionGroup struct {
 	ActionGroup
 }
 
+var ()
+
 // RemoteActionGrouper describes RemoteActionGroup's interface methods.
 type RemoteActionGrouper interface {
 	externglib.Objector

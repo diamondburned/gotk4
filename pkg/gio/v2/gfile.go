@@ -1016,6 +1016,10 @@ type File struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*File)(nil)
+)
+
 // Filer describes File's interface methods.
 type Filer interface {
 	externglib.Objector

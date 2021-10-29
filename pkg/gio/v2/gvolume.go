@@ -184,6 +184,10 @@ type Volume struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*Volume)(nil)
+)
+
 // Volumer describes Volume's interface methods.
 type Volumer interface {
 	externglib.Objector

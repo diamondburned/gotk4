@@ -115,6 +115,10 @@ type Hyperlink struct {
 	Action
 }
 
+var (
+	_ externglib.Objector = (*Hyperlink)(nil)
+)
+
 func wrapHyperlink(obj *externglib.Object) *Hyperlink {
 	return &Hyperlink{
 		Object: obj,

@@ -51,6 +51,10 @@ type SocketClient struct {
 	*externglib.Object
 }
 
+var (
+	_ externglib.Objector = (*SocketClient)(nil)
+)
+
 func wrapSocketClient(obj *externglib.Object) *SocketClient {
 	return &SocketClient{
 		Object: obj,

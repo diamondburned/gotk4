@@ -10,6 +10,7 @@ import "C"
 import (
 	"io"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -21,6 +22,7 @@ import (
 
 // Surface is a representation of Cairo's cairo_surface_t.
 type Surface struct {
+	_       [0]sync.Mutex
 	surface *C.cairo_surface_t
 }
 

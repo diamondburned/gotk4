@@ -8,11 +8,13 @@ import "C"
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 )
 
 // Context is a representation of Cairo's cairo_t.
 type Context struct {
+	_       [0]sync.Mutex
 	context *C.cairo_t
 }
 
@@ -339,6 +341,11 @@ func (v *Context) Fill() {
 // ClosePath is a wrapper around cairo_close_path().
 func (v *Context) ClosePath() {
 	C.cairo_close_path(v.native())
+}
+
+// NewSubPath is a wrapper around cairo_new_sub_path().
+func (v *Context) NewSubPath() {
+	C.cairo_new_sub_path(v.native())
 }
 
 // NewPath is a wrapper around cairo_new_path().

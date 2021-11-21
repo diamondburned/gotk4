@@ -26,48 +26,7 @@ type Surface struct {
 	surface *C.cairo_surface_t
 }
 
-func NewSurfaceFromPNG(fileName string) (*Surface, error) {
-
-	cstr := C.CString(fileName)
-	defer C.free(unsafe.Pointer(cstr))
-
-	surfaceNative := C.cairo_image_surface_create_from_png(cstr)
-
-	status := Status(C.cairo_surface_status(surfaceNative))
-	if status != STATUS_SUCCESS {
-		return nil, ErrorStatus(status)
-	}
-
-	return &Surface{surface: surfaceNative}, nil
-}
-
-// CreateImageSurfaceForData is a wrapper around cairo_image_surface_create_for_data().
-func CreateImageSurfaceForData(data []byte, format Format, width, height, stride int) (*Surface, error) {
-	surfaceNative := C.cairo_image_surface_create_for_data((*C.uchar)(unsafe.Pointer(&data[0])),
-		C.cairo_format_t(format), C.int(width), C.int(height), C.int(stride))
-
-	status := Status(C.cairo_surface_status(surfaceNative))
-	if status != STATUS_SUCCESS {
-		return nil, ErrorStatus(status)
-	}
-
-	s := wrapSurface(surfaceNative)
-
-	runtime.SetFinalizer(s, (*Surface).destroy)
-
-	return s, nil
-}
-
-// CreateImageSurface is a wrapper around cairo_image_surface_create().
-func CreateImageSurface(format Format, width, height int) *Surface {
-	c := C.cairo_image_surface_create(C.cairo_format_t(format),
-		C.int(width), C.int(height))
-	s := wrapSurface(c)
-	runtime.SetFinalizer(s, (*Surface).destroy)
-	return s
-}
-
-/// Create a new PDF surface.
+// CreatePDFSurface is a wrapper around cairo_pdf_surface_create().
 func CreatePDFSurface(fileName string, width float64, height float64) (*Surface, error) {
 	cstr := C.CString(fileName)
 	defer C.free(unsafe.Pointer(cstr))
@@ -340,7 +299,13 @@ func (v *Surface) GetWidth() int {
 	return int(C.cairo_image_surface_get_width(v.surface))
 }
 
+// GetStride is a wrapper around cairo_image_surface_get_stride().
+func (v *Surface) GetStride() int {
+	return int(C.cairo_image_surface_get_stride(v.surface))
+}
+
 // GetData is a wrapper around cairo_image_surface_get_data().
-func (v *Surface) GetData() unsafe.Pointer {
-	return unsafe.Pointer(C.cairo_image_surface_get_data(v.surface))
+func (v *Surface) GetData() []byte {
+	ptr := unsafe.Pointer(C.cairo_image_surface_get_data(v.surface))
+	return unsafe.Slice((*byte)(ptr), v.GetHeight() * v.GetStride())
 }

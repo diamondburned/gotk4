@@ -42,7 +42,7 @@ func marshalContext(p uintptr) (interface{}, error) {
 }
 
 func wrapContext(context *C.cairo_t) *Context {
-	return &Context{context}
+	return &Context{context: context}
 }
 
 func WrapContext(p uintptr) *Context {

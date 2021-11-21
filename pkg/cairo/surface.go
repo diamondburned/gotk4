@@ -38,7 +38,7 @@ func NewSurfaceFromPNG(fileName string) (*Surface, error) {
 		return nil, ErrorStatus(status)
 	}
 
-	return &Surface{surfaceNative}, nil
+	return &Surface{surface: surfaceNative}, nil
 }
 
 // CreateImageSurfaceForData is a wrapper around cairo_image_surface_create_for_data().
@@ -109,7 +109,7 @@ func marshalSurface(p uintptr) (interface{}, error) {
 }
 
 func wrapSurface(surface *C.cairo_surface_t) *Surface {
-	return &Surface{surface}
+	return &Surface{surface: surface}
 }
 
 // NewSurface creates a gotk3 cairo Surface from a pointer to a

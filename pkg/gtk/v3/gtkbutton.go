@@ -77,9 +77,9 @@ type ButtonOverrider interface {
 type Button struct {
 	Bin
 
+	*externglib.Object
 	Actionable
 	Activatable
-	*externglib.Object
 }
 
 var (
@@ -95,34 +95,34 @@ func wrapButton(obj *externglib.Object) *Button {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 		},
+		Object: obj,
 		Actionable: Actionable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 		Activatable: Activatable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

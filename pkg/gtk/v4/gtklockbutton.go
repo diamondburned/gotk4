@@ -74,6 +74,7 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -83,13 +84,14 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -99,10 +101,8 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
-			Object: obj,
 		},
 	}
 }

@@ -34,8 +34,8 @@ func init() {
 type RecentAction struct {
 	Action
 
-	RecentChooser
 	*externglib.Object
+	RecentChooser
 }
 
 var (
@@ -50,10 +50,10 @@ func wrapRecentAction(obj *externglib.Object) *RecentAction {
 				Object: obj,
 			},
 		},
+		Object: obj,
 		RecentChooser: RecentChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

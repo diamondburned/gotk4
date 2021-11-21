@@ -109,6 +109,7 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -118,7 +119,6 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

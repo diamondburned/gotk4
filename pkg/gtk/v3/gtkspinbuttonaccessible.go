@@ -27,8 +27,8 @@ func init() {
 type SpinButtonAccessible struct {
 	EntryAccessible
 
-	atk.Value
 	*externglib.Object
+	atk.Value
 }
 
 var (
@@ -48,6 +48,7 @@ func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 					Object: obj,
 				},
 			},
+			Object: obj,
 			Action: atk.Action{
 				Object: obj,
 			},
@@ -57,12 +58,11 @@ func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 			Text: atk.Text{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Value: atk.Value{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -80,6 +80,7 @@ func wrapCellEditable(obj *externglib.Object) *CellEditable {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -89,7 +90,6 @@ func wrapCellEditable(obj *externglib.Object) *CellEditable {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

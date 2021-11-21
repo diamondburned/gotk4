@@ -34,8 +34,8 @@ func init() {
 type FileChooserWidget struct {
 	Widget
 
-	FileChooser
 	*externglib.Object
+	FileChooser
 }
 
 var (
@@ -49,6 +49,7 @@ func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -58,12 +59,11 @@ func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		FileChooser: FileChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

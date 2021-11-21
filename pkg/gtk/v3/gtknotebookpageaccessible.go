@@ -28,8 +28,8 @@ func init() {
 type NotebookPageAccessible struct {
 	atk.ObjectClass
 
-	atk.Component
 	*externglib.Object
+	atk.Component
 }
 
 var (
@@ -41,10 +41,10 @@ func wrapNotebookPageAccessible(obj *externglib.Object) *NotebookPageAccessible 
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
+		Object: obj,
 		Component: atk.Component{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

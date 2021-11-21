@@ -369,8 +369,8 @@ type TreeViewOverrider interface {
 type TreeView struct {
 	Container
 
-	Scrollable
 	*externglib.Object
+	Scrollable
 }
 
 var (
@@ -385,19 +385,19 @@ func wrapTreeView(obj *externglib.Object) *TreeView {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
+		Object: obj,
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

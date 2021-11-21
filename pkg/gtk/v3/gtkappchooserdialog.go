@@ -38,8 +38,8 @@ func init() {
 type AppChooserDialog struct {
 	Dialog
 
-	AppChooser
 	*externglib.Object
+	AppChooser
 }
 
 var (
@@ -57,33 +57,33 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							ImplementorIface: atk.ImplementorIface{
 								Object: obj,
 							},
 							Buildable: Buildable{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 			},
 		},
+		Object: obj,
 		AppChooser: AppChooser{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

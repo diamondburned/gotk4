@@ -51,6 +51,7 @@ func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -60,7 +61,6 @@ func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

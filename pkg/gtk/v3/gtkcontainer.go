@@ -283,13 +283,13 @@ func wrapContainer(obj *externglib.Object) *Container {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			ImplementorIface: atk.ImplementorIface{
 				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -86,6 +86,7 @@ func wrapFrame(obj *externglib.Object) *Frame {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -95,7 +96,6 @@ func wrapFrame(obj *externglib.Object) *Frame {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

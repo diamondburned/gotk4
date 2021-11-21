@@ -38,8 +38,8 @@ func init() {
 type AppChooserDialog struct {
 	Dialog
 
-	AppChooser
 	*externglib.Object
+	AppChooser
 }
 
 var (
@@ -55,6 +55,7 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -64,14 +65,15 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Root: Root{
 					NativeSurface: NativeSurface{
 						Widget: Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							Accessible: Accessible{
 								Object: obj,
 							},
@@ -81,21 +83,21 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 							ConstraintTarget: ConstraintTarget{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: ShortcutManager{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
+		Object: obj,
 		AppChooser: AppChooser{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -105,10 +107,8 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

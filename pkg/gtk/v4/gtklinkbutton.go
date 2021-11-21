@@ -66,6 +66,7 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -75,13 +76,14 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -91,10 +93,8 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
-			Object: obj,
 		},
 	}
 }

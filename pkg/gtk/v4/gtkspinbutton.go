@@ -223,14 +223,14 @@ func (s SpinType) String() string {
 type SpinButton struct {
 	Widget
 
-	CellEditable
-	Editable
-	Orientable
-	externglib.InitiallyUnowned
 	*externglib.Object
-	ConstraintTarget
+	externglib.InitiallyUnowned
 	Accessible
 	Buildable
+	CellEditable
+	ConstraintTarget
+	Editable
+	Orientable
 }
 
 var (
@@ -244,6 +244,7 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -253,6 +254,15 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+		},
+		Object: obj,
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
+		Accessible: Accessible{
+			Object: obj,
+		},
+		Buildable: Buildable{
 			Object: obj,
 		},
 		CellEditable: CellEditable{
@@ -260,6 +270,7 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -269,14 +280,17 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+		},
+		ConstraintTarget: ConstraintTarget{
+			Object: obj,
 		},
 		Editable: Editable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -286,23 +300,9 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 		Orientable: Orientable{
-			Object: obj,
-		},
-		InitiallyUnowned: externglib.InitiallyUnowned{
-			Object: obj,
-		},
-		Object: obj,
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
 			Object: obj,
 		},
 	}

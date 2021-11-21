@@ -64,6 +64,7 @@ func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -73,7 +74,6 @@ func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

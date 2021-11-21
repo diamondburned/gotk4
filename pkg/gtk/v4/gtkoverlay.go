@@ -68,6 +68,7 @@ func wrapOverlay(obj *externglib.Object) *Overlay {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -77,7 +78,6 @@ func wrapOverlay(obj *externglib.Object) *Overlay {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

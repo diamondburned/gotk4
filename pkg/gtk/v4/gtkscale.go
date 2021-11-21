@@ -160,6 +160,7 @@ func wrapScale(obj *externglib.Object) *Scale {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -169,12 +170,11 @@ func wrapScale(obj *externglib.Object) *Scale {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -41,6 +41,7 @@ func wrapMediaControls(obj *externglib.Object) *MediaControls {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -50,7 +51,6 @@ func wrapMediaControls(obj *externglib.Object) *MediaControls {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

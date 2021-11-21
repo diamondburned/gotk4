@@ -45,39 +45,39 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							ImplementorIface: atk.ImplementorIface{
 								Object: obj,
 							},
 							Buildable: Buildable{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
+				Object: obj,
 				Actionable: Actionable{
 					Widget: Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						ImplementorIface: atk.ImplementorIface{
 							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 				Activatable: Activatable{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

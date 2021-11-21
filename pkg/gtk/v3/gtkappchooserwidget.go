@@ -58,8 +58,8 @@ type AppChooserWidgetOverrider interface {
 type AppChooserWidget struct {
 	Box
 
-	AppChooser
 	*externglib.Object
+	AppChooser
 }
 
 var (
@@ -75,35 +75,35 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		AppChooser: AppChooser{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

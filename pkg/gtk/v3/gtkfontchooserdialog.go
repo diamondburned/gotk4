@@ -36,8 +36,8 @@ func init() {
 type FontChooserDialog struct {
 	Dialog
 
-	FontChooser
 	*externglib.Object
+	FontChooser
 }
 
 var (
@@ -55,22 +55,22 @@ func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							ImplementorIface: atk.ImplementorIface{
 								Object: obj,
 							},
 							Buildable: Buildable{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 			},
 		},
+		Object: obj,
 		FontChooser: FontChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -84,6 +84,7 @@ func wrapCalendar(obj *externglib.Object) *Calendar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -93,7 +94,6 @@ func wrapCalendar(obj *externglib.Object) *Calendar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -109,9 +109,9 @@ type PopoverOverrider interface {
 type Popover struct {
 	Widget
 
+	*externglib.Object
 	NativeSurface
 	ShortcutManager
-	*externglib.Object
 }
 
 var (
@@ -125,6 +125,7 @@ func wrapPopover(obj *externglib.Object) *Popover {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -134,13 +135,14 @@ func wrapPopover(obj *externglib.Object) *Popover {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		NativeSurface: NativeSurface{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -150,13 +152,11 @@ func wrapPopover(obj *externglib.Object) *Popover {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

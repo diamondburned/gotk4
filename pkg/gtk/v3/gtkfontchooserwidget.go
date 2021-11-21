@@ -44,8 +44,8 @@ func init() {
 type FontChooserWidget struct {
 	Box
 
-	FontChooser
 	*externglib.Object
+	FontChooser
 }
 
 var (
@@ -61,24 +61,24 @@ func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		FontChooser: FontChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

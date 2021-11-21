@@ -175,8 +175,8 @@ func init() {
 type FileChooserDialog struct {
 	Dialog
 
-	FileChooser
 	*externglib.Object
+	FileChooser
 }
 
 var (
@@ -194,22 +194,22 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							ImplementorIface: atk.ImplementorIface{
 								Object: obj,
 							},
 							Buildable: Buildable{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 			},
 		},
+		Object: obj,
 		FileChooser: FileChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

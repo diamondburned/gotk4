@@ -41,8 +41,8 @@ func init() {
 type Layout struct {
 	Container
 
-	Scrollable
 	*externglib.Object
+	Scrollable
 }
 
 var (
@@ -57,19 +57,19 @@ func wrapLayout(obj *externglib.Object) *Layout {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
+		Object: obj,
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

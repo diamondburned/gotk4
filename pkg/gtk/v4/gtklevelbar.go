@@ -133,8 +133,8 @@ const LEVEL_BAR_OFFSET_LOW = "low"
 type LevelBar struct {
 	Widget
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -148,6 +148,7 @@ func wrapLevelBar(obj *externglib.Object) *LevelBar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -157,12 +158,11 @@ func wrapLevelBar(obj *externglib.Object) *LevelBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/davecgh/go-spew/spew"
@@ -104,6 +105,7 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 		}
 
 		tree.omitRedundant(true)
+		tree.sortRequires(true)
 
 	case *gir.Interface:
 		for _, prereq := range v.Prerequisites {
@@ -126,6 +128,7 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 		}
 
 		tree.omitRedundant(false)
+		tree.sortRequires(false)
 	}
 
 	return true
@@ -319,6 +322,17 @@ func firstGObjectSelector(nodes []Tree, sel string) (string, bool) {
 	}
 
 	return sel, false
+}
+
+func (tree *Tree) sortRequires(skipFirst bool) {
+	req := tree.Requires
+	if skipFirst {
+		req = req[1:]
+	}
+
+	sort.Slice(req, func(i, j int) bool {
+		return req[i].ImplType(true) < req[j].ImplType(true)
+	})
 }
 
 // resolveName resolves and adds the resolved type into the Tree.

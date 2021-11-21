@@ -189,8 +189,8 @@ type TextViewOverrider interface {
 type TextView struct {
 	Widget
 
-	Scrollable
 	*externglib.Object
+	Scrollable
 }
 
 var (
@@ -204,6 +204,7 @@ func wrapTextView(obj *externglib.Object) *TextView {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -213,12 +214,11 @@ func wrapTextView(obj *externglib.Object) *TextView {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

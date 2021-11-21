@@ -119,6 +119,7 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -128,7 +129,6 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

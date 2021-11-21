@@ -51,6 +51,7 @@ func wrapSpinner(obj *externglib.Object) *Spinner {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -60,7 +61,6 @@ func wrapSpinner(obj *externglib.Object) *Spinner {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

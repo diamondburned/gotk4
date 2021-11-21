@@ -44,8 +44,8 @@ type FontButtonOverrider interface {
 type FontButton struct {
 	Button
 
-	FontChooser
 	*externglib.Object
+	FontChooser
 }
 
 var (
@@ -62,39 +62,39 @@ func wrapFontButton(obj *externglib.Object) *FontButton {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						ImplementorIface: atk.ImplementorIface{
 							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 			},
+			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		FontChooser: FontChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

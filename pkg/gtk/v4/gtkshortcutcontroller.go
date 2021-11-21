@@ -68,9 +68,9 @@ func init() {
 type ShortcutController struct {
 	EventController
 
+	*externglib.Object
 	gio.ListModel
 	Buildable
-	*externglib.Object
 }
 
 var (
@@ -83,13 +83,13 @@ func wrapShortcutController(obj *externglib.Object) *ShortcutController {
 		EventController: EventController{
 			Object: obj,
 		},
+		Object: obj,
 		ListModel: gio.ListModel{
 			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

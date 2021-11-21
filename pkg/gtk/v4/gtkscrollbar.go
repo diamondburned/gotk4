@@ -65,8 +65,8 @@ func init() {
 type Scrollbar struct {
 	Widget
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -80,6 +80,7 @@ func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -89,12 +90,11 @@ func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

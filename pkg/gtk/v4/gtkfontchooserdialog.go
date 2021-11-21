@@ -40,8 +40,8 @@ func init() {
 type FontChooserDialog struct {
 	Dialog
 
-	FontChooser
 	*externglib.Object
+	FontChooser
 }
 
 var (
@@ -57,6 +57,7 @@ func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -66,14 +67,15 @@ func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Root: Root{
 					NativeSurface: NativeSurface{
 						Widget: Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							Accessible: Accessible{
 								Object: obj,
 							},
@@ -83,20 +85,18 @@ func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 							ConstraintTarget: ConstraintTarget{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: ShortcutManager{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
+		Object: obj,
 		FontChooser: FontChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

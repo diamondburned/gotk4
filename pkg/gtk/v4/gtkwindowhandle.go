@@ -50,6 +50,7 @@ func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -59,7 +60,6 @@ func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

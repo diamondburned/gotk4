@@ -195,6 +195,7 @@ func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -204,13 +205,14 @@ func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			NativeSurface: NativeSurface{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -220,13 +222,11 @@ func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

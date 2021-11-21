@@ -172,8 +172,8 @@ func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) 
 type RecentFilter struct {
 	externglib.InitiallyUnowned
 
-	Buildable
 	*externglib.Object
+	Buildable
 }
 
 var (
@@ -185,10 +185,10 @@ func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
+		Object: obj,
 		Buildable: Buildable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

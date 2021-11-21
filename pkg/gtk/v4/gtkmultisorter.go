@@ -30,9 +30,9 @@ func init() {
 type MultiSorter struct {
 	Sorter
 
+	*externglib.Object
 	gio.ListModel
 	Buildable
-	*externglib.Object
 }
 
 var (
@@ -44,13 +44,13 @@ func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 		Sorter: Sorter{
 			Object: obj,
 		},
+		Object: obj,
 		ListModel: gio.ListModel{
 			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

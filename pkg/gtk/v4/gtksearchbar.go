@@ -80,6 +80,7 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -89,7 +90,6 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

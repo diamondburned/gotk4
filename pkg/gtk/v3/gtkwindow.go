@@ -196,13 +196,13 @@ func wrapWindow(obj *externglib.Object) *Window {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 		},

@@ -34,8 +34,8 @@ func init() {
 type VulkanContext struct {
 	DrawContext
 
-	gio.Initable
 	*externglib.Object
+	gio.Initable
 }
 
 var (
@@ -59,10 +59,10 @@ func wrapVulkanContext(obj *externglib.Object) *VulkanContext {
 		DrawContext: DrawContext{
 			Object: obj,
 		},
+		Object: obj,
 		Initable: gio.Initable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

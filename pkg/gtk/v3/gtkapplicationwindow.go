@@ -136,9 +136,9 @@ func init() {
 type ApplicationWindow struct {
 	Window
 
+	*externglib.Object
 	gio.ActionGroup
 	gio.ActionMap
-	*externglib.Object
 }
 
 var (
@@ -155,24 +155,24 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						ImplementorIface: atk.ImplementorIface{
 							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 			},
 		},
+		Object: obj,
 		ActionGroup: gio.ActionGroup{
 			Object: obj,
 		},
 		ActionMap: gio.ActionMap{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

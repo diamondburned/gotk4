@@ -349,9 +349,9 @@ func (d DebugFlag) Has(other DebugFlag) bool {
 type EntryIconAccessible struct {
 	atk.ObjectClass
 
+	*externglib.Object
 	atk.Action
 	atk.Component
-	*externglib.Object
 }
 
 var (
@@ -363,13 +363,13 @@ func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
+		Object: obj,
 		Action: atk.Action{
 			Object: obj,
 		},
 		Component: atk.Component{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

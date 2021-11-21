@@ -41,6 +41,7 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -50,12 +51,11 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

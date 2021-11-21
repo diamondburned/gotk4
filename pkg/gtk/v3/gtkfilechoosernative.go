@@ -183,8 +183,8 @@ func init() {
 type FileChooserNative struct {
 	NativeDialog
 
-	FileChooser
 	*externglib.Object
+	FileChooser
 }
 
 var (
@@ -197,10 +197,10 @@ func wrapFileChooserNative(obj *externglib.Object) *FileChooserNative {
 		NativeDialog: NativeDialog{
 			Object: obj,
 		},
+		Object: obj,
 		FileChooser: FileChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -84,6 +84,7 @@ func wrapWindowControls(obj *externglib.Object) *WindowControls {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -93,7 +94,6 @@ func wrapWindowControls(obj *externglib.Object) *WindowControls {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

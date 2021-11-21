@@ -139,9 +139,9 @@ type TreeViewColumnOverrider interface {
 type TreeViewColumn struct {
 	externglib.InitiallyUnowned
 
+	*externglib.Object
 	Buildable
 	CellLayout
-	*externglib.Object
 }
 
 var (
@@ -153,13 +153,13 @@ func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
+		Object: obj,
 		Buildable: Buildable{
 			Object: obj,
 		},
 		CellLayout: CellLayout{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

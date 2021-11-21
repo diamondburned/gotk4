@@ -27,9 +27,9 @@ func init() {
 type ImageCellAccessible struct {
 	RendererCellAccessible
 
+	*externglib.Object
 	atk.Image
 	atk.ObjectClass
-	*externglib.Object
 }
 
 var (
@@ -45,10 +45,14 @@ func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 						Object: obj,
 					},
 				},
+				Object: obj,
 				Action: atk.Action{
 					Object: obj,
 				},
 				Component: atk.Component{
+					Object: obj,
+				},
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 				TableCell: atk.TableCell{
@@ -56,19 +60,15 @@ func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 						Object: obj,
 					},
 				},
-				ObjectClass: atk.ObjectClass{
-					Object: obj,
-				},
-				Object: obj,
 			},
 		},
+		Object: obj,
 		Image: atk.Image{
 			Object: obj,
 		},
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

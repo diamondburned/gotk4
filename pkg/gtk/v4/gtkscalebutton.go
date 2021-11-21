@@ -44,8 +44,8 @@ type ScaleButtonOverrider interface {
 type ScaleButton struct {
 	Widget
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -59,6 +59,7 @@ func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -68,12 +69,11 @@ func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

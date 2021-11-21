@@ -58,8 +58,8 @@ type AppChooserButtonOverrider interface {
 type AppChooserButton struct {
 	ComboBox
 
-	AppChooser
 	*externglib.Object
+	AppChooser
 }
 
 var (
@@ -76,50 +76,50 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						ImplementorIface: atk.ImplementorIface{
 							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 			},
+			Object: obj,
 			CellEditable: CellEditable{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 			CellLayout: CellLayout{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		AppChooser: AppChooser{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

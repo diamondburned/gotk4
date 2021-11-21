@@ -605,9 +605,9 @@ type WidgetOverrider interface {
 type Widget struct {
 	externglib.InitiallyUnowned
 
+	*externglib.Object
 	atk.ImplementorIface
 	Buildable
-	*externglib.Object
 }
 
 var (
@@ -630,13 +630,13 @@ func wrapWidget(obj *externglib.Object) *Widget {
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
+		Object: obj,
 		ImplementorIface: atk.ImplementorIface{
 			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

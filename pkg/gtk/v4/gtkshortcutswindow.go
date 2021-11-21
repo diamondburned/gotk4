@@ -81,6 +81,7 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -90,14 +91,15 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Root: Root{
 				NativeSurface: NativeSurface{
 					Widget: Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: Accessible{
 							Object: obj,
 						},
@@ -107,14 +109,12 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

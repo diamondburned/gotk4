@@ -38,8 +38,8 @@ func init() {
 type BoxLayout struct {
 	LayoutManager
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -52,10 +52,10 @@ func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
 		LayoutManager: LayoutManager{
 			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -227,13 +227,13 @@ func wrapListBox(obj *externglib.Object) *ListBox {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 	}
@@ -908,8 +908,8 @@ type ListBoxRowOverrider interface {
 type ListBoxRow struct {
 	Bin
 
-	Actionable
 	*externglib.Object
+	Actionable
 }
 
 var (
@@ -925,31 +925,31 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 		},
+		Object: obj,
 		Actionable: Actionable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

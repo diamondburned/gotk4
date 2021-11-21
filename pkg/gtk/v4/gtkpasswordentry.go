@@ -59,8 +59,8 @@ func init() {
 type PasswordEntry struct {
 	Widget
 
-	Editable
 	*externglib.Object
+	Editable
 }
 
 var (
@@ -74,6 +74,7 @@ func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -83,13 +84,14 @@ func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Editable: Editable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -99,10 +101,8 @@ func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

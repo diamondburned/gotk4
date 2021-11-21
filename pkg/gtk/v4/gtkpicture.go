@@ -86,6 +86,7 @@ func wrapPicture(obj *externglib.Object) *Picture {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -95,7 +96,6 @@ func wrapPicture(obj *externglib.Object) *Picture {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

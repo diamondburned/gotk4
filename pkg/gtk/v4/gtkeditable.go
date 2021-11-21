@@ -268,6 +268,7 @@ func wrapEditable(obj *externglib.Object) *Editable {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -277,7 +278,6 @@ func wrapEditable(obj *externglib.Object) *Editable {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

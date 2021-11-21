@@ -42,8 +42,8 @@ func init() {
 type Separator struct {
 	Widget
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -57,6 +57,7 @@ func wrapSeparator(obj *externglib.Object) *Separator {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -66,12 +67,11 @@ func wrapSeparator(obj *externglib.Object) *Separator {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

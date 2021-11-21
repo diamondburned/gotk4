@@ -42,8 +42,8 @@ func init() {
 type FontChooserWidget struct {
 	Widget
 
-	FontChooser
 	*externglib.Object
+	FontChooser
 }
 
 var (
@@ -57,6 +57,7 @@ func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -66,12 +67,11 @@ func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		FontChooser: FontChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

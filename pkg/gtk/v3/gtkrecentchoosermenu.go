@@ -46,9 +46,9 @@ func init() {
 type RecentChooserMenu struct {
 	Menu
 
+	*externglib.Object
 	Activatable
 	RecentChooser
-	*externglib.Object
 }
 
 var (
@@ -65,24 +65,24 @@ func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						ImplementorIface: atk.ImplementorIface{
 							Object: obj,
 						},
 						Buildable: Buildable{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 			},
 		},
+		Object: obj,
 		Activatable: Activatable{
 			Object: obj,
 		},
 		RecentChooser: RecentChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

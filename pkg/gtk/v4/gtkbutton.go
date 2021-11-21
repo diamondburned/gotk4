@@ -65,8 +65,8 @@ type ButtonOverrider interface {
 type Button struct {
 	Widget
 
-	Actionable
 	*externglib.Object
+	Actionable
 }
 
 var (
@@ -80,6 +80,7 @@ func wrapButton(obj *externglib.Object) *Button {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -89,13 +90,14 @@ func wrapButton(obj *externglib.Object) *Button {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Actionable: Actionable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -105,10 +107,8 @@ func wrapButton(obj *externglib.Object) *Button {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

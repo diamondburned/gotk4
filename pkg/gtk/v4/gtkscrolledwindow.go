@@ -204,6 +204,7 @@ func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -213,7 +214,6 @@ func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

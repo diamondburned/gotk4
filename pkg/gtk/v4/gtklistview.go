@@ -132,6 +132,7 @@ func wrapListView(obj *externglib.Object) *ListView {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -141,15 +142,14 @@ func wrapListView(obj *externglib.Object) *ListView {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
 			Scrollable: Scrollable{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

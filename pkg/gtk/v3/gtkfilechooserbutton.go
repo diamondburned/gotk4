@@ -67,8 +67,8 @@ type FileChooserButtonOverrider interface {
 type FileChooserButton struct {
 	Box
 
-	FileChooser
 	*externglib.Object
+	FileChooser
 }
 
 var (
@@ -84,24 +84,24 @@ func wrapFileChooserButton(obj *externglib.Object) *FileChooserButton {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		FileChooser: FileChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -27,9 +27,9 @@ func init() {
 type ButtonAccessible struct {
 	ContainerAccessible
 
+	*externglib.Object
 	atk.Action
 	atk.Image
-	*externglib.Object
 }
 
 var (
@@ -50,13 +50,13 @@ func wrapButtonAccessible(obj *externglib.Object) *ButtonAccessible {
 				},
 			},
 		},
+		Object: obj,
 		Action: atk.Action{
 			Object: obj,
 		},
 		Image: atk.Image{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

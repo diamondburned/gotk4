@@ -115,6 +115,7 @@ func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -124,13 +125,14 @@ func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -140,10 +142,8 @@ func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
-			Object: obj,
 		},
 	}
 }

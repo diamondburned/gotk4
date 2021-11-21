@@ -114,6 +114,7 @@ func wrapActionable(obj *externglib.Object) *Actionable {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -123,7 +124,6 @@ func wrapActionable(obj *externglib.Object) *Actionable {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

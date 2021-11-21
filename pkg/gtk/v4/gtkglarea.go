@@ -147,6 +147,7 @@ func wrapGLArea(obj *externglib.Object) *GLArea {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -156,7 +157,6 @@ func wrapGLArea(obj *externglib.Object) *GLArea {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

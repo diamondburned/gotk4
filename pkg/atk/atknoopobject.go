@@ -28,6 +28,7 @@ func init() {
 type NoOpObject struct {
 	ObjectClass
 
+	*externglib.Object
 	Action
 	Component
 	Document
@@ -40,7 +41,6 @@ type NoOpObject struct {
 	Text
 	Value
 	Window
-	*externglib.Object
 }
 
 var (
@@ -52,6 +52,7 @@ func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
+		Object: obj,
 		Action: Action{
 			Object: obj,
 		},
@@ -92,7 +93,6 @@ func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

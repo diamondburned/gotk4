@@ -49,8 +49,8 @@ func init() {
 type ColorChooserWidget struct {
 	Widget
 
-	ColorChooser
 	*externglib.Object
+	ColorChooser
 }
 
 var (
@@ -64,6 +64,7 @@ func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -73,12 +74,11 @@ func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		ColorChooser: ColorChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

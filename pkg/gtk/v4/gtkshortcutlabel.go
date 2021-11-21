@@ -40,6 +40,7 @@ func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -49,7 +50,6 @@ func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

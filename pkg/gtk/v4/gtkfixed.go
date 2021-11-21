@@ -73,6 +73,7 @@ func wrapFixed(obj *externglib.Object) *Fixed {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -82,7 +83,6 @@ func wrapFixed(obj *externglib.Object) *Fixed {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -47,8 +47,8 @@ type RangeOverrider interface {
 type Range struct {
 	Widget
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -62,6 +62,7 @@ func wrapRange(obj *externglib.Object) *Range {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -71,12 +72,11 @@ func wrapRange(obj *externglib.Object) *Range {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -35,11 +35,11 @@ type CellAccessibleOverrider interface {
 type CellAccessible struct {
 	Accessible
 
+	*externglib.Object
 	atk.Action
 	atk.Component
-	atk.TableCell
 	atk.ObjectClass
-	*externglib.Object
+	atk.TableCell
 }
 
 var (
@@ -53,10 +53,14 @@ func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 				Object: obj,
 			},
 		},
+		Object: obj,
 		Action: atk.Action{
 			Object: obj,
 		},
 		Component: atk.Component{
+			Object: obj,
+		},
+		ObjectClass: atk.ObjectClass{
 			Object: obj,
 		},
 		TableCell: atk.TableCell{
@@ -64,10 +68,6 @@ func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 				Object: obj,
 			},
 		},
-		ObjectClass: atk.ObjectClass{
-			Object: obj,
-		},
-		Object: obj,
 	}
 }
 

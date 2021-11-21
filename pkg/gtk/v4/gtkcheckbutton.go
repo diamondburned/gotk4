@@ -86,8 +86,8 @@ type CheckButtonOverrider interface {
 type CheckButton struct {
 	Widget
 
-	Actionable
 	*externglib.Object
+	Actionable
 }
 
 var (
@@ -101,6 +101,7 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -110,13 +111,14 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Actionable: Actionable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -126,10 +128,8 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

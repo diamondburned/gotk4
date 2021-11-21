@@ -67,8 +67,8 @@ func init() {
 type RecentChooserDialog struct {
 	Dialog
 
-	RecentChooser
 	*externglib.Object
+	RecentChooser
 }
 
 var (
@@ -86,22 +86,22 @@ func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							ImplementorIface: atk.ImplementorIface{
 								Object: obj,
 							},
 							Buildable: Buildable{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 			},
 		},
+		Object: obj,
 		RecentChooser: RecentChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

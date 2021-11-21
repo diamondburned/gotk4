@@ -61,8 +61,8 @@ type SocketOverrider interface {
 type Socket struct {
 	ObjectClass
 
-	Component
 	*externglib.Object
+	Component
 }
 
 var (
@@ -74,10 +74,10 @@ func wrapSocket(obj *externglib.Object) *Socket {
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
+		Object: obj,
 		Component: Component{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

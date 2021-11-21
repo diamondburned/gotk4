@@ -25,9 +25,9 @@ func init() {
 type ListBase struct {
 	Widget
 
+	*externglib.Object
 	Orientable
 	Scrollable
-	*externglib.Object
 }
 
 var (
@@ -52,6 +52,7 @@ func wrapListBase(obj *externglib.Object) *ListBase {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -61,15 +62,14 @@ func wrapListBase(obj *externglib.Object) *ListBase {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -106,6 +106,7 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -115,7 +116,6 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -69,6 +69,7 @@ func wrapAppChooser(obj *externglib.Object) *AppChooser {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -78,7 +79,6 @@ func wrapAppChooser(obj *externglib.Object) *AppChooser {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -65,8 +65,8 @@ func init() {
 type FileFilter struct {
 	Filter
 
-	Buildable
 	*externglib.Object
+	Buildable
 }
 
 var (
@@ -78,10 +78,10 @@ func wrapFileFilter(obj *externglib.Object) *FileFilter {
 		Filter: Filter{
 			Object: obj,
 		},
+		Object: obj,
 		Buildable: Buildable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

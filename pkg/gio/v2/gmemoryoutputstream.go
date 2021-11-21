@@ -33,9 +33,9 @@ func init() {
 type MemoryOutputStream struct {
 	OutputStream
 
+	*externglib.Object
 	PollableOutputStream
 	Seekable
-	*externglib.Object
 }
 
 var (
@@ -48,6 +48,7 @@ func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 		OutputStream: OutputStream{
 			Object: obj,
 		},
+		Object: obj,
 		PollableOutputStream: PollableOutputStream{
 			OutputStream: OutputStream{
 				Object: obj,
@@ -56,7 +57,6 @@ func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 		Seekable: Seekable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

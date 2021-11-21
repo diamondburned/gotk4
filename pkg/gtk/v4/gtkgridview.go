@@ -71,6 +71,7 @@ func wrapGridView(obj *externglib.Object) *GridView {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -80,15 +81,14 @@ func wrapGridView(obj *externglib.Object) *GridView {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
 			Scrollable: Scrollable{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

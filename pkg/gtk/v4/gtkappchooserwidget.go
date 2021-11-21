@@ -47,8 +47,8 @@ func init() {
 type AppChooserWidget struct {
 	Widget
 
-	AppChooser
 	*externglib.Object
+	AppChooser
 }
 
 var (
@@ -62,6 +62,7 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -71,13 +72,14 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		AppChooser: AppChooser{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -87,10 +89,8 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

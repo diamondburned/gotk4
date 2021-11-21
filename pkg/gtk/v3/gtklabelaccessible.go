@@ -27,9 +27,9 @@ func init() {
 type LabelAccessible struct {
 	WidgetAccessible
 
+	*externglib.Object
 	atk.Hypertext
 	atk.Text
-	*externglib.Object
 }
 
 var (
@@ -48,13 +48,13 @@ func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
 				Object: obj,
 			},
 		},
+		Object: obj,
 		Hypertext: atk.Hypertext{
 			Object: obj,
 		},
 		Text: atk.Text{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

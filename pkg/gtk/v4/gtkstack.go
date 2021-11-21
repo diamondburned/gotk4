@@ -210,6 +210,7 @@ func wrapStack(obj *externglib.Object) *Stack {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -219,7 +220,6 @@ func wrapStack(obj *externglib.Object) *Stack {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

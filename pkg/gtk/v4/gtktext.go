@@ -89,8 +89,8 @@ func init() {
 type Text struct {
 	Widget
 
-	Editable
 	*externglib.Object
+	Editable
 }
 
 var (
@@ -104,6 +104,7 @@ func wrapText(obj *externglib.Object) *Text {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -113,13 +114,14 @@ func wrapText(obj *externglib.Object) *Text {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Editable: Editable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -129,10 +131,8 @@ func wrapText(obj *externglib.Object) *Text {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

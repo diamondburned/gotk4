@@ -187,8 +187,8 @@ func init() {
 type ConstraintLayout struct {
 	LayoutManager
 
-	Buildable
 	*externglib.Object
+	Buildable
 }
 
 var (
@@ -201,10 +201,10 @@ func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 		LayoutManager: LayoutManager{
 			Object: obj,
 		},
+		Object: obj,
 		Buildable: Buildable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

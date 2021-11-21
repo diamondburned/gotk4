@@ -30,8 +30,8 @@ func init() {
 type ColorChooserDialog struct {
 	Dialog
 
-	ColorChooser
 	*externglib.Object
+	ColorChooser
 }
 
 var (
@@ -49,22 +49,22 @@ func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							ImplementorIface: atk.ImplementorIface{
 								Object: obj,
 							},
 							Buildable: Buildable{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 			},
 		},
+		Object: obj,
 		ColorChooser: ColorChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -48,9 +48,9 @@ func init() {
 type CellView struct {
 	Widget
 
+	*externglib.Object
 	CellLayout
 	Orientable
-	*externglib.Object
 }
 
 var (
@@ -64,21 +64,21 @@ func wrapCellView(obj *externglib.Object) *CellView {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			ImplementorIface: atk.ImplementorIface{
 				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		CellLayout: CellLayout{
 			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -51,8 +51,8 @@ func init() {
 type Switch struct {
 	Widget
 
-	Actionable
 	*externglib.Object
+	Actionable
 }
 
 var (
@@ -66,6 +66,7 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -75,13 +76,14 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Actionable: Actionable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -91,10 +93,8 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

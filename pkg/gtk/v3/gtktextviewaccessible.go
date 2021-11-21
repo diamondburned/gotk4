@@ -27,10 +27,10 @@ func init() {
 type TextViewAccessible struct {
 	ContainerAccessible
 
+	*externglib.Object
 	atk.EditableText
 	atk.StreamableContent
 	atk.Text
-	*externglib.Object
 }
 
 var (
@@ -51,6 +51,7 @@ func wrapTextViewAccessible(obj *externglib.Object) *TextViewAccessible {
 				},
 			},
 		},
+		Object: obj,
 		EditableText: atk.EditableText{
 			Object: obj,
 		},
@@ -60,7 +61,6 @@ func wrapTextViewAccessible(obj *externglib.Object) *TextViewAccessible {
 		Text: atk.Text{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

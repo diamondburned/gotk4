@@ -92,13 +92,13 @@ type ToolbarOverrider interface {
 type Toolbar struct {
 	Container
 
-	Orientable
-	ToolShell
 	*externglib.Object
 	atk.ImplementorIface
-	Buildable
-	Widget
 	externglib.InitiallyUnowned
+	Buildable
+	Orientable
+	ToolShell
+	Widget
 }
 
 var (
@@ -114,14 +114,24 @@ func wrapToolbar(obj *externglib.Object) *Toolbar {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
+		},
+		Object: obj,
+		ImplementorIface: atk.ImplementorIface{
+			Object: obj,
+		},
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
+		Buildable: Buildable{
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
@@ -131,36 +141,26 @@ func wrapToolbar(obj *externglib.Object) *Toolbar {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
-		},
-		Object: obj,
-		ImplementorIface: atk.ImplementorIface{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			ImplementorIface: atk.ImplementorIface{
 				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
 			},
-			Object: obj,
-		},
-		InitiallyUnowned: externglib.InitiallyUnowned{
-			Object: obj,
 		},
 	}
 }

@@ -27,10 +27,10 @@ func init() {
 type EntryAccessible struct {
 	WidgetAccessible
 
+	*externglib.Object
 	atk.Action
 	atk.EditableText
 	atk.Text
-	*externglib.Object
 }
 
 var (
@@ -49,6 +49,7 @@ func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 				Object: obj,
 			},
 		},
+		Object: obj,
 		Action: atk.Action{
 			Object: obj,
 		},
@@ -58,7 +59,6 @@ func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 		Text: atk.Text{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

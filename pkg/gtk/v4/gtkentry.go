@@ -150,13 +150,13 @@ type EntryOverrider interface {
 type Entry struct {
 	Widget
 
-	CellEditable
-	Editable
-	ConstraintTarget
-	externglib.InitiallyUnowned
 	*externglib.Object
+	externglib.InitiallyUnowned
 	Accessible
 	Buildable
+	CellEditable
+	ConstraintTarget
+	Editable
 }
 
 var (
@@ -170,6 +170,7 @@ func wrapEntry(obj *externglib.Object) *Entry {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -179,6 +180,15 @@ func wrapEntry(obj *externglib.Object) *Entry {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+		},
+		Object: obj,
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
+		Accessible: Accessible{
+			Object: obj,
+		},
+		Buildable: Buildable{
 			Object: obj,
 		},
 		CellEditable: CellEditable{
@@ -186,6 +196,7 @@ func wrapEntry(obj *externglib.Object) *Entry {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -195,14 +206,17 @@ func wrapEntry(obj *externglib.Object) *Entry {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+		},
+		ConstraintTarget: ConstraintTarget{
+			Object: obj,
 		},
 		Editable: Editable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -212,21 +226,7 @@ func wrapEntry(obj *externglib.Object) *Entry {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
-		},
-		ConstraintTarget: ConstraintTarget{
-			Object: obj,
-		},
-		InitiallyUnowned: externglib.InitiallyUnowned{
-			Object: obj,
-		},
-		Object: obj,
-		Accessible: Accessible{
-			Object: obj,
-		},
-		Buildable: Buildable{
-			Object: obj,
 		},
 	}
 }

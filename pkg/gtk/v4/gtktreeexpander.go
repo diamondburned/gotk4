@@ -75,6 +75,7 @@ func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -84,7 +85,6 @@ func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

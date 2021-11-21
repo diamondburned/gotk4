@@ -111,6 +111,7 @@ func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -120,7 +121,6 @@ func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

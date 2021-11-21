@@ -150,9 +150,9 @@ type EntryOverrider interface {
 type Entry struct {
 	Widget
 
+	*externglib.Object
 	CellEditable
 	Editable
-	*externglib.Object
 }
 
 var (
@@ -166,32 +166,32 @@ func wrapEntry(obj *externglib.Object) *Entry {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			ImplementorIface: atk.ImplementorIface{
 				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		CellEditable: CellEditable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 		Editable: Editable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

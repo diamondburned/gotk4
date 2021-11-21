@@ -154,8 +154,8 @@ func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cre
 type FileFilter struct {
 	externglib.InitiallyUnowned
 
-	Buildable
 	*externglib.Object
+	Buildable
 }
 
 var (
@@ -167,10 +167,10 @@ func wrapFileFilter(obj *externglib.Object) *FileFilter {
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
+		Object: obj,
 		Buildable: Buildable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

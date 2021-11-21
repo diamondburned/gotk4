@@ -27,9 +27,9 @@ func init() {
 type TextCellAccessible struct {
 	RendererCellAccessible
 
-	atk.Text
-	atk.ObjectClass
 	*externglib.Object
+	atk.ObjectClass
+	atk.Text
 }
 
 var (
@@ -45,10 +45,14 @@ func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 						Object: obj,
 					},
 				},
+				Object: obj,
 				Action: atk.Action{
 					Object: obj,
 				},
 				Component: atk.Component{
+					Object: obj,
+				},
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 				TableCell: atk.TableCell{
@@ -56,19 +60,15 @@ func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 						Object: obj,
 					},
 				},
-				ObjectClass: atk.ObjectClass{
-					Object: obj,
-				},
-				Object: obj,
 			},
+		},
+		Object: obj,
+		ObjectClass: atk.ObjectClass{
+			Object: obj,
 		},
 		Text: atk.Text{
 			Object: obj,
 		},
-		ObjectClass: atk.ObjectClass{
-			Object: obj,
-		},
-		Object: obj,
 	}
 }
 

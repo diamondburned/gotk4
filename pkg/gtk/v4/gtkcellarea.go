@@ -338,9 +338,9 @@ type CellAreaOverrider interface {
 type CellArea struct {
 	externglib.InitiallyUnowned
 
+	*externglib.Object
 	Buildable
 	CellLayout
-	*externglib.Object
 }
 
 var (
@@ -363,13 +363,13 @@ func wrapCellArea(obj *externglib.Object) *CellArea {
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
+		Object: obj,
 		Buildable: Buildable{
 			Object: obj,
 		},
 		CellLayout: CellLayout{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

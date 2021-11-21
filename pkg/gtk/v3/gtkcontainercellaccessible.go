@@ -42,10 +42,14 @@ func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessibl
 					Object: obj,
 				},
 			},
+			Object: obj,
 			Action: atk.Action{
 				Object: obj,
 			},
 			Component: atk.Component{
+				Object: obj,
+			},
+			ObjectClass: atk.ObjectClass{
 				Object: obj,
 			},
 			TableCell: atk.TableCell{
@@ -53,10 +57,6 @@ func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessibl
 					Object: obj,
 				},
 			},
-			ObjectClass: atk.ObjectClass{
-				Object: obj,
-			},
-			Object: obj,
 		},
 	}
 }

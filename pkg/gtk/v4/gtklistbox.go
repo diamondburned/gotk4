@@ -215,6 +215,7 @@ func wrapListBox(obj *externglib.Object) *ListBox {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -224,7 +225,6 @@ func wrapListBox(obj *externglib.Object) *ListBox {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
@@ -1002,8 +1002,8 @@ type ListBoxRowOverrider interface {
 type ListBoxRow struct {
 	Widget
 
-	Actionable
 	*externglib.Object
+	Actionable
 }
 
 var (
@@ -1017,6 +1017,7 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -1026,13 +1027,14 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Actionable: Actionable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -1042,10 +1044,8 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

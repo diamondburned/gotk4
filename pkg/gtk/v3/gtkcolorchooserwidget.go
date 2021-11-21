@@ -47,8 +47,8 @@ func init() {
 type ColorChooserWidget struct {
 	Box
 
-	ColorChooser
 	*externglib.Object
+	ColorChooser
 }
 
 var (
@@ -64,24 +64,24 @@ func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		ColorChooser: ColorChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

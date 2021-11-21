@@ -91,8 +91,8 @@ type FileIOStreamOverrider interface {
 type FileIOStream struct {
 	IOStream
 
-	Seekable
 	*externglib.Object
+	Seekable
 }
 
 var (
@@ -105,10 +105,10 @@ func wrapFileIOStream(obj *externglib.Object) *FileIOStream {
 		IOStream: IOStream{
 			Object: obj,
 		},
+		Object: obj,
 		Seekable: Seekable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

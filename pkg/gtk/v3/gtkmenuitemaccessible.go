@@ -27,9 +27,9 @@ func init() {
 type MenuItemAccessible struct {
 	ContainerAccessible
 
+	*externglib.Object
 	atk.Action
 	atk.Selection
-	*externglib.Object
 }
 
 var (
@@ -50,13 +50,13 @@ func wrapMenuItemAccessible(obj *externglib.Object) *MenuItemAccessible {
 				},
 			},
 		},
+		Object: obj,
 		Action: atk.Action{
 			Object: obj,
 		},
 		Selection: atk.Selection{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

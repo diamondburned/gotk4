@@ -27,8 +27,8 @@ func init() {
 type LinkButtonAccessible struct {
 	ButtonAccessible
 
-	atk.HyperlinkImpl
 	*externglib.Object
+	atk.HyperlinkImpl
 }
 
 var (
@@ -50,18 +50,18 @@ func wrapLinkButtonAccessible(obj *externglib.Object) *LinkButtonAccessible {
 					},
 				},
 			},
+			Object: obj,
 			Action: atk.Action{
 				Object: obj,
 			},
 			Image: atk.Image{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		HyperlinkImpl: atk.HyperlinkImpl{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

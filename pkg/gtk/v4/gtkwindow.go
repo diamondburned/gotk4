@@ -88,9 +88,9 @@ type WindowOverrider interface {
 type Window struct {
 	Widget
 
+	*externglib.Object
 	Root
 	ShortcutManager
-	*externglib.Object
 }
 
 var (
@@ -104,6 +104,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -113,14 +114,15 @@ func wrapWindow(obj *externglib.Object) *Window {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Root: Root{
 			NativeSurface: NativeSurface{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -130,14 +132,12 @@ func wrapWindow(obj *externglib.Object) *Window {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 		},
 		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

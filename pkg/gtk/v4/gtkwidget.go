@@ -568,10 +568,10 @@ type WidgetOverrider interface {
 type Widget struct {
 	externglib.InitiallyUnowned
 
+	*externglib.Object
 	Accessible
 	Buildable
 	ConstraintTarget
-	*externglib.Object
 }
 
 var (
@@ -594,6 +594,7 @@ func wrapWidget(obj *externglib.Object) *Widget {
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
+		Object: obj,
 		Accessible: Accessible{
 			Object: obj,
 		},
@@ -603,7 +604,6 @@ func wrapWidget(obj *externglib.Object) *Widget {
 		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

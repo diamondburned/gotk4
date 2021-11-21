@@ -92,9 +92,9 @@ func init() {
 type ApplicationWindow struct {
 	Window
 
+	*externglib.Object
 	gio.ActionGroup
 	gio.ActionMap
-	*externglib.Object
 }
 
 var (
@@ -109,6 +109,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -118,14 +119,15 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Root: Root{
 				NativeSurface: NativeSurface{
 					Widget: Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: Accessible{
 							Object: obj,
 						},
@@ -135,22 +137,20 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		ActionGroup: gio.ActionGroup{
 			Object: obj,
 		},
 		ActionMap: gio.ActionMap{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

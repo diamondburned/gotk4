@@ -220,9 +220,9 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	return _frameTimings
 }
 
-// Fps calculates the current frames-per-second, based on the frame timings of
+// FPS calculates the current frames-per-second, based on the frame timings of
 // frame_clock.
-func (frameClock *FrameClock) Fps() float64 {
+func (frameClock *FrameClock) FPS() float64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.double         // in
 

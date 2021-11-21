@@ -50,8 +50,8 @@ func init() {
 type EditableLabel struct {
 	Widget
 
-	Editable
 	*externglib.Object
+	Editable
 }
 
 var (
@@ -65,6 +65,7 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -74,13 +75,14 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Editable: Editable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -90,10 +92,8 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

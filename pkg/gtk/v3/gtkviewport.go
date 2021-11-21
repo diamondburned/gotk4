@@ -47,8 +47,8 @@ func init() {
 type Viewport struct {
 	Bin
 
-	Scrollable
 	*externglib.Object
+	Scrollable
 }
 
 var (
@@ -64,20 +64,20 @@ func wrapViewport(obj *externglib.Object) *Viewport {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 		},
+		Object: obj,
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

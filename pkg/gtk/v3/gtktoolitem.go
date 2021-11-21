@@ -50,8 +50,8 @@ type ToolItemOverrider interface {
 type ToolItem struct {
 	Bin
 
-	Activatable
 	*externglib.Object
+	Activatable
 }
 
 var (
@@ -67,20 +67,20 @@ func wrapToolItem(obj *externglib.Object) *ToolItem {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 		},
+		Object: obj,
 		Activatable: Activatable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

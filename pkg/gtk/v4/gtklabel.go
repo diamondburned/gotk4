@@ -212,6 +212,7 @@ func wrapLabel(obj *externglib.Object) *Label {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -221,7 +222,6 @@ func wrapLabel(obj *externglib.Object) *Label {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

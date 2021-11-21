@@ -36,12 +36,12 @@ func init() {
 type ToolItemGroup struct {
 	Container
 
-	ToolShell
 	*externglib.Object
 	atk.ImplementorIface
-	Buildable
-	Widget
 	externglib.InitiallyUnowned
+	Buildable
+	ToolShell
+	Widget
 }
 
 var (
@@ -57,50 +57,50 @@ func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
-			},
-		},
-		ToolShell: ToolShell{
-			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
-					Object: obj,
-				},
-				ImplementorIface: atk.ImplementorIface{
-					Object: obj,
-				},
-				Buildable: Buildable{
-					Object: obj,
-				},
-				Object: obj,
 			},
 		},
 		Object: obj,
 		ImplementorIface: atk.ImplementorIface{
 			Object: obj,
 		},
+		InitiallyUnowned: externglib.InitiallyUnowned{
+			Object: obj,
+		},
 		Buildable: Buildable{
 			Object: obj,
+		},
+		ToolShell: ToolShell{
+			Widget: Widget{
+				InitiallyUnowned: externglib.InitiallyUnowned{
+					Object: obj,
+				},
+				Object: obj,
+				ImplementorIface: atk.ImplementorIface{
+					Object: obj,
+				},
+				Buildable: Buildable{
+					Object: obj,
+				},
+			},
 		},
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			ImplementorIface: atk.ImplementorIface{
 				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
 			},
-			Object: obj,
-		},
-		InitiallyUnowned: externglib.InitiallyUnowned{
-			Object: obj,
 		},
 	}
 }

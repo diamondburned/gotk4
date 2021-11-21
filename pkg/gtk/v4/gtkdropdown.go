@@ -66,6 +66,7 @@ func wrapDropDown(obj *externglib.Object) *DropDown {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -75,7 +76,6 @@ func wrapDropDown(obj *externglib.Object) *DropDown {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

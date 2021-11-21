@@ -47,13 +47,13 @@ func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessibl
 					},
 				},
 			},
+			Object: obj,
 			Action: atk.Action{
 				Object: obj,
 			},
 			Selection: atk.Selection{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

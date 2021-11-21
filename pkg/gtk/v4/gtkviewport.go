@@ -42,8 +42,8 @@ func init() {
 type Viewport struct {
 	Widget
 
-	Scrollable
 	*externglib.Object
+	Scrollable
 }
 
 var (
@@ -57,6 +57,7 @@ func wrapViewport(obj *externglib.Object) *Viewport {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -66,12 +67,11 @@ func wrapViewport(obj *externglib.Object) *Viewport {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

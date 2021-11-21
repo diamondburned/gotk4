@@ -50,6 +50,7 @@ func wrapVideo(obj *externglib.Object) *Video {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -59,7 +60,6 @@ func wrapVideo(obj *externglib.Object) *Video {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

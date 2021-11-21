@@ -157,6 +157,7 @@ func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -166,7 +167,6 @@ func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

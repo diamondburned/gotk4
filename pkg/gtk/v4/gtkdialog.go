@@ -293,6 +293,7 @@ func wrapDialog(obj *externglib.Object) *Dialog {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -302,14 +303,15 @@ func wrapDialog(obj *externglib.Object) *Dialog {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Root: Root{
 				NativeSurface: NativeSurface{
 					Widget: Widget{
 						InitiallyUnowned: externglib.InitiallyUnowned{
 							Object: obj,
 						},
+						Object: obj,
 						Accessible: Accessible{
 							Object: obj,
 						},
@@ -319,14 +321,12 @@ func wrapDialog(obj *externglib.Object) *Dialog {
 						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
-						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

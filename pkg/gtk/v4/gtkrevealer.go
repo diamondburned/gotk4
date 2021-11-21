@@ -120,6 +120,7 @@ func wrapRevealer(obj *externglib.Object) *Revealer {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -129,7 +130,6 @@ func wrapRevealer(obj *externglib.Object) *Revealer {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -117,9 +117,9 @@ func _gotk4_gtk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, a
 type IconView struct {
 	Widget
 
+	*externglib.Object
 	CellLayout
 	Scrollable
-	*externglib.Object
 }
 
 var (
@@ -133,6 +133,7 @@ func wrapIconView(obj *externglib.Object) *IconView {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -142,15 +143,14 @@ func wrapIconView(obj *externglib.Object) *IconView {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		CellLayout: CellLayout{
 			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

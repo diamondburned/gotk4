@@ -177,8 +177,8 @@ func _gotk4_gtk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChil
 type FlowBox struct {
 	Widget
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -192,6 +192,7 @@ func wrapFlowBox(obj *externglib.Object) *FlowBox {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -201,12 +202,11 @@ func wrapFlowBox(obj *externglib.Object) *FlowBox {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 
@@ -984,6 +984,7 @@ func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -993,7 +994,6 @@ func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

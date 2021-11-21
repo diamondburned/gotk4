@@ -41,10 +41,14 @@ func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 						Object: obj,
 					},
 				},
+				Object: obj,
 				Action: atk.Action{
 					Object: obj,
 				},
 				Component: atk.Component{
+					Object: obj,
+				},
+				ObjectClass: atk.ObjectClass{
 					Object: obj,
 				},
 				TableCell: atk.TableCell{
@@ -52,10 +56,6 @@ func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 						Object: obj,
 					},
 				},
-				ObjectClass: atk.ObjectClass{
-					Object: obj,
-				},
-				Object: obj,
 			},
 		},
 	}

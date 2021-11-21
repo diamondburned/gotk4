@@ -135,9 +135,9 @@ type IconViewOverrider interface {
 type IconView struct {
 	Container
 
+	*externglib.Object
 	CellLayout
 	Scrollable
-	*externglib.Object
 }
 
 var (
@@ -152,22 +152,22 @@ func wrapIconView(obj *externglib.Object) *IconView {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
+		Object: obj,
 		CellLayout: CellLayout{
 			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

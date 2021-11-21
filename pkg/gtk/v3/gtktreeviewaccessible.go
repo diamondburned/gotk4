@@ -27,10 +27,10 @@ func init() {
 type TreeViewAccessible struct {
 	ContainerAccessible
 
+	*externglib.Object
 	atk.Selection
 	atk.Table
 	CellAccessibleParent
-	*externglib.Object
 }
 
 var (
@@ -51,6 +51,7 @@ func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 				},
 			},
 		},
+		Object: obj,
 		Selection: atk.Selection{
 			Object: obj,
 		},
@@ -60,7 +61,6 @@ func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 		CellAccessibleParent: CellAccessibleParent{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -59,8 +59,8 @@ func init() {
 type CenterBox struct {
 	Widget
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -74,6 +74,7 @@ func wrapCenterBox(obj *externglib.Object) *CenterBox {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -83,12 +84,11 @@ func wrapCenterBox(obj *externglib.Object) *CenterBox {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -37,8 +37,8 @@ func init() {
 type DragIcon struct {
 	Widget
 
-	Root
 	*externglib.Object
+	Root
 }
 
 var (
@@ -52,6 +52,7 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -61,14 +62,15 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Root: Root{
 			NativeSurface: NativeSurface{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -78,11 +80,9 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 		},
-		Object: obj,
 	}
 }
 

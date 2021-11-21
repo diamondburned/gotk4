@@ -52,6 +52,7 @@ func wrapActionBar(obj *externglib.Object) *ActionBar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -61,7 +62,6 @@ func wrapActionBar(obj *externglib.Object) *ActionBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -34,8 +34,8 @@ type PlugOverrider interface {
 type Plug struct {
 	ObjectClass
 
-	Component
 	*externglib.Object
+	Component
 }
 
 var (
@@ -47,10 +47,10 @@ func wrapPlug(obj *externglib.Object) *Plug {
 		ObjectClass: ObjectClass{
 			Object: obj,
 		},
+		Object: obj,
 		Component: Component{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

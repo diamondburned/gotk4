@@ -45,6 +45,7 @@ func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -54,7 +55,6 @@ func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

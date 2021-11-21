@@ -128,9 +128,9 @@ func (t ToolPaletteDragTargets) Has(other ToolPaletteDragTargets) bool {
 type ToolPalette struct {
 	Container
 
+	*externglib.Object
 	Orientable
 	Scrollable
-	*externglib.Object
 }
 
 var (
@@ -145,22 +145,22 @@ func wrapToolPalette(obj *externglib.Object) *ToolPalette {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

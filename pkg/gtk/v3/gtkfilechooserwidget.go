@@ -36,8 +36,8 @@ func init() {
 type FileChooserWidget struct {
 	Box
 
-	FileChooser
 	*externglib.Object
+	FileChooser
 }
 
 var (
@@ -53,24 +53,24 @@ func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		FileChooser: FileChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

@@ -91,6 +91,7 @@ func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -100,13 +101,14 @@ func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			CellEditable: CellEditable{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -116,13 +118,11 @@ func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 			CellLayout: CellLayout{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

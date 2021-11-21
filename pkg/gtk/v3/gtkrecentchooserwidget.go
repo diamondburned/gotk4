@@ -37,8 +37,8 @@ func init() {
 type RecentChooserWidget struct {
 	Box
 
-	RecentChooser
 	*externglib.Object
+	RecentChooser
 }
 
 var (
@@ -54,24 +54,24 @@ func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		RecentChooser: RecentChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

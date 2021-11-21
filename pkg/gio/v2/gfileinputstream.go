@@ -70,8 +70,8 @@ type FileInputStreamOverrider interface {
 type FileInputStream struct {
 	InputStream
 
-	Seekable
 	*externglib.Object
+	Seekable
 }
 
 var (
@@ -84,10 +84,10 @@ func wrapFileInputStream(obj *externglib.Object) *FileInputStream {
 		InputStream: InputStream{
 			Object: obj,
 		},
+		Object: obj,
 		Seekable: Seekable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

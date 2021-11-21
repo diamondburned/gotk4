@@ -45,6 +45,7 @@ func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -54,12 +55,11 @@ func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			Orientable: Orientable{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

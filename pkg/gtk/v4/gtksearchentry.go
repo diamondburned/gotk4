@@ -67,8 +67,8 @@ func init() {
 type SearchEntry struct {
 	Widget
 
-	Editable
 	*externglib.Object
+	Editable
 }
 
 var (
@@ -82,6 +82,7 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -91,13 +92,14 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Editable: Editable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -107,10 +109,8 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
-		Object: obj,
 	}
 }
 

@@ -31,9 +31,9 @@ func init() {
 type MemoryInputStream struct {
 	InputStream
 
+	*externglib.Object
 	PollableInputStream
 	Seekable
-	*externglib.Object
 }
 
 var (
@@ -46,6 +46,7 @@ func wrapMemoryInputStream(obj *externglib.Object) *MemoryInputStream {
 		InputStream: InputStream{
 			Object: obj,
 		},
+		Object: obj,
 		PollableInputStream: PollableInputStream{
 			InputStream: InputStream{
 				Object: obj,
@@ -54,7 +55,6 @@ func wrapMemoryInputStream(obj *externglib.Object) *MemoryInputStream {
 		Seekable: Seekable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

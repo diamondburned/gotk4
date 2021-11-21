@@ -190,8 +190,8 @@ func init() {
 type FileChooserDialog struct {
 	Dialog
 
-	FileChooser
 	*externglib.Object
+	FileChooser
 }
 
 var (
@@ -207,6 +207,7 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					Accessible: Accessible{
 						Object: obj,
 					},
@@ -216,14 +217,15 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
-					Object: obj,
 				},
+				Object: obj,
 				Root: Root{
 					NativeSurface: NativeSurface{
 						Widget: Widget{
 							InitiallyUnowned: externglib.InitiallyUnowned{
 								Object: obj,
 							},
+							Object: obj,
 							Accessible: Accessible{
 								Object: obj,
 							},
@@ -233,20 +235,18 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 							ConstraintTarget: ConstraintTarget{
 								Object: obj,
 							},
-							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: ShortcutManager{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
+		Object: obj,
 		FileChooser: FileChooser{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

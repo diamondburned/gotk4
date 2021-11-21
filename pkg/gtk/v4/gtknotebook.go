@@ -156,6 +156,7 @@ func wrapNotebook(obj *externglib.Object) *Notebook {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -165,7 +166,6 @@ func wrapNotebook(obj *externglib.Object) *Notebook {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

@@ -96,9 +96,9 @@ type ComboBoxOverrider interface {
 type ComboBox struct {
 	Widget
 
+	*externglib.Object
 	CellEditable
 	CellLayout
-	*externglib.Object
 }
 
 var (
@@ -112,6 +112,7 @@ func wrapComboBox(obj *externglib.Object) *ComboBox {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -121,13 +122,14 @@ func wrapComboBox(obj *externglib.Object) *ComboBox {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		CellEditable: CellEditable{
 			Widget: Widget{
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -137,13 +139,11 @@ func wrapComboBox(obj *externglib.Object) *ComboBox {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 		CellLayout: CellLayout{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

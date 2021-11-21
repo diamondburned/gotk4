@@ -121,6 +121,7 @@ func wrapImage(obj *externglib.Object) *Image {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -130,7 +131,6 @@ func wrapImage(obj *externglib.Object) *Image {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

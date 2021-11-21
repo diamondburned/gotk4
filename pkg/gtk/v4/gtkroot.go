@@ -64,6 +64,7 @@ func wrapRoot(obj *externglib.Object) *Root {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				Accessible: Accessible{
 					Object: obj,
 				},
@@ -73,7 +74,6 @@ func wrapRoot(obj *externglib.Object) *Root {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 	}

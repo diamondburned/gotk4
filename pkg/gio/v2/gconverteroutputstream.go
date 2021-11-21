@@ -29,15 +29,15 @@ func init() {
 type ConverterOutputStream struct {
 	FilterOutputStream
 
-	PollableOutputStream
-	OutputStream
 	*externglib.Object
+	OutputStream
+	PollableOutputStream
 }
 
 var (
 	_ FilterOutputStreamer = (*ConverterOutputStream)(nil)
-	_ OutputStreamer       = (*ConverterOutputStream)(nil)
 	_ externglib.Objector  = (*ConverterOutputStream)(nil)
+	_ OutputStreamer       = (*ConverterOutputStream)(nil)
 )
 
 func wrapConverterOutputStream(obj *externglib.Object) *ConverterOutputStream {
@@ -47,15 +47,15 @@ func wrapConverterOutputStream(obj *externglib.Object) *ConverterOutputStream {
 				Object: obj,
 			},
 		},
+		Object: obj,
+		OutputStream: OutputStream{
+			Object: obj,
+		},
 		PollableOutputStream: PollableOutputStream{
 			OutputStream: OutputStream{
 				Object: obj,
 			},
 		},
-		OutputStream: OutputStream{
-			Object: obj,
-		},
-		Object: obj,
 	}
 }
 

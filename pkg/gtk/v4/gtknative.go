@@ -72,6 +72,7 @@ func wrapNativeSurface(obj *externglib.Object) *NativeSurface {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -81,7 +82,6 @@ func wrapNativeSurface(obj *externglib.Object) *NativeSurface {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

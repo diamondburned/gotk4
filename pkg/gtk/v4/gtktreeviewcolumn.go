@@ -131,9 +131,9 @@ func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 type TreeViewColumn struct {
 	externglib.InitiallyUnowned
 
+	*externglib.Object
 	Buildable
 	CellLayout
-	*externglib.Object
 }
 
 var (
@@ -145,13 +145,13 @@ func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
 		},
+		Object: obj,
 		Buildable: Buildable{
 			Object: obj,
 		},
 		CellLayout: CellLayout{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

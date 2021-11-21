@@ -48,13 +48,13 @@ func wrapRadioMenuItemAccessible(obj *externglib.Object) *RadioMenuItemAccessibl
 						},
 					},
 				},
+				Object: obj,
 				Action: atk.Action{
 					Object: obj,
 				},
 				Selection: atk.Selection{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
 	}

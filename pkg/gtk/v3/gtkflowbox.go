@@ -187,8 +187,8 @@ type FlowBoxOverrider interface {
 type FlowBox struct {
 	Container
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -203,19 +203,19 @@ func wrapFlowBox(obj *externglib.Object) *FlowBox {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 
@@ -968,13 +968,13 @@ func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 		},

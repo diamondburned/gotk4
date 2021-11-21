@@ -72,6 +72,7 @@ func wrapStatusbar(obj *externglib.Object) *Statusbar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -81,7 +82,6 @@ func wrapStatusbar(obj *externglib.Object) *Statusbar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

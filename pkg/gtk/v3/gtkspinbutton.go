@@ -168,8 +168,8 @@ type SpinButtonOverrider interface {
 type SpinButton struct {
 	Entry
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -184,37 +184,37 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 				InitiallyUnowned: externglib.InitiallyUnowned{
 					Object: obj,
 				},
+				Object: obj,
 				ImplementorIface: atk.ImplementorIface{
 					Object: obj,
 				},
 				Buildable: Buildable{
 					Object: obj,
 				},
-				Object: obj,
 			},
+			Object: obj,
 			CellEditable: CellEditable{
 				Widget: Widget{
 					InitiallyUnowned: externglib.InitiallyUnowned{
 						Object: obj,
 					},
+					Object: obj,
 					ImplementorIface: atk.ImplementorIface{
 						Object: obj,
 					},
 					Buildable: Buildable{
 						Object: obj,
 					},
-					Object: obj,
 				},
 			},
 			Editable: Editable{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

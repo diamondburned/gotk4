@@ -42,8 +42,8 @@ func init() {
 type CellAreaBox struct {
 	CellArea
 
-	Orientable
 	*externglib.Object
+	Orientable
 }
 
 var (
@@ -57,18 +57,18 @@ func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Buildable: Buildable{
 				Object: obj,
 			},
 			CellLayout: CellLayout{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Orientable: Orientable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

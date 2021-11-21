@@ -43,13 +43,13 @@ func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 			Filter: Filter{
 				Object: obj,
 			},
+			Object: obj,
 			ListModel: gio.ListModel{
 				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
@@ -94,13 +94,13 @@ func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 			Filter: Filter{
 				Object: obj,
 			},
+			Object: obj,
 			ListModel: gio.ListModel{
 				Object: obj,
 			},
 			Buildable: Buildable{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }
@@ -133,9 +133,9 @@ func NewEveryFilter() *EveryFilter {
 type MultiFilter struct {
 	Filter
 
+	*externglib.Object
 	gio.ListModel
 	Buildable
-	*externglib.Object
 }
 
 var (
@@ -158,13 +158,13 @@ func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
 		Filter: Filter{
 			Object: obj,
 		},
+		Object: obj,
 		ListModel: gio.ListModel{
 			Object: obj,
 		},
 		Buildable: Buildable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

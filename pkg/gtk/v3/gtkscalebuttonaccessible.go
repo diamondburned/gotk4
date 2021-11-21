@@ -27,8 +27,8 @@ func init() {
 type ScaleButtonAccessible struct {
 	ButtonAccessible
 
-	atk.Value
 	*externglib.Object
+	atk.Value
 }
 
 var (
@@ -50,18 +50,18 @@ func wrapScaleButtonAccessible(obj *externglib.Object) *ScaleButtonAccessible {
 					},
 				},
 			},
+			Object: obj,
 			Action: atk.Action{
 				Object: obj,
 			},
 			Image: atk.Image{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Value: atk.Value{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

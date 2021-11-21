@@ -64,6 +64,7 @@ func wrapPopoverMenuBar(obj *externglib.Object) *PopoverMenuBar {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -73,7 +74,6 @@ func wrapPopoverMenuBar(obj *externglib.Object) *PopoverMenuBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

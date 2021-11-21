@@ -47,13 +47,13 @@ func wrapToggleButtonAccessible(obj *externglib.Object) *ToggleButtonAccessible 
 					},
 				},
 			},
+			Object: obj,
 			Action: atk.Action{
 				Object: obj,
 			},
 			Image: atk.Image{
 				Object: obj,
 			},
-			Object: obj,
 		},
 	}
 }

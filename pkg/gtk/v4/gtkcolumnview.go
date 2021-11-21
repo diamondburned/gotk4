@@ -90,8 +90,8 @@ func init() {
 type ColumnView struct {
 	Widget
 
-	Scrollable
 	*externglib.Object
+	Scrollable
 }
 
 var (
@@ -105,6 +105,7 @@ func wrapColumnView(obj *externglib.Object) *ColumnView {
 			InitiallyUnowned: externglib.InitiallyUnowned{
 				Object: obj,
 			},
+			Object: obj,
 			Accessible: Accessible{
 				Object: obj,
 			},
@@ -114,12 +115,11 @@ func wrapColumnView(obj *externglib.Object) *ColumnView {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
-			Object: obj,
 		},
+		Object: obj,
 		Scrollable: Scrollable{
 			Object: obj,
 		},
-		Object: obj,
 	}
 }
 

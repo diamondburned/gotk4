@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1351,11 +1350,9 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg3 = (C.int)(len(text))
-	if text == "" {
-		_arg2 = (*C.char)(gextras.ZeroString)
-	} else {
-		_arg2 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&text)).Data))
-	}
+	_arg2 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_text_buffer_insert(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(buffer)
@@ -1379,11 +1376,9 @@ func (buffer *TextBuffer) InsertAtCursor(text string) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg2 = (C.int)(len(text))
-	if text == "" {
-		_arg1 = (*C.char)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&text)).Data))
-	}
+	_arg1 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_text_buffer_insert_at_cursor(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buffer)
@@ -1451,11 +1446,9 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, default
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg3 = (C.int)(len(text))
-	if text == "" {
-		_arg2 = (*C.char)(gextras.ZeroString)
-	} else {
-		_arg2 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&text)).Data))
-	}
+	_arg2 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg2))
 	if defaultEditable {
 		_arg4 = C.TRUE
 	}
@@ -1497,11 +1490,9 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg2 = (C.int)(len(text))
-	if text == "" {
-		_arg1 = (*C.char)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&text)).Data))
-	}
+	_arg1 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg1))
 	if defaultEditable {
 		_arg3 = C.TRUE
 	}
@@ -1541,11 +1532,9 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg3 = (C.int)(len(markup))
-	if markup == "" {
-		_arg2 = (*C.char)(gextras.ZeroString)
-	} else {
-		_arg2 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&markup)).Data))
-	}
+	_arg2 = (*C.char)(C.malloc(C.size_t(uint((len(markup) + 1)) * uint(C.sizeof_char))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(markup)), markup)
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(buffer)
@@ -2014,11 +2003,9 @@ func (buffer *TextBuffer) SetText(text string) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg2 = (C.int)(len(text))
-	if text == "" {
-		_arg1 = (*C.char)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&text)).Data))
-	}
+	_arg1 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_text_buffer_set_text(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buffer)

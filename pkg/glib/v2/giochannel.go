@@ -4,7 +4,6 @@ package glib
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -545,7 +544,8 @@ func (channel *IOChannel) ReadChars(buf []byte) (uint, IOStatus, error) {
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 	_arg2 = (C.gsize)(len(buf))
-	_arg1 = (*C.gchar)(unsafe.Pointer(&buf[0]))
+	_arg1 = (*C.gchar)(C.CBytes(buf))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_io_channel_read_chars(_arg0, _arg1, _arg2, &_arg3, &_cerr)
 	runtime.KeepAlive(channel)
@@ -947,11 +947,9 @@ func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, err
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-	if buf == "" {
-		_arg1 = (*C.gchar)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buf)).Data))
-	}
+	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(buf) + 1)) * uint(C.sizeof_gchar))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(buf)), buf)
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(count)
 
 	_cret = C.g_io_channel_write_chars(_arg0, _arg1, _arg2, &_arg3, &_cerr)

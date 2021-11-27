@@ -4,12 +4,10 @@ package glib
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -3079,11 +3077,9 @@ func UTF8Validate(str string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg2 = (C.gssize)(len(str))
-	if str == "" {
-		_arg1 = (*C.gchar)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
-	}
+	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(str) + 1)) * uint(C.sizeof_gchar))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_utf8_validate(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(str)
@@ -3117,11 +3113,9 @@ func UTF8ValidateLen(str string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg2 = (C.gsize)(len(str))
-	if str == "" {
-		_arg1 = (*C.gchar)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
-	}
+	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(str) + 1)) * uint(C.sizeof_gchar))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_utf8_validate_len(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(str)

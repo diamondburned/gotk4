@@ -87,43 +87,51 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.inDecl.Reset()
 		value.inDecl.Linef("var %s %s", value.InName, value.In.Type)
 
-		// Only hand over Go memory if we don't have to reallocate.
-		if !value.MustRealloc() && !array.IsZeroTerminated() {
-			value.header.Import("unsafe")
+		// This is super unsafe. I'm not too sure why, but GTK sometimes
+		// randomly crashes at this function.
+		/*
+			if !value.MustRealloc() && !array.IsZeroTerminated() {
+				value.header.Import("unsafe")
 
-			if value.IsOptional() {
-				value.p.Linef("if len(%s) > 0 {", value.InName)
-				defer value.p.Linef("}")
-			}
-
-			if !isString {
-				value.p.Linef(
-					"%s = (%s)(unsafe.Pointer(&%s[0]))",
-					value.Out.Set, value.Out.Type, value.InName,
-				)
-			} else {
-				value.header.Import("reflect")
-				if !value.Nullable {
-					value.header.ImportCore("gextras")
-					// Be careful with taking the pointer of a string if the
-					// function doesn't like a null pointer: an empty string
-					// will have a null pointer.
-					// TextBuffer, for example, will complain with an "assertion
-					// 'text != NULL' failed."
-					value.p.Linef(`if %s == "" {`, value.InName)
-					// Length 0, so this shouldn't read.
-					value.p.Linef(`  %s = (%s)(gextras.ZeroString)`, value.Out.Set, value.Out.Type)
-					value.p.Linef(`} else {`)
+				if value.IsOptional() {
+					value.p.Linef("if len(%s) > 0 {", value.InName)
 					defer value.p.Linef("}")
 				}
 
-				value.p.Linef(
-					"%s = (%s)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&%s)).Data))",
-					value.Out.Set, value.Out.Type, value.InName,
-				)
-			}
+				if !isString {
+					value.p.Linef(
+						"%s = (%s)(unsafe.Pointer(&%s[0]))",
+						value.Out.Set, value.Out.Type, value.InName,
+					)
+				} else {
+					value.header.Import("reflect")
+					if !value.Nullable {
+						value.header.ImportCore("gextras")
+						// Be careful with taking the pointer of a string if the
+						// function doesn't like a null pointer: an empty string
+						// will have a null pointer.
+						// TextBuffer, for example, will complain with an "assertion
+						// 'text != NULL' failed."
+						value.p.Linef(`if %s == "" {`, value.InName)
+						// Length 0, so this shouldn't read.
+						value.p.Linef(`  %s = (%s)(gextras.ZeroString)`, value.Out.Set, value.Out.Type)
+						value.p.Linef(`} else {`)
+						defer value.p.Linef("}")
+					}
 
-			return true
+					value.p.Linef(
+						"%s = (%s)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&%s)).Data))",
+						value.Out.Set, value.Out.Type, value.InName,
+					)
+				}
+
+				return true
+			}
+		*/
+
+		if value.ShouldFree() {
+			// Write this last.
+			defer value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.Out.Set)
 		}
 
 		// Use CBytes, which copies. Since we're transferring ownership to C,

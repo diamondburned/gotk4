@@ -4,12 +4,10 @@ package glib
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -99,11 +97,9 @@ func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 	var _cerr *C.GError // in
 
 	_arg2 = (C.gssize)(len(str))
-	if str == "" {
-		_arg1 = (*C.gchar)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
-	}
+	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(str) + 1)) * uint(C.sizeof_gchar))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(fromCodeset)))
@@ -167,11 +163,9 @@ func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []
 	var _cerr *C.GError // in
 
 	_arg2 = (C.gssize)(len(str))
-	if str == "" {
-		_arg1 = (*C.gchar)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
-	}
+	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(str) + 1)) * uint(C.sizeof_gchar))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(fromCodeset)))
@@ -572,11 +566,9 @@ func LocaleToUTF8(opsysstring string) (bytesRead uint, bytesWritten uint, utf8 s
 	var _cerr *C.GError // in
 
 	_arg2 = (C.gssize)(len(opsysstring))
-	if opsysstring == "" {
-		_arg1 = (*C.gchar)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&opsysstring)).Data))
-	}
+	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(opsysstring) + 1)) * uint(C.sizeof_gchar))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(opsysstring)), opsysstring)
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_locale_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 	runtime.KeepAlive(opsysstring)

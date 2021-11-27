@@ -4,12 +4,10 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -154,11 +152,9 @@ func (cssProvider *CSSProvider) LoadFromData(data string) error {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg2 = (C.gssize)(len(data))
-	if data == "" {
-		_arg1 = (*C.gchar)(gextras.ZeroString)
-	} else {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&data)).Data))
-	}
+	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(data) + 1)) * uint(C.sizeof_gchar))))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(data)), data)
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(cssProvider)

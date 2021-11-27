@@ -690,7 +690,7 @@ func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size, sca
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.char)(C.malloc(C.size_t(uint((len(fallbacks) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg2 = (**C.char)(C.calloc(C.size_t((len(fallbacks) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(fallbacks)+1)
@@ -749,7 +749,7 @@ func (self *IconTheme) SetSearchPath(path []string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 	{
-		_arg1 = (**C.char)(C.malloc(C.size_t(uint((len(path) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(path) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(path)+1)

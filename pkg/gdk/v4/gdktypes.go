@@ -537,7 +537,7 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var _cret *C.GdkContentFormats // in
 
 	_arg2 = (C.guint)(len(mimeTypes))
-	_arg1 = (**C.char)(C.malloc(C.size_t(uint(len(mimeTypes)) * uint(unsafe.Sizeof(uint(0))))))
+	_arg1 = (**C.char)(C.calloc(C.size_t(len(mimeTypes)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.char)(_arg1), len(mimeTypes))

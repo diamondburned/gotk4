@@ -300,7 +300,7 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 	var _cret *C.GVariantType // in
 
 	_arg2 = (C.gint)(len(items))
-	_arg1 = (**C.GVariantType)(C.malloc(C.size_t(uint(len(items)) * uint(unsafe.Sizeof(uint(0))))))
+	_arg1 = (**C.GVariantType)(C.calloc(C.size_t(len(items)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.GVariantType)(_arg1), len(items))

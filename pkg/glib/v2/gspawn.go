@@ -463,7 +463,7 @@ func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, c
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(argv) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg2 = (**C.gchar)(C.calloc(C.size_t((len(argv) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(argv)+1)
@@ -476,7 +476,7 @@ func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, c
 		}
 	}
 	{
-		_arg3 = (**C.gchar)(C.malloc(C.size_t(uint((len(envp) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg3 = (**C.gchar)(C.calloc(C.size_t((len(envp) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(envp)+1)

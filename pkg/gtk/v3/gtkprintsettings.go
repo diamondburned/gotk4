@@ -1403,7 +1403,7 @@ func (settings *PrintSettings) SetPageRanges(pageRanges []PageRange) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = (C.gint)(len(pageRanges))
-	_arg1 = (*C.GtkPageRange)(C.malloc(C.size_t(uint(len(pageRanges)) * uint(C.sizeof_GtkPageRange))))
+	_arg1 = (*C.GtkPageRange)(C.calloc(C.size_t(len(pageRanges)), C.size_t(C.sizeof_GtkPageRange)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkPageRange)(_arg1), len(pageRanges))

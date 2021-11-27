@@ -3077,7 +3077,7 @@ func UTF8Validate(str string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg2 = (C.gssize)(len(str))
-	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(str) + 1)) * uint(C.sizeof_gchar))))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(str) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -3113,7 +3113,7 @@ func UTF8ValidateLen(str string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg2 = (C.gsize)(len(str))
-	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(str) + 1)) * uint(C.sizeof_gchar))))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(str) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
 	defer C.free(unsafe.Pointer(_arg1))
 

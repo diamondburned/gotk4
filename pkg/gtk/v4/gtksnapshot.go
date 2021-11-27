@@ -187,7 +187,7 @@ func (snapshot *Snapshot) AppendConicGradient(bounds *graphene.Rect, center *gra
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg3 = C.float(rotation)
 	_arg5 = (C.gsize)(len(stops))
-	_arg4 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(stops)) * uint(C.sizeof_GskColorStop))))
+	_arg4 = (*C.GskColorStop)(C.calloc(C.size_t(len(stops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg4), len(stops))
@@ -285,7 +285,7 @@ func (snapshot *Snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(startPoint)))
 	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(endPoint)))
 	_arg5 = (C.gsize)(len(stops))
-	_arg4 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(stops)) * uint(C.sizeof_GskColorStop))))
+	_arg4 = (*C.GskColorStop)(C.calloc(C.size_t(len(stops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg4), len(stops))
@@ -395,7 +395,7 @@ func (snapshot *Snapshot) AppendRadialGradient(bounds *graphene.Rect, center *gr
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = (C.gsize)(len(stops))
-	_arg7 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(stops)) * uint(C.sizeof_GskColorStop))))
+	_arg7 = (*C.GskColorStop)(C.calloc(C.size_t(len(stops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg7))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg7), len(stops))
@@ -438,7 +438,7 @@ func (snapshot *Snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, s
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(startPoint)))
 	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(endPoint)))
 	_arg5 = (C.gsize)(len(stops))
-	_arg4 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(stops)) * uint(C.sizeof_GskColorStop))))
+	_arg4 = (*C.GskColorStop)(C.calloc(C.size_t(len(stops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg4), len(stops))
@@ -487,7 +487,7 @@ func (snapshot *Snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, c
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = (C.gsize)(len(stops))
-	_arg7 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(stops)) * uint(C.sizeof_GskColorStop))))
+	_arg7 = (*C.GskColorStop)(C.calloc(C.size_t(len(stops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg7))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg7), len(stops))

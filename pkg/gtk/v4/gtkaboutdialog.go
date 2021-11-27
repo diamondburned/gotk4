@@ -251,7 +251,7 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(sectionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.char)(C.malloc(C.size_t(uint((len(people) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg2 = (**C.char)(C.calloc(C.size_t((len(people) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(people)+1)
@@ -630,7 +630,7 @@ func (about *AboutDialog) SetArtists(artists []string) {
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	{
-		_arg1 = (**C.char)(C.malloc(C.size_t(uint((len(artists) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(artists) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(artists)+1)
@@ -661,7 +661,7 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	{
-		_arg1 = (**C.char)(C.malloc(C.size_t(uint((len(authors) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(authors) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(authors)+1)
@@ -738,7 +738,7 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	{
-		_arg1 = (**C.char)(C.malloc(C.size_t(uint((len(documenters) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(documenters) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(documenters)+1)

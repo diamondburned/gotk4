@@ -561,7 +561,7 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.char)(C.malloc(C.size_t(uint((len(objectIds) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg2 = (**C.char)(C.calloc(C.size_t((len(objectIds) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(objectIds)+1)
@@ -614,7 +614,7 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.char)(C.malloc(C.size_t(uint((len(objectIds) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg2 = (**C.char)(C.calloc(C.size_t((len(objectIds) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(objectIds)+1)
@@ -670,7 +670,7 @@ func (builder *Builder) AddObjectsFromString(buffer string, length int, objectId
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 	{
-		_arg3 = (**C.char)(C.malloc(C.size_t(uint((len(objectIds) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg3 = (**C.char)(C.calloc(C.size_t((len(objectIds) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(objectIds)+1)

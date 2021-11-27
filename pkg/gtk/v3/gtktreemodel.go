@@ -1158,7 +1158,7 @@ func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrd
 		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
 	_arg4 = (C.gint)(len(newOrder))
-	_arg3 = (*C.gint)(C.malloc(C.size_t(uint(len(newOrder)) * uint(C.sizeof_gint))))
+	_arg3 = (*C.gint)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.gint)(_arg3), len(newOrder))
@@ -1375,7 +1375,7 @@ func NewTreePathFromIndices(indices []int) *TreePath {
 	var _cret *C.GtkTreePath // in
 
 	_arg2 = (C.gsize)(len(indices))
-	_arg1 = (*C.gint)(C.malloc(C.size_t(uint(len(indices)) * uint(C.sizeof_gint))))
+	_arg1 = (*C.gint)(C.calloc(C.size_t(len(indices)), C.size_t(C.sizeof_gint)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.gint)(_arg1), len(indices))

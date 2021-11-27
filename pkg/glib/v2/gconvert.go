@@ -97,7 +97,7 @@ func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 	var _cerr *C.GError // in
 
 	_arg2 = (C.gssize)(len(str))
-	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(str) + 1)) * uint(C.sizeof_gchar))))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(str) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
@@ -163,7 +163,7 @@ func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []
 	var _cerr *C.GError // in
 
 	_arg2 = (C.gssize)(len(str))
-	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(str) + 1)) * uint(C.sizeof_gchar))))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(str) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
@@ -566,7 +566,7 @@ func LocaleToUTF8(opsysstring string) (bytesRead uint, bytesWritten uint, utf8 s
 	var _cerr *C.GError // in
 
 	_arg2 = (C.gssize)(len(opsysstring))
-	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(opsysstring) + 1)) * uint(C.sizeof_gchar))))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(opsysstring) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(opsysstring)), opsysstring)
 	defer C.free(unsafe.Pointer(_arg1))
 

@@ -111,7 +111,7 @@ func NewListStore(types []externglib.Type) *ListStore {
 	var _cret *C.GtkListStore // in
 
 	_arg1 = (C.int)(len(types))
-	_arg2 = (*C.GType)(C.malloc(C.size_t(uint(len(types)) * uint(C.sizeof_GType))))
+	_arg2 = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))
@@ -271,7 +271,7 @@ func (listStore *ListStore) InsertWithValues(position int, columns []int, values
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = C.int(position)
 	_arg5 = (C.int)(len(columns))
-	_arg3 = (*C.int)(C.malloc(C.size_t(uint(len(columns)) * uint(C.sizeof_int))))
+	_arg3 = (*C.int)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_int)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.int)(_arg3), len(columns))
@@ -280,7 +280,7 @@ func (listStore *ListStore) InsertWithValues(position int, columns []int, values
 		}
 	}
 	_arg5 = (C.int)(len(values))
-	_arg4 = (*C.GValue)(C.malloc(C.size_t(uint(len(values)) * uint(C.sizeof_GValue))))
+	_arg4 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg4), len(values))
@@ -447,7 +447,7 @@ func (store *ListStore) Reorder(newOrder []int) {
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(store.Native()))
 	{
-		_arg1 = (*C.int)(C.malloc(C.size_t(uint((len(newOrder) + 1)) * uint(C.sizeof_int))))
+		_arg1 = (*C.int)(C.calloc(C.size_t((len(newOrder) + 1)), C.size_t(C.sizeof_int)))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(newOrder)+1)
@@ -480,7 +480,7 @@ func (listStore *ListStore) SetColumnTypes(types []externglib.Type) {
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg1 = (C.int)(len(types))
-	_arg2 = (*C.GType)(C.malloc(C.size_t(uint(len(types)) * uint(C.sizeof_GType))))
+	_arg2 = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))
@@ -542,7 +542,7 @@ func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []externgl
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg4 = (C.int)(len(columns))
-	_arg2 = (*C.int)(C.malloc(C.size_t(uint(len(columns)) * uint(C.sizeof_int))))
+	_arg2 = (*C.int)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_int)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.int)(_arg2), len(columns))
@@ -551,7 +551,7 @@ func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []externgl
 		}
 	}
 	_arg4 = (C.int)(len(values))
-	_arg3 = (*C.GValue)(C.malloc(C.size_t(uint(len(values)) * uint(C.sizeof_GValue))))
+	_arg3 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))

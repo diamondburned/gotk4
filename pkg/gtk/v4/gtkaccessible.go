@@ -226,7 +226,7 @@ func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values [
 		_arg2 = (*C.GtkAccessibleProperty)(unsafe.Pointer(&properties[0]))
 	}
 	_arg1 = (C.int)(len(values))
-	_arg3 = (*C.GValue)(C.malloc(C.size_t(uint(len(values)) * uint(C.sizeof_GValue))))
+	_arg3 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
@@ -265,7 +265,7 @@ func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []
 		_arg2 = (*C.GtkAccessibleRelation)(unsafe.Pointer(&relations[0]))
 	}
 	_arg1 = (C.int)(len(values))
-	_arg3 = (*C.GValue)(C.malloc(C.size_t(uint(len(values)) * uint(C.sizeof_GValue))))
+	_arg3 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
@@ -304,7 +304,7 @@ func (self *Accessible) UpdateState(states []AccessibleState, values []externgli
 		_arg2 = (*C.GtkAccessibleState)(unsafe.Pointer(&states[0]))
 	}
 	_arg1 = (C.int)(len(values))
-	_arg3 = (*C.GValue)(C.malloc(C.size_t(uint(len(values)) * uint(C.sizeof_GValue))))
+	_arg3 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))

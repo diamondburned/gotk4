@@ -1743,7 +1743,7 @@ func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.char)(C.malloc(C.size_t(uint((len(attrValue) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg2 = (**C.char)(C.calloc(C.size_t((len(attrValue) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(attrValue)+1)

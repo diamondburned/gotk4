@@ -28,7 +28,7 @@ func EnvironGetenv(envp []string, variable string) string {
 	var _cret *C.gchar  // in
 
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(envp) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(envp) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(envp)+1)
@@ -73,7 +73,7 @@ func EnvironSetenv(envp []string, variable, value string, overwrite bool) []stri
 	var _cret **C.gchar  // in
 
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(envp) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(envp) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		{
 			out := unsafe.Slice(_arg1, len(envp)+1)
 			var zero *C.gchar
@@ -133,7 +133,7 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 	var _cret **C.gchar // in
 
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(envp) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(envp) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		{
 			out := unsafe.Slice(_arg1, len(envp)+1)
 			var zero *C.gchar

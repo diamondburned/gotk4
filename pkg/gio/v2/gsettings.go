@@ -1837,7 +1837,7 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(value) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg2 = (**C.gchar)(C.calloc(C.size_t((len(value) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(value)+1)

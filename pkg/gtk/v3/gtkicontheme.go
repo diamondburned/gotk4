@@ -1155,7 +1155,7 @@ func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int, flags IconL
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(iconNames) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(iconNames) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(iconNames)+1)
@@ -1211,7 +1211,7 @@ func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size, scale i
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(iconNames) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(iconNames) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(iconNames)+1)
@@ -1904,7 +1904,7 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg2 = (C.gint)(len(path))
-	_arg1 = (**C.gchar)(C.malloc(C.size_t(uint(len(path)) * uint(unsafe.Sizeof(uint(0))))))
+	_arg1 = (**C.gchar)(C.calloc(C.size_t(len(path)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(path))

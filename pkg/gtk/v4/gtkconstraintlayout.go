@@ -355,7 +355,7 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
 	_arg2 = (C.gsize)(len(lines))
-	_arg1 = (**C.char)(C.malloc(C.size_t(uint(len(lines)) * uint(unsafe.Sizeof(uint(0))))))
+	_arg1 = (**C.char)(C.calloc(C.size_t(len(lines)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.char)(_arg1), len(lines))

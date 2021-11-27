@@ -806,7 +806,7 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg3 = C.float(rotation)
 	_arg5 = (C.gsize)(len(colorStops))
-	_arg4 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	_arg4 = (*C.GskColorStop)(C.calloc(C.size_t(len(colorStops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg4), len(colorStops))
@@ -962,7 +962,7 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 	var _cret *C.GskRenderNode // in
 
 	_arg2 = (C.guint)(len(children))
-	_arg1 = (**C.GskRenderNode)(C.malloc(C.size_t(uint(len(children)) * uint(unsafe.Sizeof(uint(0))))))
+	_arg1 = (**C.GskRenderNode)(C.calloc(C.size_t(len(children)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.GskRenderNode)(_arg1), len(children))
@@ -1320,7 +1320,7 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 	_arg3 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg5 = (C.guint)(len(children))
-	_arg4 = (**C.GskRenderNode)(C.malloc(C.size_t(uint(len(children)) * uint(unsafe.Sizeof(uint(0))))))
+	_arg4 = (**C.GskRenderNode)(C.calloc(C.size_t(len(children)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((**C.GskRenderNode)(_arg4), len(children))
@@ -1649,7 +1649,7 @@ func NewLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, co
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(end)))
 	_arg5 = (C.gsize)(len(colorStops))
-	_arg4 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	_arg4 = (*C.GskColorStop)(C.calloc(C.size_t(len(colorStops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg4), len(colorStops))
@@ -2065,7 +2065,7 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = (C.gsize)(len(colorStops))
-	_arg7 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	_arg7 = (*C.GskColorStop)(C.calloc(C.size_t(len(colorStops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg7))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg7), len(colorStops))
@@ -2363,7 +2363,7 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start, end *graphene.
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(end)))
 	_arg5 = (C.gsize)(len(colorStops))
-	_arg4 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	_arg4 = (*C.GskColorStop)(C.calloc(C.size_t(len(colorStops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg4), len(colorStops))
@@ -2445,7 +2445,7 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = (C.gsize)(len(colorStops))
-	_arg7 = (*C.GskColorStop)(C.malloc(C.size_t(uint(len(colorStops)) * uint(C.sizeof_GskColorStop))))
+	_arg7 = (*C.GskColorStop)(C.calloc(C.size_t(len(colorStops)), C.size_t(C.sizeof_GskColorStop)))
 	defer C.free(unsafe.Pointer(_arg7))
 	{
 		out := unsafe.Slice((*C.GskColorStop)(_arg7), len(colorStops))
@@ -2603,7 +2603,7 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg3 = (C.gsize)(len(shadows))
-	_arg2 = (*C.GskShadow)(C.malloc(C.size_t(uint(len(shadows)) * uint(C.sizeof_GskShadow))))
+	_arg2 = (*C.GskShadow)(C.calloc(C.size_t(len(shadows)), C.size_t(C.sizeof_GskShadow)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GskShadow)(_arg2), len(shadows))

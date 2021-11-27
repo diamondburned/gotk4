@@ -217,7 +217,7 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 
 	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 	_arg1 = (C.uint)(len(points))
-	_arg2 = (*C.graphene_point3d_t)(C.malloc(C.size_t(uint(len(points)) * uint(C.sizeof_graphene_point3d_t))))
+	_arg2 = (*C.graphene_point3d_t)(C.calloc(C.size_t(len(points)), C.size_t(C.sizeof_graphene_point3d_t)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.graphene_point3d_t)(_arg2), len(points))
@@ -255,7 +255,7 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 
 	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 	_arg1 = (C.uint)(len(vectors))
-	_arg2 = (*C.graphene_vec3_t)(C.malloc(C.size_t(uint(len(vectors)) * uint(C.sizeof_graphene_vec3_t))))
+	_arg2 = (*C.graphene_vec3_t)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_graphene_vec3_t)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.graphene_vec3_t)(_arg2), len(vectors))

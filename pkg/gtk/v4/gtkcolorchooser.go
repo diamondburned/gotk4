@@ -133,7 +133,7 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 	_arg1 = C.GtkOrientation(orientation)
 	_arg2 = C.int(colorsPerLine)
 	_arg3 = (C.int)(len(colors))
-	_arg4 = (*C.GdkRGBA)(C.malloc(C.size_t(uint(len(colors)) * uint(C.sizeof_GdkRGBA))))
+	_arg4 = (*C.GdkRGBA)(C.calloc(C.size_t(len(colors)), C.size_t(C.sizeof_GdkRGBA)))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.GdkRGBA)(_arg4), len(colors))

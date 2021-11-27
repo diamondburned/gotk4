@@ -3751,7 +3751,7 @@ func (widget *Widget) SetCSSClasses(classes []string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	{
-		_arg1 = (**C.char)(C.malloc(C.size_t(uint((len(classes) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(classes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(classes)+1)

@@ -769,7 +769,7 @@ func NewPixbufFromXPMData(data []string) *Pixbuf {
 	var _cret *C.GdkPixbuf // in
 
 	{
-		_arg1 = (**C.char)(C.malloc(C.size_t(uint((len(data) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(data) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(data)+1)
@@ -1684,7 +1684,7 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys, optionValues []strin
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(typ)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
-		_arg4 = (**C.char)(C.malloc(C.size_t(uint((len(optionKeys) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg4 = (**C.char)(C.calloc(C.size_t((len(optionKeys) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionKeys)+1)
@@ -1697,7 +1697,7 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys, optionValues []strin
 		}
 	}
 	{
-		_arg5 = (**C.char)(C.malloc(C.size_t(uint((len(optionValues) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg5 = (**C.char)(C.calloc(C.size_t((len(optionValues) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg5))
 		{
 			out := unsafe.Slice(_arg5, len(optionValues)+1)
@@ -1762,7 +1762,7 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(typ)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
-		_arg4 = (**C.char)(C.malloc(C.size_t(uint((len(optionKeys) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg4 = (**C.char)(C.calloc(C.size_t((len(optionKeys) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionKeys)+1)
@@ -1775,7 +1775,7 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 		}
 	}
 	{
-		_arg5 = (**C.char)(C.malloc(C.size_t(uint((len(optionValues) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg5 = (**C.char)(C.calloc(C.size_t((len(optionValues) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg5))
 		{
 			out := unsafe.Slice(_arg5, len(optionValues)+1)
@@ -1837,7 +1837,7 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(typ)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
-		_arg3 = (**C.char)(C.malloc(C.size_t(uint((len(optionKeys) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg3 = (**C.char)(C.calloc(C.size_t((len(optionKeys) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(optionKeys)+1)
@@ -1850,7 +1850,7 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 		}
 	}
 	{
-		_arg4 = (**C.char)(C.malloc(C.size_t(uint((len(optionValues) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg4 = (**C.char)(C.calloc(C.size_t((len(optionValues) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionValues)+1)
@@ -1919,7 +1919,7 @@ func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputS
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
-		_arg3 = (**C.gchar)(C.malloc(C.size_t(uint((len(optionKeys) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg3 = (**C.gchar)(C.calloc(C.size_t((len(optionKeys) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(optionKeys)+1)
@@ -1932,7 +1932,7 @@ func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputS
 		}
 	}
 	{
-		_arg4 = (**C.gchar)(C.malloc(C.size_t(uint((len(optionValues) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg4 = (**C.gchar)(C.calloc(C.size_t((len(optionValues) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionValues)+1)
@@ -1989,7 +1989,7 @@ func (pixbuf *Pixbuf) Savev(filename, typ string, optionKeys, optionValues []str
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(typ)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
-		_arg3 = (**C.char)(C.malloc(C.size_t(uint((len(optionKeys) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg3 = (**C.char)(C.calloc(C.size_t((len(optionKeys) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(optionKeys)+1)
@@ -2002,7 +2002,7 @@ func (pixbuf *Pixbuf) Savev(filename, typ string, optionKeys, optionValues []str
 		}
 	}
 	{
-		_arg4 = (**C.char)(C.malloc(C.size_t(uint((len(optionValues) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg4 = (**C.char)(C.calloc(C.size_t((len(optionValues) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionValues)+1)

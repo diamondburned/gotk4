@@ -804,7 +804,7 @@ func ParseDebugString(str string, keys []DebugKey) uint {
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	_arg3 = (C.guint)(len(keys))
-	_arg2 = (*C.GDebugKey)(C.malloc(C.size_t(uint(len(keys)) * uint(C.sizeof_GDebugKey))))
+	_arg2 = (*C.GDebugKey)(C.calloc(C.size_t(len(keys)), C.size_t(C.sizeof_GDebugKey)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GDebugKey)(_arg2), len(keys))

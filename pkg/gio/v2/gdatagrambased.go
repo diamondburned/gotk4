@@ -505,7 +505,7 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.guint)(len(messages))
-	_arg1 = (*C.GInputMessage)(C.malloc(C.size_t(uint(len(messages)) * uint(C.sizeof_GInputMessage))))
+	_arg1 = (*C.GInputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GInputMessage)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GInputMessage)(_arg1), len(messages))
@@ -599,7 +599,7 @@ func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages [
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.guint)(len(messages))
-	_arg1 = (*C.GOutputMessage)(C.malloc(C.size_t(uint(len(messages)) * uint(C.sizeof_GOutputMessage))))
+	_arg1 = (*C.GOutputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GOutputMessage)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GOutputMessage)(_arg1), len(messages))

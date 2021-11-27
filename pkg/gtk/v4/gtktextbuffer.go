@@ -1350,7 +1350,7 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg3 = (C.int)(len(text))
-	_arg2 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	_arg2 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(text)), text)
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -1376,7 +1376,7 @@ func (buffer *TextBuffer) InsertAtCursor(text string) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg2 = (C.int)(len(text))
-	_arg1 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	_arg1 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1446,7 +1446,7 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, default
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg3 = (C.int)(len(text))
-	_arg2 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	_arg2 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(text)), text)
 	defer C.free(unsafe.Pointer(_arg2))
 	if defaultEditable {
@@ -1490,7 +1490,7 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg2 = (C.int)(len(text))
-	_arg1 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	_arg1 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
 	defer C.free(unsafe.Pointer(_arg1))
 	if defaultEditable {
@@ -1532,7 +1532,7 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg3 = (C.int)(len(markup))
-	_arg2 = (*C.char)(C.malloc(C.size_t(uint((len(markup) + 1)) * uint(C.sizeof_char))))
+	_arg2 = (*C.char)(C.calloc(C.size_t((len(markup) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(markup)), markup)
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -2003,7 +2003,7 @@ func (buffer *TextBuffer) SetText(text string) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg2 = (C.int)(len(text))
-	_arg1 = (*C.char)(C.malloc(C.size_t(uint((len(text) + 1)) * uint(C.sizeof_char))))
+	_arg1 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
 	defer C.free(unsafe.Pointer(_arg1))
 

@@ -5080,7 +5080,7 @@ func (file *File) ReplaceContents(ctx context.Context, contents, etag string, ma
 		_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(contents))
-	_arg1 = (*C.char)(C.malloc(C.size_t(uint((len(contents) + 1)) * uint(C.sizeof_char))))
+	_arg1 = (*C.char)(C.calloc(C.size_t((len(contents) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(contents)), contents)
 	defer C.free(unsafe.Pointer(_arg1))
 	if etag != "" {
@@ -5160,7 +5160,7 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents, etag strin
 		_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(contents))
-	_arg1 = (*C.char)(C.malloc(C.size_t(uint((len(contents) + 1)) * uint(C.sizeof_char))))
+	_arg1 = (*C.char)(C.calloc(C.size_t((len(contents) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(contents)), contents)
 	defer C.free(unsafe.Pointer(_arg1))
 	if etag != "" {

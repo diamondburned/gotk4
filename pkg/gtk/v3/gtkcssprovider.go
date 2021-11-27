@@ -152,7 +152,7 @@ func (cssProvider *CSSProvider) LoadFromData(data string) error {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg2 = (C.gssize)(len(data))
-	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(data) + 1)) * uint(C.sizeof_gchar))))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(data) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(data)), data)
 	defer C.free(unsafe.Pointer(_arg1))
 

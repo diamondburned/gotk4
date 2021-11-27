@@ -340,7 +340,7 @@ func BuildFilenamev(args []string) string {
 	var _cret *C.gchar  // in
 
 	{
-		_arg1 = (**C.gchar)(C.malloc(C.size_t(uint((len(args) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(args) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(args)+1)
@@ -381,7 +381,7 @@ func BuildPathv(separator string, args []string) string {
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(separator)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(args) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg2 = (**C.gchar)(C.calloc(C.size_t((len(args) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(args)+1)
@@ -621,7 +621,7 @@ func FileSetContents(filename, contents string) error {
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.gssize)(len(contents))
-	_arg2 = (*C.gchar)(C.malloc(C.size_t(uint((len(contents) + 1)) * uint(C.sizeof_gchar))))
+	_arg2 = (*C.gchar)(C.calloc(C.size_t((len(contents) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(contents)), contents)
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -713,7 +713,7 @@ func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.gssize)(len(contents))
-	_arg2 = (*C.gchar)(C.malloc(C.size_t(uint((len(contents) + 1)) * uint(C.sizeof_gchar))))
+	_arg2 = (*C.gchar)(C.calloc(C.size_t((len(contents) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(contents)), contents)
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg4 = C.GFileSetContentsFlags(flags)

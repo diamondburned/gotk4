@@ -488,7 +488,7 @@ func ColorSelectionPaletteToString(colors []gdk.Color) string {
 	var _cret *C.gchar // in
 
 	_arg2 = (C.gint)(len(colors))
-	_arg1 = (*C.GdkColor)(C.malloc(C.size_t(uint(len(colors)) * uint(C.sizeof_GdkColor))))
+	_arg1 = (*C.GdkColor)(C.calloc(C.size_t(len(colors)), C.size_t(C.sizeof_GdkColor)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GdkColor)(_arg1), len(colors))

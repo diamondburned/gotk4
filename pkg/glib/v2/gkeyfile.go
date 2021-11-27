@@ -1100,7 +1100,7 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.gchar)(C.malloc(C.size_t(uint((len(searchDirs) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg2 = (**C.gchar)(C.calloc(C.size_t((len(searchDirs) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(searchDirs)+1)
@@ -1479,7 +1479,7 @@ func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg4 = (C.gsize)(len(list))
-	_arg3 = (*C.gint)(C.malloc(C.size_t(uint(len(list)) * uint(C.sizeof_gint))))
+	_arg3 = (*C.gint)(C.calloc(C.size_t(len(list)), C.size_t(C.sizeof_gint)))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.gint)(_arg3), len(list))
@@ -1556,7 +1556,7 @@ func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg5 = (C.gsize)(len(list))
-	_arg4 = (**C.gchar)(C.malloc(C.size_t(uint(len(list)) * uint(unsafe.Sizeof(uint(0))))))
+	_arg4 = (**C.gchar)(C.calloc(C.size_t(len(list)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg4), len(list))
@@ -1615,7 +1615,7 @@ func (keyFile *KeyFile) SetStringList(groupName string, key string, list []strin
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg4 = (C.gsize)(len(list))
-	_arg3 = (**C.gchar)(C.malloc(C.size_t(uint(len(list)) * uint(unsafe.Sizeof(uint(0))))))
+	_arg3 = (**C.gchar)(C.calloc(C.size_t(len(list)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg3), len(list))

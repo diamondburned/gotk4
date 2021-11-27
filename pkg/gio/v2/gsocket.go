@@ -1425,7 +1425,7 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.guint)(len(messages))
-	_arg1 = (*C.GInputMessage)(C.malloc(C.size_t(uint(len(messages)) * uint(C.sizeof_GInputMessage))))
+	_arg1 = (*C.GInputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GInputMessage)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GInputMessage)(_arg1), len(messages))
@@ -1537,7 +1537,7 @@ func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(buffer))
-	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(buffer) + 1)) * uint(C.sizeof_gchar))))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(buffer)), buffer)
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1629,7 +1629,7 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	}
 	_arg3 = (C.gint)(len(vectors))
-	_arg2 = (*C.GOutputVector)(C.malloc(C.size_t(uint(len(vectors)) * uint(C.sizeof_GOutputVector))))
+	_arg2 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GOutputVector)(_arg2), len(vectors))
@@ -1639,7 +1639,7 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 	}
 	if messages != nil {
 		_arg5 = (C.gint)(len(messages))
-		_arg4 = (**C.GSocketControlMessage)(C.malloc(C.size_t(uint(len(messages)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg4 = (**C.GSocketControlMessage)(C.calloc(C.size_t(len(messages)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
@@ -1712,7 +1712,7 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	}
 	_arg3 = (C.gint)(len(vectors))
-	_arg2 = (*C.GOutputVector)(C.malloc(C.size_t(uint(len(vectors)) * uint(C.sizeof_GOutputVector))))
+	_arg2 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GOutputVector)(_arg2), len(vectors))
@@ -1722,7 +1722,7 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 	}
 	if messages != nil {
 		_arg5 = (C.gint)(len(messages))
-		_arg4 = (**C.GSocketControlMessage)(C.malloc(C.size_t(uint(len(messages)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg4 = (**C.GSocketControlMessage)(C.calloc(C.size_t(len(messages)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
@@ -1814,7 +1814,7 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.guint)(len(messages))
-	_arg1 = (*C.GOutputMessage)(C.malloc(C.size_t(uint(len(messages)) * uint(C.sizeof_GOutputMessage))))
+	_arg1 = (*C.GOutputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GOutputMessage)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GOutputMessage)(_arg1), len(messages))
@@ -1871,7 +1871,7 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	}
 	_arg3 = (C.gsize)(len(buffer))
-	_arg2 = (*C.gchar)(C.malloc(C.size_t(uint((len(buffer) + 1)) * uint(C.sizeof_gchar))))
+	_arg2 = (*C.gchar)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(buffer)), buffer)
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -1918,7 +1918,7 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, block
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(buffer))
-	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(buffer) + 1)) * uint(C.sizeof_gchar))))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(buffer)), buffer)
 	defer C.free(unsafe.Pointer(_arg1))
 	if blocking {

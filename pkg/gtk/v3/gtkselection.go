@@ -263,7 +263,7 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 	var _cret *C.GtkTargetList // in
 
 	_arg2 = (C.guint)(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(C.malloc(C.size_t(uint(len(targets)) * uint(C.sizeof_GtkTargetEntry))))
+	_arg1 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))
@@ -339,7 +339,7 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 
 	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg2 = (C.guint)(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(C.malloc(C.size_t(uint(len(targets)) * uint(C.sizeof_GtkTargetEntry))))
+	_arg1 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))

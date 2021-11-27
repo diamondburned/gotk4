@@ -947,7 +947,7 @@ func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, err
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-	_arg1 = (*C.gchar)(C.malloc(C.size_t(uint((len(buf) + 1)) * uint(C.sizeof_gchar))))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(buf) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(buf)), buf)
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(count)

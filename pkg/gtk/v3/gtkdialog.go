@@ -653,7 +653,7 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (C.gint)(len(newOrder))
-	_arg2 = (*C.gint)(C.malloc(C.size_t(uint(len(newOrder)) * uint(C.sizeof_gint))))
+	_arg2 = (*C.gint)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.gint)(_arg2), len(newOrder))

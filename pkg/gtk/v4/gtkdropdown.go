@@ -131,7 +131,7 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 	var _cret *C.GtkWidget // in
 
 	{
-		_arg1 = (**C.char)(C.malloc(C.size_t(uint((len(strings) + 1)) * uint(unsafe.Sizeof(uint(0))))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(strings) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(strings)+1)

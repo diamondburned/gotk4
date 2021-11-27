@@ -41,7 +41,7 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg5 = (C.int)(len(attrs))
-	_arg4 = (*C.PangoLogAttr)(C.malloc(C.size_t(uint(len(attrs)) * uint(C.sizeof_PangoLogAttr))))
+	_arg4 = (*C.PangoLogAttr)(C.calloc(C.size_t(len(attrs)), C.size_t(C.sizeof_PangoLogAttr)))
 	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((*C.PangoLogAttr)(_arg4), len(attrs))
@@ -167,7 +167,7 @@ func GetLogAttrs(text string, length, level int, language *Language, logAttrs []
 	_arg3 = C.int(level)
 	_arg4 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 	_arg6 = (C.int)(len(logAttrs))
-	_arg5 = (*C.PangoLogAttr)(C.malloc(C.size_t(uint(len(logAttrs)) * uint(C.sizeof_PangoLogAttr))))
+	_arg5 = (*C.PangoLogAttr)(C.calloc(C.size_t(len(logAttrs)), C.size_t(C.sizeof_PangoLogAttr)))
 	defer C.free(unsafe.Pointer(_arg5))
 	{
 		out := unsafe.Slice((*C.PangoLogAttr)(_arg5), len(logAttrs))
@@ -215,7 +215,7 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg4 = C.int(offset)
 	_arg6 = (C.int)(len(logAttrs))
-	_arg5 = (*C.PangoLogAttr)(C.malloc(C.size_t(uint(len(logAttrs)) * uint(C.sizeof_PangoLogAttr))))
+	_arg5 = (*C.PangoLogAttr)(C.calloc(C.size_t(len(logAttrs)), C.size_t(C.sizeof_PangoLogAttr)))
 	defer C.free(unsafe.Pointer(_arg5))
 	{
 		out := unsafe.Slice((*C.PangoLogAttr)(_arg5), len(logAttrs))

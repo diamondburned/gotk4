@@ -501,7 +501,7 @@ func (value *ValueConverted) writeMalloc(inner *ValueConverted, lenOf string, ad
 	}
 
 	value.p.Linef(
-		"%s = (%s)(C.malloc(C.size_t(uint(%s) * uint(%s))))",
+		"%s = (%s)(C.calloc(C.size_t(%s), C.size_t(%s)))",
 		value.Out.Set, value.Out.Type, lenOf, inner.csizeof(),
 	)
 

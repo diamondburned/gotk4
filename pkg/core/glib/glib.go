@@ -180,9 +180,12 @@ func goMarshal(
 	fs := intern.ObjectClosure(unsafe.Pointer(gobject), unsafe.Pointer(gclosure))
 	if fs == nil {
 		// Possible data race, bail.
-		log.Println("warning:",
-			"gobject", unsafe.Pointer(gobject),
-			"gclosure", unsafe.Pointer(gclosure), "not found")
+		log.Printf(
+			"warning: object %s %v closure %v not found",
+			typeFromObject(unsafe.Pointer(gobject)),
+			unsafe.Pointer(gobject),
+			unsafe.Pointer(gclosure),
+		)
 		return
 	}
 
@@ -519,9 +522,13 @@ func (v *Object) IsA(typ Type) bool {
 
 // TypeFromInstance is a wrapper around g_type_from_instance().
 func (v *Object) TypeFromInstance() Type {
-	c := C._g_type_from_instance(C.gpointer(unsafe.Pointer(v.native())))
+	t := typeFromObject(unsafe.Pointer(v.native()))
 	runtime.KeepAlive(v)
-	return Type(c)
+	return t
+}
+
+func typeFromObject(obj unsafe.Pointer) Type {
+	return Type(C._g_type_from_instance(C.gpointer(obj)))
 }
 
 // StopEmission is a wrapper around g_signal_stop_emission_by_name().

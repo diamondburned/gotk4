@@ -122,21 +122,26 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 
 	shared.mu.Unlock()
 
-	// Take a reference before unlocking, just in case.
-	C.g_object_ref_sink(C.gpointer(gobject))
+	// We should already have a strong reference. Sink the object in case. This
+	// will force the reference to be truly strong.
+	if C.g_object_is_floating(C.gpointer(gobject)) != C.FALSE {
+		C.g_object_ref_sink(C.gpointer(gobject))
+	}
 
 	C.g_object_add_toggle_ref(
 		(*C.GObject)(gobject),
 		(*[0]byte)(C.goToggleNotify), nil,
 	)
 
+	// If we're "not taking," then we can assume our ownership over the object,
+	// meaning the strong reference is now ours. That means we need to replace
+	// it, not add.
 	if !take {
-		// Return the reference that we had before.
 		C.g_object_unref(C.gpointer(gobject))
 	}
 
 	// Undo the initial ref_sink.
-	C.g_object_unref(C.gpointer(gobject))
+	// C.g_object_unref(C.gpointer(gobject))
 
 	return box
 }

@@ -156,11 +156,11 @@ func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	runtime.KeepAlive(imContext)
 }
 
-// ConnectImUpdate: emitted whenever the input method context filters away a
+// ConnectIMUpdate: emitted whenever the input method context filters away a
 // keypress and prevents the controller receiving it.
 //
 // See gtk.EventControllerKey.SetIMContext() and gtk.IMContext.FilterKeypress().
-func (controller *EventControllerKey) ConnectImUpdate(f func()) externglib.SignalHandle {
+func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
 	return controller.Connect("im-update", f)
 }
 

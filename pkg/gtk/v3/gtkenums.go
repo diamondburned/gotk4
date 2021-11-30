@@ -433,12 +433,12 @@ func (e EventSequenceState) String() string {
 type IMPreeditStyle C.gint
 
 const (
-	// ImPreeditNothing: deprecated.
-	ImPreeditNothing IMPreeditStyle = iota
-	// ImPreeditCallback: deprecated.
-	ImPreeditCallback
-	// ImPreeditNone: deprecated.
-	ImPreeditNone
+	// IMPreeditNothing: deprecated.
+	IMPreeditNothing IMPreeditStyle = iota
+	// IMPreeditCallback: deprecated.
+	IMPreeditCallback
+	// IMPreeditNone: deprecated.
+	IMPreeditNone
 )
 
 func marshalIMPreeditStyle(p uintptr) (interface{}, error) {
@@ -448,11 +448,11 @@ func marshalIMPreeditStyle(p uintptr) (interface{}, error) {
 // String returns the name in string for IMPreeditStyle.
 func (i IMPreeditStyle) String() string {
 	switch i {
-	case ImPreeditNothing:
+	case IMPreeditNothing:
 		return "Nothing"
-	case ImPreeditCallback:
+	case IMPreeditCallback:
 		return "Callback"
-	case ImPreeditNone:
+	case IMPreeditNone:
 		return "None"
 	default:
 		return fmt.Sprintf("IMPreeditStyle(%d)", i)
@@ -466,12 +466,12 @@ func (i IMPreeditStyle) String() string {
 type IMStatusStyle C.gint
 
 const (
-	// ImStatusNothing: deprecated.
-	ImStatusNothing IMStatusStyle = iota
-	// ImStatusCallback: deprecated.
-	ImStatusCallback
-	// ImStatusNone: deprecated.
-	ImStatusNone
+	// IMStatusNothing: deprecated.
+	IMStatusNothing IMStatusStyle = iota
+	// IMStatusCallback: deprecated.
+	IMStatusCallback
+	// IMStatusNone: deprecated.
+	IMStatusNone
 )
 
 func marshalIMStatusStyle(p uintptr) (interface{}, error) {
@@ -481,11 +481,11 @@ func marshalIMStatusStyle(p uintptr) (interface{}, error) {
 // String returns the name in string for IMStatusStyle.
 func (i IMStatusStyle) String() string {
 	switch i {
-	case ImStatusNothing:
+	case IMStatusNothing:
 		return "Nothing"
-	case ImStatusCallback:
+	case IMStatusCallback:
 		return "Callback"
-	case ImStatusNone:
+	case IMStatusNone:
 		return "None"
 	default:
 		return fmt.Sprintf("IMStatusStyle(%d)", i)

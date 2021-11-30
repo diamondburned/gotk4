@@ -184,10 +184,10 @@ const (
 	RCTokenEngine RCTokenType = 300
 	// RCTokenModulePath: deprecated.
 	RCTokenModulePath RCTokenType = 301
-	// RCTokenImModulePath: deprecated.
-	RCTokenImModulePath RCTokenType = 302
-	// RCTokenImModuleFile: deprecated.
-	RCTokenImModuleFile RCTokenType = 303
+	// RCTokenIMModulePath: deprecated.
+	RCTokenIMModulePath RCTokenType = 302
+	// RCTokenIMModuleFile: deprecated.
+	RCTokenIMModuleFile RCTokenType = 303
 	// RCTokenStock: deprecated.
 	RCTokenStock RCTokenType = 304
 	// RCTokenLTR: deprecated.
@@ -273,10 +273,10 @@ func (r RCTokenType) String() string {
 		return "Engine"
 	case RCTokenModulePath:
 		return "ModulePath"
-	case RCTokenImModulePath:
-		return "ImModulePath"
-	case RCTokenImModuleFile:
-		return "ImModuleFile"
+	case RCTokenIMModulePath:
+		return "IMModulePath"
+	case RCTokenIMModuleFile:
+		return "IMModuleFile"
 	case RCTokenStock:
 		return "Stock"
 	case RCTokenLTR:
@@ -461,12 +461,12 @@ func RCGetDefaultFiles() []string {
 	return _filenames
 }
 
-// RCGetImModuleFile obtains the path to the IM modules file. See the
+// RCGetIMModuleFile obtains the path to the IM modules file. See the
 // documentation of the GTK_IM_MODULE_FILE environment variable for more
 // details.
 //
 // Deprecated: Use CssProvider instead.
-func RCGetImModuleFile() string {
+func RCGetIMModuleFile() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_get_im_module_file()
@@ -479,13 +479,13 @@ func RCGetImModuleFile() string {
 	return _filename
 }
 
-// RCGetImModulePath obtains the path in which to look for IM modules. See the
+// RCGetIMModulePath obtains the path in which to look for IM modules. See the
 // documentation of the GTK_PATH environment variable for more details about
 // looking up modules. This function is useful solely for utilities supplied
 // with GTK+ and should not be used by applications under normal circumstances.
 //
 // Deprecated: Use CssProvider instead.
-func RCGetImModulePath() string {
+func RCGetIMModulePath() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_get_im_module_path()

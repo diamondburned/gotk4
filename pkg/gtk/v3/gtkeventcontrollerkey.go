@@ -166,7 +166,7 @@ func (controller *EventControllerKey) ConnectFocusOut(f func()) externglib.Signa
 	return controller.Connect("focus-out", f)
 }
 
-func (controller *EventControllerKey) ConnectImUpdate(f func()) externglib.SignalHandle {
+func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
 	return controller.Connect("im-update", f)
 }
 

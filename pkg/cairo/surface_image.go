@@ -11,6 +11,8 @@ import (
 	"image/draw"
 	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/cairo/internal/swizzle"
 )
 
 // CreatePNGSurface is a wrapper around cairo_image_surface_create_from_png().
@@ -67,19 +69,19 @@ func CreateSurfaceFromImage(img image.Image) *Surface {
 	switch img := img.(type) {
 	case *image.RGBA:
 		s = CreateImageSurface(FORMAT_ARGB32, img.Rect.Dx(), img.Rect.Dy())
-
 		pix := s.GetData()
-		for i := 0; i < len(pix); i += 4 {
-			pix[i+0] = img.Pix[i+2]
-			pix[i+1] = img.Pix[i+1]
-			pix[i+2] = img.Pix[i+0]
-			pix[i+3] = img.Pix[i+3]
-		}
+		// Copy is pretty fast. Copy the RGBA data to the image directly.
+		copy(pix, img.Pix)
+		// Swizzle the RGBA bytes to the correct order.
+		swizzle.BGRA(pix)
 
 	case *image.NRGBA:
 		s = CreateImageSurface(FORMAT_ARGB32, img.Rect.Dx(), img.Rect.Dy())
 
 		pix := s.GetData()
+		// I'm not sure how slower this is than just doing a fast copy and
+		// calculate onto the malloc'd bytes, but since we're mostly doing
+		// calculations for each pixel, it likely doesn't matter.
 		for i := 0; i < len(pix); i += 4 {
 			alpha := uint16(img.Pix[i+3])
 			pix[i+0] = uint8(uint16(img.Pix[i+2]) * alpha / 0xFF)
@@ -90,14 +92,22 @@ func CreateSurfaceFromImage(img image.Image) *Surface {
 
 	case *image.Alpha:
 		s = CreateImageSurface(FORMAT_A8, img.Rect.Dx(), img.Rect.Dy())
-		s.Flush()
-		pix := s.GetData()
-		copy(pix, img.Pix)
+		copy(s.GetData(), img.Pix)
 
 	default:
-		rgba := image.NewRGBA(img.Bounds())
-		draw.Draw(rgba, img.Bounds(), img, image.Point{}, draw.Over)
-		return CreateSurfaceFromImage(rgba)
+		bounds := img.Bounds()
+		s = CreateImageSurface(FORMAT_ARGB32, bounds.Dx(), bounds.Dy())
+
+		// Create a new image.RGBA that uses the malloc'd byte array as the
+		// backing array, then draw directly on it.
+		rgba := image.RGBA{
+			Pix:    s.GetData(),
+			Stride: bounds.Dx(),
+			Rect:   bounds,
+		}
+		draw.Draw(&rgba, bounds, img, image.Point{}, draw.Over)
+		// The drawn result is in RGBA, so swizzle it to the right format.
+		swizzle.BGRA(rgba.Pix)
 	}
 
 	s.MarkDirty()

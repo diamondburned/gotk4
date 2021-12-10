@@ -2,6 +2,7 @@ package girgen
 
 import (
 	"log"
+	"os"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
@@ -11,6 +12,7 @@ import (
 
 // Opts contains generator options.
 type Opts struct {
+	// LogLevel is defaulted to Skip, unless GIR_VERBOSE=1, then it's Debug.
 	LogLevel logger.Level
 	// SingleFile, if true, will make all NamespaceGenerators generate a single
 	// output file per package instead of correlating it to the source file.
@@ -19,7 +21,13 @@ type Opts struct {
 
 // DefaultOpts contains default options.
 var DefaultOpts = Opts{
-	LogLevel: logger.Skip,
+	LogLevel: logger.Skip, // Debug if GIR_VERBOSE=1
+}
+
+func init() {
+	if os.Getenv("GIR_VERBOSE") == "1" {
+		DefaultOpts.LogLevel = logger.Debug
+	}
 }
 
 // Generator is a big generator that manages multiple repositories.

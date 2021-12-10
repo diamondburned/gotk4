@@ -29,8 +29,8 @@ func init() {
 		log.Fatalln("Missing -o output directory.")
 	}
 
-	if !verbose {
-		verbose = os.Getenv("GIR_VERBOSE") == "1"
+	if verbose {
+		girgen.DefaultOpts.LogLevel = logger.Debug
 	}
 }
 
@@ -42,14 +42,7 @@ func main() {
 		return
 	}
 
-	opts := girgen.Opts{
-		LogLevel: logger.Skip,
-	}
-	if verbose {
-		opts.LogLevel = logger.Debug
-	}
-
-	gen := girgen.NewGeneratorOpts(repos, genutil.ModulePath(module, gendata.ImportOverrides), opts)
+	gen := girgen.NewGenerator(repos, genutil.ModulePath(module, gendata.ImportOverrides))
 	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
 	gen.ApplyPreprocessors(gendata.Preprocessors)
 	gen.AddPostprocessors(gendata.Postprocessors)

@@ -9,10 +9,23 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
+// Opts contains generator options.
+type Opts struct {
+	LogLevel logger.Level
+	// SingleFile, if true, will make all NamespaceGenerators generate a single
+	// output file per package instead of correlating it to the source file.
+	SingleFile bool
+}
+
+// DefaultOpts contains default options.
+var DefaultOpts = Opts{
+	LogLevel: logger.Skip,
+}
+
 // Generator is a big generator that manages multiple repositories.
 type Generator struct {
-	Logger   *log.Logger
-	LogLevel logger.Level
+	Logger *log.Logger
+	Opts   Opts
 
 	repos   gir.Repositories
 	modPath types.ModulePathFunc
@@ -24,8 +37,13 @@ type Generator struct {
 
 // NewGenerator creates a new generator with sane defaults.
 func NewGenerator(repos gir.Repositories, modPath types.ModulePathFunc) *Generator {
+	return NewGeneratorOpts(repos, modPath, DefaultOpts)
+}
+
+// NewGeneratorOpts creates a new generator with options.
+func NewGeneratorOpts(repos gir.Repositories, modPath types.ModulePathFunc, opts Opts) *Generator {
 	return &Generator{
-		LogLevel: logger.Skip,
+		Opts: opts,
 
 		repos:   repos,
 		modPath: modPath,
@@ -96,5 +114,5 @@ func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator 
 
 // Logln writes a log line into the internal logger.
 func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
-	logger.Stdlog(g.Logger, g.LogLevel, lvl, v...)
+	logger.Stdlog(g.Logger, g.Opts.LogLevel, lvl, v...)
 }

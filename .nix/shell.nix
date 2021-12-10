@@ -12,6 +12,8 @@ let minitime = pkgs.writeShellScriptBin "minitime"
 		go build -v ./...
 	'';
 
+	CFLAGS = "-O1";
+
 in pkgs.mkShell {
 	name = "gotk4-shell";
 
@@ -37,6 +39,11 @@ in pkgs.mkShell {
 		generate
 		build
 	];
+
+	CGO_CFLAGS   = CFLAGS;
+	CGO_CXXFLAGS = CFLAGS;
+	CGO_FFLAGS   = CFLAGS;
+	CGO_LDFLAGS  = CFLAGS;
 
 	CGO_ENABLED = "1";
 

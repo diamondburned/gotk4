@@ -147,7 +147,7 @@ func (n *NamespaceGenerator) Pkgconfig() []string {
 
 // FileWriter returns the respective file writer from the given InfoFields.
 func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields) generators.FileWriter {
-	if info.Elements == nil {
+	if n.Generator.Opts.SingleFile || info.Elements == nil {
 		return n.MakeFile("")
 	}
 
@@ -176,9 +176,27 @@ func swapFileExt(filepath, ext string) string {
 	return strings.Split(filename, ".")[0] + ext
 }
 
+// File gets an existing file but returns false if no such file exists. It's
+// useful for postprocessors to check if generation is working as intended. If
+// SingleFile is true, then File will always return the same file.
+func (n *NamespaceGenerator) File(filename string) (*FileGenerator, bool) {
+	if n.Generator.Opts.SingleFile || filename == "" {
+		f, ok := n.Files[n.PkgName+".go"]
+		return f, ok
+	}
+
+	f, ok := n.Files[filename]
+	return f, ok
+}
+
 // MakeFile makes a new FileGenerator for the given filename or returns an
 // existing one.
 func (n *NamespaceGenerator) MakeFile(filename string) *FileGenerator {
+	// this should lead us down the right branch
+	if n.Generator.Opts.SingleFile {
+		filename = ""
+	}
+
 	var isRoot bool
 	if filename == "" {
 		filename = n.PkgName + ".go"

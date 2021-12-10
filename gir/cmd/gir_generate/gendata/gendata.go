@@ -588,7 +588,7 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 //  - g_log_set_handler_full
 //
 func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
-	fg, ok := nsgen.Files["gmessages.go"]
+	fg, ok := nsgen.File("gmessages.go")
 	if !ok {
 		return errors.New("missing file gmessages.go")
 	}
@@ -746,9 +746,9 @@ const cGTKDialogNew2 = `
 `
 
 func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
-	fg, ok := nsgen.Files["gtkdialog.go"]
+	fg, ok := nsgen.File("gtkdialog.go")
 	if !ok {
-		return nil
+		return errors.New("missing file gtkdialog.go")
 	}
 
 	h := fg.Header()

@@ -21,7 +21,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// gboolean _gotk4_gtk3_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// gboolean _gotk4_gtk3_TreeModelForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -48,7 +48,7 @@ const (
 	TreeModelListOnly TreeModelFlags = 0b10
 )
 
-func marshalTreeModelFlags(p uintptr) (interface{}, error) {
+func marshalTreeModelFlags(p uintptr) (any, error) {
 	return TreeModelFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -85,12 +85,12 @@ func (t TreeModelFlags) Has(other TreeModelFlags) bool {
 	return (t & other) == other
 }
 
-// TreeModelForeachFunc: type of the callback passed to gtk_tree_model_foreach()
+// TreeModelForEachFunc: type of the callback passed to gtk_tree_model_foreach()
 // to iterate over the rows in a tree model.
-type TreeModelForeachFunc func(model TreeModeller, path *TreePath, iter *TreeIter) (ok bool)
+type TreeModelForEachFunc func(model TreeModeller, path *TreePath, iter *TreeIter) (ok bool)
 
-//export _gotk4_gtk3_TreeModelForeachFunc
-func _gotk4_gtk3_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_TreeModelForEachFunc
+func _gotk4_gtk3_TreeModelForEachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -116,7 +116,7 @@ func _gotk4_gtk3_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(TreeModelForeachFunc)
+	fn := v.(TreeModelForEachFunc)
 	ok := fn(model, path, iter)
 
 	if ok {
@@ -402,8 +402,8 @@ type TreeModeller interface {
 	// NewFilter creates a new TreeModel, with child_model as the child_model
 	// and root as the virtual root.
 	NewFilter(root *TreePath) TreeModeller
-	// Foreach calls func on each node in model in a depth-first fashion.
-	Foreach(fn TreeModelForeachFunc)
+	// ForEach calls func on each node in model in a depth-first fashion.
+	ForEach(fn TreeModelForEachFunc)
 	// ColumnType returns the type of the column.
 	ColumnType(index_ int) externglib.Type
 	// Flags returns a set of flags supported by this interface.
@@ -509,7 +509,7 @@ func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
 	return _treeModel
 }
 
-// Foreach calls func on each node in model in a depth-first fashion.
+// ForEach calls func on each node in model in a depth-first fashion.
 //
 // If func returns TRUE, then the tree ceases to be walked, and
 // gtk_tree_model_foreach() returns.
@@ -518,13 +518,13 @@ func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
 //
 //    - fn: function to be called on each row.
 //
-func (model *TreeModel) Foreach(fn TreeModelForeachFunc) {
+func (model *TreeModel) ForEach(fn TreeModelForEachFunc) {
 	var _arg0 *C.GtkTreeModel           // out
 	var _arg1 C.GtkTreeModelForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeModelForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeModelForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 
@@ -738,7 +738,7 @@ func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1644,7 +1644,7 @@ func (path *TreePath) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

@@ -59,7 +59,7 @@ const (
 	SettingsBindInvertBoolean SettingsBindFlags = 0b10000
 )
 
-func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
+func marshalSettingsBindFlags(p uintptr) (any, error) {
 	return SettingsBindFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -1172,7 +1172,7 @@ func (settings *Settings) String(key string) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1213,7 +1213,7 @@ func (settings *Settings) Strv(key string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1428,7 +1428,7 @@ func (settings *Settings) ListChildren() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1467,7 +1467,7 @@ func (settings *Settings) ListKeys() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

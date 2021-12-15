@@ -46,7 +46,7 @@ func init() {
 //    - attrs: set of attributes that apply to text.
 //    - cachedIter: cached attribute iterator, or NULL.
 //
-func Itemize(context *Context, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
+func Itemize(context *Context, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) *gextras.List[*Item] {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 *C.char              // out
 	var _arg3 C.int                // out
@@ -73,21 +73,24 @@ func Itemize(context *Context, text string, startIndex, length int, attrs *AttrL
 	runtime.KeepAlive(attrs)
 	runtime.KeepAlive(cachedIter)
 
-	var _list []*Item // out
+	var _list *gextras.List[*Item] // out
 
-	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoItem)(v)
-		var dst *Item // out
-		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
+	_list = gextras.NewList[*Item](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*Item]{
+			Convert: func(ptr unsafe.Pointer) *Item {
+				src := *(**C.PangoItem)(ptr)
+				var dst *Item // out
+				dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.PangoItem)(ptr))
+				C.pango_item_free((*C.PangoItem)(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -111,7 +114,7 @@ func Itemize(context *Context, text string, startIndex, length int, attrs *AttrL
 //    - attrs: set of attributes that apply to text.
 //    - cachedIter: cached attribute iterator, or NULL.
 //
-func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
+func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) *gextras.List[*Item] {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 C.PangoDirection     // out
 	var _arg3 *C.char              // out
@@ -141,21 +144,24 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 	runtime.KeepAlive(attrs)
 	runtime.KeepAlive(cachedIter)
 
-	var _list []*Item // out
+	var _list *gextras.List[*Item] // out
 
-	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoItem)(v)
-		var dst *Item // out
-		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
+	_list = gextras.NewList[*Item](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*Item]{
+			Convert: func(ptr unsafe.Pointer) *Item {
+				src := *(**C.PangoItem)(ptr)
+				var dst *Item // out
+				dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.PangoItem)(ptr))
+				C.pango_item_free((*C.PangoItem)(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }

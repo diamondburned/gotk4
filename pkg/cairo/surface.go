@@ -62,7 +62,7 @@ func (v *Surface) GetCSurface() *C.cairo_surface_t {
 	return v.native()
 }
 
-func marshalSurface(p uintptr) (interface{}, error) {
+func marshalSurface(p uintptr) (any, error) {
 	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapSurface(uintptr(c)), nil
 }
@@ -307,5 +307,5 @@ func (v *Surface) GetStride() int {
 // GetData is a wrapper around cairo_image_surface_get_data().
 func (v *Surface) GetData() []byte {
 	ptr := unsafe.Pointer(C.cairo_image_surface_get_data(v.surface))
-	return unsafe.Slice((*byte)(ptr), v.GetHeight() * v.GetStride())
+	return unsafe.Slice((*byte)(ptr), v.GetHeight()*v.GetStride())
 }

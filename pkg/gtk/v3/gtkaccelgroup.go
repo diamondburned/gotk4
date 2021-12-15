@@ -42,7 +42,7 @@ const (
 	AccelMask AccelFlags = 0b111
 )
 
-func marshalAccelFlags(p uintptr) (interface{}, error) {
+func marshalAccelFlags(p uintptr) (any, error) {
 	return AccelFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -121,7 +121,7 @@ func AccelGroupsActivate(object *externglib.Object, accelKey uint, accelMods gdk
 //
 //    - object usually a Window.
 //
-func AccelGroupsFromObject(object *externglib.Object) []AccelGroup {
+func AccelGroupsFromObject(object *externglib.Object) *gextras.SList[AccelGroup] {
 	var _arg1 *C.GObject // out
 	var _cret *C.GSList  // in
 
@@ -130,15 +130,20 @@ func AccelGroupsFromObject(object *externglib.Object) []AccelGroup {
 	_cret = C.gtk_accel_groups_from_object(_arg1)
 	runtime.KeepAlive(object)
 
-	var _sList []AccelGroup // out
+	var _sList *gextras.SList[AccelGroup] // out
 
-	_sList = make([]AccelGroup, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkAccelGroup)(v)
-		var dst AccelGroup // out
-		dst = *wrapAccelGroup(externglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[AccelGroup](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[AccelGroup]{
+			Convert: func(ptr unsafe.Pointer) AccelGroup {
+				src := *(**C.GtkAccelGroup)(ptr)
+				var dst AccelGroup // out
+				dst = *wrapAccelGroup(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _sList
 }
@@ -182,7 +187,7 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -224,7 +229,7 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycod
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -256,7 +261,7 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -297,7 +302,7 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

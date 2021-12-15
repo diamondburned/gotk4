@@ -57,7 +57,7 @@ func getQuark(err error) C.GQuark {
 		typeName = pkgPath + "." + typ.Name()
 	}
 
-	quark, _, _ = quarkFlight.Do(pkgPath, func() (interface{}, error) {
+	quark, _, _ = quarkFlight.Do(pkgPath, func() (any, error) {
 		// Allocate the quark string inside the singlefligth group, so the
 		// pointer is ensured to be the same for this type. This string must not
 		// be freed, since g_quark_from_static_string will use it directly.
@@ -99,7 +99,7 @@ type GError struct {
 	err   string
 }
 
-func marshalGError(p uintptr) (interface{}, error) {
+func marshalGError(p uintptr) (any, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return Copy(unsafe.Pointer(b)), nil
 }

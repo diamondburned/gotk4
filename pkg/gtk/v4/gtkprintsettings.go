@@ -252,13 +252,13 @@ func (other *PrintSettings) Copy() *PrintSettings {
 	return _printSettings
 }
 
-// Foreach calls func for each key-value pair of settings.
+// ForEach calls func for each key-value pair of settings.
 //
 // The function takes the following parameters:
 //
 //    - fn: function to call.
 //
-func (settings *PrintSettings) Foreach(fn PrintSettingsFunc) {
+func (settings *PrintSettings) ForEach(fn PrintSettingsFunc) {
 	var _arg0 *C.GtkPrintSettings    // out
 	var _arg1 C.GtkPrintSettingsFunc // out
 	var _arg2 C.gpointer

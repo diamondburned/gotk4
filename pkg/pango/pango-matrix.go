@@ -230,7 +230,7 @@ func (matrix *Matrix) Rotate(degrees float64) {
 // Scale changes the transformation represented by matrix to be the
 // transformation given by first scaling by sx in the X direction and sy in the
 // Y direction then applying the original transformation.
-func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
+func (matrix *Matrix) Scale(scaleX, scaleY float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
@@ -248,7 +248,7 @@ func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 // Translate changes the transformation represented by matrix to be the
 // transformation given by first translating by (tx, ty) then applying the
 // original transformation.
-func (matrix *Matrix) Translate(tx float64, ty float64) {
+func (matrix *Matrix) Translate(tx, ty float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out

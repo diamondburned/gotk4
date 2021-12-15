@@ -22,7 +22,7 @@ var bitfieldTmpl = gotmpl.NewGoTemplate(`
 	)
 
 	{{ if .Marshaler }}
-	func marshal{{.GoName}}(p uintptr) (interface{}, error) {
+	func marshal{{.GoName}}(p uintptr) (any, error) {
 		return {{ .GoName }}(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 	}
 	{{ end }}

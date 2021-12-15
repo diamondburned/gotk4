@@ -37,7 +37,7 @@ func NewPen(w PenWriter) *Pen {
 var NoopPen = NewPen(noopWriter{})
 
 // Words writes a list of words into a single line.
-func (p *Pen) Words(words ...interface{}) {
+func (p *Pen) Words(words ...any) {
 	for i, word := range words {
 		if i != 0 {
 			p.WriteByte(' ')
@@ -57,7 +57,7 @@ func (p *Pen) Words(words ...interface{}) {
 }
 
 // Printf writes a Sprintf-formatted string.
-func (p *Pen) Printf(f string, v ...interface{}) {
+func (p *Pen) Printf(f string, v ...any) {
 	if len(v) == 0 {
 		p.WriteString(f)
 	} else {
@@ -76,7 +76,7 @@ func (p *Pen) Lines(lines []string) {
 func (p *Pen) Line(line string) { p.Linef(line) }
 
 // Linef writes a Sprintf-formatted line.
-func (p *Pen) Linef(f string, v ...interface{}) {
+func (p *Pen) Linef(f string, v ...any) {
 	p.Printf(f, v...)
 	p.EmptyLine()
 }
@@ -90,7 +90,7 @@ func (p *Pen) Descend() { p.Line("{") }
 func (p *Pen) Ascend()  { p.Line("}") }
 
 // WritTmpl writes a template into the pen.
-func (p *Pen) WriteTmpl(tmpl *template.Template, args interface{}) {
+func (p *Pen) WriteTmpl(tmpl *template.Template, args any) {
 	if err := tmpl.Execute(p.PenWriter, args); err != nil {
 		log.Panicln("template error:", err)
 	}
@@ -98,6 +98,6 @@ func (p *Pen) WriteTmpl(tmpl *template.Template, args interface{}) {
 }
 
 // LineTmpl writes an inline template with the delimiter "{" and "}".
-func (p *Pen) LineTmpl(v interface{}, tmpl string) {
+func (p *Pen) LineTmpl(v any, tmpl string) {
 	gotmpl.Render(p.PenWriter, tmpl, v)
 }

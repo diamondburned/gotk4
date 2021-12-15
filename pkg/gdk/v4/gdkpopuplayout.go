@@ -65,7 +65,7 @@ const (
 	AnchorResize AnchorHints = 0b110000
 )
 
-func marshalAnchorHints(p uintptr) (interface{}, error) {
+func marshalAnchorHints(p uintptr) (any, error) {
 	return AnchorHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -164,7 +164,7 @@ func marshalPopupLayout(p uintptr) (interface{}, error) {
 }
 
 // NewPopupLayout constructs a struct PopupLayout.
-func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gravity) *PopupLayout {
+func NewPopupLayout(anchorRect *Rectangle, rectAnchor, surfaceAnchor Gravity) *PopupLayout {
 	var _arg1 *C.GdkRectangle   // out
 	var _arg2 C.GdkGravity      // out
 	var _arg3 C.GdkGravity      // out
@@ -383,7 +383,7 @@ func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 }
 
 // SetOffset: offset the position of the anchor rectangle with the given delta.
-func (layout *PopupLayout) SetOffset(dx int, dy int) {
+func (layout *PopupLayout) SetOffset(dx, dy int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
@@ -416,7 +416,7 @@ func (layout *PopupLayout) SetRectAnchor(anchor Gravity) {
 // The shadow width corresponds to the part of the computed surface size that
 // would consist of the shadow margin surrounding the window, would there be
 // any.
-func (layout *PopupLayout) SetShadowWidth(left int, right int, top int, bottom int) {
+func (layout *PopupLayout) SetShadowWidth(left, right, top, bottom int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

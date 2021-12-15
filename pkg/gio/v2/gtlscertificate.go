@@ -392,7 +392,7 @@ func BaseTLSCertificate(obj TLSCertificater) *TLSCertificate {
 //
 //    - file containing PEM-encoded certificates to import.
 //
-func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
+func TLSCertificateListNewFromFile(file string) (*gextras.List[TLSCertificater], error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GList  // in
 	var _cerr *C.GError // in
@@ -403,28 +403,37 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	_cret = C.g_tls_certificate_list_new_from_file(_arg1, &_cerr)
 	runtime.KeepAlive(file)
 
-	var _list []TLSCertificater // out
-	var _goerr error            // out
+	var _list *gextras.List[TLSCertificater] // out
+	var _goerr error                         // out
 
-	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GTlsCertificate)(v)
-		var dst TLSCertificater // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.TLSCertificater is nil")
-			}
+	_list = gextras.NewList[TLSCertificater](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[TLSCertificater]{
+			Convert: func(ptr unsafe.Pointer) TLSCertificater {
+				src := *(**C.GTlsCertificate)(ptr)
+				var dst TLSCertificater // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.TLSCertificater is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GTlsCertificate)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

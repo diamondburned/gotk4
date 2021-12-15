@@ -151,7 +151,7 @@ func (action *RadioAction) CurrentValue() int {
 //       }
 //
 // Deprecated: since version 3.10.
-func (action *RadioAction) Group() []RadioAction {
+func (action *RadioAction) Group() *gextras.SList[RadioAction] {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret *C.GSList         // in
 
@@ -160,15 +160,20 @@ func (action *RadioAction) Group() []RadioAction {
 	_cret = C.gtk_radio_action_get_group(_arg0)
 	runtime.KeepAlive(action)
 
-	var _sList []RadioAction // out
+	var _sList *gextras.SList[RadioAction] // out
 
-	_sList = make([]RadioAction, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkRadioAction)(v)
-		var dst RadioAction // out
-		dst = *wrapRadioAction(externglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[RadioAction](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[RadioAction]{
+			Convert: func(ptr unsafe.Pointer) RadioAction {
+				src := *(**C.GtkRadioAction)(ptr)
+				var dst RadioAction // out
+				dst = *wrapRadioAction(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _sList
 }

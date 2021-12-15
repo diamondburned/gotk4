@@ -52,7 +52,7 @@ func (sects *BlockSections) grow(sect int) {
 }
 
 // Linef writes a Sprintf'd line.
-func (sects *BlockSections) Linef(sect int, f string, v ...interface{}) {
+func (sects *BlockSections) Linef(sect int, f string, v ...any) {
 	sects.grow(sect)
 	if len(v) == 0 {
 		sects.bufs[sect].WriteString(f)
@@ -133,7 +133,7 @@ type BlockSection struct {
 }
 
 // Linef writes a Sprintf'd line.
-func (sect *BlockSection) Linef(f string, v ...interface{}) { sect.p.Linef(sect.n, f, v...) }
+func (sect *BlockSection) Linef(f string, v ...any) { sect.p.Linef(sect.n, f, v...) }
 
 // Line writes a single line into the section.
 func (sect *BlockSection) Line(line string) { sect.p.Line(sect.n, line) }

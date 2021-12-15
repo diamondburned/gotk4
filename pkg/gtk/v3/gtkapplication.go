@@ -47,7 +47,7 @@ const (
 	ApplicationInhibitIdle ApplicationInhibitFlags = 0b1000
 )
 
-func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
+func marshalApplicationInhibitFlags(p uintptr) (any, error) {
 	return ApplicationInhibitFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -362,7 +362,7 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -415,7 +415,7 @@ func (application *Application) ActionsForAccel(accel string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -577,7 +577,7 @@ func (application *Application) WindowByID(id uint) *Window {
 //
 // The list that is returned should not be modified in any way. It will only
 // remain valid until the next focus change or window creation or deletion.
-func (application *Application) Windows() []Window {
+func (application *Application) Windows() *gextras.List[Window] {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GList          // in
 
@@ -586,15 +586,20 @@ func (application *Application) Windows() []Window {
 	_cret = C.gtk_application_get_windows(_arg0)
 	runtime.KeepAlive(application)
 
-	var _list []Window // out
+	var _list *gextras.List[Window] // out
 
-	_list = make([]Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkWindow)(v)
-		var dst Window // out
-		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[Window](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Window]{
+			Convert: func(ptr unsafe.Pointer) Window {
+				src := *(**C.GtkWindow)(ptr)
+				var dst Window // out
+				dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _list
 }
@@ -713,7 +718,7 @@ func (application *Application) ListActionDescriptions() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

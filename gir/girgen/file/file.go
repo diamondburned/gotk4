@@ -165,8 +165,13 @@ func (h *Header) AddMarshaler(glibGetType, goName string) {
 		return
 	}
 
+	// hack.
+	if strings.Contains(glibGetType, "_get") {
+		glibGetType += "()"
+	}
+
 	h.Marshalers = append(h.Marshalers, fmt.Sprintf(
-		`{T: externglib.Type(C.%s()), F: marshal%s},`, glibGetType, goName,
+		`{T: externglib.Type(C.%s), F: marshal%s},`, glibGetType, goName,
 	))
 	// Need this for g_value functions inside marshal.
 	h.NeedsGLibObject()

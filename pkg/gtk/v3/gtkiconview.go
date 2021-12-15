@@ -22,7 +22,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer);
+// void _gotk4_gtk3_IconViewForEachFunc(GtkIconView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {
@@ -74,12 +74,12 @@ func (i IconViewDropPosition) String() string {
 	}
 }
 
-// IconViewForeachFunc: function used by gtk_icon_view_selected_foreach() to map
+// IconViewForEachFunc: function used by gtk_icon_view_selected_foreach() to map
 // all selected rows. It will be called on every selected row in the view.
-type IconViewForeachFunc func(iconView *IconView, path *TreePath)
+type IconViewForEachFunc func(iconView *IconView, path *TreePath)
 
-//export _gotk4_gtk3_IconViewForeachFunc
-func _gotk4_gtk3_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
+//export _gotk4_gtk3_IconViewForEachFunc
+func _gotk4_gtk3_IconViewForEachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -91,7 +91,7 @@ func _gotk4_gtk3_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, a
 	iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
-	fn := v.(IconViewForeachFunc)
+	fn := v.(IconViewForEachFunc)
 	fn(iconView, path)
 }
 
@@ -726,7 +726,7 @@ func (iconView *IconView) RowSpacing() int {
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);.
-func (iconView *IconView) SelectedItems() []*TreePath {
+func (iconView *IconView) SelectedItems() *gextras.List[*TreePath] {
 	var _arg0 *C.GtkIconView // out
 	var _cret *C.GList       // in
 
@@ -735,21 +735,24 @@ func (iconView *IconView) SelectedItems() []*TreePath {
 	_cret = C.gtk_icon_view_get_selected_items(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _list []*TreePath // out
+	var _list *gextras.List[*TreePath] // out
 
-	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkTreePath)(v)
-		var dst *TreePath // out
-		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+	_list = gextras.NewList[*TreePath](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*TreePath]{
+			Convert: func(ptr unsafe.Pointer) *TreePath {
+				src := *(**C.GtkTreePath)(ptr)
+				var dst *TreePath // out
+				dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GtkTreePath)(ptr))
+				C.gtk_tree_path_free((*C.GtkTreePath)(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -942,20 +945,20 @@ func (iconView *IconView) SelectPath(path *TreePath) {
 	runtime.KeepAlive(path)
 }
 
-// SelectedForeach calls a function for each selected icon. Note that the model
+// SelectedForEach calls a function for each selected icon. Note that the model
 // or selection cannot be modified from within this function.
 //
 // The function takes the following parameters:
 //
 //    - fn: function to call for each selected icon.
 //
-func (iconView *IconView) SelectedForeach(fn IconViewForeachFunc) {
+func (iconView *IconView) SelectedForEach(fn IconViewForEachFunc) {
 	var _arg0 *C.GtkIconView           // out
 	var _arg1 C.GtkIconViewForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_IconViewForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_IconViewForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

@@ -891,7 +891,7 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 // Objects gets all objects that have been constructed by builder. Note that
 // this function does not increment the reference counts of the returned
 // objects.
-func (builder *Builder) Objects() []*externglib.Object {
+func (builder *Builder) Objects() *gextras.SList[*externglib.Object] {
 	var _arg0 *C.GtkBuilder // out
 	var _cret *C.GSList     // in
 
@@ -900,15 +900,20 @@ func (builder *Builder) Objects() []*externglib.Object {
 	_cret = C.gtk_builder_get_objects(_arg0)
 	runtime.KeepAlive(builder)
 
-	var _sList []*externglib.Object // out
+	var _sList *gextras.SList[*externglib.Object] // out
 
-	_sList = make([]*externglib.Object, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GObject)(v)
-		var dst *externglib.Object // out
-		dst = externglib.Take(unsafe.Pointer(src))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[*externglib.Object](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*externglib.Object]{
+			Convert: func(ptr unsafe.Pointer) *externglib.Object {
+				src := *(**C.GObject)(ptr)
+				var dst *externglib.Object // out
+				dst = externglib.Take(unsafe.Pointer(src))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }

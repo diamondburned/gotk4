@@ -42,7 +42,7 @@ const (
 	Fill AttachOptions = 0b100
 )
 
-func marshalAttachOptions(p uintptr) (interface{}, error) {
+func marshalAttachOptions(p uintptr) (any, error) {
 	return AttachOptions(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

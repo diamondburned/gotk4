@@ -16,7 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>
-// gboolean _gotk4_pango1_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer);
+// gboolean _gotk4_pango1_FontsetForEachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
 func init() {
@@ -26,12 +26,12 @@ func init() {
 	})
 }
 
-// FontsetForeachFunc: callback used by pango_fontset_foreach() when enumerating
+// FontsetForEachFunc: callback used by pango_fontset_foreach() when enumerating
 // fonts in a fontset.
-type FontsetForeachFunc func(fontset Fontsetter, font Fonter) (ok bool)
+type FontsetForEachFunc func(fontset Fontsetter, font Fonter) (ok bool)
 
-//export _gotk4_pango1_FontsetForeachFunc
-func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_pango1_FontsetForEachFunc
+func _gotk4_pango1_FontsetForEachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -67,7 +67,7 @@ func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		font = rv
 	}
 
-	fn := v.(FontsetForeachFunc)
+	fn := v.(FontsetForEachFunc)
 	ok := fn(fontset, font)
 
 	if ok {
@@ -82,11 +82,11 @@ func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FontsetOverrider interface {
-	// Foreach iterates through all the fonts in a fontset, calling func for
+	// ForEach iterates through all the fonts in a fontset, calling func for
 	// each one.
 	//
 	// If func returns TRUE, that stops the iteration.
-	Foreach(fn FontsetForeachFunc)
+	ForEach(fn FontsetForEachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
 	Font(wc uint) Fonter
@@ -131,7 +131,7 @@ func marshalFontsetter(p uintptr) (interface{}, error) {
 	return wrapFontset(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// Foreach iterates through all the fonts in a fontset, calling func for each
+// ForEach iterates through all the fonts in a fontset, calling func for each
 // one.
 //
 // If func returns TRUE, that stops the iteration.
@@ -140,13 +140,13 @@ func marshalFontsetter(p uintptr) (interface{}, error) {
 //
 //    - fn: callback function.
 //
-func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
+func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
 	var _arg0 *C.PangoFontset           // out
 	var _arg1 C.PangoFontsetForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(fontset.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_pango1_FontsetForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_pango1_FontsetForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

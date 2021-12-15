@@ -109,7 +109,7 @@ type CellLayoutOverrider interface {
 	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
 	Area() CellAreaer
 	// Cells returns the cell renderers which have been added to cell_layout.
-	Cells() []CellRendererer
+	Cells() *gextras.List[CellRendererer]
 	// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then
 	// the cell is allocated no more space than it needs. Any unused space is
 	// divided evenly between cells for which expand is TRUE.
@@ -249,7 +249,7 @@ type CellLayouter interface {
 	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
 	Area() CellAreaer
 	// Cells returns the cell renderers which have been added to cell_layout.
-	Cells() []CellRendererer
+	Cells() *gextras.List[CellRendererer]
 	// PackEnd adds the cell to the end of cell_layout.
 	PackEnd(cell CellRendererer, expand bool)
 	// PackStart packs the cell into the beginning of cell_layout.
@@ -364,7 +364,7 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 }
 
 // Cells returns the cell renderers which have been added to cell_layout.
-func (cellLayout *CellLayout) Cells() []CellRendererer {
+func (cellLayout *CellLayout) Cells() *gextras.List[CellRendererer] {
 	var _arg0 *C.GtkCellLayout // out
 	var _cret *C.GList         // in
 
@@ -373,27 +373,32 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 	_cret = C.gtk_cell_layout_get_cells(_arg0)
 	runtime.KeepAlive(cellLayout)
 
-	var _list []CellRendererer // out
+	var _list *gextras.List[CellRendererer] // out
 
-	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkCellRenderer)(v)
-		var dst CellRendererer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.CellRendererer is nil")
-			}
+	_list = gextras.NewList[CellRendererer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[CellRendererer]{
+			Convert: func(ptr unsafe.Pointer) CellRendererer {
+				src := *(**C.GtkCellRenderer)(ptr)
+				var dst CellRendererer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gtk.CellRendererer is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(CellRendererer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(CellRendererer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }

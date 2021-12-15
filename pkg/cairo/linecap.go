@@ -17,7 +17,7 @@ const (
 	LINE_CAP_SQUARE LineCap = C.CAIRO_LINE_CAP_SQUARE
 )
 
-func marshalLineCap(p uintptr) (interface{}, error) {
+func marshalLineCap(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return LineCap(c), nil
 }

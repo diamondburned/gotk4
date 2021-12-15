@@ -326,7 +326,7 @@ func (screen *Screen) MonitorPlugName(monitorNum int) string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -636,7 +636,7 @@ func (screen *Screen) SystemVisual() *Visual {
 //
 // The returned list should be freed with g_list_free(), but its elements need
 // not be freed.
-func (screen *Screen) ToplevelWindows() []Windower {
+func (screen *Screen) ToplevelWindows() *gextras.List[Windower] {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GList     // in
 
@@ -645,27 +645,32 @@ func (screen *Screen) ToplevelWindows() []Windower {
 	_cret = C.gdk_screen_get_toplevel_windows(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _list []Windower // out
+	var _list *gextras.List[Windower] // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkWindow)(v)
-		var dst Windower // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gdk.Windower is nil")
-			}
+	_list = gextras.NewList[Windower](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Windower]{
+			Convert: func(ptr unsafe.Pointer) Windower {
+				src := *(**C.GdkWindow)(ptr)
+				var dst Windower // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gdk.Windower is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Windower)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Windower)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -728,7 +733,7 @@ func (screen *Screen) WidthMm() int {
 // The returned list is newly allocated and owns references to the windows it
 // contains, so it should be freed using g_list_free() and its windows unrefed
 // using g_object_unref() when no longer needed.
-func (screen *Screen) WindowStack() []Windower {
+func (screen *Screen) WindowStack() *gextras.List[Windower] {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GList     // in
 
@@ -737,28 +742,37 @@ func (screen *Screen) WindowStack() []Windower {
 	_cret = C.gdk_screen_get_window_stack(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _list []Windower // out
+	var _list *gextras.List[Windower] // out
 
 	if _cret != nil {
-		_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-			src := (*C.GdkWindow)(v)
-			var dst Windower // out
-			{
-				objptr := unsafe.Pointer(src)
-				if objptr == nil {
-					panic("object of type gdk.Windower is nil")
-				}
+		_list = gextras.NewList[Windower](
+			unsafe.Pointer(_cret),
+			gextras.ListOpts[Windower]{
+				Convert: func(ptr unsafe.Pointer) Windower {
+					src := *(**C.GdkWindow)(ptr)
+					var dst Windower // out
+					{
+						objptr := unsafe.Pointer(src)
+						if objptr == nil {
+							panic("object of type gdk.Windower is nil")
+						}
 
-				object := externglib.AssumeOwnership(objptr)
-				rv, ok := (externglib.CastObject(object)).(Windower)
-				if !ok {
-					panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
-				}
-				dst = rv
-			}
-			_list = append(_list, dst)
-		})
+						object := externglib.Take(objptr)
+						rv, ok := (externglib.CastObject(object)).(Windower)
+						if !ok {
+							panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+						}
+						dst = rv
+					}
+					return dst
+				},
+				FreeData: func(ptr unsafe.Pointer) {
+					src := unsafe.Pointer(*(**C.GdkWindow)(ptr))
+					C.g_object_unref(C.gpointer(src))
+				},
+			},
+			true,
+		)
 	}
 
 	return _list
@@ -793,7 +807,7 @@ func (screen *Screen) IsComposited() bool {
 // format.
 //
 // Call g_list_free() on the return value when you’re finished with it.
-func (screen *Screen) ListVisuals() []Visual {
+func (screen *Screen) ListVisuals() *gextras.List[Visual] {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GList     // in
 
@@ -802,15 +816,20 @@ func (screen *Screen) ListVisuals() []Visual {
 	_cret = C.gdk_screen_list_visuals(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _list []Visual // out
+	var _list *gextras.List[Visual] // out
 
-	_list = make([]Visual, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkVisual)(v)
-		var dst Visual // out
-		dst = *wrapVisual(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[Visual](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Visual]{
+			Convert: func(ptr unsafe.Pointer) Visual {
+				src := *(**C.GdkVisual)(ptr)
+				var dst Visual // out
+				dst = *wrapVisual(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -831,7 +850,7 @@ func (screen *Screen) MakeDisplayName() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

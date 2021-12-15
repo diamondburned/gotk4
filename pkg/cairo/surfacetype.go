@@ -39,7 +39,7 @@ const (
 	// SURFACE_TYPE_COGL           SurfaceType = C.CAIRO_SURFACE_TYPE_COGL (since 1.12)
 )
 
-func marshalSurfaceType(p uintptr) (interface{}, error) {
+func marshalSurfaceType(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return SurfaceType(c), nil
 }

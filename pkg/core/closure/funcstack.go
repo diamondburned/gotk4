@@ -14,14 +14,14 @@ const FrameSize = 3
 // FuncStack wraps a function value and provides function frames containing the
 // caller trace for debugging.
 type FuncStack struct {
-	Func   interface{}
+	Func   any
 	Frames [FrameSize]uintptr
 }
 
 // NewFuncStack creates a new FuncStack. It panics if fn is not a function. The
 // given frameSkip is added 2, meaning the first frame from 0 will start from
 // the caller of NewFuncStack.
-func NewFuncStack(fn interface{}, frameSkip int) *FuncStack {
+func NewFuncStack(fn any, frameSkip int) *FuncStack {
 	if reflect.TypeOf(fn).Kind() != reflect.Func {
 		panic("closure value is not a func")
 	}
@@ -29,7 +29,7 @@ func NewFuncStack(fn interface{}, frameSkip int) *FuncStack {
 	return newFuncStack(fn, frameSkip)
 }
 
-func newFuncStack(fn interface{}, frameSkip int) *FuncStack {
+func newFuncStack(fn any, frameSkip int) *FuncStack {
 	fs := FuncStack{Func: fn}
 	runtime.Callers(frameSkip+3, fs.Frames[:])
 	return &fs
@@ -38,7 +38,7 @@ func newFuncStack(fn interface{}, frameSkip int) *FuncStack {
 // NewIdleFuncStack works akin to NewFuncStack, but it also validates the given
 // function type for the correct acceptable signatures for SourceFunc while also
 // caching the checks.
-func NewIdleFuncStack(fn interface{}, frameSkip int) *FuncStack {
+func NewIdleFuncStack(fn any, frameSkip int) *FuncStack {
 	switch fn.(type) {
 	case func(), func() bool:
 		return newFuncStack(fn, frameSkip)
@@ -73,7 +73,7 @@ func (fs *FuncStack) ValidFrames() []uintptr {
 const headerSignature = "closure error: "
 
 // Panicf panics with the given FuncStack printed to standard error.
-func (fs *FuncStack) Panicf(msgf string, v ...interface{}) {
+func (fs *FuncStack) Panicf(msgf string, v ...any) {
 	msg := strings.Builder{}
 	msg.WriteString(headerSignature)
 	fmt.Fprintf(&msg, msgf, v...)

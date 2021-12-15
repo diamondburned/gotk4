@@ -827,7 +827,7 @@ func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flip
 //
 //    - widget: Widget.
 //
-func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
+func MenuGetForAttachWidget(widget Widgetter) *gextras.List[Widgetter] {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GList     // in
 
@@ -836,27 +836,32 @@ func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 	_cret = C.gtk_menu_get_for_attach_widget(_arg1)
 	runtime.KeepAlive(widget)
 
-	var _list []Widgetter // out
+	var _list *gextras.List[Widgetter] // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
+	_list = gextras.NewList[Widgetter](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Widgetter]{
+			Convert: func(ptr unsafe.Pointer) Widgetter {
+				src := *(**C.GtkWidget)(ptr)
+				var dst Widgetter // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gtk.Widgetter is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Widgetter)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _list
 }

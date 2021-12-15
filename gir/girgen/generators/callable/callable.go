@@ -3,11 +3,11 @@ package callable
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
+	"github.com/diamondburned/gotk4/gir/girgen/gocode"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
@@ -368,7 +368,7 @@ func (g *Generator) renderBlock() bool {
 	}
 
 	g.Block = g.pen.String()
-	g.Tail = "(" + g.GoArgs.Join() + ") " + formatReturnSig(g.GoRets)
+	g.Tail = "(" + g.GoArgs.Join() + ") " + gocode.FormatReturn(g.GoRets.Joints())
 
 	g.pen.Reset()
 	return true
@@ -389,61 +389,7 @@ func (g *Generator) EachParamResult(f func(*typeconv.ValueConverted)) {
 	}
 }
 
-// CoalesceTail calls CoalesceTail on the generator's tail.
-func (g *Generator) CoalesceTail() {
-	g.Tail = CoalesceTail(g.Tail)
-}
-
-// CoalesceTail coalesces certain parameters with the same type to be shorter.
-func CoalesceTail(tail string) string {
-	if !strings.HasPrefix(tail, "(") {
-		return tail
-	}
-
-	paramIx := strings.Index(tail, ")")
-	params := strings.Split(tail[1:paramIx], ",")
-
-	newParams := strings.Builder{}
-	newParams.Grow(len(tail))
-	newParams.WriteByte('(')
-
-	for i, param := range params {
-		if i == len(params)-1 {
-			newParams.WriteString(param)
-			break
-		}
-
-		n, t1 := splitParam(param)
-		_, t2 := splitParam(params[i+1])
-
-		if t1 == t2 {
-			// Same type; write the name only.
-			newParams.WriteString(n)
-		} else {
-			newParams.WriteString(param)
-		}
-
-		newParams.WriteString(", ")
-	}
-
-	newParams.WriteByte(')')
-	newParams.WriteString(tail[paramIx+1:])
-
-	return newParams.String()
-}
-
-func splitParam(param string) (name, typ string) {
-	param = strings.TrimSpace(param)
-
-	parts := strings.SplitN(param, " ", 2)
-	if len(parts) == 2 {
-		return parts[0], parts[1]
-	}
-
-	panic("splitParam: invalid non-two-part param " + strconv.Quote(param))
-}
-
-func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
+func (g *Generator) Logln(lvl logger.Level, v ...any) {
 	g.gen.Logln(lvl, logger.Prefix(v, fmt.Sprintf("callable %s (C.%s)", g.Name, g.CIdentifier))...)
 }
 
@@ -497,47 +443,6 @@ func findContextResult(g FileGenerator, result []typeconv.ValueConverted) int {
 	}
 
 	return found
-}
-
-func formatReturnSig(joints pen.Joints) string {
-	if joints.Len() == 0 {
-		return ""
-	}
-
-	parts := joints.Joints()
-	types := make([]string, len(parts))
-
-	for i, part := range parts {
-		types[i] = extractTypeFromPair(part)
-	}
-
-	for i := range parts {
-		for j := range parts {
-			if i == j {
-				continue
-			}
-
-			if types[i] == types[j] {
-				goto dupeType
-			}
-		}
-	}
-
-	// No duplicate type, so only keep the types.
-	joints.SetJoints(types)
-
-dupeType:
-	if joints.Len() == 1 {
-		return joints.Join()
-	}
-
-	return "(" + joints.Join() + ")"
-}
-
-// extractTypeFromPair returns the second word (which is the type) from the
-// name-type pair.
-func extractTypeFromPair(namePair string) string {
-	return namePair[strings.IndexByte(namePair, ' ')+1:]
 }
 
 func ReturnName(attrs *gir.CallableAttrs) string {

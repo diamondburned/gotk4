@@ -160,7 +160,7 @@ func TypeNextBase(leafType, rootType Type) Type {
 
 // AnyClosure describes any function type. If AnyClosure does not contain a
 // function type, the consumer function is allowed to panic.
-type AnyClosure interface{}
+type AnyClosure any
 
 // goMarshal is called by the GLib runtime when a closure needs to be invoked.
 // The closure will be invoked with as many arguments as it can take, from 0 to
@@ -229,14 +229,12 @@ func goMarshal(
 		// library) 'peeks' into the enclosing object and passes the wrapped
 		// object to the handler. Use the Object.Cast() function
 		// to emulate that for Go signal handlers.
-		switch v := val.(type) {
-		case *Object:
-			val = v.Cast()
-		case *Variant:
-			if g := v.GoValue(); g != nil {
-				val = g
-			}
+		if obj, ok := val.(*Object); ok {
+			val = obj.Cast()
 		}
+
+		// TODO: experiment with whether or not it's possible to skip by
+		// comparing the first object type w/ the first closure type.
 
 		// Allow callbacks to omit the first type.
 		paramType := fsType.In(i - skip)
@@ -331,13 +329,13 @@ var (
 //
 // After running once, the source func will be removed from the main event loop,
 // unless f returns a single bool true.
-func IdleAdd(f interface{}) SourceHandle {
+func IdleAdd(f AnyClosure) SourceHandle {
 	return idleAdd(PriorityDefaultIdle, f)
 }
 
 // IdleAddPriority adds an idle source to the default main event loop context
 // with the given priority. Its behavior is the same as IdleAdd.
-func IdleAddPriority(priority Priority, f interface{}) SourceHandle {
+func IdleAddPriority(priority Priority, f AnyClosure) SourceHandle {
 	return idleAdd(priority, f)
 }
 
@@ -350,7 +348,7 @@ func IdleAddPriority(priority Priority, f interface{}) SourceHandle {
 
 //go:nosplit
 //go:nocheckptr
-func idleAdd(priority Priority, f interface{}) SourceHandle {
+func idleAdd(priority Priority, f any) SourceHandle {
 	fs := closure.NewIdleFuncStack(f, 2)
 	id := C.gpointer(gbox.Assign(fs))
 	h := C.g_idle_add_full(C.gint(priority), _sourceFunc, id, _removeSourceFunc)
@@ -364,30 +362,30 @@ func idleAdd(priority Priority, f interface{}) SourceHandle {
 //
 // After running once, the source func will be removed from the main event loop,
 // unless f returns a single bool true.
-func TimeoutAdd(milliseconds uint, f interface{}) SourceHandle {
+func TimeoutAdd(milliseconds uint, f AnyClosure) SourceHandle {
 	return timeoutAdd(milliseconds, false, PriorityDefault, f)
 }
 
 // TimeoutAddPriority is similar to TimeoutAdd with the given priority. Refer to
 // TimeoutAdd for more information.
-func TimeoutAddPriority(milliseconds uint, priority Priority, f interface{}) SourceHandle {
+func TimeoutAddPriority(milliseconds uint, priority Priority, f AnyClosure) SourceHandle {
 	return timeoutAdd(milliseconds, false, priority, f)
 }
 
 // TimeoutSecondsAdd is similar to TimeoutAdd, except with seconds granularity.
-func TimeoutSecondsAdd(seconds uint, f interface{}) SourceHandle {
+func TimeoutSecondsAdd(seconds uint, f AnyClosure) SourceHandle {
 	return timeoutAdd(seconds, true, PriorityDefault, f)
 }
 
 // TimeoutSecondsAddPriority adds a timeout source with the given priority.
 // Refer to TimeoutSecondsAdd for more information.
-func TimeoutSecondsAddPriority(seconds uint, priority Priority, f interface{}) SourceHandle {
+func TimeoutSecondsAddPriority(seconds uint, priority Priority, f AnyClosure) SourceHandle {
 	return timeoutAdd(seconds, true, priority, f)
 }
 
 //go:nosplit
 //go:nocheckptr
-func timeoutAdd(time uint, sec bool, priority Priority, f interface{}) SourceHandle {
+func timeoutAdd(time uint, sec bool, priority Priority, f any) SourceHandle {
 	fs := closure.NewIdleFuncStack(f, 2)
 	id := C.gpointer(gbox.Assign(fs))
 
@@ -409,15 +407,15 @@ func SourceRemove(src SourceHandle) bool {
 // Objector is an interface that describes the Object type's methods. Only this
 // package's Object types and types that embed it can satisfy this interface.
 type Objector interface {
-	Connect(string, interface{}) SignalHandle
-	ConnectAfter(string, interface{}) SignalHandle
+	Connect(string, AnyClosure) SignalHandle
+	ConnectAfter(string, AnyClosure) SignalHandle
 
 	HandlerBlock(SignalHandle)
 	HandlerUnblock(SignalHandle)
 	HandlerDisconnect(SignalHandle)
 
-	ObjectProperty(string) interface{}
-	SetObjectProperty(string, interface{})
+	ObjectProperty(string) any
+	SetObjectProperty(string, any)
 
 	Cast() Objector
 	Native() uintptr
@@ -561,7 +559,7 @@ func (v *Object) propertyType(cstr *C.gchar) Type {
 
 // ObjectProperty is a wrapper around g_object_get_property(). If the property's
 // type cannot be resolved to a Go type, then InvalidValue is returned.
-func (v *Object) ObjectProperty(name string) interface{} {
+func (v *Object) ObjectProperty(name string) any {
 	cstr := C.CString(name)
 	defer C.free(unsafe.Pointer(cstr))
 
@@ -579,7 +577,7 @@ func (v *Object) ObjectProperty(name string) interface{} {
 }
 
 // SetObjectProperty is a wrapper around g_object_set_property().
-func (v *Object) SetObjectProperty(name string, value interface{}) {
+func (v *Object) SetObjectProperty(name string, value any) {
 	cstr := C.CString(name)
 	defer C.free(unsafe.Pointer(cstr))
 
@@ -596,7 +594,7 @@ func (v *Object) SetObjectProperty(name string, value interface{}) {
 //
 // Note that this code is unsafe in that the types of values in args are not
 // checked against whether they are suitable for the callback.
-func (v *Object) Emit(s string, args ...interface{}) interface{} {
+func (v *Object) Emit(s string, args ...any) any {
 	cstr := C.CString(s)
 	defer C.free(unsafe.Pointer(cstr))
 
@@ -677,7 +675,7 @@ func (v *value) isValue() bool {
 	return b
 }
 
-func marshalValue(p uintptr) (interface{}, error) {
+func marshalValue(p uintptr) (any, error) {
 	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	if c == nil {
 		return nil, nil
@@ -690,7 +688,7 @@ func marshalValue(p uintptr) (interface{}, error) {
 }
 
 var (
-	mustHeap interface{}
+	mustHeap any
 	never    bool
 )
 
@@ -740,7 +738,7 @@ func ValueFromNative(l unsafe.Pointer) *Value {
 // NewValue converts a Go type to a comparable GValue. It will panic if the
 // given type is unknown. Most Go primitive types and all Object types are
 // supported.
-func NewValue(v interface{}) *Value {
+func NewValue(v any) *Value {
 	if v == nil {
 		val := InitValue(TypePointer)
 		val.SetPointer(uintptr(unsafe.Pointer(nil)))
@@ -789,7 +787,7 @@ func NewValue(v interface{}) *Value {
 	return nil
 }
 
-func newValuePrimitive(v interface{}) *Value {
+func newValuePrimitive(v any) *Value {
 	var val *Value
 	switch e := v.(type) {
 	case *Value:
@@ -843,7 +841,7 @@ func newValuePrimitive(v interface{}) *Value {
 
 // goGValue is a convenient function that creates a Go value from the given
 // GValue pointer.
-func goGValue(cgvalue *C.GValue) interface{} {
+func goGValue(cgvalue *C.GValue) any {
 	return (&Value{&value{cgvalue}}).GoValue()
 }
 
@@ -889,13 +887,13 @@ func (v *Value) Type() (actual Type) {
 // is responsible for recasting the interface to the wanted type.
 //
 // Deprecated: Use obj.Cast() instead.
-func CastObject(obj *Object) interface{} {
+func CastObject(obj *Object) any {
 	return obj.Cast()
 }
 
 // GValueMarshaler is a marshal function to convert a GValue into an
 // appropriate Go type.  The uintptr parameter is a *C.GValue.
-type GValueMarshaler func(uintptr) (interface{}, error)
+type GValueMarshaler func(uintptr) (any, error)
 
 // TypeMarshaler represents an actual type and it's associated marshaler.
 type TypeMarshaler struct {
@@ -944,7 +942,6 @@ func init() {
 	RegisterGValueMarshaler(TypePointer, marshalPointer)
 	RegisterGValueMarshaler(TypeBoxed, marshalBoxed)
 	RegisterGValueMarshaler(TypeObject, marshalObject)
-	RegisterGValueMarshaler(TypeVariant, marshalVariant)
 	RegisterGValueMarshaler(Type(C.g_value_get_type()), marshalValue)
 }
 
@@ -998,106 +995,101 @@ func (m *marshalMap) lookupType(t Type) (GValueMarshaler, bool) {
 	return nil, false
 }
 
-func marshalInvalid(uintptr) (interface{}, error) {
+func marshalInvalid(uintptr) (any, error) {
 	return nil, errors.New("invalid type")
 }
 
-func marshalNone(uintptr) (interface{}, error) {
+func marshalNone(uintptr) (any, error) {
 	return nil, nil
 }
 
-func marshalInterface(uintptr) (interface{}, error) {
+func marshalInterface(uintptr) (any, error) {
 	return nil, errors.New("interface conversion not yet implemented")
 }
 
-func marshalChar(p uintptr) (interface{}, error) {
+func marshalChar(p uintptr) (any, error) {
 	c := C.g_value_get_schar((*C.GValue)(unsafe.Pointer(p)))
 	return int8(c), nil
 }
 
-func marshalUchar(p uintptr) (interface{}, error) {
+func marshalUchar(p uintptr) (any, error) {
 	c := C.g_value_get_uchar((*C.GValue)(unsafe.Pointer(p)))
 	return uint8(c), nil
 }
 
-func marshalBoolean(p uintptr) (interface{}, error) {
+func marshalBoolean(p uintptr) (any, error) {
 	c := C.g_value_get_boolean((*C.GValue)(unsafe.Pointer(p)))
 	return gobool(c), nil
 }
 
-func marshalInt(p uintptr) (interface{}, error) {
+func marshalInt(p uintptr) (any, error) {
 	c := C.g_value_get_int((*C.GValue)(unsafe.Pointer(p)))
 	return int(c), nil
 }
 
-func marshalLong(p uintptr) (interface{}, error) {
+func marshalLong(p uintptr) (any, error) {
 	c := C.g_value_get_long((*C.GValue)(unsafe.Pointer(p)))
 	return int(c), nil
 }
 
-func marshalEnum(p uintptr) (interface{}, error) {
+func marshalEnum(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return int(c), nil
 }
 
-func marshalInt64(p uintptr) (interface{}, error) {
+func marshalInt64(p uintptr) (any, error) {
 	c := C.g_value_get_int64((*C.GValue)(unsafe.Pointer(p)))
 	return int64(c), nil
 }
 
-func marshalUint(p uintptr) (interface{}, error) {
+func marshalUint(p uintptr) (any, error) {
 	c := C.g_value_get_uint((*C.GValue)(unsafe.Pointer(p)))
 	return uint(c), nil
 }
 
-func marshalUlong(p uintptr) (interface{}, error) {
+func marshalUlong(p uintptr) (any, error) {
 	c := C.g_value_get_ulong((*C.GValue)(unsafe.Pointer(p)))
 	return uint(c), nil
 }
 
-func marshalFlags(p uintptr) (interface{}, error) {
+func marshalFlags(p uintptr) (any, error) {
 	c := C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))
 	return uint(c), nil
 }
 
-func marshalUint64(p uintptr) (interface{}, error) {
+func marshalUint64(p uintptr) (any, error) {
 	c := C.g_value_get_uint64((*C.GValue)(unsafe.Pointer(p)))
 	return uint64(c), nil
 }
 
-func marshalFloat(p uintptr) (interface{}, error) {
+func marshalFloat(p uintptr) (any, error) {
 	c := C.g_value_get_float((*C.GValue)(unsafe.Pointer(p)))
 	return float32(c), nil
 }
 
-func marshalDouble(p uintptr) (interface{}, error) {
+func marshalDouble(p uintptr) (any, error) {
 	c := C.g_value_get_double((*C.GValue)(unsafe.Pointer(p)))
 	return float64(c), nil
 }
 
-func marshalString(p uintptr) (interface{}, error) {
+func marshalString(p uintptr) (any, error) {
 	c := C.g_value_get_string((*C.GValue)(unsafe.Pointer(p)))
 	return C.GoString((*C.char)(c)), nil
 }
 
-func marshalBoxed(p uintptr) (interface{}, error) {
+func marshalBoxed(p uintptr) (any, error) {
 	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return unsafe.Pointer(c), nil
 }
 
-func marshalPointer(p uintptr) (interface{}, error) {
+func marshalPointer(p uintptr) (any, error) {
 	c := C.g_value_get_pointer((*C.GValue)(unsafe.Pointer(p)))
 	return unsafe.Pointer(c), nil
 }
 
-func marshalObject(p uintptr) (interface{}, error) {
+func marshalObject(p uintptr) (any, error) {
 	c := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	return Take(unsafe.Pointer(c)), nil
-}
-
-func marshalVariant(p uintptr) (interface{}, error) {
-	c := C.g_value_get_variant((*C.GValue)(unsafe.Pointer(p)))
-	return newVariant((*C.GVariant)(c)), nil
 }
 
 // GoValue converts a Value to comparable Go type. GoValue() returns
@@ -1106,7 +1098,7 @@ func marshalVariant(p uintptr) (interface{}, error) {
 //
 // Unlike the type getters, although this method is not type-safe, it can get
 // any concrete object type out, as long as there exists a marshaler for it.
-func (v *Value) GoValue() interface{} {
+func (v *Value) GoValue() any {
 	f := marshalers.lookup(v)
 	runtime.KeepAlive(v)
 	if f == nil {

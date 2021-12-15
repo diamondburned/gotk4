@@ -300,7 +300,7 @@ type TypeFindResult struct {
 	//   *Union
 	//   *Bitfield
 	//   *Callback
-	Type interface{}
+	Type any
 
 	// TODO: Constant, Annotations, Boxed
 	// TODO: Methods
@@ -500,7 +500,7 @@ func (repos Repositories) FindFullType(fullType string) *TypeFindResult {
 		return v.(*TypeFindResult)
 	}
 
-	v, _, _ = typeResultFlight.Do(fullType, func() (interface{}, error) {
+	v, _, _ = typeResultFlight.Do(fullType, func() (any, error) {
 		result := repos.findFullType(fullType)
 		if result != nil {
 			typeResultCache.Store(fullType, result)
@@ -534,7 +534,7 @@ func (repos Repositories) findFullType(fullType string) *TypeFindResult {
 
 // SearchNamespace searches the namespace for the given type name. The returned
 // interface may be any of the types in TypeFindResult.
-func SearchNamespace(namespace *Namespace, f func(typ, ctyp string) bool) interface{} {
+func SearchNamespace(namespace *Namespace, f func(typ, ctyp string) bool) any {
 	for i, alias := range namespace.Aliases {
 		if f(alias.Name, alias.CType) {
 			return &namespace.Aliases[i]

@@ -238,7 +238,7 @@ const (
 	FontMaskVariations FontMask = 0b10000000
 )
 
-func marshalFontMask(p uintptr) (interface{}, error) {
+func marshalFontMask(p uintptr) (any, error) {
 	return FontMask(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -1109,7 +1109,7 @@ func NewFontDescription() *FontDescription {
 // match as when the styles are equal.
 //
 // Note that old_match must match desc.
-func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *FontDescription) bool {
+func (desc *FontDescription) BetterMatch(oldMatch, newMatch *FontDescription) bool {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
 	var _arg2 *C.PangoFontDescription // out
@@ -1713,7 +1713,7 @@ func (desc *FontDescription) ToFilename() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1736,7 +1736,7 @@ func (desc *FontDescription) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

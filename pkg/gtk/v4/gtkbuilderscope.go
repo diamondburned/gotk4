@@ -40,7 +40,7 @@ const (
 	BuilderClosureSwapped BuilderClosureFlags = 0b1
 )
 
-func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
+func marshalBuilderClosureFlags(p uintptr) (any, error) {
 	return BuilderClosureFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

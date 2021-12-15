@@ -13,6 +13,7 @@ import (
 	"text/template"
 
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
+	"github.com/diamondburned/gotk4/gir/girgen/gocode"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 )
 
@@ -38,6 +39,10 @@ func NewGoTemplate(block string) *template.Template {
 		"TrailingNewLine":  cmt.TrailingNewLine,
 
 		"Quote": strconv.Quote,
+
+		"CoalesceTail": gocode.CoalesceTail,
+		"FormatReturn": gocode.FormatReturn,
+		"ExtractDefer": gocode.ExtractDefer,
 	})
 	t = template.Must(t.Parse(block))
 	return t
@@ -49,10 +54,10 @@ var (
 )
 
 // M describes a key-value map for a template render.
-type M = map[string]interface{}
+type M = map[string]any
 
 // Render renders the given template string with the given key-value pair.
-func Render(w io.Writer, tmpl string, v interface{}) {
+func Render(w io.Writer, tmpl string, v any) {
 	tmpl = strings.TrimSpace(tmpl) + "\n"
 
 	tmplMutex.Lock()

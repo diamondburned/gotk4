@@ -227,7 +227,7 @@ func NewRadioToolButtonWithStockFromWidget(group *RadioToolButton, stockId strin
 }
 
 // Group returns the radio button group button belongs to.
-func (button *RadioToolButton) Group() []RadioButton {
+func (button *RadioToolButton) Group() *gextras.SList[RadioButton] {
 	var _arg0 *C.GtkRadioToolButton // out
 	var _cret *C.GSList             // in
 
@@ -236,15 +236,20 @@ func (button *RadioToolButton) Group() []RadioButton {
 	_cret = C.gtk_radio_tool_button_get_group(_arg0)
 	runtime.KeepAlive(button)
 
-	var _sList []RadioButton // out
+	var _sList *gextras.SList[RadioButton] // out
 
-	_sList = make([]RadioButton, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkRadioButton)(v)
-		var dst RadioButton // out
-		dst = *wrapRadioButton(externglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[RadioButton](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[RadioButton]{
+			Convert: func(ptr unsafe.Pointer) RadioButton {
+				src := *(**C.GtkRadioButton)(ptr)
+				var dst RadioButton // out
+				dst = *wrapRadioButton(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _sList
 }

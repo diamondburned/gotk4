@@ -354,7 +354,7 @@ func (box *Box) Width() float32 {
 }
 
 // Init initializes the given #graphene_box_t with two vertices.
-func (box *Box) Init(min *Point3D, max *Point3D) *Box {
+func (box *Box) Init(min, max *Point3D) *Box {
 	var _arg0 *C.graphene_box_t     // out
 	var _arg1 *C.graphene_point3d_t // out
 	var _arg2 *C.graphene_point3d_t // out
@@ -435,7 +435,7 @@ func (box *Box) InitFromPoints(points []Point3D) *Box {
 
 // InitFromVec3 initializes the given #graphene_box_t with two vertices stored
 // inside #graphene_vec3_t.
-func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
+func (box *Box) InitFromVec3(min, max *Vec3) *Box {
 	var _arg0 *C.graphene_box_t  // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 *C.graphene_vec3_t // out

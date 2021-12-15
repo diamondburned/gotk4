@@ -121,6 +121,6 @@ func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator 
 }
 
 // Logln writes a log line into the internal logger.
-func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
+func (g *Generator) Logln(lvl logger.Level, v ...any) {
 	logger.Stdlog(g.Logger, g.Opts.LogLevel, lvl, v...)
 }

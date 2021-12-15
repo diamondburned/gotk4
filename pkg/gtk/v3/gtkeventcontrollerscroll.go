@@ -46,7 +46,7 @@ const (
 	EventControllerScrollBothAxes EventControllerScrollFlags = 0b11
 )
 
-func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
+func marshalEventControllerScrollFlags(p uintptr) (any, error) {
 	return EventControllerScrollFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

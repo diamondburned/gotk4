@@ -299,7 +299,7 @@ const (
 	AnchorResize AnchorHints = 0b110000
 )
 
-func marshalAnchorHints(p uintptr) (interface{}, error) {
+func marshalAnchorHints(p uintptr) (any, error) {
 	return AnchorHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -372,7 +372,7 @@ const (
 	DecorMaximize WMDecoration = 0b1000000
 )
 
-func marshalWMDecoration(p uintptr) (interface{}, error) {
+func marshalWMDecoration(p uintptr) (any, error) {
 	return WMDecoration(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -439,7 +439,7 @@ const (
 	FuncClose WMFunction = 0b100000
 )
 
-func marshalWMFunction(p uintptr) (interface{}, error) {
+func marshalWMFunction(p uintptr) (any, error) {
 	return WMFunction(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -511,7 +511,7 @@ const (
 	WaTypeHint WindowAttributesType = 0b100000000
 )
 
-func marshalWindowAttributesType(p uintptr) (interface{}, error) {
+func marshalWindowAttributesType(p uintptr) (any, error) {
 	return WindowAttributesType(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -593,7 +593,7 @@ const (
 	HintUserSize WindowHints = 0b100000000
 )
 
-func marshalWindowHints(p uintptr) (interface{}, error) {
+func marshalWindowHints(p uintptr) (any, error) {
 	return WindowHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -1692,7 +1692,7 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 // the root window; it only returns windows an application created itself.
 //
 // The returned list must be freed, but the elements in the list need not be.
-func (window *Window) Children() []Windower {
+func (window *Window) Children() *gextras.List[Windower] {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GList     // in
 
@@ -1701,27 +1701,32 @@ func (window *Window) Children() []Windower {
 	_cret = C.gdk_window_get_children(_arg0)
 	runtime.KeepAlive(window)
 
-	var _list []Windower // out
+	var _list *gextras.List[Windower] // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkWindow)(v)
-		var dst Windower // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gdk.Windower is nil")
-			}
+	_list = gextras.NewList[Windower](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Windower]{
+			Convert: func(ptr unsafe.Pointer) Windower {
+				src := *(**C.GdkWindow)(ptr)
+				var dst Windower // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gdk.Windower is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Windower)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Windower)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -1738,7 +1743,7 @@ func (window *Window) Children() []Windower {
 //
 //    - userData: user data to look for.
 //
-func (window *Window) ChildrenWithUserData(userData cgo.Handle) []Windower {
+func (window *Window) ChildrenWithUserData(userData cgo.Handle) *gextras.List[Windower] {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gpointer   // out
 	var _cret *C.GList     // in
@@ -1750,27 +1755,32 @@ func (window *Window) ChildrenWithUserData(userData cgo.Handle) []Windower {
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(userData)
 
-	var _list []Windower // out
+	var _list *gextras.List[Windower] // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkWindow)(v)
-		var dst Windower // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gdk.Windower is nil")
-			}
+	_list = gextras.NewList[Windower](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Windower]{
+			Convert: func(ptr unsafe.Pointer) Windower {
+				src := *(**C.GdkWindow)(ptr)
+				var dst Windower // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gdk.Windower is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Windower)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Windower)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -3417,7 +3427,7 @@ func (window *Window) MoveToRect(rect *Rectangle, rectAnchor, windowAnchor Gravi
 
 // PeekChildren: like gdk_window_get_children(), but does not copy the list of
 // children, so the list does not need to be freed.
-func (window *Window) PeekChildren() []Windower {
+func (window *Window) PeekChildren() *gextras.List[Windower] {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GList     // in
 
@@ -3426,27 +3436,32 @@ func (window *Window) PeekChildren() []Windower {
 	_cret = C.gdk_window_peek_children(_arg0)
 	runtime.KeepAlive(window)
 
-	var _list []Windower // out
+	var _list *gextras.List[Windower] // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GdkWindow)(v)
-		var dst Windower // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gdk.Windower is nil")
-			}
+	_list = gextras.NewList[Windower](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Windower]{
+			Convert: func(ptr unsafe.Pointer) Windower {
+				src := *(**C.GdkWindow)(ptr)
+				var dst Windower // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gdk.Windower is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Windower)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Windower)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _list
 }

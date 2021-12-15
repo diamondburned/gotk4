@@ -942,11 +942,11 @@ func (widget *Widget) ClassPath() (pathLength uint, path string, pathReversed st
 	_pathLength = uint(_arg1)
 	if _arg2 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	if _arg3 != nil {
 		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
+		C.free(unsafe.Pointer(_arg3))
 	}
 
 	return _pathLength, _path, _pathReversed
@@ -2278,7 +2278,7 @@ func (widget *Widget) CompositeName() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -3630,7 +3630,7 @@ func (widget *Widget) TooltipMarkup() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -3650,7 +3650,7 @@ func (widget *Widget) TooltipText() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -4502,7 +4502,7 @@ func (widget *Widget) ListActionPrefixes() []string {
 // iterate through the list and perform actions involving callbacks that might
 // destroy the widgets, you must call g_list_foreach (result,
 // (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
-func (widget *Widget) ListMnemonicLabels() []Widgetter {
+func (widget *Widget) ListMnemonicLabels() *gextras.List[Widgetter] {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GList     // in
 
@@ -4511,27 +4511,32 @@ func (widget *Widget) ListMnemonicLabels() []Widgetter {
 	_cret = C.gtk_widget_list_mnemonic_labels(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _list []Widgetter // out
+	var _list *gextras.List[Widgetter] // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
+	_list = gextras.NewList[Widgetter](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Widgetter]{
+			Convert: func(ptr unsafe.Pointer) Widgetter {
+				src := *(**C.GtkWidget)(ptr)
+				var dst Widgetter // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gtk.Widgetter is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Widgetter)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -5022,11 +5027,11 @@ func (widget *Widget) Path() (pathLength uint, path string, pathReversed string)
 	_pathLength = uint(_arg1)
 	if _arg2 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	if _arg3 != nil {
 		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
+		C.free(unsafe.Pointer(_arg3))
 	}
 
 	return _pathLength, _path, _pathReversed

@@ -588,7 +588,7 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 			_utf8s = make([]string, i)
 			for i := range src {
 				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-				defer C.free(unsafe.Pointer(src[i]))
+				C.free(unsafe.Pointer(src[i]))
 			}
 		}
 	}
@@ -729,7 +729,7 @@ func (proxy *DBusProxy) NameOwner() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8

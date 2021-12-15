@@ -70,7 +70,7 @@ const (
 	IconLookupPreload IconLookupFlags = 0b100
 )
 
-func marshalIconLookupFlags(p uintptr) (interface{}, error) {
+func marshalIconLookupFlags(p uintptr) (any, error) {
 	return IconLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -410,7 +410,7 @@ func (self *IconTheme) IconNames() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -487,7 +487,7 @@ func (self *IconTheme) ResourcePath() []string {
 			_utf8s = make([]string, i)
 			for i := range src {
 				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-				defer C.free(unsafe.Pointer(src[i]))
+				C.free(unsafe.Pointer(src[i]))
 			}
 		}
 	}
@@ -522,7 +522,7 @@ func (self *IconTheme) SearchPath() []string {
 			_filenames = make([]string, i)
 			for i := range src {
 				_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-				defer C.free(unsafe.Pointer(src[i]))
+				C.free(unsafe.Pointer(src[i]))
 			}
 		}
 	}
@@ -545,7 +545,7 @@ func (self *IconTheme) ThemeName() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

@@ -968,7 +968,7 @@ func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, u
 	_startOffset = int(_arg2)
 	_endOffset = int(_arg3)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _startOffset, _endOffset, _utf8
 }
@@ -1032,7 +1032,7 @@ func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (start
 	_endOffset = int(_arg4)
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _startOffset, _endOffset, _utf8
@@ -1064,7 +1064,7 @@ func (text *Text) Text(startOffset, endOffset int) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1102,7 +1102,7 @@ func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startO
 	_startOffset = int(_arg3)
 	_endOffset = int(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _startOffset, _endOffset, _utf8
 }
@@ -1164,7 +1164,7 @@ func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffs
 	_startOffset = int(_arg3)
 	_endOffset = int(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _startOffset, _endOffset, _utf8
 }
@@ -1202,7 +1202,7 @@ func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (start
 	_startOffset = int(_arg3)
 	_endOffset = int(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _startOffset, _endOffset, _utf8
 }

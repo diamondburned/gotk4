@@ -343,7 +343,7 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 //    view names in the VFL lines, while the target values map to children of
 //    the widget using a GtkConstraintLayout, or guides.
 //
-func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) ([]Constraint, error) {
+func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) (*gextras.List[Constraint], error) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 **C.char               // out
 	var _arg2 C.gsize
@@ -384,16 +384,21 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 	runtime.KeepAlive(vspacing)
 	runtime.KeepAlive(views)
 
-	var _list []Constraint // out
-	var _goerr error       // out
+	var _list *gextras.List[Constraint] // out
+	var _goerr error                    // out
 
-	_list = make([]Constraint, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkConstraint)(v)
-		var dst Constraint // out
-		dst = *wrapConstraint(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[Constraint](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Constraint]{
+			Convert: func(ptr unsafe.Pointer) Constraint {
+				src := *(**C.GtkConstraint)(ptr)
+				var dst Constraint // out
+				dst = *wrapConstraint(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

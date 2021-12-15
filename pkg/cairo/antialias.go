@@ -21,7 +21,7 @@ const (
 	ANTIALIAS_BEST     Antialias = C.CAIRO_ANTIALIAS_BEST // (since 1.12)
 )
 
-func marshalAntialias(p uintptr) (interface{}, error) {
+func marshalAntialias(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return Antialias(c), nil
 }

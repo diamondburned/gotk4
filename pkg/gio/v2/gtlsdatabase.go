@@ -100,7 +100,7 @@ type TLSDatabaseOverrider interface {
 	// This function can block, use
 	// g_tls_database_lookup_certificates_issued_by_async() to perform the
 	// lookup operation asynchronously.
-	LookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error)
+	LookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (*gextras.List[TLSCertificater], error)
 	// LookupCertificatesIssuedByAsync: asynchronously look up certificates
 	// issued by this issuer in the database. See
 	// g_tls_database_lookup_certificates_issued_by() for more information.
@@ -112,7 +112,7 @@ type TLSDatabaseOverrider interface {
 	// LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
 	// certificates. See g_tls_database_lookup_certificates_issued_by() for more
 	// information.
-	LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error)
+	LookupCertificatesIssuedByFinish(result AsyncResulter) (*gextras.List[TLSCertificater], error)
 	// VerifyChain determines the validity of a certificate chain after looking
 	// up and adding any missing certificates to the chain.
 	//
@@ -234,7 +234,7 @@ func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) st
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -576,7 +576,7 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 //    - interaction: used to interact with the user if necessary.
 //    - flags flags which affect the lookup operation.
 //
-func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error) {
+func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (*gextras.List[TLSCertificater], error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg4 *C.GCancellable           // out
 	var _arg1 *C.GByteArray             // out
@@ -608,28 +608,37 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 	runtime.KeepAlive(interaction)
 	runtime.KeepAlive(flags)
 
-	var _list []TLSCertificater // out
-	var _goerr error            // out
+	var _list *gextras.List[TLSCertificater] // out
+	var _goerr error                         // out
 
-	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GTlsCertificate)(v)
-		var dst TLSCertificater // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.TLSCertificater is nil")
-			}
+	_list = gextras.NewList[TLSCertificater](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[TLSCertificater]{
+			Convert: func(ptr unsafe.Pointer) TLSCertificater {
+				src := *(**C.GTlsCertificate)(ptr)
+				var dst TLSCertificater // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.TLSCertificater is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GTlsCertificate)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -699,7 +708,7 @@ func (self *TLSDatabase) LookupCertificatesIssuedByAsync(ctx context.Context, is
 //
 //    - result: Result.
 //
-func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error) {
+func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) (*gextras.List[TLSCertificater], error) {
 	var _arg0 *C.GTlsDatabase // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GList        // in
@@ -712,28 +721,37 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
 
-	var _list []TLSCertificater // out
-	var _goerr error            // out
+	var _list *gextras.List[TLSCertificater] // out
+	var _goerr error                         // out
 
-	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GTlsCertificate)(v)
-		var dst TLSCertificater // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.TLSCertificater is nil")
-			}
+	_list = gextras.NewList[TLSCertificater](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[TLSCertificater]{
+			Convert: func(ptr unsafe.Pointer) TLSCertificater {
+				src := *(**C.GTlsCertificate)(ptr)
+				var dst TLSCertificater // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.TLSCertificater is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GTlsCertificate)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

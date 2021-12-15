@@ -52,7 +52,7 @@ const (
 	DestDefaultAll DestDefaults = 0b111
 )
 
-func marshalDestDefaults(p uintptr) (interface{}, error) {
+func marshalDestDefaults(p uintptr) (any, error) {
 	return DestDefaults(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

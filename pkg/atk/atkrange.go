@@ -44,7 +44,7 @@ func marshalRange(p uintptr) (interface{}, error) {
 }
 
 // NewRange constructs a struct Range.
-func NewRange(lowerLimit float64, upperLimit float64, description string) *Range {
+func NewRange(lowerLimit, upperLimit float64, description string) *Range {
 	var _arg1 C.gdouble   // out
 	var _arg2 C.gdouble   // out
 	var _arg3 *C.gchar    // out

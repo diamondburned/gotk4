@@ -150,7 +150,7 @@ const (
 	ToplevelStateLeftResizable ToplevelState = 0b1000000000000000
 )
 
-func marshalToplevelState(p uintptr) (interface{}, error) {
+func marshalToplevelState(p uintptr) (any, error) {
 	return ToplevelState(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

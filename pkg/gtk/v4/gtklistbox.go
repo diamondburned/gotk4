@@ -21,7 +21,7 @@ import (
 // extern void callbackDelete(gpointer);
 // gboolean _gotk4_gtk4_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
 // int _gotk4_gtk4_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
-// void _gotk4_gtk4_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
+// void _gotk4_gtk4_ListBoxForEachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
 // void _gotk4_gtk4_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 import "C"
 
@@ -81,13 +81,13 @@ func _gotk4_gtk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret
 	return cret
 }
 
-// ListBoxForeachFunc: function used by gtk_list_box_selected_foreach().
+// ListBoxForEachFunc: function used by gtk_list_box_selected_foreach().
 //
 // It will be called on every selected child of the box.
-type ListBoxForeachFunc func(box *ListBox, row *ListBoxRow)
+type ListBoxForEachFunc func(box *ListBox, row *ListBoxRow)
 
-//export _gotk4_gtk4_ListBoxForeachFunc
-func _gotk4_gtk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+//export _gotk4_gtk4_ListBoxForEachFunc
+func _gotk4_gtk4_ListBoxForEachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -99,7 +99,7 @@ func _gotk4_gtk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, a
 	box = wrapListBox(externglib.Take(unsafe.Pointer(arg0)))
 	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
 
-	fn := v.(ListBoxForeachFunc)
+	fn := v.(ListBoxForEachFunc)
 	fn(box, row)
 }
 
@@ -443,7 +443,7 @@ func (box *ListBox) RowAtY(y int) *ListBoxRow {
 // SelectedRow gets the selected row, or NULL if no rows are selected.
 //
 // Note that the box may allow multiple selection, in which case you should use
-// gtk.ListBox.SelectedForeach() to find all selected rows.
+// gtk.ListBox.SelectedForEach() to find all selected rows.
 func (box *ListBox) SelectedRow() *ListBoxRow {
 	var _arg0 *C.GtkListBox    // out
 	var _cret *C.GtkListBoxRow // in
@@ -463,7 +463,7 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 }
 
 // SelectedRows creates a list of all selected children.
-func (box *ListBox) SelectedRows() []ListBoxRow {
+func (box *ListBox) SelectedRows() *gextras.List[ListBoxRow] {
 	var _arg0 *C.GtkListBox // out
 	var _cret *C.GList      // in
 
@@ -472,15 +472,20 @@ func (box *ListBox) SelectedRows() []ListBoxRow {
 	_cret = C.gtk_list_box_get_selected_rows(_arg0)
 	runtime.KeepAlive(box)
 
-	var _list []ListBoxRow // out
+	var _list *gextras.List[ListBoxRow] // out
 
-	_list = make([]ListBoxRow, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkListBoxRow)(v)
-		var dst ListBoxRow // out
-		dst = *wrapListBoxRow(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[ListBoxRow](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[ListBoxRow]{
+			Convert: func(ptr unsafe.Pointer) ListBoxRow {
+				src := *(**C.GtkListBoxRow)(ptr)
+				var dst ListBoxRow // out
+				dst = *wrapListBoxRow(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -660,7 +665,7 @@ func (box *ListBox) SelectRow(row *ListBoxRow) {
 	runtime.KeepAlive(row)
 }
 
-// SelectedForeach calls a function for each selected child.
+// SelectedForEach calls a function for each selected child.
 //
 // Note that the selection cannot be modified from within this function.
 //
@@ -668,13 +673,13 @@ func (box *ListBox) SelectRow(row *ListBoxRow) {
 //
 //    - fn: function to call for each selected child.
 //
-func (box *ListBox) SelectedForeach(fn ListBoxForeachFunc) {
+func (box *ListBox) SelectedForEach(fn ListBoxForEachFunc) {
 	var _arg0 *C.GtkListBox           // out
 	var _arg1 C.GtkListBoxForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_ListBoxForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_ListBoxForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

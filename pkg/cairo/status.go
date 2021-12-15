@@ -102,7 +102,7 @@ func StatusToString(status Status) string {
 	return s
 }
 
-func marshalStatus(p uintptr) (interface{}, error) {
+func marshalStatus(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return Status(c), nil
 }

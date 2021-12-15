@@ -113,7 +113,7 @@ const (
 	DialogUseHeaderBar DialogFlags = 0b100
 )
 
-func marshalDialogFlags(p uintptr) (interface{}, error) {
+func marshalDialogFlags(p uintptr) (any, error) {
 	return DialogFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

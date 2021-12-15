@@ -55,7 +55,7 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 	{{ range .Constructors }}
 	{{ if $.UseConstructor . }}
 	// {{ $.Callable.Name }} constructs a struct {{ $.GoName }}.
-	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
+	func {{ $.Callable.Name }}{{ CoalesceTail $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
 	{{ else }}
 	{{ with .ManualConstructor }}
@@ -79,13 +79,13 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 
 	{{ range .Methods }}
 	{{ GoDoc . 0 }}
-	func ({{ .Recv }} *{{ $.GoName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
+	func ({{ .Recv }} *{{ $.GoName }}) {{ .Name }}{{ CoalesceTail .Tail }} {{ .Block }}
 	{{ end }}
 `)
 
 // CanGenerateRecord returns false if the record cannot be generated.
 func CanGenerateRecord(gen FileGenerator, rec *gir.Record) bool {
-	log := func(v ...interface{}) {
+	log := func(v ...any) {
 		p := fmt.Sprintf("record %s (C.%s)", rec.Name, rec.CType)
 		gen.Logln(logger.Debug, logger.Prefix(v, p)...)
 	}
@@ -481,7 +481,7 @@ func (rg *RecordGenerator) genManualConstructor() {
 	}
 }
 
-func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {
+func (rg *RecordGenerator) Logln(lvl logger.Level, v ...any) {
 	p := fmt.Sprintf("record %s (C.%s):", rg.GoName, rg.CType)
 	rg.gen.Logln(lvl, logger.Prefix(v, p)...)
 }

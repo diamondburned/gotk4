@@ -85,7 +85,7 @@ func (c *Cancellable) Deadline() (time.Time, bool) {
 }
 
 // Value returns the values of the parent context.
-func (c *Cancellable) Value(key interface{}) interface{} {
+func (c *Cancellable) Value(key any) any {
 	return c.ctx.Value(key)
 }
 

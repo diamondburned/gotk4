@@ -715,7 +715,7 @@ const (
 	WindowStateLeftResizable WindowState = 0b10000000000000000
 )
 
-func marshalWindowState(p uintptr) (interface{}, error) {
+func marshalWindowState(p uintptr) (any, error) {
 	return WindowState(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

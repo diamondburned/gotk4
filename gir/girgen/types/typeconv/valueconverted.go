@@ -127,7 +127,7 @@ func (value *ValueConverted) vtmpl(tmpl string) {
 	value.p.LineTmpl(value, tmpl)
 }
 
-func (value *ValueConverted) Logln(lvl logger.Level, v ...interface{}) {
+func (value *ValueConverted) Logln(lvl logger.Level, v ...any) {
 	value.conv.Logln(lvl, logger.Prefix(v, value.logPrefix())...)
 }
 
@@ -242,11 +242,18 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 			return false
 		}
 
-		value.GoType = fmt.Sprintf(
-			"map[%s]%s",
-			value.Inner[0].GoType,
-			value.Inner[1].GoType,
-		)
+		switch value.Direction {
+		case ConvertCToGo:
+			value.GoType = fmt.Sprintf(
+				"*gextras.HashTable[%s, %s]",
+				value.Inner[0].GoType, value.Inner[1].GoType,
+			)
+		case ConvertGoToC:
+			value.GoType = fmt.Sprintf(
+				"map[%s]%s",
+				value.Inner[0].GoType, value.Inner[1].GoType,
+			)
+		}
 	case "GLib.List", "GLib.SList":
 		if value.Resolved.Ptr != 1 {
 			value.Logln(logger.Debug, "unknown List pointer rule", value.Resolved.Ptr)
@@ -258,7 +265,13 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 			return false
 		}
 
-		value.GoType = fmt.Sprintf("[]%s", value.Inner[0].GoType)
+		switch value.Direction {
+		case ConvertCToGo:
+			name := strings.Split(value.Resolved.GType, ".")[1]
+			value.GoType = fmt.Sprintf("*gextras.%s[%s]", name, value.Inner[0].GoType)
+		case ConvertGoToC:
+			value.GoType = fmt.Sprintf("[]%s", value.Inner[0].GoType)
+		}
 	default:
 		if value.Array != nil {
 			if value.Array.FixedSize > 0 {
@@ -300,13 +313,15 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	return true
 }
 
+func onlyCToGo(v *ValueConverted) bool { return v.Direction == ConvertCToGo }
+
 // manualTypes is a set of GTypes that are manually converted internally, so
 // they don't actually reference the package that they belong to.
-var manualTypes = map[string]func() bool{
-	"GLib.HashTable": nil,
+var manualTypes = map[string]func(*ValueConverted) bool{
 	"GLib.ByteArray": nil,
-	"GLib.List":      nil,
-	"GLib.SList":     nil,
+	"GLib.List":      onlyCToGo, // because we're taking in Go built-in maps for Go to C.
+	"GLib.SList":     onlyCToGo,
+	"GLib.HashTable": onlyCToGo,
 }
 
 func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (ValueType, bool) {
@@ -356,7 +371,7 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 	// resolved to a map directly in types/resolved.go, but that requires a
 	// refactor.
 	f, ok := manualTypes[vType.Resolved.GType]
-	if ok && (f == nil || f()) {
+	if ok && (f == nil || f(value)) {
 		// Hack so the caller doesn't add the import.
 		vType.NeedsNamespace = false
 		needsImporting = false
@@ -807,4 +822,16 @@ func (value *ValueConverted) MustRealloc() bool {
 	}
 
 	return !value.ownershipIsTransferring()
+}
+
+// WithOwnership returns a copy of the given value with the given ownership. It
+// is a hack.
+func (value *ValueConverted) WithOwnership(transferOwnership string) *ValueConverted {
+	conversion := *value.ConversionValue
+	conversion.TransferOwnership.TransferOwnership = transferOwnership
+
+	converted := *value
+	converted.ConversionValue = &conversion
+
+	return &converted
 }

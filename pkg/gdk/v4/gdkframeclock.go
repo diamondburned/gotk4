@@ -56,7 +56,7 @@ const (
 	FrameClockPhaseAfterPaint FrameClockPhase = 0b1000000
 )
 
-func marshalFrameClockPhase(p uintptr) (interface{}, error) {
+func marshalFrameClockPhase(p uintptr) (any, error) {
 	return FrameClockPhase(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

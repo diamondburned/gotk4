@@ -111,7 +111,7 @@ func EnvironSetenv(envp []string, variable, value string, overwrite bool) []stri
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -164,7 +164,7 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -200,7 +200,7 @@ func GetEnviron() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -262,7 +262,7 @@ func Listenv() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

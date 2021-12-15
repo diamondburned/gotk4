@@ -360,7 +360,7 @@ const (
 	ShowIgnorables ShowFlags = 0b100
 )
 
-func marshalShowFlags(p uintptr) (interface{}, error) {
+func marshalShowFlags(p uintptr) (any, error) {
 	return ShowFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -1516,7 +1516,7 @@ func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 }
 
 // Attrs gets a list of all attributes at the current position of the iterator.
-func (iterator *AttrIterator) Attrs() []*Attribute {
+func (iterator *AttrIterator) Attrs() *gextras.SList[*Attribute] {
 	var _arg0 *C.PangoAttrIterator // out
 	var _cret *C.GSList            // in
 
@@ -1525,21 +1525,24 @@ func (iterator *AttrIterator) Attrs() []*Attribute {
 	_cret = C.pango_attr_iterator_get_attrs(_arg0)
 	runtime.KeepAlive(iterator)
 
-	var _sList []*Attribute // out
+	var _sList *gextras.SList[*Attribute] // out
 
-	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoAttribute)(v)
-		var dst *Attribute // out
-		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+	_sList = gextras.NewSList[*Attribute](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*Attribute]{
+			Convert: func(ptr unsafe.Pointer) *Attribute {
+				src := *(**C.PangoAttribute)(ptr)
+				var dst *Attribute // out
+				dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_sList = append(_sList, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.PangoAttribute)(ptr))
+				C.pango_attribute_destroy((*C.PangoAttribute)(src))
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -1793,7 +1796,7 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 }
 
 // Attributes gets a list of all attributes in list.
-func (list *AttrList) Attributes() []*Attribute {
+func (list *AttrList) Attributes() *gextras.SList[*Attribute] {
 	var _arg0 *C.PangoAttrList // out
 	var _cret *C.GSList        // in
 
@@ -1802,21 +1805,24 @@ func (list *AttrList) Attributes() []*Attribute {
 	_cret = C.pango_attr_list_get_attributes(_arg0)
 	runtime.KeepAlive(list)
 
-	var _sList []*Attribute // out
+	var _sList *gextras.SList[*Attribute] // out
 
-	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoAttribute)(v)
-		var dst *Attribute // out
-		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+	_sList = gextras.NewSList[*Attribute](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*Attribute]{
+			Convert: func(ptr unsafe.Pointer) *Attribute {
+				src := *(**C.PangoAttribute)(ptr)
+				var dst *Attribute // out
+				dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_sList = append(_sList, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.PangoAttribute)(ptr))
+				C.pango_attribute_destroy((*C.PangoAttribute)(src))
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -1887,7 +1893,7 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 //
 // This operation proves useful for, for instance, inserting a pre-edit string
 // in the middle of an edit buffer.
-func (list *AttrList) Splice(other *AttrList, pos int, len int) {
+func (list *AttrList) Splice(other *AttrList, pos, len int) {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 *C.PangoAttrList // out
 	var _arg2 C.gint           // out
@@ -1917,7 +1923,7 @@ func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 //
 // Attributes start and end positions are updated if they are behind pos +
 // remove.
-func (list *AttrList) Update(pos int, remove int, add int) {
+func (list *AttrList) Update(pos, remove, add int) {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 C.int            // out
 	var _arg2 C.int            // out
@@ -2352,7 +2358,7 @@ func (color *Color) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

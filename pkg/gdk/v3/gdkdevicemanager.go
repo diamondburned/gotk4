@@ -222,7 +222,7 @@ func (deviceManager *DeviceManager) Display() *Display {
 //
 //    - typ: device type to get.
 //
-func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
+func (deviceManager *DeviceManager) ListDevices(typ DeviceType) *gextras.List[Devicer] {
 	var _arg0 *C.GdkDeviceManager // out
 	var _arg1 C.GdkDeviceType     // out
 	var _cret *C.GList            // in
@@ -234,27 +234,32 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	runtime.KeepAlive(deviceManager)
 	runtime.KeepAlive(typ)
 
-	var _list []Devicer // out
+	var _list *gextras.List[Devicer] // out
 
-	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkDevice)(v)
-		var dst Devicer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gdk.Devicer is nil")
-			}
+	_list = gextras.NewList[Devicer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Devicer]{
+			Convert: func(ptr unsafe.Pointer) Devicer {
+				src := *(**C.GdkDevice)(ptr)
+				var dst Devicer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gdk.Devicer is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Devicer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }

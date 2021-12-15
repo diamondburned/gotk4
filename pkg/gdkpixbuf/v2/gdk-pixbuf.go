@@ -1382,7 +1382,7 @@ func (pixbuf *Pixbuf) Option(key string) string {
 // Options returns a GHashTable with a list of all the options that may have
 // been attached to the pixbuf when it was loaded, or that may have been
 // attached by another function using gdkpixbuf.Pixbuf.SetOption().
-func (pixbuf *Pixbuf) Options() map[string]string {
+func (pixbuf *Pixbuf) Options() *gextras.HashTable[string, string] {
 	var _arg0 *C.GdkPixbuf  // out
 	var _cret *C.GHashTable // in
 
@@ -1391,18 +1391,32 @@ func (pixbuf *Pixbuf) Options() map[string]string {
 	_cret = C.gdk_pixbuf_get_options(_arg0)
 	runtime.KeepAlive(pixbuf)
 
-	var _hashTable map[string]string // out
+	var _hashTable *gextras.HashTable[string, string] // out
 
-	_hashTable = make(map[string]string, gextras.HashTableSize(unsafe.Pointer(_cret)))
-	gextras.MoveHashTable(unsafe.Pointer(_cret), true, func(k, v unsafe.Pointer) {
-		ksrc := *(**C.gchar)(k)
-		vsrc := *(**C.gchar)(v)
-		var kdst string // out
-		var vdst string // out
-		kdst = C.GoString((*C.gchar)(unsafe.Pointer(ksrc)))
-		vdst = C.GoString((*C.gchar)(unsafe.Pointer(vsrc)))
-		_hashTable[kdst] = vdst
-	})
+	_hashTable = gextras.NewHashTable[string, string](
+		unsafe.Pointer(_cret),
+		gextras.HashTableOpts[string, string]{
+			ConvertKey: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+			ConvertValue: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+			HashKey: func(src string, use func(unsafe.Pointer)) {
+				var dst *C.gchar // out
+				dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+				defer C.free(unsafe.Pointer(dst))
+				use(unsafe.Pointer(dst))
+			},
+		},
+		true,
+	)
 
 	return _hashTable
 }

@@ -47,7 +47,7 @@ const (
 	TargetOtherWidget TargetFlags = 0b1000
 )
 
-func marshalTargetFlags(p uintptr) (interface{}, error) {
+func marshalTargetFlags(p uintptr) (any, error) {
 	return TargetFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -163,7 +163,7 @@ func marshalTargetEntry(p uintptr) (interface{}, error) {
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
-func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
+func NewTargetEntry(target string, flags, info uint) *TargetEntry {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.guint           // out
 	var _arg3 C.guint           // out

@@ -39,7 +39,7 @@ const (
 	PaintableStaticContents PaintableFlags = 0b10
 )
 
-func marshalPaintableFlags(p uintptr) (interface{}, error) {
+func marshalPaintableFlags(p uintptr) (any, error) {
 	return PaintableFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

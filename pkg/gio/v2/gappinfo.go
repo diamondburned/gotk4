@@ -1057,32 +1057,41 @@ func AppInfoCreateFromCommandline(commandline, applicationName string, flags App
 // are excluded from display by means of OnlyShowIn or NotShowIn. See
 // g_app_info_should_show(). The returned list does not include applications
 // which have the Hidden key set.
-func AppInfoGetAll() []AppInfor {
+func AppInfoGetAll() *gextras.List[AppInfor] {
 	var _cret *C.GList // in
 
 	_cret = C.g_app_info_get_all()
 
-	var _list []AppInfor // out
+	var _list *gextras.List[AppInfor] // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.AppInfor is nil")
-			}
+	_list = gextras.NewList[AppInfor](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[AppInfor]{
+			Convert: func(ptr unsafe.Pointer) AppInfor {
+				src := *(**C.GAppInfo)(ptr)
+				var dst AppInfor // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.AppInfor is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(AppInfor)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GAppInfo)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -1095,7 +1104,7 @@ func AppInfoGetAll() []AppInfor {
 //
 //    - contentType: content type to find a Info for.
 //
-func AppInfoGetAllForType(contentType string) []AppInfor {
+func AppInfoGetAllForType(contentType string) *gextras.List[AppInfor] {
 	var _arg1 *C.char  // out
 	var _cret *C.GList // in
 
@@ -1105,27 +1114,36 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 	_cret = C.g_app_info_get_all_for_type(_arg1)
 	runtime.KeepAlive(contentType)
 
-	var _list []AppInfor // out
+	var _list *gextras.List[AppInfor] // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.AppInfor is nil")
-			}
+	_list = gextras.NewList[AppInfor](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[AppInfor]{
+			Convert: func(ptr unsafe.Pointer) AppInfor {
+				src := *(**C.GAppInfo)(ptr)
+				var dst AppInfor // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.AppInfor is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(AppInfor)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GAppInfo)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -1214,7 +1232,7 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 //
 //    - contentType: content type to find a Info for.
 //
-func AppInfoGetFallbackForType(contentType string) []AppInfor {
+func AppInfoGetFallbackForType(contentType string) *gextras.List[AppInfor] {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
@@ -1224,27 +1242,36 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 	_cret = C.g_app_info_get_fallback_for_type(_arg1)
 	runtime.KeepAlive(contentType)
 
-	var _list []AppInfor // out
+	var _list *gextras.List[AppInfor] // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.AppInfor is nil")
-			}
+	_list = gextras.NewList[AppInfor](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[AppInfor]{
+			Convert: func(ptr unsafe.Pointer) AppInfor {
+				src := *(**C.GAppInfo)(ptr)
+				var dst AppInfor // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.AppInfor is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(AppInfor)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GAppInfo)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -1259,7 +1286,7 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 //
 //    - contentType: content type to find a Info for.
 //
-func AppInfoGetRecommendedForType(contentType string) []AppInfor {
+func AppInfoGetRecommendedForType(contentType string) *gextras.List[AppInfor] {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
@@ -1269,27 +1296,36 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 	_cret = C.g_app_info_get_recommended_for_type(_arg1)
 	runtime.KeepAlive(contentType)
 
-	var _list []AppInfor // out
+	var _list *gextras.List[AppInfor] // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.AppInfor is nil")
-			}
+	_list = gextras.NewList[AppInfor](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[AppInfor]{
+			Convert: func(ptr unsafe.Pointer) AppInfor {
+				src := *(**C.GAppInfo)(ptr)
+				var dst AppInfor // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.AppInfor is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(AppInfor)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GAppInfo)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -1536,7 +1572,7 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -1568,7 +1604,7 @@ func (context *AppLaunchContext) Environment() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1612,7 +1648,7 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8

@@ -131,7 +131,7 @@ func (f *Frustum) Planes() [6]Plane {
 
 // Init initializes the given #graphene_frustum_t using the provided clipping
 // planes.
-func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5 *Plane) *Frustum {
+func (f *Frustum) Init(p0, p1, p2, p3, p4, p5 *Plane) *Frustum {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_plane_t   // out
 	var _arg2 *C.graphene_plane_t   // out

@@ -61,7 +61,7 @@ func marshalDateTime(p uintptr) (interface{}, error) {
 }
 
 // NewDateTime constructs a struct DateTime.
-func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+func NewDateTime(tz *TimeZone, year, month, day, hour, minute int, seconds float64) *DateTime {
 	var _arg1 *C.GTimeZone // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
@@ -235,7 +235,7 @@ func NewDateTimeFromUnixUTC(t int64) *DateTime {
 }
 
 // NewDateTimeLocal constructs a struct DateTime.
-func NewDateTimeLocal(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+func NewDateTimeLocal(year, month, day, hour, minute int, seconds float64) *DateTime {
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
@@ -342,7 +342,7 @@ func NewDateTimeNowUTC() *DateTime {
 }
 
 // NewDateTimeUTC constructs a struct DateTime.
-func NewDateTimeUTC(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+func NewDateTimeUTC(year, month, day, hour, minute int, seconds float64) *DateTime {
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
@@ -440,7 +440,7 @@ func (datetime *DateTime) AddDays(days int) *DateTime {
 
 // AddFull creates a new Time adding the specified values to the current date
 // and time in datetime. Add negative values to subtract.
-func (datetime *DateTime) AddFull(years int, months int, days int, hours int, minutes int, seconds float64) *DateTime {
+func (datetime *DateTime) AddFull(years, months, days, hours, minutes int, seconds float64) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -889,7 +889,7 @@ func (datetime *DateTime) Format(format string) string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -913,7 +913,7 @@ func (datetime *DateTime) FormatISO8601() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8

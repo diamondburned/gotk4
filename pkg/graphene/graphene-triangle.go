@@ -273,7 +273,7 @@ func (t *Triangle) Points() (a *Point3D, b *Point3D, c *Point3D) {
 //    - res.y = v
 //
 // See also: graphene_triangle_get_barycoords().
-func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (*Vec2, bool) {
+func (t *Triangle) Uv(p *Point3D, uvA, uvB, uvC *Vec2) (*Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
 	var _arg2 *C.graphene_vec2_t     // out
@@ -334,7 +334,7 @@ func (t *Triangle) Vertices() (a *Vec3, b *Vec3, c *Vec3) {
 // InitFromFloat initializes a #graphene_triangle_t using the three given arrays
 // of floating point values, each representing the coordinates of a point in 3D
 // space.
-func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Triangle {
+func (t *Triangle) InitFromFloat(a, b, c [3]float32) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.float               // out
 	var _arg2 *C.float               // out
@@ -361,7 +361,7 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 
 // InitFromPoint3D initializes a #graphene_triangle_t using the three given 3D
 // points.
-func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle {
+func (t *Triangle) InitFromPoint3D(a, b, c *Point3D) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
 	var _arg2 *C.graphene_point3d_t  // out
@@ -394,7 +394,7 @@ func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle
 
 // InitFromVec3 initializes a #graphene_triangle_t using the three given
 // vectors.
-func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
+func (t *Triangle) InitFromVec3(a, b, c *Vec3) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_vec3_t     // out
 	var _arg2 *C.graphene_vec3_t     // out

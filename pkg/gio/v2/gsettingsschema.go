@@ -194,7 +194,7 @@ func (schema *SettingsSchema) ListChildren() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -229,7 +229,7 @@ func (schema *SettingsSchema) ListKeys() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -553,7 +553,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 		_nonRelocatable = make([]string, i)
 		for i := range src {
 			_nonRelocatable[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	defer C.free(unsafe.Pointer(_arg3))
@@ -568,7 +568,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 		_relocatable = make([]string, i)
 		for i := range src {
 			_relocatable[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

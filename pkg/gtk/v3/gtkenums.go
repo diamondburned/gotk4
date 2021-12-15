@@ -1818,7 +1818,7 @@ const (
 	InputHintNoEmoji InputHints = 0b10000000000
 )
 
-func marshalInputHints(p uintptr) (interface{}, error) {
+func marshalInputHints(p uintptr) (any, error) {
 	return InputHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -1899,7 +1899,7 @@ const (
 	JunctionRight JunctionSides = 0b1010
 )
 
-func marshalJunctionSides(p uintptr) (interface{}, error) {
+func marshalJunctionSides(p uintptr) (any, error) {
 	return JunctionSides(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -1968,7 +1968,7 @@ const (
 	RegionSorted RegionFlags = 0b100000
 )
 
-func marshalRegionFlags(p uintptr) (interface{}, error) {
+func marshalRegionFlags(p uintptr) (any, error) {
 	return RegionFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2051,7 +2051,7 @@ const (
 	StateFlagDropActive StateFlags = 0b1000000000000
 )
 
-func marshalStateFlags(p uintptr) (interface{}, error) {
+func marshalStateFlags(p uintptr) (any, error) {
 	return StateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

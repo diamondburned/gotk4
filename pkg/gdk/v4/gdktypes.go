@@ -272,7 +272,7 @@ const (
 	AxisFlagSlider AxisFlags = 0b100000000000
 )
 
-func marshalAxisFlags(p uintptr) (interface{}, error) {
+func marshalAxisFlags(p uintptr) (any, error) {
 	return AxisFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -345,7 +345,7 @@ const (
 	ActionAsk DragAction = 0b1000
 )
 
-func marshalDragAction(p uintptr) (interface{}, error) {
+func marshalDragAction(p uintptr) (any, error) {
 	return DragAction(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -427,7 +427,7 @@ const (
 	MetaMask ModifierType = 0b10000000000000000000000000000
 )
 
-func marshalModifierType(p uintptr) (interface{}, error) {
+func marshalModifierType(p uintptr) (any, error) {
 	return ModifierType(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -774,7 +774,7 @@ func (formats *ContentFormats) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1044,7 +1044,7 @@ func (r *Rectangle) Height() int {
 }
 
 // ContainsPoint returns UE if rect contains the point described by x and y.
-func (rect *Rectangle) ContainsPoint(x int, y int) bool {
+func (rect *Rectangle) ContainsPoint(x, y int) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out

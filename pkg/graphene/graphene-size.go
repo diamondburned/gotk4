@@ -96,7 +96,7 @@ func (a *Size) Equal(b *Size) bool {
 }
 
 // Init initializes a #graphene_size_t using the given width and height.
-func (s *Size) Init(width float32, height float32) *Size {
+func (s *Size) Init(width, height float32) *Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out

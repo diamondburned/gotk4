@@ -15,7 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// void _gotk4_gtk4_TextTagTableForeach(GtkTextTag*, gpointer);
+// void _gotk4_gtk4_TextTagTableForEach(GtkTextTag*, gpointer);
 import "C"
 
 func init() {
@@ -24,12 +24,12 @@ func init() {
 	})
 }
 
-// TextTagTableForeach: function used with gtk_text_tag_table_foreach(), to
+// TextTagTableForEach: function used with gtk_text_tag_table_foreach(), to
 // iterate over every GtkTextTag inside a GtkTextTagTable.
-type TextTagTableForeach func(tag *TextTag)
+type TextTagTableForEach func(tag *TextTag)
 
-//export _gotk4_gtk4_TextTagTableForeach
-func _gotk4_gtk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
+//export _gotk4_gtk4_TextTagTableForEach
+func _gotk4_gtk4_TextTagTableForEach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -39,7 +39,7 @@ func _gotk4_gtk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 
 	tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg0)))
 
-	fn := v.(TextTagTableForeach)
+	fn := v.(TextTagTableForEach)
 	fn(tag)
 }
 
@@ -132,7 +132,7 @@ func (table *TextTagTable) Add(tag *TextTag) bool {
 	return _ok
 }
 
-// Foreach calls func on each tag in table, with user data data.
+// ForEach calls func on each tag in table, with user data data.
 //
 // Note that the table may not be modified while iterating over it (you can’t
 // add/remove tags).
@@ -141,13 +141,13 @@ func (table *TextTagTable) Add(tag *TextTag) bool {
 //
 //    - fn: function to call on each tag.
 //
-func (table *TextTagTable) Foreach(fn TextTagTableForeach) {
+func (table *TextTagTable) ForEach(fn TextTagTableForEach) {
 	var _arg0 *C.GtkTextTagTable       // out
 	var _arg1 C.GtkTextTagTableForeach // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_TextTagTableForeach)
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_TextTagTableForEach)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

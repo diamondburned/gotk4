@@ -48,7 +48,7 @@ const (
 	SeatCapabilityAll SeatCapabilities = 0b1111
 )
 
-func marshalSeatCapabilities(p uintptr) (interface{}, error) {
+func marshalSeatCapabilities(p uintptr) (any, error) {
 	return SeatCapabilities(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -267,7 +267,7 @@ func (seat *Seat) Pointer() Devicer {
 //
 //    - capabilities to get devices for.
 //
-func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
+func (seat *Seat) Slaves(capabilities SeatCapabilities) *gextras.List[Devicer] {
 	var _arg0 *C.GdkSeat            // out
 	var _arg1 C.GdkSeatCapabilities // out
 	var _cret *C.GList              // in
@@ -279,27 +279,32 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 	runtime.KeepAlive(seat)
 	runtime.KeepAlive(capabilities)
 
-	var _list []Devicer // out
+	var _list *gextras.List[Devicer] // out
 
-	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkDevice)(v)
-		var dst Devicer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gdk.Devicer is nil")
-			}
+	_list = gextras.NewList[Devicer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Devicer]{
+			Convert: func(ptr unsafe.Pointer) Devicer {
+				src := *(**C.GdkDevice)(ptr)
+				var dst Devicer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gdk.Devicer is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Devicer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }

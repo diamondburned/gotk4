@@ -1127,7 +1127,7 @@ func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) s
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1204,7 +1204,7 @@ func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) st
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

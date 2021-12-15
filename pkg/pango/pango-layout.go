@@ -682,7 +682,7 @@ func (layout *Layout) LineSpacing() float32 {
 //
 // Use the faster pango.Layout.GetLinesReadonly() if you do not plan to modify
 // the contents of the lines (glyphs, glyph widths, etc.).
-func (layout *Layout) Lines() []*LayoutLine {
+func (layout *Layout) Lines() *gextras.SList[*LayoutLine] {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.GSList      // in
 
@@ -691,22 +691,27 @@ func (layout *Layout) Lines() []*LayoutLine {
 	_cret = C.pango_layout_get_lines(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _sList []*LayoutLine // out
+	var _sList *gextras.SList[*LayoutLine] // out
 
-	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.PangoLayoutLine)(v)
-		var dst *LayoutLine // out
-		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
-		C.pango_layout_line_ref(src)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+	_sList = gextras.NewSList[*LayoutLine](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*LayoutLine]{
+			Convert: func(ptr unsafe.Pointer) *LayoutLine {
+				src := *(**C.PangoLayoutLine)(ptr)
+				var dst *LayoutLine // out
+				dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+				C.pango_layout_line_ref(src)
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(dst)),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+					},
+				)
+				return dst
 			},
-		)
-		_sList = append(_sList, dst)
-	})
+		},
+		false,
+	)
 
 	return _sList
 }
@@ -715,7 +720,7 @@ func (layout *Layout) Lines() []*LayoutLine {
 //
 // This is a faster alternative to pango.Layout.GetLines(), but the user is not
 // expected to modify the contents of the lines (glyphs, glyph widths, etc.).
-func (layout *Layout) LinesReadonly() []*LayoutLine {
+func (layout *Layout) LinesReadonly() *gextras.SList[*LayoutLine] {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.GSList      // in
 
@@ -724,22 +729,27 @@ func (layout *Layout) LinesReadonly() []*LayoutLine {
 	_cret = C.pango_layout_get_lines_readonly(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _sList []*LayoutLine // out
+	var _sList *gextras.SList[*LayoutLine] // out
 
-	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.PangoLayoutLine)(v)
-		var dst *LayoutLine // out
-		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
-		C.pango_layout_line_ref(src)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+	_sList = gextras.NewSList[*LayoutLine](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*LayoutLine]{
+			Convert: func(ptr unsafe.Pointer) *LayoutLine {
+				src := *(**C.PangoLayoutLine)(ptr)
+				var dst *LayoutLine // out
+				dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+				C.pango_layout_line_ref(src)
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(dst)),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+					},
+				)
+				return dst
 			},
-		)
-		_sList = append(_sList, dst)
-	})
+		},
+		false,
+	)
 
 	return _sList
 }
@@ -2304,7 +2314,7 @@ func (layoutLine *LayoutLine) PixelExtents() (inkRect *Rectangle, logicalRect *R
 // are adjacent. The ranges will be sorted from left to right. The ranges are
 // with respect to the left edge of the entire layout, not with respect to the
 // line.
-func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
+func (line *LayoutLine) XRanges(startIndex, endIndex int) []int {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out

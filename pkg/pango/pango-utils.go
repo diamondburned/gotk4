@@ -131,7 +131,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	_value = int(_arg3)
 	if _arg5 != nil {
 		_possibleValues = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
-		defer C.free(unsafe.Pointer(_arg5))
+		C.free(unsafe.Pointer(_arg5))
 	}
 	if _cret != 0 {
 		_ok = true
@@ -323,7 +323,7 @@ func SplitFileList(str string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -351,7 +351,7 @@ func TrimString(str string) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

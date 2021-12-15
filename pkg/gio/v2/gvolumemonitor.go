@@ -41,14 +41,14 @@ type VolumeMonitorOverrider interface {
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	ConnectedDrives() []Driver
+	ConnectedDrives() *gextras.List[Driver]
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid()).
 	MountForUUID(uuid string) Mounter
 	// Mounts gets a list of the mounts on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	Mounts() []Mounter
+	Mounts() *gextras.List[Mounter]
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid()).
 	VolumeForUUID(uuid string) Volumer
@@ -56,7 +56,7 @@ type VolumeMonitorOverrider interface {
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	Volumes() []Volumer
+	Volumes() *gextras.List[Volumer]
 	MountAdded(mount Mounter)
 	MountChanged(mount Mounter)
 	MountPreUnmount(mount Mounter)
@@ -98,7 +98,7 @@ func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
 //
 // The returned list should be freed with g_list_free(), after its elements have
 // been unreffed with g_object_unref().
-func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
+func (volumeMonitor *VolumeMonitor) ConnectedDrives() *gextras.List[Driver] {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
@@ -107,27 +107,36 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 	_cret = C.g_volume_monitor_get_connected_drives(_arg0)
 	runtime.KeepAlive(volumeMonitor)
 
-	var _list []Driver // out
+	var _list *gextras.List[Driver] // out
 
-	_list = make([]Driver, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GDrive)(v)
-		var dst Driver // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Driver is nil")
-			}
+	_list = gextras.NewList[Driver](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Driver]{
+			Convert: func(ptr unsafe.Pointer) Driver {
+				src := *(**C.GDrive)(ptr)
+				var dst Driver // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.Driver is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Driver)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Driver")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Driver)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.Driver")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GDrive)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -173,7 +182,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 //
 // The returned list should be freed with g_list_free(), after its elements have
 // been unreffed with g_object_unref().
-func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
+func (volumeMonitor *VolumeMonitor) Mounts() *gextras.List[Mounter] {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
@@ -182,27 +191,36 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 	_cret = C.g_volume_monitor_get_mounts(_arg0)
 	runtime.KeepAlive(volumeMonitor)
 
-	var _list []Mounter // out
+	var _list *gextras.List[Mounter] // out
 
-	_list = make([]Mounter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GMount)(v)
-		var dst Mounter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Mounter is nil")
-			}
+	_list = gextras.NewList[Mounter](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Mounter]{
+			Convert: func(ptr unsafe.Pointer) Mounter {
+				src := *(**C.GMount)(ptr)
+				var dst Mounter // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.Mounter is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Mounter)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Mounter)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GMount)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -248,7 +266,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 //
 // The returned list should be freed with g_list_free(), after its elements have
 // been unreffed with g_object_unref().
-func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
+func (volumeMonitor *VolumeMonitor) Volumes() *gextras.List[Volumer] {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
@@ -257,27 +275,36 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 	_cret = C.g_volume_monitor_get_volumes(_arg0)
 	runtime.KeepAlive(volumeMonitor)
 
-	var _list []Volumer // out
+	var _list *gextras.List[Volumer] // out
 
-	_list = make([]Volumer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GVolume)(v)
-		var dst Volumer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Volumer is nil")
-			}
+	_list = gextras.NewList[Volumer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Volumer]{
+			Convert: func(ptr unsafe.Pointer) Volumer {
+				src := *(**C.GVolume)(ptr)
+				var dst Volumer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.Volumer is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Volumer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Volumer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GVolume)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }

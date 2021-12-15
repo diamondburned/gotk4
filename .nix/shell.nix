@@ -34,7 +34,12 @@ in pkgs.mkShell {
 		pkgconfig
 		go
 
-		# Tools.
+		# Development tools.
+		gotools
+		goimports
+		gopls
+
+		# CLI tools.
 		minitime
 		generate
 		build

@@ -82,7 +82,7 @@ func (tree *Tree) Height() int {
 //
 // Inserts a new key and value into a #GTree as g_tree_insert_node() does, only
 // this function does not return the inserted or set node.
-func (tree *Tree) Insert(key cgo.Handle, value cgo.Handle) {
+func (tree *Tree) Insert(key, value cgo.Handle) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
@@ -198,7 +198,7 @@ func (tree *Tree) Remove(key cgo.Handle) bool {
 
 // Replace inserts a new key and value into a #GTree as g_tree_replace_node()
 // does, only this function does not return the inserted or set node.
-func (tree *Tree) Replace(key cgo.Handle, value cgo.Handle) {
+func (tree *Tree) Replace(key, value cgo.Handle) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out

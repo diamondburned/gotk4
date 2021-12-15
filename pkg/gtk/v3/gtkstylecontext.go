@@ -581,7 +581,7 @@ const (
 	StyleContextPrintShowStyle StyleContextPrintFlags = 0b10
 )
 
-func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
+func marshalStyleContextPrintFlags(p uintptr) (any, error) {
 	return StyleContextPrintFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -1498,7 +1498,7 @@ func (context *StyleContext) Invalidate() {
 }
 
 // ListClasses returns the list of classes currently defined in context.
-func (context *StyleContext) ListClasses() []string {
+func (context *StyleContext) ListClasses() *gextras.List[string] {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GList           // in
 
@@ -1507,15 +1507,20 @@ func (context *StyleContext) ListClasses() []string {
 	_cret = C.gtk_style_context_list_classes(_arg0)
 	runtime.KeepAlive(context)
 
-	var _list []string // out
+	var _list *gextras.List[string] // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -1523,7 +1528,7 @@ func (context *StyleContext) ListClasses() []string {
 // ListRegions returns the list of regions currently defined in context.
 //
 // Deprecated: since version 3.14.
-func (context *StyleContext) ListRegions() []string {
+func (context *StyleContext) ListRegions() *gextras.List[string] {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GList           // in
 
@@ -1532,15 +1537,20 @@ func (context *StyleContext) ListRegions() []string {
 	_cret = C.gtk_style_context_list_regions(_arg0)
 	runtime.KeepAlive(context)
 
-	var _list []string // out
+	var _list *gextras.List[string] // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -2101,7 +2111,7 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

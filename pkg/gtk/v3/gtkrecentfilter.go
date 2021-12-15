@@ -53,7 +53,7 @@ const (
 	RecentFilterAge RecentFilterFlags = 0b100000
 )
 
-func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
+func marshalRecentFilterFlags(p uintptr) (any, error) {
 	return RecentFilterFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

@@ -107,7 +107,7 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 // Init initializes the given GskRoundedRect with the given values.
 //
 // This function will implicitly normalize the GskRoundedRect before returning.
-func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRight *graphene.Size, bottomRight *graphene.Size, bottomLeft *graphene.Size) *RoundedRect {
+func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft, topRight, bottomRight, bottomLeft *graphene.Size) *RoundedRect {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 *C.graphene_size_t // out
@@ -254,7 +254,7 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 // Offset offsets the bound's origin by dx and dy.
 //
 // The size and corners of the rectangle are unchanged.
-func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
+func (self *RoundedRect) Offset(dx, dy float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 C.float           // out
 	var _arg2 C.float           // out
@@ -284,7 +284,7 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 //
 // This function also works for growing rectangles if you pass negative values
 // for the top, right, bottom or left.
-func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left float32) *RoundedRect {
+func (self *RoundedRect) Shrink(top, right, bottom, left float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 C.float           // out
 	var _arg2 C.float           // out

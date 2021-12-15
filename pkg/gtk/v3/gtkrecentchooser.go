@@ -152,10 +152,10 @@ type RecentChooserOverrider interface {
 	//
 	// The return value of this function is affected by the “sort-type” and
 	// “limit” properties of chooser.
-	Items() []*RecentInfo
+	Items() *gextras.List[*RecentInfo]
 	ItemActivated()
 	// ListFilters gets the RecentFilter objects held by chooser.
-	ListFilters() []RecentFilter
+	ListFilters() *gextras.SList[RecentFilter]
 	// RemoveFilter removes filter from the list of RecentFilter objects held by
 	// chooser.
 	RemoveFilter(filter *RecentFilter)
@@ -212,7 +212,7 @@ type RecentChooserer interface {
 	Filter() *RecentFilter
 	// Items gets the list of recently used resources in form of RecentInfo
 	// objects.
-	Items() []*RecentInfo
+	Items() *gextras.List[*RecentInfo]
 	// Limit gets the number of items returned by gtk_recent_chooser_get_items()
 	// and gtk_recent_chooser_get_uris().
 	Limit() int
@@ -238,7 +238,7 @@ type RecentChooserer interface {
 	// URIs gets the URI of the recently used resources.
 	URIs() []string
 	// ListFilters gets the RecentFilter objects held by chooser.
-	ListFilters() []RecentFilter
+	ListFilters() *gextras.SList[RecentFilter]
 	// RemoveFilter removes filter from the list of RecentFilter objects held by
 	// chooser.
 	RemoveFilter(filter *RecentFilter)
@@ -354,7 +354,7 @@ func (chooser *RecentChooser) CurrentURI() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -381,7 +381,7 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 //
 // The return value of this function is affected by the “sort-type” and “limit”
 // properties of chooser.
-func (chooser *RecentChooser) Items() []*RecentInfo {
+func (chooser *RecentChooser) Items() *gextras.List[*RecentInfo] {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GList            // in
 
@@ -390,21 +390,31 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 	_cret = C.gtk_recent_chooser_get_items(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _list []*RecentInfo // out
+	var _list *gextras.List[*RecentInfo] // out
 
-	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkRecentInfo)(v)
-		var dst *RecentInfo // out
-		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+	_list = gextras.NewList[*RecentInfo](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*RecentInfo]{
+			Convert: func(ptr unsafe.Pointer) *RecentInfo {
+				src := *(**C.GtkRecentInfo)(ptr)
+				var dst *RecentInfo // out
+				dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
+				C.gtk_recent_info_ref(src)
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(dst)),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+					},
+				)
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GtkRecentInfo)(ptr))
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -586,7 +596,7 @@ func (chooser *RecentChooser) URIs() []string {
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -594,7 +604,7 @@ func (chooser *RecentChooser) URIs() []string {
 }
 
 // ListFilters gets the RecentFilter objects held by chooser.
-func (chooser *RecentChooser) ListFilters() []RecentFilter {
+func (chooser *RecentChooser) ListFilters() *gextras.SList[RecentFilter] {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GSList           // in
 
@@ -603,15 +613,20 @@ func (chooser *RecentChooser) ListFilters() []RecentFilter {
 	_cret = C.gtk_recent_chooser_list_filters(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []RecentFilter // out
+	var _sList *gextras.SList[RecentFilter] // out
 
-	_sList = make([]RecentFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkRecentFilter)(v)
-		var dst RecentFilter // out
-		dst = *wrapRecentFilter(externglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[RecentFilter](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[RecentFilter]{
+			Convert: func(ptr unsafe.Pointer) RecentFilter {
+				src := *(**C.GtkRecentFilter)(ptr)
+				var dst RecentFilter // out
+				dst = *wrapRecentFilter(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }

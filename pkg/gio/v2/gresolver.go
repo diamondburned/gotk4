@@ -45,7 +45,7 @@ const (
 	ResolverNameLookupFlagsIPv6Only ResolverNameLookupFlags = 0b10
 )
 
-func marshalResolverNameLookupFlags(p uintptr) (interface{}, error) {
+func marshalResolverNameLookupFlags(p uintptr) (any, error) {
 	return ResolverNameLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -130,7 +130,7 @@ type ResolverOverrider interface {
 	//
 	// If you are planning to connect to a socket on the resolved IP address, it
 	// may be easier to create a Address and use its Connectable interface.
-	LookupByName(ctx context.Context, hostname string) ([]InetAddress, error)
+	LookupByName(ctx context.Context, hostname string) (*gextras.List[InetAddress], error)
 	// LookupByNameAsync begins asynchronously resolving hostname to determine
 	// its associated IP address(es), and eventually calls callback, which must
 	// call g_resolver_lookup_by_name_finish() to get the result. See
@@ -142,11 +142,11 @@ type ResolverOverrider interface {
 	// If the DNS resolution failed, error (if non-NULL) will be set to a value
 	// from Error. If the operation was cancelled, error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupByNameFinish(result AsyncResulter) ([]InetAddress, error)
+	LookupByNameFinish(result AsyncResulter) (*gextras.List[InetAddress], error)
 	// LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
 	// that you can modify the lookup behavior with flags. For example this can
 	// be used to limit results with RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
-	LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error)
+	LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) (*gextras.List[InetAddress], error)
 	// LookupByNameWithFlagsAsync begins asynchronously resolving hostname to
 	// determine its associated IP address(es), and eventually calls callback,
 	// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
@@ -158,7 +158,7 @@ type ResolverOverrider interface {
 	// If the DNS resolution failed, error (if non-NULL) will be set to a value
 	// from Error. If the operation was cancelled, error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error)
+	LookupByNameWithFlagsFinish(result AsyncResulter) (*gextras.List[InetAddress], error)
 	// LookupRecords: synchronously performs a DNS record lookup for the given
 	// rrname and returns a list of records as #GVariant tuples. See RecordType
 	// for information on what the records contain for each record_type.
@@ -168,7 +168,7 @@ type ResolverOverrider interface {
 	//
 	// If cancellable is non-NULL, it can be used to cancel the operation, in
 	// which case error (if non-NULL) will be set to G_IO_ERROR_CANCELLED.
-	LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error)
+	LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) (*gextras.List[*glib.Variant], error)
 	// LookupRecordsAsync begins asynchronously performing a DNS lookup for the
 	// given rrname, and eventually calls callback, which must call
 	// g_resolver_lookup_records_finish() to get the final result. See
@@ -182,7 +182,7 @@ type ResolverOverrider interface {
 	// If the DNS resolution failed, error (if non-NULL) will be set to a value
 	// from Error. If the operation was cancelled, error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error)
+	LookupRecordsFinish(result AsyncResulter) (*gextras.List[*glib.Variant], error)
 	LookupServiceAsync(ctx context.Context, rrname string, callback AsyncReadyCallback)
 	// LookupServiceFinish retrieves the result of a previous call to
 	// g_resolver_lookup_service_async().
@@ -190,7 +190,7 @@ type ResolverOverrider interface {
 	// If the DNS resolution failed, error (if non-NULL) will be set to a value
 	// from Error. If the operation was cancelled, error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error)
+	LookupServiceFinish(result AsyncResulter) (*gextras.List[*SrvTarget], error)
 	Reload()
 }
 
@@ -269,7 +269,7 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 	var _goerr error // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -341,7 +341,7 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	var _goerr error // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -375,7 +375,7 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 //    - ctx or NULL.
 //    - hostname to look up.
 //
-func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]InetAddress, error) {
+func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) (*gextras.List[InetAddress], error) {
 	var _arg0 *C.GResolver    // out
 	var _arg2 *C.GCancellable // out
 	var _arg1 *C.gchar        // out
@@ -396,16 +396,25 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(hostname)
 
-	var _list []InetAddress // out
-	var _goerr error        // out
+	var _list *gextras.List[InetAddress] // out
+	var _goerr error                     // out
 
-	_list = make([]InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GInetAddress)(v)
-		var dst InetAddress // out
-		dst = *wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[InetAddress](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[InetAddress]{
+			Convert: func(ptr unsafe.Pointer) InetAddress {
+				src := *(**C.GInetAddress)(ptr)
+				var dst InetAddress // out
+				dst = *wrapInetAddress(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GInetAddress)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -462,7 +471,7 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 //
 //    - result passed to your ReadyCallback.
 //
-func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddress, error) {
+func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) (*gextras.List[InetAddress], error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GList        // in
@@ -475,16 +484,25 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
-	var _list []InetAddress // out
-	var _goerr error        // out
+	var _list *gextras.List[InetAddress] // out
+	var _goerr error                     // out
 
-	_list = make([]InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GInetAddress)(v)
-		var dst InetAddress // out
-		dst = *wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[InetAddress](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[InetAddress]{
+			Convert: func(ptr unsafe.Pointer) InetAddress {
+				src := *(**C.GInetAddress)(ptr)
+				var dst InetAddress // out
+				dst = *wrapInetAddress(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GInetAddress)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -502,7 +520,7 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 //    - hostname to look up.
 //    - flags: extra NameLookupFlags for the lookup.
 //
-func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error) {
+func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) (*gextras.List[InetAddress], error) {
 	var _arg0 *C.GResolver               // out
 	var _arg3 *C.GCancellable            // out
 	var _arg1 *C.gchar                   // out
@@ -526,16 +544,25 @@ func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname st
 	runtime.KeepAlive(hostname)
 	runtime.KeepAlive(flags)
 
-	var _list []InetAddress // out
-	var _goerr error        // out
+	var _list *gextras.List[InetAddress] // out
+	var _goerr error                     // out
 
-	_list = make([]InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GInetAddress)(v)
-		var dst InetAddress // out
-		dst = *wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[InetAddress](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[InetAddress]{
+			Convert: func(ptr unsafe.Pointer) InetAddress {
+				src := *(**C.GInetAddress)(ptr)
+				var dst InetAddress // out
+				dst = *wrapInetAddress(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GInetAddress)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -596,7 +623,7 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostna
 //
 //    - result passed to your ReadyCallback.
 //
-func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error) {
+func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) (*gextras.List[InetAddress], error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GList        // in
@@ -609,16 +636,25 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]I
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
-	var _list []InetAddress // out
-	var _goerr error        // out
+	var _list *gextras.List[InetAddress] // out
+	var _goerr error                     // out
 
-	_list = make([]InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GInetAddress)(v)
-		var dst InetAddress // out
-		dst = *wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[InetAddress](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[InetAddress]{
+			Convert: func(ptr unsafe.Pointer) InetAddress {
+				src := *(**C.GInetAddress)(ptr)
+				var dst InetAddress // out
+				dst = *wrapInetAddress(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GInetAddress)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -642,7 +678,7 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]I
 //    - rrname: DNS name to look up the record for.
 //    - recordType: type of DNS record to look up.
 //
-func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error) {
+func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) (*gextras.List[*glib.Variant], error) {
 	var _arg0 *C.GResolver          // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
@@ -666,22 +702,32 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 	runtime.KeepAlive(rrname)
 	runtime.KeepAlive(recordType)
 
-	var _list []*glib.Variant // out
-	var _goerr error          // out
+	var _list *gextras.List[*glib.Variant] // out
+	var _goerr error                       // out
 
-	_list = make([]*glib.Variant, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GVariant)(v)
-		var dst *glib.Variant // out
-		dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
+	_list = gextras.NewList[*glib.Variant](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*glib.Variant]{
+			Convert: func(ptr unsafe.Pointer) *glib.Variant {
+				src := *(**C.GVariant)(ptr)
+				var dst *glib.Variant // out
+				dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(src)))
+				C.g_variant_ref(src)
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(dst)),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.g_variant_unref((*C.GVariant)(intern.C))
+					},
+				)
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GVariant)(ptr))
+				C.g_variant_unref((*C.GVariant)(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -743,7 +789,7 @@ func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string,
 //
 //    - result passed to your ReadyCallback.
 //
-func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error) {
+func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) (*gextras.List[*glib.Variant], error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GList        // in
@@ -756,22 +802,32 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
-	var _list []*glib.Variant // out
-	var _goerr error          // out
+	var _list *gextras.List[*glib.Variant] // out
+	var _goerr error                       // out
 
-	_list = make([]*glib.Variant, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GVariant)(v)
-		var dst *glib.Variant // out
-		dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
+	_list = gextras.NewList[*glib.Variant](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*glib.Variant]{
+			Convert: func(ptr unsafe.Pointer) *glib.Variant {
+				src := *(**C.GVariant)(ptr)
+				var dst *glib.Variant // out
+				dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(src)))
+				C.g_variant_ref(src)
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(dst)),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.g_variant_unref((*C.GVariant)(intern.C))
+					},
+				)
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GVariant)(ptr))
+				C.g_variant_unref((*C.GVariant)(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -805,7 +861,7 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 //    - protocol: networking protocol to use for service (eg, "tcp").
 //    - domain: DNS domain to look up the service in.
 //
-func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, domain string) ([]*SrvTarget, error) {
+func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, domain string) (*gextras.List[*SrvTarget], error) {
 	var _arg0 *C.GResolver    // out
 	var _arg4 *C.GCancellable // out
 	var _arg1 *C.gchar        // out
@@ -834,22 +890,25 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 	runtime.KeepAlive(protocol)
 	runtime.KeepAlive(domain)
 
-	var _list []*SrvTarget // out
-	var _goerr error       // out
+	var _list *gextras.List[*SrvTarget] // out
+	var _goerr error                    // out
 
-	_list = make([]*SrvTarget, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GSrvTarget)(v)
-		var dst *SrvTarget // out
-		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+	_list = gextras.NewList[*SrvTarget](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*SrvTarget]{
+			Convert: func(ptr unsafe.Pointer) *SrvTarget {
+				src := *(**C.GSrvTarget)(ptr)
+				var dst *SrvTarget // out
+				dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GSrvTarget)(ptr))
+				C.g_srv_target_free((*C.GSrvTarget)(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -916,7 +975,7 @@ func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, proto
 //
 //    - result passed to your ReadyCallback.
 //
-func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error) {
+func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) (*gextras.List[*SrvTarget], error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GList        // in
@@ -929,22 +988,25 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
-	var _list []*SrvTarget // out
-	var _goerr error       // out
+	var _list *gextras.List[*SrvTarget] // out
+	var _goerr error                    // out
 
-	_list = make([]*SrvTarget, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GSrvTarget)(v)
-		var dst *SrvTarget // out
-		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+	_list = gextras.NewList[*SrvTarget](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*SrvTarget]{
+			Convert: func(ptr unsafe.Pointer) *SrvTarget {
+				src := *(**C.GSrvTarget)(ptr)
+				var dst *SrvTarget // out
+				dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GSrvTarget)(ptr))
+				C.g_srv_target_free((*C.GSrvTarget)(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

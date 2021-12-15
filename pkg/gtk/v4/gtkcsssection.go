@@ -45,7 +45,7 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 }
 
 // NewCSSSection constructs a struct CSSSection.
-func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSection {
+func NewCSSSection(file gio.Filer, start, end *CSSLocation) *CSSSection {
 	var _arg1 *C.GFile          // out
 	var _arg2 *C.GtkCssLocation // out
 	var _arg3 *C.GtkCssLocation // out
@@ -188,7 +188,7 @@ func (section *CSSSection) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

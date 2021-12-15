@@ -383,7 +383,7 @@ type MenuModelOverrider interface {
 	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemAttributes gets all the attributes associated with the item in the
 	// menu model.
-	ItemAttributes(itemIndex int) map[string]*glib.Variant
+	ItemAttributes(itemIndex int) *gextras.HashTable[string, *glib.Variant]
 	// ItemLink queries the item at position item_index in model for the link
 	// specified by link.
 	//
@@ -391,7 +391,7 @@ type MenuModelOverrider interface {
 	// exist, NULL is returned.
 	ItemLink(itemIndex int, link string) MenuModeller
 	// ItemLinks gets all the links associated with the item in the menu model.
-	ItemLinks(itemIndex int) map[string]MenuModeller
+	ItemLinks(itemIndex int) *gextras.HashTable[string, MenuModeller]
 	// NItems: query the number of items in model.
 	NItems() int
 	// IsMutable queries if model is mutable.

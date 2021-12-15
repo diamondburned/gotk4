@@ -308,7 +308,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 
 // Group returns the group to which the radio menu item belongs, as a #GList of
 // RadioMenuItem. The list belongs to GTK+ and should not be freed.
-func (radioMenuItem *RadioMenuItem) Group() []RadioMenuItem {
+func (radioMenuItem *RadioMenuItem) Group() *gextras.SList[RadioMenuItem] {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _cret *C.GSList           // in
 
@@ -317,15 +317,20 @@ func (radioMenuItem *RadioMenuItem) Group() []RadioMenuItem {
 	_cret = C.gtk_radio_menu_item_get_group(_arg0)
 	runtime.KeepAlive(radioMenuItem)
 
-	var _sList []RadioMenuItem // out
+	var _sList *gextras.SList[RadioMenuItem] // out
 
-	_sList = make([]RadioMenuItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkRadioMenuItem)(v)
-		var dst RadioMenuItem // out
-		dst = *wrapRadioMenuItem(externglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[RadioMenuItem](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[RadioMenuItem]{
+			Convert: func(ptr unsafe.Pointer) RadioMenuItem {
+				src := *(**C.GtkRadioMenuItem)(ptr)
+				var dst RadioMenuItem // out
+				dst = *wrapRadioMenuItem(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _sList
 }

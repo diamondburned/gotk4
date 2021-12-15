@@ -45,7 +45,7 @@ func DBusAddressEscapeValue(str string) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -83,7 +83,7 @@ func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, err
 	var _goerr error // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -161,7 +161,7 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 
 	if _arg2 != nil {
 		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -225,7 +225,7 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 
 	if _arg2 != nil {
 		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)

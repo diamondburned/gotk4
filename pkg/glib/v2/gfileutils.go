@@ -359,7 +359,7 @@ func BuildFilenamev(args []string) string {
 	var _filename string // out
 
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _filename
 }
@@ -401,7 +401,7 @@ func BuildPathv(separator string, args []string) string {
 	var _filename string // out
 
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _filename
 }
@@ -448,7 +448,7 @@ func CanonicalizeFilename(filename, relativeTo string) string {
 	var _ret string // out
 
 	_ret = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _ret
 }
@@ -561,7 +561,7 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	var _goerr error     // out
 
 	_nameUsed = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
+	C.free(unsafe.Pointer(_arg2))
 	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -593,7 +593,7 @@ func FileReadLink(filename string) (string, error) {
 	var _goerr error // out
 
 	_ret = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -819,7 +819,7 @@ func GetCurrentDir() string {
 	var _filename string // out
 
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _filename
 }
@@ -876,7 +876,7 @@ func PathGetBasename(fileName string) string {
 	var _filename string // out
 
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _filename
 }
@@ -905,7 +905,7 @@ func PathGetDirname(fileName string) string {
 	var _filename string // out
 
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _filename
 }

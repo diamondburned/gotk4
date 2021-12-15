@@ -43,7 +43,7 @@ const (
 	OPERATOR_HSL_LUMINOSITY Operator = C.CAIRO_OPERATOR_HSL_LUMINOSITY
 )
 
-func marshalOperator(p uintptr) (interface{}, error) {
+func marshalOperator(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return Operator(c), nil
 }

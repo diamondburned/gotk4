@@ -102,7 +102,7 @@ const (
 	IconLookupDirRTL IconLookupFlags = 0b100000000
 )
 
-func marshalIconLookupFlags(p uintptr) (interface{}, error) {
+func marshalIconLookupFlags(p uintptr) (any, error) {
 	return IconLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -1259,7 +1259,7 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -1327,7 +1327,7 @@ func (iconTheme *IconTheme) SearchPath() []string {
 			_path = make([]string, _arg2)
 			for i := 0; i < int(_arg2); i++ {
 				_path[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-				defer C.free(unsafe.Pointer(src[i]))
+				C.free(unsafe.Pointer(src[i]))
 			}
 		}
 	}
@@ -1365,7 +1365,7 @@ func (iconTheme *IconTheme) HasIcon(iconName string) bool {
 
 // ListContexts gets the list of contexts available within the current hierarchy
 // of icon themes. See gtk_icon_theme_list_icons() for details about contexts.
-func (iconTheme *IconTheme) ListContexts() []string {
+func (iconTheme *IconTheme) ListContexts() *gextras.List[string] {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.GList        // in
 
@@ -1374,16 +1374,24 @@ func (iconTheme *IconTheme) ListContexts() []string {
 	_cret = C.gtk_icon_theme_list_contexts(_arg0)
 	runtime.KeepAlive(iconTheme)
 
-	var _list []string // out
+	var _list *gextras.List[string] // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		defer C.free(unsafe.Pointer(src))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.gchar)(ptr))
+				C.free(src)
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -1403,7 +1411,7 @@ func (iconTheme *IconTheme) ListContexts() []string {
 //    - context: string identifying a particular type of icon, or NULL to list
 //    all icons.
 //
-func (iconTheme *IconTheme) ListIcons(context string) []string {
+func (iconTheme *IconTheme) ListIcons(context string) *gextras.List[string] {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.GList        // in
@@ -1418,16 +1426,24 @@ func (iconTheme *IconTheme) ListIcons(context string) []string {
 	runtime.KeepAlive(iconTheme)
 	runtime.KeepAlive(context)
 
-	var _list []string // out
+	var _list *gextras.List[string] // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		defer C.free(unsafe.Pointer(src))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.gchar)(ptr))
+				C.free(src)
+			},
+		},
+		true,
+	)
 
 	return _list
 }

@@ -23,7 +23,7 @@ type FileGeneratorWriter interface {
 
 // FileWriterFromType is a convenient function that returns the FileWriter from
 // the given GIR type.
-func FileWriterFromType(w FileGeneratorWriter, v interface{}) FileWriter {
+func FileWriterFromType(w FileGeneratorWriter, v any) FileWriter {
 	return w.FileWriter(cmt.GetInfoFields(v))
 }
 

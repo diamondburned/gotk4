@@ -204,7 +204,7 @@ func (m *Matrix) Row(index_ uint) *Vec4 {
 }
 
 // Value retrieves the value at the given row and col index.
-func (m *Matrix) Value(row uint, col uint) float32 {
+func (m *Matrix) Value(row, col uint) float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
 	var _arg2 C.uint               // out
@@ -339,7 +339,7 @@ func (m *Matrix) ZTranslation() float32 {
 //
 // This function can be used to convert between an affine matrix type from other
 // libraries and a #graphene_matrix_t.
-func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 float64, y0 float64) *Matrix {
+func (m *Matrix) InitFrom2D(xx, yx, xy, yy, x0, y0 float64) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.double             // out
 	var _arg2 C.double             // out
@@ -417,7 +417,7 @@ func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
 
 // InitFromVec4 initializes a #graphene_matrix_t with the given four row
 // vectors.
-func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
+func (m *Matrix) InitFromVec4(v0, v1, v2, v3 *Vec4) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec4_t   // out
 	var _arg2 *C.graphene_vec4_t   // out
@@ -449,7 +449,7 @@ func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
 // #graphene_frustum_t.
 //
 // See also: graphene_frustum_init_from_matrix().
-func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top float32, zNear float32, zFar float32) *Matrix {
+func (m *Matrix) InitFrustum(left, right, bottom, top, zNear, zFar float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 	var _arg2 C.float              // out
@@ -514,7 +514,7 @@ func (m *Matrix) InitIdentity() *Matrix {
 // another object from world coordinates to the view coordinates of the camera.
 // Typically you would then apply the camera projection transform to get from
 // view to screen coordinates.
-func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
+func (m *Matrix) InitLookAt(eye, center, up *Vec3) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec3_t   // out
 	var _arg2 *C.graphene_vec3_t   // out
@@ -540,7 +540,7 @@ func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
 }
 
 // InitOrtho initializes a #graphene_matrix_t with an orthographic projection.
-func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom float32, zNear float32, zFar float32) *Matrix {
+func (m *Matrix) InitOrtho(left, right, top, bottom, zNear, zFar float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 	var _arg2 C.float              // out
@@ -576,7 +576,7 @@ func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom floa
 
 // InitPerspective initializes a #graphene_matrix_t with a perspective
 // projection.
-func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zFar float32) *Matrix {
+func (m *Matrix) InitPerspective(fovy, aspect, zNear, zFar float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 	var _arg2 C.float              // out
@@ -629,7 +629,7 @@ func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
 }
 
 // InitScale initializes a #graphene_matrix_t with the given scaling factors.
-func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
+func (m *Matrix) InitScale(x, y, z float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 	var _arg2 C.float              // out
@@ -656,7 +656,7 @@ func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
 
 // InitSkew initializes a #graphene_matrix_t with a skew transformation with the
 // given factors.
-func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
+func (m *Matrix) InitSkew(xSkew, ySkew float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 	var _arg2 C.float              // out
@@ -1096,7 +1096,7 @@ func (m *Matrix) RotateZ(angle float32) {
 //
 // This is the equivalent of calling graphene_matrix_init_scale() and then
 // multiplying the matrix m with the scale matrix.
-func (m *Matrix) Scale(factorX float32, factorY float32, factorZ float32) {
+func (m *Matrix) Scale(factorX, factorY, factorZ float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 	var _arg2 C.float              // out
@@ -1494,7 +1494,7 @@ func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) *P
 // UntransformBounds undoes the transformation on the corners of a
 // #graphene_rect_t using the given matrix, within the given axis aligned
 // rectangular bounds.
-func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) *Rect {
+func (m *Matrix) UntransformBounds(r, bounds *Rect) *Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
 	var _arg2 *C.graphene_rect_t   // out

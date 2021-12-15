@@ -245,7 +245,7 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 }
 
 // NewVariantTypeDictEntry constructs a struct VariantType.
-func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType {
+func NewVariantTypeDictEntry(key, value *VariantType) *VariantType {
 	var _arg1 *C.GVariantType // out
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -364,7 +364,7 @@ func (typ *VariantType) DupString() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -900,7 +900,7 @@ func VariantTypeStringScan(str, limit string) (string, bool) {
 
 	if _arg3 != nil {
 		_endptr = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
+		C.free(unsafe.Pointer(_arg3))
 	}
 	if _cret != 0 {
 		_ok = true

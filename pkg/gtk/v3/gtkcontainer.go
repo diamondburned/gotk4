@@ -464,7 +464,7 @@ func (container *Container) Forall(callback Callback) {
 	runtime.KeepAlive(callback)
 }
 
-// Foreach invokes callback on each non-internal child of container. See
+// ForEach invokes callback on each non-internal child of container. See
 // gtk_container_forall() for details on what constitutes an “internal” child.
 // For all practical purposes, this function should iterate over precisely those
 // child widgets that were added to the container by the application with
@@ -479,7 +479,7 @@ func (container *Container) Forall(callback Callback) {
 //
 //    - callback: callback.
 //
-func (container *Container) Foreach(callback Callback) {
+func (container *Container) ForEach(callback Callback) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.GtkCallback   // out
 	var _arg2 C.gpointer
@@ -514,7 +514,7 @@ func (container *Container) BorderWidth() uint {
 
 // Children returns the container’s non-internal children. See
 // gtk_container_forall() for details on what constitutes an "internal" child.
-func (container *Container) Children() []Widgetter {
+func (container *Container) Children() *gextras.List[Widgetter] {
 	var _arg0 *C.GtkContainer // out
 	var _cret *C.GList        // in
 
@@ -523,27 +523,32 @@ func (container *Container) Children() []Widgetter {
 	_cret = C.gtk_container_get_children(_arg0)
 	runtime.KeepAlive(container)
 
-	var _list []Widgetter // out
+	var _list *gextras.List[Widgetter] // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
+	_list = gextras.NewList[Widgetter](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Widgetter]{
+			Convert: func(ptr unsafe.Pointer) Widgetter {
+				src := *(**C.GtkWidget)(ptr)
+				var dst Widgetter // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gtk.Widgetter is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Widgetter)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -555,7 +560,7 @@ func (container *Container) Children() []Widgetter {
 //
 // Deprecated: For overriding focus behavior, use the GtkWidgetClass::focus
 // signal.
-func (container *Container) FocusChain() ([]Widgetter, bool) {
+func (container *Container) FocusChain() (*gextras.List[Widgetter], bool) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GList        // in
 	var _cret C.gboolean      // in
@@ -565,28 +570,33 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 	_cret = C.gtk_container_get_focus_chain(_arg0, &_arg1)
 	runtime.KeepAlive(container)
 
-	var _focusableWidgets []Widgetter // out
-	var _ok bool                      // out
+	var _focusableWidgets *gextras.List[Widgetter] // out
+	var _ok bool                                   // out
 
-	_focusableWidgets = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_arg1)))
-	gextras.MoveList(unsafe.Pointer(_arg1), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
+	_focusableWidgets = gextras.NewList[Widgetter](
+		unsafe.Pointer(_arg1),
+		gextras.ListOpts[Widgetter]{
+			Convert: func(ptr unsafe.Pointer) Widgetter {
+				src := *(**C.GtkWidget)(ptr)
+				var dst Widgetter // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gtk.Widgetter is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_focusableWidgets = append(_focusableWidgets, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Widgetter)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 	if _cret != 0 {
 		_ok = true
 	}

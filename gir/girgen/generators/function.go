@@ -22,7 +22,7 @@ var functionTmpl = gotmpl.NewGoTemplate(`
 	{{- end }}
 	//
 	{{- end }}
-	func {{ .Name }}{{ .Tail }} {{ .Block }}
+	func {{ .Name }}{{ CoalesceTail .Tail }} {{ .Block }}
 `)
 
 // GenerateFunction generates the function call for the given GIR function.
@@ -58,8 +58,6 @@ func GeneratePrefixedFunction(gen FileGeneratorWriter, fn *gir.Function, prefix 
 			callableGen.Name = prefix + callableGen.Name
 		}
 	}
-
-	callableGen.CoalesceTail()
 
 	writer := FileWriterFromType(gen, fn)
 	writer.Pen().WriteTmpl(functionTmpl, &callableGen)

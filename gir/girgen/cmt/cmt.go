@@ -46,7 +46,7 @@ type InfoFields struct {
 	Elements *gir.InfoElements
 }
 
-func getField(value reflect.Value, field string) interface{} {
+func getField(value reflect.Value, field string) any {
 	v := value.FieldByName(field)
 	if v == (reflect.Value{}) {
 		return nil
@@ -63,7 +63,7 @@ func getField(value reflect.Value, field string) interface{} {
 }
 
 // GetInfoFields gets the InfoFields from the given value.
-func GetInfoFields(v interface{}) InfoFields {
+func GetInfoFields(v any) InfoFields {
 	value := reflect.Indirect(reflect.ValueOf(v))
 	if value.Kind() != reflect.Struct {
 		panic("given value is not a struct")
@@ -80,7 +80,7 @@ func GetInfoFields(v interface{}) InfoFields {
 
 // EnsureInfoFields ensures that the given type contains all fields inside
 // InfoFields.
-func EnsureInfoFields(v interface{}) struct{} {
+func EnsureInfoFields(v any) struct{} {
 	typ := reflect.TypeOf(v)
 	if typ.Kind() == reflect.Ptr {
 		typ = typ.Elem()
@@ -165,17 +165,17 @@ func ParagraphIndent(indent int) Option { return paragraphIndent(indent) }
 func TrailingNewLine() Option { return trailingNewLine{} }
 
 // Synopsis renders the synopsis of the documentation.
-func Synopsis(v interface{}, indentLvl int, opts ...Option) string {
+func Synopsis(v any, indentLvl int, opts ...Option) string {
 	return goDoc(v, indentLvl, append(opts, synopsize{}))
 }
 
 // GoDoc renders a Go documentation string from the given struct. The struct
 // should contain at least the field Name, InfoAttrs and InfoElements.
-func GoDoc(v interface{}, indentLvl int, opts ...Option) string {
+func GoDoc(v any, indentLvl int, opts ...Option) string {
 	return goDoc(v, indentLvl, opts)
 }
 
-func goDoc(v interface{}, indentLvl int, opts []Option) string {
+func goDoc(v any, indentLvl int, opts []Option) string {
 	inf := GetInfoFields(v)
 
 	var self string

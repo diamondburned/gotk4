@@ -2746,7 +2746,7 @@ const (
 	InputHintPrivate InputHints = 0b100000000000
 )
 
-func marshalInputHints(p uintptr) (interface{}, error) {
+func marshalInputHints(p uintptr) (any, error) {
 	return InputHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2818,7 +2818,7 @@ const (
 	PickNonTargetable PickFlags = 0b10
 )
 
-func marshalPickFlags(p uintptr) (interface{}, error) {
+func marshalPickFlags(p uintptr) (any, error) {
 	return PickFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2898,7 +2898,7 @@ const (
 	StateFlagFocusWithin StateFlags = 0b100000000000000
 )
 
-func marshalStateFlags(p uintptr) (interface{}, error) {
+func marshalStateFlags(p uintptr) (any, error) {
 	return StateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

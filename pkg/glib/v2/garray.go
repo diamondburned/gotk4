@@ -263,7 +263,7 @@ func (bytes *Bytes) Hash() uint {
 // slice of another #GBytes, then the resulting #GBytes will reference the same
 // #GBytes instead of bytes. This allows consumers to simplify the usage of
 // #GBytes when asynchronously writing to streams.
-func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
+func (bytes *Bytes) NewFromBytes(offset, length uint) *Bytes {
 	var _arg0 *C.GBytes // out
 	var _arg1 C.gsize   // out
 	var _arg2 C.gsize   // out

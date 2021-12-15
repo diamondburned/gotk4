@@ -787,7 +787,7 @@ func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEv
 // ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it will
 // return the list of slave devices attached to it, otherwise it will return
 // NULL.
-func (device *Device) ListSlaveDevices() []Devicer {
+func (device *Device) ListSlaveDevices() *gextras.List[Devicer] {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GList     // in
 
@@ -796,28 +796,33 @@ func (device *Device) ListSlaveDevices() []Devicer {
 	_cret = C.gdk_device_list_slave_devices(_arg0)
 	runtime.KeepAlive(device)
 
-	var _list []Devicer // out
+	var _list *gextras.List[Devicer] // out
 
 	if _cret != nil {
-		_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-			src := (*C.GdkDevice)(v)
-			var dst Devicer // out
-			{
-				objptr := unsafe.Pointer(src)
-				if objptr == nil {
-					panic("object of type gdk.Devicer is nil")
-				}
+		_list = gextras.NewList[Devicer](
+			unsafe.Pointer(_cret),
+			gextras.ListOpts[Devicer]{
+				Convert: func(ptr unsafe.Pointer) Devicer {
+					src := *(**C.GdkDevice)(ptr)
+					var dst Devicer // out
+					{
+						objptr := unsafe.Pointer(src)
+						if objptr == nil {
+							panic("object of type gdk.Devicer is nil")
+						}
 
-				object := externglib.Take(objptr)
-				rv, ok := (externglib.CastObject(object)).(Devicer)
-				if !ok {
-					panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
-				}
-				dst = rv
-			}
-			_list = append(_list, dst)
-		})
+						object := externglib.Take(objptr)
+						rv, ok := (externglib.CastObject(object)).(Devicer)
+						if !ok {
+							panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+						}
+						dst = rv
+					}
+					return dst
+				},
+			},
+			true,
+		)
 	}
 
 	return _list

@@ -353,7 +353,7 @@ func (r *Rect) Y() float32 {
 //
 // This function will implicitly normalize the #graphene_rect_t before
 // returning.
-func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
+func (r *Rect) Init(x, y, width, height float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
@@ -417,7 +417,7 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 //
 // If the size of the resulting inset rectangle has a negative width or height
 // then the size will be set to zero.
-func (r *Rect) Inset(dX float32, dY float32) *Rect {
+func (r *Rect) Inset(dX, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
@@ -452,7 +452,7 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 //
 // If the size of the resulting inset rectangle has a negative width or height
 // then the size will be set to zero.
-func (r *Rect) InsetR(dX float32, dY float32) *Rect {
+func (r *Rect) InsetR(dX, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
@@ -573,7 +573,7 @@ func (r *Rect) NormalizeR() *Rect {
 // Offset offsets the origin by d_x and d_y.
 //
 // The size of the rectangle is unchanged.
-func (r *Rect) Offset(dX float32, dY float32) *Rect {
+func (r *Rect) Offset(dX, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
@@ -598,7 +598,7 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 // OffsetR offsets the origin of the given rectangle by d_x and d_y.
 //
 // The size of the rectangle is left unchanged.
-func (r *Rect) OffsetR(dX float32, dY float32) *Rect {
+func (r *Rect) OffsetR(dX, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
@@ -702,7 +702,7 @@ func (r *Rect) RoundToPixel() *Rect {
 
 // Scale scales the size and origin of a rectangle horizontaly by s_h, and
 // vertically by s_v. The result res is normalized.
-func (r *Rect) Scale(sH float32, sV float32) *Rect {
+func (r *Rect) Scale(sH, sV float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out

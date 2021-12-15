@@ -53,7 +53,7 @@ const (
 	CalendarShowDetails CalendarDisplayOptions = 0b100000
 )
 
-func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
+func marshalCalendarDisplayOptions(p uintptr) (any, error) {
 	return CalendarDisplayOptions(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

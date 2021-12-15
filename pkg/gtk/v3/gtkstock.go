@@ -679,21 +679,29 @@ func StockAddStatic(items []StockItem) {
 // g_slist_free(), and each string in the list must be freed with g_free().
 //
 // Deprecated: since version 3.10.
-func StockListIds() []string {
+func StockListIds() *gextras.SList[string] {
 	var _cret *C.GSList // in
 
 	_cret = C.gtk_stock_list_ids()
 
-	var _sList []string // out
+	var _sList *gextras.SList[string] // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		defer C.free(unsafe.Pointer(src))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.gchar)(ptr))
+				C.free(src)
+			},
+		},
+		true,
+	)
 
 	return _sList
 }

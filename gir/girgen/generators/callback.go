@@ -18,7 +18,7 @@ import (
 
 var callbackTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 }}
-	type {{ .GoName }} func{{ .GoTail }}
+	type {{ .GoName }} func{{ CoalesceTail .GoTail }}
 
 	//export {{ .CGoName }}
 	func {{ .CGoName }}{{ .CGoTail }} {{ .Block }}
@@ -64,7 +64,7 @@ func NewCallbackGenerator(gen FileGenerator) CallbackGenerator {
 	}
 }
 
-func (g *CallbackGenerator) Logln(lvl logger.Level, v ...interface{}) {
+func (g *CallbackGenerator) Logln(lvl logger.Level, v ...any) {
 	g.gen.Logln(lvl, logger.Prefix(v, fmt.Sprintf("callback %s (C.%s):", g.Name, g.CIdentifier))...)
 }
 
@@ -294,8 +294,6 @@ func (g *CallbackGenerator) renderBlock() bool {
 	if goTypeRets.Len() > 0 {
 		g.GoTail += " (" + goTypeRets.Join() + ")"
 	}
-
-	g.GoTail = callable.CoalesceTail(g.GoTail)
 
 	// Only add the import now, since we know that the callback will be
 	// generated.

@@ -216,7 +216,7 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 //
 // The winding order is counter-clockwise, and determines which direction the
 // normal vector will point.
-func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
+func (p *Plane) InitFromPoints(a, b, c *Point3D) *Plane {
 	var _arg0 *C.graphene_plane_t   // out
 	var _arg1 *C.graphene_point3d_t // out
 	var _arg2 *C.graphene_point3d_t // out
@@ -305,7 +305,7 @@ func (p *Plane) Normalize() *Plane {
 // be computed from matrix. If you are transforming multiple planes using the
 // same matrix it's recommended to compute the normal matrix beforehand to avoid
 // incurring in the cost of recomputing it every time.
-func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) *Plane {
+func (p *Plane) Transform(matrix, normalMatrix *Matrix) *Plane {
 	var _arg0 *C.graphene_plane_t  // out
 	var _arg1 *C.graphene_matrix_t // out
 	var _arg2 *C.graphene_matrix_t // out

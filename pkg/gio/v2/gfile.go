@@ -1507,7 +1507,7 @@ func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyF
 	var _goerr error // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -2575,7 +2575,7 @@ func (file *File) Basename() string {
 
 	if _cret != nil {
 		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _filename
@@ -2729,7 +2729,7 @@ func (file *File) ParseName() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -2751,7 +2751,7 @@ func (file *File) Path() string {
 
 	if _cret != nil {
 		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _filename
@@ -2781,7 +2781,7 @@ func (parent *File) RelativePath(descendant Filer) string {
 
 	if _cret != nil {
 		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _filename
@@ -2802,7 +2802,7 @@ func (file *File) URI() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -2831,7 +2831,7 @@ func (file *File) URIScheme() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -3026,7 +3026,7 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 
 	if _arg2 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
@@ -3116,7 +3116,7 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 
 	if _arg2 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
@@ -3172,7 +3172,7 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
 	if _arg4 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
-		defer C.free(unsafe.Pointer(_arg4))
+		C.free(unsafe.Pointer(_arg4))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -3256,7 +3256,7 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
 	if _arg4 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
-		defer C.free(unsafe.Pointer(_arg4))
+		C.free(unsafe.Pointer(_arg4))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -3298,7 +3298,7 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
 	if _arg4 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
-		defer C.free(unsafe.Pointer(_arg4))
+		C.free(unsafe.Pointer(_arg4))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -5105,7 +5105,7 @@ func (file *File) ReplaceContents(ctx context.Context, contents, etag string, ma
 
 	if _arg6 != nil {
 		_newEtag = C.GoString((*C.gchar)(unsafe.Pointer(_arg6)))
-		defer C.free(unsafe.Pointer(_arg6))
+		C.free(unsafe.Pointer(_arg6))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -5270,7 +5270,7 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 
 	if _arg2 != nil {
 		_newEtag = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

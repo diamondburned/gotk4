@@ -49,7 +49,7 @@ const (
 	ShapeRoundPositions ShapeFlags = 0b1
 )
 
-func marshalShapeFlags(p uintptr) (interface{}, error) {
+func marshalShapeFlags(p uintptr) (any, error) {
 	return ShapeFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -95,7 +95,7 @@ func (s ShapeFlags) Has(other ShapeFlags) bool {
 //
 //    - logicalItems: GList of PangoItem in logical order.
 //
-func ReorderItems(logicalItems []*Item) []*Item {
+func ReorderItems(logicalItems []*Item) *gextras.List[*Item] {
 	var _arg1 *C.GList // out
 	var _cret *C.GList // in
 
@@ -110,21 +110,24 @@ func ReorderItems(logicalItems []*Item) []*Item {
 	_cret = C.pango_reorder_items(_arg1)
 	runtime.KeepAlive(logicalItems)
 
-	var _list []*Item // out
+	var _list *gextras.List[*Item] // out
 
-	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoItem)(v)
-		var dst *Item // out
-		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
+	_list = gextras.NewList[*Item](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*Item]{
+			Convert: func(ptr unsafe.Pointer) *Item {
+				src := *(**C.PangoItem)(ptr)
+				var dst *Item // out
+				dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.PangoItem)(ptr))
+				C.pango_item_free((*C.PangoItem)(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -451,7 +454,7 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect
 // The extents are relative to the start of the glyph string range (the origin
 // of their coordinate system is at the start of the range, not at the start of
 // the entire glyph string).
-func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
+func (glyphs *GlyphString) ExtentsRange(start, end int, font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out

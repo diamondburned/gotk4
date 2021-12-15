@@ -35,7 +35,7 @@ const (
 	SUBPIXEL_ORDER_VBGR    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VBGR
 )
 
-func marshalSubpixelOrder(p uintptr) (interface{}, error) {
+func marshalSubpixelOrder(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return SubpixelOrder(c), nil
 }
@@ -51,7 +51,7 @@ const (
 	HINT_STYLE_FULL    HintStyle = C.CAIRO_HINT_STYLE_FULL
 )
 
-func marshalHintStyle(p uintptr) (interface{}, error) {
+func marshalHintStyle(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return HintStyle(c), nil
 }
@@ -65,7 +65,7 @@ const (
 	HINT_METRICS_ON      HintMetrics = C.CAIRO_HINT_METRICS_ON
 )
 
-func marshalHintMetrics(p uintptr) (interface{}, error) {
+func marshalHintMetrics(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return HintMetrics(c), nil
 }
@@ -75,7 +75,7 @@ type FontOptions struct {
 	native *C.cairo_font_options_t
 }
 
-func marshalFontOptions(p uintptr) (interface{}, error) {
+func marshalFontOptions(p uintptr) (any, error) {
 	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return &FontOptions{
 		native: (*C.cairo_font_options_t)(unsafe.Pointer(c)),

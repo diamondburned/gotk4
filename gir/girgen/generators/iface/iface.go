@@ -14,7 +14,7 @@ import (
 )
 
 // CanGenerate checks if the given class or interface can be generated.
-func CanGenerate(gen types.FileGenerator, v interface{}) bool {
+func CanGenerate(gen types.FileGenerator, v any) bool {
 	ifaceGen := NewGenerator(gen)
 	return ifaceGen.init(v)
 }
@@ -67,7 +67,7 @@ func NewGenerator(gen types.FileGenerator) Generator {
 	}
 }
 
-func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
+func (g *Generator) Logln(lvl logger.Level, v ...any) {
 	p := fmt.Sprintf("interface/class %s (C.%s):", g.InterfaceName, g.CType)
 	g.gen.Logln(lvl, logger.Prefix(v, p)...)
 }
@@ -122,7 +122,7 @@ func (g *Generator) Header() *file.Header {
 	return &g.header
 }
 
-func (g *Generator) init(typ interface{}) bool {
+func (g *Generator) init(typ any) bool {
 	resolved := types.TypeFromResult(g.gen, typ)
 	if resolved == nil || resolved.Extern == nil {
 		return false
@@ -193,7 +193,7 @@ func (g *Generator) init(typ interface{}) bool {
 
 // Use accepts either a *gir.Class or a *gir.Interface; any other type will make
 // it panic.
-func (g *Generator) Use(typ interface{}) bool {
+func (g *Generator) Use(typ any) bool {
 	g.Reset()
 
 	if !g.init(typ) {
@@ -232,7 +232,7 @@ func (g *Generator) Use(typ interface{}) bool {
 
 		g.Signals = append(g.Signals, Signal{
 			Name:         sig.Name,
-			Tail:         callable.CoalesceTail(g.cgen.Tail),
+			Tail:         g.cgen.Tail,
 			InfoElements: sig.InfoElements,
 		})
 	}

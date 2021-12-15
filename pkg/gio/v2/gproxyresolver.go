@@ -180,7 +180,7 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	if _cerr != nil {
@@ -262,7 +262,7 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	if _cerr != nil {

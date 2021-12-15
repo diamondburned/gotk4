@@ -89,7 +89,7 @@ type DriveOverrider interface {
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	Volumes() []Volumer
+	Volumes() *gextras.List[Volumer]
 	// HasMedia checks if the drive has media. Note that the OS may not be
 	// polling the drive for media changes; see
 	// g_drive_is_media_check_automatic() for more details.
@@ -200,7 +200,7 @@ type Driver interface {
 	// SymbolicIcon gets the icon for drive.
 	SymbolicIcon() Iconner
 	// Volumes: get a list of mountable volumes for drive.
-	Volumes() []Volumer
+	Volumes() *gextras.List[Volumer]
 	// HasMedia checks if the drive has media.
 	HasMedia() bool
 	// HasVolumes: check if drive has any mountable volumes.
@@ -500,7 +500,7 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -560,7 +560,7 @@ func (drive *Drive) Identifier(kind string) string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -579,7 +579,7 @@ func (drive *Drive) Name() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -653,7 +653,7 @@ func (drive *Drive) SymbolicIcon() Iconner {
 //
 // The returned list should be freed with g_list_free(), after its elements have
 // been unreffed with g_object_unref().
-func (drive *Drive) Volumes() []Volumer {
+func (drive *Drive) Volumes() *gextras.List[Volumer] {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GList  // in
 
@@ -662,27 +662,36 @@ func (drive *Drive) Volumes() []Volumer {
 	_cret = C.g_drive_get_volumes(_arg0)
 	runtime.KeepAlive(drive)
 
-	var _list []Volumer // out
+	var _list *gextras.List[Volumer] // out
 
-	_list = make([]Volumer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GVolume)(v)
-		var dst Volumer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Volumer is nil")
-			}
+	_list = gextras.NewList[Volumer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Volumer]{
+			Convert: func(ptr unsafe.Pointer) Volumer {
+				src := *(**C.GVolume)(ptr)
+				var dst Volumer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.Volumer is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Volumer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Volumer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GVolume)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }

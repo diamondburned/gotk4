@@ -184,7 +184,7 @@ func (v *Vec2) Y() float32 {
 // Init initializes a #graphene_vec2_t using the given values.
 //
 // This function can be called multiple times.
-func (v *Vec2) Init(x float32, y float32) *Vec2 {
+func (v *Vec2) Init(x, y float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out

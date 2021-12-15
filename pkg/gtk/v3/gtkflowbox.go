@@ -24,7 +24,7 @@ import (
 // extern void callbackDelete(gpointer);
 // gboolean _gotk4_gtk3_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
 // gint _gotk4_gtk3_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
-// void _gotk4_gtk3_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
+// void _gotk4_gtk3_FlowBoxForEachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 import "C"
 
 func init() {
@@ -83,12 +83,12 @@ func _gotk4_gtk3_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cr
 	return cret
 }
 
-// FlowBoxForeachFunc: function used by gtk_flow_box_selected_foreach(). It will
+// FlowBoxForEachFunc: function used by gtk_flow_box_selected_foreach(). It will
 // be called on every selected child of the box.
-type FlowBoxForeachFunc func(box *FlowBox, child *FlowBoxChild)
+type FlowBoxForEachFunc func(box *FlowBox, child *FlowBoxChild)
 
-//export _gotk4_gtk3_FlowBoxForeachFunc
-func _gotk4_gtk3_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
+//export _gotk4_gtk3_FlowBoxForEachFunc
+func _gotk4_gtk3_FlowBoxForEachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -100,7 +100,7 @@ func _gotk4_gtk3_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild,
 	box = wrapFlowBox(externglib.Take(unsafe.Pointer(arg0)))
 	child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
 
-	fn := v.(FlowBoxForeachFunc)
+	fn := v.(FlowBoxForEachFunc)
 	fn(box, child)
 }
 
@@ -443,7 +443,7 @@ func (box *FlowBox) RowSpacing() uint {
 }
 
 // SelectedChildren creates a list of all selected children.
-func (box *FlowBox) SelectedChildren() []FlowBoxChild {
+func (box *FlowBox) SelectedChildren() *gextras.List[FlowBoxChild] {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret *C.GList      // in
 
@@ -452,15 +452,20 @@ func (box *FlowBox) SelectedChildren() []FlowBoxChild {
 	_cret = C.gtk_flow_box_get_selected_children(_arg0)
 	runtime.KeepAlive(box)
 
-	var _list []FlowBoxChild // out
+	var _list *gextras.List[FlowBoxChild] // out
 
-	_list = make([]FlowBoxChild, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkFlowBoxChild)(v)
-		var dst FlowBoxChild // out
-		dst = *wrapFlowBoxChild(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[FlowBoxChild](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[FlowBoxChild]{
+			Convert: func(ptr unsafe.Pointer) FlowBoxChild {
+				src := *(**C.GtkFlowBoxChild)(ptr)
+				var dst FlowBoxChild // out
+				dst = *wrapFlowBoxChild(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -567,7 +572,7 @@ func (box *FlowBox) SelectChild(child *FlowBoxChild) {
 	runtime.KeepAlive(child)
 }
 
-// SelectedForeach calls a function for each selected child.
+// SelectedForEach calls a function for each selected child.
 //
 // Note that the selection cannot be modified from within this function.
 //
@@ -575,13 +580,13 @@ func (box *FlowBox) SelectChild(child *FlowBoxChild) {
 //
 //    - fn: function to call for each selected child.
 //
-func (box *FlowBox) SelectedForeach(fn FlowBoxForeachFunc) {
+func (box *FlowBox) SelectedForEach(fn FlowBoxForEachFunc) {
 	var _arg0 *C.GtkFlowBox           // out
 	var _arg1 C.GtkFlowBoxForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_FlowBoxForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_FlowBoxForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

@@ -32,3 +32,4 @@ Zorder -> ZOrder
 Certdb -> CertDB
 Gerror -> GError
 ImContext -> IMContext
+Foreach -> ForEach

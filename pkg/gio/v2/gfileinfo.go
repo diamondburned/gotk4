@@ -650,7 +650,7 @@ func (info *FileInfo) AttributeAsString(attribute string) string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -1466,7 +1466,7 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 			_utf8s = make([]string, i)
 			for i := range src {
 				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-				defer C.free(unsafe.Pointer(src[i]))
+				C.free(unsafe.Pointer(src[i]))
 			}
 		}
 	}

@@ -5,7 +5,10 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/gocode"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -272,6 +275,27 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 	return false
 }
 
+func genTypeConvCallback(value *ValueConverted) string {
+	piece := pen.NewPiece()
+	piece.LineTmpl(value, `
+		func(ptr unsafe.Pointer) <.Out.Type> {
+			src := *(*<.In.Type>)(ptr)
+			<.Out.Declare>
+			<.Conversion>
+			return <.Out.Set>
+		}
+	`)
+	return piece.String()
+}
+
+func extractFree(piece *pen.Piece, inner *ValueConverted) {
+	if deferred := gocode.ExtractDefer(inner.Conversion); deferred != "" {
+		piece.Line(deferred)
+		return
+	}
+	piece.Line(inner.Conversion)
+}
+
 func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 	if len(value.Inner) == 0 {
 		return conv.cgoConverter(value)
@@ -285,19 +309,7 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 
 	switch value.Resolved.GType {
 	case "GLib.List", "GLib.SList":
-		var sizeFn string
-		var moveFn string
-
-		switch value.Resolved.GType {
-		case "GLib.List":
-			sizeFn = "ListSize"
-			moveFn = "MoveList"
-		case "GLib.SList":
-			sizeFn = "SListSize"
-			moveFn = "MoveSList"
-		}
-
-		inner := conv.convertInner(value, "src", "dst")
+		inner := conv.convertInner(value.WithOwnership("none"), "src", "dst")
 		if inner == nil {
 			value.Logln(logger.Debug, "List missing inner type")
 			return false
@@ -307,23 +319,49 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 		value.header.ImportCore("gextras")
 		value.header.ApplyFrom(inner.Header())
 
-		value.p.Linef(
-			"%s = make([]%s, 0, gextras.%s(unsafe.Pointer(%s)))",
-			value.Out.Set, inner.Out.Type, sizeFn, value.InNamePtr(1))
+		var freeData string
 
-		value.p.Linef("gextras.%s(unsafe.Pointer(%s), %t, func(v unsafe.Pointer) {",
-			moveFn, value.InNamePtr(1), value.ShouldFree())
-		value.p.Linef("  src := (%s)(v)", inner.In.Type)
-		value.p.Linef("  %s", inner.Out.Declare)
-		value.p.Linef("  %s", inner.Conversion)
-		value.p.Linef("  %s = append(%[1]s, %s)", value.Out.Set, inner.Out.Name)
-		value.p.Linef("})")
+		if value.TransferOwnership.TransferOwnership == "full" {
+			inner := conv.convertInner(value, "src", "_")
+
+			free := pen.NewPiece()
+			free.Linef("func(ptr unsafe.Pointer) {")
+			free.Linef("src := unsafe.Pointer(*(*%s)(ptr))", inner.In.Type)
+			free.Linef(conv.cgoFree(inner, "src"))
+			free.Linef("}")
+			freeData = free.String()
+		}
+
+		args := gotmpl.M{
+			"inner": inner,
+			"value": value,
+			"type":  strings.Split(value.Resolved.GType, ".")[1],
+			"gen": gotmpl.M{
+				"Convert":  genTypeConvCallback(inner),
+				"FreeData": freeData,
+			},
+		}
+
+		value.p.LineTmpl(args, `
+			<.value.Out.Set> = gextras.New<.type>[<.inner.GoType>](
+				unsafe.Pointer(<.value.InNamePtr 1>),
+				gextras.ListOpts[<.inner.GoType>]{
+					Convert:  <.gen.Convert>,
+					<- with .gen.FreeData>
+					FreeData: <.>,
+					<- end>
+				},
+				<.value.ShouldFree>,
+			)
+		`)
 
 		return true
 
 	case "GLib.HashTable":
-		kt := conv.convertType(value, "ksrc", "kdst", &value.Type.Types[0])
-		vt := conv.convertType(value, "vsrc", "vdst", &value.Type.Types[1])
+		// Override the ownership of the value to force the conversion routine
+		// to either take a reference or copy the value.
+		kt := conv.convertType(value.WithOwnership("none"), "src", "dst", &value.Type.Types[0])
+		vt := conv.convertType(value.WithOwnership("none"), "src", "dst", &value.Type.Types[1])
 		if kt == nil || vt == nil {
 			value.Logln(logger.Debug, "no key/value-type")
 			return false
@@ -334,21 +372,79 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 		value.header.ApplyFrom(kt.Header())
 		value.header.ApplyFrom(vt.Header())
 
-		value.p.Linef(
-			"%s = make(%s, gextras.HashTableSize(unsafe.Pointer(%s)))",
-			value.Out.Set, value.Out.Type, value.InNamePtr(1))
+		var conversions [2]string
+		for i, conv := range [2]*ValueConverted{kt, vt} {
+			conversions[i] = genTypeConvCallback(conv)
+		}
 
-		value.p.Linef(
-			"gextras.MoveHashTable(unsafe.Pointer(%s), %t, func(k, v unsafe.Pointer) {",
-			value.InNamePtr(1), value.ShouldFree())
-		value.p.Linef("ksrc := *(*%s)(k)", kt.In.Type)
-		value.p.Linef("vsrc := *(*%s)(v)", vt.In.Type)
-		value.p.Linef(kt.Out.Declare)
-		value.p.Linef(vt.Out.Declare)
-		value.p.Linef(kt.Conversion)
-		value.p.Linef(vt.Conversion)
-		value.p.Linef("%s[kdst] = vdst", value.Out.Set)
-		value.p.Linef("})")
+		var hashKey string
+		var freeData string
+
+		// Full ownership means we free the value after the function is done.
+		cValue := value.WithOwnership("full")
+		cValue.Direction = ConvertGoToC
+
+		// These are reversed for some reason. Whatever.
+		ktHash := conv.convertType(cValue, "src", "dst", &value.Type.Types[0])
+		if ktHash != nil {
+			piece := pen.NewPiece()
+			piece.LineTmpl(ktHash, `
+				func(src <.In.Type>, use func(unsafe.Pointer)) {
+					<.Out.Declare>
+					<.Conversion>
+					use(unsafe.Pointer(<.Out.Set>))
+				}
+			`)
+			hashKey = piece.String()
+		}
+
+		// We want to free the elements only if the ownership is full, NOT
+		// CONTAINER. The methods that we have assume that container means yes.
+		if value.TransferOwnership.TransferOwnership == "full" {
+			// Hack: since the conversion routines will never free the original
+			// value, we'll regenerate the conversion but never use it, since we
+			// only need the freeing code.
+			k2 := conv.convertType(value, "k", "_", &value.Type.Types[0])
+			v2 := conv.convertType(value, "v", "_", &value.Type.Types[0])
+
+			free := pen.NewPiece()
+			free.Linef("func(kptr, vptr unsafe.Pointer) {")
+			free.Linef("k := unsafe.Pointer(*(*%s)(kptr))", k2.In.Type)
+			free.Linef("v := unsafe.Pointer(*(*%s)(vptr))", v2.In.Type)
+			free.Linef(conv.cgoFree(k2, "k"))
+			free.Linef(conv.cgoFree(v2, "v"))
+			free.Linef("}")
+			freeData = free.String()
+		}
+
+		args := gotmpl.M{
+			"kt":    kt,
+			"vt":    vt,
+			"value": value,
+			"gen": gotmpl.M{
+				"ConvertKey":   conversions[0],
+				"ConvertValue": conversions[1],
+				"HashKey":      hashKey,
+				"FreeData":     freeData,
+			},
+		}
+
+		value.p.LineTmpl(args, `
+			<.value.Out.Set> = gextras.NewHashTable[<.kt.GoType>, <.vt.GoType>](
+				unsafe.Pointer(<.value.InNamePtr 1>),
+				gextras.HashTableOpts[<.kt.GoType>, <.vt.GoType>]{
+					ConvertKey:   <.gen.ConvertKey>,
+					ConvertValue: <.gen.ConvertValue>,
+					<- with .gen.HashKey>
+					HashKey: <.>,
+					<- end>
+					<- with .gen.FreeData>
+					FreeData: <.>,
+					<- end>
+				},
+				<.value.ShouldFree>,
+			)
+		`)
 
 		return true
 	}
@@ -356,32 +452,35 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 	return false
 }
 
-/*
-// cFree calls the free function of the given value on the given string
+// cgoFree calls the free function of the given value on the given string
 // variable. v should be of type unsafe.Pointer. If value is nil, then a generic
 // C.free is returned.
-func (conv *Converter) cFree(value *ValueConverted, v string) string {
+func (conv *Converter) cgoFree(value *ValueConverted, v string) string {
 	switch {
 	case value == nil:
 		fallthrough
 	case value.Resolved.IsBuiltin("string"):
 		return fmt.Sprintf("C.free(%s)", v)
+	case value.Resolved.IsBuiltin("error"):
+		return fmt.Sprintf("C.g_error_free((*C.GError)(%s))", v)
 	}
 
 	ptr := v
-	v = fmt.Sprintf("(%s)(%s)", value.In.Type, v)
+	val := fmt.Sprintf("(%s%s)(%s)", value.OutPtr(1), value.In.Type, v)
 
 	switch value.Resolved.GType {
 	case "GObject.Value": // *externglib.Value
-		return fmt.Sprintf("C.g_value_unset(%s)", v)
+		return fmt.Sprintf("C.g_value_unset(%s)", val)
+	case "GObject.Object":
+		return fmt.Sprintf("C.g_object_unref(C.gpointer(%s))", ptr)
 	case "cairo.Context":
-		return fmt.Sprintf("C.cairo_destroy(%s)", v)
+		return fmt.Sprintf("C.cairo_destroy(%s)", val)
 	case "cairo.Surface":
-		return fmt.Sprintf("C.cairo_surface_destroy(%s)", v)
+		return fmt.Sprintf("C.cairo_surface_destroy(%s)", val)
 	case "cairo.Pattern":
-		return fmt.Sprintf("C.cairo_pattern_destroy(%s)", v)
+		return fmt.Sprintf("C.cairo_pattern_destroy(%s)", val)
 	case "cairo.Region":
-		return fmt.Sprintf("C.cairo_region_destroy(%s)", v)
+		return fmt.Sprintf("C.cairo_region_destroy(%s)", val)
 	}
 
 	if value.Resolved.Extern == nil {
@@ -390,28 +489,24 @@ func (conv *Converter) cFree(value *ValueConverted, v string) string {
 
 	switch typ := value.Resolved.Extern.Type.(type) {
 	case *gir.Class, *gir.Interface: // GObject
-		return fmt.Sprintf("C.g_object_unref(C.gpointer(uintptr(%s)))", ptr)
+		return fmt.Sprintf("C.g_object_unref(C.gpointer(%s))", ptr)
 
 	case *gir.Record:
 		free := types.RecordHasUnref(typ)
 		if free == nil {
 			free = types.RecordHasFree(typ)
 		}
-		if free != nil {
-			return fmt.Sprintf("C.%s(%s)", free.CIdentifier, v)
-		}
-		return fmt.Sprintf("C.free(unsafe.Pointer(%s))", v)
+		return types.RecordPrintFreeMethod(free, v)
 
 	case *gir.Alias:
 		result := conv.convertType(value, value.InName, value.OutName, &typ.Type)
 		if result != nil {
-			return conv.cFree(result, v)
+			return conv.cgoFree(result, v)
 		}
 	}
 
 	return fmt.Sprintf("C.free(%s)", v)
 }
-*/
 
 func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	// TODO: make the freeing use cFree().
@@ -438,7 +533,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 			// https://pkg.go.dev/github.com/diamondburned/gotk4/pkg/core/glib?utm_source=godoc#Value
 			value.p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", value.OutName)
-			value.p.Linef("  C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))")
+			value.p.Linef(conv.cgoFree(value, "unsafe.Pointer(v.Native())"))
 			value.p.Linef("})")
 		}
 		return true
@@ -453,7 +548,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	// These 4 cairo structs are found when grep -R-ing the codebase.
 	case "cairo.Context", "cairo.Pattern", "cairo.Region", "cairo.Surface":
 		var ref string
-		var unref string
 
 		value.header.Import("unsafe")
 		value.header.Import("runtime")
@@ -461,7 +555,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		switch value.Resolved.GType {
 		case "cairo.Context":
 			ref = "cairo_reference"
-			unref = "cairo_destroy"
 			value.p.Linef(
 				"%s = cairo.WrapContext(uintptr(unsafe.Pointer(%s)))",
 				value.Out.Set, value.InNamePtr(1),
@@ -469,7 +562,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 		case "cairo.Surface":
 			ref = "cairo_surface_reference"
-			unref = "cairo_surface_destroy"
 			value.p.Linef(
 				"%s = cairo.WrapSurface(uintptr(unsafe.Pointer(%s)))",
 				value.Out.Set, value.InNamePtr(1),
@@ -477,7 +569,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 		case "cairo.Pattern":
 			ref = "cairo_pattern_reference"
-			unref = "cairo_pattern_destroy"
 			value.p.Descend()
 			// Hack to fit the Pattern type.
 			value.p.Linef("_pp:= &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
@@ -486,7 +577,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 		case "cairo.Region":
 			ref = "cairo_region_reference"
-			unref = "cairo_region_destroy"
 			value.p.Descend()
 			// Hack to fit the Region type.
 			value.p.Linef("_pp:= &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
@@ -502,8 +592,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 		value.p.Linef("runtime.SetFinalizer(%s%s, func(v %s%s) {",
 			value.OutInPtr(1), value.OutName, value.OutPtr(1), value.Out.Type)
-		value.p.Linef("C.%s((%s%s)(unsafe.Pointer(v.Native())))",
-			unref, value.InPtr(1), value.In.Type)
+		value.p.Linef(conv.cgoFree(value, "unsafe.Pointer(v.Native())"))
 		value.p.Linef("})")
 
 		return true
@@ -533,7 +622,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		)
 		// Only free this if C is transferring ownership to us.
 		if value.ShouldFree() {
-			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
+			value.p.Line(conv.cgoFree(value, "unsafe.Pointer("+value.InName+")"))
 		}
 		return true
 
@@ -608,7 +697,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		var free *gir.Method
 		var unref bool
 
 		if ref := types.RecordHasRef(v); ref != nil && value.Resolved.Ptr > 0 {
@@ -618,9 +706,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 				value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InNamePtr(1))
 			}
 			unref = true
-			free = types.RecordHasUnref(v)
-		} else {
-			free = types.RecordHasFree(v)
 		}
 
 		// We can take ownership if the type can be reference-counted anyway.
@@ -635,7 +720,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 				value.Logln(logger.Debug, "SetFinalizer set fail")
 			}
 
-			value.p.Linef(types.RecordPrintFreeMethod(free, "intern.C"))
+			value.p.Linef(conv.cgoFree(value, "intern.C"))
 			value.p.Linef("},")
 			value.p.Linef(")")
 		}

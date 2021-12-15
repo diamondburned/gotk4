@@ -125,7 +125,7 @@ func (a *Quaternion) Equal(b *Quaternion) bool {
 }
 
 // Init initializes a #graphene_quaternion_t using the given four values.
-func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternion {
+func (q *Quaternion) Init(x, y, z, w float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
 	var _arg2 C.float                  // out
@@ -181,7 +181,7 @@ func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 // Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
 //
 // See also: graphene_quaternion_init_from_euler().
-func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Quaternion {
+func (q *Quaternion) InitFromAngles(degX, degY, degZ float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
 	var _arg2 C.float                  // out
@@ -273,7 +273,7 @@ func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 // Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
 //
 // See also: graphene_quaternion_init_from_euler().
-func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *Quaternion {
+func (q *Quaternion) InitFromRadians(radX, radY, radZ float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
 	var _arg2 C.float                  // out

@@ -16,7 +16,7 @@ const (
 	FILL_RULE_EVEN_ODD FillRule = C.CAIRO_FILL_RULE_EVEN_ODD
 )
 
-func marshalFillRule(p uintptr) (interface{}, error) {
+func marshalFillRule(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return FillRule(c), nil
 }

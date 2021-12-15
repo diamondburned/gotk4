@@ -393,7 +393,7 @@ func (e *Euler) Z() float32 {
 // Init initializes a #graphene_euler_t using the given angles.
 //
 // The order of the rotations is GRAPHENE_EULER_ORDER_DEFAULT.
-func (e *Euler) Init(x float32, y float32, z float32) *Euler {
+func (e *Euler) Init(x, y, z float32) *Euler {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 C.float             // out
 	var _arg2 C.float             // out
@@ -504,7 +504,7 @@ func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 
 // InitFromRadians initializes a #graphene_euler_t using the given angles and
 // order of rotation.
-func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrder) *Euler {
+func (e *Euler) InitFromRadians(x, y, z float32, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.float                  // out
 	var _arg2 C.float                  // out
@@ -563,7 +563,7 @@ func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 
 // InitWithOrder initializes a #graphene_euler_t with the given angles and
 // order.
-func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder) *Euler {
+func (e *Euler) InitWithOrder(x, y, z float32, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.float                  // out
 	var _arg2 C.float                  // out

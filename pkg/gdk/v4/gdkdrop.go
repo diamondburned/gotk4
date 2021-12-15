@@ -336,7 +336,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	var _goerr error                   // out
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
+	C.free(unsafe.Pointer(_arg2))
 	if _cret != nil {
 		{
 			objptr := unsafe.Pointer(_cret)

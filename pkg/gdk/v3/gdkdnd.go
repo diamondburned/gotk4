@@ -131,7 +131,7 @@ const (
 	ActionAsk DragAction = 0b100000
 )
 
-func marshalDragAction(p uintptr) (interface{}, error) {
+func marshalDragAction(p uintptr) (any, error) {
 	return DragAction(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

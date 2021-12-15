@@ -296,6 +296,10 @@ var Filters = []FilterMatcher{
 	// These are removed in Preprocessors.
 	FileFilter("gfiledescriptorbased."),
 	FileFilter("gunix"),
+	// This generates a non-instantialized type, but it's not used anywhere.
+	// Ideally, we should just not generate the alias and directly generate the
+	// resolved type.
+	AbsoluteFilter("Atk.AttributeSet"),
 
 	FileFilter("gasyncqueue."),
 	FileFilter("gatomic."),
@@ -381,8 +385,16 @@ func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
 	h.Import("unsafe")
 	h.Import("runtime")
 	h.ImportCore("gextras")
+	h.AddMarshaler("G_TYPE_VARIANT", "Variant")
 
 	p := fg.Pen()
+	// Copy-pasted from the code generator
+	p.Line(`
+		func marshalVariant(p uintptr) (interface{}, error) {
+	        b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	        return &Variant{&variant{(*C.GVariant)(b)}}, nil
+		}
+	`)
 	p.Line(`
 		// Foreach iterates over items in value. The iteration breaks out once f
 		// returns true. This method wraps around g_variant_iter_new.
@@ -531,14 +543,14 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 	}
 
 	fns := []fn{
-		{"IdleAdd", []string{"f interface{}"}, "SourceHandle"},
-		{"IdleAddPriority", []string{"p Priority", "f interface{}"}, "SourceHandle"},
-		{"TimeoutAdd", []string{"ms uint", "f interface{}"}, "SourceHandle"},
-		{"TimeoutAddPriority", []string{"ms uint", "p Priority", "f interface{}"}, "SourceHandle"},
-		{"TimeoutSecondsAdd", []string{"s uint", "f interface{}"}, "SourceHandle"},
-		{"TimeoutSecondsAddPriority", []string{"s uint", "p Priority", "f interface{}"}, "SourceHandle"},
+		{"IdleAdd", []string{"f externglib.AnyClosure"}, "SourceHandle"},
+		{"IdleAddPriority", []string{"p Priority", "f externglib.AnyClosure"}, "SourceHandle"},
+		{"TimeoutAdd", []string{"ms uint", "f externglib.AnyClosure"}, "SourceHandle"},
+		{"TimeoutAddPriority", []string{"ms uint", "p Priority", "f externglib.AnyClosure"}, "SourceHandle"},
+		{"TimeoutSecondsAdd", []string{"s uint", "f externglib.AnyClosure"}, "SourceHandle"},
+		{"TimeoutSecondsAddPriority", []string{"s uint", "p Priority", "f externglib.AnyClosure"}, "SourceHandle"},
 		{"TypeFromName", []string{"typeName string"}, "Type"},
-		{"NewValue", []string{"v interface{}"}, "*Value"},
+		{"NewValue", []string{"v any"}, "*Value"},
 		{"SourceRemove", []string{"src SourceHandle"}, "bool"},
 	}
 

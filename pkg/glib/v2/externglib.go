@@ -13,32 +13,32 @@ import (
 import "C"
 
 // IdleAdd is an alias for pkg/core/glib.IdleAdd.
-func IdleAdd(f interface{}) SourceHandle {
+func IdleAdd(f externglib.AnyClosure) SourceHandle {
 	return externglib.IdleAdd(f)
 }
 
 // IdleAddPriority is an alias for pkg/core/glib.IdleAddPriority.
-func IdleAddPriority(p Priority, f interface{}) SourceHandle {
+func IdleAddPriority(p Priority, f externglib.AnyClosure) SourceHandle {
 	return externglib.IdleAddPriority(p, f)
 }
 
 // TimeoutAdd is an alias for pkg/core/glib.TimeoutAdd.
-func TimeoutAdd(ms uint, f interface{}) SourceHandle {
+func TimeoutAdd(ms uint, f externglib.AnyClosure) SourceHandle {
 	return externglib.TimeoutAdd(ms, f)
 }
 
 // TimeoutAddPriority is an alias for pkg/core/glib.TimeoutAddPriority.
-func TimeoutAddPriority(ms uint, p Priority, f interface{}) SourceHandle {
+func TimeoutAddPriority(ms uint, p Priority, f externglib.AnyClosure) SourceHandle {
 	return externglib.TimeoutAddPriority(ms, p, f)
 }
 
 // TimeoutSecondsAdd is an alias for pkg/core/glib.TimeoutSecondsAdd.
-func TimeoutSecondsAdd(s uint, f interface{}) SourceHandle {
+func TimeoutSecondsAdd(s uint, f externglib.AnyClosure) SourceHandle {
 	return externglib.TimeoutSecondsAdd(s, f)
 }
 
 // TimeoutSecondsAddPriority is an alias for pkg/core/glib.TimeoutSecondsAddPriority.
-func TimeoutSecondsAddPriority(s uint, p Priority, f interface{}) SourceHandle {
+func TimeoutSecondsAddPriority(s uint, p Priority, f externglib.AnyClosure) SourceHandle {
 	return externglib.TimeoutSecondsAddPriority(s, p, f)
 }
 
@@ -48,7 +48,7 @@ func TypeFromName(typeName string) Type {
 }
 
 // NewValue is an alias for pkg/core/glib.NewValue.
-func NewValue(v interface{}) *Value {
+func NewValue(v any) *Value {
 	return externglib.NewValue(v)
 }
 

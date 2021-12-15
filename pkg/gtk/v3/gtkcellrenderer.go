@@ -85,7 +85,7 @@ const (
 	CellRendererExpanded CellRendererState = 0b1000000
 )
 
-func marshalCellRendererState(p uintptr) (interface{}, error) {
+func marshalCellRendererState(p uintptr) (any, error) {
 	return CellRendererState(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

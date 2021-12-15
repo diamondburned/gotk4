@@ -48,7 +48,7 @@ const (
 	SeatCapabilityAll SeatCapabilities = 0b1111
 )
 
-func marshalSeatCapabilities(p uintptr) (interface{}, error) {
+func marshalSeatCapabilities(p uintptr) (any, error) {
 	return SeatCapabilities(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -151,7 +151,7 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 //
 //    - capabilities to get devices for.
 //
-func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
+func (seat *Seat) Devices(capabilities SeatCapabilities) *gextras.List[Devicer] {
 	var _arg0 *C.GdkSeat            // out
 	var _arg1 C.GdkSeatCapabilities // out
 	var _cret *C.GList              // in
@@ -163,27 +163,32 @@ func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 	runtime.KeepAlive(seat)
 	runtime.KeepAlive(capabilities)
 
-	var _list []Devicer // out
+	var _list *gextras.List[Devicer] // out
 
-	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkDevice)(v)
-		var dst Devicer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gdk.Devicer is nil")
-			}
+	_list = gextras.NewList[Devicer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Devicer]{
+			Convert: func(ptr unsafe.Pointer) Devicer {
+				src := *(**C.GdkDevice)(ptr)
+				var dst Devicer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gdk.Devicer is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Devicer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -262,7 +267,7 @@ func (seat *Seat) Pointer() Devicer {
 }
 
 // Tools returns all GdkDeviceTools that are known to the application.
-func (seat *Seat) Tools() []DeviceTool {
+func (seat *Seat) Tools() *gextras.List[DeviceTool] {
 	var _arg0 *C.GdkSeat // out
 	var _cret *C.GList   // in
 
@@ -271,15 +276,20 @@ func (seat *Seat) Tools() []DeviceTool {
 	_cret = C.gdk_seat_get_tools(_arg0)
 	runtime.KeepAlive(seat)
 
-	var _list []DeviceTool // out
+	var _list *gextras.List[DeviceTool] // out
 
-	_list = make([]DeviceTool, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkDeviceTool)(v)
-		var dst DeviceTool // out
-		dst = *wrapDeviceTool(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[DeviceTool](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[DeviceTool]{
+			Convert: func(ptr unsafe.Pointer) DeviceTool {
+				src := *(**C.GdkDeviceTool)(ptr)
+				var dst DeviceTool // out
+				dst = *wrapDeviceTool(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }

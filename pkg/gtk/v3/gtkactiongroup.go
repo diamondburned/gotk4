@@ -312,7 +312,7 @@ func (actionGroup *ActionGroup) Visible() bool {
 // ListActions lists the actions in the action group.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroup) ListActions() []Action {
+func (actionGroup *ActionGroup) ListActions() *gextras.List[Action] {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GList          // in
 
@@ -321,15 +321,20 @@ func (actionGroup *ActionGroup) ListActions() []Action {
 	_cret = C.gtk_action_group_list_actions(_arg0)
 	runtime.KeepAlive(actionGroup)
 
-	var _list []Action // out
+	var _list *gextras.List[Action] // out
 
-	_list = make([]Action, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkAction)(v)
-		var dst Action // out
-		dst = *wrapAction(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[Action](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Action]{
+			Convert: func(ptr unsafe.Pointer) Action {
+				src := *(**C.GtkAction)(ptr)
+				var dst Action // out
+				dst = *wrapAction(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }

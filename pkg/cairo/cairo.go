@@ -59,7 +59,7 @@ const (
 	CONTENT_COLOR_ALPHA Content = C.CAIRO_CONTENT_COLOR_ALPHA
 )
 
-func marshalContent(p uintptr) (interface{}, error) {
+func marshalContent(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return Content(c), nil
 }

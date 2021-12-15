@@ -269,7 +269,7 @@ const (
 	DebugLayout       DebugFlag = 0b1000000000000000000000
 )
 
-func marshalDebugFlag(p uintptr) (interface{}, error) {
+func marshalDebugFlag(p uintptr) (any, error) {
 	return DebugFlag(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

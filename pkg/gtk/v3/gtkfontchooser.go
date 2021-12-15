@@ -52,7 +52,7 @@ const (
 	FontChooserLevelFeatures FontChooserLevel = 0b1000
 )
 
-func marshalFontChooserLevel(p uintptr) (interface{}, error) {
+func marshalFontChooserLevel(p uintptr) (any, error) {
 	return FontChooserLevel(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -286,7 +286,7 @@ func (fontchooser *FontChooser) Font() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -400,7 +400,7 @@ func (fontchooser *FontChooser) FontFeatures() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -464,7 +464,7 @@ func (fontchooser *FontChooser) Language() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -499,7 +499,7 @@ func (fontchooser *FontChooser) PreviewText() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

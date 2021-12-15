@@ -75,7 +75,7 @@ func NewBitsetEmpty() *Bitset {
 }
 
 // NewBitsetRange constructs a struct Bitset.
-func NewBitsetRange(start uint, nItems uint) *Bitset {
+func NewBitsetRange(start, nItems uint) *Bitset {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 	var _cret *C.GtkBitset // in
@@ -124,7 +124,7 @@ func (self *Bitset) Add(value uint) bool {
 
 // AddRange adds all values from start (inclusive) to start + n_items
 // (exclusive) in self.
-func (self *Bitset) AddRange(start uint, nItems uint) {
+func (self *Bitset) AddRange(start, nItems uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -141,7 +141,7 @@ func (self *Bitset) AddRange(start uint, nItems uint) {
 
 // AddRangeClosed adds the closed range [first, last], so first, last and all
 // values in between. first must be smaller than last.
-func (self *Bitset) AddRangeClosed(first uint, last uint) {
+func (self *Bitset) AddRangeClosed(first, last uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -159,7 +159,7 @@ func (self *Bitset) AddRangeClosed(first uint, last uint) {
 // AddRectangle interprets the values as a 2-dimensional boolean grid with the
 // given stride and inside that grid, adds a rectangle with the given width and
 // height.
-func (self *Bitset) AddRectangle(start uint, width uint, height uint, stride uint) {
+func (self *Bitset) AddRectangle(start, width, height, stride uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -356,7 +356,7 @@ func (self *Bitset) Size() uint64 {
 // Note that this function returns a guint64, because when all values are set,
 // the return value is G_MAXUINT + 1. Unless you are sure this cannot happen (it
 // can't with GListModel), be sure to use a 64bit type.
-func (self *Bitset) SizeInRange(first uint, last uint) uint64 {
+func (self *Bitset) SizeInRange(first, last uint) uint64 {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -449,7 +449,7 @@ func (self *Bitset) RemoveAll() {
 
 // RemoveRange removes all values from start (inclusive) to start + n_items
 // (exclusive) in self.
-func (self *Bitset) RemoveRange(start uint, nItems uint) {
+func (self *Bitset) RemoveRange(start, nItems uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -466,7 +466,7 @@ func (self *Bitset) RemoveRange(start uint, nItems uint) {
 
 // RemoveRangeClosed removes the closed range [first, last], so first, last and
 // all values in between. first must be smaller than last.
-func (self *Bitset) RemoveRangeClosed(first uint, last uint) {
+func (self *Bitset) RemoveRangeClosed(first, last uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -484,7 +484,7 @@ func (self *Bitset) RemoveRangeClosed(first uint, last uint) {
 // RemoveRectangle interprets the values as a 2-dimensional boolean grid with
 // the given stride and inside that grid, removes a rectangle with the given
 // width and height.
-func (self *Bitset) RemoveRectangle(start uint, width uint, height uint, stride uint) {
+func (self *Bitset) RemoveRectangle(start, width, height, stride uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -545,7 +545,7 @@ func (self *Bitset) ShiftRight(amount uint) {
 // Then, it "pastes" new room into the bitset by shifting all values larger than
 // position by added spaces to the right. This frees up space that can then be
 // filled.
-func (self *Bitset) Splice(position uint, removed uint, added uint) {
+func (self *Bitset) Splice(position, removed, added uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out

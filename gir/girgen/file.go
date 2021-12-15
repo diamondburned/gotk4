@@ -56,7 +56,7 @@ func (f *FileGenerator) Pen() *pen.Pen {
 	return &f.pen.Pen
 }
 
-func (f *FileGenerator) Logln(lvl logger.Level, v ...interface{}) {
+func (f *FileGenerator) Logln(lvl logger.Level, v ...any) {
 	p := fmt.Sprintf("file %s", f.name)
 	f.NamespaceGenerator.Logln(lvl, logger.Prefix(v, p)...)
 }

@@ -29,7 +29,7 @@ func (j *Joints) Reset(sep string) {
 func (j *Joints) Add(str string) { j.strs = append(j.strs, str) }
 
 // Addf adds a new joint with Sprintf.
-func (j *Joints) Addf(f string, v ...interface{}) {
+func (j *Joints) Addf(f string, v ...any) {
 	j.Add(fmt.Sprintf(f, v...))
 }
 

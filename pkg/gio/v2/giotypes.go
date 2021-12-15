@@ -513,7 +513,7 @@ func (matcher *FileAttributeMatcher) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -852,7 +852,7 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	if _cerr != nil {
@@ -1016,7 +1016,7 @@ func marshalSrvTarget(p uintptr) (interface{}, error) {
 }
 
 // NewSrvTarget constructs a struct SrvTarget.
-func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget {
+func NewSrvTarget(hostname string, port, priority, weight uint16) *SrvTarget {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.guint16     // out
 	var _arg3 C.guint16     // out

@@ -66,7 +66,7 @@ const (
 	PlacesOpenNewWindow PlacesOpenFlags = 0b100
 )
 
-func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
+func marshalPlacesOpenFlags(p uintptr) (any, error) {
 	return PlacesOpenFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -477,7 +477,7 @@ func (sidebar *PlacesSidebar) ShowTrash() bool {
 }
 
 // ListShortcuts gets the list of shortcuts.
-func (sidebar *PlacesSidebar) ListShortcuts() []gio.Filer {
+func (sidebar *PlacesSidebar) ListShortcuts() *gextras.SList[gio.Filer] {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret *C.GSList           // in
 
@@ -486,27 +486,36 @@ func (sidebar *PlacesSidebar) ListShortcuts() []gio.Filer {
 	_cret = C.gtk_places_sidebar_list_shortcuts(_arg0)
 	runtime.KeepAlive(sidebar)
 
-	var _sList []gio.Filer // out
+	var _sList *gextras.SList[gio.Filer] // out
 
-	_sList = make([]gio.Filer, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GFile)(v)
-		var dst gio.Filer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Filer is nil")
-			}
+	_sList = gextras.NewSList[gio.Filer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[gio.Filer]{
+			Convert: func(ptr unsafe.Pointer) gio.Filer {
+				src := *(**C.GFile)(ptr)
+				var dst gio.Filer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.Filer is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.Filer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
-			}
-			dst = rv
-		}
-		_sList = append(_sList, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(gio.Filer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GFile)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _sList
 }

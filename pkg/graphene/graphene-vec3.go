@@ -314,7 +314,7 @@ func (v *Vec3) Z() float32 {
 // Init initializes a #graphene_vec3_t using the given values.
 //
 // This function can be called multiple times.
-func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
+func (v *Vec3) Init(x, y, z float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out

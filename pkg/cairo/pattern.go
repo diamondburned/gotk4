@@ -24,7 +24,7 @@ const (
 	FILTER_GAUSSIAN Filter = C.CAIRO_FILTER_GAUSSIAN
 )
 
-func marshalFilter(p uintptr) (interface{}, error) {
+func marshalFilter(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return Filter(c), nil
 }
@@ -88,7 +88,7 @@ func (v *Pattern) Native() uintptr {
 	return uintptr(unsafe.Pointer(v.native()))
 }
 
-func marshalPattern(p uintptr) (interface{}, error) {
+func marshalPattern(p uintptr) (any, error) {
 	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	pattern := (*C.cairo_pattern_t)(unsafe.Pointer(c))
 	return wrapPattern(pattern), nil

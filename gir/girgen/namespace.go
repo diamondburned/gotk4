@@ -64,7 +64,7 @@ func (n *NamespaceGenerator) Namespace() *gir.NamespaceFindResult {
 	return n.current
 }
 
-func (n *NamespaceGenerator) Logln(lvl logger.Level, v ...interface{}) {
+func (n *NamespaceGenerator) Logln(lvl logger.Level, v ...any) {
 	p := fmt.Sprintf("package %s/v%s:", n.PkgName, n.PkgVersion)
 	n.Generator.Logln(lvl, logger.Prefix(v, p)...)
 }

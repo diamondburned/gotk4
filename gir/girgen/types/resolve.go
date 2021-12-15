@@ -41,6 +41,7 @@ type ResolvedImport struct {
 var goContainerTypes = map[string]struct{}{
 	"error":       {},
 	"string":      {},
+	"any":         {},
 	"interface{}": {},
 }
 
@@ -90,13 +91,23 @@ func builtinType(imp, typ string, girType gir.Type) *Resolved {
 
 // externGLibType returns an external GLib type from gotk3.
 func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
-	if typ.CType == "" {
-		typ.CType = ctyp
-	}
-
-	imp := ResolvedImport{
+	return externLocalType(goType, typ, ctyp, ResolvedImport{
 		Path:    "github.com/diamondburned/gotk4/pkg/core/glib",
 		Package: "externglib",
+	})
+}
+
+// externGExtrasType returns an external GExtras type.
+func externGExtrasType(goType string, typ gir.Type, ctyp string) *Resolved {
+	return externLocalType(goType, typ, ctyp, ResolvedImport{
+		Path:    "github.com/diamondburned/gotk4/pkg/core/gextras",
+		Package: "gextras",
+	})
+}
+
+func externLocalType(goType string, typ gir.Type, ctyp string, imp ResolvedImport) *Resolved {
+	if typ.CType == "" {
+		typ.CType = ctyp
 	}
 
 	var ptr uint8
@@ -111,7 +122,7 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 		ptr--
 	}
 
-	goType = "externglib." + strings.TrimPrefix(goType, "*")
+	goType = imp.Package + "." + strings.TrimPrefix(goType, "*")
 
 	return &Resolved{
 		Builtin:    &goType,
@@ -198,7 +209,7 @@ func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult)
 
 // TypeFromResult is meant to be used by an external package to generate a
 // Resolved from existing type information.
-func TypeFromResult(gen FileGenerator, v interface{}) *Resolved {
+func TypeFromResult(gen FileGenerator, v any) *Resolved {
 	res := gir.TypeFindResult{
 		NamespaceFindResult: gen.Namespace(),
 		Type:                v,
@@ -688,6 +699,9 @@ var BuiltinHandledTypes = []FilterMatcher{
 	// These are already manually covered in the girgen code; they are
 	// provided by package gotk3/glib.
 	AbsoluteFilter("GLib.Error"),
+	// These are already implemented elsewhere.
+	AbsoluteFilter("GLib.HashTable"),
+	AbsoluteFilter("GLib.HashTableIter"),
 	// Ignore generating everything in GObject, but allow resolving its
 	// types.
 	RegexFilter("GObject..*"),
@@ -756,10 +770,11 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	case "GLib.Error":
 		return builtinType("", "error", typ)
 	case "GLib.List":
-		return externGLibType("*List", typ, "GList*")
+		return externGExtrasType("*List", typ, "GList*")
 	case "GLib.SList":
-		return externGLibType("*SList", typ, "GSList*")
-	// TODO: include GLib.HashTable
+		return externGExtrasType("*SList", typ, "GSList*")
+	case "GLib.HashTable":
+		return externGExtrasType("*HashTable", typ, "GHashTable*")
 	case "GObject.Type", "GType":
 		return externGLibType("Type", typ, "GType")
 	case "GObject.Value", "GValue": // inconsistency???

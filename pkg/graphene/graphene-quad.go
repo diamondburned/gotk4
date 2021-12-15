@@ -123,7 +123,7 @@ func (q *Quad) Point(index_ uint) *Point {
 }
 
 // Init initializes a #graphene_quad_t with the given points.
-func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
+func (q *Quad) Init(p1, p2, p3, p4 *Point) *Quad {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 *C.graphene_point_t // out
 	var _arg2 *C.graphene_point_t // out

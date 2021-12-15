@@ -870,7 +870,7 @@ func (window *Window) Icon() *gdkpixbuf.Pixbuf {
 
 // IconList retrieves the list of icons set by gtk_window_set_icon_list(). The
 // list is copied, but the reference count on each member won’t be incremented.
-func (window *Window) IconList() []gdkpixbuf.Pixbuf {
+func (window *Window) IconList() *gextras.List[gdkpixbuf.Pixbuf] {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GList     // in
 
@@ -879,25 +879,30 @@ func (window *Window) IconList() []gdkpixbuf.Pixbuf {
 	_cret = C.gtk_window_get_icon_list(_arg0)
 	runtime.KeepAlive(window)
 
-	var _list []gdkpixbuf.Pixbuf // out
+	var _list *gextras.List[gdkpixbuf.Pixbuf] // out
 
-	_list = make([]gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkPixbuf)(v)
-		var dst gdkpixbuf.Pixbuf // out
-		{
-			obj := externglib.Take(unsafe.Pointer(src))
-			dst = gdkpixbuf.Pixbuf{
-				Object: obj,
-				LoadableIcon: gio.LoadableIcon{
-					Icon: gio.Icon{
+	_list = gextras.NewList[gdkpixbuf.Pixbuf](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[gdkpixbuf.Pixbuf]{
+			Convert: func(ptr unsafe.Pointer) gdkpixbuf.Pixbuf {
+				src := *(**C.GdkPixbuf)(ptr)
+				var dst gdkpixbuf.Pixbuf // out
+				{
+					obj := externglib.Take(unsafe.Pointer(src))
+					dst = gdkpixbuf.Pixbuf{
 						Object: obj,
-					},
-				},
-			}
-		}
-		_list = append(_list, dst)
-	})
+						LoadableIcon: gio.LoadableIcon{
+							Icon: gio.Icon{
+								Object: obj,
+							},
+						},
+					}
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -3109,30 +3114,35 @@ func (window *Window) ConnectSetFocus(f func(widget Widgetter)) externglib.Signa
 // gtk_window_set_default_icon_list(). The list is a copy and should be freed
 // with g_list_free(), but the pixbufs in the list have not had their reference
 // count incremented.
-func WindowGetDefaultIconList() []gdkpixbuf.Pixbuf {
+func WindowGetDefaultIconList() *gextras.List[gdkpixbuf.Pixbuf] {
 	var _cret *C.GList // in
 
 	_cret = C.gtk_window_get_default_icon_list()
 
-	var _list []gdkpixbuf.Pixbuf // out
+	var _list *gextras.List[gdkpixbuf.Pixbuf] // out
 
-	_list = make([]gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkPixbuf)(v)
-		var dst gdkpixbuf.Pixbuf // out
-		{
-			obj := externglib.Take(unsafe.Pointer(src))
-			dst = gdkpixbuf.Pixbuf{
-				Object: obj,
-				LoadableIcon: gio.LoadableIcon{
-					Icon: gio.Icon{
+	_list = gextras.NewList[gdkpixbuf.Pixbuf](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[gdkpixbuf.Pixbuf]{
+			Convert: func(ptr unsafe.Pointer) gdkpixbuf.Pixbuf {
+				src := *(**C.GdkPixbuf)(ptr)
+				var dst gdkpixbuf.Pixbuf // out
+				{
+					obj := externglib.Take(unsafe.Pointer(src))
+					dst = gdkpixbuf.Pixbuf{
 						Object: obj,
-					},
-				},
-			}
-		}
-		_list = append(_list, dst)
-	})
+						LoadableIcon: gio.LoadableIcon{
+							Icon: gio.Icon{
+								Object: obj,
+							},
+						},
+					}
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -3158,32 +3168,37 @@ func WindowGetDefaultIconName() string {
 // through the list and perform actions involving callbacks that might destroy
 // the widgets, you must call g_list_foreach (result, (GFunc)g_object_ref, NULL)
 // first, and then unref all the widgets afterwards.
-func WindowListToplevels() []Widgetter {
+func WindowListToplevels() *gextras.List[Widgetter] {
 	var _cret *C.GList // in
 
 	_cret = C.gtk_window_list_toplevels()
 
-	var _list []Widgetter // out
+	var _list *gextras.List[Widgetter] // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
+	_list = gextras.NewList[Widgetter](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Widgetter]{
+			Convert: func(ptr unsafe.Pointer) Widgetter {
+				src := *(**C.GtkWidget)(ptr)
+				var dst Widgetter // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gtk.Widgetter is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Widgetter)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }

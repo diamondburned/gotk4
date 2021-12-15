@@ -36,7 +36,7 @@ const (
 	PopoverMenuNested PopoverMenuFlags = 0b1
 )
 
-func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
+func marshalPopoverMenuFlags(p uintptr) (any, error) {
 	return PopoverMenuFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

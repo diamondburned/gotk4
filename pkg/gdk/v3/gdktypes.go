@@ -423,7 +423,7 @@ const (
 	AxisFlagSlider AxisFlags = 0b1000000000
 )
 
-func marshalAxisFlags(p uintptr) (interface{}, error) {
+func marshalAxisFlags(p uintptr) (any, error) {
 	return AxisFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -560,7 +560,7 @@ const (
 	AllEventsMask EventMask = 0b11111111111111111111111110
 )
 
-func marshalEventMask(p uintptr) (interface{}, error) {
+func marshalEventMask(p uintptr) (any, error) {
 	return EventMask(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -739,7 +739,7 @@ const (
 	ModifierMask ModifierType = 0b1011100000000000001111111111111
 )
 
-func marshalModifierType(p uintptr) (interface{}, error) {
+func marshalModifierType(p uintptr) (any, error) {
 	return ModifierType(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

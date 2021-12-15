@@ -680,11 +680,11 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 
 	if _arg1 != nil {
 		_start = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-		defer C.free(unsafe.Pointer(_arg1))
+		C.free(unsafe.Pointer(_arg1))
 	}
 	if _arg2 != nil {
 		_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	_script = Script(_arg3)
 

@@ -40,7 +40,7 @@ const (
 	ToolPaletteDragGroups ToolPaletteDragTargets = 0b10
 )
 
-func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
+func marshalToolPaletteDragTargets(p uintptr) (any, error) {
 	return ToolPaletteDragTargets(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

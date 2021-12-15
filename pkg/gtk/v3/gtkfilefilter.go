@@ -48,7 +48,7 @@ const (
 	FileFilterMIMEType FileFilterFlags = 0b1000
 )
 
-func marshalFileFilterFlags(p uintptr) (interface{}, error) {
+func marshalFileFilterFlags(p uintptr) (any, error) {
 	return FileFilterFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

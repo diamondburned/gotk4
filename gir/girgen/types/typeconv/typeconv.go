@@ -415,7 +415,7 @@ func (conv *Converter) rgen() types.FileGenerator {
 // every type. We can do this with IsPrimitive and IsClass fairly easily. We
 // will have to account for Go type edge cases, however.
 
-func (conv *Converter) Logln(lvl logger.Level, v ...interface{}) {
+func (conv *Converter) Logln(lvl logger.Level, v ...any) {
 	if conv.logger == nil {
 		conv.fgen.Logln(lvl, v...)
 	} else {

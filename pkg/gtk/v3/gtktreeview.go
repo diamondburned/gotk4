@@ -1035,7 +1035,7 @@ func (treeView *TreeView) Column(n int) *TreeViewColumn {
 
 // Columns returns a #GList of all the TreeViewColumn s currently in tree_view.
 // The returned list must be freed with g_list_free ().
-func (treeView *TreeView) Columns() []TreeViewColumn {
+func (treeView *TreeView) Columns() *gextras.List[TreeViewColumn] {
 	var _arg0 *C.GtkTreeView // out
 	var _cret *C.GList       // in
 
@@ -1044,15 +1044,20 @@ func (treeView *TreeView) Columns() []TreeViewColumn {
 	_cret = C.gtk_tree_view_get_columns(_arg0)
 	runtime.KeepAlive(treeView)
 
-	var _list []TreeViewColumn // out
+	var _list *gextras.List[TreeViewColumn] // out
 
-	_list = make([]TreeViewColumn, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkTreeViewColumn)(v)
-		var dst TreeViewColumn // out
-		dst = *wrapTreeViewColumn(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[TreeViewColumn](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[TreeViewColumn]{
+			Convert: func(ptr unsafe.Pointer) TreeViewColumn {
+				src := *(**C.GtkTreeViewColumn)(ptr)
+				var dst TreeViewColumn // out
+				dst = *wrapTreeViewColumn(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }

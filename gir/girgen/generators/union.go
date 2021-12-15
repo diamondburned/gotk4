@@ -281,7 +281,7 @@ func (ug *UnionGenerator) Use(union *gir.Union) bool {
 	return true
 }
 
-func (ug *UnionGenerator) Logln(lvl logger.Level, v ...interface{}) {
+func (ug *UnionGenerator) Logln(lvl logger.Level, v ...any) {
 	p := fmt.Sprintf("union %s (C.%s):", ug.GoName, ug.CType)
 	ug.gen.Logln(lvl, logger.Prefix(v, p)...)
 }

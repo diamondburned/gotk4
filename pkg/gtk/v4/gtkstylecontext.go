@@ -47,7 +47,7 @@ const (
 	StyleContextPrintShowChange StyleContextPrintFlags = 0b100
 )
 
-func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
+func marshalStyleContextPrintFlags(p uintptr) (any, error) {
 	return StyleContextPrintFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -558,7 +558,7 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

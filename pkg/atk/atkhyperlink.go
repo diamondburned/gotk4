@@ -33,7 +33,7 @@ const (
 	HyperlinkIsInline HyperlinkStateFlags = 0b1
 )
 
-func marshalHyperlinkStateFlags(p uintptr) (interface{}, error) {
+func marshalHyperlinkStateFlags(p uintptr) (any, error) {
 	return HyperlinkStateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -236,7 +236,7 @@ func (link_ *Hyperlink) URI(i int) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

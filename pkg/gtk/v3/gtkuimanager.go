@@ -61,7 +61,7 @@ const (
 	UiManagerPopupWithAccels UIManagerItemType = 0b1000000000
 )
 
-func marshalUIManagerItemType(p uintptr) (interface{}, error) {
+func marshalUIManagerItemType(p uintptr) (any, error) {
 	return UIManagerItemType(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -647,7 +647,7 @@ func (manager *UIManager) Action(path string) *Action {
 // ActionGroups returns the list of action groups associated with manager.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) ActionGroups() []ActionGroup {
+func (manager *UIManager) ActionGroups() *gextras.List[ActionGroup] {
 	var _arg0 *C.GtkUIManager // out
 	var _cret *C.GList        // in
 
@@ -656,15 +656,20 @@ func (manager *UIManager) ActionGroups() []ActionGroup {
 	_cret = C.gtk_ui_manager_get_action_groups(_arg0)
 	runtime.KeepAlive(manager)
 
-	var _list []ActionGroup // out
+	var _list *gextras.List[ActionGroup] // out
 
-	_list = make([]ActionGroup, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkActionGroup)(v)
-		var dst ActionGroup // out
-		dst = *wrapActionGroup(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[ActionGroup](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[ActionGroup]{
+			Convert: func(ptr unsafe.Pointer) ActionGroup {
+				src := *(**C.GtkActionGroup)(ptr)
+				var dst ActionGroup // out
+				dst = *wrapActionGroup(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _list
 }
@@ -701,7 +706,7 @@ func (manager *UIManager) AddTearoffs() bool {
 //    - types specifies the types of toplevel widgets to include. Allowed types
 //    are K_UI_MANAGER_MENUBAR, K_UI_MANAGER_TOOLBAR and K_UI_MANAGER_POPUP.
 //
-func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
+func (manager *UIManager) Toplevels(types UIManagerItemType) *gextras.SList[Widgetter] {
 	var _arg0 *C.GtkUIManager        // out
 	var _arg1 C.GtkUIManagerItemType // out
 	var _cret *C.GSList              // in
@@ -713,27 +718,32 @@ func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(types)
 
-	var _sList []Widgetter // out
+	var _sList *gextras.SList[Widgetter] // out
 
-	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
+	_sList = gextras.NewSList[Widgetter](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Widgetter]{
+			Convert: func(ptr unsafe.Pointer) Widgetter {
+				src := *(**C.GtkWidget)(ptr)
+				var dst Widgetter // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gtk.Widgetter is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_sList = append(_sList, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Widgetter)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -753,7 +763,7 @@ func (manager *UIManager) Ui() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

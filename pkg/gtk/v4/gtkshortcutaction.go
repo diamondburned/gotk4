@@ -48,7 +48,7 @@ const (
 	ShortcutActionExclusive ShortcutActionFlags = 0b1
 )
 
-func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
+func marshalShortcutActionFlags(p uintptr) (any, error) {
 	return ShortcutActionFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -511,7 +511,7 @@ func (self *ShortcutAction) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

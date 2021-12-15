@@ -43,7 +43,7 @@ const (
 	IONval IOCondition = 0b100000
 )
 
-func marshalIOCondition(p uintptr) (interface{}, error) {
+func marshalIOCondition(p uintptr) (any, error) {
 	return IOCondition(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

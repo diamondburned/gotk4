@@ -261,7 +261,7 @@ func (manager *RecentManager) AddItem(uri string) bool {
 }
 
 // Items gets the list of recently used resources.
-func (manager *RecentManager) Items() []*RecentInfo {
+func (manager *RecentManager) Items() *gextras.List[*RecentInfo] {
 	var _arg0 *C.GtkRecentManager // out
 	var _cret *C.GList            // in
 
@@ -270,21 +270,31 @@ func (manager *RecentManager) Items() []*RecentInfo {
 	_cret = C.gtk_recent_manager_get_items(_arg0)
 	runtime.KeepAlive(manager)
 
-	var _list []*RecentInfo // out
+	var _list *gextras.List[*RecentInfo] // out
 
-	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkRecentInfo)(v)
-		var dst *RecentInfo // out
-		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+	_list = gextras.NewList[*RecentInfo](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*RecentInfo]{
+			Convert: func(ptr unsafe.Pointer) *RecentInfo {
+				src := *(**C.GtkRecentInfo)(ptr)
+				var dst *RecentInfo // out
+				dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
+				C.gtk_recent_info_ref(src)
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(dst)),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+					},
+				)
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GtkRecentInfo)(ptr))
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }
@@ -695,7 +705,7 @@ func (info *RecentInfo) Applications() []string {
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -788,7 +798,7 @@ func (info *RecentInfo) Groups() []string {
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -875,7 +885,7 @@ func (info *RecentInfo) ShortName() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -914,7 +924,7 @@ func (info *RecentInfo) URIDisplay() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -1026,7 +1036,7 @@ func (info *RecentInfo) LastApplication() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

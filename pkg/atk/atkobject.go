@@ -28,12 +28,6 @@ func init() {
 	})
 }
 
-// AttributeSet: this is a singly-linked list (a List) of Attribute. It is used
-// by atk_text_get_run_attributes(), atk_text_get_default_attributes(),
-// atk_editable_text_set_run_attributes(), atk_document_get_attributes() and
-// atk_object_get_attributes().
-type AttributeSet = externglib.SList
-
 // Layer describes the layer of a component
 //
 // These enumerated "layer values" are used when determining which UI rendering

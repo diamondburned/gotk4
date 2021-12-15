@@ -8,7 +8,7 @@ import (
 // atomicContainer is a struct containing an interface that is used for swapping
 // into Value.
 type atomicContainer struct {
-	data interface{}
+	data any
 }
 
 type slabEntry struct {
@@ -27,7 +27,7 @@ type Slab struct {
 
 // Put stores the entry inside the slab. If once is true, then when the entry is
 // retrieved using Get, it will also be wiped off the list.
-func (s *Slab) Put(entry interface{}, once bool) uintptr {
+func (s *Slab) Put(entry any, once bool) uintptr {
 	slabEntry := slabEntry{atomic.Value{}, 0, once}
 	if once {
 		// Wrap the entry value inside an atomic container for type consistency.
@@ -55,7 +55,7 @@ func (s *Slab) Put(entry interface{}, once bool) uintptr {
 }
 
 // Get gets the entry at the given index.
-func (s *Slab) Get(i uintptr) interface{} {
+func (s *Slab) Get(i uintptr) any {
 	s.mu.RLock()
 
 	// Perform simple bound check.
@@ -65,7 +65,7 @@ func (s *Slab) Get(i uintptr) interface{} {
 	}
 
 	entry := s.list[i]
-	var v interface{}
+	var v any
 
 	// Perform an atomic value retrieve.
 	if entry.Once {
@@ -88,7 +88,7 @@ func (s *Slab) Get(i uintptr) interface{} {
 }
 
 // Pop removes the entry at the given index and returns the old value.
-func (s *Slab) Pop(i uintptr) interface{} {
+func (s *Slab) Pop(i uintptr) any {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 

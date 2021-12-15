@@ -489,7 +489,7 @@ func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {
 
 // TypeIsInFile returns true if the given type was declared in the given
 // filename. The filename shouldn't contain the file extension.
-func TypeIsInFile(typ interface{}, file string) bool {
+func TypeIsInFile(typ any, file string) bool {
 	info := cmt.GetInfoFields(typ)
 	if info.Elements == nil {
 		log.Panicf("type %T missing info.Elements", typ)

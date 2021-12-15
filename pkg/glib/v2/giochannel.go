@@ -309,7 +309,7 @@ func marshalIOChannel(p uintptr) (interface{}, error) {
 }
 
 // NewIOChannelFile constructs a struct IOChannel.
-func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
+func NewIOChannelFile(filename, mode string) (*IOChannel, error) {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.gchar      // out
 	var _cret *C.GIOChannel // in
@@ -587,7 +587,7 @@ func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorP
 	var _goerr error        // out
 
 	_strReturn = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	defer C.free(unsafe.Pointer(_arg1))
+	C.free(unsafe.Pointer(_arg1))
 	_length = uint(_arg2)
 	_terminatorPos = uint(_arg3)
 	_ioStatus = IOStatus(_cret)

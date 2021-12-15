@@ -40,7 +40,7 @@ func (lvl Level) prefix() string {
 	}
 }
 
-func (lvl Level) colorf(f string, v ...interface{}) string {
+func (lvl Level) colorf(f string, v ...any) string {
 	switch lvl {
 	case Skip:
 		return color.BlueString(f, v...)
@@ -57,7 +57,7 @@ func (lvl Level) colorf(f string, v ...interface{}) string {
 
 // LineLogger describes anything that can log itself.
 type LineLogger interface {
-	Logln(Level, ...interface{})
+	Logln(Level, ...any)
 }
 
 // NoopLogger is a logger that doesn't log anything. It is used as a placeholder
@@ -66,10 +66,10 @@ var NoopLogger = noopLogger{}
 
 type noopLogger struct{}
 
-func (noop noopLogger) Logln(Level, ...interface{}) {}
+func (noop noopLogger) Logln(Level, ...any) {}
 
 // Prefix prepends the given prefixes into the given value list.
-func Prefix(list []interface{}, p interface{}) []interface{} {
+func Prefix(list []any, p any) []any {
 	list = append(list, nil)
 	copy(list[1:], list)
 	list[0] = p
@@ -77,7 +77,7 @@ func Prefix(list []interface{}, p interface{}) []interface{} {
 }
 
 // Stdlog renders the given log entry into the stdlib logger.
-func Stdlog(logger *log.Logger, minlevel, level Level, v ...interface{}) {
+func Stdlog(logger *log.Logger, minlevel, level Level, v ...any) {
 	if logger == nil || minlevel > level {
 		return
 	}

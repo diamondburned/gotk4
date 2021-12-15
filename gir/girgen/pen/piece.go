@@ -3,6 +3,8 @@ package pen
 import (
 	"fmt"
 	"strings"
+
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 )
 
 // Piece is a simple string builder with easy chaining.
@@ -22,7 +24,7 @@ func (p *Piece) ensureCap() {
 }
 
 // Writef writes using Printf.
-func (p *Piece) Writef(f string, v ...interface{}) *Piece {
+func (p *Piece) Writef(f string, v ...any) *Piece {
 	p.ensureCap()
 	if len(v) == 0 {
 		p.str.WriteString(f)
@@ -33,7 +35,7 @@ func (p *Piece) Writef(f string, v ...interface{}) *Piece {
 }
 
 // Write writes using Print.
-func (p *Piece) Write(v ...interface{}) *Piece {
+func (p *Piece) Write(v ...any) *Piece {
 	p.ensureCap()
 
 	if len(v) == 1 {
@@ -70,11 +72,16 @@ func (p *Piece) Line(line string) *Piece {
 }
 
 // Linef writes a line using Sprintf.
-func (p *Piece) Linef(f string, v ...interface{}) *Piece {
+func (p *Piece) Linef(f string, v ...any) *Piece {
 	p.ensureCap()
 	p.Writef(f, v...)
 	p.str.WriteByte('\n')
 	return p
+}
+
+// LineTmpl writes an inline template with the delimiter "{" and "}".
+func (p *Piece) LineTmpl(v any, tmpl string) {
+	gotmpl.Render(&p.str, tmpl, v)
 }
 
 // String returns the inner string block.

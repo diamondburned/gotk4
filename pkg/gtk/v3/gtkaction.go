@@ -543,7 +543,7 @@ func (action *Action) Name() string {
 // gtk_activatable_get_related_action().
 //
 // Deprecated: since version 3.10.
-func (action *Action) Proxies() []Widgetter {
+func (action *Action) Proxies() *gextras.SList[Widgetter] {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GSList    // in
 
@@ -552,27 +552,32 @@ func (action *Action) Proxies() []Widgetter {
 	_cret = C.gtk_action_get_proxies(_arg0)
 	runtime.KeepAlive(action)
 
-	var _sList []Widgetter // out
+	var _sList *gextras.SList[Widgetter] // out
 
-	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
+	_sList = gextras.NewSList[Widgetter](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Widgetter]{
+			Convert: func(ptr unsafe.Pointer) Widgetter {
+				src := *(**C.GtkWidget)(ptr)
+				var dst Widgetter // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gtk.Widgetter is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_sList = append(_sList, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Widgetter)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _sList
 }

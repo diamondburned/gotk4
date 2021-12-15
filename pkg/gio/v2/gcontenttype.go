@@ -94,7 +94,7 @@ func ContentTypeFromMIMEType(mimeType string) string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -120,7 +120,7 @@ func ContentTypeGetDescription(typ string) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -149,7 +149,7 @@ func ContentTypeGetGenericIconName(typ string) string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -237,7 +237,7 @@ func ContentTypeGetMIMEType(typ string) string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -315,7 +315,7 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 		_resultUncertain = true
 	}
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _resultUncertain, _utf8
 }
@@ -360,7 +360,7 @@ func ContentTypeGuessForTree(root Filer) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -507,21 +507,29 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 // ContentTypesGetRegistered gets a list of strings containing all the
 // registered content types known to the system. The list and its data should be
 // freed using g_list_free_full (list, g_free).
-func ContentTypesGetRegistered() []string {
+func ContentTypesGetRegistered() *gextras.List[string] {
 	var _cret *C.GList // in
 
 	_cret = C.g_content_types_get_registered()
 
-	var _list []string // out
+	var _list *gextras.List[string] // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		defer C.free(unsafe.Pointer(src))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.gchar)(ptr))
+				C.free(src)
+			},
+		},
+		true,
+	)
 
 	return _list
 }

@@ -49,7 +49,7 @@ const (
 	TextSearchCaseInsensitive TextSearchFlags = 0b100
 )
 
-func marshalTextSearchFlags(p uintptr) (interface{}, error) {
+func marshalTextSearchFlags(p uintptr) (any, error) {
 	return TextSearchFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -1644,7 +1644,7 @@ func (iter *TextIter) LineOffset() int {
 // in the same place.
 //
 // The returned list is not in any meaningful order.
-func (iter *TextIter) Marks() []TextMark {
+func (iter *TextIter) Marks() *gextras.SList[TextMark] {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GSList      // in
 
@@ -1653,15 +1653,20 @@ func (iter *TextIter) Marks() []TextMark {
 	_cret = C.gtk_text_iter_get_marks(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _sList []TextMark // out
+	var _sList *gextras.SList[TextMark] // out
 
-	_sList = make([]TextMark, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkTextMark)(v)
-		var dst TextMark // out
-		dst = *wrapTextMark(externglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[TextMark](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[TextMark]{
+			Convert: func(ptr unsafe.Pointer) TextMark {
+				src := *(**C.GtkTextMark)(ptr)
+				var dst TextMark // out
+				dst = *wrapTextMark(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -1741,7 +1746,7 @@ func (start *TextIter) Slice(end *TextIter) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1753,7 +1758,7 @@ func (start *TextIter) Slice(end *TextIter) string {
 //
 // The GtkTextTags in the list don’t have a reference added, but you have to
 // free the list itself.
-func (iter *TextIter) Tags() []TextTag {
+func (iter *TextIter) Tags() *gextras.SList[TextTag] {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GSList      // in
 
@@ -1762,15 +1767,20 @@ func (iter *TextIter) Tags() []TextTag {
 	_cret = C.gtk_text_iter_get_tags(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _sList []TextTag // out
+	var _sList *gextras.SList[TextTag] // out
 
-	_sList = make([]TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkTextTag)(v)
-		var dst TextTag // out
-		dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[TextTag](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[TextTag]{
+			Convert: func(ptr unsafe.Pointer) TextTag {
+				src := *(**C.GtkTextTag)(ptr)
+				var dst TextTag // out
+				dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -1796,7 +1806,7 @@ func (start *TextIter) Text(end *TextIter) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1808,7 +1818,7 @@ func (start *TextIter) Text(end *TextIter) string {
 // is toggled on at iter, then some non-empty range of characters following iter
 // has that tag applied to it. If a tag is toggled off, then some non-empty
 // range following iter does not have the tag applied to it.
-func (iter *TextIter) ToggledTags(toggledOn bool) []TextTag {
+func (iter *TextIter) ToggledTags(toggledOn bool) *gextras.SList[TextTag] {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gboolean     // out
 	var _cret *C.GSList      // in
@@ -1822,15 +1832,20 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []TextTag {
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(toggledOn)
 
-	var _sList []TextTag // out
+	var _sList *gextras.SList[TextTag] // out
 
-	_sList = make([]TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkTextTag)(v)
-		var dst TextTag // out
-		dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[TextTag](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[TextTag]{
+			Convert: func(ptr unsafe.Pointer) TextTag {
+				src := *(**C.GtkTextTag)(ptr)
+				var dst TextTag // out
+				dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -1893,7 +1908,7 @@ func (start *TextIter) VisibleSlice(end *TextIter) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1918,7 +1933,7 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1951,7 +1966,7 @@ func (iter *TextIter) HasTag(tag *TextTag) bool {
 // InRange checks whether iter falls in the range [start, end).
 //
 // start and end must be in ascending order.
-func (iter *TextIter) InRange(start *TextIter, end *TextIter) bool {
+func (iter *TextIter) InRange(start, end *TextIter) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 *C.GtkTextIter // out

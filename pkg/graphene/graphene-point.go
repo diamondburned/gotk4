@@ -128,7 +128,7 @@ func (a *Point) Equal(b *Point) bool {
 // Init initializes p to the given x and y coordinates.
 //
 // It's safe to call this function multiple times.
-func (p *Point) Init(x float32, y float32) *Point {
+func (p *Point) Init(x, y float32) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 C.float             // out
 	var _arg2 C.float             // out

@@ -286,7 +286,7 @@ func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int) *gdkpi
 // returned instead.
 //
 // Deprecated: Use IconTheme instead.
-func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale int, forWindow gdk.Windower) *cairo.Surface {
+func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size, scale int, forWindow gdk.Windower) *cairo.Surface {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.GtkIconSize      // out
@@ -925,7 +925,7 @@ func (selectionData *SelectionData) Text() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -955,7 +955,7 @@ func (selectionData *SelectionData) URIs() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1744,7 +1744,7 @@ func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) 
 
 // IterListClasses returns a list with all the class names defined for the
 // widget at position pos in the hierarchy defined in path.
-func (path *WidgetPath) IterListClasses(pos int) []string {
+func (path *WidgetPath) IterListClasses(pos int) *gextras.SList[string] {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret *C.GSList        // in
@@ -1756,15 +1756,20 @@ func (path *WidgetPath) IterListClasses(pos int) []string {
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
-	var _sList []string // out
+	var _sList *gextras.SList[string] // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -1773,7 +1778,7 @@ func (path *WidgetPath) IterListClasses(pos int) []string {
 // widget at position pos in the hierarchy defined in path.
 //
 // Deprecated: The use of regions is deprecated.
-func (path *WidgetPath) IterListRegions(pos int) []string {
+func (path *WidgetPath) IterListRegions(pos int) *gextras.SList[string] {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret *C.GSList        // in
@@ -1785,15 +1790,20 @@ func (path *WidgetPath) IterListRegions(pos int) []string {
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
-	var _sList []string // out
+	var _sList *gextras.SList[string] // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -1967,7 +1977,7 @@ func (path *WidgetPath) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

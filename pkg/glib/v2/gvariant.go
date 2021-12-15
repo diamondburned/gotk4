@@ -24,6 +24,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_variant_builder_get_type()), F: marshalVariantBuilder},
 		{T: externglib.Type(C.g_variant_dict_get_type()), F: marshalVariantDict},
+		{T: externglib.Type(C.G_TYPE_VARIANT), F: marshalVariant},
 	})
 }
 
@@ -600,7 +601,7 @@ func NewVariantBytestringArray(strv []string) *Variant {
 }
 
 // NewVariantDictEntry constructs a struct Variant.
-func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
+func NewVariantDictEntry(key, value *Variant) *Variant {
 	var _arg1 *C.GVariant // out
 	var _arg2 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -651,7 +652,7 @@ func NewVariantDouble(value float64) *Variant {
 }
 
 // NewVariantFixedArray constructs a struct Variant.
-func NewVariantFixedArray(elementType *VariantType, elements cgo.Handle, nElements uint, elementSize uint) *Variant {
+func NewVariantFixedArray(elementType *VariantType, elements cgo.Handle, nElements, elementSize uint) *Variant {
 	var _arg1 *C.GVariantType // out
 	var _arg2 C.gconstpointer // out
 	var _arg3 C.gsize         // out
@@ -1293,7 +1294,7 @@ func (value *Variant) DupBytestringArray() []string {
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1326,7 +1327,7 @@ func (value *Variant) DupObjv() []string {
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1354,7 +1355,7 @@ func (value *Variant) DupString() (uint, string) {
 
 	_length = uint(_arg1)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _length, _utf8
 }
@@ -1385,7 +1386,7 @@ func (value *Variant) DupStrv() []string {
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -2302,7 +2303,7 @@ func (value *Variant) Print(typeAnnotate bool) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -2483,7 +2484,7 @@ func VariantParseErrorPrintContext(err error, sourceStr string) string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -2909,6 +2910,11 @@ func (dict *VariantDict) Remove(key string) bool {
 	}
 
 	return _ok
+}
+
+func marshalVariant(p uintptr) (interface{}, error) {
+	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Variant{&variant{(*C.GVariant)(b)}}, nil
 }
 
 // Foreach iterates over items in value. The iteration breaks out once f

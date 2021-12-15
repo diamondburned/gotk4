@@ -114,7 +114,7 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 
 	if _arg2 != nil {
 		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -199,7 +199,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 
 	if _arg2 != nil {
 		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)

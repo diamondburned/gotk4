@@ -17,7 +17,7 @@ const (
 	LINE_JOIN_BEVEL LineJoin = C.CAIRO_LINE_JOIN_BEVEL
 )
 
-func marshalLineJoin(p uintptr) (interface{}, error) {
+func marshalLineJoin(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return LineJoin(c), nil
 }

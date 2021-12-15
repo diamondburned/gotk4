@@ -610,7 +610,7 @@ func (display *Display) KeyboardUngrab(time_ uint32) {
 // The list is statically allocated and should not be freed.
 //
 // Deprecated: Use gdk_device_manager_list_devices() instead.
-func (display *Display) ListDevices() []Devicer {
+func (display *Display) ListDevices() *gextras.List[Devicer] {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GList      // in
 
@@ -619,33 +619,38 @@ func (display *Display) ListDevices() []Devicer {
 	_cret = C.gdk_display_list_devices(_arg0)
 	runtime.KeepAlive(display)
 
-	var _list []Devicer // out
+	var _list *gextras.List[Devicer] // out
 
-	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GdkDevice)(v)
-		var dst Devicer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gdk.Devicer is nil")
-			}
+	_list = gextras.NewList[Devicer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Devicer]{
+			Convert: func(ptr unsafe.Pointer) Devicer {
+				src := *(**C.GdkDevice)(ptr)
+				var dst Devicer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gdk.Devicer is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Devicer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _list
 }
 
 // ListSeats returns the list of seats known to display.
-func (display *Display) ListSeats() []Seater {
+func (display *Display) ListSeats() *gextras.List[Seater] {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GList      // in
 
@@ -654,27 +659,32 @@ func (display *Display) ListSeats() []Seater {
 	_cret = C.gdk_display_list_seats(_arg0)
 	runtime.KeepAlive(display)
 
-	var _list []Seater // out
+	var _list *gextras.List[Seater] // out
 
-	_list = make([]Seater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkSeat)(v)
-		var dst Seater // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gdk.Seater is nil")
-			}
+	_list = gextras.NewList[Seater](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[Seater]{
+			Convert: func(ptr unsafe.Pointer) Seater {
+				src := *(**C.GdkSeat)(ptr)
+				var dst Seater // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gdk.Seater is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Seater)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(Seater)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _list
 }

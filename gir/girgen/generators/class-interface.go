@@ -18,7 +18,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	type {{ .StructName }}Overrider interface {
 		{{ range .Virtuals -}}
 		{{- GoDoc . 1 TrailingNewLine -}}
-		{{- .Name }}{{ .Tail }}
+		{{- .Name }}{{ CoalesceTail .Tail }}
 		{{ end -}}
 	}
 	{{ end }}
@@ -58,7 +58,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 		{{ range .Methods -}}
 		{{- Synopsis . 1 TrailingNewLine -}}
-		{{- .Name }}{{ .Tail }}
+		{{- .Name }}{{ CoalesceTail .Tail }}
 		{{ else }}
 		{{ $needsPrivate = true }}
 		base{{ .StructName }}() *{{ .StructName }}
@@ -91,7 +91,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{- end }}
 	//
 	{{- end }}
-	func {{ .Name }}{{ .Tail }} {{ .Block }}
+	func {{ .Name }}{{ CoalesceTail .Tail }} {{ .Block }}
 	{{ end }}
 
 	{{ range .Methods }}
@@ -105,7 +105,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{- end }}
 	//
 	{{- end }}
-	func ({{ .Recv }} *{{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
+	func ({{ .Recv }} *{{ $.StructName }}) {{ .Name }}{{ CoalesceTail .Tail }} {{ .Block }}
 	{{ end }}
 
 	{{ if $needsPrivate }}
@@ -122,7 +122,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ range .Signals }}
 	{{ $name := printf "Connect%s" (KebabToGo true .Name) }}
 	{{ GoDoc . 0 (OverrideSelfName $name) }}
-	func ({{ $.Recv }} *{{ $.StructName }}) {{ $name }}(f func{{ .Tail }}) externglib.SignalHandle {
+	func ({{ $.Recv }} *{{ $.StructName }}) {{ $name }}(f func{{ CoalesceTail .Tail }}) externglib.SignalHandle {
 		return {{ $.Recv }}.Connect({{ Quote .Name }}, f)
 	}
 	{{ end }}

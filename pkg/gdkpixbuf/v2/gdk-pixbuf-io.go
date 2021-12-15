@@ -276,20 +276,25 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height i
 
 // PixbufGetFormats obtains the available information about the image formats
 // supported by GdkPixbuf.
-func PixbufGetFormats() []*PixbufFormat {
+func PixbufGetFormats() *gextras.SList[*PixbufFormat] {
 	var _cret *C.GSList // in
 
 	_cret = C.gdk_pixbuf_get_formats()
 
-	var _sList []*PixbufFormat // out
+	var _sList *gextras.SList[*PixbufFormat] // out
 
-	_sList = make([]*PixbufFormat, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkPixbufFormat)(v)
-		var dst *PixbufFormat // out
-		dst = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[*PixbufFormat](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*PixbufFormat]{
+			Convert: func(ptr unsafe.Pointer) *PixbufFormat {
+				src := *(**C.GdkPixbufFormat)(ptr)
+				var dst *PixbufFormat // out
+				dst = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -387,7 +392,7 @@ func (format *PixbufFormat) Description() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -417,7 +422,7 @@ func (format *PixbufFormat) Extensions() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -441,7 +446,7 @@ func (format *PixbufFormat) License() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -470,7 +475,7 @@ func (format *PixbufFormat) MIMETypes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -490,7 +495,7 @@ func (format *PixbufFormat) Name() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

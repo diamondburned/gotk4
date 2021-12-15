@@ -308,7 +308,7 @@ func marshalGradient(p uintptr) (interface{}, error) {
 }
 
 // NewGradientLinear constructs a struct Gradient.
-func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient {
+func NewGradientLinear(x0, y0, x1, y1 float64) *Gradient {
 	var _arg1 C.gdouble      // out
 	var _arg2 C.gdouble      // out
 	var _arg3 C.gdouble      // out
@@ -340,7 +340,7 @@ func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient
 }
 
 // NewGradientRadial constructs a struct Gradient.
-func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 float64, radius1 float64) *Gradient {
+func NewGradientRadial(x0, y0, radius0, x1, y1, radius1 float64) *Gradient {
 	var _arg1 C.gdouble      // out
 	var _arg2 C.gdouble      // out
 	var _arg3 C.gdouble      // out
@@ -436,7 +436,7 @@ func (gradient *Gradient) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -519,7 +519,7 @@ func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
 }
 
 // NewSymbolicColorMix constructs a struct SymbolicColor.
-func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor float64) *SymbolicColor {
+func NewSymbolicColorMix(color1, color2 *SymbolicColor, factor float64) *SymbolicColor {
 	var _arg1 *C.GtkSymbolicColor // out
 	var _arg2 *C.GtkSymbolicColor // out
 	var _arg3 C.gdouble           // out
@@ -678,7 +678,7 @@ func (color *SymbolicColor) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

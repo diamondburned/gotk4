@@ -488,7 +488,7 @@ func (scanner *Scanner) SyncFileOffset() {
 // intermediate call to g_scanner_get_next_token(), as g_scanner_unexp_token()
 // evaluates the scanner's current token (not the peeked token) to construct
 // part of the message.
-func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
+func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec, symbolSpec, symbolName, message string, isError int) {
 	var _arg0 *C.GScanner  // out
 	var _arg1 C.GTokenType // out
 	var _arg2 *C.gchar     // out

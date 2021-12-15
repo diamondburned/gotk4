@@ -284,7 +284,7 @@ func (r *Ray) InitFromRay(src *Ray) *Ray {
 }
 
 // InitFromVec3 initializes the given #graphene_ray_t using the given vectors.
-func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
+func (r *Ray) InitFromVec3(origin, direction *Vec3) *Ray {
 	var _arg0 *C.graphene_ray_t  // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 *C.graphene_vec3_t // out

@@ -35,7 +35,7 @@ func (v *Context) Native() uintptr {
 	return uintptr(unsafe.Pointer(v.native()))
 }
 
-func marshalContext(p uintptr) (interface{}, error) {
+func marshalContext(p uintptr) (any, error) {
 	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	context := (*C.cairo_t)(unsafe.Pointer(c))
 	return wrapContext(context), nil

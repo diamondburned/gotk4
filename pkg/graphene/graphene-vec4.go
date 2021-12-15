@@ -254,7 +254,7 @@ func (v *Vec4) Z() float32 {
 // Init initializes a #graphene_vec4_t using the given values.
 //
 // This function can be called multiple times.
-func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
+func (v *Vec4) Init(x, y, z, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
@@ -305,7 +305,7 @@ func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 
 // InitFromVec2 initializes a #graphene_vec4_t using the components of a
 // #graphene_vec2_t and the values of z and w.
-func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
+func (v *Vec4) InitFromVec2(src *Vec2, z, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec2_t // out
 	var _arg2 C.float            // out

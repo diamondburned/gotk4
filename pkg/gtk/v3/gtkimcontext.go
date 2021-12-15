@@ -298,7 +298,7 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 	var _ok bool         // out
 
 	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	defer C.free(unsafe.Pointer(_arg1))
+	C.free(unsafe.Pointer(_arg1))
 	_cursorIndex = int(_arg2)
 	if _cret != 0 {
 		_ok = true

@@ -172,7 +172,7 @@ type ValueOverrider interface {
 	Range() *Range
 	// SubRanges gets the list of subranges defined for this object. See Value
 	// introduction for examples of subranges and when to expose them.
-	SubRanges() []*Range
+	SubRanges() *gextras.SList[*Range]
 	// ValueAndText gets the current value and the human readable text
 	// alternative of obj. text is a newly created string, that must be freed by
 	// the caller. Can be NULL if no descriptor is available.
@@ -315,7 +315,7 @@ type Valueer interface {
 	// Range gets the range of this object.
 	Range() *Range
 	// SubRanges gets the list of subranges defined for this object.
-	SubRanges() []*Range
+	SubRanges() *gextras.SList[*Range]
 	// ValueAndText gets the current value and the human readable text
 	// alternative of obj.
 	ValueAndText() (float64, string)
@@ -461,7 +461,7 @@ func (obj *Value) Range() *Range {
 
 // SubRanges gets the list of subranges defined for this object. See Value
 // introduction for examples of subranges and when to expose them.
-func (obj *Value) SubRanges() []*Range {
+func (obj *Value) SubRanges() *gextras.SList[*Range] {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.GSList   // in
 
@@ -470,21 +470,24 @@ func (obj *Value) SubRanges() []*Range {
 	_cret = C.atk_value_get_sub_ranges(_arg0)
 	runtime.KeepAlive(obj)
 
-	var _sList []*Range // out
+	var _sList *gextras.SList[*Range] // out
 
-	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.AtkRange)(v)
-		var dst *Range // out
-		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.atk_range_free((*C.AtkRange)(intern.C))
+	_sList = gextras.NewSList[*Range](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*Range]{
+			Convert: func(ptr unsafe.Pointer) *Range {
+				src := *(**C.AtkRange)(ptr)
+				var dst *Range // out
+				dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_sList = append(_sList, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.AtkRange)(ptr))
+				C.atk_range_free((*C.AtkRange)(src))
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -508,7 +511,7 @@ func (obj *Value) ValueAndText() (float64, string) {
 	_value = float64(_arg1)
 	if _arg2 != nil {
 		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+		C.free(unsafe.Pointer(_arg2))
 	}
 
 	return _value, _text

@@ -146,11 +146,11 @@ type CellAreaOverrider interface {
 	// Implementing CellArea classes should implement this method to receive and
 	// navigate focus in its own way particular to how it lays out cells.
 	Focus(direction DirectionType) bool
-	// Foreach calls callback for every CellRenderer in area.
-	Foreach(callback CellCallback)
-	// ForeachAlloc calls callback for every CellRenderer in area with the
+	// ForEach calls callback for every CellRenderer in area.
+	ForEach(callback CellCallback)
+	// ForEachAlloc calls callback for every CellRenderer in area with the
 	// allocated rectangle inside cell_area.
-	ForeachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
+	ForEachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	//
@@ -816,13 +816,13 @@ func (area *CellArea) Focus(direction DirectionType) bool {
 	return _ok
 }
 
-// Foreach calls callback for every CellRenderer in area.
+// ForEach calls callback for every CellRenderer in area.
 //
 // The function takes the following parameters:
 //
 //    - callback to call.
 //
-func (area *CellArea) Foreach(callback CellCallback) {
+func (area *CellArea) ForEach(callback CellCallback) {
 	var _arg0 *C.GtkCellArea    // out
 	var _arg1 C.GtkCellCallback // out
 	var _arg2 C.gpointer
@@ -837,7 +837,7 @@ func (area *CellArea) Foreach(callback CellCallback) {
 	runtime.KeepAlive(callback)
 }
 
-// ForeachAlloc calls callback for every CellRenderer in area with the allocated
+// ForEachAlloc calls callback for every CellRenderer in area with the allocated
 // rectangle inside cell_area.
 //
 // The function takes the following parameters:
@@ -848,7 +848,7 @@ func (area *CellArea) Foreach(callback CellCallback) {
 //    - backgroundArea: widget relative coordinates of the background area.
 //    - callback to call.
 //
-func (area *CellArea) ForeachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
+func (area *CellArea) ForEachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
 	var _arg0 *C.GtkCellArea         // out
 	var _arg1 *C.GtkCellAreaContext  // out
 	var _arg2 *C.GtkWidget           // out
@@ -1124,7 +1124,7 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 //
 //    - renderer expected to have focus.
 //
-func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
+func (area *CellArea) FocusSiblings(renderer CellRendererer) *gextras.List[CellRendererer] {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.GList           // in
@@ -1136,27 +1136,32 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 
-	var _list []CellRendererer // out
+	var _list *gextras.List[CellRendererer] // out
 
-	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkCellRenderer)(v)
-		var dst CellRendererer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.CellRendererer is nil")
-			}
+	_list = gextras.NewList[CellRendererer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[CellRendererer]{
+			Convert: func(ptr unsafe.Pointer) CellRendererer {
+				src := *(**C.GtkCellRenderer)(ptr)
+				var dst CellRendererer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gtk.CellRendererer is nil")
+					}
 
-			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(CellRendererer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(CellRendererer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+		},
+		false,
+	)
 
 	return _list
 }

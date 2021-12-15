@@ -280,10 +280,10 @@ type FileChooserer interface {
 	Filename() string
 	// Filenames lists all the selected files and subfolders in the current
 	// folder of chooser.
-	Filenames() []string
+	Filenames() *gextras.SList[string]
 	// Files lists all the selected files and subfolders in the current folder
 	// of chooser as #GFile.
-	Files() []gio.Filer
+	Files() *gextras.SList[gio.Filer]
 	// Filter gets the current filter; see gtk_file_chooser_set_filter().
 	Filter() *FileFilter
 	// LocalOnly gets whether only local files can be selected in the file
@@ -315,19 +315,19 @@ type FileChooserer interface {
 	URI() string
 	// URIs lists all the selected files and subfolders in the current folder of
 	// chooser.
-	URIs() []string
+	URIs() *gextras.SList[string]
 	// UsePreviewLabel gets whether a stock label should be drawn with the name
 	// of the previewed file.
 	UsePreviewLabel() bool
 	// ListFilters lists the current set of user-selectable filters; see
 	// gtk_file_chooser_add_filter(), gtk_file_chooser_remove_filter().
-	ListFilters() []FileFilter
+	ListFilters() *gextras.SList[FileFilter]
 	// ListShortcutFolderURIs queries the list of shortcut folders in the file
 	// chooser, as set by gtk_file_chooser_add_shortcut_folder_uri().
-	ListShortcutFolderURIs() []string
+	ListShortcutFolderURIs() *gextras.SList[string]
 	// ListShortcutFolders queries the list of shortcut folders in the file
 	// chooser, as set by gtk_file_chooser_add_shortcut_folder().
-	ListShortcutFolders() []string
+	ListShortcutFolders() *gextras.SList[string]
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
@@ -669,7 +669,7 @@ func (chooser *FileChooser) CurrentFolder() string {
 
 	if _cret != nil {
 		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _filename
@@ -728,7 +728,7 @@ func (chooser *FileChooser) CurrentFolderURI() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -754,7 +754,7 @@ func (chooser *FileChooser) CurrentName() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -860,7 +860,7 @@ func (chooser *FileChooser) Filename() string {
 
 	if _cret != nil {
 		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _filename
@@ -870,7 +870,7 @@ func (chooser *FileChooser) Filename() string {
 // of chooser. The returned names are full absolute paths. If files in the
 // current folder cannot be represented as local filenames they will be ignored.
 // (See gtk_file_chooser_get_uris()).
-func (chooser *FileChooser) Filenames() []string {
+func (chooser *FileChooser) Filenames() *gextras.SList[string] {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
 
@@ -879,23 +879,31 @@ func (chooser *FileChooser) Filenames() []string {
 	_cret = C.gtk_file_chooser_get_filenames(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []string // out
+	var _sList *gextras.SList[string] // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		defer C.free(unsafe.Pointer(src))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.gchar)(ptr))
+				C.free(src)
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
 
 // Files lists all the selected files and subfolders in the current folder of
 // chooser as #GFile. An internal function, see gtk_file_chooser_get_uris().
-func (chooser *FileChooser) Files() []gio.Filer {
+func (chooser *FileChooser) Files() *gextras.SList[gio.Filer] {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
 
@@ -904,27 +912,36 @@ func (chooser *FileChooser) Files() []gio.Filer {
 	_cret = C.gtk_file_chooser_get_files(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []gio.Filer // out
+	var _sList *gextras.SList[gio.Filer] // out
 
-	_sList = make([]gio.Filer, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GFile)(v)
-		var dst gio.Filer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Filer is nil")
-			}
+	_sList = gextras.NewSList[gio.Filer](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[gio.Filer]{
+			Convert: func(ptr unsafe.Pointer) gio.Filer {
+				src := *(**C.GFile)(ptr)
+				var dst gio.Filer // out
+				{
+					objptr := unsafe.Pointer(src)
+					if objptr == nil {
+						panic("object of type gio.Filer is nil")
+					}
 
-			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.Filer)
-			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
-			}
-			dst = rv
-		}
-		_sList = append(_sList, dst)
-	})
+					object := externglib.Take(objptr)
+					rv, ok := (externglib.CastObject(object)).(gio.Filer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+					}
+					dst = rv
+				}
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GFile)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -1012,7 +1029,7 @@ func (chooser *FileChooser) PreviewFilename() string {
 
 	if _cret != nil {
 		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _filename
@@ -1033,7 +1050,7 @@ func (chooser *FileChooser) PreviewURI() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -1147,7 +1164,7 @@ func (chooser *FileChooser) URI() string {
 
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+		C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -1155,7 +1172,7 @@ func (chooser *FileChooser) URI() string {
 
 // URIs lists all the selected files and subfolders in the current folder of
 // chooser. The returned names are full absolute URIs.
-func (chooser *FileChooser) URIs() []string {
+func (chooser *FileChooser) URIs() *gextras.SList[string] {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
 
@@ -1164,16 +1181,24 @@ func (chooser *FileChooser) URIs() []string {
 	_cret = C.gtk_file_chooser_get_uris(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []string // out
+	var _sList *gextras.SList[string] // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
-		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		defer C.free(unsafe.Pointer(src))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[string](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[string]{
+			Convert: func(ptr unsafe.Pointer) string {
+				src := *(**C.gchar)(ptr)
+				var dst string // out
+				dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.gchar)(ptr))
+				C.free(src)
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
@@ -1200,7 +1225,7 @@ func (chooser *FileChooser) UsePreviewLabel() bool {
 
 // ListFilters lists the current set of user-selectable filters; see
 // gtk_file_chooser_add_filter(), gtk_file_chooser_remove_filter().
-func (chooser *FileChooser) ListFilters() []FileFilter {
+func (chooser *FileChooser) ListFilters() *gextras.SList[FileFilter] {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
 
@@ -1209,22 +1234,27 @@ func (chooser *FileChooser) ListFilters() []FileFilter {
 	_cret = C.gtk_file_chooser_list_filters(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []FileFilter // out
+	var _sList *gextras.SList[FileFilter] // out
 
-	_sList = make([]FileFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkFileFilter)(v)
-		var dst FileFilter // out
-		dst = *wrapFileFilter(externglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
+	_sList = gextras.NewSList[FileFilter](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[FileFilter]{
+			Convert: func(ptr unsafe.Pointer) FileFilter {
+				src := *(**C.GtkFileFilter)(ptr)
+				var dst FileFilter // out
+				dst = *wrapFileFilter(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+		},
+		true,
+	)
 
 	return _sList
 }
 
 // ListShortcutFolderURIs queries the list of shortcut folders in the file
 // chooser, as set by gtk_file_chooser_add_shortcut_folder_uri().
-func (chooser *FileChooser) ListShortcutFolderURIs() []string {
+func (chooser *FileChooser) ListShortcutFolderURIs() *gextras.SList[string] {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
 
@@ -1233,17 +1263,25 @@ func (chooser *FileChooser) ListShortcutFolderURIs() []string {
 	_cret = C.gtk_file_chooser_list_shortcut_folder_uris(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []string // out
+	var _sList *gextras.SList[string] // out
 
 	if _cret != nil {
-		_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-		gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-			src := (*C.gchar)(v)
-			var dst string // out
-			dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-			defer C.free(unsafe.Pointer(src))
-			_sList = append(_sList, dst)
-		})
+		_sList = gextras.NewSList[string](
+			unsafe.Pointer(_cret),
+			gextras.ListOpts[string]{
+				Convert: func(ptr unsafe.Pointer) string {
+					src := *(**C.gchar)(ptr)
+					var dst string // out
+					dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+					return dst
+				},
+				FreeData: func(ptr unsafe.Pointer) {
+					src := unsafe.Pointer(*(**C.gchar)(ptr))
+					C.free(src)
+				},
+			},
+			true,
+		)
 	}
 
 	return _sList
@@ -1251,7 +1289,7 @@ func (chooser *FileChooser) ListShortcutFolderURIs() []string {
 
 // ListShortcutFolders queries the list of shortcut folders in the file chooser,
 // as set by gtk_file_chooser_add_shortcut_folder().
-func (chooser *FileChooser) ListShortcutFolders() []string {
+func (chooser *FileChooser) ListShortcutFolders() *gextras.SList[string] {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
 
@@ -1260,17 +1298,25 @@ func (chooser *FileChooser) ListShortcutFolders() []string {
 	_cret = C.gtk_file_chooser_list_shortcut_folders(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []string // out
+	var _sList *gextras.SList[string] // out
 
 	if _cret != nil {
-		_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-		gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-			src := (*C.gchar)(v)
-			var dst string // out
-			dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-			defer C.free(unsafe.Pointer(src))
-			_sList = append(_sList, dst)
-		})
+		_sList = gextras.NewSList[string](
+			unsafe.Pointer(_cret),
+			gextras.ListOpts[string]{
+				Convert: func(ptr unsafe.Pointer) string {
+					src := *(**C.gchar)(ptr)
+					var dst string // out
+					dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+					return dst
+				},
+				FreeData: func(ptr unsafe.Pointer) {
+					src := unsafe.Pointer(*(**C.gchar)(ptr))
+					C.free(src)
+				},
+			},
+			true,
+		)
 	}
 
 	return _sList

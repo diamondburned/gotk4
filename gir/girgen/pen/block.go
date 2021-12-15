@@ -27,7 +27,7 @@ func (b *Block) Line(line string) {
 }
 
 // Linef writes a line using Printf. If v is none, then f is taken literally.
-func (b *Block) Linef(f string, v ...interface{}) {
+func (b *Block) Linef(f string, v ...any) {
 	if len(v) == 0 {
 		b.str.WriteString(f)
 	} else {

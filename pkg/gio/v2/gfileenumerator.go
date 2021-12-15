@@ -87,7 +87,7 @@ type FileEnumeratorOverrider interface {
 	NextFilesAsync(ctx context.Context, numFiles, ioPriority int, callback AsyncReadyCallback)
 	// NextFilesFinish finishes the asynchronous operation started with
 	// g_file_enumerator_next_files_async().
-	NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
+	NextFilesFinish(result AsyncResulter) (*gextras.List[FileInfo], error)
 }
 
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
@@ -546,7 +546,7 @@ func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, 
 //
 //    - result: Result.
 //
-func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileInfo, error) {
+func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) (*gextras.List[FileInfo], error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GList           // in
@@ -559,16 +559,25 @@ func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileI
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(result)
 
-	var _list []FileInfo // out
-	var _goerr error     // out
+	var _list *gextras.List[FileInfo] // out
+	var _goerr error                  // out
 
-	_list = make([]FileInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GFileInfo)(v)
-		var dst FileInfo // out
-		dst = *wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[FileInfo](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[FileInfo]{
+			Convert: func(ptr unsafe.Pointer) FileInfo {
+				src := *(**C.GFileInfo)(ptr)
+				var dst FileInfo // out
+				dst = *wrapFileInfo(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GFileInfo)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

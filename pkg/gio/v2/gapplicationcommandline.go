@@ -203,7 +203,7 @@ func (cmdline *ApplicationCommandLine) Arguments() []string {
 		_filenames = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

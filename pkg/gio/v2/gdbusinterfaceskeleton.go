@@ -156,7 +156,7 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 }
 
 // Connections gets a list of the connections that interface_ is exported on.
-func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
+func (interface_ *DBusInterfaceSkeleton) Connections() *gextras.List[DBusConnection] {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GList                  // in
 
@@ -165,15 +165,24 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
 	_cret = C.g_dbus_interface_skeleton_get_connections(_arg0)
 	runtime.KeepAlive(interface_)
 
-	var _list []DBusConnection // out
+	var _list *gextras.List[DBusConnection] // out
 
-	_list = make([]DBusConnection, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GDBusConnection)(v)
-		var dst DBusConnection // out
-		dst = *wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
+	_list = gextras.NewList[DBusConnection](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[DBusConnection]{
+			Convert: func(ptr unsafe.Pointer) DBusConnection {
+				src := *(**C.GDBusConnection)(ptr)
+				var dst DBusConnection // out
+				dst = *wrapDBusConnection(externglib.Take(unsafe.Pointer(src)))
+				return dst
+			},
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GDBusConnection)(ptr))
+				C.g_object_unref(C.gpointer(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }

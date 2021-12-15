@@ -12,19 +12,19 @@ import (
 var registry slab.Slab
 
 // Assign assigns the given value and returns the fake pointer.
-func Assign(v interface{}) uintptr {
+func Assign(v any) uintptr {
 	return registry.Put(v, false)
 }
 
 // AssignOnce stores the given value so that, when the value is retrieved, it
 // will immediately be deleted.
-func AssignOnce(v interface{}) uintptr {
+func AssignOnce(v any) uintptr {
 	return registry.Put(v, true)
 }
 
 // Get gets the value from the given fake pointer. The context must match the
 // given value in Assign.
-func Get(ptr uintptr) interface{} {
+func Get(ptr uintptr) any {
 	return registry.Get(ptr)
 }
 
@@ -40,6 +40,6 @@ func callbackDelete(ptr uintptr) {
 }
 
 // Pop gets a value and deletes it atomically.
-func Pop(ptr uintptr) interface{} {
+func Pop(ptr uintptr) any {
 	return registry.Pop(ptr)
 }

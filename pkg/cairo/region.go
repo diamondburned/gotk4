@@ -33,7 +33,7 @@ const (
 	REGION_OVERLAP_PART RegionOverlap = C.CAIRO_REGION_OVERLAP_PART
 )
 
-func marshalRegionOverlap(p uintptr) (interface{}, error) {
+func marshalRegionOverlap(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return RegionOverlap(c), nil
 }
@@ -95,7 +95,7 @@ func (v *Region) Native() uintptr {
 	return uintptr(unsafe.Pointer(v.native()))
 }
 
-func marshalRegion(p uintptr) (interface{}, error) {
+func marshalRegion(p uintptr) (any, error) {
 	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	region := (*C.cairo_region_t)(unsafe.Pointer(c))
 	return wrapRegion(region), nil

@@ -269,7 +269,7 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 // Scale scales next in 2-dimensional space by the given factors.
 //
 // Use gsk.Transform.Scale3D() to scale in all 3 dimensions.
-func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
+func (next *Transform) Scale(factorX, factorY float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
 	var _arg2 C.float         // out
@@ -300,7 +300,7 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 }
 
 // Scale3D scales next by the given factors.
-func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
+func (next *Transform) Scale3D(factorX, factorY, factorZ float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
 	var _arg2 C.float         // out
@@ -447,7 +447,7 @@ func (self *Transform) String() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

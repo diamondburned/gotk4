@@ -166,7 +166,7 @@ func (a *Point3D) Equal(b *Point3D) bool {
 }
 
 // Init initializes a #graphene_point3d_t with the given coordinates.
-func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
+func (p *Point3D) Init(x, y, z float32) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.float               // out
 	var _arg2 C.float               // out
@@ -324,7 +324,7 @@ func (p *Point3D) Normalize() *Point3D {
 //
 // The coordinates of the resulting #graphene_point3d_t will be in the [ -1, 1 ]
 // range.
-func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32) *Point3D {
+func (p *Point3D) NormalizeViewport(viewport *Rect, zNear, zFar float32) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_rect_t    // out
 	var _arg2 C.float               // out

@@ -102,7 +102,7 @@ func NewPaperSize(name string) *PaperSize {
 }
 
 // NewPaperSizeCustom constructs a struct PaperSize.
-func NewPaperSizeCustom(name string, displayName string, width float64, height float64, unit Unit) *PaperSize {
+func NewPaperSizeCustom(name, displayName string, width, height float64, unit Unit) *PaperSize {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
 	var _arg3 C.gdouble       // out
@@ -162,7 +162,7 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 }
 
 // NewPaperSizeFromIPP constructs a struct PaperSize.
-func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSize {
+func NewPaperSizeFromIPP(ippName string, width, height float64) *PaperSize {
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gdouble       // out
 	var _arg3 C.gdouble       // out
@@ -226,7 +226,7 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 }
 
 // NewPaperSizeFromPPD constructs a struct PaperSize.
-func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, height float64) *PaperSize {
+func NewPaperSizeFromPPD(ppdName, ppdDisplayName string, width, height float64) *PaperSize {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
 	var _arg3 C.gdouble       // out
@@ -514,7 +514,7 @@ func (size *PaperSize) IsIPP() bool {
 }
 
 // SetSize changes the dimensions of a size to width x height.
-func (size *PaperSize) SetSize(width float64, height float64, unit Unit) {
+func (size *PaperSize) SetSize(width, height float64, unit Unit) {
 	var _arg0 *C.GtkPaperSize // out
 	var _arg1 C.gdouble       // out
 	var _arg2 C.gdouble       // out
@@ -594,7 +594,7 @@ func PaperSizeGetDefault() string {
 //    - includeCustom: whether to include custom paper sizes as defined in the
 //    page setup dialog.
 //
-func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
+func PaperSizeGetPaperSizes(includeCustom bool) *gextras.List[*PaperSize] {
 	var _arg1 C.gboolean // out
 	var _cret *C.GList   // in
 
@@ -605,21 +605,24 @@ func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
 	_cret = C.gtk_paper_size_get_paper_sizes(_arg1)
 	runtime.KeepAlive(includeCustom)
 
-	var _list []*PaperSize // out
+	var _list *gextras.List[*PaperSize] // out
 
-	_list = make([]*PaperSize, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkPaperSize)(v)
-		var dst *PaperSize // out
-		dst = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+	_list = gextras.NewList[*PaperSize](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*PaperSize]{
+			Convert: func(ptr unsafe.Pointer) *PaperSize {
+				src := *(**C.GtkPaperSize)(ptr)
+				var dst *PaperSize // out
+				dst = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_list = append(_list, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.GtkPaperSize)(ptr))
+				C.gtk_paper_size_free((*C.GtkPaperSize)(src))
+			},
+		},
+		true,
+	)
 
 	return _list
 }

@@ -29,7 +29,7 @@ func (b *Box) Object() unsafe.Pointer { return b.obj }
 
 // Hack to force an object on the heap.
 var never bool
-var sink interface{}
+var sink any
 
 // newBox creates a zero-value instance of Box.
 func newBox(obj unsafe.Pointer) *Box {

@@ -77,7 +77,7 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 //
 // This function takes ownership of glyph_item; it will be reused as one of the
 // elements in the list.
-func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem {
+func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) *gextras.SList[*GlyphItem] {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.PangoAttrList  // out
@@ -93,21 +93,24 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(list)
 
-	var _sList []*GlyphItem // out
+	var _sList *gextras.SList[*GlyphItem] // out
 
-	_sList = make([]*GlyphItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoGlyphItem)(v)
-		var dst *GlyphItem // out
-		dst = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
+	_sList = gextras.NewSList[*GlyphItem](
+		unsafe.Pointer(_cret),
+		gextras.ListOpts[*GlyphItem]{
+			Convert: func(ptr unsafe.Pointer) *GlyphItem {
+				src := *(**C.PangoGlyphItem)(ptr)
+				var dst *GlyphItem // out
+				dst = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(src)))
+				return dst
 			},
-		)
-		_sList = append(_sList, dst)
-	})
+			FreeData: func(ptr unsafe.Pointer) {
+				src := unsafe.Pointer(*(**C.PangoGlyphItem)(ptr))
+				C.pango_glyph_item_free((*C.PangoGlyphItem)(src))
+			},
+		},
+		true,
+	)
 
 	return _sList
 }

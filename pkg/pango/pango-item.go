@@ -243,7 +243,7 @@ func (item *Item) Copy() *Item {
 // chars, and must be provided because the text used to generate the item isn't
 // available, so pango_item_split() can't count the char length of the split
 // items itself.
-func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
+func (orig *Item) Split(splitIndex, splitOffset int) *Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

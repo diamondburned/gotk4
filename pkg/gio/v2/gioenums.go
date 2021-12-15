@@ -2153,7 +2153,7 @@ const (
 	AppInfoCreateSupportsStartupNotification AppInfoCreateFlags = 0b100
 )
 
-func marshalAppInfoCreateFlags(p uintptr) (interface{}, error) {
+func marshalAppInfoCreateFlags(p uintptr) (any, error) {
 	return AppInfoCreateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2242,7 +2242,7 @@ const (
 	ApplicationReplace ApplicationFlags = 0b100000000
 )
 
-func marshalApplicationFlags(p uintptr) (interface{}, error) {
+func marshalApplicationFlags(p uintptr) (any, error) {
 	return ApplicationFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2314,7 +2314,7 @@ const (
 	AskPasswordTcrypt AskPasswordFlags = 0b100000
 )
 
-func marshalAskPasswordFlags(p uintptr) (interface{}, error) {
+func marshalAskPasswordFlags(p uintptr) (any, error) {
 	return AskPasswordFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2378,7 +2378,7 @@ const (
 	BusNameOwnerFlagsDoNotQueue BusNameOwnerFlags = 0b100
 )
 
-func marshalBusNameOwnerFlags(p uintptr) (interface{}, error) {
+func marshalBusNameOwnerFlags(p uintptr) (any, error) {
 	return BusNameOwnerFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2430,7 +2430,7 @@ const (
 	BusNameWatcherFlagsAutoStart BusNameWatcherFlags = 0b1
 )
 
-func marshalBusNameWatcherFlags(p uintptr) (interface{}, error) {
+func marshalBusNameWatcherFlags(p uintptr) (any, error) {
 	return BusNameWatcherFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2479,7 +2479,7 @@ const (
 	ConverterFlush ConverterFlags = 0b10
 )
 
-func marshalConverterFlags(p uintptr) (interface{}, error) {
+func marshalConverterFlags(p uintptr) (any, error) {
 	return ConverterFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2532,7 +2532,7 @@ const (
 	DBusCallFlagsAllowInteractiveAuthorization DBusCallFlags = 0b10
 )
 
-func marshalDBusCallFlags(p uintptr) (interface{}, error) {
+func marshalDBusCallFlags(p uintptr) (any, error) {
 	return DBusCallFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2582,7 +2582,7 @@ const (
 	DBusCapabilityFlagsUnixFdPassing DBusCapabilityFlags = 0b1
 )
 
-func marshalDBusCapabilityFlags(p uintptr) (interface{}, error) {
+func marshalDBusCapabilityFlags(p uintptr) (any, error) {
 	return DBusCapabilityFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2648,7 +2648,7 @@ const (
 	DBusConnectionFlagsAuthenticationRequireSameUser DBusConnectionFlags = 0b100000
 )
 
-func marshalDBusConnectionFlags(p uintptr) (interface{}, error) {
+func marshalDBusConnectionFlags(p uintptr) (any, error) {
 	return DBusConnectionFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2710,7 +2710,7 @@ const (
 	DBusInterfaceSkeletonFlagsHandleMethodInvocationsInThread DBusInterfaceSkeletonFlags = 0b1
 )
 
-func marshalDBusInterfaceSkeletonFlags(p uintptr) (interface{}, error) {
+func marshalDBusInterfaceSkeletonFlags(p uintptr) (any, error) {
 	return DBusInterfaceSkeletonFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2764,7 +2764,7 @@ const (
 	DBusMessageFlagsAllowInteractiveAuthorization DBusMessageFlags = 0b100
 )
 
-func marshalDBusMessageFlags(p uintptr) (interface{}, error) {
+func marshalDBusMessageFlags(p uintptr) (any, error) {
 	return DBusMessageFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2819,7 +2819,7 @@ const (
 	DBusObjectManagerClientFlagsDoNotAutoStart DBusObjectManagerClientFlags = 0b1
 )
 
-func marshalDBusObjectManagerClientFlags(p uintptr) (interface{}, error) {
+func marshalDBusObjectManagerClientFlags(p uintptr) (any, error) {
 	return DBusObjectManagerClientFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2869,7 +2869,7 @@ const (
 	DBusPropertyInfoFlagsWritable DBusPropertyInfoFlags = 0b10
 )
 
-func marshalDBusPropertyInfoFlags(p uintptr) (interface{}, error) {
+func marshalDBusPropertyInfoFlags(p uintptr) (any, error) {
 	return DBusPropertyInfoFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2942,7 +2942,7 @@ const (
 	DBusProxyFlagsDoNotAutoStartAtConstruction DBusProxyFlags = 0b10000
 )
 
-func marshalDBusProxyFlags(p uintptr) (interface{}, error) {
+func marshalDBusProxyFlags(p uintptr) (any, error) {
 	return DBusProxyFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -2998,7 +2998,7 @@ const (
 	DBusSendMessageFlagsPreserveSerial DBusSendMessageFlags = 0b1
 )
 
-func marshalDBusSendMessageFlags(p uintptr) (interface{}, error) {
+func marshalDBusSendMessageFlags(p uintptr) (any, error) {
 	return DBusSendMessageFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3053,7 +3053,7 @@ const (
 	DBusServerFlagsAuthenticationRequireSameUser DBusServerFlags = 0b100
 )
 
-func marshalDBusServerFlags(p uintptr) (interface{}, error) {
+func marshalDBusServerFlags(p uintptr) (any, error) {
 	return DBusServerFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3114,7 +3114,7 @@ const (
 	DBusSignalFlagsMatchArg0Path DBusSignalFlags = 0b100
 )
 
-func marshalDBusSignalFlags(p uintptr) (interface{}, error) {
+func marshalDBusSignalFlags(p uintptr) (any, error) {
 	return DBusSignalFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3167,7 +3167,7 @@ const (
 	DBusSubtreeFlagsDispatchToUnenumeratedNodes DBusSubtreeFlags = 0b1
 )
 
-func marshalDBusSubtreeFlags(p uintptr) (interface{}, error) {
+func marshalDBusSubtreeFlags(p uintptr) (any, error) {
 	return DBusSubtreeFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3212,7 +3212,7 @@ const (
 	DriveStartNone DriveStartFlags = 0b0
 )
 
-func marshalDriveStartFlags(p uintptr) (interface{}, error) {
+func marshalDriveStartFlags(p uintptr) (any, error) {
 	return DriveStartFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3261,7 +3261,7 @@ const (
 	FileAttributeInfoCopyWhenMoved FileAttributeInfoFlags = 0b10
 )
 
-func marshalFileAttributeInfoFlags(p uintptr) (interface{}, error) {
+func marshalFileAttributeInfoFlags(p uintptr) (any, error) {
 	return FileAttributeInfoFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3323,7 +3323,7 @@ const (
 	FileCopyTargetDefaultPerms FileCopyFlags = 0b100000
 )
 
-func marshalFileCopyFlags(p uintptr) (interface{}, error) {
+func marshalFileCopyFlags(p uintptr) (any, error) {
 	return FileCopyFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3390,7 +3390,7 @@ const (
 	FileCreateReplaceDestination FileCreateFlags = 0b10
 )
 
-func marshalFileCreateFlags(p uintptr) (interface{}, error) {
+func marshalFileCreateFlags(p uintptr) (any, error) {
 	return FileCreateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3449,7 +3449,7 @@ const (
 	FileMeasureNoXdev FileMeasureFlags = 0b1000
 )
 
-func marshalFileMeasureFlags(p uintptr) (interface{}, error) {
+func marshalFileMeasureFlags(p uintptr) (any, error) {
 	return FileMeasureFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3514,7 +3514,7 @@ const (
 	FileMonitorWatchMoves FileMonitorFlags = 0b1000
 )
 
-func marshalFileMonitorFlags(p uintptr) (interface{}, error) {
+func marshalFileMonitorFlags(p uintptr) (any, error) {
 	return FileMonitorFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3567,7 +3567,7 @@ const (
 	FileQueryInfoNofollowSymlinks FileQueryInfoFlags = 0b1
 )
 
-func marshalFileQueryInfoFlags(p uintptr) (interface{}, error) {
+func marshalFileQueryInfoFlags(p uintptr) (any, error) {
 	return FileQueryInfoFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3619,7 +3619,7 @@ const (
 	IOStreamSpliceWaitForBoth IOStreamSpliceFlags = 0b100
 )
 
-func marshalIOStreamSpliceFlags(p uintptr) (interface{}, error) {
+func marshalIOStreamSpliceFlags(p uintptr) (any, error) {
 	return IOStreamSpliceFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3668,7 +3668,7 @@ const (
 	MountMountNone MountMountFlags = 0b0
 )
 
-func marshalMountMountFlags(p uintptr) (interface{}, error) {
+func marshalMountMountFlags(p uintptr) (any, error) {
 	return MountMountFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3714,7 +3714,7 @@ const (
 	MountUnmountForce MountUnmountFlags = 0b1
 )
 
-func marshalMountUnmountFlags(p uintptr) (interface{}, error) {
+func marshalMountUnmountFlags(p uintptr) (any, error) {
 	return MountUnmountFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3763,7 +3763,7 @@ const (
 	OutputStreamSpliceCloseTarget OutputStreamSpliceFlags = 0b10
 )
 
-func marshalOutputStreamSpliceFlags(p uintptr) (interface{}, error) {
+func marshalOutputStreamSpliceFlags(p uintptr) (any, error) {
 	return OutputStreamSpliceFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3813,7 +3813,7 @@ const (
 	ResourceFlagsCompressed ResourceFlags = 0b1
 )
 
-func marshalResourceFlags(p uintptr) (interface{}, error) {
+func marshalResourceFlags(p uintptr) (any, error) {
 	return ResourceFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3858,7 +3858,7 @@ const (
 	ResourceLookupFlagsNone ResourceLookupFlags = 0b0
 )
 
-func marshalResourceLookupFlags(p uintptr) (interface{}, error) {
+func marshalResourceLookupFlags(p uintptr) (any, error) {
 	return ResourceLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3913,7 +3913,7 @@ const (
 	SocketMsgDontroute SocketMsgFlags = 0b100
 )
 
-func marshalSocketMsgFlags(p uintptr) (interface{}, error) {
+func marshalSocketMsgFlags(p uintptr) (any, error) {
 	return SocketMsgFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -3996,7 +3996,7 @@ const (
 	SubprocessFlagsInheritFds SubprocessFlags = 0b10000000
 )
 
-func marshalSubprocessFlags(p uintptr) (interface{}, error) {
+func marshalSubprocessFlags(p uintptr) (any, error) {
 	return SubprocessFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -4055,7 +4055,7 @@ const (
 	TestDBusNone TestDBusFlags = 0b0
 )
 
-func marshalTestDBusFlags(p uintptr) (interface{}, error) {
+func marshalTestDBusFlags(p uintptr) (any, error) {
 	return TestDBusFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -4119,7 +4119,7 @@ const (
 	TLSCertificateValidateAll TLSCertificateFlags = 0b1111111
 )
 
-func marshalTLSCertificateFlags(p uintptr) (interface{}, error) {
+func marshalTLSCertificateFlags(p uintptr) (any, error) {
 	return TLSCertificateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -4176,7 +4176,7 @@ const (
 	TLSDatabaseVerifyNone TLSDatabaseVerifyFlags = 0b0
 )
 
-func marshalTLSDatabaseVerifyFlags(p uintptr) (interface{}, error) {
+func marshalTLSDatabaseVerifyFlags(p uintptr) (any, error) {
 	return TLSDatabaseVerifyFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
@@ -4227,7 +4227,7 @@ const (
 	TLSPasswordFinalTry TLSPasswordFlags = 0b1000
 )
 
-func marshalTLSPasswordFlags(p uintptr) (interface{}, error) {
+func marshalTLSPasswordFlags(p uintptr) (any, error) {
 	return TLSPasswordFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

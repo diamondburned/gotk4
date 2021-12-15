@@ -141,7 +141,7 @@ const (
 	DebugIconfallback   DebugFlags = 0b1000000000000000000
 )
 
-func marshalDebugFlags(p uintptr) (interface{}, error) {
+func marshalDebugFlags(p uintptr) (any, error) {
 	return DebugFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 

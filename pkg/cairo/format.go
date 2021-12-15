@@ -21,7 +21,7 @@ const (
 	FORMAT_RGB30     Format = C.CAIRO_FORMAT_RGB30
 )
 
-func marshalFormat(p uintptr) (interface{}, error) {
+func marshalFormat(p uintptr) (any, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return Format(c), nil
 }

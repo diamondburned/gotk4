@@ -349,11 +349,10 @@ func IdleAddPriority(priority Priority, f interface{}) SourceHandle {
 */
 
 //go:nosplit
-//go:nocheckptr
 func idleAdd(priority Priority, f interface{}) SourceHandle {
 	fs := closure.NewIdleFuncStack(f, 2)
-	id := C.gpointer(gbox.Assign(fs))
-	h := C.g_idle_add_full(C.gint(priority), _sourceFunc, id, _removeSourceFunc)
+	id := gbox.Assign(fs)
+	h := C.g_idle_add_full(C.gint(priority), _sourceFunc, C.gpointer(id), _removeSourceFunc)
 
 	return SourceHandle(h)
 }
@@ -389,13 +388,13 @@ func TimeoutSecondsAddPriority(seconds uint, priority Priority, f interface{}) S
 //go:nocheckptr
 func timeoutAdd(time uint, sec bool, priority Priority, f interface{}) SourceHandle {
 	fs := closure.NewIdleFuncStack(f, 2)
-	id := C.gpointer(gbox.Assign(fs))
+	id := gbox.Assign(fs)
 
 	var h C.guint
 	if sec {
-		h = C.g_timeout_add_seconds_full(C.gint(priority), C.guint(time), _sourceFunc, id, _removeSourceFunc)
+		h = C.g_timeout_add_seconds_full(C.gint(priority), C.guint(time), _sourceFunc, C.gpointer(Id), _removeSourceFunc)
 	} else {
-		h = C.g_timeout_add_full(C.gint(priority), C.guint(time), _sourceFunc, id, _removeSourceFunc)
+		h = C.g_timeout_add_full(C.gint(priority), C.guint(time), _sourceFunc, C.gpointer(id), _removeSourceFunc)
 	}
 
 	return SourceHandle(h)

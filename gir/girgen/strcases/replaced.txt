@@ -1,5 +1,6 @@
 # Edge cases after Pascal case.
 
+Ids -> IDs
 Uris -> URIs
 Tolower -> ToLower
 Toupper -> ToUpper
@@ -32,3 +33,4 @@ Zorder -> ZOrder
 Certdb -> CertDB
 Gerror -> GError
 ImContext -> IMContext
+Foreach -> ForEach

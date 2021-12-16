@@ -24,7 +24,7 @@ import (
 // extern void callbackDelete(gpointer);
 // gboolean _gotk4_gtk3_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
 // gint _gotk4_gtk3_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
-// void _gotk4_gtk3_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
+// void _gotk4_gtk3_ListBoxForEachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
 // void _gotk4_gtk3_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 import "C"
 
@@ -89,12 +89,12 @@ func _gotk4_gtk3_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret
 	return cret
 }
 
-// ListBoxForeachFunc: function used by gtk_list_box_selected_foreach(). It will
+// ListBoxForEachFunc: function used by gtk_list_box_selected_foreach(). It will
 // be called on every selected child of the box.
-type ListBoxForeachFunc func(box *ListBox, row *ListBoxRow)
+type ListBoxForEachFunc func(box *ListBox, row *ListBoxRow)
 
-//export _gotk4_gtk3_ListBoxForeachFunc
-func _gotk4_gtk3_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+//export _gotk4_gtk3_ListBoxForEachFunc
+func _gotk4_gtk3_ListBoxForEachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -106,7 +106,7 @@ func _gotk4_gtk3_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, a
 	box = wrapListBox(externglib.Take(unsafe.Pointer(arg0)))
 	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
 
-	fn := v.(ListBoxForeachFunc)
+	fn := v.(ListBoxForEachFunc)
 	fn(box, row)
 }
 
@@ -597,7 +597,7 @@ func (box *ListBox) SelectRow(row *ListBoxRow) {
 	runtime.KeepAlive(row)
 }
 
-// SelectedForeach calls a function for each selected child.
+// SelectedForEach calls a function for each selected child.
 //
 // Note that the selection cannot be modified from within this function.
 //
@@ -605,13 +605,13 @@ func (box *ListBox) SelectRow(row *ListBoxRow) {
 //
 //    - fn: function to call for each selected child.
 //
-func (box *ListBox) SelectedForeach(fn ListBoxForeachFunc) {
+func (box *ListBox) SelectedForEach(fn ListBoxForEachFunc) {
 	var _arg0 *C.GtkListBox           // out
 	var _arg1 C.GtkListBoxForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

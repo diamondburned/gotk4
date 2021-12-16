@@ -149,11 +149,11 @@ type CellAreaOverrider interface {
 	// Implementing CellArea classes should implement this method to receive and
 	// navigate focus in its own way particular to how it lays out cells.
 	Focus(direction DirectionType) bool
-	// Foreach calls callback for every CellRenderer in area.
-	Foreach(callback CellCallback)
-	// ForeachAlloc calls callback for every CellRenderer in area with the
+	// ForEach calls callback for every CellRenderer in area.
+	ForEach(callback CellCallback)
+	// ForEachAlloc calls callback for every CellRenderer in area with the
 	// allocated rectangle inside cell_area.
-	ForeachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
+	ForEachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	//
@@ -818,13 +818,13 @@ func (area *CellArea) Focus(direction DirectionType) bool {
 	return _ok
 }
 
-// Foreach calls callback for every CellRenderer in area.
+// ForEach calls callback for every CellRenderer in area.
 //
 // The function takes the following parameters:
 //
 //    - callback to call.
 //
-func (area *CellArea) Foreach(callback CellCallback) {
+func (area *CellArea) ForEach(callback CellCallback) {
 	var _arg0 *C.GtkCellArea    // out
 	var _arg1 C.GtkCellCallback // out
 	var _arg2 C.gpointer
@@ -839,7 +839,7 @@ func (area *CellArea) Foreach(callback CellCallback) {
 	runtime.KeepAlive(callback)
 }
 
-// ForeachAlloc calls callback for every CellRenderer in area with the allocated
+// ForEachAlloc calls callback for every CellRenderer in area with the allocated
 // rectangle inside cell_area.
 //
 // The function takes the following parameters:
@@ -850,7 +850,7 @@ func (area *CellArea) Foreach(callback CellCallback) {
 //    - backgroundArea: widget relative coordinates of the background area.
 //    - callback to call.
 //
-func (area *CellArea) ForeachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
+func (area *CellArea) ForEachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
 	var _arg0 *C.GtkCellArea         // out
 	var _arg1 *C.GtkCellAreaContext  // out
 	var _arg2 *C.GtkWidget           // out

@@ -20,7 +20,7 @@ import (
 // #include <gtk/gtkx.h>
 // extern void callbackDelete(gpointer);
 // gboolean _gotk4_gtk3_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
-// void _gotk4_gtk3_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// void _gotk4_gtk3_TreeSelectionForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -29,13 +29,13 @@ func init() {
 	})
 }
 
-// TreeSelectionForeachFunc: function used by
+// TreeSelectionForEachFunc: function used by
 // gtk_tree_selection_selected_foreach() to map all selected rows. It will be
 // called on every selected row in the view.
-type TreeSelectionForeachFunc func(model TreeModeller, path *TreePath, iter *TreeIter)
+type TreeSelectionForEachFunc func(model TreeModeller, path *TreePath, iter *TreeIter)
 
-//export _gotk4_gtk3_TreeSelectionForeachFunc
-func _gotk4_gtk3_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
+//export _gotk4_gtk3_TreeSelectionForEachFunc
+func _gotk4_gtk3_TreeSelectionForEachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -61,7 +61,7 @@ func _gotk4_gtk3_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(TreeSelectionForeachFunc)
+	fn := v.(TreeSelectionForEachFunc)
 	fn(model, path, iter)
 }
 
@@ -426,7 +426,7 @@ func (selection *TreeSelection) SelectRange(startPath, endPath *TreePath) {
 	runtime.KeepAlive(endPath)
 }
 
-// SelectedForeach calls a function for each selected node. Note that you cannot
+// SelectedForEach calls a function for each selected node. Note that you cannot
 // modify the tree or selection from within this function. As a result,
 // gtk_tree_selection_get_selected_rows() might be more useful.
 //
@@ -434,13 +434,13 @@ func (selection *TreeSelection) SelectRange(startPath, endPath *TreePath) {
 //
 //    - fn: function to call for each selected node.
 //
-func (selection *TreeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
+func (selection *TreeSelection) SelectedForEach(fn TreeSelectionForEachFunc) {
 	var _arg0 *C.GtkTreeSelection           // out
 	var _arg1 C.GtkTreeSelectionForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeSelectionForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeSelectionForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

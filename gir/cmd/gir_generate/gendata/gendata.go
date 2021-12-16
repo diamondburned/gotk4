@@ -693,8 +693,8 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 				for _, field := range fields {
 					if !Lfile {
 						switch field.Key() {
-						case "MESSAGE":     message  = field.Value()
-						case "GLIB_DOMAIN": domain   = field.Value()
+						case "MESSAGE":     message = field.Value()
+						case "GLIB_DOMAIN": domain  = field.Value()
 						}
 						// Skip setting code* if we don't have to.
 						continue
@@ -725,12 +725,28 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 					return LogWriterHandled
 				}
 
+				var level string
+
+                switch lvl {
+				case
+					LogLevelError,
+					LogLevelCritical,
+					LogLevelWarning,
+					LogLevelMessage,
+					LogLevelInfo,
+					LogLevelDebug:
+
+					level = strings.TrimPrefix(lvl.String(), "Level")
+				default:
+					level = lvl.String()
+                }
+
 				if codeFunc == "" {
-					f("%s: %s: %s:%s: %s", lvl, domain, codeFile, codeLine, message)
+					f("%s: %s: %s:%s: %s", level, domain, codeFile, codeLine, message)
 					return LogWriterHandled
 				}
 
-				f("%s: %s: %s:%s (%s): %s", lvl, domain, codeFile, codeLine, codeFunc, message)
+				f("%s: %s: %s:%s (%s): %s", level, domain, codeFile, codeLine, codeFunc, message)
 				return LogWriterHandled
 			}
 		}

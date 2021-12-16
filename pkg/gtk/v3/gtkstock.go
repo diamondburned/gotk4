@@ -674,12 +674,12 @@ func StockAddStatic(items []StockItem) {
 	runtime.KeepAlive(items)
 }
 
-// StockListIds retrieves a list of all known stock IDs added to a IconFactory
+// StockListIDs retrieves a list of all known stock IDs added to a IconFactory
 // or registered with gtk_stock_add(). The list must be freed with
 // g_slist_free(), and each string in the list must be freed with g_free().
 //
 // Deprecated: since version 3.10.
-func StockListIds() []string {
+func StockListIDs() []string {
 	var _cret *C.GSList // in
 
 	_cret = C.gtk_stock_list_ids()

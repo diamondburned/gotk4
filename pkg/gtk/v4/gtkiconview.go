@@ -18,7 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// void _gotk4_gtk4_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer);
+// void _gotk4_gtk4_IconViewForEachFunc(GtkIconView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {
@@ -70,14 +70,14 @@ func (i IconViewDropPosition) String() string {
 	}
 }
 
-// IconViewForeachFunc: function used by gtk_icon_view_selected_foreach() to map
+// IconViewForEachFunc: function used by gtk_icon_view_selected_foreach() to map
 // all selected rows.
 //
 // It will be called on every selected row in the view.
-type IconViewForeachFunc func(iconView *IconView, path *TreePath)
+type IconViewForEachFunc func(iconView *IconView, path *TreePath)
 
-//export _gotk4_gtk4_IconViewForeachFunc
-func _gotk4_gtk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
+//export _gotk4_gtk4_IconViewForEachFunc
+func _gotk4_gtk4_IconViewForEachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -89,7 +89,7 @@ func _gotk4_gtk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, a
 	iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
-	fn := v.(IconViewForeachFunc)
+	fn := v.(IconViewForEachFunc)
 	fn(iconView, path)
 }
 
@@ -879,20 +879,20 @@ func (iconView *IconView) SelectPath(path *TreePath) {
 	runtime.KeepAlive(path)
 }
 
-// SelectedForeach calls a function for each selected icon. Note that the model
+// SelectedForEach calls a function for each selected icon. Note that the model
 // or selection cannot be modified from within this function.
 //
 // The function takes the following parameters:
 //
 //    - fn: function to call for each selected icon.
 //
-func (iconView *IconView) SelectedForeach(fn IconViewForeachFunc) {
+func (iconView *IconView) SelectedForEach(fn IconViewForEachFunc) {
 	var _arg0 *C.GtkIconView           // out
 	var _arg1 C.GtkIconViewForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_IconViewForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_IconViewForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

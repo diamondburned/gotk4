@@ -464,7 +464,7 @@ func (container *Container) Forall(callback Callback) {
 	runtime.KeepAlive(callback)
 }
 
-// Foreach invokes callback on each non-internal child of container. See
+// ForEach invokes callback on each non-internal child of container. See
 // gtk_container_forall() for details on what constitutes an “internal” child.
 // For all practical purposes, this function should iterate over precisely those
 // child widgets that were added to the container by the application with
@@ -479,7 +479,7 @@ func (container *Container) Forall(callback Callback) {
 //
 //    - callback: callback.
 //
-func (container *Container) Foreach(callback Callback) {
+func (container *Container) ForEach(callback Callback) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.GtkCallback   // out
 	var _arg2 C.gpointer

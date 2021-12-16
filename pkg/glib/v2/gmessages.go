@@ -989,12 +989,28 @@ func LoggerHandler(l *log.Logger) LogWriterFunc {
 			return LogWriterHandled
 		}
 
+		var level string
+
+		switch lvl {
+		case
+			LogLevelError,
+			LogLevelCritical,
+			LogLevelWarning,
+			LogLevelMessage,
+			LogLevelInfo,
+			LogLevelDebug:
+
+			level = strings.TrimPrefix(lvl.String(), "Level")
+		default:
+			level = lvl.String()
+		}
+
 		if codeFunc == "" {
-			f("%s: %s: %s:%s: %s", lvl, domain, codeFile, codeLine, message)
+			f("%s: %s: %s:%s: %s", level, domain, codeFile, codeLine, message)
 			return LogWriterHandled
 		}
 
-		f("%s: %s: %s:%s (%s): %s", lvl, domain, codeFile, codeLine, codeFunc, message)
+		f("%s: %s: %s:%s (%s): %s", level, domain, codeFile, codeLine, codeFunc, message)
 		return LogWriterHandled
 	}
 }

@@ -392,7 +392,7 @@ func timeoutAdd(time uint, sec bool, priority Priority, f interface{}) SourceHan
 
 	var h C.guint
 	if sec {
-		h = C.g_timeout_add_seconds_full(C.gint(priority), C.guint(time), _sourceFunc, C.gpointer(Id), _removeSourceFunc)
+		h = C.g_timeout_add_seconds_full(C.gint(priority), C.guint(time), _sourceFunc, C.gpointer(id), _removeSourceFunc)
 	} else {
 		h = C.g_timeout_add_full(C.gint(priority), C.guint(time), _sourceFunc, C.gpointer(id), _removeSourceFunc)
 	}

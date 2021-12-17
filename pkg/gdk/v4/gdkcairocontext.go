@@ -38,7 +38,7 @@ var (
 )
 
 // CairoContexter describes types inherited from class CairoContext.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type CairoContexter interface {

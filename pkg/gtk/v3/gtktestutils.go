@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -54,9 +55,10 @@ func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -99,9 +101,10 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		_ret = rv
 	}
@@ -142,9 +145,10 @@ func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) Widgetter
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		_widget = rv
 	}
@@ -189,9 +193,10 @@ func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_ret = rv
 		}

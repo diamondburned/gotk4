@@ -966,15 +966,16 @@ func (m *marshalMap) lookupIfaces(t Type) GValueMarshaler {
 func (m *marshalMap) lookup(v *Value) GValueMarshaler {
 	typ := v.Type()
 
-	// Check the inheritance tree.
+	// Check the inheritance tree for concrete classes.
 	for t := typ; t != 0; t = t.Parent() {
-		// Traverse the type inheritance tree.
 		f, ok := m.lookupType(t)
 		if ok {
 			return f
 		}
+	}
 
-		// Check the top level type's interface.
+	// Check the tree again for interfaces.
+	for t := typ; t != 0; t = t.Parent() {
 		if f := m.lookupIfaces(t); f != nil {
 			return f
 		}

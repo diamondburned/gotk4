@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -264,9 +265,10 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(ConstraintTargetter)
+			casted := object.Cast()
+			rv, ok := casted.(ConstraintTargetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ConstraintTargetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.ConstraintTargetter")
 			}
 			_constraintTarget = rv
 		}
@@ -331,9 +333,10 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(ConstraintTargetter)
+			casted := object.Cast()
+			rv, ok := casted.(ConstraintTargetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ConstraintTargetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.ConstraintTargetter")
 			}
 			_constraintTarget = rv
 		}

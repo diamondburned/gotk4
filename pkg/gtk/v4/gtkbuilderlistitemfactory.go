@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -187,9 +188,10 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(BuilderScoper)
+			casted := object.Cast()
+			rv, ok := casted.(BuilderScoper)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.BuilderScoper")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.BuilderScoper")
 			}
 			_builderScope = rv
 		}

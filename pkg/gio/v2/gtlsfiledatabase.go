@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -94,9 +95,10 @@ func NewTLSFileDatabase(anchors string) (TLSFileDatabaser, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(TLSFileDatabaser)
+		casted := object.Cast()
+		rv, ok := casted.(TLSFileDatabaser)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSFileDatabaser")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSFileDatabaser")
 		}
 		_tlsFileDatabase = rv
 	}

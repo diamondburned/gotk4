@@ -112,7 +112,7 @@ var (
 )
 
 // Permissioner describes types inherited from class Permission.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Permissioner interface {

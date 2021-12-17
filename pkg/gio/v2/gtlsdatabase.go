@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -185,7 +186,7 @@ var (
 )
 
 // TLSDatabaser describes types inherited from class TLSDatabase.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type TLSDatabaser interface {
@@ -298,9 +299,10 @@ func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle 
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			casted := object.Cast()
+			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 			}
 			_tlsCertificate = rv
 		}
@@ -393,9 +395,10 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+		casted := object.Cast()
+		rv, ok := casted.(TLSCertificater)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 		}
 		_tlsCertificate = rv
 	}
@@ -459,9 +462,10 @@ func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificat
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+		casted := object.Cast()
+		rv, ok := casted.(TLSCertificater)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 		}
 		_tlsCertificate = rv
 	}
@@ -549,9 +553,10 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+		casted := object.Cast()
+		rv, ok := casted.(TLSCertificater)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 		}
 		_tlsCertificate = rv
 	}
@@ -622,9 +627,10 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			casted := object.Cast()
+			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 			}
 			dst = rv
 		}
@@ -726,9 +732,10 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			casted := object.Cast()
+			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 			}
 			dst = rv
 		}

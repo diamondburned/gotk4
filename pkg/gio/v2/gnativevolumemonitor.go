@@ -32,7 +32,7 @@ var (
 )
 
 // NativeVolumeMonitorrer describes types inherited from class NativeVolumeMonitor.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type NativeVolumeMonitorrer interface {

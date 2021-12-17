@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -55,9 +56,10 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		model = rv
 	}
@@ -91,9 +93,10 @@ func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		model = rv
 	}
@@ -372,9 +375,10 @@ func (filter *TreeModelFilter) Model() TreeModeller {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		_treeModel = rv
 	}

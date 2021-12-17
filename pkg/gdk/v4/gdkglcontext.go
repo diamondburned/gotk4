@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -82,7 +83,7 @@ var (
 )
 
 // GLContexter describes types inherited from class GLContext.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type GLContexter interface {
@@ -205,9 +206,10 @@ func (context *GLContext) SharedContext() GLContexter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(GLContexter)
+			casted := object.Cast()
+			rv, ok := casted.(GLContexter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.GLContexter")
 			}
 			_glContext = rv
 		}
@@ -233,9 +235,10 @@ func (context *GLContext) Surface() Surfacer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Surfacer)
+			casted := object.Cast()
+			rv, ok := casted.(Surfacer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
 			}
 			_surface = rv
 		}
@@ -493,9 +496,10 @@ func GLContextGetCurrent() GLContexter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(GLContexter)
+			casted := object.Cast()
+			rv, ok := casted.(GLContexter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.GLContexter")
 			}
 			_glContext = rv
 		}

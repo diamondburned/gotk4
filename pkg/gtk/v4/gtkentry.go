@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -408,9 +409,10 @@ func (entry *Entry) ExtraMenu() gio.MenuModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.MenuModeller)
+			casted := object.Cast()
+			rv, ok := casted.(gio.MenuModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.MenuModeller")
 			}
 			_menuModel = rv
 		}
@@ -558,9 +560,10 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+			casted := object.Cast()
+			rv, ok := casted.(gio.Iconner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
 			}
 			_icon = rv
 		}
@@ -626,9 +629,10 @@ func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintabler {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Paintabler)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Paintabler")
 			}
 			_paintable = rv
 		}

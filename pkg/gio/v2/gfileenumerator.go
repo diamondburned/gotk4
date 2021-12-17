@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -279,9 +280,10 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Filer)
+		casted := object.Cast()
+		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 		}
 		_file = rv
 	}
@@ -308,9 +310,10 @@ func (enumerator *FileEnumerator) Container() Filer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Filer)
+		casted := object.Cast()
+		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 		}
 		_file = rv
 	}
@@ -424,9 +427,10 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, e
 			objptr := unsafe.Pointer(_arg2)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Filer)
+			casted := object.Cast()
+			rv, ok := casted.(Filer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 			}
 			_outChild = rv
 		}

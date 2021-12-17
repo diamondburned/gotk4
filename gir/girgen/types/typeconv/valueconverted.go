@@ -447,6 +447,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 		m["GoType"] = value.Resolved.PublicType(true)
 		// Require the abstract cast if we have an abstract type.
 		value.header.NeedsExternGLib()
+		value.header.Import("reflect")
 		value.p.Descend()
 		value.p.LineTmpl(m, `
 			objptr := unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)
@@ -456,9 +457,10 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 			}
 			<end>
 			object := externglib.<.Func>(objptr)
-			rv, ok := (<.Value.OutPtr 0>externglib.CastObject(object)).(<.Value.Out.Type>)
+			casted := <.Value.OutPtr 0>object.Cast()
+			rv, ok := casted.(<.Value.Out.Type>)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not <.GoType>")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not <.GoType>")
 			}
 			<.Value.Out.Set> = rv
 		`)

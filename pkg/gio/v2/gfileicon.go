@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -89,9 +90,10 @@ func (icon *FileIcon) File() Filer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Filer)
+		casted := object.Cast()
+		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 		}
 		_file = rv
 	}

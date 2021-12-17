@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -49,9 +50,10 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(CellLayouter)
+		casted := object.Cast()
+		rv, ok := casted.(CellLayouter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellLayouter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellLayouter")
 		}
 		cellLayout = rv
 	}
@@ -62,9 +64,10 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		casted := object.Cast()
+		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
 		}
 		cell = rv
 	}
@@ -75,9 +78,10 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		treeModel = rv
 	}
@@ -352,9 +356,10 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(CellAreaer)
+			casted := object.Cast()
+			rv, ok := casted.(CellAreaer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellAreaer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellAreaer")
 			}
 			_cellArea = rv
 		}
@@ -386,9 +391,10 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 			}
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(CellRendererer)
+			casted := object.Cast()
+			rv, ok := casted.(CellRendererer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
 			}
 			dst = rv
 		}

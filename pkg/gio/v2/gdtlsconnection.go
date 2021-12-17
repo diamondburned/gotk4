@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -379,9 +380,10 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			casted := object.Cast()
+			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 			}
 			_tlsCertificate = rv
 		}
@@ -451,9 +453,10 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSDatabaser)
+			casted := object.Cast()
+			rv, ok := casted.(TLSDatabaser)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSDatabaser")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSDatabaser")
 			}
 			_tlsDatabase = rv
 		}
@@ -527,9 +530,10 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			casted := object.Cast()
+			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 			}
 			_tlsCertificate = rv
 		}

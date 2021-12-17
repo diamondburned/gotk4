@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -109,9 +110,10 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gsk.Rendererer)
+		casted := object.Cast()
+		rv, ok := casted.(gsk.Rendererer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.Rendererer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.Rendererer")
 		}
 		_renderer = rv
 	}
@@ -138,9 +140,10 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gdk.Surfacer)
+		casted := object.Cast()
+		rv, ok := casted.(gdk.Surfacer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
 		}
 		_surface = rv
 	}
@@ -219,9 +222,10 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(NativeSurfacer)
+		casted := object.Cast()
+		rv, ok := casted.(NativeSurfacer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.NativeSurfacer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.NativeSurfacer")
 		}
 		_native = rv
 	}

@@ -44,7 +44,8 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .IsClass }}
 	// {{ .InterfaceName }} describes types inherited from class {{ .StructName }}.
-	{{ $needsPrivate = true }}
+	{{- $needsPrivate = true }}
+	//
 	// To get the original type, the caller must assert this to an interface or
 	// another type.
 	type {{ .InterfaceName }} interface {

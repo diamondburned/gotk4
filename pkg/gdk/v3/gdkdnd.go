@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -326,9 +327,10 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Windower)
+		casted := object.Cast()
+		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 		}
 		_destWindow = rv
 	}

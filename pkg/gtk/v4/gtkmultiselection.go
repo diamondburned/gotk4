@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -94,9 +95,10 @@ func (self *MultiSelection) Model() gio.ListModeller {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+		casted := object.Cast()
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ListModeller")
 		}
 		_listModel = rv
 	}

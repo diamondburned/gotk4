@@ -68,7 +68,7 @@ var (
 )
 
 // NativeDialogger describes types inherited from class NativeDialog.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type NativeDialogger interface {

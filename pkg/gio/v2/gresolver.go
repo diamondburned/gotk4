@@ -5,6 +5,7 @@ package gio
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -211,7 +212,7 @@ var (
 )
 
 // Resolverer describes types inherited from class Resolver.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Resolverer interface {
@@ -1002,9 +1003,10 @@ func ResolverGetDefault() Resolverer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Resolverer)
+		casted := object.Cast()
+		rv, ok := casted.(Resolverer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Resolverer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Resolverer")
 		}
 		_resolver = rv
 	}

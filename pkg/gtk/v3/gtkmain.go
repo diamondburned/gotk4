@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -51,9 +52,10 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		grabWidget = rv
 	}
@@ -248,9 +250,10 @@ func GetCurrentEventDevice() gdk.Devicer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Devicer)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Devicer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 			}
 			_device = rv
 		}
@@ -335,9 +338,10 @@ func GetEventWidget(event *gdk.Event) Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -497,9 +501,10 @@ func GrabGetCurrent() Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_widget = rv
 		}

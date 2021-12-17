@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -108,7 +109,7 @@ var (
 )
 
 // Seater describes types inherited from class Seat.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Seater interface {
@@ -176,9 +177,10 @@ func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 			}
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
+			casted := object.Cast()
+			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 			}
 			dst = rv
 		}
@@ -222,9 +224,10 @@ func (seat *Seat) Keyboard() Devicer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
+			casted := object.Cast()
+			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 			}
 			_device = rv
 		}
@@ -250,9 +253,10 @@ func (seat *Seat) Pointer() Devicer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
+			casted := object.Cast()
+			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 			}
 			_device = rv
 		}

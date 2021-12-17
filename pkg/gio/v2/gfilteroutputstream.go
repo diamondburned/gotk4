@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -35,7 +36,7 @@ var (
 )
 
 // FilterOutputStreamer describes types inherited from class FilterOutputStream.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FilterOutputStreamer interface {
@@ -76,9 +77,10 @@ func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(OutputStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(OutputStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.OutputStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.OutputStreamer")
 		}
 		_outputStream = rv
 	}

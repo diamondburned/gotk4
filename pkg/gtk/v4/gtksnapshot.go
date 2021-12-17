@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1165,9 +1166,10 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gsk.RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(gsk.RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -1210,9 +1212,10 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+		casted := object.Cast()
+		rv, ok := casted.(gdk.Paintabler)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Paintabler")
 		}
 		_paintable = rv
 	}

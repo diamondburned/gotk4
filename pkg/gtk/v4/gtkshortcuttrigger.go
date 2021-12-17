@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -105,9 +106,10 @@ func (self *AlternativeTrigger) First() ShortcutTriggerer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(ShortcutTriggerer)
+		casted := object.Cast()
+		rv, ok := casted.(ShortcutTriggerer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ShortcutTriggerer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.ShortcutTriggerer")
 		}
 		_shortcutTrigger = rv
 	}
@@ -136,9 +138,10 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(ShortcutTriggerer)
+		casted := object.Cast()
+		rv, ok := casted.(ShortcutTriggerer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ShortcutTriggerer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.ShortcutTriggerer")
 		}
 		_shortcutTrigger = rv
 	}
@@ -355,7 +358,7 @@ var (
 )
 
 // ShortcutTriggerer describes types inherited from class ShortcutTrigger.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ShortcutTriggerer interface {

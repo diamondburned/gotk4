@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -297,9 +298,10 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(pango.FontMapper)
+		casted := object.Cast()
+		rv, ok := casted.(pango.FontMapper)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontMapper")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
 		}
 		_fontMap = rv
 	}

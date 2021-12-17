@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -114,9 +115,10 @@ func (section *CSSSection) File() gio.Filer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gio.Filer)
+		casted := object.Cast()
+		rv, ok := casted.(gio.Filer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 		}
 		_file = rv
 	}

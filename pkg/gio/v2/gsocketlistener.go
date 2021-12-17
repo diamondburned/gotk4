@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -376,9 +377,10 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 			objptr := unsafe.Pointer(_arg5)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(SocketAddresser)
+			casted := object.Cast()
+			rv, ok := casted.(SocketAddresser)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketAddresser")
 			}
 			_effectiveAddress = rv
 		}

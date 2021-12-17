@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -157,9 +158,10 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Actioner)
+		casted := object.Cast()
+		rv, ok := casted.(Actioner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Actioner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Actioner")
 		}
 		_action = rv
 	}

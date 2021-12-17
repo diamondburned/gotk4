@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -142,9 +143,10 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(IOStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(IOStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.IOStreamer")
 		}
 		_ioStream = rv
 	}
@@ -222,9 +224,10 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(IOStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(IOStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.IOStreamer")
 		}
 		_ioStream = rv
 	}
@@ -283,9 +286,10 @@ func ProxyGetDefaultForProtocol(protocol string) Proxier {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Proxier)
+			casted := object.Cast()
+			rv, ok := casted.(Proxier)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Proxier")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Proxier")
 			}
 			_proxy = rv
 		}

@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -89,7 +90,7 @@ var (
 )
 
 // Devicer describes types inherited from class Device.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Devicer interface {
@@ -346,9 +347,10 @@ func (device *Device) Seat() Seater {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Seater)
+		casted := object.Cast()
+		rv, ok := casted.(Seater)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
 		}
 		_seat = rv
 	}
@@ -400,9 +402,10 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface S
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Surfacer)
+			casted := object.Cast()
+			rv, ok := casted.(Surfacer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
 			}
 			_surface = rv
 		}

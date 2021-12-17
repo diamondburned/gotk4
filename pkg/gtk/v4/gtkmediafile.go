@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -52,7 +53,7 @@ var (
 )
 
 // MediaFiler describes types inherited from class MediaFile.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MediaFiler interface {
@@ -218,9 +219,10 @@ func (self *MediaFile) File() gio.Filer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			casted := object.Cast()
+			rv, ok := casted.(gio.Filer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 			}
 			_file = rv
 		}
@@ -248,9 +250,10 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.InputStreamer)
+			casted := object.Cast()
+			rv, ok := casted.(gio.InputStreamer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.InputStreamer")
 			}
 			_inputStream = rv
 		}

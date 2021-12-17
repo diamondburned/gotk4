@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -311,9 +312,10 @@ func (notebook *Notebook) ActionWidget(packType PackType) Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -383,9 +385,10 @@ func (notebook *Notebook) MenuLabel(child Widgetter) Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -464,9 +467,10 @@ func (notebook *Notebook) NthPage(pageNum int) Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -522,9 +526,10 @@ func (notebook *Notebook) Pages() gio.ListModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+		casted := object.Cast()
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ListModeller")
 		}
 		_listModel = rv
 	}
@@ -644,9 +649,10 @@ func (notebook *Notebook) TabLabel(child Widgetter) Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_widget = rv
 		}
@@ -1441,9 +1447,10 @@ func (page *NotebookPage) Child() Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		_widget = rv
 	}

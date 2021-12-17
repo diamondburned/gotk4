@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1488,9 +1489,10 @@ func (connection *DBusConnection) Stream() IOStreamer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(IOStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(IOStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.IOStreamer")
 		}
 		_ioStream = rv
 	}
@@ -4472,9 +4474,10 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(MenuModeller)
+			casted := object.Cast()
+			rv, ok := casted.(MenuModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.MenuModeller")
 			}
 			_menuModel = rv
 		}

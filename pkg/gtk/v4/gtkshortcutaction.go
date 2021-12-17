@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -103,9 +104,10 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		widget = rv
 	}
@@ -392,7 +394,7 @@ var (
 )
 
 // ShortcutActioner describes types inherited from class ShortcutAction.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ShortcutActioner interface {

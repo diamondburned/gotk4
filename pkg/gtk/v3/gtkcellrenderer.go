@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -224,7 +225,7 @@ type CellRenderer struct {
 var ()
 
 // CellRendererer describes types inherited from class CellRenderer.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type CellRendererer interface {
@@ -902,9 +903,10 @@ func (cell *CellRenderer) StartEditing(event *gdk.Event, widget Widgetter, path 
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(CellEditabler)
+			casted := object.Cast()
+			rv, ok := casted.(CellEditabler)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellEditabler")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellEditabler")
 			}
 			_cellEditable = rv
 		}

@@ -115,7 +115,7 @@ var (
 )
 
 // InputStreamer describes types inherited from class InputStream.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type InputStreamer interface {

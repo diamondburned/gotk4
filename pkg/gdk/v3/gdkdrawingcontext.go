@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -121,9 +122,10 @@ func (context *DrawingContext) Window() Windower {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Windower)
+		casted := object.Cast()
+		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 		}
 		_window = rv
 	}

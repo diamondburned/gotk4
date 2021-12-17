@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -44,7 +45,7 @@ var (
 )
 
 // EventControllerer describes types inherited from class EventController.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type EventControllerer interface {
@@ -82,9 +83,10 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Eventer)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Eventer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Eventer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Eventer")
 			}
 			_event = rv
 		}
@@ -111,9 +113,10 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Devicer)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Devicer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 			}
 			_device = rv
 		}
@@ -229,9 +232,10 @@ func (controller *EventController) Widget() Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		_widget = rv
 	}

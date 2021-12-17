@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -86,7 +87,7 @@ var (
 )
 
 // TLSConnectioner describes types inherited from class TLSConnection.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type TLSConnectioner interface {
@@ -158,9 +159,10 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			casted := object.Cast()
+			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 			}
 			_tlsCertificate = rv
 		}
@@ -230,9 +232,10 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSDatabaser)
+			casted := object.Cast()
+			rv, ok := casted.(TLSDatabaser)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSDatabaser")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSDatabaser")
 			}
 			_tlsDatabase = rv
 		}
@@ -306,9 +309,10 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			casted := object.Cast()
+			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 			}
 			_tlsCertificate = rv
 		}

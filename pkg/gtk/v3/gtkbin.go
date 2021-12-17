@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -40,7 +41,7 @@ var (
 )
 
 // Binner describes types inherited from class Bin.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Binner interface {
@@ -92,9 +93,10 @@ func (bin *Bin) Child() Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_widget = rv
 		}

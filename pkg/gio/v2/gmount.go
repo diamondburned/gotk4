@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -443,9 +444,10 @@ func (mount *Mount) DefaultLocation() Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Filer)
+		casted := object.Cast()
+		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 		}
 		_file = rv
 	}
@@ -473,9 +475,10 @@ func (mount *Mount) Drive() Driver {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Driver)
+			casted := object.Cast()
+			rv, ok := casted.(Driver)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Driver")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Driver")
 			}
 			_drive = rv
 		}
@@ -503,9 +506,10 @@ func (mount *Mount) Icon() Iconner {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Iconner)
+		casted := object.Cast()
+		rv, ok := casted.(Iconner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
 		}
 		_icon = rv
 	}
@@ -550,9 +554,10 @@ func (mount *Mount) Root() Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Filer)
+		casted := object.Cast()
+		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 		}
 		_file = rv
 	}
@@ -598,9 +603,10 @@ func (mount *Mount) SymbolicIcon() Iconner {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Iconner)
+		casted := object.Cast()
+		rv, ok := casted.(Iconner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
 		}
 		_icon = rv
 	}
@@ -647,9 +653,10 @@ func (mount *Mount) Volume() Volumer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Volumer)
+			casted := object.Cast()
+			rv, ok := casted.(Volumer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Volumer")
 			}
 			_volume = rv
 		}

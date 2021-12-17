@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -362,9 +363,10 @@ func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gio.MenuModeller)
+		casted := object.Cast()
+		rv, ok := casted.(gio.MenuModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.MenuModeller")
 		}
 		_menuModel = rv
 	}

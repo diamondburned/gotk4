@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -170,9 +171,10 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(IOStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(IOStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.IOStreamer")
 		}
 		_ioStream = rv
 	}
@@ -234,9 +236,10 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(IOStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(IOStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.IOStreamer")
 		}
 		_ioStream = rv
 	}

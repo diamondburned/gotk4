@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -74,9 +75,10 @@ func (a *Analysis) Font() Fonter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Fonter)
+		casted := object.Cast()
+		rv, ok := casted.(Fonter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fonter")
 		}
 		v = rv
 	}

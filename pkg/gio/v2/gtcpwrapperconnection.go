@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -96,9 +97,10 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(IOStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(IOStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.IOStreamer")
 		}
 		_ioStream = rv
 	}

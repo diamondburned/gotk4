@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -150,9 +151,10 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(TLSDatabaser)
+		casted := object.Cast()
+		rv, ok := casted.(TLSDatabaser)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSDatabaser")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSDatabaser")
 		}
 		_tlsDatabase = rv
 	}
@@ -313,9 +315,10 @@ func TLSBackendGetDefault() TLSBackender {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TLSBackender)
+		casted := object.Cast()
+		rv, ok := casted.(TLSBackender)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSBackender")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSBackender")
 		}
 		_tlsBackend = rv
 	}

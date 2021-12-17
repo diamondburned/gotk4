@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -598,9 +599,10 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.AppInfor)
+			casted := object.Cast()
+			rv, ok := casted.(gio.AppInfor)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 			}
 			_appInfo = rv
 		}
@@ -755,9 +757,10 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+			casted := object.Cast()
+			rv, ok := casted.(gio.Iconner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
 			}
 			_icon = rv
 		}

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -103,9 +104,10 @@ func (self *AppChooser) AppInfo() gio.AppInfor {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.AppInfor)
+			casted := object.Cast()
+			rv, ok := casted.(gio.AppInfor)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 			}
 			_appInfo = rv
 		}

@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -276,9 +277,10 @@ func (cursor *Cursor) Texture() Texturer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Texturer)
+			casted := object.Cast()
+			rv, ok := casted.(Texturer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Texturer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Texturer")
 			}
 			_texture = rv
 		}

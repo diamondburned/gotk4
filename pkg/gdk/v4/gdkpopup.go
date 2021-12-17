@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -109,9 +110,10 @@ func (popup *Popup) Parent() Surfacer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Surfacer)
+		casted := object.Cast()
+		rv, ok := casted.(Surfacer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
 		}
 		_surface = rv
 	}

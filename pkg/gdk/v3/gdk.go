@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -203,9 +204,10 @@ func (context *DragContext) DestWindow() Windower {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Windower)
+		casted := object.Cast()
+		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 		}
 		_window = rv
 	}
@@ -232,9 +234,10 @@ func (context *DragContext) Device() Devicer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Devicer)
+		casted := object.Cast()
+		rv, ok := casted.(Devicer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 		}
 		_device = rv
 	}
@@ -263,9 +266,10 @@ func (context *DragContext) DragWindow() Windower {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Windower)
+			casted := object.Cast()
+			rv, ok := casted.(Windower)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 			}
 			_window = rv
 		}
@@ -327,9 +331,10 @@ func (context *DragContext) SourceWindow() Windower {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Windower)
+		casted := object.Cast()
+		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 		}
 		_window = rv
 	}

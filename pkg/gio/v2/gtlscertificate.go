@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -62,7 +63,7 @@ var (
 )
 
 // TLSCertificater describes types inherited from class TLSCertificate.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type TLSCertificater interface {
@@ -284,9 +285,10 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			casted := object.Cast()
+			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 			}
 			_tlsCertificate = rv
 		}
@@ -417,9 +419,10 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			casted := object.Cast()
+			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
 			}
 			dst = rv
 		}

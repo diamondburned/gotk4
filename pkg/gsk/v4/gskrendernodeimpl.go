@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -141,9 +142,10 @@ func (node *BlendNode) BottomChild() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -170,9 +172,10 @@ func (node *BlendNode) TopChild() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -246,9 +249,10 @@ func (node *BlurNode) Child() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -543,9 +547,10 @@ func (node *ClipNode) Child() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -649,9 +654,10 @@ func (node *ColorMatrixNode) Child() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -1008,9 +1014,10 @@ func (node *ContainerNode) Child(idx uint) RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -1107,9 +1114,10 @@ func (node *CrossFadeNode) EndChild() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -1154,9 +1162,10 @@ func (node *CrossFadeNode) StartChild() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -1234,9 +1243,10 @@ func (node *DebugNode) Child() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -1393,9 +1403,10 @@ func (node *GLShaderNode) Child(idx uint) RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -1813,9 +1824,10 @@ func (node *OpacityNode) Child() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -2290,9 +2302,10 @@ func (node *RepeatNode) Child() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -2538,9 +2551,10 @@ func (node *RoundedClipNode) Child() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -2642,9 +2656,10 @@ func (node *ShadowNode) Child() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}
@@ -2789,9 +2804,10 @@ func (node *TextNode) Font() pango.Fonter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(pango.Fonter)
+		casted := object.Cast()
+		rv, ok := casted.(pango.Fonter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fonter")
 		}
 		_font = rv
 	}
@@ -2943,9 +2959,10 @@ func (node *TextureNode) Texture() gdk.Texturer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gdk.Texturer)
+		casted := object.Cast()
+		rv, ok := casted.(gdk.Texturer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Texturer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Texturer")
 		}
 		_texture = rv
 	}
@@ -3020,9 +3037,10 @@ func (node *TransformNode) Child() RenderNoder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(RenderNoder)
+		casted := object.Cast()
+		rv, ok := casted.(RenderNoder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gsk.RenderNoder")
 		}
 		_renderNode = rv
 	}

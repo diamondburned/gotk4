@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -221,9 +222,10 @@ func (self *Video) File() gio.Filer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			casted := object.Cast()
+			rv, ok := casted.(gio.Filer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 			}
 			_file = rv
 		}
@@ -268,9 +270,10 @@ func (self *Video) MediaStream() MediaStreamer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(MediaStreamer)
+			casted := object.Cast()
+			rv, ok := casted.(MediaStreamer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.MediaStreamer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.MediaStreamer")
 			}
 			_mediaStream = rv
 		}

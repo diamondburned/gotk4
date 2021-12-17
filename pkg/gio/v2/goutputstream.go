@@ -214,7 +214,7 @@ var (
 )
 
 // OutputStreamer describes types inherited from class OutputStream.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type OutputStreamer interface {

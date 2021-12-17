@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -38,7 +39,7 @@ var (
 )
 
 // ATContexter describes types inherited from class ATContext.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ATContexter interface {
@@ -113,9 +114,10 @@ func (self *ATContext) Accessible() Accessibler {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Accessibler)
+		casted := object.Cast()
+		rv, ok := casted.(Accessibler)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Accessibler")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Accessibler")
 		}
 		_accessible = rv
 	}

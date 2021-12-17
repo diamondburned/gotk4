@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -79,7 +80,7 @@ var (
 )
 
 // SocketAddressEnumeratorrer describes types inherited from class SocketAddressEnumerator.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type SocketAddressEnumeratorrer interface {
@@ -142,9 +143,10 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(SocketAddresser)
+		casted := object.Cast()
+		rv, ok := casted.(SocketAddresser)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketAddresser")
 		}
 		_socketAddress = rv
 	}
@@ -221,9 +223,10 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(SocketAddresser)
+		casted := object.Cast()
+		rv, ok := casted.(SocketAddresser)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketAddresser")
 		}
 		_socketAddress = rv
 	}

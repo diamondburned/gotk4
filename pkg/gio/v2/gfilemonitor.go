@@ -52,7 +52,7 @@ var (
 )
 
 // FileMonitorrer describes types inherited from class FileMonitor.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FileMonitorrer interface {

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -150,9 +151,10 @@ func (emblemed *EmblemedIcon) GetIcon() Iconner {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Iconner)
+		casted := object.Cast()
+		rv, ok := casted.(Iconner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
 		}
 		_icon = rv
 	}

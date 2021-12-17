@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -149,9 +150,10 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		model = rv
 	}
@@ -192,9 +194,10 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		model = rv
 	}
@@ -699,9 +702,10 @@ func (treeView *TreeView) CreateRowDragIcon(path *TreePath) gdk.Paintabler {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Paintabler)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Paintabler")
 			}
 			_paintable = rv
 		}
@@ -1185,9 +1189,10 @@ func (treeView *TreeView) Model() TreeModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TreeModeller)
+			casted := object.Cast()
+			rv, ok := casted.(TreeModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 			}
 			_treeModel = rv
 		}
@@ -1290,9 +1295,10 @@ func (treeView *TreeView) SearchEntry() Editabler {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Editabler)
+			casted := object.Cast()
+			rv, ok := casted.(Editabler)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Editabler")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Editabler")
 			}
 			_editable = rv
 		}

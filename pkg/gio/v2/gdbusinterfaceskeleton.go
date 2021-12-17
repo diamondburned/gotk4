@@ -59,7 +59,7 @@ var (
 )
 
 // DBusInterfaceSkeletonner describes types inherited from class DBusInterfaceSkeleton.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type DBusInterfaceSkeletonner interface {

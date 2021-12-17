@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -218,9 +219,10 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gio.OutputStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(gio.OutputStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.OutputStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.OutputStreamer")
 		}
 		_outputStream = rv
 	}

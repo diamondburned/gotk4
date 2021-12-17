@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -109,9 +110,10 @@ func (converterStream *ConverterInputStream) Converter() Converterer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Converterer)
+		casted := object.Cast()
+		rv, ok := casted.(Converterer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Converterer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Converterer")
 		}
 		_converter = rv
 	}

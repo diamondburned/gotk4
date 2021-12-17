@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -165,9 +166,10 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Filer)
+		casted := object.Cast()
+		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
 		}
 		_file = rv
 	}
@@ -406,9 +408,10 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(InputStreamer)
+			casted := object.Cast()
+			rv, ok := casted.(InputStreamer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.InputStreamer")
 			}
 			_inputStream = rv
 		}

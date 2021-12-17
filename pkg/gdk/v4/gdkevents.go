@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -700,9 +701,10 @@ func (event *DNDEvent) Drop() Dropper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Dropper)
+			casted := object.Cast()
+			rv, ok := casted.(Dropper)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Dropper")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Dropper")
 			}
 			_drop = rv
 		}
@@ -747,7 +749,7 @@ var (
 )
 
 // Eventer describes types inherited from class Event.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Eventer interface {
@@ -839,9 +841,10 @@ func (event *Event) Device() Devicer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
+			casted := object.Cast()
+			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 			}
 			_device = rv
 		}
@@ -1047,9 +1050,10 @@ func (event *Event) Seat() Seater {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Seater)
+			casted := object.Cast()
+			rv, ok := casted.(Seater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
 			}
 			_seat = rv
 		}
@@ -1077,9 +1081,10 @@ func (event *Event) Surface() Surfacer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Surfacer)
+		casted := object.Cast()
+		rv, ok := casted.(Surfacer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
 		}
 		_surface = rv
 	}
@@ -1222,9 +1227,10 @@ func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Surfacer)
+		casted := object.Cast()
+		rv, ok := casted.(Surfacer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
 		}
 		_surface = rv
 	}

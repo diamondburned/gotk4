@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -102,9 +103,10 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(TLSServerConnectioner)
+		casted := object.Cast()
+		rv, ok := casted.(TLSServerConnectioner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSServerConnectioner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSServerConnectioner")
 		}
 		_tlsServerConnection = rv
 	}

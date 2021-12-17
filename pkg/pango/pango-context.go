@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -297,9 +298,10 @@ func (context *Context) FontMap() FontMapper {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(FontMapper)
+		casted := object.Cast()
+		rv, ok := casted.(FontMapper)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontMapper")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
 		}
 		_fontMap = rv
 	}
@@ -517,9 +519,10 @@ func (context *Context) ListFamilies() []FontFamilier {
 				}
 
 				object := externglib.Take(objptr)
-				rv, ok := (externglib.CastObject(object)).(FontFamilier)
+				casted := object.Cast()
+				rv, ok := casted.(FontFamilier)
 				if !ok {
-					panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+					panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFamilier")
 				}
 				_families[i] = rv
 			}
@@ -555,9 +558,10 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Fonter)
+			casted := object.Cast()
+			rv, ok := casted.(Fonter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fonter")
 			}
 			_font = rv
 		}
@@ -596,9 +600,10 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Fontsetter)
+			casted := object.Cast()
+			rv, ok := casted.(Fontsetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fontsetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fontsetter")
 			}
 			_fontset = rv
 		}

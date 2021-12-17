@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -70,9 +71,10 @@ func ValueDupExpression(value *externglib.Value) Expressioner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Expressioner)
+			casted := object.Cast()
+			rv, ok := casted.(Expressioner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Expressioner")
 			}
 			_expression = rv
 		}
@@ -103,9 +105,10 @@ func ValueGetExpression(value *externglib.Value) Expressioner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Expressioner)
+			casted := object.Cast()
+			rv, ok := casted.(Expressioner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Expressioner")
 			}
 			_expression = rv
 		}
@@ -393,7 +396,7 @@ var (
 )
 
 // Expressioner describes types inherited from class Expression.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Expressioner interface {
@@ -754,9 +757,10 @@ func (expression *PropertyExpression) GetExpression() Expressioner {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Expressioner)
+		casted := object.Cast()
+		rv, ok := casted.(Expressioner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Expressioner")
 		}
 		_ret = rv
 	}

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -178,9 +179,10 @@ func (self *DropTarget) Drop() gdk.Dropper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Dropper)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Dropper)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Dropper")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Dropper")
 			}
 			_drop = rv
 		}

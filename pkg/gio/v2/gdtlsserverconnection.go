@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -95,9 +96,10 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(DTLSServerConnectioner)
+		casted := object.Cast()
+		rv, ok := casted.(DTLSServerConnectioner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DTLSServerConnectioner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.DTLSServerConnectioner")
 		}
 		_dtlsServerConnection = rv
 	}

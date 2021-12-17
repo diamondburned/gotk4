@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -117,9 +118,10 @@ func _gotk4_gtk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, 
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(pango.FontFamilier)
+		casted := object.Cast()
+		rv, ok := casted.(pango.FontFamilier)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFamilier")
 		}
 		family = rv
 	}
@@ -130,9 +132,10 @@ func _gotk4_gtk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, 
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(pango.FontFacer)
+		casted := object.Cast()
+		rv, ok := casted.(pango.FontFacer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFacer")
 		}
 		face = rv
 	}
@@ -352,9 +355,10 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(pango.FontFacer)
+			casted := object.Cast()
+			rv, ok := casted.(pango.FontFacer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFacer")
 			}
 			_fontFace = rv
 		}
@@ -384,9 +388,10 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(pango.FontFamilier)
+			casted := object.Cast()
+			rv, ok := casted.(pango.FontFamilier)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFamilier")
 			}
 			_fontFamily = rv
 		}
@@ -431,9 +436,10 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(pango.FontMapper)
+			casted := object.Cast()
+			rv, ok := casted.(pango.FontMapper)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontMapper")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
 			}
 			_fontMap = rv
 		}

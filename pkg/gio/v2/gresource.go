@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -191,9 +192,10 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(InputStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(InputStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.InputStreamer")
 		}
 		_inputStream = rv
 	}

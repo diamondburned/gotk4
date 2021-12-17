@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -83,9 +84,10 @@ func (screen *Screen) ActiveWindow() Windower {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Windower)
+			casted := object.Cast()
+			rv, ok := casted.(Windower)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 			}
 			_window = rv
 		}
@@ -567,9 +569,10 @@ func (screen *Screen) RootWindow() Windower {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Windower)
+		casted := object.Cast()
+		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 		}
 		_window = rv
 	}
@@ -658,9 +661,10 @@ func (screen *Screen) ToplevelWindows() []Windower {
 			}
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Windower)
+			casted := object.Cast()
+			rv, ok := casted.(Windower)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 			}
 			dst = rv
 		}
@@ -751,9 +755,10 @@ func (screen *Screen) WindowStack() []Windower {
 				}
 
 				object := externglib.AssumeOwnership(objptr)
-				rv, ok := (externglib.CastObject(object)).(Windower)
+				casted := object.Cast()
+				rv, ok := casted.(Windower)
 				if !ok {
-					panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+					panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 				}
 				dst = rv
 			}

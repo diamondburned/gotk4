@@ -57,7 +57,7 @@ var (
 )
 
 // SocketAddresser describes types inherited from class SocketAddress.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type SocketAddresser interface {

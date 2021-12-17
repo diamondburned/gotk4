@@ -49,7 +49,7 @@ var (
 )
 
 // Texturer describes types inherited from class Texture.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Texturer interface {

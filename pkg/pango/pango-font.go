@@ -4,6 +4,7 @@ package pango
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -345,7 +346,7 @@ var (
 )
 
 // Fonter describes types inherited from class Font.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Fonter interface {
@@ -461,9 +462,10 @@ func (font *Font) Face() FontFacer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(FontFacer)
+		casted := object.Cast()
+		rv, ok := casted.(FontFacer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFacer")
 		}
 		_fontFace = rv
 	}
@@ -499,9 +501,10 @@ func (font *Font) FontMap() FontMapper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(FontMapper)
+			casted := object.Cast()
+			rv, ok := casted.(FontMapper)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontMapper")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
 			}
 			_fontMap = rv
 		}
@@ -670,7 +673,7 @@ var (
 )
 
 // FontFacer describes types inherited from class FontFace.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FontFacer interface {
@@ -753,9 +756,10 @@ func (face *FontFace) Family() FontFamilier {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(FontFamilier)
+		casted := object.Cast()
+		rv, ok := casted.(FontFamilier)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFamilier")
 		}
 		_fontFamily = rv
 	}
@@ -875,7 +879,7 @@ var (
 )
 
 // FontFamilier describes types inherited from class FontFamily.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FontFamilier interface {
@@ -924,9 +928,10 @@ func (family *FontFamily) Face(name string) FontFacer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(FontFacer)
+			casted := object.Cast()
+			rv, ok := casted.(FontFacer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFacer")
 			}
 			_fontFace = rv
 		}
@@ -1035,9 +1040,10 @@ func (family *FontFamily) ListFaces() []FontFacer {
 					}
 
 					object := externglib.Take(objptr)
-					rv, ok := (externglib.CastObject(object)).(FontFacer)
+					casted := object.Cast()
+					rv, ok := casted.(FontFacer)
 					if !ok {
-						panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
+						panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFacer")
 					}
 					_faces[i] = rv
 				}

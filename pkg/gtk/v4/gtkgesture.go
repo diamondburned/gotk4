@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -124,7 +125,7 @@ var (
 )
 
 // Gesturer describes types inherited from class Gesture.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Gesturer interface {
@@ -225,9 +226,10 @@ func (gesture *Gesture) Device() gdk.Devicer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Devicer)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Devicer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 			}
 			_device = rv
 		}
@@ -259,9 +261,10 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 			}
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Gesturer)
+			casted := object.Cast()
+			rv, ok := casted.(Gesturer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Gesturer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Gesturer")
 			}
 			dst = rv
 		}
@@ -301,9 +304,10 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Eventer)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Eventer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Eventer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Eventer")
 			}
 			_event = rv
 		}

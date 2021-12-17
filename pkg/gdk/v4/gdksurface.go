@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -42,7 +43,7 @@ var (
 )
 
 // Surfacer describes types inherited from class Surface.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Surfacer interface {
@@ -147,9 +148,10 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(CairoContexter)
+		casted := object.Cast()
+		rv, ok := casted.(CairoContexter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.CairoContexter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.CairoContexter")
 		}
 		_cairoContext = rv
 	}
@@ -183,9 +185,10 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(GLContexter)
+		casted := object.Cast()
+		rv, ok := casted.(GLContexter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.GLContexter")
 		}
 		_glContext = rv
 	}
@@ -268,9 +271,10 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(VulkanContexter)
+		casted := object.Cast()
+		rv, ok := casted.(VulkanContexter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.VulkanContexter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.VulkanContexter")
 		}
 		_vulkanContext = rv
 	}
@@ -430,9 +434,10 @@ func (surface *Surface) FrameClock() FrameClocker {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(FrameClocker)
+		casted := object.Cast()
+		rv, ok := casted.(FrameClocker)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.FrameClocker")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.FrameClocker")
 		}
 		_frameClock = rv
 	}

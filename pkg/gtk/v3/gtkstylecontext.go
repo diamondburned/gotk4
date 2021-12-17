@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"strings"
@@ -1118,9 +1119,10 @@ func (context *StyleContext) FrameClock() gdk.FrameClocker {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.FrameClocker)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.FrameClocker)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.FrameClocker")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.FrameClocker")
 			}
 			_frameClock = rv
 		}

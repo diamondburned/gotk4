@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -413,9 +414,10 @@ func (editable *Editable) Delegate() Editabler {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Editabler)
+			casted := object.Cast()
+			rv, ok := casted.(Editabler)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Editabler")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Editabler")
 			}
 			_ret = rv
 		}

@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -758,9 +759,10 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(SocketAddresser)
+		casted := object.Cast()
+		rv, ok := casted.(SocketAddresser)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketAddresser")
 		}
 		_socketAddress = rv
 	}
@@ -895,9 +897,10 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(SocketAddresser)
+		casted := object.Cast()
+		rv, ok := casted.(SocketAddresser)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketAddresser")
 		}
 		_socketAddress = rv
 	}
@@ -1339,9 +1342,10 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 			objptr := unsafe.Pointer(_arg1)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(SocketAddresser)
+			casted := object.Cast()
+			rv, ok := casted.(SocketAddresser)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketAddresser")
 			}
 			_address = rv
 		}

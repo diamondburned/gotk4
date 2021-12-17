@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -100,7 +101,7 @@ var (
 )
 
 // LayoutManagerer describes types inherited from class LayoutManager.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type LayoutManagerer interface {
@@ -186,9 +187,10 @@ func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(LayoutChilder)
+		casted := object.Cast()
+		rv, ok := casted.(LayoutChilder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.LayoutChilder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.LayoutChilder")
 		}
 		_layoutChild = rv
 	}
@@ -230,9 +232,10 @@ func (manager *LayoutManager) Widget() Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_widget = rv
 		}

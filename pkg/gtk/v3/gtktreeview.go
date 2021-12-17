@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -176,9 +177,10 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		model = rv
 	}
@@ -219,9 +221,10 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		model = rv
 	}
@@ -259,9 +262,10 @@ func _gotk4_gtk3_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidg
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		searchDialog = rv
 	}
@@ -954,9 +958,10 @@ func (treeView *TreeView) BinWindow() gdk.Windower {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Windower)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Windower)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 			}
 			_window = rv
 		}
@@ -1283,9 +1288,10 @@ func (treeView *TreeView) Model() TreeModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TreeModeller)
+			casted := object.Cast()
+			rv, ok := casted.(TreeModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 			}
 			_treeModel = rv
 		}

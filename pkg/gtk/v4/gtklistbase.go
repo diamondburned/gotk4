@@ -36,7 +36,7 @@ var (
 )
 
 // ListBaser describes types inherited from class ListBase.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ListBaser interface {

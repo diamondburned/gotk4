@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -50,9 +51,10 @@ func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		casted := object.Cast()
+		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
 		}
 		renderer = rv
 	}
@@ -89,9 +91,10 @@ func _gotk4_gtk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		casted := object.Cast()
+		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
 		}
 		renderer = rv
 	}
@@ -348,7 +351,7 @@ var (
 )
 
 // CellAreaer describes types inherited from class CellArea.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type CellAreaer interface {
@@ -960,9 +963,10 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		casted := object.Cast()
+		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
 		}
 		_cellRenderer = rv
 	}
@@ -1009,9 +1013,10 @@ func (area *CellArea) EditWidget() CellEditabler {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(CellEditabler)
+		casted := object.Cast()
+		rv, ok := casted.(CellEditabler)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellEditabler")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellEditabler")
 		}
 		_cellEditable = rv
 	}
@@ -1038,9 +1043,10 @@ func (area *CellArea) EditedCell() CellRendererer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		casted := object.Cast()
+		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
 		}
 		_cellRenderer = rv
 	}
@@ -1067,9 +1073,10 @@ func (area *CellArea) FocusCell() CellRendererer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		casted := object.Cast()
+		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
 		}
 		_cellRenderer = rv
 	}
@@ -1107,9 +1114,10 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(CellRendererer)
+			casted := object.Cast()
+			rv, ok := casted.(CellRendererer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
 			}
 			_cellRenderer = rv
 		}
@@ -1149,9 +1157,10 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 			}
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(CellRendererer)
+			casted := object.Cast()
+			rv, ok := casted.(CellRendererer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
 			}
 			dst = rv
 		}

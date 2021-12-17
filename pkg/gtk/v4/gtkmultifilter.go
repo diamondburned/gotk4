@@ -143,7 +143,7 @@ var (
 )
 
 // MultiFilterer describes types inherited from class MultiFilter.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MultiFilterer interface {

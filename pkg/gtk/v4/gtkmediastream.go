@@ -93,7 +93,7 @@ var (
 )
 
 // MediaStreamer describes types inherited from class MediaStream.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MediaStreamer interface {

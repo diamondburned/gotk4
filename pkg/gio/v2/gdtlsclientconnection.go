@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -84,9 +85,10 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(SocketConnectabler)
+		casted := object.Cast()
+		rv, ok := casted.(SocketConnectabler)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketConnectabler")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketConnectabler")
 		}
 		_socketConnectable = rv
 	}
@@ -186,9 +188,10 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(DTLSClientConnectioner)
+		casted := object.Cast()
+		rv, ok := casted.(DTLSClientConnectioner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DTLSClientConnectioner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.DTLSClientConnectioner")
 		}
 		_dtlsClientConnection = rv
 	}

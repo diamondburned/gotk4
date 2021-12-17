@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -316,9 +317,10 @@ func (paintable *Paintable) CurrentImage() Paintabler {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Paintabler)
+		casted := object.Cast()
+		rv, ok := casted.(Paintabler)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Paintabler")
 		}
 		_ret = rv
 	}
@@ -556,9 +558,10 @@ func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) Paintabler {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Paintabler)
+		casted := object.Cast()
+		rv, ok := casted.(Paintabler)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Paintabler")
 		}
 		_paintable = rv
 	}

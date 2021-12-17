@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -711,9 +712,10 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(SocketAddresser)
+			casted := object.Cast()
+			rv, ok := casted.(SocketAddresser)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketAddresser")
 			}
 			_socketAddress = rv
 		}
@@ -762,9 +764,10 @@ func (client *SocketClient) ProxyResolver() ProxyResolverer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(ProxyResolverer)
+		casted := object.Cast()
+		rv, ok := casted.(ProxyResolverer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ProxyResolverer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ProxyResolverer")
 		}
 		_proxyResolver = rv
 	}

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -180,9 +181,10 @@ func ContentTypeGetIcon(typ string) Iconner {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Iconner)
+		casted := object.Cast()
+		rv, ok := casted.(Iconner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
 		}
 		_icon = rv
 	}
@@ -268,9 +270,10 @@ func ContentTypeGetSymbolicIcon(typ string) Iconner {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Iconner)
+		casted := object.Cast()
+		rv, ok := casted.(Iconner)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
 		}
 		_icon = rv
 	}

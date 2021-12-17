@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -330,9 +331,10 @@ func NetworkMonitorGetDefault() NetworkMonitorrer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(NetworkMonitorrer)
+		casted := object.Cast()
+		rv, ok := casted.(NetworkMonitorrer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.NetworkMonitorrer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.NetworkMonitorrer")
 		}
 		_networkMonitor = rv
 	}

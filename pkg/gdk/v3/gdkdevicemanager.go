@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -136,7 +137,7 @@ var (
 )
 
 // DeviceManagerer describes types inherited from class DeviceManager.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type DeviceManagerer interface {
@@ -183,9 +184,10 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Devicer)
+		casted := object.Cast()
+		rv, ok := casted.(Devicer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 		}
 		_device = rv
 	}
@@ -247,9 +249,10 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 			}
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
+			casted := object.Cast()
+			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 			}
 			dst = rv
 		}

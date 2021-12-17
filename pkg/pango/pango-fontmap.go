@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -74,7 +75,7 @@ var (
 )
 
 // FontMapper describes types inherited from class FontMap.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FontMapper interface {
@@ -161,9 +162,10 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(FontFamilier)
+		casted := object.Cast()
+		rv, ok := casted.(FontFamilier)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFamilier")
 		}
 		_fontFamily = rv
 	}
@@ -224,9 +226,10 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 				}
 
 				object := externglib.Take(objptr)
-				rv, ok := (externglib.CastObject(object)).(FontFamilier)
+				casted := object.Cast()
+				rv, ok := casted.(FontFamilier)
 				if !ok {
-					panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+					panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFamilier")
 				}
 				_families[i] = rv
 			}
@@ -265,9 +268,10 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Fonter)
+			casted := object.Cast()
+			rv, ok := casted.(Fonter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fonter")
 			}
 			_font = rv
 		}
@@ -310,9 +314,10 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Fontsetter)
+			casted := object.Cast()
+			rv, ok := casted.(Fontsetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fontsetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fontsetter")
 			}
 			_fontset = rv
 		}

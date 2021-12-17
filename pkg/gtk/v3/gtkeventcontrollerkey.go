@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -131,9 +132,10 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(IMContexter)
+		casted := object.Cast()
+		rv, ok := casted.(IMContexter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.IMContexter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.IMContexter")
 		}
 		_imContext = rv
 	}

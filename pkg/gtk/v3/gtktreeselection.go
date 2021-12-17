@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -52,9 +53,10 @@ func _gotk4_gtk3_TreeSelectionForEachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		model = rv
 	}
@@ -91,9 +93,10 @@ func _gotk4_gtk3_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeMode
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 		}
 		model = rv
 	}
@@ -219,9 +222,10 @@ func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
 			objptr := unsafe.Pointer(_arg1)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TreeModeller)
+			casted := object.Cast()
+			rv, ok := casted.(TreeModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 			}
 			_model = rv
 		}
@@ -260,9 +264,10 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 			objptr := unsafe.Pointer(_arg1)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(TreeModeller)
+			casted := object.Cast()
+			rv, ok := casted.(TreeModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
 			}
 			_model = rv
 		}

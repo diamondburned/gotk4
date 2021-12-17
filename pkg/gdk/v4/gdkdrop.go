@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -52,7 +53,7 @@ var (
 )
 
 // Dropper describes types inherited from class Drop.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Dropper interface {
@@ -141,9 +142,10 @@ func (self *Drop) Device() Devicer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Devicer)
+		casted := object.Cast()
+		rv, ok := casted.(Devicer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 		}
 		_device = rv
 	}
@@ -188,9 +190,10 @@ func (self *Drop) Drag() Dragger {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Dragger)
+			casted := object.Cast()
+			rv, ok := casted.(Dragger)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Dragger")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Dragger")
 			}
 			_drag = rv
 		}
@@ -243,9 +246,10 @@ func (self *Drop) Surface() Surfacer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Surfacer)
+		casted := object.Cast()
+		rv, ok := casted.(Surfacer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
 		}
 		_surface = rv
 	}
@@ -342,9 +346,10 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.InputStreamer)
+			casted := object.Cast()
+			rv, ok := casted.(gio.InputStreamer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.InputStreamer")
 			}
 			_inputStream = rv
 		}

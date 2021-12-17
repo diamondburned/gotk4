@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -89,9 +90,10 @@ func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		widget = rv
 	}
@@ -121,9 +123,10 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		widget = rv
 	}
@@ -134,9 +137,10 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gdk.FrameClocker)
+		casted := object.Cast()
+		rv, ok := casted.(gdk.FrameClocker)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.FrameClocker")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.FrameClocker")
 		}
 		frameClock = rv
 	}
@@ -615,7 +619,7 @@ var (
 )
 
 // Widgetter describes types inherited from class Widget.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Widgetter interface {
@@ -1950,9 +1954,10 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.ActionGrouper)
+			casted := object.Cast()
+			rv, ok := casted.(gio.ActionGrouper)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.ActionGrouper")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ActionGrouper")
 			}
 			_actionGroup = rv
 		}
@@ -2109,9 +2114,10 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_ret = rv
 		}
@@ -2465,9 +2471,10 @@ func (widget *Widget) FontMap() pango.FontMapper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(pango.FontMapper)
+			casted := object.Cast()
+			rv, ok := casted.(pango.FontMapper)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontMapper")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
 			}
 			_fontMap = rv
 		}
@@ -2531,9 +2538,10 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.FrameClocker)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.FrameClocker)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.FrameClocker")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.FrameClocker")
 			}
 			_frameClock = rv
 		}
@@ -2944,9 +2952,10 @@ func (widget *Widget) Parent() Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			_ret = rv
 		}
@@ -2972,9 +2981,10 @@ func (widget *Widget) ParentWindow() gdk.Windower {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Windower)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Windower)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 			}
 			_window = rv
 		}
@@ -3353,9 +3363,10 @@ func (widget *Widget) RootWindow() gdk.Windower {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gdk.Windower)
+		casted := object.Cast()
+		rv, ok := casted.(gdk.Windower)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 		}
 		_window = rv
 	}
@@ -3720,9 +3731,10 @@ func (widget *Widget) Toplevel() Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 		}
 		_ret = rv
 	}
@@ -3879,9 +3891,10 @@ func (widget *Widget) Window() gdk.Windower {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Windower)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Windower)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 			}
 			_window = rv
 		}
@@ -4524,9 +4537,10 @@ func (widget *Widget) ListMnemonicLabels() []Widgetter {
 			}
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
 			}
 			dst = rv
 		}

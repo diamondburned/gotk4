@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -53,9 +54,10 @@ func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(AsyncResulter)
+		casted := object.Cast()
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.AsyncResulter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AsyncResulter")
 		}
 		res = rv
 	}
@@ -145,9 +147,10 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(DatagramBasedder)
+		casted := object.Cast()
+		rv, ok := casted.(DatagramBasedder)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DatagramBasedder")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.DatagramBasedder")
 		}
 		datagramBased = rv
 	}
@@ -974,9 +977,10 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(InputStreamer)
+		casted := object.Cast()
+		rv, ok := casted.(InputStreamer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.InputStreamer")
 		}
 		_inputStream = rv
 	}

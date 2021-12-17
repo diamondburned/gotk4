@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -198,9 +199,10 @@ func (source *DragSource) Drag() gdk.Dragger {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Dragger)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Dragger)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Dragger")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Dragger")
 			}
 			_drag = rv
 		}

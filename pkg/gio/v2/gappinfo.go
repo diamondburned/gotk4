@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -402,9 +403,10 @@ func (appinfo *AppInfo) Dup() AppInfor {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(AppInfor)
+		casted := object.Cast()
+		rv, ok := casted.(AppInfor)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 		}
 		_appInfo = rv
 	}
@@ -533,9 +535,10 @@ func (appinfo *AppInfo) Icon() Iconner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Iconner)
+			casted := object.Cast()
+			rv, ok := casted.(Iconner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
 			}
 			_icon = rv
 		}
@@ -1037,9 +1040,10 @@ func AppInfoCreateFromCommandline(commandline, applicationName string, flags App
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(AppInfor)
+		casted := object.Cast()
+		rv, ok := casted.(AppInfor)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 		}
 		_appInfo = rv
 	}
@@ -1075,9 +1079,10 @@ func AppInfoGetAll() []AppInfor {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			casted := object.Cast()
+			rv, ok := casted.(AppInfor)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 			}
 			dst = rv
 		}
@@ -1118,9 +1123,10 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			casted := object.Cast()
+			rv, ok := casted.(AppInfor)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 			}
 			dst = rv
 		}
@@ -1159,9 +1165,10 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			casted := object.Cast()
+			rv, ok := casted.(AppInfor)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 			}
 			_appInfo = rv
 		}
@@ -1195,9 +1202,10 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			casted := object.Cast()
+			rv, ok := casted.(AppInfor)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 			}
 			_appInfo = rv
 		}
@@ -1237,9 +1245,10 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			casted := object.Cast()
+			rv, ok := casted.(AppInfor)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 			}
 			dst = rv
 		}
@@ -1282,9 +1291,10 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			casted := object.Cast()
+			rv, ok := casted.(AppInfor)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
 			}
 			dst = rv
 		}

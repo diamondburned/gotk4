@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -47,9 +48,10 @@ func _gotk4_pango1_FontsetForEachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Fontsetter)
+		casted := object.Cast()
+		rv, ok := casted.(Fontsetter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fontsetter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fontsetter")
 		}
 		fontset = rv
 	}
@@ -60,9 +62,10 @@ func _gotk4_pango1_FontsetForEachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Fonter)
+		casted := object.Cast()
+		rv, ok := casted.(Fonter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fonter")
 		}
 		font = rv
 	}
@@ -111,7 +114,7 @@ var (
 )
 
 // Fontsetter describes types inherited from class Fontset.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Fontsetter interface {
@@ -183,9 +186,10 @@ func (fontset *Fontset) Font(wc uint) Fonter {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(Fonter)
+		casted := object.Cast()
+		rv, ok := casted.(Fonter)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fonter")
 		}
 		_font = rv
 	}

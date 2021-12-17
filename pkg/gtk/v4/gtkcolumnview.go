@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -196,9 +197,10 @@ func (self *ColumnView) Columns() gio.ListModeller {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+		casted := object.Cast()
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ListModeller")
 		}
 		_listModel = rv
 	}
@@ -243,9 +245,10 @@ func (self *ColumnView) Model() SelectionModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(SelectionModeller)
+			casted := object.Cast()
+			rv, ok := casted.(SelectionModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.SelectionModeller")
 			}
 			_selectionModel = rv
 		}

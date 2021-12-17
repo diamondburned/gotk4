@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -106,9 +107,10 @@ func (self *Shortcut) Action() ShortcutActioner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(ShortcutActioner)
+			casted := object.Cast()
+			rv, ok := casted.(ShortcutActioner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ShortcutActioner")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.ShortcutActioner")
 			}
 			_shortcutAction = rv
 		}
@@ -160,9 +162,10 @@ func (self *Shortcut) Trigger() ShortcutTriggerer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(ShortcutTriggerer)
+			casted := object.Cast()
+			rv, ok := casted.(ShortcutTriggerer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ShortcutTriggerer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.ShortcutTriggerer")
 			}
 			_shortcutTrigger = rv
 		}

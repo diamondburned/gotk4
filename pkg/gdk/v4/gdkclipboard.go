@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -241,9 +242,10 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(gio.InputStreamer)
+			casted := object.Cast()
+			rv, ok := casted.(gio.InputStreamer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.InputStreamer")
 			}
 			_inputStream = rv
 		}
@@ -395,9 +397,10 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			rv, ok := (externglib.CastObject(object)).(Texturer)
+			casted := object.Cast()
+			rv, ok := casted.(Texturer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Texturer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Texturer")
 			}
 			_texture = rv
 		}

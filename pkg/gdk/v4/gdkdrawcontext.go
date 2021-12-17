@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -41,7 +42,7 @@ var (
 )
 
 // DrawContexter describes types inherited from class DrawContext.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type DrawContexter interface {
@@ -187,9 +188,10 @@ func (context *DrawContext) Surface() Surfacer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Surfacer)
+			casted := object.Cast()
+			rv, ok := casted.(Surfacer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
 			}
 			_surface = rv
 		}

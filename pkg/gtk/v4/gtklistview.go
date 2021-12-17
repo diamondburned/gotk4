@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -252,9 +253,10 @@ func (self *ListView) Model() SelectionModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(SelectionModeller)
+			casted := object.Cast()
+			rv, ok := casted.(SelectionModeller)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.SelectionModeller")
 			}
 			_selectionModel = rv
 		}

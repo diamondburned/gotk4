@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -180,9 +181,10 @@ func (display *Display) DefaultGroup() Windower {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Windower)
+		casted := object.Cast()
+		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 		}
 		_window = rv
 	}
@@ -226,9 +228,10 @@ func (display *Display) DefaultSeat() Seater {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(Seater)
+		casted := object.Cast()
+		rv, ok := casted.(Seater)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
 		}
 		_seat = rv
 	}
@@ -255,9 +258,10 @@ func (display *Display) DeviceManager() DeviceManagerer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(DeviceManagerer)
+			casted := object.Cast()
+			rv, ok := casted.(DeviceManagerer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.DeviceManagerer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.DeviceManagerer")
 			}
 			_deviceManager = rv
 		}
@@ -536,9 +540,10 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) 
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Windower)
+			casted := object.Cast()
+			rv, ok := casted.(Windower)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
 			}
 			_window = rv
 		}
@@ -632,9 +637,10 @@ func (display *Display) ListDevices() []Devicer {
 			}
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Devicer)
+			casted := object.Cast()
+			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
 			}
 			dst = rv
 		}
@@ -667,9 +673,10 @@ func (display *Display) ListSeats() []Seater {
 			}
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Seater)
+			casted := object.Cast()
+			rv, ok := casted.(Seater)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
 			}
 			dst = rv
 		}

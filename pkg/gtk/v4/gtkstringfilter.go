@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -134,9 +135,10 @@ func (self *StringFilter) Expression() Expressioner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(Expressioner)
+			casted := object.Cast()
+			rv, ok := casted.(Expressioner)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Expressioner")
 			}
 			_expression = rv
 		}

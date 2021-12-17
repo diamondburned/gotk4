@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -45,7 +46,7 @@ var (
 )
 
 // Rendererer describes types inherited from class Renderer.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Rendererer interface {
@@ -115,9 +116,10 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			rv, ok := (externglib.CastObject(object)).(gdk.Surfacer)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Surfacer)
 			if !ok {
-				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
 			}
 			_surface = rv
 		}
@@ -247,9 +249,10 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(gdk.Texturer)
+		casted := object.Cast()
+		rv, ok := casted.(gdk.Texturer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Texturer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Texturer")
 		}
 		_texture = rv
 	}

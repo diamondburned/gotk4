@@ -44,7 +44,7 @@ var (
 )
 
 // VulkanContexter describes types inherited from class VulkanContext.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type VulkanContexter interface {

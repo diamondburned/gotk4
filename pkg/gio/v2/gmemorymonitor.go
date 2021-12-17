@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -143,9 +144,10 @@ func MemoryMonitorDupDefault() MemoryMonitorrer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		rv, ok := (externglib.CastObject(object)).(MemoryMonitorrer)
+		casted := object.Cast()
+		rv, ok := casted.(MemoryMonitorrer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MemoryMonitorrer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.MemoryMonitorrer")
 		}
 		_memoryMonitor = rv
 	}

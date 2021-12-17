@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -287,9 +288,10 @@ func ProxyResolverGetDefault() ProxyResolverer {
 		}
 
 		object := externglib.Take(objptr)
-		rv, ok := (externglib.CastObject(object)).(ProxyResolverer)
+		casted := object.Cast()
+		rv, ok := casted.(ProxyResolverer)
 		if !ok {
-			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ProxyResolverer")
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ProxyResolverer")
 		}
 		_proxyResolver = rv
 	}

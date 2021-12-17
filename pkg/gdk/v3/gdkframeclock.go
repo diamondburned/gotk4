@@ -141,7 +141,7 @@ var (
 )
 
 // FrameClocker describes types inherited from class FrameClock.
-
+//
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FrameClocker interface {

@@ -111,7 +111,7 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 
 	shared.mu.Lock()
 
-	box, _ := gets(gobject)
+	box, _ = gets(gobject)
 	if box != nil {
 		shared.mu.Unlock()
 		return box

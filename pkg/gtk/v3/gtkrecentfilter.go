@@ -18,8 +18,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_RecentFilterFunc(GtkRecentFilterInfo*, gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk3_RecentFilterFunc(GtkRecentFilterInfo*, gpointer);
 import "C"
 
 func init() {
@@ -101,18 +101,21 @@ func (r RecentFilterFlags) Has(other RecentFilterFlags) bool {
 type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
 
 //export _gotk4_gtk3_RecentFilterFunc
-func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_RecentFilterFunc(arg1 *C.GtkRecentFilterInfo, arg2 C.gpointer) (cret C.gboolean) {
+	var fn RecentFilterFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(RecentFilterFunc)
 	}
 
-	var filterInfo *RecentFilterInfo // out
+	var _filterInfo *RecentFilterInfo // out
 
-	filterInfo = (*RecentFilterInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
+	_filterInfo = (*RecentFilterInfo)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
-	fn := v.(RecentFilterFunc)
-	ok := fn(filterInfo)
+	ok := fn(_filterInfo)
 
 	if ok {
 		cret = C.TRUE

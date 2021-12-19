@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// ArrowOverrider contains methods that are overridable.
+type ArrowOverrider interface {
+}
+
 // Arrow should be used to draw simple arrows that need to point in one of the
 // four cardinal directions (up, down, left, or right). The style of the arrow
 // can be one of shadow in, shadow out, etched in, or etched out. Note that
@@ -49,6 +53,14 @@ type Arrow struct {
 var (
 	_ Miscer = (*Arrow)(nil)
 )
+
+func classInitArrower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapArrow(obj *externglib.Object) *Arrow {
 	return &Arrow{

@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// NumerableIconOverrider contains methods that are overridable.
+type NumerableIconOverrider interface {
+}
+
 // NumerableIcon is a subclass of Icon that can show a number or short string as
 // an emblem. The number can be overlayed on top of another emblem, if desired.
 //
@@ -38,6 +42,14 @@ type NumerableIcon struct {
 var (
 	_ externglib.Objector = (*NumerableIcon)(nil)
 )
+
+func classInitNumerableIconner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 	return &NumerableIcon{

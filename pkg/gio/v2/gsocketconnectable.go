@@ -12,6 +12,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_enumerate(GSocketConnectable*);
+// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_proxy_enumerate(GSocketConnectable*);
+// extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(GSocketConnectable*);
 import "C"
 
 func init() {
@@ -21,9 +24,6 @@ func init() {
 }
 
 // SocketConnectableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SocketConnectableOverrider interface {
 	// Enumerate creates a AddressEnumerator for connectable.
 	//
@@ -137,6 +137,51 @@ type SocketConnectabler interface {
 }
 
 var _ SocketConnectabler = (*SocketConnectable)(nil)
+
+func ifaceInitSocketConnectabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GSocketConnectableIface)(unsafe.Pointer(gifacePtr))
+	iface.enumerate = (*[0]byte)(C._gotk4_gio2_SocketConnectableIface_enumerate)
+	iface.proxy_enumerate = (*[0]byte)(C._gotk4_gio2_SocketConnectableIface_proxy_enumerate)
+	iface.to_string = (*[0]byte)(C._gotk4_gio2_SocketConnectableIface_to_string)
+}
+
+//export _gotk4_gio2_SocketConnectableIface_enumerate
+func _gotk4_gio2_SocketConnectableIface_enumerate(arg0 *C.GSocketConnectable) (cret *C.GSocketAddressEnumerator) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SocketConnectableOverrider)
+
+	socketAddressEnumerator := iface.Enumerate()
+
+	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(socketAddressEnumerator.Native()))
+	C.g_object_ref(C.gpointer(socketAddressEnumerator.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_SocketConnectableIface_proxy_enumerate
+func _gotk4_gio2_SocketConnectableIface_proxy_enumerate(arg0 *C.GSocketConnectable) (cret *C.GSocketAddressEnumerator) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SocketConnectableOverrider)
+
+	socketAddressEnumerator := iface.ProxyEnumerate()
+
+	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(socketAddressEnumerator.Native()))
+	C.g_object_ref(C.gpointer(socketAddressEnumerator.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_SocketConnectableIface_to_string
+func _gotk4_gio2_SocketConnectableIface_to_string(arg0 *C.GSocketConnectable) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SocketConnectableOverrider)
+
+	utf8 := iface.String()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
 
 func wrapSocketConnectable(obj *externglib.Object) *SocketConnectable {
 	return &SocketConnectable{

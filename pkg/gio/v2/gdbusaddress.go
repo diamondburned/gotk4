@@ -15,7 +15,7 @@ import (
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // DBusAddressEscapeValue: escape string so it can appear in a D-Bus address as

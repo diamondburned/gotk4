@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -18,6 +19,13 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_StatusIconClass_button_press_event(GtkStatusIcon*, GdkEventButton*);
+// extern gboolean _gotk4_gtk3_StatusIconClass_button_release_event(GtkStatusIcon*, GdkEventButton*);
+// extern gboolean _gotk4_gtk3_StatusIconClass_query_tooltip(GtkStatusIcon*, gint, gint, gboolean, GtkTooltip*);
+// extern gboolean _gotk4_gtk3_StatusIconClass_scroll_event(GtkStatusIcon*, GdkEventScroll*);
+// extern gboolean _gotk4_gtk3_StatusIconClass_size_changed(GtkStatusIcon*, gint);
+// extern void _gotk4_gtk3_StatusIconClass_activate(GtkStatusIcon*);
+// extern void _gotk4_gtk3_StatusIconClass_popup_menu(GtkStatusIcon*, guint, guint32);
 import "C"
 
 func init() {
@@ -27,9 +35,6 @@ func init() {
 }
 
 // StatusIconOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type StatusIconOverrider interface {
 	Activate()
 	// The function takes the following parameters:
@@ -112,6 +117,186 @@ type StatusIcon struct {
 var (
 	_ externglib.Objector = (*StatusIcon)(nil)
 )
+
+func classInitStatusIconner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkStatusIconClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkStatusIconClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_activate)
+	}
+
+	if _, ok := goval.(interface {
+		ButtonPressEvent(event *gdk.EventButton) bool
+	}); ok {
+		pclass.button_press_event = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_button_press_event)
+	}
+
+	if _, ok := goval.(interface {
+		ButtonReleaseEvent(event *gdk.EventButton) bool
+	}); ok {
+		pclass.button_release_event = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_button_release_event)
+	}
+
+	if _, ok := goval.(interface {
+		PopupMenu(button uint, activateTime uint32)
+	}); ok {
+		pclass.popup_menu = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_popup_menu)
+	}
+
+	if _, ok := goval.(interface {
+		QueryTooltip(x, y int, keyboardMode bool, tooltip *Tooltip) bool
+	}); ok {
+		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_query_tooltip)
+	}
+
+	if _, ok := goval.(interface {
+		ScrollEvent(event *gdk.EventScroll) bool
+	}); ok {
+		pclass.scroll_event = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_scroll_event)
+	}
+
+	if _, ok := goval.(interface{ SizeChanged(size int) bool }); ok {
+		pclass.size_changed = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_size_changed)
+	}
+}
+
+//export _gotk4_gtk3_StatusIconClass_activate
+func _gotk4_gtk3_StatusIconClass_activate(arg0 *C.GtkStatusIcon) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
+
+//export _gotk4_gtk3_StatusIconClass_button_press_event
+func _gotk4_gtk3_StatusIconClass_button_press_event(arg0 *C.GtkStatusIcon, arg1 *C.GdkEventButton) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ButtonPressEvent(event *gdk.EventButton) bool
+	})
+
+	var _event *gdk.EventButton // out
+
+	_event = (*gdk.EventButton)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.ButtonPressEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_StatusIconClass_button_release_event
+func _gotk4_gtk3_StatusIconClass_button_release_event(arg0 *C.GtkStatusIcon, arg1 *C.GdkEventButton) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ButtonReleaseEvent(event *gdk.EventButton) bool
+	})
+
+	var _event *gdk.EventButton // out
+
+	_event = (*gdk.EventButton)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.ButtonReleaseEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_StatusIconClass_popup_menu
+func _gotk4_gtk3_StatusIconClass_popup_menu(arg0 *C.GtkStatusIcon, arg1 C.guint, arg2 C.guint32) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PopupMenu(button uint, activateTime uint32)
+	})
+
+	var _button uint         // out
+	var _activateTime uint32 // out
+
+	_button = uint(arg1)
+	_activateTime = uint32(arg2)
+
+	iface.PopupMenu(_button, _activateTime)
+}
+
+//export _gotk4_gtk3_StatusIconClass_query_tooltip
+func _gotk4_gtk3_StatusIconClass_query_tooltip(arg0 *C.GtkStatusIcon, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		QueryTooltip(x, y int, keyboardMode bool, tooltip *Tooltip) bool
+	})
+
+	var _x int             // out
+	var _y int             // out
+	var _keyboardMode bool // out
+	var _tooltip *Tooltip  // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	if arg3 != 0 {
+		_keyboardMode = true
+	}
+	_tooltip = wrapTooltip(externglib.Take(unsafe.Pointer(arg4)))
+
+	ok := iface.QueryTooltip(_x, _y, _keyboardMode, _tooltip)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_StatusIconClass_scroll_event
+func _gotk4_gtk3_StatusIconClass_scroll_event(arg0 *C.GtkStatusIcon, arg1 *C.GdkEventScroll) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ScrollEvent(event *gdk.EventScroll) bool
+	})
+
+	var _event *gdk.EventScroll // out
+
+	_event = (*gdk.EventScroll)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.ScrollEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_StatusIconClass_size_changed
+func _gotk4_gtk3_StatusIconClass_size_changed(arg0 *C.GtkStatusIcon, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SizeChanged(size int) bool })
+
+	var _size int // out
+
+	_size = int(arg1)
+
+	ok := iface.SizeChanged(_size)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapStatusIcon(obj *externglib.Object) *StatusIcon {
 	return &StatusIcon{

@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// ColumnViewOverrider contains methods that are overridable.
+type ColumnViewOverrider interface {
+}
+
 // ColumnView: GtkColumnView presents a large dynamic list of items using
 // multiple columns with headers.
 //
@@ -97,6 +101,14 @@ var (
 	_ Widgetter           = (*ColumnView)(nil)
 	_ externglib.Objector = (*ColumnView)(nil)
 )
+
+func classInitColumnViewer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapColumnView(obj *externglib.Object) *ColumnView {
 	return &ColumnView{

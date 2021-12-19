@@ -6,12 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(GDBusObjectSkeleton*, GDBusInterfaceSkeleton*, GDBusMethodInvocation*);
 import "C"
 
 func init() {
@@ -21,9 +23,6 @@ func init() {
 }
 
 // DBusObjectSkeletonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type DBusObjectSkeletonOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -50,6 +49,62 @@ type DBusObjectSkeleton struct {
 var (
 	_ externglib.Objector = (*DBusObjectSkeleton)(nil)
 )
+
+func classInitDBusObjectSkeletonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GDBusObjectSkeletonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GDBusObjectSkeletonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
+	}); ok {
+		pclass.authorize_method = (*[0]byte)(C._gotk4_gio2_DBusObjectSkeletonClass_authorize_method)
+	}
+}
+
+//export _gotk4_gio2_DBusObjectSkeletonClass_authorize_method
+func _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(arg0 *C.GDBusObjectSkeleton, arg1 *C.GDBusInterfaceSkeleton, arg2 *C.GDBusMethodInvocation) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
+	})
+
+	var _interface_ DBusInterfaceSkeletonner // out
+	var _invocation *DBusMethodInvocation    // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusInterfaceSkeletonner is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusInterfaceSkeletonner)
+			return ok
+		})
+		rv, ok := casted.(DBusInterfaceSkeletonner)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfaceSkeletonner")
+		}
+		_interface_ = rv
+	}
+	_invocation = wrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg2)))
+
+	ok := iface.AuthorizeMethod(_interface_, _invocation)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapDBusObjectSkeleton(obj *externglib.Object) *DBusObjectSkeleton {
 	return &DBusObjectSkeleton{

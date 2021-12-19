@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// BoxLayoutOverrider contains methods that are overridable.
+type BoxLayoutOverrider interface {
+}
+
 // BoxLayout: GtkBoxLayout is a layout manager that arranges children in a
 // single row or column.
 //
@@ -45,6 +49,14 @@ var (
 	_ LayoutManagerer     = (*BoxLayout)(nil)
 	_ externglib.Objector = (*BoxLayout)(nil)
 )
+
+func classInitBoxLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
 	return &BoxLayout{

@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ListBoxRowAccessibleOverrider contains methods that are overridable.
+type ListBoxRowAccessibleOverrider interface {
+}
+
 type ListBoxRowAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -30,6 +34,14 @@ type ListBoxRowAccessible struct {
 var (
 	_ externglib.Objector = (*ListBoxRowAccessible)(nil)
 )
+
+func classInitListBoxRowAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapListBoxRowAccessible(obj *externglib.Object) *ListBoxRowAccessible {
 	return &ListBoxRowAccessible{

@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// TreeListRowSorterOverrider contains methods that are overridable.
+type TreeListRowSorterOverrider interface {
+}
+
 // TreeListRowSorter: GtkTreeListRowSorter is a special-purpose sorter that will
 // apply a given sorter to the levels in a tree.
 //
@@ -39,6 +43,14 @@ type TreeListRowSorter struct {
 var (
 	_ externglib.Objector = (*TreeListRowSorter)(nil)
 )
+
+func classInitTreeListRowSorterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
 	return &TreeListRowSorter{

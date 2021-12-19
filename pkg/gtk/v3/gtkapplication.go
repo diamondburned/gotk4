@@ -8,6 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -19,6 +20,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_ApplicationClass_window_added(GtkApplication*, GtkWindow*);
+// extern void _gotk4_gtk3_ApplicationClass_window_removed(GtkApplication*, GtkWindow*);
 import "C"
 
 func init() {
@@ -87,9 +90,6 @@ func (a ApplicationInhibitFlags) Has(other ApplicationInhibitFlags) bool {
 }
 
 // ApplicationOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ApplicationOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -184,6 +184,50 @@ type Application struct {
 var (
 	_ externglib.Objector = (*Application)(nil)
 )
+
+func classInitApplicationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkApplicationClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkApplicationClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ WindowAdded(window *Window) }); ok {
+		pclass.window_added = (*[0]byte)(C._gotk4_gtk3_ApplicationClass_window_added)
+	}
+
+	if _, ok := goval.(interface{ WindowRemoved(window *Window) }); ok {
+		pclass.window_removed = (*[0]byte)(C._gotk4_gtk3_ApplicationClass_window_removed)
+	}
+}
+
+//export _gotk4_gtk3_ApplicationClass_window_added
+func _gotk4_gtk3_ApplicationClass_window_added(arg0 *C.GtkApplication, arg1 *C.GtkWindow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ WindowAdded(window *Window) })
+
+	var _window *Window // out
+
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.WindowAdded(_window)
+}
+
+//export _gotk4_gtk3_ApplicationClass_window_removed
+func _gotk4_gtk3_ApplicationClass_window_removed(arg0 *C.GtkApplication, arg1 *C.GtkWindow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ WindowRemoved(window *Window) })
+
+	var _window *Window // out
+
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.WindowRemoved(_window)
+}
 
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{

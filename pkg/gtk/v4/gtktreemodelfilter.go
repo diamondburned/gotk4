@@ -14,9 +14,11 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_TreeModelFilterClass_visible(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelFilterVisibleFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk4_TreeModelFilterClass_modify(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*, GValue*, int);
+// extern void _gotk4_gtk4_TreeModelFilterModifyFunc(GtkTreeModel*, GtkTreeIter*, GValue*, int, gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk4_TreeModelFilterVisibleFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
-// void _gotk4_gtk4_TreeModelFilterModifyFunc(GtkTreeModel*, GtkTreeIter*, GValue*, int, gpointer);
 import "C"
 
 func init() {
@@ -34,18 +36,22 @@ func init() {
 type TreeModelFilterModifyFunc func(model TreeModeller, iter *TreeIter, column int) (value externglib.Value)
 
 //export _gotk4_gtk4_TreeModelFilterModifyFunc
-func _gotk4_gtk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.int, arg4 C.gpointer) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TreeModelFilterModifyFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 *C.GValue, arg4 C.int, arg5 C.gpointer) {
+	var fn TreeModelFilterModifyFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeModelFilterModifyFunc)
 	}
 
-	var model TreeModeller // out
-	var iter *TreeIter     // out
-	var column int         // out
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
+	var _column int         // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.TreeModeller is nil")
 		}
@@ -59,15 +65,14 @@ func _gotk4_gtk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
-		model = rv
+		_model = rv
 	}
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	column = int(arg3)
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_column = int(arg4)
 
-	fn := v.(TreeModelFilterModifyFunc)
-	value := fn(model, iter, column)
+	value := fn(_model, _iter, _column)
 
-	*arg2 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+	*arg3 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 // TreeModelFilterVisibleFunc: function which decides whether the row indicated
@@ -75,17 +80,21 @@ func _gotk4_gtk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 type TreeModelFilterVisibleFunc func(model TreeModeller, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_TreeModelFilterVisibleFunc
-func _gotk4_gtk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TreeModelFilterVisibleFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
+	var fn TreeModelFilterVisibleFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeModelFilterVisibleFunc)
 	}
 
-	var model TreeModeller // out
-	var iter *TreeIter     // out
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.TreeModeller is nil")
 		}
@@ -99,12 +108,11 @@ func _gotk4_gtk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
-		model = rv
+		_model = rv
 	}
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(TreeModelFilterVisibleFunc)
-	ok := fn(model, iter)
+	ok := fn(_model, _iter)
 
 	if ok {
 		cret = C.TRUE
@@ -162,9 +170,6 @@ func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
 }
 
 // TreeModelFilterOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TreeModelFilterOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -258,6 +263,104 @@ type TreeModelFilter struct {
 var (
 	_ externglib.Objector = (*TreeModelFilter)(nil)
 )
+
+func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Modify(childModel TreeModeller, iter *TreeIter, value *externglib.Value, column int)
+	}); ok {
+		pclass.modify = (*[0]byte)(C._gotk4_gtk4_TreeModelFilterClass_modify)
+	}
+
+	if _, ok := goval.(interface {
+		Visible(childModel TreeModeller, iter *TreeIter) bool
+	}); ok {
+		pclass.visible = (*[0]byte)(C._gotk4_gtk4_TreeModelFilterClass_visible)
+	}
+}
+
+//export _gotk4_gtk4_TreeModelFilterClass_modify
+func _gotk4_gtk4_TreeModelFilterClass_modify(arg0 *C.GtkTreeModelFilter, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 *C.GValue, arg4 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Modify(childModel TreeModeller, iter *TreeIter, value *externglib.Value, column int)
+	})
+
+	var _childModel TreeModeller // out
+	var _iter *TreeIter          // out
+	var _value *externglib.Value // out
+	var _column int              // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_childModel = rv
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_value = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	_column = int(arg4)
+
+	iface.Modify(_childModel, _iter, _value, _column)
+}
+
+//export _gotk4_gtk4_TreeModelFilterClass_visible
+func _gotk4_gtk4_TreeModelFilterClass_visible(arg0 *C.GtkTreeModelFilter, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Visible(childModel TreeModeller, iter *TreeIter) bool
+	})
+
+	var _childModel TreeModeller // out
+	var _iter *TreeIter          // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_childModel = rv
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	ok := iface.Visible(_childModel, _iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapTreeModelFilter(obj *externglib.Object) *TreeModelFilter {
 	return &TreeModelFilter{

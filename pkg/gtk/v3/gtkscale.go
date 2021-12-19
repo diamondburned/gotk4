@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -16,6 +17,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gchar* _gotk4_gtk3_ScaleClass_format_value(GtkScale*, gdouble);
+// extern void _gotk4_gtk3_ScaleClass_draw_value(GtkScale*);
+// extern void _gotk4_gtk3_ScaleClass_get_layout_offsets(GtkScale*, gint*, gint*);
 import "C"
 
 func init() {
@@ -25,9 +29,6 @@ func init() {
 }
 
 // ScaleOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ScaleOverrider interface {
 	DrawValue()
 	// The function takes the following parameters:
@@ -128,6 +129,65 @@ type Scale struct {
 var (
 	_ Ranger = (*Scale)(nil)
 )
+
+func classInitScaler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkScaleClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkScaleClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ DrawValue() }); ok {
+		pclass.draw_value = (*[0]byte)(C._gotk4_gtk3_ScaleClass_draw_value)
+	}
+
+	if _, ok := goval.(interface{ FormatValue(value float64) string }); ok {
+		pclass.format_value = (*[0]byte)(C._gotk4_gtk3_ScaleClass_format_value)
+	}
+
+	if _, ok := goval.(interface{ LayoutOffsets() (x int, y int) }); ok {
+		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk3_ScaleClass_get_layout_offsets)
+	}
+}
+
+//export _gotk4_gtk3_ScaleClass_draw_value
+func _gotk4_gtk3_ScaleClass_draw_value(arg0 *C.GtkScale) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DrawValue() })
+
+	iface.DrawValue()
+}
+
+//export _gotk4_gtk3_ScaleClass_format_value
+func _gotk4_gtk3_ScaleClass_format_value(arg0 *C.GtkScale, arg1 C.gdouble) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ FormatValue(value float64) string })
+
+	var _value float64 // out
+
+	_value = float64(arg1)
+
+	utf8 := iface.FormatValue(_value)
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_gtk3_ScaleClass_get_layout_offsets
+func _gotk4_gtk3_ScaleClass_get_layout_offsets(arg0 *C.GtkScale, arg1 *C.gint, arg2 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ LayoutOffsets() (x int, y int) })
+
+	x, y := iface.LayoutOffsets()
+
+	*arg1 = C.gint(x)
+	*arg2 = C.gint(y)
+}
 
 func wrapScale(obj *externglib.Object) *Scale {
 	return &Scale{

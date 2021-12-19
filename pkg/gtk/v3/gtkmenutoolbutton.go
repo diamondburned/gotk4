@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_MenuToolButtonClass_show_menu(GtkMenuToolButton*);
 import "C"
 
 func init() {
@@ -24,9 +26,6 @@ func init() {
 }
 
 // MenuToolButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type MenuToolButtonOverrider interface {
 	ShowMenu()
 }
@@ -59,6 +58,30 @@ var (
 	_ externglib.Objector = (*MenuToolButton)(nil)
 	_ Binner              = (*MenuToolButton)(nil)
 )
+
+func classInitMenuToolButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkMenuToolButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkMenuToolButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ShowMenu() }); ok {
+		pclass.show_menu = (*[0]byte)(C._gotk4_gtk3_MenuToolButtonClass_show_menu)
+	}
+}
+
+//export _gotk4_gtk3_MenuToolButtonClass_show_menu
+func _gotk4_gtk3_MenuToolButtonClass_show_menu(arg0 *C.GtkMenuToolButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ShowMenu() })
+
+	iface.ShowMenu()
+}
 
 func wrapMenuToolButton(obj *externglib.Object) *MenuToolButton {
 	return &MenuToolButton{

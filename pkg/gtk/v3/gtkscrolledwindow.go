@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -16,6 +17,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_ScrolledWindowClass_scroll_child(GtkScrolledWindow*, GtkScrollType, gboolean);
+// extern void _gotk4_gtk3_ScrolledWindowClass_move_focus_out(GtkScrolledWindow*, GtkDirectionType);
 import "C"
 
 func init() {
@@ -107,9 +110,6 @@ func (p PolicyType) String() string {
 }
 
 // ScrolledWindowOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ScrolledWindowOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -207,6 +207,64 @@ type ScrolledWindow struct {
 var (
 	_ Binner = (*ScrolledWindow)(nil)
 )
+
+func classInitScrolledWindower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkScrolledWindowClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkScrolledWindowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ MoveFocusOut(direction DirectionType) }); ok {
+		pclass.move_focus_out = (*[0]byte)(C._gotk4_gtk3_ScrolledWindowClass_move_focus_out)
+	}
+
+	if _, ok := goval.(interface {
+		ScrollChild(scroll ScrollType, horizontal bool) bool
+	}); ok {
+		pclass.scroll_child = (*[0]byte)(C._gotk4_gtk3_ScrolledWindowClass_scroll_child)
+	}
+}
+
+//export _gotk4_gtk3_ScrolledWindowClass_move_focus_out
+func _gotk4_gtk3_ScrolledWindowClass_move_focus_out(arg0 *C.GtkScrolledWindow, arg1 C.GtkDirectionType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MoveFocusOut(direction DirectionType) })
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	iface.MoveFocusOut(_direction)
+}
+
+//export _gotk4_gtk3_ScrolledWindowClass_scroll_child
+func _gotk4_gtk3_ScrolledWindowClass_scroll_child(arg0 *C.GtkScrolledWindow, arg1 C.GtkScrollType, arg2 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ScrollChild(scroll ScrollType, horizontal bool) bool
+	})
+
+	var _scroll ScrollType // out
+	var _horizontal bool   // out
+
+	_scroll = ScrollType(arg1)
+	if arg2 != 0 {
+		_horizontal = true
+	}
+
+	ok := iface.ScrollChild(_scroll, _horizontal)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 	return &ScrolledWindow{

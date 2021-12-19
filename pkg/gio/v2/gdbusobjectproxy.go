@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// DBusObjectProxyOverrider contains methods that are overridable.
+type DBusObjectProxyOverrider interface {
+}
+
 // DBusObjectProxy is an object used to represent a remote object with one or
 // more D-Bus interfaces. Normally, you don't instantiate a BusObjectProxy
 // yourself - typically BusObjectManagerClient is used to obtain it.
@@ -33,6 +37,14 @@ type DBusObjectProxy struct {
 var (
 	_ externglib.Objector = (*DBusObjectProxy)(nil)
 )
+
+func classInitDBusObjectProxier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
 	return &DBusObjectProxy{

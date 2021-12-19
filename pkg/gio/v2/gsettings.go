@@ -18,7 +18,11 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// gboolean _gotk4_gio2_SettingsGetMapping(GVariant*, gpointer*, gpointer);
+// extern gboolean _gotk4_gio2_SettingsClass_change_event(GSettings*, GQuark*, gint);
+// extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(GSettings*, GQuark);
+// extern gboolean _gotk4_gio2_SettingsGetMapping(GVariant*, gpointer*, gpointer);
+// extern void _gotk4_gio2_SettingsClass_changed(GSettings*, gchar*);
+// extern void _gotk4_gio2_SettingsClass_writable_changed(GSettings*, gchar*);
 import "C"
 
 func init() {
@@ -108,27 +112,30 @@ func (s SettingsBindFlags) Has(other SettingsBindFlags) bool {
 type SettingsBindGetMapping func(value *externglib.Value, variant *glib.Variant) (ok bool)
 
 //export _gotk4_gio2_SettingsBindGetMapping
-func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.GValue, arg2 *C.GVariant, arg3 C.gpointer) (cret C.gboolean) {
+	var fn SettingsBindGetMapping
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(SettingsBindGetMapping)
 	}
 
-	var value *externglib.Value // out
-	var variant *glib.Variant   // out
+	var _value *externglib.Value // out
+	var _variant *glib.Variant   // out
 
-	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
-	variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.g_variant_ref(arg1)
+	_value = externglib.ValueFromNative(unsafe.Pointer(arg1))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	C.g_variant_ref(arg2)
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(variant)),
+		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
-	fn := v.(SettingsBindGetMapping)
-	ok := fn(value, variant)
+	ok := fn(_value, _variant)
 
 	if ok {
 		cret = C.TRUE
@@ -142,20 +149,23 @@ func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C
 type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.VariantType) (variant *glib.Variant)
 
 //export _gotk4_gio2_SettingsBindSetMapping
-func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) (cret *C.GVariant) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.GValue, arg2 *C.GVariantType, arg3 C.gpointer) (cret *C.GVariant) {
+	var fn SettingsBindSetMapping
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(SettingsBindSetMapping)
 	}
 
-	var value *externglib.Value        // out
-	var expectedType *glib.VariantType // out
+	var _value *externglib.Value        // out
+	var _expectedType *glib.VariantType // out
 
-	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
-	expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_value = externglib.ValueFromNative(unsafe.Pointer(arg1))
+	_expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(SettingsBindSetMapping)
-	variant := fn(value, expectedType)
+	variant := fn(_value, _expectedType)
 
 	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
@@ -175,27 +185,30 @@ func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, ar
 type SettingsGetMapping func(value *glib.Variant) (result cgo.Handle, ok bool)
 
 //export _gotk4_gio2_SettingsGetMapping
-func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_SettingsGetMapping(arg1 *C.GVariant, arg2 *C.gpointer, arg3 C.gpointer) (cret C.gboolean) {
+	var fn SettingsGetMapping
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(SettingsGetMapping)
 	}
 
-	var value *glib.Variant // out
+	var _value *glib.Variant // out
 
-	value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	C.g_variant_ref(arg0)
+	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_variant_ref(arg1)
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(value)),
+		gextras.StructIntern(unsafe.Pointer(_value)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
-	fn := v.(SettingsGetMapping)
-	result, ok := fn(value)
+	result, ok := fn(_value)
 
-	*arg1 = (C.gpointer)(unsafe.Pointer(result))
+	*arg2 = (C.gpointer)(unsafe.Pointer(result))
 	if ok {
 		cret = C.TRUE
 	}
@@ -204,9 +217,6 @@ func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.g
 }
 
 // SettingsOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SettingsOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -510,6 +520,100 @@ type Settings struct {
 var (
 	_ externglib.Objector = (*Settings)(nil)
 )
+
+func classInitSettingser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GSettingsClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GSettingsClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		ChangeEvent(keys *glib.Quark, nKeys int) bool
+	}); ok {
+		pclass.change_event = (*[0]byte)(C._gotk4_gio2_SettingsClass_change_event)
+	}
+
+	if _, ok := goval.(interface{ Changed(key string) }); ok {
+		pclass.changed = (*[0]byte)(C._gotk4_gio2_SettingsClass_changed)
+	}
+
+	if _, ok := goval.(interface{ WritableChangeEvent(key glib.Quark) bool }); ok {
+		pclass.writable_change_event = (*[0]byte)(C._gotk4_gio2_SettingsClass_writable_change_event)
+	}
+
+	if _, ok := goval.(interface{ WritableChanged(key string) }); ok {
+		pclass.writable_changed = (*[0]byte)(C._gotk4_gio2_SettingsClass_writable_changed)
+	}
+}
+
+//export _gotk4_gio2_SettingsClass_change_event
+func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, arg2 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ChangeEvent(keys *glib.Quark, nKeys int) bool
+	})
+
+	var _keys *glib.Quark // out
+	var _nKeys int        // out
+
+	_keys = (*uint32)(unsafe.Pointer(arg1))
+	_nKeys = int(arg2)
+
+	ok := iface.ChangeEvent(_keys, _nKeys)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_SettingsClass_changed
+func _gotk4_gio2_SettingsClass_changed(arg0 *C.GSettings, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Changed(key string) })
+
+	var _key string // out
+
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.Changed(_key)
+}
+
+//export _gotk4_gio2_SettingsClass_writable_change_event
+func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.GSettings, arg1 C.GQuark) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ WritableChangeEvent(key glib.Quark) bool })
+
+	var _key glib.Quark // out
+
+	_key = uint32(arg1)
+
+	ok := iface.WritableChangeEvent(_key)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_SettingsClass_writable_changed
+func _gotk4_gio2_SettingsClass_writable_changed(arg0 *C.GSettings, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ WritableChanged(key string) })
+
+	var _key string // out
+
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.WritableChanged(_key)
+}
 
 func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{

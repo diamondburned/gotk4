@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_SwitchClass_state_set(GtkSwitch*, gboolean);
+// extern void _gotk4_gtk3_SwitchClass_activate(GtkSwitch*);
 import "C"
 
 func init() {
@@ -24,9 +27,6 @@ func init() {
 }
 
 // SwitchOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SwitchOverrider interface {
 	Activate()
 	// The function takes the following parameters:
@@ -62,6 +62,54 @@ var (
 	_ Widgetter           = (*Switch)(nil)
 	_ externglib.Objector = (*Switch)(nil)
 )
+
+func classInitSwitcher(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkSwitchClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkSwitchClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_SwitchClass_activate)
+	}
+
+	if _, ok := goval.(interface{ StateSet(state bool) bool }); ok {
+		pclass.state_set = (*[0]byte)(C._gotk4_gtk3_SwitchClass_state_set)
+	}
+}
+
+//export _gotk4_gtk3_SwitchClass_activate
+func _gotk4_gtk3_SwitchClass_activate(arg0 *C.GtkSwitch) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
+
+//export _gotk4_gtk3_SwitchClass_state_set
+func _gotk4_gtk3_SwitchClass_state_set(arg0 *C.GtkSwitch, arg1 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StateSet(state bool) bool })
+
+	var _state bool // out
+
+	if arg1 != 0 {
+		_state = true
+	}
+
+	ok := iface.StateSet(_state)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapSwitch(obj *externglib.Object) *Switch {
 	return &Switch{

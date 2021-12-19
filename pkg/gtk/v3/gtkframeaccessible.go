@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// FrameAccessibleOverrider contains methods that are overridable.
+type FrameAccessibleOverrider interface {
+}
+
 type FrameAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -30,6 +34,14 @@ type FrameAccessible struct {
 var (
 	_ externglib.Objector = (*FrameAccessible)(nil)
 )
+
+func classInitFrameAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFrameAccessible(obj *externglib.Object) *FrameAccessible {
 	return &FrameAccessible{

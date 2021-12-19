@@ -79,6 +79,10 @@ func (a AttachOptions) Has(other AttachOptions) bool {
 	return (a & other) == other
 }
 
+// TableOverrider contains methods that are overridable.
+type TableOverrider interface {
+}
+
 // Table functions allow the programmer to arrange widgets in rows and columns,
 // making it easy to align many widgets next to each other, horizontally and
 // vertically.
@@ -110,6 +114,14 @@ type Table struct {
 var (
 	_ Containerer = (*Table)(nil)
 )
+
+func classInitTabler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTable(obj *externglib.Object) *Table {
 	return &Table{

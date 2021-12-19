@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// MountOperationOverrider contains methods that are overridable.
+type MountOperationOverrider interface {
+}
+
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
 type MountOperation struct {
@@ -34,6 +38,14 @@ type MountOperation struct {
 var (
 	_ externglib.Objector = (*MountOperation)(nil)
 )
+
+func classInitMountOperationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{

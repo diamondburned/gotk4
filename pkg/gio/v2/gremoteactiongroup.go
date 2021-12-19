@@ -14,6 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(GRemoteActionGroup*, gchar*, GVariant*, GVariant*);
+// extern void _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(GRemoteActionGroup*, gchar*, GVariant*, GVariant*);
 import "C"
 
 func init() {
@@ -23,9 +25,6 @@ func init() {
 }
 
 // RemoteActionGroupOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type RemoteActionGroupOverrider interface {
 	// ActivateActionFull activates the remote action.
 	//
@@ -98,6 +97,74 @@ type RemoteActionGrouper interface {
 }
 
 var _ RemoteActionGrouper = (*RemoteActionGroup)(nil)
+
+func ifaceInitRemoteActionGrouper(gifacePtr, data C.gpointer) {
+	iface := (*C.GRemoteActionGroupInterface)(unsafe.Pointer(gifacePtr))
+	iface.activate_action_full = (*[0]byte)(C._gotk4_gio2_RemoteActionGroupInterface_activate_action_full)
+	iface.change_action_state_full = (*[0]byte)(C._gotk4_gio2_RemoteActionGroupInterface_change_action_state_full)
+}
+
+//export _gotk4_gio2_RemoteActionGroupInterface_activate_action_full
+func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.GRemoteActionGroup, arg1 *C.gchar, arg2 *C.GVariant, arg3 *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(RemoteActionGroupOverrider)
+
+	var _actionName string          // out
+	var _parameter *glib.Variant    // out
+	var _platformData *glib.Variant // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	if arg2 != nil {
+		_parameter = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+		C.g_variant_ref(arg2)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_parameter)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	C.g_variant_ref(arg3)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_platformData)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	iface.ActivateActionFull(_actionName, _parameter, _platformData)
+}
+
+//export _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full
+func _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(arg0 *C.GRemoteActionGroup, arg1 *C.gchar, arg2 *C.GVariant, arg3 *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(RemoteActionGroupOverrider)
+
+	var _actionName string          // out
+	var _value *glib.Variant        // out
+	var _platformData *glib.Variant // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	C.g_variant_ref(arg2)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_value)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	C.g_variant_ref(arg3)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_platformData)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	iface.ChangeActionStateFull(_actionName, _value, _platformData)
+}
 
 func wrapRemoteActionGroup(obj *externglib.Object) *RemoteActionGroup {
 	return &RemoteActionGroup{

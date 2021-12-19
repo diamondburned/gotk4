@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// SpinButtonAccessibleOverrider contains methods that are overridable.
+type SpinButtonAccessibleOverrider interface {
+}
+
 type SpinButtonAccessible struct {
 	_ [0]func() // equal guard
 	EntryAccessible
@@ -33,6 +37,14 @@ type SpinButtonAccessible struct {
 var (
 	_ externglib.Objector = (*SpinButtonAccessible)(nil)
 )
+
+func classInitSpinButtonAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 	return &SpinButtonAccessible{

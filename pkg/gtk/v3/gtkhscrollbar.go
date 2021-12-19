@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// HScrollbarOverrider contains methods that are overridable.
+type HScrollbarOverrider interface {
+}
+
 // HScrollbar widget is a widget arranged horizontally creating a scrollbar. See
 // Scrollbar for details on scrollbars. Adjustment pointers may be added to
 // handle the adjustment of the scrollbar or it may be left NULL in which case
@@ -38,6 +42,14 @@ type HScrollbar struct {
 var (
 	_ Ranger = (*HScrollbar)(nil)
 )
+
+func classInitHScrollbarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 	return &HScrollbar{

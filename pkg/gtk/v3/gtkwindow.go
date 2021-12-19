@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -21,6 +22,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_WindowClass_enable_debugging(GtkWindow*, gboolean);
+// extern void _gotk4_gtk3_WindowClass_activate_default(GtkWindow*);
+// extern void _gotk4_gtk3_WindowClass_activate_focus(GtkWindow*);
+// extern void _gotk4_gtk3_WindowClass_keys_changed(GtkWindow*);
+// extern void _gotk4_gtk3_WindowClass_set_focus(GtkWindow*, GtkWidget*);
 import "C"
 
 func init() {
@@ -110,9 +116,6 @@ func (w WindowType) String() string {
 }
 
 // WindowOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type WindowOverrider interface {
 	ActivateDefault()
 	ActivateFocus()
@@ -196,6 +199,109 @@ type Window struct {
 var (
 	_ Binner = (*Window)(nil)
 )
+
+func classInitWindower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkWindowClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkWindowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActivateDefault() }); ok {
+		pclass.activate_default = (*[0]byte)(C._gotk4_gtk3_WindowClass_activate_default)
+	}
+
+	if _, ok := goval.(interface{ ActivateFocus() }); ok {
+		pclass.activate_focus = (*[0]byte)(C._gotk4_gtk3_WindowClass_activate_focus)
+	}
+
+	if _, ok := goval.(interface{ EnableDebugging(toggle bool) bool }); ok {
+		pclass.enable_debugging = (*[0]byte)(C._gotk4_gtk3_WindowClass_enable_debugging)
+	}
+
+	if _, ok := goval.(interface{ KeysChanged() }); ok {
+		pclass.keys_changed = (*[0]byte)(C._gotk4_gtk3_WindowClass_keys_changed)
+	}
+
+	if _, ok := goval.(interface{ SetFocus(focus Widgetter) }); ok {
+		pclass.set_focus = (*[0]byte)(C._gotk4_gtk3_WindowClass_set_focus)
+	}
+}
+
+//export _gotk4_gtk3_WindowClass_activate_default
+func _gotk4_gtk3_WindowClass_activate_default(arg0 *C.GtkWindow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActivateDefault() })
+
+	iface.ActivateDefault()
+}
+
+//export _gotk4_gtk3_WindowClass_activate_focus
+func _gotk4_gtk3_WindowClass_activate_focus(arg0 *C.GtkWindow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActivateFocus() })
+
+	iface.ActivateFocus()
+}
+
+//export _gotk4_gtk3_WindowClass_enable_debugging
+func _gotk4_gtk3_WindowClass_enable_debugging(arg0 *C.GtkWindow, arg1 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ EnableDebugging(toggle bool) bool })
+
+	var _toggle bool // out
+
+	if arg1 != 0 {
+		_toggle = true
+	}
+
+	ok := iface.EnableDebugging(_toggle)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WindowClass_keys_changed
+func _gotk4_gtk3_WindowClass_keys_changed(arg0 *C.GtkWindow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ KeysChanged() })
+
+	iface.KeysChanged()
+}
+
+//export _gotk4_gtk3_WindowClass_set_focus
+func _gotk4_gtk3_WindowClass_set_focus(arg0 *C.GtkWindow, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetFocus(focus Widgetter) })
+
+	var _focus Widgetter // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_focus = rv
+		}
+	}
+
+	iface.SetFocus(_focus)
+}
 
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{

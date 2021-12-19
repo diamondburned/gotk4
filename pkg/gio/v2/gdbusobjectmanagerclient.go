@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -17,9 +18,10 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// GType _gotk4_gio2_DBusProxyTypeFunc(GDBusObjectManagerClient*, gchar*, gchar*, gpointer);
+// extern GType _gotk4_gio2_DBusProxyTypeFunc(GDBusObjectManagerClient*, gchar*, gchar*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(GDBusObjectManagerClient*, GDBusObjectProxy*, GDBusProxy*, gchar*, gchar*, GVariant*);
 // extern void callbackDelete(gpointer);
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -29,9 +31,6 @@ func init() {
 }
 
 // DBusObjectManagerClientOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type DBusObjectManagerClientOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -119,6 +118,53 @@ type DBusObjectManagerClient struct {
 var (
 	_ externglib.Objector = (*DBusObjectManagerClient)(nil)
 )
+
+func classInitDBusObjectManagerClienter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GDBusObjectManagerClientClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GDBusObjectManagerClientClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
+	}); ok {
+		pclass.interface_proxy_signal = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal)
+	}
+}
+
+//export _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal
+func _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(arg0 *C.GDBusObjectManagerClient, arg1 *C.GDBusObjectProxy, arg2 *C.GDBusProxy, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
+	})
+
+	var _objectProxy *DBusObjectProxy // out
+	var _interfaceProxy *DBusProxy    // out
+	var _senderName string            // out
+	var _signalName string            // out
+	var _parameters *glib.Variant     // out
+
+	_objectProxy = wrapDBusObjectProxy(externglib.Take(unsafe.Pointer(arg1)))
+	_interfaceProxy = wrapDBusProxy(externglib.Take(unsafe.Pointer(arg2)))
+	_senderName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	_signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
+	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
+	C.g_variant_ref(arg5)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_parameters)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	iface.InterfaceProxySignal(_objectProxy, _interfaceProxy, _senderName, _signalName, _parameters)
+}
 
 func wrapDBusObjectManagerClient(obj *externglib.Object) *DBusObjectManagerClient {
 	return &DBusObjectManagerClient{

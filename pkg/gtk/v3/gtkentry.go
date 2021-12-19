@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -21,6 +22,19 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_EntryClass_activate(GtkEntry*);
+// extern void _gotk4_gtk3_EntryClass_backspace(GtkEntry*);
+// extern void _gotk4_gtk3_EntryClass_copy_clipboard(GtkEntry*);
+// extern void _gotk4_gtk3_EntryClass_cut_clipboard(GtkEntry*);
+// extern void _gotk4_gtk3_EntryClass_delete_from_cursor(GtkEntry*, GtkDeleteType, gint);
+// extern void _gotk4_gtk3_EntryClass_get_frame_size(GtkEntry*, gint*, gint*, gint*, gint*);
+// extern void _gotk4_gtk3_EntryClass_get_text_area_size(GtkEntry*, gint*, gint*, gint*, gint*);
+// extern void _gotk4_gtk3_EntryClass_insert_at_cursor(GtkEntry*, gchar*);
+// extern void _gotk4_gtk3_EntryClass_insert_emoji(GtkEntry*);
+// extern void _gotk4_gtk3_EntryClass_move_cursor(GtkEntry*, GtkMovementStep, gint, gboolean);
+// extern void _gotk4_gtk3_EntryClass_paste_clipboard(GtkEntry*);
+// extern void _gotk4_gtk3_EntryClass_populate_popup(GtkEntry*, GtkWidget*);
+// extern void _gotk4_gtk3_EntryClass_toggle_overwrite(GtkEntry*);
 import "C"
 
 func init() {
@@ -59,9 +73,6 @@ func (e EntryIconPosition) String() string {
 }
 
 // EntryOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type EntryOverrider interface {
 	Activate()
 	Backspace()
@@ -187,6 +198,250 @@ var (
 	_ Widgetter           = (*Entry)(nil)
 	_ externglib.Objector = (*Entry)(nil)
 )
+
+func classInitEntrier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkEntryClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkEntryClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_EntryClass_activate)
+	}
+
+	if _, ok := goval.(interface{ Backspace() }); ok {
+		pclass.backspace = (*[0]byte)(C._gotk4_gtk3_EntryClass_backspace)
+	}
+
+	if _, ok := goval.(interface{ CopyClipboard() }); ok {
+		pclass.copy_clipboard = (*[0]byte)(C._gotk4_gtk3_EntryClass_copy_clipboard)
+	}
+
+	if _, ok := goval.(interface{ CutClipboard() }); ok {
+		pclass.cut_clipboard = (*[0]byte)(C._gotk4_gtk3_EntryClass_cut_clipboard)
+	}
+
+	if _, ok := goval.(interface {
+		DeleteFromCursor(typ DeleteType, count int)
+	}); ok {
+		pclass.delete_from_cursor = (*[0]byte)(C._gotk4_gtk3_EntryClass_delete_from_cursor)
+	}
+
+	if _, ok := goval.(interface {
+		FrameSize(x, y, width, height *int)
+	}); ok {
+		pclass.get_frame_size = (*[0]byte)(C._gotk4_gtk3_EntryClass_get_frame_size)
+	}
+
+	if _, ok := goval.(interface {
+		TextAreaSize(x, y, width, height *int)
+	}); ok {
+		pclass.get_text_area_size = (*[0]byte)(C._gotk4_gtk3_EntryClass_get_text_area_size)
+	}
+
+	if _, ok := goval.(interface{ InsertAtCursor(str string) }); ok {
+		pclass.insert_at_cursor = (*[0]byte)(C._gotk4_gtk3_EntryClass_insert_at_cursor)
+	}
+
+	if _, ok := goval.(interface{ InsertEmoji() }); ok {
+		pclass.insert_emoji = (*[0]byte)(C._gotk4_gtk3_EntryClass_insert_emoji)
+	}
+
+	if _, ok := goval.(interface {
+		MoveCursor(step MovementStep, count int, extendSelection bool)
+	}); ok {
+		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_EntryClass_move_cursor)
+	}
+
+	if _, ok := goval.(interface{ PasteClipboard() }); ok {
+		pclass.paste_clipboard = (*[0]byte)(C._gotk4_gtk3_EntryClass_paste_clipboard)
+	}
+
+	if _, ok := goval.(interface{ PopulatePopup(popup Widgetter) }); ok {
+		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_EntryClass_populate_popup)
+	}
+
+	if _, ok := goval.(interface{ ToggleOverwrite() }); ok {
+		pclass.toggle_overwrite = (*[0]byte)(C._gotk4_gtk3_EntryClass_toggle_overwrite)
+	}
+}
+
+//export _gotk4_gtk3_EntryClass_activate
+func _gotk4_gtk3_EntryClass_activate(arg0 *C.GtkEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
+
+//export _gotk4_gtk3_EntryClass_backspace
+func _gotk4_gtk3_EntryClass_backspace(arg0 *C.GtkEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Backspace() })
+
+	iface.Backspace()
+}
+
+//export _gotk4_gtk3_EntryClass_copy_clipboard
+func _gotk4_gtk3_EntryClass_copy_clipboard(arg0 *C.GtkEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CopyClipboard() })
+
+	iface.CopyClipboard()
+}
+
+//export _gotk4_gtk3_EntryClass_cut_clipboard
+func _gotk4_gtk3_EntryClass_cut_clipboard(arg0 *C.GtkEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CutClipboard() })
+
+	iface.CutClipboard()
+}
+
+//export _gotk4_gtk3_EntryClass_delete_from_cursor
+func _gotk4_gtk3_EntryClass_delete_from_cursor(arg0 *C.GtkEntry, arg1 C.GtkDeleteType, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DeleteFromCursor(typ DeleteType, count int)
+	})
+
+	var _typ DeleteType // out
+	var _count int      // out
+
+	_typ = DeleteType(arg1)
+	_count = int(arg2)
+
+	iface.DeleteFromCursor(_typ, _count)
+}
+
+//export _gotk4_gtk3_EntryClass_get_frame_size
+func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		FrameSize(x, y, width, height *int)
+	})
+
+	var _x *int      // out
+	var _y *int      // out
+	var _width *int  // out
+	var _height *int // out
+
+	_x = (*int)(unsafe.Pointer(arg1))
+	_y = (*int)(unsafe.Pointer(arg2))
+	_width = (*int)(unsafe.Pointer(arg3))
+	_height = (*int)(unsafe.Pointer(arg4))
+
+	iface.FrameSize(_x, _y, _width, _height)
+}
+
+//export _gotk4_gtk3_EntryClass_get_text_area_size
+func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		TextAreaSize(x, y, width, height *int)
+	})
+
+	var _x *int      // out
+	var _y *int      // out
+	var _width *int  // out
+	var _height *int // out
+
+	_x = (*int)(unsafe.Pointer(arg1))
+	_y = (*int)(unsafe.Pointer(arg2))
+	_width = (*int)(unsafe.Pointer(arg3))
+	_height = (*int)(unsafe.Pointer(arg4))
+
+	iface.TextAreaSize(_x, _y, _width, _height)
+}
+
+//export _gotk4_gtk3_EntryClass_insert_at_cursor
+func _gotk4_gtk3_EntryClass_insert_at_cursor(arg0 *C.GtkEntry, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ InsertAtCursor(str string) })
+
+	var _str string // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.InsertAtCursor(_str)
+}
+
+//export _gotk4_gtk3_EntryClass_insert_emoji
+func _gotk4_gtk3_EntryClass_insert_emoji(arg0 *C.GtkEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ InsertEmoji() })
+
+	iface.InsertEmoji()
+}
+
+//export _gotk4_gtk3_EntryClass_move_cursor
+func _gotk4_gtk3_EntryClass_move_cursor(arg0 *C.GtkEntry, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MoveCursor(step MovementStep, count int, extendSelection bool)
+	})
+
+	var _step MovementStep    // out
+	var _count int            // out
+	var _extendSelection bool // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+	if arg3 != 0 {
+		_extendSelection = true
+	}
+
+	iface.MoveCursor(_step, _count, _extendSelection)
+}
+
+//export _gotk4_gtk3_EntryClass_paste_clipboard
+func _gotk4_gtk3_EntryClass_paste_clipboard(arg0 *C.GtkEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PasteClipboard() })
+
+	iface.PasteClipboard()
+}
+
+//export _gotk4_gtk3_EntryClass_populate_popup
+func _gotk4_gtk3_EntryClass_populate_popup(arg0 *C.GtkEntry, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PopulatePopup(popup Widgetter) })
+
+	var _popup Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_popup = rv
+	}
+
+	iface.PopulatePopup(_popup)
+}
+
+//export _gotk4_gtk3_EntryClass_toggle_overwrite
+func _gotk4_gtk3_EntryClass_toggle_overwrite(arg0 *C.GtkEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ToggleOverwrite() })
+
+	iface.ToggleOverwrite()
+}
 
 func wrapEntry(obj *externglib.Object) *Entry {
 	return &Entry{

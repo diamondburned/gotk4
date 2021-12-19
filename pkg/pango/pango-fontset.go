@@ -14,7 +14,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>
-// gboolean _gotk4_pango1_FontsetForEachFunc(PangoFontset*, PangoFont*, gpointer);
+// extern PangoFont* _gotk4_pango1_FontsetClass_get_font(PangoFontset*, guint);
+// extern PangoFontMetrics* _gotk4_pango1_FontsetClass_get_metrics(PangoFontset*);
+// extern PangoLanguage* _gotk4_pango1_FontsetClass_get_language(PangoFontset*);
+// extern gboolean _gotk4_pango1_FontsetForEachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
 func init() {
@@ -29,17 +32,21 @@ func init() {
 type FontsetForEachFunc func(fontset Fontsetter, font Fonter) (ok bool)
 
 //export _gotk4_pango1_FontsetForEachFunc
-func _gotk4_pango1_FontsetForEachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_pango1_FontsetForEachFunc(arg1 *C.PangoFontset, arg2 *C.PangoFont, arg3 C.gpointer) (cret C.gboolean) {
+	var fn FontsetForEachFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FontsetForEachFunc)
 	}
 
-	var fontset Fontsetter // out
-	var font Fonter        // out
+	var _fontset Fontsetter // out
+	var _font Fonter        // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type pango.Fontsetter is nil")
 		}
@@ -53,10 +60,10 @@ func _gotk4_pango1_FontsetForEachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fontsetter")
 		}
-		fontset = rv
+		_fontset = rv
 	}
 	{
-		objptr := unsafe.Pointer(arg1)
+		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type pango.Fonter is nil")
 		}
@@ -70,11 +77,10 @@ func _gotk4_pango1_FontsetForEachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fonter")
 		}
-		font = rv
+		_font = rv
 	}
 
-	fn := v.(FontsetForEachFunc)
-	ok := fn(fontset, font)
+	ok := fn(_fontset, _font)
 
 	if ok {
 		cret = C.TRUE
@@ -84,20 +90,7 @@ func _gotk4_pango1_FontsetForEachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 }
 
 // FontsetOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type FontsetOverrider interface {
-	// ForEach iterates through all the fonts in a fontset, calling func for
-	// each one.
-	//
-	// If func returns TRUE, that stops the iteration.
-	//
-	// The function takes the following parameters:
-	//
-	//    - fn: callback function.
-	//
-	ForEach(fn FontsetForEachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
 	//
@@ -150,6 +143,72 @@ type Fontsetter interface {
 }
 
 var _ Fontsetter = (*Fontset)(nil)
+
+func classInitFontsetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.PangoFontsetClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.PangoFontsetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Font(wc uint) Fonter }); ok {
+		pclass.get_font = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_font)
+	}
+
+	if _, ok := goval.(interface{ Language() *Language }); ok {
+		pclass.get_language = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_language)
+	}
+
+	if _, ok := goval.(interface{ Metrics() *FontMetrics }); ok {
+		pclass.get_metrics = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_metrics)
+	}
+}
+
+//export _gotk4_pango1_FontsetClass_get_font
+func _gotk4_pango1_FontsetClass_get_font(arg0 *C.PangoFontset, arg1 C.guint) (cret *C.PangoFont) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Font(wc uint) Fonter })
+
+	var _wc uint // out
+
+	_wc = uint(arg1)
+
+	font := iface.Font(_wc)
+
+	cret = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	C.g_object_ref(C.gpointer(font.Native()))
+
+	return cret
+}
+
+//export _gotk4_pango1_FontsetClass_get_language
+func _gotk4_pango1_FontsetClass_get_language(arg0 *C.PangoFontset) (cret *C.PangoLanguage) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Language() *Language })
+
+	language := iface.Language()
+
+	cret = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(language)), nil)
+
+	return cret
+}
+
+//export _gotk4_pango1_FontsetClass_get_metrics
+func _gotk4_pango1_FontsetClass_get_metrics(arg0 *C.PangoFontset) (cret *C.PangoFontMetrics) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Metrics() *FontMetrics })
+
+	fontMetrics := iface.Metrics()
+
+	cret = (*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(fontMetrics)))
+
+	return cret
+}
 
 func wrapFontset(obj *externglib.Object) *Fontset {
 	return &Fontset{
@@ -270,6 +329,10 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	return _fontMetrics
 }
 
+// FontsetSimpleOverrider contains methods that are overridable.
+type FontsetSimpleOverrider interface {
+}
+
 // FontsetSimple: PangoFontsetSimple is a implementation of the abstract
 // PangoFontset base class as an array of fonts.
 //
@@ -283,6 +346,14 @@ type FontsetSimple struct {
 var (
 	_ Fontsetter = (*FontsetSimple)(nil)
 )
+
+func classInitFontsetSimpler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFontsetSimple(obj *externglib.Object) *FontsetSimple {
 	return &FontsetSimple{

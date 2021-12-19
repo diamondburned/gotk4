@@ -16,7 +16,11 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern gboolean _gotk4_gio2_TlsConnectionClass_accept_certificate(GTlsConnection*, GTlsCertificate*, GTlsCertificateFlags);
+// extern gboolean _gotk4_gio2_TlsConnectionClass_get_binding_data(GTlsConnection*, GTlsChannelBindingType, GByteArray*, GError**);
+// extern gboolean _gotk4_gio2_TlsConnectionClass_handshake(GTlsConnection*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_TlsConnectionClass_handshake_finish(GTlsConnection*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -26,9 +30,6 @@ func init() {
 }
 
 // TLSConnectionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TLSConnectionOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -78,16 +79,6 @@ type TLSConnectionOverrider interface {
 	//    - ctx (optional) or NULL.
 	//
 	Handshake(ctx context.Context) error
-	// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
-	// g_tls_connection_handshake() for more information.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//    - ioPriority: [I/O priority][io-priority] of the request.
-	//    - callback (optional) to call when the handshake is complete.
-	//
-	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
 	// g_tls_connection_handshake() for more information.
 	//
@@ -123,6 +114,161 @@ type TLSConnectioner interface {
 }
 
 var _ TLSConnectioner = (*TLSConnection)(nil)
+
+func classInitTLSConnectioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GTlsConnectionClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GTlsConnectionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		AcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
+	}); ok {
+		pclass.accept_certificate = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_accept_certificate)
+	}
+
+	if _, ok := goval.(interface {
+		BindingData(typ TLSChannelBindingType, data []byte) error
+	}); ok {
+		pclass.get_binding_data = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_get_binding_data)
+	}
+
+	if _, ok := goval.(interface {
+		Handshake(ctx context.Context) error
+	}); ok {
+		pclass.handshake = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_handshake)
+	}
+
+	if _, ok := goval.(interface {
+		HandshakeFinish(result AsyncResulter) error
+	}); ok {
+		pclass.handshake_finish = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_handshake_finish)
+	}
+}
+
+//export _gotk4_gio2_TlsConnectionClass_accept_certificate
+func _gotk4_gio2_TlsConnectionClass_accept_certificate(arg0 *C.GTlsConnection, arg1 *C.GTlsCertificate, arg2 C.GTlsCertificateFlags) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
+	})
+
+	var _peerCert TLSCertificater   // out
+	var _errors TLSCertificateFlags // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.TLSCertificater is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TLSCertificater)
+			return ok
+		})
+		rv, ok := casted.(TLSCertificater)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSCertificater")
+		}
+		_peerCert = rv
+	}
+	_errors = TLSCertificateFlags(arg2)
+
+	ok := iface.AcceptCertificate(_peerCert, _errors)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsConnectionClass_get_binding_data
+func _gotk4_gio2_TlsConnectionClass_get_binding_data(arg0 *C.GTlsConnection, arg1 C.GTlsChannelBindingType, arg2 *C.GByteArray, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		BindingData(typ TLSChannelBindingType, data []byte) error
+	})
+
+	var _typ TLSChannelBindingType // out
+	var _data []byte               // out
+
+	_typ = TLSChannelBindingType(arg1)
+	_data = make([]byte, arg2.len)
+	copy(_data, unsafe.Slice((*byte)(arg2.data), arg2.len))
+
+	_goerr := iface.BindingData(_typ, _data)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsConnectionClass_handshake
+func _gotk4_gio2_TlsConnectionClass_handshake(arg0 *C.GTlsConnection, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Handshake(ctx context.Context) error
+	})
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	_goerr := iface.Handshake(_cancellable)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsConnectionClass_handshake_finish
+func _gotk4_gio2_TlsConnectionClass_handshake_finish(arg0 *C.GTlsConnection, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		HandshakeFinish(result AsyncResulter) error
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.HandshakeFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapTLSConnection(obj *externglib.Object) *TLSConnection {
 	return &TLSConnection{

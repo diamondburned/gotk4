@@ -96,18 +96,21 @@ func (k KeyEventType) String() string {
 type KeySnoopFunc func(event *KeyEventStruct) (gint int)
 
 //export _gotk4_atk1_KeySnoopFunc
-func _gotk4_atk1_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret C.gint) {
+	var fn KeySnoopFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(KeySnoopFunc)
 	}
 
-	var event *KeyEventStruct // out
+	var _event *KeyEventStruct // out
 
-	event = (*KeyEventStruct)(gextras.NewStructNative(unsafe.Pointer(arg0)))
+	_event = (*KeyEventStruct)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
-	fn := v.(KeySnoopFunc)
-	gint := fn(event)
+	gint := fn(_event)
 
 	cret = C.gint(gint)
 
@@ -292,6 +295,10 @@ func RemoveKeyEventListener(listenerId uint) {
 	runtime.KeepAlive(listenerId)
 }
 
+// UtilOverrider contains methods that are overridable.
+type UtilOverrider interface {
+}
+
 // Util: set of ATK utility functions which are used to support event
 // registration of various types, and obtaining the 'root' accessible of a
 // process and information about the current ATK implementation and toolkit
@@ -304,6 +311,14 @@ type Util struct {
 var (
 	_ externglib.Objector = (*Util)(nil)
 )
+
+func classInitUtiller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapUtil(obj *externglib.Object) *Util {
 	return &Util{

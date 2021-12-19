@@ -14,6 +14,12 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern GdkPaintable* _gotk4_gdk4_PaintableInterface_get_current_image(GdkPaintable*);
+// extern GdkPaintableFlags _gotk4_gdk4_PaintableInterface_get_flags(GdkPaintable*);
+// extern double _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(GdkPaintable*);
+// extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_height(GdkPaintable*);
+// extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_width(GdkPaintable*);
+// extern void _gotk4_gdk4_PaintableInterface_snapshot(GdkPaintable*, GdkSnapshot*, double, double);
 import "C"
 
 func init() {
@@ -75,9 +81,6 @@ func (p PaintableFlags) Has(other PaintableFlags) bool {
 }
 
 // PaintableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PaintableOverrider interface {
 	// CurrentImage gets an immutable paintable for the current contents
 	// displayed by paintable.
@@ -259,6 +262,109 @@ type Paintabler interface {
 }
 
 var _ Paintabler = (*Paintable)(nil)
+
+func ifaceInitPaintabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GdkPaintableInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_current_image = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_current_image)
+	iface.get_flags = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_flags)
+	iface.get_intrinsic_aspect_ratio = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio)
+	iface.get_intrinsic_height = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_height)
+	iface.get_intrinsic_width = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_width)
+	iface.snapshot = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_snapshot)
+}
+
+//export _gotk4_gdk4_PaintableInterface_get_current_image
+func _gotk4_gdk4_PaintableInterface_get_current_image(arg0 *C.GdkPaintable) (cret *C.GdkPaintable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PaintableOverrider)
+
+	ret := iface.CurrentImage()
+
+	cret = (*C.GdkPaintable)(unsafe.Pointer(ret.Native()))
+	C.g_object_ref(C.gpointer(ret.Native()))
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_get_flags
+func _gotk4_gdk4_PaintableInterface_get_flags(arg0 *C.GdkPaintable) (cret C.GdkPaintableFlags) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PaintableOverrider)
+
+	paintableFlags := iface.Flags()
+
+	cret = C.GdkPaintableFlags(paintableFlags)
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio
+func _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(arg0 *C.GdkPaintable) (cret C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PaintableOverrider)
+
+	gdouble := iface.IntrinsicAspectRatio()
+
+	cret = C.double(gdouble)
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_get_intrinsic_height
+func _gotk4_gdk4_PaintableInterface_get_intrinsic_height(arg0 *C.GdkPaintable) (cret C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PaintableOverrider)
+
+	gint := iface.IntrinsicHeight()
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_get_intrinsic_width
+func _gotk4_gdk4_PaintableInterface_get_intrinsic_width(arg0 *C.GdkPaintable) (cret C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PaintableOverrider)
+
+	gint := iface.IntrinsicWidth()
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_snapshot
+func _gotk4_gdk4_PaintableInterface_snapshot(arg0 *C.GdkPaintable, arg1 *C.GdkSnapshot, arg2 C.double, arg3 C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PaintableOverrider)
+
+	var _snapshot Snapshotter // out
+	var _width float64        // out
+	var _height float64       // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Snapshotter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Snapshotter)
+			return ok
+		})
+		rv, ok := casted.(Snapshotter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Snapshotter")
+		}
+		_snapshot = rv
+	}
+	_width = float64(arg2)
+	_height = float64(arg3)
+
+	iface.Snapshot(_snapshot, _width, _height)
+}
 
 func wrapPaintable(obj *externglib.Object) *Paintable {
 	return &Paintable{

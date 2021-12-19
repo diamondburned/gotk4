@@ -14,7 +14,7 @@ import (
 
 // #include <stdlib.h>
 // #include <glib.h>
-// void _gotk4_glib2_SpawnChildSetupFunc(gpointer);
+// extern void _gotk4_glib2_SpawnChildSetupFunc(gpointer);
 import "C"
 
 // SpawnError: error codes returned by spawning processes.
@@ -232,13 +232,16 @@ func (s SpawnFlags) Has(other SpawnFlags) bool {
 type SpawnChildSetupFunc func()
 
 //export _gotk4_glib2_SpawnChildSetupFunc
-func _gotk4_glib2_SpawnChildSetupFunc(arg0 C.gpointer) {
-	v := gbox.Get(uintptr(arg0))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_glib2_SpawnChildSetupFunc(arg1 C.gpointer) {
+	var fn SpawnChildSetupFunc
+	{
+		v := gbox.Get(uintptr(arg1))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(SpawnChildSetupFunc)
 	}
 
-	fn := v.(SpawnChildSetupFunc)
 	fn()
 }
 

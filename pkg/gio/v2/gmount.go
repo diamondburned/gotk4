@@ -16,292 +16,34 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern GDrive* _gotk4_gio2_MountIface_get_drive(GMount*);
+// extern GFile* _gotk4_gio2_MountIface_get_default_location(GMount*);
+// extern GFile* _gotk4_gio2_MountIface_get_root(GMount*);
+// extern GIcon* _gotk4_gio2_MountIface_get_icon(GMount*);
+// extern GIcon* _gotk4_gio2_MountIface_get_symbolic_icon(GMount*);
+// extern GVolume* _gotk4_gio2_MountIface_get_volume(GMount*);
+// extern char* _gotk4_gio2_MountIface_get_name(GMount*);
+// extern char* _gotk4_gio2_MountIface_get_uuid(GMount*);
+// extern gboolean _gotk4_gio2_MountIface_can_eject(GMount*);
+// extern gboolean _gotk4_gio2_MountIface_can_unmount(GMount*);
+// extern gboolean _gotk4_gio2_MountIface_eject_finish(GMount*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_eject_with_operation_finish(GMount*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_remount_finish(GMount*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_unmount_finish(GMount*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_unmount_with_operation_finish(GMount*, GAsyncResult*, GError**);
+// extern gchar* _gotk4_gio2_MountIface_get_sort_key(GMount*);
+// extern gchar** _gotk4_gio2_MountIface_guess_content_type_finish(GMount*, GAsyncResult*, GError**);
+// extern gchar** _gotk4_gio2_MountIface_guess_content_type_sync(GMount*, gboolean, GCancellable*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_MountIface_changed(GMount*);
+// extern void _gotk4_gio2_MountIface_pre_unmount(GMount*);
+// extern void _gotk4_gio2_MountIface_unmounted(GMount*);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_mount_get_type()), F: marshalMounter},
 	})
-}
-
-// MountOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type MountOverrider interface {
-	// CanEject checks if mount can be ejected.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the mount can be ejected.
-	//
-	CanEject() bool
-	// CanUnmount checks if mount can be unmounted.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the mount can be unmounted.
-	//
-	CanUnmount() bool
-	Changed()
-	// Eject ejects a mount. This is an asynchronous operation, and is finished
-	// by calling g_mount_eject_finish() with the mount and Result data returned
-	// in the callback.
-	//
-	// Deprecated: Use g_mount_eject_with_operation() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the unmount if required for eject.
-	//    - callback (optional) or NULL.
-	//
-	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
-	// EjectFinish finishes ejecting a mount. If any errors occurred during the
-	// operation, error will be set to contain the errors and FALSE will be
-	// returned.
-	//
-	// Deprecated: Use g_mount_eject_with_operation_finish() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	EjectFinish(result AsyncResulter) error
-	// EjectWithOperation ejects a mount. This is an asynchronous operation, and
-	// is finished by calling g_mount_eject_with_operation_finish() with the
-	// mount and Result data returned in the callback.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the unmount if required for eject.
-	//    - mountOperation (optional) or NULL to avoid user interaction.
-	//    - callback (optional) or NULL.
-	//
-	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
-	// EjectWithOperationFinish finishes ejecting a mount. If any errors
-	// occurred during the operation, error will be set to contain the errors
-	// and FALSE will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	EjectWithOperationFinish(result AsyncResulter) error
-	// DefaultLocation gets the default location of mount. The default location
-	// of the given mount is a path that reflects the main entry point for the
-	// user (e.g. the home directory, or the root of the volume).
-	//
-	// The function returns the following values:
-	//
-	//    - file: #GFile. The returned object should be unreffed with
-	//      g_object_unref() when no longer needed.
-	//
-	DefaultLocation() Filer
-	// Drive gets the drive for the mount.
-	//
-	// This is a convenience method for getting the #GVolume and then using that
-	// object to get the #GDrive.
-	//
-	// The function returns the following values:
-	//
-	//    - drive (optional) or NULL if mount is not associated with a volume or
-	//      a drive. The returned object should be unreffed with g_object_unref()
-	//      when no longer needed.
-	//
-	Drive() Driver
-	// Icon gets the icon for mount.
-	//
-	// The function returns the following values:
-	//
-	//    - icon: #GIcon. The returned object should be unreffed with
-	//      g_object_unref() when no longer needed.
-	//
-	Icon() Iconner
-	// Name gets the name of mount.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: name for the given mount. The returned string should be freed
-	//      with g_free() when no longer needed.
-	//
-	Name() string
-	// Root gets the root directory on mount.
-	//
-	// The function returns the following values:
-	//
-	//    - file: #GFile. The returned object should be unreffed with
-	//      g_object_unref() when no longer needed.
-	//
-	Root() Filer
-	// SortKey gets the sort key for mount, if any.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): sorting key for mount or NULL if no such key is
-	//      available.
-	//
-	SortKey() string
-	// SymbolicIcon gets the symbolic icon for mount.
-	//
-	// The function returns the following values:
-	//
-	//    - icon: #GIcon. The returned object should be unreffed with
-	//      g_object_unref() when no longer needed.
-	//
-	SymbolicIcon() Iconner
-	// UUID gets the UUID for the mount. The reference is typically based on the
-	// file system UUID for the mount in question and should be considered an
-	// opaque string. Returns NULL if there is no UUID available.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): UUID for mount or NULL if no UUID can be computed.
-	//      The returned string should be freed with g_free() when no longer
-	//      needed.
-	//
-	UUID() string
-	// Volume gets the volume for the mount.
-	//
-	// The function returns the following values:
-	//
-	//    - volume (optional) or NULL if mount is not associated with a volume.
-	//      The returned object should be unreffed with g_object_unref() when no
-	//      longer needed.
-	//
-	Volume() Volumer
-	// GuessContentType tries to guess the type of content stored on mount.
-	// Returns one or more textual identifiers of well-known content types
-	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
-	// camera memory cards. See the shared-mime-info
-	// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
-	// specification for more on x-content types.
-	//
-	// This is an asynchronous operation (see g_mount_guess_content_type_sync()
-	// for the synchronous version), and is finished by calling
-	// g_mount_guess_content_type_finish() with the mount and Result data
-	// returned in the callback.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - forceRescan: whether to force a rescan of the content. Otherwise a
-	//      cached result will be used if available.
-	//    - callback (optional): ReadyCallback.
-	//
-	GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback)
-	// GuessContentTypeFinish finishes guessing content types of mount. If any
-	// errors occurred during the operation, error will be set to contain the
-	// errors and FALSE will be returned. In particular, you may get an
-	// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8s: NULL-terminated array of content types or NULL on error.
-	//      Caller should free this array with g_strfreev() when done with it.
-	//
-	GuessContentTypeFinish(result AsyncResulter) ([]string, error)
-	// GuessContentTypeSync tries to guess the type of content stored on mount.
-	// Returns one or more textual identifiers of well-known content types
-	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
-	// camera memory cards. See the shared-mime-info
-	// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
-	// specification for more on x-content types.
-	//
-	// This is a synchronous operation and as such may block doing IO; see
-	// g_mount_guess_content_type() for the asynchronous version.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - forceRescan: whether to force a rescan of the content. Otherwise a
-	//      cached result will be used if available.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8s: NULL-terminated array of content types or NULL on error.
-	//      Caller should free this array with g_strfreev() when done with it.
-	//
-	GuessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error)
-	PreUnmount()
-	// Remount remounts a mount. This is an asynchronous operation, and is
-	// finished by calling g_mount_remount_finish() with the mount and Results
-	// data returned in the callback.
-	//
-	// Remounting is useful when some setting affecting the operation of the
-	// volume has been changed, as these may need a remount to take affect.
-	// While this is semantically equivalent with unmounting and then remounting
-	// not all backends might need to actually be unmounted.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the operation.
-	//    - mountOperation (optional) or NULL to avoid user interaction.
-	//    - callback (optional) or NULL.
-	//
-	Remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
-	// RemountFinish finishes remounting a mount. If any errors occurred during
-	// the operation, error will be set to contain the errors and FALSE will be
-	// returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	RemountFinish(result AsyncResulter) error
-	// Unmount unmounts a mount. This is an asynchronous operation, and is
-	// finished by calling g_mount_unmount_finish() with the mount and Result
-	// data returned in the callback.
-	//
-	// Deprecated: Use g_mount_unmount_with_operation() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the operation.
-	//    - callback (optional) or NULL.
-	//
-	Unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
-	// UnmountFinish finishes unmounting a mount. If any errors occurred during
-	// the operation, error will be set to contain the errors and FALSE will be
-	// returned.
-	//
-	// Deprecated: Use g_mount_unmount_with_operation_finish() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	UnmountFinish(result AsyncResulter) error
-	// UnmountWithOperation unmounts a mount. This is an asynchronous operation,
-	// and is finished by calling g_mount_unmount_with_operation_finish() with
-	// the mount and Result data returned in the callback.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the operation.
-	//    - mountOperation (optional) or NULL to avoid user interaction.
-	//    - callback (optional) or NULL.
-	//
-	UnmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
-	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
-	// occurred during the operation, error will be set to contain the errors
-	// and FALSE will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	UnmountWithOperationFinish(result AsyncResulter) error
-	Unmounted()
 }
 
 // Mount interface represents user-visible mounts. Note, when porting from

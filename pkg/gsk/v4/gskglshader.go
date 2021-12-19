@@ -25,6 +25,10 @@ func init() {
 	})
 }
 
+// GLShaderOverrider contains methods that are overridable.
+type GLShaderOverrider interface {
+}
+
 // GLShader: GskGLShader is a snippet of GLSL that is meant to run in the
 // fragment shader of the rendering pipeline.
 //
@@ -135,6 +139,14 @@ type GLShader struct {
 var (
 	_ externglib.Objector = (*GLShader)(nil)
 )
+
+func classInitGLShaderer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGLShader(obj *externglib.Object) *GLShader {
 	return &GLShader{

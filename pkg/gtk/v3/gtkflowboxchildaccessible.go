@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// FlowBoxChildAccessibleOverrider contains methods that are overridable.
+type FlowBoxChildAccessibleOverrider interface {
+}
+
 type FlowBoxChildAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -30,6 +34,14 @@ type FlowBoxChildAccessible struct {
 var (
 	_ externglib.Objector = (*FlowBoxChildAccessible)(nil)
 )
+
+func classInitFlowBoxChildAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFlowBoxChildAccessible(obj *externglib.Object) *FlowBoxChildAccessible {
 	return &FlowBoxChildAccessible{

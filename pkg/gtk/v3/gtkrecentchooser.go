@@ -18,8 +18,20 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GList* _gotk4_gtk3_RecentChooserIface_get_items(GtkRecentChooser*);
+// extern GSList* _gotk4_gtk3_RecentChooserIface_list_filters(GtkRecentChooser*);
+// extern gboolean _gotk4_gtk3_RecentChooserIface_select_uri(GtkRecentChooser*, gchar*, GError**);
+// extern gboolean _gotk4_gtk3_RecentChooserIface_set_current_uri(GtkRecentChooser*, gchar*, GError**);
+// extern gchar* _gotk4_gtk3_RecentChooserIface_get_current_uri(GtkRecentChooser*);
+// extern gint _gotk4_gtk3_RecentSortFunc(GtkRecentInfo*, GtkRecentInfo*, gpointer);
+// extern void _gotk4_gtk3_RecentChooserIface_add_filter(GtkRecentChooser*, GtkRecentFilter*);
+// extern void _gotk4_gtk3_RecentChooserIface_item_activated(GtkRecentChooser*);
+// extern void _gotk4_gtk3_RecentChooserIface_remove_filter(GtkRecentChooser*, GtkRecentFilter*);
+// extern void _gotk4_gtk3_RecentChooserIface_select_all(GtkRecentChooser*);
+// extern void _gotk4_gtk3_RecentChooserIface_selection_changed(GtkRecentChooser*);
+// extern void _gotk4_gtk3_RecentChooserIface_unselect_all(GtkRecentChooser*);
+// extern void _gotk4_gtk3_RecentChooserIface_unselect_uri(GtkRecentChooser*, gchar*);
 // extern void callbackDelete(gpointer);
-// gint _gotk4_gtk3_RecentSortFunc(GtkRecentInfo*, GtkRecentInfo*, gpointer);
 import "C"
 
 func init() {
@@ -98,134 +110,41 @@ func (r RecentSortType) String() string {
 type RecentSortFunc func(a, b *RecentInfo) (gint int)
 
 //export _gotk4_gtk3_RecentSortFunc
-func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) (cret C.gint) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_RecentSortFunc(arg1 *C.GtkRecentInfo, arg2 *C.GtkRecentInfo, arg3 C.gpointer) (cret C.gint) {
+	var fn RecentSortFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(RecentSortFunc)
 	}
 
-	var a *RecentInfo // out
-	var b *RecentInfo // out
+	var _a *RecentInfo // out
+	var _b *RecentInfo // out
 
-	a = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	C.gtk_recent_info_ref(arg0)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(a)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
-		},
-	)
-	b = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_a = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.gtk_recent_info_ref(arg1)
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(b)),
+		gextras.StructIntern(unsafe.Pointer(_a)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+		},
+	)
+	_b = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	C.gtk_recent_info_ref(arg2)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_b)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
 		},
 	)
 
-	fn := v.(RecentSortFunc)
-	gint := fn(a, b)
+	gint := fn(_a, _b)
 
 	cret = C.gint(gint)
 
 	return cret
-}
-
-// RecentChooserOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type RecentChooserOverrider interface {
-	// AddFilter adds filter to the list of RecentFilter objects held by
-	// chooser.
-	//
-	// If no previous filter objects were defined, this function will call
-	// gtk_recent_chooser_set_filter().
-	//
-	// The function takes the following parameters:
-	//
-	//    - filter: RecentFilter.
-	//
-	AddFilter(filter *RecentFilter)
-	// CurrentURI gets the URI currently selected by chooser.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: newly allocated string holding a URI.
-	//
-	CurrentURI() string
-	// Items gets the list of recently used resources in form of RecentInfo
-	// objects.
-	//
-	// The return value of this function is affected by the “sort-type” and
-	// “limit” properties of chooser.
-	//
-	// The function returns the following values:
-	//
-	//    - list: newly allocated list of RecentInfo objects. You should use
-	//      gtk_recent_info_unref() on every item of the list, and then free the
-	//      list itself using g_list_free().
-	//
-	Items() []*RecentInfo
-	ItemActivated()
-	// ListFilters gets the RecentFilter objects held by chooser.
-	//
-	// The function returns the following values:
-	//
-	//    - sList: singly linked list of RecentFilter objects. You should just
-	//      free the returned list using g_slist_free().
-	//
-	ListFilters() []RecentFilter
-	// RemoveFilter removes filter from the list of RecentFilter objects held by
-	// chooser.
-	//
-	// The function takes the following parameters:
-	//
-	//    - filter: RecentFilter.
-	//
-	RemoveFilter(filter *RecentFilter)
-	// SelectAll selects all the items inside chooser, if the chooser supports
-	// multiple selection.
-	SelectAll()
-	// SelectURI selects uri inside chooser.
-	//
-	// The function takes the following parameters:
-	//
-	//    - uri: URI.
-	//
-	SelectURI(uri string) error
-	SelectionChanged()
-	// SetCurrentURI sets uri as the current URI for chooser.
-	//
-	// The function takes the following parameters:
-	//
-	//    - uri: URI.
-	//
-	SetCurrentURI(uri string) error
-	// SetSortFunc sets the comparison function used when sorting to be
-	// sort_func. If the chooser has the sort type set to K_RECENT_SORT_CUSTOM
-	// then the chooser will sort using this function.
-	//
-	// To the comparison function will be passed two RecentInfo structs and
-	// sort_data; sort_func should return a positive integer if the first item
-	// comes before the second, zero if the two items are equal and a negative
-	// integer if the first item comes after the second.
-	//
-	// The function takes the following parameters:
-	//
-	//    - sortFunc: comparison function.
-	//
-	SetSortFunc(sortFunc RecentSortFunc)
-	// UnselectAll unselects all the items inside chooser.
-	UnselectAll()
-	// UnselectURI unselects uri inside chooser.
-	//
-	// The function takes the following parameters:
-	//
-	//    - uri: URI.
-	//
-	UnselectURI(uri string)
 }
 
 // RecentChooser is an interface that can be implemented by widgets displaying

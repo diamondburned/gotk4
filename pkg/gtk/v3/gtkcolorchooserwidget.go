@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ColorChooserWidgetOverrider contains methods that are overridable.
+type ColorChooserWidgetOverrider interface {
+}
+
 // ColorChooserWidget widget lets the user select a color. By default, the
 // chooser presents a predefined palette of colors, plus a small number of
 // settable custom colors. It is also possible to select a different color with
@@ -54,6 +58,14 @@ var (
 	_ externglib.Objector = (*ColorChooserWidget)(nil)
 	_ Containerer         = (*ColorChooserWidget)(nil)
 )
+
+func classInitColorChooserWidgetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 	return &ColorChooserWidget{

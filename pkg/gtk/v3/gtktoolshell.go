@@ -16,6 +16,15 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GtkIconSize _gotk4_gtk3_ToolShellIface_get_icon_size(GtkToolShell*);
+// extern GtkOrientation _gotk4_gtk3_ToolShellIface_get_orientation(GtkToolShell*);
+// extern GtkOrientation _gotk4_gtk3_ToolShellIface_get_text_orientation(GtkToolShell*);
+// extern GtkReliefStyle _gotk4_gtk3_ToolShellIface_get_relief_style(GtkToolShell*);
+// extern GtkSizeGroup* _gotk4_gtk3_ToolShellIface_get_text_size_group(GtkToolShell*);
+// extern GtkToolbarStyle _gotk4_gtk3_ToolShellIface_get_style(GtkToolShell*);
+// extern PangoEllipsizeMode _gotk4_gtk3_ToolShellIface_get_ellipsize_mode(GtkToolShell*);
+// extern gfloat _gotk4_gtk3_ToolShellIface_get_text_alignment(GtkToolShell*);
+// extern void _gotk4_gtk3_ToolShellIface_rebuild_menu(GtkToolShell*);
 import "C"
 
 func init() {
@@ -25,9 +34,6 @@ func init() {
 }
 
 // ToolShellOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ToolShellOverrider interface {
 	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	// Tool items must not call this function directly, but rely on
@@ -143,6 +149,123 @@ type ToolSheller interface {
 }
 
 var _ ToolSheller = (*ToolShell)(nil)
+
+func ifaceInitToolSheller(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkToolShellIface)(unsafe.Pointer(gifacePtr))
+	iface.get_ellipsize_mode = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_ellipsize_mode)
+	iface.get_icon_size = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_icon_size)
+	iface.get_orientation = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_orientation)
+	iface.get_relief_style = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_relief_style)
+	iface.get_style = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_style)
+	iface.get_text_alignment = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_text_alignment)
+	iface.get_text_orientation = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_text_orientation)
+	iface.get_text_size_group = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_text_size_group)
+	iface.rebuild_menu = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_rebuild_menu)
+}
+
+//export _gotk4_gtk3_ToolShellIface_get_ellipsize_mode
+func _gotk4_gtk3_ToolShellIface_get_ellipsize_mode(arg0 *C.GtkToolShell) (cret C.PangoEllipsizeMode) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ToolShellOverrider)
+
+	ellipsizeMode := iface.EllipsizeMode()
+
+	cret = C.PangoEllipsizeMode(ellipsizeMode)
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolShellIface_get_icon_size
+func _gotk4_gtk3_ToolShellIface_get_icon_size(arg0 *C.GtkToolShell) (cret C.GtkIconSize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ToolShellOverrider)
+
+	iconSize := iface.IconSize()
+
+	cret = C.GtkIconSize(iconSize)
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolShellIface_get_orientation
+func _gotk4_gtk3_ToolShellIface_get_orientation(arg0 *C.GtkToolShell) (cret C.GtkOrientation) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ToolShellOverrider)
+
+	orientation := iface.Orientation()
+
+	cret = C.GtkOrientation(orientation)
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolShellIface_get_relief_style
+func _gotk4_gtk3_ToolShellIface_get_relief_style(arg0 *C.GtkToolShell) (cret C.GtkReliefStyle) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ToolShellOverrider)
+
+	reliefStyle := iface.ReliefStyle()
+
+	cret = C.GtkReliefStyle(reliefStyle)
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolShellIface_get_style
+func _gotk4_gtk3_ToolShellIface_get_style(arg0 *C.GtkToolShell) (cret C.GtkToolbarStyle) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ToolShellOverrider)
+
+	toolbarStyle := iface.Style()
+
+	cret = C.GtkToolbarStyle(toolbarStyle)
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolShellIface_get_text_alignment
+func _gotk4_gtk3_ToolShellIface_get_text_alignment(arg0 *C.GtkToolShell) (cret C.gfloat) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ToolShellOverrider)
+
+	gfloat := iface.TextAlignment()
+
+	cret = C.gfloat(gfloat)
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolShellIface_get_text_orientation
+func _gotk4_gtk3_ToolShellIface_get_text_orientation(arg0 *C.GtkToolShell) (cret C.GtkOrientation) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ToolShellOverrider)
+
+	orientation := iface.TextOrientation()
+
+	cret = C.GtkOrientation(orientation)
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolShellIface_get_text_size_group
+func _gotk4_gtk3_ToolShellIface_get_text_size_group(arg0 *C.GtkToolShell) (cret *C.GtkSizeGroup) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ToolShellOverrider)
+
+	sizeGroup := iface.TextSizeGroup()
+
+	cret = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolShellIface_rebuild_menu
+func _gotk4_gtk3_ToolShellIface_rebuild_menu(arg0 *C.GtkToolShell) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ToolShellOverrider)
+
+	iface.RebuildMenu()
+}
 
 func wrapToolShell(obj *externglib.Object) *ToolShell {
 	return &ToolShell{

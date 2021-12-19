@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// FontChooserDialogOverrider contains methods that are overridable.
+type FontChooserDialogOverrider interface {
+}
+
 // FontChooserDialog widget is a dialog for selecting a font. It implements the
 // FontChooser interface.
 //
@@ -43,6 +47,14 @@ var (
 	_ externglib.Objector = (*FontChooserDialog)(nil)
 	_ Binner              = (*FontChooserDialog)(nil)
 )
+
+func classInitFontChooserDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 	return &FontChooserDialog{

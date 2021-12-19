@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_HandleBoxClass_child_attached(GtkHandleBox*, GtkWidget*);
+// extern void _gotk4_gtk3_HandleBoxClass_child_detached(GtkHandleBox*, GtkWidget*);
 import "C"
 
 func init() {
@@ -24,9 +27,6 @@ func init() {
 }
 
 // HandleBoxOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type HandleBoxOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -66,6 +66,82 @@ type HandleBox struct {
 var (
 	_ Binner = (*HandleBox)(nil)
 )
+
+func classInitHandleBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkHandleBoxClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkHandleBoxClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ChildAttached(child Widgetter) }); ok {
+		pclass.child_attached = (*[0]byte)(C._gotk4_gtk3_HandleBoxClass_child_attached)
+	}
+
+	if _, ok := goval.(interface{ ChildDetached(child Widgetter) }); ok {
+		pclass.child_detached = (*[0]byte)(C._gotk4_gtk3_HandleBoxClass_child_detached)
+	}
+}
+
+//export _gotk4_gtk3_HandleBoxClass_child_attached
+func _gotk4_gtk3_HandleBoxClass_child_attached(arg0 *C.GtkHandleBox, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ChildAttached(child Widgetter) })
+
+	var _child Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+
+	iface.ChildAttached(_child)
+}
+
+//export _gotk4_gtk3_HandleBoxClass_child_detached
+func _gotk4_gtk3_HandleBoxClass_child_detached(arg0 *C.GtkHandleBox, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ChildDetached(child Widgetter) })
+
+	var _child Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+
+	iface.ChildDetached(_child)
+}
 
 func wrapHandleBox(obj *externglib.Object) *HandleBox {
 	return &HandleBox{

@@ -6,12 +6,15 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_gio2_FileMonitorClass_cancel(GFileMonitor*);
+// extern void _gotk4_gio2_FileMonitorClass_changed(GFileMonitor*, GFile*, GFile*, GFileMonitorEvent);
 import "C"
 
 func init() {
@@ -21,9 +24,6 @@ func init() {
 }
 
 // FileMonitorOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type FileMonitorOverrider interface {
 	// Cancel cancels a file monitor.
 	//
@@ -71,6 +71,92 @@ type FileMonitorrer interface {
 }
 
 var _ FileMonitorrer = (*FileMonitor)(nil)
+
+func classInitFileMonitorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GFileMonitorClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GFileMonitorClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Cancel() bool }); ok {
+		pclass.cancel = (*[0]byte)(C._gotk4_gio2_FileMonitorClass_cancel)
+	}
+
+	if _, ok := goval.(interface {
+		Changed(file, otherFile Filer, eventType FileMonitorEvent)
+	}); ok {
+		pclass.changed = (*[0]byte)(C._gotk4_gio2_FileMonitorClass_changed)
+	}
+}
+
+//export _gotk4_gio2_FileMonitorClass_cancel
+func _gotk4_gio2_FileMonitorClass_cancel(arg0 *C.GFileMonitor) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Cancel() bool })
+
+	ok := iface.Cancel()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_FileMonitorClass_changed
+func _gotk4_gio2_FileMonitorClass_changed(arg0 *C.GFileMonitor, arg1 *C.GFile, arg2 *C.GFile, arg3 C.GFileMonitorEvent) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Changed(file, otherFile Filer, eventType FileMonitorEvent)
+	})
+
+	var _file Filer                 // out
+	var _otherFile Filer            // out
+	var _eventType FileMonitorEvent // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Filer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
+		rv, ok := casted.(Filer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+		}
+		_file = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.Filer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
+		rv, ok := casted.(Filer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+		}
+		_otherFile = rv
+	}
+	_eventType = FileMonitorEvent(arg3)
+
+	iface.Changed(_file, _otherFile, _eventType)
+}
 
 func wrapFileMonitor(obj *externglib.Object) *FileMonitor {
 	return &FileMonitor{

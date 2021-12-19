@@ -7,12 +7,17 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gsize _gotk4_gio2_SocketControlMessageClass_get_size(GSocketControlMessage*);
+// extern int _gotk4_gio2_SocketControlMessageClass_get_level(GSocketControlMessage*);
+// extern int _gotk4_gio2_SocketControlMessageClass_get_type(GSocketControlMessage*);
+// extern void _gotk4_gio2_SocketControlMessageClass_serialize(GSocketControlMessage*, gpointer);
 import "C"
 
 func init() {
@@ -22,9 +27,6 @@ func init() {
 }
 
 // SocketControlMessageOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SocketControlMessageOverrider interface {
 	// Level returns the "level" (i.e. the originating protocol) of the control
 	// message. This is often SOL_SOCKET.
@@ -95,6 +97,82 @@ type SocketControlMessager interface {
 }
 
 var _ SocketControlMessager = (*SocketControlMessage)(nil)
+
+func classInitSocketControlMessager(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GSocketControlMessageClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GSocketControlMessageClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Level() int }); ok {
+		pclass.get_level = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_level)
+	}
+
+	if _, ok := goval.(interface{ Size() uint }); ok {
+		pclass.get_size = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_size)
+	}
+
+	if _, ok := goval.(interface{ Type() int }); ok {
+		pclass.get_type = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_type)
+	}
+
+	if _, ok := goval.(interface{ Serialize(data cgo.Handle) }); ok {
+		pclass.serialize = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_serialize)
+	}
+}
+
+//export _gotk4_gio2_SocketControlMessageClass_get_level
+func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.GSocketControlMessage) (cret C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Level() int })
+
+	gint := iface.Level()
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gio2_SocketControlMessageClass_get_size
+func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.GSocketControlMessage) (cret C.gsize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Size() uint })
+
+	gsize := iface.Size()
+
+	cret = C.gsize(gsize)
+
+	return cret
+}
+
+//export _gotk4_gio2_SocketControlMessageClass_get_type
+func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.GSocketControlMessage) (cret C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Type() int })
+
+	gint := iface.Type()
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gio2_SocketControlMessageClass_serialize
+func _gotk4_gio2_SocketControlMessageClass_serialize(arg0 *C.GSocketControlMessage, arg1 C.gpointer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Serialize(data cgo.Handle) })
+
+	var _data cgo.Handle // out
+
+	_data = (cgo.Handle)(unsafe.Pointer(arg1))
+
+	iface.Serialize(_data)
+}
 
 func wrapSocketControlMessage(obj *externglib.Object) *SocketControlMessage {
 	return &SocketControlMessage{

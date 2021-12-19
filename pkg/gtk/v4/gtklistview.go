@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// ListViewOverrider contains methods that are overridable.
+type ListViewOverrider interface {
+}
+
 // ListView: GtkListView presents a large dynamic list of items.
 //
 // GtkListView uses its factory to generate one row widget for each visible item
@@ -123,6 +127,14 @@ type ListView struct {
 var (
 	_ ListBaser = (*ListView)(nil)
 )
+
+func classInitListViewer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapListView(obj *externglib.Object) *ListView {
 	return &ListView{

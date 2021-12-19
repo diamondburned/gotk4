@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// PanedAccessibleOverrider contains methods that are overridable.
+type PanedAccessibleOverrider interface {
+}
+
 type PanedAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -32,6 +36,14 @@ type PanedAccessible struct {
 var (
 	_ externglib.Objector = (*PanedAccessible)(nil)
 )
+
+func classInitPanedAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapPanedAccessible(obj *externglib.Object) *PanedAccessible {
 	return &PanedAccessible{

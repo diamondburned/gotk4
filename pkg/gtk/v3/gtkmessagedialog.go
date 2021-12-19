@@ -76,6 +76,10 @@ func (b ButtonsType) String() string {
 	}
 }
 
+// MessageDialogOverrider contains methods that are overridable.
+type MessageDialogOverrider interface {
+}
+
 // MessageDialog presents a dialog with some message text. It’s simply a
 // convenience widget; you could construct the equivalent of MessageDialog from
 // Dialog without too much effort, but MessageDialog saves typing.
@@ -120,6 +124,14 @@ type MessageDialog struct {
 var (
 	_ Binner = (*MessageDialog)(nil)
 )
+
+func classInitMessageDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	return &MessageDialog{

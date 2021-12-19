@@ -33,17 +33,21 @@ const PRIORITY_RESIZE = 110
 type KeySnoopFunc func(grabWidget Widgetter, event *gdk.EventKey) (gint int)
 
 //export _gotk4_gtk3_KeySnoopFunc
-func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) (cret C.gint) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_KeySnoopFunc(arg1 *C.GtkWidget, arg2 *C.GdkEventKey, arg3 C.gpointer) (cret C.gint) {
+	var fn KeySnoopFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(KeySnoopFunc)
 	}
 
-	var grabWidget Widgetter // out
-	var event *gdk.EventKey  // out
+	var _grabWidget Widgetter // out
+	var _event *gdk.EventKey  // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -57,12 +61,11 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
-		grabWidget = rv
+		_grabWidget = rv
 	}
-	event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(KeySnoopFunc)
-	gint := fn(grabWidget, event)
+	gint := fn(_grabWidget, _event)
 
 	cret = C.gint(gint)
 

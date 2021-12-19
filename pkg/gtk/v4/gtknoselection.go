@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// NoSelectionOverrider contains methods that are overridable.
+type NoSelectionOverrider interface {
+}
+
 // NoSelection: GtkNoSelection is a GtkSelectionModel that does not allow
 // selecting anything.
 //
@@ -36,6 +40,14 @@ type NoSelection struct {
 var (
 	_ externglib.Objector = (*NoSelection)(nil)
 )
+
+func classInitNoSelectioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNoSelection(obj *externglib.Object) *NoSelection {
 	return &NoSelection{

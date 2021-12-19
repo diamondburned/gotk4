@@ -6,12 +6,18 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_MountOperationClass_aborted(GMountOperation*);
+// extern void _gotk4_gio2_MountOperationClass_ask_password(GMountOperation*, char*, char*, char*, GAskPasswordFlags);
+// extern void _gotk4_gio2_MountOperationClass_ask_question(GMountOperation*, char*, char**);
+// extern void _gotk4_gio2_MountOperationClass_reply(GMountOperation*, GMountOperationResult);
+// extern void _gotk4_gio2_MountOperationClass_show_unmount_progress(GMountOperation*, gchar*, gint64, gint64);
 import "C"
 
 func init() {
@@ -21,9 +27,6 @@ func init() {
 }
 
 // MountOperationOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type MountOperationOverrider interface {
 	Aborted()
 	// The function takes the following parameters:
@@ -86,6 +89,134 @@ type MountOperation struct {
 var (
 	_ externglib.Objector = (*MountOperation)(nil)
 )
+
+func classInitMountOperationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GMountOperationClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GMountOperationClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Aborted() }); ok {
+		pclass.aborted = (*[0]byte)(C._gotk4_gio2_MountOperationClass_aborted)
+	}
+
+	if _, ok := goval.(interface {
+		AskPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
+	}); ok {
+		pclass.ask_password = (*[0]byte)(C._gotk4_gio2_MountOperationClass_ask_password)
+	}
+
+	if _, ok := goval.(interface {
+		AskQuestion(message string, choices []string)
+	}); ok {
+		pclass.ask_question = (*[0]byte)(C._gotk4_gio2_MountOperationClass_ask_question)
+	}
+
+	if _, ok := goval.(interface {
+		Reply(result MountOperationResult)
+	}); ok {
+		pclass.reply = (*[0]byte)(C._gotk4_gio2_MountOperationClass_reply)
+	}
+
+	if _, ok := goval.(interface {
+		ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
+	}); ok {
+		pclass.show_unmount_progress = (*[0]byte)(C._gotk4_gio2_MountOperationClass_show_unmount_progress)
+	}
+}
+
+//export _gotk4_gio2_MountOperationClass_aborted
+func _gotk4_gio2_MountOperationClass_aborted(arg0 *C.GMountOperation) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Aborted() })
+
+	iface.Aborted()
+}
+
+//export _gotk4_gio2_MountOperationClass_ask_password
+func _gotk4_gio2_MountOperationClass_ask_password(arg0 *C.GMountOperation, arg1 *C.char, arg2 *C.char, arg3 *C.char, arg4 C.GAskPasswordFlags) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AskPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
+	})
+
+	var _message string         // out
+	var _defaultUser string     // out
+	var _defaultDomain string   // out
+	var _flags AskPasswordFlags // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_defaultUser = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_defaultDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	_flags = AskPasswordFlags(arg4)
+
+	iface.AskPassword(_message, _defaultUser, _defaultDomain, _flags)
+}
+
+//export _gotk4_gio2_MountOperationClass_ask_question
+func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 *C.char, arg2 **C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AskQuestion(message string, choices []string)
+	})
+
+	var _message string   // out
+	var _choices []string // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	{
+		var i int
+		var z *C.char
+		for p := arg2; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(arg2, i)
+		_choices = make([]string, i)
+		for i := range src {
+			_choices[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	iface.AskQuestion(_message, _choices)
+}
+
+//export _gotk4_gio2_MountOperationClass_reply
+func _gotk4_gio2_MountOperationClass_reply(arg0 *C.GMountOperation, arg1 C.GMountOperationResult) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Reply(result MountOperationResult)
+	})
+
+	var _result MountOperationResult // out
+
+	_result = MountOperationResult(arg1)
+
+	iface.Reply(_result)
+}
+
+//export _gotk4_gio2_MountOperationClass_show_unmount_progress
+func _gotk4_gio2_MountOperationClass_show_unmount_progress(arg0 *C.GMountOperation, arg1 *C.gchar, arg2 C.gint64, arg3 C.gint64) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
+	})
+
+	var _message string  // out
+	var _timeLeft int64  // out
+	var _bytesLeft int64 // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_timeLeft = int64(arg2)
+	_bytesLeft = int64(arg3)
+
+	iface.ShowUnmountProgress(_message, _timeLeft, _bytesLeft)
+}
 
 func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{

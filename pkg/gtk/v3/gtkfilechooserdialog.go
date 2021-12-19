@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// FileChooserDialogOverrider contains methods that are overridable.
+type FileChooserDialogOverrider interface {
+}
+
 // FileChooserDialog is a dialog box suitable for use with “File/Open” or
 // “File/Save as” commands. This widget works by putting a FileChooserWidget
 // inside a Dialog. It exposes the FileChooser interface, so you can use all of
@@ -182,6 +186,14 @@ var (
 	_ externglib.Objector = (*FileChooserDialog)(nil)
 	_ Binner              = (*FileChooserDialog)(nil)
 )
+
+func classInitFileChooserDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 	return &FileChooserDialog{

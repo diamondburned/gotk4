@@ -12,6 +12,7 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern AtkHyperlink* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(AtkHyperlinkImpl*);
 import "C"
 
 func init() {
@@ -21,9 +22,6 @@ func init() {
 }
 
 // HyperlinkImplOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type HyperlinkImplOverrider interface {
 	// Hyperlink gets the hyperlink associated with this object.
 	//
@@ -77,6 +75,24 @@ type HyperlinkImpler interface {
 }
 
 var _ HyperlinkImpler = (*HyperlinkImpl)(nil)
+
+func ifaceInitHyperlinkImpler(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkHyperlinkImplIface)(unsafe.Pointer(gifacePtr))
+	iface.get_hyperlink = (*[0]byte)(C._gotk4_atk1_HyperlinkImplIface_get_hyperlink)
+}
+
+//export _gotk4_atk1_HyperlinkImplIface_get_hyperlink
+func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.AtkHyperlinkImpl) (cret *C.AtkHyperlink) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(HyperlinkImplOverrider)
+
+	hyperlink := iface.Hyperlink()
+
+	cret = (*C.AtkHyperlink)(unsafe.Pointer(hyperlink.Native()))
+	C.g_object_ref(C.gpointer(hyperlink.Native()))
+
+	return cret
+}
 
 func wrapHyperlinkImpl(obj *externglib.Object) *HyperlinkImpl {
 	return &HyperlinkImpl{

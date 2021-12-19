@@ -14,6 +14,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ColorChooserInterface_add_palette(GtkColorChooser*, GtkOrientation, int, int, GdkRGBA*);
+// extern void _gotk4_gtk4_ColorChooserInterface_color_activated(GtkColorChooser*, GdkRGBA*);
+// extern void _gotk4_gtk4_ColorChooserInterface_get_rgba(GtkColorChooser*, GdkRGBA*);
+// extern void _gotk4_gtk4_ColorChooserInterface_set_rgba(GtkColorChooser*, GdkRGBA*);
 import "C"
 
 func init() {
@@ -23,9 +27,6 @@ func init() {
 }
 
 // ColorChooserOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ColorChooserOverrider interface {
 	// AddPalette adds a palette to the color chooser.
 	//
@@ -106,6 +107,72 @@ type ColorChooserer interface {
 }
 
 var _ ColorChooserer = (*ColorChooser)(nil)
+
+func ifaceInitColorChooserer(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkColorChooserInterface)(unsafe.Pointer(gifacePtr))
+	iface.add_palette = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_add_palette)
+	iface.color_activated = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_color_activated)
+	iface.get_rgba = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_get_rgba)
+	iface.set_rgba = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_set_rgba)
+}
+
+//export _gotk4_gtk4_ColorChooserInterface_add_palette
+func _gotk4_gtk4_ColorChooserInterface_add_palette(arg0 *C.GtkColorChooser, arg1 C.GtkOrientation, arg2 C.int, arg3 C.int, arg4 *C.GdkRGBA) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ColorChooserOverrider)
+
+	var _orientation Orientation // out
+	var _colorsPerLine int       // out
+	var _colors []gdk.RGBA       // out
+
+	_orientation = Orientation(arg1)
+	_colorsPerLine = int(arg2)
+	if arg4 != nil {
+		{
+			src := unsafe.Slice(arg4, arg3)
+			_colors = make([]gdk.RGBA, arg3)
+			for i := 0; i < int(arg3); i++ {
+				_colors[i] = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			}
+		}
+	}
+
+	iface.AddPalette(_orientation, _colorsPerLine, _colors)
+}
+
+//export _gotk4_gtk4_ColorChooserInterface_color_activated
+func _gotk4_gtk4_ColorChooserInterface_color_activated(arg0 *C.GtkColorChooser, arg1 *C.GdkRGBA) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ColorChooserOverrider)
+
+	var _color *gdk.RGBA // out
+
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.ColorActivated(_color)
+}
+
+//export _gotk4_gtk4_ColorChooserInterface_get_rgba
+func _gotk4_gtk4_ColorChooserInterface_get_rgba(arg0 *C.GtkColorChooser, arg1 *C.GdkRGBA) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ColorChooserOverrider)
+
+	color := iface.RGBA()
+
+	*arg1 = *(*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+}
+
+//export _gotk4_gtk4_ColorChooserInterface_set_rgba
+func _gotk4_gtk4_ColorChooserInterface_set_rgba(arg0 *C.GtkColorChooser, arg1 *C.GdkRGBA) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ColorChooserOverrider)
+
+	var _color *gdk.RGBA // out
+
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.SetRGBA(_color)
+}
 
 func wrapColorChooser(obj *externglib.Object) *ColorChooser {
 	return &ColorChooser{

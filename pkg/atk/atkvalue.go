@@ -14,6 +14,16 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern AtkRange* _gotk4_atk1_ValueIface_get_range(AtkValue*);
+// extern GSList* _gotk4_atk1_ValueIface_get_sub_ranges(AtkValue*);
+// extern gboolean _gotk4_atk1_ValueIface_set_current_value(AtkValue*, GValue*);
+// extern gdouble _gotk4_atk1_ValueIface_get_increment(AtkValue*);
+// extern void _gotk4_atk1_ValueIface_get_current_value(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_maximum_value(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_minimum_increment(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_minimum_value(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_value_and_text(AtkValue*, gdouble*, gchar**);
+// extern void _gotk4_atk1_ValueIface_set_value(AtkValue*, gdouble);
 import "C"
 
 func init() {
@@ -146,9 +156,6 @@ func ValueTypeGetName(valueType ValueType) string {
 }
 
 // ValueOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ValueOverrider interface {
 	// CurrentValue gets the value of this object.
 	//
@@ -394,6 +401,148 @@ type Valueer interface {
 }
 
 var _ Valueer = (*Value)(nil)
+
+func ifaceInitValueer(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkValueIface)(unsafe.Pointer(gifacePtr))
+	iface.get_current_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_current_value)
+	iface.get_increment = (*[0]byte)(C._gotk4_atk1_ValueIface_get_increment)
+	iface.get_maximum_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_maximum_value)
+	iface.get_minimum_increment = (*[0]byte)(C._gotk4_atk1_ValueIface_get_minimum_increment)
+	iface.get_minimum_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_minimum_value)
+	iface.get_range = (*[0]byte)(C._gotk4_atk1_ValueIface_get_range)
+	iface.get_sub_ranges = (*[0]byte)(C._gotk4_atk1_ValueIface_get_sub_ranges)
+	iface.get_value_and_text = (*[0]byte)(C._gotk4_atk1_ValueIface_get_value_and_text)
+	iface.set_current_value = (*[0]byte)(C._gotk4_atk1_ValueIface_set_current_value)
+	iface.set_value = (*[0]byte)(C._gotk4_atk1_ValueIface_set_value)
+}
+
+//export _gotk4_atk1_ValueIface_get_current_value
+func _gotk4_atk1_ValueIface_get_current_value(arg0 *C.AtkValue, arg1 *C.GValue) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	value := iface.CurrentValue()
+
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+}
+
+//export _gotk4_atk1_ValueIface_get_increment
+func _gotk4_atk1_ValueIface_get_increment(arg0 *C.AtkValue) (cret C.gdouble) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	gdouble := iface.Increment()
+
+	cret = C.gdouble(gdouble)
+
+	return cret
+}
+
+//export _gotk4_atk1_ValueIface_get_maximum_value
+func _gotk4_atk1_ValueIface_get_maximum_value(arg0 *C.AtkValue, arg1 *C.GValue) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	value := iface.MaximumValue()
+
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+}
+
+//export _gotk4_atk1_ValueIface_get_minimum_increment
+func _gotk4_atk1_ValueIface_get_minimum_increment(arg0 *C.AtkValue, arg1 *C.GValue) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	value := iface.MinimumIncrement()
+
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+}
+
+//export _gotk4_atk1_ValueIface_get_minimum_value
+func _gotk4_atk1_ValueIface_get_minimum_value(arg0 *C.AtkValue, arg1 *C.GValue) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	value := iface.MinimumValue()
+
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+}
+
+//export _gotk4_atk1_ValueIface_get_range
+func _gotk4_atk1_ValueIface_get_range(arg0 *C.AtkValue) (cret *C.AtkRange) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	_range := iface.Range()
+
+	if _range != nil {
+		cret = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(_range)), nil)
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ValueIface_get_sub_ranges
+func _gotk4_atk1_ValueIface_get_sub_ranges(arg0 *C.AtkValue) (cret *C.GSList) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	sList := iface.SubRanges()
+
+	for i := len(sList) - 1; i >= 0; i-- {
+		src := sList[i]
+		var dst *C.AtkRange // out
+		dst = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(src)), nil)
+		cret = C.g_slist_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ValueIface_get_value_and_text
+func _gotk4_atk1_ValueIface_get_value_and_text(arg0 *C.AtkValue, arg1 *C.gdouble, arg2 **C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	value, text := iface.ValueAndText()
+
+	*arg1 = C.gdouble(value)
+	if text != "" {
+		*arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	}
+}
+
+//export _gotk4_atk1_ValueIface_set_current_value
+func _gotk4_atk1_ValueIface_set_current_value(arg0 *C.AtkValue, arg1 *C.GValue) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	var _value *externglib.Value // out
+
+	_value = externglib.ValueFromNative(unsafe.Pointer(arg1))
+
+	ok := iface.SetCurrentValue(_value)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ValueIface_set_value
+func _gotk4_atk1_ValueIface_set_value(arg0 *C.AtkValue, arg1 C.gdouble) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ValueOverrider)
+
+	var _newValue float64 // out
+
+	_newValue = float64(arg1)
+
+	iface.SetValue(_newValue)
+}
 
 func wrapValue(obj *externglib.Object) *Value {
 	return &Value{

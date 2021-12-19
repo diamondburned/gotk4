@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/atk"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -13,6 +15,10 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// HeaderBarAccessibleOverrider contains methods that are overridable.
+type HeaderBarAccessibleOverrider interface {
+}
+
 type HeaderBarAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -21,6 +27,14 @@ type HeaderBarAccessible struct {
 var (
 	_ externglib.Objector = (*HeaderBarAccessible)(nil)
 )
+
+func classInitHeaderBarAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapHeaderBarAccessible(obj *externglib.Object) *HeaderBarAccessible {
 	return &HeaderBarAccessible{

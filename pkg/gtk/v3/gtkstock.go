@@ -15,8 +15,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
 // extern void callbackDelete(gpointer);
-// gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
 import "C"
 
 // STOCK_ABOUT: “About” item. ! (help-about.png)
@@ -597,18 +597,21 @@ type Stock = string
 type TranslateFunc func(path string) (utf8 string)
 
 //export _gotk4_gtk3_TranslateFunc
-func _gotk4_gtk3_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_TranslateFunc(arg1 *C.gchar, arg2 C.gpointer) (cret *C.gchar) {
+	var fn TranslateFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TranslateFunc)
 	}
 
-	var path string // out
+	var _path string // out
 
-	path = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 
-	fn := v.(TranslateFunc)
-	utf8 := fn(path)
+	utf8 := fn(_path)
 
 	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 

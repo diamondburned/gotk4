@@ -6,12 +6,15 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gio2_TlsPasswordClass_get_default_warning(GTlsPassword*);
+// extern guchar* _gotk4_gio2_TlsPasswordClass_get_value(GTlsPassword*, gsize*);
 import "C"
 
 func init() {
@@ -21,9 +24,6 @@ func init() {
 }
 
 // TLSPasswordOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TLSPasswordOverrider interface {
 	// The function returns the following values:
 	//
@@ -53,6 +53,57 @@ type TLSPassword struct {
 var (
 	_ externglib.Objector = (*TLSPassword)(nil)
 )
+
+func classInitTLSPassworder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GTlsPasswordClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GTlsPasswordClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ DefaultWarning() string }); ok {
+		pclass.get_default_warning = (*[0]byte)(C._gotk4_gio2_TlsPasswordClass_get_default_warning)
+	}
+
+	if _, ok := goval.(interface{ Value(length *uint) *byte }); ok {
+		pclass.get_value = (*[0]byte)(C._gotk4_gio2_TlsPasswordClass_get_value)
+	}
+}
+
+//export _gotk4_gio2_TlsPasswordClass_get_default_warning
+func _gotk4_gio2_TlsPasswordClass_get_default_warning(arg0 *C.GTlsPassword) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DefaultWarning() string })
+
+	utf8 := iface.DefaultWarning()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsPasswordClass_get_value
+func _gotk4_gio2_TlsPasswordClass_get_value(arg0 *C.GTlsPassword, arg1 *C.gsize) (cret *C.guchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Value(length *uint) *byte })
+
+	var _length *uint // out
+
+	if arg1 != nil {
+		_length = (*uint)(unsafe.Pointer(arg1))
+	}
+
+	guint8 := iface.Value(_length)
+
+	cret = (*C.guchar)(unsafe.Pointer(guint8))
+
+	return cret
+}
 
 func wrapTLSPassword(obj *externglib.Object) *TLSPassword {
 	return &TLSPassword{

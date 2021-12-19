@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// LockButtonOverrider contains methods that are overridable.
+type LockButtonOverrider interface {
+}
+
 // LockButton is a widget that can be used in control panels or preference
 // dialogs to allow users to obtain and revoke authorizations needed to operate
 // the controls. The required authorization is represented by a #GPermission
@@ -63,6 +67,14 @@ var (
 	_ Binner              = (*LockButton)(nil)
 	_ externglib.Objector = (*LockButton)(nil)
 )
+
+func classInitLockButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapLockButton(obj *externglib.Object) *LockButton {
 	return &LockButton{

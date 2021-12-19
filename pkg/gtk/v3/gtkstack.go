@@ -139,6 +139,10 @@ func (s StackTransitionType) String() string {
 	}
 }
 
+// StackOverrider contains methods that are overridable.
+type StackOverrider interface {
+}
+
 // Stack widget is a container which only shows one of its children at a time.
 // In contrast to GtkNotebook, GtkStack does not provide a means for users to
 // change the visible child. Instead, the StackSwitcher widget can be used with
@@ -162,6 +166,14 @@ type Stack struct {
 var (
 	_ Containerer = (*Stack)(nil)
 )
+
+func classInitStacker(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapStack(obj *externglib.Object) *Stack {
 	return &Stack{

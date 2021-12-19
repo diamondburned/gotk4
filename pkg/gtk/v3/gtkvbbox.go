@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// VButtonBoxOverrider contains methods that are overridable.
+type VButtonBoxOverrider interface {
+}
+
 type VButtonBox struct {
 	_ [0]func() // equal guard
 	ButtonBox
@@ -31,6 +35,14 @@ var (
 	_ Containerer         = (*VButtonBox)(nil)
 	_ externglib.Objector = (*VButtonBox)(nil)
 )
+
+func classInitVButtonBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapVButtonBox(obj *externglib.Object) *VButtonBox {
 	return &VButtonBox{

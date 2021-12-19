@@ -14,8 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_EntryCompletionMatchFunc(GtkEntryCompletion*, char*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk4_EntryCompletionMatchFunc(GtkEntryCompletion*, char*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -35,22 +35,25 @@ func init() {
 type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_EntryCompletionMatchFunc
-func _gotk4_gtk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_EntryCompletionMatchFunc(arg1 *C.GtkEntryCompletion, arg2 *C.char, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
+	var fn EntryCompletionMatchFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(EntryCompletionMatchFunc)
 	}
 
-	var completion *EntryCompletion // out
-	var key string                  // out
-	var iter *TreeIter              // out
+	var _completion *EntryCompletion // out
+	var _key string                  // out
+	var _iter *TreeIter              // out
 
-	completion = wrapEntryCompletion(externglib.Take(unsafe.Pointer(arg0)))
-	key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_completion = wrapEntryCompletion(externglib.Take(unsafe.Pointer(arg1)))
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 
-	fn := v.(EntryCompletionMatchFunc)
-	ok := fn(completion, key, iter)
+	ok := fn(_completion, _key, _iter)
 
 	if ok {
 		cret = C.TRUE

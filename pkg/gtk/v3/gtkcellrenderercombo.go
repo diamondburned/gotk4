@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// CellRendererComboOverrider contains methods that are overridable.
+type CellRendererComboOverrider interface {
+}
+
 // CellRendererCombo renders text in a cell like CellRendererText from which it
 // is derived. But while CellRendererText offers a simple entry to edit the
 // text, CellRendererCombo offers a ComboBox widget to edit the text. The values
@@ -41,6 +45,14 @@ type CellRendererCombo struct {
 var (
 	_ CellRendererer = (*CellRendererCombo)(nil)
 )
+
+func classInitCellRendererCombor(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCellRendererCombo(obj *externglib.Object) *CellRendererCombo {
 	return &CellRendererCombo{

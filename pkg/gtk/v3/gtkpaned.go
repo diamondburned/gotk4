@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -16,6 +17,12 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_PanedClass_accept_position(GtkPaned*);
+// extern gboolean _gotk4_gtk3_PanedClass_cancel_position(GtkPaned*);
+// extern gboolean _gotk4_gtk3_PanedClass_cycle_child_focus(GtkPaned*, gboolean);
+// extern gboolean _gotk4_gtk3_PanedClass_cycle_handle_focus(GtkPaned*, gboolean);
+// extern gboolean _gotk4_gtk3_PanedClass_move_handle(GtkPaned*, GtkScrollType);
+// extern gboolean _gotk4_gtk3_PanedClass_toggle_handle_focus(GtkPaned*);
 import "C"
 
 func init() {
@@ -25,9 +32,6 @@ func init() {
 }
 
 // PanedOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PanedOverrider interface {
 	// The function returns the following values:
 	//
@@ -106,6 +110,142 @@ var (
 	_ Containerer         = (*Paned)(nil)
 	_ externglib.Objector = (*Paned)(nil)
 )
+
+func classInitPanedder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkPanedClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkPanedClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ AcceptPosition() bool }); ok {
+		pclass.accept_position = (*[0]byte)(C._gotk4_gtk3_PanedClass_accept_position)
+	}
+
+	if _, ok := goval.(interface{ CancelPosition() bool }); ok {
+		pclass.cancel_position = (*[0]byte)(C._gotk4_gtk3_PanedClass_cancel_position)
+	}
+
+	if _, ok := goval.(interface{ CycleChildFocus(reverse bool) bool }); ok {
+		pclass.cycle_child_focus = (*[0]byte)(C._gotk4_gtk3_PanedClass_cycle_child_focus)
+	}
+
+	if _, ok := goval.(interface{ CycleHandleFocus(reverse bool) bool }); ok {
+		pclass.cycle_handle_focus = (*[0]byte)(C._gotk4_gtk3_PanedClass_cycle_handle_focus)
+	}
+
+	if _, ok := goval.(interface{ MoveHandle(scroll ScrollType) bool }); ok {
+		pclass.move_handle = (*[0]byte)(C._gotk4_gtk3_PanedClass_move_handle)
+	}
+
+	if _, ok := goval.(interface{ ToggleHandleFocus() bool }); ok {
+		pclass.toggle_handle_focus = (*[0]byte)(C._gotk4_gtk3_PanedClass_toggle_handle_focus)
+	}
+}
+
+//export _gotk4_gtk3_PanedClass_accept_position
+func _gotk4_gtk3_PanedClass_accept_position(arg0 *C.GtkPaned) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ AcceptPosition() bool })
+
+	ok := iface.AcceptPosition()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_PanedClass_cancel_position
+func _gotk4_gtk3_PanedClass_cancel_position(arg0 *C.GtkPaned) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CancelPosition() bool })
+
+	ok := iface.CancelPosition()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_PanedClass_cycle_child_focus
+func _gotk4_gtk3_PanedClass_cycle_child_focus(arg0 *C.GtkPaned, arg1 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CycleChildFocus(reverse bool) bool })
+
+	var _reverse bool // out
+
+	if arg1 != 0 {
+		_reverse = true
+	}
+
+	ok := iface.CycleChildFocus(_reverse)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_PanedClass_cycle_handle_focus
+func _gotk4_gtk3_PanedClass_cycle_handle_focus(arg0 *C.GtkPaned, arg1 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CycleHandleFocus(reverse bool) bool })
+
+	var _reverse bool // out
+
+	if arg1 != 0 {
+		_reverse = true
+	}
+
+	ok := iface.CycleHandleFocus(_reverse)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_PanedClass_move_handle
+func _gotk4_gtk3_PanedClass_move_handle(arg0 *C.GtkPaned, arg1 C.GtkScrollType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MoveHandle(scroll ScrollType) bool })
+
+	var _scroll ScrollType // out
+
+	_scroll = ScrollType(arg1)
+
+	ok := iface.MoveHandle(_scroll)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_PanedClass_toggle_handle_focus
+func _gotk4_gtk3_PanedClass_toggle_handle_focus(arg0 *C.GtkPaned) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ToggleHandleFocus() bool })
+
+	ok := iface.ToggleHandleFocus()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapPaned(obj *externglib.Object) *Paned {
 	return &Paned{

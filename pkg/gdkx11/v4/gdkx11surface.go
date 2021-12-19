@@ -48,6 +48,10 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 	return _guint32
 }
 
+// X11SurfaceOverrider contains methods that are overridable.
+type X11SurfaceOverrider interface {
+}
+
 type X11Surface struct {
 	_ [0]func() // equal guard
 	gdk.Surface
@@ -56,6 +60,14 @@ type X11Surface struct {
 var (
 	_ gdk.Surfacer = (*X11Surface)(nil)
 )
+
+func classInitX11Surfacer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11Surface(obj *externglib.Object) *X11Surface {
 	return &X11Surface{

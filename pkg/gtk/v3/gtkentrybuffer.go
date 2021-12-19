@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -14,6 +15,12 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gchar* _gotk4_gtk3_EntryBufferClass_get_text(GtkEntryBuffer*, gsize*);
+// extern guint _gotk4_gtk3_EntryBufferClass_delete_text(GtkEntryBuffer*, guint, guint);
+// extern guint _gotk4_gtk3_EntryBufferClass_get_length(GtkEntryBuffer*);
+// extern guint _gotk4_gtk3_EntryBufferClass_insert_text(GtkEntryBuffer*, guint, gchar*, guint);
+// extern void _gotk4_gtk3_EntryBufferClass_deleted_text(GtkEntryBuffer*, guint, guint);
+// extern void _gotk4_gtk3_EntryBufferClass_inserted_text(GtkEntryBuffer*, guint, gchar*, guint);
 import "C"
 
 func init() {
@@ -23,9 +30,6 @@ func init() {
 }
 
 // EntryBufferOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type EntryBufferOverrider interface {
 	// DeleteText deletes a sequence of characters from the buffer. n_chars
 	// characters are deleted starting at position. If n_chars is negative, then
@@ -112,6 +116,151 @@ type EntryBuffer struct {
 var (
 	_ externglib.Objector = (*EntryBuffer)(nil)
 )
+
+func classInitEntryBufferer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkEntryBufferClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkEntryBufferClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		DeleteText(position, nChars uint) uint
+	}); ok {
+		pclass.delete_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_delete_text)
+	}
+
+	if _, ok := goval.(interface{ DeletedText(position, nChars uint) }); ok {
+		pclass.deleted_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_deleted_text)
+	}
+
+	if _, ok := goval.(interface{ Length() uint }); ok {
+		pclass.get_length = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_get_length)
+	}
+
+	if _, ok := goval.(interface{ Text(nBytes *uint) string }); ok {
+		pclass.get_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_get_text)
+	}
+
+	if _, ok := goval.(interface {
+		InsertText(position uint, chars string, nChars uint) uint
+	}); ok {
+		pclass.insert_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_insert_text)
+	}
+
+	if _, ok := goval.(interface {
+		InsertedText(position uint, chars string, nChars uint)
+	}); ok {
+		pclass.inserted_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_inserted_text)
+	}
+}
+
+//export _gotk4_gtk3_EntryBufferClass_delete_text
+func _gotk4_gtk3_EntryBufferClass_delete_text(arg0 *C.GtkEntryBuffer, arg1 C.guint, arg2 C.guint) (cret C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DeleteText(position, nChars uint) uint
+	})
+
+	var _position uint // out
+	var _nChars uint   // out
+
+	_position = uint(arg1)
+	_nChars = uint(arg2)
+
+	guint := iface.DeleteText(_position, _nChars)
+
+	cret = C.guint(guint)
+
+	return cret
+}
+
+//export _gotk4_gtk3_EntryBufferClass_deleted_text
+func _gotk4_gtk3_EntryBufferClass_deleted_text(arg0 *C.GtkEntryBuffer, arg1 C.guint, arg2 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DeletedText(position, nChars uint) })
+
+	var _position uint // out
+	var _nChars uint   // out
+
+	_position = uint(arg1)
+	_nChars = uint(arg2)
+
+	iface.DeletedText(_position, _nChars)
+}
+
+//export _gotk4_gtk3_EntryBufferClass_get_length
+func _gotk4_gtk3_EntryBufferClass_get_length(arg0 *C.GtkEntryBuffer) (cret C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Length() uint })
+
+	guint := iface.Length()
+
+	cret = C.guint(guint)
+
+	return cret
+}
+
+//export _gotk4_gtk3_EntryBufferClass_get_text
+func _gotk4_gtk3_EntryBufferClass_get_text(arg0 *C.GtkEntryBuffer, arg1 *C.gsize) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Text(nBytes *uint) string })
+
+	var _nBytes *uint // out
+
+	_nBytes = (*uint)(unsafe.Pointer(arg1))
+
+	utf8 := iface.Text(_nBytes)
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_gtk3_EntryBufferClass_insert_text
+func _gotk4_gtk3_EntryBufferClass_insert_text(arg0 *C.GtkEntryBuffer, arg1 C.guint, arg2 *C.gchar, arg3 C.guint) (cret C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		InsertText(position uint, chars string, nChars uint) uint
+	})
+
+	var _position uint // out
+	var _chars string  // out
+	var _nChars uint   // out
+
+	_position = uint(arg1)
+	_chars = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_nChars = uint(arg3)
+
+	guint := iface.InsertText(_position, _chars, _nChars)
+
+	cret = C.guint(guint)
+
+	return cret
+}
+
+//export _gotk4_gtk3_EntryBufferClass_inserted_text
+func _gotk4_gtk3_EntryBufferClass_inserted_text(arg0 *C.GtkEntryBuffer, arg1 C.guint, arg2 *C.gchar, arg3 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		InsertedText(position uint, chars string, nChars uint)
+	})
+
+	var _position uint // out
+	var _chars string  // out
+	var _nChars uint   // out
+
+	_position = uint(arg1)
+	_chars = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_nChars = uint(arg3)
+
+	iface.InsertedText(_position, _chars, _nChars)
+}
 
 func wrapEntryBuffer(obj *externglib.Object) *EntryBuffer {
 	return &EntryBuffer{

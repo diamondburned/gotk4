@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_FontButtonClass_font_set(GtkFontButton*);
 import "C"
 
 func init() {
@@ -24,9 +26,6 @@ func init() {
 }
 
 // FontButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type FontButtonOverrider interface {
 	FontSet()
 }
@@ -51,6 +50,30 @@ var (
 	_ externglib.Objector = (*FontButton)(nil)
 	_ Binner              = (*FontButton)(nil)
 )
+
+func classInitFontButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkFontButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkFontButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ FontSet() }); ok {
+		pclass.font_set = (*[0]byte)(C._gotk4_gtk3_FontButtonClass_font_set)
+	}
+}
+
+//export _gotk4_gtk3_FontButtonClass_font_set
+func _gotk4_gtk3_FontButtonClass_font_set(arg0 *C.GtkFontButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ FontSet() })
+
+	iface.FontSet()
+}
 
 func wrapFontButton(obj *externglib.Object) *FontButton {
 	return &FontButton{

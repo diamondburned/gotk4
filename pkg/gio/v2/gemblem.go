@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// EmblemOverrider contains methods that are overridable.
+type EmblemOverrider interface {
+}
+
 // Emblem is an implementation of #GIcon that supports having an emblem, which
 // is an icon with additional properties. It can than be added to a Icon.
 //
@@ -35,6 +39,14 @@ type Emblem struct {
 var (
 	_ externglib.Objector = (*Emblem)(nil)
 )
+
+func classInitEmblemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEmblem(obj *externglib.Object) *Emblem {
 	return &Emblem{

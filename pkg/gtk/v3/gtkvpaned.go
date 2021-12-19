@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// VPanedOverrider contains methods that are overridable.
+type VPanedOverrider interface {
+}
+
 // VPaned widget is a container widget with two children arranged vertically.
 // The division between the two panes is adjustable by the user by dragging a
 // handle. See Paned for details.
@@ -36,6 +40,14 @@ var (
 	_ Containerer         = (*VPaned)(nil)
 	_ externglib.Objector = (*VPaned)(nil)
 )
+
+func classInitVPanedder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapVPaned(obj *externglib.Object) *VPaned {
 	return &VPaned{

@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -14,6 +15,17 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>
+// extern void _gotk4_pango1_RendererClass_begin(PangoRenderer*);
+// extern void _gotk4_pango1_RendererClass_draw_error_underline(PangoRenderer*, int, int, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_glyph(PangoRenderer*, PangoFont*, PangoGlyph, double, double);
+// extern void _gotk4_pango1_RendererClass_draw_glyph_item(PangoRenderer*, char*, PangoGlyphItem*, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_glyphs(PangoRenderer*, PangoFont*, PangoGlyphString*, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_rectangle(PangoRenderer*, PangoRenderPart, int, int, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_shape(PangoRenderer*, PangoAttrShape*, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_trapezoid(PangoRenderer*, PangoRenderPart, double, double, double, double, double, double);
+// extern void _gotk4_pango1_RendererClass_end(PangoRenderer*);
+// extern void _gotk4_pango1_RendererClass_part_changed(PangoRenderer*, PangoRenderPart);
+// extern void _gotk4_pango1_RendererClass_prepare_run(PangoRenderer*, PangoLayoutRun*);
 import "C"
 
 func init() {
@@ -63,9 +75,6 @@ func (r RenderPart) String() string {
 }
 
 // RendererOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type RendererOverrider interface {
 	Begin()
 	// DrawErrorUnderline: draw a squiggly line that approximately covers the
@@ -224,6 +233,292 @@ type Rendererer interface {
 }
 
 var _ Rendererer = (*Renderer)(nil)
+
+func classInitRendererer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.PangoRendererClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.PangoRendererClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Begin() }); ok {
+		pclass.begin = (*[0]byte)(C._gotk4_pango1_RendererClass_begin)
+	}
+
+	if _, ok := goval.(interface{ DrawErrorUnderline(x, y, width, height int) }); ok {
+		pclass.draw_error_underline = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_error_underline)
+	}
+
+	if _, ok := goval.(interface {
+		DrawGlyph(font Fonter, glyph Glyph, x, y float64)
+	}); ok {
+		pclass.draw_glyph = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyph)
+	}
+
+	if _, ok := goval.(interface {
+		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
+	}); ok {
+		pclass.draw_glyph_item = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyph_item)
+	}
+
+	if _, ok := goval.(interface {
+		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
+	}); ok {
+		pclass.draw_glyphs = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyphs)
+	}
+
+	if _, ok := goval.(interface {
+		DrawRectangle(part RenderPart, x, y, width, height int)
+	}); ok {
+		pclass.draw_rectangle = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_rectangle)
+	}
+
+	if _, ok := goval.(interface {
+		DrawShape(attr *AttrShape, x, y int)
+	}); ok {
+		pclass.draw_shape = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_shape)
+	}
+
+	if _, ok := goval.(interface {
+		DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
+	}); ok {
+		pclass.draw_trapezoid = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_trapezoid)
+	}
+
+	if _, ok := goval.(interface{ End() }); ok {
+		pclass.end = (*[0]byte)(C._gotk4_pango1_RendererClass_end)
+	}
+
+	if _, ok := goval.(interface{ PartChanged(part RenderPart) }); ok {
+		pclass.part_changed = (*[0]byte)(C._gotk4_pango1_RendererClass_part_changed)
+	}
+
+	if _, ok := goval.(interface{ PrepareRun(run *LayoutRun) }); ok {
+		pclass.prepare_run = (*[0]byte)(C._gotk4_pango1_RendererClass_prepare_run)
+	}
+}
+
+//export _gotk4_pango1_RendererClass_begin
+func _gotk4_pango1_RendererClass_begin(arg0 *C.PangoRenderer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Begin() })
+
+	iface.Begin()
+}
+
+//export _gotk4_pango1_RendererClass_draw_error_underline
+func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.PangoRenderer, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DrawErrorUnderline(x, y, width, height int) })
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_width = int(arg3)
+	_height = int(arg4)
+
+	iface.DrawErrorUnderline(_x, _y, _width, _height)
+}
+
+//export _gotk4_pango1_RendererClass_draw_glyph
+func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 C.PangoGlyph, arg3 C.double, arg4 C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DrawGlyph(font Fonter, glyph Glyph, x, y float64)
+	})
+
+	var _font Fonter // out
+	var _glyph Glyph // out
+	var _x float64   // out
+	var _y float64   // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type pango.Fonter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Fonter)
+			return ok
+		})
+		rv, ok := casted.(Fonter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fonter")
+		}
+		_font = rv
+	}
+	_glyph = uint32(arg2)
+	_x = float64(arg3)
+	_y = float64(arg4)
+
+	iface.DrawGlyph(_font, _glyph, _x, _y)
+}
+
+//export _gotk4_pango1_RendererClass_draw_glyph_item
+func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.char, arg2 *C.PangoGlyphItem, arg3 C.int, arg4 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
+	})
+
+	var _text string          // out
+	var _glyphItem *GlyphItem // out
+	var _x int                // out
+	var _y int                // out
+
+	if arg1 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	}
+	_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_x = int(arg3)
+	_y = int(arg4)
+
+	iface.DrawGlyphItem(_text, _glyphItem, _x, _y)
+}
+
+//export _gotk4_pango1_RendererClass_draw_glyphs
+func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 *C.PangoGlyphString, arg3 C.int, arg4 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
+	})
+
+	var _font Fonter         // out
+	var _glyphs *GlyphString // out
+	var _x int               // out
+	var _y int               // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type pango.Fonter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Fonter)
+			return ok
+		})
+		rv, ok := casted.(Fonter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fonter")
+		}
+		_font = rv
+	}
+	_glyphs = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_x = int(arg3)
+	_y = int(arg4)
+
+	iface.DrawGlyphs(_font, _glyphs, _x, _y)
+}
+
+//export _gotk4_pango1_RendererClass_draw_rectangle
+func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DrawRectangle(part RenderPart, x, y, width, height int)
+	})
+
+	var _part RenderPart // out
+	var _x int           // out
+	var _y int           // out
+	var _width int       // out
+	var _height int      // out
+
+	_part = RenderPart(arg1)
+	_x = int(arg2)
+	_y = int(arg3)
+	_width = int(arg4)
+	_height = int(arg5)
+
+	iface.DrawRectangle(_part, _x, _y, _width, _height)
+}
+
+//export _gotk4_pango1_RendererClass_draw_shape
+func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.PangoRenderer, arg1 *C.PangoAttrShape, arg2 C.int, arg3 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DrawShape(attr *AttrShape, x, y int)
+	})
+
+	var _attr *AttrShape // out
+	var _x int           // out
+	var _y int           // out
+
+	_attr = (*AttrShape)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_x = int(arg2)
+	_y = int(arg3)
+
+	iface.DrawShape(_attr, _x, _y)
+}
+
+//export _gotk4_pango1_RendererClass_draw_trapezoid
+func _gotk4_pango1_RendererClass_draw_trapezoid(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.double, arg3 C.double, arg4 C.double, arg5 C.double, arg6 C.double, arg7 C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
+	})
+
+	var _part RenderPart // out
+	var _y1 float64      // out
+	var _x11 float64     // out
+	var _x21 float64     // out
+	var _y2 float64      // out
+	var _x12 float64     // out
+	var _x22 float64     // out
+
+	_part = RenderPart(arg1)
+	_y1 = float64(arg2)
+	_x11 = float64(arg3)
+	_x21 = float64(arg4)
+	_y2 = float64(arg5)
+	_x12 = float64(arg6)
+	_x22 = float64(arg7)
+
+	iface.DrawTrapezoid(_part, _y1, _x11, _x21, _y2, _x12, _x22)
+}
+
+//export _gotk4_pango1_RendererClass_end
+func _gotk4_pango1_RendererClass_end(arg0 *C.PangoRenderer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ End() })
+
+	iface.End()
+}
+
+//export _gotk4_pango1_RendererClass_part_changed
+func _gotk4_pango1_RendererClass_part_changed(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PartChanged(part RenderPart) })
+
+	var _part RenderPart // out
+
+	_part = RenderPart(arg1)
+
+	iface.PartChanged(_part)
+}
+
+//export _gotk4_pango1_RendererClass_prepare_run
+func _gotk4_pango1_RendererClass_prepare_run(arg0 *C.PangoRenderer, arg1 *C.PangoLayoutRun) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PrepareRun(run *LayoutRun) })
+
+	var _run *LayoutRun // out
+
+	_run = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.PrepareRun(_run)
+}
 
 func wrapRenderer(obj *externglib.Object) *Renderer {
 	return &Renderer{

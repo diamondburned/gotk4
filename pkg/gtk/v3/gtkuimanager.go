@@ -8,6 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -18,6 +19,14 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GtkAction* _gotk4_gtk3_UIManagerClass_get_action(GtkUIManager*, gchar*);
+// extern GtkWidget* _gotk4_gtk3_UIManagerClass_get_widget(GtkUIManager*, gchar*);
+// extern void _gotk4_gtk3_UIManagerClass_actions_changed(GtkUIManager*);
+// extern void _gotk4_gtk3_UIManagerClass_add_widget(GtkUIManager*, GtkWidget*);
+// extern void _gotk4_gtk3_UIManagerClass_connect_proxy(GtkUIManager*, GtkAction*, GtkWidget*);
+// extern void _gotk4_gtk3_UIManagerClass_disconnect_proxy(GtkUIManager*, GtkAction*, GtkWidget*);
+// extern void _gotk4_gtk3_UIManagerClass_post_activate(GtkUIManager*, GtkAction*);
+// extern void _gotk4_gtk3_UIManagerClass_pre_activate(GtkUIManager*, GtkAction*);
 import "C"
 
 func init() {
@@ -115,9 +124,6 @@ func (u UIManagerItemType) Has(other UIManagerItemType) bool {
 }
 
 // UIManagerOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type UIManagerOverrider interface {
 	ActionsChanged()
 	// The function takes the following parameters:
@@ -413,6 +419,210 @@ type UIManager struct {
 var (
 	_ externglib.Objector = (*UIManager)(nil)
 )
+
+func classInitUIManagerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkUIManagerClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkUIManagerClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActionsChanged() }); ok {
+		pclass.actions_changed = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_actions_changed)
+	}
+
+	if _, ok := goval.(interface{ AddWidget(widget Widgetter) }); ok {
+		pclass.add_widget = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_add_widget)
+	}
+
+	if _, ok := goval.(interface {
+		ConnectProxy(action *Action, proxy Widgetter)
+	}); ok {
+		pclass.connect_proxy = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_connect_proxy)
+	}
+
+	if _, ok := goval.(interface {
+		DisconnectProxy(action *Action, proxy Widgetter)
+	}); ok {
+		pclass.disconnect_proxy = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_disconnect_proxy)
+	}
+
+	if _, ok := goval.(interface{ Action(path string) *Action }); ok {
+		pclass.get_action = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_get_action)
+	}
+
+	if _, ok := goval.(interface{ Widget(path string) Widgetter }); ok {
+		pclass.get_widget = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_get_widget)
+	}
+
+	if _, ok := goval.(interface{ PostActivate(action *Action) }); ok {
+		pclass.post_activate = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_post_activate)
+	}
+
+	if _, ok := goval.(interface{ PreActivate(action *Action) }); ok {
+		pclass.pre_activate = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_pre_activate)
+	}
+}
+
+//export _gotk4_gtk3_UIManagerClass_actions_changed
+func _gotk4_gtk3_UIManagerClass_actions_changed(arg0 *C.GtkUIManager) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActionsChanged() })
+
+	iface.ActionsChanged()
+}
+
+//export _gotk4_gtk3_UIManagerClass_add_widget
+func _gotk4_gtk3_UIManagerClass_add_widget(arg0 *C.GtkUIManager, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ AddWidget(widget Widgetter) })
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	iface.AddWidget(_widget)
+}
+
+//export _gotk4_gtk3_UIManagerClass_connect_proxy
+func _gotk4_gtk3_UIManagerClass_connect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkAction, arg2 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ConnectProxy(action *Action, proxy Widgetter)
+	})
+
+	var _action *Action  // out
+	var _proxy Widgetter // out
+
+	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_proxy = rv
+	}
+
+	iface.ConnectProxy(_action, _proxy)
+}
+
+//export _gotk4_gtk3_UIManagerClass_disconnect_proxy
+func _gotk4_gtk3_UIManagerClass_disconnect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkAction, arg2 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DisconnectProxy(action *Action, proxy Widgetter)
+	})
+
+	var _action *Action  // out
+	var _proxy Widgetter // out
+
+	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_proxy = rv
+	}
+
+	iface.DisconnectProxy(_action, _proxy)
+}
+
+//export _gotk4_gtk3_UIManagerClass_get_action
+func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.GtkUIManager, arg1 *C.gchar) (cret *C.GtkAction) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Action(path string) *Action })
+
+	var _path string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	action := iface.Action(_path)
+
+	cret = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_UIManagerClass_get_widget
+func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.GtkUIManager, arg1 *C.gchar) (cret *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Widget(path string) Widgetter })
+
+	var _path string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	widget := iface.Widget(_path)
+
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_UIManagerClass_post_activate
+func _gotk4_gtk3_UIManagerClass_post_activate(arg0 *C.GtkUIManager, arg1 *C.GtkAction) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PostActivate(action *Action) })
+
+	var _action *Action // out
+
+	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.PostActivate(_action)
+}
+
+//export _gotk4_gtk3_UIManagerClass_pre_activate
+func _gotk4_gtk3_UIManagerClass_pre_activate(arg0 *C.GtkUIManager, arg1 *C.GtkAction) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PreActivate(action *Action) })
+
+	var _action *Action // out
+
+	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.PreActivate(_action)
+}
 
 func wrapUIManager(obj *externglib.Object) *UIManager {
 	return &UIManager{

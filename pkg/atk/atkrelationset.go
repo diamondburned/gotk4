@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// RelationSetOverrider contains methods that are overridable.
+type RelationSetOverrider interface {
+}
+
 // RelationSet held by an object establishes its relationships with objects
 // beyond the normal "parent/child" hierarchical relationships that all user
 // interface objects have. AtkRelationSets establish whether objects are
@@ -34,6 +38,14 @@ type RelationSet struct {
 var (
 	_ externglib.Objector = (*RelationSet)(nil)
 )
+
+func classInitRelationSetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRelationSet(obj *externglib.Object) *RelationSet {
 	return &RelationSet{

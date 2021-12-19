@@ -20,7 +20,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
-// void _gotk4_gsk4_ParseErrorFunc(GskParseLocation*, GskParseLocation*, GError*, gpointer);
+// extern void _gotk4_gsk4_ParseErrorFunc(GskParseLocation*, GskParseLocation*, GError*, gpointer);
 import "C"
 
 func init() {
@@ -34,22 +34,25 @@ func init() {
 type ParseErrorFunc func(start, end *ParseLocation, err error)
 
 //export _gotk4_gsk4_ParseErrorFunc
-func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gsk4_ParseErrorFunc(arg1 *C.GskParseLocation, arg2 *C.GskParseLocation, arg3 *C.GError, arg4 C.gpointer) {
+	var fn ParseErrorFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ParseErrorFunc)
 	}
 
-	var start *ParseLocation // out
-	var end *ParseLocation   // out
-	var err error            // out
+	var _start *ParseLocation // out
+	var _end *ParseLocation   // out
+	var _err error            // out
 
-	start = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	end = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	err = gerror.Take(unsafe.Pointer(arg2))
+	_start = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_end = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_err = gerror.Take(unsafe.Pointer(arg3))
 
-	fn := v.(ParseErrorFunc)
-	fn(start, end, err)
+	fn(_start, _end, _err)
 }
 
 // NewBlendNode creates a GskRenderNode that will use blend_mode to blend the

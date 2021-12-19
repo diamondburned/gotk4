@@ -18,7 +18,15 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern gboolean _gotk4_gio2_OutputStreamClass_close_finish(GOutputStream*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_OutputStreamClass_close_fn(GOutputStream*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_OutputStreamClass_flush(GOutputStream*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_OutputStreamClass_flush_finish(GOutputStream*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_OutputStreamClass_writev_finish(GOutputStream*, GAsyncResult*, gsize*, GError**);
+// extern gssize _gotk4_gio2_OutputStreamClass_splice(GOutputStream*, GInputStream*, GOutputStreamSpliceFlags, GCancellable*, GError**);
+// extern gssize _gotk4_gio2_OutputStreamClass_splice_finish(GOutputStream*, GAsyncResult*, GError**);
+// extern gssize _gotk4_gio2_OutputStreamClass_write_finish(GOutputStream*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -28,28 +36,7 @@ func init() {
 }
 
 // OutputStreamOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type OutputStreamOverrider interface {
-	// CloseAsync requests an asynchronous close of the stream, releasing
-	// resources related to it. When the operation is finished callback will be
-	// called. You can then call g_output_stream_close_finish() to get the
-	// result of the operation.
-	//
-	// For behaviour details see g_output_stream_close().
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional cancellable object.
-	//    - ioPriority: io priority of the request.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish closes an output stream.
 	//
 	// The function takes the following parameters:
@@ -75,19 +62,6 @@ type OutputStreamOverrider interface {
 	//    - ctx (optional): optional cancellable object.
 	//
 	Flush(ctx context.Context) error
-	// FlushAsync forces an asynchronous write of all user-space buffered data
-	// for the given stream. For behaviour details see g_output_stream_flush().
-	//
-	// When the operation is finished callback will be called. You can then call
-	// g_output_stream_flush_finish() to get the result of the operation.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - ioPriority: io priority of the request.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	FlushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// FlushFinish finishes flushing an output stream.
 	//
 	// The function takes the following parameters:
@@ -111,22 +85,6 @@ type OutputStreamOverrider interface {
 	//      determine the actual number of bytes spliced.
 	//
 	Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
-	// SpliceAsync splices a stream asynchronously. When the operation is
-	// finished callback will be called. You can then call
-	// g_output_stream_splice_finish() to get the result of the operation.
-	//
-	// For the synchronous, blocking version of this function, see
-	// g_output_stream_splice().
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - source: Stream.
-	//    - flags: set of StreamSpliceFlags.
-	//    - ioPriority: io priority of the request.
-	//    - callback (optional): ReadyCallback.
-	//
-	SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback)
 	// SpliceFinish finishes an asynchronous stream splice operation.
 	//
 	// The function takes the following parameters:
@@ -140,50 +98,6 @@ type OutputStreamOverrider interface {
 	//      and there is no way to determine the actual number of bytes spliced.
 	//
 	SpliceFinish(result AsyncResulter) (int, error)
-	// WriteAsync: request an asynchronous write of count bytes from buffer into
-	// the stream. When the operation is finished callback will be called. You
-	// can then call g_output_stream_write_finish() to get the result of the
-	// operation.
-	//
-	// During an async request no other sync and async calls are allowed, and
-	// will result in G_IO_ERROR_PENDING errors.
-	//
-	// A value of count larger than G_MAXSSIZE will cause a
-	// G_IO_ERROR_INVALID_ARGUMENT error.
-	//
-	// On success, the number of bytes written will be passed to the callback.
-	// It is not an error if this is not the same as the requested size, as it
-	// can happen e.g. on a partial I/O error, but generally we try to write as
-	// many bytes as requested.
-	//
-	// You are guaranteed that this method will never fail with
-	// G_IO_ERROR_WOULD_BLOCK - if stream can't accept more data, the method
-	// will just wait until this changes.
-	//
-	// Any outstanding I/O request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	//
-	// For the synchronous, blocking version of this function, see
-	// g_output_stream_write().
-	//
-	// Note that no copy of buffer will be made, so it must stay valid until
-	// callback is called. See g_output_stream_write_bytes_async() for a #GBytes
-	// version that will automatically hold a reference to the contents (without
-	// copying) for the duration of the call.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - buffer (optional) containing the data to write.
-	//    - ioPriority: io priority of the request.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
 	// WriteFinish finishes a stream write operation.
 	//
 	// The function takes the following parameters:
@@ -195,75 +109,6 @@ type OutputStreamOverrider interface {
 	//    - gssize containing the number of bytes written to the stream.
 	//
 	WriteFinish(result AsyncResulter) (int, error)
-	// WriteFn tries to write count bytes from buffer into the stream. Will
-	// block during the operation.
-	//
-	// If count is 0, returns 0 and does nothing. A value of count larger than
-	// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
-	//
-	// On success, the number of bytes written to the stream is returned. It is
-	// not an error if this is not the same as the requested size, as it can
-	// happen e.g. on a partial I/O error, or if there is not enough storage in
-	// the stream. All writes block until at least one byte is written or an
-	// error occurs; 0 is never returned (unless count is 0).
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// On error -1 is returned and error is set accordingly.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional cancellable object.
-	//    - buffer (optional) containing the data to write.
-	//
-	// The function returns the following values:
-	//
-	//    - gssize: number of bytes written, or -1 on error.
-	//
-	WriteFn(ctx context.Context, buffer []byte) (int, error)
-	// WritevAsync: request an asynchronous write of the bytes contained in
-	// n_vectors vectors into the stream. When the operation is finished
-	// callback will be called. You can then call
-	// g_output_stream_writev_finish() to get the result of the operation.
-	//
-	// During an async request no other sync and async calls are allowed, and
-	// will result in G_IO_ERROR_PENDING errors.
-	//
-	// On success, the number of bytes written will be passed to the callback.
-	// It is not an error if this is not the same as the requested size, as it
-	// can happen e.g. on a partial I/O error, but generally we try to write as
-	// many bytes as requested.
-	//
-	// You are guaranteed that this method will never fail with
-	// G_IO_ERROR_WOULD_BLOCK — if stream can't accept more data, the method
-	// will just wait until this changes.
-	//
-	// Any outstanding I/O request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	//
-	// For the synchronous, blocking version of this function, see
-	// g_output_stream_writev().
-	//
-	// Note that no copy of vectors will be made, so it must stay valid until
-	// callback is called.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - vectors: buffer containing the Vectors to write.
-	//    - ioPriority: i/O priority of the request.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback)
 	// WritevFinish finishes a stream writev operation.
 	//
 	// The function takes the following parameters:
@@ -276,41 +121,6 @@ type OutputStreamOverrider interface {
 	//      were written to the stream.
 	//
 	WritevFinish(result AsyncResulter) (uint, error)
-	// WritevFn tries to write the bytes contained in the n_vectors vectors into
-	// the stream. Will block during the operation.
-	//
-	// If n_vectors is 0 or the sum of all bytes in vectors is 0, returns 0 and
-	// does nothing.
-	//
-	// On success, the number of bytes written to the stream is returned. It is
-	// not an error if this is not the same as the requested size, as it can
-	// happen e.g. on a partial I/O error, or if there is not enough storage in
-	// the stream. All writes block until at least one byte is written or an
-	// error occurs; 0 is never returned (unless n_vectors is 0 or the sum of
-	// all bytes in vectors is 0).
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// Some implementations of g_output_stream_writev() may have limitations on
-	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
-	// these are exceeded. For example, when writing to a local file on UNIX
-	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional cancellable object.
-	//    - vectors: buffer containing the Vectors to write.
-	//
-	// The function returns the following values:
-	//
-	//    - bytesWritten (optional): location to store the number of bytes that
-	//      were written to the stream.
-	//
-	WritevFn(ctx context.Context, vectors []OutputVector) (uint, error)
 }
 
 // OutputStream has functions to write to a stream (g_output_stream_write()), to
@@ -343,6 +153,336 @@ type OutputStreamer interface {
 }
 
 var _ OutputStreamer = (*OutputStream)(nil)
+
+func classInitOutputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GOutputStreamClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GOutputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		CloseFinish(result AsyncResulter) error
+	}); ok {
+		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_close_finish)
+	}
+
+	if _, ok := goval.(interface {
+		CloseFn(ctx context.Context) error
+	}); ok {
+		pclass.close_fn = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_close_fn)
+	}
+
+	if _, ok := goval.(interface {
+		Flush(ctx context.Context) error
+	}); ok {
+		pclass.flush = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_flush)
+	}
+
+	if _, ok := goval.(interface {
+		FlushFinish(result AsyncResulter) error
+	}); ok {
+		pclass.flush_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_flush_finish)
+	}
+
+	if _, ok := goval.(interface {
+		Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
+	}); ok {
+		pclass.splice = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_splice)
+	}
+
+	if _, ok := goval.(interface {
+		SpliceFinish(result AsyncResulter) (int, error)
+	}); ok {
+		pclass.splice_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_splice_finish)
+	}
+
+	if _, ok := goval.(interface {
+		WriteFinish(result AsyncResulter) (int, error)
+	}); ok {
+		pclass.write_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_write_finish)
+	}
+
+	if _, ok := goval.(interface {
+		WritevFinish(result AsyncResulter) (uint, error)
+	}); ok {
+		pclass.writev_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_writev_finish)
+	}
+}
+
+//export _gotk4_gio2_OutputStreamClass_close_finish
+func _gotk4_gio2_OutputStreamClass_close_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CloseFinish(result AsyncResulter) error
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.CloseFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_OutputStreamClass_close_fn
+func _gotk4_gio2_OutputStreamClass_close_fn(arg0 *C.GOutputStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CloseFn(ctx context.Context) error
+	})
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	_goerr := iface.CloseFn(_cancellable)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_OutputStreamClass_flush
+func _gotk4_gio2_OutputStreamClass_flush(arg0 *C.GOutputStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Flush(ctx context.Context) error
+	})
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	_goerr := iface.Flush(_cancellable)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_OutputStreamClass_flush_finish
+func _gotk4_gio2_OutputStreamClass_flush_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		FlushFinish(result AsyncResulter) error
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.FlushFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_OutputStreamClass_splice
+func _gotk4_gio2_OutputStreamClass_splice(arg0 *C.GOutputStream, arg1 *C.GInputStream, arg2 C.GOutputStreamSpliceFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
+	})
+
+	var _cancellable context.Context   // out
+	var _source InputStreamer          // out
+	var _flags OutputStreamSpliceFlags // out
+
+	if arg3 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
+	}
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.InputStreamer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(InputStreamer)
+			return ok
+		})
+		rv, ok := casted.(InputStreamer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.InputStreamer")
+		}
+		_source = rv
+	}
+	_flags = OutputStreamSpliceFlags(arg2)
+
+	gssize, _goerr := iface.Splice(_cancellable, _source, _flags)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_OutputStreamClass_splice_finish
+func _gotk4_gio2_OutputStreamClass_splice_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SpliceFinish(result AsyncResulter) (int, error)
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	gssize, _goerr := iface.SpliceFinish(_result)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_OutputStreamClass_write_finish
+func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		WriteFinish(result AsyncResulter) (int, error)
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	gssize, _goerr := iface.WriteFinish(_result)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_OutputStreamClass_writev_finish
+func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, arg2 *C.gsize, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		WritevFinish(result AsyncResulter) (uint, error)
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	bytesWritten, _goerr := iface.WritevFinish(_result)
+
+	*arg2 = C.gsize(bytesWritten)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapOutputStream(obj *externglib.Object) *OutputStream {
 	return &OutputStream{

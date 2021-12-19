@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// DropDownOverrider contains methods that are overridable.
+type DropDownOverrider interface {
+}
+
 // DropDown: GtkDropDown is a widget that allows the user to choose an item from
 // a list of options.
 //
@@ -58,6 +62,14 @@ type DropDown struct {
 var (
 	_ Widgetter = (*DropDown)(nil)
 )
+
+func classInitDropDowner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDropDown(obj *externglib.Object) *DropDown {
 	return &DropDown{

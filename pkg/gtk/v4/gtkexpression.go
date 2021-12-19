@@ -14,8 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ExpressionNotify(gpointer);
 // extern void callbackDelete(gpointer);
-// void _gotk4_gtk4_ExpressionNotify(gpointer);
 import "C"
 
 func init() {
@@ -35,13 +35,16 @@ func init() {
 type ExpressionNotify func()
 
 //export _gotk4_gtk4_ExpressionNotify
-func _gotk4_gtk4_ExpressionNotify(arg0 C.gpointer) {
-	v := gbox.Get(uintptr(arg0))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_ExpressionNotify(arg1 C.gpointer) {
+	var fn ExpressionNotify
+	{
+		v := gbox.Get(uintptr(arg1))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ExpressionNotify)
 	}
 
-	fn := v.(ExpressionNotify)
 	fn()
 }
 

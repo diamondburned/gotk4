@@ -16,7 +16,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_SocketListenerClass_changed(GSocketListener*);
+// extern void _gotk4_gio2_SocketListenerClass_event(GSocketListener*, GSocketListenerEvent, GSocket*);
 import "C"
 
 func init() {
@@ -26,9 +28,6 @@ func init() {
 }
 
 // SocketListenerOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SocketListenerOverrider interface {
 	Changed()
 	// The function takes the following parameters:
@@ -58,6 +57,52 @@ type SocketListener struct {
 var (
 	_ externglib.Objector = (*SocketListener)(nil)
 )
+
+func classInitSocketListenerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GSocketListenerClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GSocketListenerClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Changed() }); ok {
+		pclass.changed = (*[0]byte)(C._gotk4_gio2_SocketListenerClass_changed)
+	}
+
+	if _, ok := goval.(interface {
+		Event(event SocketListenerEvent, socket *Socket)
+	}); ok {
+		pclass.event = (*[0]byte)(C._gotk4_gio2_SocketListenerClass_event)
+	}
+}
+
+//export _gotk4_gio2_SocketListenerClass_changed
+func _gotk4_gio2_SocketListenerClass_changed(arg0 *C.GSocketListener) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Changed() })
+
+	iface.Changed()
+}
+
+//export _gotk4_gio2_SocketListenerClass_event
+func _gotk4_gio2_SocketListenerClass_event(arg0 *C.GSocketListener, arg1 C.GSocketListenerEvent, arg2 *C.GSocket) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Event(event SocketListenerEvent, socket *Socket)
+	})
+
+	var _event SocketListenerEvent // out
+	var _socket *Socket            // out
+
+	_event = SocketListenerEvent(arg1)
+	_socket = wrapSocket(externglib.Take(unsafe.Pointer(arg2)))
+
+	iface.Event(_event, _socket)
+}
 
 func wrapSocketListener(obj *externglib.Object) *SocketListener {
 	return &SocketListener{

@@ -12,6 +12,10 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern AtkHyperlink* _gotk4_atk1_HypertextIface_get_link(AtkHypertext*, gint);
+// extern gint _gotk4_atk1_HypertextIface_get_link_index(AtkHypertext*, gint);
+// extern gint _gotk4_atk1_HypertextIface_get_n_links(AtkHypertext*);
+// extern void _gotk4_atk1_HypertextIface_link_selected(AtkHypertext*, gint);
 import "C"
 
 func init() {
@@ -21,9 +25,6 @@ func init() {
 }
 
 // HypertextOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type HypertextOverrider interface {
 	// Link gets the link in this hypertext document at index link_index.
 	//
@@ -91,6 +92,70 @@ type Hypertexter interface {
 }
 
 var _ Hypertexter = (*Hypertext)(nil)
+
+func ifaceInitHypertexter(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkHypertextIface)(unsafe.Pointer(gifacePtr))
+	iface.get_link = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_link)
+	iface.get_link_index = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_link_index)
+	iface.get_n_links = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_n_links)
+	iface.link_selected = (*[0]byte)(C._gotk4_atk1_HypertextIface_link_selected)
+}
+
+//export _gotk4_atk1_HypertextIface_get_link
+func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cret *C.AtkHyperlink) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(HypertextOverrider)
+
+	var _linkIndex int // out
+
+	_linkIndex = int(arg1)
+
+	hyperlink := iface.Link(_linkIndex)
+
+	cret = (*C.AtkHyperlink)(unsafe.Pointer(hyperlink.Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_HypertextIface_get_link_index
+func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(HypertextOverrider)
+
+	var _charIndex int // out
+
+	_charIndex = int(arg1)
+
+	gint := iface.LinkIndex(_charIndex)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HypertextIface_get_n_links
+func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.AtkHypertext) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(HypertextOverrider)
+
+	gint := iface.NLinks()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HypertextIface_link_selected
+func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.AtkHypertext, arg1 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(HypertextOverrider)
+
+	var _linkIndex int // out
+
+	_linkIndex = int(arg1)
+
+	iface.LinkSelected(_linkIndex)
+}
 
 func wrapHypertext(obj *externglib.Object) *Hypertext {
 	return &Hypertext{

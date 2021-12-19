@@ -13,6 +13,9 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_CellEditableIface_editing_done(GtkCellEditable*);
+// extern void _gotk4_gtk4_CellEditableIface_remove_widget(GtkCellEditable*);
+// extern void _gotk4_gtk4_CellEditableIface_start_editing(GtkCellEditable*, GdkEvent*);
 import "C"
 
 func init() {
@@ -22,9 +25,6 @@ func init() {
 }
 
 // CellEditableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CellEditableOverrider interface {
 	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
@@ -78,6 +78,56 @@ type CellEditabler interface {
 }
 
 var _ CellEditabler = (*CellEditable)(nil)
+
+func ifaceInitCellEditabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkCellEditableIface)(unsafe.Pointer(gifacePtr))
+	iface.editing_done = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_editing_done)
+	iface.remove_widget = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_remove_widget)
+	iface.start_editing = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_start_editing)
+}
+
+//export _gotk4_gtk4_CellEditableIface_editing_done
+func _gotk4_gtk4_CellEditableIface_editing_done(arg0 *C.GtkCellEditable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellEditableOverrider)
+
+	iface.EditingDone()
+}
+
+//export _gotk4_gtk4_CellEditableIface_remove_widget
+func _gotk4_gtk4_CellEditableIface_remove_widget(arg0 *C.GtkCellEditable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellEditableOverrider)
+
+	iface.RemoveWidget()
+}
+
+//export _gotk4_gtk4_CellEditableIface_start_editing
+func _gotk4_gtk4_CellEditableIface_start_editing(arg0 *C.GtkCellEditable, arg1 *C.GdkEvent) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellEditableOverrider)
+
+	var _event gdk.Eventer // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.Eventer)
+				return ok
+			})
+			rv, ok := casted.(gdk.Eventer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Eventer")
+			}
+			_event = rv
+		}
+	}
+
+	iface.StartEditing(_event)
+}
 
 func wrapCellEditable(obj *externglib.Object) *CellEditable {
 	return &CellEditable{

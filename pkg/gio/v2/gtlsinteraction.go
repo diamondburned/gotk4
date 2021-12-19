@@ -16,7 +16,11 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern GTlsInteractionResult _gotk4_gio2_TlsInteractionClass_ask_password(GTlsInteraction*, GTlsPassword*, GCancellable*, GError**);
+// extern GTlsInteractionResult _gotk4_gio2_TlsInteractionClass_ask_password_finish(GTlsInteraction*, GAsyncResult*, GError**);
+// extern GTlsInteractionResult _gotk4_gio2_TlsInteractionClass_request_certificate(GTlsInteraction*, GTlsConnection*, GTlsCertificateRequestFlags, GCancellable*, GError**);
+// extern GTlsInteractionResult _gotk4_gio2_TlsInteractionClass_request_certificate_finish(GTlsInteraction*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -26,9 +30,6 @@ func init() {
 }
 
 // TLSInteractionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TLSInteractionOverrider interface {
 	// AskPassword: run synchronous interaction to ask the user for a password.
 	// In general, g_tls_interaction_invoke_ask_password() should be used
@@ -54,29 +55,6 @@ type TLSInteractionOverrider interface {
 	//    - tlsInteractionResult status of the ask password interaction.
 	//
 	AskPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error)
-	// AskPasswordAsync: run asynchronous interaction to ask the user for a
-	// password. In general, g_tls_interaction_invoke_ask_password() should be
-	// used instead of this function.
-	//
-	// Derived subclasses usually implement a password prompt, although they may
-	// also choose to provide a password from elsewhere. The password value will
-	// be filled in and then callback will be called. Alternatively the user may
-	// abort this password request, which will usually abort the TLS connection.
-	//
-	// If the interaction is cancelled by the cancellation object, or by the
-	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
-	// not support immediate cancellation.
-	//
-	// Certain implementations may not support immediate cancellation.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable cancellation object.
-	//    - password: Password object.
-	//    - callback (optional) will be called when the interaction completes.
-	//
-	AskPasswordAsync(ctx context.Context, password *TLSPassword, callback AsyncReadyCallback)
 	// AskPasswordFinish: complete an ask password user interaction request.
 	// This should be once the g_tls_interaction_ask_password_async() completion
 	// callback is called.
@@ -127,25 +105,6 @@ type TLSInteractionOverrider interface {
 	//    - tlsInteractionResult status of the request certificate interaction.
 	//
 	RequestCertificate(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error)
-	// RequestCertificateAsync: run asynchronous interaction to ask the user for
-	// a certificate to use with the connection. In general,
-	// g_tls_interaction_invoke_request_certificate() should be used instead of
-	// this function.
-	//
-	// Derived subclasses usually implement a certificate selector, although
-	// they may also choose to provide a certificate from elsewhere. callback
-	// will be called when the operation completes. Alternatively the user may
-	// abort this certificate request, which will usually abort the TLS
-	// connection.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable cancellation object.
-	//    - connection: Connection object.
-	//    - flags providing more information about the request.
-	//    - callback (optional) will be called when the interaction completes.
-	//
-	RequestCertificateAsync(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags, callback AsyncReadyCallback)
 	// RequestCertificateFinish: complete a request certificate user interaction
 	// request. This should be once the
 	// g_tls_interaction_request_certificate_async() completion callback is
@@ -197,6 +156,184 @@ type TLSInteraction struct {
 var (
 	_ externglib.Objector = (*TLSInteraction)(nil)
 )
+
+func classInitTLSInteractioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GTlsInteractionClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GTlsInteractionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		AskPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error)
+	}); ok {
+		pclass.ask_password = (*[0]byte)(C._gotk4_gio2_TlsInteractionClass_ask_password)
+	}
+
+	if _, ok := goval.(interface {
+		AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
+	}); ok {
+		pclass.ask_password_finish = (*[0]byte)(C._gotk4_gio2_TlsInteractionClass_ask_password_finish)
+	}
+
+	if _, ok := goval.(interface {
+		RequestCertificate(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error)
+	}); ok {
+		pclass.request_certificate = (*[0]byte)(C._gotk4_gio2_TlsInteractionClass_request_certificate)
+	}
+
+	if _, ok := goval.(interface {
+		RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
+	}); ok {
+		pclass.request_certificate_finish = (*[0]byte)(C._gotk4_gio2_TlsInteractionClass_request_certificate_finish)
+	}
+}
+
+//export _gotk4_gio2_TlsInteractionClass_ask_password
+func _gotk4_gio2_TlsInteractionClass_ask_password(arg0 *C.GTlsInteraction, arg1 *C.GTlsPassword, arg2 *C.GCancellable, _cerr **C.GError) (cret C.GTlsInteractionResult) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AskPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error)
+	})
+
+	var _cancellable context.Context // out
+	var _password *TLSPassword       // out
+
+	if arg2 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
+	}
+	_password = wrapTLSPassword(externglib.Take(unsafe.Pointer(arg1)))
+
+	tlsInteractionResult, _goerr := iface.AskPassword(_cancellable, _password)
+
+	cret = C.GTlsInteractionResult(tlsInteractionResult)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsInteractionClass_ask_password_finish
+func _gotk4_gio2_TlsInteractionClass_ask_password_finish(arg0 *C.GTlsInteraction, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsInteractionResult) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	tlsInteractionResult, _goerr := iface.AskPasswordFinish(_result)
+
+	cret = C.GTlsInteractionResult(tlsInteractionResult)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsInteractionClass_request_certificate
+func _gotk4_gio2_TlsInteractionClass_request_certificate(arg0 *C.GTlsInteraction, arg1 *C.GTlsConnection, arg2 C.GTlsCertificateRequestFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret C.GTlsInteractionResult) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		RequestCertificate(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error)
+	})
+
+	var _cancellable context.Context      // out
+	var _connection TLSConnectioner       // out
+	var _flags TLSCertificateRequestFlags // out
+
+	if arg3 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
+	}
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.TLSConnectioner is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TLSConnectioner)
+			return ok
+		})
+		rv, ok := casted.(TLSConnectioner)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSConnectioner")
+		}
+		_connection = rv
+	}
+	_flags = TLSCertificateRequestFlags(arg2)
+
+	tlsInteractionResult, _goerr := iface.RequestCertificate(_cancellable, _connection, _flags)
+
+	cret = C.GTlsInteractionResult(tlsInteractionResult)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsInteractionClass_request_certificate_finish
+func _gotk4_gio2_TlsInteractionClass_request_certificate_finish(arg0 *C.GTlsInteraction, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsInteractionResult) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	tlsInteractionResult, _goerr := iface.RequestCertificateFinish(_result)
+
+	cret = C.GTlsInteractionResult(tlsInteractionResult)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapTLSInteraction(obj *externglib.Object) *TLSInteraction {
 	return &TLSInteraction{

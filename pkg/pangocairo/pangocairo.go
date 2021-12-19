@@ -19,8 +19,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pangocairo.h>
+// extern void _gotk4_pangocairo1_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer);
 // extern void callbackDelete(gpointer);
-// void _gotk4_pangocairo1_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer);
 import "C"
 
 func init() {
@@ -35,28 +35,31 @@ func init() {
 type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool)
 
 //export _gotk4_pangocairo1_ShapeRendererFunc
-func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_pangocairo1_ShapeRendererFunc(arg1 *C.cairo_t, arg2 *C.PangoAttrShape, arg3 C.gboolean, arg4 C.gpointer) {
+	var fn ShapeRendererFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ShapeRendererFunc)
 	}
 
-	var cr *cairo.Context     // out
-	var attr *pango.AttrShape // out
-	var doPath bool           // out
+	var _cr *cairo.Context     // out
+	var _attr *pango.AttrShape // out
+	var _doPath bool           // out
 
-	cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg0)))
-	C.cairo_reference(arg0)
-	runtime.SetFinalizer(cr, func(v *cairo.Context) {
+	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
+	C.cairo_reference(arg1)
+	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
-	attr = (*pango.AttrShape)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	if arg2 != 0 {
-		doPath = true
+	_attr = (*pango.AttrShape)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	if arg3 != 0 {
+		_doPath = true
 	}
 
-	fn := v.(ShapeRendererFunc)
-	fn(cr, attr, doPath)
+	fn(_cr, _attr, _doPath)
 }
 
 // ContextGetFontOptions retrieves any font rendering options previously set

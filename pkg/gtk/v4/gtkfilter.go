@@ -7,12 +7,15 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GtkFilterMatch _gotk4_gtk4_FilterClass_get_strictness(GtkFilter*);
+// extern gboolean _gotk4_gtk4_FilterClass_match(GtkFilter*, gpointer);
 import "C"
 
 func init() {
@@ -100,9 +103,6 @@ func (f FilterMatch) String() string {
 }
 
 // FilterOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type FilterOverrider interface {
 	// Strictness gets the known strictness of filters. If the strictness is not
 	// known, GTK_FILTER_MATCH_SOME is returned.
@@ -157,6 +157,60 @@ type Filter struct {
 var (
 	_ externglib.Objector = (*Filter)(nil)
 )
+
+func classInitFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkFilterClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkFilterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Strictness() FilterMatch }); ok {
+		pclass.get_strictness = (*[0]byte)(C._gotk4_gtk4_FilterClass_get_strictness)
+	}
+
+	if _, ok := goval.(interface {
+		Match(item *externglib.Object) bool
+	}); ok {
+		pclass.match = (*[0]byte)(C._gotk4_gtk4_FilterClass_match)
+	}
+}
+
+//export _gotk4_gtk4_FilterClass_get_strictness
+func _gotk4_gtk4_FilterClass_get_strictness(arg0 *C.GtkFilter) (cret C.GtkFilterMatch) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Strictness() FilterMatch })
+
+	filterMatch := iface.Strictness()
+
+	cret = C.GtkFilterMatch(filterMatch)
+
+	return cret
+}
+
+//export _gotk4_gtk4_FilterClass_match
+func _gotk4_gtk4_FilterClass_match(arg0 *C.GtkFilter, arg1 C.gpointer) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Match(item *externglib.Object) bool
+	})
+
+	var _item *externglib.Object // out
+
+	_item = externglib.Take(unsafe.Pointer(arg1))
+
+	ok := iface.Match(_item)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapFilter(obj *externglib.Object) *Filter {
 	return &Filter{

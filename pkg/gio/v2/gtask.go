@@ -19,13 +19,17 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_task_get_type()), F: marshalTasker},
 	})
+}
+
+// TaskOverrider contains methods that are overridable.
+type TaskOverrider interface {
 }
 
 // Task represents and manages a cancellable "task".
@@ -197,6 +201,14 @@ type Task struct {
 var (
 	_ externglib.Objector = (*Task)(nil)
 )
+
+func classInitTasker(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTask(obj *externglib.Object) *Task {
 	return &Task{
@@ -702,7 +714,9 @@ func (task *Task) ReturnError(err error) {
 	var _arg1 *C.GError // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	C.g_task_return_error(_arg0, _arg1)
 	runtime.KeepAlive(task)
@@ -1012,7 +1026,9 @@ func TaskReportError(sourceObject *externglib.Object, callback AsyncReadyCallbac
 		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
-	_arg5 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg5 = (*C.GError)(gerror.New(err))
+	}
 
 	C.g_task_report_error(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(sourceObject)

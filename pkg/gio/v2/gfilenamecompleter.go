@@ -6,12 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_FilenameCompleterClass_got_completion_data(GFilenameCompleter*);
 import "C"
 
 func init() {
@@ -21,9 +23,6 @@ func init() {
 }
 
 // FilenameCompleterOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type FilenameCompleterOverrider interface {
 	GotCompletionData()
 }
@@ -39,6 +38,30 @@ type FilenameCompleter struct {
 var (
 	_ externglib.Objector = (*FilenameCompleter)(nil)
 )
+
+func classInitFilenameCompleterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GFilenameCompleterClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GFilenameCompleterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ GotCompletionData() }); ok {
+		pclass.got_completion_data = (*[0]byte)(C._gotk4_gio2_FilenameCompleterClass_got_completion_data)
+	}
+}
+
+//export _gotk4_gio2_FilenameCompleterClass_got_completion_data
+func _gotk4_gio2_FilenameCompleterClass_got_completion_data(arg0 *C.GFilenameCompleter) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ GotCompletionData() })
+
+	iface.GotCompletionData()
+}
 
 func wrapFilenameCompleter(obj *externglib.Object) *FilenameCompleter {
 	return &FilenameCompleter{

@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// NoOpObjectOverrider contains methods that are overridable.
+type NoOpObjectOverrider interface {
+}
+
 // NoOpObject is an AtkObject which purports to implement all ATK interfaces. It
 // is the type of AtkObject which is created if an accessible object is
 // requested for an object type for which no factory type is specified.
@@ -45,6 +49,14 @@ type NoOpObject struct {
 var (
 	_ externglib.Objector = (*NoOpObject)(nil)
 )
+
+func classInitNoOpObjector(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 	return &NoOpObject{

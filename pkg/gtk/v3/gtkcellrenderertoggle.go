@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -14,6 +15,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CellRendererToggleClass_toggled(GtkCellRendererToggle*, gchar*);
 import "C"
 
 func init() {
@@ -23,9 +25,6 @@ func init() {
 }
 
 // CellRendererToggleOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CellRendererToggleOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -43,6 +42,34 @@ type CellRendererToggle struct {
 var (
 	_ CellRendererer = (*CellRendererToggle)(nil)
 )
+
+func classInitCellRendererToggler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCellRendererToggleClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCellRendererToggleClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Toggled(path string) }); ok {
+		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_CellRendererToggleClass_toggled)
+	}
+}
+
+//export _gotk4_gtk3_CellRendererToggleClass_toggled
+func _gotk4_gtk3_CellRendererToggleClass_toggled(arg0 *C.GtkCellRendererToggle, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Toggled(path string) })
+
+	var _path string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.Toggled(_path)
+}
 
 func wrapCellRendererToggle(obj *externglib.Object) *CellRendererToggle {
 	return &CellRendererToggle{

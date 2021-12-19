@@ -8,6 +8,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -18,6 +19,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GType _gotk4_gtk3_BuilderClass_get_type_from_name(GtkBuilder*, char*);
 import "C"
 
 func init() {
@@ -112,9 +114,6 @@ func (b BuilderError) String() string {
 }
 
 // BuilderOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type BuilderOverrider interface {
 	// TypeFromName looks up a type by name, using the virtual function that
 	// Builder has for that purpose. This is mainly used when implementing the
@@ -310,6 +309,42 @@ type Builder struct {
 var (
 	_ externglib.Objector = (*Builder)(nil)
 )
+
+func classInitBuilderer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkBuilderClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkBuilderClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		TypeFromName(typeName string) externglib.Type
+	}); ok {
+		pclass.get_type_from_name = (*[0]byte)(C._gotk4_gtk3_BuilderClass_get_type_from_name)
+	}
+}
+
+//export _gotk4_gtk3_BuilderClass_get_type_from_name
+func _gotk4_gtk3_BuilderClass_get_type_from_name(arg0 *C.GtkBuilder, arg1 *C.char) (cret C.GType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		TypeFromName(typeName string) externglib.Type
+	})
+
+	var _typeName string // out
+
+	_typeName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	gType := iface.TypeFromName(_typeName)
+
+	cret = C.GType(gType)
+
+	return cret
+}
 
 func wrapBuilder(obj *externglib.Object) *Builder {
 	return &Builder{

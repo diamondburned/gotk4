@@ -25,7 +25,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gtk3_IconThemeClass_changed(GtkIconTheme*);
 import "C"
 
 func init() {
@@ -151,6 +152,10 @@ func (i IconLookupFlags) Has(other IconLookupFlags) bool {
 	return (i & other) == other
 }
 
+// IconInfoOverrider contains methods that are overridable.
+type IconInfoOverrider interface {
+}
+
 // IconInfo contains information found when looking up an icon in an icon theme.
 type IconInfo struct {
 	_ [0]func() // equal guard
@@ -160,6 +165,14 @@ type IconInfo struct {
 var (
 	_ externglib.Objector = (*IconInfo)(nil)
 )
+
+func classInitIconInfor(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapIconInfo(obj *externglib.Object) *IconInfo {
 	return &IconInfo{
@@ -1087,9 +1100,6 @@ func (iconInfo *IconInfo) SetRawCoordinates(rawCoordinates bool) {
 }
 
 // IconThemeOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type IconThemeOverrider interface {
 	Changed()
 }
@@ -1162,6 +1172,30 @@ type IconTheme struct {
 var (
 	_ externglib.Objector = (*IconTheme)(nil)
 )
+
+func classInitIconThemer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkIconThemeClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkIconThemeClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Changed() }); ok {
+		pclass.changed = (*[0]byte)(C._gotk4_gtk3_IconThemeClass_changed)
+	}
+}
+
+//export _gotk4_gtk3_IconThemeClass_changed
+func _gotk4_gtk3_IconThemeClass_changed(arg0 *C.GtkIconTheme) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Changed() })
+
+	iface.Changed()
+}
 
 func wrapIconTheme(obj *externglib.Object) *IconTheme {
 	return &IconTheme{

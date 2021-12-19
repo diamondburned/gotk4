@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// ProgressBarOverrider contains methods that are overridable.
+type ProgressBarOverrider interface {
+}
+
 // ProgressBar is typically used to display the progress of a long running
 // operation. It provides a visual clue that processing is underway. The
 // GtkProgressBar can be used in two different modes: percentage mode and
@@ -73,6 +77,14 @@ var (
 	_ Widgetter           = (*ProgressBar)(nil)
 	_ externglib.Objector = (*ProgressBar)(nil)
 )
+
+func classInitProgressBarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 	return &ProgressBar{

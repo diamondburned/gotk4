@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// HScaleOverrider contains methods that are overridable.
+type HScaleOverrider interface {
+}
+
 // HScale widget is used to allow the user to select a value using a horizontal
 // slider. To create one, use gtk_hscale_new_with_range().
 //
@@ -38,6 +42,14 @@ type HScale struct {
 var (
 	_ Ranger = (*HScale)(nil)
 )
+
+func classInitHScaler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapHScale(obj *externglib.Object) *HScale {
 	return &HScale{

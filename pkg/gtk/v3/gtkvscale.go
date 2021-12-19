@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// VScaleOverrider contains methods that are overridable.
+type VScaleOverrider interface {
+}
+
 // VScale widget is used to allow the user to select a value using a vertical
 // slider. To create one, use gtk_hscale_new_with_range().
 //
@@ -38,6 +42,14 @@ type VScale struct {
 var (
 	_ Ranger = (*VScale)(nil)
 )
+
+func classInitVScaler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapVScale(obj *externglib.Object) *VScale {
 	return &VScale{

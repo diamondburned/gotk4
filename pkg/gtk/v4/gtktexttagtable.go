@@ -13,7 +13,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// void _gotk4_gtk4_TextTagTableForEach(GtkTextTag*, gpointer);
+// extern void _gotk4_gtk4_TextTagTableForEach(GtkTextTag*, gpointer);
 import "C"
 
 func init() {
@@ -27,18 +27,21 @@ func init() {
 type TextTagTableForEach func(tag *TextTag)
 
 //export _gotk4_gtk4_TextTagTableForEach
-func _gotk4_gtk4_TextTagTableForEach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TextTagTableForEach(arg1 *C.GtkTextTag, arg2 C.gpointer) {
+	var fn TextTagTableForEach
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TextTagTableForEach)
 	}
 
-	var tag *TextTag // out
+	var _tag *TextTag // out
 
-	tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg0)))
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
 
-	fn := v.(TextTagTableForEach)
-	fn(tag)
+	fn(_tag)
 }
 
 // TextTagTable: collection of tags in a GtkTextBuffer

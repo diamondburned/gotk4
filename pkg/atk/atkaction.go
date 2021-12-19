@@ -12,6 +12,13 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_atk1_ActionIface_do_action(AtkAction*, gint);
+// extern gboolean _gotk4_atk1_ActionIface_set_description(AtkAction*, gint, gchar*);
+// extern gchar* _gotk4_atk1_ActionIface_get_description(AtkAction*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_keybinding(AtkAction*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_localized_name(AtkAction*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_name(AtkAction*, gint);
+// extern gint _gotk4_atk1_ActionIface_get_n_actions(AtkAction*);
 import "C"
 
 func init() {
@@ -21,9 +28,6 @@ func init() {
 }
 
 // ActionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ActionOverrider interface {
 	// DoAction: perform the specified action on the object.
 	//
@@ -191,6 +195,143 @@ type Actioner interface {
 }
 
 var _ Actioner = (*Action)(nil)
+
+func ifaceInitActioner(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkActionIface)(unsafe.Pointer(gifacePtr))
+	iface.do_action = (*[0]byte)(C._gotk4_atk1_ActionIface_do_action)
+	iface.get_description = (*[0]byte)(C._gotk4_atk1_ActionIface_get_description)
+	iface.get_keybinding = (*[0]byte)(C._gotk4_atk1_ActionIface_get_keybinding)
+	iface.get_localized_name = (*[0]byte)(C._gotk4_atk1_ActionIface_get_localized_name)
+	iface.get_n_actions = (*[0]byte)(C._gotk4_atk1_ActionIface_get_n_actions)
+	iface.get_name = (*[0]byte)(C._gotk4_atk1_ActionIface_get_name)
+	iface.set_description = (*[0]byte)(C._gotk4_atk1_ActionIface_set_description)
+}
+
+//export _gotk4_atk1_ActionIface_do_action
+func _gotk4_atk1_ActionIface_do_action(arg0 *C.AtkAction, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	ok := iface.DoAction(_i)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_description
+func _gotk4_atk1_ActionIface_get_description(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := iface.Description(_i)
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_keybinding
+func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := iface.Keybinding(_i)
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_localized_name
+func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := iface.LocalizedName(_i)
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_n_actions
+func _gotk4_atk1_ActionIface_get_n_actions(arg0 *C.AtkAction) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	gint := iface.NActions()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_name
+func _gotk4_atk1_ActionIface_get_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := iface.Name(_i)
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_set_description
+func _gotk4_atk1_ActionIface_set_description(arg0 *C.AtkAction, arg1 C.gint, arg2 *C.gchar) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	var _i int       // out
+	var _desc string // out
+
+	_i = int(arg1)
+	_desc = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	ok := iface.SetDescription(_i, _desc)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapAction(obj *externglib.Object) *Action {
 	return &Action{

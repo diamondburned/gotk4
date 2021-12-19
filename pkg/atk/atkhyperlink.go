@@ -8,12 +8,22 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern AtkObject* _gotk4_atk1_HyperlinkClass_get_object(AtkHyperlink*, gint);
+// extern gboolean _gotk4_atk1_HyperlinkClass_is_selected_link(AtkHyperlink*);
+// extern gboolean _gotk4_atk1_HyperlinkClass_is_valid(AtkHyperlink*);
+// extern gchar* _gotk4_atk1_HyperlinkClass_get_uri(AtkHyperlink*, gint);
+// extern gint _gotk4_atk1_HyperlinkClass_get_end_index(AtkHyperlink*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_n_anchors(AtkHyperlink*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_start_index(AtkHyperlink*);
+// extern guint _gotk4_atk1_HyperlinkClass_link_state(AtkHyperlink*);
+// extern void _gotk4_atk1_HyperlinkClass_link_activated(AtkHyperlink*);
 import "C"
 
 func init() {
@@ -67,9 +77,6 @@ func (h HyperlinkStateFlags) Has(other HyperlinkStateFlags) bool {
 }
 
 // HyperlinkOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type HyperlinkOverrider interface {
 	// EndIndex gets the index with the hypertext document at which this link
 	// ends.
@@ -162,6 +169,170 @@ type Hyperlink struct {
 var (
 	_ externglib.Objector = (*Hyperlink)(nil)
 )
+
+func classInitHyperlinker(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ EndIndex() int }); ok {
+		pclass.get_end_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_end_index)
+	}
+
+	if _, ok := goval.(interface{ NAnchors() int }); ok {
+		pclass.get_n_anchors = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_n_anchors)
+	}
+
+	if _, ok := goval.(interface{ GetObject(i int) *ObjectClass }); ok {
+		pclass.get_object = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_object)
+	}
+
+	if _, ok := goval.(interface{ StartIndex() int }); ok {
+		pclass.get_start_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_start_index)
+	}
+
+	if _, ok := goval.(interface{ URI(i int) string }); ok {
+		pclass.get_uri = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_uri)
+	}
+
+	if _, ok := goval.(interface{ IsSelectedLink() bool }); ok {
+		pclass.is_selected_link = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_is_selected_link)
+	}
+
+	if _, ok := goval.(interface{ IsValid() bool }); ok {
+		pclass.is_valid = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_is_valid)
+	}
+
+	if _, ok := goval.(interface{ LinkActivated() }); ok {
+		pclass.link_activated = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_activated)
+	}
+
+	if _, ok := goval.(interface{ LinkState() uint }); ok {
+		pclass.link_state = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_state)
+	}
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_end_index
+func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ EndIndex() int })
+
+	gint := iface.EndIndex()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_n_anchors
+func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ NAnchors() int })
+
+	gint := iface.NAnchors()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_object
+func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ GetObject(i int) *ObjectClass })
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	object := iface.GetObject(_i)
+
+	cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_start_index
+func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StartIndex() int })
+
+	gint := iface.StartIndex()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_uri
+func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ URI(i int) string })
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := iface.URI(_i)
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_is_selected_link
+func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.AtkHyperlink) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ IsSelectedLink() bool })
+
+	ok := iface.IsSelectedLink()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_is_valid
+func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.AtkHyperlink) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ IsValid() bool })
+
+	ok := iface.IsValid()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_link_activated
+func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ LinkActivated() })
+
+	iface.LinkActivated()
+}
+
+//export _gotk4_atk1_HyperlinkClass_link_state
+func _gotk4_atk1_HyperlinkClass_link_state(arg0 *C.AtkHyperlink) (cret C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ LinkState() uint })
+
+	guint := iface.LinkState()
+
+	cret = C.guint(guint)
+
+	return cret
+}
 
 func wrapHyperlink(obj *externglib.Object) *Hyperlink {
 	return &Hyperlink{

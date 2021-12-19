@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// MemoryInputStreamOverrider contains methods that are overridable.
+type MemoryInputStreamOverrider interface {
+}
+
 // MemoryInputStream is a class for using arbitrary memory chunks as input for
 // GIO streaming input operations.
 //
@@ -39,6 +43,14 @@ var (
 	_ InputStreamer       = (*MemoryInputStream)(nil)
 	_ externglib.Objector = (*MemoryInputStream)(nil)
 )
+
+func classInitMemoryInputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMemoryInputStream(obj *externglib.Object) *MemoryInputStream {
 	return &MemoryInputStream{

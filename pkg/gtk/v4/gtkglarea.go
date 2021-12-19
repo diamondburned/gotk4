@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -14,6 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_GLAreaClass_render(GtkGLArea*, GdkGLContext*);
+// extern void _gotk4_gtk4_GLAreaClass_resize(GtkGLArea*, int, int);
 import "C"
 
 func init() {
@@ -23,9 +26,6 @@ func init() {
 }
 
 // GLAreaOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type GLAreaOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -148,6 +148,78 @@ type GLArea struct {
 var (
 	_ Widgetter = (*GLArea)(nil)
 )
+
+func classInitGLAreaer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Render(context gdk.GLContexter) bool
+	}); ok {
+		pclass.render = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_render)
+	}
+
+	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
+		pclass.resize = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_resize)
+	}
+}
+
+//export _gotk4_gtk4_GLAreaClass_render
+func _gotk4_gtk4_GLAreaClass_render(arg0 *C.GtkGLArea, arg1 *C.GdkGLContext) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Render(context gdk.GLContexter) bool
+	})
+
+	var _context gdk.GLContexter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.GLContexter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.GLContexter)
+			return ok
+		})
+		rv, ok := casted.(gdk.GLContexter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.GLContexter")
+		}
+		_context = rv
+	}
+
+	ok := iface.Render(_context)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_GLAreaClass_resize
+func _gotk4_gtk4_GLAreaClass_resize(arg0 *C.GtkGLArea, arg1 C.int, arg2 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Resize(width, height int) })
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	iface.Resize(_width, _height)
+}
 
 func wrapGLArea(obj *externglib.Object) *GLArea {
 	return &GLArea{
@@ -510,7 +582,9 @@ func (area *GLArea) SetError(err error) {
 	var _arg1 *C.GError    // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	C.gtk_gl_area_set_error(_arg0, _arg1)
 	runtime.KeepAlive(area)

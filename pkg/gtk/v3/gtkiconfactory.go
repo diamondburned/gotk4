@@ -233,6 +233,10 @@ func IconSizeRegisterAlias(alias string, target int) {
 	runtime.KeepAlive(target)
 }
 
+// IconFactoryOverrider contains methods that are overridable.
+type IconFactoryOverrider interface {
+}
+
 // IconFactory: icon factory manages a collection of IconSet; a IconSet manages
 // a set of variants of a particular icon (i.e. a IconSet contains variants for
 // different sizes and widget states). Icons in an icon factory are named by a
@@ -311,6 +315,14 @@ type IconFactory struct {
 var (
 	_ externglib.Objector = (*IconFactory)(nil)
 )
+
+func classInitIconFactorier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapIconFactory(obj *externglib.Object) *IconFactory {
 	return &IconFactory{

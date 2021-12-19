@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// BufferedOutputStreamOverrider contains methods that are overridable.
+type BufferedOutputStreamOverrider interface {
+}
+
 // BufferedOutputStream: buffered output stream implements OutputStream and
 // provides for buffered writes.
 //
@@ -44,6 +48,14 @@ type BufferedOutputStream struct {
 var (
 	_ FilterOutputStreamer = (*BufferedOutputStream)(nil)
 )
+
+func classInitBufferedOutputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapBufferedOutputStream(obj *externglib.Object) *BufferedOutputStream {
 	return &BufferedOutputStream{

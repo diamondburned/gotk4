@@ -364,7 +364,9 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 	C.g_object_ref(C.gpointer(invocation.Native()))
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	C.g_dbus_method_invocation_return_gerror(_arg0, _arg1)
 	runtime.KeepAlive(invocation)

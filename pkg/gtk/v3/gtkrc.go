@@ -8,6 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -19,6 +20,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern guint _gotk4_gtk3_RcStyleClass_parse(GtkRcStyle*, GtkSettings*, GScanner*);
+// extern void _gotk4_gtk3_RcStyleClass_merge(GtkRcStyle*, GtkRcStyle*);
 import "C"
 
 func init() {
@@ -967,9 +970,6 @@ func RCSetDefaultFiles(filenames []string) {
 }
 
 // RCStyleOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type RCStyleOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -995,6 +995,60 @@ type RCStyle struct {
 var (
 	_ externglib.Objector = (*RCStyle)(nil)
 )
+
+func classInitRCStyler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkRcStyleClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkRcStyleClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Merge(src *RCStyle) }); ok {
+		pclass.merge = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_merge)
+	}
+
+	if _, ok := goval.(interface {
+		Parse(settings *Settings, scanner *glib.Scanner) uint
+	}); ok {
+		pclass.parse = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_parse)
+	}
+}
+
+//export _gotk4_gtk3_RcStyleClass_merge
+func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.GtkRcStyle, arg1 *C.GtkRcStyle) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Merge(src *RCStyle) })
+
+	var _src *RCStyle // out
+
+	_src = wrapRCStyle(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.Merge(_src)
+}
+
+//export _gotk4_gtk3_RcStyleClass_parse
+func _gotk4_gtk3_RcStyleClass_parse(arg0 *C.GtkRcStyle, arg1 *C.GtkSettings, arg2 *C.GScanner) (cret C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Parse(settings *Settings, scanner *glib.Scanner) uint
+	})
+
+	var _settings *Settings    // out
+	var _scanner *glib.Scanner // out
+
+	_settings = wrapSettings(externglib.Take(unsafe.Pointer(arg1)))
+	_scanner = (*glib.Scanner)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	guint := iface.Parse(_settings, _scanner)
+
+	cret = C.guint(guint)
+
+	return cret
+}
 
 func wrapRCStyle(obj *externglib.Object) *RCStyle {
 	return &RCStyle{

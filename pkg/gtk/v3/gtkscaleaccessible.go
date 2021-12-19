@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ScaleAccessibleOverrider contains methods that are overridable.
+type ScaleAccessibleOverrider interface {
+}
+
 type ScaleAccessible struct {
 	_ [0]func() // equal guard
 	RangeAccessible
@@ -30,6 +34,14 @@ type ScaleAccessible struct {
 var (
 	_ externglib.Objector = (*ScaleAccessible)(nil)
 )
+
+func classInitScaleAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapScaleAccessible(obj *externglib.Object) *ScaleAccessible {
 	return &ScaleAccessible{

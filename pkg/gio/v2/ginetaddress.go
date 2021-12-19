@@ -6,12 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gio2_InetAddressClass_to_string(GInetAddress*);
 import "C"
 
 func init() {
@@ -21,9 +23,6 @@ func init() {
 }
 
 // InetAddressOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type InetAddressOverrider interface {
 	// String converts address to string form.
 	//
@@ -50,6 +49,34 @@ type InetAddress struct {
 var (
 	_ externglib.Objector = (*InetAddress)(nil)
 )
+
+func classInitInetAddresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GInetAddressClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GInetAddressClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ String() string }); ok {
+		pclass.to_string = (*[0]byte)(C._gotk4_gio2_InetAddressClass_to_string)
+	}
+}
+
+//export _gotk4_gio2_InetAddressClass_to_string
+func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.GInetAddress) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ String() string })
+
+	utf8 := iface.String()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
 
 func wrapInetAddress(obj *externglib.Object) *InetAddress {
 	return &InetAddress{

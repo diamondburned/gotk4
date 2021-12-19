@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -16,6 +17,15 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_MenuShellClass_move_selected(GtkMenuShell*, gint);
+// extern gint _gotk4_gtk3_MenuShellClass_get_popup_delay(GtkMenuShell*);
+// extern void _gotk4_gtk3_MenuShellClass_activate_current(GtkMenuShell*, gboolean);
+// extern void _gotk4_gtk3_MenuShellClass_cancel(GtkMenuShell*);
+// extern void _gotk4_gtk3_MenuShellClass_deactivate(GtkMenuShell*);
+// extern void _gotk4_gtk3_MenuShellClass_insert(GtkMenuShell*, GtkWidget*, gint);
+// extern void _gotk4_gtk3_MenuShellClass_move_current(GtkMenuShell*, GtkMenuDirectionType);
+// extern void _gotk4_gtk3_MenuShellClass_select_item(GtkMenuShell*, GtkWidget*);
+// extern void _gotk4_gtk3_MenuShellClass_selection_done(GtkMenuShell*);
 import "C"
 
 func init() {
@@ -25,9 +35,6 @@ func init() {
 }
 
 // MenuShellOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type MenuShellOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -112,6 +119,200 @@ type MenuSheller interface {
 }
 
 var _ MenuSheller = (*MenuShell)(nil)
+
+func classInitMenuSheller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkMenuShellClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkMenuShellClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActivateCurrent(forceHide bool) }); ok {
+		pclass.activate_current = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_activate_current)
+	}
+
+	if _, ok := goval.(interface{ Cancel() }); ok {
+		pclass.cancel = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_cancel)
+	}
+
+	if _, ok := goval.(interface{ Deactivate() }); ok {
+		pclass.deactivate = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_deactivate)
+	}
+
+	if _, ok := goval.(interface{ PopupDelay() int }); ok {
+		pclass.get_popup_delay = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_get_popup_delay)
+	}
+
+	if _, ok := goval.(interface {
+		Insert(child Widgetter, position int)
+	}); ok {
+		pclass.insert = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_insert)
+	}
+
+	if _, ok := goval.(interface {
+		MoveCurrent(direction MenuDirectionType)
+	}); ok {
+		pclass.move_current = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_move_current)
+	}
+
+	if _, ok := goval.(interface{ MoveSelected(distance int) bool }); ok {
+		pclass.move_selected = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_move_selected)
+	}
+
+	if _, ok := goval.(interface{ SelectItem(menuItem Widgetter) }); ok {
+		pclass.select_item = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_select_item)
+	}
+
+	if _, ok := goval.(interface{ SelectionDone() }); ok {
+		pclass.selection_done = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_selection_done)
+	}
+}
+
+//export _gotk4_gtk3_MenuShellClass_activate_current
+func _gotk4_gtk3_MenuShellClass_activate_current(arg0 *C.GtkMenuShell, arg1 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActivateCurrent(forceHide bool) })
+
+	var _forceHide bool // out
+
+	if arg1 != 0 {
+		_forceHide = true
+	}
+
+	iface.ActivateCurrent(_forceHide)
+}
+
+//export _gotk4_gtk3_MenuShellClass_cancel
+func _gotk4_gtk3_MenuShellClass_cancel(arg0 *C.GtkMenuShell) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Cancel() })
+
+	iface.Cancel()
+}
+
+//export _gotk4_gtk3_MenuShellClass_deactivate
+func _gotk4_gtk3_MenuShellClass_deactivate(arg0 *C.GtkMenuShell) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Deactivate() })
+
+	iface.Deactivate()
+}
+
+//export _gotk4_gtk3_MenuShellClass_get_popup_delay
+func _gotk4_gtk3_MenuShellClass_get_popup_delay(arg0 *C.GtkMenuShell) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PopupDelay() int })
+
+	gint := iface.PopupDelay()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_gtk3_MenuShellClass_insert
+func _gotk4_gtk3_MenuShellClass_insert(arg0 *C.GtkMenuShell, arg1 *C.GtkWidget, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Insert(child Widgetter, position int)
+	})
+
+	var _child Widgetter // out
+	var _position int    // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+	_position = int(arg2)
+
+	iface.Insert(_child, _position)
+}
+
+//export _gotk4_gtk3_MenuShellClass_move_current
+func _gotk4_gtk3_MenuShellClass_move_current(arg0 *C.GtkMenuShell, arg1 C.GtkMenuDirectionType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MoveCurrent(direction MenuDirectionType)
+	})
+
+	var _direction MenuDirectionType // out
+
+	_direction = MenuDirectionType(arg1)
+
+	iface.MoveCurrent(_direction)
+}
+
+//export _gotk4_gtk3_MenuShellClass_move_selected
+func _gotk4_gtk3_MenuShellClass_move_selected(arg0 *C.GtkMenuShell, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MoveSelected(distance int) bool })
+
+	var _distance int // out
+
+	_distance = int(arg1)
+
+	ok := iface.MoveSelected(_distance)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_MenuShellClass_select_item
+func _gotk4_gtk3_MenuShellClass_select_item(arg0 *C.GtkMenuShell, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectItem(menuItem Widgetter) })
+
+	var _menuItem Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_menuItem = rv
+	}
+
+	iface.SelectItem(_menuItem)
+}
+
+//export _gotk4_gtk3_MenuShellClass_selection_done
+func _gotk4_gtk3_MenuShellClass_selection_done(arg0 *C.GtkMenuShell) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectionDone() })
+
+	iface.SelectionDone()
+}
 
 func wrapMenuShell(obj *externglib.Object) *MenuShell {
 	return &MenuShell{

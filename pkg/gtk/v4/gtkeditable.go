@@ -12,98 +12,17 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GtkEditable* _gotk4_gtk4_EditableInterface_get_delegate(GtkEditable*);
+// extern char* _gotk4_gtk4_EditableInterface_get_text(GtkEditable*);
+// extern gboolean _gotk4_gtk4_EditableInterface_get_selection_bounds(GtkEditable*, int*, int*);
+// extern void _gotk4_gtk4_EditableInterface_changed(GtkEditable*);
+// extern void _gotk4_gtk4_EditableInterface_delete_text(GtkEditable*, int, int);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_editable_get_type()), F: marshalEditabler},
 	})
-}
-
-// EditableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type EditableOverrider interface {
-	Changed()
-	// DeleteText deletes a sequence of characters.
-	//
-	// The characters that are deleted are those characters at positions from
-	// start_pos up to, but not including end_pos. If end_pos is negative, then
-	// the characters deleted are those from start_pos to the end of the text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start position.
-	//    - endPos: end position.
-	//
-	DeleteText(startPos, endPos int)
-	// DoDeleteText deletes a sequence of characters.
-	//
-	// The characters that are deleted are those characters at positions from
-	// start_pos up to, but not including end_pos. If end_pos is negative, then
-	// the characters deleted are those from start_pos to the end of the text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start position.
-	//    - endPos: end position.
-	//
-	DoDeleteText(startPos, endPos int)
-	// Delegate gets the GtkEditable that editable is delegating its
-	// implementation to.
-	//
-	// Typically, the delegate is a gtk.Text widget.
-	//
-	// The function returns the following values:
-	//
-	//    - ret (optional): delegate GtkEditable.
-	//
-	Delegate() Editabler
-	// SelectionBounds retrieves the selection bound of the editable.
-	//
-	// start_pos will be filled with the start of the selection and end_pos with
-	// end. If no text was selected both will be identical and FALSE will be
-	// returned.
-	//
-	// Note that positions are specified in characters, not bytes.
-	//
-	// The function returns the following values:
-	//
-	//    - startPos (optional): location to store the starting position, or
-	//      NULL.
-	//    - endPos (optional): location to store the end position, or NULL.
-	//    - ok: TRUE if there is a non-empty selection, FALSE otherwise.
-	//
-	SelectionBounds() (startPos int, endPos int, ok bool)
-	// Text retrieves the contents of editable.
-	//
-	// The returned string is owned by GTK and must not be modified or freed.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: pointer to the contents of the editable.
-	//
-	Text() string
-	// SetSelectionBounds selects a region of text.
-	//
-	// The characters that are selected are those characters at positions from
-	// start_pos up to, but not including end_pos. If end_pos is negative, then
-	// the characters selected are those characters from start_pos to the end of
-	// the text.
-	//
-	// Note that positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start of region.
-	//    - endPos: end of region.
-	//
-	SetSelectionBounds(startPos, endPos int)
 }
 
 // Editable: GtkEditable is an interface for text editing widgets.

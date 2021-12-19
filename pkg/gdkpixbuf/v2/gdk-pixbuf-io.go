@@ -20,7 +20,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -86,20 +86,23 @@ func (p PixbufFormatFlags) Has(other PixbufFormatFlags) bool {
 type PixbufModulePreparedFunc func(pixbuf *Pixbuf, anim *PixbufAnimation)
 
 //export _gotk4_gdkpixbuf2_PixbufModulePreparedFunc
-func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg1 *C.GdkPixbuf, arg2 *C.GdkPixbufAnimation, arg3 C.gpointer) {
+	var fn PixbufModulePreparedFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(PixbufModulePreparedFunc)
 	}
 
-	var pixbuf *Pixbuf        // out
-	var anim *PixbufAnimation // out
+	var _pixbuf *Pixbuf        // out
+	var _anim *PixbufAnimation // out
 
-	pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg0)))
-	anim = wrapPixbufAnimation(externglib.Take(unsafe.Pointer(arg1)))
+	_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg1)))
+	_anim = wrapPixbufAnimation(externglib.Take(unsafe.Pointer(arg2)))
 
-	fn := v.(PixbufModulePreparedFunc)
-	fn(pixbuf, anim)
+	fn(_pixbuf, _anim)
 }
 
 // PixbufModuleSizeFunc defines the type of the function that gets called once
@@ -118,20 +121,23 @@ func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPi
 type PixbufModuleSizeFunc func(width, height *int)
 
 //export _gotk4_gdkpixbuf2_PixbufModuleSizeFunc
-func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg1 *C.gint, arg2 *C.gint, arg3 C.gpointer) {
+	var fn PixbufModuleSizeFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(PixbufModuleSizeFunc)
 	}
 
-	var width *int  // out
-	var height *int // out
+	var _width *int  // out
+	var _height *int // out
 
-	width = (*int)(unsafe.Pointer(arg0))
-	height = (*int)(unsafe.Pointer(arg1))
+	_width = (*int)(unsafe.Pointer(arg1))
+	_height = (*int)(unsafe.Pointer(arg2))
 
-	fn := v.(PixbufModuleSizeFunc)
-	fn(width, height)
+	fn(_width, _height)
 }
 
 // PixbufModuleUpdatedFunc defines the type of the function that gets called
@@ -142,26 +148,29 @@ func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.g
 type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x, y, width, height int)
 
 //export _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc
-func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
-	v := gbox.Get(uintptr(arg5))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg1 *C.GdkPixbuf, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.int, arg6 C.gpointer) {
+	var fn PixbufModuleUpdatedFunc
+	{
+		v := gbox.Get(uintptr(arg6))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(PixbufModuleUpdatedFunc)
 	}
 
-	var pixbuf *Pixbuf // out
-	var x int          // out
-	var y int          // out
-	var width int      // out
-	var height int     // out
+	var _pixbuf *Pixbuf // out
+	var _x int          // out
+	var _y int          // out
+	var _width int      // out
+	var _height int     // out
 
-	pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg0)))
-	x = int(arg1)
-	y = int(arg2)
-	width = int(arg3)
-	height = int(arg4)
+	_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg1)))
+	_x = int(arg2)
+	_y = int(arg3)
+	_width = int(arg4)
+	_height = int(arg5)
 
-	fn := v.(PixbufModuleUpdatedFunc)
-	fn(pixbuf, x, y, width, height)
+	fn(_pixbuf, _x, _y, _width, _height)
 }
 
 // PixbufGetFileInfo parses an image file far enough to determine its format and

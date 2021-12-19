@@ -499,17 +499,7 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 }
 
 // AccelGroupOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type AccelGroupOverrider interface {
-	// The function takes the following parameters:
-	//
-	//    - keyval
-	//    - modifier
-	//    - accelClosure
-	//
-	AccelChanged(keyval uint, modifier gdk.ModifierType, accelClosure externglib.AnyClosure)
 }
 
 // AccelGroup represents a group of keyboard accelerators, typically attached to
@@ -533,6 +523,14 @@ type AccelGroup struct {
 var (
 	_ externglib.Objector = (*AccelGroup)(nil)
 )
+
+func classInitAccelGrouper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapAccelGroup(obj *externglib.Object) *AccelGroup {
 	return &AccelGroup{

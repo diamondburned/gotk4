@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// CenterBoxOverrider contains methods that are overridable.
+type CenterBoxOverrider interface {
+}
+
 // CenterBox: GtkCenterBox arranges three children in a row, keeping the middle
 // child centered as well as possible.
 //
@@ -66,6 +70,14 @@ var (
 	_ Widgetter           = (*CenterBox)(nil)
 	_ externglib.Objector = (*CenterBox)(nil)
 )
+
+func classInitCenterBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCenterBox(obj *externglib.Object) *CenterBox {
 	return &CenterBox{

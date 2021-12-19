@@ -12,6 +12,14 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern AtkObject* _gotk4_atk1_SelectionIface_ref_selection(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_add_selection(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_clear_selection(AtkSelection*);
+// extern gboolean _gotk4_atk1_SelectionIface_is_child_selected(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_remove_selection(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_select_all_selection(AtkSelection*);
+// extern gint _gotk4_atk1_SelectionIface_get_selection_count(AtkSelection*);
+// extern void _gotk4_atk1_SelectionIface_selection_changed(AtkSelection*);
 import "C"
 
 func init() {
@@ -21,9 +29,6 @@ func init() {
 }
 
 // SelectionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SelectionOverrider interface {
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.
@@ -162,6 +167,139 @@ type Selectioner interface {
 }
 
 var _ Selectioner = (*Selection)(nil)
+
+func ifaceInitSelectioner(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkSelectionIface)(unsafe.Pointer(gifacePtr))
+	iface.add_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_add_selection)
+	iface.clear_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_clear_selection)
+	iface.get_selection_count = (*[0]byte)(C._gotk4_atk1_SelectionIface_get_selection_count)
+	iface.is_child_selected = (*[0]byte)(C._gotk4_atk1_SelectionIface_is_child_selected)
+	iface.ref_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_ref_selection)
+	iface.remove_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_remove_selection)
+	iface.select_all_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_select_all_selection)
+	iface.selection_changed = (*[0]byte)(C._gotk4_atk1_SelectionIface_selection_changed)
+}
+
+//export _gotk4_atk1_SelectionIface_add_selection
+func _gotk4_atk1_SelectionIface_add_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	ok := iface.AddSelection(_i)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_clear_selection
+func _gotk4_atk1_SelectionIface_clear_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionOverrider)
+
+	ok := iface.ClearSelection()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_get_selection_count
+func _gotk4_atk1_SelectionIface_get_selection_count(arg0 *C.AtkSelection) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionOverrider)
+
+	gint := iface.SelectionCount()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_is_child_selected
+func _gotk4_atk1_SelectionIface_is_child_selected(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	ok := iface.IsChildSelected(_i)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_ref_selection
+func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	object := iface.RefSelection(_i)
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+		C.g_object_ref(C.gpointer(object.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_remove_selection
+func _gotk4_atk1_SelectionIface_remove_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	ok := iface.RemoveSelection(_i)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_select_all_selection
+func _gotk4_atk1_SelectionIface_select_all_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionOverrider)
+
+	ok := iface.SelectAllSelection()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_selection_changed
+func _gotk4_atk1_SelectionIface_selection_changed(arg0 *C.AtkSelection) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionOverrider)
+
+	iface.SelectionChanged()
+}
 
 func wrapSelection(obj *externglib.Object) *Selection {
 	return &Selection{

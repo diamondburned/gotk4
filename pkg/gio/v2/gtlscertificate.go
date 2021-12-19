@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -14,6 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GTlsCertificateFlags _gotk4_gio2_TlsCertificateClass_verify(GTlsCertificate*, GSocketConnectable*, GTlsCertificate*);
 import "C"
 
 func init() {
@@ -23,9 +25,6 @@ func init() {
 }
 
 // TLSCertificateOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TLSCertificateOverrider interface {
 	// Verify: this verifies cert and returns a set of CertificateFlags
 	// indicating any problems found with it. This can be used to verify a
@@ -80,6 +79,74 @@ type TLSCertificater interface {
 }
 
 var _ TLSCertificater = (*TLSCertificate)(nil)
+
+func classInitTLSCertificater(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GTlsCertificateClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GTlsCertificateClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
+	}); ok {
+		pclass.verify = (*[0]byte)(C._gotk4_gio2_TlsCertificateClass_verify)
+	}
+}
+
+//export _gotk4_gio2_TlsCertificateClass_verify
+func _gotk4_gio2_TlsCertificateClass_verify(arg0 *C.GTlsCertificate, arg1 *C.GSocketConnectable, arg2 *C.GTlsCertificate) (cret C.GTlsCertificateFlags) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
+	})
+
+	var _identity SocketConnectabler // out
+	var _trustedCa TLSCertificater   // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(SocketConnectabler)
+				return ok
+			})
+			rv, ok := casted.(SocketConnectabler)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
+			}
+			_identity = rv
+		}
+	}
+	if arg2 != nil {
+		{
+			objptr := unsafe.Pointer(arg2)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(TLSCertificater)
+				return ok
+			})
+			rv, ok := casted.(TLSCertificater)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSCertificater")
+			}
+			_trustedCa = rv
+		}
+	}
+
+	tlsCertificateFlags := iface.Verify(_identity, _trustedCa)
+
+	cret = C.GTlsCertificateFlags(tlsCertificateFlags)
+
+	return cret
+}
 
 func wrapTLSCertificate(obj *externglib.Object) *TLSCertificate {
 	return &TLSCertificate{

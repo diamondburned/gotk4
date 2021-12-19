@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// TextChildAnchorOverrider contains methods that are overridable.
+type TextChildAnchorOverrider interface {
+}
+
 // TextChildAnchor is a spot in the buffer where child widgets can be “anchored”
 // (inserted inline, as if they were characters). The anchor can have multiple
 // widgets anchored, to allow for multiple views.
@@ -34,6 +38,14 @@ type TextChildAnchor struct {
 var (
 	_ externglib.Objector = (*TextChildAnchor)(nil)
 )
+
+func classInitTextChildAnchorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 	return &TextChildAnchor{

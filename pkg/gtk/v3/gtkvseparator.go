@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// VSeparatorOverrider contains methods that are overridable.
+type VSeparatorOverrider interface {
+}
+
 // VSeparator widget is a vertical separator, used to group the widgets within a
 // window. It displays a vertical line with a shadow to make it appear sunken
 // into the interface.
@@ -36,6 +40,14 @@ var (
 	_ Widgetter           = (*VSeparator)(nil)
 	_ externglib.Objector = (*VSeparator)(nil)
 )
+
+func classInitVSeparatorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapVSeparator(obj *externglib.Object) *VSeparator {
 	return &VSeparator{

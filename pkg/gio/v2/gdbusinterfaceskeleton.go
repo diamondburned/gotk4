@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -15,6 +16,10 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(GDBusInterfaceSkeleton*);
+// extern GVariant* _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(GDBusInterfaceSkeleton*);
+// extern gboolean _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(GDBusInterfaceSkeleton*, GDBusMethodInvocation*);
+// extern void _gotk4_gio2_DBusInterfaceSkeletonClass_flush(GDBusInterfaceSkeleton*);
 import "C"
 
 func init() {
@@ -24,9 +29,6 @@ func init() {
 }
 
 // DBusInterfaceSkeletonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type DBusInterfaceSkeletonOverrider interface {
 	// Flush: if interface_ has outstanding changes, request for these changes
 	// to be emitted immediately.
@@ -82,6 +84,88 @@ type DBusInterfaceSkeletonner interface {
 }
 
 var _ DBusInterfaceSkeletonner = (*DBusInterfaceSkeleton)(nil)
+
+func classInitDBusInterfaceSkeletonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GDBusInterfaceSkeletonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GDBusInterfaceSkeletonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Flush() }); ok {
+		pclass.flush = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_flush)
+	}
+
+	if _, ok := goval.(interface {
+		GAuthorizeMethod(invocation *DBusMethodInvocation) bool
+	}); ok {
+		pclass.g_authorize_method = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method)
+	}
+
+	if _, ok := goval.(interface{ Info() *DBusInterfaceInfo }); ok {
+		pclass.get_info = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_get_info)
+	}
+
+	if _, ok := goval.(interface{ Properties() *glib.Variant }); ok {
+		pclass.get_properties = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_get_properties)
+	}
+}
+
+//export _gotk4_gio2_DBusInterfaceSkeletonClass_flush
+func _gotk4_gio2_DBusInterfaceSkeletonClass_flush(arg0 *C.GDBusInterfaceSkeleton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Flush() })
+
+	iface.Flush()
+}
+
+//export _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method
+func _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(arg0 *C.GDBusInterfaceSkeleton, arg1 *C.GDBusMethodInvocation) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		GAuthorizeMethod(invocation *DBusMethodInvocation) bool
+	})
+
+	var _invocation *DBusMethodInvocation // out
+
+	_invocation = wrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg1)))
+
+	ok := iface.GAuthorizeMethod(_invocation)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DBusInterfaceSkeletonClass_get_info
+func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GDBusInterfaceInfo) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Info() *DBusInterfaceInfo })
+
+	dBusInterfaceInfo := iface.Info()
+
+	cret = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(dBusInterfaceInfo)))
+
+	return cret
+}
+
+//export _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties
+func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Properties() *glib.Variant })
+
+	variant := iface.Properties()
+
+	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+
+	return cret
+}
 
 func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 	return &DBusInterfaceSkeleton{

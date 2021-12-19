@@ -9,12 +9,36 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern AtkLayer _gotk4_atk1_ObjectClass_get_layer(AtkObject*);
+// extern AtkObject* _gotk4_atk1_ObjectClass_get_parent(AtkObject*);
+// extern AtkRelationSet* _gotk4_atk1_ObjectClass_ref_relation_set(AtkObject*);
+// extern AtkRole _gotk4_atk1_ObjectClass_get_role(AtkObject*);
+// extern AtkStateSet* _gotk4_atk1_ObjectClass_ref_state_set(AtkObject*);
+// extern gchar* _gotk4_atk1_ObjectClass_get_description(AtkObject*);
+// extern gchar* _gotk4_atk1_ObjectClass_get_name(AtkObject*);
+// extern gchar* _gotk4_atk1_ObjectClass_get_object_locale(AtkObject*);
+// extern gint _gotk4_atk1_ObjectClass_get_index_in_parent(AtkObject*);
+// extern gint _gotk4_atk1_ObjectClass_get_mdi_zorder(AtkObject*);
+// extern gint _gotk4_atk1_ObjectClass_get_n_children(AtkObject*);
+// extern void _gotk4_atk1_ObjectClass_active_descendant_changed(AtkObject*, gpointer*);
+// extern void _gotk4_atk1_ObjectClass_children_changed(AtkObject*, guint, gpointer);
+// extern void _gotk4_atk1_ObjectClass_focus_event(AtkObject*, gboolean);
+// extern void _gotk4_atk1_ObjectClass_initialize(AtkObject*, gpointer);
+// extern void _gotk4_atk1_ObjectClass_property_change(AtkObject*, AtkPropertyValues*);
+// extern void _gotk4_atk1_ObjectClass_remove_property_change_handler(AtkObject*, guint);
+// extern void _gotk4_atk1_ObjectClass_set_description(AtkObject*, gchar*);
+// extern void _gotk4_atk1_ObjectClass_set_name(AtkObject*, gchar*);
+// extern void _gotk4_atk1_ObjectClass_set_parent(AtkObject*, AtkObject*);
+// extern void _gotk4_atk1_ObjectClass_set_role(AtkObject*, AtkRole);
+// extern void _gotk4_atk1_ObjectClass_state_change(AtkObject*, gchar*, gboolean);
+// extern void _gotk4_atk1_ObjectClass_visible_data_changed(AtkObject*);
 import "C"
 
 func init() {
@@ -901,13 +925,16 @@ func RoleRegister(name string) Role {
 type Function func() (ok bool)
 
 //export _gotk4_atk1_Function
-func _gotk4_atk1_Function(arg0 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg0))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_atk1_Function(arg1 C.gpointer) (cret C.gboolean) {
+	var fn Function
+	{
+		v := gbox.Get(uintptr(arg1))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(Function)
 	}
 
-	fn := v.(Function)
 	ok := fn()
 
 	if ok {
@@ -958,9 +985,6 @@ func BaseImplementorIface(obj ImplementorIfacer) *ImplementorIface {
 }
 
 // ObjectClassOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ObjectClassOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -1160,6 +1184,405 @@ type ObjectClass struct {
 var (
 	_ externglib.Objector = (*ObjectClass)(nil)
 )
+
+func classInitObjectClasser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.AtkObjectClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.AtkObjectClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActiveDescendantChanged(child *cgo.Handle) }); ok {
+		pclass.active_descendant_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_active_descendant_changed)
+	}
+
+	if _, ok := goval.(interface {
+		ChildrenChanged(changeIndex uint, changedChild cgo.Handle)
+	}); ok {
+		pclass.children_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_children_changed)
+	}
+
+	if _, ok := goval.(interface{ FocusEvent(focusIn bool) }); ok {
+		pclass.focus_event = (*[0]byte)(C._gotk4_atk1_ObjectClass_focus_event)
+	}
+
+	if _, ok := goval.(interface{ Description() string }); ok {
+		pclass.get_description = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_description)
+	}
+
+	if _, ok := goval.(interface{ IndexInParent() int }); ok {
+		pclass.get_index_in_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_index_in_parent)
+	}
+
+	if _, ok := goval.(interface{ Layer() Layer }); ok {
+		pclass.get_layer = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_layer)
+	}
+
+	if _, ok := goval.(interface{ MDIZOrder() int }); ok {
+		pclass.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_mdi_zorder)
+	}
+
+	if _, ok := goval.(interface{ NChildren() int }); ok {
+		pclass.get_n_children = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_n_children)
+	}
+
+	if _, ok := goval.(interface{ Name() string }); ok {
+		pclass.get_name = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_name)
+	}
+
+	if _, ok := goval.(interface{ ObjectLocale() string }); ok {
+		pclass.get_object_locale = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_object_locale)
+	}
+
+	if _, ok := goval.(interface{ Parent() *ObjectClass }); ok {
+		pclass.get_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_parent)
+	}
+
+	if _, ok := goval.(interface{ Role() Role }); ok {
+		pclass.get_role = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_role)
+	}
+
+	if _, ok := goval.(interface{ Initialize(data cgo.Handle) }); ok {
+		pclass.initialize = (*[0]byte)(C._gotk4_atk1_ObjectClass_initialize)
+	}
+
+	if _, ok := goval.(interface{ PropertyChange(values *PropertyValues) }); ok {
+		pclass.property_change = (*[0]byte)(C._gotk4_atk1_ObjectClass_property_change)
+	}
+
+	if _, ok := goval.(interface{ RefRelationSet() *RelationSet }); ok {
+		pclass.ref_relation_set = (*[0]byte)(C._gotk4_atk1_ObjectClass_ref_relation_set)
+	}
+
+	if _, ok := goval.(interface{ RefStateSet() *StateSet }); ok {
+		pclass.ref_state_set = (*[0]byte)(C._gotk4_atk1_ObjectClass_ref_state_set)
+	}
+
+	if _, ok := goval.(interface{ RemovePropertyChangeHandler(handlerId uint) }); ok {
+		pclass.remove_property_change_handler = (*[0]byte)(C._gotk4_atk1_ObjectClass_remove_property_change_handler)
+	}
+
+	if _, ok := goval.(interface{ SetDescription(description string) }); ok {
+		pclass.set_description = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_description)
+	}
+
+	if _, ok := goval.(interface{ SetName(name string) }); ok {
+		pclass.set_name = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_name)
+	}
+
+	if _, ok := goval.(interface{ SetParent(parent *ObjectClass) }); ok {
+		pclass.set_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_parent)
+	}
+
+	if _, ok := goval.(interface{ SetRole(role Role) }); ok {
+		pclass.set_role = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_role)
+	}
+
+	if _, ok := goval.(interface {
+		StateChange(name string, stateSet bool)
+	}); ok {
+		pclass.state_change = (*[0]byte)(C._gotk4_atk1_ObjectClass_state_change)
+	}
+
+	if _, ok := goval.(interface{ VisibleDataChanged() }); ok {
+		pclass.visible_data_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_visible_data_changed)
+	}
+}
+
+//export _gotk4_atk1_ObjectClass_active_descendant_changed
+func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.AtkObject, arg1 *C.gpointer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActiveDescendantChanged(child *cgo.Handle) })
+
+	var _child *cgo.Handle // out
+
+	if arg1 != nil {
+		_child = (*cgo.Handle)(unsafe.Pointer(arg1))
+	}
+
+	iface.ActiveDescendantChanged(_child)
+}
+
+//export _gotk4_atk1_ObjectClass_children_changed
+func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.AtkObject, arg1 C.guint, arg2 C.gpointer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ChildrenChanged(changeIndex uint, changedChild cgo.Handle)
+	})
+
+	var _changeIndex uint        // out
+	var _changedChild cgo.Handle // out
+
+	_changeIndex = uint(arg1)
+	_changedChild = (cgo.Handle)(unsafe.Pointer(arg2))
+
+	iface.ChildrenChanged(_changeIndex, _changedChild)
+}
+
+//export _gotk4_atk1_ObjectClass_focus_event
+func _gotk4_atk1_ObjectClass_focus_event(arg0 *C.AtkObject, arg1 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ FocusEvent(focusIn bool) })
+
+	var _focusIn bool // out
+
+	if arg1 != 0 {
+		_focusIn = true
+	}
+
+	iface.FocusEvent(_focusIn)
+}
+
+//export _gotk4_atk1_ObjectClass_get_description
+func _gotk4_atk1_ObjectClass_get_description(arg0 *C.AtkObject) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Description() string })
+
+	utf8 := iface.Description()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_index_in_parent
+func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.AtkObject) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ IndexInParent() int })
+
+	gint := iface.IndexInParent()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_layer
+func _gotk4_atk1_ObjectClass_get_layer(arg0 *C.AtkObject) (cret C.AtkLayer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Layer() Layer })
+
+	layer := iface.Layer()
+
+	cret = C.AtkLayer(layer)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_mdi_zorder
+func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.AtkObject) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MDIZOrder() int })
+
+	gint := iface.MDIZOrder()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_n_children
+func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.AtkObject) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ NChildren() int })
+
+	gint := iface.NChildren()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_name
+func _gotk4_atk1_ObjectClass_get_name(arg0 *C.AtkObject) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Name() string })
+
+	utf8 := iface.Name()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_object_locale
+func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.AtkObject) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ObjectLocale() string })
+
+	utf8 := iface.ObjectLocale()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_parent
+func _gotk4_atk1_ObjectClass_get_parent(arg0 *C.AtkObject) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Parent() *ObjectClass })
+
+	object := iface.Parent()
+
+	cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_role
+func _gotk4_atk1_ObjectClass_get_role(arg0 *C.AtkObject) (cret C.AtkRole) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Role() Role })
+
+	role := iface.Role()
+
+	cret = C.AtkRole(role)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_initialize
+func _gotk4_atk1_ObjectClass_initialize(arg0 *C.AtkObject, arg1 C.gpointer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Initialize(data cgo.Handle) })
+
+	var _data cgo.Handle // out
+
+	_data = (cgo.Handle)(unsafe.Pointer(arg1))
+
+	iface.Initialize(_data)
+}
+
+//export _gotk4_atk1_ObjectClass_property_change
+func _gotk4_atk1_ObjectClass_property_change(arg0 *C.AtkObject, arg1 *C.AtkPropertyValues) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PropertyChange(values *PropertyValues) })
+
+	var _values *PropertyValues // out
+
+	_values = (*PropertyValues)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.PropertyChange(_values)
+}
+
+//export _gotk4_atk1_ObjectClass_ref_relation_set
+func _gotk4_atk1_ObjectClass_ref_relation_set(arg0 *C.AtkObject) (cret *C.AtkRelationSet) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RefRelationSet() *RelationSet })
+
+	relationSet := iface.RefRelationSet()
+
+	cret = (*C.AtkRelationSet)(unsafe.Pointer(relationSet.Native()))
+	C.g_object_ref(C.gpointer(relationSet.Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_ref_state_set
+func _gotk4_atk1_ObjectClass_ref_state_set(arg0 *C.AtkObject) (cret *C.AtkStateSet) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RefStateSet() *StateSet })
+
+	stateSet := iface.RefStateSet()
+
+	cret = (*C.AtkStateSet)(unsafe.Pointer(stateSet.Native()))
+	C.g_object_ref(C.gpointer(stateSet.Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_remove_property_change_handler
+func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.AtkObject, arg1 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RemovePropertyChangeHandler(handlerId uint) })
+
+	var _handlerId uint // out
+
+	_handlerId = uint(arg1)
+
+	iface.RemovePropertyChangeHandler(_handlerId)
+}
+
+//export _gotk4_atk1_ObjectClass_set_description
+func _gotk4_atk1_ObjectClass_set_description(arg0 *C.AtkObject, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetDescription(description string) })
+
+	var _description string // out
+
+	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.SetDescription(_description)
+}
+
+//export _gotk4_atk1_ObjectClass_set_name
+func _gotk4_atk1_ObjectClass_set_name(arg0 *C.AtkObject, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetName(name string) })
+
+	var _name string // out
+
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.SetName(_name)
+}
+
+//export _gotk4_atk1_ObjectClass_set_parent
+func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.AtkObject, arg1 *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetParent(parent *ObjectClass) })
+
+	var _parent *ObjectClass // out
+
+	_parent = wrapObject(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.SetParent(_parent)
+}
+
+//export _gotk4_atk1_ObjectClass_set_role
+func _gotk4_atk1_ObjectClass_set_role(arg0 *C.AtkObject, arg1 C.AtkRole) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetRole(role Role) })
+
+	var _role Role // out
+
+	_role = Role(arg1)
+
+	iface.SetRole(_role)
+}
+
+//export _gotk4_atk1_ObjectClass_state_change
+func _gotk4_atk1_ObjectClass_state_change(arg0 *C.AtkObject, arg1 *C.gchar, arg2 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		StateChange(name string, stateSet bool)
+	})
+
+	var _name string   // out
+	var _stateSet bool // out
+
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	if arg2 != 0 {
+		_stateSet = true
+	}
+
+	iface.StateChange(_name, _stateSet)
+}
+
+//export _gotk4_atk1_ObjectClass_visible_data_changed
+func _gotk4_atk1_ObjectClass_visible_data_changed(arg0 *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ VisibleDataChanged() })
+
+	iface.VisibleDataChanged()
+}
 
 func wrapObject(obj *externglib.Object) *ObjectClass {
 	return &ObjectClass{

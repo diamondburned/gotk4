@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// SizeGroupOverrider contains methods that are overridable.
+type SizeGroupOverrider interface {
+}
+
 // SizeGroup provides a mechanism for grouping a number of widgets together so
 // they all request the same amount of space. This is typically useful when you
 // want a column of widgets to have the same size, but you can’t use a Grid
@@ -96,6 +100,14 @@ type SizeGroup struct {
 var (
 	_ externglib.Objector = (*SizeGroup)(nil)
 )
+
+func classInitSizeGrouper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
 	return &SizeGroup{

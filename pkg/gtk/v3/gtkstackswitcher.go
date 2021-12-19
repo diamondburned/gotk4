@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// StackSwitcherOverrider contains methods that are overridable.
+type StackSwitcherOverrider interface {
+}
+
 // StackSwitcher widget acts as a controller for a Stack; it shows a row of
 // buttons to switch between the various pages of the associated stack widget.
 //
@@ -52,6 +56,14 @@ var (
 	_ Containerer         = (*StackSwitcher)(nil)
 	_ externglib.Objector = (*StackSwitcher)(nil)
 )
+
+func classInitStackSwitcherer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 	return &StackSwitcher{

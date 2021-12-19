@@ -13,6 +13,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_ScrollableInterface_get_border(GtkScrollable*, GtkBorder*);
 import "C"
 
 func init() {
@@ -22,9 +23,6 @@ func init() {
 }
 
 // ScrollableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ScrollableOverrider interface {
 	// Border returns the size of a non-scrolling border around the outside of
 	// the scrollable.
@@ -103,6 +101,26 @@ type Scrollabler interface {
 }
 
 var _ Scrollabler = (*Scrollable)(nil)
+
+func ifaceInitScrollabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkScrollableInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_border = (*[0]byte)(C._gotk4_gtk4_ScrollableInterface_get_border)
+}
+
+//export _gotk4_gtk4_ScrollableInterface_get_border
+func _gotk4_gtk4_ScrollableInterface_get_border(arg0 *C.GtkScrollable, arg1 *C.GtkBorder) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ScrollableOverrider)
+
+	border, ok := iface.Border()
+
+	*arg1 = *(*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border)))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapScrollable(obj *externglib.Object) *Scrollable {
 	return &Scrollable{

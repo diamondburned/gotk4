@@ -14,8 +14,16 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GList* _gotk4_gtk4_CellLayoutIface_get_cells(GtkCellLayout*);
+// extern GtkCellArea* _gotk4_gtk4_CellLayoutIface_get_area(GtkCellLayout*);
+// extern void _gotk4_gtk4_CellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk4_CellLayoutIface_add_attribute(GtkCellLayout*, GtkCellRenderer*, char*, int);
+// extern void _gotk4_gtk4_CellLayoutIface_clear(GtkCellLayout*);
+// extern void _gotk4_gtk4_CellLayoutIface_clear_attributes(GtkCellLayout*, GtkCellRenderer*);
+// extern void _gotk4_gtk4_CellLayoutIface_pack_end(GtkCellLayout*, GtkCellRenderer*, gboolean);
+// extern void _gotk4_gtk4_CellLayoutIface_pack_start(GtkCellLayout*, GtkCellRenderer*, gboolean);
+// extern void _gotk4_gtk4_CellLayoutIface_reorder(GtkCellLayout*, GtkCellRenderer*, int);
 // extern void callbackDelete(gpointer);
-// void _gotk4_gtk4_CellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -29,19 +37,23 @@ func init() {
 type CellLayoutDataFunc func(cellLayout CellLayouter, cell CellRendererer, treeModel TreeModeller, iter *TreeIter)
 
 //export _gotk4_gtk4_CellLayoutDataFunc
-func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_CellLayoutDataFunc(arg1 *C.GtkCellLayout, arg2 *C.GtkCellRenderer, arg3 *C.GtkTreeModel, arg4 *C.GtkTreeIter, arg5 C.gpointer) {
+	var fn CellLayoutDataFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(CellLayoutDataFunc)
 	}
 
-	var cellLayout CellLayouter // out
-	var cell CellRendererer     // out
-	var treeModel TreeModeller  // out
-	var iter *TreeIter          // out
+	var _cellLayout CellLayouter // out
+	var _cell CellRendererer     // out
+	var _treeModel TreeModeller  // out
+	var _iter *TreeIter          // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.CellLayouter is nil")
 		}
@@ -55,10 +67,10 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellLayouter")
 		}
-		cellLayout = rv
+		_cellLayout = rv
 	}
 	{
-		objptr := unsafe.Pointer(arg1)
+		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -72,10 +84,10 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
-		cell = rv
+		_cell = rv
 	}
 	{
-		objptr := unsafe.Pointer(arg2)
+		objptr := unsafe.Pointer(arg3)
 		if objptr == nil {
 			panic("object of type gtk.TreeModeller is nil")
 		}
@@ -89,113 +101,11 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
-		treeModel = rv
+		_treeModel = rv
 	}
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
-	fn := v.(CellLayoutDataFunc)
-	fn(cellLayout, cell, treeModel, iter)
-}
-
-// CellLayoutOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type CellLayoutOverrider interface {
-	// AddAttribute adds an attribute mapping to the list in cell_layout.
-	//
-	// The column is the column of the model to get a value from, and the
-	// attribute is the parameter on cell to be set from the value. So for
-	// example if column 2 of the model contains strings, you could have the
-	// “text” attribute of a CellRendererText get its values from column 2.
-	//
-	// The function takes the following parameters:
-	//
-	//    - cell: CellRenderer.
-	//    - attribute on the renderer.
-	//    - column position on the model to get the attribute from.
-	//
-	AddAttribute(cell CellRendererer, attribute string, column int)
-	// Clear unsets all the mappings on all renderers on cell_layout and removes
-	// all renderers from cell_layout.
-	Clear()
-	// ClearAttributes clears all existing attributes previously set with
-	// gtk_cell_layout_set_attributes().
-	//
-	// The function takes the following parameters:
-	//
-	//    - cell to clear the attribute mapping on.
-	//
-	ClearAttributes(cell CellRendererer)
-	// Area returns the underlying CellArea which might be cell_layout if called
-	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
-	//
-	// The function returns the following values:
-	//
-	//    - cellArea (optional): cell area used by cell_layout, or NULL in case
-	//      no cell area is used.
-	//
-	Area() CellAreaer
-	// Cells returns the cell renderers which have been added to cell_layout.
-	//
-	// The function returns the following values:
-	//
-	//    - list: a list of cell renderers. The list, but not the renderers has
-	//      been newly allocated and should be freed with g_list_free() when no
-	//      longer needed.
-	//
-	Cells() []CellRendererer
-	// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then
-	// the cell is allocated no more space than it needs. Any unused space is
-	// divided evenly between cells for which expand is TRUE.
-	//
-	// Note that reusing the same cell renderer is not supported.
-	//
-	// The function takes the following parameters:
-	//
-	//    - cell: CellRenderer.
-	//    - expand: TRUE if cell is to be given extra space allocated to
-	//      cell_layout.
-	//
-	PackEnd(cell CellRendererer, expand bool)
-	// PackStart packs the cell into the beginning of cell_layout. If expand is
-	// FALSE, then the cell is allocated no more space than it needs. Any unused
-	// space is divided evenly between cells for which expand is TRUE.
-	//
-	// Note that reusing the same cell renderer is not supported.
-	//
-	// The function takes the following parameters:
-	//
-	//    - cell: CellRenderer.
-	//    - expand: TRUE if cell is to be given extra space allocated to
-	//      cell_layout.
-	//
-	PackStart(cell CellRendererer, expand bool)
-	// Reorder re-inserts cell at position.
-	//
-	// Note that cell has already to be packed into cell_layout for this to
-	// function properly.
-	//
-	// The function takes the following parameters:
-	//
-	//    - cell to reorder.
-	//    - position: new position to insert cell at.
-	//
-	Reorder(cell CellRendererer, position int)
-	// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
-	//
-	// This function is used instead of the standard attributes mapping for
-	// setting the column value, and should set the value of cell_layout’s cell
-	// renderer(s) as appropriate.
-	//
-	// func may be NULL to remove a previously set function.
-	//
-	// The function takes the following parameters:
-	//
-	//    - cell: CellRenderer.
-	//    - fn (optional) to use, or NULL.
-	//
-	SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc)
+	fn(_cellLayout, _cell, _treeModel, _iter)
 }
 
 // CellLayout: interface for packing cells

@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// FlattenListModelOverrider contains methods that are overridable.
+type FlattenListModelOverrider interface {
+}
+
 // FlattenListModel: GtkFlattenListModel is a list model that concatenates other
 // list models.
 //
@@ -36,6 +40,14 @@ type FlattenListModel struct {
 var (
 	_ externglib.Objector = (*FlattenListModel)(nil)
 )
+
+func classInitFlattenListModeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
 	return &FlattenListModel{

@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// TLSServerConnectionOverrider contains methods that are overridable.
+type TLSServerConnectionOverrider interface {
+}
+
 // TLSServerConnection is the server-side subclass of Connection, representing a
 // server-side TLS connection.
 type TLSServerConnection struct {
@@ -40,6 +44,9 @@ type TLSServerConnectioner interface {
 }
 
 var _ TLSServerConnectioner = (*TLSServerConnection)(nil)
+
+func ifaceInitTLSServerConnectioner(gifacePtr, data C.gpointer) {
+}
 
 func wrapTLSServerConnection(obj *externglib.Object) *TLSServerConnection {
 	return &TLSServerConnection{

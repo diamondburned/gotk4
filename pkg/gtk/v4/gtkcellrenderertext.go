@@ -6,12 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_CellRendererTextClass_edited(GtkCellRendererText*, char*, char*);
 import "C"
 
 func init() {
@@ -21,9 +23,6 @@ func init() {
 }
 
 // CellRendererTextOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CellRendererTextOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -49,6 +48,36 @@ type CellRendererText struct {
 var (
 	_ CellRendererer = (*CellRendererText)(nil)
 )
+
+func classInitCellRendererTexter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCellRendererTextClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCellRendererTextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Edited(path, newText string) }); ok {
+		pclass.edited = (*[0]byte)(C._gotk4_gtk4_CellRendererTextClass_edited)
+	}
+}
+
+//export _gotk4_gtk4_CellRendererTextClass_edited
+func _gotk4_gtk4_CellRendererTextClass_edited(arg0 *C.GtkCellRendererText, arg1 *C.char, arg2 *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Edited(path, newText string) })
+
+	var _path string    // out
+	var _newText string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_newText = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	iface.Edited(_path, _newText)
+}
 
 func wrapCellRendererText(obj *externglib.Object) *CellRendererText {
 	return &CellRendererText{

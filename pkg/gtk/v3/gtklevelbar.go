@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_LevelBarClass_offset_changed(GtkLevelBar*, gchar*);
 import "C"
 
 func init() {
@@ -36,9 +38,6 @@ const LEVEL_BAR_OFFSET_HIGH = "high"
 const LEVEL_BAR_OFFSET_LOW = "low"
 
 // LevelBarOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type LevelBarOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -90,6 +89,34 @@ var (
 	_ Widgetter           = (*LevelBar)(nil)
 	_ externglib.Objector = (*LevelBar)(nil)
 )
+
+func classInitLevelBarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkLevelBarClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkLevelBarClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ OffsetChanged(name string) }); ok {
+		pclass.offset_changed = (*[0]byte)(C._gotk4_gtk3_LevelBarClass_offset_changed)
+	}
+}
+
+//export _gotk4_gtk3_LevelBarClass_offset_changed
+func _gotk4_gtk3_LevelBarClass_offset_changed(arg0 *C.GtkLevelBar, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ OffsetChanged(name string) })
+
+	var _name string // out
+
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.OffsetChanged(_name)
+}
 
 func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	return &LevelBar{

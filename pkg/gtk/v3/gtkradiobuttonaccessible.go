@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// RadioButtonAccessibleOverrider contains methods that are overridable.
+type RadioButtonAccessibleOverrider interface {
+}
+
 type RadioButtonAccessible struct {
 	_ [0]func() // equal guard
 	ToggleButtonAccessible
@@ -30,6 +34,14 @@ type RadioButtonAccessible struct {
 var (
 	_ externglib.Objector = (*RadioButtonAccessible)(nil)
 )
+
+func classInitRadioButtonAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRadioButtonAccessible(obj *externglib.Object) *RadioButtonAccessible {
 	return &RadioButtonAccessible{

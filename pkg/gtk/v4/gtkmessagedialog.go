@@ -74,6 +74,10 @@ func (b ButtonsType) String() string {
 	}
 }
 
+// MessageDialogOverrider contains methods that are overridable.
+type MessageDialogOverrider interface {
+}
+
 // MessageDialog: GtkMessageDialog presents a dialog with some message text.
 //
 // !An example GtkMessageDialog (messagedialog.png)
@@ -139,6 +143,14 @@ var (
 	_ Widgetter           = (*MessageDialog)(nil)
 	_ externglib.Objector = (*MessageDialog)(nil)
 )
+
+func classInitMessageDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	return &MessageDialog{

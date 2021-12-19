@@ -4,6 +4,7 @@ package gendata
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -360,6 +361,8 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("C.gdk_pixbuf_non_anim_get_type"),
 	AbsoluteFilter("C.gdk_window_destroy_notify"),
 	AbsoluteFilter("C.gtk_print_capabilities_get_type"),
+	AbsoluteFilter("C.GdkPixbufAnimationClass"),
+	AbsoluteFilter("C.GdkPixbufAnimationIterClass"),
 
 	// Already handled in GLibAliases.
 	AbsoluteFilter("C.g_source_remove"),
@@ -787,25 +790,28 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 	return nil
 }
 
-const cGTKDialogNew2 = `
-	GtkWidget* _gotk4_gtk_dialog_new2(const gchar* title, GtkWindow* parent, GtkDialogFlags flags) {
-		return gtk_dialog_new_with_buttons(title, parent, flags, NULL, NULL);
-	}
-`
-
 func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
-	fg, ok := nsgen.File("gtkdialog.go")
-	if !ok {
-		return errors.New("missing file gtkdialog.go")
-	}
+	name := fmt.Sprintf(
+		"_gotk4_gtk%s_dialog_new2",
+		gir.MajorVersion(nsgen.Namespace().Namespace.Version),
+	)
+
+	fg := nsgen.MakeFile("gtkdialog-new.go")
 
 	h := fg.Header()
 	h.Import("unsafe")
 	h.Import("runtime")
-	h.AddCBlock(cGTKDialogNew2)
+	h.NeedsExternGLib()
+
+	h.AddCBlock(fmt.Sprintf(`
+		GtkWidget* %s(const gchar* title, GtkWindow* parent, GtkDialogFlags flags) {
+			return gtk_dialog_new_with_buttons(title, parent, flags, NULL, NULL);
+		}`,
+		name,
+	))
 
 	p := fg.Pen()
-	p.Line(`
+	p.Linef(`
 		// NewDialogWithFlags is a slightly more advanced version of NewDialog,
 		// allowing the user to construct a new dialog with the given
 		// constructor-only dialog flags.
@@ -815,7 +821,7 @@ func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
 			ctitle := C.CString(title)
 			defer C.free(unsafe.Pointer(ctitle))
 
-			w := C._gotk4_gtk_dialog_new2(
+			w := C.%s(
 				(*C.gchar)(unsafe.Pointer(ctitle)),
 				(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
 				(C.GtkDialogFlags)(flags),
@@ -824,7 +830,7 @@ func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
 
 			return wrapDialog(externglib.Take(unsafe.Pointer(w)))
 		}
-	`)
+	`, name)
 
 	return nil
 }

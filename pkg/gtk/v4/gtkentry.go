@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -17,6 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_EntryClass_activate(GtkEntry*);
 import "C"
 
 func init() {
@@ -55,9 +57,6 @@ func (e EntryIconPosition) String() string {
 }
 
 // EntryOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type EntryOverrider interface {
 	Activate()
 }
@@ -162,6 +161,30 @@ var (
 	_ Widgetter           = (*Entry)(nil)
 	_ externglib.Objector = (*Entry)(nil)
 )
+
+func classInitEntrier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkEntryClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkEntryClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk4_EntryClass_activate)
+	}
+}
+
+//export _gotk4_gtk4_EntryClass_activate
+func _gotk4_gtk4_EntryClass_activate(arg0 *C.GtkEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
 
 func wrapEntry(obj *externglib.Object) *Entry {
 	return &Entry{

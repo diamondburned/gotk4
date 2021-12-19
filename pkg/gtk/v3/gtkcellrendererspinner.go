@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// CellRendererSpinnerOverrider contains methods that are overridable.
+type CellRendererSpinnerOverrider interface {
+}
+
 // CellRendererSpinner renders a spinning animation in a cell, very similar to
 // Spinner. It can often be used as an alternative to a CellRendererProgress for
 // displaying indefinite activity, instead of actual progress.
@@ -38,6 +42,14 @@ type CellRendererSpinner struct {
 var (
 	_ CellRendererer = (*CellRendererSpinner)(nil)
 )
+
+func classInitCellRendererSpinnerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCellRendererSpinner(obj *externglib.Object) *CellRendererSpinner {
 	return &CellRendererSpinner{

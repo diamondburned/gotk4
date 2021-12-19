@@ -175,44 +175,57 @@ func (h *Header) AddMarshaler(glibGetType, goName string) {
 }
 
 func (h *Header) AddCallback(source *gir.NamespaceFindResult, callback *gir.Callback) {
-	h.AddCallbackHeader(CallbackCHeader(source, callback))
+	h.AddCallable(source, "", &callback.CallableAttrs)
+}
+
+func (h *Header) AddCallable(source *gir.NamespaceFindResult, name string, callable *gir.CallableAttrs) {
+	h.AddCallbackHeader(CallableCHeader(source, name, callable))
 }
 
 const callbackPrefix = "_gotk4"
 
-// CallbackExportedName creates the exported C name of the given callback from
+// CallableExportedName creates the exported C name of the given callback from
 // the given namespace.
-func CallbackExportedName(source *gir.NamespaceFindResult, callback *gir.Callback) string {
+func CallableExportedName(source *gir.NamespaceFindResult, callable *gir.CallableAttrs) string {
+	return ExportedName(source, strcases.PascalToGo(callable.Name))
+}
+
+func ExportedName(source *gir.NamespaceFindResult, suffixes ...string) string {
 	namespaceName := strings.ToLower(source.Namespace.Name)
 	if source.Namespace.Version != "" {
 		namespaceName += gir.MajorVersion(source.Namespace.Version)
 	}
 
-	goName := strcases.PascalToGo(callback.Name)
-
-	return fmt.Sprintf("%s_%s_%s", callbackPrefix, namespaceName, goName)
+	return callbackPrefix + "_" + namespaceName + "_" + strings.Join(suffixes, "_")
 }
 
-// CallbackCHeader renders the C function signature.
-func CallbackCHeader(source *gir.NamespaceFindResult, callback *gir.Callback) string {
+// CallableCHeader renders the C function signature.
+func CallableCHeader(source *gir.NamespaceFindResult, name string, callable *gir.CallableAttrs) string {
 	var ctail pen.Joints
-	if callback.Parameters != nil {
-		ctail = pen.NewJoints(", ", len(callback.Parameters.Parameters))
+	if callable.Parameters != nil {
+		ctail = pen.NewJoints(", ", len(callable.Parameters.Parameters)+1)
 
-		for _, param := range callback.Parameters.Parameters {
+		if callable.Parameters.InstanceParameter != nil {
+			ctail.Add(types.AnyTypeC(callable.Parameters.InstanceParameter.AnyType))
+		}
+		for _, param := range callable.Parameters.Parameters {
 			ctail.Add(types.AnyTypeC(param.AnyType))
+		}
+		if callable.Throws {
+			ctail.Add("GError**")
 		}
 	}
 
 	cReturn := "void"
-	if callback.ReturnValue != nil {
-		cReturn = types.AnyTypeC(callback.ReturnValue.AnyType)
+	if callable.ReturnValue != nil {
+		cReturn = types.AnyTypeC(callable.ReturnValue.AnyType)
 	}
 
-	return fmt.Sprintf(
-		"%s %s(%s);",
-		cReturn, CallbackExportedName(source, callback), ctail.Join(),
-	)
+	if name == "" {
+		name = CallableExportedName(source, callable)
+	}
+
+	return fmt.Sprintf("extern %s %s(%s);", cReturn, name, ctail.Join())
 }
 
 // AddCBlock adds a block of C code into the Cgo preamble.

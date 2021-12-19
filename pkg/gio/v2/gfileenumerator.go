@@ -17,7 +17,11 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern GFileInfo* _gotk4_gio2_FileEnumeratorClass_next_file(GFileEnumerator*, GCancellable*, GError**);
+// extern GList* _gotk4_gio2_FileEnumeratorClass_next_files_finish(GFileEnumerator*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileEnumeratorClass_close_finish(GFileEnumerator*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileEnumeratorClass_close_fn(GFileEnumerator*, GCancellable*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -27,24 +31,7 @@ func init() {
 }
 
 // FileEnumeratorOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type FileEnumeratorOverrider interface {
-	// CloseAsync: asynchronously closes the file enumerator.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned in
-	// g_file_enumerator_close_finish().
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - ioPriority: [I/O priority][io-priority] of the request.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a file enumerator, started from
 	// g_file_enumerator_close_async().
 	//
@@ -87,34 +74,6 @@ type FileEnumeratorOverrider interface {
 	//      returned object with g_object_unref() when no longer needed.
 	//
 	NextFile(ctx context.Context) (*FileInfo, error)
-	// NextFilesAsync: request information for a number of files from the
-	// enumerator asynchronously. When all i/o for the operation is finished the
-	// callback will be called with the requested information.
-	//
-	// See the documentation of Enumerator for information about the order of
-	// returned files.
-	//
-	// The callback can be called with less than num_files files in case of
-	// error or at the end of the enumerator. In case of a partial error the
-	// callback will be called with any succeeding items and no error, and on
-	// the next request the error will be reported. If a request is cancelled
-	// the callback will be called with G_IO_ERROR_CANCELLED.
-	//
-	// During an async request no other sync and async calls are allowed, and
-	// will result in G_IO_ERROR_PENDING errors.
-	//
-	// Any outstanding i/o request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - numFiles: number of file info objects to request.
-	//    - ioPriority: [I/O priority][io-priority] of the request.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	NextFilesAsync(ctx context.Context, numFiles, ioPriority int, callback AsyncReadyCallback)
 	// NextFilesFinish finishes the asynchronous operation started with
 	// g_file_enumerator_next_files_async().
 	//
@@ -161,6 +120,169 @@ type FileEnumerator struct {
 var (
 	_ externglib.Objector = (*FileEnumerator)(nil)
 )
+
+func classInitFileEnumeratorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GFileEnumeratorClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GFileEnumeratorClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		CloseFinish(result AsyncResulter) error
+	}); ok {
+		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_close_finish)
+	}
+
+	if _, ok := goval.(interface {
+		CloseFn(ctx context.Context) error
+	}); ok {
+		pclass.close_fn = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_close_fn)
+	}
+
+	if _, ok := goval.(interface {
+		NextFile(ctx context.Context) (*FileInfo, error)
+	}); ok {
+		pclass.next_file = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_next_file)
+	}
+
+	if _, ok := goval.(interface {
+		NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
+	}); ok {
+		pclass.next_files_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_next_files_finish)
+	}
+}
+
+//export _gotk4_gio2_FileEnumeratorClass_close_finish
+func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CloseFinish(result AsyncResulter) error
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.CloseFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_FileEnumeratorClass_close_fn
+func _gotk4_gio2_FileEnumeratorClass_close_fn(arg0 *C.GFileEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CloseFn(ctx context.Context) error
+	})
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	_goerr := iface.CloseFn(_cancellable)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_FileEnumeratorClass_next_file
+func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.GFileEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		NextFile(ctx context.Context) (*FileInfo, error)
+	})
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	fileInfo, _goerr := iface.NextFile(_cancellable)
+
+	if fileInfo != nil {
+		cret = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
+		C.g_object_ref(C.gpointer(fileInfo.Native()))
+	}
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_FileEnumeratorClass_next_files_finish
+func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	list, _goerr := iface.NextFilesFinish(_result)
+
+	for i := len(list) - 1; i >= 0; i-- {
+		src := list[i]
+		var dst *C.GFileInfo // out
+		dst = (*C.GFileInfo)(unsafe.Pointer((&src).Native()))
+		C.g_object_ref(C.gpointer((&src).Native()))
+		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
+	}
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 	return &FileEnumerator{

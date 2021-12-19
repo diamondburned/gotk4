@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// BooleanCellAccessibleOverrider contains methods that are overridable.
+type BooleanCellAccessibleOverrider interface {
+}
+
 type BooleanCellAccessible struct {
 	_ [0]func() // equal guard
 	RendererCellAccessible
@@ -30,6 +34,14 @@ type BooleanCellAccessible struct {
 var (
 	_ externglib.Objector = (*BooleanCellAccessible)(nil)
 )
+
+func classInitBooleanCellAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 	return &BooleanCellAccessible{

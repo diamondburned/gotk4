@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// AccelLabelOverrider contains methods that are overridable.
+type AccelLabelOverrider interface {
+}
+
 // AccelLabel widget is a subclass of Label that also displays an accelerator
 // key on the right of the label text, e.g. “Ctrl+S”. It is commonly used in
 // menus to show the keyboard short-cuts for commands.
@@ -64,6 +68,14 @@ type AccelLabel struct {
 var (
 	_ Miscer = (*AccelLabel)(nil)
 )
+
+func classInitAccelLabeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapAccelLabel(obj *externglib.Object) *AccelLabel {
 	return &AccelLabel{

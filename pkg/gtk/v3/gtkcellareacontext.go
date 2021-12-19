@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -14,6 +15,10 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CellAreaContextClass_allocate(GtkCellAreaContext*, gint, gint);
+// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(GtkCellAreaContext*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(GtkCellAreaContext*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_CellAreaContextClass_reset(GtkCellAreaContext*);
 import "C"
 
 func init() {
@@ -23,9 +28,6 @@ func init() {
 }
 
 // CellAreaContextOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CellAreaContextOverrider interface {
 	// Allocate allocates a width and/or a height for all rows which are to be
 	// rendered with context.
@@ -125,6 +127,94 @@ type CellAreaContext struct {
 var (
 	_ externglib.Objector = (*CellAreaContext)(nil)
 )
+
+func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Allocate(width, height int) }); ok {
+		pclass.allocate = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_allocate)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
+	}); ok {
+		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
+	}); ok {
+		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height)
+	}
+
+	if _, ok := goval.(interface{ Reset() }); ok {
+		pclass.reset = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_reset)
+	}
+}
+
+//export _gotk4_gtk3_CellAreaContextClass_allocate
+func _gotk4_gtk3_CellAreaContextClass_allocate(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Allocate(width, height int) })
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	iface.Allocate(_width, _height)
+}
+
+//export _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width
+func _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
+	})
+
+	var _width int // out
+
+	_width = int(arg1)
+
+	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_width)
+
+	*arg2 = C.gint(minimumHeight)
+	*arg3 = C.gint(naturalHeight)
+}
+
+//export _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height
+func _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
+	})
+
+	var _height int // out
+
+	_height = int(arg1)
+
+	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_height)
+
+	*arg2 = C.gint(minimumWidth)
+	*arg3 = C.gint(naturalWidth)
+}
+
+//export _gotk4_gtk3_CellAreaContextClass_reset
+func _gotk4_gtk3_CellAreaContextClass_reset(arg0 *C.GtkCellAreaContext) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Reset() })
+
+	iface.Reset()
+}
 
 func wrapCellAreaContext(obj *externglib.Object) *CellAreaContext {
 	return &CellAreaContext{

@@ -7,7 +7,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -17,6 +19,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CssProviderClass_parsing_error(GtkCssProvider*, GtkCssSection*, GError*);
 import "C"
 
 func init() {
@@ -69,9 +72,6 @@ func (c CSSProviderError) String() string {
 }
 
 // CSSProviderOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CSSProviderOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -114,6 +114,47 @@ type CSSProvider struct {
 var (
 	_ externglib.Objector = (*CSSProvider)(nil)
 )
+
+func classInitCSSProviderer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCssProviderClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCssProviderClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		ParsingError(section *CSSSection, err error)
+	}); ok {
+		pclass.parsing_error = (*[0]byte)(C._gotk4_gtk3_CssProviderClass_parsing_error)
+	}
+}
+
+//export _gotk4_gtk3_CssProviderClass_parsing_error
+func _gotk4_gtk3_CssProviderClass_parsing_error(arg0 *C.GtkCssProvider, arg1 *C.GtkCssSection, arg2 *C.GError) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ParsingError(section *CSSSection, err error)
+	})
+
+	var _section *CSSSection // out
+	var _err error           // out
+
+	_section = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.gtk_css_section_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_section)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
+		},
+	)
+	_err = gerror.Take(unsafe.Pointer(arg2))
+
+	iface.ParsingError(_section, _err)
+}
 
 func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
 	return &CSSProvider{

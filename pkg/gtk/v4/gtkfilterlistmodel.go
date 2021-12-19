@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// FilterListModelOverrider contains methods that are overridable.
+type FilterListModelOverrider interface {
+}
+
 // FilterListModel: GtkFilterListModel is a list model that filters the elements
 // of the underlying model according to a GtkFilter.
 //
@@ -40,6 +44,14 @@ type FilterListModel struct {
 var (
 	_ externglib.Objector = (*FilterListModel)(nil)
 )
+
+func classInitFilterListModeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
 	return &FilterListModel{

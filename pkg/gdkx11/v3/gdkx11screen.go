@@ -41,6 +41,10 @@ func X11GetDefaultScreen() int {
 	return _gint
 }
 
+// X11ScreenOverrider contains methods that are overridable.
+type X11ScreenOverrider interface {
+}
+
 type X11Screen struct {
 	_ [0]func() // equal guard
 	gdk.Screen
@@ -49,6 +53,14 @@ type X11Screen struct {
 var (
 	_ externglib.Objector = (*X11Screen)(nil)
 )
+
+func classInitX11Screener(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11Screen(obj *externglib.Object) *X11Screen {
 	return &X11Screen{

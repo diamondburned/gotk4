@@ -68,6 +68,10 @@ func (r RevealerTransitionType) String() string {
 	}
 }
 
+// RevealerOverrider contains methods that are overridable.
+type RevealerOverrider interface {
+}
+
 // Revealer widget is a container which animates the transition of its child
 // from invisible to visible.
 //
@@ -90,6 +94,14 @@ type Revealer struct {
 var (
 	_ Binner = (*Revealer)(nil)
 )
+
+func classInitRevealerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRevealer(obj *externglib.Object) *Revealer {
 	return &Revealer{

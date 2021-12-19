@@ -102,20 +102,23 @@ const SQRT2 = 1.414214
 type CompareDataFunc func(a, b cgo.Handle) (gint int)
 
 //export _gotk4_glib2_CompareDataFunc
-func _gotk4_glib2_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) (cret C.gint) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_glib2_CompareDataFunc(arg1 C.gconstpointer, arg2 C.gconstpointer, arg3 C.gpointer) (cret C.gint) {
+	var fn CompareDataFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(CompareDataFunc)
 	}
 
-	var a cgo.Handle // out
-	var b cgo.Handle // out
+	var _a cgo.Handle // out
+	var _b cgo.Handle // out
 
-	a = (cgo.Handle)(unsafe.Pointer(arg0))
-	b = (cgo.Handle)(unsafe.Pointer(arg1))
+	_a = (cgo.Handle)(unsafe.Pointer(arg1))
+	_b = (cgo.Handle)(unsafe.Pointer(arg2))
 
-	fn := v.(CompareDataFunc)
-	gint := fn(a, b)
+	gint := fn(_a, _b)
 
 	cret = C.gint(gint)
 
@@ -127,18 +130,21 @@ func _gotk4_glib2_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, ar
 type Func func(data cgo.Handle)
 
 //export _gotk4_glib2_Func
-func _gotk4_glib2_Func(arg0 C.gpointer, arg1 C.gpointer) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_glib2_Func(arg1 C.gpointer, arg2 C.gpointer) {
+	var fn Func
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(Func)
 	}
 
-	var data cgo.Handle // out
+	var _data cgo.Handle // out
 
-	data = (cgo.Handle)(unsafe.Pointer(arg0))
+	_data = (cgo.Handle)(unsafe.Pointer(arg1))
 
-	fn := v.(Func)
-	fn(data)
+	fn(_data)
 }
 
 // HFunc specifies the type of the function passed to g_hash_table_foreach(). It
@@ -147,20 +153,23 @@ func _gotk4_glib2_Func(arg0 C.gpointer, arg1 C.gpointer) {
 type HFunc func(key, value cgo.Handle)
 
 //export _gotk4_glib2_HFunc
-func _gotk4_glib2_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_glib2_HFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) {
+	var fn HFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(HFunc)
 	}
 
-	var key cgo.Handle   // out
-	var value cgo.Handle // out
+	var _key cgo.Handle   // out
+	var _value cgo.Handle // out
 
-	key = (cgo.Handle)(unsafe.Pointer(arg0))
-	value = (cgo.Handle)(unsafe.Pointer(arg1))
+	_key = (cgo.Handle)(unsafe.Pointer(arg1))
+	_value = (cgo.Handle)(unsafe.Pointer(arg2))
 
-	fn := v.(HFunc)
-	fn(key, value)
+	fn(_key, _value)
 }
 
 // TimeVal represents a precise time, with seconds and microseconds. Similar to

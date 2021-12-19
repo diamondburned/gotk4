@@ -22,6 +22,10 @@ func init() {
 
 const MAX_COMPOSE_LEN = 7
 
+// IMContextSimpleOverrider contains methods that are overridable.
+type IMContextSimpleOverrider interface {
+}
+
 // IMContextSimple: GtkIMContextSimple is an input method supporting table-based
 // input methods.
 //
@@ -54,6 +58,14 @@ type IMContextSimple struct {
 var (
 	_ IMContexter = (*IMContextSimple)(nil)
 )
+
+func classInitIMContextSimpler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapIMContextSimple(obj *externglib.Object) *IMContextSimple {
 	return &IMContextSimple{

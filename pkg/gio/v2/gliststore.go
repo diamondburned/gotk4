@@ -14,13 +14,17 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
+// extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_list_store_get_type()), F: marshalListStorer},
 	})
+}
+
+// ListStoreOverrider contains methods that are overridable.
+type ListStoreOverrider interface {
 }
 
 // ListStore is a simple implementation of Model that stores all items in
@@ -38,6 +42,14 @@ type ListStore struct {
 var (
 	_ externglib.Objector = (*ListStore)(nil)
 )
+
+func classInitListStorer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapListStore(obj *externglib.Object) *ListStore {
 	return &ListStore{

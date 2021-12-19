@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// GridOverrider contains methods that are overridable.
+type GridOverrider interface {
+}
+
 // Grid is a container which arranges its child widgets in rows and columns,
 // with arbitrary positions and horizontal/vertical spans.
 //
@@ -52,6 +56,14 @@ var (
 	_ Containerer         = (*Grid)(nil)
 	_ externglib.Objector = (*Grid)(nil)
 )
+
+func classInitGridder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGrid(obj *externglib.Object) *Grid {
 	return &Grid{

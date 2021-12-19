@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// BoolFilterOverrider contains methods that are overridable.
+type BoolFilterOverrider interface {
+}
+
 // BoolFilter: GtkBoolFilter evaluates a boolean GtkExpression to determine
 // whether to include items.
 type BoolFilter struct {
@@ -30,6 +34,14 @@ type BoolFilter struct {
 var (
 	_ externglib.Objector = (*BoolFilter)(nil)
 )
+
+func classInitBoolFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapBoolFilter(obj *externglib.Object) *BoolFilter {
 	return &BoolFilter{

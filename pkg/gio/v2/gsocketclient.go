@@ -16,7 +16,8 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_SocketClientClass_event(GSocketClient*, GSocketClientEvent, GSocketConnectable*, GIOStream*);
 import "C"
 
 func init() {
@@ -26,9 +27,6 @@ func init() {
 }
 
 // SocketClientOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SocketClientOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -59,6 +57,74 @@ type SocketClient struct {
 var (
 	_ externglib.Objector = (*SocketClient)(nil)
 )
+
+func classInitSocketClienter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GSocketClientClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GSocketClientClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+	}); ok {
+		pclass.event = (*[0]byte)(C._gotk4_gio2_SocketClientClass_event)
+	}
+}
+
+//export _gotk4_gio2_SocketClientClass_event
+func _gotk4_gio2_SocketClientClass_event(arg0 *C.GSocketClient, arg1 C.GSocketClientEvent, arg2 *C.GSocketConnectable, arg3 *C.GIOStream) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+	})
+
+	var _event SocketClientEvent        // out
+	var _connectable SocketConnectabler // out
+	var _connection IOStreamer          // out
+
+	_event = SocketClientEvent(arg1)
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.SocketConnectabler is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(SocketConnectabler)
+			return ok
+		})
+		rv, ok := casted.(SocketConnectabler)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
+		}
+		_connectable = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg3)
+		if objptr == nil {
+			panic("object of type gio.IOStreamer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(IOStreamer)
+			return ok
+		})
+		rv, ok := casted.(IOStreamer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.IOStreamer")
+		}
+		_connection = rv
+	}
+
+	iface.Event(_event, _connectable, _connection)
+}
 
 func wrapSocketClient(obj *externglib.Object) *SocketClient {
 	return &SocketClient{

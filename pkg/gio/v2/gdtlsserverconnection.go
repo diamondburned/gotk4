@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// DTLSServerConnectionOverrider contains methods that are overridable.
+type DTLSServerConnectionOverrider interface {
+}
+
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
 type DTLSServerConnection struct {
@@ -38,6 +42,9 @@ type DTLSServerConnectioner interface {
 }
 
 var _ DTLSServerConnectioner = (*DTLSServerConnection)(nil)
+
+func ifaceInitDTLSServerConnectioner(gifacePtr, data C.gpointer) {
+}
 
 func wrapDTLSServerConnection(obj *externglib.Object) *DTLSServerConnection {
 	return &DTLSServerConnection{

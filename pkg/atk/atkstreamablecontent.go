@@ -14,6 +14,10 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern GIOChannel* _gotk4_atk1_StreamableContentIface_get_stream(AtkStreamableContent*, gchar*);
+// extern gchar* _gotk4_atk1_StreamableContentIface_get_mime_type(AtkStreamableContent*, gint);
+// extern gchar* _gotk4_atk1_StreamableContentIface_get_uri(AtkStreamableContent*, gchar*);
+// extern gint _gotk4_atk1_StreamableContentIface_get_n_mime_types(AtkStreamableContent*);
 import "C"
 
 func init() {
@@ -23,9 +27,6 @@ func init() {
 }
 
 // StreamableContentOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type StreamableContentOverrider interface {
 	// MIMEType gets the character string of the specified mime type. The first
 	// mime type is at position 0, the second at position 1, and so on.
@@ -121,6 +122,78 @@ type StreamableContenter interface {
 }
 
 var _ StreamableContenter = (*StreamableContent)(nil)
+
+func ifaceInitStreamableContenter(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkStreamableContentIface)(unsafe.Pointer(gifacePtr))
+	iface.get_mime_type = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_mime_type)
+	iface.get_n_mime_types = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_n_mime_types)
+	iface.get_stream = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_stream)
+	iface.get_uri = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_uri)
+}
+
+//export _gotk4_atk1_StreamableContentIface_get_mime_type
+func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.AtkStreamableContent, arg1 C.gint) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(StreamableContentOverrider)
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := iface.MIMEType(_i)
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_StreamableContentIface_get_n_mime_types
+func _gotk4_atk1_StreamableContentIface_get_n_mime_types(arg0 *C.AtkStreamableContent) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(StreamableContentOverrider)
+
+	gint := iface.NMIMETypes()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_StreamableContentIface_get_stream
+func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.AtkStreamableContent, arg1 *C.gchar) (cret *C.GIOChannel) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(StreamableContentOverrider)
+
+	var _mimeType string // out
+
+	_mimeType = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ioChannel := iface.Stream(_mimeType)
+
+	cret = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(ioChannel)))
+
+	return cret
+}
+
+//export _gotk4_atk1_StreamableContentIface_get_uri
+func _gotk4_atk1_StreamableContentIface_get_uri(arg0 *C.AtkStreamableContent, arg1 *C.gchar) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(StreamableContentOverrider)
+
+	var _mimeType string // out
+
+	_mimeType = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	utf8 := iface.URI(_mimeType)
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
 
 func wrapStreamableContent(obj *externglib.Object) *StreamableContent {
 	return &StreamableContent{

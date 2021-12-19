@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// LayoutOverrider contains methods that are overridable.
+type LayoutOverrider interface {
+}
+
 // Layout is similar to DrawingArea in that it’s a “blank slate” and doesn’t do
 // anything except paint a blank background by default. It’s different in that
 // it supports scrolling natively due to implementing Scrollable, and can
@@ -48,6 +52,14 @@ var (
 	_ Containerer         = (*Layout)(nil)
 	_ externglib.Objector = (*Layout)(nil)
 )
+
+func classInitLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapLayout(obj *externglib.Object) *Layout {
 	return &Layout{

@@ -13,8 +13,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_CustomFilterFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk4_CustomFilterFunc(gpointer, gpointer);
 import "C"
 
 func init() {
@@ -31,24 +31,31 @@ func init() {
 type CustomFilterFunc func(item *externglib.Object) (ok bool)
 
 //export _gotk4_gtk4_CustomFilterFunc
-func _gotk4_gtk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_CustomFilterFunc(arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
+	var fn CustomFilterFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(CustomFilterFunc)
 	}
 
-	var item *externglib.Object // out
+	var _item *externglib.Object // out
 
-	item = externglib.Take(unsafe.Pointer(arg0))
+	_item = externglib.Take(unsafe.Pointer(arg1))
 
-	fn := v.(CustomFilterFunc)
-	ok := fn(item)
+	ok := fn(_item)
 
 	if ok {
 		cret = C.TRUE
 	}
 
 	return cret
+}
+
+// CustomFilterOverrider contains methods that are overridable.
+type CustomFilterOverrider interface {
 }
 
 // CustomFilter: GtkCustomFilter determines whether to include items with a
@@ -61,6 +68,14 @@ type CustomFilter struct {
 var (
 	_ externglib.Objector = (*CustomFilter)(nil)
 )
+
+func classInitCustomFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCustomFilter(obj *externglib.Object) *CustomFilter {
 	return &CustomFilter{

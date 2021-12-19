@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// PopoverAccessibleOverrider contains methods that are overridable.
+type PopoverAccessibleOverrider interface {
+}
+
 type PopoverAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -30,6 +34,14 @@ type PopoverAccessible struct {
 var (
 	_ externglib.Objector = (*PopoverAccessible)(nil)
 )
+
+func classInitPopoverAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapPopoverAccessible(obj *externglib.Object) *PopoverAccessible {
 	return &PopoverAccessible{

@@ -16,7 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -48,6 +48,10 @@ func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 	return _socketConnection
 }
 
+// SocketConnectionOverrider contains methods that are overridable.
+type SocketConnectionOverrider interface {
+}
+
 // SocketConnection is a OStream for a connected socket. They can be created
 // either by Client when connecting to a host, or by Listener when accepting a
 // new client.
@@ -71,6 +75,14 @@ type SocketConnection struct {
 var (
 	_ IOStreamer = (*SocketConnection)(nil)
 )
+
+func classInitSocketConnectioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSocketConnection(obj *externglib.Object) *SocketConnection {
 	return &SocketConnection{

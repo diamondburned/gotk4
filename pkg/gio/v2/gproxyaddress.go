@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// ProxyAddressOverrider contains methods that are overridable.
+type ProxyAddressOverrider interface {
+}
+
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress struct {
 	_ [0]func() // equal guard
@@ -29,6 +33,14 @@ type ProxyAddress struct {
 var (
 	_ SocketAddresser = (*ProxyAddress)(nil)
 )
+
+func classInitProxyAddresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapProxyAddress(obj *externglib.Object) *ProxyAddress {
 	return &ProxyAddress{

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -16,6 +17,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_PlugClass_embedded(GtkPlug*);
 import "C"
 
 func init() {
@@ -25,9 +27,6 @@ func init() {
 }
 
 // PlugOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PlugOverrider interface {
 	Embedded()
 }
@@ -56,6 +55,30 @@ type Plug struct {
 var (
 	_ Binner = (*Plug)(nil)
 )
+
+func classInitPlugger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkPlugClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkPlugClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Embedded() }); ok {
+		pclass.embedded = (*[0]byte)(C._gotk4_gtk3_PlugClass_embedded)
+	}
+}
+
+//export _gotk4_gtk3_PlugClass_embedded
+func _gotk4_gtk3_PlugClass_embedded(arg0 *C.GtkPlug) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Embedded() })
+
+	iface.Embedded()
+}
 
 func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{

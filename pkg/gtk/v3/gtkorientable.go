@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// OrientableOverrider contains methods that are overridable.
+type OrientableOverrider interface {
+}
+
 // Orientable interface is implemented by all widgets that can be oriented
 // horizontally or vertically. Historically, such widgets have been realized as
 // subclasses of a common base class (e.g Box/HBox/VBox or Scale/HScale/VScale).
@@ -49,6 +53,9 @@ type Orientabler interface {
 }
 
 var _ Orientabler = (*Orientable)(nil)
+
+func ifaceInitOrientabler(gifacePtr, data C.gpointer) {
+}
 
 func wrapOrientable(obj *externglib.Object) *Orientable {
 	return &Orientable{

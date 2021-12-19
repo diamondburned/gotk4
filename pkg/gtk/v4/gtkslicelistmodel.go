@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// SliceListModelOverrider contains methods that are overridable.
+type SliceListModelOverrider interface {
+}
+
 // SliceListModel: GtkSliceListModel is a list model that presents a slice of
 // another model.
 //
@@ -37,6 +41,14 @@ type SliceListModel struct {
 var (
 	_ externglib.Objector = (*SliceListModel)(nil)
 )
+
+func classInitSliceListModeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSliceListModel(obj *externglib.Object) *SliceListModel {
 	return &SliceListModel{

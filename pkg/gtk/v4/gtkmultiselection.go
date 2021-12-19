@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// MultiSelectionOverrider contains methods that are overridable.
+type MultiSelectionOverrider interface {
+}
+
 // MultiSelection: GtkMultiSelection is a GtkSelectionModel that allows
 // selecting multiple elements.
 type MultiSelection struct {
@@ -33,6 +37,14 @@ type MultiSelection struct {
 var (
 	_ externglib.Objector = (*MultiSelection)(nil)
 )
+
+func classInitMultiSelectioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMultiSelection(obj *externglib.Object) *MultiSelection {
 	return &MultiSelection{

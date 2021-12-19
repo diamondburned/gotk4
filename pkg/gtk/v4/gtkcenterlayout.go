@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// CenterLayoutOverrider contains methods that are overridable.
+type CenterLayoutOverrider interface {
+}
+
 // CenterLayout: GtkCenterLayout is a layout manager that manages up to three
 // children.
 //
@@ -36,6 +40,14 @@ type CenterLayout struct {
 var (
 	_ LayoutManagerer = (*CenterLayout)(nil)
 )
+
+func classInitCenterLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCenterLayout(obj *externglib.Object) *CenterLayout {
 	return &CenterLayout{

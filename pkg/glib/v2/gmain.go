@@ -15,8 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <glib.h>
+// extern gboolean _gotk4_glib2_SourceFunc(gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_glib2_SourceFunc(gpointer);
 import "C"
 
 func init() {
@@ -73,13 +73,16 @@ const SOURCE_REMOVE = false
 type SourceFunc func() (ok bool)
 
 //export _gotk4_glib2_SourceFunc
-func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg0))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_glib2_SourceFunc(arg1 C.gpointer) (cret C.gboolean) {
+	var fn SourceFunc
+	{
+		v := gbox.Get(uintptr(arg1))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(SourceFunc)
 	}
 
-	fn := v.(SourceFunc)
 	ok := fn()
 
 	if ok {

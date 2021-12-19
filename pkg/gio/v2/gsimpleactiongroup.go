@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// SimpleActionGroupOverrider contains methods that are overridable.
+type SimpleActionGroupOverrider interface {
+}
+
 // SimpleActionGroup is a hash table filled with #GAction objects, implementing
 // the Group and Map interfaces.
 type SimpleActionGroup struct {
@@ -35,6 +39,14 @@ type SimpleActionGroup struct {
 var (
 	_ externglib.Objector = (*SimpleActionGroup)(nil)
 )
+
+func classInitSimpleActionGrouper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSimpleActionGroup(obj *externglib.Object) *SimpleActionGroup {
 	return &SimpleActionGroup{

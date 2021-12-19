@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// FilterInputStreamOverrider contains methods that are overridable.
+type FilterInputStreamOverrider interface {
+}
+
 // FilterInputStream: base class for input stream implementations that perform
 // some kind of filtering operation on a base stream. Typical examples of
 // filtering operations are character set conversion, compression and byte order
@@ -43,6 +47,14 @@ type FilterInputStreamer interface {
 }
 
 var _ FilterInputStreamer = (*FilterInputStream)(nil)
+
+func classInitFilterInputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFilterInputStream(obj *externglib.Object) *FilterInputStream {
 	return &FilterInputStream{

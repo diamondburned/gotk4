@@ -16,7 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// void _gotk4_gtk4_IconViewForEachFunc(GtkIconView*, GtkTreePath*, gpointer);
+// extern void _gotk4_gtk4_IconViewForEachFunc(GtkIconView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {
@@ -75,20 +75,23 @@ func (i IconViewDropPosition) String() string {
 type IconViewForEachFunc func(iconView *IconView, path *TreePath)
 
 //export _gotk4_gtk4_IconViewForEachFunc
-func _gotk4_gtk4_IconViewForEachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_IconViewForEachFunc(arg1 *C.GtkIconView, arg2 *C.GtkTreePath, arg3 C.gpointer) {
+	var fn IconViewForEachFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(IconViewForEachFunc)
 	}
 
-	var iconView *IconView // out
-	var path *TreePath     // out
+	var _iconView *IconView // out
+	var _path *TreePath     // out
 
-	iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg0)))
-	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(IconViewForEachFunc)
-	fn(iconView, path)
+	fn(_iconView, _path)
 }
 
 // IconView: GtkIconView is a widget which displays data in a grid of icons.

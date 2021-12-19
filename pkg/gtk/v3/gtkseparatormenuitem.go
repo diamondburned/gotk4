@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// SeparatorMenuItemOverrider contains methods that are overridable.
+type SeparatorMenuItemOverrider interface {
+}
+
 // SeparatorMenuItem is a separator used to group items within a menu. It
 // displays a horizontal line with a shadow to make it appear sunken into the
 // interface.
@@ -39,6 +43,14 @@ var (
 	_ Binner              = (*SeparatorMenuItem)(nil)
 	_ externglib.Objector = (*SeparatorMenuItem)(nil)
 )
+
+func classInitSeparatorMenuItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 	return &SeparatorMenuItem{

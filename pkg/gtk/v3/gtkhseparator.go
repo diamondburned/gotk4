@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// HSeparatorOverrider contains methods that are overridable.
+type HSeparatorOverrider interface {
+}
+
 // HSeparator widget is a horizontal separator, used to group the widgets within
 // a window. It displays a horizontal line with a shadow to make it appear
 // sunken into the interface.
@@ -41,6 +45,14 @@ var (
 	_ Widgetter           = (*HSeparator)(nil)
 	_ externglib.Objector = (*HSeparator)(nil)
 )
+
+func classInitHSeparatorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapHSeparator(obj *externglib.Object) *HSeparator {
 	return &HSeparator{

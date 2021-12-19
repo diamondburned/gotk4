@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ArrowAccessibleOverrider contains methods that are overridable.
+type ArrowAccessibleOverrider interface {
+}
+
 type ArrowAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible
@@ -32,6 +36,14 @@ type ArrowAccessible struct {
 var (
 	_ externglib.Objector = (*ArrowAccessible)(nil)
 )
+
+func classInitArrowAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapArrowAccessible(obj *externglib.Object) *ArrowAccessible {
 	return &ArrowAccessible{

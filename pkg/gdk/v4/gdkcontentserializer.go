@@ -18,7 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -357,7 +357,9 @@ func (serializer *ContentSerializer) ReturnError(err error) {
 	var _arg1 *C.GError               // out
 
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	C.gdk_content_serializer_return_error(_arg0, _arg1)
 	runtime.KeepAlive(serializer)

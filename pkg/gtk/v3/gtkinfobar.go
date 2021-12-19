@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_InfoBarClass_close(GtkInfoBar*);
+// extern void _gotk4_gtk3_InfoBarClass_response(GtkInfoBar*, gint);
 import "C"
 
 func init() {
@@ -24,9 +27,6 @@ func init() {
 }
 
 // InfoBarOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type InfoBarOverrider interface {
 	Close()
 	// Response emits the “response” signal with the given response_id.
@@ -117,6 +117,46 @@ var (
 	_ Containerer         = (*InfoBar)(nil)
 	_ externglib.Objector = (*InfoBar)(nil)
 )
+
+func classInitInfoBarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkInfoBarClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkInfoBarClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Close() }); ok {
+		pclass.close = (*[0]byte)(C._gotk4_gtk3_InfoBarClass_close)
+	}
+
+	if _, ok := goval.(interface{ Response(responseId int) }); ok {
+		pclass.response = (*[0]byte)(C._gotk4_gtk3_InfoBarClass_response)
+	}
+}
+
+//export _gotk4_gtk3_InfoBarClass_close
+func _gotk4_gtk3_InfoBarClass_close(arg0 *C.GtkInfoBar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Close() })
+
+	iface.Close()
+}
+
+//export _gotk4_gtk3_InfoBarClass_response
+func _gotk4_gtk3_InfoBarClass_response(arg0 *C.GtkInfoBar, arg1 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Response(responseId int) })
+
+	var _responseId int // out
+
+	_responseId = int(arg1)
+
+	iface.Response(_responseId)
+}
 
 func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	return &InfoBar{

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_LinkButtonClass_activate_link(GtkLinkButton*);
 import "C"
 
 func init() {
@@ -24,9 +26,6 @@ func init() {
 }
 
 // LinkButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type LinkButtonOverrider interface {
 	// The function returns the following values:
 	//
@@ -62,6 +61,36 @@ var (
 	_ Binner              = (*LinkButton)(nil)
 	_ externglib.Objector = (*LinkButton)(nil)
 )
+
+func classInitLinkButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkLinkButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkLinkButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActivateLink() bool }); ok {
+		pclass.activate_link = (*[0]byte)(C._gotk4_gtk3_LinkButtonClass_activate_link)
+	}
+}
+
+//export _gotk4_gtk3_LinkButtonClass_activate_link
+func _gotk4_gtk3_LinkButtonClass_activate_link(arg0 *C.GtkLinkButton) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActivateLink() bool })
+
+	ok := iface.ActivateLink()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapLinkButton(obj *externglib.Object) *LinkButton {
 	return &LinkButton{

@@ -87,6 +87,10 @@ func (i ImageType) String() string {
 	}
 }
 
+// ImageOverrider contains methods that are overridable.
+type ImageOverrider interface {
+}
+
 // Image widget displays an image. Various kinds of object can be displayed as
 // an image; most typically, you would load a Pixbuf ("pixel buffer") from a
 // file, and then display that. There’s a convenience function to do this,
@@ -151,6 +155,14 @@ type Image struct {
 var (
 	_ Miscer = (*Image)(nil)
 )
+
+func classInitImager(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapImage(obj *externglib.Object) *Image {
 	return &Image{

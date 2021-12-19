@@ -14,6 +14,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GVariant* _gotk4_gtk4_ActionableInterface_get_action_target_value(GtkActionable*);
+// extern char* _gotk4_gtk4_ActionableInterface_get_action_name(GtkActionable*);
+// extern void _gotk4_gtk4_ActionableInterface_set_action_name(GtkActionable*, char*);
+// extern void _gotk4_gtk4_ActionableInterface_set_action_target_value(GtkActionable*, GVariant*);
 import "C"
 
 func init() {
@@ -23,9 +27,6 @@ func init() {
 }
 
 // ActionableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ActionableOverrider interface {
 	// ActionName gets the action name for actionable.
 	//
@@ -126,6 +127,78 @@ type Actionabler interface {
 }
 
 var _ Actionabler = (*Actionable)(nil)
+
+func ifaceInitActionabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkActionableInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_action_name = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_get_action_name)
+	iface.get_action_target_value = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_get_action_target_value)
+	iface.set_action_name = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_set_action_name)
+	iface.set_action_target_value = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_set_action_target_value)
+}
+
+//export _gotk4_gtk4_ActionableInterface_get_action_name
+func _gotk4_gtk4_ActionableInterface_get_action_name(arg0 *C.GtkActionable) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionableOverrider)
+
+	utf8 := iface.ActionName()
+
+	if utf8 != "" {
+		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_ActionableInterface_get_action_target_value
+func _gotk4_gtk4_ActionableInterface_get_action_target_value(arg0 *C.GtkActionable) (cret *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionableOverrider)
+
+	variant := iface.ActionTargetValue()
+
+	if variant != nil {
+		cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_ActionableInterface_set_action_name
+func _gotk4_gtk4_ActionableInterface_set_action_name(arg0 *C.GtkActionable, arg1 *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionableOverrider)
+
+	var _actionName string // out
+
+	if arg1 != nil {
+		_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	}
+
+	iface.SetActionName(_actionName)
+}
+
+//export _gotk4_gtk4_ActionableInterface_set_action_target_value
+func _gotk4_gtk4_ActionableInterface_set_action_target_value(arg0 *C.GtkActionable, arg1 *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionableOverrider)
+
+	var _targetValue *glib.Variant // out
+
+	if arg1 != nil {
+		_targetValue = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		C.g_variant_ref(arg1)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_targetValue)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+
+	iface.SetActionTargetValue(_targetValue)
+}
 
 func wrapActionable(obj *externglib.Object) *Actionable {
 	return &Actionable{

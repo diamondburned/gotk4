@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// ActionBarOverrider contains methods that are overridable.
+type ActionBarOverrider interface {
+}
+
 // ActionBar is designed to present contextual actions. It is expected to be
 // displayed below the content and expand horizontally to fill the area.
 //
@@ -43,6 +47,14 @@ type ActionBar struct {
 var (
 	_ Binner = (*ActionBar)(nil)
 )
+
+func classInitActionBarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapActionBar(obj *externglib.Object) *ActionBar {
 	return &ActionBar{

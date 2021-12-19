@@ -6,12 +6,15 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern void _gotk4_atk1_MiscClass_threads_enter(AtkMisc*);
+// extern void _gotk4_atk1_MiscClass_threads_leave(AtkMisc*);
 import "C"
 
 func init() {
@@ -21,9 +24,6 @@ func init() {
 }
 
 // MiscOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type MiscOverrider interface {
 	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
 	// (This method is implemented by the toolkit ATK implementation layer; for
@@ -55,6 +55,42 @@ type Misc struct {
 var (
 	_ externglib.Objector = (*Misc)(nil)
 )
+
+func classInitMiscer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.AtkMiscClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.AtkMiscClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ThreadsEnter() }); ok {
+		pclass.threads_enter = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_enter)
+	}
+
+	if _, ok := goval.(interface{ ThreadsLeave() }); ok {
+		pclass.threads_leave = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_leave)
+	}
+}
+
+//export _gotk4_atk1_MiscClass_threads_enter
+func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ThreadsEnter() })
+
+	iface.ThreadsEnter()
+}
+
+//export _gotk4_atk1_MiscClass_threads_leave
+func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.AtkMisc) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ThreadsLeave() })
+
+	iface.ThreadsLeave()
+}
 
 func wrapMisc(obj *externglib.Object) *Misc {
 	return &Misc{

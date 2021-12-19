@@ -15,11 +15,12 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// GtkWidget* _gotk4_gtk4_FlowBoxCreateWidgetFunc(gpointer, gpointer);
+// extern GtkWidget* _gotk4_gtk4_FlowBoxCreateWidgetFunc(gpointer, gpointer);
+// extern gboolean _gotk4_gtk4_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
+// extern int _gotk4_gtk4_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
+// extern void _gotk4_gtk4_FlowBoxChildClass_activate(GtkFlowBoxChild*);
+// extern void _gotk4_gtk4_FlowBoxForEachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk4_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
-// int _gotk4_gtk4_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
-// void _gotk4_gtk4_FlowBoxForEachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 import "C"
 
 func init() {
@@ -36,18 +37,21 @@ func init() {
 type FlowBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgetter)
 
 //export _gotk4_gtk4_FlowBoxCreateWidgetFunc
-func _gotk4_gtk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_FlowBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GtkWidget) {
+	var fn FlowBoxCreateWidgetFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FlowBoxCreateWidgetFunc)
 	}
 
-	var item *externglib.Object // out
+	var _item *externglib.Object // out
 
-	item = externglib.Take(unsafe.Pointer(arg0))
+	_item = externglib.Take(unsafe.Pointer(arg1))
 
-	fn := v.(FlowBoxCreateWidgetFunc)
-	widget := fn(item)
+	widget := fn(_item)
 
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	C.g_object_ref(C.gpointer(widget.Native()))
@@ -62,18 +66,21 @@ func _gotk4_gtk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret
 type FlowBoxFilterFunc func(child *FlowBoxChild) (ok bool)
 
 //export _gotk4_gtk4_FlowBoxFilterFunc
-func _gotk4_gtk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_FlowBoxFilterFunc(arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cret C.gboolean) {
+	var fn FlowBoxFilterFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FlowBoxFilterFunc)
 	}
 
-	var child *FlowBoxChild // out
+	var _child *FlowBoxChild // out
 
-	child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg0)))
+	_child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
 
-	fn := v.(FlowBoxFilterFunc)
-	ok := fn(child)
+	ok := fn(_child)
 
 	if ok {
 		cret = C.TRUE
@@ -88,20 +95,23 @@ func _gotk4_gtk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cr
 type FlowBoxForEachFunc func(box *FlowBox, child *FlowBoxChild)
 
 //export _gotk4_gtk4_FlowBoxForEachFunc
-func _gotk4_gtk4_FlowBoxForEachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_FlowBoxForEachFunc(arg1 *C.GtkFlowBox, arg2 *C.GtkFlowBoxChild, arg3 C.gpointer) {
+	var fn FlowBoxForEachFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FlowBoxForEachFunc)
 	}
 
-	var box *FlowBox        // out
-	var child *FlowBoxChild // out
+	var _box *FlowBox        // out
+	var _child *FlowBoxChild // out
 
-	box = wrapFlowBox(externglib.Take(unsafe.Pointer(arg0)))
-	child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
+	_box = wrapFlowBox(externglib.Take(unsafe.Pointer(arg1)))
+	_child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg2)))
 
-	fn := v.(FlowBoxForEachFunc)
-	fn(box, child)
+	fn(_box, _child)
 }
 
 // FlowBoxSortFunc: function to compare two children to determine which should
@@ -109,20 +119,23 @@ func _gotk4_gtk4_FlowBoxForEachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild,
 type FlowBoxSortFunc func(child1, child2 *FlowBoxChild) (gint int)
 
 //export _gotk4_gtk4_FlowBoxSortFunc
-func _gotk4_gtk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cret C.int) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_FlowBoxSortFunc(arg1 *C.GtkFlowBoxChild, arg2 *C.GtkFlowBoxChild, arg3 C.gpointer) (cret C.int) {
+	var fn FlowBoxSortFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FlowBoxSortFunc)
 	}
 
-	var child1 *FlowBoxChild // out
-	var child2 *FlowBoxChild // out
+	var _child1 *FlowBoxChild // out
+	var _child2 *FlowBoxChild // out
 
-	child1 = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg0)))
-	child2 = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
+	_child1 = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
+	_child2 = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg2)))
 
-	fn := v.(FlowBoxSortFunc)
-	gint := fn(child1, child2)
+	gint := fn(_child1, _child2)
 
 	cret = C.int(gint)
 
@@ -1019,9 +1032,6 @@ func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 }
 
 // FlowBoxChildOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type FlowBoxChildOverrider interface {
 	Activate()
 }
@@ -1036,6 +1046,30 @@ type FlowBoxChild struct {
 var (
 	_ Widgetter = (*FlowBoxChild)(nil)
 )
+
+func classInitFlowBoxChilder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkFlowBoxChildClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkFlowBoxChildClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk4_FlowBoxChildClass_activate)
+	}
+}
+
+//export _gotk4_gtk4_FlowBoxChildClass_activate
+func _gotk4_gtk4_FlowBoxChildClass_activate(arg0 *C.GtkFlowBoxChild) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
 
 func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 	return &FlowBoxChild{

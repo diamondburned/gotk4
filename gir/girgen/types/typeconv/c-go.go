@@ -571,6 +571,15 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.p.LineTmpl(value, "<.Out.Set> = gerror.Take(unsafe.Pointer(<.InNamePtr 1>))")
 		return true
 
+	case value.Resolved.IsBuiltin("context.Context"):
+		value.header.ImportCore("gcancel")
+		value.header.Import("unsafe")
+
+		value.vtmpl(`
+			<.Out.Set> = gcancel.NewCancellableContext(unsafe.Pointer(<.InNamePtr 1>))
+		`)
+		return true
+
 	case value.Resolved.IsPrimitive():
 		return value.castPrimitive()
 	}

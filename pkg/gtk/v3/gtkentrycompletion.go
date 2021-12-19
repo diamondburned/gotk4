@@ -16,8 +16,13 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_EntryCompletionClass_cursor_on_match(GtkEntryCompletion*, GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk3_EntryCompletionClass_insert_prefix(GtkEntryCompletion*, gchar*);
+// extern gboolean _gotk4_gtk3_EntryCompletionClass_match_selected(GtkEntryCompletion*, GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk3_EntryCompletionMatchFunc(GtkEntryCompletion*, gchar*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk3_EntryCompletionClass_action_activated(GtkEntryCompletion*, gint);
+// extern void _gotk4_gtk3_EntryCompletionClass_no_matches(GtkEntryCompletion*);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk3_EntryCompletionMatchFunc(GtkEntryCompletion*, gchar*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -35,22 +40,25 @@ func init() {
 type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_EntryCompletionMatchFunc
-func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_EntryCompletionMatchFunc(arg1 *C.GtkEntryCompletion, arg2 *C.gchar, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
+	var fn EntryCompletionMatchFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(EntryCompletionMatchFunc)
 	}
 
-	var completion *EntryCompletion // out
-	var key string                  // out
-	var iter *TreeIter              // out
+	var _completion *EntryCompletion // out
+	var _key string                  // out
+	var _iter *TreeIter              // out
 
-	completion = wrapEntryCompletion(externglib.Take(unsafe.Pointer(arg0)))
-	key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_completion = wrapEntryCompletion(externglib.Take(unsafe.Pointer(arg1)))
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 
-	fn := v.(EntryCompletionMatchFunc)
-	ok := fn(completion, key, iter)
+	ok := fn(_completion, _key, _iter)
 
 	if ok {
 		cret = C.TRUE
@@ -60,9 +68,6 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gc
 }
 
 // EntryCompletionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type EntryCompletionOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -140,6 +145,156 @@ type EntryCompletion struct {
 var (
 	_ externglib.Objector = (*EntryCompletion)(nil)
 )
+
+func classInitEntryCompletioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkEntryCompletionClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkEntryCompletionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActionActivated(index_ int) }); ok {
+		pclass.action_activated = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_action_activated)
+	}
+
+	if _, ok := goval.(interface {
+		CursorOnMatch(model TreeModeller, iter *TreeIter) bool
+	}); ok {
+		pclass.cursor_on_match = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_cursor_on_match)
+	}
+
+	if _, ok := goval.(interface{ InsertPrefix(prefix string) bool }); ok {
+		pclass.insert_prefix = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_insert_prefix)
+	}
+
+	if _, ok := goval.(interface {
+		MatchSelected(model TreeModeller, iter *TreeIter) bool
+	}); ok {
+		pclass.match_selected = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_match_selected)
+	}
+
+	if _, ok := goval.(interface{ NoMatches() }); ok {
+		pclass.no_matches = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_no_matches)
+	}
+}
+
+//export _gotk4_gtk3_EntryCompletionClass_action_activated
+func _gotk4_gtk3_EntryCompletionClass_action_activated(arg0 *C.GtkEntryCompletion, arg1 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActionActivated(index_ int) })
+
+	var _index_ int // out
+
+	_index_ = int(arg1)
+
+	iface.ActionActivated(_index_)
+}
+
+//export _gotk4_gtk3_EntryCompletionClass_cursor_on_match
+func _gotk4_gtk3_EntryCompletionClass_cursor_on_match(arg0 *C.GtkEntryCompletion, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CursorOnMatch(model TreeModeller, iter *TreeIter) bool
+	})
+
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_model = rv
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	ok := iface.CursorOnMatch(_model, _iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_EntryCompletionClass_insert_prefix
+func _gotk4_gtk3_EntryCompletionClass_insert_prefix(arg0 *C.GtkEntryCompletion, arg1 *C.gchar) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ InsertPrefix(prefix string) bool })
+
+	var _prefix string // out
+
+	_prefix = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := iface.InsertPrefix(_prefix)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_EntryCompletionClass_match_selected
+func _gotk4_gtk3_EntryCompletionClass_match_selected(arg0 *C.GtkEntryCompletion, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MatchSelected(model TreeModeller, iter *TreeIter) bool
+	})
+
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_model = rv
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	ok := iface.MatchSelected(_model, _iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_EntryCompletionClass_no_matches
+func _gotk4_gtk3_EntryCompletionClass_no_matches(arg0 *C.GtkEntryCompletion) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ NoMatches() })
+
+	iface.NoMatches()
+}
 
 func wrapEntryCompletion(obj *externglib.Object) *EntryCompletion {
 	return &EntryCompletion{

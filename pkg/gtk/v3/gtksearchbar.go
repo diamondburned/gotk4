@@ -25,6 +25,10 @@ func init() {
 	})
 }
 
+// SearchBarOverrider contains methods that are overridable.
+type SearchBarOverrider interface {
+}
+
 // SearchBar is a container made to have a search entry (possibly with
 // additional connex widgets, such as drop-down menus, or buttons) built-in. The
 // search bar would appear when a search is started through typing on the
@@ -57,6 +61,14 @@ type SearchBar struct {
 var (
 	_ Binner = (*SearchBar)(nil)
 )
+
+func classInitSearchBarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	return &SearchBar{

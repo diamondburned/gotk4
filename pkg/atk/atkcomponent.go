@@ -14,6 +14,22 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern AtkLayer _gotk4_atk1_ComponentIface_get_layer(AtkComponent*);
+// extern AtkObject* _gotk4_atk1_ComponentIface_ref_accessible_at_point(AtkComponent*, gint, gint, AtkCoordType);
+// extern gboolean _gotk4_atk1_ComponentIface_contains(AtkComponent*, gint, gint, AtkCoordType);
+// extern gboolean _gotk4_atk1_ComponentIface_grab_focus(AtkComponent*);
+// extern gboolean _gotk4_atk1_ComponentIface_scroll_to(AtkComponent*, AtkScrollType);
+// extern gboolean _gotk4_atk1_ComponentIface_scroll_to_point(AtkComponent*, AtkCoordType, gint, gint);
+// extern gboolean _gotk4_atk1_ComponentIface_set_extents(AtkComponent*, gint, gint, gint, gint, AtkCoordType);
+// extern gboolean _gotk4_atk1_ComponentIface_set_position(AtkComponent*, gint, gint, AtkCoordType);
+// extern gboolean _gotk4_atk1_ComponentIface_set_size(AtkComponent*, gint, gint);
+// extern gdouble _gotk4_atk1_ComponentIface_get_alpha(AtkComponent*);
+// extern gint _gotk4_atk1_ComponentIface_get_mdi_zorder(AtkComponent*);
+// extern void _gotk4_atk1_ComponentIface_bounds_changed(AtkComponent*, AtkRectangle*);
+// extern void _gotk4_atk1_ComponentIface_get_extents(AtkComponent*, gint*, gint*, gint*, gint*, AtkCoordType);
+// extern void _gotk4_atk1_ComponentIface_get_position(AtkComponent*, gint*, gint*, AtkCoordType);
+// extern void _gotk4_atk1_ComponentIface_get_size(AtkComponent*, gint*, gint*);
+// extern void _gotk4_atk1_ComponentIface_remove_focus_handler(AtkComponent*, guint);
 import "C"
 
 func init() {
@@ -80,9 +96,6 @@ func (s ScrollType) String() string {
 }
 
 // ComponentOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ComponentOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -359,6 +372,296 @@ type Componenter interface {
 }
 
 var _ Componenter = (*Component)(nil)
+
+func ifaceInitComponenter(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkComponentIface)(unsafe.Pointer(gifacePtr))
+	iface.bounds_changed = (*[0]byte)(C._gotk4_atk1_ComponentIface_bounds_changed)
+	iface.contains = (*[0]byte)(C._gotk4_atk1_ComponentIface_contains)
+	iface.get_alpha = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_alpha)
+	iface.get_extents = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_extents)
+	iface.get_layer = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_layer)
+	iface.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_mdi_zorder)
+	iface.get_position = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_position)
+	iface.get_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_size)
+	iface.grab_focus = (*[0]byte)(C._gotk4_atk1_ComponentIface_grab_focus)
+	iface.ref_accessible_at_point = (*[0]byte)(C._gotk4_atk1_ComponentIface_ref_accessible_at_point)
+	iface.remove_focus_handler = (*[0]byte)(C._gotk4_atk1_ComponentIface_remove_focus_handler)
+	iface.scroll_to = (*[0]byte)(C._gotk4_atk1_ComponentIface_scroll_to)
+	iface.scroll_to_point = (*[0]byte)(C._gotk4_atk1_ComponentIface_scroll_to_point)
+	iface.set_extents = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_extents)
+	iface.set_position = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_position)
+	iface.set_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_size)
+}
+
+//export _gotk4_atk1_ComponentIface_bounds_changed
+func _gotk4_atk1_ComponentIface_bounds_changed(arg0 *C.AtkComponent, arg1 *C.AtkRectangle) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _bounds *Rectangle // out
+
+	_bounds = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.BoundsChanged(_bounds)
+}
+
+//export _gotk4_atk1_ComponentIface_contains
+func _gotk4_atk1_ComponentIface_contains(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _x int               // out
+	var _y int               // out
+	var _coordType CoordType // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_coordType = CoordType(arg3)
+
+	ok := iface.Contains(_x, _y, _coordType)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_get_alpha
+func _gotk4_atk1_ComponentIface_get_alpha(arg0 *C.AtkComponent) (cret C.gdouble) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	gdouble := iface.Alpha()
+
+	cret = C.gdouble(gdouble)
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_get_extents
+func _gotk4_atk1_ComponentIface_get_extents(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 C.AtkCoordType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _coordType CoordType // out
+
+	_coordType = CoordType(arg5)
+
+	x, y, width, height := iface.Extents(_coordType)
+
+	*arg1 = C.gint(x)
+	*arg2 = C.gint(y)
+	*arg3 = C.gint(width)
+	*arg4 = C.gint(height)
+}
+
+//export _gotk4_atk1_ComponentIface_get_layer
+func _gotk4_atk1_ComponentIface_get_layer(arg0 *C.AtkComponent) (cret C.AtkLayer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	layer := iface.Layer()
+
+	cret = C.AtkLayer(layer)
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_get_mdi_zorder
+func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.AtkComponent) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	gint := iface.MDIZOrder()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_get_position
+func _gotk4_atk1_ComponentIface_get_position(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint, arg3 C.AtkCoordType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _coordType CoordType // out
+
+	_coordType = CoordType(arg3)
+
+	x, y := iface.Position(_coordType)
+
+	*arg1 = C.gint(x)
+	*arg2 = C.gint(y)
+}
+
+//export _gotk4_atk1_ComponentIface_get_size
+func _gotk4_atk1_ComponentIface_get_size(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	width, height := iface.Size()
+
+	*arg1 = C.gint(width)
+	*arg2 = C.gint(height)
+}
+
+//export _gotk4_atk1_ComponentIface_grab_focus
+func _gotk4_atk1_ComponentIface_grab_focus(arg0 *C.AtkComponent) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	ok := iface.GrabFocus()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_ref_accessible_at_point
+func _gotk4_atk1_ComponentIface_ref_accessible_at_point(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _x int               // out
+	var _y int               // out
+	var _coordType CoordType // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_coordType = CoordType(arg3)
+
+	object := iface.RefAccessibleAtPoint(_x, _y, _coordType)
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+		C.g_object_ref(C.gpointer(object.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_remove_focus_handler
+func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.AtkComponent, arg1 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _handlerId uint // out
+
+	_handlerId = uint(arg1)
+
+	iface.RemoveFocusHandler(_handlerId)
+}
+
+//export _gotk4_atk1_ComponentIface_scroll_to
+func _gotk4_atk1_ComponentIface_scroll_to(arg0 *C.AtkComponent, arg1 C.AtkScrollType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _typ ScrollType // out
+
+	_typ = ScrollType(arg1)
+
+	ok := iface.ScrollTo(_typ)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_scroll_to_point
+func _gotk4_atk1_ComponentIface_scroll_to_point(arg0 *C.AtkComponent, arg1 C.AtkCoordType, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _coords CoordType // out
+	var _x int            // out
+	var _y int            // out
+
+	_coords = CoordType(arg1)
+	_x = int(arg2)
+	_y = int(arg3)
+
+	ok := iface.ScrollToPoint(_coords, _x, _y)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_set_extents
+func _gotk4_atk1_ComponentIface_set_extents(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.gint, arg5 C.AtkCoordType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _x int               // out
+	var _y int               // out
+	var _width int           // out
+	var _height int          // out
+	var _coordType CoordType // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_width = int(arg3)
+	_height = int(arg4)
+	_coordType = CoordType(arg5)
+
+	ok := iface.SetExtents(_x, _y, _width, _height, _coordType)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_set_position
+func _gotk4_atk1_ComponentIface_set_position(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _x int               // out
+	var _y int               // out
+	var _coordType CoordType // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_coordType = CoordType(arg3)
+
+	ok := iface.SetPosition(_x, _y, _coordType)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_set_size
+func _gotk4_atk1_ComponentIface_set_size(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	ok := iface.SetSize(_width, _height)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapComponent(obj *externglib.Object) *Component {
 	return &Component{

@@ -19,6 +19,10 @@ func init() {
 	})
 }
 
+// ProxyAddressEnumeratorOverrider contains methods that are overridable.
+type ProxyAddressEnumeratorOverrider interface {
+}
+
 // ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
 // Address instances returned by the AddressEnumerator and wraps them in Address
 // instances, using the given AddressEnumerator:proxy-resolver.
@@ -35,6 +39,14 @@ type ProxyAddressEnumerator struct {
 var (
 	_ SocketAddressEnumeratorrer = (*ProxyAddressEnumerator)(nil)
 )
+
+func classInitProxyAddressEnumeratorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator {
 	return &ProxyAddressEnumerator{

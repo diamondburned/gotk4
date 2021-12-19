@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// TreeStoreOverrider contains methods that are overridable.
+type TreeStoreOverrider interface {
+}
+
 // TreeStore: tree-like data structure that can be used with the GtkTreeView
 //
 // The TreeStore object is a list model for use with a TreeView widget. It
@@ -59,6 +63,14 @@ type TreeStore struct {
 var (
 	_ externglib.Objector = (*TreeStore)(nil)
 )
+
+func classInitTreeStorer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTreeStore(obj *externglib.Object) *TreeStore {
 	return &TreeStore{

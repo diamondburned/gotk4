@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// CellRendererPixbufOverrider contains methods that are overridable.
+type CellRendererPixbufOverrider interface {
+}
+
 // CellRendererPixbuf can be used to render an image in a cell. It allows to
 // render either a given Pixbuf (set via the CellRendererPixbuf:pixbuf property)
 // or a named icon (set via the CellRendererPixbuf:icon-name property).
@@ -40,6 +44,14 @@ type CellRendererPixbuf struct {
 var (
 	_ CellRendererer = (*CellRendererPixbuf)(nil)
 )
+
+func classInitCellRendererPixbuffer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
 	return &CellRendererPixbuf{

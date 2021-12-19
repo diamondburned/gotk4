@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// RecentActionOverrider contains methods that are overridable.
+type RecentActionOverrider interface {
+}
+
 // RecentAction represents a list of recently used files, which can be shown by
 // widgets such as RecentChooserDialog or RecentChooserMenu.
 //
@@ -40,6 +44,14 @@ type RecentAction struct {
 var (
 	_ externglib.Objector = (*RecentAction)(nil)
 )
+
+func classInitRecentActioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRecentAction(obj *externglib.Object) *RecentAction {
 	return &RecentAction{

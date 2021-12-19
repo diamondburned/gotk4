@@ -13,6 +13,7 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(GTlsClientConnection*, GTlsClientConnection*);
 import "C"
 
 func init() {
@@ -22,9 +23,6 @@ func init() {
 }
 
 // TLSClientConnectionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TLSClientConnectionOverrider interface {
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption. This is not normally needed,
@@ -98,6 +96,39 @@ type TLSClientConnectioner interface {
 }
 
 var _ TLSClientConnectioner = (*TLSClientConnection)(nil)
+
+func ifaceInitTLSClientConnectioner(gifacePtr, data C.gpointer) {
+	iface := (*C.GTlsClientConnectionInterface)(unsafe.Pointer(gifacePtr))
+	iface.copy_session_state = (*[0]byte)(C._gotk4_gio2_TlsClientConnectionInterface_copy_session_state)
+}
+
+//export _gotk4_gio2_TlsClientConnectionInterface_copy_session_state
+func _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(arg0 *C.GTlsClientConnection, arg1 *C.GTlsClientConnection) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TLSClientConnectionOverrider)
+
+	var _source TLSClientConnectioner // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.TLSClientConnectioner is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TLSClientConnectioner)
+			return ok
+		})
+		rv, ok := casted.(TLSClientConnectioner)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSClientConnectioner")
+		}
+		_source = rv
+	}
+
+	iface.CopySessionState(_source)
+}
 
 func wrapTLSClientConnection(obj *externglib.Object) *TLSClientConnection {
 	return &TLSClientConnection{

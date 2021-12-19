@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// RendererCellAccessibleOverrider contains methods that are overridable.
+type RendererCellAccessibleOverrider interface {
+}
+
 type RendererCellAccessible struct {
 	_ [0]func() // equal guard
 	CellAccessible
@@ -31,6 +35,14 @@ type RendererCellAccessible struct {
 var (
 	_ externglib.Objector = (*RendererCellAccessible)(nil)
 )
+
+func classInitRendererCellAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible {
 	return &RendererCellAccessible{

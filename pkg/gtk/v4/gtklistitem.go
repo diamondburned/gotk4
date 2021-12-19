@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// ListItemOverrider contains methods that are overridable.
+type ListItemOverrider interface {
+}
+
 // ListItem: GtkListItem is used by list widgets to represent items in a
 // GListModel.
 //
@@ -42,6 +46,14 @@ type ListItem struct {
 var (
 	_ externglib.Objector = (*ListItem)(nil)
 )
+
+func classInitListItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapListItem(obj *externglib.Object) *ListItem {
 	return &ListItem{

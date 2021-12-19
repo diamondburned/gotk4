@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// GesturePanOverrider contains methods that are overridable.
+type GesturePanOverrider interface {
+}
+
 // GesturePan is a Gesture implementation able to recognize pan gestures, those
 // are drags that are locked to happen along one axis. The axis that a
 // GesturePan handles is defined at construct time, and can be changed through
@@ -42,6 +46,14 @@ type GesturePan struct {
 var (
 	_ Gesturer = (*GesturePan)(nil)
 )
+
+func classInitGesturePanner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGesturePan(obj *externglib.Object) *GesturePan {
 	return &GesturePan{

@@ -17,7 +17,7 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -51,12 +51,18 @@ func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncRead
 		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
-	_arg4 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg4 = (*C.GError)(gerror.New(err))
+	}
 
 	C.g_simple_async_report_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(callback)
 	runtime.KeepAlive(err)
+}
+
+// SimpleAsyncResultOverrider contains methods that are overridable.
+type SimpleAsyncResultOverrider interface {
 }
 
 // SimpleAsyncResult as of GLib 2.46, AsyncResult is deprecated in favor of
@@ -227,6 +233,14 @@ var (
 	_ externglib.Objector = (*SimpleAsyncResult)(nil)
 )
 
+func classInitSimpleAsyncResulter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
 	return &SimpleAsyncResult{
 		Object: obj,
@@ -319,7 +333,9 @@ func NewSimpleAsyncResultFromError(sourceObject *externglib.Object, callback Asy
 		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
-	_arg4 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg4 = (*C.GError)(gerror.New(err))
+	}
 
 	_cret = C.g_simple_async_result_new_from_error(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(sourceObject)
@@ -498,7 +514,9 @@ func (simple *SimpleAsyncResult) SetFromError(err error) {
 	var _arg1 *C.GError             // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	C.g_simple_async_result_set_from_error(_arg0, _arg1)
 	runtime.KeepAlive(simple)

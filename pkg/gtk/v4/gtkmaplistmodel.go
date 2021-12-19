@@ -14,8 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gpointer _gotk4_gtk4_MapListModelMapFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
-// gpointer _gotk4_gtk4_MapListModelMapFunc(gpointer, gpointer);
 import "C"
 
 func init() {
@@ -32,23 +32,30 @@ func init() {
 type MapListModelMapFunc func(item *externglib.Object) (object *externglib.Object)
 
 //export _gotk4_gtk4_MapListModelMapFunc
-func _gotk4_gtk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointer) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_MapListModelMapFunc(arg1 C.gpointer, arg2 C.gpointer) (cret C.gpointer) {
+	var fn MapListModelMapFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(MapListModelMapFunc)
 	}
 
-	var item *externglib.Object // out
+	var _item *externglib.Object // out
 
-	item = externglib.AssumeOwnership(unsafe.Pointer(arg0))
+	_item = externglib.AssumeOwnership(unsafe.Pointer(arg1))
 
-	fn := v.(MapListModelMapFunc)
-	object := fn(item)
+	object := fn(_item)
 
 	cret = C.gpointer(unsafe.Pointer(object.Native()))
 	C.g_object_ref(C.gpointer(object.Native()))
 
 	return cret
+}
+
+// MapListModelOverrider contains methods that are overridable.
+type MapListModelOverrider interface {
 }
 
 // MapListModel: GtkMapListModel maps the items in a list model to different
@@ -90,6 +97,14 @@ type MapListModel struct {
 var (
 	_ externglib.Objector = (*MapListModel)(nil)
 )
+
+func classInitMapListModeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMapListModel(obj *externglib.Object) *MapListModel {
 	return &MapListModel{

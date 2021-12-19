@@ -16,13 +16,17 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_data_input_stream_get_type()), F: marshalDataInputStreamer},
 	})
+}
+
+// DataInputStreamOverrider contains methods that are overridable.
+type DataInputStreamOverrider interface {
 }
 
 // DataInputStream: data input stream implements Stream and includes functions
@@ -35,6 +39,14 @@ type DataInputStream struct {
 var (
 	_ FilterInputStreamer = (*DataInputStream)(nil)
 )
+
+func classInitDataInputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDataInputStream(obj *externglib.Object) *DataInputStream {
 	return &DataInputStream{

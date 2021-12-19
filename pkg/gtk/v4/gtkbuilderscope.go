@@ -13,6 +13,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(GtkBuilderScope*, GtkBuilder*, char*);
+// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(GtkBuilderScope*, GtkBuilder*, char*);
 import "C"
 
 func init() {
@@ -74,9 +76,6 @@ func (b BuilderClosureFlags) Has(other BuilderClosureFlags) bool {
 }
 
 // BuilderScopeOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type BuilderScopeOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -128,6 +127,48 @@ type BuilderScoper interface {
 
 var _ BuilderScoper = (*BuilderScope)(nil)
 
+func ifaceInitBuilderScoper(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkBuilderScopeInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_type_from_function = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_function)
+	iface.get_type_from_name = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_name)
+}
+
+//export _gotk4_gtk4_BuilderScopeInterface_get_type_from_function
+func _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuilderScopeOverrider)
+
+	var _builder *Builder    // out
+	var _functionName string // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+	_functionName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	gType := iface.TypeFromFunction(_builder, _functionName)
+
+	cret = C.GType(gType)
+
+	return cret
+}
+
+//export _gotk4_gtk4_BuilderScopeInterface_get_type_from_name
+func _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuilderScopeOverrider)
+
+	var _builder *Builder // out
+	var _typeName string  // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+	_typeName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	gType := iface.TypeFromName(_builder, _typeName)
+
+	cret = C.GType(gType)
+
+	return cret
+}
+
 func wrapBuilderScope(obj *externglib.Object) *BuilderScope {
 	return &BuilderScope{
 		Object: obj,
@@ -145,6 +186,10 @@ func (self *BuilderScope) baseBuilderScope() *BuilderScope {
 // BaseBuilderScope returns the underlying base object.
 func BaseBuilderScope(obj BuilderScoper) *BuilderScope {
 	return obj.baseBuilderScope()
+}
+
+// BuilderCScopeOverrider contains methods that are overridable.
+type BuilderCScopeOverrider interface {
 }
 
 // BuilderCScope: GtkBuilderScope implementation for the C language.
@@ -171,6 +216,14 @@ type BuilderCScope struct {
 var (
 	_ externglib.Objector = (*BuilderCScope)(nil)
 )
+
+func classInitBuilderCScoper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapBuilderCScope(obj *externglib.Object) *BuilderCScope {
 	return &BuilderCScope{

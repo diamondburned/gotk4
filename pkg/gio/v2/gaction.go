@@ -14,6 +14,14 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GVariant* _gotk4_gio2_ActionInterface_get_state(GAction*);
+// extern GVariant* _gotk4_gio2_ActionInterface_get_state_hint(GAction*);
+// extern GVariantType* _gotk4_gio2_ActionInterface_get_parameter_type(GAction*);
+// extern GVariantType* _gotk4_gio2_ActionInterface_get_state_type(GAction*);
+// extern gboolean _gotk4_gio2_ActionInterface_get_enabled(GAction*);
+// extern gchar* _gotk4_gio2_ActionInterface_get_name(GAction*);
+// extern void _gotk4_gio2_ActionInterface_activate(GAction*, GVariant*);
+// extern void _gotk4_gio2_ActionInterface_change_state(GAction*, GVariant*);
 import "C"
 
 func init() {
@@ -23,9 +31,6 @@ func init() {
 }
 
 // ActionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ActionOverrider interface {
 	// Activate activates the action.
 	//
@@ -204,6 +209,141 @@ type Actioner interface {
 }
 
 var _ Actioner = (*Action)(nil)
+
+func ifaceInitActioner(gifacePtr, data C.gpointer) {
+	iface := (*C.GActionInterface)(unsafe.Pointer(gifacePtr))
+	iface.activate = (*[0]byte)(C._gotk4_gio2_ActionInterface_activate)
+	iface.change_state = (*[0]byte)(C._gotk4_gio2_ActionInterface_change_state)
+	iface.get_enabled = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_enabled)
+	iface.get_name = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_name)
+	iface.get_parameter_type = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_parameter_type)
+	iface.get_state = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_state)
+	iface.get_state_hint = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_state_hint)
+	iface.get_state_type = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_state_type)
+}
+
+//export _gotk4_gio2_ActionInterface_activate
+func _gotk4_gio2_ActionInterface_activate(arg0 *C.GAction, arg1 *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	var _parameter *glib.Variant // out
+
+	if arg1 != nil {
+		_parameter = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		C.g_variant_ref(arg1)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_parameter)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+
+	iface.Activate(_parameter)
+}
+
+//export _gotk4_gio2_ActionInterface_change_state
+func _gotk4_gio2_ActionInterface_change_state(arg0 *C.GAction, arg1 *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	var _value *glib.Variant // out
+
+	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_variant_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_value)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	iface.ChangeState(_value)
+}
+
+//export _gotk4_gio2_ActionInterface_get_enabled
+func _gotk4_gio2_ActionInterface_get_enabled(arg0 *C.GAction) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	ok := iface.Enabled()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ActionInterface_get_name
+func _gotk4_gio2_ActionInterface_get_name(arg0 *C.GAction) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	utf8 := iface.Name()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_gio2_ActionInterface_get_parameter_type
+func _gotk4_gio2_ActionInterface_get_parameter_type(arg0 *C.GAction) (cret *C.GVariantType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	variantType := iface.ParameterType()
+
+	if variantType != nil {
+		cret = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(variantType)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ActionInterface_get_state
+func _gotk4_gio2_ActionInterface_get_state(arg0 *C.GAction) (cret *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	variant := iface.State()
+
+	if variant != nil {
+		cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ActionInterface_get_state_hint
+func _gotk4_gio2_ActionInterface_get_state_hint(arg0 *C.GAction) (cret *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	variant := iface.StateHint()
+
+	if variant != nil {
+		cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ActionInterface_get_state_type
+func _gotk4_gio2_ActionInterface_get_state_type(arg0 *C.GAction) (cret *C.GVariantType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionOverrider)
+
+	variantType := iface.StateType()
+
+	if variantType != nil {
+		cret = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(variantType)))
+	}
+
+	return cret
+}
 
 func wrapAction(obj *externglib.Object) *Action {
 	return &Action{

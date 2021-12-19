@@ -15,8 +15,23 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// gboolean _gotk4_gtk4_CellAllocCallback(GtkCellRenderer*, GdkRectangle*, GdkRectangle*, gpointer);
-// gboolean _gotk4_gtk4_CellCallback(GtkCellRenderer*, gpointer);
+// extern GtkCellAreaContext* _gotk4_gtk4_CellAreaClass_copy_context(GtkCellArea*, GtkCellAreaContext*);
+// extern GtkCellAreaContext* _gotk4_gtk4_CellAreaClass_create_context(GtkCellArea*);
+// extern GtkSizeRequestMode _gotk4_gtk4_CellAreaClass_get_request_mode(GtkCellArea*);
+// extern gboolean _gotk4_gtk4_CellAllocCallback(GtkCellRenderer*, GdkRectangle*, GdkRectangle*, gpointer);
+// extern gboolean _gotk4_gtk4_CellAreaClass_activate(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkRectangle*, GtkCellRendererState, gboolean);
+// extern gboolean _gotk4_gtk4_CellAreaClass_focus(GtkCellArea*, GtkDirectionType);
+// extern gboolean _gotk4_gtk4_CellAreaClass_is_activatable(GtkCellArea*);
+// extern gboolean _gotk4_gtk4_CellCallback(GtkCellRenderer*, gpointer);
+// extern int _gotk4_gtk4_CellAreaClass_event(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkEvent*, GdkRectangle*, GtkCellRendererState);
+// extern void _gotk4_gtk4_CellAreaClass_add(GtkCellArea*, GtkCellRenderer*);
+// extern void _gotk4_gtk4_CellAreaClass_apply_attributes(GtkCellArea*, GtkTreeModel*, GtkTreeIter*, gboolean, gboolean);
+// extern void _gotk4_gtk4_CellAreaClass_get_preferred_height(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int*, int*);
+// extern void _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int, int*, int*);
+// extern void _gotk4_gtk4_CellAreaClass_get_preferred_width(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int*, int*);
+// extern void _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int, int*, int*);
+// extern void _gotk4_gtk4_CellAreaClass_remove(GtkCellArea*, GtkCellRenderer*);
+// extern void _gotk4_gtk4_CellAreaClass_snapshot(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GtkSnapshot*, GdkRectangle*, GdkRectangle*, GtkCellRendererState, gboolean);
 import "C"
 
 func init() {
@@ -31,18 +46,22 @@ func init() {
 type CellAllocCallback func(renderer CellRendererer, cellArea, cellBackground *gdk.Rectangle) (ok bool)
 
 //export _gotk4_gtk4_CellAllocCallback
-func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_CellAllocCallback(arg1 *C.GtkCellRenderer, arg2 *C.GdkRectangle, arg3 *C.GdkRectangle, arg4 C.gpointer) (cret C.gboolean) {
+	var fn CellAllocCallback
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(CellAllocCallback)
 	}
 
-	var renderer CellRendererer       // out
-	var cellArea *gdk.Rectangle       // out
-	var cellBackground *gdk.Rectangle // out
+	var _renderer CellRendererer       // out
+	var _cellArea *gdk.Rectangle       // out
+	var _cellBackground *gdk.Rectangle // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -56,13 +75,12 @@ func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
-		renderer = rv
+		_renderer = rv
 	}
-	cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	cellBackground = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_cellBackground = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 
-	fn := v.(CellAllocCallback)
-	ok := fn(renderer, cellArea, cellBackground)
+	ok := fn(_renderer, _cellArea, _cellBackground)
 
 	if ok {
 		cret = C.TRUE
@@ -76,16 +94,20 @@ func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 type CellCallback func(renderer CellRendererer) (ok bool)
 
 //export _gotk4_gtk4_CellCallback
-func _gotk4_gtk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_CellCallback(arg1 *C.GtkCellRenderer, arg2 C.gpointer) (cret C.gboolean) {
+	var fn CellCallback
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(CellCallback)
 	}
 
-	var renderer CellRendererer // out
+	var _renderer CellRendererer // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -99,11 +121,10 @@ func _gotk4_gtk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
-		renderer = rv
+		_renderer = rv
 	}
 
-	fn := v.(CellCallback)
-	ok := fn(renderer)
+	ok := fn(_renderer)
 
 	if ok {
 		cret = C.TRUE
@@ -113,9 +134,6 @@ func _gotk4_gtk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.
 }
 
 // CellAreaOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CellAreaOverrider interface {
 	// Activate activates area, usually by activating the currently focused
 	// cell, however some subclasses which embed widgets in the area can also
@@ -217,25 +235,6 @@ type CellAreaOverrider interface {
 	//    - ok: TRUE if focus remains inside area as a result of this call.
 	//
 	Focus(direction DirectionType) bool
-	// ForEach calls callback for every CellRenderer in area.
-	//
-	// The function takes the following parameters:
-	//
-	//    - callback to call.
-	//
-	ForEach(callback CellCallback)
-	// ForEachAlloc calls callback for every CellRenderer in area with the
-	// allocated rectangle inside cell_area.
-	//
-	// The function takes the following parameters:
-	//
-	//    - context for this row of data.
-	//    - widget that area is rendering to.
-	//    - cellArea: widget relative coordinates and size for area.
-	//    - backgroundArea: widget relative coordinates of the background area.
-	//    - callback to call.
-	//
-	ForEachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	//
@@ -524,6 +523,564 @@ type CellAreaer interface {
 }
 
 var _ CellAreaer = (*CellArea)(nil)
+
+func classInitCellAreaer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCellAreaClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCellAreaClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	}); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_activate)
+	}
+
+	if _, ok := goval.(interface{ Add(renderer CellRendererer) }); ok {
+		pclass.add = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_add)
+	}
+
+	if _, ok := goval.(interface {
+		ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
+	}); ok {
+		pclass.apply_attributes = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_apply_attributes)
+	}
+
+	if _, ok := goval.(interface {
+		CopyContext(context *CellAreaContext) *CellAreaContext
+	}); ok {
+		pclass.copy_context = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_copy_context)
+	}
+
+	if _, ok := goval.(interface{ CreateContext() *CellAreaContext }); ok {
+		pclass.create_context = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_create_context)
+	}
+
+	if _, ok := goval.(interface {
+		Event(context *CellAreaContext, widget Widgetter, event gdk.Eventer, cellArea *gdk.Rectangle, flags CellRendererState) int
+	}); ok {
+		pclass.event = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_event)
+	}
+
+	if _, ok := goval.(interface {
+		Focus(direction DirectionType) bool
+	}); ok {
+		pclass.focus = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_focus)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int, naturalHeight int)
+	}); ok {
+		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_preferred_height)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight int, naturalHeight int)
+	}); ok {
+		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_preferred_height_for_width)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth int, naturalWidth int)
+	}); ok {
+		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_preferred_width)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth int, naturalWidth int)
+	}); ok {
+		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_preferred_width_for_height)
+	}
+
+	if _, ok := goval.(interface{ RequestMode() SizeRequestMode }); ok {
+		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_request_mode)
+	}
+
+	if _, ok := goval.(interface{ IsActivatable() bool }); ok {
+		pclass.is_activatable = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_is_activatable)
+	}
+
+	if _, ok := goval.(interface{ Remove(renderer CellRendererer) }); ok {
+		pclass.remove = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_remove)
+	}
+
+	if _, ok := goval.(interface {
+		Snapshot(context *CellAreaContext, widget Widgetter, snapshot *Snapshot, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+	}); ok {
+		pclass.snapshot = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_snapshot)
+	}
+}
+
+//export _gotk4_gtk4_CellAreaClass_activate
+func _gotk4_gtk4_CellAreaClass_activate(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GdkRectangle, arg4 C.GtkCellRendererState, arg5 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	})
+
+	var _context *CellAreaContext // out
+	var _widget Widgetter         // out
+	var _cellArea *gdk.Rectangle  // out
+	var _flags CellRendererState  // out
+	var _editOnly bool            // out
+
+	_context = wrapCellAreaContext(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	_flags = CellRendererState(arg4)
+	if arg5 != 0 {
+		_editOnly = true
+	}
+
+	ok := iface.Activate(_context, _widget, _cellArea, _flags, _editOnly)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_CellAreaClass_add
+func _gotk4_gtk4_CellAreaClass_add(arg0 *C.GtkCellArea, arg1 *C.GtkCellRenderer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Add(renderer CellRendererer) })
+
+	var _renderer CellRendererer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_renderer = rv
+	}
+
+	iface.Add(_renderer)
+}
+
+//export _gotk4_gtk4_CellAreaClass_apply_attributes
+func _gotk4_gtk4_CellAreaClass_apply_attributes(arg0 *C.GtkCellArea, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gboolean, arg4 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
+	})
+
+	var _treeModel TreeModeller // out
+	var _iter *TreeIter         // out
+	var _isExpander bool        // out
+	var _isExpanded bool        // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_treeModel = rv
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	if arg3 != 0 {
+		_isExpander = true
+	}
+	if arg4 != 0 {
+		_isExpanded = true
+	}
+
+	iface.ApplyAttributes(_treeModel, _iter, _isExpander, _isExpanded)
+}
+
+//export _gotk4_gtk4_CellAreaClass_copy_context
+func _gotk4_gtk4_CellAreaClass_copy_context(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext) (cret *C.GtkCellAreaContext) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CopyContext(context *CellAreaContext) *CellAreaContext
+	})
+
+	var _context *CellAreaContext // out
+
+	_context = wrapCellAreaContext(externglib.Take(unsafe.Pointer(arg1)))
+
+	cellAreaContext := iface.CopyContext(_context)
+
+	cret = (*C.GtkCellAreaContext)(unsafe.Pointer(cellAreaContext.Native()))
+	C.g_object_ref(C.gpointer(cellAreaContext.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk4_CellAreaClass_create_context
+func _gotk4_gtk4_CellAreaClass_create_context(arg0 *C.GtkCellArea) (cret *C.GtkCellAreaContext) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CreateContext() *CellAreaContext })
+
+	cellAreaContext := iface.CreateContext()
+
+	cret = (*C.GtkCellAreaContext)(unsafe.Pointer(cellAreaContext.Native()))
+	C.g_object_ref(C.gpointer(cellAreaContext.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk4_CellAreaClass_event
+func _gotk4_gtk4_CellAreaClass_event(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GdkEvent, arg4 *C.GdkRectangle, arg5 C.GtkCellRendererState) (cret C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Event(context *CellAreaContext, widget Widgetter, event gdk.Eventer, cellArea *gdk.Rectangle, flags CellRendererState) int
+	})
+
+	var _context *CellAreaContext // out
+	var _widget Widgetter         // out
+	var _event gdk.Eventer        // out
+	var _cellArea *gdk.Rectangle  // out
+	var _flags CellRendererState  // out
+
+	_context = wrapCellAreaContext(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg3)
+		if objptr == nil {
+			panic("object of type gdk.Eventer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Eventer)
+			return ok
+		})
+		rv, ok := casted.(gdk.Eventer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Eventer")
+		}
+		_event = rv
+	}
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	_flags = CellRendererState(arg5)
+
+	gint := iface.Event(_context, _widget, _event, _cellArea, _flags)
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gtk4_CellAreaClass_focus
+func _gotk4_gtk4_CellAreaClass_focus(arg0 *C.GtkCellArea, arg1 C.GtkDirectionType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Focus(direction DirectionType) bool
+	})
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	ok := iface.Focus(_direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_CellAreaClass_get_preferred_height
+func _gotk4_gtk4_CellAreaClass_get_preferred_height(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.int, arg4 *C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int, naturalHeight int)
+	})
+
+	var _context *CellAreaContext // out
+	var _widget Widgetter         // out
+
+	_context = wrapCellAreaContext(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	minimumHeight, naturalHeight := iface.PreferredHeight(_context, _widget)
+
+	*arg3 = C.int(minimumHeight)
+	*arg4 = C.int(naturalHeight)
+}
+
+//export _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width
+func _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 C.int, arg4 *C.int, arg5 *C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight int, naturalHeight int)
+	})
+
+	var _context *CellAreaContext // out
+	var _widget Widgetter         // out
+	var _width int                // out
+
+	_context = wrapCellAreaContext(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_width = int(arg3)
+
+	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_context, _widget, _width)
+
+	*arg4 = C.int(minimumHeight)
+	*arg5 = C.int(naturalHeight)
+}
+
+//export _gotk4_gtk4_CellAreaClass_get_preferred_width
+func _gotk4_gtk4_CellAreaClass_get_preferred_width(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.int, arg4 *C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth int, naturalWidth int)
+	})
+
+	var _context *CellAreaContext // out
+	var _widget Widgetter         // out
+
+	_context = wrapCellAreaContext(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	minimumWidth, naturalWidth := iface.PreferredWidth(_context, _widget)
+
+	*arg3 = C.int(minimumWidth)
+	*arg4 = C.int(naturalWidth)
+}
+
+//export _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height
+func _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 C.int, arg4 *C.int, arg5 *C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth int, naturalWidth int)
+	})
+
+	var _context *CellAreaContext // out
+	var _widget Widgetter         // out
+	var _height int               // out
+
+	_context = wrapCellAreaContext(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_height = int(arg3)
+
+	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_context, _widget, _height)
+
+	*arg4 = C.int(minimumWidth)
+	*arg5 = C.int(naturalWidth)
+}
+
+//export _gotk4_gtk4_CellAreaClass_get_request_mode
+func _gotk4_gtk4_CellAreaClass_get_request_mode(arg0 *C.GtkCellArea) (cret C.GtkSizeRequestMode) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RequestMode() SizeRequestMode })
+
+	sizeRequestMode := iface.RequestMode()
+
+	cret = C.GtkSizeRequestMode(sizeRequestMode)
+
+	return cret
+}
+
+//export _gotk4_gtk4_CellAreaClass_is_activatable
+func _gotk4_gtk4_CellAreaClass_is_activatable(arg0 *C.GtkCellArea) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ IsActivatable() bool })
+
+	ok := iface.IsActivatable()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_CellAreaClass_remove
+func _gotk4_gtk4_CellAreaClass_remove(arg0 *C.GtkCellArea, arg1 *C.GtkCellRenderer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Remove(renderer CellRendererer) })
+
+	var _renderer CellRendererer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_renderer = rv
+	}
+
+	iface.Remove(_renderer)
+}
+
+//export _gotk4_gtk4_CellAreaClass_snapshot
+func _gotk4_gtk4_CellAreaClass_snapshot(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GtkSnapshot, arg4 *C.GdkRectangle, arg5 *C.GdkRectangle, arg6 C.GtkCellRendererState, arg7 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Snapshot(context *CellAreaContext, widget Widgetter, snapshot *Snapshot, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+	})
+
+	var _context *CellAreaContext      // out
+	var _widget Widgetter              // out
+	var _snapshot *Snapshot            // out
+	var _backgroundArea *gdk.Rectangle // out
+	var _cellArea *gdk.Rectangle       // out
+	var _flags CellRendererState       // out
+	var _paintFocus bool               // out
+
+	_context = wrapCellAreaContext(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_snapshot = wrapSnapshot(externglib.Take(unsafe.Pointer(arg3)))
+	_backgroundArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg5)))
+	_flags = CellRendererState(arg6)
+	if arg7 != 0 {
+		_paintFocus = true
+	}
+
+	iface.Snapshot(_context, _widget, _snapshot, _backgroundArea, _cellArea, _flags, _paintFocus)
+}
 
 func wrapCellArea(obj *externglib.Object) *CellArea {
 	return &CellArea{

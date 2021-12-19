@@ -18,7 +18,14 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_Callback(GtkWidget*, gpointer);
+// extern GType _gotk4_gtk3_ContainerClass_child_type(GtkContainer*);
+// extern GtkWidgetPath* _gotk4_gtk3_ContainerClass_get_path_for_child(GtkContainer*, GtkWidget*);
+// extern gchar* _gotk4_gtk3_ContainerClass_composite_name(GtkContainer*, GtkWidget*);
+// extern void _gotk4_gtk3_Callback(GtkWidget*, gpointer);
+// extern void _gotk4_gtk3_ContainerClass_add(GtkContainer*, GtkWidget*);
+// extern void _gotk4_gtk3_ContainerClass_check_resize(GtkContainer*);
+// extern void _gotk4_gtk3_ContainerClass_remove(GtkContainer*, GtkWidget*);
+// extern void _gotk4_gtk3_ContainerClass_set_focus_child(GtkContainer*, GtkWidget*);
 import "C"
 
 func init() {
@@ -28,9 +35,6 @@ func init() {
 }
 
 // ContainerOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ContainerOverrider interface {
 	// Add adds widget to container. Typically used for simple containers such
 	// as Window, Frame, or Button; for more complicated layout containers such
@@ -64,20 +68,6 @@ type ContainerOverrider interface {
 	// The function returns the following values:
 	//
 	CompositeName(child Widgetter) string
-	// Forall invokes callback on each direct child of container, including
-	// children that are considered “internal” (implementation details of the
-	// container). “Internal” children generally weren’t added by the user of
-	// the container, but were added by the container implementation itself.
-	//
-	// Most applications should use gtk_container_foreach(), rather than
-	// gtk_container_forall().
-	//
-	// The function takes the following parameters:
-	//
-	//    - includeInternals
-	//    - callback: callback.
-	//
-	Forall(includeInternals bool, callback Callback)
 	// PathForChild returns a newly created widget path representing all the
 	// widget hierarchy from the toplevel down to and including child.
 	//
@@ -314,6 +304,217 @@ type Containerer interface {
 }
 
 var _ Containerer = (*Container)(nil)
+
+func classInitContainerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkContainerClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkContainerClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Add(widget Widgetter) }); ok {
+		pclass.add = (*[0]byte)(C._gotk4_gtk3_ContainerClass_add)
+	}
+
+	if _, ok := goval.(interface{ CheckResize() }); ok {
+		pclass.check_resize = (*[0]byte)(C._gotk4_gtk3_ContainerClass_check_resize)
+	}
+
+	if _, ok := goval.(interface{ ChildType() externglib.Type }); ok {
+		pclass.child_type = (*[0]byte)(C._gotk4_gtk3_ContainerClass_child_type)
+	}
+
+	if _, ok := goval.(interface{ CompositeName(child Widgetter) string }); ok {
+		pclass.composite_name = (*[0]byte)(C._gotk4_gtk3_ContainerClass_composite_name)
+	}
+
+	if _, ok := goval.(interface {
+		PathForChild(child Widgetter) *WidgetPath
+	}); ok {
+		pclass.get_path_for_child = (*[0]byte)(C._gotk4_gtk3_ContainerClass_get_path_for_child)
+	}
+
+	if _, ok := goval.(interface{ Remove(widget Widgetter) }); ok {
+		pclass.remove = (*[0]byte)(C._gotk4_gtk3_ContainerClass_remove)
+	}
+
+	if _, ok := goval.(interface{ SetFocusChild(child Widgetter) }); ok {
+		pclass.set_focus_child = (*[0]byte)(C._gotk4_gtk3_ContainerClass_set_focus_child)
+	}
+}
+
+//export _gotk4_gtk3_ContainerClass_add
+func _gotk4_gtk3_ContainerClass_add(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Add(widget Widgetter) })
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	iface.Add(_widget)
+}
+
+//export _gotk4_gtk3_ContainerClass_check_resize
+func _gotk4_gtk3_ContainerClass_check_resize(arg0 *C.GtkContainer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CheckResize() })
+
+	iface.CheckResize()
+}
+
+//export _gotk4_gtk3_ContainerClass_child_type
+func _gotk4_gtk3_ContainerClass_child_type(arg0 *C.GtkContainer) (cret C.GType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ChildType() externglib.Type })
+
+	gType := iface.ChildType()
+
+	cret = C.GType(gType)
+
+	return cret
+}
+
+//export _gotk4_gtk3_ContainerClass_composite_name
+func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.GtkContainer, arg1 *C.GtkWidget) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CompositeName(child Widgetter) string })
+
+	var _child Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+
+	utf8 := iface.CompositeName(_child)
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_gtk3_ContainerClass_get_path_for_child
+func _gotk4_gtk3_ContainerClass_get_path_for_child(arg0 *C.GtkContainer, arg1 *C.GtkWidget) (cret *C.GtkWidgetPath) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PathForChild(child Widgetter) *WidgetPath
+	})
+
+	var _child Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+
+	widgetPath := iface.PathForChild(_child)
+
+	cret = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(widgetPath)))
+
+	return cret
+}
+
+//export _gotk4_gtk3_ContainerClass_remove
+func _gotk4_gtk3_ContainerClass_remove(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Remove(widget Widgetter) })
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	iface.Remove(_widget)
+}
+
+//export _gotk4_gtk3_ContainerClass_set_focus_child
+func _gotk4_gtk3_ContainerClass_set_focus_child(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetFocusChild(child Widgetter) })
+
+	var _child Widgetter // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_child = rv
+		}
+	}
+
+	iface.SetFocusChild(_child)
+}
 
 func wrapContainer(obj *externglib.Object) *Container {
 	return &Container{

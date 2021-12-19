@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -14,6 +15,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GInputStream* _gotk4_gio2_ApplicationCommandLineClass_get_stdin(GApplicationCommandLine*);
+// extern void _gotk4_gio2_ApplicationCommandLineClass_print_literal(GApplicationCommandLine*, gchar*);
+// extern void _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(GApplicationCommandLine*, gchar*);
 import "C"
 
 func init() {
@@ -23,9 +27,6 @@ func init() {
 }
 
 // ApplicationCommandLineOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ApplicationCommandLineOverrider interface {
 	// Stdin gets the stdin of the invoking process.
 	//
@@ -129,6 +130,69 @@ type ApplicationCommandLine struct {
 var (
 	_ externglib.Objector = (*ApplicationCommandLine)(nil)
 )
+
+func classInitApplicationCommandLiner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GApplicationCommandLineClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GApplicationCommandLineClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Stdin() InputStreamer }); ok {
+		pclass.get_stdin = (*[0]byte)(C._gotk4_gio2_ApplicationCommandLineClass_get_stdin)
+	}
+
+	if _, ok := goval.(interface{ PrintLiteral(message string) }); ok {
+		pclass.print_literal = (*[0]byte)(C._gotk4_gio2_ApplicationCommandLineClass_print_literal)
+	}
+
+	if _, ok := goval.(interface{ PrinterrLiteral(message string) }); ok {
+		pclass.printerr_literal = (*[0]byte)(C._gotk4_gio2_ApplicationCommandLineClass_printerr_literal)
+	}
+}
+
+//export _gotk4_gio2_ApplicationCommandLineClass_get_stdin
+func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.GApplicationCommandLine) (cret *C.GInputStream) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Stdin() InputStreamer })
+
+	inputStream := iface.Stdin()
+
+	if inputStream != nil {
+		cret = (*C.GInputStream)(unsafe.Pointer(inputStream.Native()))
+		C.g_object_ref(C.gpointer(inputStream.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ApplicationCommandLineClass_print_literal
+func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.GApplicationCommandLine, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PrintLiteral(message string) })
+
+	var _message string // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.PrintLiteral(_message)
+}
+
+//export _gotk4_gio2_ApplicationCommandLineClass_printerr_literal
+func _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(arg0 *C.GApplicationCommandLine, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PrinterrLiteral(message string) })
+
+	var _message string // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.PrinterrLiteral(_message)
+}
 
 func wrapApplicationCommandLine(obj *externglib.Object) *ApplicationCommandLine {
 	return &ApplicationCommandLine{

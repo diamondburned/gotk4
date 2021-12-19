@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// FileChooserNativeOverrider contains methods that are overridable.
+type FileChooserNativeOverrider interface {
+}
+
 // FileChooserNative is an abstraction of a dialog box suitable for use with
 // “File/Open” or “File/Save as” commands. By default, this just uses a
 // FileChooserDialog to implement the actual dialog. However, on certain
@@ -190,6 +194,14 @@ var (
 	_ NativeDialogger     = (*FileChooserNative)(nil)
 	_ externglib.Objector = (*FileChooserNative)(nil)
 )
+
+func classInitFileChooserNativer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFileChooserNative(obj *externglib.Object) *FileChooserNative {
 	return &FileChooserNative{

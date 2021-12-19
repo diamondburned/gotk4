@@ -6,12 +6,16 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_FrameClass_compute_child_allocation(GtkFrame*, GtkAllocation*);
 import "C"
 
 func init() {
@@ -21,9 +25,6 @@ func init() {
 }
 
 // FrameOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type FrameOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -80,6 +81,34 @@ type Frame struct {
 var (
 	_ Widgetter = (*Frame)(nil)
 )
+
+func classInitFramer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkFrameClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkFrameClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ComputeChildAllocation(allocation *Allocation) }); ok {
+		pclass.compute_child_allocation = (*[0]byte)(C._gotk4_gtk4_FrameClass_compute_child_allocation)
+	}
+}
+
+//export _gotk4_gtk4_FrameClass_compute_child_allocation
+func _gotk4_gtk4_FrameClass_compute_child_allocation(arg0 *C.GtkFrame, arg1 *C.GtkAllocation) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ComputeChildAllocation(allocation *Allocation) })
+
+	var _allocation *Allocation // out
+
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.ComputeChildAllocation(_allocation)
+}
 
 func wrapFrame(obj *externglib.Object) *Frame {
 	return &Frame{

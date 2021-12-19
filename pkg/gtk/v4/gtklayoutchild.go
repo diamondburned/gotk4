@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// LayoutChildOverrider contains methods that are overridable.
+type LayoutChildOverrider interface {
+}
+
 // LayoutChild: GtkLayoutChild is the base class for objects that are meant to
 // hold layout properties.
 //
@@ -48,6 +52,14 @@ type LayoutChilder interface {
 }
 
 var _ LayoutChilder = (*LayoutChild)(nil)
+
+func classInitLayoutChilder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapLayoutChild(obj *externglib.Object) *LayoutChild {
 	return &LayoutChild{

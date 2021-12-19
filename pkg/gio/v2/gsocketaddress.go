@@ -7,6 +7,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -14,6 +15,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GSocketFamily _gotk4_gio2_SocketAddressClass_get_family(GSocketAddress*);
+// extern gboolean _gotk4_gio2_SocketAddressClass_to_native(GSocketAddress*, gpointer, gsize, GError**);
+// extern gssize _gotk4_gio2_SocketAddressClass_get_native_size(GSocketAddress*);
 import "C"
 
 func init() {
@@ -23,9 +27,6 @@ func init() {
 }
 
 // SocketAddressOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SocketAddressOverrider interface {
 	// Family gets the socket family type of address.
 	//
@@ -83,6 +84,78 @@ type SocketAddresser interface {
 }
 
 var _ SocketAddresser = (*SocketAddress)(nil)
+
+func classInitSocketAddresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GSocketAddressClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GSocketAddressClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Family() SocketFamily }); ok {
+		pclass.get_family = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_get_family)
+	}
+
+	if _, ok := goval.(interface{ NativeSize() int }); ok {
+		pclass.get_native_size = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_get_native_size)
+	}
+
+	if _, ok := goval.(interface {
+		ToNative(dest cgo.Handle, destlen uint) error
+	}); ok {
+		pclass.to_native = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_to_native)
+	}
+}
+
+//export _gotk4_gio2_SocketAddressClass_get_family
+func _gotk4_gio2_SocketAddressClass_get_family(arg0 *C.GSocketAddress) (cret C.GSocketFamily) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Family() SocketFamily })
+
+	socketFamily := iface.Family()
+
+	cret = C.GSocketFamily(socketFamily)
+
+	return cret
+}
+
+//export _gotk4_gio2_SocketAddressClass_get_native_size
+func _gotk4_gio2_SocketAddressClass_get_native_size(arg0 *C.GSocketAddress) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ NativeSize() int })
+
+	gssize := iface.NativeSize()
+
+	cret = C.gssize(gssize)
+
+	return cret
+}
+
+//export _gotk4_gio2_SocketAddressClass_to_native
+func _gotk4_gio2_SocketAddressClass_to_native(arg0 *C.GSocketAddress, arg1 C.gpointer, arg2 C.gsize, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ToNative(dest cgo.Handle, destlen uint) error
+	})
+
+	var _dest cgo.Handle // out
+	var _destlen uint    // out
+
+	_dest = (cgo.Handle)(unsafe.Pointer(arg1))
+	_destlen = uint(arg2)
+
+	_goerr := iface.ToNative(_dest, _destlen)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapSocketAddress(obj *externglib.Object) *SocketAddress {
 	return &SocketAddress{

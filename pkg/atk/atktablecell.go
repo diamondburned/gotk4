@@ -12,6 +12,11 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern AtkObject* _gotk4_atk1_TableCellIface_get_table(AtkTableCell*);
+// extern gboolean _gotk4_atk1_TableCellIface_get_position(AtkTableCell*, gint*, gint*);
+// extern gboolean _gotk4_atk1_TableCellIface_get_row_column_span(AtkTableCell*, gint*, gint*, gint*, gint*);
+// extern gint _gotk4_atk1_TableCellIface_get_column_span(AtkTableCell*);
+// extern gint _gotk4_atk1_TableCellIface_get_row_span(AtkTableCell*);
 import "C"
 
 func init() {
@@ -21,9 +26,6 @@ func init() {
 }
 
 // TableCellOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TableCellOverrider interface {
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
@@ -109,6 +111,86 @@ type TableCeller interface {
 }
 
 var _ TableCeller = (*TableCell)(nil)
+
+func ifaceInitTableCeller(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkTableCellIface)(unsafe.Pointer(gifacePtr))
+	iface.get_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_column_span)
+	iface.get_position = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_position)
+	iface.get_row_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_column_span)
+	iface.get_row_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_span)
+	iface.get_table = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_table)
+}
+
+//export _gotk4_atk1_TableCellIface_get_column_span
+func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.AtkTableCell) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableCellOverrider)
+
+	gint := iface.ColumnSpan()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableCellIface_get_position
+func _gotk4_atk1_TableCellIface_get_position(arg0 *C.AtkTableCell, arg1 *C.gint, arg2 *C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableCellOverrider)
+
+	row, column, ok := iface.Position()
+
+	*arg1 = C.gint(row)
+	*arg2 = C.gint(column)
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableCellIface_get_row_column_span
+func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.AtkTableCell, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableCellOverrider)
+
+	row, column, rowSpan, columnSpan, ok := iface.RowColumnSpan()
+
+	*arg1 = C.gint(row)
+	*arg2 = C.gint(column)
+	*arg3 = C.gint(rowSpan)
+	*arg4 = C.gint(columnSpan)
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableCellIface_get_row_span
+func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.AtkTableCell) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableCellOverrider)
+
+	gint := iface.RowSpan()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableCellIface_get_table
+func _gotk4_atk1_TableCellIface_get_table(arg0 *C.AtkTableCell) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableCellOverrider)
+
+	object := iface.Table()
+
+	cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	C.g_object_ref(C.gpointer(object.Native()))
+
+	return cret
+}
 
 func wrapTableCell(obj *externglib.Object) *TableCell {
 	return &TableCell{

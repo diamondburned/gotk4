@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// DrawingAreaOverrider contains methods that are overridable.
+type DrawingAreaOverrider interface {
+}
+
 // DrawingArea widget is used for creating custom user interface elements. It’s
 // essentially a blank widget; you can draw on it. After creating a drawing
 // area, the application may want to connect to:
@@ -106,6 +110,14 @@ type DrawingArea struct {
 var (
 	_ Widgetter = (*DrawingArea)(nil)
 )
+
+func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 	return &DrawingArea{

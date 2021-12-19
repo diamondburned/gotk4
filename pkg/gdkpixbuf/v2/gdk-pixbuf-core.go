@@ -20,8 +20,8 @@ import (
 // #include <stdlib.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
-// gboolean _gotk4_gdkpixbuf2_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern gboolean _gotk4_gdkpixbuf2_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -162,21 +162,26 @@ func (p PixbufError) String() string {
 type PixbufSaveFunc func(buf []byte) (err error, ok bool)
 
 //export _gotk4_gdkpixbuf2_PixbufSaveFunc
-func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg1 *C.gchar, arg2 C.gsize, arg3 **C.GError, arg4 C.gpointer) (cret C.gboolean) {
+	var fn PixbufSaveFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(PixbufSaveFunc)
 	}
 
-	var buf []byte // out
+	var _buf []byte // out
 
-	buf = make([]byte, arg1)
-	copy(buf, unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1))
+	_buf = make([]byte, arg2)
+	copy(_buf, unsafe.Slice((*byte)(unsafe.Pointer(arg1)), arg2))
 
-	fn := v.(PixbufSaveFunc)
-	err, ok := fn(buf)
+	err, ok := fn(_buf)
 
-	*arg2 = (*C.GError)(gerror.New(err))
+	if err != nil && arg3 != nil {
+		*arg3 = (*C.GError)(gerror.New(err))
+	}
 	if ok {
 		cret = C.TRUE
 	}

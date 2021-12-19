@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -15,6 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_CancellableClass_cancelled(GCancellable*);
 import "C"
 
 func init() {
@@ -24,9 +26,6 @@ func init() {
 }
 
 // CancellableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CancellableOverrider interface {
 	Cancelled()
 }
@@ -41,6 +40,30 @@ type Cancellable struct {
 var (
 	_ externglib.Objector = (*Cancellable)(nil)
 )
+
+func classInitCancellabler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GCancellableClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GCancellableClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Cancelled() }); ok {
+		pclass.cancelled = (*[0]byte)(C._gotk4_gio2_CancellableClass_cancelled)
+	}
+}
+
+//export _gotk4_gio2_CancellableClass_cancelled
+func _gotk4_gio2_CancellableClass_cancelled(arg0 *C.GCancellable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Cancelled() })
+
+	iface.Cancelled()
+}
 
 func wrapCancellable(obj *externglib.Object) *Cancellable {
 	return &Cancellable{

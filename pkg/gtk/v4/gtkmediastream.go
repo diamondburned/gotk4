@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -14,6 +15,12 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_MediaStreamClass_play(GtkMediaStream*);
+// extern void _gotk4_gtk4_MediaStreamClass_pause(GtkMediaStream*);
+// extern void _gotk4_gtk4_MediaStreamClass_realize(GtkMediaStream*, GdkSurface*);
+// extern void _gotk4_gtk4_MediaStreamClass_seek(GtkMediaStream*, gint64);
+// extern void _gotk4_gtk4_MediaStreamClass_unrealize(GtkMediaStream*, GdkSurface*);
+// extern void _gotk4_gtk4_MediaStreamClass_update_audio(GtkMediaStream*, gboolean, double);
 import "C"
 
 func init() {
@@ -23,9 +30,6 @@ func init() {
 }
 
 // MediaStreamOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type MediaStreamOverrider interface {
 	// Pause pauses playback of the stream.
 	//
@@ -124,6 +128,152 @@ type MediaStreamer interface {
 
 var _ MediaStreamer = (*MediaStream)(nil)
 
+func classInitMediaStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkMediaStreamClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkMediaStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Pause() }); ok {
+		pclass.pause = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_pause)
+	}
+
+	if _, ok := goval.(interface{ Play() bool }); ok {
+		pclass.play = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_play)
+	}
+
+	if _, ok := goval.(interface{ Realize(surface gdk.Surfacer) }); ok {
+		pclass.realize = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_realize)
+	}
+
+	if _, ok := goval.(interface{ Seek(timestamp int64) }); ok {
+		pclass.seek = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_seek)
+	}
+
+	if _, ok := goval.(interface{ Unrealize(surface gdk.Surfacer) }); ok {
+		pclass.unrealize = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_unrealize)
+	}
+
+	if _, ok := goval.(interface {
+		UpdateAudio(muted bool, volume float64)
+	}); ok {
+		pclass.update_audio = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_update_audio)
+	}
+}
+
+//export _gotk4_gtk4_MediaStreamClass_pause
+func _gotk4_gtk4_MediaStreamClass_pause(arg0 *C.GtkMediaStream) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Pause() })
+
+	iface.Pause()
+}
+
+//export _gotk4_gtk4_MediaStreamClass_play
+func _gotk4_gtk4_MediaStreamClass_play(arg0 *C.GtkMediaStream) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Play() bool })
+
+	ok := iface.Play()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_MediaStreamClass_realize
+func _gotk4_gtk4_MediaStreamClass_realize(arg0 *C.GtkMediaStream, arg1 *C.GdkSurface) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Realize(surface gdk.Surfacer) })
+
+	var _surface gdk.Surfacer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Surfacer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Surfacer)
+			return ok
+		})
+		rv, ok := casted.(gdk.Surfacer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
+		}
+		_surface = rv
+	}
+
+	iface.Realize(_surface)
+}
+
+//export _gotk4_gtk4_MediaStreamClass_seek
+func _gotk4_gtk4_MediaStreamClass_seek(arg0 *C.GtkMediaStream, arg1 C.gint64) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Seek(timestamp int64) })
+
+	var _timestamp int64 // out
+
+	_timestamp = int64(arg1)
+
+	iface.Seek(_timestamp)
+}
+
+//export _gotk4_gtk4_MediaStreamClass_unrealize
+func _gotk4_gtk4_MediaStreamClass_unrealize(arg0 *C.GtkMediaStream, arg1 *C.GdkSurface) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Unrealize(surface gdk.Surfacer) })
+
+	var _surface gdk.Surfacer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Surfacer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Surfacer)
+			return ok
+		})
+		rv, ok := casted.(gdk.Surfacer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
+		}
+		_surface = rv
+	}
+
+	iface.Unrealize(_surface)
+}
+
+//export _gotk4_gtk4_MediaStreamClass_update_audio
+func _gotk4_gtk4_MediaStreamClass_update_audio(arg0 *C.GtkMediaStream, arg1 C.gboolean, arg2 C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		UpdateAudio(muted bool, volume float64)
+	})
+
+	var _muted bool     // out
+	var _volume float64 // out
+
+	if arg1 != 0 {
+		_muted = true
+	}
+	_volume = float64(arg2)
+
+	iface.UpdateAudio(_muted, _volume)
+}
+
 func wrapMediaStream(obj *externglib.Object) *MediaStream {
 	return &MediaStream{
 		Object: obj,
@@ -181,7 +331,9 @@ func (self *MediaStream) GError(err error) {
 	var _arg1 *C.GError         // out
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	C.gtk_media_stream_gerror(_arg0, _arg1)
 	runtime.KeepAlive(self)

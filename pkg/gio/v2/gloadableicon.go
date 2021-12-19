@@ -16,60 +16,15 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern GInputStream* _gotk4_gio2_LoadableIconIface_load(GLoadableIcon*, int, char**, GCancellable*, GError**);
+// extern GInputStream* _gotk4_gio2_LoadableIconIface_load_finish(GLoadableIcon*, GAsyncResult*, char**, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_loadable_icon_get_type()), F: marshalLoadableIconner},
 	})
-}
-
-// LoadableIconOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type LoadableIconOverrider interface {
-	// Load loads a loadable icon. For the asynchronous version of this
-	// function, see g_loadable_icon_load_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - size: integer.
-	//
-	// The function returns the following values:
-	//
-	//    - typ (optional): location to store the type of the loaded icon, NULL
-	//      to ignore.
-	//    - inputStream to read the icon from.
-	//
-	Load(ctx context.Context, size int) (string, InputStreamer, error)
-	// LoadAsync loads an icon asynchronously. To finish this function, see
-	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
-	// this function, see g_loadable_icon_load().
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - size: integer.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback)
-	// LoadFinish finishes an asynchronous icon load started in
-	// g_loadable_icon_load_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - typ (optional): location to store the type of the loaded icon, NULL
-	//      to ignore.
-	//    - inputStream to read the icon from.
-	//
-	LoadFinish(res AsyncResulter) (string, InputStreamer, error)
 }
 
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons

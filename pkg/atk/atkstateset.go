@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// StateSetOverrider contains methods that are overridable.
+type StateSetOverrider interface {
+}
+
 // StateSet is a read-only representation of the full set of States that apply
 // to an object at a given time. This set is not meant to be modified, but
 // rather created when #atk_object_ref_state_set() is called.
@@ -31,6 +35,14 @@ type StateSet struct {
 var (
 	_ externglib.Objector = (*StateSet)(nil)
 )
+
+func classInitStateSetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapStateSet(obj *externglib.Object) *StateSet {
 	return &StateSet{

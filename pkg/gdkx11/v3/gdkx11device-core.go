@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// X11DeviceCoreOverrider contains methods that are overridable.
+type X11DeviceCoreOverrider interface {
+}
+
 type X11DeviceCore struct {
 	_ [0]func() // equal guard
 	gdk.Device
@@ -28,6 +32,14 @@ type X11DeviceCore struct {
 var (
 	_ gdk.Devicer = (*X11DeviceCore)(nil)
 )
+
+func classInitX11DeviceCorer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11DeviceCore(obj *externglib.Object) *X11DeviceCore {
 	return &X11DeviceCore{

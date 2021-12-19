@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// ViewportOverrider contains methods that are overridable.
+type ViewportOverrider interface {
+}
+
 // Viewport widget acts as an adaptor class, implementing scrollability for
 // child widgets that lack their own scrolling capabilities. Use GtkViewport to
 // scroll child widgets such as Grid, Box, and so on.
@@ -54,6 +58,14 @@ var (
 	_ Binner              = (*Viewport)(nil)
 	_ externglib.Objector = (*Viewport)(nil)
 )
+
+func classInitViewporter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapViewport(obj *externglib.Object) *Viewport {
 	return &Viewport{

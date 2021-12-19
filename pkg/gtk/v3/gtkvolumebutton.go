@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// VolumeButtonOverrider contains methods that are overridable.
+type VolumeButtonOverrider interface {
+}
+
 // VolumeButton is a subclass of ScaleButton that has been tailored for use as a
 // volume control widget with suitable icons, tooltips and accessible labels.
 type VolumeButton struct {
@@ -33,6 +37,14 @@ var (
 	_ externglib.Objector = (*VolumeButton)(nil)
 	_ Binner              = (*VolumeButton)(nil)
 )
+
+func classInitVolumeButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 	return &VolumeButton{

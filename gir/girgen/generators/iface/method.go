@@ -10,8 +10,9 @@ import (
 )
 
 type Method struct {
-	InfoElements *gir.InfoElements
-	InfoAttrs    *gir.InfoAttrs
+	InfoElements  *gir.InfoElements
+	InfoAttrs     *gir.InfoAttrs
+	CallableAttrs *gir.CallableAttrs
 
 	Recv       string
 	Name       string
@@ -29,8 +30,9 @@ type ParamDoc struct {
 
 func newMethod(cgen *callable.Generator) Method {
 	return Method{
-		InfoElements: &cgen.InfoElements,
-		InfoAttrs:    &cgen.InfoAttrs,
+		InfoElements:  &cgen.CallableAttrs.InfoElements,
+		InfoAttrs:     &cgen.CallableAttrs.InfoAttrs,
+		CallableAttrs: cgen.CallableAttrs,
 
 		Recv:       cgen.Recv(),
 		Name:       cgen.Name,
@@ -63,6 +65,7 @@ func (m *Methods) reset(capacity int) {
 
 func (m *Methods) setMethods(g *Generator, methods []gir.Method) {
 	m.reset(len(methods))
+	g.methods = make([]gir.Method, 0, len(methods))
 
 	for i := range methods {
 		if types.FilterMethod(g.gen, g.Name, &methods[i]) {
@@ -76,11 +79,13 @@ func (m *Methods) setMethods(g *Generator, methods []gir.Method) {
 		}
 
 		*m = append(*m, newMethod(&g.cgen))
+		g.methods = append(g.methods, methods[i])
 	}
 }
 
 func (m *Methods) setVirtuals(g *Generator, virtuals []gir.VirtualMethod) {
 	m.reset(len(virtuals))
+	g.virtuals = make([]gir.VirtualMethod, 0, len(virtuals))
 
 	for i := range virtuals {
 		if types.FilterSub(g.gen, g.Name, virtuals[i].Name, virtuals[i].CIdentifier) {
@@ -102,6 +107,7 @@ func (m *Methods) setVirtuals(g *Generator, virtuals []gir.VirtualMethod) {
 		}
 
 		*m = append(*m, newMethod(&g.cgen))
+		g.virtuals = append(g.virtuals, virtuals[i])
 	}
 }
 

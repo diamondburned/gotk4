@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -16,6 +17,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_AppChooserButtonClass_custom_item_activated(GtkAppChooserButton*, gchar*);
 import "C"
 
 func init() {
@@ -25,9 +27,6 @@ func init() {
 }
 
 // AppChooserButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type AppChooserButtonOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -67,6 +66,34 @@ var (
 	_ externglib.Objector = (*AppChooserButton)(nil)
 	_ Binner              = (*AppChooserButton)(nil)
 )
+
+func classInitAppChooserButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkAppChooserButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkAppChooserButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ CustomItemActivated(itemName string) }); ok {
+		pclass.custom_item_activated = (*[0]byte)(C._gotk4_gtk3_AppChooserButtonClass_custom_item_activated)
+	}
+}
+
+//export _gotk4_gtk3_AppChooserButtonClass_custom_item_activated
+func _gotk4_gtk3_AppChooserButtonClass_custom_item_activated(arg0 *C.GtkAppChooserButton, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CustomItemActivated(itemName string) })
+
+	var _itemName string // out
+
+	_itemName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.CustomItemActivated(_itemName)
+}
 
 func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 	return &AppChooserButton{

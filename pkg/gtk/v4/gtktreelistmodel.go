@@ -14,7 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// GListModel* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
+// extern GListModel* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -35,18 +35,21 @@ func init() {
 type TreeListModelCreateModelFunc func(item *externglib.Object) (listModel gio.ListModeller)
 
 //export _gotk4_gtk4_TreeListModelCreateModelFunc
-func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GListModel) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GListModel) {
+	var fn TreeListModelCreateModelFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeListModelCreateModelFunc)
 	}
 
-	var item *externglib.Object // out
+	var _item *externglib.Object // out
 
-	item = externglib.Take(unsafe.Pointer(arg0))
+	_item = externglib.Take(unsafe.Pointer(arg1))
 
-	fn := v.(TreeListModelCreateModelFunc)
-	listModel := fn(item)
+	listModel := fn(_item)
 
 	if listModel != nil {
 		cret = (*C.GListModel)(unsafe.Pointer(listModel.Native()))
@@ -54,6 +57,10 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) 
 	}
 
 	return cret
+}
+
+// TreeListModelOverrider contains methods that are overridable.
+type TreeListModelOverrider interface {
 }
 
 // TreeListModel: GtkTreeListModel is a list model that can create child models
@@ -68,6 +75,14 @@ type TreeListModel struct {
 var (
 	_ externglib.Objector = (*TreeListModel)(nil)
 )
+
+func classInitTreeListModeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTreeListModel(obj *externglib.Object) *TreeListModel {
 	return &TreeListModel{
@@ -335,6 +350,10 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 	runtime.KeepAlive(autoexpand)
 }
 
+// TreeListRowOverrider contains methods that are overridable.
+type TreeListRowOverrider interface {
+}
+
 // TreeListRow: GtkTreeListRow is used by GtkTreeListModel to represent items.
 //
 // It allows navigating the model as a tree and modify the state of rows.
@@ -354,6 +373,14 @@ type TreeListRow struct {
 var (
 	_ externglib.Objector = (*TreeListRow)(nil)
 )
+
+func classInitTreeListRower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTreeListRow(obj *externglib.Object) *TreeListRow {
 	return &TreeListRow{

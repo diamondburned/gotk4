@@ -16,79 +16,16 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_gio2_SeekableIface_can_seek(GSeekable*);
+// extern gboolean _gotk4_gio2_SeekableIface_can_truncate(GSeekable*);
+// extern gboolean _gotk4_gio2_SeekableIface_seek(GSeekable*, goffset, GSeekType, GCancellable*, GError**);
+// extern goffset _gotk4_gio2_SeekableIface_tell(GSeekable*);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_seekable_get_type()), F: marshalSeekabler},
 	})
-}
-
-// SeekableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type SeekableOverrider interface {
-	// CanSeek tests if the stream supports the Iface.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if seekable can be seeked. FALSE otherwise.
-	//
-	CanSeek() bool
-	// CanTruncate tests if the length of the stream can be adjusted with
-	// g_seekable_truncate().
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the stream can be truncated, FALSE otherwise.
-	//
-	CanTruncate() bool
-	// Seek seeks in the stream by the given offset, modified by type.
-	//
-	// Attempting to seek past the end of the stream will have different results
-	// depending on if the stream is fixed-sized or resizable. If the stream is
-	// resizable then seeking past the end and then writing will result in zeros
-	// filling the empty space. Seeking past the end of a resizable stream and
-	// reading will result in EOF. Seeking past the end of a fixed-sized stream
-	// will fail.
-	//
-	// Any operation that would result in a negative offset will fail.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - offset: #goffset.
-	//    - typ: Type.
-	//
-	Seek(ctx context.Context, offset int64, typ glib.SeekType) error
-	// Tell tells the current position within the stream.
-	//
-	// The function returns the following values:
-	//
-	//    - gint64: offset from the beginning of the buffer.
-	//
-	Tell() int64
-	// TruncateFn sets the length of the stream to offset. If the stream was
-	// previously larger than offset, the extra data is discarded. If the stream
-	// was previously shorter than offset, it is extended with NUL ('\0') bytes.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - offset: new length for seekable, in bytes.
-	//
-	TruncateFn(ctx context.Context, offset int64) error
 }
 
 // Seekable is implemented by streams (implementations of Stream or Stream) that

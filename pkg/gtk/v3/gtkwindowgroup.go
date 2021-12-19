@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// WindowGroupOverrider contains methods that are overridable.
+type WindowGroupOverrider interface {
+}
+
 // WindowGroup restricts the effect of grabs to windows in the same group,
 // thereby making window groups almost behave like separate applications.
 //
@@ -45,6 +49,14 @@ type WindowGroup struct {
 var (
 	_ externglib.Objector = (*WindowGroup)(nil)
 )
+
+func classInitWindowGrouper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 	return &WindowGroup{

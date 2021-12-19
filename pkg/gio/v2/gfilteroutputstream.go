@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// FilterOutputStreamOverrider contains methods that are overridable.
+type FilterOutputStreamOverrider interface {
+}
+
 // FilterOutputStream: base class for output stream implementations that perform
 // some kind of filtering operation on a base stream. Typical examples of
 // filtering operations are character set conversion, compression and byte order
@@ -43,6 +47,14 @@ type FilterOutputStreamer interface {
 }
 
 var _ FilterOutputStreamer = (*FilterOutputStream)(nil)
+
+func classInitFilterOutputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFilterOutputStream(obj *externglib.Object) *FilterOutputStream {
 	return &FilterOutputStream{

@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// RecentChooserDialogOverrider contains methods that are overridable.
+type RecentChooserDialogOverrider interface {
+}
+
 // RecentChooserDialog is a dialog box suitable for displaying the recently used
 // documents. This widgets works by putting a RecentChooserWidget inside a
 // Dialog. It exposes the RecentChooserIface interface, so you can use all the
@@ -74,6 +78,14 @@ var (
 	_ externglib.Objector = (*RecentChooserDialog)(nil)
 	_ Binner              = (*RecentChooserDialog)(nil)
 )
+
+func classInitRecentChooserDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 	return &RecentChooserDialog{

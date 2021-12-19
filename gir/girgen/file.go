@@ -46,6 +46,11 @@ func NewFileGenerator(n *NamespaceGenerator, name string, isRoot bool) *FileGene
 	}
 }
 
+// Name returns the current file's name.
+func (f *FileGenerator) Name() string {
+	return f.name
+}
+
 // Header returns the current file's header.
 func (f *FileGenerator) Header() *file.Header {
 	return &f.header

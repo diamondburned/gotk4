@@ -21,7 +21,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// gboolean _gotk4_gtk3_TextCharPredicate(gunichar, gpointer);
+// extern gboolean _gotk4_gtk3_TextCharPredicate(gunichar, gpointer);
 import "C"
 
 func init() {
@@ -92,18 +92,21 @@ func (t TextSearchFlags) Has(other TextSearchFlags) bool {
 type TextCharPredicate func(ch uint32) (ok bool)
 
 //export _gotk4_gtk3_TextCharPredicate
-func _gotk4_gtk3_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_TextCharPredicate(arg1 C.gunichar, arg2 C.gpointer) (cret C.gboolean) {
+	var fn TextCharPredicate
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TextCharPredicate)
 	}
 
-	var ch uint32 // out
+	var _ch uint32 // out
 
-	ch = uint32(arg0)
+	_ch = uint32(arg1)
 
-	fn := v.(TextCharPredicate)
-	ok := fn(ch)
+	ok := fn(_ch)
 
 	if ok {
 		cret = C.TRUE

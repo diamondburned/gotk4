@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// SimpleProxyResolverOverrider contains methods that are overridable.
+type SimpleProxyResolverOverrider interface {
+}
+
 // SimpleProxyResolver is a simple Resolver implementation that handles a single
 // default proxy, multiple URI-scheme-specific proxies, and a list of hosts that
 // proxies should not be used for.
@@ -37,6 +41,14 @@ type SimpleProxyResolver struct {
 var (
 	_ externglib.Objector = (*SimpleProxyResolver)(nil)
 )
+
+func classInitSimpleProxyResolverer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
 	return &SimpleProxyResolver{

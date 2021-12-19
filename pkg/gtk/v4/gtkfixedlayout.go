@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// FixedLayoutOverrider contains methods that are overridable.
+type FixedLayoutOverrider interface {
+}
+
 // FixedLayout: GtkFixedLayout is a layout manager which can place child widgets
 // at fixed positions.
 //
@@ -61,6 +65,14 @@ var (
 	_ LayoutManagerer = (*FixedLayout)(nil)
 )
 
+func classInitFixedLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
 	return &FixedLayout{
 		LayoutManager: LayoutManager{
@@ -91,6 +103,10 @@ func NewFixedLayout() *FixedLayout {
 	return _fixedLayout
 }
 
+// FixedLayoutChildOverrider contains methods that are overridable.
+type FixedLayoutChildOverrider interface {
+}
+
 // FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.
 type FixedLayoutChild struct {
 	_ [0]func() // equal guard
@@ -100,6 +116,14 @@ type FixedLayoutChild struct {
 var (
 	_ LayoutChilder = (*FixedLayoutChild)(nil)
 )
+
+func classInitFixedLayoutChilder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
 	return &FixedLayoutChild{

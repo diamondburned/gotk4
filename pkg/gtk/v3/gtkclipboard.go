@@ -19,9 +19,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_ClipboardImageReceivedFunc(GtkClipboard*, GdkPixbuf*, gpointer);
-// void _gotk4_gtk3_ClipboardTextReceivedFunc(GtkClipboard*, gchar*, gpointer);
-// void _gotk4_gtk3_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
+// extern void _gotk4_gtk3_ClipboardImageReceivedFunc(GtkClipboard*, GdkPixbuf*, gpointer);
+// extern void _gotk4_gtk3_ClipboardTextReceivedFunc(GtkClipboard*, gchar*, gpointer);
+// extern void _gotk4_gtk3_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
 import "C"
 
 func init() {
@@ -35,19 +35,23 @@ func init() {
 type ClipboardImageReceivedFunc func(clipboard *Clipboard, pixbuf *gdkpixbuf.Pixbuf)
 
 //export _gotk4_gtk3_ClipboardImageReceivedFunc
-func _gotk4_gtk3_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_ClipboardImageReceivedFunc(arg1 *C.GtkClipboard, arg2 *C.GdkPixbuf, arg3 C.gpointer) {
+	var fn ClipboardImageReceivedFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ClipboardImageReceivedFunc)
 	}
 
-	var clipboard *Clipboard     // out
-	var pixbuf *gdkpixbuf.Pixbuf // out
+	var _clipboard *Clipboard     // out
+	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
+	_clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg1)))
 	{
-		obj := externglib.Take(unsafe.Pointer(arg1))
-		pixbuf = &gdkpixbuf.Pixbuf{
+		obj := externglib.Take(unsafe.Pointer(arg2))
+		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
 				Icon: gio.Icon{
@@ -57,8 +61,7 @@ func _gotk4_gtk3_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPix
 		}
 	}
 
-	fn := v.(ClipboardImageReceivedFunc)
-	fn(clipboard, pixbuf)
+	fn(_clipboard, _pixbuf)
 }
 
 // ClipboardReceivedFunc: function to be called when the results of
@@ -66,20 +69,23 @@ func _gotk4_gtk3_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPix
 type ClipboardReceivedFunc func(clipboard *Clipboard, selectionData *SelectionData)
 
 //export _gotk4_gtk3_ClipboardReceivedFunc
-func _gotk4_gtk3_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_ClipboardReceivedFunc(arg1 *C.GtkClipboard, arg2 *C.GtkSelectionData, arg3 C.gpointer) {
+	var fn ClipboardReceivedFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ClipboardReceivedFunc)
 	}
 
-	var clipboard *Clipboard         // out
-	var selectionData *SelectionData // out
+	var _clipboard *Clipboard         // out
+	var _selectionData *SelectionData // out
 
-	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
-	selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg1)))
+	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(ClipboardReceivedFunc)
-	fn(clipboard, selectionData)
+	fn(_clipboard, _selectionData)
 }
 
 // ClipboardTextReceivedFunc: function to be called when the results of
@@ -87,22 +93,25 @@ func _gotk4_gtk3_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectio
 type ClipboardTextReceivedFunc func(clipboard *Clipboard, text string)
 
 //export _gotk4_gtk3_ClipboardTextReceivedFunc
-func _gotk4_gtk3_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_ClipboardTextReceivedFunc(arg1 *C.GtkClipboard, arg2 *C.gchar, arg3 C.gpointer) {
+	var fn ClipboardTextReceivedFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ClipboardTextReceivedFunc)
 	}
 
-	var clipboard *Clipboard // out
-	var text string          // out
+	var _clipboard *Clipboard // out
+	var _text string          // out
 
-	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
-	if arg1 != nil {
-		text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg1)))
+	if arg2 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	}
 
-	fn := v.(ClipboardTextReceivedFunc)
-	fn(clipboard, text)
+	fn(_clipboard, _text)
 }
 
 // ClipboardURIReceivedFunc: function to be called when the results of
@@ -110,32 +119,35 @@ func _gotk4_gtk3_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, 
 type ClipboardURIReceivedFunc func(clipboard *Clipboard, uris []string)
 
 //export _gotk4_gtk3_ClipboardURIReceivedFunc
-func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_ClipboardURIReceivedFunc(arg1 *C.GtkClipboard, arg2 **C.gchar, arg3 C.gpointer) {
+	var fn ClipboardURIReceivedFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ClipboardURIReceivedFunc)
 	}
 
-	var clipboard *Clipboard // out
-	var uris []string        // out
+	var _clipboard *Clipboard // out
+	var _uris []string        // out
 
-	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
+	_clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg1)))
 	{
 		var i int
 		var z *C.gchar
-		for p := arg1; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := arg2; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(arg1, i)
-		uris = make([]string, i)
+		src := unsafe.Slice(arg2, i)
+		_uris = make([]string, i)
 		for i := range src {
-			uris[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			_uris[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 
-	fn := v.(ClipboardURIReceivedFunc)
-	fn(clipboard, uris)
+	fn(_clipboard, _uris)
 }
 
 // Clipboard object represents a clipboard of data shared between different

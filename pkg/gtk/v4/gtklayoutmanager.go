@@ -6,12 +6,19 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GtkLayoutChild* _gotk4_gtk4_LayoutManagerClass_create_layout_child(GtkLayoutManager*, GtkWidget*, GtkWidget*);
+// extern GtkSizeRequestMode _gotk4_gtk4_LayoutManagerClass_get_request_mode(GtkLayoutManager*, GtkWidget*);
+// extern void _gotk4_gtk4_LayoutManagerClass_allocate(GtkLayoutManager*, GtkWidget*, int, int, int);
+// extern void _gotk4_gtk4_LayoutManagerClass_measure(GtkLayoutManager*, GtkWidget*, GtkOrientation, int, int*, int*, int*, int*);
+// extern void _gotk4_gtk4_LayoutManagerClass_root(GtkLayoutManager*);
+// extern void _gotk4_gtk4_LayoutManagerClass_unroot(GtkLayoutManager*);
 import "C"
 
 func init() {
@@ -21,9 +28,6 @@ func init() {
 }
 
 // LayoutManagerOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type LayoutManagerOverrider interface {
 	// Allocate assigns the given width, height, and baseline to a widget, and
 	// computes the position and sizes of the children of the widget using the
@@ -150,6 +154,228 @@ type LayoutManagerer interface {
 }
 
 var _ LayoutManagerer = (*LayoutManager)(nil)
+
+func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Allocate(widget Widgetter, width, height, baseline int)
+	}); ok {
+		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_allocate)
+	}
+
+	if _, ok := goval.(interface {
+		CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
+	}); ok {
+		pclass.create_layout_child = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_create_layout_child)
+	}
+
+	if _, ok := goval.(interface {
+		RequestMode(widget Widgetter) SizeRequestMode
+	}); ok {
+		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_get_request_mode)
+	}
+
+	if _, ok := goval.(interface {
+		Measure(widget Widgetter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	}); ok {
+		pclass.measure = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_measure)
+	}
+
+	if _, ok := goval.(interface{ Root() }); ok {
+		pclass.root = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_root)
+	}
+
+	if _, ok := goval.(interface{ Unroot() }); ok {
+		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_unroot)
+	}
+}
+
+//export _gotk4_gtk4_LayoutManagerClass_allocate
+func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.int, arg3 C.int, arg4 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Allocate(widget Widgetter, width, height, baseline int)
+	})
+
+	var _widget Widgetter // out
+	var _width int        // out
+	var _height int       // out
+	var _baseline int     // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_width = int(arg2)
+	_height = int(arg3)
+	_baseline = int(arg4)
+
+	iface.Allocate(_widget, _width, _height, _baseline)
+}
+
+//export _gotk4_gtk4_LayoutManagerClass_create_layout_child
+func _gotk4_gtk4_LayoutManagerClass_create_layout_child(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 *C.GtkWidget) (cret *C.GtkLayoutChild) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
+	})
+
+	var _widget Widgetter   // out
+	var _forChild Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_forChild = rv
+	}
+
+	layoutChild := iface.CreateLayoutChild(_widget, _forChild)
+
+	cret = (*C.GtkLayoutChild)(unsafe.Pointer(layoutChild.Native()))
+	C.g_object_ref(C.gpointer(layoutChild.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk4_LayoutManagerClass_get_request_mode
+func _gotk4_gtk4_LayoutManagerClass_get_request_mode(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget) (cret C.GtkSizeRequestMode) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		RequestMode(widget Widgetter) SizeRequestMode
+	})
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	sizeRequestMode := iface.RequestMode(_widget)
+
+	cret = C.GtkSizeRequestMode(sizeRequestMode)
+
+	return cret
+}
+
+//export _gotk4_gtk4_LayoutManagerClass_measure
+func _gotk4_gtk4_LayoutManagerClass_measure(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.GtkOrientation, arg3 C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int, arg7 *C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Measure(widget Widgetter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	})
+
+	var _widget Widgetter        // out
+	var _orientation Orientation // out
+	var _forSize int             // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_orientation = Orientation(arg2)
+	_forSize = int(arg3)
+
+	minimum, natural, minimumBaseline, naturalBaseline := iface.Measure(_widget, _orientation, _forSize)
+
+	*arg4 = C.int(minimum)
+	*arg5 = C.int(natural)
+	*arg6 = C.int(minimumBaseline)
+	*arg7 = C.int(naturalBaseline)
+}
+
+//export _gotk4_gtk4_LayoutManagerClass_root
+func _gotk4_gtk4_LayoutManagerClass_root(arg0 *C.GtkLayoutManager) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Root() })
+
+	iface.Root()
+}
+
+//export _gotk4_gtk4_LayoutManagerClass_unroot
+func _gotk4_gtk4_LayoutManagerClass_unroot(arg0 *C.GtkLayoutManager) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Unroot() })
+
+	iface.Unroot()
+}
 
 func wrapLayoutManager(obj *externglib.Object) *LayoutManager {
 	return &LayoutManager{

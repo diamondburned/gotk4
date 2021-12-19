@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -16,6 +17,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_AppChooserWidgetClass_application_activated(GtkAppChooserWidget*, GAppInfo*);
+// extern void _gotk4_gtk3_AppChooserWidgetClass_application_selected(GtkAppChooserWidget*, GAppInfo*);
+// extern void _gotk4_gtk3_AppChooserWidgetClass_populate_popup(GtkAppChooserWidget*, GtkMenu*, GAppInfo*);
 import "C"
 
 func init() {
@@ -25,9 +29,6 @@ func init() {
 }
 
 // AppChooserWidgetOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type AppChooserWidgetOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -74,6 +75,120 @@ var (
 	_ externglib.Objector = (*AppChooserWidget)(nil)
 	_ Containerer         = (*AppChooserWidget)(nil)
 )
+
+func classInitAppChooserWidgetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkAppChooserWidgetClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkAppChooserWidgetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ApplicationActivated(appInfo gio.AppInfor) }); ok {
+		pclass.application_activated = (*[0]byte)(C._gotk4_gtk3_AppChooserWidgetClass_application_activated)
+	}
+
+	if _, ok := goval.(interface{ ApplicationSelected(appInfo gio.AppInfor) }); ok {
+		pclass.application_selected = (*[0]byte)(C._gotk4_gtk3_AppChooserWidgetClass_application_selected)
+	}
+
+	if _, ok := goval.(interface {
+		PopulatePopup(menu *Menu, appInfo gio.AppInfor)
+	}); ok {
+		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_AppChooserWidgetClass_populate_popup)
+	}
+}
+
+//export _gotk4_gtk3_AppChooserWidgetClass_application_activated
+func _gotk4_gtk3_AppChooserWidgetClass_application_activated(arg0 *C.GtkAppChooserWidget, arg1 *C.GAppInfo) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ApplicationActivated(appInfo gio.AppInfor) })
+
+	var _appInfo gio.AppInfor // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.AppInfor)
+			return ok
+		})
+		rv, ok := casted.(gio.AppInfor)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_appInfo = rv
+	}
+
+	iface.ApplicationActivated(_appInfo)
+}
+
+//export _gotk4_gtk3_AppChooserWidgetClass_application_selected
+func _gotk4_gtk3_AppChooserWidgetClass_application_selected(arg0 *C.GtkAppChooserWidget, arg1 *C.GAppInfo) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ApplicationSelected(appInfo gio.AppInfor) })
+
+	var _appInfo gio.AppInfor // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.AppInfor)
+			return ok
+		})
+		rv, ok := casted.(gio.AppInfor)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_appInfo = rv
+	}
+
+	iface.ApplicationSelected(_appInfo)
+}
+
+//export _gotk4_gtk3_AppChooserWidgetClass_populate_popup
+func _gotk4_gtk3_AppChooserWidgetClass_populate_popup(arg0 *C.GtkAppChooserWidget, arg1 *C.GtkMenu, arg2 *C.GAppInfo) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PopulatePopup(menu *Menu, appInfo gio.AppInfor)
+	})
+
+	var _menu *Menu           // out
+	var _appInfo gio.AppInfor // out
+
+	_menu = wrapMenu(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.AppInfor)
+			return ok
+		})
+		rv, ok := casted.(gio.AppInfor)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_appInfo = rv
+	}
+
+	iface.PopulatePopup(_menu, _appInfo)
+}
 
 func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 	return &AppChooserWidget{

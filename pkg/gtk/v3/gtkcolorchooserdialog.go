@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// ColorChooserDialogOverrider contains methods that are overridable.
+type ColorChooserDialogOverrider interface {
+}
+
 // ColorChooserDialog widget is a dialog for choosing a color. It implements the
 // ColorChooser interface.
 type ColorChooserDialog struct {
@@ -37,6 +41,14 @@ var (
 	_ externglib.Objector = (*ColorChooserDialog)(nil)
 	_ Binner              = (*ColorChooserDialog)(nil)
 )
+
+func classInitColorChooserDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 	return &ColorChooserDialog{

@@ -16,7 +16,10 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern GIOStream* _gotk4_gio2_ProxyInterface_connect(GProxy*, GIOStream*, GProxyAddress*, GCancellable*, GError**);
+// extern GIOStream* _gotk4_gio2_ProxyInterface_connect_finish(GProxy*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_ProxyInterface_supports_hostname(GProxy*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -28,64 +31,6 @@ func init() {
 // PROXY_EXTENSION_POINT_NAME: extension point for proxy functionality. See
 // [Extending GIO][extending-gio].
 const PROXY_EXTENSION_POINT_NAME = "gio-proxy"
-
-// ProxyOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type ProxyOverrider interface {
-	// ConnectProxy: given connection to communicate with a proxy (eg, a
-	// Connection that is connected to the proxy server), this does the
-	// necessary handshake to connect to proxy_address, and if required, wraps
-	// the OStream to handle proxy payload.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): #GCancellable.
-	//    - connection: OStream.
-	//    - proxyAddress: Address.
-	//
-	// The function returns the following values:
-	//
-	//    - ioStream that will replace connection. This might be the same as
-	//      connection, in which case a reference will be added.
-	//
-	ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error)
-	// ConnectAsync asynchronous version of g_proxy_connect().
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): #GCancellable.
-	//    - connection: OStream.
-	//    - proxyAddress: Address.
-	//    - callback (optional): ReadyCallback.
-	//
-	ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback)
-	// ConnectFinish: see g_proxy_connect().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - ioStream: OStream.
-	//
-	ConnectFinish(result AsyncResulter) (IOStreamer, error)
-	// SupportsHostname: some proxy protocols expect to be passed a hostname,
-	// which they will resolve to an IP address themselves. Others, like SOCKS4,
-	// do not allow this. This function will return FALSE if proxy is
-	// implementing such a protocol. When FALSE is returned, the caller should
-	// resolve the destination hostname first, and then pass a Address
-	// containing the stringified IP address to g_proxy_connect() or
-	// g_proxy_connect_async().
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if hostname resolution is supported.
-	//
-	SupportsHostname() bool
-}
 
 // Proxy handles connecting to a remote host via a given type of proxy server.
 // It is implemented by the 'gio-proxy' extension point. The extensions are

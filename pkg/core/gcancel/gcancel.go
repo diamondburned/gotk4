@@ -120,6 +120,27 @@ func GCancellableFromContext(ctx context.Context) *Cancellable {
 	return nilCancellable
 }
 
+// NewCancellableContext creates a new context.Context from the given
+// *GCancellable. If the pointer is nil, then context.Background() is used.
+func NewCancellableContext(cancellable unsafe.Pointer) context.Context {
+	cval := (*C.GCancellable)(cancellable)
+	if cval == nil {
+		return context.Background()
+	}
+
+	obj := &Cancellable{
+		// TODO: query gbox for a Cancellable.
+		Object: glib.Take(cancellable),
+		ctx:    context.Background(),
+	}
+
+	done := make(chan struct{})
+	obj.Connect("cancelled", func() { close(done) })
+	obj.done = done
+
+	return obj
+}
+
 // WithCancel behaves similarly to context.WithCancel, except the created
 // context is of type Cancellable. This is useful if the user wants to reuse the
 // same Cancellable instance for multiple calls.

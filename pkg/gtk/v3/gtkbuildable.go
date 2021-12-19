@@ -17,6 +17,16 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GObject* _gotk4_gtk3_BuildableIface_construct_child(GtkBuildable*, GtkBuilder*, gchar*);
+// extern GObject* _gotk4_gtk3_BuildableIface_get_internal_child(GtkBuildable*, GtkBuilder*, gchar*);
+// extern gboolean _gotk4_gtk3_BuildableIface_custom_tag_start(GtkBuildable*, GtkBuilder*, GObject*, gchar*, GMarkupParser*, gpointer*);
+// extern gchar* _gotk4_gtk3_BuildableIface_get_name(GtkBuildable*);
+// extern void _gotk4_gtk3_BuildableIface_add_child(GtkBuildable*, GtkBuilder*, GObject*, gchar*);
+// extern void _gotk4_gtk3_BuildableIface_custom_finished(GtkBuildable*, GtkBuilder*, GObject*, gchar*, gpointer);
+// extern void _gotk4_gtk3_BuildableIface_custom_tag_end(GtkBuildable*, GtkBuilder*, GObject*, gchar*, gpointer*);
+// extern void _gotk4_gtk3_BuildableIface_parser_finished(GtkBuildable*, GtkBuilder*);
+// extern void _gotk4_gtk3_BuildableIface_set_buildable_property(GtkBuildable*, GtkBuilder*, gchar*, GValue*);
+// extern void _gotk4_gtk3_BuildableIface_set_name(GtkBuildable*, gchar*);
 import "C"
 
 func init() {
@@ -26,9 +36,6 @@ func init() {
 }
 
 // BuildableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type BuildableOverrider interface {
 	// AddChild adds a child to buildable. type is an optional string describing
 	// how the child should be added.
@@ -200,6 +207,196 @@ type Buildabler interface {
 }
 
 var _ Buildabler = (*Buildable)(nil)
+
+func ifaceInitBuildabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkBuildableIface)(unsafe.Pointer(gifacePtr))
+	iface.add_child = (*[0]byte)(C._gotk4_gtk3_BuildableIface_add_child)
+	iface.construct_child = (*[0]byte)(C._gotk4_gtk3_BuildableIface_construct_child)
+	iface.custom_finished = (*[0]byte)(C._gotk4_gtk3_BuildableIface_custom_finished)
+	iface.custom_tag_end = (*[0]byte)(C._gotk4_gtk3_BuildableIface_custom_tag_end)
+	iface.custom_tag_start = (*[0]byte)(C._gotk4_gtk3_BuildableIface_custom_tag_start)
+	iface.get_internal_child = (*[0]byte)(C._gotk4_gtk3_BuildableIface_get_internal_child)
+	iface.get_name = (*[0]byte)(C._gotk4_gtk3_BuildableIface_get_name)
+	iface.parser_finished = (*[0]byte)(C._gotk4_gtk3_BuildableIface_parser_finished)
+	iface.set_buildable_property = (*[0]byte)(C._gotk4_gtk3_BuildableIface_set_buildable_property)
+	iface.set_name = (*[0]byte)(C._gotk4_gtk3_BuildableIface_set_name)
+}
+
+//export _gotk4_gtk3_BuildableIface_add_child
+func _gotk4_gtk3_BuildableIface_add_child(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	var _builder *Builder         // out
+	var _child *externglib.Object // out
+	var _typ string               // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+	_child = externglib.Take(unsafe.Pointer(arg2))
+	if arg3 != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	}
+
+	iface.AddChild(_builder, _child, _typ)
+}
+
+//export _gotk4_gtk3_BuildableIface_construct_child
+func _gotk4_gtk3_BuildableIface_construct_child(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.gchar) (cret *C.GObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	var _builder *Builder // out
+	var _name string      // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	object := iface.ConstructChild(_builder, _name)
+
+	cret = (*C.GObject)(unsafe.Pointer(object.Native()))
+	C.g_object_ref(C.gpointer(object.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_BuildableIface_custom_finished
+func _gotk4_gtk3_BuildableIface_custom_finished(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.gchar, arg4 C.gpointer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	var _builder *Builder         // out
+	var _child *externglib.Object // out
+	var _tagname string           // out
+	var _data cgo.Handle          // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+	if arg2 != nil {
+		_child = externglib.Take(unsafe.Pointer(arg2))
+	}
+	_tagname = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	_data = (cgo.Handle)(unsafe.Pointer(arg4))
+
+	iface.CustomFinished(_builder, _child, _tagname, _data)
+}
+
+//export _gotk4_gtk3_BuildableIface_custom_tag_end
+func _gotk4_gtk3_BuildableIface_custom_tag_end(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.gchar, arg4 *C.gpointer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	var _builder *Builder         // out
+	var _child *externglib.Object // out
+	var _tagname string           // out
+	var _data *cgo.Handle         // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+	if arg2 != nil {
+		_child = externglib.Take(unsafe.Pointer(arg2))
+	}
+	_tagname = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	if arg4 != nil {
+		_data = (*cgo.Handle)(unsafe.Pointer(arg4))
+	}
+
+	iface.CustomTagEnd(_builder, _child, _tagname, _data)
+}
+
+//export _gotk4_gtk3_BuildableIface_custom_tag_start
+func _gotk4_gtk3_BuildableIface_custom_tag_start(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.gchar, arg4 *C.GMarkupParser, arg5 *C.gpointer) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	var _builder *Builder         // out
+	var _child *externglib.Object // out
+	var _tagname string           // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+	if arg2 != nil {
+		_child = externglib.Take(unsafe.Pointer(arg2))
+	}
+	_tagname = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+
+	parser, data, ok := iface.CustomTagStart(_builder, _child, _tagname)
+
+	*arg4 = *(*C.GMarkupParser)(gextras.StructNative(unsafe.Pointer(parser)))
+	*arg5 = (C.gpointer)(unsafe.Pointer(data))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_BuildableIface_get_internal_child
+func _gotk4_gtk3_BuildableIface_get_internal_child(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.gchar) (cret *C.GObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	var _builder *Builder // out
+	var _childname string // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+	_childname = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	object := iface.InternalChild(_builder, _childname)
+
+	cret = (*C.GObject)(unsafe.Pointer(object.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_BuildableIface_get_name
+func _gotk4_gtk3_BuildableIface_get_name(arg0 *C.GtkBuildable) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	utf8 := iface.Name()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_gtk3_BuildableIface_parser_finished
+func _gotk4_gtk3_BuildableIface_parser_finished(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	var _builder *Builder // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.ParserFinished(_builder)
+}
+
+//export _gotk4_gtk3_BuildableIface_set_buildable_property
+func _gotk4_gtk3_BuildableIface_set_buildable_property(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.gchar, arg3 *C.GValue) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	var _builder *Builder        // out
+	var _name string             // out
+	var _value *externglib.Value // out
+
+	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_value = externglib.ValueFromNative(unsafe.Pointer(arg3))
+
+	iface.SetBuildableProperty(_builder, _name, _value)
+}
+
+//export _gotk4_gtk3_BuildableIface_set_name
+func _gotk4_gtk3_BuildableIface_set_name(arg0 *C.GtkBuildable, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuildableOverrider)
+
+	var _name string // out
+
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.SetName(_name)
+}
 
 func wrapBuildable(obj *externglib.Object) *Buildable {
 	return &Buildable{

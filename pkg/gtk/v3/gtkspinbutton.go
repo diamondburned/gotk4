@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -16,6 +17,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gint _gotk4_gtk3_SpinButtonClass_input(GtkSpinButton*, gdouble*);
+// extern gint _gotk4_gtk3_SpinButtonClass_output(GtkSpinButton*);
+// extern void _gotk4_gtk3_SpinButtonClass_change_value(GtkSpinButton*, GtkScrollType);
+// extern void _gotk4_gtk3_SpinButtonClass_value_changed(GtkSpinButton*);
+// extern void _gotk4_gtk3_SpinButtonClass_wrapped(GtkSpinButton*);
 import "C"
 
 func init() {
@@ -109,9 +115,6 @@ func (s SpinType) String() string {
 }
 
 // SpinButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SpinButtonOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -183,6 +186,94 @@ var (
 	_ externglib.Objector = (*SpinButton)(nil)
 	_ Widgetter           = (*SpinButton)(nil)
 )
+
+func classInitSpinButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkSpinButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkSpinButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ChangeValue(scroll ScrollType) }); ok {
+		pclass.change_value = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_change_value)
+	}
+
+	if _, ok := goval.(interface{ Input(newValue *float64) int }); ok {
+		pclass.input = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_input)
+	}
+
+	if _, ok := goval.(interface{ Output() int }); ok {
+		pclass.output = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_output)
+	}
+
+	if _, ok := goval.(interface{ ValueChanged() }); ok {
+		pclass.value_changed = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_value_changed)
+	}
+
+	if _, ok := goval.(interface{ Wrapped() }); ok {
+		pclass.wrapped = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_wrapped)
+	}
+}
+
+//export _gotk4_gtk3_SpinButtonClass_change_value
+func _gotk4_gtk3_SpinButtonClass_change_value(arg0 *C.GtkSpinButton, arg1 C.GtkScrollType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ChangeValue(scroll ScrollType) })
+
+	var _scroll ScrollType // out
+
+	_scroll = ScrollType(arg1)
+
+	iface.ChangeValue(_scroll)
+}
+
+//export _gotk4_gtk3_SpinButtonClass_input
+func _gotk4_gtk3_SpinButtonClass_input(arg0 *C.GtkSpinButton, arg1 *C.gdouble) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Input(newValue *float64) int })
+
+	var _newValue *float64 // out
+
+	_newValue = (*float64)(unsafe.Pointer(arg1))
+
+	gint := iface.Input(_newValue)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_gtk3_SpinButtonClass_output
+func _gotk4_gtk3_SpinButtonClass_output(arg0 *C.GtkSpinButton) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Output() int })
+
+	gint := iface.Output()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_gtk3_SpinButtonClass_value_changed
+func _gotk4_gtk3_SpinButtonClass_value_changed(arg0 *C.GtkSpinButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ValueChanged() })
+
+	iface.ValueChanged()
+}
+
+//export _gotk4_gtk3_SpinButtonClass_wrapped
+func _gotk4_gtk3_SpinButtonClass_wrapped(arg0 *C.GtkSpinButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Wrapped() })
+
+	iface.Wrapped()
+}
 
 func wrapSpinButton(obj *externglib.Object) *SpinButton {
 	return &SpinButton{

@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// BookmarkListOverrider contains methods that are overridable.
+type BookmarkListOverrider interface {
+}
+
 // BookmarkList: GtkBookmarkList is a list model that wraps GBookmarkFile.
 //
 // It presents a GListModel and fills it asynchronously with the GFileInfos
@@ -38,6 +42,14 @@ type BookmarkList struct {
 var (
 	_ externglib.Objector = (*BookmarkList)(nil)
 )
+
+func classInitBookmarkLister(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapBookmarkList(obj *externglib.Object) *BookmarkList {
 	return &BookmarkList{

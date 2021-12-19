@@ -11,8 +11,8 @@ import (
 
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
+// extern gboolean _gotk4_glib2_SourceFunc(gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_glib2_SourceFunc(gpointer);
 import "C"
 
 // ThreadsAddIdle adds a function to be called whenever there are no higher

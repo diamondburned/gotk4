@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// AnyFilterOverrider contains methods that are overridable.
+type AnyFilterOverrider interface {
+}
+
 // AnyFilter: GtkAnyFilter matches an item when at least one of its filters
 // matches.
 //
@@ -35,6 +39,14 @@ type AnyFilter struct {
 var (
 	_ MultiFilterer = (*AnyFilter)(nil)
 )
+
+func classInitAnyFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 	return &AnyFilter{
@@ -81,6 +93,10 @@ func NewAnyFilter() *AnyFilter {
 	return _anyFilter
 }
 
+// EveryFilterOverrider contains methods that are overridable.
+type EveryFilterOverrider interface {
+}
+
 // EveryFilter: GtkEveryFilter matches an item when each of its filters matches.
 //
 // To add filters to a GtkEveryFilter, use gtk.MultiFilter.Append().
@@ -92,6 +108,14 @@ type EveryFilter struct {
 var (
 	_ MultiFilterer = (*EveryFilter)(nil)
 )
+
+func classInitEveryFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 	return &EveryFilter{
@@ -138,6 +162,10 @@ func NewEveryFilter() *EveryFilter {
 	return _everyFilter
 }
 
+// MultiFilterOverrider contains methods that are overridable.
+type MultiFilterOverrider interface {
+}
+
 // MultiFilter: GtkMultiFilter is the base class for filters that combine
 // multiple filters.
 type MultiFilter struct {
@@ -163,6 +191,14 @@ type MultiFilterer interface {
 }
 
 var _ MultiFilterer = (*MultiFilter)(nil)
+
+func classInitMultiFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
 	return &MultiFilter{

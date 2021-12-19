@@ -12,6 +12,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GTlsDatabase* _gotk4_gio2_TlsBackendInterface_get_default_database(GTlsBackend*);
+// extern gboolean _gotk4_gio2_TlsBackendInterface_supports_dtls(GTlsBackend*);
+// extern gboolean _gotk4_gio2_TlsBackendInterface_supports_tls(GTlsBackend*);
 import "C"
 
 func init() {
@@ -25,9 +28,6 @@ func init() {
 const TLS_BACKEND_EXTENSION_POINT_NAME = "gio-tls-backend"
 
 // TLSBackendOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TLSBackendOverrider interface {
 	// DefaultDatabase gets the default Database used to verify TLS connections.
 	//
@@ -99,6 +99,54 @@ type TLSBackender interface {
 }
 
 var _ TLSBackender = (*TLSBackend)(nil)
+
+func ifaceInitTLSBackender(gifacePtr, data C.gpointer) {
+	iface := (*C.GTlsBackendInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_default_database = (*[0]byte)(C._gotk4_gio2_TlsBackendInterface_get_default_database)
+	iface.supports_dtls = (*[0]byte)(C._gotk4_gio2_TlsBackendInterface_supports_dtls)
+	iface.supports_tls = (*[0]byte)(C._gotk4_gio2_TlsBackendInterface_supports_tls)
+}
+
+//export _gotk4_gio2_TlsBackendInterface_get_default_database
+func _gotk4_gio2_TlsBackendInterface_get_default_database(arg0 *C.GTlsBackend) (cret *C.GTlsDatabase) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TLSBackendOverrider)
+
+	tlsDatabase := iface.DefaultDatabase()
+
+	cret = (*C.GTlsDatabase)(unsafe.Pointer(tlsDatabase.Native()))
+	C.g_object_ref(C.gpointer(tlsDatabase.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsBackendInterface_supports_dtls
+func _gotk4_gio2_TlsBackendInterface_supports_dtls(arg0 *C.GTlsBackend) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TLSBackendOverrider)
+
+	ok := iface.SupportsDTLS()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsBackendInterface_supports_tls
+func _gotk4_gio2_TlsBackendInterface_supports_tls(arg0 *C.GTlsBackend) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TLSBackendOverrider)
+
+	ok := iface.SupportsTLS()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapTLSBackend(obj *externglib.Object) *TLSBackend {
 	return &TLSBackend{

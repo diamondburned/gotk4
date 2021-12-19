@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// RecentChooserMenuOverrider contains methods that are overridable.
+type RecentChooserMenuOverrider interface {
+}
+
 // RecentChooserMenu is a widget suitable for displaying recently used files
 // inside a menu. It can be used to set a sub-menu of a MenuItem using
 // gtk_menu_item_set_submenu(), or as the menu of a MenuToolButton.
@@ -54,6 +58,14 @@ var (
 	_ externglib.Objector = (*RecentChooserMenu)(nil)
 	_ MenuSheller         = (*RecentChooserMenu)(nil)
 )
+
+func classInitRecentChooserMenuer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 	return &RecentChooserMenu{

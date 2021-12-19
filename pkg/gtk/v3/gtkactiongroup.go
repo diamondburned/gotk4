@@ -16,8 +16,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GtkAction* _gotk4_gtk3_ActionGroupClass_get_action(GtkActionGroup*, gchar*);
+// extern gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
 // extern void callbackDelete(gpointer);
-// gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
 import "C"
 
 func init() {
@@ -27,9 +28,6 @@ func init() {
 }
 
 // ActionGroupOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ActionGroupOverrider interface {
 	// Action looks up an action in the action group by name.
 	//
@@ -105,6 +103,42 @@ type ActionGroup struct {
 var (
 	_ externglib.Objector = (*ActionGroup)(nil)
 )
+
+func classInitActionGrouper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkActionGroupClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkActionGroupClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Action(actionName string) *Action
+	}); ok {
+		pclass.get_action = (*[0]byte)(C._gotk4_gtk3_ActionGroupClass_get_action)
+	}
+}
+
+//export _gotk4_gtk3_ActionGroupClass_get_action
+func _gotk4_gtk3_ActionGroupClass_get_action(arg0 *C.GtkActionGroup, arg1 *C.gchar) (cret *C.GtkAction) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Action(actionName string) *Action
+	})
+
+	var _actionName string // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	action := iface.Action(_actionName)
+
+	cret = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+
+	return cret
+}
 
 func wrapActionGroup(obj *externglib.Object) *ActionGroup {
 	return &ActionGroup{

@@ -235,10 +235,15 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			// void pointer. GIR should use equivalent types, so this should be
 			// fine.
 			"out := unsafe.Slice((*%s)(%s), len(%s))",
-			inner.Out.Type, value.OutName, value.InName,
+			inner.Out.Type, value.Out.Set, value.InName,
 		)
 
 		value.p.Linef("for i := range %s {", value.InName)
+
+		// TODO: this generates *out because of value's inheritance, which is bad.
+		// Do something. We can maybe use a hack and trim the star off.
+		// Or maybe not? Maybe the converter should manually insert the star.
+
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
 
@@ -413,16 +418,16 @@ func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
 		value.p.Linef(
 			"%s = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))",
 			value.Out.Set)
-		value.p.Linef("for ksrc, vsrc := range %s {", value.InNamePtr(0))
+		value.p.Linef("for ksrc, vsrc := range %s {", value.In.Set)
 		value.p.Linef(kt.Out.Declare)
 		value.p.Linef(vt.Out.Declare)
 		value.p.Linef(kt.Conversion)
 		value.p.Linef(vt.Conversion)
-		value.p.Linef("  C.g_hash_table_insert(%s, %s, %s)", value.OutInNamePtr(1), kptr, vptr)
+		value.p.Linef("  C.g_hash_table_insert(%s, %s, %s)", value.Out.Set, kptr, vptr)
 		value.p.Linef("}")
 
 		if value.ShouldFree() {
-			value.p.Linef("defer C.g_hash_table_unref(%s)", value.OutInNamePtr(1))
+			value.p.Linef("defer C.g_hash_table_unref(%s)", value.Out.Set)
 		}
 
 		return true
@@ -551,9 +556,15 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		}
 
 		value.header.ImportCore("gerror")
-		value.header.Import("unsafe")
 
-		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 1>(gerror.New(<.InNamePtr 0>))")
+		condition := "<.InNamePtr 0> != nil"
+		if value.ParameterIsOutput() {
+			condition += " && <.Out.Name> != nil"
+		}
+
+		value.vtmpl("if " + condition + " {")
+		value.vtmpl("  <.Out.Set> = <.OutCast 1>(gerror.New(<.InNamePtr 0>))")
+		value.vtmpl("}")
 
 		// TODO: figure this out.
 		// if value.ShouldFree() {
@@ -654,7 +665,10 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		return true
 
 	case *gir.Callback:
-		exportedName := file.CallbackExportedName(value.Resolved.Extern.NamespaceFindResult, v)
+		exportedName := file.CallableExportedName(
+			value.Resolved.Extern.NamespaceFindResult,
+			&v.CallableAttrs,
+		)
 
 		// Callbacks must have the closure attribute to store the closure
 		// pointer.

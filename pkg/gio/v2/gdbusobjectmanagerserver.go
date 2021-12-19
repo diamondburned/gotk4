@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// DBusObjectManagerServerOverrider contains methods that are overridable.
+type DBusObjectManagerServerOverrider interface {
+}
+
 // DBusObjectManagerServer is used to export BusObject instances using the
 // standardized org.freedesktop.DBus.ObjectManager
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
@@ -50,6 +54,14 @@ type DBusObjectManagerServer struct {
 var (
 	_ externglib.Objector = (*DBusObjectManagerServer)(nil)
 )
+
+func classInitDBusObjectManagerServerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDBusObjectManagerServer(obj *externglib.Object) *DBusObjectManagerServer {
 	return &DBusObjectManagerServer{

@@ -12,6 +12,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GType _gotk4_gio2_ListModelInterface_get_item_type(GListModel*);
+// extern gpointer _gotk4_gio2_ListModelInterface_get_item(GListModel*, guint);
+// extern guint _gotk4_gio2_ListModelInterface_get_n_items(GListModel*);
 import "C"
 
 func init() {
@@ -21,9 +24,6 @@ func init() {
 }
 
 // ListModelOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ListModelOverrider interface {
 	// Item: get the item at position. If position is greater than the number of
 	// items in list, NULL is returned.
@@ -130,6 +130,54 @@ type ListModeller interface {
 }
 
 var _ ListModeller = (*ListModel)(nil)
+
+func ifaceInitListModeller(gifacePtr, data C.gpointer) {
+	iface := (*C.GListModelInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_item = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item)
+	iface.get_item_type = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item_type)
+	iface.get_n_items = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_n_items)
+}
+
+//export _gotk4_gio2_ListModelInterface_get_item
+func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.GListModel, arg1 C.guint) (cret C.gpointer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ListModelOverrider)
+
+	var _position uint // out
+
+	_position = uint(arg1)
+
+	object := iface.Item(_position)
+
+	cret = C.gpointer(unsafe.Pointer(object.Native()))
+	C.g_object_ref(C.gpointer(object.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_ListModelInterface_get_item_type
+func _gotk4_gio2_ListModelInterface_get_item_type(arg0 *C.GListModel) (cret C.GType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ListModelOverrider)
+
+	gType := iface.ItemType()
+
+	cret = C.GType(gType)
+
+	return cret
+}
+
+//export _gotk4_gio2_ListModelInterface_get_n_items
+func _gotk4_gio2_ListModelInterface_get_n_items(arg0 *C.GListModel) (cret C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ListModelOverrider)
+
+	guint := iface.NItems()
+
+	cret = C.guint(guint)
+
+	return cret
+}
 
 func wrapListModel(obj *externglib.Object) *ListModel {
 	return &ListModel{

@@ -6,12 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ToggleButtonClass_toggled(GtkToggleButton*);
 import "C"
 
 func init() {
@@ -21,9 +23,6 @@ func init() {
 }
 
 // ToggleButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ToggleButtonOverrider interface {
 	// Toggled emits the ::toggled signal on the GtkToggleButton.
 	//
@@ -106,6 +105,30 @@ var (
 	_ Widgetter           = (*ToggleButton)(nil)
 	_ externglib.Objector = (*ToggleButton)(nil)
 )
+
+func classInitToggleButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkToggleButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkToggleButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Toggled() }); ok {
+		pclass.toggled = (*[0]byte)(C._gotk4_gtk4_ToggleButtonClass_toggled)
+	}
+}
+
+//export _gotk4_gtk4_ToggleButtonClass_toggled
+func _gotk4_gtk4_ToggleButtonClass_toggled(arg0 *C.GtkToggleButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Toggled() })
+
+	iface.Toggled()
+}
 
 func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 	return &ToggleButton{

@@ -320,13 +320,7 @@ func (g *Generator) renderBlock() bool {
 		// Don't count the instance parameter.
 		resultParams = resultParams[1:]
 	}
-	if ix := findContextResult(g.gen, resultParams); ix > 0 {
-		cancellable := resultParams[ix]
-		// Shift everything up to the cancellable value up 1 value.
-		copy(resultParams[1:], resultParams[:ix])
-		// Set the first value to the cancellable one.
-		resultParams[0] = cancellable
-	}
+	MoveContextResult(g.gen, resultParams)
 
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)
@@ -521,10 +515,10 @@ func findGCancellableParam(g FileGenerator, params []gir.Parameter) int {
 	return found
 }
 
-// findContextResult finds the context.Context type from the given list of
+// FindContextResult finds the context.Context type from the given list of
 // callable results, but only if the list has one instance. -1 is returned
 // otherwise.
-func findContextResult(g FileGenerator, result []typeconv.ValueConverted) int {
+func FindContextResult(g FileGenerator, result []typeconv.ValueConverted) int {
 	found := -1
 
 	for i, v := range result {
@@ -544,6 +538,22 @@ func findContextResult(g FileGenerator, result []typeconv.ValueConverted) int {
 	}
 
 	return found
+}
+
+// MoveContextResult moves the context variable. True is returned if the
+// variable is found and moved.
+func MoveContextResult(g FileGenerator, result []typeconv.ValueConverted) bool {
+	ix := FindContextResult(g, result)
+	if ix <= 0 {
+		return false
+	}
+
+	cancellable := result[ix]
+	// Shift everything up to the cancellable value up 1 value.
+	copy(result[1:], result[:ix])
+	// Set the first value to the cancellable one.
+	result[0] = cancellable
+	return true
 }
 
 func formatReturnSig(joints pen.Joints) string {

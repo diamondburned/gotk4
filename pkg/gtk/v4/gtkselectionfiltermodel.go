@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// SelectionFilterModelOverrider contains methods that are overridable.
+type SelectionFilterModelOverrider interface {
+}
+
 // SelectionFilterModel: GtkSelectionFilterModel is a list model that presents
 // the selection from a GtkSelectionModel.
 type SelectionFilterModel struct {
@@ -33,6 +37,14 @@ type SelectionFilterModel struct {
 var (
 	_ externglib.Objector = (*SelectionFilterModel)(nil)
 )
+
+func classInitSelectionFilterModeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSelectionFilterModel(obj *externglib.Object) *SelectionFilterModel {
 	return &SelectionFilterModel{

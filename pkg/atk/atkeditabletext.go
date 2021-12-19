@@ -12,6 +12,12 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern void _gotk4_atk1_EditableTextIface_copy_text(AtkEditableText*, gint, gint);
+// extern void _gotk4_atk1_EditableTextIface_cut_text(AtkEditableText*, gint, gint);
+// extern void _gotk4_atk1_EditableTextIface_delete_text(AtkEditableText*, gint, gint);
+// extern void _gotk4_atk1_EditableTextIface_insert_text(AtkEditableText*, gchar*, gint, gint*);
+// extern void _gotk4_atk1_EditableTextIface_paste_text(AtkEditableText*, gint);
+// extern void _gotk4_atk1_EditableTextIface_set_text_contents(AtkEditableText*, gchar*);
 import "C"
 
 func init() {
@@ -21,9 +27,6 @@ func init() {
 }
 
 // EditableTextOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type EditableTextOverrider interface {
 	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
@@ -116,6 +119,98 @@ type EditableTexter interface {
 }
 
 var _ EditableTexter = (*EditableText)(nil)
+
+func ifaceInitEditableTexter(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkEditableTextIface)(unsafe.Pointer(gifacePtr))
+	iface.copy_text = (*[0]byte)(C._gotk4_atk1_EditableTextIface_copy_text)
+	iface.cut_text = (*[0]byte)(C._gotk4_atk1_EditableTextIface_cut_text)
+	iface.delete_text = (*[0]byte)(C._gotk4_atk1_EditableTextIface_delete_text)
+	iface.insert_text = (*[0]byte)(C._gotk4_atk1_EditableTextIface_insert_text)
+	iface.paste_text = (*[0]byte)(C._gotk4_atk1_EditableTextIface_paste_text)
+	iface.set_text_contents = (*[0]byte)(C._gotk4_atk1_EditableTextIface_set_text_contents)
+}
+
+//export _gotk4_atk1_EditableTextIface_copy_text
+func _gotk4_atk1_EditableTextIface_copy_text(arg0 *C.AtkEditableText, arg1 C.gint, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(EditableTextOverrider)
+
+	var _startPos int // out
+	var _endPos int   // out
+
+	_startPos = int(arg1)
+	_endPos = int(arg2)
+
+	iface.CopyText(_startPos, _endPos)
+}
+
+//export _gotk4_atk1_EditableTextIface_cut_text
+func _gotk4_atk1_EditableTextIface_cut_text(arg0 *C.AtkEditableText, arg1 C.gint, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(EditableTextOverrider)
+
+	var _startPos int // out
+	var _endPos int   // out
+
+	_startPos = int(arg1)
+	_endPos = int(arg2)
+
+	iface.CutText(_startPos, _endPos)
+}
+
+//export _gotk4_atk1_EditableTextIface_delete_text
+func _gotk4_atk1_EditableTextIface_delete_text(arg0 *C.AtkEditableText, arg1 C.gint, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(EditableTextOverrider)
+
+	var _startPos int // out
+	var _endPos int   // out
+
+	_startPos = int(arg1)
+	_endPos = int(arg2)
+
+	iface.DeleteText(_startPos, _endPos)
+}
+
+//export _gotk4_atk1_EditableTextIface_insert_text
+func _gotk4_atk1_EditableTextIface_insert_text(arg0 *C.AtkEditableText, arg1 *C.gchar, arg2 C.gint, arg3 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(EditableTextOverrider)
+
+	var _str string    // out
+	var _length int    // out
+	var _position *int // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_length = int(arg2)
+	_position = (*int)(unsafe.Pointer(arg3))
+
+	iface.InsertText(_str, _length, _position)
+}
+
+//export _gotk4_atk1_EditableTextIface_paste_text
+func _gotk4_atk1_EditableTextIface_paste_text(arg0 *C.AtkEditableText, arg1 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(EditableTextOverrider)
+
+	var _position int // out
+
+	_position = int(arg1)
+
+	iface.PasteText(_position)
+}
+
+//export _gotk4_atk1_EditableTextIface_set_text_contents
+func _gotk4_atk1_EditableTextIface_set_text_contents(arg0 *C.AtkEditableText, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(EditableTextOverrider)
+
+	var _str string // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.SetTextContents(_str)
+}
 
 func wrapEditableText(obj *externglib.Object) *EditableText {
 	return &EditableText{

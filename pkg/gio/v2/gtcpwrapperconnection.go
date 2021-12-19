@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// TCPWrapperConnectionOverrider contains methods that are overridable.
+type TCPWrapperConnectionOverrider interface {
+}
+
 // TCPWrapperConnection can be used to wrap a OStream that is based on a
 // #GSocket, but which is not actually a Connection. This is used by Client so
 // that it can always return a Connection, even when the connection it has
@@ -32,6 +36,14 @@ type TCPWrapperConnection struct {
 var (
 	_ IOStreamer = (*TCPWrapperConnection)(nil)
 )
+
+func classInitTCPWrapperConnectioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTCPWrapperConnection(obj *externglib.Object) *TCPWrapperConnection {
 	return &TCPWrapperConnection{

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(GtkAccessible*);
+// extern void _gotk4_gtk3_AccessibleClass_widget_set(GtkAccessible*);
+// extern void _gotk4_gtk3_AccessibleClass_widget_unset(GtkAccessible*);
 import "C"
 
 func init() {
@@ -24,9 +28,6 @@ func init() {
 }
 
 // AccessibleOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type AccessibleOverrider interface {
 	// ConnectWidgetDestroyed: this function specifies the callback function to
 	// be called when the widget corresponding to a GtkAccessible is destroyed.
@@ -54,6 +55,54 @@ type Accessible struct {
 var (
 	_ externglib.Objector = (*Accessible)(nil)
 )
+
+func classInitAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkAccessibleClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkAccessibleClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ConnectWidgetDestroyed() }); ok {
+		pclass.connect_widget_destroyed = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_connect_widget_destroyed)
+	}
+
+	if _, ok := goval.(interface{ WidgetSet() }); ok {
+		pclass.widget_set = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_widget_set)
+	}
+
+	if _, ok := goval.(interface{ WidgetUnset() }); ok {
+		pclass.widget_unset = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_widget_unset)
+	}
+}
+
+//export _gotk4_gtk3_AccessibleClass_connect_widget_destroyed
+func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.GtkAccessible) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ConnectWidgetDestroyed() })
+
+	iface.ConnectWidgetDestroyed()
+}
+
+//export _gotk4_gtk3_AccessibleClass_widget_set
+func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.GtkAccessible) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ WidgetSet() })
+
+	iface.WidgetSet()
+}
+
+//export _gotk4_gtk3_AccessibleClass_widget_unset
+func _gotk4_gtk3_AccessibleClass_widget_unset(arg0 *C.GtkAccessible) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ WidgetUnset() })
+
+	iface.WidgetUnset()
+}
 
 func wrapAccessible(obj *externglib.Object) *Accessible {
 	return &Accessible{

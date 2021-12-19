@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// RangeAccessibleOverrider contains methods that are overridable.
+type RangeAccessibleOverrider interface {
+}
+
 type RangeAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible
@@ -32,6 +36,14 @@ type RangeAccessible struct {
 var (
 	_ externglib.Objector = (*RangeAccessible)(nil)
 )
+
+func classInitRangeAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRangeAccessible(obj *externglib.Object) *RangeAccessible {
 	return &RangeAccessible{

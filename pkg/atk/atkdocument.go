@@ -13,103 +13,16 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_atk1_DocumentIface_get_document_type(AtkDocument*);
+// extern gint _gotk4_atk1_DocumentIface_get_current_page_number(AtkDocument*);
+// extern gint _gotk4_atk1_DocumentIface_get_page_count(AtkDocument*);
+// extern gpointer _gotk4_atk1_DocumentIface_get_document(AtkDocument*);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.atk_document_get_type()), F: marshalDocumenter},
 	})
-}
-
-// DocumentOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DocumentOverrider interface {
-	// CurrentPageNumber retrieves the current page number inside document.
-	//
-	// The function returns the following values:
-	//
-	//    - gint: current page number inside document, or -1 if not implemented,
-	//      not know by the implementor, or irrelevant.
-	//
-	CurrentPageNumber() int
-	// Document gets a gpointer that points to an instance of the DOM. It is up
-	// to the caller to check atk_document_get_type to determine how to cast
-	// this pointer.
-	//
-	// Deprecated: Since 2.12. document is already a representation of the
-	// document. Use it directly, or one of its children, as an instance of the
-	// DOM.
-	//
-	// The function returns the following values:
-	//
-	//    - gpointer (optional) that points to an instance of the DOM.
-	//
-	Document() cgo.Handle
-	// DocumentAttributeValue retrieves the value of the given attribute_name
-	// inside document.
-	//
-	// The function takes the following parameters:
-	//
-	//    - attributeName: character string representing the name of the
-	//      attribute whose value is being queried.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): string value associated with the named attribute for
-	//      this document, or NULL if a value for attribute_name has not been
-	//      specified for this document.
-	//
-	DocumentAttributeValue(attributeName string) string
-	// DocumentLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
-	// locale of the content of this document instance. Individual text
-	// substrings or images within this document may have a different locale,
-	// see atk_text_get_attributes and atk_image_get_image_locale.
-	//
-	// Deprecated: Please use atk_object_get_object_locale() instead.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
-	//      the document content as a whole, or NULL if the document content does
-	//      not specify a locale.
-	//
-	DocumentLocale() string
-	// DocumentType gets a string indicating the document type.
-	//
-	// Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask
-	// for the document type if it applies.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: string indicating the document type.
-	//
-	DocumentType() string
-	// PageCount retrieves the total number of pages inside document.
-	//
-	// The function returns the following values:
-	//
-	//    - gint: total page count of document, or -1 if not implemented, not
-	//      know by the implementor or irrelevant.
-	//
-	PageCount() int
-	// SetDocumentAttribute sets the value for the given attribute_name inside
-	// document.
-	//
-	// The function takes the following parameters:
-	//
-	//    - attributeName: character string representing the name of the
-	//      attribute whose value is being set.
-	//    - attributeValue: string value to be associated with attribute_name.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if attribute_value is successfully associated with
-	//      attribute_name for this document, and FALSE if if the document does
-	//      not allow the attribute to be modified.
-	//
-	SetDocumentAttribute(attributeName, attributeValue string) bool
 }
 
 // Document interface should be supported by any object whose content is a

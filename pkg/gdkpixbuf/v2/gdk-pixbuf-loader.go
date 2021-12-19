@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -15,6 +16,10 @@ import (
 // #include <stdlib.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(GdkPixbufLoader*);
+// extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(GdkPixbufLoader*, int, int, int, int);
+// extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(GdkPixbufLoader*);
+// extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared(GdkPixbufLoader*, int, int);
 import "C"
 
 func init() {
@@ -24,9 +29,6 @@ func init() {
 }
 
 // PixbufLoaderOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PixbufLoaderOverrider interface {
 	AreaPrepared()
 	// The function takes the following parameters:
@@ -99,6 +101,82 @@ type PixbufLoader struct {
 var (
 	_ externglib.Objector = (*PixbufLoader)(nil)
 )
+
+func classInitPixbufLoaderer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GdkPixbufLoaderClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GdkPixbufLoaderClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ AreaPrepared() }); ok {
+		pclass.area_prepared = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared)
+	}
+
+	if _, ok := goval.(interface{ AreaUpdated(x, y, width, height int) }); ok {
+		pclass.area_updated = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated)
+	}
+
+	if _, ok := goval.(interface{ Closed() }); ok {
+		pclass.closed = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_closed)
+	}
+
+	if _, ok := goval.(interface{ SizePrepared(width, height int) }); ok {
+		pclass.size_prepared = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared)
+	}
+}
+
+//export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared
+func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(arg0 *C.GdkPixbufLoader) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ AreaPrepared() })
+
+	iface.AreaPrepared()
+}
+
+//export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated
+func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ AreaUpdated(x, y, width, height int) })
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_width = int(arg3)
+	_height = int(arg4)
+
+	iface.AreaUpdated(_x, _y, _width, _height)
+}
+
+//export _gotk4_gdkpixbuf2_PixbufLoaderClass_closed
+func _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(arg0 *C.GdkPixbufLoader) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Closed() })
+
+	iface.Closed()
+}
+
+//export _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared
+func _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SizePrepared(width, height int) })
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	iface.SizePrepared(_width, _height)
+}
 
 func wrapPixbufLoader(obj *externglib.Object) *PixbufLoader {
 	return &PixbufLoader{

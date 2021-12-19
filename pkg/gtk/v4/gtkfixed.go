@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// FixedOverrider contains methods that are overridable.
+type FixedOverrider interface {
+}
+
 // Fixed: GtkFixed places its child widgets at fixed positions and with fixed
 // sizes.
 //
@@ -65,6 +69,14 @@ type Fixed struct {
 var (
 	_ Widgetter = (*Fixed)(nil)
 )
+
+func classInitFixedder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFixed(obj *externglib.Object) *Fixed {
 	return &Fixed{

@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// HeaderBarOverrider contains methods that are overridable.
+type HeaderBarOverrider interface {
+}
+
 // HeaderBar is similar to a horizontal Box. It allows children to be placed at
 // the start or the end. In addition, it allows a title and subtitle to be
 // displayed. The title will be centered with respect to the width of the box,
@@ -45,6 +49,14 @@ type HeaderBar struct {
 var (
 	_ Containerer = (*HeaderBar)(nil)
 )
+
+func classInitHeaderBarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 	return &HeaderBar{

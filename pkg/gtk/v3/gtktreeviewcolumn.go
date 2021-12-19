@@ -18,8 +18,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk3_TreeViewColumnClass_clicked(GtkTreeViewColumn*);
 // extern void callbackDelete(gpointer);
-// void _gotk4_gtk3_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -72,20 +73,24 @@ func (t TreeViewColumnSizing) String() string {
 type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell CellRendererer, treeModel TreeModeller, iter *TreeIter)
 
 //export _gotk4_gtk3_TreeCellDataFunc
-func _gotk4_gtk3_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_TreeCellDataFunc(arg1 *C.GtkTreeViewColumn, arg2 *C.GtkCellRenderer, arg3 *C.GtkTreeModel, arg4 *C.GtkTreeIter, arg5 C.gpointer) {
+	var fn TreeCellDataFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeCellDataFunc)
 	}
 
-	var treeColumn *TreeViewColumn // out
-	var cell CellRendererer        // out
-	var treeModel TreeModeller     // out
-	var iter *TreeIter             // out
+	var _treeColumn *TreeViewColumn // out
+	var _cell CellRendererer        // out
+	var _treeModel TreeModeller     // out
+	var _iter *TreeIter             // out
 
-	treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg0)))
+	_treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg1)))
 	{
-		objptr := unsafe.Pointer(arg1)
+		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -99,10 +104,10 @@ func _gotk4_gtk3_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
-		cell = rv
+		_cell = rv
 	}
 	{
-		objptr := unsafe.Pointer(arg2)
+		objptr := unsafe.Pointer(arg3)
 		if objptr == nil {
 			panic("object of type gtk.TreeModeller is nil")
 		}
@@ -116,18 +121,14 @@ func _gotk4_gtk3_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
-		treeModel = rv
+		_treeModel = rv
 	}
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
-	fn := v.(TreeCellDataFunc)
-	fn(treeColumn, cell, treeModel, iter)
+	fn(_treeColumn, _cell, _treeModel, _iter)
 }
 
 // TreeViewColumnOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TreeViewColumnOverrider interface {
 	// Clicked emits the “clicked” signal on the column. This function will only
 	// work if tree_column is clickable.
@@ -154,6 +155,30 @@ type TreeViewColumn struct {
 var (
 	_ externglib.Objector = (*TreeViewColumn)(nil)
 )
+
+func classInitTreeViewColumner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkTreeViewColumnClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkTreeViewColumnClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Clicked() }); ok {
+		pclass.clicked = (*[0]byte)(C._gotk4_gtk3_TreeViewColumnClass_clicked)
+	}
+}
+
+//export _gotk4_gtk3_TreeViewColumnClass_clicked
+func _gotk4_gtk3_TreeViewColumnClass_clicked(arg0 *C.GtkTreeViewColumn) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Clicked() })
+
+	iface.Clicked()
+}
 
 func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
 	return &TreeViewColumn{

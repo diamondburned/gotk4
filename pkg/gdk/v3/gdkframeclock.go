@@ -101,6 +101,10 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 	return (f & other) == other
 }
 
+// FrameClockOverrider contains methods that are overridable.
+type FrameClockOverrider interface {
+}
+
 // FrameClock tells the application when to update and repaint a window. This
 // may be synced to the vertical refresh rate of the monitor, for example. Even
 // when the frame clock uses a simple timer rather than a hardware-based
@@ -149,6 +153,14 @@ type FrameClocker interface {
 }
 
 var _ FrameClocker = (*FrameClock)(nil)
+
+func classInitFrameClocker(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFrameClock(obj *externglib.Object) *FrameClock {
 	return &FrameClock{

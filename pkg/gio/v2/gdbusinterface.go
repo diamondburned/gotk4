@@ -13,6 +13,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceIface_get_info(GDBusInterface*);
+// extern GDBusObject* _gotk4_gio2_DBusInterfaceIface_dup_object(GDBusInterface*);
+// extern void _gotk4_gio2_DBusInterfaceIface_set_object(GDBusInterface*, GDBusObject*);
 import "C"
 
 func init() {
@@ -22,9 +25,6 @@ func init() {
 }
 
 // DBusInterfaceOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type DBusInterfaceOverrider interface {
 	// DupObject gets the BusObject that interface_ belongs to, if any.
 	//
@@ -78,6 +78,67 @@ type DBusInterfacer interface {
 }
 
 var _ DBusInterfacer = (*DBusInterface)(nil)
+
+func ifaceInitDBusInterfacer(gifacePtr, data C.gpointer) {
+	iface := (*C.GDBusInterfaceIface)(unsafe.Pointer(gifacePtr))
+	iface.dup_object = (*[0]byte)(C._gotk4_gio2_DBusInterfaceIface_dup_object)
+	iface.get_info = (*[0]byte)(C._gotk4_gio2_DBusInterfaceIface_get_info)
+	iface.set_object = (*[0]byte)(C._gotk4_gio2_DBusInterfaceIface_set_object)
+}
+
+//export _gotk4_gio2_DBusInterfaceIface_dup_object
+func _gotk4_gio2_DBusInterfaceIface_dup_object(arg0 *C.GDBusInterface) (cret *C.GDBusObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusInterfaceOverrider)
+
+	dBusObject := iface.DupObject()
+
+	if dBusObject != nil {
+		cret = (*C.GDBusObject)(unsafe.Pointer(dBusObject.Native()))
+		C.g_object_ref(C.gpointer(dBusObject.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DBusInterfaceIface_get_info
+func _gotk4_gio2_DBusInterfaceIface_get_info(arg0 *C.GDBusInterface) (cret *C.GDBusInterfaceInfo) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusInterfaceOverrider)
+
+	dBusInterfaceInfo := iface.Info()
+
+	cret = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(dBusInterfaceInfo)))
+
+	return cret
+}
+
+//export _gotk4_gio2_DBusInterfaceIface_set_object
+func _gotk4_gio2_DBusInterfaceIface_set_object(arg0 *C.GDBusInterface, arg1 *C.GDBusObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusInterfaceOverrider)
+
+	var _object DBusObjector // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(DBusObjector)
+				return ok
+			})
+			rv, ok := casted.(DBusObjector)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
+			}
+			_object = rv
+		}
+	}
+
+	iface.SetObject(_object)
+}
 
 func wrapDBusInterface(obj *externglib.Object) *DBusInterface {
 	return &DBusInterface{

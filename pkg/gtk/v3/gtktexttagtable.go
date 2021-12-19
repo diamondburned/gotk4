@@ -15,7 +15,10 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_TextTagTableForEach(GtkTextTag*, gpointer);
+// extern void _gotk4_gtk3_TextTagTableClass_tag_added(GtkTextTagTable*, GtkTextTag*);
+// extern void _gotk4_gtk3_TextTagTableClass_tag_changed(GtkTextTagTable*, GtkTextTag*, gboolean);
+// extern void _gotk4_gtk3_TextTagTableClass_tag_removed(GtkTextTagTable*, GtkTextTag*);
+// extern void _gotk4_gtk3_TextTagTableForEach(GtkTextTag*, gpointer);
 import "C"
 
 func init() {
@@ -27,24 +30,24 @@ func init() {
 type TextTagTableForEach func(tag *TextTag)
 
 //export _gotk4_gtk3_TextTagTableForEach
-func _gotk4_gtk3_TextTagTableForEach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_TextTagTableForEach(arg1 *C.GtkTextTag, arg2 C.gpointer) {
+	var fn TextTagTableForEach
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TextTagTableForEach)
 	}
 
-	var tag *TextTag // out
+	var _tag *TextTag // out
 
-	tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg0)))
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
 
-	fn := v.(TextTagTableForEach)
-	fn(tag)
+	fn(_tag)
 }
 
 // TextTagTableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TextTagTableOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -87,6 +90,74 @@ type TextTagTable struct {
 var (
 	_ externglib.Objector = (*TextTagTable)(nil)
 )
+
+func classInitTextTagTabler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkTextTagTableClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkTextTagTableClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ TagAdded(tag *TextTag) }); ok {
+		pclass.tag_added = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_added)
+	}
+
+	if _, ok := goval.(interface {
+		TagChanged(tag *TextTag, sizeChanged bool)
+	}); ok {
+		pclass.tag_changed = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_changed)
+	}
+
+	if _, ok := goval.(interface{ TagRemoved(tag *TextTag) }); ok {
+		pclass.tag_removed = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_removed)
+	}
+}
+
+//export _gotk4_gtk3_TextTagTableClass_tag_added
+func _gotk4_gtk3_TextTagTableClass_tag_added(arg0 *C.GtkTextTagTable, arg1 *C.GtkTextTag) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ TagAdded(tag *TextTag) })
+
+	var _tag *TextTag // out
+
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.TagAdded(_tag)
+}
+
+//export _gotk4_gtk3_TextTagTableClass_tag_changed
+func _gotk4_gtk3_TextTagTableClass_tag_changed(arg0 *C.GtkTextTagTable, arg1 *C.GtkTextTag, arg2 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		TagChanged(tag *TextTag, sizeChanged bool)
+	})
+
+	var _tag *TextTag     // out
+	var _sizeChanged bool // out
+
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
+	if arg2 != 0 {
+		_sizeChanged = true
+	}
+
+	iface.TagChanged(_tag, _sizeChanged)
+}
+
+//export _gotk4_gtk3_TextTagTableClass_tag_removed
+func _gotk4_gtk3_TextTagTableClass_tag_removed(arg0 *C.GtkTextTagTable, arg1 *C.GtkTextTag) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ TagRemoved(tag *TextTag) })
+
+	var _tag *TextTag // out
+
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.TagRemoved(_tag)
+}
 
 func wrapTextTagTable(obj *externglib.Object) *TextTagTable {
 	return &TextTagTable{

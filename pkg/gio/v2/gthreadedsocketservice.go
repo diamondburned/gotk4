@@ -6,12 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(GThreadedSocketService*, GSocketConnection*, GObject*);
 import "C"
 
 func init() {
@@ -21,9 +23,6 @@ func init() {
 }
 
 // ThreadedSocketServiceOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ThreadedSocketServiceOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -56,6 +55,46 @@ type ThreadedSocketService struct {
 var (
 	_ externglib.Objector = (*ThreadedSocketService)(nil)
 )
+
+func classInitThreadedSocketServicer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GThreadedSocketServiceClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GThreadedSocketServiceClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Run(connection *SocketConnection, sourceObject *externglib.Object) bool
+	}); ok {
+		pclass.run = (*[0]byte)(C._gotk4_gio2_ThreadedSocketServiceClass_run)
+	}
+}
+
+//export _gotk4_gio2_ThreadedSocketServiceClass_run
+func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.GThreadedSocketService, arg1 *C.GSocketConnection, arg2 *C.GObject) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Run(connection *SocketConnection, sourceObject *externglib.Object) bool
+	})
+
+	var _connection *SocketConnection    // out
+	var _sourceObject *externglib.Object // out
+
+	_connection = wrapSocketConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_sourceObject = externglib.Take(unsafe.Pointer(arg2))
+
+	ok := iface.Run(_connection, _sourceObject)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapThreadedSocketService(obj *externglib.Object) *ThreadedSocketService {
 	return &ThreadedSocketService{

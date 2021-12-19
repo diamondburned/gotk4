@@ -103,6 +103,10 @@ func RelationTypeRegister(name string) RelationType {
 	return _relationType
 }
 
+// RelationOverrider contains methods that are overridable.
+type RelationOverrider interface {
+}
+
 // Relation describes a relation between an object and one or more other
 // objects. The actual relations that an object has with other objects are
 // defined as an AtkRelationSet, which is a set of AtkRelations.
@@ -114,6 +118,14 @@ type Relation struct {
 var (
 	_ externglib.Objector = (*Relation)(nil)
 )
+
+func classInitRelationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRelation(obj *externglib.Object) *Relation {
 	return &Relation{

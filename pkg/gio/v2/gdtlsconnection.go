@@ -16,157 +16,21 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_accept_certificate(GDtlsConnection*, GTlsCertificate*, GTlsCertificateFlags);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_get_binding_data(GDtlsConnection*, GTlsChannelBindingType, GByteArray*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake(GDtlsConnection*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake_finish(GDtlsConnection*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown(GDtlsConnection*, gboolean, gboolean, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown_finish(GDtlsConnection*, GAsyncResult*, GError**);
+// extern gchar* _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol(GDtlsConnection*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(GDtlsConnection*, gchar**);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_dtls_connection_get_type()), F: marshalDTLSConnectioner},
 	})
-}
-
-// DTLSConnectionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DTLSConnectionOverrider interface {
-	// The function takes the following parameters:
-	//
-	//    - peerCert
-	//    - errors
-	//
-	// The function returns the following values:
-	//
-	AcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
-	// The function takes the following parameters:
-	//
-	//    - typ
-	//    - data
-	//
-	BindingData(typ TLSChannelBindingType, data []byte) error
-	// NegotiatedProtocol gets the name of the application-layer protocol
-	// negotiated during the handshake.
-	//
-	// If the peer did not use the ALPN extension, or did not advertise a
-	// protocol that matched one of conn's protocols, or the TLS backend does
-	// not support ALPN, then this will be NULL. See
-	// g_dtls_connection_set_advertised_protocols().
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): negotiated protocol, or NULL.
-	//
-	NegotiatedProtocol() string
-	// Handshake attempts a TLS handshake on conn.
-	//
-	// On the client side, it is never necessary to call this method; although
-	// the connection needs to perform a handshake after connecting, Connection
-	// will handle this for you automatically when you try to send or receive
-	// data on the connection. You can call g_dtls_connection_handshake()
-	// manually if you want to know whether the initial handshake succeeded or
-	// failed (as opposed to just immediately trying to use conn to read or
-	// write, in which case, if it fails, it may not be possible to tell if it
-	// failed before or after completing the handshake), but beware that servers
-	// may reject client authentication after the handshake has completed, so a
-	// successful handshake does not indicate the connection will be usable.
-	//
-	// Likewise, on the server side, although a handshake is necessary at the
-	// beginning of the communication, you do not need to call this function
-	// explicitly unless you want clearer error reporting.
-	//
-	// Previously, calling g_dtls_connection_handshake() after the initial
-	// handshake would trigger a rehandshake; however, this usage was deprecated
-	// in GLib 2.60 because rehandshaking was removed from the TLS protocol in
-	// TLS 1.3. Since GLib 2.64, calling this function after the initial
-	// handshake will no longer do anything.
-	//
-	// Connection::accept_certificate may be emitted during the handshake.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//
-	Handshake(ctx context.Context) error
-	// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
-	// g_dtls_connection_handshake() for more information.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//    - ioPriority: [I/O priority][io-priority] of the request.
-	//    - callback (optional) to call when the handshake is complete.
-	//
-	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
-	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
-	// g_dtls_connection_handshake() for more information.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	HandshakeFinish(result AsyncResulter) error
-	// SetAdvertisedProtocols sets the list of application-layer protocols to
-	// advertise that the caller is willing to speak on this connection. The
-	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
-	// negotiate a compatible protocol with the peer; use
-	// g_dtls_connection_get_negotiated_protocol() to find the negotiated
-	// protocol after the handshake. Specifying NULL for the the value of
-	// protocols will disable ALPN negotiation.
-	//
-	// See IANA TLS ALPN Protocol IDs
-	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
-	// for a list of registered protocol IDs.
-	//
-	// The function takes the following parameters:
-	//
-	//    - protocols (optional): NULL-terminated array of ALPN protocol names
-	//      (eg, "http/1.1", "h2"), or NULL.
-	//
-	SetAdvertisedProtocols(protocols []string)
-	// Shutdown: shut down part or all of a DTLS connection.
-	//
-	// If shutdown_read is TRUE then the receiving side of the connection is
-	// shut down, and further reading is disallowed. Subsequent calls to
-	// g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
-	//
-	// If shutdown_write is TRUE then the sending side of the connection is shut
-	// down, and further writing is disallowed. Subsequent calls to
-	// g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
-	//
-	// It is allowed for both shutdown_read and shutdown_write to be TRUE — this
-	// is equivalent to calling g_dtls_connection_close().
-	//
-	// If cancellable is cancelled, the Connection may be left partially-closed
-	// and any pending untransmitted data may be lost. Call
-	// g_dtls_connection_shutdown() again to complete closing the Connection.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//    - shutdownRead: TRUE to stop reception of incoming datagrams.
-	//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
-	//
-	Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error
-	// ShutdownAsync: asynchronously shut down part or all of the DTLS
-	// connection. See g_dtls_connection_shutdown() for more information.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//    - shutdownRead: TRUE to stop reception of incoming datagrams.
-	//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
-	//    - ioPriority: [I/O priority][io-priority] of the request.
-	//    - callback (optional) to call when the shutdown operation is complete.
-	//
-	ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback)
-	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
-	// g_dtls_connection_shutdown() for more information.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	ShutdownFinish(result AsyncResulter) error
 }
 
 // DTLSConnection is the base DTLS connection class type, which wraps a Based

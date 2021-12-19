@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// FileChooserWidgetOverrider contains methods that are overridable.
+type FileChooserWidgetOverrider interface {
+}
+
 // FileChooserWidget is a widget for choosing files. It exposes the FileChooser
 // interface, and you should use the methods of this interface to interact with
 // the widget.
@@ -43,6 +47,14 @@ var (
 	_ externglib.Objector = (*FileChooserWidget)(nil)
 	_ Containerer         = (*FileChooserWidget)(nil)
 )
+
+func classInitFileChooserWidgetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 	return &FileChooserWidget{

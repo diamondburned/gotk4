@@ -19,6 +19,10 @@ func init() {
 	})
 }
 
+// WindowOverrider contains methods that are overridable.
+type WindowOverrider interface {
+}
+
 // Window should be implemented by the UI elements that represent a top-level
 // window, such as the main window of an application or dialog.
 type Window struct {
@@ -38,6 +42,9 @@ type Windower interface {
 }
 
 var _ Windower = (*Window)(nil)
+
+func ifaceInitWindower(gifacePtr, data C.gpointer) {
+}
 
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{

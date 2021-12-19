@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// CheckMenuItemAccessibleOverrider contains methods that are overridable.
+type CheckMenuItemAccessibleOverrider interface {
+}
+
 type CheckMenuItemAccessible struct {
 	_ [0]func() // equal guard
 	MenuItemAccessible
@@ -30,6 +34,14 @@ type CheckMenuItemAccessible struct {
 var (
 	_ externglib.Objector = (*CheckMenuItemAccessible)(nil)
 )
+
+func classInitCheckMenuItemAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessible {
 	return &CheckMenuItemAccessible{

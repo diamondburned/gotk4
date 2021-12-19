@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// CellRendererSpinOverrider contains methods that are overridable.
+type CellRendererSpinOverrider interface {
+}
+
 // CellRendererSpin renders text in a cell like CellRendererText from which it
 // is derived. But while CellRendererText offers a simple entry to edit the
 // text, CellRendererSpin offers a SpinButton widget. Of course, that means that
@@ -42,6 +46,14 @@ type CellRendererSpin struct {
 var (
 	_ CellRendererer = (*CellRendererSpin)(nil)
 )
+
+func classInitCellRendererSpinner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
 	return &CellRendererSpin{

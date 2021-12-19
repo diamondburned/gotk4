@@ -14,6 +14,11 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GdkContentProvider* _gotk4_gtk4_TreeDragSourceIface_drag_data_get(GtkTreeDragSource*, GtkTreePath*);
+// extern gboolean _gotk4_gtk4_TreeDragDestIface_drag_data_received(GtkTreeDragDest*, GtkTreePath*, GValue*);
+// extern gboolean _gotk4_gtk4_TreeDragDestIface_row_drop_possible(GtkTreeDragDest*, GtkTreePath*, GValue*);
+// extern gboolean _gotk4_gtk4_TreeDragSourceIface_drag_data_delete(GtkTreeDragSource*, GtkTreePath*);
+// extern gboolean _gotk4_gtk4_TreeDragSourceIface_row_draggable(GtkTreeDragSource*, GtkTreePath*);
 import "C"
 
 func init() {
@@ -60,9 +65,6 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 }
 
 // TreeDragDestOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TreeDragDestOverrider interface {
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// dest, deriving the contents of the row from value. If dest is outside the
@@ -122,6 +124,52 @@ type TreeDragDester interface {
 }
 
 var _ TreeDragDester = (*TreeDragDest)(nil)
+
+func ifaceInitTreeDragDester(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkTreeDragDestIface)(unsafe.Pointer(gifacePtr))
+	iface.drag_data_received = (*[0]byte)(C._gotk4_gtk4_TreeDragDestIface_drag_data_received)
+	iface.row_drop_possible = (*[0]byte)(C._gotk4_gtk4_TreeDragDestIface_row_drop_possible)
+}
+
+//export _gotk4_gtk4_TreeDragDestIface_drag_data_received
+func _gotk4_gtk4_TreeDragDestIface_drag_data_received(arg0 *C.GtkTreeDragDest, arg1 *C.GtkTreePath, arg2 *C.GValue) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeDragDestOverrider)
+
+	var _dest *TreePath          // out
+	var _value *externglib.Value // out
+
+	_dest = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_value = externglib.ValueFromNative(unsafe.Pointer(arg2))
+
+	ok := iface.DragDataReceived(_dest, _value)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeDragDestIface_row_drop_possible
+func _gotk4_gtk4_TreeDragDestIface_row_drop_possible(arg0 *C.GtkTreeDragDest, arg1 *C.GtkTreePath, arg2 *C.GValue) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeDragDestOverrider)
+
+	var _destPath *TreePath      // out
+	var _value *externglib.Value // out
+
+	_destPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_value = externglib.ValueFromNative(unsafe.Pointer(arg2))
+
+	ok := iface.RowDropPossible(_destPath, _value)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapTreeDragDest(obj *externglib.Object) *TreeDragDest {
 	return &TreeDragDest{
@@ -212,9 +260,6 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *externg
 }
 
 // TreeDragSourceOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TreeDragSourceOverrider interface {
 	// DragDataDelete asks the TreeDragSource to delete the row at path, because
 	// it was moved somewhere else via drag-and-drop. Returns FALSE if the
@@ -284,6 +329,68 @@ type TreeDragSourcer interface {
 }
 
 var _ TreeDragSourcer = (*TreeDragSource)(nil)
+
+func ifaceInitTreeDragSourcer(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkTreeDragSourceIface)(unsafe.Pointer(gifacePtr))
+	iface.drag_data_delete = (*[0]byte)(C._gotk4_gtk4_TreeDragSourceIface_drag_data_delete)
+	iface.drag_data_get = (*[0]byte)(C._gotk4_gtk4_TreeDragSourceIface_drag_data_get)
+	iface.row_draggable = (*[0]byte)(C._gotk4_gtk4_TreeDragSourceIface_row_draggable)
+}
+
+//export _gotk4_gtk4_TreeDragSourceIface_drag_data_delete
+func _gotk4_gtk4_TreeDragSourceIface_drag_data_delete(arg0 *C.GtkTreeDragSource, arg1 *C.GtkTreePath) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeDragSourceOverrider)
+
+	var _path *TreePath // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.DragDataDelete(_path)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeDragSourceIface_drag_data_get
+func _gotk4_gtk4_TreeDragSourceIface_drag_data_get(arg0 *C.GtkTreeDragSource, arg1 *C.GtkTreePath) (cret *C.GdkContentProvider) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeDragSourceOverrider)
+
+	var _path *TreePath // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	contentProvider := iface.DragDataGet(_path)
+
+	if contentProvider != nil {
+		cret = (*C.GdkContentProvider)(unsafe.Pointer(contentProvider.Native()))
+		C.g_object_ref(C.gpointer(contentProvider.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeDragSourceIface_row_draggable
+func _gotk4_gtk4_TreeDragSourceIface_row_draggable(arg0 *C.GtkTreeDragSource, arg1 *C.GtkTreePath) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeDragSourceOverrider)
+
+	var _path *TreePath // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.RowDraggable(_path)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapTreeDragSource(obj *externglib.Object) *TreeDragSource {
 	return &TreeDragSource{

@@ -25,6 +25,10 @@ func init() {
 	})
 }
 
+// AlternativeTriggerOverrider contains methods that are overridable.
+type AlternativeTriggerOverrider interface {
+}
+
 // AlternativeTrigger: GtkShortcutTrigger that combines two triggers.
 //
 // The GtkAlternativeTrigger triggers when either of two trigger.
@@ -38,6 +42,14 @@ type AlternativeTrigger struct {
 var (
 	_ ShortcutTriggerer = (*AlternativeTrigger)(nil)
 )
+
+func classInitAlternativeTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapAlternativeTrigger(obj *externglib.Object) *AlternativeTrigger {
 	return &AlternativeTrigger{
@@ -167,6 +179,10 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 	return _shortcutTrigger
 }
 
+// KeyvalTriggerOverrider contains methods that are overridable.
+type KeyvalTriggerOverrider interface {
+}
+
 // KeyvalTrigger: GtkShortcutTrigger that triggers when a specific keyval and
 // modifiers are pressed.
 type KeyvalTrigger struct {
@@ -177,6 +193,14 @@ type KeyvalTrigger struct {
 var (
 	_ ShortcutTriggerer = (*KeyvalTrigger)(nil)
 )
+
+func classInitKeyvalTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapKeyvalTrigger(obj *externglib.Object) *KeyvalTrigger {
 	return &KeyvalTrigger{
@@ -265,6 +289,10 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 	return _modifierType
 }
 
+// MnemonicTriggerOverrider contains methods that are overridable.
+type MnemonicTriggerOverrider interface {
+}
+
 // MnemonicTrigger: GtkShortcutTrigger that triggers when a specific mnemonic is
 // pressed.
 //
@@ -278,6 +306,14 @@ type MnemonicTrigger struct {
 var (
 	_ ShortcutTriggerer = (*MnemonicTrigger)(nil)
 )
+
+func classInitMnemonicTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMnemonicTrigger(obj *externglib.Object) *MnemonicTrigger {
 	return &MnemonicTrigger{
@@ -343,6 +379,10 @@ func (self *MnemonicTrigger) Keyval() uint {
 	return _guint
 }
 
+// NeverTriggerOverrider contains methods that are overridable.
+type NeverTriggerOverrider interface {
+}
+
 // NeverTrigger: GtkShortcutTrigger that never triggers.
 type NeverTrigger struct {
 	_ [0]func() // equal guard
@@ -352,6 +392,14 @@ type NeverTrigger struct {
 var (
 	_ ShortcutTriggerer = (*NeverTrigger)(nil)
 )
+
+func classInitNeverTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNeverTrigger(obj *externglib.Object) *NeverTrigger {
 	return &NeverTrigger{
@@ -386,6 +434,10 @@ func NeverTriggerGet() *NeverTrigger {
 	return _neverTrigger
 }
 
+// ShortcutTriggerOverrider contains methods that are overridable.
+type ShortcutTriggerOverrider interface {
+}
+
 // ShortcutTrigger: GtkShortcutTrigger tracks how a GtkShortcut should be
 // activated.
 //
@@ -417,6 +469,14 @@ type ShortcutTriggerer interface {
 }
 
 var _ ShortcutTriggerer = (*ShortcutTrigger)(nil)
+
+func classInitShortcutTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapShortcutTrigger(obj *externglib.Object) *ShortcutTrigger {
 	return &ShortcutTrigger{

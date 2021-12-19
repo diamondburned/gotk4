@@ -139,6 +139,11 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		return true
 	}
 
+	// Treat this specific case differently. We only care about when we index
+	// the slice, not the slice itself, so setting the inArray below is not what
+	// we want.
+	callbackInArray := value.inArray && conv.Callback
+
 	// Ensure that the array type matches the inner type. Some functions violate
 	// this, e.g. g_spawn_command_line_sync().
 	if value.Array != nil {
@@ -281,7 +286,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		return false
 	}
 
-	if value.ParameterIsOutput() {
+	if !callbackInArray && value.ParameterIsOutput() {
 		switch value.Direction {
 		case ConvertCToGo:
 			value.In.Call = "&" + value.In.Call
@@ -332,11 +337,10 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 		return ValueType{}, false
 	}
 
-	// Allow Go to C gio.Cancellable to be a context.Context. We're not doing
-	// this inside Resolve, because this is the only case where we actually want
+	// Allow gio.Cancellable to be a context.Context. We're not doing this
+	// inside Resolve, because this is the only case where we actually want
 	// this.
-	if value.Direction == ConvertGoToC &&
-		value.ParameterIndex.Index() != -1 && !value.ParameterIsOutput() &&
+	if !value.ParameterIsOutput() && value.ParameterIndex.Index() != -1 &&
 		resolved.Ptr == 1 && resolved.GType == "Gio.Cancellable" {
 
 		resolved = types.BuiltinType("context", "Context", *typ)

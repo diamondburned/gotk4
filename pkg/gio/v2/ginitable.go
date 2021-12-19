@@ -15,6 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_gio2_InitableIface_init(GInitable*, GCancellable*, GError**);
 import "C"
 
 func init() {
@@ -24,9 +25,6 @@ func init() {
 }
 
 // InitableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type InitableOverrider interface {
 	// Init initializes the object implementing the interface.
 	//
@@ -114,6 +112,31 @@ type Initabler interface {
 }
 
 var _ Initabler = (*Initable)(nil)
+
+func ifaceInitInitabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GInitableIface)(unsafe.Pointer(gifacePtr))
+	iface.init = (*[0]byte)(C._gotk4_gio2_InitableIface_init)
+}
+
+//export _gotk4_gio2_InitableIface_init
+func _gotk4_gio2_InitableIface_init(arg0 *C.GInitable, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(InitableOverrider)
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	_goerr := iface.Init(_cancellable)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapInitable(obj *externglib.Object) *Initable {
 	return &Initable{

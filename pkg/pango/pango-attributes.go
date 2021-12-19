@@ -18,7 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>
-// gboolean _gotk4_pango1_AttrFilterFunc(PangoAttribute*, gpointer);
+// extern gboolean _gotk4_pango1_AttrFilterFunc(PangoAttribute*, gpointer);
 import "C"
 
 func init() {
@@ -413,13 +413,16 @@ func (s ShowFlags) Has(other ShowFlags) bool {
 type AttrDataCopyFunc func() (gpointer cgo.Handle)
 
 //export _gotk4_pango1_AttrDataCopyFunc
-func _gotk4_pango1_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
-	v := gbox.Get(uintptr(arg0))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_pango1_AttrDataCopyFunc(arg1 C.gconstpointer) (cret C.gpointer) {
+	var fn AttrDataCopyFunc
+	{
+		v := gbox.Get(uintptr(arg1))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(AttrDataCopyFunc)
 	}
 
-	fn := v.(AttrDataCopyFunc)
 	gpointer := fn()
 
 	cret = (C.gpointer)(unsafe.Pointer(gpointer))
@@ -431,18 +434,21 @@ func _gotk4_pango1_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
 type AttrFilterFunc func(attribute *Attribute) (ok bool)
 
 //export _gotk4_pango1_AttrFilterFunc
-func _gotk4_pango1_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_pango1_AttrFilterFunc(arg1 *C.PangoAttribute, arg2 C.gpointer) (cret C.gboolean) {
+	var fn AttrFilterFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(AttrFilterFunc)
 	}
 
-	var attribute *Attribute // out
+	var _attribute *Attribute // out
 
-	attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(arg0)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
-	fn := v.(AttrFilterFunc)
-	ok := fn(attribute)
+	ok := fn(_attribute)
 
 	if ok {
 		cret = C.TRUE

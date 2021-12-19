@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// ConverterInputStreamOverrider contains methods that are overridable.
+type ConverterInputStreamOverrider interface {
+}
+
 // ConverterInputStream: converter input stream implements Stream and allows
 // conversion of data of various types during reading.
 //
@@ -38,6 +42,14 @@ var (
 	_ externglib.Objector = (*ConverterInputStream)(nil)
 	_ InputStreamer       = (*ConverterInputStream)(nil)
 )
+
+func classInitConverterInputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapConverterInputStream(obj *externglib.Object) *ConverterInputStream {
 	return &ConverterInputStream{

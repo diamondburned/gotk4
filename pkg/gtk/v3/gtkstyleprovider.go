@@ -15,6 +15,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GtkIconFactory* _gotk4_gtk3_StyleProviderIface_get_icon_factory(GtkStyleProvider*, GtkWidgetPath*);
+// extern GtkStyleProperties* _gotk4_gtk3_StyleProviderIface_get_style(GtkStyleProvider*, GtkWidgetPath*);
 import "C"
 
 func init() {
@@ -54,9 +56,6 @@ const STYLE_PROVIDER_PRIORITY_THEME = 200
 const STYLE_PROVIDER_PRIORITY_USER = 800
 
 // StyleProviderOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type StyleProviderOverrider interface {
 	// IconFactory returns the IconFactory defined to be in use for path, or
 	// NULL if none is defined.
@@ -115,6 +114,63 @@ type StyleProviderer interface {
 }
 
 var _ StyleProviderer = (*StyleProvider)(nil)
+
+func ifaceInitStyleProviderer(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkStyleProviderIface)(unsafe.Pointer(gifacePtr))
+	iface.get_icon_factory = (*[0]byte)(C._gotk4_gtk3_StyleProviderIface_get_icon_factory)
+	iface.get_style = (*[0]byte)(C._gotk4_gtk3_StyleProviderIface_get_style)
+}
+
+//export _gotk4_gtk3_StyleProviderIface_get_icon_factory
+func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, arg1 *C.GtkWidgetPath) (cret *C.GtkIconFactory) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(StyleProviderOverrider)
+
+	var _path *WidgetPath // out
+
+	_path = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.gtk_widget_path_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_path)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+		},
+	)
+
+	iconFactory := iface.IconFactory(_path)
+
+	if iconFactory != nil {
+		cret = (*C.GtkIconFactory)(unsafe.Pointer(iconFactory.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_StyleProviderIface_get_style
+func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.GtkStyleProvider, arg1 *C.GtkWidgetPath) (cret *C.GtkStyleProperties) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(StyleProviderOverrider)
+
+	var _path *WidgetPath // out
+
+	_path = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.gtk_widget_path_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_path)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+		},
+	)
+
+	styleProperties := iface.Style(_path)
+
+	if styleProperties != nil {
+		cret = (*C.GtkStyleProperties)(unsafe.Pointer(styleProperties.Native()))
+		C.g_object_ref(C.gpointer(styleProperties.Native()))
+	}
+
+	return cret
+}
 
 func wrapStyleProvider(obj *externglib.Object) *StyleProvider {
 	return &StyleProvider{

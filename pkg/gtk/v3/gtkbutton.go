@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -16,6 +17,12 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_ButtonClass_activate(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_clicked(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_enter(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_leave(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_pressed(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_released(GtkButton*);
 import "C"
 
 func init() {
@@ -25,9 +32,6 @@ func init() {
 }
 
 // ButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ButtonOverrider interface {
 	Activate()
 	// Clicked emits a Button::clicked signal to the given Button.
@@ -85,6 +89,90 @@ var (
 	_ Binner              = (*Button)(nil)
 	_ externglib.Objector = (*Button)(nil)
 )
+
+func classInitButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ButtonClass_activate)
+	}
+
+	if _, ok := goval.(interface{ Clicked() }); ok {
+		pclass.clicked = (*[0]byte)(C._gotk4_gtk3_ButtonClass_clicked)
+	}
+
+	if _, ok := goval.(interface{ Enter() }); ok {
+		pclass.enter = (*[0]byte)(C._gotk4_gtk3_ButtonClass_enter)
+	}
+
+	if _, ok := goval.(interface{ Leave() }); ok {
+		pclass.leave = (*[0]byte)(C._gotk4_gtk3_ButtonClass_leave)
+	}
+
+	if _, ok := goval.(interface{ Pressed() }); ok {
+		pclass.pressed = (*[0]byte)(C._gotk4_gtk3_ButtonClass_pressed)
+	}
+
+	if _, ok := goval.(interface{ Released() }); ok {
+		pclass.released = (*[0]byte)(C._gotk4_gtk3_ButtonClass_released)
+	}
+}
+
+//export _gotk4_gtk3_ButtonClass_activate
+func _gotk4_gtk3_ButtonClass_activate(arg0 *C.GtkButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
+
+//export _gotk4_gtk3_ButtonClass_clicked
+func _gotk4_gtk3_ButtonClass_clicked(arg0 *C.GtkButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Clicked() })
+
+	iface.Clicked()
+}
+
+//export _gotk4_gtk3_ButtonClass_enter
+func _gotk4_gtk3_ButtonClass_enter(arg0 *C.GtkButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Enter() })
+
+	iface.Enter()
+}
+
+//export _gotk4_gtk3_ButtonClass_leave
+func _gotk4_gtk3_ButtonClass_leave(arg0 *C.GtkButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Leave() })
+
+	iface.Leave()
+}
+
+//export _gotk4_gtk3_ButtonClass_pressed
+func _gotk4_gtk3_ButtonClass_pressed(arg0 *C.GtkButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Pressed() })
+
+	iface.Pressed()
+}
+
+//export _gotk4_gtk3_ButtonClass_released
+func _gotk4_gtk3_ButtonClass_released(arg0 *C.GtkButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Released() })
+
+	iface.Released()
+}
 
 func wrapButton(obj *externglib.Object) *Button {
 	return &Button{

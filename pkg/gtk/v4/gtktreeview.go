@@ -16,12 +16,27 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row(GtkTreeView*, gboolean, gboolean, gboolean);
+// extern gboolean _gotk4_gtk4_TreeViewClass_move_cursor(GtkTreeView*, GtkMovementStep, int, gboolean, gboolean);
+// extern gboolean _gotk4_gtk4_TreeViewClass_select_all(GtkTreeView*);
+// extern gboolean _gotk4_gtk4_TreeViewClass_select_cursor_parent(GtkTreeView*);
+// extern gboolean _gotk4_gtk4_TreeViewClass_select_cursor_row(GtkTreeView*, gboolean);
+// extern gboolean _gotk4_gtk4_TreeViewClass_start_interactive_search(GtkTreeView*);
+// extern gboolean _gotk4_gtk4_TreeViewClass_test_collapse_row(GtkTreeView*, GtkTreeIter*, GtkTreePath*);
+// extern gboolean _gotk4_gtk4_TreeViewClass_test_expand_row(GtkTreeView*, GtkTreeIter*, GtkTreePath*);
+// extern gboolean _gotk4_gtk4_TreeViewClass_toggle_cursor_row(GtkTreeView*);
+// extern gboolean _gotk4_gtk4_TreeViewClass_unselect_all(GtkTreeView*);
+// extern gboolean _gotk4_gtk4_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer);
+// extern gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// extern gboolean _gotk4_gtk4_TreeViewSearchEqualFunc(GtkTreeModel*, int, char*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk4_TreeViewClass_columns_changed(GtkTreeView*);
+// extern void _gotk4_gtk4_TreeViewClass_cursor_changed(GtkTreeView*);
+// extern void _gotk4_gtk4_TreeViewClass_row_activated(GtkTreeView*, GtkTreePath*, GtkTreeViewColumn*);
+// extern void _gotk4_gtk4_TreeViewClass_row_collapsed(GtkTreeView*, GtkTreeIter*, GtkTreePath*);
+// extern void _gotk4_gtk4_TreeViewClass_row_expanded(GtkTreeView*, GtkTreeIter*, GtkTreePath*);
+// extern void _gotk4_gtk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk4_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer);
-// gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
-// gboolean _gotk4_gtk4_TreeViewSearchEqualFunc(GtkTreeModel*, int, char*, GtkTreeIter*, gpointer);
-// void _gotk4_gtk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
-// void _gotk4_gtk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {
@@ -78,24 +93,27 @@ func (t TreeViewDropPosition) String() string {
 type TreeViewColumnDropFunc func(treeView *TreeView, column, prevColumn, nextColumn *TreeViewColumn) (ok bool)
 
 //export _gotk4_gtk4_TreeViewColumnDropFunc
-func _gotk4_gtk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TreeViewColumnDropFunc(arg1 *C.GtkTreeView, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 *C.GtkTreeViewColumn, arg5 C.gpointer) (cret C.gboolean) {
+	var fn TreeViewColumnDropFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeViewColumnDropFunc)
 	}
 
-	var treeView *TreeView         // out
-	var column *TreeViewColumn     // out
-	var prevColumn *TreeViewColumn // out
-	var nextColumn *TreeViewColumn // out
+	var _treeView *TreeView         // out
+	var _column *TreeViewColumn     // out
+	var _prevColumn *TreeViewColumn // out
+	var _nextColumn *TreeViewColumn // out
 
-	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
-	column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg1)))
-	prevColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg2)))
-	nextColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg3)))
+	_treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg1)))
+	_column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg2)))
+	_prevColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg3)))
+	_nextColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg4)))
 
-	fn := v.(TreeViewColumnDropFunc)
-	ok := fn(treeView, column, prevColumn, nextColumn)
+	ok := fn(_treeView, _column, _prevColumn, _nextColumn)
 
 	if ok {
 		cret = C.TRUE
@@ -108,20 +126,23 @@ func _gotk4_gtk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeView
 type TreeViewMappingFunc func(treeView *TreeView, path *TreePath)
 
 //export _gotk4_gtk4_TreeViewMappingFunc
-func _gotk4_gtk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TreeViewMappingFunc(arg1 *C.GtkTreeView, arg2 *C.GtkTreePath, arg3 C.gpointer) {
+	var fn TreeViewMappingFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeViewMappingFunc)
 	}
 
-	var treeView *TreeView // out
-	var path *TreePath     // out
+	var _treeView *TreeView // out
+	var _path *TreePath     // out
 
-	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
-	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(TreeViewMappingFunc)
-	fn(treeView, path)
+	fn(_treeView, _path)
 }
 
 // TreeViewRowSeparatorFunc: function type for determining whether the row
@@ -131,17 +152,21 @@ func _gotk4_gtk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, a
 type TreeViewRowSeparatorFunc func(model TreeModeller, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_TreeViewRowSeparatorFunc
-func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
+	var fn TreeViewRowSeparatorFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeViewRowSeparatorFunc)
 	}
 
-	var model TreeModeller // out
-	var iter *TreeIter     // out
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.TreeModeller is nil")
 		}
@@ -155,12 +180,11 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
-		model = rv
+		_model = rv
 	}
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(TreeViewRowSeparatorFunc)
-	ok := fn(model, iter)
+	ok := fn(_model, _iter)
 
 	if ok {
 		cret = C.TRUE
@@ -176,19 +200,23 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 type TreeViewSearchEqualFunc func(model TreeModeller, column int, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_TreeViewSearchEqualFunc
-func _gotk4_gtk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.char, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.int, arg3 *C.char, arg4 *C.GtkTreeIter, arg5 C.gpointer) (cret C.gboolean) {
+	var fn TreeViewSearchEqualFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeViewSearchEqualFunc)
 	}
 
-	var model TreeModeller // out
-	var column int         // out
-	var key string         // out
-	var iter *TreeIter     // out
+	var _model TreeModeller // out
+	var _column int         // out
+	var _key string         // out
+	var _iter *TreeIter     // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.TreeModeller is nil")
 		}
@@ -202,14 +230,13 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
-		model = rv
+		_model = rv
 	}
-	column = int(arg1)
-	key = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	_column = int(arg2)
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
-	fn := v.(TreeViewSearchEqualFunc)
-	ok := fn(model, column, key, iter)
+	ok := fn(_model, _column, _key, _iter)
 
 	if ok {
 		cret = C.TRUE
@@ -219,9 +246,6 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 
 }
 
 // TreeViewOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TreeViewOverrider interface {
 	ColumnsChanged()
 	CursorChanged()
@@ -403,6 +427,350 @@ var (
 	_ Widgetter           = (*TreeView)(nil)
 	_ externglib.Objector = (*TreeView)(nil)
 )
+
+func classInitTreeViewer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkTreeViewClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkTreeViewClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ColumnsChanged() }); ok {
+		pclass.columns_changed = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_columns_changed)
+	}
+
+	if _, ok := goval.(interface{ CursorChanged() }); ok {
+		pclass.cursor_changed = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_cursor_changed)
+	}
+
+	if _, ok := goval.(interface {
+		ExpandCollapseCursorRow(logical, expand, openAll bool) bool
+	}); ok {
+		pclass.expand_collapse_cursor_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row)
+	}
+
+	if _, ok := goval.(interface {
+		MoveCursor(step MovementStep, count int, extend, modify bool) bool
+	}); ok {
+		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_move_cursor)
+	}
+
+	if _, ok := goval.(interface {
+		RowActivated(path *TreePath, column *TreeViewColumn)
+	}); ok {
+		pclass.row_activated = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_row_activated)
+	}
+
+	if _, ok := goval.(interface {
+		RowCollapsed(iter *TreeIter, path *TreePath)
+	}); ok {
+		pclass.row_collapsed = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_row_collapsed)
+	}
+
+	if _, ok := goval.(interface {
+		RowExpanded(iter *TreeIter, path *TreePath)
+	}); ok {
+		pclass.row_expanded = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_row_expanded)
+	}
+
+	if _, ok := goval.(interface{ SelectAll() bool }); ok {
+		pclass.select_all = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_select_all)
+	}
+
+	if _, ok := goval.(interface{ SelectCursorParent() bool }); ok {
+		pclass.select_cursor_parent = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_select_cursor_parent)
+	}
+
+	if _, ok := goval.(interface{ SelectCursorRow(startEditing bool) bool }); ok {
+		pclass.select_cursor_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_select_cursor_row)
+	}
+
+	if _, ok := goval.(interface{ StartInteractiveSearch() bool }); ok {
+		pclass.start_interactive_search = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_start_interactive_search)
+	}
+
+	if _, ok := goval.(interface {
+		TestCollapseRow(iter *TreeIter, path *TreePath) bool
+	}); ok {
+		pclass.test_collapse_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_test_collapse_row)
+	}
+
+	if _, ok := goval.(interface {
+		TestExpandRow(iter *TreeIter, path *TreePath) bool
+	}); ok {
+		pclass.test_expand_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_test_expand_row)
+	}
+
+	if _, ok := goval.(interface{ ToggleCursorRow() bool }); ok {
+		pclass.toggle_cursor_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_toggle_cursor_row)
+	}
+
+	if _, ok := goval.(interface{ UnselectAll() bool }); ok {
+		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_unselect_all)
+	}
+}
+
+//export _gotk4_gtk4_TreeViewClass_columns_changed
+func _gotk4_gtk4_TreeViewClass_columns_changed(arg0 *C.GtkTreeView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ColumnsChanged() })
+
+	iface.ColumnsChanged()
+}
+
+//export _gotk4_gtk4_TreeViewClass_cursor_changed
+func _gotk4_gtk4_TreeViewClass_cursor_changed(arg0 *C.GtkTreeView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CursorChanged() })
+
+	iface.CursorChanged()
+}
+
+//export _gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row
+func _gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row(arg0 *C.GtkTreeView, arg1 C.gboolean, arg2 C.gboolean, arg3 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ExpandCollapseCursorRow(logical, expand, openAll bool) bool
+	})
+
+	var _logical bool // out
+	var _expand bool  // out
+	var _openAll bool // out
+
+	if arg1 != 0 {
+		_logical = true
+	}
+	if arg2 != 0 {
+		_expand = true
+	}
+	if arg3 != 0 {
+		_openAll = true
+	}
+
+	ok := iface.ExpandCollapseCursorRow(_logical, _expand, _openAll)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeViewClass_move_cursor
+func _gotk4_gtk4_TreeViewClass_move_cursor(arg0 *C.GtkTreeView, arg1 C.GtkMovementStep, arg2 C.int, arg3 C.gboolean, arg4 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MoveCursor(step MovementStep, count int, extend, modify bool) bool
+	})
+
+	var _step MovementStep // out
+	var _count int         // out
+	var _extend bool       // out
+	var _modify bool       // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+	if arg3 != 0 {
+		_extend = true
+	}
+	if arg4 != 0 {
+		_modify = true
+	}
+
+	ok := iface.MoveCursor(_step, _count, _extend, _modify)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeViewClass_row_activated
+func _gotk4_gtk4_TreeViewClass_row_activated(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 *C.GtkTreeViewColumn) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		RowActivated(path *TreePath, column *TreeViewColumn)
+	})
+
+	var _path *TreePath         // out
+	var _column *TreeViewColumn // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg2)))
+
+	iface.RowActivated(_path, _column)
+}
+
+//export _gotk4_gtk4_TreeViewClass_row_collapsed
+func _gotk4_gtk4_TreeViewClass_row_collapsed(arg0 *C.GtkTreeView, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		RowCollapsed(iter *TreeIter, path *TreePath)
+	})
+
+	var _iter *TreeIter // out
+	var _path *TreePath // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	iface.RowCollapsed(_iter, _path)
+}
+
+//export _gotk4_gtk4_TreeViewClass_row_expanded
+func _gotk4_gtk4_TreeViewClass_row_expanded(arg0 *C.GtkTreeView, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		RowExpanded(iter *TreeIter, path *TreePath)
+	})
+
+	var _iter *TreeIter // out
+	var _path *TreePath // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	iface.RowExpanded(_iter, _path)
+}
+
+//export _gotk4_gtk4_TreeViewClass_select_all
+func _gotk4_gtk4_TreeViewClass_select_all(arg0 *C.GtkTreeView) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectAll() bool })
+
+	ok := iface.SelectAll()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeViewClass_select_cursor_parent
+func _gotk4_gtk4_TreeViewClass_select_cursor_parent(arg0 *C.GtkTreeView) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectCursorParent() bool })
+
+	ok := iface.SelectCursorParent()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeViewClass_select_cursor_row
+func _gotk4_gtk4_TreeViewClass_select_cursor_row(arg0 *C.GtkTreeView, arg1 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectCursorRow(startEditing bool) bool })
+
+	var _startEditing bool // out
+
+	if arg1 != 0 {
+		_startEditing = true
+	}
+
+	ok := iface.SelectCursorRow(_startEditing)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeViewClass_start_interactive_search
+func _gotk4_gtk4_TreeViewClass_start_interactive_search(arg0 *C.GtkTreeView) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StartInteractiveSearch() bool })
+
+	ok := iface.StartInteractiveSearch()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeViewClass_test_collapse_row
+func _gotk4_gtk4_TreeViewClass_test_collapse_row(arg0 *C.GtkTreeView, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		TestCollapseRow(iter *TreeIter, path *TreePath) bool
+	})
+
+	var _iter *TreeIter // out
+	var _path *TreePath // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	ok := iface.TestCollapseRow(_iter, _path)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeViewClass_test_expand_row
+func _gotk4_gtk4_TreeViewClass_test_expand_row(arg0 *C.GtkTreeView, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		TestExpandRow(iter *TreeIter, path *TreePath) bool
+	})
+
+	var _iter *TreeIter // out
+	var _path *TreePath // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	ok := iface.TestExpandRow(_iter, _path)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeViewClass_toggle_cursor_row
+func _gotk4_gtk4_TreeViewClass_toggle_cursor_row(arg0 *C.GtkTreeView) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ToggleCursorRow() bool })
+
+	ok := iface.ToggleCursorRow()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeViewClass_unselect_all
+func _gotk4_gtk4_TreeViewClass_unselect_all(arg0 *C.GtkTreeView) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ UnselectAll() bool })
+
+	ok := iface.UnselectAll()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapTreeView(obj *externglib.Object) *TreeView {
 	return &TreeView{

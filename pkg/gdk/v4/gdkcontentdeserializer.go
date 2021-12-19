@@ -18,7 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -360,7 +360,9 @@ func (deserializer *ContentDeserializer) ReturnError(err error) {
 	var _arg1 *C.GError                 // out
 
 	_arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(deserializer.Native()))
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	C.gdk_content_deserializer_return_error(_arg0, _arg1)
 	runtime.KeepAlive(deserializer)

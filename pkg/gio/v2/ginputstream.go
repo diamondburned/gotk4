@@ -18,7 +18,12 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern gboolean _gotk4_gio2_InputStreamClass_close_finish(GInputStream*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_InputStreamClass_close_fn(GInputStream*, GCancellable*, GError**);
+// extern gssize _gotk4_gio2_InputStreamClass_read_finish(GInputStream*, GAsyncResult*, GError**);
+// extern gssize _gotk4_gio2_InputStreamClass_skip(GInputStream*, gsize, GCancellable*, GError**);
+// extern gssize _gotk4_gio2_InputStreamClass_skip_finish(GInputStream*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -28,28 +33,7 @@ func init() {
 }
 
 // InputStreamOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type InputStreamOverrider interface {
-	// CloseAsync requests an asynchronous closes of the stream, releasing
-	// resources related to it. When the operation is finished callback will be
-	// called. You can then call g_input_stream_close_finish() to get the result
-	// of the operation.
-	//
-	// For behaviour details see g_input_stream_close().
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional cancellable object.
-	//    - ioPriority: [I/O priority][io-priority] of the request.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
 	//
@@ -98,38 +82,6 @@ type InputStreamOverrider interface {
 	//    - gssize: number of bytes skipped, or -1 on error.
 	//
 	Skip(ctx context.Context, count uint) (int, error)
-	// SkipAsync: request an asynchronous skip of count bytes from the stream.
-	// When the operation is finished callback will be called. You can then call
-	// g_input_stream_skip_finish() to get the result of the operation.
-	//
-	// During an async request no other sync and async calls are allowed, and
-	// will result in G_IO_ERROR_PENDING errors.
-	//
-	// A value of count larger than G_MAXSSIZE will cause a
-	// G_IO_ERROR_INVALID_ARGUMENT error.
-	//
-	// On success, the number of bytes skipped will be passed to the callback.
-	// It is not an error if this is not the same as the requested size, as it
-	// can happen e.g. near the end of a file, but generally we try to skip as
-	// many bytes as requested. Zero is returned on end of file (or if count is
-	// zero), but never otherwise.
-	//
-	// Any outstanding i/o request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one, you must override all.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - count: number of bytes that will be skipped from the stream.
-	//    - ioPriority: [I/O priority][io-priority] of the request.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
 	// SkipFinish finishes a stream skip operation.
 	//
 	// The function takes the following parameters:
@@ -173,6 +125,205 @@ type InputStreamer interface {
 }
 
 var _ InputStreamer = (*InputStream)(nil)
+
+func classInitInputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GInputStreamClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GInputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		CloseFinish(result AsyncResulter) error
+	}); ok {
+		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_close_finish)
+	}
+
+	if _, ok := goval.(interface {
+		CloseFn(ctx context.Context) error
+	}); ok {
+		pclass.close_fn = (*[0]byte)(C._gotk4_gio2_InputStreamClass_close_fn)
+	}
+
+	if _, ok := goval.(interface {
+		ReadFinish(result AsyncResulter) (int, error)
+	}); ok {
+		pclass.read_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_read_finish)
+	}
+
+	if _, ok := goval.(interface {
+		Skip(ctx context.Context, count uint) (int, error)
+	}); ok {
+		pclass.skip = (*[0]byte)(C._gotk4_gio2_InputStreamClass_skip)
+	}
+
+	if _, ok := goval.(interface {
+		SkipFinish(result AsyncResulter) (int, error)
+	}); ok {
+		pclass.skip_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_skip_finish)
+	}
+}
+
+//export _gotk4_gio2_InputStreamClass_close_finish
+func _gotk4_gio2_InputStreamClass_close_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CloseFinish(result AsyncResulter) error
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.CloseFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_InputStreamClass_close_fn
+func _gotk4_gio2_InputStreamClass_close_fn(arg0 *C.GInputStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CloseFn(ctx context.Context) error
+	})
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	_goerr := iface.CloseFn(_cancellable)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_InputStreamClass_read_finish
+func _gotk4_gio2_InputStreamClass_read_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ReadFinish(result AsyncResulter) (int, error)
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	gssize, _goerr := iface.ReadFinish(_result)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_InputStreamClass_skip
+func _gotk4_gio2_InputStreamClass_skip(arg0 *C.GInputStream, arg1 C.gsize, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Skip(ctx context.Context, count uint) (int, error)
+	})
+
+	var _cancellable context.Context // out
+	var _count uint                  // out
+
+	if arg2 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
+	}
+	_count = uint(arg1)
+
+	gssize, _goerr := iface.Skip(_cancellable, _count)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_InputStreamClass_skip_finish
+func _gotk4_gio2_InputStreamClass_skip_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SkipFinish(result AsyncResulter) (int, error)
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	gssize, _goerr := iface.SkipFinish(_result)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapInputStream(obj *externglib.Object) *InputStream {
 	return &InputStream{

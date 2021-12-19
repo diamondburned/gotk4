@@ -17,7 +17,34 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern GDriveStartStopType _gotk4_gio2_DriveIface_get_start_stop_type(GDrive*);
+// extern GIcon* _gotk4_gio2_DriveIface_get_icon(GDrive*);
+// extern GIcon* _gotk4_gio2_DriveIface_get_symbolic_icon(GDrive*);
+// extern GList* _gotk4_gio2_DriveIface_get_volumes(GDrive*);
+// extern char* _gotk4_gio2_DriveIface_get_identifier(GDrive*, char*);
+// extern char* _gotk4_gio2_DriveIface_get_name(GDrive*);
+// extern char** _gotk4_gio2_DriveIface_enumerate_identifiers(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_eject(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_poll_for_media(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_start(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_start_degraded(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_stop(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_eject_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_eject_with_operation_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_has_media(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_has_volumes(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_is_media_check_automatic(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_is_media_removable(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_is_removable(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_poll_for_media_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_start_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_stop_finish(GDrive*, GAsyncResult*, GError**);
+// extern gchar* _gotk4_gio2_DriveIface_get_sort_key(GDrive*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_DriveIface_changed(GDrive*);
+// extern void _gotk4_gio2_DriveIface_disconnected(GDrive*);
+// extern void _gotk4_gio2_DriveIface_eject_button(GDrive*);
+// extern void _gotk4_gio2_DriveIface_stop_button(GDrive*);
 import "C"
 
 func init() {
@@ -29,270 +56,6 @@ func init() {
 // DRIVE_IDENTIFIER_KIND_UNIX_DEVICE: string used to obtain a Unix device path
 // with g_drive_get_identifier().
 const DRIVE_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
-
-// DriveOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type DriveOverrider interface {
-	// CanEject checks if a drive can be ejected.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the drive can be ejected, FALSE otherwise.
-	//
-	CanEject() bool
-	// CanPollForMedia checks if a drive can be polled for media changes.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the drive can be polled for media changes, FALSE
-	//      otherwise.
-	//
-	CanPollForMedia() bool
-	// CanStart checks if a drive can be started.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the drive can be started, FALSE otherwise.
-	//
-	CanStart() bool
-	// CanStartDegraded checks if a drive can be started degraded.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the drive can be started degraded, FALSE otherwise.
-	//
-	CanStartDegraded() bool
-	// CanStop checks if a drive can be stopped.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the drive can be stopped, FALSE otherwise.
-	//
-	CanStop() bool
-	Changed()
-	Disconnected()
-	// Eject: asynchronously ejects a drive.
-	//
-	// When the operation is finished, callback will be called. You can then
-	// call g_drive_eject_finish() to obtain the result of the operation.
-	//
-	// Deprecated: Use g_drive_eject_with_operation() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the unmount if required for eject.
-	//    - callback (optional) or NULL.
-	//
-	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
-	EjectButton()
-	// EjectFinish finishes ejecting a drive.
-	//
-	// Deprecated: Use g_drive_eject_with_operation_finish() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	EjectFinish(result AsyncResulter) error
-	// EjectWithOperation ejects a drive. This is an asynchronous operation, and
-	// is finished by calling g_drive_eject_with_operation_finish() with the
-	// drive and Result data returned in the callback.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the unmount if required for eject.
-	//    - mountOperation (optional) or NULL to avoid user interaction.
-	//    - callback (optional) or NULL.
-	//
-	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
-	// EjectWithOperationFinish finishes ejecting a drive. If any errors
-	// occurred during the operation, error will be set to contain the errors
-	// and FALSE will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	EjectWithOperationFinish(result AsyncResulter) error
-	// EnumerateIdentifiers gets the kinds of identifiers that drive has. Use
-	// g_drive_get_identifier() to obtain the identifiers themselves.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8s: NULL-terminated array of strings containing kinds of
-	//      identifiers. Use g_strfreev() to free.
-	//
-	EnumerateIdentifiers() []string
-	// Icon gets the icon for drive.
-	//
-	// The function returns the following values:
-	//
-	//    - icon for the drive. Free the returned object with g_object_unref().
-	//
-	Icon() Iconner
-	// Identifier gets the identifier of the given kind for drive. The only
-	// identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
-	//
-	// The function takes the following parameters:
-	//
-	//    - kind of identifier to return.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): newly allocated string containing the requested
-	//      identifier, or NULL if the #GDrive doesn't have this kind of
-	//      identifier.
-	//
-	Identifier(kind string) string
-	// Name gets the name of drive.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: string containing drive's name. The returned string should be
-	//      freed when no longer needed.
-	//
-	Name() string
-	// SortKey gets the sort key for drive, if any.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): sorting key for drive or NULL if no such key is
-	//      available.
-	//
-	SortKey() string
-	// StartStopType gets a hint about how a drive can be started/stopped.
-	//
-	// The function returns the following values:
-	//
-	//    - driveStartStopType: value from the StartStopType enumeration.
-	//
-	StartStopType() DriveStartStopType
-	// SymbolicIcon gets the icon for drive.
-	//
-	// The function returns the following values:
-	//
-	//    - icon: symbolic #GIcon for the drive. Free the returned object with
-	//      g_object_unref().
-	//
-	SymbolicIcon() Iconner
-	// Volumes: get a list of mountable volumes for drive.
-	//
-	// The returned list should be freed with g_list_free(), after its elements
-	// have been unreffed with g_object_unref().
-	//
-	// The function returns the following values:
-	//
-	//    - list containing any #GVolume objects on the given drive.
-	//
-	Volumes() []Volumer
-	// HasMedia checks if the drive has media. Note that the OS may not be
-	// polling the drive for media changes; see
-	// g_drive_is_media_check_automatic() for more details.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if drive has media, FALSE otherwise.
-	//
-	HasMedia() bool
-	// HasVolumes: check if drive has any mountable volumes.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the drive contains volumes, FALSE otherwise.
-	//
-	HasVolumes() bool
-	// IsMediaCheckAutomatic checks if drive is capable of automatically
-	// detecting media changes.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the drive is capable of automatically detecting media
-	//      changes, FALSE otherwise.
-	//
-	IsMediaCheckAutomatic() bool
-	// IsMediaRemovable checks if the drive supports removable media.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if drive supports removable media, FALSE otherwise.
-	//
-	IsMediaRemovable() bool
-	// IsRemovable checks if the #GDrive and/or its media is considered
-	// removable by the user. See g_drive_is_media_removable().
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if drive and/or its media is considered removable, FALSE
-	//      otherwise.
-	//
-	IsRemovable() bool
-	// PollForMedia: asynchronously polls drive to see if media has been
-	// inserted or removed.
-	//
-	// When the operation is finished, callback will be called. You can then
-	// call g_drive_poll_for_media_finish() to obtain the result of the
-	// operation.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - callback (optional) or NULL.
-	//
-	PollForMedia(ctx context.Context, callback AsyncReadyCallback)
-	// PollForMediaFinish finishes an operation started with
-	// g_drive_poll_for_media() on a drive.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	PollForMediaFinish(result AsyncResulter) error
-	// Start: asynchronously starts a drive.
-	//
-	// When the operation is finished, callback will be called. You can then
-	// call g_drive_start_finish() to obtain the result of the operation.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the start operation.
-	//    - mountOperation (optional) or NULL to avoid user interaction.
-	//    - callback (optional) or NULL.
-	//
-	Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
-	// StartFinish finishes starting a drive.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	StartFinish(result AsyncResulter) error
-	// Stop: asynchronously stops a drive.
-	//
-	// When the operation is finished, callback will be called. You can then
-	// call g_drive_stop_finish() to obtain the result of the operation.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the unmount if required for stopping.
-	//    - mountOperation (optional) or NULL to avoid user interaction.
-	//    - callback (optional) or NULL.
-	//
-	Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
-	StopButton()
-	// StopFinish finishes stopping a drive.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	StopFinish(result AsyncResulter) error
-}
 
 // Drive - this represent a piece of hardware connected to the machine. It's
 // generally only created for removable hardware or hardware with removable

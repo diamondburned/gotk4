@@ -6,12 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_atk1_PlugClass_get_object_id(AtkPlug*);
 import "C"
 
 func init() {
@@ -21,9 +23,6 @@ func init() {
 }
 
 // PlugOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PlugOverrider interface {
 	// The function returns the following values:
 	//
@@ -42,6 +41,34 @@ type Plug struct {
 var (
 	_ externglib.Objector = (*Plug)(nil)
 )
+
+func classInitPlugger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.AtkPlugClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.AtkPlugClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ObjectID() string }); ok {
+		pclass.get_object_id = (*[0]byte)(C._gotk4_atk1_PlugClass_get_object_id)
+	}
+}
+
+//export _gotk4_atk1_PlugClass_get_object_id
+func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.AtkPlug) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ObjectID() string })
+
+	utf8 := iface.ObjectID()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
 
 func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{

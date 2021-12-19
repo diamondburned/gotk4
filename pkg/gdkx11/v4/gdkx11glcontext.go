@@ -53,6 +53,10 @@ func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
 	return _major, _minor, _ok
 }
 
+// X11GLContextOverrider contains methods that are overridable.
+type X11GLContextOverrider interface {
+}
+
 type X11GLContext struct {
 	_ [0]func() // equal guard
 	gdk.GLContext
@@ -61,6 +65,14 @@ type X11GLContext struct {
 var (
 	_ gdk.GLContexter = (*X11GLContext)(nil)
 )
+
+func classInitX11GLContexter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11GLContext(obj *externglib.Object) *X11GLContext {
 	return &X11GLContext{

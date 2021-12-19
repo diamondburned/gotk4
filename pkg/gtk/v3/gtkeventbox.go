@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// EventBoxOverrider contains methods that are overridable.
+type EventBoxOverrider interface {
+}
+
 // EventBox widget is a subclass of Bin which also has its own window. It is
 // useful since it allows you to catch events for widgets which do not have
 // their own window.
@@ -34,6 +38,14 @@ type EventBox struct {
 var (
 	_ Binner = (*EventBox)(nil)
 )
+
+func classInitEventBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEventBox(obj *externglib.Object) *EventBox {
 	return &EventBox{

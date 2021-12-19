@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// TLSFileDatabaseOverrider contains methods that are overridable.
+type TLSFileDatabaseOverrider interface {
+}
+
 // TLSFileDatabase is implemented by Database objects which load their
 // certificate information from a file. It is an interface which TLS library
 // specific subtypes implement.
@@ -41,6 +45,9 @@ type TLSFileDatabaser interface {
 }
 
 var _ TLSFileDatabaser = (*TLSFileDatabase)(nil)
+
+func ifaceInitTLSFileDatabaser(gifacePtr, data C.gpointer) {
+}
 
 func wrapTLSFileDatabase(obj *externglib.Object) *TLSFileDatabase {
 	return &TLSFileDatabase{

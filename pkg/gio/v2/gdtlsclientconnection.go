@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// DTLSClientConnectionOverrider contains methods that are overridable.
+type DTLSClientConnectionOverrider interface {
+}
+
 // DTLSClientConnection is the client-side subclass of Connection, representing
 // a client-side DTLS connection.
 type DTLSClientConnection struct {
@@ -49,6 +53,9 @@ type DTLSClientConnectioner interface {
 }
 
 var _ DTLSClientConnectioner = (*DTLSClientConnection)(nil)
+
+func ifaceInitDTLSClientConnectioner(gifacePtr, data C.gpointer) {
+}
 
 func wrapDTLSClientConnection(obj *externglib.Object) *DTLSClientConnection {
 	return &DTLSClientConnection{

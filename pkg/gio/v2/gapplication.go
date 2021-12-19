@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -17,6 +18,20 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(GApplication*, GDBusConnection*, gchar*, GError**);
+// extern gboolean _gotk4_gio2_ApplicationClass_name_lost(GApplication*);
+// extern gint _gotk4_gio2_ApplicationClass_handle_local_options(GApplication*, GVariantDict*);
+// extern int _gotk4_gio2_ApplicationClass_command_line(GApplication*, GApplicationCommandLine*);
+// extern void _gotk4_gio2_ApplicationClass_activate(GApplication*);
+// extern void _gotk4_gio2_ApplicationClass_add_platform_data(GApplication*, GVariantBuilder*);
+// extern void _gotk4_gio2_ApplicationClass_after_emit(GApplication*, GVariant*);
+// extern void _gotk4_gio2_ApplicationClass_before_emit(GApplication*, GVariant*);
+// extern void _gotk4_gio2_ApplicationClass_dbus_unregister(GApplication*, GDBusConnection*, gchar*);
+// extern void _gotk4_gio2_ApplicationClass_open(GApplication*, GFile**, gint, gchar*);
+// extern void _gotk4_gio2_ApplicationClass_quit_mainloop(GApplication*);
+// extern void _gotk4_gio2_ApplicationClass_run_mainloop(GApplication*);
+// extern void _gotk4_gio2_ApplicationClass_shutdown(GApplication*);
+// extern void _gotk4_gio2_ApplicationClass_startup(GApplication*);
 import "C"
 
 func init() {
@@ -26,9 +41,6 @@ func init() {
 }
 
 // ApplicationOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ApplicationOverrider interface {
 	// Activate activates the application.
 	//
@@ -217,6 +229,326 @@ type Application struct {
 var (
 	_ externglib.Objector = (*Application)(nil)
 )
+
+func classInitApplicationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GApplicationClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GApplicationClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gio2_ApplicationClass_activate)
+	}
+
+	if _, ok := goval.(interface {
+		AddPlatformData(builder *glib.VariantBuilder)
+	}); ok {
+		pclass.add_platform_data = (*[0]byte)(C._gotk4_gio2_ApplicationClass_add_platform_data)
+	}
+
+	if _, ok := goval.(interface {
+		AfterEmit(platformData *glib.Variant)
+	}); ok {
+		pclass.after_emit = (*[0]byte)(C._gotk4_gio2_ApplicationClass_after_emit)
+	}
+
+	if _, ok := goval.(interface {
+		BeforeEmit(platformData *glib.Variant)
+	}); ok {
+		pclass.before_emit = (*[0]byte)(C._gotk4_gio2_ApplicationClass_before_emit)
+	}
+
+	if _, ok := goval.(interface {
+		CommandLine(commandLine *ApplicationCommandLine) int
+	}); ok {
+		pclass.command_line = (*[0]byte)(C._gotk4_gio2_ApplicationClass_command_line)
+	}
+
+	if _, ok := goval.(interface {
+		DBusRegister(connection *DBusConnection, objectPath string) error
+	}); ok {
+		pclass.dbus_register = (*[0]byte)(C._gotk4_gio2_ApplicationClass_dbus_register)
+	}
+
+	if _, ok := goval.(interface {
+		DBusUnregister(connection *DBusConnection, objectPath string)
+	}); ok {
+		pclass.dbus_unregister = (*[0]byte)(C._gotk4_gio2_ApplicationClass_dbus_unregister)
+	}
+
+	if _, ok := goval.(interface {
+		HandleLocalOptions(options *glib.VariantDict) int
+	}); ok {
+		pclass.handle_local_options = (*[0]byte)(C._gotk4_gio2_ApplicationClass_handle_local_options)
+	}
+
+	if _, ok := goval.(interface{ NameLost() bool }); ok {
+		pclass.name_lost = (*[0]byte)(C._gotk4_gio2_ApplicationClass_name_lost)
+	}
+
+	if _, ok := goval.(interface {
+		Open(files []Filer, hint string)
+	}); ok {
+		pclass.open = (*[0]byte)(C._gotk4_gio2_ApplicationClass_open)
+	}
+
+	if _, ok := goval.(interface{ QuitMainloop() }); ok {
+		pclass.quit_mainloop = (*[0]byte)(C._gotk4_gio2_ApplicationClass_quit_mainloop)
+	}
+
+	if _, ok := goval.(interface{ RunMainloop() }); ok {
+		pclass.run_mainloop = (*[0]byte)(C._gotk4_gio2_ApplicationClass_run_mainloop)
+	}
+
+	if _, ok := goval.(interface{ Shutdown() }); ok {
+		pclass.shutdown = (*[0]byte)(C._gotk4_gio2_ApplicationClass_shutdown)
+	}
+
+	if _, ok := goval.(interface{ Startup() }); ok {
+		pclass.startup = (*[0]byte)(C._gotk4_gio2_ApplicationClass_startup)
+	}
+}
+
+//export _gotk4_gio2_ApplicationClass_activate
+func _gotk4_gio2_ApplicationClass_activate(arg0 *C.GApplication) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
+
+//export _gotk4_gio2_ApplicationClass_add_platform_data
+func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *C.GVariantBuilder) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AddPlatformData(builder *glib.VariantBuilder)
+	})
+
+	var _builder *glib.VariantBuilder // out
+
+	_builder = (*glib.VariantBuilder)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_variant_builder_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_builder)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_builder_unref((*C.GVariantBuilder)(intern.C))
+		},
+	)
+
+	iface.AddPlatformData(_builder)
+}
+
+//export _gotk4_gio2_ApplicationClass_after_emit
+func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AfterEmit(platformData *glib.Variant)
+	})
+
+	var _platformData *glib.Variant // out
+
+	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_variant_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_platformData)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	iface.AfterEmit(_platformData)
+}
+
+//export _gotk4_gio2_ApplicationClass_before_emit
+func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		BeforeEmit(platformData *glib.Variant)
+	})
+
+	var _platformData *glib.Variant // out
+
+	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_variant_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_platformData)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	iface.BeforeEmit(_platformData)
+}
+
+//export _gotk4_gio2_ApplicationClass_command_line
+func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GApplicationCommandLine) (cret C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CommandLine(commandLine *ApplicationCommandLine) int
+	})
+
+	var _commandLine *ApplicationCommandLine // out
+
+	_commandLine = wrapApplicationCommandLine(externglib.Take(unsafe.Pointer(arg1)))
+
+	gint := iface.CommandLine(_commandLine)
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gio2_ApplicationClass_dbus_register
+func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DBusRegister(connection *DBusConnection, objectPath string) error
+	})
+
+	var _connection *DBusConnection // out
+	var _objectPath string          // out
+
+	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	_goerr := iface.DBusRegister(_connection, _objectPath)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ApplicationClass_dbus_unregister
+func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DBusUnregister(connection *DBusConnection, objectPath string)
+	})
+
+	var _connection *DBusConnection // out
+	var _objectPath string          // out
+
+	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	iface.DBusUnregister(_connection, _objectPath)
+}
+
+//export _gotk4_gio2_ApplicationClass_handle_local_options
+func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg1 *C.GVariantDict) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		HandleLocalOptions(options *glib.VariantDict) int
+	})
+
+	var _options *glib.VariantDict // out
+
+	_options = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_variant_dict_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_options)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
+		},
+	)
+
+	gint := iface.HandleLocalOptions(_options)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_gio2_ApplicationClass_name_lost
+func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ NameLost() bool })
+
+	ok := iface.NameLost()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ApplicationClass_open
+func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Open(files []Filer, hint string)
+	})
+
+	var _files []Filer // out
+	var _hint string   // out
+
+	{
+		src := unsafe.Slice(arg1, arg2)
+		_files = make([]Filer, arg2)
+		for i := 0; i < int(arg2); i++ {
+			{
+				objptr := unsafe.Pointer(src[i])
+				if objptr == nil {
+					panic("object of type gio.Filer is nil")
+				}
+
+				object := externglib.Take(objptr)
+				casted := object.WalkCast(func(obj externglib.Objector) bool {
+					_, ok := obj.(Filer)
+					return ok
+				})
+				rv, ok := casted.(Filer)
+				if !ok {
+					panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+				}
+				_files[i] = rv
+			}
+		}
+	}
+	_hint = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+
+	iface.Open(_files, _hint)
+}
+
+//export _gotk4_gio2_ApplicationClass_quit_mainloop
+func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.GApplication) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ QuitMainloop() })
+
+	iface.QuitMainloop()
+}
+
+//export _gotk4_gio2_ApplicationClass_run_mainloop
+func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.GApplication) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RunMainloop() })
+
+	iface.RunMainloop()
+}
+
+//export _gotk4_gio2_ApplicationClass_shutdown
+func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.GApplication) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Shutdown() })
+
+	iface.Shutdown()
+}
+
+//export _gotk4_gio2_ApplicationClass_startup
+func _gotk4_gio2_ApplicationClass_startup(arg0 *C.GApplication) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Startup() })
+
+	iface.Startup()
+}
 
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{

@@ -18,7 +18,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_PrintSettingsFunc(gchar*, gchar*, gpointer);
+// extern void _gotk4_gtk3_PrintSettingsFunc(gchar*, gchar*, gpointer);
 import "C"
 
 func init() {
@@ -77,20 +77,23 @@ const PRINT_SETTINGS_WIN32_DRIVER_VERSION = "win32-driver-version"
 type PrintSettingsFunc func(key, value string)
 
 //export _gotk4_gtk3_PrintSettingsFunc
-func _gotk4_gtk3_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_PrintSettingsFunc(arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
+	var fn PrintSettingsFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(PrintSettingsFunc)
 	}
 
-	var key string   // out
-	var value string // out
+	var _key string   // out
+	var _value string // out
 
-	key = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
-	value = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_value = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
-	fn := v.(PrintSettingsFunc)
-	fn(key, value)
+	fn(_key, _value)
 }
 
 // PrintSettings object represents the settings of a print dialog in a

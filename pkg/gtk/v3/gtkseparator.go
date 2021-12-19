@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// SeparatorOverrider contains methods that are overridable.
+type SeparatorOverrider interface {
+}
+
 // Separator is a horizontal or vertical separator widget, depending on the
 // value of the Orientable:orientation property, used to group the widgets
 // within a window. It displays a line with a shadow to make it appear sunken
@@ -45,6 +49,14 @@ var (
 	_ Widgetter           = (*Separator)(nil)
 	_ externglib.Objector = (*Separator)(nil)
 )
+
+func classInitSeparatorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSeparator(obj *externglib.Object) *Separator {
 	return &Separator{

@@ -23,10 +23,10 @@ func init() {
 	})
 }
 
-// ErrorCoder is an interface that returns a GError code. Errors may optionally
+// GErrorCoder is an interface that returns a GError code. Errors may optionally
 // implement this interface to override the default error code.
-type ErrorCoder interface {
-	ErrorCode() int
+type GErrorCoder interface {
+	GErrorCode() int
 }
 
 var (
@@ -82,8 +82,8 @@ func New(err error) unsafe.Pointer {
 	}
 
 	var code int
-	if coder, ok := err.(ErrorCoder); ok {
-		code = coder.ErrorCode()
+	if coder, ok := err.(GErrorCoder); ok {
+		code = coder.GErrorCode()
 	}
 
 	errString := (*C.gchar)(C.CString(err.Error()))

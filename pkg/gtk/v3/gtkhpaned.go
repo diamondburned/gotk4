@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// HPanedOverrider contains methods that are overridable.
+type HPanedOverrider interface {
+}
+
 // HPaned widget is a container widget with two children arranged horizontally.
 // The division between the two panes is adjustable by the user by dragging a
 // handle. See Paned for details.
@@ -36,6 +40,14 @@ var (
 	_ Containerer         = (*HPaned)(nil)
 	_ externglib.Objector = (*HPaned)(nil)
 )
+
+func classInitHPanedder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapHPaned(obj *externglib.Object) *HPaned {
 	return &HPaned{

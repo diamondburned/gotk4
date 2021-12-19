@@ -31,20 +31,23 @@ func init() {
 type HRFunc func(key, value cgo.Handle) (ok bool)
 
 //export _gotk4_glib2_HRFunc
-func _gotk4_glib2_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_glib2_HRFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) (cret C.gboolean) {
+	var fn HRFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(HRFunc)
 	}
 
-	var key cgo.Handle   // out
-	var value cgo.Handle // out
+	var _key cgo.Handle   // out
+	var _value cgo.Handle // out
 
-	key = (cgo.Handle)(unsafe.Pointer(arg0))
-	value = (cgo.Handle)(unsafe.Pointer(arg1))
+	_key = (cgo.Handle)(unsafe.Pointer(arg1))
+	_value = (cgo.Handle)(unsafe.Pointer(arg2))
 
-	fn := v.(HRFunc)
-	ok := fn(key, value)
+	ok := fn(_key, _value)
 
 	if ok {
 		cret = C.TRUE

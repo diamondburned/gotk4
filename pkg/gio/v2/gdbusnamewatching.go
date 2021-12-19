@@ -19,22 +19,25 @@ import "C"
 type BusNameAppearedCallback func(connection *DBusConnection, name, nameOwner string)
 
 //export _gotk4_gio2_BusNameAppearedCallback
-func _gotk4_gio2_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_BusNameAppearedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) {
+	var fn BusNameAppearedCallback
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(BusNameAppearedCallback)
 	}
 
-	var connection *DBusConnection // out
-	var name string                // out
-	var nameOwner string           // out
+	var _connection *DBusConnection // out
+	var _name string                // out
+	var _nameOwner string           // out
 
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
-	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	nameOwner = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_nameOwner = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 
-	fn := v.(BusNameAppearedCallback)
-	fn(connection, name, nameOwner)
+	fn(_connection, _name, _nameOwner)
 }
 
 // BusNameVanishedCallback: invoked when the name being watched is known not to
@@ -45,20 +48,23 @@ func _gotk4_gio2_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar,
 type BusNameVanishedCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusNameVanishedCallback
-func _gotk4_gio2_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_BusNameVanishedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
+	var fn BusNameVanishedCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(BusNameVanishedCallback)
 	}
 
-	var connection *DBusConnection // out
-	var name string                // out
+	var _connection *DBusConnection // out
+	var _name string                // out
 
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
-	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
-	fn := v.(BusNameVanishedCallback)
-	fn(connection, name)
+	fn(_connection, _name)
 }
 
 // BusUnwatchName stops watching a name.

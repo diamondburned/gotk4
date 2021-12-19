@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// AspectFrameOverrider contains methods that are overridable.
+type AspectFrameOverrider interface {
+}
+
 // AspectFrame is useful when you want pack a widget so that it can resize but
 // always retains the same aspect ratio. For instance, one might be drawing a
 // small preview of a larger image. AspectFrame derives from Frame, so it can
@@ -41,6 +45,14 @@ type AspectFrame struct {
 var (
 	_ Binner = (*AspectFrame)(nil)
 )
+
+func classInitAspectFramer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	return &AspectFrame{

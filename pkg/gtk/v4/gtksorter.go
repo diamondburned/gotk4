@@ -7,12 +7,15 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GtkOrdering _gotk4_gtk4_SorterClass_compare(GtkSorter*, gpointer, gpointer);
+// extern GtkSorterOrder _gotk4_gtk4_SorterClass_get_order(GtkSorter*);
 import "C"
 
 func init() {
@@ -97,9 +100,6 @@ func (s SorterOrder) String() string {
 }
 
 // SorterOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SorterOverrider interface {
 	// Compare compares two given items according to the sort order implemented
 	// by the sorter.
@@ -165,6 +165,60 @@ type Sorter struct {
 var (
 	_ externglib.Objector = (*Sorter)(nil)
 )
+
+func classInitSorterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkSorterClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkSorterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Compare(item1, item2 *externglib.Object) Ordering
+	}); ok {
+		pclass.compare = (*[0]byte)(C._gotk4_gtk4_SorterClass_compare)
+	}
+
+	if _, ok := goval.(interface{ Order() SorterOrder }); ok {
+		pclass.get_order = (*[0]byte)(C._gotk4_gtk4_SorterClass_get_order)
+	}
+}
+
+//export _gotk4_gtk4_SorterClass_compare
+func _gotk4_gtk4_SorterClass_compare(arg0 *C.GtkSorter, arg1 C.gpointer, arg2 C.gpointer) (cret C.GtkOrdering) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Compare(item1, item2 *externglib.Object) Ordering
+	})
+
+	var _item1 *externglib.Object // out
+	var _item2 *externglib.Object // out
+
+	_item1 = externglib.Take(unsafe.Pointer(arg1))
+	_item2 = externglib.Take(unsafe.Pointer(arg2))
+
+	ordering := iface.Compare(_item1, _item2)
+
+	cret = C.GtkOrdering(ordering)
+
+	return cret
+}
+
+//export _gotk4_gtk4_SorterClass_get_order
+func _gotk4_gtk4_SorterClass_get_order(arg0 *C.GtkSorter) (cret C.GtkSorterOrder) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Order() SorterOrder })
+
+	sorterOrder := iface.Order()
+
+	cret = C.GtkSorterOrder(sorterOrder)
+
+	return cret
+}
 
 func wrapSorter(obj *externglib.Object) *Sorter {
 	return &Sorter{

@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// DrawingContextOverrider contains methods that are overridable.
+type DrawingContextOverrider interface {
+}
+
 // DrawingContext is an object that represents the current drawing state of a
 // Window.
 //
@@ -39,6 +43,14 @@ type DrawingContext struct {
 var (
 	_ externglib.Objector = (*DrawingContext)(nil)
 )
+
+func classInitDrawingContexter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDrawingContext(obj *externglib.Object) *DrawingContext {
 	return &DrawingContext{

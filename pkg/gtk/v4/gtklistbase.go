@@ -19,6 +19,10 @@ func init() {
 	})
 }
 
+// ListBaseOverrider contains methods that are overridable.
+type ListBaseOverrider interface {
+}
+
 // ListBase: GtkListBase is the abstract base class for GTK's list widgets.
 type ListBase struct {
 	_ [0]func() // equal guard
@@ -44,6 +48,14 @@ type ListBaser interface {
 }
 
 var _ ListBaser = (*ListBase)(nil)
+
+func classInitListBaser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapListBase(obj *externglib.Object) *ListBase {
 	return &ListBase{

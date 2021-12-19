@@ -17,7 +17,26 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// gboolean _gotk4_gtk4_TreeModelForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// extern GType _gotk4_gtk4_TreeModelIface_get_column_type(GtkTreeModel*, int);
+// extern GtkTreeModelFlags _gotk4_gtk4_TreeModelIface_get_flags(GtkTreeModel*);
+// extern GtkTreePath* _gotk4_gtk4_TreeModelIface_get_path(GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// extern gboolean _gotk4_gtk4_TreeModelIface_get_iter(GtkTreeModel*, GtkTreeIter*, GtkTreePath*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_children(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_has_child(GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_next(GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_nth_child(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, int);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_parent(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_previous(GtkTreeModel*, GtkTreeIter*);
+// extern int _gotk4_gtk4_TreeModelIface_get_n_columns(GtkTreeModel*);
+// extern int _gotk4_gtk4_TreeModelIface_iter_n_children(GtkTreeModel*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_get_value(GtkTreeModel*, GtkTreeIter*, int, GValue*);
+// extern void _gotk4_gtk4_TreeModelIface_ref_node(GtkTreeModel*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_row_changed(GtkTreeModel*, GtkTreePath*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_row_deleted(GtkTreeModel*, GtkTreePath*);
+// extern void _gotk4_gtk4_TreeModelIface_row_has_child_toggled(GtkTreeModel*, GtkTreePath*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_row_inserted(GtkTreeModel*, GtkTreePath*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_unref_node(GtkTreeModel*, GtkTreeIter*);
 import "C"
 
 func init() {
@@ -86,18 +105,22 @@ func (t TreeModelFlags) Has(other TreeModelFlags) bool {
 type TreeModelForEachFunc func(model TreeModeller, path *TreePath, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_TreeModelForEachFunc
-func _gotk4_gtk4_TreeModelForEachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TreeModelForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
+	var fn TreeModelForEachFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeModelForEachFunc)
 	}
 
-	var model TreeModeller // out
-	var path *TreePath     // out
-	var iter *TreeIter     // out
+	var _model TreeModeller // out
+	var _path *TreePath     // out
+	var _iter *TreeIter     // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.TreeModeller is nil")
 		}
@@ -111,13 +134,12 @@ func _gotk4_gtk4_TreeModelForEachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
-		model = rv
+		_model = rv
 	}
-	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 
-	fn := v.(TreeModelForEachFunc)
-	ok := fn(model, path, iter)
+	ok := fn(_model, _path, _iter)
 
 	if ok {
 		cret = C.TRUE
@@ -127,9 +149,6 @@ func _gotk4_gtk4_TreeModelForEachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 }
 
 // TreeModelOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TreeModelOverrider interface {
 	// ColumnType returns the type of the column.
 	//
@@ -641,6 +660,334 @@ type TreeModeller interface {
 }
 
 var _ TreeModeller = (*TreeModel)(nil)
+
+func ifaceInitTreeModeller(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkTreeModelIface)(unsafe.Pointer(gifacePtr))
+	iface.get_column_type = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_column_type)
+	iface.get_flags = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_flags)
+	iface.get_iter = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_iter)
+	iface.get_n_columns = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_n_columns)
+	iface.get_path = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_path)
+	iface.get_value = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_value)
+	iface.iter_children = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_children)
+	iface.iter_has_child = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_has_child)
+	iface.iter_n_children = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_n_children)
+	iface.iter_next = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_next)
+	iface.iter_nth_child = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_nth_child)
+	iface.iter_parent = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_parent)
+	iface.iter_previous = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_previous)
+	iface.ref_node = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_ref_node)
+	iface.row_changed = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_changed)
+	iface.row_deleted = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_deleted)
+	iface.row_has_child_toggled = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_has_child_toggled)
+	iface.row_inserted = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_inserted)
+	iface.unref_node = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_unref_node)
+}
+
+//export _gotk4_gtk4_TreeModelIface_get_column_type
+func _gotk4_gtk4_TreeModelIface_get_column_type(arg0 *C.GtkTreeModel, arg1 C.int) (cret C.GType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _index_ int // out
+
+	_index_ = int(arg1)
+
+	gType := iface.ColumnType(_index_)
+
+	cret = C.GType(gType)
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_get_flags
+func _gotk4_gtk4_TreeModelIface_get_flags(arg0 *C.GtkTreeModel) (cret C.GtkTreeModelFlags) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	treeModelFlags := iface.Flags()
+
+	cret = C.GtkTreeModelFlags(treeModelFlags)
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_get_iter
+func _gotk4_gtk4_TreeModelIface_get_iter(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _path *TreePath // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	iter, ok := iface.Iter(_path)
+
+	*arg1 = *(*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_get_n_columns
+func _gotk4_gtk4_TreeModelIface_get_n_columns(arg0 *C.GtkTreeModel) (cret C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	gint := iface.NColumns()
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_get_path
+func _gotk4_gtk4_TreeModelIface_get_path(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret *C.GtkTreePath) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _iter *TreeIter // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	treePath := iface.Path(_iter)
+
+	cret = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(treePath)))
+	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(treePath)), nil)
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_get_value
+func _gotk4_gtk4_TreeModelIface_get_value(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.int, arg3 *C.GValue) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _iter *TreeIter // out
+	var _column int     // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_column = int(arg2)
+
+	value := iface.Value(_iter, _column)
+
+	*arg3 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+}
+
+//export _gotk4_gtk4_TreeModelIface_iter_children
+func _gotk4_gtk4_TreeModelIface_iter_children(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _parent *TreeIter // out
+
+	if arg2 != nil {
+		_parent = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	}
+
+	iter, ok := iface.IterChildren(_parent)
+
+	*arg1 = *(*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_iter_has_child
+func _gotk4_gtk4_TreeModelIface_iter_has_child(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _iter *TreeIter // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.IterHasChild(_iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_iter_n_children
+func _gotk4_gtk4_TreeModelIface_iter_n_children(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _iter *TreeIter // out
+
+	if arg1 != nil {
+		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	}
+
+	gint := iface.IterNChildren(_iter)
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_iter_next
+func _gotk4_gtk4_TreeModelIface_iter_next(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _iter *TreeIter // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.IterNext(_iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_iter_nth_child
+func _gotk4_gtk4_TreeModelIface_iter_nth_child(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.int) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _parent *TreeIter // out
+	var _n int            // out
+
+	if arg2 != nil {
+		_parent = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	}
+	_n = int(arg3)
+
+	iter, ok := iface.IterNthChild(_parent, _n)
+
+	*arg1 = *(*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_iter_parent
+func _gotk4_gtk4_TreeModelIface_iter_parent(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _child *TreeIter // out
+
+	_child = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	iter, ok := iface.IterParent(_child)
+
+	*arg1 = *(*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_iter_previous
+func _gotk4_gtk4_TreeModelIface_iter_previous(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _iter *TreeIter // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.IterPrevious(_iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_ref_node
+func _gotk4_gtk4_TreeModelIface_ref_node(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _iter *TreeIter // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.RefNode(_iter)
+}
+
+//export _gotk4_gtk4_TreeModelIface_row_changed
+func _gotk4_gtk4_TreeModelIface_row_changed(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _path *TreePath // out
+	var _iter *TreeIter // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	iface.RowChanged(_path, _iter)
+}
+
+//export _gotk4_gtk4_TreeModelIface_row_deleted
+func _gotk4_gtk4_TreeModelIface_row_deleted(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _path *TreePath // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.RowDeleted(_path)
+}
+
+//export _gotk4_gtk4_TreeModelIface_row_has_child_toggled
+func _gotk4_gtk4_TreeModelIface_row_has_child_toggled(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _path *TreePath // out
+	var _iter *TreeIter // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	iface.RowHasChildToggled(_path, _iter)
+}
+
+//export _gotk4_gtk4_TreeModelIface_row_inserted
+func _gotk4_gtk4_TreeModelIface_row_inserted(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _path *TreePath // out
+	var _iter *TreeIter // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	iface.RowInserted(_path, _iter)
+}
+
+//export _gotk4_gtk4_TreeModelIface_unref_node
+func _gotk4_gtk4_TreeModelIface_unref_node(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _iter *TreeIter // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.UnrefNode(_iter)
+}
 
 func wrapTreeModel(obj *externglib.Object) *TreeModel {
 	return &TreeModel{

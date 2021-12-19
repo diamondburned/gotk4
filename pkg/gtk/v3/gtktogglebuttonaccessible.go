@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ToggleButtonAccessibleOverrider contains methods that are overridable.
+type ToggleButtonAccessibleOverrider interface {
+}
+
 type ToggleButtonAccessible struct {
 	_ [0]func() // equal guard
 	ButtonAccessible
@@ -30,6 +34,14 @@ type ToggleButtonAccessible struct {
 var (
 	_ externglib.Objector = (*ToggleButtonAccessible)(nil)
 )
+
+func classInitToggleButtonAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapToggleButtonAccessible(obj *externglib.Object) *ToggleButtonAccessible {
 	return &ToggleButtonAccessible{

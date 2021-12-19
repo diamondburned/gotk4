@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// NotebookAccessibleOverrider contains methods that are overridable.
+type NotebookAccessibleOverrider interface {
+}
+
 type NotebookAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -32,6 +36,14 @@ type NotebookAccessible struct {
 var (
 	_ externglib.Objector = (*NotebookAccessible)(nil)
 )
+
+func classInitNotebookAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNotebookAccessible(obj *externglib.Object) *NotebookAccessible {
 	return &NotebookAccessible{

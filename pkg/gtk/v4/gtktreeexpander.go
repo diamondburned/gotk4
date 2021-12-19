@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// TreeExpanderOverrider contains methods that are overridable.
+type TreeExpanderOverrider interface {
+}
+
 // TreeExpander: GtkTreeExpander is a widget that provides an expander for a
 // list.
 //
@@ -67,6 +71,14 @@ type TreeExpander struct {
 var (
 	_ Widgetter = (*TreeExpander)(nil)
 )
+
+func classInitTreeExpanderer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
 	return &TreeExpander{

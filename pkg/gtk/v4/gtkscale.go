@@ -14,7 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// char* _gotk4_gtk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
+// extern char* _gotk4_gtk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
+// extern void _gotk4_gtk4_ScaleClass_get_layout_offsets(GtkScale*, int*, int*);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -27,20 +28,23 @@ func init() {
 type ScaleFormatValueFunc func(scale *Scale, value float64) (utf8 string)
 
 //export _gotk4_gtk4_ScaleFormatValueFunc
-func _gotk4_gtk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) (cret *C.char) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.GtkScale, arg2 C.double, arg3 C.gpointer) (cret *C.char) {
+	var fn ScaleFormatValueFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ScaleFormatValueFunc)
 	}
 
-	var scale *Scale  // out
-	var value float64 // out
+	var _scale *Scale  // out
+	var _value float64 // out
 
-	scale = wrapScale(externglib.Take(unsafe.Pointer(arg0)))
-	value = float64(arg1)
+	_scale = wrapScale(externglib.Take(unsafe.Pointer(arg1)))
+	_value = float64(arg2)
 
-	fn := v.(ScaleFormatValueFunc)
-	utf8 := fn(scale, value)
+	utf8 := fn(_scale, _value)
 
 	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 
@@ -48,9 +52,6 @@ func _gotk4_gtk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gp
 }
 
 // ScaleOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ScaleOverrider interface {
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// PangoLayout representing the text in the scale.
@@ -157,6 +158,33 @@ var (
 	_ Widgetter           = (*Scale)(nil)
 	_ externglib.Objector = (*Scale)(nil)
 )
+
+func classInitScaler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkScaleClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkScaleClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ LayoutOffsets() (x int, y int) }); ok {
+		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk4_ScaleClass_get_layout_offsets)
+	}
+}
+
+//export _gotk4_gtk4_ScaleClass_get_layout_offsets
+func _gotk4_gtk4_ScaleClass_get_layout_offsets(arg0 *C.GtkScale, arg1 *C.int, arg2 *C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ LayoutOffsets() (x int, y int) })
+
+	x, y := iface.LayoutOffsets()
+
+	*arg1 = C.int(x)
+	*arg2 = C.int(y)
+}
 
 func wrapScale(obj *externglib.Object) *Scale {
 	return &Scale{

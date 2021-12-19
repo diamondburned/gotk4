@@ -16,7 +16,25 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern GDrive* _gotk4_gio2_VolumeIface_get_drive(GVolume*);
+// extern GFile* _gotk4_gio2_VolumeIface_get_activation_root(GVolume*);
+// extern GIcon* _gotk4_gio2_VolumeIface_get_icon(GVolume*);
+// extern GIcon* _gotk4_gio2_VolumeIface_get_symbolic_icon(GVolume*);
+// extern GMount* _gotk4_gio2_VolumeIface_get_mount(GVolume*);
+// extern char* _gotk4_gio2_VolumeIface_get_identifier(GVolume*, char*);
+// extern char* _gotk4_gio2_VolumeIface_get_name(GVolume*);
+// extern char* _gotk4_gio2_VolumeIface_get_uuid(GVolume*);
+// extern char** _gotk4_gio2_VolumeIface_enumerate_identifiers(GVolume*);
+// extern gboolean _gotk4_gio2_VolumeIface_can_eject(GVolume*);
+// extern gboolean _gotk4_gio2_VolumeIface_can_mount(GVolume*);
+// extern gboolean _gotk4_gio2_VolumeIface_eject_finish(GVolume*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_VolumeIface_eject_with_operation_finish(GVolume*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_VolumeIface_mount_finish(GVolume*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_VolumeIface_should_automount(GVolume*);
+// extern gchar* _gotk4_gio2_VolumeIface_get_sort_key(GVolume*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_VolumeIface_changed(GVolume*);
+// extern void _gotk4_gio2_VolumeIface_removed(GVolume*);
 import "C"
 
 func init() {
@@ -58,213 +76,6 @@ const VOLUME_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
 // VOLUME_IDENTIFIER_KIND_UUID: string used to obtain a UUID with
 // g_volume_get_identifier().
 const VOLUME_IDENTIFIER_KIND_UUID = "uuid"
-
-// VolumeOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type VolumeOverrider interface {
-	// CanEject checks if a volume can be ejected.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the volume can be ejected. FALSE otherwise.
-	//
-	CanEject() bool
-	// CanMount checks if a volume can be mounted.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the volume can be mounted. FALSE otherwise.
-	//
-	CanMount() bool
-	Changed()
-	// Eject ejects a volume. This is an asynchronous operation, and is finished
-	// by calling g_volume_eject_finish() with the volume and Result returned in
-	// the callback.
-	//
-	// Deprecated: Use g_volume_eject_with_operation() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the unmount if required for eject.
-	//    - callback (optional) or NULL.
-	//
-	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
-	// EjectFinish finishes ejecting a volume. If any errors occurred during the
-	// operation, error will be set to contain the errors and FALSE will be
-	// returned.
-	//
-	// Deprecated: Use g_volume_eject_with_operation_finish() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	EjectFinish(result AsyncResulter) error
-	// EjectWithOperation ejects a volume. This is an asynchronous operation,
-	// and is finished by calling g_volume_eject_with_operation_finish() with
-	// the volume and Result data returned in the callback.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the unmount if required for eject.
-	//    - mountOperation (optional) or NULL to avoid user interaction.
-	//    - callback (optional) or NULL.
-	//
-	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
-	// EjectWithOperationFinish finishes ejecting a volume. If any errors
-	// occurred during the operation, error will be set to contain the errors
-	// and FALSE will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	EjectWithOperationFinish(result AsyncResulter) error
-	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
-	// that volume has. Use g_volume_get_identifier() to obtain the identifiers
-	// themselves.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8s: NULL-terminated array of strings containing kinds of
-	//      identifiers. Use g_strfreev() to free.
-	//
-	EnumerateIdentifiers() []string
-	// ActivationRoot gets the activation root for a #GVolume if it is known
-	// ahead of mount time. Returns NULL otherwise. If not NULL and if volume is
-	// mounted, then the result of g_mount_get_root() on the #GMount object
-	// obtained from g_volume_get_mount() will always either be equal or a
-	// prefix of what this function returns. In other words, in code
-	//
-	//    (g_file_has_prefix (volume_activation_root, mount_root) ||
-	//     g_file_equal (volume_activation_root, mount_root))
-	//
-	// will always be TRUE.
-	//
-	// Activation roots are typically used in Monitor implementations to find
-	// the underlying mount to shadow, see g_mount_is_shadowed() for more
-	// details.
-	//
-	// The function returns the following values:
-	//
-	//    - file (optional): activation root of volume or NULL. Use
-	//      g_object_unref() to free.
-	//
-	ActivationRoot() Filer
-	// Drive gets the drive for the volume.
-	//
-	// The function returns the following values:
-	//
-	//    - drive (optional) or NULL if volume is not associated with a drive.
-	//      The returned object should be unreffed with g_object_unref() when no
-	//      longer needed.
-	//
-	Drive() Driver
-	// Icon gets the icon for volume.
-	//
-	// The function returns the following values:
-	//
-	//    - icon: #GIcon. The returned object should be unreffed with
-	//      g_object_unref() when no longer needed.
-	//
-	Icon() Iconner
-	// Identifier gets the identifier of the given kind for volume. See the
-	// [introduction][volume-identifier] for more information about volume
-	// identifiers.
-	//
-	// The function takes the following parameters:
-	//
-	//    - kind of identifier to return.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): newly allocated string containing the requested
-	//      identifier, or NULL if the #GVolume doesn't have this kind of
-	//      identifier.
-	//
-	Identifier(kind string) string
-	// Mount gets the mount for the volume.
-	//
-	// The function returns the following values:
-	//
-	//    - mount (optional) or NULL if volume isn't mounted. The returned object
-	//      should be unreffed with g_object_unref() when no longer needed.
-	//
-	Mount() Mounter
-	// Name gets the name of volume.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: name for the given volume. The returned string should be freed
-	//      with g_free() when no longer needed.
-	//
-	Name() string
-	// SortKey gets the sort key for volume, if any.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): sorting key for volume or NULL if no such key is
-	//      available.
-	//
-	SortKey() string
-	// SymbolicIcon gets the symbolic icon for volume.
-	//
-	// The function returns the following values:
-	//
-	//    - icon: #GIcon. The returned object should be unreffed with
-	//      g_object_unref() when no longer needed.
-	//
-	SymbolicIcon() Iconner
-	// UUID gets the UUID for the volume. The reference is typically based on
-	// the file system UUID for the volume in question and should be considered
-	// an opaque string. Returns NULL if there is no UUID available.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): UUID for volume or NULL if no UUID can be computed.
-	//      The returned string should be freed with g_free() when no longer
-	//      needed.
-	//
-	UUID() string
-	// MountFinish finishes mounting a volume. If any errors occurred during the
-	// operation, error will be set to contain the errors and FALSE will be
-	// returned.
-	//
-	// If the mount operation succeeded, g_volume_get_mount() on volume is
-	// guaranteed to return the mount right after calling this function; there's
-	// no need to listen for the 'mount-added' signal on Monitor.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	MountFinish(result AsyncResulter) error
-	// MountFn mounts a volume. This is an asynchronous operation, and is
-	// finished by calling g_volume_mount_finish() with the volume and Result
-	// returned in the callback.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags affecting the operation.
-	//    - mountOperation (optional) or NULL to avoid user interaction.
-	//    - callback (optional) or NULL.
-	//
-	MountFn(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
-	Removed()
-	// ShouldAutomount returns whether the volume should be automatically
-	// mounted.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the volume should be automatically mounted.
-	//
-	ShouldAutomount() bool
-}
 
 // Volume interface represents user-visible objects that can be mounted. Note,
 // when porting from GnomeVFS, #GVolume is the moral equivalent of VFSDrive.

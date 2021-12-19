@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -17,6 +18,18 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_TextViewClass_extend_selection(GtkTextView*, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*);
+// extern void _gotk4_gtk4_TextViewClass_backspace(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_copy_clipboard(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_cut_clipboard(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_delete_from_cursor(GtkTextView*, GtkDeleteType, int);
+// extern void _gotk4_gtk4_TextViewClass_insert_at_cursor(GtkTextView*, char*);
+// extern void _gotk4_gtk4_TextViewClass_insert_emoji(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_move_cursor(GtkTextView*, GtkMovementStep, int, gboolean);
+// extern void _gotk4_gtk4_TextViewClass_paste_clipboard(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_set_anchor(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_snapshot_layer(GtkTextView*, GtkTextViewLayer, GtkSnapshot*);
+// extern void _gotk4_gtk4_TextViewClass_toggle_overwrite(GtkTextView*);
 import "C"
 
 func init() {
@@ -132,9 +145,6 @@ func (t TextWindowType) String() string {
 }
 
 // TextViewOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TextViewOverrider interface {
 	Backspace()
 	CopyClipboard()
@@ -223,6 +233,220 @@ var (
 	_ Widgetter           = (*TextView)(nil)
 	_ externglib.Objector = (*TextView)(nil)
 )
+
+func classInitTextViewer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkTextViewClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkTextViewClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Backspace() }); ok {
+		pclass.backspace = (*[0]byte)(C._gotk4_gtk4_TextViewClass_backspace)
+	}
+
+	if _, ok := goval.(interface{ CopyClipboard() }); ok {
+		pclass.copy_clipboard = (*[0]byte)(C._gotk4_gtk4_TextViewClass_copy_clipboard)
+	}
+
+	if _, ok := goval.(interface{ CutClipboard() }); ok {
+		pclass.cut_clipboard = (*[0]byte)(C._gotk4_gtk4_TextViewClass_cut_clipboard)
+	}
+
+	if _, ok := goval.(interface {
+		DeleteFromCursor(typ DeleteType, count int)
+	}); ok {
+		pclass.delete_from_cursor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_delete_from_cursor)
+	}
+
+	if _, ok := goval.(interface {
+		ExtendSelection(granularity TextExtendSelection, location, start, end *TextIter) bool
+	}); ok {
+		pclass.extend_selection = (*[0]byte)(C._gotk4_gtk4_TextViewClass_extend_selection)
+	}
+
+	if _, ok := goval.(interface{ InsertAtCursor(str string) }); ok {
+		pclass.insert_at_cursor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_insert_at_cursor)
+	}
+
+	if _, ok := goval.(interface{ InsertEmoji() }); ok {
+		pclass.insert_emoji = (*[0]byte)(C._gotk4_gtk4_TextViewClass_insert_emoji)
+	}
+
+	if _, ok := goval.(interface {
+		MoveCursor(step MovementStep, count int, extendSelection bool)
+	}); ok {
+		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_move_cursor)
+	}
+
+	if _, ok := goval.(interface{ PasteClipboard() }); ok {
+		pclass.paste_clipboard = (*[0]byte)(C._gotk4_gtk4_TextViewClass_paste_clipboard)
+	}
+
+	if _, ok := goval.(interface{ SetAnchor() }); ok {
+		pclass.set_anchor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_set_anchor)
+	}
+
+	if _, ok := goval.(interface {
+		SnapshotLayer(layer TextViewLayer, snapshot *Snapshot)
+	}); ok {
+		pclass.snapshot_layer = (*[0]byte)(C._gotk4_gtk4_TextViewClass_snapshot_layer)
+	}
+
+	if _, ok := goval.(interface{ ToggleOverwrite() }); ok {
+		pclass.toggle_overwrite = (*[0]byte)(C._gotk4_gtk4_TextViewClass_toggle_overwrite)
+	}
+}
+
+//export _gotk4_gtk4_TextViewClass_backspace
+func _gotk4_gtk4_TextViewClass_backspace(arg0 *C.GtkTextView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Backspace() })
+
+	iface.Backspace()
+}
+
+//export _gotk4_gtk4_TextViewClass_copy_clipboard
+func _gotk4_gtk4_TextViewClass_copy_clipboard(arg0 *C.GtkTextView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CopyClipboard() })
+
+	iface.CopyClipboard()
+}
+
+//export _gotk4_gtk4_TextViewClass_cut_clipboard
+func _gotk4_gtk4_TextViewClass_cut_clipboard(arg0 *C.GtkTextView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CutClipboard() })
+
+	iface.CutClipboard()
+}
+
+//export _gotk4_gtk4_TextViewClass_delete_from_cursor
+func _gotk4_gtk4_TextViewClass_delete_from_cursor(arg0 *C.GtkTextView, arg1 C.GtkDeleteType, arg2 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DeleteFromCursor(typ DeleteType, count int)
+	})
+
+	var _typ DeleteType // out
+	var _count int      // out
+
+	_typ = DeleteType(arg1)
+	_count = int(arg2)
+
+	iface.DeleteFromCursor(_typ, _count)
+}
+
+//export _gotk4_gtk4_TextViewClass_extend_selection
+func _gotk4_gtk4_TextViewClass_extend_selection(arg0 *C.GtkTextView, arg1 C.GtkTextExtendSelection, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.GtkTextIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ExtendSelection(granularity TextExtendSelection, location, start, end *TextIter) bool
+	})
+
+	var _granularity TextExtendSelection // out
+	var _location *TextIter              // out
+	var _start *TextIter                 // out
+	var _end *TextIter                   // out
+
+	_granularity = TextExtendSelection(arg1)
+	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+
+	ok := iface.ExtendSelection(_granularity, _location, _start, _end)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TextViewClass_insert_at_cursor
+func _gotk4_gtk4_TextViewClass_insert_at_cursor(arg0 *C.GtkTextView, arg1 *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ InsertAtCursor(str string) })
+
+	var _str string // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.InsertAtCursor(_str)
+}
+
+//export _gotk4_gtk4_TextViewClass_insert_emoji
+func _gotk4_gtk4_TextViewClass_insert_emoji(arg0 *C.GtkTextView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ InsertEmoji() })
+
+	iface.InsertEmoji()
+}
+
+//export _gotk4_gtk4_TextViewClass_move_cursor
+func _gotk4_gtk4_TextViewClass_move_cursor(arg0 *C.GtkTextView, arg1 C.GtkMovementStep, arg2 C.int, arg3 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MoveCursor(step MovementStep, count int, extendSelection bool)
+	})
+
+	var _step MovementStep    // out
+	var _count int            // out
+	var _extendSelection bool // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+	if arg3 != 0 {
+		_extendSelection = true
+	}
+
+	iface.MoveCursor(_step, _count, _extendSelection)
+}
+
+//export _gotk4_gtk4_TextViewClass_paste_clipboard
+func _gotk4_gtk4_TextViewClass_paste_clipboard(arg0 *C.GtkTextView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PasteClipboard() })
+
+	iface.PasteClipboard()
+}
+
+//export _gotk4_gtk4_TextViewClass_set_anchor
+func _gotk4_gtk4_TextViewClass_set_anchor(arg0 *C.GtkTextView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetAnchor() })
+
+	iface.SetAnchor()
+}
+
+//export _gotk4_gtk4_TextViewClass_snapshot_layer
+func _gotk4_gtk4_TextViewClass_snapshot_layer(arg0 *C.GtkTextView, arg1 C.GtkTextViewLayer, arg2 *C.GtkSnapshot) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SnapshotLayer(layer TextViewLayer, snapshot *Snapshot)
+	})
+
+	var _layer TextViewLayer // out
+	var _snapshot *Snapshot  // out
+
+	_layer = TextViewLayer(arg1)
+	_snapshot = wrapSnapshot(externglib.Take(unsafe.Pointer(arg2)))
+
+	iface.SnapshotLayer(_layer, _snapshot)
+}
+
+//export _gotk4_gtk4_TextViewClass_toggle_overwrite
+func _gotk4_gtk4_TextViewClass_toggle_overwrite(arg0 *C.GtkTextView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ToggleOverwrite() })
+
+	iface.ToggleOverwrite()
+}
 
 func wrapTextView(obj *externglib.Object) *TextView {
 	return &TextView{

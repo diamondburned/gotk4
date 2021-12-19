@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -14,6 +15,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_ShortcutsWindowClass_close(GtkShortcutsWindow*);
+// extern void _gotk4_gtk3_ShortcutsWindowClass_search(GtkShortcutsWindow*);
 import "C"
 
 func init() {
@@ -23,9 +26,6 @@ func init() {
 }
 
 // ShortcutsWindowOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ShortcutsWindowOverrider interface {
 	Close()
 	Search()
@@ -82,6 +82,42 @@ type ShortcutsWindow struct {
 var (
 	_ Binner = (*ShortcutsWindow)(nil)
 )
+
+func classInitShortcutsWindower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkShortcutsWindowClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkShortcutsWindowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Close() }); ok {
+		pclass.close = (*[0]byte)(C._gotk4_gtk3_ShortcutsWindowClass_close)
+	}
+
+	if _, ok := goval.(interface{ Search() }); ok {
+		pclass.search = (*[0]byte)(C._gotk4_gtk3_ShortcutsWindowClass_search)
+	}
+}
+
+//export _gotk4_gtk3_ShortcutsWindowClass_close
+func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.GtkShortcutsWindow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Close() })
+
+	iface.Close()
+}
+
+//export _gotk4_gtk3_ShortcutsWindowClass_search
+func _gotk4_gtk3_ShortcutsWindowClass_search(arg0 *C.GtkShortcutsWindow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Search() })
+
+	iface.Search()
+}
 
 func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	return &ShortcutsWindow{

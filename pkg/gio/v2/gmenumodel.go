@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -14,6 +15,15 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GMenuAttributeIter* _gotk4_gio2_MenuModelClass_iterate_item_attributes(GMenuModel*, gint);
+// extern GMenuLinkIter* _gotk4_gio2_MenuModelClass_iterate_item_links(GMenuModel*, gint);
+// extern GMenuModel* _gotk4_gio2_MenuModelClass_get_item_link(GMenuModel*, gint, gchar*);
+// extern GVariant* _gotk4_gio2_MenuModelClass_get_item_attribute_value(GMenuModel*, gint, gchar*, GVariantType*);
+// extern gboolean _gotk4_gio2_MenuLinkIterClass_get_next(GMenuLinkIter*, gchar**, GMenuModel**);
+// extern gboolean _gotk4_gio2_MenuModelClass_is_mutable(GMenuModel*);
+// extern gint _gotk4_gio2_MenuModelClass_get_n_items(GMenuModel*);
+// extern void _gotk4_gio2_MenuModelClass_get_item_attributes(GMenuModel*, gint, GHashTable**);
+// extern void _gotk4_gio2_MenuModelClass_get_item_links(GMenuModel*, gint, GHashTable**);
 import "C"
 
 func init() {
@@ -67,6 +77,10 @@ const MENU_LINK_SECTION = "section"
 // See also g_menu_item_set_link().
 const MENU_LINK_SUBMENU = "submenu"
 
+// MenuAttributeIterOverrider contains methods that are overridable.
+type MenuAttributeIterOverrider interface {
+}
+
 // MenuAttributeIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuAttributeIter struct {
@@ -88,6 +102,14 @@ type MenuAttributeIterer interface {
 }
 
 var _ MenuAttributeIterer = (*MenuAttributeIter)(nil)
+
+func classInitMenuAttributeIterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMenuAttributeIter(obj *externglib.Object) *MenuAttributeIter {
 	return &MenuAttributeIter{
@@ -193,9 +215,6 @@ func (iter *MenuAttributeIter) Next() bool {
 }
 
 // MenuLinkIterOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type MenuLinkIterOverrider interface {
 	// Next: this function combines g_menu_link_iter_next() with
 	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
@@ -242,6 +261,50 @@ type MenuLinkIterer interface {
 }
 
 var _ MenuLinkIterer = (*MenuLinkIter)(nil)
+
+func classInitMenuLinkIterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GMenuLinkIterClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GMenuLinkIterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Next() (string, MenuModeller, bool)
+	}); ok {
+		pclass.get_next = (*[0]byte)(C._gotk4_gio2_MenuLinkIterClass_get_next)
+	}
+}
+
+//export _gotk4_gio2_MenuLinkIterClass_get_next
+func _gotk4_gio2_MenuLinkIterClass_get_next(arg0 *C.GMenuLinkIter, arg1 **C.gchar, arg2 **C.GMenuModel) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Next() (string, MenuModeller, bool)
+	})
+
+	outLink, value, ok := iface.Next()
+
+	if outLink != "" {
+		*arg1 = (*C.gchar)(unsafe.Pointer(C.CString(outLink)))
+		defer C.free(unsafe.Pointer(arg1))
+	}
+	if value != nil {
+		if value != nil {
+			*arg2 = (*C.GMenuModel)(unsafe.Pointer(value.Native()))
+			C.g_object_ref(C.gpointer(value.Native()))
+		}
+	}
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapMenuLinkIter(obj *externglib.Object) *MenuLinkIter {
 	return &MenuLinkIter{
@@ -417,9 +480,6 @@ func (iter *MenuLinkIter) Next() bool {
 }
 
 // MenuModelOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type MenuModelOverrider interface {
 	// ItemAttributeValue queries the item at position item_index in model for
 	// the attribute specified by attribute.
@@ -673,6 +733,223 @@ type MenuModeller interface {
 }
 
 var _ MenuModeller = (*MenuModel)(nil)
+
+func classInitMenuModeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GMenuModelClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GMenuModelClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
+	}); ok {
+		pclass.get_item_attribute_value = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_item_attribute_value)
+	}
+
+	if _, ok := goval.(interface {
+		ItemAttributes(itemIndex int) map[string]*glib.Variant
+	}); ok {
+		pclass.get_item_attributes = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_item_attributes)
+	}
+
+	if _, ok := goval.(interface {
+		ItemLink(itemIndex int, link string) MenuModeller
+	}); ok {
+		pclass.get_item_link = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_item_link)
+	}
+
+	if _, ok := goval.(interface {
+		ItemLinks(itemIndex int) map[string]MenuModeller
+	}); ok {
+		pclass.get_item_links = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_item_links)
+	}
+
+	if _, ok := goval.(interface{ NItems() int }); ok {
+		pclass.get_n_items = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_n_items)
+	}
+
+	if _, ok := goval.(interface{ IsMutable() bool }); ok {
+		pclass.is_mutable = (*[0]byte)(C._gotk4_gio2_MenuModelClass_is_mutable)
+	}
+
+	if _, ok := goval.(interface {
+		IterateItemAttributes(itemIndex int) MenuAttributeIterer
+	}); ok {
+		pclass.iterate_item_attributes = (*[0]byte)(C._gotk4_gio2_MenuModelClass_iterate_item_attributes)
+	}
+
+	if _, ok := goval.(interface {
+		IterateItemLinks(itemIndex int) MenuLinkIterer
+	}); ok {
+		pclass.iterate_item_links = (*[0]byte)(C._gotk4_gio2_MenuModelClass_iterate_item_links)
+	}
+}
+
+//export _gotk4_gio2_MenuModelClass_get_item_attribute_value
+func _gotk4_gio2_MenuModelClass_get_item_attribute_value(arg0 *C.GMenuModel, arg1 C.gint, arg2 *C.gchar, arg3 *C.GVariantType) (cret *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
+	})
+
+	var _itemIndex int                  // out
+	var _attribute string               // out
+	var _expectedType *glib.VariantType // out
+
+	_itemIndex = int(arg1)
+	_attribute = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	if arg3 != nil {
+		_expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	}
+
+	variant := iface.ItemAttributeValue(_itemIndex, _attribute, _expectedType)
+
+	if variant != nil {
+		cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MenuModelClass_get_item_attributes
+func _gotk4_gio2_MenuModelClass_get_item_attributes(arg0 *C.GMenuModel, arg1 C.gint, arg2 **C.GHashTable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ItemAttributes(itemIndex int) map[string]*glib.Variant
+	})
+
+	var _itemIndex int // out
+
+	_itemIndex = int(arg1)
+
+	attributes := iface.ItemAttributes(_itemIndex)
+
+	*arg2 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
+	for ksrc, vsrc := range attributes {
+		var kdst *C.gchar    // out
+		var vdst *C.GVariant // out
+		kdst = (*C.gchar)(unsafe.Pointer(C.CString(ksrc)))
+		defer C.free(unsafe.Pointer(kdst))
+		vdst = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(vsrc)))
+		C.g_hash_table_insert(*arg2, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
+	}
+}
+
+//export _gotk4_gio2_MenuModelClass_get_item_link
+func _gotk4_gio2_MenuModelClass_get_item_link(arg0 *C.GMenuModel, arg1 C.gint, arg2 *C.gchar) (cret *C.GMenuModel) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ItemLink(itemIndex int, link string) MenuModeller
+	})
+
+	var _itemIndex int // out
+	var _link string   // out
+
+	_itemIndex = int(arg1)
+	_link = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	menuModel := iface.ItemLink(_itemIndex, _link)
+
+	if menuModel != nil {
+		cret = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
+		C.g_object_ref(C.gpointer(menuModel.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MenuModelClass_get_item_links
+func _gotk4_gio2_MenuModelClass_get_item_links(arg0 *C.GMenuModel, arg1 C.gint, arg2 **C.GHashTable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ItemLinks(itemIndex int) map[string]MenuModeller
+	})
+
+	var _itemIndex int // out
+
+	_itemIndex = int(arg1)
+
+	links := iface.ItemLinks(_itemIndex)
+
+	*arg2 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
+	for ksrc, vsrc := range links {
+		var kdst *C.gchar      // out
+		var vdst *C.GMenuModel // out
+		kdst = (*C.gchar)(unsafe.Pointer(C.CString(ksrc)))
+		defer C.free(unsafe.Pointer(kdst))
+		vdst = (*C.GMenuModel)(unsafe.Pointer(vsrc.Native()))
+		C.g_hash_table_insert(*arg2, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
+	}
+}
+
+//export _gotk4_gio2_MenuModelClass_get_n_items
+func _gotk4_gio2_MenuModelClass_get_n_items(arg0 *C.GMenuModel) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ NItems() int })
+
+	gint := iface.NItems()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_gio2_MenuModelClass_is_mutable
+func _gotk4_gio2_MenuModelClass_is_mutable(arg0 *C.GMenuModel) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ IsMutable() bool })
+
+	ok := iface.IsMutable()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MenuModelClass_iterate_item_attributes
+func _gotk4_gio2_MenuModelClass_iterate_item_attributes(arg0 *C.GMenuModel, arg1 C.gint) (cret *C.GMenuAttributeIter) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		IterateItemAttributes(itemIndex int) MenuAttributeIterer
+	})
+
+	var _itemIndex int // out
+
+	_itemIndex = int(arg1)
+
+	menuAttributeIter := iface.IterateItemAttributes(_itemIndex)
+
+	cret = (*C.GMenuAttributeIter)(unsafe.Pointer(menuAttributeIter.Native()))
+	C.g_object_ref(C.gpointer(menuAttributeIter.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_MenuModelClass_iterate_item_links
+func _gotk4_gio2_MenuModelClass_iterate_item_links(arg0 *C.GMenuModel, arg1 C.gint) (cret *C.GMenuLinkIter) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		IterateItemLinks(itemIndex int) MenuLinkIterer
+	})
+
+	var _itemIndex int // out
+
+	_itemIndex = int(arg1)
+
+	menuLinkIter := iface.IterateItemLinks(_itemIndex)
+
+	cret = (*C.GMenuLinkIter)(unsafe.Pointer(menuLinkIter.Native()))
+	C.g_object_ref(C.gpointer(menuLinkIter.Native()))
+
+	return cret
+}
 
 func wrapMenuModel(obj *externglib.Object) *MenuModel {
 	return &MenuModel{

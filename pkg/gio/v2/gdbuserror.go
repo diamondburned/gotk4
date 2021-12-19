@@ -39,7 +39,9 @@ func DBusErrorEncodeGError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
 
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	_cret = C.g_dbus_error_encode_gerror(_arg1)
 	runtime.KeepAlive(err)
@@ -72,7 +74,9 @@ func DBusErrorGetRemoteError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
 
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	_cret = C.g_dbus_error_get_remote_error(_arg1)
 	runtime.KeepAlive(err)
@@ -104,7 +108,9 @@ func DBusErrorIsRemoteError(err error) bool {
 	var _arg1 *C.GError  // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	_cret = C.g_dbus_error_is_remote_error(_arg1)
 	runtime.KeepAlive(err)
@@ -271,7 +277,9 @@ func DBusErrorStripRemoteError(err error) bool {
 	var _arg1 *C.GError  // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 
 	_cret = C.g_dbus_error_strip_remote_error(_arg1)
 	runtime.KeepAlive(err)

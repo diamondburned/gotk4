@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// BinOverrider contains methods that are overridable.
+type BinOverrider interface {
+}
+
 // Bin widget is a container with just one child. It is not very useful itself,
 // but it is useful for deriving subclasses, since it provides common code
 // needed for handling a single child widget.
@@ -48,6 +52,14 @@ type Binner interface {
 }
 
 var _ Binner = (*Bin)(nil)
+
+func classInitBinner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapBin(obj *externglib.Object) *Bin {
 	return &Bin{

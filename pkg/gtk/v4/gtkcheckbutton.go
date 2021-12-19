@@ -6,12 +6,15 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_CheckButtonClass_activate(GtkCheckButton*);
+// extern void _gotk4_gtk4_CheckButtonClass_toggled(GtkCheckButton*);
 import "C"
 
 func init() {
@@ -21,9 +24,6 @@ func init() {
 }
 
 // CheckButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CheckButtonOverrider interface {
 	Activate()
 	Toggled()
@@ -93,6 +93,42 @@ var (
 	_ Widgetter           = (*CheckButton)(nil)
 	_ externglib.Objector = (*CheckButton)(nil)
 )
+
+func classInitCheckButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk4_CheckButtonClass_activate)
+	}
+
+	if _, ok := goval.(interface{ Toggled() }); ok {
+		pclass.toggled = (*[0]byte)(C._gotk4_gtk4_CheckButtonClass_toggled)
+	}
+}
+
+//export _gotk4_gtk4_CheckButtonClass_activate
+func _gotk4_gtk4_CheckButtonClass_activate(arg0 *C.GtkCheckButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
+
+//export _gotk4_gtk4_CheckButtonClass_toggled
+func _gotk4_gtk4_CheckButtonClass_toggled(arg0 *C.GtkCheckButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Toggled() })
+
+	iface.Toggled()
+}
 
 func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	return &CheckButton{

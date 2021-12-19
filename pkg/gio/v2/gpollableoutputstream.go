@@ -17,6 +17,11 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GPollableReturn _gotk4_gio2_PollableOutputStreamInterface_writev_nonblocking(GPollableOutputStream*, GOutputVector*, gsize, gsize*, GError**);
+// extern GSource* _gotk4_gio2_PollableOutputStreamInterface_create_source(GPollableOutputStream*, GCancellable*);
+// extern gboolean _gotk4_gio2_PollableOutputStreamInterface_can_poll(GPollableOutputStream*);
+// extern gboolean _gotk4_gio2_PollableOutputStreamInterface_is_writable(GPollableOutputStream*);
+// extern gssize _gotk4_gio2_PollableOutputStreamInterface_write_nonblocking(GPollableOutputStream*, void*, gsize, GError**);
 import "C"
 
 func init() {
@@ -26,9 +31,6 @@ func init() {
 }
 
 // PollableOutputStreamOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PollableOutputStreamOverrider interface {
 	// CanPoll checks if stream is actually pollable. Some classes may implement
 	// OutputStream but have only certain instances of that class be pollable.
@@ -167,6 +169,109 @@ type PollableOutputStreamer interface {
 }
 
 var _ PollableOutputStreamer = (*PollableOutputStream)(nil)
+
+func ifaceInitPollableOutputStreamer(gifacePtr, data C.gpointer) {
+	iface := (*C.GPollableOutputStreamInterface)(unsafe.Pointer(gifacePtr))
+	iface.can_poll = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_can_poll)
+	iface.create_source = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_create_source)
+	iface.is_writable = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_is_writable)
+	iface.write_nonblocking = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_write_nonblocking)
+	iface.writev_nonblocking = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_writev_nonblocking)
+}
+
+//export _gotk4_gio2_PollableOutputStreamInterface_can_poll
+func _gotk4_gio2_PollableOutputStreamInterface_can_poll(arg0 *C.GPollableOutputStream) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PollableOutputStreamOverrider)
+
+	ok := iface.CanPoll()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_PollableOutputStreamInterface_create_source
+func _gotk4_gio2_PollableOutputStreamInterface_create_source(arg0 *C.GPollableOutputStream, arg1 *C.GCancellable) (cret *C.GSource) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PollableOutputStreamOverrider)
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	source := iface.CreateSource(_cancellable)
+
+	cret = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+
+	return cret
+}
+
+//export _gotk4_gio2_PollableOutputStreamInterface_is_writable
+func _gotk4_gio2_PollableOutputStreamInterface_is_writable(arg0 *C.GPollableOutputStream) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PollableOutputStreamOverrider)
+
+	ok := iface.IsWritable()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_PollableOutputStreamInterface_write_nonblocking
+func _gotk4_gio2_PollableOutputStreamInterface_write_nonblocking(arg0 *C.GPollableOutputStream, arg1 *C.void, arg2 C.gsize, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PollableOutputStreamOverrider)
+
+	var _buffer []byte // out
+
+	if arg1 != nil {
+		_buffer = make([]byte, arg2)
+		copy(_buffer, unsafe.Slice((*byte)(unsafe.Pointer(arg1)), arg2))
+	}
+
+	gssize, _goerr := iface.WriteNonblocking(_buffer)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_PollableOutputStreamInterface_writev_nonblocking
+func _gotk4_gio2_PollableOutputStreamInterface_writev_nonblocking(arg0 *C.GPollableOutputStream, arg1 *C.GOutputVector, arg2 C.gsize, arg3 *C.gsize, _cerr **C.GError) (cret C.GPollableReturn) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PollableOutputStreamOverrider)
+
+	var _vectors []OutputVector // out
+
+	{
+		src := unsafe.Slice(arg1, arg2)
+		_vectors = make([]OutputVector, arg2)
+		for i := 0; i < int(arg2); i++ {
+			_vectors[i] = *(*OutputVector)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
+
+	bytesWritten, pollableReturn, _goerr := iface.WritevNonblocking(_vectors)
+
+	*arg3 = C.gsize(bytesWritten)
+	cret = C.GPollableReturn(pollableReturn)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapPollableOutputStream(obj *externglib.Object) *PollableOutputStream {
 	return &PollableOutputStream{

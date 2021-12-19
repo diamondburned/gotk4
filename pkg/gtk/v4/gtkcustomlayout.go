@@ -19,6 +19,10 @@ func init() {
 	})
 }
 
+// CustomLayoutOverrider contains methods that are overridable.
+type CustomLayoutOverrider interface {
+}
+
 // CustomLayout: GtkCustomLayout uses closures for size negotiation.
 //
 // A GtkCustomLayout uses closures matching to the old GtkWidget virtual
@@ -32,6 +36,14 @@ type CustomLayout struct {
 var (
 	_ LayoutManagerer = (*CustomLayout)(nil)
 )
+
+func classInitCustomLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCustomLayout(obj *externglib.Object) *CustomLayout {
 	return &CustomLayout{

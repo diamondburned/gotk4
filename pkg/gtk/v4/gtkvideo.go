@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// VideoOverrider contains methods that are overridable.
+type VideoOverrider interface {
+}
+
 // Video: GtkVideo is a widget to show a GtkMediaStream with media controls.
 //
 // !An example GtkVideo (video.png)
@@ -42,6 +46,14 @@ type Video struct {
 var (
 	_ Widgetter = (*Video)(nil)
 )
+
+func classInitVideoer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapVideo(obj *externglib.Object) *Video {
 	return &Video{

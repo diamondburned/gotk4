@@ -14,8 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_DrawingAreaClass_resize(GtkDrawingArea*, int, int);
+// extern void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
 // extern void callbackDelete(gpointer);
-// void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
 import "C"
 
 func init() {
@@ -32,34 +33,34 @@ func init() {
 type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width, height int)
 
 //export _gotk4_gtk4_DrawingAreaDrawFunc
-func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
+	var fn DrawingAreaDrawFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(DrawingAreaDrawFunc)
 	}
 
-	var drawingArea *DrawingArea // out
-	var cr *cairo.Context        // out
-	var width int                // out
-	var height int               // out
+	var _drawingArea *DrawingArea // out
+	var _cr *cairo.Context        // out
+	var _width int                // out
+	var _height int               // out
 
-	drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(arg0)))
-	cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(cr, func(v *cairo.Context) {
+	_drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(arg1)))
+	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg2)))
+	C.cairo_reference(arg2)
+	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
-	width = int(arg2)
-	height = int(arg3)
+	_width = int(arg3)
+	_height = int(arg4)
 
-	fn := v.(DrawingAreaDrawFunc)
-	fn(drawingArea, cr, width, height)
+	fn(_drawingArea, _cr, _width, _height)
 }
 
 // DrawingAreaOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type DrawingAreaOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -154,6 +155,36 @@ type DrawingArea struct {
 var (
 	_ Widgetter = (*DrawingArea)(nil)
 )
+
+func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
+		pclass.resize = (*[0]byte)(C._gotk4_gtk4_DrawingAreaClass_resize)
+	}
+}
+
+//export _gotk4_gtk4_DrawingAreaClass_resize
+func _gotk4_gtk4_DrawingAreaClass_resize(arg0 *C.GtkDrawingArea, arg1 C.int, arg2 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Resize(width, height int) })
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	iface.Resize(_width, _height)
+}
 
 func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 	return &DrawingArea{

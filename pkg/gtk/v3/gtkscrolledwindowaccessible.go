@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ScrolledWindowAccessibleOverrider contains methods that are overridable.
+type ScrolledWindowAccessibleOverrider interface {
+}
+
 type ScrolledWindowAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -30,6 +34,14 @@ type ScrolledWindowAccessible struct {
 var (
 	_ externglib.Objector = (*ScrolledWindowAccessible)(nil)
 )
+
+func classInitScrolledWindowAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapScrolledWindowAccessible(obj *externglib.Object) *ScrolledWindowAccessible {
 	return &ScrolledWindowAccessible{

@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// ColorSelectionDialogOverrider contains methods that are overridable.
+type ColorSelectionDialogOverrider interface {
+}
+
 type ColorSelectionDialog struct {
 	_ [0]func() // equal guard
 	Dialog
@@ -31,6 +35,14 @@ type ColorSelectionDialog struct {
 var (
 	_ Binner = (*ColorSelectionDialog)(nil)
 )
+
+func classInitColorSelectionDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapColorSelectionDialog(obj *externglib.Object) *ColorSelectionDialog {
 	return &ColorSelectionDialog{

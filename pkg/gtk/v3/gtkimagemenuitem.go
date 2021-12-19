@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// ImageMenuItemOverrider contains methods that are overridable.
+type ImageMenuItemOverrider interface {
+}
+
 // ImageMenuItem is a menu item which has an icon next to the text label.
 //
 // This is functionally equivalent to:
@@ -56,6 +60,14 @@ var (
 	_ Binner              = (*ImageMenuItem)(nil)
 	_ externglib.Objector = (*ImageMenuItem)(nil)
 )
+
+func classInitImageMenuItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 	return &ImageMenuItem{

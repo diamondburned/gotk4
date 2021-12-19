@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ImageAccessibleOverrider contains methods that are overridable.
+type ImageAccessibleOverrider interface {
+}
+
 type ImageAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible
@@ -32,6 +36,14 @@ type ImageAccessible struct {
 var (
 	_ externglib.Objector = (*ImageAccessible)(nil)
 )
+
+func classInitImageAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapImageAccessible(obj *externglib.Object) *ImageAccessible {
 	return &ImageAccessible{

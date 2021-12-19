@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -17,6 +18,10 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_SearchEntryClass_next_match(GtkSearchEntry*);
+// extern void _gotk4_gtk3_SearchEntryClass_previous_match(GtkSearchEntry*);
+// extern void _gotk4_gtk3_SearchEntryClass_search_changed(GtkSearchEntry*);
+// extern void _gotk4_gtk3_SearchEntryClass_stop_search(GtkSearchEntry*);
 import "C"
 
 func init() {
@@ -26,9 +31,6 @@ func init() {
 }
 
 // SearchEntryOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SearchEntryOverrider interface {
 	NextMatch()
 	PreviousMatch()
@@ -68,6 +70,66 @@ var (
 	_ Widgetter           = (*SearchEntry)(nil)
 	_ externglib.Objector = (*SearchEntry)(nil)
 )
+
+func classInitSearchEntrier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkSearchEntryClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkSearchEntryClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ NextMatch() }); ok {
+		pclass.next_match = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_next_match)
+	}
+
+	if _, ok := goval.(interface{ PreviousMatch() }); ok {
+		pclass.previous_match = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_previous_match)
+	}
+
+	if _, ok := goval.(interface{ SearchChanged() }); ok {
+		pclass.search_changed = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_search_changed)
+	}
+
+	if _, ok := goval.(interface{ StopSearch() }); ok {
+		pclass.stop_search = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_stop_search)
+	}
+}
+
+//export _gotk4_gtk3_SearchEntryClass_next_match
+func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.GtkSearchEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ NextMatch() })
+
+	iface.NextMatch()
+}
+
+//export _gotk4_gtk3_SearchEntryClass_previous_match
+func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.GtkSearchEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PreviousMatch() })
+
+	iface.PreviousMatch()
+}
+
+//export _gotk4_gtk3_SearchEntryClass_search_changed
+func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.GtkSearchEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SearchChanged() })
+
+	iface.SearchChanged()
+}
+
+//export _gotk4_gtk3_SearchEntryClass_stop_search
+func _gotk4_gtk3_SearchEntryClass_stop_search(arg0 *C.GtkSearchEntry) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StopSearch() })
+
+	iface.StopSearch()
+}
 
 func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 	return &SearchEntry{

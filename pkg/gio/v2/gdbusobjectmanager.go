@@ -13,6 +13,14 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GDBusInterface* _gotk4_gio2_DBusObjectManagerIface_get_interface(GDBusObjectManager*, gchar*, gchar*);
+// extern GDBusObject* _gotk4_gio2_DBusObjectManagerIface_get_object(GDBusObjectManager*, gchar*);
+// extern GList* _gotk4_gio2_DBusObjectManagerIface_get_objects(GDBusObjectManager*);
+// extern gchar* _gotk4_gio2_DBusObjectManagerIface_get_object_path(GDBusObjectManager*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_interface_added(GDBusObjectManager*, GDBusObject*, GDBusInterface*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_interface_removed(GDBusObjectManager*, GDBusObject*, GDBusInterface*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_object_added(GDBusObjectManager*, GDBusObject*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_object_removed(GDBusObjectManager*, GDBusObject*);
 import "C"
 
 func init() {
@@ -22,9 +30,6 @@ func init() {
 }
 
 // DBusObjectManagerOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type DBusObjectManagerOverrider interface {
 	// Interface gets the interface proxy for interface_name at object_path, if
 	// any.
@@ -118,6 +123,233 @@ type DBusObjectManagerer interface {
 }
 
 var _ DBusObjectManagerer = (*DBusObjectManager)(nil)
+
+func ifaceInitDBusObjectManagerer(gifacePtr, data C.gpointer) {
+	iface := (*C.GDBusObjectManagerIface)(unsafe.Pointer(gifacePtr))
+	iface.get_interface = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_interface)
+	iface.get_object = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_object)
+	iface.get_object_path = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_object_path)
+	iface.get_objects = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_objects)
+	iface.interface_added = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_interface_added)
+	iface.interface_removed = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_interface_removed)
+	iface.object_added = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_object_added)
+	iface.object_removed = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_object_removed)
+}
+
+//export _gotk4_gio2_DBusObjectManagerIface_get_interface
+func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.GDBusObjectManager, arg1 *C.gchar, arg2 *C.gchar) (cret *C.GDBusInterface) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusObjectManagerOverrider)
+
+	var _objectPath string    // out
+	var _interfaceName string // out
+
+	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	dBusInterface := iface.Interface(_objectPath, _interfaceName)
+
+	cret = (*C.GDBusInterface)(unsafe.Pointer(dBusInterface.Native()))
+	C.g_object_ref(C.gpointer(dBusInterface.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_DBusObjectManagerIface_get_object
+func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.GDBusObjectManager, arg1 *C.gchar) (cret *C.GDBusObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusObjectManagerOverrider)
+
+	var _objectPath string // out
+
+	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	dBusObject := iface.GetObject(_objectPath)
+
+	cret = (*C.GDBusObject)(unsafe.Pointer(dBusObject.Native()))
+	C.g_object_ref(C.gpointer(dBusObject.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_DBusObjectManagerIface_get_object_path
+func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.GDBusObjectManager) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusObjectManagerOverrider)
+
+	utf8 := iface.ObjectPath()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_gio2_DBusObjectManagerIface_get_objects
+func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.GDBusObjectManager) (cret *C.GList) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusObjectManagerOverrider)
+
+	list := iface.Objects()
+
+	for i := len(list) - 1; i >= 0; i-- {
+		src := list[i]
+		var dst *C.GDBusObject // out
+		dst = (*C.GDBusObject)(unsafe.Pointer(src.Native()))
+		C.g_object_ref(C.gpointer(src.Native()))
+		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DBusObjectManagerIface_interface_added
+func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject, arg2 *C.GDBusInterface) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusObjectManagerOverrider)
+
+	var _object DBusObjector       // out
+	var _interface_ DBusInterfacer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusObjector is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusObjector)
+			return ok
+		})
+		rv, ok := casted.(DBusObjector)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
+		}
+		_object = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.DBusInterfacer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusInterfacer)
+			return ok
+		})
+		rv, ok := casted.(DBusInterfacer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
+		}
+		_interface_ = rv
+	}
+
+	iface.InterfaceAdded(_object, _interface_)
+}
+
+//export _gotk4_gio2_DBusObjectManagerIface_interface_removed
+func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject, arg2 *C.GDBusInterface) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusObjectManagerOverrider)
+
+	var _object DBusObjector       // out
+	var _interface_ DBusInterfacer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusObjector is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusObjector)
+			return ok
+		})
+		rv, ok := casted.(DBusObjector)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
+		}
+		_object = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.DBusInterfacer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusInterfacer)
+			return ok
+		})
+		rv, ok := casted.(DBusInterfacer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
+		}
+		_interface_ = rv
+	}
+
+	iface.InterfaceRemoved(_object, _interface_)
+}
+
+//export _gotk4_gio2_DBusObjectManagerIface_object_added
+func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusObjectManagerOverrider)
+
+	var _object DBusObjector // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusObjector is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusObjector)
+			return ok
+		})
+		rv, ok := casted.(DBusObjector)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
+		}
+		_object = rv
+	}
+
+	iface.ObjectAdded(_object)
+}
+
+//export _gotk4_gio2_DBusObjectManagerIface_object_removed
+func _gotk4_gio2_DBusObjectManagerIface_object_removed(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DBusObjectManagerOverrider)
+
+	var _object DBusObjector // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusObjector is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusObjector)
+			return ok
+		})
+		rv, ok := casted.(DBusObjector)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
+		}
+		_object = rv
+	}
+
+	iface.ObjectRemoved(_object)
+}
 
 func wrapDBusObjectManager(obj *externglib.Object) *DBusObjectManager {
 	return &DBusObjectManager{

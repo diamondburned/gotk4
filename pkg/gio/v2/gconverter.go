@@ -13,6 +13,8 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GConverterResult _gotk4_gio2_ConverterIface_convert(GConverter*, void*, gsize, void*, gsize, GConverterFlags, gsize*, gsize*, GError**);
+// extern void _gotk4_gio2_ConverterIface_reset(GConverter*);
 import "C"
 
 func init() {
@@ -22,9 +24,6 @@ func init() {
 }
 
 // ConverterOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ConverterOverrider interface {
 	// Convert: this is the main operation used when converting data. It is to
 	// be called multiple times in a loop, and each time it will do some work,
@@ -154,6 +153,51 @@ type Converterer interface {
 }
 
 var _ Converterer = (*Converter)(nil)
+
+func ifaceInitConverterer(gifacePtr, data C.gpointer) {
+	iface := (*C.GConverterIface)(unsafe.Pointer(gifacePtr))
+	iface.convert = (*[0]byte)(C._gotk4_gio2_ConverterIface_convert)
+	iface.reset = (*[0]byte)(C._gotk4_gio2_ConverterIface_reset)
+}
+
+//export _gotk4_gio2_ConverterIface_convert
+func _gotk4_gio2_ConverterIface_convert(arg0 *C.GConverter, arg1 *C.void, arg2 C.gsize, arg3 *C.void, arg4 C.gsize, arg5 C.GConverterFlags, arg6 *C.gsize, arg7 *C.gsize, _cerr **C.GError) (cret C.GConverterResult) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ConverterOverrider)
+
+	var _inbuf []byte         // out
+	var _outbuf []byte        // out
+	var _flags ConverterFlags // out
+
+	if arg1 != nil {
+		_inbuf = make([]byte, arg2)
+		copy(_inbuf, unsafe.Slice((*byte)(unsafe.Pointer(arg1)), arg2))
+	}
+	if arg3 != nil {
+		_outbuf = make([]byte, arg4)
+		copy(_outbuf, unsafe.Slice((*byte)(unsafe.Pointer(arg3)), arg4))
+	}
+	_flags = ConverterFlags(arg5)
+
+	bytesRead, bytesWritten, converterResult, _goerr := iface.Convert(_inbuf, _outbuf, _flags)
+
+	*arg6 = C.gsize(bytesRead)
+	*arg7 = C.gsize(bytesWritten)
+	cret = C.GConverterResult(converterResult)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ConverterIface_reset
+func _gotk4_gio2_ConverterIface_reset(arg0 *C.GConverter) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ConverterOverrider)
+
+	iface.Reset()
+}
 
 func wrapConverter(obj *externglib.Object) *Converter {
 	return &Converter{

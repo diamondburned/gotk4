@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// NetworkServiceOverrider contains methods that are overridable.
+type NetworkServiceOverrider interface {
+}
+
 // NetworkService: like Address does with hostnames, Service provides an easy
 // way to resolve a SRV record, and then attempt to connect to one of the hosts
 // that implements that service, handling service priority/weighting, multiple
@@ -37,6 +41,14 @@ type NetworkService struct {
 var (
 	_ externglib.Objector = (*NetworkService)(nil)
 )
+
+func classInitNetworkServicer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNetworkService(obj *externglib.Object) *NetworkService {
 	return &NetworkService{

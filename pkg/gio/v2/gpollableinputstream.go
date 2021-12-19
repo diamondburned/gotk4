@@ -17,6 +17,10 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GSource* _gotk4_gio2_PollableInputStreamInterface_create_source(GPollableInputStream*, GCancellable*);
+// extern gboolean _gotk4_gio2_PollableInputStreamInterface_can_poll(GPollableInputStream*);
+// extern gboolean _gotk4_gio2_PollableInputStreamInterface_is_readable(GPollableInputStream*);
+// extern gssize _gotk4_gio2_PollableInputStreamInterface_read_nonblocking(GPollableInputStream*, void*, gsize, GError**);
 import "C"
 
 func init() {
@@ -26,9 +30,6 @@ func init() {
 }
 
 // PollableInputStreamOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PollableInputStreamOverrider interface {
 	// CanPoll checks if stream is actually pollable. Some classes may implement
 	// InputStream but have only certain instances of that class be pollable. If
@@ -130,6 +131,82 @@ type PollableInputStreamer interface {
 }
 
 var _ PollableInputStreamer = (*PollableInputStream)(nil)
+
+func ifaceInitPollableInputStreamer(gifacePtr, data C.gpointer) {
+	iface := (*C.GPollableInputStreamInterface)(unsafe.Pointer(gifacePtr))
+	iface.can_poll = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_can_poll)
+	iface.create_source = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_create_source)
+	iface.is_readable = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_is_readable)
+	iface.read_nonblocking = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_read_nonblocking)
+}
+
+//export _gotk4_gio2_PollableInputStreamInterface_can_poll
+func _gotk4_gio2_PollableInputStreamInterface_can_poll(arg0 *C.GPollableInputStream) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PollableInputStreamOverrider)
+
+	ok := iface.CanPoll()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_PollableInputStreamInterface_create_source
+func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.GPollableInputStream, arg1 *C.GCancellable) (cret *C.GSource) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PollableInputStreamOverrider)
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	source := iface.CreateSource(_cancellable)
+
+	cret = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+
+	return cret
+}
+
+//export _gotk4_gio2_PollableInputStreamInterface_is_readable
+func _gotk4_gio2_PollableInputStreamInterface_is_readable(arg0 *C.GPollableInputStream) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PollableInputStreamOverrider)
+
+	ok := iface.IsReadable()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_PollableInputStreamInterface_read_nonblocking
+func _gotk4_gio2_PollableInputStreamInterface_read_nonblocking(arg0 *C.GPollableInputStream, arg1 *C.void, arg2 C.gsize, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PollableInputStreamOverrider)
+
+	var _buffer []byte // out
+
+	if arg1 != nil {
+		_buffer = make([]byte, arg2)
+		copy(_buffer, unsafe.Slice((*byte)(unsafe.Pointer(arg1)), arg2))
+	}
+
+	gssize, _goerr := iface.ReadNonblocking(_buffer)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapPollableInputStream(obj *externglib.Object) *PollableInputStream {
 	return &PollableInputStream{

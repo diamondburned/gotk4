@@ -43,6 +43,10 @@ func GetDefaultRegistry() *Registry {
 	return _registry
 }
 
+// RegistryOverrider contains methods that are overridable.
+type RegistryOverrider interface {
+}
+
 // Registry is normally used to create appropriate ATK "peers" for user
 // interface components. Application developers usually need only interact with
 // the AtkRegistry by associating appropriate ATK implementation classes with
@@ -56,6 +60,14 @@ type Registry struct {
 var (
 	_ externglib.Objector = (*Registry)(nil)
 )
+
+func classInitRegistrier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRegistry(obj *externglib.Object) *Registry {
 	return &Registry{

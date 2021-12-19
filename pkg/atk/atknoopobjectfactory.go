@@ -19,6 +19,10 @@ func init() {
 	})
 }
 
+// NoOpObjectFactoryOverrider contains methods that are overridable.
+type NoOpObjectFactoryOverrider interface {
+}
+
 // NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject. An
 // instance of this is created by an AtkRegistry if no factory type has not been
 // specified to create an accessible object of a particular type.
@@ -30,6 +34,14 @@ type NoOpObjectFactory struct {
 var (
 	_ externglib.Objector = (*NoOpObjectFactory)(nil)
 )
+
+func classInitNoOpObjectFactorier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNoOpObjectFactory(obj *externglib.Object) *NoOpObjectFactory {
 	return &NoOpObjectFactory{

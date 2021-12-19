@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// ConstraintLayoutOverrider contains methods that are overridable.
+type ConstraintLayoutOverrider interface {
+}
+
 // ConstraintLayout: layout manager using constraints to describe relations
 // between widgets.
 //
@@ -194,6 +198,14 @@ var (
 	_ LayoutManagerer     = (*ConstraintLayout)(nil)
 	_ externglib.Objector = (*ConstraintLayout)(nil)
 )
+
+func classInitConstraintLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 	return &ConstraintLayout{
@@ -572,6 +584,10 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 	runtime.KeepAlive(guide)
 }
 
+// ConstraintLayoutChildOverrider contains methods that are overridable.
+type ConstraintLayoutChildOverrider interface {
+}
+
 // ConstraintLayoutChild: GtkLayoutChild subclass for children in a
 // GtkConstraintLayout.
 type ConstraintLayoutChild struct {
@@ -582,6 +598,14 @@ type ConstraintLayoutChild struct {
 var (
 	_ LayoutChilder = (*ConstraintLayoutChild)(nil)
 )
+
+func classInitConstraintLayoutChilder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
 	return &ConstraintLayoutChild{

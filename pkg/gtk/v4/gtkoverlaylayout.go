@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// OverlayLayoutOverrider contains methods that are overridable.
+type OverlayLayoutOverrider interface {
+}
+
 // OverlayLayout: GtkOverlayLayout is the layout manager used by GtkOverlay.
 //
 // It places widgets as overlays on top of the main child.
@@ -35,6 +39,14 @@ type OverlayLayout struct {
 var (
 	_ LayoutManagerer = (*OverlayLayout)(nil)
 )
+
+func classInitOverlayLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapOverlayLayout(obj *externglib.Object) *OverlayLayout {
 	return &OverlayLayout{
@@ -66,6 +78,10 @@ func NewOverlayLayout() *OverlayLayout {
 	return _overlayLayout
 }
 
+// OverlayLayoutChildOverrider contains methods that are overridable.
+type OverlayLayoutChildOverrider interface {
+}
+
 // OverlayLayoutChild: GtkLayoutChild subclass for children in a
 // GtkOverlayLayout.
 type OverlayLayoutChild struct {
@@ -76,6 +92,14 @@ type OverlayLayoutChild struct {
 var (
 	_ LayoutChilder = (*OverlayLayoutChild)(nil)
 )
+
+func classInitOverlayLayoutChilder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapOverlayLayoutChild(obj *externglib.Object) *OverlayLayoutChild {
 	return &OverlayLayoutChild{

@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// DirectoryListOverrider contains methods that are overridable.
+type DirectoryListOverrider interface {
+}
+
 // DirectoryList: GtkDirectoryList is a list model that wraps
 // g_file_enumerate_children_async().
 //
@@ -54,6 +58,14 @@ type DirectoryList struct {
 var (
 	_ externglib.Objector = (*DirectoryList)(nil)
 )
+
+func classInitDirectoryLister(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDirectoryList(obj *externglib.Object) *DirectoryList {
 	return &DirectoryList{

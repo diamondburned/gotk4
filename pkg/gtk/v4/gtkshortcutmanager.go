@@ -11,6 +11,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ShortcutManagerInterface_add_controller(GtkShortcutManager*, GtkShortcutController*);
+// extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(GtkShortcutManager*, GtkShortcutController*);
 import "C"
 
 func init() {
@@ -20,9 +22,6 @@ func init() {
 }
 
 // ShortcutManagerOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ShortcutManagerOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -61,6 +60,36 @@ type ShortcutManagerer interface {
 }
 
 var _ ShortcutManagerer = (*ShortcutManager)(nil)
+
+func ifaceInitShortcutManagerer(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkShortcutManagerInterface)(unsafe.Pointer(gifacePtr))
+	iface.add_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_add_controller)
+	iface.remove_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_remove_controller)
+}
+
+//export _gotk4_gtk4_ShortcutManagerInterface_add_controller
+func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ShortcutManagerOverrider)
+
+	var _controller *ShortcutController // out
+
+	_controller = wrapShortcutController(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.AddController(_controller)
+}
+
+//export _gotk4_gtk4_ShortcutManagerInterface_remove_controller
+func _gotk4_gtk4_ShortcutManagerInterface_remove_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ShortcutManagerOverrider)
+
+	var _controller *ShortcutController // out
+
+	_controller = wrapShortcutController(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.RemoveController(_controller)
+}
 
 func wrapShortcutManager(obj *externglib.Object) *ShortcutManager {
 	return &ShortcutManager{

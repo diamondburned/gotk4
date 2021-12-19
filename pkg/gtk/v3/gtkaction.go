@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -16,6 +17,12 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GtkWidget* _gotk4_gtk3_ActionClass_create_menu(GtkAction*);
+// extern GtkWidget* _gotk4_gtk3_ActionClass_create_menu_item(GtkAction*);
+// extern GtkWidget* _gotk4_gtk3_ActionClass_create_tool_item(GtkAction*);
+// extern void _gotk4_gtk3_ActionClass_activate(GtkAction*);
+// extern void _gotk4_gtk3_ActionClass_connect_proxy(GtkAction*, GtkWidget*);
+// extern void _gotk4_gtk3_ActionClass_disconnect_proxy(GtkAction*, GtkWidget*);
 import "C"
 
 func init() {
@@ -25,9 +32,6 @@ func init() {
 }
 
 // ActionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ActionOverrider interface {
 	// Activate emits the “activate” signal on the specified action, if it isn't
 	// insensitive. This gets called by the proxy widgets when they get
@@ -132,6 +136,142 @@ type Action struct {
 var (
 	_ externglib.Objector = (*Action)(nil)
 )
+
+func classInitActioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkActionClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkActionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ActionClass_activate)
+	}
+
+	if _, ok := goval.(interface{ ConnectProxy(proxy Widgetter) }); ok {
+		pclass.connect_proxy = (*[0]byte)(C._gotk4_gtk3_ActionClass_connect_proxy)
+	}
+
+	if _, ok := goval.(interface{ CreateMenu() Widgetter }); ok {
+		pclass.create_menu = (*[0]byte)(C._gotk4_gtk3_ActionClass_create_menu)
+	}
+
+	if _, ok := goval.(interface{ CreateMenuItem() Widgetter }); ok {
+		pclass.create_menu_item = (*[0]byte)(C._gotk4_gtk3_ActionClass_create_menu_item)
+	}
+
+	if _, ok := goval.(interface{ CreateToolItem() Widgetter }); ok {
+		pclass.create_tool_item = (*[0]byte)(C._gotk4_gtk3_ActionClass_create_tool_item)
+	}
+
+	if _, ok := goval.(interface{ DisconnectProxy(proxy Widgetter) }); ok {
+		pclass.disconnect_proxy = (*[0]byte)(C._gotk4_gtk3_ActionClass_disconnect_proxy)
+	}
+}
+
+//export _gotk4_gtk3_ActionClass_activate
+func _gotk4_gtk3_ActionClass_activate(arg0 *C.GtkAction) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
+
+//export _gotk4_gtk3_ActionClass_connect_proxy
+func _gotk4_gtk3_ActionClass_connect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ConnectProxy(proxy Widgetter) })
+
+	var _proxy Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_proxy = rv
+	}
+
+	iface.ConnectProxy(_proxy)
+}
+
+//export _gotk4_gtk3_ActionClass_create_menu
+func _gotk4_gtk3_ActionClass_create_menu(arg0 *C.GtkAction) (cret *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CreateMenu() Widgetter })
+
+	widget := iface.CreateMenu()
+
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_ActionClass_create_menu_item
+func _gotk4_gtk3_ActionClass_create_menu_item(arg0 *C.GtkAction) (cret *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CreateMenuItem() Widgetter })
+
+	widget := iface.CreateMenuItem()
+
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_ActionClass_create_tool_item
+func _gotk4_gtk3_ActionClass_create_tool_item(arg0 *C.GtkAction) (cret *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CreateToolItem() Widgetter })
+
+	widget := iface.CreateToolItem()
+
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_ActionClass_disconnect_proxy
+func _gotk4_gtk3_ActionClass_disconnect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DisconnectProxy(proxy Widgetter) })
+
+	var _proxy Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_proxy = rv
+	}
+
+	iface.DisconnectProxy(_proxy)
+}
 
 func wrapAction(obj *externglib.Object) *Action {
 	return &Action{

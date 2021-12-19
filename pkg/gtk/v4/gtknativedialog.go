@@ -6,12 +6,16 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_NativeDialogClass_hide(GtkNativeDialog*);
+// extern void _gotk4_gtk4_NativeDialogClass_response(GtkNativeDialog*, int);
+// extern void _gotk4_gtk4_NativeDialogClass_show(GtkNativeDialog*);
 import "C"
 
 func init() {
@@ -21,9 +25,6 @@ func init() {
 }
 
 // NativeDialogOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type NativeDialogOverrider interface {
 	// Hide hides the dialog if it is visible, aborting any interaction.
 	//
@@ -78,6 +79,58 @@ type NativeDialogger interface {
 }
 
 var _ NativeDialogger = (*NativeDialog)(nil)
+
+func classInitNativeDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Hide() }); ok {
+		pclass.hide = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_hide)
+	}
+
+	if _, ok := goval.(interface{ Response(responseId int) }); ok {
+		pclass.response = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_response)
+	}
+
+	if _, ok := goval.(interface{ Show() }); ok {
+		pclass.show = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_show)
+	}
+}
+
+//export _gotk4_gtk4_NativeDialogClass_hide
+func _gotk4_gtk4_NativeDialogClass_hide(arg0 *C.GtkNativeDialog) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Hide() })
+
+	iface.Hide()
+}
+
+//export _gotk4_gtk4_NativeDialogClass_response
+func _gotk4_gtk4_NativeDialogClass_response(arg0 *C.GtkNativeDialog, arg1 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Response(responseId int) })
+
+	var _responseId int // out
+
+	_responseId = int(arg1)
+
+	iface.Response(_responseId)
+}
+
+//export _gotk4_gtk4_NativeDialogClass_show
+func _gotk4_gtk4_NativeDialogClass_show(arg0 *C.GtkNativeDialog) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Show() })
+
+	iface.Show()
+}
 
 func wrapNativeDialog(obj *externglib.Object) *NativeDialog {
 	return &NativeDialog{

@@ -14,9 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
+// extern void _gotk4_gtk4_TreeSelectionForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
-// void _gotk4_gtk4_TreeSelectionForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -31,61 +31,20 @@ func init() {
 type TreeSelectionForEachFunc func(model TreeModeller, path *TreePath, iter *TreeIter)
 
 //export _gotk4_gtk4_TreeSelectionForEachFunc
-func _gotk4_gtk4_TreeSelectionForEachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var model TreeModeller // out
-	var path *TreePath     // out
-	var iter *TreeIter     // out
-
+func _gotk4_gtk4_TreeSelectionForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
+	var fn TreeSelectionForEachFunc
 	{
-		objptr := unsafe.Pointer(arg0)
-		if objptr == nil {
-			panic("object of type gtk.TreeModeller is nil")
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
 		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
-			return ok
-		})
-		rv, ok := casted.(TreeModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-		}
-		model = rv
-	}
-	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-
-	fn := v.(TreeSelectionForEachFunc)
-	fn(model, path, iter)
-}
-
-// TreeSelectionFunc: function used by gtk_tree_selection_set_select_function()
-// to filter whether or not a row may be selected. It is called whenever a row's
-// state might change.
-//
-// A return value of TRUE indicates to selection that it is okay to change the
-// selection.
-type TreeSelectionFunc func(selection *TreeSelection, model TreeModeller, path *TreePath, pathCurrentlySelected bool) (ok bool)
-
-//export _gotk4_gtk4_TreeSelectionFunc
-func _gotk4_gtk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+		fn = v.(TreeSelectionForEachFunc)
 	}
 
-	var selection *TreeSelection   // out
-	var model TreeModeller         // out
-	var path *TreePath             // out
-	var pathCurrentlySelected bool // out
+	var _model TreeModeller // out
+	var _path *TreePath     // out
+	var _iter *TreeIter     // out
 
-	selection = wrapTreeSelection(externglib.Take(unsafe.Pointer(arg0)))
 	{
 		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
@@ -101,15 +60,62 @@ func _gotk4_gtk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeMode
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
-		model = rv
+		_model = rv
 	}
-	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	if arg3 != 0 {
-		pathCurrentlySelected = true
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+
+	fn(_model, _path, _iter)
+}
+
+// TreeSelectionFunc: function used by gtk_tree_selection_set_select_function()
+// to filter whether or not a row may be selected. It is called whenever a row's
+// state might change.
+//
+// A return value of TRUE indicates to selection that it is okay to change the
+// selection.
+type TreeSelectionFunc func(selection *TreeSelection, model TreeModeller, path *TreePath, pathCurrentlySelected bool) (ok bool)
+
+//export _gotk4_gtk4_TreeSelectionFunc
+func _gotk4_gtk4_TreeSelectionFunc(arg1 *C.GtkTreeSelection, arg2 *C.GtkTreeModel, arg3 *C.GtkTreePath, arg4 C.gboolean, arg5 C.gpointer) (cret C.gboolean) {
+	var fn TreeSelectionFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeSelectionFunc)
 	}
 
-	fn := v.(TreeSelectionFunc)
-	ok := fn(selection, model, path, pathCurrentlySelected)
+	var _selection *TreeSelection   // out
+	var _model TreeModeller         // out
+	var _path *TreePath             // out
+	var _pathCurrentlySelected bool // out
+
+	_selection = wrapTreeSelection(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_model = rv
+	}
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	if arg4 != 0 {
+		_pathCurrentlySelected = true
+	}
+
+	ok := fn(_selection, _model, _path, _pathCurrentlySelected)
 
 	if ok {
 		cret = C.TRUE

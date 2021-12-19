@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// GridLayoutOverrider contains methods that are overridable.
+type GridLayoutOverrider interface {
+}
+
 // GridLayout: GtkGridLayout is a layout manager which arranges child widgets in
 // rows and columns.
 //
@@ -43,6 +47,14 @@ type GridLayout struct {
 var (
 	_ LayoutManagerer = (*GridLayout)(nil)
 )
+
+func classInitGridLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGridLayout(obj *externglib.Object) *GridLayout {
 	return &GridLayout{
@@ -345,6 +357,10 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 	runtime.KeepAlive(spacing)
 }
 
+// GridLayoutChildOverrider contains methods that are overridable.
+type GridLayoutChildOverrider interface {
+}
+
 // GridLayoutChild: GtkLayoutChild subclass for children in a GtkGridLayout.
 type GridLayoutChild struct {
 	_ [0]func() // equal guard
@@ -354,6 +370,14 @@ type GridLayoutChild struct {
 var (
 	_ LayoutChilder = (*GridLayoutChild)(nil)
 )
+
+func classInitGridLayoutChilder(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGridLayoutChild(obj *externglib.Object) *GridLayoutChild {
 	return &GridLayoutChild{

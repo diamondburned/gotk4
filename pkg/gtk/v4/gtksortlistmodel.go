@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// SortListModelOverrider contains methods that are overridable.
+type SortListModelOverrider interface {
+}
+
 // SortListModel: GtkSortListModel is a list model that sorts the elements of
 // the underlying model according to a GtkSorter.
 //
@@ -41,6 +45,14 @@ type SortListModel struct {
 var (
 	_ externglib.Objector = (*SortListModel)(nil)
 )
+
+func classInitSortListModeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSortListModel(obj *externglib.Object) *SortListModel {
 	return &SortListModel{

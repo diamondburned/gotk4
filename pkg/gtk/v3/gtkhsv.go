@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_HSVClass_changed(GtkHSV*);
+// extern void _gotk4_gtk3_HSVClass_move(GtkHSV*, GtkDirectionType);
 import "C"
 
 func init() {
@@ -24,9 +27,6 @@ func init() {
 }
 
 // HSVOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type HSVOverrider interface {
 	Changed()
 	// The function takes the following parameters:
@@ -48,6 +48,46 @@ type HSV struct {
 var (
 	_ Widgetter = (*HSV)(nil)
 )
+
+func classInitHSVer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkHSVClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkHSVClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Changed() }); ok {
+		pclass.changed = (*[0]byte)(C._gotk4_gtk3_HSVClass_changed)
+	}
+
+	if _, ok := goval.(interface{ Move(typ DirectionType) }); ok {
+		pclass.move = (*[0]byte)(C._gotk4_gtk3_HSVClass_move)
+	}
+}
+
+//export _gotk4_gtk3_HSVClass_changed
+func _gotk4_gtk3_HSVClass_changed(arg0 *C.GtkHSV) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Changed() })
+
+	iface.Changed()
+}
+
+//export _gotk4_gtk3_HSVClass_move
+func _gotk4_gtk3_HSVClass_move(arg0 *C.GtkHSV, arg1 C.GtkDirectionType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Move(typ DirectionType) })
+
+	var _typ DirectionType // out
+
+	_typ = DirectionType(arg1)
+
+	iface.Move(_typ)
+}
 
 func wrapHSV(obj *externglib.Object) *HSV {
 	return &HSV{

@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// TextureOverrider contains methods that are overridable.
+type TextureOverrider interface {
+}
+
 // Texture: GdkTexture is the basic element used to refer to pixel data.
 //
 // It is primarily meant for pixel data that will not change over multiple
@@ -57,6 +61,14 @@ type Texturer interface {
 }
 
 var _ Texturer = (*Texture)(nil)
+
+func classInitTexturer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTexture(obj *externglib.Object) *Texture {
 	return &Texture{

@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// StackAccessibleOverrider contains methods that are overridable.
+type StackAccessibleOverrider interface {
+}
+
 type StackAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -30,6 +34,14 @@ type StackAccessible struct {
 var (
 	_ externglib.Objector = (*StackAccessible)(nil)
 )
+
+func classInitStackAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapStackAccessible(obj *externglib.Object) *StackAccessible {
 	return &StackAccessible{

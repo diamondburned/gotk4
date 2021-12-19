@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// ConstraintTargetOverrider contains methods that are overridable.
+type ConstraintTargetOverrider interface {
+}
+
 // ConstraintTarget: GtkConstraintTarget interface is implemented by objects
 // that can be used as source or target in GtkConstraints.
 //
@@ -43,6 +47,9 @@ type ConstraintTargetter interface {
 
 var _ ConstraintTargetter = (*ConstraintTarget)(nil)
 
+func ifaceInitConstraintTargetter(gifacePtr, data C.gpointer) {
+}
+
 func wrapConstraintTarget(obj *externglib.Object) *ConstraintTarget {
 	return &ConstraintTarget{
 		Object: obj,
@@ -60,6 +67,10 @@ func (v *ConstraintTarget) baseConstraintTarget() *ConstraintTarget {
 // BaseConstraintTarget returns the underlying base object.
 func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
 	return obj.baseConstraintTarget()
+}
+
+// ConstraintOverrider contains methods that are overridable.
+type ConstraintOverrider interface {
 }
 
 // Constraint: GtkConstraint describes a constraint between attributes of two
@@ -84,6 +95,14 @@ type Constraint struct {
 var (
 	_ externglib.Objector = (*Constraint)(nil)
 )
+
+func classInitConstrainter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapConstraint(obj *externglib.Object) *Constraint {
 	return &Constraint{

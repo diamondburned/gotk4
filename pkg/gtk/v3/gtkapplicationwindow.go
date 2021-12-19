@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// ApplicationWindowOverrider contains methods that are overridable.
+type ApplicationWindowOverrider interface {
+}
+
 // ApplicationWindow is a Window subclass that offers some extra functionality
 // for better integration with Application features. Notably, it can handle both
 // the application menu as well as the menubar. See
@@ -144,6 +148,14 @@ var (
 	_ externglib.Objector = (*ApplicationWindow)(nil)
 	_ Binner              = (*ApplicationWindow)(nil)
 )
+
+func classInitApplicationWindower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{

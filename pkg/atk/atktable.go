@@ -12,6 +12,42 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern AtkObject* _gotk4_atk1_TableIface_get_caption(AtkTable*);
+// extern AtkObject* _gotk4_atk1_TableIface_get_column_header(AtkTable*, gint);
+// extern AtkObject* _gotk4_atk1_TableIface_get_row_header(AtkTable*, gint);
+// extern AtkObject* _gotk4_atk1_TableIface_get_summary(AtkTable*);
+// extern AtkObject* _gotk4_atk1_TableIface_ref_at(AtkTable*, gint, gint);
+// extern gboolean _gotk4_atk1_TableIface_add_column_selection(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_add_row_selection(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_is_column_selected(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_is_row_selected(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_is_selected(AtkTable*, gint, gint);
+// extern gboolean _gotk4_atk1_TableIface_remove_column_selection(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_remove_row_selection(AtkTable*, gint);
+// extern gchar* _gotk4_atk1_TableIface_get_column_description(AtkTable*, gint);
+// extern gchar* _gotk4_atk1_TableIface_get_row_description(AtkTable*, gint);
+// extern gint _gotk4_atk1_TableIface_get_column_at_index(AtkTable*, gint);
+// extern gint _gotk4_atk1_TableIface_get_column_extent_at(AtkTable*, gint, gint);
+// extern gint _gotk4_atk1_TableIface_get_index_at(AtkTable*, gint, gint);
+// extern gint _gotk4_atk1_TableIface_get_n_columns(AtkTable*);
+// extern gint _gotk4_atk1_TableIface_get_n_rows(AtkTable*);
+// extern gint _gotk4_atk1_TableIface_get_row_at_index(AtkTable*, gint);
+// extern gint _gotk4_atk1_TableIface_get_row_extent_at(AtkTable*, gint, gint);
+// extern gint _gotk4_atk1_TableIface_get_selected_columns(AtkTable*, gint**);
+// extern gint _gotk4_atk1_TableIface_get_selected_rows(AtkTable*, gint**);
+// extern void _gotk4_atk1_TableIface_column_deleted(AtkTable*, gint, gint);
+// extern void _gotk4_atk1_TableIface_column_inserted(AtkTable*, gint, gint);
+// extern void _gotk4_atk1_TableIface_column_reordered(AtkTable*);
+// extern void _gotk4_atk1_TableIface_model_changed(AtkTable*);
+// extern void _gotk4_atk1_TableIface_row_deleted(AtkTable*, gint, gint);
+// extern void _gotk4_atk1_TableIface_row_inserted(AtkTable*, gint, gint);
+// extern void _gotk4_atk1_TableIface_row_reordered(AtkTable*);
+// extern void _gotk4_atk1_TableIface_set_caption(AtkTable*, AtkObject*);
+// extern void _gotk4_atk1_TableIface_set_column_description(AtkTable*, gint, gchar*);
+// extern void _gotk4_atk1_TableIface_set_column_header(AtkTable*, gint, AtkObject*);
+// extern void _gotk4_atk1_TableIface_set_row_description(AtkTable*, gint, gchar*);
+// extern void _gotk4_atk1_TableIface_set_row_header(AtkTable*, gint, AtkObject*);
+// extern void _gotk4_atk1_TableIface_set_summary(AtkTable*, AtkObject*);
 import "C"
 
 func init() {
@@ -21,9 +57,6 @@ func init() {
 }
 
 // TableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TableOverrider interface {
 	// AddColumnSelection adds the specified column to the selection.
 	//
@@ -503,6 +536,594 @@ type Tabler interface {
 }
 
 var _ Tabler = (*Table)(nil)
+
+func ifaceInitTabler(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkTableIface)(unsafe.Pointer(gifacePtr))
+	iface.add_column_selection = (*[0]byte)(C._gotk4_atk1_TableIface_add_column_selection)
+	iface.add_row_selection = (*[0]byte)(C._gotk4_atk1_TableIface_add_row_selection)
+	iface.column_deleted = (*[0]byte)(C._gotk4_atk1_TableIface_column_deleted)
+	iface.column_inserted = (*[0]byte)(C._gotk4_atk1_TableIface_column_inserted)
+	iface.column_reordered = (*[0]byte)(C._gotk4_atk1_TableIface_column_reordered)
+	iface.get_caption = (*[0]byte)(C._gotk4_atk1_TableIface_get_caption)
+	iface.get_column_at_index = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_at_index)
+	iface.get_column_description = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_description)
+	iface.get_column_extent_at = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_extent_at)
+	iface.get_column_header = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_header)
+	iface.get_index_at = (*[0]byte)(C._gotk4_atk1_TableIface_get_index_at)
+	iface.get_n_columns = (*[0]byte)(C._gotk4_atk1_TableIface_get_n_columns)
+	iface.get_n_rows = (*[0]byte)(C._gotk4_atk1_TableIface_get_n_rows)
+	iface.get_row_at_index = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_at_index)
+	iface.get_row_description = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_description)
+	iface.get_row_extent_at = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_extent_at)
+	iface.get_row_header = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_header)
+	iface.get_selected_columns = (*[0]byte)(C._gotk4_atk1_TableIface_get_selected_columns)
+	iface.get_selected_rows = (*[0]byte)(C._gotk4_atk1_TableIface_get_selected_rows)
+	iface.get_summary = (*[0]byte)(C._gotk4_atk1_TableIface_get_summary)
+	iface.is_column_selected = (*[0]byte)(C._gotk4_atk1_TableIface_is_column_selected)
+	iface.is_row_selected = (*[0]byte)(C._gotk4_atk1_TableIface_is_row_selected)
+	iface.is_selected = (*[0]byte)(C._gotk4_atk1_TableIface_is_selected)
+	iface.model_changed = (*[0]byte)(C._gotk4_atk1_TableIface_model_changed)
+	iface.ref_at = (*[0]byte)(C._gotk4_atk1_TableIface_ref_at)
+	iface.remove_column_selection = (*[0]byte)(C._gotk4_atk1_TableIface_remove_column_selection)
+	iface.remove_row_selection = (*[0]byte)(C._gotk4_atk1_TableIface_remove_row_selection)
+	iface.row_deleted = (*[0]byte)(C._gotk4_atk1_TableIface_row_deleted)
+	iface.row_inserted = (*[0]byte)(C._gotk4_atk1_TableIface_row_inserted)
+	iface.row_reordered = (*[0]byte)(C._gotk4_atk1_TableIface_row_reordered)
+	iface.set_caption = (*[0]byte)(C._gotk4_atk1_TableIface_set_caption)
+	iface.set_column_description = (*[0]byte)(C._gotk4_atk1_TableIface_set_column_description)
+	iface.set_column_header = (*[0]byte)(C._gotk4_atk1_TableIface_set_column_header)
+	iface.set_row_description = (*[0]byte)(C._gotk4_atk1_TableIface_set_row_description)
+	iface.set_row_header = (*[0]byte)(C._gotk4_atk1_TableIface_set_row_header)
+	iface.set_summary = (*[0]byte)(C._gotk4_atk1_TableIface_set_summary)
+}
+
+//export _gotk4_atk1_TableIface_add_column_selection
+func _gotk4_atk1_TableIface_add_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	ok := iface.AddColumnSelection(_column)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_add_row_selection
+func _gotk4_atk1_TableIface_add_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	ok := iface.AddRowSelection(_row)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_column_deleted
+func _gotk4_atk1_TableIface_column_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _column int     // out
+	var _numDeleted int // out
+
+	_column = int(arg1)
+	_numDeleted = int(arg2)
+
+	iface.ColumnDeleted(_column, _numDeleted)
+}
+
+//export _gotk4_atk1_TableIface_column_inserted
+func _gotk4_atk1_TableIface_column_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _column int      // out
+	var _numInserted int // out
+
+	_column = int(arg1)
+	_numInserted = int(arg2)
+
+	iface.ColumnInserted(_column, _numInserted)
+}
+
+//export _gotk4_atk1_TableIface_column_reordered
+func _gotk4_atk1_TableIface_column_reordered(arg0 *C.AtkTable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	iface.ColumnReordered()
+}
+
+//export _gotk4_atk1_TableIface_get_caption
+func _gotk4_atk1_TableIface_get_caption(arg0 *C.AtkTable) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	object := iface.Caption()
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_column_at_index
+func _gotk4_atk1_TableIface_get_column_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _index_ int // out
+
+	_index_ = int(arg1)
+
+	gint := iface.ColumnAtIndex(_index_)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_column_description
+func _gotk4_atk1_TableIface_get_column_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	utf8 := iface.ColumnDescription(_column)
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_column_extent_at
+func _gotk4_atk1_TableIface_get_column_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	gint := iface.ColumnExtentAt(_row, _column)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_column_header
+func _gotk4_atk1_TableIface_get_column_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	object := iface.ColumnHeader(_column)
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_index_at
+func _gotk4_atk1_TableIface_get_index_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	gint := iface.IndexAt(_row, _column)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_n_columns
+func _gotk4_atk1_TableIface_get_n_columns(arg0 *C.AtkTable) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	gint := iface.NColumns()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_n_rows
+func _gotk4_atk1_TableIface_get_n_rows(arg0 *C.AtkTable) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	gint := iface.NRows()
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_row_at_index
+func _gotk4_atk1_TableIface_get_row_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _index_ int // out
+
+	_index_ = int(arg1)
+
+	gint := iface.RowAtIndex(_index_)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_row_description
+func _gotk4_atk1_TableIface_get_row_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	utf8 := iface.RowDescription(_row)
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_row_extent_at
+func _gotk4_atk1_TableIface_get_row_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	gint := iface.RowExtentAt(_row, _column)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_row_header
+func _gotk4_atk1_TableIface_get_row_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	object := iface.RowHeader(_row)
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_selected_columns
+func _gotk4_atk1_TableIface_get_selected_columns(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _selected **int // out
+
+	_selected = (**int)(unsafe.Pointer(arg1))
+
+	gint := iface.SelectedColumns(_selected)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_selected_rows
+func _gotk4_atk1_TableIface_get_selected_rows(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _selected **int // out
+
+	_selected = (**int)(unsafe.Pointer(arg1))
+
+	gint := iface.SelectedRows(_selected)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_summary
+func _gotk4_atk1_TableIface_get_summary(arg0 *C.AtkTable) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	object := iface.Summary()
+
+	cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	C.g_object_ref(C.gpointer(object.Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_is_column_selected
+func _gotk4_atk1_TableIface_is_column_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	ok := iface.IsColumnSelected(_column)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_is_row_selected
+func _gotk4_atk1_TableIface_is_row_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	ok := iface.IsRowSelected(_row)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_is_selected
+func _gotk4_atk1_TableIface_is_selected(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	ok := iface.IsSelected(_row, _column)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_model_changed
+func _gotk4_atk1_TableIface_model_changed(arg0 *C.AtkTable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	iface.ModelChanged()
+}
+
+//export _gotk4_atk1_TableIface_ref_at
+func _gotk4_atk1_TableIface_ref_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	object := iface.RefAt(_row, _column)
+
+	cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	C.g_object_ref(C.gpointer(object.Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_remove_column_selection
+func _gotk4_atk1_TableIface_remove_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	ok := iface.RemoveColumnSelection(_column)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_remove_row_selection
+func _gotk4_atk1_TableIface_remove_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	ok := iface.RemoveRowSelection(_row)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_row_deleted
+func _gotk4_atk1_TableIface_row_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int        // out
+	var _numDeleted int // out
+
+	_row = int(arg1)
+	_numDeleted = int(arg2)
+
+	iface.RowDeleted(_row, _numDeleted)
+}
+
+//export _gotk4_atk1_TableIface_row_inserted
+func _gotk4_atk1_TableIface_row_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int         // out
+	var _numInserted int // out
+
+	_row = int(arg1)
+	_numInserted = int(arg2)
+
+	iface.RowInserted(_row, _numInserted)
+}
+
+//export _gotk4_atk1_TableIface_row_reordered
+func _gotk4_atk1_TableIface_row_reordered(arg0 *C.AtkTable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	iface.RowReordered()
+}
+
+//export _gotk4_atk1_TableIface_set_caption
+func _gotk4_atk1_TableIface_set_caption(arg0 *C.AtkTable, arg1 *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _caption *ObjectClass // out
+
+	_caption = wrapObject(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.SetCaption(_caption)
+}
+
+//export _gotk4_atk1_TableIface_set_column_description
+func _gotk4_atk1_TableIface_set_column_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _column int         // out
+	var _description string // out
+
+	_column = int(arg1)
+	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	iface.SetColumnDescription(_column, _description)
+}
+
+//export _gotk4_atk1_TableIface_set_column_header
+func _gotk4_atk1_TableIface_set_column_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _column int          // out
+	var _header *ObjectClass // out
+
+	_column = int(arg1)
+	_header = wrapObject(externglib.Take(unsafe.Pointer(arg2)))
+
+	iface.SetColumnHeader(_column, _header)
+}
+
+//export _gotk4_atk1_TableIface_set_row_description
+func _gotk4_atk1_TableIface_set_row_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int            // out
+	var _description string // out
+
+	_row = int(arg1)
+	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	iface.SetRowDescription(_row, _description)
+}
+
+//export _gotk4_atk1_TableIface_set_row_header
+func _gotk4_atk1_TableIface_set_row_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _row int             // out
+	var _header *ObjectClass // out
+
+	_row = int(arg1)
+	_header = wrapObject(externglib.Take(unsafe.Pointer(arg2)))
+
+	iface.SetRowHeader(_row, _header)
+}
+
+//export _gotk4_atk1_TableIface_set_summary
+func _gotk4_atk1_TableIface_set_summary(arg0 *C.AtkTable, arg1 *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableOverrider)
+
+	var _accessible *ObjectClass // out
+
+	_accessible = wrapObject(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.SetSummary(_accessible)
+}
 
 func wrapTable(obj *externglib.Object) *Table {
 	return &Table{

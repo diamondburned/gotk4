@@ -71,6 +71,10 @@ func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 	runtime.KeepAlive(value)
 }
 
+// AccessibleOverrider contains methods that are overridable.
+type AccessibleOverrider interface {
+}
+
 // Accessible: GtkAccessible is an interface for describing UI elements for
 // Assistive Technologies.
 //
@@ -119,6 +123,9 @@ type Accessibler interface {
 }
 
 var _ Accessibler = (*Accessible)(nil)
+
+func ifaceInitAccessibler(gifacePtr, data C.gpointer) {
+}
 
 func wrapAccessible(obj *externglib.Object) *Accessible {
 	return &Accessible{

@@ -10,16 +10,13 @@ import (
 )
 
 var classInterfaceTmpl = gotmpl.NewGoTemplate(`
-	{{ if .Virtuals }}
+	{{ if .GLibTypeStruct }}
 	// {{ .StructName }}Overrider contains methods that are overridable.
-	//
-	// As of right now, interface overriding and subclassing is not supported
-	// yet, so the interface currently has no use.
 	type {{ .StructName }}Overrider interface {
-		{{ range .Virtuals -}}
+		{{ range .GLibTypeStruct.Methods -}}
 		{{ if $.IsInSameFile . -}}
-		{{- GoDoc . 1 TrailingNewLine -}}
-		{{- .Name }}{{ .Tail }}
+		{{- GoDoc .Go 1 TrailingNewLine -}}
+		{{- .Go.Name }}{{ .Go.Tail }}
 		{{ end -}}
 		{{ end -}}
 	}
@@ -73,6 +70,44 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
+	{{ end }}
+
+	{{ if .GLibTypeStruct }}
+	{{ if .IsClass }}
+	func classInit{{ .InterfaceName }}(gclassPtr, data C.gpointer) {
+		C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+		goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+		*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+		{{ if .GLibTypeStruct.Methods }}
+		goval := gbox.Get(uintptr(data))
+		pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gclassPtr))
+		// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+		// pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+		{{ range .GLibTypeStruct.Methods }}
+		if _, ok := goval.(interface{ {{ .Go.Name }}{{ .Go.Tail }} }); ok {
+			pclass.{{ .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
+		}
+		{{ end -}}
+		{{ end -}}
+	}
+	{{ else }}
+	func ifaceInit{{ .InterfaceName }}(gifacePtr, data C.gpointer) {
+		{{- if .GLibTypeStruct.Methods }}
+		iface := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gifacePtr))
+		{{- range .GLibTypeStruct.Methods }}
+		iface.{{ .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
+		{{- end }}
+		{{- end }}
+	}
+	{{ end }}
+
+	{{ range .GLibTypeStruct.Methods }}
+	//export {{ .C.Name }}
+	func {{ .C.Name }}{{ .C.Tail }} {{ .C.Block }}
+	{{ end }}
 	{{ end }}
 
 	{{ $wrapper := .Tree.WrapName false }}
@@ -170,10 +205,17 @@ func (d ifacegenData) Recv() string {
 func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {
 	writer := FileWriterFromType(gen, igen)
 	writer.Header().NeedsExternGLib()
+	writer.Header().Import("unsafe")
+	// TOOD: add gbox
 
 	// Import for implementation types.
 	for _, parent := range igen.Tree.Requires {
 		writer.Header().ImportImpl(parent.Resolved)
+	}
+
+	// These conditions should follow what's in the template.
+	if igen.IsClass() && igen.GLibTypeStruct != nil && len(igen.GLibTypeStruct.Methods) > 0 {
+		writer.Header().ImportCore("gbox")
 	}
 
 	data := ifacegenData{

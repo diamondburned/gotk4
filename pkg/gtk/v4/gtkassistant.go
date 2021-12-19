@@ -15,8 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern int _gotk4_gtk4_AssistantPageFunc(int, gpointer);
 // extern void callbackDelete(gpointer);
-// int _gotk4_gtk4_AssistantPageFunc(int, gpointer);
 import "C"
 
 func init() {
@@ -96,18 +96,21 @@ func (a AssistantPageType) String() string {
 type AssistantPageFunc func(currentPage int) (gint int)
 
 //export _gotk4_gtk4_AssistantPageFunc
-func _gotk4_gtk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_AssistantPageFunc(arg1 C.int, arg2 C.gpointer) (cret C.int) {
+	var fn AssistantPageFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(AssistantPageFunc)
 	}
 
-	var currentPage int // out
+	var _currentPage int // out
 
-	currentPage = int(arg0)
+	_currentPage = int(arg1)
 
-	fn := v.(AssistantPageFunc)
-	gint := fn(currentPage)
+	gint := fn(_currentPage)
 
 	cret = C.int(gint)
 

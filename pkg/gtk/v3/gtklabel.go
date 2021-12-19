@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -17,6 +18,10 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_LabelClass_activate_link(GtkLabel*, gchar*);
+// extern void _gotk4_gtk3_LabelClass_copy_clipboard(GtkLabel*);
+// extern void _gotk4_gtk3_LabelClass_move_cursor(GtkLabel*, GtkMovementStep, gint, gboolean);
+// extern void _gotk4_gtk3_LabelClass_populate_popup(GtkLabel*, GtkMenu*);
 import "C"
 
 func init() {
@@ -26,9 +31,6 @@ func init() {
 }
 
 // LabelOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type LabelOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -71,6 +73,94 @@ type Label struct {
 var (
 	_ Miscer = (*Label)(nil)
 )
+
+func classInitLabeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkLabelClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkLabelClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActivateLink(uri string) bool }); ok {
+		pclass.activate_link = (*[0]byte)(C._gotk4_gtk3_LabelClass_activate_link)
+	}
+
+	if _, ok := goval.(interface{ CopyClipboard() }); ok {
+		pclass.copy_clipboard = (*[0]byte)(C._gotk4_gtk3_LabelClass_copy_clipboard)
+	}
+
+	if _, ok := goval.(interface {
+		MoveCursor(step MovementStep, count int, extendSelection bool)
+	}); ok {
+		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_LabelClass_move_cursor)
+	}
+
+	if _, ok := goval.(interface{ PopulatePopup(menu *Menu) }); ok {
+		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_LabelClass_populate_popup)
+	}
+}
+
+//export _gotk4_gtk3_LabelClass_activate_link
+func _gotk4_gtk3_LabelClass_activate_link(arg0 *C.GtkLabel, arg1 *C.gchar) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActivateLink(uri string) bool })
+
+	var _uri string // out
+
+	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := iface.ActivateLink(_uri)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_LabelClass_copy_clipboard
+func _gotk4_gtk3_LabelClass_copy_clipboard(arg0 *C.GtkLabel) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CopyClipboard() })
+
+	iface.CopyClipboard()
+}
+
+//export _gotk4_gtk3_LabelClass_move_cursor
+func _gotk4_gtk3_LabelClass_move_cursor(arg0 *C.GtkLabel, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MoveCursor(step MovementStep, count int, extendSelection bool)
+	})
+
+	var _step MovementStep    // out
+	var _count int            // out
+	var _extendSelection bool // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+	if arg3 != 0 {
+		_extendSelection = true
+	}
+
+	iface.MoveCursor(_step, _count, _extendSelection)
+}
+
+//export _gotk4_gtk3_LabelClass_populate_popup
+func _gotk4_gtk3_LabelClass_populate_popup(arg0 *C.GtkLabel, arg1 *C.GtkMenu) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PopulatePopup(menu *Menu) })
+
+	var _menu *Menu // out
+
+	_menu = wrapMenu(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.PopulatePopup(_menu)
+}
 
 func wrapLabel(obj *externglib.Object) *Label {
 	return &Label{

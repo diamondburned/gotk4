@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// ConstraintGuideOverrider contains methods that are overridable.
+type ConstraintGuideOverrider interface {
+}
+
 // ConstraintGuide: GtkConstraintGuide is an invisible layout element in a
 // GtkConstraintLayout.
 //
@@ -41,6 +45,14 @@ type ConstraintGuide struct {
 var (
 	_ externglib.Objector = (*ConstraintGuide)(nil)
 )
+
+func classInitConstraintGuider(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapConstraintGuide(obj *externglib.Object) *ConstraintGuide {
 	return &ConstraintGuide{

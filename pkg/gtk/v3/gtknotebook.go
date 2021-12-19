@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -15,6 +16,16 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_NotebookClass_change_current_page(GtkNotebook*, gint);
+// extern gboolean _gotk4_gtk3_NotebookClass_focus_tab(GtkNotebook*, GtkNotebookTab);
+// extern gboolean _gotk4_gtk3_NotebookClass_reorder_tab(GtkNotebook*, GtkDirectionType, gboolean);
+// extern gboolean _gotk4_gtk3_NotebookClass_select_page(GtkNotebook*, gboolean);
+// extern gint _gotk4_gtk3_NotebookClass_insert_page(GtkNotebook*, GtkWidget*, GtkWidget*, GtkWidget*, gint);
+// extern void _gotk4_gtk3_NotebookClass_move_focus_out(GtkNotebook*, GtkDirectionType);
+// extern void _gotk4_gtk3_NotebookClass_page_added(GtkNotebook*, GtkWidget*, guint);
+// extern void _gotk4_gtk3_NotebookClass_page_removed(GtkNotebook*, GtkWidget*, guint);
+// extern void _gotk4_gtk3_NotebookClass_page_reordered(GtkNotebook*, GtkWidget*, guint);
+// extern void _gotk4_gtk3_NotebookClass_switch_page(GtkNotebook*, GtkWidget*, guint);
 import "C"
 
 func init() {
@@ -24,9 +35,6 @@ func init() {
 }
 
 // NotebookOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type NotebookOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -174,6 +182,362 @@ type Notebook struct {
 var (
 	_ Containerer = (*Notebook)(nil)
 )
+
+func classInitNotebooker(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkNotebookClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkNotebookClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ChangeCurrentPage(offset int) bool }); ok {
+		pclass.change_current_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_change_current_page)
+	}
+
+	if _, ok := goval.(interface{ FocusTab(typ NotebookTab) bool }); ok {
+		pclass.focus_tab = (*[0]byte)(C._gotk4_gtk3_NotebookClass_focus_tab)
+	}
+
+	if _, ok := goval.(interface {
+		InsertPage(child, tabLabel, menuLabel Widgetter, position int) int
+	}); ok {
+		pclass.insert_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_insert_page)
+	}
+
+	if _, ok := goval.(interface{ MoveFocusOut(direction DirectionType) }); ok {
+		pclass.move_focus_out = (*[0]byte)(C._gotk4_gtk3_NotebookClass_move_focus_out)
+	}
+
+	if _, ok := goval.(interface {
+		PageAdded(child Widgetter, pageNum uint)
+	}); ok {
+		pclass.page_added = (*[0]byte)(C._gotk4_gtk3_NotebookClass_page_added)
+	}
+
+	if _, ok := goval.(interface {
+		PageRemoved(child Widgetter, pageNum uint)
+	}); ok {
+		pclass.page_removed = (*[0]byte)(C._gotk4_gtk3_NotebookClass_page_removed)
+	}
+
+	if _, ok := goval.(interface {
+		PageReordered(child Widgetter, pageNum uint)
+	}); ok {
+		pclass.page_reordered = (*[0]byte)(C._gotk4_gtk3_NotebookClass_page_reordered)
+	}
+
+	if _, ok := goval.(interface {
+		ReorderTab(direction DirectionType, moveToLast bool) bool
+	}); ok {
+		pclass.reorder_tab = (*[0]byte)(C._gotk4_gtk3_NotebookClass_reorder_tab)
+	}
+
+	if _, ok := goval.(interface{ SelectPage(moveFocus bool) bool }); ok {
+		pclass.select_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_select_page)
+	}
+
+	if _, ok := goval.(interface {
+		SwitchPage(page Widgetter, pageNum uint)
+	}); ok {
+		pclass.switch_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_switch_page)
+	}
+}
+
+//export _gotk4_gtk3_NotebookClass_change_current_page
+func _gotk4_gtk3_NotebookClass_change_current_page(arg0 *C.GtkNotebook, arg1 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ChangeCurrentPage(offset int) bool })
+
+	var _offset int // out
+
+	_offset = int(arg1)
+
+	ok := iface.ChangeCurrentPage(_offset)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_NotebookClass_focus_tab
+func _gotk4_gtk3_NotebookClass_focus_tab(arg0 *C.GtkNotebook, arg1 C.GtkNotebookTab) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ FocusTab(typ NotebookTab) bool })
+
+	var _typ NotebookTab // out
+
+	_typ = NotebookTab(arg1)
+
+	ok := iface.FocusTab(_typ)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_NotebookClass_insert_page
+func _gotk4_gtk3_NotebookClass_insert_page(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 *C.GtkWidget, arg3 *C.GtkWidget, arg4 C.gint) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		InsertPage(child, tabLabel, menuLabel Widgetter, position int) int
+	})
+
+	var _child Widgetter     // out
+	var _tabLabel Widgetter  // out
+	var _menuLabel Widgetter // out
+	var _position int        // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_tabLabel = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg3)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_menuLabel = rv
+	}
+	_position = int(arg4)
+
+	gint := iface.InsertPage(_child, _tabLabel, _menuLabel, _position)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_gtk3_NotebookClass_move_focus_out
+func _gotk4_gtk3_NotebookClass_move_focus_out(arg0 *C.GtkNotebook, arg1 C.GtkDirectionType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MoveFocusOut(direction DirectionType) })
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	iface.MoveFocusOut(_direction)
+}
+
+//export _gotk4_gtk3_NotebookClass_page_added
+func _gotk4_gtk3_NotebookClass_page_added(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PageAdded(child Widgetter, pageNum uint)
+	})
+
+	var _child Widgetter // out
+	var _pageNum uint    // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+	_pageNum = uint(arg2)
+
+	iface.PageAdded(_child, _pageNum)
+}
+
+//export _gotk4_gtk3_NotebookClass_page_removed
+func _gotk4_gtk3_NotebookClass_page_removed(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PageRemoved(child Widgetter, pageNum uint)
+	})
+
+	var _child Widgetter // out
+	var _pageNum uint    // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+	_pageNum = uint(arg2)
+
+	iface.PageRemoved(_child, _pageNum)
+}
+
+//export _gotk4_gtk3_NotebookClass_page_reordered
+func _gotk4_gtk3_NotebookClass_page_reordered(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PageReordered(child Widgetter, pageNum uint)
+	})
+
+	var _child Widgetter // out
+	var _pageNum uint    // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+	_pageNum = uint(arg2)
+
+	iface.PageReordered(_child, _pageNum)
+}
+
+//export _gotk4_gtk3_NotebookClass_reorder_tab
+func _gotk4_gtk3_NotebookClass_reorder_tab(arg0 *C.GtkNotebook, arg1 C.GtkDirectionType, arg2 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ReorderTab(direction DirectionType, moveToLast bool) bool
+	})
+
+	var _direction DirectionType // out
+	var _moveToLast bool         // out
+
+	_direction = DirectionType(arg1)
+	if arg2 != 0 {
+		_moveToLast = true
+	}
+
+	ok := iface.ReorderTab(_direction, _moveToLast)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_NotebookClass_select_page
+func _gotk4_gtk3_NotebookClass_select_page(arg0 *C.GtkNotebook, arg1 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectPage(moveFocus bool) bool })
+
+	var _moveFocus bool // out
+
+	if arg1 != 0 {
+		_moveFocus = true
+	}
+
+	ok := iface.SelectPage(_moveFocus)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_NotebookClass_switch_page
+func _gotk4_gtk3_NotebookClass_switch_page(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SwitchPage(page Widgetter, pageNum uint)
+	})
+
+	var _page Widgetter // out
+	var _pageNum uint   // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_page = rv
+	}
+	_pageNum = uint(arg2)
+
+	iface.SwitchPage(_page, _pageNum)
+}
 
 func wrapNotebook(obj *externglib.Object) *Notebook {
 	return &Notebook{

@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// ToplevelAccessibleOverrider contains methods that are overridable.
+type ToplevelAccessibleOverrider interface {
+}
+
 type ToplevelAccessible struct {
 	_ [0]func() // equal guard
 	atk.ObjectClass
@@ -32,6 +36,14 @@ type ToplevelAccessible struct {
 var (
 	_ externglib.Objector = (*ToplevelAccessible)(nil)
 )
+
+func classInitToplevelAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapToplevelAccessible(obj *externglib.Object) *ToplevelAccessible {
 	return &ToplevelAccessible{

@@ -21,6 +21,10 @@ func init() {
 
 const NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME = "gio-native-volume-monitor"
 
+// NativeVolumeMonitorOverrider contains methods that are overridable.
+type NativeVolumeMonitorOverrider interface {
+}
+
 type NativeVolumeMonitor struct {
 	_ [0]func() // equal guard
 	VolumeMonitor
@@ -40,6 +44,14 @@ type NativeVolumeMonitorrer interface {
 }
 
 var _ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
+
+func classInitNativeVolumeMonitorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNativeVolumeMonitor(obj *externglib.Object) *NativeVolumeMonitor {
 	return &NativeVolumeMonitor{

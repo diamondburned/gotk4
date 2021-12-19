@@ -19,8 +19,12 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gint _gotk4_gtk3_AssistantPageFunc(gint, gpointer);
+// extern void _gotk4_gtk3_AssistantClass_apply(GtkAssistant*);
+// extern void _gotk4_gtk3_AssistantClass_cancel(GtkAssistant*);
+// extern void _gotk4_gtk3_AssistantClass_close(GtkAssistant*);
+// extern void _gotk4_gtk3_AssistantClass_prepare(GtkAssistant*, GtkWidget*);
 // extern void callbackDelete(gpointer);
-// gint _gotk4_gtk3_AssistantPageFunc(gint, gpointer);
 import "C"
 
 func init() {
@@ -95,18 +99,21 @@ func (a AssistantPageType) String() string {
 type AssistantPageFunc func(currentPage int) (gint int)
 
 //export _gotk4_gtk3_AssistantPageFunc
-func _gotk4_gtk3_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) (cret C.gint) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_AssistantPageFunc(arg1 C.gint, arg2 C.gpointer) (cret C.gint) {
+	var fn AssistantPageFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(AssistantPageFunc)
 	}
 
-	var currentPage int // out
+	var _currentPage int // out
 
-	currentPage = int(arg0)
+	_currentPage = int(arg1)
 
-	fn := v.(AssistantPageFunc)
-	gint := fn(currentPage)
+	gint := fn(_currentPage)
 
 	cret = C.gint(gint)
 
@@ -114,9 +121,6 @@ func _gotk4_gtk3_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) (cret C.gint) {
 }
 
 // AssistantOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type AssistantOverrider interface {
 	Apply()
 	Cancel()
@@ -161,6 +165,86 @@ type Assistant struct {
 var (
 	_ Binner = (*Assistant)(nil)
 )
+
+func classInitAssistanter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkAssistantClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkAssistantClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Apply() }); ok {
+		pclass.apply = (*[0]byte)(C._gotk4_gtk3_AssistantClass_apply)
+	}
+
+	if _, ok := goval.(interface{ Cancel() }); ok {
+		pclass.cancel = (*[0]byte)(C._gotk4_gtk3_AssistantClass_cancel)
+	}
+
+	if _, ok := goval.(interface{ Close() }); ok {
+		pclass.close = (*[0]byte)(C._gotk4_gtk3_AssistantClass_close)
+	}
+
+	if _, ok := goval.(interface{ Prepare(page Widgetter) }); ok {
+		pclass.prepare = (*[0]byte)(C._gotk4_gtk3_AssistantClass_prepare)
+	}
+}
+
+//export _gotk4_gtk3_AssistantClass_apply
+func _gotk4_gtk3_AssistantClass_apply(arg0 *C.GtkAssistant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Apply() })
+
+	iface.Apply()
+}
+
+//export _gotk4_gtk3_AssistantClass_cancel
+func _gotk4_gtk3_AssistantClass_cancel(arg0 *C.GtkAssistant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Cancel() })
+
+	iface.Cancel()
+}
+
+//export _gotk4_gtk3_AssistantClass_close
+func _gotk4_gtk3_AssistantClass_close(arg0 *C.GtkAssistant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Close() })
+
+	iface.Close()
+}
+
+//export _gotk4_gtk3_AssistantClass_prepare
+func _gotk4_gtk3_AssistantClass_prepare(arg0 *C.GtkAssistant, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Prepare(page Widgetter) })
+
+	var _page Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_page = rv
+	}
+
+	iface.Prepare(_page)
+}
 
 func wrapAssistant(obj *externglib.Object) *Assistant {
 	return &Assistant{

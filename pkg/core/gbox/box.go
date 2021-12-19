@@ -3,6 +3,7 @@ package gbox
 // #cgo pkg-config: glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
+// extern void callbackDelete(guintptr _0);
 import "C"
 
 import (

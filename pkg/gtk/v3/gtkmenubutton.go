@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// MenuButtonOverrider contains methods that are overridable.
+type MenuButtonOverrider interface {
+}
+
 // MenuButton widget is used to display a popup when clicked on. This popup can
 // be provided either as a Menu, a Popover or an abstract Model.
 //
@@ -114,6 +118,14 @@ var (
 	_ Binner              = (*MenuButton)(nil)
 	_ externglib.Objector = (*MenuButton)(nil)
 )
+
+func classInitMenuButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	return &MenuButton{

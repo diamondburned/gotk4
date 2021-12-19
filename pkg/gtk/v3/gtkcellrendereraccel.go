@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -15,6 +16,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CellRendererAccelClass_accel_cleared(GtkCellRendererAccel*, gchar*);
+// extern void _gotk4_gtk3_CellRendererAccelClass_accel_edited(GtkCellRendererAccel*, gchar*, guint, GdkModifierType, guint);
 import "C"
 
 func init() {
@@ -54,9 +57,6 @@ func (c CellRendererAccelMode) String() string {
 }
 
 // CellRendererAccelOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CellRendererAccelOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -84,6 +84,60 @@ type CellRendererAccel struct {
 var (
 	_ CellRendererer = (*CellRendererAccel)(nil)
 )
+
+func classInitCellRendererAcceller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCellRendererAccelClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCellRendererAccelClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ AccelCleared(pathString string) }); ok {
+		pclass.accel_cleared = (*[0]byte)(C._gotk4_gtk3_CellRendererAccelClass_accel_cleared)
+	}
+
+	if _, ok := goval.(interface {
+		AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
+	}); ok {
+		pclass.accel_edited = (*[0]byte)(C._gotk4_gtk3_CellRendererAccelClass_accel_edited)
+	}
+}
+
+//export _gotk4_gtk3_CellRendererAccelClass_accel_cleared
+func _gotk4_gtk3_CellRendererAccelClass_accel_cleared(arg0 *C.GtkCellRendererAccel, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ AccelCleared(pathString string) })
+
+	var _pathString string // out
+
+	_pathString = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.AccelCleared(_pathString)
+}
+
+//export _gotk4_gtk3_CellRendererAccelClass_accel_edited
+func _gotk4_gtk3_CellRendererAccelClass_accel_edited(arg0 *C.GtkCellRendererAccel, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
+	})
+
+	var _pathString string          // out
+	var _accelKey uint              // out
+	var _accelMods gdk.ModifierType // out
+	var _hardwareKeycode uint       // out
+
+	_pathString = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_accelKey = uint(arg2)
+	_accelMods = gdk.ModifierType(arg3)
+	_hardwareKeycode = uint(arg4)
+
+	iface.AccelEdited(_pathString, _accelKey, _accelMods, _hardwareKeycode)
+}
 
 func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
 	return &CellRendererAccel{

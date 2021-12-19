@@ -26,6 +26,10 @@ func init() {
 	})
 }
 
+// OffscreenWindowOverrider contains methods that are overridable.
+type OffscreenWindowOverrider interface {
+}
+
 // OffscreenWindow is strictly intended to be used for obtaining snapshots of
 // widgets that are not part of a normal widget hierarchy. Since OffscreenWindow
 // is a toplevel widget you cannot obtain snapshots of a full window with it
@@ -49,6 +53,14 @@ type OffscreenWindow struct {
 var (
 	_ Binner = (*OffscreenWindow)(nil)
 )
+
+func classInitOffscreenWindower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 	return &OffscreenWindow{

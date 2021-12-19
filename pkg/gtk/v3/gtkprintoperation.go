@@ -18,7 +18,17 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_PageSetupDoneFunc(GtkPageSetup*, gpointer);
+// extern gboolean _gotk4_gtk3_PrintOperationClass_paginate(GtkPrintOperation*, GtkPrintContext*);
+// extern gboolean _gotk4_gtk3_PrintOperationClass_preview(GtkPrintOperation*, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*);
+// extern void _gotk4_gtk3_PageSetupDoneFunc(GtkPageSetup*, gpointer);
+// extern void _gotk4_gtk3_PrintOperationClass_begin_print(GtkPrintOperation*, GtkPrintContext*);
+// extern void _gotk4_gtk3_PrintOperationClass_custom_widget_apply(GtkPrintOperation*, GtkWidget*);
+// extern void _gotk4_gtk3_PrintOperationClass_done(GtkPrintOperation*, GtkPrintOperationResult);
+// extern void _gotk4_gtk3_PrintOperationClass_draw_page(GtkPrintOperation*, GtkPrintContext*, gint);
+// extern void _gotk4_gtk3_PrintOperationClass_end_print(GtkPrintOperation*, GtkPrintContext*);
+// extern void _gotk4_gtk3_PrintOperationClass_request_page_setup(GtkPrintOperation*, GtkPrintContext*, gint, GtkPageSetup*);
+// extern void _gotk4_gtk3_PrintOperationClass_status_changed(GtkPrintOperation*);
+// extern void _gotk4_gtk3_PrintOperationClass_update_custom_widget(GtkPrintOperation*, GtkWidget*, GtkPageSetup*, GtkPrintSettings*);
 import "C"
 
 func init() {
@@ -227,18 +237,21 @@ func (p PrintStatus) String() string {
 type PageSetupDoneFunc func(pageSetup *PageSetup)
 
 //export _gotk4_gtk3_PageSetupDoneFunc
-func _gotk4_gtk3_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_PageSetupDoneFunc(arg1 *C.GtkPageSetup, arg2 C.gpointer) {
+	var fn PageSetupDoneFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(PageSetupDoneFunc)
 	}
 
-	var pageSetup *PageSetup // out
+	var _pageSetup *PageSetup // out
 
-	pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg0)))
+	_pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg1)))
 
-	fn := v.(PageSetupDoneFunc)
-	fn(pageSetup)
+	fn(_pageSetup)
 }
 
 // PrintRunPageSetupDialog runs a page setup dialog, letting the user modify the
@@ -324,9 +337,6 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 }
 
 // PrintOperationOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PrintOperationOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -444,6 +454,272 @@ type PrintOperation struct {
 var (
 	_ externglib.Objector = (*PrintOperation)(nil)
 )
+
+func classInitPrintOperationer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkPrintOperationClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkPrintOperationClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ BeginPrint(context *PrintContext) }); ok {
+		pclass.begin_print = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_begin_print)
+	}
+
+	if _, ok := goval.(interface{ CustomWidgetApply(widget Widgetter) }); ok {
+		pclass.custom_widget_apply = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_custom_widget_apply)
+	}
+
+	if _, ok := goval.(interface {
+		Done(result PrintOperationResult)
+	}); ok {
+		pclass.done = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_done)
+	}
+
+	if _, ok := goval.(interface {
+		DrawPage(context *PrintContext, pageNr int)
+	}); ok {
+		pclass.draw_page = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_draw_page)
+	}
+
+	if _, ok := goval.(interface{ EndPrint(context *PrintContext) }); ok {
+		pclass.end_print = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_end_print)
+	}
+
+	if _, ok := goval.(interface {
+		Paginate(context *PrintContext) bool
+	}); ok {
+		pclass.paginate = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_paginate)
+	}
+
+	if _, ok := goval.(interface {
+		Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
+	}); ok {
+		pclass.preview = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_preview)
+	}
+
+	if _, ok := goval.(interface {
+		RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
+	}); ok {
+		pclass.request_page_setup = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_request_page_setup)
+	}
+
+	if _, ok := goval.(interface{ StatusChanged() }); ok {
+		pclass.status_changed = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_status_changed)
+	}
+
+	if _, ok := goval.(interface {
+		UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
+	}); ok {
+		pclass.update_custom_widget = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_update_custom_widget)
+	}
+}
+
+//export _gotk4_gtk3_PrintOperationClass_begin_print
+func _gotk4_gtk3_PrintOperationClass_begin_print(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ BeginPrint(context *PrintContext) })
+
+	var _context *PrintContext // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.BeginPrint(_context)
+}
+
+//export _gotk4_gtk3_PrintOperationClass_custom_widget_apply
+func _gotk4_gtk3_PrintOperationClass_custom_widget_apply(arg0 *C.GtkPrintOperation, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CustomWidgetApply(widget Widgetter) })
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	iface.CustomWidgetApply(_widget)
+}
+
+//export _gotk4_gtk3_PrintOperationClass_done
+func _gotk4_gtk3_PrintOperationClass_done(arg0 *C.GtkPrintOperation, arg1 C.GtkPrintOperationResult) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Done(result PrintOperationResult)
+	})
+
+	var _result PrintOperationResult // out
+
+	_result = PrintOperationResult(arg1)
+
+	iface.Done(_result)
+}
+
+//export _gotk4_gtk3_PrintOperationClass_draw_page
+func _gotk4_gtk3_PrintOperationClass_draw_page(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DrawPage(context *PrintContext, pageNr int)
+	})
+
+	var _context *PrintContext // out
+	var _pageNr int            // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+	_pageNr = int(arg2)
+
+	iface.DrawPage(_context, _pageNr)
+}
+
+//export _gotk4_gtk3_PrintOperationClass_end_print
+func _gotk4_gtk3_PrintOperationClass_end_print(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ EndPrint(context *PrintContext) })
+
+	var _context *PrintContext // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.EndPrint(_context)
+}
+
+//export _gotk4_gtk3_PrintOperationClass_paginate
+func _gotk4_gtk3_PrintOperationClass_paginate(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Paginate(context *PrintContext) bool
+	})
+
+	var _context *PrintContext // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+
+	ok := iface.Paginate(_context)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_PrintOperationClass_preview
+func _gotk4_gtk3_PrintOperationClass_preview(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintOperationPreview, arg2 *C.GtkPrintContext, arg3 *C.GtkWindow) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
+	})
+
+	var _preview PrintOperationPreviewer // out
+	var _context *PrintContext           // out
+	var _parent *Window                  // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.PrintOperationPreviewer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(PrintOperationPreviewer)
+			return ok
+		})
+		rv, ok := casted.(PrintOperationPreviewer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.PrintOperationPreviewer")
+		}
+		_preview = rv
+	}
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg2)))
+	_parent = wrapWindow(externglib.Take(unsafe.Pointer(arg3)))
+
+	ok := iface.Preview(_preview, _context, _parent)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_PrintOperationClass_request_page_setup
+func _gotk4_gtk3_PrintOperationClass_request_page_setup(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext, arg2 C.gint, arg3 *C.GtkPageSetup) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
+	})
+
+	var _context *PrintContext // out
+	var _pageNr int            // out
+	var _setup *PageSetup      // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+	_pageNr = int(arg2)
+	_setup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg3)))
+
+	iface.RequestPageSetup(_context, _pageNr, _setup)
+}
+
+//export _gotk4_gtk3_PrintOperationClass_status_changed
+func _gotk4_gtk3_PrintOperationClass_status_changed(arg0 *C.GtkPrintOperation) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StatusChanged() })
+
+	iface.StatusChanged()
+}
+
+//export _gotk4_gtk3_PrintOperationClass_update_custom_widget
+func _gotk4_gtk3_PrintOperationClass_update_custom_widget(arg0 *C.GtkPrintOperation, arg1 *C.GtkWidget, arg2 *C.GtkPageSetup, arg3 *C.GtkPrintSettings) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
+	})
+
+	var _widget Widgetter        // out
+	var _setup *PageSetup        // out
+	var _settings *PrintSettings // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_setup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg2)))
+	_settings = wrapPrintSettings(externglib.Take(unsafe.Pointer(arg3)))
+
+	iface.UpdateCustomWidget(_widget, _setup, _settings)
+}
 
 func wrapPrintOperation(obj *externglib.Object) *PrintOperation {
 	return &PrintOperation{

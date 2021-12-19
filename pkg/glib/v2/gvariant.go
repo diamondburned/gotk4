@@ -2734,7 +2734,9 @@ func VariantParseErrorPrintContext(err error, sourceStr string) string {
 	var _arg2 *C.gchar  // out
 	var _cret *C.gchar  // in
 
-	_arg1 = (*C.GError)(gerror.New(err))
+	if err != nil {
+		_arg1 = (*C.GError)(gerror.New(err))
+	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(sourceStr)))
 	defer C.free(unsafe.Pointer(_arg2))
 

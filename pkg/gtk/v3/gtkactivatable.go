@@ -14,6 +14,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_ActivatableIface_sync_action_properties(GtkActivatable*, GtkAction*);
+// extern void _gotk4_gtk3_ActivatableIface_update(GtkActivatable*, GtkAction*, gchar*);
 import "C"
 
 func init() {
@@ -23,9 +25,6 @@ func init() {
 }
 
 // ActivatableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ActivatableOverrider interface {
 	// SyncActionProperties: this is called to update the activatable
 	// completely, this is called internally when the Activatable:related-action
@@ -317,6 +316,40 @@ type Activatabler interface {
 }
 
 var _ Activatabler = (*Activatable)(nil)
+
+func ifaceInitActivatabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkActivatableIface)(unsafe.Pointer(gifacePtr))
+	iface.sync_action_properties = (*[0]byte)(C._gotk4_gtk3_ActivatableIface_sync_action_properties)
+	iface.update = (*[0]byte)(C._gotk4_gtk3_ActivatableIface_update)
+}
+
+//export _gotk4_gtk3_ActivatableIface_sync_action_properties
+func _gotk4_gtk3_ActivatableIface_sync_action_properties(arg0 *C.GtkActivatable, arg1 *C.GtkAction) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActivatableOverrider)
+
+	var _action *Action // out
+
+	if arg1 != nil {
+		_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	}
+
+	iface.SyncActionProperties(_action)
+}
+
+//export _gotk4_gtk3_ActivatableIface_update
+func _gotk4_gtk3_ActivatableIface_update(arg0 *C.GtkActivatable, arg1 *C.GtkAction, arg2 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActivatableOverrider)
+
+	var _action *Action      // out
+	var _propertyName string // out
+
+	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	_propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	iface.Update(_action, _propertyName)
+}
 
 func wrapActivatable(obj *externglib.Object) *Activatable {
 	return &Activatable{

@@ -6,12 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern void _gotk4_atk1_ObjectFactoryClass_invalidate(AtkObjectFactory*);
 import "C"
 
 func init() {
@@ -21,9 +23,6 @@ func init() {
 }
 
 // ObjectFactoryOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ObjectFactoryOverrider interface {
 	// Invalidate: inform factory that it is no longer being used to create
 	// accessibles. When called, factory may need to inform Objects which it has
@@ -44,6 +43,30 @@ type ObjectFactory struct {
 var (
 	_ externglib.Objector = (*ObjectFactory)(nil)
 )
+
+func classInitObjectFactorier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.AtkObjectFactoryClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.AtkObjectFactoryClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Invalidate() }); ok {
+		pclass.invalidate = (*[0]byte)(C._gotk4_atk1_ObjectFactoryClass_invalidate)
+	}
+}
+
+//export _gotk4_atk1_ObjectFactoryClass_invalidate
+func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.AtkObjectFactory) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Invalidate() })
+
+	iface.Invalidate()
+}
 
 func wrapObjectFactory(obj *externglib.Object) *ObjectFactory {
 	return &ObjectFactory{

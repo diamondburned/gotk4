@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// TearoffMenuItemOverrider contains methods that are overridable.
+type TearoffMenuItemOverrider interface {
+}
+
 // TearoffMenuItem is a special MenuItem which is used to tear off and reattach
 // its menu.
 //
@@ -45,6 +49,14 @@ var (
 	_ Binner              = (*TearoffMenuItem)(nil)
 	_ externglib.Objector = (*TearoffMenuItem)(nil)
 )
+
+func classInitTearoffMenuItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 	return &TearoffMenuItem{

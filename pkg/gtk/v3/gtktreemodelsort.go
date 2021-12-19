@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// TreeModelSortOverrider contains methods that are overridable.
+type TreeModelSortOverrider interface {
+}
+
 // TreeModelSort is a model which implements the TreeSortable interface. It does
 // not hold any data itself, but rather is created with a child model and
 // proxies its data. It has identical column types to this child model, and the
@@ -89,6 +93,14 @@ type TreeModelSort struct {
 var (
 	_ externglib.Objector = (*TreeModelSort)(nil)
 )
+
+func classInitTreeModelSorter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTreeModelSort(obj *externglib.Object) *TreeModelSort {
 	return &TreeModelSort{

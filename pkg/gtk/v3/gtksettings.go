@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// SettingsOverrider contains methods that are overridable.
+type SettingsOverrider interface {
+}
+
 // Settings provide a mechanism to share global settings between applications.
 //
 // On the X window system, this sharing is realized by an XSettings
@@ -64,6 +68,14 @@ type Settings struct {
 var (
 	_ externglib.Objector = (*Settings)(nil)
 )
+
+func classInitSettingser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{

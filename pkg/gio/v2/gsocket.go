@@ -25,6 +25,10 @@ func init() {
 	})
 }
 
+// SocketOverrider contains methods that are overridable.
+type SocketOverrider interface {
+}
+
 // Socket is a low-level networking primitive. It is a more or less direct
 // mapping of the BSD socket API in a portable GObject based API. It supports
 // both the UNIX socket implementations and winsock2 on Windows.
@@ -85,6 +89,14 @@ type Socket struct {
 var (
 	_ externglib.Objector = (*Socket)(nil)
 )
+
+func classInitSocketter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{

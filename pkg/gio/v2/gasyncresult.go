@@ -14,6 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GObject* _gotk4_gio2_AsyncResultIface_get_source_object(GAsyncResult*);
+// extern gboolean _gotk4_gio2_AsyncResultIface_is_tagged(GAsyncResult*, gpointer);
+// extern gpointer _gotk4_gio2_AsyncResultIface_get_user_data(GAsyncResult*);
 import "C"
 
 func init() {
@@ -23,9 +26,6 @@ func init() {
 }
 
 // AsyncResultOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type AsyncResultOverrider interface {
 	// SourceObject gets the source object from a Result.
 	//
@@ -162,6 +162,58 @@ type AsyncResulter interface {
 }
 
 var _ AsyncResulter = (*AsyncResult)(nil)
+
+func ifaceInitAsyncResulter(gifacePtr, data C.gpointer) {
+	iface := (*C.GAsyncResultIface)(unsafe.Pointer(gifacePtr))
+	iface.get_source_object = (*[0]byte)(C._gotk4_gio2_AsyncResultIface_get_source_object)
+	iface.get_user_data = (*[0]byte)(C._gotk4_gio2_AsyncResultIface_get_user_data)
+	iface.is_tagged = (*[0]byte)(C._gotk4_gio2_AsyncResultIface_is_tagged)
+}
+
+//export _gotk4_gio2_AsyncResultIface_get_source_object
+func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.GAsyncResult) (cret *C.GObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AsyncResultOverrider)
+
+	object := iface.SourceObject()
+
+	if object != nil {
+		cret = (*C.GObject)(unsafe.Pointer(object.Native()))
+		C.g_object_ref(C.gpointer(object.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AsyncResultIface_get_user_data
+func _gotk4_gio2_AsyncResultIface_get_user_data(arg0 *C.GAsyncResult) (cret C.gpointer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AsyncResultOverrider)
+
+	gpointer := iface.UserData()
+
+	cret = (C.gpointer)(unsafe.Pointer(gpointer))
+
+	return cret
+}
+
+//export _gotk4_gio2_AsyncResultIface_is_tagged
+func _gotk4_gio2_AsyncResultIface_is_tagged(arg0 *C.GAsyncResult, arg1 C.gpointer) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AsyncResultOverrider)
+
+	var _sourceTag cgo.Handle // out
+
+	_sourceTag = (cgo.Handle)(unsafe.Pointer(arg1))
+
+	ok := iface.IsTagged(_sourceTag)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapAsyncResult(obj *externglib.Object) *AsyncResult {
 	return &AsyncResult{

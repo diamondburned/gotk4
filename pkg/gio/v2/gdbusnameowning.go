@@ -19,40 +19,46 @@ import "C"
 type BusAcquiredCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusAcquiredCallback
-func _gotk4_gio2_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_BusAcquiredCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
+	var fn BusAcquiredCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(BusAcquiredCallback)
 	}
 
-	var connection *DBusConnection // out
-	var name string                // out
+	var _connection *DBusConnection // out
+	var _name string                // out
 
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
-	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
-	fn := v.(BusAcquiredCallback)
-	fn(connection, name)
+	fn(_connection, _name)
 }
 
 // BusNameAcquiredCallback: invoked when the name is acquired.
 type BusNameAcquiredCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusNameAcquiredCallback
-func _gotk4_gio2_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_BusNameAcquiredCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
+	var fn BusNameAcquiredCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(BusNameAcquiredCallback)
 	}
 
-	var connection *DBusConnection // out
-	var name string                // out
+	var _connection *DBusConnection // out
+	var _name string                // out
 
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
-	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
-	fn := v.(BusNameAcquiredCallback)
-	fn(connection, name)
+	fn(_connection, _name)
 }
 
 // BusNameLostCallback: invoked when the name is lost or connection has been
@@ -60,20 +66,23 @@ func _gotk4_gio2_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar,
 type BusNameLostCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusNameLostCallback
-func _gotk4_gio2_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_BusNameLostCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
+	var fn BusNameLostCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(BusNameLostCallback)
 	}
 
-	var connection *DBusConnection // out
-	var name string                // out
+	var _connection *DBusConnection // out
+	var _name string                // out
 
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
-	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
-	fn := v.(BusNameLostCallback)
-	fn(connection, name)
+	fn(_connection, _name)
 }
 
 // BusUnownName stops owning a name.

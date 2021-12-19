@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// TextCellAccessibleOverrider contains methods that are overridable.
+type TextCellAccessibleOverrider interface {
+}
+
 type TextCellAccessible struct {
 	_ [0]func() // equal guard
 	RendererCellAccessible
@@ -34,6 +38,14 @@ type TextCellAccessible struct {
 var (
 	_ externglib.Objector = (*TextCellAccessible)(nil)
 )
+
+func classInitTextCellAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 	return &TextCellAccessible{

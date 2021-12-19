@@ -23,8 +23,86 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern AtkObject* _gotk4_gtk3_WidgetClass_get_accessible(GtkWidget*);
+// extern GtkSizeRequestMode _gotk4_gtk3_WidgetClass_get_request_mode(GtkWidget*);
+// extern gboolean _gotk4_gtk3_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
+// extern gboolean _gotk4_gtk3_WidgetClass_button_press_event(GtkWidget*, GdkEventButton*);
+// extern gboolean _gotk4_gtk3_WidgetClass_button_release_event(GtkWidget*, GdkEventButton*);
+// extern gboolean _gotk4_gtk3_WidgetClass_can_activate_accel(GtkWidget*, guint);
+// extern gboolean _gotk4_gtk3_WidgetClass_configure_event(GtkWidget*, GdkEventConfigure*);
+// extern gboolean _gotk4_gtk3_WidgetClass_damage_event(GtkWidget*, GdkEventExpose*);
+// extern gboolean _gotk4_gtk3_WidgetClass_delete_event(GtkWidget*, GdkEventAny*);
+// extern gboolean _gotk4_gtk3_WidgetClass_destroy_event(GtkWidget*, GdkEventAny*);
+// extern gboolean _gotk4_gtk3_WidgetClass_drag_drop(GtkWidget*, GdkDragContext*, gint, gint, guint);
+// extern gboolean _gotk4_gtk3_WidgetClass_drag_failed(GtkWidget*, GdkDragContext*, GtkDragResult);
+// extern gboolean _gotk4_gtk3_WidgetClass_drag_motion(GtkWidget*, GdkDragContext*, gint, gint, guint);
+// extern gboolean _gotk4_gtk3_WidgetClass_draw(GtkWidget*, cairo_t*);
+// extern gboolean _gotk4_gtk3_WidgetClass_enter_notify_event(GtkWidget*, GdkEventCrossing*);
+// extern gboolean _gotk4_gtk3_WidgetClass_focus(GtkWidget*, GtkDirectionType);
+// extern gboolean _gotk4_gtk3_WidgetClass_focus_in_event(GtkWidget*, GdkEventFocus*);
+// extern gboolean _gotk4_gtk3_WidgetClass_focus_out_event(GtkWidget*, GdkEventFocus*);
+// extern gboolean _gotk4_gtk3_WidgetClass_grab_broken_event(GtkWidget*, GdkEventGrabBroken*);
+// extern gboolean _gotk4_gtk3_WidgetClass_key_press_event(GtkWidget*, GdkEventKey*);
+// extern gboolean _gotk4_gtk3_WidgetClass_key_release_event(GtkWidget*, GdkEventKey*);
+// extern gboolean _gotk4_gtk3_WidgetClass_keynav_failed(GtkWidget*, GtkDirectionType);
+// extern gboolean _gotk4_gtk3_WidgetClass_leave_notify_event(GtkWidget*, GdkEventCrossing*);
+// extern gboolean _gotk4_gtk3_WidgetClass_map_event(GtkWidget*, GdkEventAny*);
+// extern gboolean _gotk4_gtk3_WidgetClass_mnemonic_activate(GtkWidget*, gboolean);
+// extern gboolean _gotk4_gtk3_WidgetClass_motion_notify_event(GtkWidget*, GdkEventMotion*);
+// extern gboolean _gotk4_gtk3_WidgetClass_popup_menu(GtkWidget*);
+// extern gboolean _gotk4_gtk3_WidgetClass_property_notify_event(GtkWidget*, GdkEventProperty*);
+// extern gboolean _gotk4_gtk3_WidgetClass_proximity_in_event(GtkWidget*, GdkEventProximity*);
+// extern gboolean _gotk4_gtk3_WidgetClass_proximity_out_event(GtkWidget*, GdkEventProximity*);
+// extern gboolean _gotk4_gtk3_WidgetClass_query_tooltip(GtkWidget*, gint, gint, gboolean, GtkTooltip*);
+// extern gboolean _gotk4_gtk3_WidgetClass_scroll_event(GtkWidget*, GdkEventScroll*);
+// extern gboolean _gotk4_gtk3_WidgetClass_selection_clear_event(GtkWidget*, GdkEventSelection*);
+// extern gboolean _gotk4_gtk3_WidgetClass_selection_notify_event(GtkWidget*, GdkEventSelection*);
+// extern gboolean _gotk4_gtk3_WidgetClass_selection_request_event(GtkWidget*, GdkEventSelection*);
+// extern gboolean _gotk4_gtk3_WidgetClass_show_help(GtkWidget*, GtkWidgetHelpType);
+// extern gboolean _gotk4_gtk3_WidgetClass_touch_event(GtkWidget*, GdkEventTouch*);
+// extern gboolean _gotk4_gtk3_WidgetClass_unmap_event(GtkWidget*, GdkEventAny*);
+// extern gboolean _gotk4_gtk3_WidgetClass_visibility_notify_event(GtkWidget*, GdkEventVisibility*);
+// extern gboolean _gotk4_gtk3_WidgetClass_window_state_event(GtkWidget*, GdkEventWindowState*);
+// extern void _gotk4_gtk3_WidgetClass_adjust_baseline_allocation(GtkWidget*, gint*);
+// extern void _gotk4_gtk3_WidgetClass_adjust_baseline_request(GtkWidget*, gint*, gint*);
+// extern void _gotk4_gtk3_WidgetClass_adjust_size_allocation(GtkWidget*, GtkOrientation, gint*, gint*, gint*, gint*);
+// extern void _gotk4_gtk3_WidgetClass_adjust_size_request(GtkWidget*, GtkOrientation, gint*, gint*);
+// extern void _gotk4_gtk3_WidgetClass_composited_changed(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_destroy(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_direction_changed(GtkWidget*, GtkTextDirection);
+// extern void _gotk4_gtk3_WidgetClass_drag_begin(GtkWidget*, GdkDragContext*);
+// extern void _gotk4_gtk3_WidgetClass_drag_data_delete(GtkWidget*, GdkDragContext*);
+// extern void _gotk4_gtk3_WidgetClass_drag_data_get(GtkWidget*, GdkDragContext*, GtkSelectionData*, guint, guint);
+// extern void _gotk4_gtk3_WidgetClass_drag_data_received(GtkWidget*, GdkDragContext*, gint, gint, GtkSelectionData*, guint, guint);
+// extern void _gotk4_gtk3_WidgetClass_drag_end(GtkWidget*, GdkDragContext*);
+// extern void _gotk4_gtk3_WidgetClass_drag_leave(GtkWidget*, GdkDragContext*, guint);
+// extern void _gotk4_gtk3_WidgetClass_get_preferred_height(GtkWidget*, gint*, gint*);
+// extern void _gotk4_gtk3_WidgetClass_get_preferred_height_and_baseline_for_width(GtkWidget*, gint, gint*, gint*, gint*, gint*);
+// extern void _gotk4_gtk3_WidgetClass_get_preferred_height_for_width(GtkWidget*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_WidgetClass_get_preferred_width(GtkWidget*, gint*, gint*);
+// extern void _gotk4_gtk3_WidgetClass_get_preferred_width_for_height(GtkWidget*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_WidgetClass_grab_focus(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_grab_notify(GtkWidget*, gboolean);
+// extern void _gotk4_gtk3_WidgetClass_hide(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_hierarchy_changed(GtkWidget*, GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_map(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_move_focus(GtkWidget*, GtkDirectionType);
+// extern void _gotk4_gtk3_WidgetClass_parent_set(GtkWidget*, GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_queue_draw_region(GtkWidget*, cairo_region_t*);
+// extern void _gotk4_gtk3_WidgetClass_realize(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_screen_changed(GtkWidget*, GdkScreen*);
+// extern void _gotk4_gtk3_WidgetClass_selection_get(GtkWidget*, GtkSelectionData*, guint, guint);
+// extern void _gotk4_gtk3_WidgetClass_selection_received(GtkWidget*, GtkSelectionData*, guint);
+// extern void _gotk4_gtk3_WidgetClass_show(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_show_all(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_size_allocate(GtkWidget*, GtkAllocation*);
+// extern void _gotk4_gtk3_WidgetClass_state_changed(GtkWidget*, GtkStateType);
+// extern void _gotk4_gtk3_WidgetClass_state_flags_changed(GtkWidget*, GtkStateFlags);
+// extern void _gotk4_gtk3_WidgetClass_style_set(GtkWidget*, GtkStyle*);
+// extern void _gotk4_gtk3_WidgetClass_style_updated(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_unmap(GtkWidget*);
+// extern void _gotk4_gtk3_WidgetClass_unrealize(GtkWidget*);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk3_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
 import "C"
 
 func init() {
@@ -72,16 +150,20 @@ func (w WidgetHelpType) String() string {
 type Callback func(widget Widgetter)
 
 //export _gotk4_gtk3_Callback
-func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_Callback(arg1 *C.GtkWidget, arg2 C.gpointer) {
+	var fn Callback
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(Callback)
 	}
 
-	var widget Widgetter // out
+	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -95,11 +177,10 @@ func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
-		widget = rv
+		_widget = rv
 	}
 
-	fn := v.(Callback)
-	fn(widget)
+	fn(_widget)
 }
 
 // TickCallback: callback type for adding a function to update animations. See
@@ -107,17 +188,21 @@ func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 type TickCallback func(widget Widgetter, frameClock gdk.FrameClocker) (ok bool)
 
 //export _gotk4_gtk3_TickCallback
-func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_TickCallback(arg1 *C.GtkWidget, arg2 *C.GdkFrameClock, arg3 C.gpointer) (cret C.gboolean) {
+	var fn TickCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TickCallback)
 	}
 
-	var widget Widgetter            // out
-	var frameClock gdk.FrameClocker // out
+	var _widget Widgetter            // out
+	var _frameClock gdk.FrameClocker // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -131,10 +216,10 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
-		widget = rv
+		_widget = rv
 	}
 	{
-		objptr := unsafe.Pointer(arg1)
+		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gdk.FrameClocker is nil")
 		}
@@ -148,11 +233,10 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.FrameClocker")
 		}
-		frameClock = rv
+		_frameClock = rv
 	}
 
-	fn := v.(TickCallback)
-	ok := fn(widget, frameClock)
+	ok := fn(_widget, _frameClock)
 
 	if ok {
 		cret = C.TRUE
@@ -231,9 +315,6 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Wind
 }
 
 // WidgetOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type WidgetOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -413,24 +494,6 @@ type WidgetOverrider interface {
 	// The function returns the following values:
 	//
 	EnterNotifyEvent(event *gdk.EventCrossing) bool
-	// Event: rarely-used function. This function is used to emit the event
-	// signals on a widget (those signals should never be emitted without using
-	// this function to do so). If you want to synthesize an event though, don’t
-	// use this function; instead, use gtk_main_do_event() so the event will
-	// behave as if it were in the event queue. Don’t synthesize expose events;
-	// instead, use gdk_window_invalidate_rect() to invalidate a region of the
-	// window.
-	//
-	// The function takes the following parameters:
-	//
-	//    - event: Event.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: return from the event signal emission (TRUE if the event was
-	//      handled).
-	//
-	Event(event *gdk.Event) bool
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -983,6 +1046,1822 @@ type Widgetter interface {
 }
 
 var _ Widgetter = (*Widget)(nil)
+
+func classInitWidgetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkWidgetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ AdjustBaselineAllocation(baseline *int) }); ok {
+		pclass.adjust_baseline_allocation = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_baseline_allocation)
+	}
+
+	if _, ok := goval.(interface {
+		AdjustBaselineRequest(minimumBaseline, naturalBaseline *int)
+	}); ok {
+		pclass.adjust_baseline_request = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_baseline_request)
+	}
+
+	if _, ok := goval.(interface {
+		AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int)
+	}); ok {
+		pclass.adjust_size_allocation = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_size_allocation)
+	}
+
+	if _, ok := goval.(interface {
+		AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int)
+	}); ok {
+		pclass.adjust_size_request = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_size_request)
+	}
+
+	if _, ok := goval.(interface {
+		ButtonPressEvent(event *gdk.EventButton) bool
+	}); ok {
+		pclass.button_press_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_button_press_event)
+	}
+
+	if _, ok := goval.(interface {
+		ButtonReleaseEvent(event *gdk.EventButton) bool
+	}); ok {
+		pclass.button_release_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_button_release_event)
+	}
+
+	if _, ok := goval.(interface{ CanActivateAccel(signalId uint) bool }); ok {
+		pclass.can_activate_accel = (*[0]byte)(C._gotk4_gtk3_WidgetClass_can_activate_accel)
+	}
+
+	if _, ok := goval.(interface{ CompositedChanged() }); ok {
+		pclass.composited_changed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_composited_changed)
+	}
+
+	if _, ok := goval.(interface {
+		ConfigureEvent(event *gdk.EventConfigure) bool
+	}); ok {
+		pclass.configure_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_configure_event)
+	}
+
+	if _, ok := goval.(interface {
+		DamageEvent(event *gdk.EventExpose) bool
+	}); ok {
+		pclass.damage_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_damage_event)
+	}
+
+	if _, ok := goval.(interface {
+		DeleteEvent(event *gdk.EventAny) bool
+	}); ok {
+		pclass.delete_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_delete_event)
+	}
+
+	if _, ok := goval.(interface{ Destroy() }); ok {
+		pclass.destroy = (*[0]byte)(C._gotk4_gtk3_WidgetClass_destroy)
+	}
+
+	if _, ok := goval.(interface {
+		DestroyEvent(event *gdk.EventAny) bool
+	}); ok {
+		pclass.destroy_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_destroy_event)
+	}
+
+	if _, ok := goval.(interface {
+		DirectionChanged(previousDirection TextDirection)
+	}); ok {
+		pclass.direction_changed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_direction_changed)
+	}
+
+	if _, ok := goval.(interface {
+		DragBegin(context *gdk.DragContext)
+	}); ok {
+		pclass.drag_begin = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_begin)
+	}
+
+	if _, ok := goval.(interface {
+		DragDataDelete(context *gdk.DragContext)
+	}); ok {
+		pclass.drag_data_delete = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_data_delete)
+	}
+
+	if _, ok := goval.(interface {
+		DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint)
+	}); ok {
+		pclass.drag_data_get = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_data_get)
+	}
+
+	if _, ok := goval.(interface {
+		DragDataReceived(context *gdk.DragContext, x, y int, selectionData *SelectionData, info, time_ uint)
+	}); ok {
+		pclass.drag_data_received = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_data_received)
+	}
+
+	if _, ok := goval.(interface {
+		DragDrop(context *gdk.DragContext, x, y int, time_ uint) bool
+	}); ok {
+		pclass.drag_drop = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_drop)
+	}
+
+	if _, ok := goval.(interface {
+		DragEnd(context *gdk.DragContext)
+	}); ok {
+		pclass.drag_end = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_end)
+	}
+
+	if _, ok := goval.(interface {
+		DragFailed(context *gdk.DragContext, result DragResult) bool
+	}); ok {
+		pclass.drag_failed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_failed)
+	}
+
+	if _, ok := goval.(interface {
+		DragLeave(context *gdk.DragContext, time_ uint)
+	}); ok {
+		pclass.drag_leave = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_leave)
+	}
+
+	if _, ok := goval.(interface {
+		DragMotion(context *gdk.DragContext, x, y int, time_ uint) bool
+	}); ok {
+		pclass.drag_motion = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_motion)
+	}
+
+	if _, ok := goval.(interface{ Draw(cr *cairo.Context) bool }); ok {
+		pclass.draw = (*[0]byte)(C._gotk4_gtk3_WidgetClass_draw)
+	}
+
+	if _, ok := goval.(interface {
+		EnterNotifyEvent(event *gdk.EventCrossing) bool
+	}); ok {
+		pclass.enter_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_enter_notify_event)
+	}
+
+	if _, ok := goval.(interface {
+		Focus(direction DirectionType) bool
+	}); ok {
+		pclass.focus = (*[0]byte)(C._gotk4_gtk3_WidgetClass_focus)
+	}
+
+	if _, ok := goval.(interface {
+		FocusInEvent(event *gdk.EventFocus) bool
+	}); ok {
+		pclass.focus_in_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_focus_in_event)
+	}
+
+	if _, ok := goval.(interface {
+		FocusOutEvent(event *gdk.EventFocus) bool
+	}); ok {
+		pclass.focus_out_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_focus_out_event)
+	}
+
+	if _, ok := goval.(interface{ Accessible() *atk.ObjectClass }); ok {
+		pclass.get_accessible = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_accessible)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredHeight() (minimumHeight int, naturalHeight int)
+	}); ok {
+		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_height)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int)
+	}); ok {
+		pclass.get_preferred_height_and_baseline_for_width = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_height_and_baseline_for_width)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
+	}); ok {
+		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_height_for_width)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredWidth() (minimumWidth int, naturalWidth int)
+	}); ok {
+		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_width)
+	}
+
+	if _, ok := goval.(interface {
+		PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
+	}); ok {
+		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_width_for_height)
+	}
+
+	if _, ok := goval.(interface{ RequestMode() SizeRequestMode }); ok {
+		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_request_mode)
+	}
+
+	if _, ok := goval.(interface {
+		GrabBrokenEvent(event *gdk.EventGrabBroken) bool
+	}); ok {
+		pclass.grab_broken_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_grab_broken_event)
+	}
+
+	if _, ok := goval.(interface{ GrabFocus() }); ok {
+		pclass.grab_focus = (*[0]byte)(C._gotk4_gtk3_WidgetClass_grab_focus)
+	}
+
+	if _, ok := goval.(interface{ GrabNotify(wasGrabbed bool) }); ok {
+		pclass.grab_notify = (*[0]byte)(C._gotk4_gtk3_WidgetClass_grab_notify)
+	}
+
+	if _, ok := goval.(interface{ Hide() }); ok {
+		pclass.hide = (*[0]byte)(C._gotk4_gtk3_WidgetClass_hide)
+	}
+
+	if _, ok := goval.(interface {
+		HierarchyChanged(previousToplevel Widgetter)
+	}); ok {
+		pclass.hierarchy_changed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_hierarchy_changed)
+	}
+
+	if _, ok := goval.(interface {
+		KeyPressEvent(event *gdk.EventKey) bool
+	}); ok {
+		pclass.key_press_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_key_press_event)
+	}
+
+	if _, ok := goval.(interface {
+		KeyReleaseEvent(event *gdk.EventKey) bool
+	}); ok {
+		pclass.key_release_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_key_release_event)
+	}
+
+	if _, ok := goval.(interface {
+		KeynavFailed(direction DirectionType) bool
+	}); ok {
+		pclass.keynav_failed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_keynav_failed)
+	}
+
+	if _, ok := goval.(interface {
+		LeaveNotifyEvent(event *gdk.EventCrossing) bool
+	}); ok {
+		pclass.leave_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_leave_notify_event)
+	}
+
+	if _, ok := goval.(interface{ Map() }); ok {
+		pclass._map = (*[0]byte)(C._gotk4_gtk3_WidgetClass_map)
+	}
+
+	if _, ok := goval.(interface {
+		MapEvent(event *gdk.EventAny) bool
+	}); ok {
+		pclass.map_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_map_event)
+	}
+
+	if _, ok := goval.(interface{ MnemonicActivate(groupCycling bool) bool }); ok {
+		pclass.mnemonic_activate = (*[0]byte)(C._gotk4_gtk3_WidgetClass_mnemonic_activate)
+	}
+
+	if _, ok := goval.(interface {
+		MotionNotifyEvent(event *gdk.EventMotion) bool
+	}); ok {
+		pclass.motion_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_motion_notify_event)
+	}
+
+	if _, ok := goval.(interface{ MoveFocus(direction DirectionType) }); ok {
+		pclass.move_focus = (*[0]byte)(C._gotk4_gtk3_WidgetClass_move_focus)
+	}
+
+	if _, ok := goval.(interface {
+		ParentSet(previousParent Widgetter)
+	}); ok {
+		pclass.parent_set = (*[0]byte)(C._gotk4_gtk3_WidgetClass_parent_set)
+	}
+
+	if _, ok := goval.(interface{ PopupMenu() bool }); ok {
+		pclass.popup_menu = (*[0]byte)(C._gotk4_gtk3_WidgetClass_popup_menu)
+	}
+
+	if _, ok := goval.(interface {
+		PropertyNotifyEvent(event *gdk.EventProperty) bool
+	}); ok {
+		pclass.property_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_property_notify_event)
+	}
+
+	if _, ok := goval.(interface {
+		ProximityInEvent(event *gdk.EventProximity) bool
+	}); ok {
+		pclass.proximity_in_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_proximity_in_event)
+	}
+
+	if _, ok := goval.(interface {
+		ProximityOutEvent(event *gdk.EventProximity) bool
+	}); ok {
+		pclass.proximity_out_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_proximity_out_event)
+	}
+
+	if _, ok := goval.(interface {
+		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
+	}); ok {
+		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk3_WidgetClass_query_tooltip)
+	}
+
+	if _, ok := goval.(interface{ QueueDrawRegion(region *cairo.Region) }); ok {
+		pclass.queue_draw_region = (*[0]byte)(C._gotk4_gtk3_WidgetClass_queue_draw_region)
+	}
+
+	if _, ok := goval.(interface{ Realize() }); ok {
+		pclass.realize = (*[0]byte)(C._gotk4_gtk3_WidgetClass_realize)
+	}
+
+	if _, ok := goval.(interface {
+		ScreenChanged(previousScreen *gdk.Screen)
+	}); ok {
+		pclass.screen_changed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_screen_changed)
+	}
+
+	if _, ok := goval.(interface {
+		ScrollEvent(event *gdk.EventScroll) bool
+	}); ok {
+		pclass.scroll_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_scroll_event)
+	}
+
+	if _, ok := goval.(interface {
+		SelectionClearEvent(event *gdk.EventSelection) bool
+	}); ok {
+		pclass.selection_clear_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_clear_event)
+	}
+
+	if _, ok := goval.(interface {
+		SelectionGet(selectionData *SelectionData, info, time_ uint)
+	}); ok {
+		pclass.selection_get = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_get)
+	}
+
+	if _, ok := goval.(interface {
+		SelectionNotifyEvent(event *gdk.EventSelection) bool
+	}); ok {
+		pclass.selection_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_notify_event)
+	}
+
+	if _, ok := goval.(interface {
+		SelectionReceived(selectionData *SelectionData, time_ uint)
+	}); ok {
+		pclass.selection_received = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_received)
+	}
+
+	if _, ok := goval.(interface {
+		SelectionRequestEvent(event *gdk.EventSelection) bool
+	}); ok {
+		pclass.selection_request_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_request_event)
+	}
+
+	if _, ok := goval.(interface{ Show() }); ok {
+		pclass.show = (*[0]byte)(C._gotk4_gtk3_WidgetClass_show)
+	}
+
+	if _, ok := goval.(interface{ ShowAll() }); ok {
+		pclass.show_all = (*[0]byte)(C._gotk4_gtk3_WidgetClass_show_all)
+	}
+
+	if _, ok := goval.(interface {
+		ShowHelp(helpType WidgetHelpType) bool
+	}); ok {
+		pclass.show_help = (*[0]byte)(C._gotk4_gtk3_WidgetClass_show_help)
+	}
+
+	if _, ok := goval.(interface{ SizeAllocate(allocation *Allocation) }); ok {
+		pclass.size_allocate = (*[0]byte)(C._gotk4_gtk3_WidgetClass_size_allocate)
+	}
+
+	if _, ok := goval.(interface{ StateChanged(previousState StateType) }); ok {
+		pclass.state_changed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_state_changed)
+	}
+
+	if _, ok := goval.(interface {
+		StateFlagsChanged(previousStateFlags StateFlags)
+	}); ok {
+		pclass.state_flags_changed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_state_flags_changed)
+	}
+
+	if _, ok := goval.(interface{ StyleSet(previousStyle *Style) }); ok {
+		pclass.style_set = (*[0]byte)(C._gotk4_gtk3_WidgetClass_style_set)
+	}
+
+	if _, ok := goval.(interface{ StyleUpdated() }); ok {
+		pclass.style_updated = (*[0]byte)(C._gotk4_gtk3_WidgetClass_style_updated)
+	}
+
+	if _, ok := goval.(interface {
+		TouchEvent(event *gdk.EventTouch) bool
+	}); ok {
+		pclass.touch_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_touch_event)
+	}
+
+	if _, ok := goval.(interface{ Unmap() }); ok {
+		pclass.unmap = (*[0]byte)(C._gotk4_gtk3_WidgetClass_unmap)
+	}
+
+	if _, ok := goval.(interface {
+		UnmapEvent(event *gdk.EventAny) bool
+	}); ok {
+		pclass.unmap_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_unmap_event)
+	}
+
+	if _, ok := goval.(interface{ Unrealize() }); ok {
+		pclass.unrealize = (*[0]byte)(C._gotk4_gtk3_WidgetClass_unrealize)
+	}
+
+	if _, ok := goval.(interface {
+		VisibilityNotifyEvent(event *gdk.EventVisibility) bool
+	}); ok {
+		pclass.visibility_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_visibility_notify_event)
+	}
+
+	if _, ok := goval.(interface {
+		WindowStateEvent(event *gdk.EventWindowState) bool
+	}); ok {
+		pclass.window_state_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_window_state_event)
+	}
+}
+
+//export _gotk4_gtk3_WidgetClass_adjust_baseline_allocation
+func _gotk4_gtk3_WidgetClass_adjust_baseline_allocation(arg0 *C.GtkWidget, arg1 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ AdjustBaselineAllocation(baseline *int) })
+
+	var _baseline *int // out
+
+	_baseline = (*int)(unsafe.Pointer(arg1))
+
+	iface.AdjustBaselineAllocation(_baseline)
+}
+
+//export _gotk4_gtk3_WidgetClass_adjust_baseline_request
+func _gotk4_gtk3_WidgetClass_adjust_baseline_request(arg0 *C.GtkWidget, arg1 *C.gint, arg2 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AdjustBaselineRequest(minimumBaseline, naturalBaseline *int)
+	})
+
+	var _minimumBaseline *int // out
+	var _naturalBaseline *int // out
+
+	_minimumBaseline = (*int)(unsafe.Pointer(arg1))
+	_naturalBaseline = (*int)(unsafe.Pointer(arg2))
+
+	iface.AdjustBaselineRequest(_minimumBaseline, _naturalBaseline)
+}
+
+//export _gotk4_gtk3_WidgetClass_adjust_size_allocation
+func _gotk4_gtk3_WidgetClass_adjust_size_allocation(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int)
+	})
+
+	var _orientation Orientation // out
+	var _minimumSize *int        // out
+	var _naturalSize *int        // out
+	var _allocatedPos *int       // out
+	var _allocatedSize *int      // out
+
+	_orientation = Orientation(arg1)
+	_minimumSize = (*int)(unsafe.Pointer(arg2))
+	_naturalSize = (*int)(unsafe.Pointer(arg3))
+	_allocatedPos = (*int)(unsafe.Pointer(arg4))
+	_allocatedSize = (*int)(unsafe.Pointer(arg5))
+
+	iface.AdjustSizeAllocation(_orientation, _minimumSize, _naturalSize, _allocatedPos, _allocatedSize)
+}
+
+//export _gotk4_gtk3_WidgetClass_adjust_size_request
+func _gotk4_gtk3_WidgetClass_adjust_size_request(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 *C.gint, arg3 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int)
+	})
+
+	var _orientation Orientation // out
+	var _minimumSize *int        // out
+	var _naturalSize *int        // out
+
+	_orientation = Orientation(arg1)
+	_minimumSize = (*int)(unsafe.Pointer(arg2))
+	_naturalSize = (*int)(unsafe.Pointer(arg3))
+
+	iface.AdjustSizeRequest(_orientation, _minimumSize, _naturalSize)
+}
+
+//export _gotk4_gtk3_WidgetClass_button_press_event
+func _gotk4_gtk3_WidgetClass_button_press_event(arg0 *C.GtkWidget, arg1 *C.GdkEventButton) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ButtonPressEvent(event *gdk.EventButton) bool
+	})
+
+	var _event *gdk.EventButton // out
+
+	_event = (*gdk.EventButton)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.ButtonPressEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_button_release_event
+func _gotk4_gtk3_WidgetClass_button_release_event(arg0 *C.GtkWidget, arg1 *C.GdkEventButton) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ButtonReleaseEvent(event *gdk.EventButton) bool
+	})
+
+	var _event *gdk.EventButton // out
+
+	_event = (*gdk.EventButton)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.ButtonReleaseEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_can_activate_accel
+func _gotk4_gtk3_WidgetClass_can_activate_accel(arg0 *C.GtkWidget, arg1 C.guint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CanActivateAccel(signalId uint) bool })
+
+	var _signalId uint // out
+
+	_signalId = uint(arg1)
+
+	ok := iface.CanActivateAccel(_signalId)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_composited_changed
+func _gotk4_gtk3_WidgetClass_composited_changed(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CompositedChanged() })
+
+	iface.CompositedChanged()
+}
+
+//export _gotk4_gtk3_WidgetClass_configure_event
+func _gotk4_gtk3_WidgetClass_configure_event(arg0 *C.GtkWidget, arg1 *C.GdkEventConfigure) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ConfigureEvent(event *gdk.EventConfigure) bool
+	})
+
+	var _event *gdk.EventConfigure // out
+
+	_event = (*gdk.EventConfigure)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.ConfigureEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_damage_event
+func _gotk4_gtk3_WidgetClass_damage_event(arg0 *C.GtkWidget, arg1 *C.GdkEventExpose) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DamageEvent(event *gdk.EventExpose) bool
+	})
+
+	var _event *gdk.EventExpose // out
+
+	_event = (*gdk.EventExpose)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.DamageEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_delete_event
+func _gotk4_gtk3_WidgetClass_delete_event(arg0 *C.GtkWidget, arg1 *C.GdkEventAny) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DeleteEvent(event *gdk.EventAny) bool
+	})
+
+	var _event *gdk.EventAny // out
+
+	_event = (*gdk.EventAny)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.DeleteEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_destroy
+func _gotk4_gtk3_WidgetClass_destroy(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Destroy() })
+
+	iface.Destroy()
+}
+
+//export _gotk4_gtk3_WidgetClass_destroy_event
+func _gotk4_gtk3_WidgetClass_destroy_event(arg0 *C.GtkWidget, arg1 *C.GdkEventAny) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DestroyEvent(event *gdk.EventAny) bool
+	})
+
+	var _event *gdk.EventAny // out
+
+	_event = (*gdk.EventAny)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.DestroyEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_direction_changed
+func _gotk4_gtk3_WidgetClass_direction_changed(arg0 *C.GtkWidget, arg1 C.GtkTextDirection) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DirectionChanged(previousDirection TextDirection)
+	})
+
+	var _previousDirection TextDirection // out
+
+	_previousDirection = TextDirection(arg1)
+
+	iface.DirectionChanged(_previousDirection)
+}
+
+//export _gotk4_gtk3_WidgetClass_drag_begin
+func _gotk4_gtk3_WidgetClass_drag_begin(arg0 *C.GtkWidget, arg1 *C.GdkDragContext) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DragBegin(context *gdk.DragContext)
+	})
+
+	var _context *gdk.DragContext // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+
+	iface.DragBegin(_context)
+}
+
+//export _gotk4_gtk3_WidgetClass_drag_data_delete
+func _gotk4_gtk3_WidgetClass_drag_data_delete(arg0 *C.GtkWidget, arg1 *C.GdkDragContext) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DragDataDelete(context *gdk.DragContext)
+	})
+
+	var _context *gdk.DragContext // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+
+	iface.DragDataDelete(_context)
+}
+
+//export _gotk4_gtk3_WidgetClass_drag_data_get
+func _gotk4_gtk3_WidgetClass_drag_data_get(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 *C.GtkSelectionData, arg3 C.guint, arg4 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint)
+	})
+
+	var _context *gdk.DragContext     // out
+	var _selectionData *SelectionData // out
+	var _info uint                    // out
+	var _time_ uint                   // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_info = uint(arg3)
+	_time_ = uint(arg4)
+
+	iface.DragDataGet(_context, _selectionData, _info, _time_)
+}
+
+//export _gotk4_gtk3_WidgetClass_drag_data_received
+func _gotk4_gtk3_WidgetClass_drag_data_received(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 *C.GtkSelectionData, arg5 C.guint, arg6 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DragDataReceived(context *gdk.DragContext, x, y int, selectionData *SelectionData, info, time_ uint)
+	})
+
+	var _context *gdk.DragContext     // out
+	var _x int                        // out
+	var _y int                        // out
+	var _selectionData *SelectionData // out
+	var _info uint                    // out
+	var _time_ uint                   // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_x = int(arg2)
+	_y = int(arg3)
+	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	_info = uint(arg5)
+	_time_ = uint(arg6)
+
+	iface.DragDataReceived(_context, _x, _y, _selectionData, _info, _time_)
+}
+
+//export _gotk4_gtk3_WidgetClass_drag_drop
+func _gotk4_gtk3_WidgetClass_drag_drop(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 C.guint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DragDrop(context *gdk.DragContext, x, y int, time_ uint) bool
+	})
+
+	var _context *gdk.DragContext // out
+	var _x int                    // out
+	var _y int                    // out
+	var _time_ uint               // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_x = int(arg2)
+	_y = int(arg3)
+	_time_ = uint(arg4)
+
+	ok := iface.DragDrop(_context, _x, _y, _time_)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_drag_end
+func _gotk4_gtk3_WidgetClass_drag_end(arg0 *C.GtkWidget, arg1 *C.GdkDragContext) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DragEnd(context *gdk.DragContext)
+	})
+
+	var _context *gdk.DragContext // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+
+	iface.DragEnd(_context)
+}
+
+//export _gotk4_gtk3_WidgetClass_drag_failed
+func _gotk4_gtk3_WidgetClass_drag_failed(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 C.GtkDragResult) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DragFailed(context *gdk.DragContext, result DragResult) bool
+	})
+
+	var _context *gdk.DragContext // out
+	var _result DragResult        // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_result = DragResult(arg2)
+
+	ok := iface.DragFailed(_context, _result)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_drag_leave
+func _gotk4_gtk3_WidgetClass_drag_leave(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DragLeave(context *gdk.DragContext, time_ uint)
+	})
+
+	var _context *gdk.DragContext // out
+	var _time_ uint               // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_time_ = uint(arg2)
+
+	iface.DragLeave(_context, _time_)
+}
+
+//export _gotk4_gtk3_WidgetClass_drag_motion
+func _gotk4_gtk3_WidgetClass_drag_motion(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 C.guint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DragMotion(context *gdk.DragContext, x, y int, time_ uint) bool
+	})
+
+	var _context *gdk.DragContext // out
+	var _x int                    // out
+	var _y int                    // out
+	var _time_ uint               // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_x = int(arg2)
+	_y = int(arg3)
+	_time_ = uint(arg4)
+
+	ok := iface.DragMotion(_context, _x, _y, _time_)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_draw
+func _gotk4_gtk3_WidgetClass_draw(arg0 *C.GtkWidget, arg1 *C.cairo_t) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Draw(cr *cairo.Context) bool })
+
+	var _cr *cairo.Context // out
+
+	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
+	C.cairo_reference(arg1)
+	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+	})
+
+	ok := iface.Draw(_cr)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_enter_notify_event
+func _gotk4_gtk3_WidgetClass_enter_notify_event(arg0 *C.GtkWidget, arg1 *C.GdkEventCrossing) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		EnterNotifyEvent(event *gdk.EventCrossing) bool
+	})
+
+	var _event *gdk.EventCrossing // out
+
+	_event = (*gdk.EventCrossing)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.EnterNotifyEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_focus
+func _gotk4_gtk3_WidgetClass_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Focus(direction DirectionType) bool
+	})
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	ok := iface.Focus(_direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_focus_in_event
+func _gotk4_gtk3_WidgetClass_focus_in_event(arg0 *C.GtkWidget, arg1 *C.GdkEventFocus) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		FocusInEvent(event *gdk.EventFocus) bool
+	})
+
+	var _event *gdk.EventFocus // out
+
+	_event = (*gdk.EventFocus)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.FocusInEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_focus_out_event
+func _gotk4_gtk3_WidgetClass_focus_out_event(arg0 *C.GtkWidget, arg1 *C.GdkEventFocus) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		FocusOutEvent(event *gdk.EventFocus) bool
+	})
+
+	var _event *gdk.EventFocus // out
+
+	_event = (*gdk.EventFocus)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.FocusOutEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_get_accessible
+func _gotk4_gtk3_WidgetClass_get_accessible(arg0 *C.GtkWidget) (cret *C.AtkObject) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Accessible() *atk.ObjectClass })
+
+	object := iface.Accessible()
+
+	cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_get_preferred_height
+func _gotk4_gtk3_WidgetClass_get_preferred_height(arg0 *C.GtkWidget, arg1 *C.gint, arg2 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredHeight() (minimumHeight int, naturalHeight int)
+	})
+
+	minimumHeight, naturalHeight := iface.PreferredHeight()
+
+	*arg1 = C.gint(minimumHeight)
+	*arg2 = C.gint(naturalHeight)
+}
+
+//export _gotk4_gtk3_WidgetClass_get_preferred_height_and_baseline_for_width
+func _gotk4_gtk3_WidgetClass_get_preferred_height_and_baseline_for_width(arg0 *C.GtkWidget, arg1 C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int)
+	})
+
+	var _width int // out
+
+	_width = int(arg1)
+
+	minimumHeight, naturalHeight, minimumBaseline, naturalBaseline := iface.PreferredHeightAndBaselineForWidth(_width)
+
+	*arg2 = C.gint(minimumHeight)
+	*arg3 = C.gint(naturalHeight)
+	*arg4 = C.gint(minimumBaseline)
+	*arg5 = C.gint(naturalBaseline)
+}
+
+//export _gotk4_gtk3_WidgetClass_get_preferred_height_for_width
+func _gotk4_gtk3_WidgetClass_get_preferred_height_for_width(arg0 *C.GtkWidget, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
+	})
+
+	var _width int // out
+
+	_width = int(arg1)
+
+	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_width)
+
+	*arg2 = C.gint(minimumHeight)
+	*arg3 = C.gint(naturalHeight)
+}
+
+//export _gotk4_gtk3_WidgetClass_get_preferred_width
+func _gotk4_gtk3_WidgetClass_get_preferred_width(arg0 *C.GtkWidget, arg1 *C.gint, arg2 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredWidth() (minimumWidth int, naturalWidth int)
+	})
+
+	minimumWidth, naturalWidth := iface.PreferredWidth()
+
+	*arg1 = C.gint(minimumWidth)
+	*arg2 = C.gint(naturalWidth)
+}
+
+//export _gotk4_gtk3_WidgetClass_get_preferred_width_for_height
+func _gotk4_gtk3_WidgetClass_get_preferred_width_for_height(arg0 *C.GtkWidget, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
+	})
+
+	var _height int // out
+
+	_height = int(arg1)
+
+	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_height)
+
+	*arg2 = C.gint(minimumWidth)
+	*arg3 = C.gint(naturalWidth)
+}
+
+//export _gotk4_gtk3_WidgetClass_get_request_mode
+func _gotk4_gtk3_WidgetClass_get_request_mode(arg0 *C.GtkWidget) (cret C.GtkSizeRequestMode) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RequestMode() SizeRequestMode })
+
+	sizeRequestMode := iface.RequestMode()
+
+	cret = C.GtkSizeRequestMode(sizeRequestMode)
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_grab_broken_event
+func _gotk4_gtk3_WidgetClass_grab_broken_event(arg0 *C.GtkWidget, arg1 *C.GdkEventGrabBroken) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		GrabBrokenEvent(event *gdk.EventGrabBroken) bool
+	})
+
+	var _event *gdk.EventGrabBroken // out
+
+	_event = (*gdk.EventGrabBroken)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.GrabBrokenEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_grab_focus
+func _gotk4_gtk3_WidgetClass_grab_focus(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ GrabFocus() })
+
+	iface.GrabFocus()
+}
+
+//export _gotk4_gtk3_WidgetClass_grab_notify
+func _gotk4_gtk3_WidgetClass_grab_notify(arg0 *C.GtkWidget, arg1 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ GrabNotify(wasGrabbed bool) })
+
+	var _wasGrabbed bool // out
+
+	if arg1 != 0 {
+		_wasGrabbed = true
+	}
+
+	iface.GrabNotify(_wasGrabbed)
+}
+
+//export _gotk4_gtk3_WidgetClass_hide
+func _gotk4_gtk3_WidgetClass_hide(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Hide() })
+
+	iface.Hide()
+}
+
+//export _gotk4_gtk3_WidgetClass_hierarchy_changed
+func _gotk4_gtk3_WidgetClass_hierarchy_changed(arg0 *C.GtkWidget, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		HierarchyChanged(previousToplevel Widgetter)
+	})
+
+	var _previousToplevel Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_previousToplevel = rv
+	}
+
+	iface.HierarchyChanged(_previousToplevel)
+}
+
+//export _gotk4_gtk3_WidgetClass_key_press_event
+func _gotk4_gtk3_WidgetClass_key_press_event(arg0 *C.GtkWidget, arg1 *C.GdkEventKey) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		KeyPressEvent(event *gdk.EventKey) bool
+	})
+
+	var _event *gdk.EventKey // out
+
+	_event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.KeyPressEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_key_release_event
+func _gotk4_gtk3_WidgetClass_key_release_event(arg0 *C.GtkWidget, arg1 *C.GdkEventKey) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		KeyReleaseEvent(event *gdk.EventKey) bool
+	})
+
+	var _event *gdk.EventKey // out
+
+	_event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.KeyReleaseEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_keynav_failed
+func _gotk4_gtk3_WidgetClass_keynav_failed(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		KeynavFailed(direction DirectionType) bool
+	})
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	ok := iface.KeynavFailed(_direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_leave_notify_event
+func _gotk4_gtk3_WidgetClass_leave_notify_event(arg0 *C.GtkWidget, arg1 *C.GdkEventCrossing) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		LeaveNotifyEvent(event *gdk.EventCrossing) bool
+	})
+
+	var _event *gdk.EventCrossing // out
+
+	_event = (*gdk.EventCrossing)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.LeaveNotifyEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_map
+func _gotk4_gtk3_WidgetClass_map(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Map() })
+
+	iface.Map()
+}
+
+//export _gotk4_gtk3_WidgetClass_map_event
+func _gotk4_gtk3_WidgetClass_map_event(arg0 *C.GtkWidget, arg1 *C.GdkEventAny) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MapEvent(event *gdk.EventAny) bool
+	})
+
+	var _event *gdk.EventAny // out
+
+	_event = (*gdk.EventAny)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.MapEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_mnemonic_activate
+func _gotk4_gtk3_WidgetClass_mnemonic_activate(arg0 *C.GtkWidget, arg1 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MnemonicActivate(groupCycling bool) bool })
+
+	var _groupCycling bool // out
+
+	if arg1 != 0 {
+		_groupCycling = true
+	}
+
+	ok := iface.MnemonicActivate(_groupCycling)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_motion_notify_event
+func _gotk4_gtk3_WidgetClass_motion_notify_event(arg0 *C.GtkWidget, arg1 *C.GdkEventMotion) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MotionNotifyEvent(event *gdk.EventMotion) bool
+	})
+
+	var _event *gdk.EventMotion // out
+
+	_event = (*gdk.EventMotion)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.MotionNotifyEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_move_focus
+func _gotk4_gtk3_WidgetClass_move_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MoveFocus(direction DirectionType) })
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	iface.MoveFocus(_direction)
+}
+
+//export _gotk4_gtk3_WidgetClass_parent_set
+func _gotk4_gtk3_WidgetClass_parent_set(arg0 *C.GtkWidget, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ParentSet(previousParent Widgetter)
+	})
+
+	var _previousParent Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_previousParent = rv
+	}
+
+	iface.ParentSet(_previousParent)
+}
+
+//export _gotk4_gtk3_WidgetClass_popup_menu
+func _gotk4_gtk3_WidgetClass_popup_menu(arg0 *C.GtkWidget) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PopupMenu() bool })
+
+	ok := iface.PopupMenu()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_property_notify_event
+func _gotk4_gtk3_WidgetClass_property_notify_event(arg0 *C.GtkWidget, arg1 *C.GdkEventProperty) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PropertyNotifyEvent(event *gdk.EventProperty) bool
+	})
+
+	var _event *gdk.EventProperty // out
+
+	_event = (*gdk.EventProperty)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.PropertyNotifyEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_proximity_in_event
+func _gotk4_gtk3_WidgetClass_proximity_in_event(arg0 *C.GtkWidget, arg1 *C.GdkEventProximity) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ProximityInEvent(event *gdk.EventProximity) bool
+	})
+
+	var _event *gdk.EventProximity // out
+
+	_event = (*gdk.EventProximity)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.ProximityInEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_proximity_out_event
+func _gotk4_gtk3_WidgetClass_proximity_out_event(arg0 *C.GtkWidget, arg1 *C.GdkEventProximity) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ProximityOutEvent(event *gdk.EventProximity) bool
+	})
+
+	var _event *gdk.EventProximity // out
+
+	_event = (*gdk.EventProximity)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.ProximityOutEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_query_tooltip
+func _gotk4_gtk3_WidgetClass_query_tooltip(arg0 *C.GtkWidget, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
+	})
+
+	var _x int                // out
+	var _y int                // out
+	var _keyboardTooltip bool // out
+	var _tooltip *Tooltip     // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	if arg3 != 0 {
+		_keyboardTooltip = true
+	}
+	_tooltip = wrapTooltip(externglib.Take(unsafe.Pointer(arg4)))
+
+	ok := iface.QueryTooltip(_x, _y, _keyboardTooltip, _tooltip)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_queue_draw_region
+func _gotk4_gtk3_WidgetClass_queue_draw_region(arg0 *C.GtkWidget, arg1 *C.cairo_region_t) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ QueueDrawRegion(region *cairo.Region) })
+
+	var _region *cairo.Region // out
+
+	{
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(arg1)}
+		_region = (*cairo.Region)(unsafe.Pointer(_pp))
+	}
+	C.cairo_region_reference(arg1)
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+	})
+
+	iface.QueueDrawRegion(_region)
+}
+
+//export _gotk4_gtk3_WidgetClass_realize
+func _gotk4_gtk3_WidgetClass_realize(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Realize() })
+
+	iface.Realize()
+}
+
+//export _gotk4_gtk3_WidgetClass_screen_changed
+func _gotk4_gtk3_WidgetClass_screen_changed(arg0 *C.GtkWidget, arg1 *C.GdkScreen) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ScreenChanged(previousScreen *gdk.Screen)
+	})
+
+	var _previousScreen *gdk.Screen // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_previousScreen = &gdk.Screen{
+			Object: obj,
+		}
+	}
+
+	iface.ScreenChanged(_previousScreen)
+}
+
+//export _gotk4_gtk3_WidgetClass_scroll_event
+func _gotk4_gtk3_WidgetClass_scroll_event(arg0 *C.GtkWidget, arg1 *C.GdkEventScroll) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ScrollEvent(event *gdk.EventScroll) bool
+	})
+
+	var _event *gdk.EventScroll // out
+
+	_event = (*gdk.EventScroll)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.ScrollEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_selection_clear_event
+func _gotk4_gtk3_WidgetClass_selection_clear_event(arg0 *C.GtkWidget, arg1 *C.GdkEventSelection) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SelectionClearEvent(event *gdk.EventSelection) bool
+	})
+
+	var _event *gdk.EventSelection // out
+
+	_event = (*gdk.EventSelection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.SelectionClearEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_selection_get
+func _gotk4_gtk3_WidgetClass_selection_get(arg0 *C.GtkWidget, arg1 *C.GtkSelectionData, arg2 C.guint, arg3 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SelectionGet(selectionData *SelectionData, info, time_ uint)
+	})
+
+	var _selectionData *SelectionData // out
+	var _info uint                    // out
+	var _time_ uint                   // out
+
+	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_info = uint(arg2)
+	_time_ = uint(arg3)
+
+	iface.SelectionGet(_selectionData, _info, _time_)
+}
+
+//export _gotk4_gtk3_WidgetClass_selection_notify_event
+func _gotk4_gtk3_WidgetClass_selection_notify_event(arg0 *C.GtkWidget, arg1 *C.GdkEventSelection) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SelectionNotifyEvent(event *gdk.EventSelection) bool
+	})
+
+	var _event *gdk.EventSelection // out
+
+	_event = (*gdk.EventSelection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.SelectionNotifyEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_selection_received
+func _gotk4_gtk3_WidgetClass_selection_received(arg0 *C.GtkWidget, arg1 *C.GtkSelectionData, arg2 C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SelectionReceived(selectionData *SelectionData, time_ uint)
+	})
+
+	var _selectionData *SelectionData // out
+	var _time_ uint                   // out
+
+	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_time_ = uint(arg2)
+
+	iface.SelectionReceived(_selectionData, _time_)
+}
+
+//export _gotk4_gtk3_WidgetClass_selection_request_event
+func _gotk4_gtk3_WidgetClass_selection_request_event(arg0 *C.GtkWidget, arg1 *C.GdkEventSelection) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SelectionRequestEvent(event *gdk.EventSelection) bool
+	})
+
+	var _event *gdk.EventSelection // out
+
+	_event = (*gdk.EventSelection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.SelectionRequestEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_show
+func _gotk4_gtk3_WidgetClass_show(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Show() })
+
+	iface.Show()
+}
+
+//export _gotk4_gtk3_WidgetClass_show_all
+func _gotk4_gtk3_WidgetClass_show_all(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ShowAll() })
+
+	iface.ShowAll()
+}
+
+//export _gotk4_gtk3_WidgetClass_show_help
+func _gotk4_gtk3_WidgetClass_show_help(arg0 *C.GtkWidget, arg1 C.GtkWidgetHelpType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ShowHelp(helpType WidgetHelpType) bool
+	})
+
+	var _helpType WidgetHelpType // out
+
+	_helpType = WidgetHelpType(arg1)
+
+	ok := iface.ShowHelp(_helpType)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_size_allocate
+func _gotk4_gtk3_WidgetClass_size_allocate(arg0 *C.GtkWidget, arg1 *C.GtkAllocation) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SizeAllocate(allocation *Allocation) })
+
+	var _allocation *Allocation // out
+
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.SizeAllocate(_allocation)
+}
+
+//export _gotk4_gtk3_WidgetClass_state_changed
+func _gotk4_gtk3_WidgetClass_state_changed(arg0 *C.GtkWidget, arg1 C.GtkStateType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StateChanged(previousState StateType) })
+
+	var _previousState StateType // out
+
+	_previousState = StateType(arg1)
+
+	iface.StateChanged(_previousState)
+}
+
+//export _gotk4_gtk3_WidgetClass_state_flags_changed
+func _gotk4_gtk3_WidgetClass_state_flags_changed(arg0 *C.GtkWidget, arg1 C.GtkStateFlags) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		StateFlagsChanged(previousStateFlags StateFlags)
+	})
+
+	var _previousStateFlags StateFlags // out
+
+	_previousStateFlags = StateFlags(arg1)
+
+	iface.StateFlagsChanged(_previousStateFlags)
+}
+
+//export _gotk4_gtk3_WidgetClass_style_set
+func _gotk4_gtk3_WidgetClass_style_set(arg0 *C.GtkWidget, arg1 *C.GtkStyle) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StyleSet(previousStyle *Style) })
+
+	var _previousStyle *Style // out
+
+	_previousStyle = wrapStyle(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.StyleSet(_previousStyle)
+}
+
+//export _gotk4_gtk3_WidgetClass_style_updated
+func _gotk4_gtk3_WidgetClass_style_updated(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StyleUpdated() })
+
+	iface.StyleUpdated()
+}
+
+//export _gotk4_gtk3_WidgetClass_touch_event
+func _gotk4_gtk3_WidgetClass_touch_event(arg0 *C.GtkWidget, arg1 *C.GdkEventTouch) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		TouchEvent(event *gdk.EventTouch) bool
+	})
+
+	var _event *gdk.EventTouch // out
+
+	_event = (*gdk.EventTouch)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.TouchEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_unmap
+func _gotk4_gtk3_WidgetClass_unmap(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Unmap() })
+
+	iface.Unmap()
+}
+
+//export _gotk4_gtk3_WidgetClass_unmap_event
+func _gotk4_gtk3_WidgetClass_unmap_event(arg0 *C.GtkWidget, arg1 *C.GdkEventAny) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		UnmapEvent(event *gdk.EventAny) bool
+	})
+
+	var _event *gdk.EventAny // out
+
+	_event = (*gdk.EventAny)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.UnmapEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_unrealize
+func _gotk4_gtk3_WidgetClass_unrealize(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Unrealize() })
+
+	iface.Unrealize()
+}
+
+//export _gotk4_gtk3_WidgetClass_visibility_notify_event
+func _gotk4_gtk3_WidgetClass_visibility_notify_event(arg0 *C.GtkWidget, arg1 *C.GdkEventVisibility) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		VisibilityNotifyEvent(event *gdk.EventVisibility) bool
+	})
+
+	var _event *gdk.EventVisibility // out
+
+	_event = (*gdk.EventVisibility)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.VisibilityNotifyEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_window_state_event
+func _gotk4_gtk3_WidgetClass_window_state_event(arg0 *C.GtkWidget, arg1 *C.GdkEventWindowState) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		WindowStateEvent(event *gdk.EventWindowState) bool
+	})
+
+	var _event *gdk.EventWindowState // out
+
+	_event = (*gdk.EventWindowState)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := iface.WindowStateEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapWidget(obj *externglib.Object) *Widget {
 	return &Widget{

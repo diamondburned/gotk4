@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// RecentChooserWidgetOverrider contains methods that are overridable.
+type RecentChooserWidgetOverrider interface {
+}
+
 // RecentChooserWidget is a widget suitable for selecting recently used files.
 // It is the main building block of a RecentChooserDialog. Most applications
 // will only need to use the latter; you can use RecentChooserWidget as part of
@@ -44,6 +48,14 @@ var (
 	_ externglib.Objector = (*RecentChooserWidget)(nil)
 	_ Containerer         = (*RecentChooserWidget)(nil)
 )
+
+func classInitRecentChooserWidgetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
 	return &RecentChooserWidget{

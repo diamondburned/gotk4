@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// WidgetPaintableOverrider contains methods that are overridable.
+type WidgetPaintableOverrider interface {
+}
+
 // WidgetPaintable: GtkWidgetPaintable is a GdkPaintable that displays the
 // contents of a widget.
 //
@@ -50,6 +54,14 @@ type WidgetPaintable struct {
 var (
 	_ externglib.Objector = (*WidgetPaintable)(nil)
 )
+
+func classInitWidgetPaintabler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
 	return &WidgetPaintable{

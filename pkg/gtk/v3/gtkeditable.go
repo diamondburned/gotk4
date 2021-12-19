@@ -14,115 +14,18 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_EditableInterface_get_selection_bounds(GtkEditable*, gint*, gint*);
+// extern gchar* _gotk4_gtk3_EditableInterface_get_chars(GtkEditable*, gint, gint);
+// extern gint _gotk4_gtk3_EditableInterface_get_position(GtkEditable*);
+// extern void _gotk4_gtk3_EditableInterface_changed(GtkEditable*);
+// extern void _gotk4_gtk3_EditableInterface_delete_text(GtkEditable*, gint, gint);
+// extern void _gotk4_gtk3_EditableInterface_set_position(GtkEditable*, gint);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_editable_get_type()), F: marshalEditabler},
 	})
-}
-
-// EditableOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type EditableOverrider interface {
-	Changed()
-	// DeleteText deletes a sequence of characters. The characters that are
-	// deleted are those characters at positions from start_pos up to, but not
-	// including end_pos. If end_pos is negative, then the characters deleted
-	// are those from start_pos to the end of the text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start position.
-	//    - endPos: end position.
-	//
-	DeleteText(startPos, endPos int)
-	// DoDeleteText deletes a sequence of characters. The characters that are
-	// deleted are those characters at positions from start_pos up to, but not
-	// including end_pos. If end_pos is negative, then the characters deleted
-	// are those from start_pos to the end of the text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start position.
-	//    - endPos: end position.
-	//
-	DoDeleteText(startPos, endPos int)
-	// Chars retrieves a sequence of characters. The characters that are
-	// retrieved are those characters at positions from start_pos up to, but not
-	// including end_pos. If end_pos is negative, then the characters retrieved
-	// are those characters from start_pos to the end of the text.
-	//
-	// Note that positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start of text.
-	//    - endPos: end of text.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: pointer to the contents of the widget as a string. This string
-	//      is allocated by the Editable implementation and should be freed by
-	//      the caller.
-	//
-	Chars(startPos, endPos int) string
-	// Position retrieves the current position of the cursor relative to the
-	// start of the content of the editable.
-	//
-	// Note that this position is in characters, not in bytes.
-	//
-	// The function returns the following values:
-	//
-	//    - gint: cursor position.
-	//
-	Position() int
-	// SelectionBounds retrieves the selection bound of the editable. start_pos
-	// will be filled with the start of the selection and end_pos with end. If
-	// no text was selected both will be identical and FALSE will be returned.
-	//
-	// Note that positions are specified in characters, not bytes.
-	//
-	// The function returns the following values:
-	//
-	//    - startPos (optional): location to store the starting position, or
-	//      NULL.
-	//    - endPos (optional): location to store the end position, or NULL.
-	//    - ok: TRUE if an area is selected, FALSE otherwise.
-	//
-	SelectionBounds() (startPos int, endPos int, ok bool)
-	// SetPosition sets the cursor position in the editable to the given value.
-	//
-	// The cursor is displayed before the character with the given (base 0)
-	// index in the contents of the editable. The value must be less than or
-	// equal to the number of characters in the editable. A value of -1
-	// indicates that the position should be set after the last character of the
-	// editable. Note that position is in characters, not in bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - position of the cursor.
-	//
-	SetPosition(position int)
-	// SetSelectionBounds selects a region of text. The characters that are
-	// selected are those characters at positions from start_pos up to, but not
-	// including end_pos. If end_pos is negative, then the characters selected
-	// are those characters from start_pos to the end of the text.
-	//
-	// Note that positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start of region.
-	//    - endPos: end of region.
-	//
-	SetSelectionBounds(startPos, endPos int)
 }
 
 // Editable interface is an interface which should be implemented by text

@@ -18,7 +18,8 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_DBusProxyClass_g_signal(GDBusProxy*, gchar*, gchar*, GVariant*);
 import "C"
 
 func init() {
@@ -28,9 +29,6 @@ func init() {
 }
 
 // DBusProxyOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type DBusProxyOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -89,6 +87,49 @@ type DBusProxy struct {
 var (
 	_ externglib.Objector = (*DBusProxy)(nil)
 )
+
+func classInitDBusProxier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GDBusProxyClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GDBusProxyClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		GSignal(senderName, signalName string, parameters *glib.Variant)
+	}); ok {
+		pclass.g_signal = (*[0]byte)(C._gotk4_gio2_DBusProxyClass_g_signal)
+	}
+}
+
+//export _gotk4_gio2_DBusProxyClass_g_signal
+func _gotk4_gio2_DBusProxyClass_g_signal(arg0 *C.GDBusProxy, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		GSignal(senderName, signalName string, parameters *glib.Variant)
+	})
+
+	var _senderName string        // out
+	var _signalName string        // out
+	var _parameters *glib.Variant // out
+
+	_senderName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	C.g_variant_ref(arg3)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_parameters)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	iface.GSignal(_senderName, _signalName, _parameters)
+}
 
 func wrapDBusProxy(obj *externglib.Object) *DBusProxy {
 	return &DBusProxy{

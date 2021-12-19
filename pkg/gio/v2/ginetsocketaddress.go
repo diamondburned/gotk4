@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// InetSocketAddressOverrider contains methods that are overridable.
+type InetSocketAddressOverrider interface {
+}
+
 // InetSocketAddress: IPv4 or IPv6 socket address; that is, the combination of a
 // Address and a port number.
 type InetSocketAddress struct {
@@ -30,6 +34,14 @@ type InetSocketAddress struct {
 var (
 	_ SocketAddresser = (*InetSocketAddress)(nil)
 )
+
+func classInitInetSocketAddresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapInetSocketAddress(obj *externglib.Object) *InetSocketAddress {
 	return &InetSocketAddress{

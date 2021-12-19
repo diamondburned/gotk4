@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -16,6 +17,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CheckMenuItemClass_draw_indicator(GtkCheckMenuItem*, cairo_t*);
+// extern void _gotk4_gtk3_CheckMenuItemClass_toggled(GtkCheckMenuItem*);
 import "C"
 
 func init() {
@@ -25,9 +28,6 @@ func init() {
 }
 
 // CheckMenuItemOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CheckMenuItemOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -59,6 +59,50 @@ var (
 	_ Binner              = (*CheckMenuItem)(nil)
 	_ externglib.Objector = (*CheckMenuItem)(nil)
 )
+
+func classInitCheckMenuItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCheckMenuItemClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCheckMenuItemClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ DrawIndicator(cr *cairo.Context) }); ok {
+		pclass.draw_indicator = (*[0]byte)(C._gotk4_gtk3_CheckMenuItemClass_draw_indicator)
+	}
+
+	if _, ok := goval.(interface{ Toggled() }); ok {
+		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_CheckMenuItemClass_toggled)
+	}
+}
+
+//export _gotk4_gtk3_CheckMenuItemClass_draw_indicator
+func _gotk4_gtk3_CheckMenuItemClass_draw_indicator(arg0 *C.GtkCheckMenuItem, arg1 *C.cairo_t) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DrawIndicator(cr *cairo.Context) })
+
+	var _cr *cairo.Context // out
+
+	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
+	C.cairo_reference(arg1)
+	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+	})
+
+	iface.DrawIndicator(_cr)
+}
+
+//export _gotk4_gtk3_CheckMenuItemClass_toggled
+func _gotk4_gtk3_CheckMenuItemClass_toggled(arg0 *C.GtkCheckMenuItem) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Toggled() })
+
+	iface.Toggled()
+}
 
 func wrapCheckMenuItem(obj *externglib.Object) *CheckMenuItem {
 	return &CheckMenuItem{

@@ -16,7 +16,11 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern gboolean _gotk4_gio2_PermissionClass_acquire(GPermission*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_PermissionClass_acquire_finish(GPermission*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_PermissionClass_release(GPermission*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_PermissionClass_release_finish(GPermission*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -26,9 +30,6 @@ func init() {
 }
 
 // PermissionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PermissionOverrider interface {
 	// Acquire attempts to acquire the permission represented by permission.
 	//
@@ -51,18 +52,6 @@ type PermissionOverrider interface {
 	//    - ctx (optional) or NULL.
 	//
 	Acquire(ctx context.Context) error
-	// AcquireAsync attempts to acquire the permission represented by
-	// permission.
-	//
-	// This is the first half of the asynchronous version of
-	// g_permission_acquire().
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//    - callback (optional) to call when done.
-	//
-	AcquireAsync(ctx context.Context, callback AsyncReadyCallback)
 	// AcquireFinish collects the result of attempting to acquire the permission
 	// represented by permission.
 	//
@@ -95,18 +84,6 @@ type PermissionOverrider interface {
 	//    - ctx (optional) or NULL.
 	//
 	Release(ctx context.Context) error
-	// ReleaseAsync attempts to release the permission represented by
-	// permission.
-	//
-	// This is the first half of the asynchronous version of
-	// g_permission_release().
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//    - callback (optional) to call when done.
-	//
-	ReleaseAsync(ctx context.Context, callback AsyncReadyCallback)
 	// ReleaseFinish collects the result of attempting to release the permission
 	// represented by permission.
 	//
@@ -152,6 +129,158 @@ type Permissioner interface {
 }
 
 var _ Permissioner = (*Permission)(nil)
+
+func classInitPermissioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GPermissionClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GPermissionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Acquire(ctx context.Context) error
+	}); ok {
+		pclass.acquire = (*[0]byte)(C._gotk4_gio2_PermissionClass_acquire)
+	}
+
+	if _, ok := goval.(interface {
+		AcquireFinish(result AsyncResulter) error
+	}); ok {
+		pclass.acquire_finish = (*[0]byte)(C._gotk4_gio2_PermissionClass_acquire_finish)
+	}
+
+	if _, ok := goval.(interface {
+		Release(ctx context.Context) error
+	}); ok {
+		pclass.release = (*[0]byte)(C._gotk4_gio2_PermissionClass_release)
+	}
+
+	if _, ok := goval.(interface {
+		ReleaseFinish(result AsyncResulter) error
+	}); ok {
+		pclass.release_finish = (*[0]byte)(C._gotk4_gio2_PermissionClass_release_finish)
+	}
+}
+
+//export _gotk4_gio2_PermissionClass_acquire
+func _gotk4_gio2_PermissionClass_acquire(arg0 *C.GPermission, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Acquire(ctx context.Context) error
+	})
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	_goerr := iface.Acquire(_cancellable)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_PermissionClass_acquire_finish
+func _gotk4_gio2_PermissionClass_acquire_finish(arg0 *C.GPermission, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AcquireFinish(result AsyncResulter) error
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.AcquireFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_PermissionClass_release
+func _gotk4_gio2_PermissionClass_release(arg0 *C.GPermission, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Release(ctx context.Context) error
+	})
+
+	var _cancellable context.Context // out
+
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
+	}
+
+	_goerr := iface.Release(_cancellable)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_PermissionClass_release_finish
+func _gotk4_gio2_PermissionClass_release_finish(arg0 *C.GPermission, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ReleaseFinish(result AsyncResulter) error
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.ReleaseFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapPermission(obj *externglib.Object) *Permission {
 	return &Permission{

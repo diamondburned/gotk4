@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// WindowControlsOverrider contains methods that are overridable.
+type WindowControlsOverrider interface {
+}
+
 // WindowControls: GtkWindowControls shows window frame controls.
 //
 // Typical window frame controls are minimize, maximize and close buttons, and
@@ -76,6 +80,14 @@ type WindowControls struct {
 var (
 	_ Widgetter = (*WindowControls)(nil)
 )
+
+func classInitWindowControlser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapWindowControls(obj *externglib.Object) *WindowControls {
 	return &WindowControls{

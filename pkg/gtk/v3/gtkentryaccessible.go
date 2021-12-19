@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// EntryAccessibleOverrider contains methods that are overridable.
+type EntryAccessibleOverrider interface {
+}
+
 type EntryAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible
@@ -35,6 +39,14 @@ type EntryAccessible struct {
 var (
 	_ externglib.Objector = (*EntryAccessible)(nil)
 )
+
+func classInitEntryAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 	return &EntryAccessible{

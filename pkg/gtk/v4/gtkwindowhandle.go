@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// WindowHandleOverrider contains methods that are overridable.
+type WindowHandleOverrider interface {
+}
+
 // WindowHandle: GtkWindowHandle is a titlebar area widget.
 //
 // When added into a window, it can be dragged to move the window, and handles
@@ -42,6 +46,14 @@ type WindowHandle struct {
 var (
 	_ Widgetter = (*WindowHandle)(nil)
 )
+
+func classInitWindowHandler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 	return &WindowHandle{

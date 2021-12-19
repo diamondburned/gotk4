@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// TCPConnectionOverrider contains methods that are overridable.
+type TCPConnectionOverrider interface {
+}
+
 // TCPConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
 type TCPConnection struct {
@@ -30,6 +34,14 @@ type TCPConnection struct {
 var (
 	_ IOStreamer = (*TCPConnection)(nil)
 )
+
+func classInitTCPConnectioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTCPConnection(obj *externglib.Object) *TCPConnection {
 	return &TCPConnection{

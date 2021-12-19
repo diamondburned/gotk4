@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -16,6 +17,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CheckButtonClass_draw_indicator(GtkCheckButton*, cairo_t*);
 import "C"
 
 func init() {
@@ -25,9 +27,6 @@ func init() {
 }
 
 // CheckButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CheckButtonOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -59,6 +58,38 @@ var (
 	_ Binner              = (*CheckButton)(nil)
 	_ externglib.Objector = (*CheckButton)(nil)
 )
+
+func classInitCheckButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ DrawIndicator(cr *cairo.Context) }); ok {
+		pclass.draw_indicator = (*[0]byte)(C._gotk4_gtk3_CheckButtonClass_draw_indicator)
+	}
+}
+
+//export _gotk4_gtk3_CheckButtonClass_draw_indicator
+func _gotk4_gtk3_CheckButtonClass_draw_indicator(arg0 *C.GtkCheckButton, arg1 *C.cairo_t) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DrawIndicator(cr *cairo.Context) })
+
+	var _cr *cairo.Context // out
+
+	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
+	C.cairo_reference(arg1)
+	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+	})
+
+	iface.DrawIndicator(_cr)
+}
 
 func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	return &CheckButton{

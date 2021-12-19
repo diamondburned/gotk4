@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// MemoryOutputStreamOverrider contains methods that are overridable.
+type MemoryOutputStreamOverrider interface {
+}
+
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for
 // GIO streaming output operations.
 //
@@ -41,6 +45,14 @@ var (
 	_ OutputStreamer      = (*MemoryOutputStream)(nil)
 	_ externglib.Objector = (*MemoryOutputStream)(nil)
 )
+
+func classInitMemoryOutputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 	return &MemoryOutputStream{

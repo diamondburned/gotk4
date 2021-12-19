@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// ShortcutLabelOverrider contains methods that are overridable.
+type ShortcutLabelOverrider interface {
+}
+
 // ShortcutLabel is a widget that represents a single keyboard shortcut or
 // gesture in the user interface.
 type ShortcutLabel struct {
@@ -34,6 +38,14 @@ var (
 	_ Containerer         = (*ShortcutLabel)(nil)
 	_ externglib.Objector = (*ShortcutLabel)(nil)
 )
+
+func classInitShortcutLabeller(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 	return &ShortcutLabel{

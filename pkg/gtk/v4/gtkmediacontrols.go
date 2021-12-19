@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// MediaControlsOverrider contains methods that are overridable.
+type MediaControlsOverrider interface {
+}
+
 // MediaControls: GtkMediaControls is a widget to show controls for a video.
 //
 // !An example GtkMediaControls (media-controls.png)
@@ -33,6 +37,14 @@ type MediaControls struct {
 var (
 	_ Widgetter = (*MediaControls)(nil)
 )
+
+func classInitMediaControlser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMediaControls(obj *externglib.Object) *MediaControls {
 	return &MediaControls{

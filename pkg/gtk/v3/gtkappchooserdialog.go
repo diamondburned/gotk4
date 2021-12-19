@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// AppChooserDialogOverrider contains methods that are overridable.
+type AppChooserDialogOverrider interface {
+}
+
 // AppChooserDialog shows a AppChooserWidget inside a Dialog.
 //
 // Note that AppChooserDialog does not have any interesting methods of its own.
@@ -45,6 +49,14 @@ var (
 	_ externglib.Objector = (*AppChooserDialog)(nil)
 	_ Binner              = (*AppChooserDialog)(nil)
 )
+
+func classInitAppChooserDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 	return &AppChooserDialog{

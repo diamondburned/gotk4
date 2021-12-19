@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// MenuAccessibleOverrider contains methods that are overridable.
+type MenuAccessibleOverrider interface {
+}
+
 type MenuAccessible struct {
 	_ [0]func() // equal guard
 	MenuShellAccessible
@@ -30,6 +34,14 @@ type MenuAccessible struct {
 var (
 	_ externglib.Objector = (*MenuAccessible)(nil)
 )
+
+func classInitMenuAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMenuAccessible(obj *externglib.Object) *MenuAccessible {
 	return &MenuAccessible{

@@ -26,6 +26,10 @@ func init() {
 	})
 }
 
+// CellViewOverrider contains methods that are overridable.
+type CellViewOverrider interface {
+}
+
 // CellView displays a single row of a TreeModel using a CellArea and
 // CellAreaContext. A CellAreaContext can be provided to the CellView at
 // construction time in order to keep the cellview in context of a group of cell
@@ -56,6 +60,14 @@ var (
 	_ Widgetter           = (*CellView)(nil)
 	_ externglib.Objector = (*CellView)(nil)
 )
+
+func classInitCellViewer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCellView(obj *externglib.Object) *CellView {
 	return &CellView{

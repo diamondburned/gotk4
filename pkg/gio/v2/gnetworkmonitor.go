@@ -16,7 +16,10 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach(GNetworkMonitor*, GSocketConnectable*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach_finish(GNetworkMonitor*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_NetworkMonitorInterface_network_changed(GNetworkMonitor*, gboolean);
 import "C"
 
 func init() {
@@ -28,63 +31,6 @@ func init() {
 // NETWORK_MONITOR_EXTENSION_POINT_NAME: extension point for network status
 // monitoring functionality. See [Extending GIO][extending-gio].
 const NETWORK_MONITOR_EXTENSION_POINT_NAME = "gio-network-monitor"
-
-// NetworkMonitorOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
-type NetworkMonitorOverrider interface {
-	// CanReach attempts to determine whether or not the host pointed to by
-	// connectable can be reached, without actually trying to connect to it.
-	//
-	// This may return TRUE even when Monitor:network-available is FALSE, if,
-	// for example, monitor can determine that connectable refers to a host on a
-	// local network.
-	//
-	// If monitor believes that an attempt to connect to connectable will
-	// succeed, it will return TRUE. Otherwise, it will return FALSE and set
-	// error to an appropriate error (such as G_IO_ERROR_HOST_UNREACHABLE).
-	//
-	// Note that although this does not attempt to connect to connectable, it
-	// may still block for a brief period of time (eg, trying to do multicast
-	// DNS on the local network), so if you do not want to block, you should use
-	// g_network_monitor_can_reach_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//    - connectable: Connectable.
-	//
-	CanReach(ctx context.Context, connectable SocketConnectabler) error
-	// CanReachAsync: asynchronously attempts to determine whether or not the
-	// host pointed to by connectable can be reached, without actually trying to
-	// connect to it.
-	//
-	// For more details, see g_network_monitor_can_reach().
-	//
-	// When the operation is finished, callback will be called. You can then
-	// call g_network_monitor_can_reach_finish() to get the result of the
-	// operation.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//    - connectable: Connectable.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback)
-	// CanReachFinish finishes an async network connectivity test. See
-	// g_network_monitor_can_reach_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	CanReachFinish(result AsyncResulter) error
-	// The function takes the following parameters:
-	//
-	NetworkChanged(networkAvailable bool)
-}
 
 // NetworkMonitor provides an easy-to-use cross-platform API for monitoring
 // network connectivity. On Linux, the available implementations are based on

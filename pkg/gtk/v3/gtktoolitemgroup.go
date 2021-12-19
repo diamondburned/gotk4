@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// ToolItemGroupOverrider contains methods that are overridable.
+type ToolItemGroupOverrider interface {
+}
+
 // ToolItemGroup is used together with ToolPalette to add ToolItems to a palette
 // like container with different categories and drag and drop support.
 //
@@ -48,6 +52,14 @@ var (
 	_ externglib.Objector = (*ToolItemGroup)(nil)
 	_ Widgetter           = (*ToolItemGroup)(nil)
 )
+
+func classInitToolItemGrouper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 	return &ToolItemGroup{

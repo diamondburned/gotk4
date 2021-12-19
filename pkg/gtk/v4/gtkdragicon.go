@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// DragIconOverrider contains methods that are overridable.
+type DragIconOverrider interface {
+}
+
 // DragIcon: GtkDragIcon is a GtkRoot implementation for drag icons.
 //
 // A drag icon moves with the pointer during a Drag-and-Drop operation and is
@@ -44,6 +48,14 @@ var (
 	_ Widgetter           = (*DragIcon)(nil)
 	_ externglib.Objector = (*DragIcon)(nil)
 )
+
+func classInitDragIconner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDragIcon(obj *externglib.Object) *DragIcon {
 	return &DragIcon{

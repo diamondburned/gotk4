@@ -115,6 +115,10 @@ func (b BuilderError) String() string {
 	}
 }
 
+// BuilderOverrider contains methods that are overridable.
+type BuilderOverrider interface {
+}
+
 // Builder: GtkBuilder reads XML descriptions of a user interface and
 // instantiates the described objects.
 //
@@ -294,6 +298,14 @@ type Builder struct {
 var (
 	_ externglib.Objector = (*Builder)(nil)
 )
+
+func classInitBuilderer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapBuilder(obj *externglib.Object) *Builder {
 	return &Builder{

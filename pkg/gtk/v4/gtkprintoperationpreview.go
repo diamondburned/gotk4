@@ -12,6 +12,11 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_PrintOperationPreviewIface_is_selected(GtkPrintOperationPreview*, int);
+// extern void _gotk4_gtk4_PrintOperationPreviewIface_end_preview(GtkPrintOperationPreview*);
+// extern void _gotk4_gtk4_PrintOperationPreviewIface_got_page_size(GtkPrintOperationPreview*, GtkPrintContext*, GtkPageSetup*);
+// extern void _gotk4_gtk4_PrintOperationPreviewIface_ready(GtkPrintOperationPreview*, GtkPrintContext*);
+// extern void _gotk4_gtk4_PrintOperationPreviewIface_render_page(GtkPrintOperationPreview*, int);
 import "C"
 
 func init() {
@@ -21,9 +26,6 @@ func init() {
 }
 
 // PrintOperationPreviewOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PrintOperationPreviewOverrider interface {
 	// EndPreview ends a preview.
 	//
@@ -96,6 +98,79 @@ type PrintOperationPreviewer interface {
 }
 
 var _ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
+
+func ifaceInitPrintOperationPreviewer(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkPrintOperationPreviewIface)(unsafe.Pointer(gifacePtr))
+	iface.end_preview = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_end_preview)
+	iface.got_page_size = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_got_page_size)
+	iface.is_selected = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_is_selected)
+	iface.ready = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_ready)
+	iface.render_page = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_render_page)
+}
+
+//export _gotk4_gtk4_PrintOperationPreviewIface_end_preview
+func _gotk4_gtk4_PrintOperationPreviewIface_end_preview(arg0 *C.GtkPrintOperationPreview) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PrintOperationPreviewOverrider)
+
+	iface.EndPreview()
+}
+
+//export _gotk4_gtk4_PrintOperationPreviewIface_got_page_size
+func _gotk4_gtk4_PrintOperationPreviewIface_got_page_size(arg0 *C.GtkPrintOperationPreview, arg1 *C.GtkPrintContext, arg2 *C.GtkPageSetup) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PrintOperationPreviewOverrider)
+
+	var _context *PrintContext // out
+	var _pageSetup *PageSetup  // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+	_pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg2)))
+
+	iface.GotPageSize(_context, _pageSetup)
+}
+
+//export _gotk4_gtk4_PrintOperationPreviewIface_is_selected
+func _gotk4_gtk4_PrintOperationPreviewIface_is_selected(arg0 *C.GtkPrintOperationPreview, arg1 C.int) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PrintOperationPreviewOverrider)
+
+	var _pageNr int // out
+
+	_pageNr = int(arg1)
+
+	ok := iface.IsSelected(_pageNr)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_PrintOperationPreviewIface_ready
+func _gotk4_gtk4_PrintOperationPreviewIface_ready(arg0 *C.GtkPrintOperationPreview, arg1 *C.GtkPrintContext) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PrintOperationPreviewOverrider)
+
+	var _context *PrintContext // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.Ready(_context)
+}
+
+//export _gotk4_gtk4_PrintOperationPreviewIface_render_page
+func _gotk4_gtk4_PrintOperationPreviewIface_render_page(arg0 *C.GtkPrintOperationPreview, arg1 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(PrintOperationPreviewOverrider)
+
+	var _pageNr int // out
+
+	_pageNr = int(arg1)
+
+	iface.RenderPage(_pageNr)
+}
 
 func wrapPrintOperationPreview(obj *externglib.Object) *PrintOperationPreview {
 	return &PrintOperationPreview{

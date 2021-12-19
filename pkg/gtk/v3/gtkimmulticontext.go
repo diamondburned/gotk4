@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// IMMulticontextOverrider contains methods that are overridable.
+type IMMulticontextOverrider interface {
+}
+
 type IMMulticontext struct {
 	_ [0]func() // equal guard
 	IMContext
@@ -30,6 +34,14 @@ type IMMulticontext struct {
 var (
 	_ IMContexter = (*IMMulticontext)(nil)
 )
+
+func classInitIMMulticontexter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
 	return &IMMulticontext{

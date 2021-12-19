@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// GObjectAccessibleOverrider contains methods that are overridable.
+type GObjectAccessibleOverrider interface {
+}
+
 // GObjectAccessible: this object class is derived from AtkObject. It can be
 // used as a basis for implementing accessible objects for GObjects which are
 // not derived from GtkWidget. One example of its use is in providing an
@@ -32,6 +36,14 @@ type GObjectAccessible struct {
 var (
 	_ externglib.Objector = (*GObjectAccessible)(nil)
 )
+
+func classInitGObjectAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGObjectAccessible(obj *externglib.Object) *GObjectAccessible {
 	return &GObjectAccessible{

@@ -17,9 +17,9 @@ import (
 
 // #include <stdlib.h>
 // #include <glib.h>
-// GLogWriterOutput _gotk4_glib2_LogWriterFunc(GLogLevelFlags, GLogField*, gsize, gpointer);
+// extern GLogWriterOutput _gotk4_glib2_LogWriterFunc(GLogLevelFlags, GLogField*, gsize, gpointer);
+// extern void _gotk4_glib2_LogFunc(gchar*, GLogLevelFlags, gchar*, gpointer);
 // extern void callbackDelete(gpointer);
-// void _gotk4_glib2_LogFunc(gchar*, GLogLevelFlags, gchar*, gpointer);
 import "C"
 
 // LOG_DOMAIN defines the log domain. See Log Domains (#log-domains).
@@ -166,22 +166,25 @@ func (l LogLevelFlags) Has(other LogLevelFlags) bool {
 type LogFunc func(logDomain string, logLevel LogLevelFlags, message string)
 
 //export _gotk4_glib2_LogFunc
-func _gotk4_glib2_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_glib2_LogFunc(arg1 *C.gchar, arg2 C.GLogLevelFlags, arg3 *C.gchar, arg4 C.gpointer) {
+	var fn LogFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(LogFunc)
 	}
 
-	var logDomain string       // out
-	var logLevel LogLevelFlags // out
-	var message string         // out
+	var _logDomain string       // out
+	var _logLevel LogLevelFlags // out
+	var _message string         // out
 
-	logDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
-	logLevel = LogLevelFlags(arg1)
-	message = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_logDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_logLevel = LogLevelFlags(arg2)
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 
-	fn := v.(LogFunc)
-	fn(logDomain, logLevel, message)
+	fn(_logDomain, _logLevel, _message)
 }
 
 // LogWriterFunc: writer function for log entries. A log entry is a collection
@@ -205,26 +208,29 @@ func _gotk4_glib2_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, a
 type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOutput LogWriterOutput)
 
 //export _gotk4_glib2_LogWriterFunc
-func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) (cret C.GLogWriterOutput) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_glib2_LogWriterFunc(arg1 C.GLogLevelFlags, arg2 *C.GLogField, arg3 C.gsize, arg4 C.gpointer) (cret C.GLogWriterOutput) {
+	var fn LogWriterFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(LogWriterFunc)
 	}
 
-	var logLevel LogLevelFlags // out
-	var fields []LogField      // out
+	var _logLevel LogLevelFlags // out
+	var _fields []LogField      // out
 
-	logLevel = LogLevelFlags(arg0)
+	_logLevel = LogLevelFlags(arg1)
 	{
-		src := unsafe.Slice(arg1, arg2)
-		fields = make([]LogField, arg2)
-		for i := 0; i < int(arg2); i++ {
-			fields[i] = *(*LogField)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		src := unsafe.Slice(arg2, arg3)
+		_fields = make([]LogField, arg3)
+		for i := 0; i < int(arg3); i++ {
+			_fields[i] = *(*LogField)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 		}
 	}
 
-	fn := v.(LogWriterFunc)
-	logWriterOutput := fn(logLevel, fields)
+	logWriterOutput := fn(_logLevel, _fields)
 
 	cret = C.GLogWriterOutput(logWriterOutput)
 

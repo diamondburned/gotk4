@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// ComboBoxTextOverrider contains methods that are overridable.
+type ComboBoxTextOverrider interface {
+}
+
 // ComboBoxText is a simple variant of ComboBox that hides the model-view
 // complexity for simple text-only use cases.
 //
@@ -79,6 +83,14 @@ var (
 	_ Binner              = (*ComboBoxText)(nil)
 	_ externglib.Objector = (*ComboBoxText)(nil)
 )
+
+func classInitComboBoxTexter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 	return &ComboBoxText{

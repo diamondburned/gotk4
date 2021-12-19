@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// PopoverMenuOverrider contains methods that are overridable.
+type PopoverMenuOverrider interface {
+}
+
 // PopoverMenu is a subclass of Popover that treats its children like menus and
 // allows switching between them. It is meant to be used primarily together with
 // ModelButton, but any widget can be used, such as SpinButton or Scale. In this
@@ -99,6 +103,14 @@ type PopoverMenu struct {
 var (
 	_ Binner = (*PopoverMenu)(nil)
 )
+
+func classInitPopoverMenuer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 	return &PopoverMenu{

@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// InetAddressMaskOverrider contains methods that are overridable.
+type InetAddressMaskOverrider interface {
+}
+
 // InetAddressMask represents a range of IPv4 or IPv6 addresses described by a
 // base address and a length indicating how many bits of the base address are
 // relevant for matching purposes. These are often given in string form. Eg,
@@ -35,6 +39,14 @@ type InetAddressMask struct {
 var (
 	_ externglib.Objector = (*InetAddressMask)(nil)
 )
+
+func classInitInetAddressMasker(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapInetAddressMask(obj *externglib.Object) *InetAddressMask {
 	return &InetAddressMask{

@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// SpinnerOverrider contains methods that are overridable.
+type SpinnerOverrider interface {
+}
+
 // Spinner widget displays an icon-size spinning animation. It is often used as
 // an alternative to a ProgressBar for displaying indefinite activity, instead
 // of actual progress.
@@ -43,6 +47,14 @@ type Spinner struct {
 var (
 	_ Widgetter = (*Spinner)(nil)
 )
+
+func classInitSpinnerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSpinner(obj *externglib.Object) *Spinner {
 	return &Spinner{

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -16,6 +17,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_ToolItemClass_create_menu_proxy(GtkToolItem*);
+// extern void _gotk4_gtk3_ToolItemClass_toolbar_reconfigured(GtkToolItem*);
 import "C"
 
 func init() {
@@ -25,9 +28,6 @@ func init() {
 }
 
 // ToolItemOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ToolItemOverrider interface {
 	// The function returns the following values:
 	//
@@ -59,6 +59,48 @@ var (
 	_ Binner              = (*ToolItem)(nil)
 	_ externglib.Objector = (*ToolItem)(nil)
 )
+
+func classInitToolItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkToolItemClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkToolItemClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ CreateMenuProxy() bool }); ok {
+		pclass.create_menu_proxy = (*[0]byte)(C._gotk4_gtk3_ToolItemClass_create_menu_proxy)
+	}
+
+	if _, ok := goval.(interface{ ToolbarReconfigured() }); ok {
+		pclass.toolbar_reconfigured = (*[0]byte)(C._gotk4_gtk3_ToolItemClass_toolbar_reconfigured)
+	}
+}
+
+//export _gotk4_gtk3_ToolItemClass_create_menu_proxy
+func _gotk4_gtk3_ToolItemClass_create_menu_proxy(arg0 *C.GtkToolItem) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ CreateMenuProxy() bool })
+
+	ok := iface.CreateMenuProxy()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolItemClass_toolbar_reconfigured
+func _gotk4_gtk3_ToolItemClass_toolbar_reconfigured(arg0 *C.GtkToolItem) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ToolbarReconfigured() })
+
+	iface.ToolbarReconfigured()
+}
 
 func wrapToolItem(obj *externglib.Object) *ToolItem {
 	return &ToolItem{

@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// RadioToolButtonOverrider contains methods that are overridable.
+type RadioToolButtonOverrider interface {
+}
+
 // RadioToolButton is a ToolItem that contains a radio button, that is, a button
 // that is part of a group of toggle buttons where only one button can be active
 // at a time.
@@ -45,6 +49,14 @@ var (
 	_ externglib.Objector = (*RadioToolButton)(nil)
 	_ Binner              = (*RadioToolButton)(nil)
 )
+
+func classInitRadioToolButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 	return &RadioToolButton{

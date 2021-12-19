@@ -16,7 +16,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill(GBufferedInputStream*, gssize, GCancellable*, GError**);
+// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill_finish(GBufferedInputStream*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -26,9 +28,6 @@ func init() {
 }
 
 // BufferedInputStreamOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type BufferedInputStreamOverrider interface {
 	// Fill tries to read count bytes from the stream into the buffer. Will
 	// block during this read.
@@ -66,21 +65,6 @@ type BufferedInputStreamOverrider interface {
 	//      on error.
 	//
 	Fill(ctx context.Context, count int) (int, error)
-	// FillAsync reads data into stream's buffer asynchronously, up to count
-	// size. io_priority can be used to prioritize reads. For the synchronous
-	// version of this function, see g_buffered_input_stream_fill().
-	//
-	// If count is -1 then the attempted read size is equal to the number of
-	// bytes that are required to fill the buffer.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object.
-	//    - count: number of bytes that will be read from the stream.
-	//    - ioPriority: [I/O priority][io-priority] of the request.
-	//    - callback (optional): ReadyCallback.
-	//
-	FillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback)
 	// FillFinish finishes an asynchronous read.
 	//
 	// The function takes the following parameters:
@@ -118,6 +102,92 @@ type BufferedInputStream struct {
 var (
 	_ FilterInputStreamer = (*BufferedInputStream)(nil)
 )
+
+func classInitBufferedInputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GBufferedInputStreamClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GBufferedInputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Fill(ctx context.Context, count int) (int, error)
+	}); ok {
+		pclass.fill = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill)
+	}
+
+	if _, ok := goval.(interface {
+		FillFinish(result AsyncResulter) (int, error)
+	}); ok {
+		pclass.fill_finish = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill_finish)
+	}
+}
+
+//export _gotk4_gio2_BufferedInputStreamClass_fill
+func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.GBufferedInputStream, arg1 C.gssize, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Fill(ctx context.Context, count int) (int, error)
+	})
+
+	var _cancellable context.Context // out
+	var _count int                   // out
+
+	if arg2 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
+	}
+	_count = int(arg1)
+
+	gssize, _goerr := iface.Fill(_cancellable, _count)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_BufferedInputStreamClass_fill_finish
+func _gotk4_gio2_BufferedInputStreamClass_fill_finish(arg0 *C.GBufferedInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		FillFinish(result AsyncResulter) (int, error)
+	})
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	gssize, _goerr := iface.FillFinish(_result)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapBufferedInputStream(obj *externglib.Object) *BufferedInputStream {
 	return &BufferedInputStream{

@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -16,6 +17,13 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gchar* _gotk4_gtk3_MenuItemClass_get_label(GtkMenuItem*);
+// extern void _gotk4_gtk3_MenuItemClass_activate(GtkMenuItem*);
+// extern void _gotk4_gtk3_MenuItemClass_activate_item(GtkMenuItem*);
+// extern void _gotk4_gtk3_MenuItemClass_deselect(GtkMenuItem*);
+// extern void _gotk4_gtk3_MenuItemClass_select(GtkMenuItem*);
+// extern void _gotk4_gtk3_MenuItemClass_set_label(GtkMenuItem*, gchar*);
+// extern void _gotk4_gtk3_MenuItemClass_toggle_size_allocate(GtkMenuItem*, gint);
 import "C"
 
 func init() {
@@ -25,9 +33,6 @@ func init() {
 }
 
 // MenuItemOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type MenuItemOverrider interface {
 	// Activate emits the MenuItem::activate signal on the given item.
 	Activate()
@@ -94,6 +99,115 @@ var (
 	_ Binner              = (*MenuItem)(nil)
 	_ externglib.Objector = (*MenuItem)(nil)
 )
+
+func classInitMenuItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkMenuItemClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkMenuItemClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_activate)
+	}
+
+	if _, ok := goval.(interface{ ActivateItem() }); ok {
+		pclass.activate_item = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_activate_item)
+	}
+
+	if _, ok := goval.(interface{ Deselect() }); ok {
+		pclass.deselect = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_deselect)
+	}
+
+	if _, ok := goval.(interface{ Label() string }); ok {
+		pclass.get_label = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_get_label)
+	}
+
+	if _, ok := goval.(interface{ Select() }); ok {
+		pclass._select = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_select)
+	}
+
+	if _, ok := goval.(interface{ SetLabel(label string) }); ok {
+		pclass.set_label = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_set_label)
+	}
+
+	if _, ok := goval.(interface{ ToggleSizeAllocate(allocation int) }); ok {
+		pclass.toggle_size_allocate = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_toggle_size_allocate)
+	}
+}
+
+//export _gotk4_gtk3_MenuItemClass_activate
+func _gotk4_gtk3_MenuItemClass_activate(arg0 *C.GtkMenuItem) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
+
+//export _gotk4_gtk3_MenuItemClass_activate_item
+func _gotk4_gtk3_MenuItemClass_activate_item(arg0 *C.GtkMenuItem) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActivateItem() })
+
+	iface.ActivateItem()
+}
+
+//export _gotk4_gtk3_MenuItemClass_deselect
+func _gotk4_gtk3_MenuItemClass_deselect(arg0 *C.GtkMenuItem) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Deselect() })
+
+	iface.Deselect()
+}
+
+//export _gotk4_gtk3_MenuItemClass_get_label
+func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.GtkMenuItem) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Label() string })
+
+	utf8 := iface.Label()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_gtk3_MenuItemClass_select
+func _gotk4_gtk3_MenuItemClass_select(arg0 *C.GtkMenuItem) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Select() })
+
+	iface.Select()
+}
+
+//export _gotk4_gtk3_MenuItemClass_set_label
+func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.GtkMenuItem, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetLabel(label string) })
+
+	var _label string // out
+
+	_label = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.SetLabel(_label)
+}
+
+//export _gotk4_gtk3_MenuItemClass_toggle_size_allocate
+func _gotk4_gtk3_MenuItemClass_toggle_size_allocate(arg0 *C.GtkMenuItem, arg1 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ToggleSizeAllocate(allocation int) })
+
+	var _allocation int // out
+
+	_allocation = int(arg1)
+
+	iface.ToggleSizeAllocate(_allocation)
+}
 
 func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	return &MenuItem{

@@ -15,8 +15,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern char* _gotk4_gtk4_ComboBoxClass_format_entry_text(GtkComboBox*, char*);
+// extern gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk4_ComboBoxClass_changed(GtkComboBox*);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -26,9 +28,6 @@ func init() {
 }
 
 // ComboBoxOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ComboBoxOverrider interface {
 	Changed()
 	// The function takes the following parameters:
@@ -108,6 +107,50 @@ var (
 	_ Widgetter           = (*ComboBox)(nil)
 	_ externglib.Objector = (*ComboBox)(nil)
 )
+
+func classInitComboBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkComboBoxClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkComboBoxClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Changed() }); ok {
+		pclass.changed = (*[0]byte)(C._gotk4_gtk4_ComboBoxClass_changed)
+	}
+
+	if _, ok := goval.(interface{ FormatEntryText(path string) string }); ok {
+		pclass.format_entry_text = (*[0]byte)(C._gotk4_gtk4_ComboBoxClass_format_entry_text)
+	}
+}
+
+//export _gotk4_gtk4_ComboBoxClass_changed
+func _gotk4_gtk4_ComboBoxClass_changed(arg0 *C.GtkComboBox) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Changed() })
+
+	iface.Changed()
+}
+
+//export _gotk4_gtk4_ComboBoxClass_format_entry_text
+func _gotk4_gtk4_ComboBoxClass_format_entry_text(arg0 *C.GtkComboBox, arg1 *C.char) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ FormatEntryText(path string) string })
+
+	var _path string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	utf8 := iface.FormatEntryText(_path)
+
+	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
 
 func wrapComboBox(obj *externglib.Object) *ComboBox {
 	return &ComboBox{

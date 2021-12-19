@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// MenuBarOverrider contains methods that are overridable.
+type MenuBarOverrider interface {
+}
+
 // MenuBar is a subclass of MenuShell which contains one or more MenuItems. The
 // result is a standard menu bar which can hold many menu items.
 //
@@ -39,6 +43,14 @@ type MenuBar struct {
 var (
 	_ MenuSheller = (*MenuBar)(nil)
 )
+
+func classInitMenuBarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMenuBar(obj *externglib.Object) *MenuBar {
 	return &MenuBar{

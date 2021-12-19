@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// VScrollbarOverrider contains methods that are overridable.
+type VScrollbarOverrider interface {
+}
+
 // VScrollbar widget is a widget arranged vertically creating a scrollbar. See
 // Scrollbar for details on scrollbars. Adjustment pointers may be added to
 // handle the adjustment of the scrollbar or it may be left NULL in which case
@@ -38,6 +42,14 @@ type VScrollbar struct {
 var (
 	_ Ranger = (*VScrollbar)(nil)
 )
+
+func classInitVScrollbarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapVScrollbar(obj *externglib.Object) *VScrollbar {
 	return &VScrollbar{

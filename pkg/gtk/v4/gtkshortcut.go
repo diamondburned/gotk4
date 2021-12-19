@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ShortcutOverrider contains methods that are overridable.
+type ShortcutOverrider interface {
+}
+
 // Shortcut: GtkShortcut describes a keyboard shortcut.
 //
 // It contains a description of how to trigger the shortcut via a
@@ -44,6 +48,14 @@ type Shortcut struct {
 var (
 	_ externglib.Objector = (*Shortcut)(nil)
 )
+
+func classInitShortcutter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapShortcut(obj *externglib.Object) *Shortcut {
 	return &Shortcut{

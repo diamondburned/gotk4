@@ -12,8 +12,8 @@ import (
 
 // #include <stdlib.h>
 // #include <gdk/wayland/gdkwayland.h>
+// extern void _gotk4_gdkwayland4_WaylandToplevelExported(GdkToplevel*, char*, gpointer);
 // extern void callbackDelete(gpointer);
-// void _gotk4_gdkwayland4_WaylandToplevelExported(GdkToplevel*, char*, gpointer);
 import "C"
 
 // WaylandToplevelExported: callback that gets called when the handle for a
@@ -26,20 +26,23 @@ import "C"
 type WaylandToplevelExported func(toplevel *WaylandToplevel, handle string)
 
 //export _gotk4_gdkwayland4_WaylandToplevelExported
-func _gotk4_gdkwayland4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gdkwayland4_WaylandToplevelExported(arg1 *C.GdkToplevel, arg2 *C.char, arg3 C.gpointer) {
+	var fn WaylandToplevelExported
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(WaylandToplevelExported)
 	}
 
-	var toplevel *WaylandToplevel // out
-	var handle string             // out
+	var _toplevel *WaylandToplevel // out
+	var _handle string             // out
 
-	toplevel = wrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg0)))
-	handle = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_toplevel = wrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg1)))
+	_handle = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
-	fn := v.(WaylandToplevelExported)
-	fn(toplevel, handle)
+	fn(_toplevel, _handle)
 }
 
 // ExportHandle: asynchronously obtains a handle for a surface that can be

@@ -73,6 +73,10 @@ func (b ButtonBoxStyle) String() string {
 	}
 }
 
+// ButtonBoxOverrider contains methods that are overridable.
+type ButtonBoxOverrider interface {
+}
+
 type ButtonBox struct {
 	_ [0]func() // equal guard
 	Box
@@ -82,6 +86,14 @@ var (
 	_ Containerer         = (*ButtonBox)(nil)
 	_ externglib.Objector = (*ButtonBox)(nil)
 )
+
+func classInitButtonBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapButtonBox(obj *externglib.Object) *ButtonBox {
 	return &ButtonBox{

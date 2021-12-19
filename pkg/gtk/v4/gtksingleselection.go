@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// SingleSelectionOverrider contains methods that are overridable.
+type SingleSelectionOverrider interface {
+}
+
 // SingleSelection: GtkSingleSelection is a GtkSelectionModel that allows
 // selecting a single item.
 //
@@ -38,6 +42,14 @@ type SingleSelection struct {
 var (
 	_ externglib.Objector = (*SingleSelection)(nil)
 )
+
+func classInitSingleSelectioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSingleSelection(obj *externglib.Object) *SingleSelection {
 	return &SingleSelection{

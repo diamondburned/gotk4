@@ -8,13 +8,25 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// GFile* _gotk4_gio2_VFSFileLookupFunc(GVfs*, char*, gpointer);
+// extern GFile* _gotk4_gio2_VFSFileLookupFunc(GVfs*, char*, gpointer);
+// extern GFile* _gotk4_gio2_VfsClass_get_file_for_path(GVfs*, char*);
+// extern GFile* _gotk4_gio2_VfsClass_get_file_for_uri(GVfs*, char*);
+// extern GFile* _gotk4_gio2_VfsClass_parse_name(GVfs*, char*);
+// extern gboolean _gotk4_gio2_VfsClass_is_active(GVfs*);
+// extern gboolean _gotk4_gio2_VfsClass_local_file_set_attributes(GVfs*, char*, GFileInfo*, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern gchar** _gotk4_gio2_VfsClass_get_supported_uri_schemes(GVfs*);
+// extern void _gotk4_gio2_VfsClass_add_writable_namespaces(GVfs*, GFileAttributeInfoList*);
+// extern void _gotk4_gio2_VfsClass_local_file_moved(GVfs*, char*, char*);
+// extern void _gotk4_gio2_VfsClass_local_file_removed(GVfs*, char*);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -37,20 +49,23 @@ const VFS_EXTENSION_POINT_NAME = "gio-vfs"
 type VFSFileLookupFunc func(vfs *VFS, identifier string) (file Filer)
 
 //export _gotk4_gio2_VFSFileLookupFunc
-func _gotk4_gio2_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret *C.GFile) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_VFSFileLookupFunc(arg1 *C.GVfs, arg2 *C.char, arg3 C.gpointer) (cret *C.GFile) {
+	var fn VFSFileLookupFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(VFSFileLookupFunc)
 	}
 
-	var vfs *VFS          // out
-	var identifier string // out
+	var _vfs *VFS          // out
+	var _identifier string // out
 
-	vfs = wrapVFS(externglib.Take(unsafe.Pointer(arg0)))
-	identifier = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_vfs = wrapVFS(externglib.Take(unsafe.Pointer(arg1)))
+	_identifier = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
-	fn := v.(VFSFileLookupFunc)
-	file := fn(vfs, identifier)
+	file := fn(_vfs, _identifier)
 
 	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
 	C.g_object_ref(C.gpointer(file.Native()))
@@ -59,9 +74,6 @@ func _gotk4_gio2_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) 
 }
 
 // VFSOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type VFSOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -150,6 +162,222 @@ type VFS struct {
 var (
 	_ externglib.Objector = (*VFS)(nil)
 )
+
+func classInitVFSer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GVfsClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GVfsClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		AddWritableNamespaces(list *FileAttributeInfoList)
+	}); ok {
+		pclass.add_writable_namespaces = (*[0]byte)(C._gotk4_gio2_VfsClass_add_writable_namespaces)
+	}
+
+	if _, ok := goval.(interface{ FileForPath(path string) Filer }); ok {
+		pclass.get_file_for_path = (*[0]byte)(C._gotk4_gio2_VfsClass_get_file_for_path)
+	}
+
+	if _, ok := goval.(interface{ FileForURI(uri string) Filer }); ok {
+		pclass.get_file_for_uri = (*[0]byte)(C._gotk4_gio2_VfsClass_get_file_for_uri)
+	}
+
+	if _, ok := goval.(interface{ SupportedURISchemes() []string }); ok {
+		pclass.get_supported_uri_schemes = (*[0]byte)(C._gotk4_gio2_VfsClass_get_supported_uri_schemes)
+	}
+
+	if _, ok := goval.(interface{ IsActive() bool }); ok {
+		pclass.is_active = (*[0]byte)(C._gotk4_gio2_VfsClass_is_active)
+	}
+
+	if _, ok := goval.(interface{ LocalFileMoved(source, dest string) }); ok {
+		pclass.local_file_moved = (*[0]byte)(C._gotk4_gio2_VfsClass_local_file_moved)
+	}
+
+	if _, ok := goval.(interface{ LocalFileRemoved(filename string) }); ok {
+		pclass.local_file_removed = (*[0]byte)(C._gotk4_gio2_VfsClass_local_file_removed)
+	}
+
+	if _, ok := goval.(interface {
+		LocalFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
+	}); ok {
+		pclass.local_file_set_attributes = (*[0]byte)(C._gotk4_gio2_VfsClass_local_file_set_attributes)
+	}
+
+	if _, ok := goval.(interface{ ParseName(parseName string) Filer }); ok {
+		pclass.parse_name = (*[0]byte)(C._gotk4_gio2_VfsClass_parse_name)
+	}
+}
+
+//export _gotk4_gio2_VfsClass_add_writable_namespaces
+func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.GVfs, arg1 *C.GFileAttributeInfoList) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		AddWritableNamespaces(list *FileAttributeInfoList)
+	})
+
+	var _list *FileAttributeInfoList // out
+
+	_list = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_file_attribute_info_list_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_list)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
+		},
+	)
+
+	iface.AddWritableNamespaces(_list)
+}
+
+//export _gotk4_gio2_VfsClass_get_file_for_path
+func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ FileForPath(path string) Filer })
+
+	var _path string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	file := iface.FileForPath(_path)
+
+	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
+	C.g_object_ref(C.gpointer(file.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_VfsClass_get_file_for_uri
+func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ FileForURI(uri string) Filer })
+
+	var _uri string // out
+
+	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	file := iface.FileForURI(_uri)
+
+	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
+	C.g_object_ref(C.gpointer(file.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_VfsClass_get_supported_uri_schemes
+func _gotk4_gio2_VfsClass_get_supported_uri_schemes(arg0 *C.GVfs) (cret **C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SupportedURISchemes() []string })
+
+	utf8s := iface.SupportedURISchemes()
+
+	{
+		cret = (**C.gchar)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(cret))
+		{
+			out := unsafe.Slice(cret, len(utf8s)+1)
+			var zero *C.gchar
+			out[len(utf8s)] = zero
+			for i := range utf8s {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VfsClass_is_active
+func _gotk4_gio2_VfsClass_is_active(arg0 *C.GVfs) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ IsActive() bool })
+
+	ok := iface.IsActive()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VfsClass_local_file_moved
+func _gotk4_gio2_VfsClass_local_file_moved(arg0 *C.GVfs, arg1 *C.char, arg2 *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ LocalFileMoved(source, dest string) })
+
+	var _source string // out
+	var _dest string   // out
+
+	_source = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_dest = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	iface.LocalFileMoved(_source, _dest)
+}
+
+//export _gotk4_gio2_VfsClass_local_file_removed
+func _gotk4_gio2_VfsClass_local_file_removed(arg0 *C.GVfs, arg1 *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ LocalFileRemoved(filename string) })
+
+	var _filename string // out
+
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.LocalFileRemoved(_filename)
+}
+
+//export _gotk4_gio2_VfsClass_local_file_set_attributes
+func _gotk4_gio2_VfsClass_local_file_set_attributes(arg0 *C.GVfs, arg1 *C.char, arg2 *C.GFileInfo, arg3 C.GFileQueryInfoFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		LocalFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
+	})
+
+	var _cancellable context.Context // out
+	var _filename string             // out
+	var _info *FileInfo              // out
+	var _flags FileQueryInfoFlags    // out
+
+	if arg4 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg4))
+	}
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_info = wrapFileInfo(externglib.Take(unsafe.Pointer(arg2)))
+	_flags = FileQueryInfoFlags(arg3)
+
+	_goerr := iface.LocalFileSetAttributes(_cancellable, _filename, _info, _flags)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VfsClass_parse_name
+func _gotk4_gio2_VfsClass_parse_name(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ParseName(parseName string) Filer })
+
+	var _parseName string // out
+
+	_parseName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	file := iface.ParseName(_parseName)
+
+	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
+	C.g_object_ref(C.gpointer(file.Native()))
+
+	return cret
+}
 
 func wrapVFS(obj *externglib.Object) *VFS {
 	return &VFS{

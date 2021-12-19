@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// DataOutputStreamOverrider contains methods that are overridable.
+type DataOutputStreamOverrider interface {
+}
+
 // DataOutputStream: data output stream implements Stream and includes functions
 // for writing data directly to an output stream.
 type DataOutputStream struct {
@@ -35,6 +39,14 @@ type DataOutputStream struct {
 var (
 	_ FilterOutputStreamer = (*DataOutputStream)(nil)
 )
+
+func classInitDataOutputStreamer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDataOutputStream(obj *externglib.Object) *DataOutputStream {
 	return &DataOutputStream{

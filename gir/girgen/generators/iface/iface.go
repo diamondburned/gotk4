@@ -22,16 +22,17 @@ func CanGenerate(gen types.FileGenerator, v interface{}) bool {
 type Generator struct {
 	Root gir.TypeFindResult
 
-	Name         string
-	CType        string
-	GLibGetType  string
-	InfoAttrs    *gir.InfoAttrs
-	InfoElements *gir.InfoElements
+	Name           string
+	CType          string
+	GLibGetType    string
+	GLibTypeStruct *TypeStruct
+	InfoAttrs      *gir.InfoAttrs
+	InfoElements   *gir.InfoElements
 
 	InterfaceName string
 	StructName    string
 
-	Virtuals     Methods // for overrider
+	Virtuals     Methods // deprecated
 	Methods      Methods // for big interface
 	Constructors Methods
 	Signals      []Signal
@@ -68,7 +69,11 @@ func NewGenerator(gen types.FileGenerator) Generator {
 }
 
 func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
-	p := fmt.Sprintf("interface/class %s (C.%s):", g.InterfaceName, g.CType)
+	name := "class"
+	if g.IsInterface() {
+		name = "interface"
+	}
+	p := fmt.Sprintf("%s %s (C.%s):", name, g.InterfaceName, g.CType)
 	g.gen.Logln(lvl, logger.Prefix(v, p)...)
 }
 
@@ -117,6 +122,14 @@ func (g *Generator) IsClass() bool {
 	}
 }
 
+// IsInterface returns true if the generator is generating an interface.
+func (g *Generator) IsInterface() bool { return !g.IsClass() }
+
+// OverriderName returns the name of the overrider interface.
+func (g *Generator) OverriderName() string {
+	return g.StructName + "Overrider"
+}
+
 // Header returns the callback generator's current header.
 func (g *Generator) Header() *file.Header {
 	return &g.header
@@ -152,17 +165,6 @@ func (g *Generator) init(typ interface{}) bool {
 		if !g.Tree.ResolveFromType(resolved) {
 			g.Logln(logger.Debug, "class cannot be type-resolved")
 			return false
-		}
-
-		for _, ctor := range typ.Constructors {
-			// Copy and bodge this so the constructors and stuff are named properly.
-			// This copies things safely, so class is not modified.
-			ctor := bodgeClassCtor(typ, ctor)
-			if !g.cgen.UseConstructor(&g.Root, &ctor.CallableAttrs) {
-				continue
-			}
-
-			g.Constructors = append(g.Constructors, newMethod(&g.cgen))
 		}
 
 	case *gir.Interface:
@@ -212,8 +214,23 @@ func (g *Generator) Use(typ interface{}) bool {
 	switch v := g.Root.Type.(type) {
 	case *gir.Interface:
 		signals = v.Signals
+		g.checkTypeStruct(v.GLibTypeStruct)
+
 	case *gir.Class:
 		signals = v.Signals
+		g.checkTypeStruct(v.GLibTypeStruct)
+
+		for _, ctor := range v.Constructors {
+			// Copy and bodge this so the constructors and stuff are named properly.
+			// This copies things safely, so class is not modified.
+			ctor := bodgeClassCtor(v, ctor)
+			if !g.cgen.UseConstructor(&g.Root, &ctor.CallableAttrs) {
+				continue
+			}
+
+			// file.ApplyHeader(g, &g.cgen)
+			g.Constructors = append(g.Constructors, newMethod(&g.cgen))
+		}
 	}
 
 	for _, sig := range signals {
@@ -237,6 +254,20 @@ func (g *Generator) Use(typ interface{}) bool {
 	}
 
 	return true
+}
+
+func (g *Generator) checkTypeStruct(girName string) {
+	result := types.Find(g.gen, girName)
+	if result == nil {
+		return
+	}
+
+	if types.Filter(g.gen, result.Name(), result.CType()) {
+		g.Logln(logger.Skip, "class/interface struct", result.Name())
+		return
+	}
+
+	g.GLibTypeStruct = newTypeStruct(g, result)
 }
 
 func (g *Generator) ImplInterfaces() []string {

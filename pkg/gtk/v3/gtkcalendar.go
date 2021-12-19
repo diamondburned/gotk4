@@ -18,8 +18,15 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gchar* _gotk4_gtk3_CalendarDetailFunc(GtkCalendar*, guint, guint, guint, gpointer);
+// extern void _gotk4_gtk3_CalendarClass_day_selected(GtkCalendar*);
+// extern void _gotk4_gtk3_CalendarClass_day_selected_double_click(GtkCalendar*);
+// extern void _gotk4_gtk3_CalendarClass_month_changed(GtkCalendar*);
+// extern void _gotk4_gtk3_CalendarClass_next_month(GtkCalendar*);
+// extern void _gotk4_gtk3_CalendarClass_next_year(GtkCalendar*);
+// extern void _gotk4_gtk3_CalendarClass_prev_month(GtkCalendar*);
+// extern void _gotk4_gtk3_CalendarClass_prev_year(GtkCalendar*);
 // extern void callbackDelete(gpointer);
-// gchar* _gotk4_gtk3_CalendarDetailFunc(GtkCalendar*, guint, guint, guint, gpointer);
 import "C"
 
 func init() {
@@ -100,24 +107,27 @@ func (c CalendarDisplayOptions) Has(other CalendarDisplayOptions) bool {
 type CalendarDetailFunc func(calendar *Calendar, year, month, day uint) (utf8 string)
 
 //export _gotk4_gtk3_CalendarDetailFunc
-func _gotk4_gtk3_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) (cret *C.gchar) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.GtkCalendar, arg2 C.guint, arg3 C.guint, arg4 C.guint, arg5 C.gpointer) (cret *C.gchar) {
+	var fn CalendarDetailFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(CalendarDetailFunc)
 	}
 
-	var calendar *Calendar // out
-	var year uint          // out
-	var month uint         // out
-	var day uint           // out
+	var _calendar *Calendar // out
+	var _year uint          // out
+	var _month uint         // out
+	var _day uint           // out
 
-	calendar = wrapCalendar(externglib.Take(unsafe.Pointer(arg0)))
-	year = uint(arg1)
-	month = uint(arg2)
-	day = uint(arg3)
+	_calendar = wrapCalendar(externglib.Take(unsafe.Pointer(arg1)))
+	_year = uint(arg2)
+	_month = uint(arg3)
+	_day = uint(arg4)
 
-	fn := v.(CalendarDetailFunc)
-	utf8 := fn(calendar, year, month, day)
+	utf8 := fn(_calendar, _year, _month, _day)
 
 	if utf8 != "" {
 		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
@@ -127,9 +137,6 @@ func _gotk4_gtk3_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.gu
 }
 
 // CalendarOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type CalendarOverrider interface {
 	DaySelected()
 	DaySelectedDoubleClick()
@@ -168,6 +175,102 @@ type Calendar struct {
 var (
 	_ Widgetter = (*Calendar)(nil)
 )
+
+func classInitCalendarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkCalendarClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkCalendarClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ DaySelected() }); ok {
+		pclass.day_selected = (*[0]byte)(C._gotk4_gtk3_CalendarClass_day_selected)
+	}
+
+	if _, ok := goval.(interface{ DaySelectedDoubleClick() }); ok {
+		pclass.day_selected_double_click = (*[0]byte)(C._gotk4_gtk3_CalendarClass_day_selected_double_click)
+	}
+
+	if _, ok := goval.(interface{ MonthChanged() }); ok {
+		pclass.month_changed = (*[0]byte)(C._gotk4_gtk3_CalendarClass_month_changed)
+	}
+
+	if _, ok := goval.(interface{ NextMonth() }); ok {
+		pclass.next_month = (*[0]byte)(C._gotk4_gtk3_CalendarClass_next_month)
+	}
+
+	if _, ok := goval.(interface{ NextYear() }); ok {
+		pclass.next_year = (*[0]byte)(C._gotk4_gtk3_CalendarClass_next_year)
+	}
+
+	if _, ok := goval.(interface{ PrevMonth() }); ok {
+		pclass.prev_month = (*[0]byte)(C._gotk4_gtk3_CalendarClass_prev_month)
+	}
+
+	if _, ok := goval.(interface{ PrevYear() }); ok {
+		pclass.prev_year = (*[0]byte)(C._gotk4_gtk3_CalendarClass_prev_year)
+	}
+}
+
+//export _gotk4_gtk3_CalendarClass_day_selected
+func _gotk4_gtk3_CalendarClass_day_selected(arg0 *C.GtkCalendar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DaySelected() })
+
+	iface.DaySelected()
+}
+
+//export _gotk4_gtk3_CalendarClass_day_selected_double_click
+func _gotk4_gtk3_CalendarClass_day_selected_double_click(arg0 *C.GtkCalendar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DaySelectedDoubleClick() })
+
+	iface.DaySelectedDoubleClick()
+}
+
+//export _gotk4_gtk3_CalendarClass_month_changed
+func _gotk4_gtk3_CalendarClass_month_changed(arg0 *C.GtkCalendar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MonthChanged() })
+
+	iface.MonthChanged()
+}
+
+//export _gotk4_gtk3_CalendarClass_next_month
+func _gotk4_gtk3_CalendarClass_next_month(arg0 *C.GtkCalendar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ NextMonth() })
+
+	iface.NextMonth()
+}
+
+//export _gotk4_gtk3_CalendarClass_next_year
+func _gotk4_gtk3_CalendarClass_next_year(arg0 *C.GtkCalendar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ NextYear() })
+
+	iface.NextYear()
+}
+
+//export _gotk4_gtk3_CalendarClass_prev_month
+func _gotk4_gtk3_CalendarClass_prev_month(arg0 *C.GtkCalendar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PrevMonth() })
+
+	iface.PrevMonth()
+}
+
+//export _gotk4_gtk3_CalendarClass_prev_year
+func _gotk4_gtk3_CalendarClass_prev_year(arg0 *C.GtkCalendar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PrevYear() })
+
+	iface.PrevYear()
+}
 
 func wrapCalendar(obj *externglib.Object) *Calendar {
 	return &Calendar{

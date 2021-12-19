@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// CellAreaBoxOverrider contains methods that are overridable.
+type CellAreaBoxOverrider interface {
+}
+
 // CellAreaBox renders cell renderers into a row or a column depending on its
 // Orientation.
 //
@@ -49,6 +53,14 @@ var (
 	_ CellAreaer          = (*CellAreaBox)(nil)
 	_ externglib.Objector = (*CellAreaBox)(nil)
 )
+
+func classInitCellAreaBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 	return &CellAreaBox{

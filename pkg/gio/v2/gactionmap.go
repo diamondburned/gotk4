@@ -14,6 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GAction* _gotk4_gio2_ActionMapInterface_lookup_action(GActionMap*, gchar*);
+// extern void _gotk4_gio2_ActionMapInterface_add_action(GActionMap*, GAction*);
+// extern void _gotk4_gio2_ActionMapInterface_remove_action(GActionMap*, gchar*);
 import "C"
 
 func init() {
@@ -23,9 +26,6 @@ func init() {
 }
 
 // ActionMapOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ActionMapOverrider interface {
 	// AddAction adds an action to the action_map.
 	//
@@ -94,6 +94,71 @@ type ActionMapper interface {
 }
 
 var _ ActionMapper = (*ActionMap)(nil)
+
+func ifaceInitActionMapper(gifacePtr, data C.gpointer) {
+	iface := (*C.GActionMapInterface)(unsafe.Pointer(gifacePtr))
+	iface.add_action = (*[0]byte)(C._gotk4_gio2_ActionMapInterface_add_action)
+	iface.lookup_action = (*[0]byte)(C._gotk4_gio2_ActionMapInterface_lookup_action)
+	iface.remove_action = (*[0]byte)(C._gotk4_gio2_ActionMapInterface_remove_action)
+}
+
+//export _gotk4_gio2_ActionMapInterface_add_action
+func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GAction) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionMapOverrider)
+
+	var _action Actioner // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Actioner is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Actioner)
+			return ok
+		})
+		rv, ok := casted.(Actioner)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Actioner")
+		}
+		_action = rv
+	}
+
+	iface.AddAction(_action)
+}
+
+//export _gotk4_gio2_ActionMapInterface_lookup_action
+func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.GActionMap, arg1 *C.gchar) (cret *C.GAction) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionMapOverrider)
+
+	var _actionName string // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	action := iface.LookupAction(_actionName)
+
+	if action != nil {
+		cret = (*C.GAction)(unsafe.Pointer(action.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ActionMapInterface_remove_action
+func _gotk4_gio2_ActionMapInterface_remove_action(arg0 *C.GActionMap, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionMapOverrider)
+
+	var _actionName string // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.RemoveAction(_actionName)
+}
 
 func wrapActionMap(obj *externglib.Object) *ActionMap {
 	return &ActionMap{

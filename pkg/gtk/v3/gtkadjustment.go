@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -14,6 +15,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_AdjustmentClass_changed(GtkAdjustment*);
+// extern void _gotk4_gtk3_AdjustmentClass_value_changed(GtkAdjustment*);
 import "C"
 
 func init() {
@@ -23,9 +26,6 @@ func init() {
 }
 
 // AdjustmentOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type AdjustmentOverrider interface {
 	// Changed emits a Adjustment::changed signal from the Adjustment. This is
 	// typically called by the owner of the Adjustment after it has changed any
@@ -56,6 +56,42 @@ type Adjustment struct {
 }
 
 var ()
+
+func classInitAdjustmenter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkAdjustmentClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkAdjustmentClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Changed() }); ok {
+		pclass.changed = (*[0]byte)(C._gotk4_gtk3_AdjustmentClass_changed)
+	}
+
+	if _, ok := goval.(interface{ ValueChanged() }); ok {
+		pclass.value_changed = (*[0]byte)(C._gotk4_gtk3_AdjustmentClass_value_changed)
+	}
+}
+
+//export _gotk4_gtk3_AdjustmentClass_changed
+func _gotk4_gtk3_AdjustmentClass_changed(arg0 *C.GtkAdjustment) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Changed() })
+
+	iface.Changed()
+}
+
+//export _gotk4_gtk3_AdjustmentClass_value_changed
+func _gotk4_gtk3_AdjustmentClass_value_changed(arg0 *C.GtkAdjustment) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ValueChanged() })
+
+	iface.ValueChanged()
+}
 
 func wrapAdjustment(obj *externglib.Object) *Adjustment {
 	return &Adjustment{

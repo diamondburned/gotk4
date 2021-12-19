@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// X11KeymapOverrider contains methods that are overridable.
+type X11KeymapOverrider interface {
+}
+
 type X11Keymap struct {
 	_ [0]func() // equal guard
 	gdk.Keymap
@@ -29,6 +33,14 @@ type X11Keymap struct {
 var (
 	_ externglib.Objector = (*X11Keymap)(nil)
 )
+
+func classInitX11Keymapper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11Keymap(obj *externglib.Object) *X11Keymap {
 	return &X11Keymap{

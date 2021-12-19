@@ -60,6 +60,10 @@ func (a ArrowPlacement) String() string {
 	}
 }
 
+// MenuOverrider contains methods that are overridable.
+type MenuOverrider interface {
+}
+
 // Menu is a MenuShell that implements a drop down menu consisting of a list of
 // MenuItem objects which can be navigated and activated by the user to perform
 // application functions.
@@ -94,6 +98,14 @@ type Menu struct {
 var (
 	_ MenuSheller = (*Menu)(nil)
 )
+
+func classInitMenuer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMenu(obj *externglib.Object) *Menu {
 	return &Menu{

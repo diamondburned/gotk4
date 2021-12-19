@@ -18,7 +18,14 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_formats(GdkContentProvider*);
+// extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_storable_formats(GdkContentProvider*);
+// extern gboolean _gotk4_gdk4_ContentProviderClass_get_value(GdkContentProvider*, GValue*, GError**);
+// extern gboolean _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(GdkContentProvider*, GAsyncResult*, GError**);
+// extern void _gotk4_gdk4_ContentProviderClass_attach_clipboard(GdkContentProvider*, GdkClipboard*);
+// extern void _gotk4_gdk4_ContentProviderClass_content_changed(GdkContentProvider*);
+// extern void _gotk4_gdk4_ContentProviderClass_detach_clipboard(GdkContentProvider*, GdkClipboard*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -28,9 +35,6 @@ func init() {
 }
 
 // ContentProviderOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ContentProviderOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -73,28 +77,6 @@ type ContentProviderOverrider interface {
 	//    - contentFormats: storable formats of the provider.
 	//
 	RefStorableFormats() *ContentFormats
-	// WriteMIMETypeAsync: asynchronously writes the contents of provider to
-	// stream in the given mime_type.
-	//
-	// When the operation is finished callback will be called. You must then
-	// call gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the
-	// operation.
-	//
-	// The given mime type does not need to be listed in the formats returned by
-	// gdk.ContentProvider.RefFormats(). However, if the given GType is not
-	// supported, IO_ERROR_NOT_SUPPORTED will be reported.
-	//
-	// The given stream will not be closed.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional GCancellable object, NULL to ignore.
-	//    - mimeType: mime type to provide the data in.
-	//    - stream: GOutputStream to write to.
-	//    - ioPriority: i/O priority of the request.
-	//    - callback (optional) to call when the request is satisfied.
-	//
-	WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback)
 	// WriteMIMETypeFinish finishes an asynchronous write operation.
 	//
 	// See gdk.ContentProvider.WriteMIMETypeAsync().
@@ -123,6 +105,162 @@ type ContentProvider struct {
 var (
 	_ externglib.Objector = (*ContentProvider)(nil)
 )
+
+func classInitContentProviderer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GdkContentProviderClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GdkContentProviderClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ AttachClipboard(clipboard *Clipboard) }); ok {
+		pclass.attach_clipboard = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_attach_clipboard)
+	}
+
+	if _, ok := goval.(interface{ ContentChanged() }); ok {
+		pclass.content_changed = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_content_changed)
+	}
+
+	if _, ok := goval.(interface{ DetachClipboard(clipboard *Clipboard) }); ok {
+		pclass.detach_clipboard = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_detach_clipboard)
+	}
+
+	if _, ok := goval.(interface {
+		Value(value *externglib.Value) error
+	}); ok {
+		pclass.get_value = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_get_value)
+	}
+
+	if _, ok := goval.(interface{ RefFormats() *ContentFormats }); ok {
+		pclass.ref_formats = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_ref_formats)
+	}
+
+	if _, ok := goval.(interface{ RefStorableFormats() *ContentFormats }); ok {
+		pclass.ref_storable_formats = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_ref_storable_formats)
+	}
+
+	if _, ok := goval.(interface {
+		WriteMIMETypeFinish(result gio.AsyncResulter) error
+	}); ok {
+		pclass.write_mime_type_finish = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_write_mime_type_finish)
+	}
+}
+
+//export _gotk4_gdk4_ContentProviderClass_attach_clipboard
+func _gotk4_gdk4_ContentProviderClass_attach_clipboard(arg0 *C.GdkContentProvider, arg1 *C.GdkClipboard) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ AttachClipboard(clipboard *Clipboard) })
+
+	var _clipboard *Clipboard // out
+
+	_clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.AttachClipboard(_clipboard)
+}
+
+//export _gotk4_gdk4_ContentProviderClass_content_changed
+func _gotk4_gdk4_ContentProviderClass_content_changed(arg0 *C.GdkContentProvider) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ContentChanged() })
+
+	iface.ContentChanged()
+}
+
+//export _gotk4_gdk4_ContentProviderClass_detach_clipboard
+func _gotk4_gdk4_ContentProviderClass_detach_clipboard(arg0 *C.GdkContentProvider, arg1 *C.GdkClipboard) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ DetachClipboard(clipboard *Clipboard) })
+
+	var _clipboard *Clipboard // out
+
+	_clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.DetachClipboard(_clipboard)
+}
+
+//export _gotk4_gdk4_ContentProviderClass_get_value
+func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.GdkContentProvider, arg1 *C.GValue, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Value(value *externglib.Value) error
+	})
+
+	var _value *externglib.Value // out
+
+	_value = externglib.ValueFromNative(unsafe.Pointer(arg1))
+
+	_goerr := iface.Value(_value)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gdk4_ContentProviderClass_ref_formats
+func _gotk4_gdk4_ContentProviderClass_ref_formats(arg0 *C.GdkContentProvider) (cret *C.GdkContentFormats) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RefFormats() *ContentFormats })
+
+	contentFormats := iface.RefFormats()
+
+	cret = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(contentFormats)))
+
+	return cret
+}
+
+//export _gotk4_gdk4_ContentProviderClass_ref_storable_formats
+func _gotk4_gdk4_ContentProviderClass_ref_storable_formats(arg0 *C.GdkContentProvider) (cret *C.GdkContentFormats) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RefStorableFormats() *ContentFormats })
+
+	contentFormats := iface.RefStorableFormats()
+
+	cret = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(contentFormats)))
+
+	return cret
+}
+
+//export _gotk4_gdk4_ContentProviderClass_write_mime_type_finish
+func _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(arg0 *C.GdkContentProvider, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		WriteMIMETypeFinish(result gio.AsyncResulter) error
+	})
+
+	var _result gio.AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(gio.AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.WriteMIMETypeFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapContentProvider(obj *externglib.Object) *ContentProvider {
 	return &ContentProvider{

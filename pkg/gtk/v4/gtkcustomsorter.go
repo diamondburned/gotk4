@@ -14,14 +14,18 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 // extern void callbackDelete(gpointer);
-// gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_custom_sorter_get_type()), F: marshalCustomSorterer},
 	})
+}
+
+// CustomSorterOverrider contains methods that are overridable.
+type CustomSorterOverrider interface {
 }
 
 // CustomSorter: GtkCustomSorter is a GtkSorter implementation that sorts via a
@@ -34,6 +38,14 @@ type CustomSorter struct {
 var (
 	_ externglib.Objector = (*CustomSorter)(nil)
 )
+
+func classInitCustomSorterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCustomSorter(obj *externglib.Object) *CustomSorter {
 	return &CustomSorter{

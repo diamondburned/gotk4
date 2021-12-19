@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -14,6 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_PopoverClass_activate_default(GtkPopover*);
+// extern void _gotk4_gtk4_PopoverClass_closed(GtkPopover*);
 import "C"
 
 func init() {
@@ -23,9 +26,6 @@ func init() {
 }
 
 // PopoverOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type PopoverOverrider interface {
 	ActivateDefault()
 	Closed()
@@ -117,6 +117,42 @@ var (
 	_ Widgetter           = (*Popover)(nil)
 	_ externglib.Objector = (*Popover)(nil)
 )
+
+func classInitPopoverer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkPopoverClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkPopoverClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActivateDefault() }); ok {
+		pclass.activate_default = (*[0]byte)(C._gotk4_gtk4_PopoverClass_activate_default)
+	}
+
+	if _, ok := goval.(interface{ Closed() }); ok {
+		pclass.closed = (*[0]byte)(C._gotk4_gtk4_PopoverClass_closed)
+	}
+}
+
+//export _gotk4_gtk4_PopoverClass_activate_default
+func _gotk4_gtk4_PopoverClass_activate_default(arg0 *C.GtkPopover) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActivateDefault() })
+
+	iface.ActivateDefault()
+}
+
+//export _gotk4_gtk4_PopoverClass_closed
+func _gotk4_gtk4_PopoverClass_closed(arg0 *C.GtkPopover) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Closed() })
+
+	iface.Closed()
+}
 
 func wrapPopover(obj *externglib.Object) *Popover {
 	return &Popover{

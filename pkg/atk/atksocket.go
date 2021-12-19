@@ -6,12 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern void _gotk4_atk1_SocketClass_embed(AtkSocket*, gchar*);
 import "C"
 
 func init() {
@@ -21,9 +23,6 @@ func init() {
 }
 
 // SocketOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SocketOverrider interface {
 	// Embed embeds the children of an Plug as the children of the Socket. The
 	// plug may be in the same process or in a different process.
@@ -72,6 +71,34 @@ type Socket struct {
 var (
 	_ externglib.Objector = (*Socket)(nil)
 )
+
+func classInitSocketter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.AtkSocketClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.AtkSocketClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Embed(plugId string) }); ok {
+		pclass.embed = (*[0]byte)(C._gotk4_atk1_SocketClass_embed)
+	}
+}
+
+//export _gotk4_atk1_SocketClass_embed
+func _gotk4_atk1_SocketClass_embed(arg0 *C.AtkSocket, arg1 *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Embed(plugId string) })
+
+	var _plugId string // out
+
+	_plugId = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	iface.Embed(_plugId)
+}
 
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{

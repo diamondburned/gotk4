@@ -6,12 +6,15 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ButtonClass_activate(GtkButton*);
+// extern void _gotk4_gtk4_ButtonClass_clicked(GtkButton*);
 import "C"
 
 func init() {
@@ -21,9 +24,6 @@ func init() {
 }
 
 // ButtonOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ButtonOverrider interface {
 	Activate()
 	Clicked()
@@ -72,6 +72,42 @@ var (
 	_ Widgetter           = (*Button)(nil)
 	_ externglib.Objector = (*Button)(nil)
 )
+
+func classInitButtonner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkButtonClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk4_ButtonClass_activate)
+	}
+
+	if _, ok := goval.(interface{ Clicked() }); ok {
+		pclass.clicked = (*[0]byte)(C._gotk4_gtk4_ButtonClass_clicked)
+	}
+}
+
+//export _gotk4_gtk4_ButtonClass_activate
+func _gotk4_gtk4_ButtonClass_activate(arg0 *C.GtkButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
+
+//export _gotk4_gtk4_ButtonClass_clicked
+func _gotk4_gtk4_ButtonClass_clicked(arg0 *C.GtkButton) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Clicked() })
+
+	iface.Clicked()
+}
 
 func wrapButton(obj *externglib.Object) *Button {
 	return &Button{

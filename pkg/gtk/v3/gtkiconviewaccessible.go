@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// IconViewAccessibleOverrider contains methods that are overridable.
+type IconViewAccessibleOverrider interface {
+}
+
 type IconViewAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -32,6 +36,14 @@ type IconViewAccessible struct {
 var (
 	_ externglib.Objector = (*IconViewAccessible)(nil)
 )
+
+func classInitIconViewAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapIconViewAccessible(obj *externglib.Object) *IconViewAccessible {
 	return &IconViewAccessible{

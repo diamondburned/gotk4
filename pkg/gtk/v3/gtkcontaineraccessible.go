@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ContainerAccessibleOverrider contains methods that are overridable.
+type ContainerAccessibleOverrider interface {
+}
+
 type ContainerAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible
@@ -30,6 +34,14 @@ type ContainerAccessible struct {
 var (
 	_ externglib.Objector = (*ContainerAccessible)(nil)
 )
+
+func classInitContainerAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapContainerAccessible(obj *externglib.Object) *ContainerAccessible {
 	return &ContainerAccessible{

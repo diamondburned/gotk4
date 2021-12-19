@@ -20,7 +20,15 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_IconViewForEachFunc(GtkIconView*, GtkTreePath*, gpointer);
+// extern gboolean _gotk4_gtk3_IconViewClass_activate_cursor_item(GtkIconView*);
+// extern gboolean _gotk4_gtk3_IconViewClass_move_cursor(GtkIconView*, GtkMovementStep, gint);
+// extern void _gotk4_gtk3_IconViewClass_item_activated(GtkIconView*, GtkTreePath*);
+// extern void _gotk4_gtk3_IconViewClass_select_all(GtkIconView*);
+// extern void _gotk4_gtk3_IconViewClass_select_cursor_item(GtkIconView*);
+// extern void _gotk4_gtk3_IconViewClass_selection_changed(GtkIconView*);
+// extern void _gotk4_gtk3_IconViewClass_toggle_cursor_item(GtkIconView*);
+// extern void _gotk4_gtk3_IconViewClass_unselect_all(GtkIconView*);
+// extern void _gotk4_gtk3_IconViewForEachFunc(GtkIconView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {
@@ -77,26 +85,26 @@ func (i IconViewDropPosition) String() string {
 type IconViewForEachFunc func(iconView *IconView, path *TreePath)
 
 //export _gotk4_gtk3_IconViewForEachFunc
-func _gotk4_gtk3_IconViewForEachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_IconViewForEachFunc(arg1 *C.GtkIconView, arg2 *C.GtkTreePath, arg3 C.gpointer) {
+	var fn IconViewForEachFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(IconViewForEachFunc)
 	}
 
-	var iconView *IconView // out
-	var path *TreePath     // out
+	var _iconView *IconView // out
+	var _path *TreePath     // out
 
-	iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg0)))
-	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
-	fn := v.(IconViewForEachFunc)
-	fn(iconView, path)
+	fn(_iconView, _path)
 }
 
 // IconViewOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type IconViewOverrider interface {
 	// The function returns the following values:
 	//
@@ -157,6 +165,140 @@ var (
 	_ Containerer         = (*IconView)(nil)
 	_ externglib.Objector = (*IconView)(nil)
 )
+
+func classInitIconViewer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkIconViewClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkIconViewClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActivateCursorItem() bool }); ok {
+		pclass.activate_cursor_item = (*[0]byte)(C._gotk4_gtk3_IconViewClass_activate_cursor_item)
+	}
+
+	if _, ok := goval.(interface{ ItemActivated(path *TreePath) }); ok {
+		pclass.item_activated = (*[0]byte)(C._gotk4_gtk3_IconViewClass_item_activated)
+	}
+
+	if _, ok := goval.(interface {
+		MoveCursor(step MovementStep, count int) bool
+	}); ok {
+		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_IconViewClass_move_cursor)
+	}
+
+	if _, ok := goval.(interface{ SelectAll() }); ok {
+		pclass.select_all = (*[0]byte)(C._gotk4_gtk3_IconViewClass_select_all)
+	}
+
+	if _, ok := goval.(interface{ SelectCursorItem() }); ok {
+		pclass.select_cursor_item = (*[0]byte)(C._gotk4_gtk3_IconViewClass_select_cursor_item)
+	}
+
+	if _, ok := goval.(interface{ SelectionChanged() }); ok {
+		pclass.selection_changed = (*[0]byte)(C._gotk4_gtk3_IconViewClass_selection_changed)
+	}
+
+	if _, ok := goval.(interface{ ToggleCursorItem() }); ok {
+		pclass.toggle_cursor_item = (*[0]byte)(C._gotk4_gtk3_IconViewClass_toggle_cursor_item)
+	}
+
+	if _, ok := goval.(interface{ UnselectAll() }); ok {
+		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk3_IconViewClass_unselect_all)
+	}
+}
+
+//export _gotk4_gtk3_IconViewClass_activate_cursor_item
+func _gotk4_gtk3_IconViewClass_activate_cursor_item(arg0 *C.GtkIconView) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActivateCursorItem() bool })
+
+	ok := iface.ActivateCursorItem()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_IconViewClass_item_activated
+func _gotk4_gtk3_IconViewClass_item_activated(arg0 *C.GtkIconView, arg1 *C.GtkTreePath) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ItemActivated(path *TreePath) })
+
+	var _path *TreePath // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.ItemActivated(_path)
+}
+
+//export _gotk4_gtk3_IconViewClass_move_cursor
+func _gotk4_gtk3_IconViewClass_move_cursor(arg0 *C.GtkIconView, arg1 C.GtkMovementStep, arg2 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MoveCursor(step MovementStep, count int) bool
+	})
+
+	var _step MovementStep // out
+	var _count int         // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+
+	ok := iface.MoveCursor(_step, _count)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_IconViewClass_select_all
+func _gotk4_gtk3_IconViewClass_select_all(arg0 *C.GtkIconView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectAll() })
+
+	iface.SelectAll()
+}
+
+//export _gotk4_gtk3_IconViewClass_select_cursor_item
+func _gotk4_gtk3_IconViewClass_select_cursor_item(arg0 *C.GtkIconView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectCursorItem() })
+
+	iface.SelectCursorItem()
+}
+
+//export _gotk4_gtk3_IconViewClass_selection_changed
+func _gotk4_gtk3_IconViewClass_selection_changed(arg0 *C.GtkIconView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectionChanged() })
+
+	iface.SelectionChanged()
+}
+
+//export _gotk4_gtk3_IconViewClass_toggle_cursor_item
+func _gotk4_gtk3_IconViewClass_toggle_cursor_item(arg0 *C.GtkIconView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ToggleCursorItem() })
+
+	iface.ToggleCursorItem()
+}
+
+//export _gotk4_gtk3_IconViewClass_unselect_all
+func _gotk4_gtk3_IconViewClass_unselect_all(arg0 *C.GtkIconView) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ UnselectAll() })
+
+	iface.UnselectAll()
+}
 
 func wrapIconView(obj *externglib.Object) *IconView {
 	return &IconView{

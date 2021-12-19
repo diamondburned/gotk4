@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// VBoxOverrider contains methods that are overridable.
+type VBoxOverrider interface {
+}
+
 // VBox is a container that organizes child widgets into a single column.
 //
 // Use the Box packing interface to determine the arrangement, spacing, height,
@@ -55,6 +59,14 @@ var (
 	_ Containerer         = (*VBox)(nil)
 	_ externglib.Objector = (*VBox)(nil)
 )
+
+func classInitVBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapVBox(obj *externglib.Object) *VBox {
 	return &VBox{

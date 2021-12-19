@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// LevelBarAccessibleOverrider contains methods that are overridable.
+type LevelBarAccessibleOverrider interface {
+}
+
 type LevelBarAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible
@@ -32,6 +36,14 @@ type LevelBarAccessible struct {
 var (
 	_ externglib.Objector = (*LevelBarAccessible)(nil)
 )
+
+func classInitLevelBarAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapLevelBarAccessible(obj *externglib.Object) *LevelBarAccessible {
 	return &LevelBarAccessible{

@@ -53,6 +53,10 @@ func (s StringFilterMatchMode) String() string {
 	}
 }
 
+// StringFilterOverrider contains methods that are overridable.
+type StringFilterOverrider interface {
+}
+
 // StringFilter: GtkStringFilter determines whether to include items by
 // comparing strings to a fixed search term.
 //
@@ -74,6 +78,14 @@ type StringFilter struct {
 var (
 	_ externglib.Objector = (*StringFilter)(nil)
 )
+
+func classInitStringFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapStringFilter(obj *externglib.Object) *StringFilter {
 	return &StringFilter{

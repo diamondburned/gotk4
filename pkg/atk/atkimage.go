@@ -12,6 +12,11 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_atk1_ImageIface_set_image_description(AtkImage*, gchar*);
+// extern gchar* _gotk4_atk1_ImageIface_get_image_description(AtkImage*);
+// extern gchar* _gotk4_atk1_ImageIface_get_image_locale(AtkImage*);
+// extern void _gotk4_atk1_ImageIface_get_image_position(AtkImage*, gint*, gint*, AtkCoordType);
+// extern void _gotk4_atk1_ImageIface_get_image_size(AtkImage*, gint*, gint*);
 import "C"
 
 func init() {
@@ -21,9 +26,6 @@ func init() {
 }
 
 // ImageOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ImageOverrider interface {
 	// ImageDescription: get a textual description of this image.
 	//
@@ -126,6 +128,87 @@ type Imager interface {
 }
 
 var _ Imager = (*Image)(nil)
+
+func ifaceInitImager(gifacePtr, data C.gpointer) {
+	iface := (*C.AtkImageIface)(unsafe.Pointer(gifacePtr))
+	iface.get_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_description)
+	iface.get_image_locale = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_locale)
+	iface.get_image_position = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_position)
+	iface.get_image_size = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_size)
+	iface.set_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_set_image_description)
+}
+
+//export _gotk4_atk1_ImageIface_get_image_description
+func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.AtkImage) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ImageOverrider)
+
+	utf8 := iface.ImageDescription()
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_ImageIface_get_image_locale
+func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.AtkImage) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ImageOverrider)
+
+	utf8 := iface.ImageLocale()
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ImageIface_get_image_position
+func _gotk4_atk1_ImageIface_get_image_position(arg0 *C.AtkImage, arg1 *C.gint, arg2 *C.gint, arg3 C.AtkCoordType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ImageOverrider)
+
+	var _coordType CoordType // out
+
+	_coordType = CoordType(arg3)
+
+	x, y := iface.ImagePosition(_coordType)
+
+	*arg1 = C.gint(x)
+	*arg2 = C.gint(y)
+}
+
+//export _gotk4_atk1_ImageIface_get_image_size
+func _gotk4_atk1_ImageIface_get_image_size(arg0 *C.AtkImage, arg1 *C.gint, arg2 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ImageOverrider)
+
+	width, height := iface.ImageSize()
+
+	*arg1 = C.gint(width)
+	*arg2 = C.gint(height)
+}
+
+//export _gotk4_atk1_ImageIface_set_image_description
+func _gotk4_atk1_ImageIface_set_image_description(arg0 *C.AtkImage, arg1 *C.gchar) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ImageOverrider)
+
+	var _description string // out
+
+	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := iface.SetImageDescription(_description)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapImage(obj *externglib.Object) *Image {
 	return &Image{

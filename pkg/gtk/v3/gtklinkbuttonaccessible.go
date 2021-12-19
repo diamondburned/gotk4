@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// LinkButtonAccessibleOverrider contains methods that are overridable.
+type LinkButtonAccessibleOverrider interface {
+}
+
 type LinkButtonAccessible struct {
 	_ [0]func() // equal guard
 	ButtonAccessible
@@ -33,6 +37,14 @@ type LinkButtonAccessible struct {
 var (
 	_ externglib.Objector = (*LinkButtonAccessible)(nil)
 )
+
+func classInitLinkButtonAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapLinkButtonAccessible(obj *externglib.Object) *LinkButtonAccessible {
 	return &LinkButtonAccessible{

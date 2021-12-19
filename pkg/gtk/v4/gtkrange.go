@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -14,6 +15,11 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_RangeClass_change_value(GtkRange*, GtkScrollType, double);
+// extern void _gotk4_gtk4_RangeClass_adjust_bounds(GtkRange*, double);
+// extern void _gotk4_gtk4_RangeClass_get_range_border(GtkRange*, GtkBorder*);
+// extern void _gotk4_gtk4_RangeClass_move_slider(GtkRange*, GtkScrollType);
+// extern void _gotk4_gtk4_RangeClass_value_changed(GtkRange*);
 import "C"
 
 func init() {
@@ -23,9 +29,6 @@ func init() {
 }
 
 // RangeOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type RangeOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -67,6 +70,106 @@ var (
 	_ Widgetter           = (*Range)(nil)
 	_ externglib.Objector = (*Range)(nil)
 )
+
+func classInitRanger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkRangeClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkRangeClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ AdjustBounds(newValue float64) }); ok {
+		pclass.adjust_bounds = (*[0]byte)(C._gotk4_gtk4_RangeClass_adjust_bounds)
+	}
+
+	if _, ok := goval.(interface {
+		ChangeValue(scroll ScrollType, newValue float64) bool
+	}); ok {
+		pclass.change_value = (*[0]byte)(C._gotk4_gtk4_RangeClass_change_value)
+	}
+
+	if _, ok := goval.(interface{ RangeBorder(border_ *Border) }); ok {
+		pclass.get_range_border = (*[0]byte)(C._gotk4_gtk4_RangeClass_get_range_border)
+	}
+
+	if _, ok := goval.(interface{ MoveSlider(scroll ScrollType) }); ok {
+		pclass.move_slider = (*[0]byte)(C._gotk4_gtk4_RangeClass_move_slider)
+	}
+
+	if _, ok := goval.(interface{ ValueChanged() }); ok {
+		pclass.value_changed = (*[0]byte)(C._gotk4_gtk4_RangeClass_value_changed)
+	}
+}
+
+//export _gotk4_gtk4_RangeClass_adjust_bounds
+func _gotk4_gtk4_RangeClass_adjust_bounds(arg0 *C.GtkRange, arg1 C.double) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ AdjustBounds(newValue float64) })
+
+	var _newValue float64 // out
+
+	_newValue = float64(arg1)
+
+	iface.AdjustBounds(_newValue)
+}
+
+//export _gotk4_gtk4_RangeClass_change_value
+func _gotk4_gtk4_RangeClass_change_value(arg0 *C.GtkRange, arg1 C.GtkScrollType, arg2 C.double) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ChangeValue(scroll ScrollType, newValue float64) bool
+	})
+
+	var _scroll ScrollType // out
+	var _newValue float64  // out
+
+	_scroll = ScrollType(arg1)
+	_newValue = float64(arg2)
+
+	ok := iface.ChangeValue(_scroll, _newValue)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_RangeClass_get_range_border
+func _gotk4_gtk4_RangeClass_get_range_border(arg0 *C.GtkRange, arg1 *C.GtkBorder) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RangeBorder(border_ *Border) })
+
+	var _border_ *Border // out
+
+	_border_ = (*Border)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	iface.RangeBorder(_border_)
+}
+
+//export _gotk4_gtk4_RangeClass_move_slider
+func _gotk4_gtk4_RangeClass_move_slider(arg0 *C.GtkRange, arg1 C.GtkScrollType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MoveSlider(scroll ScrollType) })
+
+	var _scroll ScrollType // out
+
+	_scroll = ScrollType(arg1)
+
+	iface.MoveSlider(_scroll)
+}
+
+//export _gotk4_gtk4_RangeClass_value_changed
+func _gotk4_gtk4_RangeClass_value_changed(arg0 *C.GtkRange) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ValueChanged() })
+
+	iface.ValueChanged()
+}
 
 func wrapRange(obj *externglib.Object) *Range {
 	return &Range{

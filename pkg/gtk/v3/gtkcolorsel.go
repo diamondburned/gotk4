@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -17,6 +18,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_ColorSelectionClass_color_changed(GtkColorSelection*);
 import "C"
 
 func init() {
@@ -26,9 +28,6 @@ func init() {
 }
 
 // ColorSelectionOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ColorSelectionOverrider interface {
 	ColorChanged()
 }
@@ -42,6 +41,30 @@ var (
 	_ Containerer         = (*ColorSelection)(nil)
 	_ externglib.Objector = (*ColorSelection)(nil)
 )
+
+func classInitColorSelectioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkColorSelectionClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkColorSelectionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ColorChanged() }); ok {
+		pclass.color_changed = (*[0]byte)(C._gotk4_gtk3_ColorSelectionClass_color_changed)
+	}
+}
+
+//export _gotk4_gtk3_ColorSelectionClass_color_changed
+func _gotk4_gtk3_ColorSelectionClass_color_changed(arg0 *C.GtkColorSelection) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ColorChanged() })
+
+	iface.ColorChanged()
+}
 
 func wrapColorSelection(obj *externglib.Object) *ColorSelection {
 	return &ColorSelection{

@@ -21,8 +21,31 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GtkSizeRequestMode _gotk4_gtk4_WidgetClass_get_request_mode(GtkWidget*);
+// extern gboolean _gotk4_gtk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
+// extern gboolean _gotk4_gtk4_WidgetClass_contains(GtkWidget*, double, double);
+// extern gboolean _gotk4_gtk4_WidgetClass_focus(GtkWidget*, GtkDirectionType);
+// extern gboolean _gotk4_gtk4_WidgetClass_grab_focus(GtkWidget*);
+// extern gboolean _gotk4_gtk4_WidgetClass_keynav_failed(GtkWidget*, GtkDirectionType);
+// extern gboolean _gotk4_gtk4_WidgetClass_mnemonic_activate(GtkWidget*, gboolean);
+// extern gboolean _gotk4_gtk4_WidgetClass_query_tooltip(GtkWidget*, int, int, gboolean, GtkTooltip*);
+// extern void _gotk4_gtk4_WidgetClass_direction_changed(GtkWidget*, GtkTextDirection);
+// extern void _gotk4_gtk4_WidgetClass_hide(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_map(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_measure(GtkWidget*, GtkOrientation, int, int*, int*, int*, int*);
+// extern void _gotk4_gtk4_WidgetClass_move_focus(GtkWidget*, GtkDirectionType);
+// extern void _gotk4_gtk4_WidgetClass_realize(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_root(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_set_focus_child(GtkWidget*, GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_show(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_size_allocate(GtkWidget*, int, int, int);
+// extern void _gotk4_gtk4_WidgetClass_snapshot(GtkWidget*, GtkSnapshot*);
+// extern void _gotk4_gtk4_WidgetClass_state_flags_changed(GtkWidget*, GtkStateFlags);
+// extern void _gotk4_gtk4_WidgetClass_system_setting_changed(GtkWidget*, GtkSystemSetting);
+// extern void _gotk4_gtk4_WidgetClass_unmap(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_unrealize(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_unroot(GtkWidget*);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
 import "C"
 
 func init() {
@@ -41,17 +64,21 @@ type Allocation = gdk.Rectangle
 type TickCallback func(widget Widgetter, frameClock gdk.FrameClocker) (ok bool)
 
 //export _gotk4_gtk4_TickCallback
-func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TickCallback(arg1 *C.GtkWidget, arg2 *C.GdkFrameClock, arg3 C.gpointer) (cret C.gboolean) {
+	var fn TickCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TickCallback)
 	}
 
-	var widget Widgetter            // out
-	var frameClock gdk.FrameClocker // out
+	var _widget Widgetter            // out
+	var _frameClock gdk.FrameClocker // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -65,10 +92,10 @@ func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
-		widget = rv
+		_widget = rv
 	}
 	{
-		objptr := unsafe.Pointer(arg1)
+		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gdk.FrameClocker is nil")
 		}
@@ -82,11 +109,10 @@ func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.FrameClocker")
 		}
-		frameClock = rv
+		_frameClock = rv
 	}
 
-	fn := v.(TickCallback)
-	ok := fn(widget, frameClock)
+	ok := fn(_widget, _frameClock)
 
 	if ok {
 		cret = C.TRUE
@@ -96,9 +122,6 @@ func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 }
 
 // WidgetOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type WidgetOverrider interface {
 	// Contains tests if the point at (x, y) is contained in widget.
 	//
@@ -689,6 +712,452 @@ type Widgetter interface {
 }
 
 var _ Widgetter = (*Widget)(nil)
+
+func classInitWidgetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkWidgetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Contains(x, y float64) bool }); ok {
+		pclass.contains = (*[0]byte)(C._gotk4_gtk4_WidgetClass_contains)
+	}
+
+	if _, ok := goval.(interface {
+		DirectionChanged(previousDirection TextDirection)
+	}); ok {
+		pclass.direction_changed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_direction_changed)
+	}
+
+	if _, ok := goval.(interface {
+		Focus(direction DirectionType) bool
+	}); ok {
+		pclass.focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_focus)
+	}
+
+	if _, ok := goval.(interface{ RequestMode() SizeRequestMode }); ok {
+		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk4_WidgetClass_get_request_mode)
+	}
+
+	if _, ok := goval.(interface{ GrabFocus() bool }); ok {
+		pclass.grab_focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_grab_focus)
+	}
+
+	if _, ok := goval.(interface{ Hide() }); ok {
+		pclass.hide = (*[0]byte)(C._gotk4_gtk4_WidgetClass_hide)
+	}
+
+	if _, ok := goval.(interface {
+		KeynavFailed(direction DirectionType) bool
+	}); ok {
+		pclass.keynav_failed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_keynav_failed)
+	}
+
+	if _, ok := goval.(interface{ Map() }); ok {
+		pclass._map = (*[0]byte)(C._gotk4_gtk4_WidgetClass_map)
+	}
+
+	if _, ok := goval.(interface {
+		Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	}); ok {
+		pclass.measure = (*[0]byte)(C._gotk4_gtk4_WidgetClass_measure)
+	}
+
+	if _, ok := goval.(interface{ MnemonicActivate(groupCycling bool) bool }); ok {
+		pclass.mnemonic_activate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_mnemonic_activate)
+	}
+
+	if _, ok := goval.(interface{ MoveFocus(direction DirectionType) }); ok {
+		pclass.move_focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_move_focus)
+	}
+
+	if _, ok := goval.(interface {
+		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
+	}); ok {
+		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk4_WidgetClass_query_tooltip)
+	}
+
+	if _, ok := goval.(interface{ Realize() }); ok {
+		pclass.realize = (*[0]byte)(C._gotk4_gtk4_WidgetClass_realize)
+	}
+
+	if _, ok := goval.(interface{ Root() }); ok {
+		pclass.root = (*[0]byte)(C._gotk4_gtk4_WidgetClass_root)
+	}
+
+	if _, ok := goval.(interface{ SetFocusChild(child Widgetter) }); ok {
+		pclass.set_focus_child = (*[0]byte)(C._gotk4_gtk4_WidgetClass_set_focus_child)
+	}
+
+	if _, ok := goval.(interface{ Show() }); ok {
+		pclass.show = (*[0]byte)(C._gotk4_gtk4_WidgetClass_show)
+	}
+
+	if _, ok := goval.(interface {
+		SizeAllocate(width, height, baseline int)
+	}); ok {
+		pclass.size_allocate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_size_allocate)
+	}
+
+	if _, ok := goval.(interface{ Snapshot(snapshot *Snapshot) }); ok {
+		pclass.snapshot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_snapshot)
+	}
+
+	if _, ok := goval.(interface {
+		StateFlagsChanged(previousStateFlags StateFlags)
+	}); ok {
+		pclass.state_flags_changed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_state_flags_changed)
+	}
+
+	if _, ok := goval.(interface{ SystemSettingChanged(settings SystemSetting) }); ok {
+		pclass.system_setting_changed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_system_setting_changed)
+	}
+
+	if _, ok := goval.(interface{ Unmap() }); ok {
+		pclass.unmap = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unmap)
+	}
+
+	if _, ok := goval.(interface{ Unrealize() }); ok {
+		pclass.unrealize = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unrealize)
+	}
+
+	if _, ok := goval.(interface{ Unroot() }); ok {
+		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unroot)
+	}
+}
+
+//export _gotk4_gtk4_WidgetClass_contains
+func _gotk4_gtk4_WidgetClass_contains(arg0 *C.GtkWidget, arg1 C.double, arg2 C.double) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Contains(x, y float64) bool })
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	ok := iface.Contains(_x, _y)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_WidgetClass_direction_changed
+func _gotk4_gtk4_WidgetClass_direction_changed(arg0 *C.GtkWidget, arg1 C.GtkTextDirection) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DirectionChanged(previousDirection TextDirection)
+	})
+
+	var _previousDirection TextDirection // out
+
+	_previousDirection = TextDirection(arg1)
+
+	iface.DirectionChanged(_previousDirection)
+}
+
+//export _gotk4_gtk4_WidgetClass_focus
+func _gotk4_gtk4_WidgetClass_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Focus(direction DirectionType) bool
+	})
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	ok := iface.Focus(_direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_WidgetClass_get_request_mode
+func _gotk4_gtk4_WidgetClass_get_request_mode(arg0 *C.GtkWidget) (cret C.GtkSizeRequestMode) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RequestMode() SizeRequestMode })
+
+	sizeRequestMode := iface.RequestMode()
+
+	cret = C.GtkSizeRequestMode(sizeRequestMode)
+
+	return cret
+}
+
+//export _gotk4_gtk4_WidgetClass_grab_focus
+func _gotk4_gtk4_WidgetClass_grab_focus(arg0 *C.GtkWidget) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ GrabFocus() bool })
+
+	ok := iface.GrabFocus()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_WidgetClass_hide
+func _gotk4_gtk4_WidgetClass_hide(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Hide() })
+
+	iface.Hide()
+}
+
+//export _gotk4_gtk4_WidgetClass_keynav_failed
+func _gotk4_gtk4_WidgetClass_keynav_failed(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		KeynavFailed(direction DirectionType) bool
+	})
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	ok := iface.KeynavFailed(_direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_WidgetClass_map
+func _gotk4_gtk4_WidgetClass_map(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Map() })
+
+	iface.Map()
+}
+
+//export _gotk4_gtk4_WidgetClass_measure
+func _gotk4_gtk4_WidgetClass_measure(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 C.int, arg3 *C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	})
+
+	var _orientation Orientation // out
+	var _forSize int             // out
+
+	_orientation = Orientation(arg1)
+	_forSize = int(arg2)
+
+	minimum, natural, minimumBaseline, naturalBaseline := iface.Measure(_orientation, _forSize)
+
+	*arg3 = C.int(minimum)
+	*arg4 = C.int(natural)
+	*arg5 = C.int(minimumBaseline)
+	*arg6 = C.int(naturalBaseline)
+}
+
+//export _gotk4_gtk4_WidgetClass_mnemonic_activate
+func _gotk4_gtk4_WidgetClass_mnemonic_activate(arg0 *C.GtkWidget, arg1 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MnemonicActivate(groupCycling bool) bool })
+
+	var _groupCycling bool // out
+
+	if arg1 != 0 {
+		_groupCycling = true
+	}
+
+	ok := iface.MnemonicActivate(_groupCycling)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_WidgetClass_move_focus
+func _gotk4_gtk4_WidgetClass_move_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ MoveFocus(direction DirectionType) })
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	iface.MoveFocus(_direction)
+}
+
+//export _gotk4_gtk4_WidgetClass_query_tooltip
+func _gotk4_gtk4_WidgetClass_query_tooltip(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
+	})
+
+	var _x int                // out
+	var _y int                // out
+	var _keyboardTooltip bool // out
+	var _tooltip *Tooltip     // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	if arg3 != 0 {
+		_keyboardTooltip = true
+	}
+	_tooltip = wrapTooltip(externglib.Take(unsafe.Pointer(arg4)))
+
+	ok := iface.QueryTooltip(_x, _y, _keyboardTooltip, _tooltip)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_WidgetClass_realize
+func _gotk4_gtk4_WidgetClass_realize(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Realize() })
+
+	iface.Realize()
+}
+
+//export _gotk4_gtk4_WidgetClass_root
+func _gotk4_gtk4_WidgetClass_root(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Root() })
+
+	iface.Root()
+}
+
+//export _gotk4_gtk4_WidgetClass_set_focus_child
+func _gotk4_gtk4_WidgetClass_set_focus_child(arg0 *C.GtkWidget, arg1 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetFocusChild(child Widgetter) })
+
+	var _child Widgetter // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_child = rv
+		}
+	}
+
+	iface.SetFocusChild(_child)
+}
+
+//export _gotk4_gtk4_WidgetClass_show
+func _gotk4_gtk4_WidgetClass_show(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Show() })
+
+	iface.Show()
+}
+
+//export _gotk4_gtk4_WidgetClass_size_allocate
+func _gotk4_gtk4_WidgetClass_size_allocate(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.int) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SizeAllocate(width, height, baseline int)
+	})
+
+	var _width int    // out
+	var _height int   // out
+	var _baseline int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+	_baseline = int(arg3)
+
+	iface.SizeAllocate(_width, _height, _baseline)
+}
+
+//export _gotk4_gtk4_WidgetClass_snapshot
+func _gotk4_gtk4_WidgetClass_snapshot(arg0 *C.GtkWidget, arg1 *C.GtkSnapshot) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Snapshot(snapshot *Snapshot) })
+
+	var _snapshot *Snapshot // out
+
+	_snapshot = wrapSnapshot(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.Snapshot(_snapshot)
+}
+
+//export _gotk4_gtk4_WidgetClass_state_flags_changed
+func _gotk4_gtk4_WidgetClass_state_flags_changed(arg0 *C.GtkWidget, arg1 C.GtkStateFlags) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		StateFlagsChanged(previousStateFlags StateFlags)
+	})
+
+	var _previousStateFlags StateFlags // out
+
+	_previousStateFlags = StateFlags(arg1)
+
+	iface.StateFlagsChanged(_previousStateFlags)
+}
+
+//export _gotk4_gtk4_WidgetClass_system_setting_changed
+func _gotk4_gtk4_WidgetClass_system_setting_changed(arg0 *C.GtkWidget, arg1 C.GtkSystemSetting) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SystemSettingChanged(settings SystemSetting) })
+
+	var _settings SystemSetting // out
+
+	_settings = SystemSetting(arg1)
+
+	iface.SystemSettingChanged(_settings)
+}
+
+//export _gotk4_gtk4_WidgetClass_unmap
+func _gotk4_gtk4_WidgetClass_unmap(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Unmap() })
+
+	iface.Unmap()
+}
+
+//export _gotk4_gtk4_WidgetClass_unrealize
+func _gotk4_gtk4_WidgetClass_unrealize(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Unrealize() })
+
+	iface.Unrealize()
+}
+
+//export _gotk4_gtk4_WidgetClass_unroot
+func _gotk4_gtk4_WidgetClass_unroot(arg0 *C.GtkWidget) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Unroot() })
+
+	iface.Unroot()
+}
 
 func wrapWidget(obj *externglib.Object) *Widget {
 	return &Widget{

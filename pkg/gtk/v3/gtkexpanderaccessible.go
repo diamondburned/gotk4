@@ -22,6 +22,10 @@ func init() {
 	})
 }
 
+// ExpanderAccessibleOverrider contains methods that are overridable.
+type ExpanderAccessibleOverrider interface {
+}
+
 type ExpanderAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -32,6 +36,14 @@ type ExpanderAccessible struct {
 var (
 	_ externglib.Objector = (*ExpanderAccessible)(nil)
 )
+
+func classInitExpanderAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
 	return &ExpanderAccessible{

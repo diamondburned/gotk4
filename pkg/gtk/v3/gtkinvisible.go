@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// InvisibleOverrider contains methods that are overridable.
+type InvisibleOverrider interface {
+}
+
 // Invisible widget is used internally in GTK+, and is probably not very useful
 // for application developers.
 //
@@ -37,6 +41,14 @@ type Invisible struct {
 var (
 	_ Widgetter = (*Invisible)(nil)
 )
+
+func classInitInvisibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapInvisible(obj *externglib.Object) *Invisible {
 	return &Invisible{

@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// NativeSocketAddressOverrider contains methods that are overridable.
+type NativeSocketAddressOverrider interface {
+}
+
 // NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress struct {
 	_ [0]func() // equal guard
@@ -30,6 +34,14 @@ type NativeSocketAddress struct {
 var (
 	_ SocketAddresser = (*NativeSocketAddress)(nil)
 )
+
+func classInitNativeSocketAddresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNativeSocketAddress(obj *externglib.Object) *NativeSocketAddress {
 	return &NativeSocketAddress{

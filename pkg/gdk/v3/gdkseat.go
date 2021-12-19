@@ -16,7 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// void _gotk4_gdk3_SeatGrabPrepareFunc(GdkSeat*, GdkWindow*, gpointer);
+// extern void _gotk4_gdk3_SeatGrabPrepareFunc(GdkSeat*, GdkWindow*, gpointer);
 import "C"
 
 func init() {
@@ -99,17 +99,21 @@ func (s SeatCapabilities) Has(other SeatCapabilities) bool {
 type SeatGrabPrepareFunc func(seat Seater, window Windower)
 
 //export _gotk4_gdk3_SeatGrabPrepareFunc
-func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gdk3_SeatGrabPrepareFunc(arg1 *C.GdkSeat, arg2 *C.GdkWindow, arg3 C.gpointer) {
+	var fn SeatGrabPrepareFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(SeatGrabPrepareFunc)
 	}
 
-	var seat Seater     // out
-	var window Windower // out
+	var _seat Seater     // out
+	var _window Windower // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gdk.Seater is nil")
 		}
@@ -123,10 +127,10 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
 		}
-		seat = rv
+		_seat = rv
 	}
 	{
-		objptr := unsafe.Pointer(arg1)
+		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -140,11 +144,10 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		window = rv
+		_window = rv
 	}
 
-	fn := v.(SeatGrabPrepareFunc)
-	fn(seat, window)
+	fn(_seat, _window)
 }
 
 // Seat object represents a collection of input devices that belong to a user.

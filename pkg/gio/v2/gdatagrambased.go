@@ -17,6 +17,11 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GIOCondition _gotk4_gio2_DatagramBasedInterface_condition_check(GDatagramBased*, GIOCondition);
+// extern GSource* _gotk4_gio2_DatagramBasedInterface_create_source(GDatagramBased*, GIOCondition, GCancellable*);
+// extern gboolean _gotk4_gio2_DatagramBasedInterface_condition_wait(GDatagramBased*, GIOCondition, gint64, GCancellable*, GError**);
+// extern gint _gotk4_gio2_DatagramBasedInterface_receive_messages(GDatagramBased*, GInputMessage*, guint, gint, gint64, GCancellable*, GError**);
+// extern gint _gotk4_gio2_DatagramBasedInterface_send_messages(GDatagramBased*, GOutputMessage*, guint, gint, gint64, GCancellable*, GError**);
 import "C"
 
 func init() {
@@ -26,9 +31,6 @@ func init() {
 }
 
 // DatagramBasedOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type DatagramBasedOverrider interface {
 	// ConditionCheck checks on the readiness of datagram_based to perform
 	// operations. The operations specified in condition are checked for and
@@ -323,6 +325,141 @@ type DatagramBasedder interface {
 }
 
 var _ DatagramBasedder = (*DatagramBased)(nil)
+
+func ifaceInitDatagramBasedder(gifacePtr, data C.gpointer) {
+	iface := (*C.GDatagramBasedInterface)(unsafe.Pointer(gifacePtr))
+	iface.condition_check = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_condition_check)
+	iface.condition_wait = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_condition_wait)
+	iface.create_source = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_create_source)
+	iface.receive_messages = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_receive_messages)
+	iface.send_messages = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_send_messages)
+}
+
+//export _gotk4_gio2_DatagramBasedInterface_condition_check
+func _gotk4_gio2_DatagramBasedInterface_condition_check(arg0 *C.GDatagramBased, arg1 C.GIOCondition) (cret C.GIOCondition) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DatagramBasedOverrider)
+
+	var _condition glib.IOCondition // out
+
+	_condition = glib.IOCondition(arg1)
+
+	ioCondition := iface.ConditionCheck(_condition)
+
+	cret = C.GIOCondition(ioCondition)
+
+	return cret
+}
+
+//export _gotk4_gio2_DatagramBasedInterface_condition_wait
+func _gotk4_gio2_DatagramBasedInterface_condition_wait(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gint64, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DatagramBasedOverrider)
+
+	var _cancellable context.Context // out
+	var _condition glib.IOCondition  // out
+	var _timeout int64               // out
+
+	if arg3 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
+	}
+	_condition = glib.IOCondition(arg1)
+	_timeout = int64(arg2)
+
+	_goerr := iface.ConditionWait(_cancellable, _condition, _timeout)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DatagramBasedInterface_create_source
+func _gotk4_gio2_DatagramBasedInterface_create_source(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 *C.GCancellable) (cret *C.GSource) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DatagramBasedOverrider)
+
+	var _cancellable context.Context // out
+	var _condition glib.IOCondition  // out
+
+	if arg2 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
+	}
+	_condition = glib.IOCondition(arg1)
+
+	source := iface.CreateSource(_cancellable, _condition)
+
+	cret = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+
+	return cret
+}
+
+//export _gotk4_gio2_DatagramBasedInterface_receive_messages
+func _gotk4_gio2_DatagramBasedInterface_receive_messages(arg0 *C.GDatagramBased, arg1 *C.GInputMessage, arg2 C.guint, arg3 C.gint, arg4 C.gint64, arg5 *C.GCancellable, _cerr **C.GError) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DatagramBasedOverrider)
+
+	var _cancellable context.Context // out
+	var _messages []InputMessage     // out
+	var _flags int                   // out
+	var _timeout int64               // out
+
+	if arg5 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg5))
+	}
+	{
+		src := unsafe.Slice(arg1, arg2)
+		_messages = make([]InputMessage, arg2)
+		for i := 0; i < int(arg2); i++ {
+			_messages[i] = *(*InputMessage)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
+	_flags = int(arg3)
+	_timeout = int64(arg4)
+
+	gint, _goerr := iface.ReceiveMessages(_cancellable, _messages, _flags, _timeout)
+
+	cret = C.gint(gint)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DatagramBasedInterface_send_messages
+func _gotk4_gio2_DatagramBasedInterface_send_messages(arg0 *C.GDatagramBased, arg1 *C.GOutputMessage, arg2 C.guint, arg3 C.gint, arg4 C.gint64, arg5 *C.GCancellable, _cerr **C.GError) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DatagramBasedOverrider)
+
+	var _cancellable context.Context // out
+	var _messages []OutputMessage    // out
+	var _flags int                   // out
+	var _timeout int64               // out
+
+	if arg5 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg5))
+	}
+	{
+		src := unsafe.Slice(arg1, arg2)
+		_messages = make([]OutputMessage, arg2)
+		for i := 0; i < int(arg2); i++ {
+			_messages[i] = *(*OutputMessage)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
+	_flags = int(arg3)
+	_timeout = int64(arg4)
+
+	gint, _goerr := iface.SendMessages(_cancellable, _messages, _flags, _timeout)
+
+	cret = C.gint(gint)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 	return &DatagramBased{

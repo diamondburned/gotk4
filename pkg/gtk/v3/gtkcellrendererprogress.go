@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// CellRendererProgressOverrider contains methods that are overridable.
+type CellRendererProgressOverrider interface {
+}
+
 // CellRendererProgress renders a numeric value as a progress par in a cell.
 // Additionally, it can display a text on top of the progress bar.
 //
@@ -35,6 +39,14 @@ type CellRendererProgress struct {
 var (
 	_ CellRendererer = (*CellRendererProgress)(nil)
 )
+
+func classInitCellRendererProgresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 	return &CellRendererProgress{

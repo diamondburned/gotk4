@@ -16,6 +16,9 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GVariant* _gotk4_gio2_IconIface_serialize(GIcon*);
+// extern gboolean _gotk4_gio2_IconIface_equal(GIcon*, GIcon*);
+// extern guint _gotk4_gio2_IconIface_hash(GIcon*);
 import "C"
 
 func init() {
@@ -25,9 +28,6 @@ func init() {
 }
 
 // IconOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type IconOverrider interface {
 	// Equal checks if two icons are equal.
 	//
@@ -112,6 +112,72 @@ type Iconner interface {
 }
 
 var _ Iconner = (*Icon)(nil)
+
+func ifaceInitIconner(gifacePtr, data C.gpointer) {
+	iface := (*C.GIconIface)(unsafe.Pointer(gifacePtr))
+	iface.equal = (*[0]byte)(C._gotk4_gio2_IconIface_equal)
+	iface.hash = (*[0]byte)(C._gotk4_gio2_IconIface_hash)
+	iface.serialize = (*[0]byte)(C._gotk4_gio2_IconIface_serialize)
+}
+
+//export _gotk4_gio2_IconIface_equal
+func _gotk4_gio2_IconIface_equal(arg0 *C.GIcon, arg1 *C.GIcon) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(IconOverrider)
+
+	var _icon2 Iconner // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Iconner)
+				return ok
+			})
+			rv, ok := casted.(Iconner)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
+			}
+			_icon2 = rv
+		}
+	}
+
+	ok := iface.Equal(_icon2)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_IconIface_hash
+func _gotk4_gio2_IconIface_hash(arg0 *C.GIcon) (cret C.guint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(IconOverrider)
+
+	guint := iface.Hash()
+
+	cret = C.guint(guint)
+
+	return cret
+}
+
+//export _gotk4_gio2_IconIface_serialize
+func _gotk4_gio2_IconIface_serialize(arg0 *C.GIcon) (cret *C.GVariant) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(IconOverrider)
+
+	variant := iface.Serialize()
+
+	if variant != nil {
+		cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	}
+
+	return cret
+}
 
 func wrapIcon(obj *externglib.Object) *Icon {
 	return &Icon{

@@ -27,6 +27,10 @@ func init() {
 	})
 }
 
+// StylePropertiesOverrider contains methods that are overridable.
+type StylePropertiesOverrider interface {
+}
+
 // StyleProperties provides the storage for style information that is used by
 // StyleContext and other StyleProvider implementations.
 //
@@ -51,6 +55,14 @@ type StyleProperties struct {
 var (
 	_ externglib.Objector = (*StyleProperties)(nil)
 )
+
+func classInitStylePropertieser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapStyleProperties(obj *externglib.Object) *StyleProperties {
 	return &StyleProperties{

@@ -18,12 +18,21 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// GtkWidget* _gotk4_gtk3_ListBoxCreateWidgetFunc(gpointer, gpointer);
+// extern GtkWidget* _gotk4_gtk3_ListBoxCreateWidgetFunc(gpointer, gpointer);
+// extern gboolean _gotk4_gtk3_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
+// extern gint _gotk4_gtk3_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
+// extern void _gotk4_gtk3_ListBoxClass_activate_cursor_row(GtkListBox*);
+// extern void _gotk4_gtk3_ListBoxClass_move_cursor(GtkListBox*, GtkMovementStep, gint);
+// extern void _gotk4_gtk3_ListBoxClass_row_activated(GtkListBox*, GtkListBoxRow*);
+// extern void _gotk4_gtk3_ListBoxClass_row_selected(GtkListBox*, GtkListBoxRow*);
+// extern void _gotk4_gtk3_ListBoxClass_select_all(GtkListBox*);
+// extern void _gotk4_gtk3_ListBoxClass_selected_rows_changed(GtkListBox*);
+// extern void _gotk4_gtk3_ListBoxClass_toggle_cursor_row(GtkListBox*);
+// extern void _gotk4_gtk3_ListBoxClass_unselect_all(GtkListBox*);
+// extern void _gotk4_gtk3_ListBoxForEachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
+// extern void _gotk4_gtk3_ListBoxRowClass_activate(GtkListBoxRow*);
+// extern void _gotk4_gtk3_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk3_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
-// gint _gotk4_gtk3_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
-// void _gotk4_gtk3_ListBoxForEachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
-// void _gotk4_gtk3_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 import "C"
 
 func init() {
@@ -43,18 +52,21 @@ func init() {
 type ListBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgetter)
 
 //export _gotk4_gtk3_ListBoxCreateWidgetFunc
-func _gotk4_gtk3_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_ListBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GtkWidget) {
+	var fn ListBoxCreateWidgetFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ListBoxCreateWidgetFunc)
 	}
 
-	var item *externglib.Object // out
+	var _item *externglib.Object // out
 
-	item = externglib.Take(unsafe.Pointer(arg0))
+	_item = externglib.Take(unsafe.Pointer(arg1))
 
-	fn := v.(ListBoxCreateWidgetFunc)
-	widget := fn(item)
+	widget := fn(_item)
 
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	C.g_object_ref(C.gpointer(widget.Native()))
@@ -67,18 +79,21 @@ func _gotk4_gtk3_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret
 type ListBoxFilterFunc func(row *ListBoxRow) (ok bool)
 
 //export _gotk4_gtk3_ListBoxFilterFunc
-func _gotk4_gtk3_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_ListBoxFilterFunc(arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret C.gboolean) {
+	var fn ListBoxFilterFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ListBoxFilterFunc)
 	}
 
-	var row *ListBoxRow // out
+	var _row *ListBoxRow // out
 
-	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
+	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
 
-	fn := v.(ListBoxFilterFunc)
-	ok := fn(row)
+	ok := fn(_row)
 
 	if ok {
 		cret = C.TRUE
@@ -92,40 +107,46 @@ func _gotk4_gtk3_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret
 type ListBoxForEachFunc func(box *ListBox, row *ListBoxRow)
 
 //export _gotk4_gtk3_ListBoxForEachFunc
-func _gotk4_gtk3_ListBoxForEachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_ListBoxForEachFunc(arg1 *C.GtkListBox, arg2 *C.GtkListBoxRow, arg3 C.gpointer) {
+	var fn ListBoxForEachFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ListBoxForEachFunc)
 	}
 
-	var box *ListBox    // out
-	var row *ListBoxRow // out
+	var _box *ListBox    // out
+	var _row *ListBoxRow // out
 
-	box = wrapListBox(externglib.Take(unsafe.Pointer(arg0)))
-	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	_box = wrapListBox(externglib.Take(unsafe.Pointer(arg1)))
+	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg2)))
 
-	fn := v.(ListBoxForEachFunc)
-	fn(box, row)
+	fn(_box, _row)
 }
 
 // ListBoxSortFunc: compare two rows to determine which should be first.
 type ListBoxSortFunc func(row1, row2 *ListBoxRow) (gint int)
 
 //export _gotk4_gtk3_ListBoxSortFunc
-func _gotk4_gtk3_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret C.gint) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_ListBoxSortFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListBoxRow, arg3 C.gpointer) (cret C.gint) {
+	var fn ListBoxSortFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ListBoxSortFunc)
 	}
 
-	var row1 *ListBoxRow // out
-	var row2 *ListBoxRow // out
+	var _row1 *ListBoxRow // out
+	var _row2 *ListBoxRow // out
 
-	row1 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
-	row2 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	_row1 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	_row2 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg2)))
 
-	fn := v.(ListBoxSortFunc)
-	gint := fn(row1, row2)
+	gint := fn(_row1, _row2)
 
 	cret = C.gint(gint)
 
@@ -139,28 +160,28 @@ func _gotk4_gtk3_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, a
 type ListBoxUpdateHeaderFunc func(row, before *ListBoxRow)
 
 //export _gotk4_gtk3_ListBoxUpdateHeaderFunc
-func _gotk4_gtk3_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_ListBoxUpdateHeaderFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListBoxRow, arg3 C.gpointer) {
+	var fn ListBoxUpdateHeaderFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ListBoxUpdateHeaderFunc)
 	}
 
-	var row *ListBoxRow    // out
-	var before *ListBoxRow // out
+	var _row *ListBoxRow    // out
+	var _before *ListBoxRow // out
 
-	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
-	if arg1 != nil {
-		before = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	if arg2 != nil {
+		_before = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg2)))
 	}
 
-	fn := v.(ListBoxUpdateHeaderFunc)
-	fn(row, before)
+	fn(_row, _before)
 }
 
 // ListBoxOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ListBoxOverrider interface {
 	ActivateCursorRow()
 	// The function takes the following parameters:
@@ -227,6 +248,132 @@ type ListBox struct {
 var (
 	_ Containerer = (*ListBox)(nil)
 )
+
+func classInitListBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkListBoxClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkListBoxClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ ActivateCursorRow() }); ok {
+		pclass.activate_cursor_row = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_activate_cursor_row)
+	}
+
+	if _, ok := goval.(interface {
+		MoveCursor(step MovementStep, count int)
+	}); ok {
+		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_move_cursor)
+	}
+
+	if _, ok := goval.(interface{ RowActivated(row *ListBoxRow) }); ok {
+		pclass.row_activated = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_row_activated)
+	}
+
+	if _, ok := goval.(interface{ RowSelected(row *ListBoxRow) }); ok {
+		pclass.row_selected = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_row_selected)
+	}
+
+	if _, ok := goval.(interface{ SelectAll() }); ok {
+		pclass.select_all = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_select_all)
+	}
+
+	if _, ok := goval.(interface{ SelectedRowsChanged() }); ok {
+		pclass.selected_rows_changed = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_selected_rows_changed)
+	}
+
+	if _, ok := goval.(interface{ ToggleCursorRow() }); ok {
+		pclass.toggle_cursor_row = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_toggle_cursor_row)
+	}
+
+	if _, ok := goval.(interface{ UnselectAll() }); ok {
+		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_unselect_all)
+	}
+}
+
+//export _gotk4_gtk3_ListBoxClass_activate_cursor_row
+func _gotk4_gtk3_ListBoxClass_activate_cursor_row(arg0 *C.GtkListBox) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ActivateCursorRow() })
+
+	iface.ActivateCursorRow()
+}
+
+//export _gotk4_gtk3_ListBoxClass_move_cursor
+func _gotk4_gtk3_ListBoxClass_move_cursor(arg0 *C.GtkListBox, arg1 C.GtkMovementStep, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MoveCursor(step MovementStep, count int)
+	})
+
+	var _step MovementStep // out
+	var _count int         // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+
+	iface.MoveCursor(_step, _count)
+}
+
+//export _gotk4_gtk3_ListBoxClass_row_activated
+func _gotk4_gtk3_ListBoxClass_row_activated(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RowActivated(row *ListBoxRow) })
+
+	var _row *ListBoxRow // out
+
+	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.RowActivated(_row)
+}
+
+//export _gotk4_gtk3_ListBoxClass_row_selected
+func _gotk4_gtk3_ListBoxClass_row_selected(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RowSelected(row *ListBoxRow) })
+
+	var _row *ListBoxRow // out
+
+	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+
+	iface.RowSelected(_row)
+}
+
+//export _gotk4_gtk3_ListBoxClass_select_all
+func _gotk4_gtk3_ListBoxClass_select_all(arg0 *C.GtkListBox) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectAll() })
+
+	iface.SelectAll()
+}
+
+//export _gotk4_gtk3_ListBoxClass_selected_rows_changed
+func _gotk4_gtk3_ListBoxClass_selected_rows_changed(arg0 *C.GtkListBox) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SelectedRowsChanged() })
+
+	iface.SelectedRowsChanged()
+}
+
+//export _gotk4_gtk3_ListBoxClass_toggle_cursor_row
+func _gotk4_gtk3_ListBoxClass_toggle_cursor_row(arg0 *C.GtkListBox) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ToggleCursorRow() })
+
+	iface.ToggleCursorRow()
+}
+
+//export _gotk4_gtk3_ListBoxClass_unselect_all
+func _gotk4_gtk3_ListBoxClass_unselect_all(arg0 *C.GtkListBox) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ UnselectAll() })
+
+	iface.UnselectAll()
+}
 
 func wrapListBox(obj *externglib.Object) *ListBox {
 	return &ListBox{
@@ -946,9 +1093,6 @@ func (box *ListBox) UnselectRow(row *ListBoxRow) {
 }
 
 // ListBoxRowOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ListBoxRowOverrider interface {
 	Activate()
 }
@@ -965,6 +1109,30 @@ var (
 	_ Binner              = (*ListBoxRow)(nil)
 	_ externglib.Objector = (*ListBoxRow)(nil)
 )
+
+func classInitListBoxRower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Activate() }); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ListBoxRowClass_activate)
+	}
+}
+
+//export _gotk4_gtk3_ListBoxRowClass_activate
+func _gotk4_gtk3_ListBoxRowClass_activate(arg0 *C.GtkListBoxRow) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Activate() })
+
+	iface.Activate()
+}
 
 func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 	return &ListBoxRow{

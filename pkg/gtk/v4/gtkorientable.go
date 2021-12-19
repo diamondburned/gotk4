@@ -20,6 +20,10 @@ func init() {
 	})
 }
 
+// OrientableOverrider contains methods that are overridable.
+type OrientableOverrider interface {
+}
+
 // Orientable: GtkOrientable interface is implemented by all widgets that can be
 // oriented horizontally or vertically.
 //
@@ -45,6 +49,9 @@ type Orientabler interface {
 }
 
 var _ Orientabler = (*Orientable)(nil)
+
+func ifaceInitOrientabler(gifacePtr, data C.gpointer) {
+}
 
 func wrapOrientable(obj *externglib.Object) *Orientable {
 	return &Orientable{

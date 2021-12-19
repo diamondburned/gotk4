@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// MiscOverrider contains methods that are overridable.
+type MiscOverrider interface {
+}
+
 // Misc widget is an abstract widget which is not useful itself, but is used to
 // derive subclasses which have alignment and padding attributes.
 //
@@ -57,6 +61,14 @@ type Miscer interface {
 }
 
 var _ Miscer = (*Misc)(nil)
+
+func classInitMiscer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMisc(obj *externglib.Object) *Misc {
 	return &Misc{

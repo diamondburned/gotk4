@@ -19,8 +19,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_FileFilterFunc(GtkFileFilterInfo*, gpointer);
 // extern void callbackDelete(gpointer);
-// gboolean _gotk4_gtk3_FileFilterFunc(GtkFileFilterInfo*, gpointer);
 import "C"
 
 func init() {
@@ -92,18 +92,21 @@ func (f FileFilterFlags) Has(other FileFilterFlags) bool {
 type FileFilterFunc func(filterInfo *FileFilterInfo) (ok bool)
 
 //export _gotk4_gtk3_FileFilterFunc
-func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk3_FileFilterFunc(arg1 *C.GtkFileFilterInfo, arg2 C.gpointer) (cret C.gboolean) {
+	var fn FileFilterFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FileFilterFunc)
 	}
 
-	var filterInfo *FileFilterInfo // out
+	var _filterInfo *FileFilterInfo // out
 
-	filterInfo = (*FileFilterInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
+	_filterInfo = (*FileFilterInfo)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
-	fn := v.(FileFilterFunc)
-	ok := fn(filterInfo)
+	ok := fn(_filterInfo)
 
 	if ok {
 		cret = C.TRUE

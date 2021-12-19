@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -18,9 +19,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// GtkWidget* _gotk4_gtk_dialog_new2(const gchar* title, GtkWindow* parent, GtkDialogFlags flags) {
-// 	return gtk_dialog_new_with_buttons(title, parent, flags, NULL, NULL);
-// }
+// extern void _gotk4_gtk3_DialogClass_close(GtkDialog*);
+// extern void _gotk4_gtk3_DialogClass_response(GtkDialog*, gint);
 import "C"
 
 func init() {
@@ -191,9 +191,6 @@ func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 }
 
 // DialogOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type DialogOverrider interface {
 	Close()
 	// Response emits the Dialog::response signal with the given response ID.
@@ -327,6 +324,46 @@ type Dialog struct {
 var (
 	_ Binner = (*Dialog)(nil)
 )
+
+func classInitDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkDialogClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkDialogClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ Close() }); ok {
+		pclass.close = (*[0]byte)(C._gotk4_gtk3_DialogClass_close)
+	}
+
+	if _, ok := goval.(interface{ Response(responseId int) }); ok {
+		pclass.response = (*[0]byte)(C._gotk4_gtk3_DialogClass_response)
+	}
+}
+
+//export _gotk4_gtk3_DialogClass_close
+func _gotk4_gtk3_DialogClass_close(arg0 *C.GtkDialog) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Close() })
+
+	iface.Close()
+}
+
+//export _gotk4_gtk3_DialogClass_response
+func _gotk4_gtk3_DialogClass_response(arg0 *C.GtkDialog, arg1 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Response(responseId int) })
+
+	var _responseId int // out
+
+	_responseId = int(arg1)
+
+	iface.Response(_responseId)
+}
 
 func wrapDialog(obj *externglib.Object) *Dialog {
 	return &Dialog{
@@ -782,23 +819,4 @@ func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)
 	runtime.KeepAlive(setting)
-}
-
-// NewDialogWithFlags is a slightly more advanced version of NewDialog,
-// allowing the user to construct a new dialog with the given
-// constructor-only dialog flags.
-//
-// It is a wrapper around Gtk.Dialog.new_with_buttons in C.
-func NewDialogWithFlags(title string, parent *Window, flags DialogFlags) *Dialog {
-	ctitle := C.CString(title)
-	defer C.free(unsafe.Pointer(ctitle))
-
-	w := C._gotk4_gtk_dialog_new2(
-		(*C.gchar)(unsafe.Pointer(ctitle)),
-		(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
-		(C.GtkDialogFlags)(flags),
-	)
-	runtime.KeepAlive(parent)
-
-	return wrapDialog(externglib.Take(unsafe.Pointer(w)))
 }

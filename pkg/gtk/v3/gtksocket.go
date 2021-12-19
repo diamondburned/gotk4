@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -16,6 +17,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_SocketClass_plug_removed(GtkSocket*);
+// extern void _gotk4_gtk3_SocketClass_plug_added(GtkSocket*);
 import "C"
 
 func init() {
@@ -25,9 +28,6 @@ func init() {
 }
 
 // SocketOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SocketOverrider interface {
 	PlugAdded()
 	// The function returns the following values:
@@ -89,6 +89,48 @@ type Socket struct {
 var (
 	_ Containerer = (*Socket)(nil)
 )
+
+func classInitSocketter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkSocketClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkSocketClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ PlugAdded() }); ok {
+		pclass.plug_added = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_added)
+	}
+
+	if _, ok := goval.(interface{ PlugRemoved() bool }); ok {
+		pclass.plug_removed = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_removed)
+	}
+}
+
+//export _gotk4_gtk3_SocketClass_plug_added
+func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.GtkSocket) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PlugAdded() })
+
+	iface.PlugAdded()
+}
+
+//export _gotk4_gtk3_SocketClass_plug_removed
+func _gotk4_gtk3_SocketClass_plug_removed(arg0 *C.GtkSocket) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PlugRemoved() bool })
+
+	ok := iface.PlugRemoved()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{

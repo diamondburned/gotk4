@@ -15,8 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
-// void _gotk4_gtk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -71,20 +71,24 @@ func (t TreeViewColumnSizing) String() string {
 type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell CellRendererer, treeModel TreeModeller, iter *TreeIter)
 
 //export _gotk4_gtk4_TreeCellDataFunc
-func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gtk4_TreeCellDataFunc(arg1 *C.GtkTreeViewColumn, arg2 *C.GtkCellRenderer, arg3 *C.GtkTreeModel, arg4 *C.GtkTreeIter, arg5 C.gpointer) {
+	var fn TreeCellDataFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeCellDataFunc)
 	}
 
-	var treeColumn *TreeViewColumn // out
-	var cell CellRendererer        // out
-	var treeModel TreeModeller     // out
-	var iter *TreeIter             // out
+	var _treeColumn *TreeViewColumn // out
+	var _cell CellRendererer        // out
+	var _treeModel TreeModeller     // out
+	var _iter *TreeIter             // out
 
-	treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg0)))
+	_treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg1)))
 	{
-		objptr := unsafe.Pointer(arg1)
+		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -98,10 +102,10 @@ func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
-		cell = rv
+		_cell = rv
 	}
 	{
-		objptr := unsafe.Pointer(arg2)
+		objptr := unsafe.Pointer(arg3)
 		if objptr == nil {
 			panic("object of type gtk.TreeModeller is nil")
 		}
@@ -115,12 +119,11 @@ func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
-		treeModel = rv
+		_treeModel = rv
 	}
-	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
-	fn := v.(TreeCellDataFunc)
-	fn(treeColumn, cell, treeModel, iter)
+	fn(_treeColumn, _cell, _treeModel, _iter)
 }
 
 // TreeViewColumn: visible column in a GtkTreeView widget

@@ -52,6 +52,10 @@ func (d DevicePadFeature) String() string {
 	}
 }
 
+// DevicePadOverrider contains methods that are overridable.
+type DevicePadOverrider interface {
+}
+
 // DevicePad is an interface implemented by devices of type
 // GDK_SOURCE_TABLET_PAD, it allows querying the features provided by the pad
 // device.
@@ -93,6 +97,9 @@ type DevicePadder interface {
 }
 
 var _ DevicePadder = (*DevicePad)(nil)
+
+func ifaceInitDevicePadder(gifacePtr, data C.gpointer) {
+}
 
 func wrapDevicePad(obj *externglib.Object) *DevicePad {
 	return &DevicePad{

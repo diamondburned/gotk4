@@ -14,6 +14,15 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GtkBitset* _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(GtkSelectionModel*, guint, guint);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_is_selected(GtkSelectionModel*, guint);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_all(GtkSelectionModel*);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_item(GtkSelectionModel*, guint, gboolean);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_range(GtkSelectionModel*, guint, guint, gboolean);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_set_selection(GtkSelectionModel*, GtkBitset*, GtkBitset*);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_all(GtkSelectionModel*);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_item(GtkSelectionModel*, guint);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_range(GtkSelectionModel*, guint, guint);
 import "C"
 
 func init() {
@@ -23,9 +32,6 @@ func init() {
 }
 
 // SelectionModelOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type SelectionModelOverrider interface {
 	// SelectionInRange gets the set of selected items in a range.
 	//
@@ -247,6 +253,201 @@ type SelectionModeller interface {
 }
 
 var _ SelectionModeller = (*SelectionModel)(nil)
+
+func ifaceInitSelectionModeller(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkSelectionModelInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_selection_in_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_get_selection_in_range)
+	iface.is_selected = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_is_selected)
+	iface.select_all = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_all)
+	iface.select_item = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_item)
+	iface.select_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_range)
+	iface.set_selection = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_set_selection)
+	iface.unselect_all = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_all)
+	iface.unselect_item = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_item)
+	iface.unselect_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_range)
+}
+
+//export _gotk4_gtk4_SelectionModelInterface_get_selection_in_range
+func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint) (cret *C.GtkBitset) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionModelOverrider)
+
+	var _position uint // out
+	var _nItems uint   // out
+
+	_position = uint(arg1)
+	_nItems = uint(arg2)
+
+	bitset := iface.SelectionInRange(_position, _nItems)
+
+	cret = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(bitset)))
+
+	return cret
+}
+
+//export _gotk4_gtk4_SelectionModelInterface_is_selected
+func _gotk4_gtk4_SelectionModelInterface_is_selected(arg0 *C.GtkSelectionModel, arg1 C.guint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionModelOverrider)
+
+	var _position uint // out
+
+	_position = uint(arg1)
+
+	ok := iface.IsSelected(_position)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_SelectionModelInterface_select_all
+func _gotk4_gtk4_SelectionModelInterface_select_all(arg0 *C.GtkSelectionModel) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionModelOverrider)
+
+	ok := iface.SelectAll()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_SelectionModelInterface_select_item
+func _gotk4_gtk4_SelectionModelInterface_select_item(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionModelOverrider)
+
+	var _position uint     // out
+	var _unselectRest bool // out
+
+	_position = uint(arg1)
+	if arg2 != 0 {
+		_unselectRest = true
+	}
+
+	ok := iface.SelectItem(_position, _unselectRest)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_SelectionModelInterface_select_range
+func _gotk4_gtk4_SelectionModelInterface_select_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint, arg3 C.gboolean) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionModelOverrider)
+
+	var _position uint     // out
+	var _nItems uint       // out
+	var _unselectRest bool // out
+
+	_position = uint(arg1)
+	_nItems = uint(arg2)
+	if arg3 != 0 {
+		_unselectRest = true
+	}
+
+	ok := iface.SelectRange(_position, _nItems, _unselectRest)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_SelectionModelInterface_set_selection
+func _gotk4_gtk4_SelectionModelInterface_set_selection(arg0 *C.GtkSelectionModel, arg1 *C.GtkBitset, arg2 *C.GtkBitset) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionModelOverrider)
+
+	var _selected *Bitset // out
+	var _mask *Bitset     // out
+
+	_selected = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.gtk_bitset_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_selected)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+		},
+	)
+	_mask = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	C.gtk_bitset_ref(arg2)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_mask)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+		},
+	)
+
+	ok := iface.SetSelection(_selected, _mask)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_SelectionModelInterface_unselect_all
+func _gotk4_gtk4_SelectionModelInterface_unselect_all(arg0 *C.GtkSelectionModel) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionModelOverrider)
+
+	ok := iface.UnselectAll()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_SelectionModelInterface_unselect_item
+func _gotk4_gtk4_SelectionModelInterface_unselect_item(arg0 *C.GtkSelectionModel, arg1 C.guint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionModelOverrider)
+
+	var _position uint // out
+
+	_position = uint(arg1)
+
+	ok := iface.UnselectItem(_position)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_SelectionModelInterface_unselect_range
+func _gotk4_gtk4_SelectionModelInterface_unselect_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(SelectionModelOverrider)
+
+	var _position uint // out
+	var _nItems uint   // out
+
+	_position = uint(arg1)
+	_nItems = uint(arg2)
+
+	ok := iface.UnselectRange(_position, _nItems)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapSelectionModel(obj *externglib.Object) *SelectionModel {
 	return &SelectionModel{

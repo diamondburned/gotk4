@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// SocketAccessibleOverrider contains methods that are overridable.
+type SocketAccessibleOverrider interface {
+}
+
 type SocketAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -31,6 +35,14 @@ type SocketAccessible struct {
 var (
 	_ externglib.Objector = (*SocketAccessible)(nil)
 )
+
+func classInitSocketAccessibler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSocketAccessible(obj *externglib.Object) *SocketAccessible {
 	return &SocketAccessible{

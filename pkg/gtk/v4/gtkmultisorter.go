@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// MultiSorterOverrider contains methods that are overridable.
+type MultiSorterOverrider interface {
+}
+
 // MultiSorter: GtkMultiSorter combines multiple sorters by trying them in turn.
 //
 // If the first sorter compares two items as equal, the second is tried next,
@@ -37,6 +41,14 @@ type MultiSorter struct {
 var (
 	_ externglib.Objector = (*MultiSorter)(nil)
 )
+
+func classInitMultiSorterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 	return &MultiSorter{

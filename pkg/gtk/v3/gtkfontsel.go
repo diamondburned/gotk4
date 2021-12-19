@@ -25,6 +25,10 @@ func init() {
 	})
 }
 
+// FontSelectionOverrider contains methods that are overridable.
+type FontSelectionOverrider interface {
+}
+
 type FontSelection struct {
 	_ [0]func() // equal guard
 	Box
@@ -34,6 +38,14 @@ var (
 	_ Containerer         = (*FontSelection)(nil)
 	_ externglib.Objector = (*FontSelection)(nil)
 )
+
+func classInitFontSelectioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFontSelection(obj *externglib.Object) *FontSelection {
 	return &FontSelection{
@@ -515,6 +527,10 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 	runtime.KeepAlive(text)
 }
 
+// FontSelectionDialogOverrider contains methods that are overridable.
+type FontSelectionDialogOverrider interface {
+}
+
 type FontSelectionDialog struct {
 	_ [0]func() // equal guard
 	Dialog
@@ -523,6 +539,14 @@ type FontSelectionDialog struct {
 var (
 	_ Binner = (*FontSelectionDialog)(nil)
 )
+
+func classInitFontSelectionDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 	return &FontSelectionDialog{

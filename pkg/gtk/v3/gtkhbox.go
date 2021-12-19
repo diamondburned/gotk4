@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// HBoxOverrider contains methods that are overridable.
+type HBoxOverrider interface {
+}
+
 // HBox is a container that organizes child widgets into a single row.
 //
 // Use the Box packing interface to determine the arrangement, spacing, width,
@@ -49,6 +53,14 @@ var (
 	_ Containerer         = (*HBox)(nil)
 	_ externglib.Objector = (*HBox)(nil)
 )
+
+func classInitHBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapHBox(obj *externglib.Object) *HBox {
 	return &HBox{

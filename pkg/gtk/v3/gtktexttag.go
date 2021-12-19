@@ -25,23 +25,7 @@ func init() {
 }
 
 // TextTagOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type TextTagOverrider interface {
-	// Event emits the “event” signal on the TextTag.
-	//
-	// The function takes the following parameters:
-	//
-	//    - eventObject: object that received the event, such as a widget.
-	//    - event: event.
-	//    - iter: location where the event was received.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: result of signal emission (whether the event was handled).
-	//
-	Event(eventObject *externglib.Object, event *gdk.Event, iter *TextIter) bool
 }
 
 // TextTag: you may wish to begin by reading the [text widget conceptual
@@ -66,6 +50,14 @@ type TextTag struct {
 var (
 	_ externglib.Objector = (*TextTag)(nil)
 )
+
+func classInitTextTagger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapTextTag(obj *externglib.Object) *TextTag {
 	return &TextTag{

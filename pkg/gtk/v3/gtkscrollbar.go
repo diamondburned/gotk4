@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// ScrollbarOverrider contains methods that are overridable.
+type ScrollbarOverrider interface {
+}
+
 // Scrollbar widget is a horizontal or vertical scrollbar, depending on the
 // value of the Orientable:orientation property.
 //
@@ -69,6 +73,14 @@ type Scrollbar struct {
 var (
 	_ Ranger = (*Scrollbar)(nil)
 )
+
+func classInitScrollbarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 	return &Scrollbar{

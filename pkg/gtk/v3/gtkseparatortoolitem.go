@@ -23,6 +23,10 @@ func init() {
 	})
 }
 
+// SeparatorToolItemOverrider contains methods that are overridable.
+type SeparatorToolItemOverrider interface {
+}
+
 // SeparatorToolItem is a ToolItem that separates groups of other ToolItems.
 // Depending on the theme, a SeparatorToolItem will often look like a vertical
 // line on horizontally docked toolbars.
@@ -46,6 +50,14 @@ var (
 	_ Binner              = (*SeparatorToolItem)(nil)
 	_ externglib.Objector = (*SeparatorToolItem)(nil)
 )
+
+func classInitSeparatorToolItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 	return &SeparatorToolItem{

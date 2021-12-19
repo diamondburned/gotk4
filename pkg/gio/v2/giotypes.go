@@ -3,11 +3,13 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -36,16 +38,20 @@ func init() {
 type AsyncReadyCallback func(res AsyncResulter)
 
 //export _gotk4_gio2_AsyncReadyCallback
-func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_AsyncReadyCallback(arg1 *C.GObject, arg2 *C.GAsyncResult, arg3 C.gpointer) {
+	var fn AsyncReadyCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(AsyncReadyCallback)
 	}
 
-	var res AsyncResulter // out
+	var _res AsyncResulter // out
 
 	{
-		objptr := unsafe.Pointer(arg1)
+		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gio.AsyncResulter is nil")
 		}
@@ -59,32 +65,34 @@ func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
-		res = rv
+		_res = rv
 	}
 
-	fn := v.(AsyncReadyCallback)
-	fn(res)
+	fn(_res)
 }
 
 // CancellableSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_cancellable_source_new().
-type CancellableSourceFunc func(cancellable *Cancellable) (ok bool)
+type CancellableSourceFunc func(cancellable context.Context) (ok bool)
 
 //export _gotk4_gio2_CancellableSourceFunc
-func _gotk4_gio2_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_CancellableSourceFunc(arg1 *C.GCancellable, arg2 C.gpointer) (cret C.gboolean) {
+	var fn CancellableSourceFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(CancellableSourceFunc)
 	}
 
-	var cancellable *Cancellable // out
+	var _cancellable context.Context // out
 
-	if arg0 != nil {
-		cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(arg0)))
+	if arg1 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
 	}
 
-	fn := v.(CancellableSourceFunc)
-	ok := fn(cancellable)
+	ok := fn(_cancellable)
 
 	if ok {
 		cret = C.TRUE
@@ -102,24 +110,27 @@ func _gotk4_gio2_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (c
 type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath, interfaceName string) (gType externglib.Type)
 
 //export _gotk4_gio2_DBusProxyTypeFunc
-func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
-	v := gbox.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_DBusProxyTypeFunc(arg1 *C.GDBusObjectManagerClient, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) (cret C.GType) {
+	var fn DBusProxyTypeFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(DBusProxyTypeFunc)
 	}
 
-	var manager *DBusObjectManagerClient // out
-	var objectPath string                // out
-	var interfaceName string             // out
+	var _manager *DBusObjectManagerClient // out
+	var _objectPath string                // out
+	var _interfaceName string             // out
 
-	manager = wrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0)))
-	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	if arg2 != nil {
-		interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_manager = wrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg1)))
+	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	if arg3 != nil {
+		_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 	}
 
-	fn := v.(DBusProxyTypeFunc)
-	gType := fn(manager, objectPath, interfaceName)
+	gType := fn(_manager, _objectPath, _interfaceName)
 
 	cret = C.GType(gType)
 
@@ -131,17 +142,21 @@ func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gch
 type DatagramBasedSourceFunc func(datagramBased DatagramBasedder, condition glib.IOCondition) (ok bool)
 
 //export _gotk4_gio2_DatagramBasedSourceFunc
-func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_DatagramBasedSourceFunc(arg1 *C.GDatagramBased, arg2 C.GIOCondition, arg3 C.gpointer) (cret C.gboolean) {
+	var fn DatagramBasedSourceFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(DatagramBasedSourceFunc)
 	}
 
-	var datagramBased DatagramBasedder // out
-	var condition glib.IOCondition     // out
+	var _datagramBased DatagramBasedder // out
+	var _condition glib.IOCondition     // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gio.DatagramBasedder is nil")
 		}
@@ -155,12 +170,11 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DatagramBasedder")
 		}
-		datagramBased = rv
+		_datagramBased = rv
 	}
-	condition = glib.IOCondition(arg1)
+	_condition = glib.IOCondition(arg2)
 
-	fn := v.(DatagramBasedSourceFunc)
-	ok := fn(datagramBased, condition)
+	ok := fn(_datagramBased, _condition)
 
 	if ok {
 		cret = C.TRUE
@@ -199,26 +213,29 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 type FileMeasureProgressCallback func(reporting bool, currentSize, numDirs, numFiles uint64)
 
 //export _gotk4_gio2_FileMeasureProgressCallback
-func _gotk4_gio2_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_FileMeasureProgressCallback(arg1 C.gboolean, arg2 C.guint64, arg3 C.guint64, arg4 C.guint64, arg5 C.gpointer) {
+	var fn FileMeasureProgressCallback
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FileMeasureProgressCallback)
 	}
 
-	var reporting bool     // out
-	var currentSize uint64 // out
-	var numDirs uint64     // out
-	var numFiles uint64    // out
+	var _reporting bool     // out
+	var _currentSize uint64 // out
+	var _numDirs uint64     // out
+	var _numFiles uint64    // out
 
-	if arg0 != 0 {
-		reporting = true
+	if arg1 != 0 {
+		_reporting = true
 	}
-	currentSize = uint64(arg1)
-	numDirs = uint64(arg2)
-	numFiles = uint64(arg3)
+	_currentSize = uint64(arg2)
+	_numDirs = uint64(arg3)
+	_numFiles = uint64(arg4)
 
-	fn := v.(FileMeasureProgressCallback)
-	fn(reporting, currentSize, numDirs, numFiles)
+	fn(_reporting, _currentSize, _numDirs, _numFiles)
 }
 
 // FileProgressCallback: when doing file operations that may take a while, such
@@ -227,20 +244,23 @@ func _gotk4_gio2_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, ar
 type FileProgressCallback func(currentNumBytes, totalNumBytes int64)
 
 //export _gotk4_gio2_FileProgressCallback
-func _gotk4_gio2_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_FileProgressCallback(arg1 C.goffset, arg2 C.goffset, arg3 C.gpointer) {
+	var fn FileProgressCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FileProgressCallback)
 	}
 
-	var currentNumBytes int64 // out
-	var totalNumBytes int64   // out
+	var _currentNumBytes int64 // out
+	var _totalNumBytes int64   // out
 
-	currentNumBytes = int64(arg0)
-	totalNumBytes = int64(arg1)
+	_currentNumBytes = int64(arg1)
+	_totalNumBytes = int64(arg2)
 
-	fn := v.(FileProgressCallback)
-	fn(currentNumBytes, totalNumBytes)
+	fn(_currentNumBytes, _totalNumBytes)
 }
 
 // FileReadMoreCallback: when loading the partial contents of a file with
@@ -251,20 +271,23 @@ func _gotk4_gio2_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpo
 type FileReadMoreCallback func(fileContents string, fileSize int64) (ok bool)
 
 //export _gotk4_gio2_FileReadMoreCallback
-func _gotk4_gio2_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_FileReadMoreCallback(arg1 *C.char, arg2 C.goffset, arg3 C.gpointer) (cret C.gboolean) {
+	var fn FileReadMoreCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FileReadMoreCallback)
 	}
 
-	var fileContents string // out
-	var fileSize int64      // out
+	var _fileContents string // out
+	var _fileSize int64      // out
 
-	fileContents = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
-	fileSize = int64(arg1)
+	_fileContents = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_fileSize = int64(arg2)
 
-	fn := v.(FileReadMoreCallback)
-	ok := fn(fileContents, fileSize)
+	ok := fn(_fileContents, _fileSize)
 
 	if ok {
 		cret = C.TRUE
@@ -279,18 +302,21 @@ func _gotk4_gio2_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpoin
 type PollableSourceFunc func(pollableStream *externglib.Object) (ok bool)
 
 //export _gotk4_gio2_PollableSourceFunc
-func _gotk4_gio2_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_PollableSourceFunc(arg1 *C.GObject, arg2 C.gpointer) (cret C.gboolean) {
+	var fn PollableSourceFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(PollableSourceFunc)
 	}
 
-	var pollableStream *externglib.Object // out
+	var _pollableStream *externglib.Object // out
 
-	pollableStream = externglib.Take(unsafe.Pointer(arg0))
+	_pollableStream = externglib.Take(unsafe.Pointer(arg1))
 
-	fn := v.(PollableSourceFunc)
-	ok := fn(pollableStream)
+	ok := fn(_pollableStream)
 
 	if ok {
 		cret = C.TRUE
@@ -304,20 +330,23 @@ func _gotk4_gio2_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gb
 type SocketSourceFunc func(socket *Socket, condition glib.IOCondition) (ok bool)
 
 //export _gotk4_gio2_SocketSourceFunc
-func _gotk4_gio2_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gio2_SocketSourceFunc(arg1 *C.GSocket, arg2 C.GIOCondition, arg3 C.gpointer) (cret C.gboolean) {
+	var fn SocketSourceFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(SocketSourceFunc)
 	}
 
-	var socket *Socket             // out
-	var condition glib.IOCondition // out
+	var _socket *Socket             // out
+	var _condition glib.IOCondition // out
 
-	socket = wrapSocket(externglib.Take(unsafe.Pointer(arg0)))
-	condition = glib.IOCondition(arg1)
+	_socket = wrapSocket(externglib.Take(unsafe.Pointer(arg1)))
+	_condition = glib.IOCondition(arg2)
 
-	fn := v.(SocketSourceFunc)
-	ok := fn(socket, condition)
+	ok := fn(_socket, _condition)
 
 	if ok {
 		cret = C.TRUE

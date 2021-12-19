@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// PopupOverrider contains methods that are overridable.
+type PopupOverrider interface {
+}
+
 // Popup: GdkPopup is a surface that is attached to another surface.
 //
 // The GdkPopup is positioned relative to its parent surface.
@@ -57,6 +61,9 @@ type Popupper interface {
 }
 
 var _ Popupper = (*Popup)(nil)
+
+func ifaceInitPopupper(gifacePtr, data C.gpointer) {
+}
 
 func wrapPopup(obj *externglib.Object) *Popup {
 	return &Popup{

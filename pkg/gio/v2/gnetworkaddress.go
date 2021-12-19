@@ -21,6 +21,10 @@ func init() {
 	})
 }
 
+// NetworkAddressOverrider contains methods that are overridable.
+type NetworkAddressOverrider interface {
+}
+
 // NetworkAddress provides an easy way to resolve a hostname and then attempt to
 // connect to that host, handling the possibility of multiple IP addresses and
 // multiple address families.
@@ -39,6 +43,14 @@ type NetworkAddress struct {
 var (
 	_ externglib.Objector = (*NetworkAddress)(nil)
 )
+
+func classInitNetworkAddresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
 	return &NetworkAddress{

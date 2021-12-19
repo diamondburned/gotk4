@@ -11,6 +11,7 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_MemoryMonitorInterface_low_memory_warning(GMemoryMonitor*, GMemoryMonitorWarningLevel);
 import "C"
 
 func init() {
@@ -24,9 +25,6 @@ func init() {
 const MEMORY_MONITOR_EXTENSION_POINT_NAME = "gio-memory-monitor"
 
 // MemoryMonitorOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type MemoryMonitorOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -99,6 +97,23 @@ type MemoryMonitorrer interface {
 }
 
 var _ MemoryMonitorrer = (*MemoryMonitor)(nil)
+
+func ifaceInitMemoryMonitorrer(gifacePtr, data C.gpointer) {
+	iface := (*C.GMemoryMonitorInterface)(unsafe.Pointer(gifacePtr))
+	iface.low_memory_warning = (*[0]byte)(C._gotk4_gio2_MemoryMonitorInterface_low_memory_warning)
+}
+
+//export _gotk4_gio2_MemoryMonitorInterface_low_memory_warning
+func _gotk4_gio2_MemoryMonitorInterface_low_memory_warning(arg0 *C.GMemoryMonitor, arg1 C.GMemoryMonitorWarningLevel) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MemoryMonitorOverrider)
+
+	var _level MemoryMonitorWarningLevel // out
+
+	_level = MemoryMonitorWarningLevel(arg1)
+
+	iface.LowMemoryWarning(_level)
+}
 
 func wrapMemoryMonitor(obj *externglib.Object) *MemoryMonitor {
 	return &MemoryMonitor{

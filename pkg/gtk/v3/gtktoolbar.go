@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -16,6 +17,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_ToolbarClass_popup_context_menu(GtkToolbar*, gint, gint, gint);
+// extern void _gotk4_gtk3_ToolbarClass_orientation_changed(GtkToolbar*, GtkOrientation);
+// extern void _gotk4_gtk3_ToolbarClass_style_changed(GtkToolbar*, GtkToolbarStyle);
 import "C"
 
 func init() {
@@ -54,9 +58,6 @@ func (t ToolbarSpaceStyle) String() string {
 }
 
 // ToolbarOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type ToolbarOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -117,6 +118,80 @@ var (
 	_ externglib.Objector = (*Toolbar)(nil)
 	_ Widgetter           = (*Toolbar)(nil)
 )
+
+func classInitToolbarrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkToolbarClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkToolbarClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface{ OrientationChanged(orientation Orientation) }); ok {
+		pclass.orientation_changed = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_orientation_changed)
+	}
+
+	if _, ok := goval.(interface {
+		PopupContextMenu(x, y, buttonNumber int) bool
+	}); ok {
+		pclass.popup_context_menu = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_popup_context_menu)
+	}
+
+	if _, ok := goval.(interface{ StyleChanged(style ToolbarStyle) }); ok {
+		pclass.style_changed = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_style_changed)
+	}
+}
+
+//export _gotk4_gtk3_ToolbarClass_orientation_changed
+func _gotk4_gtk3_ToolbarClass_orientation_changed(arg0 *C.GtkToolbar, arg1 C.GtkOrientation) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ OrientationChanged(orientation Orientation) })
+
+	var _orientation Orientation // out
+
+	_orientation = Orientation(arg1)
+
+	iface.OrientationChanged(_orientation)
+}
+
+//export _gotk4_gtk3_ToolbarClass_popup_context_menu
+func _gotk4_gtk3_ToolbarClass_popup_context_menu(arg0 *C.GtkToolbar, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PopupContextMenu(x, y, buttonNumber int) bool
+	})
+
+	var _x int            // out
+	var _y int            // out
+	var _buttonNumber int // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_buttonNumber = int(arg3)
+
+	ok := iface.PopupContextMenu(_x, _y, _buttonNumber)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_ToolbarClass_style_changed
+func _gotk4_gtk3_ToolbarClass_style_changed(arg0 *C.GtkToolbar, arg1 C.GtkToolbarStyle) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StyleChanged(style ToolbarStyle) })
+
+	var _style ToolbarStyle // out
+
+	_style = ToolbarStyle(arg1)
+
+	iface.StyleChanged(_style)
+}
 
 func wrapToolbar(obj *externglib.Object) *Toolbar {
 	return &Toolbar{

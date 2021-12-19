@@ -20,7 +20,10 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// gboolean _gotk4_gdk3_WindowChildFunc(GdkWindow*, gpointer);
+// extern cairo_surface_t* _gotk4_gdk3_WindowClass_create_surface(GdkWindow*, gint, gint);
+// extern gboolean _gotk4_gdk3_WindowChildFunc(GdkWindow*, gpointer);
+// extern void _gotk4_gdk3_WindowClass_from_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
+// extern void _gotk4_gdk3_WindowClass_to_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
 import "C"
 
 func init() {
@@ -648,16 +651,20 @@ func (w WindowHints) Has(other WindowHints) bool {
 type WindowChildFunc func(window Windower) (ok bool)
 
 //export _gotk4_gdk3_WindowChildFunc
-func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gboolean) {
-	v := gbox.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
+func _gotk4_gdk3_WindowChildFunc(arg1 *C.GdkWindow, arg2 C.gpointer) (cret C.gboolean) {
+	var fn WindowChildFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(WindowChildFunc)
 	}
 
-	var window Windower // out
+	var _window Windower // out
 
 	{
-		objptr := unsafe.Pointer(arg0)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -671,11 +678,10 @@ func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gbo
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		window = rv
+		_window = rv
 	}
 
-	fn := v.(WindowChildFunc)
-	ok := fn(window)
+	ok := fn(_window)
 
 	if ok {
 		cret = C.TRUE
@@ -820,9 +826,6 @@ func OffscreenWindowSetEmbedder(window, embedder Windower) {
 }
 
 // WindowOverrider contains methods that are overridable.
-//
-// As of right now, interface overriding and subclassing is not supported
-// yet, so the interface currently has no use.
 type WindowOverrider interface {
 	// The function takes the following parameters:
 	//
@@ -869,6 +872,96 @@ type Windower interface {
 }
 
 var _ Windower = (*Window)(nil)
+
+func classInitWindower(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GdkWindowClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GdkWindowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		CreateSurface(width, height int) *cairo.Surface
+	}); ok {
+		pclass.create_surface = (*[0]byte)(C._gotk4_gdk3_WindowClass_create_surface)
+	}
+
+	if _, ok := goval.(interface {
+		FromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64)
+	}); ok {
+		pclass.from_embedder = (*[0]byte)(C._gotk4_gdk3_WindowClass_from_embedder)
+	}
+
+	if _, ok := goval.(interface {
+		ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
+	}); ok {
+		pclass.to_embedder = (*[0]byte)(C._gotk4_gdk3_WindowClass_to_embedder)
+	}
+}
+
+//export _gotk4_gdk3_WindowClass_create_surface
+func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.GdkWindow, arg1 C.gint, arg2 C.gint) (cret *C.cairo_surface_t) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CreateSurface(width, height int) *cairo.Surface
+	})
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	surface := iface.CreateSurface(_width, _height)
+
+	cret = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+
+	return cret
+}
+
+//export _gotk4_gdk3_WindowClass_from_embedder
+func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		FromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64)
+	})
+
+	var _embedderX float64   // out
+	var _embedderY float64   // out
+	var _offscreenX *float64 // out
+	var _offscreenY *float64 // out
+
+	_embedderX = float64(arg1)
+	_embedderY = float64(arg2)
+	_offscreenX = (*float64)(unsafe.Pointer(arg3))
+	_offscreenY = (*float64)(unsafe.Pointer(arg4))
+
+	iface.FromEmbedder(_embedderX, _embedderY, _offscreenX, _offscreenY)
+}
+
+//export _gotk4_gdk3_WindowClass_to_embedder
+func _gotk4_gdk3_WindowClass_to_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
+	})
+
+	var _offscreenX float64 // out
+	var _offscreenY float64 // out
+	var _embedderX *float64 // out
+	var _embedderY *float64 // out
+
+	_offscreenX = float64(arg1)
+	_offscreenY = float64(arg2)
+	_embedderX = (*float64)(unsafe.Pointer(arg3))
+	_embedderY = (*float64)(unsafe.Pointer(arg4))
+
+	iface.ToEmbedder(_offscreenX, _offscreenY, _embedderX, _embedderY)
+}
 
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{

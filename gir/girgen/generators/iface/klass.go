@@ -35,8 +35,14 @@ type TypeStructMethod struct {
 }
 
 func newTypeStruct(g *Generator, result *gir.TypeFindResult) *TypeStruct {
+	record, ok := result.Type.(*gir.Record)
+	if !ok {
+		g.Logln(logger.Skip, "type-struct skipped since not *gir.Record")
+		return nil
+	}
+
 	ts := &TypeStruct{
-		Record: result.Type.(*gir.Record),
+		Record: record,
 		ns:     result.NamespaceFindResult,
 		igen:   g,
 	}

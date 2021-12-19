@@ -94,8 +94,7 @@ func (g *Generator) Use(cb *gir.CallableAttrs) bool {
 	g.Reset()
 	g.CallableAttrs = cb
 
-	// This check doesn't apply for virtual methods.
-
+	// We can't use the callback if it has no closure parameters.
 	// if cb.Parameters == nil || len(cb.Parameters.Parameters) == 0 {
 	// 	g.Logln(logger.Debug, "has no parameters at all")
 	// 	return false

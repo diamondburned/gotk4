@@ -47,7 +47,7 @@ func newBox(obj unsafe.Pointer) *Box {
 
 // shared contains shared closure data.
 var shared = struct {
-	mu sync.Mutex
+	mu sync.RWMutex
 	// weak stores *Box while the object is in Go's heap. The finalizer will
 	// move *Box to strong if the reference is toggled. This is only the case,
 	// because the finalizer will not run otherwise.
@@ -65,9 +65,9 @@ var shared = struct {
 // ObjectClosure gets the FuncStack instance from the given GObject and GClosure
 // pointers. The given unsafe.Pointers MUST be C pointers.
 func ObjectClosure(gobject, gclosure unsafe.Pointer) *closure.FuncStack {
-	shared.mu.Lock()
+	shared.mu.RLock()
 	box, _ := gets(gobject)
-	shared.mu.Unlock()
+	shared.mu.RUnlock()
 
 	if box == nil {
 		return nil
@@ -78,9 +78,9 @@ func ObjectClosure(gobject, gclosure unsafe.Pointer) *closure.FuncStack {
 
 // RemoveClosure removes the given GClosure callback.
 func RemoveClosure(gobject, gclosure unsafe.Pointer) {
-	shared.mu.Lock()
+	shared.mu.RLock()
 	box, _ := gets(gobject)
-	shared.mu.Unlock()
+	shared.mu.RUnlock()
 
 	if box != nil {
 		box.Closures.Delete(gclosure)
@@ -100,6 +100,14 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	// If the registry does not exist, then we'll have to globally register it.
 	// If the registry is currently strongly referenced, then we must move it to
 	// a weak reference.
+
+	shared.mu.RLock()
+	box, _ := gets(gobject)
+	shared.mu.RUnlock()
+
+	if box != nil {
+		return box
+	}
 
 	shared.mu.Lock()
 

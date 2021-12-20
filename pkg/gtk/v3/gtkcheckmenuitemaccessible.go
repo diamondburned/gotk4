@@ -26,10 +26,8 @@ func init() {
 }
 
 type CheckMenuItemAccessible struct {
+	_ [0]func() // equal guard
 	MenuItemAccessible
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

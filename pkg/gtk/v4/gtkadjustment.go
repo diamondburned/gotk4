@@ -43,10 +43,8 @@ type AdjustmentOverrider interface {
 // The GtkAdjustment object does not update the value itself. Instead it is left
 // up to the owner of the GtkAdjustment to control the value.
 type Adjustment struct {
+	_ [0]func() // equal guard
 	externglib.InitiallyUnowned
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

@@ -96,10 +96,8 @@ type RadioButtonOverrider interface {
 // Inside the ToggleButton::toggled handler, gtk_toggle_button_get_active() can
 // be used to determine if the button has been selected or deselected.
 type RadioButton struct {
+	_ [0]func() // equal guard
 	CheckButton
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

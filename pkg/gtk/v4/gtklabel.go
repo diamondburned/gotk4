@@ -201,10 +201,8 @@ func init() {
 // the gtk.Label::activate-link signal and the gtk.Label.GetCurrentURI()
 // function.
 type Label struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

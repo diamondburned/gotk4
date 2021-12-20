@@ -38,13 +38,11 @@ func init() {
 // To set the heading that is shown above the GtkAppChooserWidget, use
 // gtk.AppChooserDialog.SetHeading().
 type AppChooserDialog struct {
+	_ [0]func() // equal guard
 	Dialog
 
 	*externglib.Object
 	AppChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

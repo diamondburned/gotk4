@@ -43,10 +43,8 @@ func init() {
 //
 // This type has been renamed from Native.
 type NativeSurface struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

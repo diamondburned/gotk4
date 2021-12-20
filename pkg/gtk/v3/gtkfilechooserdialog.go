@@ -174,13 +174,11 @@ func init() {
 // code][gtkfilechooserdialog-responses] when you use FileChooserDialog to
 // ensure proper operation.
 type FileChooserDialog struct {
+	_ [0]func() // equal guard
 	Dialog
 
 	*externglib.Object
 	FileChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

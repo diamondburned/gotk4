@@ -133,13 +133,11 @@ type FileOutputStreamOverrider interface {
 // output stream supports truncating, use g_seekable_can_truncate(). To truncate
 // a file output stream, use g_seekable_truncate().
 type FileOutputStream struct {
+	_ [0]func() // equal guard
 	OutputStream
 
 	*externglib.Object
 	Seekable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

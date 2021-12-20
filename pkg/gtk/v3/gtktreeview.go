@@ -431,13 +431,11 @@ type TreeViewOverrider interface {
 // widgets' CSS nodes. For rubberband selection, a subnode with name rubberband
 // is used.
 type TreeView struct {
+	_ [0]func() // equal guard
 	Container
 
 	*externglib.Object
 	Scrollable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -220,12 +220,10 @@ func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncRead
 //      return g_object_ref (cake);
 //    }.
 type SimpleAsyncResult struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	AsyncResult
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

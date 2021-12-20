@@ -114,10 +114,8 @@ type BuilderScopeOverrider interface {
 // By default, GTK will use its own implementation of GtkBuilderScope for the C
 // language which can be created via gtk.BuilderCScope.New.
 type BuilderScope struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -167,12 +165,10 @@ func BaseBuilderScope(obj BuilderScoper) *BuilderScope {
 // signal callbacks which are referenced by the loaded XML, this functionality
 // will require that GModule be supported on the platform.
 type BuilderCScope struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	BuilderScope
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

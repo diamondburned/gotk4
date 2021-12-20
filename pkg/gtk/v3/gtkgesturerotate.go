@@ -29,10 +29,8 @@ func init() {
 // rotations, whenever the angle between both handled sequences changes, the
 // GestureRotate::angle-changed signal is emitted.
 type GestureRotate struct {
+	_ [0]func() // equal guard
 	Gesture
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

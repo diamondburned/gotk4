@@ -51,12 +51,10 @@ func init() {
 // gtksettings.GetForDisplay, but in many cases, it is more convenient to use
 // gtk.Widget.GetSettings().
 type Settings struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	StyleProvider
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

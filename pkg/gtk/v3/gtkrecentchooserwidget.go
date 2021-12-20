@@ -36,13 +36,11 @@ func init() {
 //
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserWidget struct {
+	_ [0]func() // equal guard
 	Box
 
 	*externglib.Object
 	RecentChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -32,14 +32,12 @@ func init() {
 // As of GLib 2.34, OutputStream trivially implements OutputStream: it always
 // polls as ready.
 type MemoryOutputStream struct {
+	_ [0]func() // equal guard
 	OutputStream
 
 	*externglib.Object
 	PollableOutputStream
 	Seekable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -73,10 +73,8 @@ func (d DevicePadFeature) String() string {
 // gdk.DevicePad.GetGroupNModes(), and the current mode for a given group will
 // be notified through events of type K_PAD_GROUP_MODE.
 type DevicePad struct {
+	_ [0]func() // equal guard
 	Device
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

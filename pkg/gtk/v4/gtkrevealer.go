@@ -109,10 +109,8 @@ func (r RevealerTransitionType) String() string {
 // The child of GtkRevealer, if set, is always available in the accessibility
 // tree, regardless of the state of the revealer widget.
 type Revealer struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

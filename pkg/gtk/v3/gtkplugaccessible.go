@@ -27,10 +27,8 @@ func init() {
 }
 
 type PlugAccessible struct {
+	_ [0]func() // equal guard
 	WindowAccessible
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

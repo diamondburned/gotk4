@@ -68,10 +68,8 @@ type TLSClientConnectionOverrider interface {
 // TLSClientConnection is the client-side subclass of Connection, representing a
 // client-side TLS connection.
 type TLSClientConnection struct {
+	_ [0]func() // equal guard
 	TLSConnection
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -28,10 +28,8 @@ func init() {
 // not derived from GtkWidget. One example of its use is in providing an
 // accessible object for GnomeCanvasItem in the GAIL library.
 type GObjectAccessible struct {
+	_ [0]func() // equal guard
 	ObjectClass
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

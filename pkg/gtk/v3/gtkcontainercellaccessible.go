@@ -28,10 +28,8 @@ func init() {
 }
 
 type ContainerCellAccessible struct {
+	_ [0]func() // equal guard
 	CellAccessible
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

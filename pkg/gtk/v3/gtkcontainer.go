@@ -300,10 +300,8 @@ type ContainerOverrider interface {
 //      </focus-chain>
 //    </object>.
 type Container struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

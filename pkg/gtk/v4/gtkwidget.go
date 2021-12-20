@@ -664,15 +664,13 @@ type WidgetOverrider interface {
 //      gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (klass), hello_button_clicked);
 //    }.
 type Widget struct {
+	_ [0]func() // equal guard
 	externglib.InitiallyUnowned
 
 	*externglib.Object
 	Accessible
 	Buildable
 	ConstraintTarget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

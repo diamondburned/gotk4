@@ -31,12 +31,10 @@ func init() {
 // See Target for more information about SRV records, and see Connectable for an
 // example of using the connectable interface.
 type NetworkService struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	SocketConnectable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

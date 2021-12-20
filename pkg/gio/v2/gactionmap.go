@@ -74,10 +74,8 @@ type ActionMapOverrider interface {
 // various action groups to unique, prefixed names (e.g. by prepending "app." or
 // "win."). This is the motivation for the 'Map' part of the interface name.
 type ActionMap struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

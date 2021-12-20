@@ -29,10 +29,8 @@ func init() {
 // a radio or a checkbutton, depending on the CellRendererToggle:radio property.
 // When activated, it emits the CellRendererToggle::toggled signal.
 type CellRendererToggle struct {
+	_ [0]func() // equal guard
 	CellRenderer
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

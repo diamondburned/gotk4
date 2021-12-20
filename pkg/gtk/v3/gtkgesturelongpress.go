@@ -32,10 +32,8 @@ func init() {
 // far of the initial press point, the GestureLongPress::cancelled signal will
 // be emitted.
 type GestureLongPress struct {
+	_ [0]func() // equal guard
 	GestureSingle
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

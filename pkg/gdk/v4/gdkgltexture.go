@@ -25,10 +25,8 @@ func init() {
 
 // GLTexture: gdkTexture representing a GL texture object.
 type GLTexture struct {
+	_ [0]func() // equal guard
 	Texture
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

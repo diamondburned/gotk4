@@ -31,10 +31,8 @@ func init() {
 //
 // GtkHPaned has been deprecated, use Paned instead.
 type HPaned struct {
+	_ [0]func() // equal guard
 	Paned
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -153,13 +153,11 @@ func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cre
 //      </patterns>
 //    </object>.
 type FileFilter struct {
+	_ [0]func() // equal guard
 	externglib.InitiallyUnowned
 
 	*externglib.Object
 	Buildable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

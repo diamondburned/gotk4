@@ -97,10 +97,8 @@ func init() {
 // message type. If the info bar shows a close button, that button will have the
 // .close style class applied.
 type InfoBar struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

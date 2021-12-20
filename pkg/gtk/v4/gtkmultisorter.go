@@ -29,14 +29,12 @@ func init() {
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
 type MultiSorter struct {
+	_ [0]func() // equal guard
 	Sorter
 
 	*externglib.Object
 	gio.ListModel
 	Buildable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

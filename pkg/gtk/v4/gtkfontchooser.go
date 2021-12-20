@@ -245,10 +245,8 @@ type FontChooserOverrider interface {
 // In GTK, the main objects that implement this interface are
 // gtk.FontChooserWidget, gtk.FontChooserDialog and gtk.FontButton.
 type FontChooser struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -310,10 +310,8 @@ type ComponentOverrider interface {
 // background, in which case text glyph bounding box information is provided by
 // Text.
 type Component struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

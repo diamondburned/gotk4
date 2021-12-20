@@ -42,10 +42,8 @@ func init() {
 // window group and drop their references on the window group; when all window
 // have been removed, the window group will be freed.
 type WindowGroup struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

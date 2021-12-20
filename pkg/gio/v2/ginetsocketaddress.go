@@ -26,10 +26,8 @@ func init() {
 // InetSocketAddress: IPv4 or IPv6 socket address; that is, the combination of a
 // Address and a port number.
 type InetSocketAddress struct {
+	_ [0]func() // equal guard
 	SocketAddress
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

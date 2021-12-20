@@ -86,14 +86,12 @@ type MenuItemOverrider interface {
 // submenu, it gets another CSS node with name arrow, which has the .left or
 // .right style class.
 type MenuItem struct {
+	_ [0]func() // equal guard
 	Bin
 
 	*externglib.Object
 	Actionable
 	Activatable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

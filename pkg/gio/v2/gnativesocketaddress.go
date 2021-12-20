@@ -26,10 +26,8 @@ func init() {
 
 // NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress struct {
+	_ [0]func() // equal guard
 	SocketAddress
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -49,10 +49,8 @@ type TLSPasswordOverrider interface {
 
 // TLSPassword holds a password used in TLS.
 type TLSPassword struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -39,10 +39,8 @@ func init() {
 // If you are writing a full-fledged video player, you may want to use the
 // gdk.Paintable API and a media framework such as Gstreamer directly.
 type Video struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

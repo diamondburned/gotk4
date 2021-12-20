@@ -85,13 +85,11 @@ type CheckButtonOverrider interface {
 //
 // GtkCheckButton uses the GTK_ACCESSIBLE_ROLE_CHECKBOX role.
 type CheckButton struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Actionable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

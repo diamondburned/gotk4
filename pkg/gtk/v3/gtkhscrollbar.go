@@ -34,10 +34,8 @@ func init() {
 //
 // GtkHScrollbar has been deprecated, use Scrollbar instead.
 type HScrollbar struct {
+	_ [0]func() // equal guard
 	Scrollbar
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -71,10 +71,8 @@ type DBusObjectOverrider interface {
 // (see BusObjectSkeleton) and the client side (see BusObjectProxy). It is
 // essentially just a container of interfaces.
 type DBusObject struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

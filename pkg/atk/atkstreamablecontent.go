@@ -99,10 +99,8 @@ type StreamableContentOverrider interface {
 // strongly tied to the current user-agent view of the a particular document,
 // but may in some cases give access to the underlying model data.
 type StreamableContent struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -131,10 +131,8 @@ func init() {
 //      fragColor = position * source1 + (1.0 - position) * source2;
 //    }.
 type GLShader struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

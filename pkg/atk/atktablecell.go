@@ -85,10 +85,8 @@ type TableCellOverrider interface {
 //
 // See also Table.
 type TableCell struct {
+	_ [0]func() // equal guard
 	ObjectClass
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

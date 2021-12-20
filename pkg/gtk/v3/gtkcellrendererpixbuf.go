@@ -36,10 +36,8 @@ func init() {
 // the CellRendererPixbuf:pixbuf-expander-closed property is set to a pixbuf, it
 // renders that one.
 type CellRendererPixbuf struct {
+	_ [0]func() // equal guard
 	CellRenderer
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

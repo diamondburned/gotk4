@@ -25,10 +25,8 @@ func init() {
 // Window should be implemented by the UI elements that represent a top-level
 // window, such as the main window of an application or dialog.
 type Window struct {
+	_ [0]func() // equal guard
 	ObjectClass
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

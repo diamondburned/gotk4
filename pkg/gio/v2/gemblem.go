@@ -30,12 +30,10 @@ func init() {
 // Currently, only metainformation about the emblem's origin is supported. More
 // may be added in the future.
 type Emblem struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Icon
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

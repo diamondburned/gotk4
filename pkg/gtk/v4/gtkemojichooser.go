@@ -48,10 +48,8 @@ func init() {
 // between different emoji categories consists of buttons with the
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
 type EmojiChooser struct {
+	_ [0]func() // equal guard
 	Popover
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

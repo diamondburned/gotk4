@@ -38,10 +38,8 @@ func init() {
 // When necessary, GtkMountOperation shows dialogs to let the user enter
 // passwords, ask questions or show processes blocking unmount.
 type MountOperation struct {
+	_ [0]func() // equal guard
 	gio.MountOperation
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

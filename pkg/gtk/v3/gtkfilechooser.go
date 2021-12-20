@@ -234,10 +234,8 @@ func FileChooserErrorQuark() glib.Quark {
 // container such as a Box or a Grid and include your widgets in it. Then, set
 // the container as the whole extra widget.
 type FileChooser struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -79,10 +79,8 @@ type LoadableIconOverrider interface {
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
 // from streams.
 type LoadableIcon struct {
+	_ [0]func() // equal guard
 	Icon
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

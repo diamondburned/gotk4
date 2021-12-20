@@ -58,10 +58,8 @@ func init() {
 // drop target, and will receive the GTK_STATE_FLAG_DROP_ACTIVE state, which can
 // be used by themes to style the widget as a drop target.
 type DropTargetAsync struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

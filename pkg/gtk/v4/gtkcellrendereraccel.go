@@ -60,10 +60,8 @@ func (c CellRendererAccelMode) String() string {
 // like Control + a). If the cell renderer is editable, the accelerator can be
 // changed by simply typing the new combination.
 type CellRendererAccel struct {
+	_ [0]func() // equal guard
 	CellRendererText
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

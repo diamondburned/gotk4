@@ -37,10 +37,8 @@ func init() {
 //
 // The CellRendererCombo cell renderer was added in GTK+ 2.6.
 type CellRendererCombo struct {
+	_ [0]func() // equal guard
 	CellRendererText
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

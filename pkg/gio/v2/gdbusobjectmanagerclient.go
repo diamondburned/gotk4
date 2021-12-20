@@ -111,14 +111,12 @@ type DBusObjectManagerClientOverrider interface {
 // the same context and, consequently, will deliver signals in the same main
 // loop.
 type DBusObjectManagerClient struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	AsyncInitable
 	DBusObjectManager
 	Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

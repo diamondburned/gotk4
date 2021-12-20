@@ -31,10 +31,8 @@ func init() {
 // DataInputStream: data input stream implements Stream and includes functions
 // for reading structured data directly from a binary input stream.
 type DataInputStream struct {
+	_ [0]func() // equal guard
 	BufferedInputStream
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -38,10 +38,8 @@ func init() {
 // determined by the gtk.Settings:gtk-long-press-time setting. It can be
 // modified by the gtk.GestureLongPress:delay-factor property.
 type GestureLongPress struct {
+	_ [0]func() // equal guard
 	GestureSingle
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

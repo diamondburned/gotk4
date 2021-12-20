@@ -152,10 +152,8 @@ type ScaleOverrider interface {
 //
 // GtkScale uses the GTK_ACCESSIBLE_ROLE_SLIDER role.
 type Scale struct {
+	_ [0]func() // equal guard
 	Range
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

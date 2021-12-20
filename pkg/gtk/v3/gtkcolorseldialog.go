@@ -28,10 +28,8 @@ func init() {
 }
 
 type ColorSelectionDialog struct {
+	_ [0]func() // equal guard
 	Dialog
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

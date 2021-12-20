@@ -35,10 +35,8 @@ func init() {
 //
 // Typical numerable icons: ! (numerableicon.png) ! (numerableicon2.png).
 type NumerableIcon struct {
+	_ [0]func() // equal guard
 	gio.EmblemedIcon
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

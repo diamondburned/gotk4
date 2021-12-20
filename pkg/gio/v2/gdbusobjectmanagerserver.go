@@ -44,12 +44,10 @@ func init() {
 // used with BusObjectManagerServer or any D-Bus object implementing the
 // org.freedesktop.DBus.ObjectManager interface.
 type DBusObjectManagerServer struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	DBusObjectManager
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

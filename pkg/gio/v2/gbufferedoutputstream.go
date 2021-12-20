@@ -38,12 +38,10 @@ func init() {
 // that the buffer's size cannot be reduced below the size of the data within
 // the buffer.
 type BufferedOutputStream struct {
+	_ [0]func() // equal guard
 	FilterOutputStream
 
 	Seekable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

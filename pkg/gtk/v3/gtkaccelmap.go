@@ -84,10 +84,8 @@ func init() {
 // accelerators. It is also possible to monitor only single accelerator path by
 // using it as a detail of the AccelMap::changed signal.
 type AccelMap struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

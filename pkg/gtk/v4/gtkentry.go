@@ -150,6 +150,7 @@ type EntryOverrider interface {
 //
 // GtkEntry uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type Entry struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
@@ -159,9 +160,6 @@ type Entry struct {
 	CellEditable
 	ConstraintTarget
 	Editable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -859,10 +859,8 @@ type TextOverrider interface {
 // assumptions about the character length; also bounding box glyph-to-offset
 // mapping may be complex for languages which use ligatures.
 type Text struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

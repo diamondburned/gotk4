@@ -55,10 +55,8 @@ type SocketListenerOverrider interface {
 // If you want to implement a network server, also look at Service and
 // SocketService which are subclasses of Listener that make this even easier.
 type SocketListener struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

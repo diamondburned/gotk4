@@ -133,14 +133,12 @@ func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 // they work together, and to the TreeView documentation for specifics about the
 // CSS node structure for treeviews and their headers.
 type TreeViewColumn struct {
+	_ [0]func() // equal guard
 	externglib.InitiallyUnowned
 
 	*externglib.Object
 	Buildable
 	CellLayout
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

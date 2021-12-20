@@ -28,10 +28,8 @@ func init() {
 // DTLSClientConnection is the client-side subclass of Connection, representing
 // a client-side DTLS connection.
 type DTLSClientConnection struct {
+	_ [0]func() // equal guard
 	DTLSConnection
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

@@ -529,10 +529,8 @@ type AccelGroupOverrider interface {
 // gtk_label_new_with_mnemonic(). Menu items can have both accelerators and
 // mnemonics, of course.
 type AccelGroup struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

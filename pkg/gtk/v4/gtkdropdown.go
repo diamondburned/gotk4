@@ -55,10 +55,8 @@ func init() {
 //
 // GtkDropDown uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type DropDown struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

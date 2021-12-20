@@ -32,10 +32,8 @@ func init() {
 // GdkPopups are typically used to implement menus and similar popups. They can
 // be modal, which is indicated by the gdkpopup:autohide property.
 type Popup struct {
+	_ [0]func() // equal guard
 	Surface
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

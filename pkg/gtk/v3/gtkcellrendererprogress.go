@@ -29,12 +29,10 @@ func init() {
 //
 // The CellRendererProgress cell renderer was added in GTK+ 2.6.
 type CellRendererProgress struct {
+	_ [0]func() // equal guard
 	CellRenderer
 
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

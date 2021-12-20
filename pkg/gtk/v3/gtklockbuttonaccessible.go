@@ -26,10 +26,8 @@ func init() {
 }
 
 type LockButtonAccessible struct {
+	_ [0]func() // equal guard
 	ButtonAccessible
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

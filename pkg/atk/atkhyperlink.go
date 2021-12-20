@@ -156,12 +156,10 @@ type HyperlinkOverrider interface {
 // inline embedded content, since it allows specification of a start and end
 // offset within the host AtkHypertext object.
 type Hyperlink struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Action
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

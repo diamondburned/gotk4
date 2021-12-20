@@ -36,10 +36,8 @@ func init() {
 // surfaces. Other, more specialized surface types exist, but you will rarely
 // interact with them directly.
 type Surface struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

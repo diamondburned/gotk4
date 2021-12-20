@@ -44,12 +44,10 @@ type DBusObjectSkeletonOverrider interface {
 //
 // This type is intended to be used with BusObjectManager.
 type DBusObjectSkeleton struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	DBusObject
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

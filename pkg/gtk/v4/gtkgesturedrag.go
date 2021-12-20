@@ -31,10 +31,8 @@ func init() {
 // extracted through gtk.GestureDrag.GetOffset() and
 // gtk.GestureDrag.GetStartPoint().
 type GestureDrag struct {
+	_ [0]func() // equal guard
 	GestureSingle
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

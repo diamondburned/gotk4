@@ -35,13 +35,11 @@ func init() {
 // The GtkFontChooserDialog implementation of the Buildable interface exposes
 // the buttons with the names “select_button” and “cancel_button”.
 type FontChooserDialog struct {
+	_ [0]func() // equal guard
 	Dialog
 
 	*externglib.Object
 	FontChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

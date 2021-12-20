@@ -209,10 +209,8 @@ type RendererOverrider interface {
 // and draw_rectangle, renderers for particular font backends and destinations
 // can be created.
 type Renderer struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

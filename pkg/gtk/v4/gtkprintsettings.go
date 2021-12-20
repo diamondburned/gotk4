@@ -107,10 +107,8 @@ func _gotk4_gtk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) 
 // The predefined keys try to use shared values as much as possible so that
 // moving such a document between systems still works.
 type PrintSettings struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

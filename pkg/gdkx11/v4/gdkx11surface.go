@@ -53,10 +53,8 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 }
 
 type X11Surface struct {
+	_ [0]func() // equal guard
 	gdk.Surface
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -28,10 +28,8 @@ func init() {
 // Beyond the gdk.Monitor API, the Wayland implementation offers access to the
 // Wayland wl_output object with gdkwayland.WaylandMonitor.GetWlOutput().
 type WaylandMonitor struct {
+	_ [0]func() // equal guard
 	gdk.Monitor
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

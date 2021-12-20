@@ -25,10 +25,8 @@ func init() {
 
 // DragSurface is an interface for surfaces used during DND.
 type DragSurface struct {
+	_ [0]func() // equal guard
 	Surface
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

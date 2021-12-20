@@ -138,10 +138,8 @@ type VolumeMonitorOverrider interface {
 // In order to receive updates about volumes and mounts monitored through GVFS,
 // a main loop must be running.
 type VolumeMonitor struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

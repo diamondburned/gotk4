@@ -71,10 +71,8 @@ func init() {
 // view widget you want to use it with, such as via gtk.ListView.SetFactory().
 // Reusing factories across different views is allowed, but very uncommon.
 type ListItemFactory struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

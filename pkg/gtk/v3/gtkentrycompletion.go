@@ -134,13 +134,11 @@ type EntryCompletionOverrider interface {
 // gtk_tree_model_filter_get_model(). Don’t forget to use
 // gtk_tree_model_filter_convert_iter_to_child_iter() to obtain a matching iter.
 type EntryCompletion struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Buildable
 	CellLayout
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

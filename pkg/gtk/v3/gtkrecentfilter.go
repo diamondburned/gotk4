@@ -171,13 +171,11 @@ func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) 
 //      </applications>
 //    </object>.
 type RecentFilter struct {
+	_ [0]func() // equal guard
 	externglib.InitiallyUnowned
 
 	*externglib.Object
 	Buildable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

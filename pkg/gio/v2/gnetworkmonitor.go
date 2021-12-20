@@ -96,10 +96,8 @@ type NetworkMonitorOverrider interface {
 //
 // There is also an implementation for use inside Flatpak sandboxes.
 type NetworkMonitor struct {
+	_ [0]func() // equal guard
 	Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

@@ -57,10 +57,8 @@ func _gotk4_gtk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboo
 // CustomFilter: GtkCustomFilter determines whether to include items with a
 // callback.
 type CustomFilter struct {
+	_ [0]func() // equal guard
 	Filter
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

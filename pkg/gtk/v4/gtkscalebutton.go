@@ -46,13 +46,11 @@ type ScaleButtonOverrider interface {
 // GtkScaleButton has a single CSS node with name button. To differentiate it
 // from a plain GtkButton, it gets the .scale style class.
 type ScaleButton struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -46,10 +46,8 @@ const MAX_COMPOSE_LEN = 7
 // example, Ctrl-Shift-u 1 2 3 Enter yields U+0123 LATIN SMALL LETTER G WITH
 // CEDILLA, i.e. ģ.
 type IMContextSimple struct {
+	_ [0]func() // equal guard
 	IMContext
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

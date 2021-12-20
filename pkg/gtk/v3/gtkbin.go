@@ -34,10 +34,8 @@ func init() {
 // Many GTK+ widgets are subclasses of Bin, including Window, Button, Frame,
 // HandleBox or ScrolledWindow.
 type Bin struct {
+	_ [0]func() // equal guard
 	Container
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

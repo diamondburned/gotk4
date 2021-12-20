@@ -66,12 +66,10 @@ type SocketAddressOverrider interface {
 // This is an abstract class; use SocketAddress for internet sockets, or
 // SocketAddress for UNIX domain sockets.
 type SocketAddress struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	SocketConnectable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

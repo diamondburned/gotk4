@@ -63,15 +63,13 @@ func init() {
 //      </data>
 //    </object>.
 type ListStore struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Buildable
 	TreeDragDest
 	TreeDragSource
 	TreeSortable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

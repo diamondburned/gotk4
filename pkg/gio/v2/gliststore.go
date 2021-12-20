@@ -32,12 +32,10 @@ func init() {
 // It provides insertions, deletions, and lookups in logarithmic time with a
 // fast path for the common case of iterating the list linearly.
 type ListStore struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	ListModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

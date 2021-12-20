@@ -45,14 +45,12 @@ func init() {
 //
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooserMenu struct {
+	_ [0]func() // equal guard
 	Menu
 
 	*externglib.Object
 	Activatable
 	RecentChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

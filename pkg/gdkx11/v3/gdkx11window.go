@@ -52,10 +52,8 @@ func X11GetServerTime(window *X11Window) uint32 {
 }
 
 type X11Window struct {
+	_ [0]func() // equal guard
 	gdk.Window
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

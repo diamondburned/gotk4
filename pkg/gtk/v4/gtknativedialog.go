@@ -63,10 +63,8 @@ type NativeDialogOverrider interface {
 // and GTK does not keep them alive. It is your responsibility to keep a
 // reference until you are done with the object.
 type NativeDialog struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

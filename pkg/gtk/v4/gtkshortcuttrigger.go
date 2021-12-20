@@ -35,10 +35,8 @@ func init() {
 //
 // This can be cascaded to combine more than two triggers.
 type AlternativeTrigger struct {
+	_ [0]func() // equal guard
 	ShortcutTrigger
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -170,10 +168,8 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 // KeyvalTrigger: GtkShortcutTrigger that triggers when a specific keyval and
 // modifiers are pressed.
 type KeyvalTrigger struct {
+	_ [0]func() // equal guard
 	ShortcutTrigger
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -273,10 +269,8 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 // Mnemonics require a *mnemonic modifier* (typically <kbd>Alt</kbd>) to be
 // pressed together with the mnemonic key.
 type MnemonicTrigger struct {
+	_ [0]func() // equal guard
 	ShortcutTrigger
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -349,10 +343,8 @@ func (self *MnemonicTrigger) Keyval() uint {
 
 // NeverTrigger: GtkShortcutTrigger that never triggers.
 type NeverTrigger struct {
+	_ [0]func() // equal guard
 	ShortcutTrigger
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -405,10 +397,8 @@ func NeverTriggerGet() *NeverTrigger {
 // during construction. If you want to change a trigger, you have to replace it
 // with a new one.
 type ShortcutTrigger struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -26,14 +26,12 @@ func init() {
 }
 
 type MenuItemAccessible struct {
+	_ [0]func() // equal guard
 	ContainerAccessible
 
 	*externglib.Object
 	atk.Action
 	atk.Selection
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

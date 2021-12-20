@@ -321,10 +321,8 @@ type CellRendererOverrider interface {
 // “set” properties reflect whether a property has been set or not. You should
 // not set them independently.
 type CellRenderer struct {
+	_ [0]func() // equal guard
 	externglib.InitiallyUnowned
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

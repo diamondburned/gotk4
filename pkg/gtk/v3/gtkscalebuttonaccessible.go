@@ -26,13 +26,11 @@ func init() {
 }
 
 type ScaleButtonAccessible struct {
+	_ [0]func() // equal guard
 	ButtonAccessible
 
 	*externglib.Object
 	atk.Value
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

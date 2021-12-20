@@ -34,10 +34,8 @@ func init() {
 // You can find out what Wayland globals are supported by a display with
 // gdkwayland.WaylandDisplay.QueryRegistry().
 type WaylandDisplay struct {
+	_ [0]func() // equal guard
 	gdk.Display
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

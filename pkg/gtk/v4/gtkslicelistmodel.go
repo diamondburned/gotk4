@@ -32,12 +32,10 @@ func init() {
 // elements per page and updating the offset whenever a different page is
 // opened.
 type SliceListModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

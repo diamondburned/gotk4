@@ -120,10 +120,8 @@ func init() {
 // GtkListView uses the GTK_ACCESSIBLE_ROLE_LIST role, and the list items use
 // the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListView struct {
+	_ [0]func() // equal guard
 	ListBase
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

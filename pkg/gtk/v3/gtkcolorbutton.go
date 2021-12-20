@@ -46,13 +46,11 @@ type ColorButtonOverrider interface {
 // GtkColorButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .color style class.
 type ColorButton struct {
+	_ [0]func() // equal guard
 	Button
 
 	*externglib.Object
 	ColorChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -42,10 +42,8 @@ func init() {
 // widget, so GtkMisc should not be used in new code. To reflect this fact, all
 // Misc API has been deprecated.
 type Misc struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

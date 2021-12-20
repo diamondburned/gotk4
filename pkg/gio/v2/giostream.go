@@ -125,10 +125,8 @@ type IOStreamOverrider interface {
 // state the wrapper stream leaves the base stream in (though they are
 // guaranteed not to crash).
 type IOStream struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

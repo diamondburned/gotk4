@@ -2238,10 +2238,8 @@ func (node *RadialGradientNode) Vradius() float32 {
 // gsk.RenderNodes are immutable, you can only specify their properties during
 // construction.
 type RenderNode struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

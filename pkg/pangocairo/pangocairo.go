@@ -582,10 +582,8 @@ func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 // The actual type of the font will depend on the particular font technology
 // Cairo was compiled to use.
 type Font struct {
+	_ [0]func() // equal guard
 	pango.Font
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -628,10 +626,8 @@ func BaseFont(obj Fonter) *Font {
 // The actual type of the font map will depend on the particular font technology
 // Cairo was compiled to use.
 type FontMap struct {
+	_ [0]func() // equal guard
 	pango.FontMap
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

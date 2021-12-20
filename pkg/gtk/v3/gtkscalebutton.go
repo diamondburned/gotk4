@@ -49,13 +49,11 @@ type ScaleButtonOverrider interface {
 //
 // The popup widget that contains the scale has a .scale-popup style class.
 type ScaleButton struct {
+	_ [0]func() // equal guard
 	Button
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

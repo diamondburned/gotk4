@@ -261,10 +261,8 @@ type IMContextOverrider interface {
 // loadable modules. An input method module is a small shared library which
 // provides a GIOExtension for the extension point named "gtk-im-module".
 type IMContext struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

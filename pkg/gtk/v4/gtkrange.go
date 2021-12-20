@@ -59,13 +59,11 @@ type RangeOverrider interface {
 // provides properties and methods for setting a “fill level” on range widgets.
 // See gtk.Range.SetFillLevel().
 type Range struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

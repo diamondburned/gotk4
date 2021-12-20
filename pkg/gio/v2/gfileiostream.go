@@ -139,13 +139,11 @@ type FileIOStreamOverrider interface {
 // implementation of #GSeekable just call into the same operations on the output
 // stream.
 type FileIOStream struct {
+	_ [0]func() // equal guard
 	IOStream
 
 	*externglib.Object
 	Seekable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

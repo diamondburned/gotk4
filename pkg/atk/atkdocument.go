@@ -122,10 +122,8 @@ type DocumentOverrider interface {
 // AtkDocument) in those cases where one document contains "embedded content"
 // which can reasonably be considered a document in its own right.
 type Document struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

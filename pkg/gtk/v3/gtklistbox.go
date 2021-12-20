@@ -224,10 +224,8 @@ type ListBoxOverrider interface {
 // single CSS node named row. The row nodes get the .activatable style class
 // added when appropriate.
 type ListBox struct {
+	_ [0]func() // equal guard
 	Container
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -960,13 +958,11 @@ type ListBoxRowOverrider interface {
 }
 
 type ListBoxRow struct {
+	_ [0]func() // equal guard
 	Bin
 
 	*externglib.Object
 	Actionable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

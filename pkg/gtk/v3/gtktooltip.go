@@ -65,10 +65,8 @@ func init() {
 // the return value are exactly as before, return TRUE to show the window, FALSE
 // to not show it.
 type Tooltip struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

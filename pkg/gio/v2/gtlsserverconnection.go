@@ -28,10 +28,8 @@ func init() {
 // TLSServerConnection is the server-side subclass of Connection, representing a
 // server-side TLS connection.
 type TLSServerConnection struct {
+	_ [0]func() // equal guard
 	TLSConnection
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

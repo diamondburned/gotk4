@@ -49,13 +49,11 @@ func init() {
 // For all the subnodes added to the text node in various situations, see
 // gtk.Text.
 type EditableLabel struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Editable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

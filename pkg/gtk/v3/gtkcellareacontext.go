@@ -122,10 +122,8 @@ type CellAreaContextOverrider interface {
 // the same row when calling other CellArea APIs such as gtk_cell_area_render()
 // and gtk_cell_area_event().
 type CellAreaContext struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

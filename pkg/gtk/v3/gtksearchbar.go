@@ -53,10 +53,8 @@ func init() {
 // A simple example
 // (https://gitlab.gnome.org/GNOME/gtk/blob/gtk-3-24/examples/search-bar.c).
 type SearchBar struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

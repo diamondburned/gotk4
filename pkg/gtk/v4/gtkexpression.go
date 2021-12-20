@@ -173,10 +173,8 @@ func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 
 // CClosureExpression: variant of GtkClosureExpression using a C closure.
 type CClosureExpression struct {
+	_ [0]func() // equal guard
 	Expression
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -198,10 +196,8 @@ func marshalCClosureExpressioner(p uintptr) (interface{}, error) {
 // ClosureExpression: expression using a custom GClosure to compute the value
 // from its parameters.
 type ClosureExpression struct {
+	_ [0]func() // equal guard
 	Expression
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -222,10 +218,8 @@ func marshalClosureExpressioner(p uintptr) (interface{}, error) {
 
 // ConstantExpression: constant value in a GtkExpression.
 type ConstantExpression struct {
+	_ [0]func() // equal guard
 	Expression
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -415,10 +409,8 @@ func (expression *ConstantExpression) Value() *externglib.Value {
 //      <lookup type='GFile' name='size'>myfile</lookup>
 //    </closure>.
 type Expression struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -663,10 +655,8 @@ func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify)
 
 // ObjectExpression: GObject value in a GtkExpression.
 type ObjectExpression struct {
+	_ [0]func() // equal guard
 	Expression
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -744,10 +734,8 @@ func (expression *ObjectExpression) Object() *externglib.Object {
 
 // PropertyExpression: GObject property value in a GtkExpression.
 type PropertyExpression struct {
+	_ [0]func() // equal guard
 	Expression
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -107,10 +107,8 @@ func (a AttachOptions) Has(other AttachOptions) bool {
 // capabilities as GtkTable for arranging widgets in a rectangular grid, but >
 // does support height-for-width geometry management.
 type Table struct {
+	_ [0]func() // equal guard
 	Container
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

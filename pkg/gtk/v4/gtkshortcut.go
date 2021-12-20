@@ -41,10 +41,8 @@ func init() {
 // shortcuts, either by providing informational strings for display purposes or
 // by allowing shortcuts to be configured.
 type Shortcut struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

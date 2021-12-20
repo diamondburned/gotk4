@@ -59,10 +59,8 @@ func init() {
 // LockButton:tooltip-lock, LockButton:tooltip-unlock and
 // LockButton:tooltip-not-authorized properties.
 type LockButton struct {
+	_ [0]func() // equal guard
 	Button
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

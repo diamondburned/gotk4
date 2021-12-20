@@ -130,10 +130,8 @@ type FontsetOverrider interface {
 // a particular Unicode character, and for finding a composite set of metrics
 // for the entire fontset.
 type Fontset struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -273,10 +271,8 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 // When creating a PangoFontsetSimple, you have to provide the array of fonts
 // that make up the fontset.
 type FontsetSimple struct {
+	_ [0]func() // equal guard
 	Fontset
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

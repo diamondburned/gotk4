@@ -199,10 +199,8 @@ func (s StackTransitionType) String() string {
 // GtkStack uses the GTK_ACCESSIBLE_ROLE_TAB_PANEL for the stack pages, which
 // are the accessible parent objects of the child widgets.
 type Stack struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -891,12 +889,10 @@ func (stack *Stack) SetVisibleChildName(name string) {
 
 // StackPage: GtkStackPage is an auxiliary class used by GtkStack.
 type StackPage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Accessible
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

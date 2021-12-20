@@ -73,10 +73,8 @@ func (s Status) String() string {
 }
 
 type DeviceTool struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -94,10 +92,8 @@ func marshalDeviceTooler(p uintptr) (interface{}, error) {
 }
 
 type DragContext struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

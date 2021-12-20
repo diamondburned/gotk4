@@ -45,10 +45,8 @@ type CellRendererTextOverrider interface {
 // If the CellRenderer:mode is GTK_CELL_RENDERER_MODE_EDITABLE, the
 // CellRendererText allows to edit its text using an entry.
 type CellRendererText struct {
+	_ [0]func() // equal guard
 	CellRenderer
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

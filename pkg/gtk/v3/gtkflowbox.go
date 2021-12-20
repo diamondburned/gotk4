@@ -195,13 +195,11 @@ type FlowBoxOverrider interface {
 // single CSS node with name flowboxchild. For rubberband selection, a subnode
 // with name rubberband is used.
 type FlowBox struct {
+	_ [0]func() // equal guard
 	Container
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1024,10 +1022,8 @@ type FlowBoxChildOverrider interface {
 }
 
 type FlowBoxChild struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

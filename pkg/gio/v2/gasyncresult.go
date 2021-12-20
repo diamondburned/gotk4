@@ -140,10 +140,8 @@ type AsyncResultOverrider interface {
 // recommended to choose priorities between G_PRIORITY_LOW and G_PRIORITY_HIGH,
 // with G_PRIORITY_DEFAULT as a default.
 type AsyncResult struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

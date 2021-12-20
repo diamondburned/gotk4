@@ -359,10 +359,8 @@ type ValueOverrider interface {
 // that description should be included regardless of whether or not it has also
 // changed. </para> </refsect1>.
 type Value struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

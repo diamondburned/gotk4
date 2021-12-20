@@ -291,10 +291,8 @@ func (b BuilderError) String() string {
 // GtkWidget documentation
 // (class.Widget.html#building-composite-widgets-from-template-xml) for details.
 type Builder struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

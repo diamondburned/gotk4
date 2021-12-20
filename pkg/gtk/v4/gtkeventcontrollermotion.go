@@ -32,10 +32,8 @@ func init() {
 // gtk.EventControllerMotion:contains-pointer properties which are updated to
 // reflect changes in the pointer position as it moves over the widget.
 type EventControllerMotion struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

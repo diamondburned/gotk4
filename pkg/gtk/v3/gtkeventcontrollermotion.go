@@ -30,10 +30,8 @@ func init() {
 //
 // This object was added in 3.24.
 type EventControllerMotion struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

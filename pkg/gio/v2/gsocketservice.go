@@ -61,10 +61,8 @@ type SocketServiceOverrider interface {
 // stop the service are thread-safe so these can be used from threads that
 // handle incoming clients.
 type SocketService struct {
+	_ [0]func() // equal guard
 	SocketListener
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

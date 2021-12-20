@@ -52,13 +52,11 @@ type ToolItemOverrider interface {
 // See the Toolbar class for a description of the toolbar widget, and ToolShell
 // for a description of the tool shell interface.
 type ToolItem struct {
+	_ [0]func() // equal guard
 	Bin
 
 	*externglib.Object
 	Activatable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

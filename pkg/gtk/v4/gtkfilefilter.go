@@ -64,13 +64,11 @@ func init() {
 //      </patterns>
 //    </object>.
 type FileFilter struct {
+	_ [0]func() // equal guard
 	Filter
 
 	*externglib.Object
 	Buildable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

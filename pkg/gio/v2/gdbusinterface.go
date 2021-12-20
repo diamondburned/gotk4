@@ -60,10 +60,8 @@ type DBusInterfaceOverrider interface {
 // DBusInterface type is the base type for D-Bus interfaces both on the service
 // side (see BusInterfaceSkeleton) and client side (see BusProxy).
 type DBusInterface struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

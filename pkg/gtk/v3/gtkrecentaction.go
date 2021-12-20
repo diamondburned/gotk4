@@ -33,13 +33,11 @@ func init() {
 // used files in the popup menu, use a RecentAction as the action for a
 // <toolitem> element.
 type RecentAction struct {
+	_ [0]func() // equal guard
 	Action
 
 	*externglib.Object
 	RecentChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

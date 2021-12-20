@@ -48,13 +48,11 @@ func init() {
 //
 // GtkColorChooserWidget has a single CSS node with name colorchooser.
 type ColorChooserWidget struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	ColorChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

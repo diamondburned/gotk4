@@ -61,10 +61,8 @@ func init() {
 // Like Label, GtkAccelLabel has a main CSS node with the name label. It adds a
 // subnode with name accelerator.
 type AccelLabel struct {
+	_ [0]func() // equal guard
 	Label
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

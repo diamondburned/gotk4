@@ -140,10 +140,8 @@ func _gotk4_gtk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeMode
 // happened (mostly as a result of programmers calling select_row on an already
 // selected row).
 type TreeSelection struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -37,10 +37,8 @@ type CancellableOverrider interface {
 // Cancellable is a thread-safe operation cancellation stack used throughout GIO
 // to allow for cancellation of synchronous and asynchronous operations.
 type Cancellable struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

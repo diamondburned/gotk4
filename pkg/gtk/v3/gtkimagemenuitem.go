@@ -52,10 +52,8 @@ func init() {
 //
 //      gtk_widget_show_all (menu_item);.
 type ImageMenuItem struct {
+	_ [0]func() // equal guard
 	MenuItem
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

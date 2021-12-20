@@ -39,10 +39,8 @@ func init() {
 // gsk.Renderer.Realize() before calling gsk.Renderer.Render(), in order to
 // create the appropriate windowing system resources needed to render the scene.
 type Renderer struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

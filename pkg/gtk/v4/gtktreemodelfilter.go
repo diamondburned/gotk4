@@ -243,13 +243,11 @@ type TreeModelFilterOverrider interface {
 // reference counting, or for models that do implement reference counting,
 // obtain references on these child levels yourself.
 type TreeModelFilter struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	TreeDragSource
 	TreeModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

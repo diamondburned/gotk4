@@ -122,12 +122,10 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *externglib.Value)
 //
 // Also see gdk.ContentSerializer.
 type ContentDeserializer struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.AsyncResult
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

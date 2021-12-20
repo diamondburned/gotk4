@@ -187,13 +187,11 @@ func init() {
 //    // divided by 2 plus 12
 //    [button1(button2 / 2 + 12)].
 type ConstraintLayout struct {
+	_ [0]func() // equal guard
 	LayoutManager
 
 	*externglib.Object
 	Buildable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -575,10 +573,8 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 // ConstraintLayoutChild: GtkLayoutChild subclass for children in a
 // GtkConstraintLayout.
 type ConstraintLayoutChild struct {
+	_ [0]func() // equal guard
 	LayoutChild
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

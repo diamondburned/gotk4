@@ -41,10 +41,8 @@ func init() {
 //
 // GtkActionBar has a single CSS node with name actionbar.
 type ActionBar struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

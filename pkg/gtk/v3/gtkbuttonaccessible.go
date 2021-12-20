@@ -26,14 +26,12 @@ func init() {
 }
 
 type ButtonAccessible struct {
+	_ [0]func() // equal guard
 	ContainerAccessible
 
 	*externglib.Object
 	atk.Action
 	atk.Image
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

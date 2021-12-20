@@ -39,10 +39,8 @@ func init() {
 // gtk.ColumnViewColumn.SetSorter(), to let users influence sorting by clicking
 // on the column header.
 type ColumnViewColumn struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

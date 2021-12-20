@@ -106,13 +106,11 @@ type FileInputStreamOverrider interface {
 // g_seekable_can_seek(). To position a file input stream, use
 // g_seekable_seek().
 type FileInputStream struct {
+	_ [0]func() // equal guard
 	InputStream
 
 	*externglib.Object
 	Seekable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

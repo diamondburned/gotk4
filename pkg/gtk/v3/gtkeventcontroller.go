@@ -32,10 +32,8 @@ func init() {
 // Those react to a series of Events, and possibly trigger actions as a
 // consequence of those.
 type EventController struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

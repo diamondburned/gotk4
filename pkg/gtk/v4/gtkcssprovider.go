@@ -52,12 +52,10 @@ func init() {
 // To track errors while loading CSS, connect to the
 // gtk.CSSProvider::parsing-error signal.
 type CSSProvider struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	StyleProvider
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

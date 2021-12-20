@@ -191,12 +191,10 @@ func init() {
 // "short-circuit" results, such as when passing 0 to
 // g_input_stream_read_async()).
 type Task struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	AsyncResult
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

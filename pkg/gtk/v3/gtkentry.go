@@ -179,14 +179,12 @@ type EntryOverrider interface {
 // just a single handle for the text cursor, it gets the style class
 // .insertion-cursor.
 type Entry struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	CellEditable
 	Editable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

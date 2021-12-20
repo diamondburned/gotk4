@@ -105,10 +105,8 @@ type ProxyResolverOverrider interface {
 // in glib-networking. GIO comes with an implementation for use inside Flatpak
 // portals.
 type ProxyResolver struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

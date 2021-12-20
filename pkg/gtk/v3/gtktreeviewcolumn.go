@@ -141,14 +141,12 @@ type TreeViewColumnOverrider interface {
 // overview of all the objects and data types related to the tree widget and how
 // they work together.
 type TreeViewColumn struct {
+	_ [0]func() // equal guard
 	externglib.InitiallyUnowned
 
 	*externglib.Object
 	Buildable
 	CellLayout
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

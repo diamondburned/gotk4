@@ -167,10 +167,8 @@ func (l License) String() string {
 // GtkAboutDialog has a single CSS node with the name window and style class
 // .aboutdialog.
 type AboutDialog struct {
+	_ [0]func() // equal guard
 	Window
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

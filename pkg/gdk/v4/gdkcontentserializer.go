@@ -119,12 +119,10 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 //
 // Also see gdk.ContentDeserializer.
 type ContentSerializer struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.AsyncResult
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

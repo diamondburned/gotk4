@@ -135,10 +135,8 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 
 // ActivateAction: GtkShortcutAction that calls gtk_widget_activate().
 type ActivateAction struct {
+	_ [0]func() // equal guard
 	ShortcutAction
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -180,10 +178,8 @@ func ActivateActionGet() *ActivateAction {
 
 // CallbackAction: GtkShortcutAction that invokes a callback.
 type CallbackAction struct {
+	_ [0]func() // equal guard
 	ShortcutAction
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -237,10 +233,8 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 
 // MnemonicAction: GtkShortcutAction that calls gtk_widget_mnemonic_activate().
 type MnemonicAction struct {
+	_ [0]func() // equal guard
 	ShortcutAction
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -282,10 +276,8 @@ func MnemonicActionGet() *MnemonicAction {
 
 // NamedAction: GtkShortcutAction that activates an action by name.
 type NamedAction struct {
+	_ [0]func() // equal guard
 	ShortcutAction
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -360,10 +352,8 @@ func (self *NamedAction) ActionName() string {
 
 // NothingAction: GtkShortcutAction that does nothing.
 type NothingAction struct {
+	_ [0]func() // equal guard
 	ShortcutAction
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -430,10 +420,8 @@ func NothingActionGet() *NothingAction {
 //      gtk_widget_activate_action()
 //    - gtk.NothingAction: a shortcut action that does nothing.
 type ShortcutAction struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -592,10 +580,8 @@ func (self *ShortcutAction) String() string {
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.
 type SignalAction struct {
+	_ [0]func() // equal guard
 	ShortcutAction
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

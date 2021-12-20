@@ -98,10 +98,8 @@ type DBusObjectManagerOverrider interface {
 // See BusObjectManagerClient for the client-side implementation and
 // BusObjectManagerServer for the service-side implementation.
 type DBusObjectManager struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

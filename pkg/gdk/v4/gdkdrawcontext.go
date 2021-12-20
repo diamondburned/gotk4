@@ -35,10 +35,8 @@ func init() {
 //
 // A GdkDrawContext is always associated with a single toplevel surface.
 type DrawContext struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

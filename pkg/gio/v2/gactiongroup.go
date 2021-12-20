@@ -301,10 +301,8 @@ type ActionGroupOverrider interface {
 // The other virtual functions should not be implemented - their "wrappers" are
 // actually implemented with calls to g_action_group_query_action().
 type ActionGroup struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

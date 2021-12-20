@@ -146,10 +146,8 @@ func (p PlacesOpenFlags) Has(other PlacesOpenFlags) bool {
 //
 // - .has-open-popup when a popup is open for a row.
 type PlacesSidebar struct {
+	_ [0]func() // equal guard
 	ScrolledWindow
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

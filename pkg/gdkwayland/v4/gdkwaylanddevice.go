@@ -32,10 +32,8 @@ func init() {
 // gdkwayland.WaylandDevice.GetWlKeyboard() and the wl_pointer with
 // gdkwayland.WaylandDevice.GetWlPointer().
 type WaylandDevice struct {
+	_ [0]func() // equal guard
 	gdk.Device
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

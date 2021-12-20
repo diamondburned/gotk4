@@ -26,10 +26,8 @@ func init() {
 // instance of this is created by an AtkRegistry if no factory type has not been
 // specified to create an accessible object of a particular type.
 type NoOpObjectFactory struct {
+	_ [0]func() // equal guard
 	ObjectFactory
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

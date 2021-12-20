@@ -66,13 +66,11 @@ type FileChooserButtonOverrider interface {
 // GtkFileChooserButton has a CSS node with name “filechooserbutton”, containing
 // a subnode for the internal button with name “button” and style class “.file”.
 type FileChooserButton struct {
+	_ [0]func() // equal guard
 	Box
 
 	*externglib.Object
 	FileChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

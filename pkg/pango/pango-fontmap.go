@@ -111,10 +111,8 @@ type FontMapOverrider interface {
 // This is a virtual object with implementations being specific to particular
 // rendering systems.
 type FontMap struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

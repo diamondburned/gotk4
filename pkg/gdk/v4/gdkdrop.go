@@ -46,10 +46,8 @@ func init() {
 // so they are not normally needed in GTK applications. See the "Drag and Drop"
 // section of the GTK documentation for more information.
 type Drop struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

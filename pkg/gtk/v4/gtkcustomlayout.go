@@ -28,10 +28,8 @@ func init() {
 // functions for size negotiation, as a convenience API to ease the porting
 // towards the corresponding `GtkLayoutManager virtual functions.
 type CustomLayout struct {
+	_ [0]func() // equal guard
 	LayoutManager
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

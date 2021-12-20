@@ -85,12 +85,10 @@ func _gotk4_gtk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.g
 // GtkMapListModel will attempt to discard the mapped objects as soon as they
 // are no longer needed and recreate them if necessary.
 type MapListModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

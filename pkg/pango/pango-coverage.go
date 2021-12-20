@@ -75,10 +75,8 @@ func (c CoverageLevel) String() string {
 // character. The Coverage is a data structure that is used to represent that
 // information. It is an opaque structure with no public fields.
 type Coverage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

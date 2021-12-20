@@ -63,12 +63,10 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) 
 // TreeListModel: GtkTreeListModel is a list model that can create child models
 // on demand.
 type TreeListModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -350,10 +348,8 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 // to expand or collapse a row or gtk.TreeListRowSorter that makes it possible
 // to sort trees properly.
 type TreeListRow struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

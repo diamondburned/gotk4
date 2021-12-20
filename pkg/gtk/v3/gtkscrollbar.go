@@ -65,10 +65,8 @@ func init() {
 // classes related to overlay scrolling (.overlay-indicator, .dragging,
 // .hovering).
 type Scrollbar struct {
+	_ [0]func() // equal guard
 	Range
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

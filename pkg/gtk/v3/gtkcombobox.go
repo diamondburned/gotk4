@@ -83,14 +83,12 @@ type ComboBoxOverrider interface {
 // button, both with the .combo class added. The button also contains another
 // node with name arrow.
 type ComboBox struct {
+	_ [0]func() // equal guard
 	Bin
 
 	*externglib.Object
 	CellEditable
 	CellLayout
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

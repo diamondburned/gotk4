@@ -127,12 +127,10 @@ type ActionOverrider interface {
 //
 // When the proxy is activated, it should activate its action.
 type Action struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Buildable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -34,10 +34,8 @@ func init() {
 // This controller is not able to accept drops, use gtk.DropTarget for that
 // purpose.
 type DropControllerMotion struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

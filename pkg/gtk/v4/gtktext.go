@@ -89,13 +89,11 @@ func init() {
 // delegate for a GtkEditable implementation that will be represented to
 // accessibility.
 type Text struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Editable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

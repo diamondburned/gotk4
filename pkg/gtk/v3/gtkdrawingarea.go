@@ -102,10 +102,8 @@ func init() {
 // gtk_widget_has_focus() in your expose event handler to decide whether to draw
 // the focus indicator. See gtk_render_focus() for one way to draw focus.
 type DrawingArea struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

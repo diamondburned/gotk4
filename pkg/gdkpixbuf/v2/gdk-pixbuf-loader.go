@@ -95,10 +95,8 @@ type PixbufLoaderOverrider interface {
 // gdkpixbuf.PixbufAnimationIter to retrieve the pixbuf for the desired time
 // stamp.
 type PixbufLoader struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

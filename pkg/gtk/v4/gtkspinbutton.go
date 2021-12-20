@@ -222,6 +222,7 @@ func (s SpinType) String() string {
 //
 // GtkSpinButton uses the GTK_ACCESSIBLE_ROLE_SPIN_BUTTON role.
 type SpinButton struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
@@ -232,9 +233,6 @@ type SpinButton struct {
 	ConstraintTarget
 	Editable
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

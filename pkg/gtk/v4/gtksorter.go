@@ -161,10 +161,8 @@ type SorterOverrider interface {
 // Of course, in particular for large lists, it is also possible to subclass
 // GtkSorter and provide one's own sorter.
 type Sorter struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -26,12 +26,10 @@ func init() {
 
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
 type FileIcon struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	LoadableIcon
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -108,10 +108,8 @@ type EntryBufferOverrider interface {
 // case of important passwords. Or a derived class could integrate with an
 // application’s concept of undo/redo.
 type EntryBuffer struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

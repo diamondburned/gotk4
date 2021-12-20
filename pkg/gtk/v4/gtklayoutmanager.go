@@ -136,10 +136,8 @@ type LayoutManagerOverrider interface {
 // gtk.LayoutManager.LayoutChanged() every time a property is updated, in order
 // to queue a new size measuring and allocation.
 type LayoutManager struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

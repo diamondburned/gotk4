@@ -65,12 +65,10 @@ type DBusInterfaceSkeletonOverrider interface {
 // DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
 // service side.
 type DBusInterfaceSkeleton struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	DBusInterface
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

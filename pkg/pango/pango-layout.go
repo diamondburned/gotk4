@@ -164,10 +164,8 @@ func (w WrapMode) String() string {
 // It is possible, as well, to ignore the 2-D setup, and simply treat the
 // results of a PangoLayout as a list of lines.
 type Layout struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

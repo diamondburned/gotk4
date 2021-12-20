@@ -51,10 +51,8 @@ func X11SetSmClientID(smClientId string) {
 }
 
 type X11Display struct {
+	_ [0]func() // equal guard
 	gdk.Display
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -27,14 +27,12 @@ func init() {
 
 // WaylandPopup: wayland implementation of GdkPopup.
 type WaylandPopup struct {
+	_ [0]func() // equal guard
 	WaylandSurface
 
 	*externglib.Object
 	gdk.Popup
 	gdk.Surface
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -70,10 +68,8 @@ func marshalWaylandPopupper(p uintptr) (interface{}, error) {
 // Beyond the gdk.Surface API, the Wayland implementation offers access to the
 // Wayland wl_surface object with gdkwayland.WaylandSurface.GetWlSurface().
 type WaylandSurface struct {
+	_ [0]func() // equal guard
 	gdk.Surface
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -99,14 +95,12 @@ func marshalWaylandSurfacer(p uintptr) (interface{}, error) {
 // gdkwayland.WaylandToplevel.ExportHandle() and
 // gdkwayland.WaylandToplevel.SetTransientForExported().
 type WaylandToplevel struct {
+	_ [0]func() // equal guard
 	WaylandSurface
 
 	*externglib.Object
 	gdk.Surface
 	gdk.Toplevel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

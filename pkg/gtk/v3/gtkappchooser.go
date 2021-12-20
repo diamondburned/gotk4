@@ -45,10 +45,8 @@ func init() {
 // To obtain the application that has been selected in a AppChooser, use
 // gtk_app_chooser_get_app_info().
 type AppChooser struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

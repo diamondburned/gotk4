@@ -189,13 +189,11 @@ func init() {
 // To summarize, make sure you use a predefined response code when you use
 // GtkFileChooserDialog to ensure proper operation.
 type FileChooserDialog struct {
+	_ [0]func() // equal guard
 	Dialog
 
 	*externglib.Object
 	FileChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

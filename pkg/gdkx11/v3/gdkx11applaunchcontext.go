@@ -25,10 +25,8 @@ func init() {
 }
 
 type X11AppLaunchContext struct {
+	_ [0]func() // equal guard
 	gdk.AppLaunchContext
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

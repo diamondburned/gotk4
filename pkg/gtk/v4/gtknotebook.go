@@ -145,10 +145,8 @@ func (n NotebookTab) String() string {
 //    - GTK_ACCESSIBLE_ROLE_TAB role for each tab
 //    - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page.
 type Notebook struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1538,10 +1536,8 @@ func (notebook *Notebook) SetTabReorderable(child Widgetter, reorderable bool) {
 
 // NotebookPage: GtkNotebookPage is an auxiliary object used by GtkNotebook.
 type NotebookPage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

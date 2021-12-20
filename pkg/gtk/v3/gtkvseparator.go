@@ -31,10 +31,8 @@ func init() {
 //
 // GtkVSeparator has been deprecated, use Separator instead.
 type VSeparator struct {
+	_ [0]func() // equal guard
 	Separator
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

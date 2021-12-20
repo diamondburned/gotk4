@@ -25,10 +25,8 @@ func init() {
 
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress struct {
+	_ [0]func() // equal guard
 	InetSocketAddress
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

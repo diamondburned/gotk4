@@ -58,12 +58,10 @@ func init() {
 // use gtk_widget_get_settings(). gtk_settings_get_default() returns the
 // GtkSettings instance for the default screen.
 type Settings struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	StyleProvider
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

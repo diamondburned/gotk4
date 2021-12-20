@@ -73,13 +73,11 @@ func init() {
 // left to right. So :first-child will always select the leftmost child,
 // regardless of text direction.
 type Box struct {
+	_ [0]func() // equal guard
 	Container
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

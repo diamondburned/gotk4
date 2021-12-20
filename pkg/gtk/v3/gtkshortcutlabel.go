@@ -29,10 +29,8 @@ func init() {
 // ShortcutLabel is a widget that represents a single keyboard shortcut or
 // gesture in the user interface.
 type ShortcutLabel struct {
+	_ [0]func() // equal guard
 	Box
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

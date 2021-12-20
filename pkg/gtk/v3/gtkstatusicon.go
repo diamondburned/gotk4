@@ -109,10 +109,8 @@ type StatusIconOverrider interface {
 // the users of transient status updates. See this HowDoI
 // (https://wiki.gnome.org/HowDoI/GNotification) for code examples.
 type StatusIcon struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

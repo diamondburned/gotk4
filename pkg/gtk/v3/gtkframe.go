@@ -77,10 +77,8 @@ type FrameOverrider interface {
 // gtk_frame_set_shadow_type() with GTK_SHADOW_NONE to add the “.flat” class or
 // any other shadow type to remove it.
 type Frame struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

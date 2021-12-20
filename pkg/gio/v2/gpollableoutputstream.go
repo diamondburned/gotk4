@@ -142,10 +142,8 @@ type PollableOutputStreamOverrider interface {
 // readiness to write. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
 type PollableOutputStream struct {
+	_ [0]func() // equal guard
 	OutputStream
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

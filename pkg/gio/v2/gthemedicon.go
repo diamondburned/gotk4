@@ -30,12 +30,10 @@ func init() {
 // should be used to resolve the list of names so that fallback icons work
 // nicely with themes that inherit other themes.
 type ThemedIcon struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Icon
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

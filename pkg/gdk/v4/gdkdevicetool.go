@@ -78,10 +78,8 @@ func (d DeviceToolType) String() string {
 
 // DeviceTool: physical tool associated to a GdkDevice.
 type DeviceTool struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

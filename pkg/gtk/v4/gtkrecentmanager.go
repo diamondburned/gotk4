@@ -141,10 +141,8 @@ type RecentManagerOverrider interface {
 // Note that the maximum age of the recently used files list is controllable
 // through the gtk.Settings:gtk-recent-files-max-age property.
 type RecentManager struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

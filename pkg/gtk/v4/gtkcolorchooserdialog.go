@@ -35,13 +35,11 @@ func init() {
 // To change the initially selected color, use gtk.ColorChooser.SetRGBA(). To
 // get the selected color use gtk.ColorChooser.GetRGBA().
 type ColorChooserDialog struct {
+	_ [0]func() // equal guard
 	Dialog
 
 	*externglib.Object
 	ColorChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

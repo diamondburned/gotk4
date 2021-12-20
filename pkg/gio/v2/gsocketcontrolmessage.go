@@ -81,10 +81,8 @@ type SocketControlMessageOverrider interface {
 // registered with the GType typesystem before calling
 // g_socket_receive_message() to read such a message.
 type SocketControlMessage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

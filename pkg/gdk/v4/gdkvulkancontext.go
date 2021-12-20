@@ -33,13 +33,11 @@ func init() {
 // Support for GdkVulkanContext is platform-specific and context creation can
 // fail, returning NULL context.
 type VulkanContext struct {
+	_ [0]func() // equal guard
 	DrawContext
 
 	*externglib.Object
 	gio.Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

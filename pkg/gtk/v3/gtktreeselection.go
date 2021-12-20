@@ -146,10 +146,8 @@ type TreeSelectionOverrider interface {
 // happened (mostly as a result of programmers calling select_row on an already
 // selected row).
 type TreeSelection struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

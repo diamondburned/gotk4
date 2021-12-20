@@ -71,13 +71,11 @@ func init() {
 //
 // GtkProgressBar uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
 type ProgressBar struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

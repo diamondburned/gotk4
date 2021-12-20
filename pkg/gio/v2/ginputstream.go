@@ -158,10 +158,8 @@ type InputStreamOverrider interface {
 //
 // All of these functions have async variants too.
 type InputStream struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -78,10 +78,8 @@ func (s SubpixelLayout) String() string {
 // GdkMonitor was introduced in GTK+ 3.22 and supersedes earlier APIs in
 // GdkScreen to obtain monitor-related information.
 type Monitor struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

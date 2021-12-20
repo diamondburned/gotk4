@@ -30,14 +30,12 @@ func init() {
 //
 // As of GLib 2.34, InputStream implements InputStream.
 type MemoryInputStream struct {
+	_ [0]func() // equal guard
 	InputStream
 
 	*externglib.Object
 	PollableInputStream
 	Seekable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -77,10 +77,8 @@ type FrameOverrider interface {
 // visible border. You can set the appearance of the border using CSS properties
 // like “border-style” on this node.
 type Frame struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

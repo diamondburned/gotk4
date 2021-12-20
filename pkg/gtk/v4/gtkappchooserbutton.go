@@ -52,13 +52,11 @@ func init() {
 //
 // GtkAppChooserButton has a single CSS node with the name “appchooserbutton”.
 type AppChooserButton struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	AppChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

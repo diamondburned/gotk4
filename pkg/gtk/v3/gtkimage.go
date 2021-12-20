@@ -148,10 +148,8 @@ func (i ImageType) String() string {
 // GtkImage has a single CSS node with the name image. The style classes may
 // appear on image CSS nodes: .icon-dropshadow, .lowres-icon.
 type Image struct {
+	_ [0]func() // equal guard
 	Misc
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

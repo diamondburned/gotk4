@@ -97,10 +97,8 @@ type ProxyOverrider interface {
 // implementation can be retrieved with the name 'socks5' using the function
 // g_io_extension_point_get_extension_by_name().
 type Proxy struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

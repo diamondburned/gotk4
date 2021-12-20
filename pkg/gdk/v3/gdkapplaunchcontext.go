@@ -42,10 +42,8 @@ func init() {
 //
 //    g_object_unref (context);.
 type AppLaunchContext struct {
+	_ [0]func() // equal guard
 	gio.AppLaunchContext
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

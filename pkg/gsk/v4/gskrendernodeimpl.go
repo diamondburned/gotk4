@@ -49,10 +49,8 @@ func init() {
 // BlendNode: render node applying a blending function between its two child
 // nodes.
 type BlendNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -73,10 +71,8 @@ func marshalBlendNoder(p uintptr) (interface{}, error) {
 
 // BlurNode: render node applying a blur effect to its single child.
 type BlurNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -97,10 +93,8 @@ func marshalBlurNoder(p uintptr) (interface{}, error) {
 
 // BorderNode: render node for a border.
 type BorderNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -121,10 +115,8 @@ func marshalBorderNoder(p uintptr) (interface{}, error) {
 
 // CairoNode: render node for a Cairo surface.
 type CairoNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -145,10 +137,8 @@ func marshalCairoNoder(p uintptr) (interface{}, error) {
 
 // ClipNode: render node applying a rectangular clip to its single child node.
 type ClipNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -170,10 +160,8 @@ func marshalClipNoder(p uintptr) (interface{}, error) {
 // ColorMatrixNode: render node controlling the color matrix of its single child
 // node.
 type ColorMatrixNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -194,10 +182,8 @@ func marshalColorMatrixNoder(p uintptr) (interface{}, error) {
 
 // ColorNode: render node for a solid color.
 type ColorNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -218,10 +204,8 @@ func marshalColorNoder(p uintptr) (interface{}, error) {
 
 // ConicGradientNode: render node for a conic gradient.
 type ConicGradientNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -242,10 +226,8 @@ func marshalConicGradientNoder(p uintptr) (interface{}, error) {
 
 // ContainerNode: render node that can contain other render nodes.
 type ContainerNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -266,10 +248,8 @@ func marshalContainerNoder(p uintptr) (interface{}, error) {
 
 // CrossFadeNode: render node cross fading between two child nodes.
 type CrossFadeNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -291,10 +271,8 @@ func marshalCrossFadeNoder(p uintptr) (interface{}, error) {
 // DebugNode: render node that emits a debugging message when drawing its child
 // node.
 type DebugNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -315,10 +293,8 @@ func marshalDebugNoder(p uintptr) (interface{}, error) {
 
 // GLShaderNode: render node using a GL shader when drawing its children nodes.
 type GLShaderNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -339,10 +315,8 @@ func marshalGLShaderNoder(p uintptr) (interface{}, error) {
 
 // InsetShadowNode: render node for an inset shadow.
 type InsetShadowNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -363,10 +337,8 @@ func marshalInsetShadowNoder(p uintptr) (interface{}, error) {
 
 // LinearGradientNode: render node for a linear gradient.
 type LinearGradientNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -387,10 +359,8 @@ func marshalLinearGradientNoder(p uintptr) (interface{}, error) {
 
 // OpacityNode: render node controlling the opacity of its single child node.
 type OpacityNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -411,10 +381,8 @@ func marshalOpacityNoder(p uintptr) (interface{}, error) {
 
 // OutsetShadowNode: render node for an outset shadow.
 type OutsetShadowNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -435,10 +403,8 @@ func marshalOutsetShadowNoder(p uintptr) (interface{}, error) {
 
 // RadialGradientNode: render node for a radial gradient.
 type RadialGradientNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -459,10 +425,8 @@ func marshalRadialGradientNoder(p uintptr) (interface{}, error) {
 
 // RepeatNode: render node repeating its single child node.
 type RepeatNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -483,10 +447,8 @@ func marshalRepeatNoder(p uintptr) (interface{}, error) {
 
 // RepeatingLinearGradientNode: render node for a repeating linear gradient.
 type RepeatingLinearGradientNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -507,10 +469,8 @@ func marshalRepeatingLinearGradientNoder(p uintptr) (interface{}, error) {
 
 // RepeatingRadialGradientNode: render node for a repeating radial gradient.
 type RepeatingRadialGradientNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -532,10 +492,8 @@ func marshalRepeatingRadialGradientNoder(p uintptr) (interface{}, error) {
 // RoundedClipNode: render node applying a rounded rectangle clip to its single
 // child.
 type RoundedClipNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -557,10 +515,8 @@ func marshalRoundedClipNoder(p uintptr) (interface{}, error) {
 // ShadowNode: render node drawing one or more shadows behind its single child
 // node.
 type ShadowNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -581,10 +537,8 @@ func marshalShadowNoder(p uintptr) (interface{}, error) {
 
 // TextNode: render node drawing a set of glyphs.
 type TextNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -605,10 +559,8 @@ func marshalTextNoder(p uintptr) (interface{}, error) {
 
 // TextureNode: render node for a Texture.
 type TextureNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -629,10 +581,8 @@ func marshalTextureNoder(p uintptr) (interface{}, error) {
 
 // TransformNode: render node applying a GskTransform to its single child node.
 type TransformNode struct {
+	_ [0]func() // equal guard
 	RenderNode
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

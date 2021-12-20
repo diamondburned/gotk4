@@ -59,13 +59,11 @@ type AppChooserButtonOverrider interface {
 // To track changes in the selected application, use the ComboBox::changed
 // signal.
 type AppChooserButton struct {
+	_ [0]func() // equal guard
 	ComboBox
 
 	*externglib.Object
 	AppChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

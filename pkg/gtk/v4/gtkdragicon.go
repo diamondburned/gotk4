@@ -37,13 +37,11 @@ func init() {
 //
 // Keep in mind that drag icons do not allow user input.
 type DragIcon struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Root
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

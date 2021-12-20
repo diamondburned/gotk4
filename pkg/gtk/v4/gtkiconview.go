@@ -117,14 +117,12 @@ func _gotk4_gtk4_IconViewForEachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, a
 // GtkIconView has a single CSS node with name iconview and style class .view.
 // For rubberband selection, a subnode with name rubberband is used.
 type IconView struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	CellLayout
 	Scrollable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

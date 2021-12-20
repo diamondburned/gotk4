@@ -27,13 +27,11 @@ func init() {
 }
 
 type NotebookPageAccessible struct {
+	_ [0]func() // equal guard
 	atk.ObjectClass
 
 	*externglib.Object
 	atk.Component
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

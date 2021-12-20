@@ -26,15 +26,13 @@ func init() {
 }
 
 type TextViewAccessible struct {
+	_ [0]func() // equal guard
 	ContainerAccessible
 
 	*externglib.Object
 	atk.EditableText
 	atk.StreamableContent
 	atk.Text
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

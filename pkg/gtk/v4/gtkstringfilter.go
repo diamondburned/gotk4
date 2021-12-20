@@ -71,10 +71,8 @@ func (s StringFilterMatchMode) String() string {
 // It is also possible to make case-insensitive comparisons, with
 // gtk.StringFilter.SetIgnoreCase().
 type StringFilter struct {
+	_ [0]func() // equal guard
 	Filter
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -56,10 +56,8 @@ type SocketClientOverrider interface {
 // As Client is a lightweight object, you don't need to cache it. You can just
 // create a new one any time you need one.
 type SocketClient struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

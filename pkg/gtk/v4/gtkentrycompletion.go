@@ -98,13 +98,11 @@ func _gotk4_gtk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.ch
 // to use gtk.TreeModelFilter.ConvertIterToChildIter() to obtain a matching
 // iter.
 type EntryCompletion struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Buildable
 	CellLayout
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

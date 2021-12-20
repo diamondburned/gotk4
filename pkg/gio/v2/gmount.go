@@ -327,10 +327,8 @@ type MountOverrider interface {
 // present when g_mount_unmount_with_operation_finish() is called, then it will
 // be filled with any error information.
 type Mount struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

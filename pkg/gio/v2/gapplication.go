@@ -210,13 +210,11 @@ type ApplicationOverrider interface {
 // gapplication-example-dbushooks.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
 type Application struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	ActionGroup
 	ActionMap
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -49,10 +49,8 @@ func init() {
 //      </template>
 //    </interface>.
 type BuilderListItemFactory struct {
+	_ [0]func() // equal guard
 	ListItemFactory
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

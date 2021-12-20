@@ -36,10 +36,8 @@ func init() {
 //
 // All velocities are reported in pixels/sec units.
 type GestureSwipe struct {
+	_ [0]func() // equal guard
 	GestureSingle
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

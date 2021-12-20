@@ -39,10 +39,8 @@ type RadioActionOverrider interface {
 // RadioAction is similar to RadioMenuItem. A number of radio actions can be
 // linked together so that only one may be active at any one time.
 type RadioAction struct {
+	_ [0]func() // equal guard
 	ToggleAction
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

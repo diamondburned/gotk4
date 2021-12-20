@@ -40,10 +40,8 @@ func init() {
 // > TearoffMenuItem is deprecated and should not be used in newly > written
 // code. Menus are not meant to be torn around.
 type TearoffMenuItem struct {
+	_ [0]func() // equal guard
 	MenuItem
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

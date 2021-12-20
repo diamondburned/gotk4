@@ -385,10 +385,8 @@ type FontOverrider interface {
 // Font: PangoFont is used to represent a font in a rendering-system-independent
 // manner.
 type Font struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -782,10 +780,8 @@ type FontFaceOverrider interface {
 // FontFace: PangoFontFace is used to represent a group of fonts with the same
 // family, slant, weight, and width, but varying sizes.
 type FontFace struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1054,10 +1050,8 @@ type FontFamilyOverrider interface {
 // The font faces in a family share a common design, but differ in slant,
 // weight, width or other aspects.
 type FontFamily struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

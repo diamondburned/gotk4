@@ -35,10 +35,8 @@ func init() {
 // CellRendererCombo:text-column property. Further properties of the combo box
 // can be set in a handler for the CellRenderer::editing-started signal.
 type CellRendererCombo struct {
+	_ [0]func() // equal guard
 	CellRendererText
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

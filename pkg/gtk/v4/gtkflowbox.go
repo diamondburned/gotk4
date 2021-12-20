@@ -177,13 +177,11 @@ func _gotk4_gtk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChil
 // GtkFlowBox uses the GTK_ACCESSIBLE_ROLE_GRID role, and GtkFlowBoxChild uses
 // the GTK_ACCESSIBLE_ROLE_GRID_CELL role.
 type FlowBox struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1035,10 +1033,8 @@ type FlowBoxChildOverrider interface {
 // FlowBoxChild: GtkFlowBoxChild is the kind of widget that can be added to a
 // GtkFlowBox.
 type FlowBoxChild struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

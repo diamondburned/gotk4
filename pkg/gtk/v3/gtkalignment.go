@@ -44,10 +44,8 @@ func init() {
 // Widget:halign, Widget:valign and Widget:margin properties on the child
 // widget.
 type Alignment struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -127,10 +127,8 @@ func init() {
 // - If the gesture has GTK_PHASE_NONE, ensuring events of type
 // GDK_TOUCHPAD_SWIPE and GDK_TOUCHPAD_PINCH are handled by the Gesture.
 type Gesture struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

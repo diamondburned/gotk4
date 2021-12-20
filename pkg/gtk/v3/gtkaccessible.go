@@ -51,10 +51,8 @@ type AccessibleOverrider interface {
 // corresponding acccessible implementation, override the get_accessible vfunc
 // in WidgetClass.
 type Accessible struct {
+	_ [0]func() // equal guard
 	atk.ObjectClass
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

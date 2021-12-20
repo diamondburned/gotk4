@@ -91,10 +91,8 @@ func init() {
 //      g_object_unref (layout);
 //    }.
 type PrintContext struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

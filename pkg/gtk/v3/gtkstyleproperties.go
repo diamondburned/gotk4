@@ -45,12 +45,10 @@ func init() {
 // StyleProperties has been deprecated in GTK 3.16. The CSS machinery does not
 // use it anymore and all users of this object have been deprecated.
 type StyleProperties struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	StyleProvider
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

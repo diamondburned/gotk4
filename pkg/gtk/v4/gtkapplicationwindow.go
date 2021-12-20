@@ -91,14 +91,12 @@ func init() {
 //
 //    GtkWidget *window = gtk_application_window_new (app);.
 type ApplicationWindow struct {
+	_ [0]func() // equal guard
 	Window
 
 	*externglib.Object
 	gio.ActionGroup
 	gio.ActionMap
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

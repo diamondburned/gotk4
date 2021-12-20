@@ -358,14 +358,12 @@ func (d DebugFlag) Has(other DebugFlag) bool {
 }
 
 type EntryIconAccessible struct {
+	_ [0]func() // equal guard
 	atk.ObjectClass
 
 	*externglib.Object
 	atk.Action
 	atk.Component
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

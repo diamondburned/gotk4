@@ -29,10 +29,8 @@ func init() {
 // that it can always return a Connection, even when the connection it has
 // actually created is not directly a Connection.
 type TCPWrapperConnection struct {
+	_ [0]func() // equal guard
 	TCPConnection
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

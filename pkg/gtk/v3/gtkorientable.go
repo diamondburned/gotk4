@@ -33,10 +33,8 @@ func init() {
 //
 // Orientable was introduced in GTK+ 2.16.
 type Orientable struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

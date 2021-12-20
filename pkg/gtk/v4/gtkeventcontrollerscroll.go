@@ -127,10 +127,8 @@ func (e EventControllerScrollFlags) Has(other EventControllerScrollFlags) bool {
 // with two X/Y velocity arguments that are consistent with the motion that was
 // received.
 type EventControllerScroll struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

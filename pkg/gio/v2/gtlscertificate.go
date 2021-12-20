@@ -66,10 +66,8 @@ type TLSCertificateOverrider interface {
 // client from a server), or the combination of a certificate and a private key
 // (which is needed when acting as a ServerConnection).
 type TLSCertificate struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

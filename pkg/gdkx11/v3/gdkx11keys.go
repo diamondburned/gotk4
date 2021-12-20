@@ -25,10 +25,8 @@ func init() {
 }
 
 type X11Keymap struct {
+	_ [0]func() // equal guard
 	gdk.Keymap
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -60,10 +60,8 @@ type TLSBackendOverrider interface {
 
 // TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
 type TLSBackend struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

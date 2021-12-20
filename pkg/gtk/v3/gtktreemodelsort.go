@@ -83,13 +83,11 @@ func init() {
 //      g_free (modified_data);
 //    }.
 type TreeModelSort struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	TreeDragSource
 	TreeSortable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

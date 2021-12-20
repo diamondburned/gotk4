@@ -26,14 +26,12 @@ func init() {
 }
 
 type ImageCellAccessible struct {
+	_ [0]func() // equal guard
 	RendererCellAccessible
 
 	*externglib.Object
 	atk.Image
 	atk.ObjectClass
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -47,10 +47,8 @@ func init() {
 // When circumstances require it, GtkStackSwitcher adds the .needs-attention
 // style class to the widgets representing the stack pages.
 type StackSwitcher struct {
+	_ [0]func() // equal guard
 	Box
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

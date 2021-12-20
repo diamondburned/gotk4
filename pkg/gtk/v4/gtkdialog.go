@@ -285,10 +285,8 @@ type DialogOverrider interface {
 //
 // GtkDialog uses the GTK_ACCESSIBLE_ROLE_DIALOG role.
 type Dialog struct {
+	_ [0]func() // equal guard
 	Window
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

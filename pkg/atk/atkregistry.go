@@ -52,10 +52,8 @@ func GetDefaultRegistry() *Registry {
 // GObject classes via the atk_registry_set_factory_type call, passing the
 // appropriate GType for application custom widget classes.
 type Registry struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

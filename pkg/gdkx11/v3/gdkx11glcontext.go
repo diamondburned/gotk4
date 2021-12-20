@@ -61,10 +61,8 @@ func X11DisplayGetGLXVersion(display *gdk.Display) (major int, minor int, ok boo
 }
 
 type X11GLContext struct {
+	_ [0]func() // equal guard
 	gdk.GLContext
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

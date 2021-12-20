@@ -76,10 +76,8 @@ func init() {
 // gdk.GLContext().GetCurrent; you can also unset any GdkGLContext that is
 // currently set by calling gdk.GLContext().ClearCurrent.
 type GLContext struct {
+	_ [0]func() // equal guard
 	DrawContext
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

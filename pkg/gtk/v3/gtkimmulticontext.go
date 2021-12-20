@@ -26,10 +26,8 @@ func init() {
 }
 
 type IMMulticontext struct {
+	_ [0]func() // equal guard
 	IMContext
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

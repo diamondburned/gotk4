@@ -46,10 +46,8 @@ type MediaFileOverrider interface {
 //
 // GTK itself includes implementations using GStreamer and ffmpeg.
 type MediaFile struct {
+	_ [0]func() // equal guard
 	MediaStream
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

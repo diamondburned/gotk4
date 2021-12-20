@@ -63,10 +63,8 @@ type HyperlinkImplOverrider interface {
 // to interact with AtkObjects via AtkHyperlink semantics, a new interface was
 // required.
 type HyperlinkImpl struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

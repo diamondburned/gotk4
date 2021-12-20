@@ -26,10 +26,8 @@ func init() {
 // TCPConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
 type TCPConnection struct {
+	_ [0]func() // equal guard
 	SocketConnection
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

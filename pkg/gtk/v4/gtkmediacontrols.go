@@ -30,10 +30,8 @@ func init() {
 //
 // Usually, GtkMediaControls is used as part of gtk.Video.
 type MediaControls struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

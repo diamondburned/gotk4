@@ -40,12 +40,10 @@ func init() {
 // GdkTexture is an immutable object: That means you cannot change anything
 // about it other than increasing the reference count via g_object_ref().
 type Texture struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Paintable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

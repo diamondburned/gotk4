@@ -24,10 +24,8 @@ func init() {
 }
 
 type X11Drag struct {
+	_ [0]func() // equal guard
 	gdk.Drag
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -27,12 +27,10 @@ func init() {
 // more D-Bus interfaces. Normally, you don't instantiate a BusObjectProxy
 // yourself - typically BusObjectManagerClient is used to obtain it.
 type DBusObjectProxy struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	DBusObject
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

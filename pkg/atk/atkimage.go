@@ -103,10 +103,8 @@ type ImageOverrider interface {
 // provided for alternative, text-only presentation of the most significant
 // information present in the image.
 type Image struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

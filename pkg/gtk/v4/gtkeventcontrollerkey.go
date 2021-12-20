@@ -28,10 +28,8 @@ func init() {
 // EventControllerKey: GtkEventControllerKey is an event controller that
 // provides access to key events.
 type EventControllerKey struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

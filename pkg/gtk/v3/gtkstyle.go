@@ -1590,10 +1590,8 @@ type StyleOverrider interface {
 // Usually applications should not need to use or modify the Style of their
 // widgets.
 type Style struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

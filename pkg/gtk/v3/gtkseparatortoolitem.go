@@ -41,10 +41,8 @@ func init() {
 //
 // GtkSeparatorToolItem has a single CSS node with name separator.
 type SeparatorToolItem struct {
+	_ [0]func() // equal guard
 	ToolItem
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

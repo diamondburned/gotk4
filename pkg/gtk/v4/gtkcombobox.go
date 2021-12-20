@@ -100,14 +100,12 @@ type ComboBoxOverrider interface {
 //
 // GtkComboBox uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type ComboBox struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	CellEditable
 	CellLayout
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

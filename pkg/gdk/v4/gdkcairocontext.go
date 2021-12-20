@@ -31,10 +31,8 @@ func init() {
 // gdk.Surface.CreateCairoContext(), and the context can then be used to draw on
 // that surface.
 type CairoContext struct {
+	_ [0]func() // equal guard
 	DrawContext
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -24,10 +24,8 @@ func init() {
 }
 
 type X11DisplayManager struct {
+	_ [0]func() // equal guard
 	gdk.DisplayManager
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

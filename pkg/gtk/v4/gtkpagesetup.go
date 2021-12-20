@@ -67,10 +67,8 @@ func init() {
 //      page_setup = new_page_setup;
 //    }.
 type PageSetup struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -26,12 +26,10 @@ func init() {
 }
 
 type IconViewAccessible struct {
+	_ [0]func() // equal guard
 	ContainerAccessible
 
 	atk.Selection
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

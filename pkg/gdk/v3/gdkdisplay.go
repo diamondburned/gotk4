@@ -42,10 +42,8 @@ func init() {
 // DeviceManager object. Every display has a device manager, which you can
 // obtain using gdk_display_get_device_manager().
 type Display struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

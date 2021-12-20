@@ -68,13 +68,11 @@ type RangeOverrider interface {
 // “steppers”. It also provides properties and methods for setting a “fill
 // level” on range widgets. See gtk_range_set_fill_level().
 type Range struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -38,10 +38,8 @@ func init() {
 // the basic concepts, such as the capture and bubble phases of even
 // propagation.
 type EventController struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

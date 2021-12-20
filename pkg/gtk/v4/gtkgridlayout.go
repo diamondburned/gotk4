@@ -39,10 +39,8 @@ func init() {
 // the same row or column; however, if you only ever need a single row or
 // column, you should consider using GtkBoxLayout.
 type GridLayout struct {
+	_ [0]func() // equal guard
 	LayoutManager
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -352,10 +350,8 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 
 // GridLayoutChild: GtkLayoutChild subclass for children in a GtkGridLayout.
 type GridLayoutChild struct {
+	_ [0]func() // equal guard
 	LayoutChild
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

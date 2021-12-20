@@ -31,12 +31,10 @@ func init() {
 // GtkFlattenListModel takes a list model containing list models, and flattens
 // it into a single model.
 type FlattenListModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

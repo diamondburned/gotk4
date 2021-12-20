@@ -29,13 +29,11 @@ func init() {
 // ColorChooserDialog widget is a dialog for choosing a color. It implements the
 // ColorChooser interface.
 type ColorChooserDialog struct {
+	_ [0]func() // equal guard
 	Dialog
 
 	*externglib.Object
 	ColorChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

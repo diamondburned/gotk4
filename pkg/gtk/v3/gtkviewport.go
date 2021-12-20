@@ -47,13 +47,11 @@ func init() {
 //
 // GtkViewport has a single CSS node with name viewport.
 type Viewport struct {
+	_ [0]func() // equal guard
 	Bin
 
 	*externglib.Object
 	Scrollable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

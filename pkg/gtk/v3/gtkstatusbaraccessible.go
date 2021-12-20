@@ -26,10 +26,8 @@ func init() {
 }
 
 type StatusbarAccessible struct {
+	_ [0]func() // equal guard
 	ContainerAccessible
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

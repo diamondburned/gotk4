@@ -30,10 +30,8 @@ func init() {
 //
 // Besides GtkWidget, it is also implemented by GtkConstraintGuide.
 type ConstraintTarget struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -83,10 +81,8 @@ func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
 // The source and target, as well as their attributes, of a GtkConstraint
 // instance are immutable after creation.
 type Constraint struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

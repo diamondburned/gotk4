@@ -46,14 +46,12 @@ func init() {
 //
 // GtkCellView has a single CSS node with name cellview.
 type CellView struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	CellLayout
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

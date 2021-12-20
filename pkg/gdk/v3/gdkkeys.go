@@ -293,10 +293,8 @@ func UnicodeToKeyval(wc uint32) uint {
 // keycode/group/level triplet in the keymap and see what keyval it corresponds
 // to.
 type Keymap struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

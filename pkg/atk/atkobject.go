@@ -924,10 +924,8 @@ func _gotk4_atk1_Function(arg0 C.gpointer) (cret C.gboolean) {
 // which AtkObject peers may be obtained via calls to
 // iface->(ref_accessible)(implementor);.
 type ImplementorIface struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1158,10 +1156,8 @@ type ObjectClassOverrider interface {
 //
 // See also: ObjectFactory, Registry. (GTK+ users see also Accessible).
 type ObjectClass struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

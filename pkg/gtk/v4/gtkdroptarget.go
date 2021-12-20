@@ -96,10 +96,8 @@ func init() {
 // state during a Drag-and-Drop operation (e.g. switching tabs), you can use
 // gtk.DropControllerMotion.
 type DropTarget struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

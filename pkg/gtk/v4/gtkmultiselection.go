@@ -28,12 +28,10 @@ func init() {
 // MultiSelection: GtkMultiSelection is a GtkSelectionModel that allows
 // selecting multiple elements.
 type MultiSelection struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	SelectionModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

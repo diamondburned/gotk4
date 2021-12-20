@@ -97,10 +97,8 @@ type PopoverOverrider interface {
 // in Entry or TextView get style classes like .touch-selection or .magnifier to
 // differentiate from plain popovers.
 type Popover struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

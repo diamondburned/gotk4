@@ -95,10 +95,8 @@ func init() {
 // PopoverMenu instances have a single css node called "popover" and get the
 // .menu style class.
 type PopoverMenu struct {
+	_ [0]func() // equal guard
 	Popover
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

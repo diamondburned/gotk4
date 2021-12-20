@@ -226,13 +226,11 @@ type TextViewOverrider interface {
 // If a context menu is opened, the window node will appear as a subnode of the
 // main node.
 type TextView struct {
+	_ [0]func() // equal guard
 	Container
 
 	*externglib.Object
 	Scrollable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

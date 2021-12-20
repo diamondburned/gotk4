@@ -191,10 +191,8 @@ type DTLSConnectionOverrider interface {
 // wish. If they do not, and g_socket_close() is called on the base socket, the
 // Connection will not raise a G_IO_ERROR_NOT_CONNECTED error on further I/O.
 type DTLSConnection struct {
+	_ [0]func() // equal guard
 	DatagramBased
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

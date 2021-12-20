@@ -26,15 +26,13 @@ func init() {
 }
 
 type EntryAccessible struct {
+	_ [0]func() // equal guard
 	WidgetAccessible
 
 	*externglib.Object
 	atk.Action
 	atk.EditableText
 	atk.Text
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

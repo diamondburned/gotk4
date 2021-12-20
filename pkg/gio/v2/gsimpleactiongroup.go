@@ -29,13 +29,11 @@ func init() {
 // SimpleActionGroup is a hash table filled with #GAction objects, implementing
 // the Group and Map interfaces.
 type SimpleActionGroup struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	ActionGroup
 	ActionMap
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

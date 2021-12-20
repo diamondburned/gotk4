@@ -181,10 +181,8 @@ type ApplicationOverrider interface {
 // Getting Started with GTK+: Basics
 // (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3).
 type Application struct {
+	_ [0]func() // equal guard
 	gio.Application
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

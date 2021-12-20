@@ -162,10 +162,8 @@ type ActionOverrider interface {
 // action rather than exposing redundant actions if possible. By convention we
 // have been using "mouse centric" terminology for Action names.
 type Action struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

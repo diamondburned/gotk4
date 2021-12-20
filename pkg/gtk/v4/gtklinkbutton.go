@@ -52,10 +52,8 @@ func init() {
 //
 // GtkLinkButton uses the K_ACCESSIBLE_ROLE_LINK role.
 type LinkButton struct {
+	_ [0]func() // equal guard
 	Button
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

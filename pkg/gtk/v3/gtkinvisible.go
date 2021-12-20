@@ -33,10 +33,8 @@ func init() {
 // It is used for reliable pointer grabs and selection handling in the code for
 // drag-and-drop.
 type Invisible struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

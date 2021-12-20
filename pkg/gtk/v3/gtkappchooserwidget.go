@@ -66,13 +66,11 @@ type AppChooserWidgetOverrider interface {
 //
 // GtkAppChooserWidget has a single CSS node with name appchooser.
 type AppChooserWidget struct {
+	_ [0]func() // equal guard
 	Box
 
 	*externglib.Object
 	AppChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -60,10 +60,8 @@ const STYLE_PROVIDER_PRIORITY_USER = 800
 //
 // GTK uses the GtkStyleProvider implementation for CSS in gtk.CSSProvider.
 type StyleProvider struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

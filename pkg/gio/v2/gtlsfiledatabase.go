@@ -29,10 +29,8 @@ func init() {
 // certificate information from a file. It is an interface which TLS library
 // specific subtypes implement.
 type TLSFileDatabase struct {
+	_ [0]func() // equal guard
 	TLSDatabase
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

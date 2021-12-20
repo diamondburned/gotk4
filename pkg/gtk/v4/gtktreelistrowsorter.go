@@ -35,10 +35,8 @@ func init() {
 //    selection = gtk_single_selection_new (sort_model);
 //    gtk_column_view_set_model (view, G_LIST_MODEL (selection));.
 type TreeListRowSorter struct {
+	_ [0]func() // equal guard
 	Sorter
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -98,10 +98,8 @@ type MenuShellOverrider interface {
 // selected menu item.) The current menu is the menu that contains the current
 // menu item. It will always have a GTK grab and receive all key presses.
 type MenuShell struct {
+	_ [0]func() // equal guard
 	Container
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

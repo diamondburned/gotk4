@@ -29,10 +29,8 @@ func init() {
 // gestures, whenever the distance between both tracked sequences changes, the
 // GestureZoom::scale-changed signal is emitted to report the scale factor.
 type GestureZoom struct {
+	_ [0]func() // equal guard
 	Gesture
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -68,10 +68,8 @@ type LabelOverrider interface {
 // It is possible to implement custom handling for links and their tooltips with
 // the Label::activate-link signal and the gtk_label_get_current_uri() function.
 type Label struct {
+	_ [0]func() // equal guard
 	Misc
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -344,10 +344,8 @@ type AppInfoOverrider interface {
 // format of a particular URIs. Different launcher applications (e.g. file
 // managers) may have different ideas of what a given URI means.
 type AppInfo struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1773,10 +1771,8 @@ type AppLaunchContextOverrider interface {
 // is used to handle for instance startup notification and launching the new
 // application on the same screen as the launching window.
 type AppLaunchContext struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

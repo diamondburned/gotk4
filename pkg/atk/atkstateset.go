@@ -27,10 +27,8 @@ func init() {
 // to an object at a given time. This set is not meant to be modified, but
 // rather created when #atk_object_ref_state_set() is called.
 type StateSet struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

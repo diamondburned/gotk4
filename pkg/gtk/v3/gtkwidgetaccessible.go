@@ -26,12 +26,10 @@ func init() {
 }
 
 type WidgetAccessible struct {
+	_ [0]func() // equal guard
 	Accessible
 
 	atk.Component
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

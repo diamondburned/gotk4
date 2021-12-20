@@ -145,10 +145,8 @@ func IOErrorQuark() glib.Quark {
 // installed applications often come in groups (like during system updates) and
 // rescanning the list on every change is pointless and expensive.
 type AppInfoMonitor struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -174,12 +172,10 @@ func (v *AppInfoMonitor) ConnectChanged(f func()) externglib.SignalHandle {
 // BytesIcon specifies an image held in memory in a common format (usually png)
 // to be used as icon.
 type BytesIcon struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	LoadableIcon
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -205,12 +201,10 @@ func marshalBytesIconner(p uintptr) (interface{}, error) {
 // as a proxy for an action group that is exported over D-Bus with
 // g_dbus_connection_export_action_group().
 type DBusActionGroup struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	RemoteActionGroup
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -267,10 +261,8 @@ func marshalDBusActionGrouper(p uintptr) (interface{}, error) {
 //      return authorized;
 //    }.
 type DBusAuthObserver struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -350,13 +342,11 @@ func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(strea
 // Here is an example for exporting a #GObject: gdbus-example-export.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c).
 type DBusConnection struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	AsyncInitable
 	Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -383,10 +373,8 @@ func marshalDBusConnectioner(p uintptr) (interface{}, error) {
 // menu model that is exported over D-Bus with
 // g_dbus_connection_export_menu_model().
 type DBusMenuModel struct {
+	_ [0]func() // equal guard
 	MenuModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -408,10 +396,8 @@ func marshalDBusMenuModeller(p uintptr) (interface{}, error) {
 // DBusMessage: type for representing D-Bus messages that can be sent or
 // received on a BusConnection.
 type DBusMessage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -436,10 +422,8 @@ func marshalDBusMessager(p uintptr) (interface{}, error) {
 // argument to the handle_method_call() function in a BusInterfaceVTable that
 // was passed to g_dbus_connection_register_object().
 type DBusMethodInvocation struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -476,12 +460,10 @@ func marshalDBusMethodInvocationer(p uintptr) (interface{}, error) {
 // passing the G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flag to the
 // server.
 type DBusServer struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -532,10 +514,8 @@ func (server *DBusServer) ConnectNewConnection(f func(connection DBusConnection)
 // g_menu_insert(). To add a section, use g_menu_insert_section(). To add a
 // submenu, use g_menu_insert_submenu().
 type Menu struct {
+	_ [0]func() // equal guard
 	MenuModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -557,10 +537,8 @@ func marshalMenuer(p uintptr) (interface{}, error) {
 // MenuItem is an opaque structure type. You must access it using the functions
 // below.
 type MenuItem struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -598,10 +576,8 @@ func marshalMenuItemmer(p uintptr) (interface{}, error) {
 //
 // A notification can be sent with g_application_send_notification().
 type Notification struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -667,12 +643,10 @@ func marshalNotificationer(p uintptr) (interface{}, error) {
 // setting stored in #GSettings, see g_settings_create_action() instead, and
 // possibly combine its use with g_settings_bind().
 type PropertyAction struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Action
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -698,12 +672,10 @@ func marshalPropertyActioner(p uintptr) (interface{}, error) {
 //
 // See also Action.
 type SimpleAction struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Action
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -782,10 +754,8 @@ func (simple *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) exte
 // g_unix_input_stream_new() or g_win32_input_stream_new(), and you want to take
 // advantage of the methods provided by OStream.
 type SimpleIOStream struct {
+	_ [0]func() // equal guard
 	IOStream
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -810,10 +780,8 @@ func marshalSimpleIOStreamer(p uintptr) (interface{}, error) {
 //
 // Calling request or release will result in errors.
 type SimplePermission struct {
+	_ [0]func() // equal guard
 	Permission
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -904,10 +872,8 @@ func marshalSimplePermissioner(p uintptr) (interface{}, error) {
 //
 //        CLEANFILES += gschemas.compiled.
 type TestDBus struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

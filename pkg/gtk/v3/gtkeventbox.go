@@ -30,10 +30,8 @@ func init() {
 // useful since it allows you to catch events for widgets which do not have
 // their own window.
 type EventBox struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

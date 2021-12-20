@@ -33,12 +33,10 @@ func init() {
 // particular, this means that changing the sort order of an underlying sort
 // model will preserve the selection.
 type SingleSelection struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	SelectionModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

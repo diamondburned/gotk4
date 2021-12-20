@@ -26,10 +26,8 @@ func init() {
 }
 
 type ScaleAccessible struct {
+	_ [0]func() // equal guard
 	RangeAccessible
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

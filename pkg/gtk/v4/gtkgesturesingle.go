@@ -39,10 +39,8 @@ func init() {
 // setting it to 0. While the gesture is active, the button being currently
 // pressed can be known through gtk.GestureSingle.GetCurrentButton().
 type GestureSingle struct {
+	_ [0]func() // equal guard
 	Gesture
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

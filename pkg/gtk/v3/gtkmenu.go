@@ -91,10 +91,8 @@ func (a ArrowPlacement) String() string {
 // name arrow, for scrolling menu arrows. These subnodes get the .top and
 // .bottom style classes.
 type Menu struct {
+	_ [0]func() // equal guard
 	MenuShell
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -204,10 +204,8 @@ type ScrolledWindowOverrider interface {
 // If both scrollbars are visible, the area where they meet is drawn with a
 // subnode named junction.
 type ScrolledWindow struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

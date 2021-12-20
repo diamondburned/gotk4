@@ -54,10 +54,8 @@ func init() {
 //
 // Marks are typically created using the gtk.TextBuffer.CreateMark() function.
 type TextMark struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -89,10 +89,8 @@ type MemoryMonitorOverrider interface {
 // Don't forget to disconnect the Monitor::low-memory-warning signal, and unref
 // the Monitor itself when exiting.
 type MemoryMonitor struct {
+	_ [0]func() // equal guard
 	Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

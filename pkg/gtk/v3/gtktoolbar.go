@@ -103,6 +103,7 @@ type ToolbarOverrider interface {
 //
 // GtkToolbar has a single CSS node with name toolbar.
 type Toolbar struct {
+	_ [0]func() // equal guard
 	Container
 
 	*externglib.Object
@@ -112,9 +113,6 @@ type Toolbar struct {
 	Orientable
 	ToolShell
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

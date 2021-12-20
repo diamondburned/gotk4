@@ -83,10 +83,8 @@ type ColorChooserOverrider interface {
 // In GTK, the main widgets that implement this interface are
 // gtk.ColorChooserWidget, gtk.ColorChooserDialog and gtk.ColorButton.
 type ColorChooser struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

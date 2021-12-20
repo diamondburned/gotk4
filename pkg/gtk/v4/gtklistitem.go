@@ -39,10 +39,8 @@ func init() {
 // 2. The bound stage where the listitem references an item from the list. The
 // gtk.ListItem:item property is not NULL.
 type ListItem struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

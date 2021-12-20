@@ -26,13 +26,11 @@ func init() {
 }
 
 type LinkButtonAccessible struct {
+	_ [0]func() // equal guard
 	ButtonAccessible
 
 	*externglib.Object
 	atk.HyperlinkImpl
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

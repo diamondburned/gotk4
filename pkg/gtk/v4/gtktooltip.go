@@ -50,10 +50,8 @@ func init() {
 // - Return TRUE from your ::query-tooltip handler. This causes the tooltip to
 // be show. If you return FALSE, it will not be shown.
 type Tooltip struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

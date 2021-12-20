@@ -109,14 +109,12 @@ type PopoverOverrider interface {
 // also does not support any border shape other than solid, no border-radius,
 // only one border width (border-bottom-width is used) and no box-shadow.
 type Popover struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	NativeSurface
 	ShortcutManager
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

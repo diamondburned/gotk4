@@ -171,10 +171,8 @@ type NotebookOverrider interface {
 // The nodes are always arranged from left-to-right, regarldess of text
 // direction.
 type Notebook struct {
+	_ [0]func() // equal guard
 	Container
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

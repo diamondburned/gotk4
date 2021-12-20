@@ -67,13 +67,11 @@ func init() {
 //
 // GtkSearchEntry uses the GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
 type SearchEntry struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Editable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

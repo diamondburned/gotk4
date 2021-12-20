@@ -43,13 +43,11 @@ func init() {
 // button node. To differentiate it from a plain GtkButton, it gets the .color
 // style class.
 type ColorButton struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	ColorChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

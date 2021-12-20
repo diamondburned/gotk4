@@ -193,10 +193,8 @@ func (p PolicyType) String() string {
 //
 // GtkScrolledWindow uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type ScrolledWindow struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -87,13 +87,11 @@ func init() {
 //    gtk_paned_set_end_child_shrink (GTK_PANED (hpaned), FALSE);
 //    gtk_widget_set_size_request (frame2, 50, -1);.
 type Paned struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

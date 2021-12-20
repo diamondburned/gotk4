@@ -129,10 +129,8 @@ type PixbufAnimationOverrider interface {
 // however; you just ask GdkPixbuf what should be displayed at a given point in
 // time.
 type PixbufAnimation struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -607,10 +605,8 @@ type PixbufAnimationIterOverrider interface {
 // PixbufAnimationIter: opaque object representing an iterator which points to a
 // certain position in an animation.
 type PixbufAnimationIter struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

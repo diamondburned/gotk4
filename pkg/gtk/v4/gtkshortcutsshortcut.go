@@ -99,10 +99,8 @@ func (s ShortcutType) String() string {
 //
 // This widget is only meant to be used with GtkShortcutsWindow.
 type ShortcutsShortcut struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

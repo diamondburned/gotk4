@@ -59,13 +59,11 @@ func init() {
 //
 // GtkPasswordEntry uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type PasswordEntry struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Editable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -102,10 +102,8 @@ func (s SeatCapabilities) Has(other SeatCapabilities) bool {
 // Seat: GdkSeat object represents a collection of input devices that belong to
 // a user.
 type Seat struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

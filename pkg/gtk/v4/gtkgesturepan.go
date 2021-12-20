@@ -37,10 +37,8 @@ func init() {
 // gtk.GesturePan::pan signal will be emitted as input events are received,
 // containing the offset in the given axis.
 type GesturePan struct {
+	_ [0]func() // equal guard
 	GestureDrag
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

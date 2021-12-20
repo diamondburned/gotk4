@@ -26,14 +26,12 @@ func init() {
 }
 
 type LabelAccessible struct {
+	_ [0]func() // equal guard
 	WidgetAccessible
 
 	*externglib.Object
 	atk.Hypertext
 	atk.Text
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

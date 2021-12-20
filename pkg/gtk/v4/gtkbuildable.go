@@ -124,10 +124,8 @@ type BuildableOverrider interface {
 // An object only needs to implement this interface if it needs to extend the
 // GtkBuilder XML format or run any extra routines at deserialization time.
 type Buildable struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

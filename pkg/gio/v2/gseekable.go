@@ -107,10 +107,8 @@ type SeekableOverrider interface {
 // a normal file. Seeking past the end and writing data will usually cause the
 // stream to resize by introducing zero bytes.
 type Seekable struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

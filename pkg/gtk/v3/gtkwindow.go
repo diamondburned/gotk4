@@ -193,10 +193,8 @@ type WindowOverrider interface {
 // GtkWindow adds the .titlebar and .default-decoration style classes to the
 // widget that is added as a titlebar child.
 type Window struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

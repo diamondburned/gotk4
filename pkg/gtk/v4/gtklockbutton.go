@@ -61,10 +61,8 @@ func init() {
 // gtk.LockButton:tooltip-lock, gtk.LockButton:tooltip-unlock and
 // gtk.LockButton:tooltip-not-authorized properties.
 type LockButton struct {
+	_ [0]func() // equal guard
 	Button
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

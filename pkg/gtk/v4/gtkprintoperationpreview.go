@@ -77,10 +77,8 @@ type PrintOperationPreviewOverrider interface {
 // A GtkPrintOperationPreview object is passed to the
 // gtk.PrintOperation::preview signal by gtk.PrintOperation.
 type PrintOperationPreview struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

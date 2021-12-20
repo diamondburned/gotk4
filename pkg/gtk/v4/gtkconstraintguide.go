@@ -35,12 +35,10 @@ func init() {
 //
 // Unlike a GtkWidget, a GtkConstraintGuide will not be drawn.
 type ConstraintGuide struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	ConstraintTarget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

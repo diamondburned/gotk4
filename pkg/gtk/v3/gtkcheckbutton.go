@@ -54,10 +54,8 @@ type CheckButtonOverrider interface {
 // button and adds a .check style class to it. The subnode is invisible in this
 // case.
 type CheckButton struct {
+	_ [0]func() // equal guard
 	ToggleButton
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

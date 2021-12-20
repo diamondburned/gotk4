@@ -502,14 +502,12 @@ type CellAreaOverrider interface {
 // value of a cell property, use gtk_cell_area_cell_get_property(),
 // gtk_cell_area_cell_get() or gtk_cell_area_cell_get_valist().
 type CellArea struct {
+	_ [0]func() // equal guard
 	externglib.InitiallyUnowned
 
 	*externglib.Object
 	Buildable
 	CellLayout
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

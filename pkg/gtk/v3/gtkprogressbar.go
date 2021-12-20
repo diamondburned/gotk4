@@ -65,13 +65,11 @@ func init() {
 // end of the GtkProgressBar. The .osd class on the progressbar node is for use
 // in overlays like the one Epiphany has for page loading progress.
 type ProgressBar struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -233,10 +233,8 @@ type EditableOverrider interface {
 // gtk.Editable::delete-text signals, you will need to connect to them on the
 // delegate obtained via gtk.Editable.GetDelegate().
 type Editable struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

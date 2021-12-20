@@ -29,10 +29,8 @@ func init() {
 // It should only be used as a last resort if none of the other event
 // controllers or gestures do the job.
 type EventControllerLegacy struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

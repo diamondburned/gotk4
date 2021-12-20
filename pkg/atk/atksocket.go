@@ -65,13 +65,11 @@ type SocketOverrider interface {
 // All the logic related to those functions will be implemented by the IPC
 // layer.
 type Socket struct {
+	_ [0]func() // equal guard
 	ObjectClass
 
 	*externglib.Object
 	Component
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

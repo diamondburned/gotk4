@@ -282,10 +282,8 @@ type CellLayoutOverrider interface {
 // alternative cell areas, you can do so by moving the problematic calls out of
 // init() and into a constructor() for your class.
 type CellLayout struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

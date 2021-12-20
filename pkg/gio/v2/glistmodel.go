@@ -110,10 +110,8 @@ type ListModelOverrider interface {
 // [thread-default main context][g-main-context-push-thread-default] in effect
 // at the time that the model was created.
 type ListModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

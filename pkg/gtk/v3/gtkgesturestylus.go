@@ -29,10 +29,8 @@ func init() {
 // GestureStylus is a Gesture implementation specific to stylus input. The
 // provided signals just provide the basic information.
 type GestureStylus struct {
+	_ [0]func() // equal guard
 	GestureSingle
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

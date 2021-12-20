@@ -109,10 +109,8 @@ func _gotk4_gtk3_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer
 //
 // Printing support was added in GTK+ 2.10.
 type PrintSettings struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

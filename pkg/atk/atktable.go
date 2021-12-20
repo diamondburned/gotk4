@@ -419,10 +419,8 @@ type TableOverrider interface {
 // complex, and hard to expose other kind of children, like rows or captions.
 // Right now, index-based methods are deprecated.
 type Table struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

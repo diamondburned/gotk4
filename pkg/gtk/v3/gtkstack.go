@@ -159,10 +159,8 @@ func (s StackTransitionType) String() string {
 //
 // GtkStack has a single CSS node named stack.
 type Stack struct {
+	_ [0]func() // equal guard
 	Container
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

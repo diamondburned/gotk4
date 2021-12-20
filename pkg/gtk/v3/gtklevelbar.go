@@ -82,13 +82,11 @@ type LevelBarOverrider interface {
 // In horizontal orientation, the nodes are always arranged from left to right,
 // regardless of text direction.
 type LevelBar struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

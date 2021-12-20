@@ -106,12 +106,10 @@ type MediaStreamOverrider interface {
 // gtk.MediaStream.SeekFailed(), gtk.MediaStream.GError(),
 // gtk.MediaStream.Error(), gtk.MediaStream.ErrorValist().
 type MediaStream struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gdk.Paintable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

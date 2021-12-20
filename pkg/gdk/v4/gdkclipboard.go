@@ -46,10 +46,8 @@ func init() {
 // gdk.Clipboard.ReadTextAsync() or gdk.Clipboard.ReadTextureAsync(). For other
 // data, use gdk.Clipboard.ReadAsync(), which provides a GInputStream object.
 type Clipboard struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

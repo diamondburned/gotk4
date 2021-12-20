@@ -34,10 +34,8 @@ func init() {
 // to bind them to columns in your tree model using e.g.
 // gtk_tree_view_column_add_attribute().
 type CellRendererSpinner struct {
+	_ [0]func() // equal guard
 	CellRenderer
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

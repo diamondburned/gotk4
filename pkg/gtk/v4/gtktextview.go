@@ -216,13 +216,11 @@ type TextViewOverrider interface {
 //
 // GtkTextView uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
 type TextView struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Scrollable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

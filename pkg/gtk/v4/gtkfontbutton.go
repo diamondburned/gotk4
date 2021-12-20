@@ -40,13 +40,11 @@ func init() {
 // GtkFontButton has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
 type FontButton struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	FontChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

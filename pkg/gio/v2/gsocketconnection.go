@@ -68,10 +68,8 @@ func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 // To close a Connection, use g_io_stream_close(). Closing both substreams of
 // the OStream separately will not close the underlying #GSocket.
 type SocketConnection struct {
+	_ [0]func() // equal guard
 	IOStream
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

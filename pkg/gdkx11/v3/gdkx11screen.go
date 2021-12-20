@@ -45,10 +45,8 @@ func X11GetDefaultScreen() int {
 }
 
 type X11Screen struct {
+	_ [0]func() // equal guard
 	gdk.Screen
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

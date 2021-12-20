@@ -300,10 +300,8 @@ func RemoveKeyEventListener(listenerId uint) {
 // process and information about the current ATK implementation and toolkit
 // version.
 type Util struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

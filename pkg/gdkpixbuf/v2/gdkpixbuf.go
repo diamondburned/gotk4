@@ -39,10 +39,8 @@ func PixbufErrorQuark() glib.Quark {
 }
 
 type PixbufSimpleAnimIter struct {
+	_ [0]func() // equal guard
 	PixbufAnimationIter
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

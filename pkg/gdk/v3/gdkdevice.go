@@ -166,10 +166,8 @@ func (i InputSource) String() string {
 // See the DeviceManager documentation for more information about the various
 // kinds of master and slave devices, and their relationships.
 type Device struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

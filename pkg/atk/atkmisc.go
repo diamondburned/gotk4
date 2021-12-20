@@ -51,10 +51,8 @@ type MiscOverrider interface {
 // Misc: set of utility functions for thread locking. This interface and all his
 // related methods are deprecated since 2.12.
 type Misc struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

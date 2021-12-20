@@ -191,10 +191,8 @@ type ThemingEngineOverrider interface {
 // rendering. The advancements in CSS theming are good enough to allow themers
 // to achieve their goals without the need to modify source code.
 type ThemingEngine struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

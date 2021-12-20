@@ -26,14 +26,12 @@ func init() {
 }
 
 type TextCellAccessible struct {
+	_ [0]func() // equal guard
 	RendererCellAccessible
 
 	*externglib.Object
 	atk.ObjectClass
 	atk.Text
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

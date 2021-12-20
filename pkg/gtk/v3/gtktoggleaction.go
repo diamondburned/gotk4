@@ -39,10 +39,8 @@ type ToggleActionOverrider interface {
 // ToggleAction corresponds roughly to a CheckMenuItem. It has an “active” state
 // specifying whether the action has been checked or not.
 type ToggleAction struct {
+	_ [0]func() // equal guard
 	Action
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

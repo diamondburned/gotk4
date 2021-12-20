@@ -204,10 +204,8 @@ func _gotk4_gtk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListB
 // GtkListBox uses the GTK_ACCESSIBLE_ROLE_LIST role and GtkListBoxRow uses the
 // GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListBox struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1050,13 +1048,11 @@ type ListBoxRowOverrider interface {
 // ListBoxRow: GtkListBoxRow is the kind of widget that can be added to a
 // GtkListBox.
 type ListBoxRow struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Actionable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

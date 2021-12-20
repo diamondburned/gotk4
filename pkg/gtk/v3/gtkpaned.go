@@ -99,13 +99,11 @@ type PanedOverrider interface {
 //    gtk_paned_pack2 (GTK_PANED (hpaned), frame2, FALSE, FALSE);
 //    gtk_widget_set_size_request (frame2, 50, -1);.
 type Paned struct {
+	_ [0]func() // equal guard
 	Container
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

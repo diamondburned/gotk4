@@ -61,10 +61,8 @@ func init() {
 // prefer the simplicity of GtkFixed, by all means use the widget. But you
 // should be aware of the tradeoffs.
 type Fixed struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

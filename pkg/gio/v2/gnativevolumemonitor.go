@@ -25,10 +25,8 @@ func init() {
 const NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME = "gio-native-volume-monitor"
 
 type NativeVolumeMonitor struct {
+	_ [0]func() // equal guard
 	VolumeMonitor
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -43,13 +43,11 @@ type FontButtonOverrider interface {
 //
 // GtkFontButton has a single CSS node with name button and style class .font.
 type FontButton struct {
+	_ [0]func() // equal guard
 	Button
 
 	*externglib.Object
 	FontChooser
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

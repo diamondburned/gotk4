@@ -63,10 +63,8 @@ type NativeDialogOverrider interface {
 // native dialog in a modal way with a recursive mainloop, similar to
 // gtk_dialog_run().
 type NativeDialog struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

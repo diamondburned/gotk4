@@ -108,12 +108,10 @@ type CSSProviderOverrider interface {
 // In the same way, GTK+ tries to load a gtk-keys.css file for the current key
 // theme, as defined by Settings:gtk-key-theme-name.
 type CSSProvider struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	StyleProvider
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

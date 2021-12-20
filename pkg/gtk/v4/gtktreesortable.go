@@ -166,10 +166,8 @@ type TreeSortableOverrider interface {
 // sorting. The TreeView uses the methods provided by this interface to sort the
 // model.
 type TreeSortable struct {
+	_ [0]func() // equal guard
 	TreeModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

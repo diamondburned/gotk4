@@ -29,12 +29,10 @@ func init() {
 // relevant for matching purposes. These are often given in string form. Eg,
 // "10.0.0.0/8", or "fe80::/10".
 type InetAddressMask struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

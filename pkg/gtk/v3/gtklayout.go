@@ -41,13 +41,11 @@ func init() {
 // by gtk_layout_get_bin_window(), rather than to the one returned by
 // gtk_widget_get_window() as you would for a DrawingArea.
 type Layout struct {
+	_ [0]func() // equal guard
 	Container
 
 	*externglib.Object
 	Scrollable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

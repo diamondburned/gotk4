@@ -58,13 +58,11 @@ func init() {
 //
 // GtkBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Box struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

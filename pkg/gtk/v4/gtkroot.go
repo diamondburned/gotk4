@@ -39,10 +39,8 @@ func init() {
 // GtkRoot also maintains the location of keyboard focus inside its widget
 // hierarchy, with gtk.Root.SetFocus() and gtk.Root.GetFocus().
 type Root struct {
+	_ [0]func() // equal guard
 	NativeSurface
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

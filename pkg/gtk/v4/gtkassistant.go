@@ -156,10 +156,8 @@ func _gotk4_gtk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
 // GtkAssistant has a single CSS node with the name window and style class
 // .assistant.
 type Assistant struct {
+	_ [0]func() // equal guard
 	Window
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -858,10 +856,8 @@ func (assistant *Assistant) UpdateButtonsState() {
 
 // AssistantPage: GtkAssistantPage is an auxiliary object used by `GtkAssistant.
 type AssistantPage struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

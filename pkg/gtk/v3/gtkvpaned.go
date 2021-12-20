@@ -31,10 +31,8 @@ func init() {
 //
 // GtkVPaned has been deprecated, use Paned instead.
 type VPaned struct {
+	_ [0]func() // equal guard
 	Paned
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

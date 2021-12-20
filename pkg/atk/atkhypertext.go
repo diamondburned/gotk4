@@ -72,10 +72,8 @@ type HypertextOverrider interface {
 // that Hypertext instances have textual content; they may implement Image as
 // well, and Hyperlinks need not have non-zero text offsets.
 type Hypertext struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -112,10 +112,8 @@ type InfoBarOverrider interface {
 // the style classes .info, .warning, .error or .question, depending on the
 // message type.
 type InfoBar struct {
+	_ [0]func() // equal guard
 	Box
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -296,10 +296,8 @@ type DatagramBasedOverrider interface {
 // Based concurrently from multiple threads, you must implement your own
 // locking.
 type DatagramBased struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

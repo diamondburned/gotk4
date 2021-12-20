@@ -74,10 +74,8 @@ const MENU_LINK_SUBMENU = "submenu"
 // MenuAttributeIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuAttributeIter struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -230,10 +228,8 @@ type MenuLinkIterOverrider interface {
 // MenuLinkIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuLinkIter struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -657,10 +653,8 @@ type MenuModelOverrider interface {
 // rendered as "selected" when the state of the action is equal to the target
 // value of the menu item.
 type MenuModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

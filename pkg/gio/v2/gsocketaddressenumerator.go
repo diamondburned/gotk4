@@ -99,10 +99,8 @@ type SocketAddressEnumeratorOverrider interface {
 // g_socket_address_enumerator_next() has returned NULL, further enumeration
 // with that AddressEnumerator is not possible, and it can be unreffed.
 type SocketAddressEnumerator struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

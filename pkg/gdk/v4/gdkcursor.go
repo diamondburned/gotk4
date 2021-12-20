@@ -57,10 +57,8 @@ func init() {
 // to support cursors. If none of the provided cursors can be supported, the
 // default cursor will be the ultimate fallback.
 type Cursor struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

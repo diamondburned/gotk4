@@ -45,10 +45,8 @@ func init() {
 // same effect with an image, use the icon names “pan-start-symbolic“ and
 // “pan-end-symbolic“, which react to the text direction.
 type Arrow struct {
+	_ [0]func() // equal guard
 	Misc
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

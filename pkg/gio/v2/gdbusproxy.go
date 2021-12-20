@@ -81,14 +81,12 @@ type DBusProxyOverrider interface {
 // gdbus-example-watch-proxy.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c).
 type DBusProxy struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	AsyncInitable
 	DBusInterface
 	Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -53,10 +53,8 @@ type RadioMenuItemOverrider interface {
 // GtkRadioMenuItem has a main CSS node with name menuitem, and a subnode with
 // name radio, which gets the .left or .right style class.
 type RadioMenuItem struct {
+	_ [0]func() // equal guard
 	CheckMenuItem
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

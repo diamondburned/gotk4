@@ -45,13 +45,11 @@ func init() {
 //
 // GtkGrid uses a single CSS node with name grid.
 type Grid struct {
+	_ [0]func() // equal guard
 	Container
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

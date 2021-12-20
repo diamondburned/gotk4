@@ -127,10 +127,8 @@ type SelectionOverrider interface {
 // accomplished a other ATK interfaces - Selection is limited to the
 // selection/deselection of children.
 type Selection struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

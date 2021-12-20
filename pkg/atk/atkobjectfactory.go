@@ -40,10 +40,8 @@ type ObjectFactoryOverrider interface {
 // atk_registry_set_factory_type() is normally called to store in the registry
 // the factory type to be used to create an accessible of a particular GType.
 type ObjectFactory struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -59,10 +59,8 @@ func init() {
 // GtkGridView uses the GTK_ACCESSIBLE_ROLE_GRID role, and the items use the
 // GTK_ACCESSIBLE_ROLE_GRID_CELL role.
 type GridView struct {
+	_ [0]func() // equal guard
 	ListBase
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

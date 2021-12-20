@@ -43,10 +43,8 @@ func init() {
 // Output devices are represented by gdk.Monitor objects, which can be accessed
 // with gdk.Display.GetMonitorAtSurface() and similar APIs.
 type Display struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

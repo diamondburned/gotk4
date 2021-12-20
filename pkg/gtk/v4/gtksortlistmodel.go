@@ -36,12 +36,10 @@ func init() {
 // issues with GtkSortListModel, it is strongly recommended that you write your
 // own sorting list model.
 type SortListModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

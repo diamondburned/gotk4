@@ -42,10 +42,8 @@ func init() {
 // titlebar widget of a Window (see gtk_window_set_titlebar()), as it gives
 // features typical of titlebars while allowing the addition of child widgets.
 type HeaderBar struct {
+	_ [0]func() // equal guard
 	Container
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

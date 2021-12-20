@@ -28,10 +28,8 @@ func init() {
 // Beyond the regular gdk.Seat API, the Wayland implementation provides access
 // to the Wayland wl_seat object with gdkwayland.WaylandSeat.GetWlSeat().
 type WaylandSeat struct {
+	_ [0]func() // equal guard
 	gdk.Seat
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

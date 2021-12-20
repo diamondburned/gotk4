@@ -62,10 +62,8 @@ type HandleBoxOverrider interface {
 // make it useful and most importantly does not fit well into modern >
 // application design. Do not use it. There is no replacement.
 type HandleBox struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

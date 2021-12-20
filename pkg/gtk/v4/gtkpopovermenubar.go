@@ -53,10 +53,8 @@ func init() {
 // use the GTK_ACCESSIBLE_ROLE_MENU_ITEM role and the menus use the
 // GTK_ACCESSIBLE_ROLE_MENU role.
 type PopoverMenuBar struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

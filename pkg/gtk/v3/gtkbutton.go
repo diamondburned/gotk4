@@ -77,14 +77,12 @@ type ButtonOverrider interface {
 // .toggle, .popup, .scale, .lock, .color, .font, .file to differentiate
 // themselves from a plain GtkButton.
 type Button struct {
+	_ [0]func() // equal guard
 	Bin
 
 	*externglib.Object
 	Actionable
 	Activatable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

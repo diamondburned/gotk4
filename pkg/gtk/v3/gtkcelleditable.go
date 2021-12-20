@@ -62,10 +62,8 @@ type CellEditableOverrider interface {
 // the contents of a TreeView cell. It provides a way to specify how temporary
 // widgets should be configured for editing, get the new value, etc.
 type CellEditable struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

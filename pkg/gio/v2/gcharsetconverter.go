@@ -26,13 +26,11 @@ func init() {
 
 // CharsetConverter is an implementation of #GConverter based on GIConv.
 type CharsetConverter struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Converter
 	Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

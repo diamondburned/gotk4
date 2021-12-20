@@ -34,10 +34,8 @@ func init() {
 //
 // GtkAspectFrame uses a CSS node with name frame.
 type AspectFrame struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

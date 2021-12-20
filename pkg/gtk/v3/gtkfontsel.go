@@ -30,10 +30,8 @@ func init() {
 }
 
 type FontSelection struct {
+	_ [0]func() // equal guard
 	Box
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -501,10 +499,8 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 }
 
 type FontSelectionDialog struct {
+	_ [0]func() // equal guard
 	Dialog
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

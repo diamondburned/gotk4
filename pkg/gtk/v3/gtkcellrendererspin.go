@@ -38,10 +38,8 @@ func init() {
 //
 // The CellRendererSpin cell renderer was added in GTK+ 2.10.
 type CellRendererSpin struct {
+	_ [0]func() // equal guard
 	CellRendererText
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

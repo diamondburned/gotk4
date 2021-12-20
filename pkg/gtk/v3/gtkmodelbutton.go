@@ -127,10 +127,8 @@ func (b ButtonRole) String() string {
 // node to button and add a .model style class to it. The indicator subnode is
 // invisible in this case.
 type ModelButton struct {
+	_ [0]func() // equal guard
 	Button
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

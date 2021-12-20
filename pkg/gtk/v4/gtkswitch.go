@@ -50,13 +50,11 @@ func init() {
 //
 // GtkSwitch uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
 type Switch struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Actionable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

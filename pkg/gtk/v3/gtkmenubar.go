@@ -35,10 +35,8 @@ func init() {
 //
 // GtkMenuBar has a single CSS node with name menubar.
 type MenuBar struct {
+	_ [0]func() // equal guard
 	MenuShell
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

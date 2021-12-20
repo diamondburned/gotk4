@@ -31,10 +31,8 @@ func init() {
 // coordinates be extracted through gtk_gesture_drag_get_offset() and
 // gtk_gesture_drag_get_start_point().
 type GestureDrag struct {
+	_ [0]func() // equal guard
 	GestureSingle
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

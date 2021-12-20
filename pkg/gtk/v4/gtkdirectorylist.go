@@ -49,12 +49,10 @@ func init() {
 // GtkDirectoryList, but can access the GFile directly from the GFileInfo when
 // operating with a GtkListView or similar.
 type DirectoryList struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

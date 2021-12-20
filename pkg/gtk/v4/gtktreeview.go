@@ -390,13 +390,11 @@ type TreeViewOverrider interface {
 // For the drop target location during DND, a subnode with name dndtarget is
 // used.
 type TreeView struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Scrollable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -78,10 +78,8 @@ type ShortcutsWindowOverrider interface {
 // The .ui file for this example can be found here
 // (https://git.gnome.org/browse/gtk+/tree/demos/gtk-demo/shortcuts-builder.ui).
 type ShortcutsWindow struct {
+	_ [0]func() // equal guard
 	Window
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

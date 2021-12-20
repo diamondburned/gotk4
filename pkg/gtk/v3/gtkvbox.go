@@ -50,10 +50,8 @@ func init() {
 // For more information about migrating to Grid, see [Migrating from other
 // containers to GtkGrid][gtk-migrating-GtkGrid].
 type VBox struct {
+	_ [0]func() // equal guard
 	Box
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

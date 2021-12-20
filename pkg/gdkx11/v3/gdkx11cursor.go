@@ -24,10 +24,8 @@ func init() {
 }
 
 type X11Cursor struct {
+	_ [0]func() // equal guard
 	gdk.Cursor
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

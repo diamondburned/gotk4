@@ -26,12 +26,10 @@ func init() {
 }
 
 type PanedAccessible struct {
+	_ [0]func() // equal guard
 	ContainerAccessible
 
 	atk.Value
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

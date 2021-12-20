@@ -33,12 +33,10 @@ func init() {
 //
 // See Connectable for an example of using the connectable interface.
 type NetworkAddress struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	SocketConnectable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

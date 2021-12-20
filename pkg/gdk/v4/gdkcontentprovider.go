@@ -119,10 +119,8 @@ type ContentProviderOverrider interface {
 // gdk.ContentSerializer and gdk.ContentDeserializer if you want to add support
 // for application-specific data formats.
 type ContentProvider struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

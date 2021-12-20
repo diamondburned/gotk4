@@ -25,10 +25,8 @@ func init() {
 
 // PixbufSimpleAnim: opaque struct representing a simple animation.
 type PixbufSimpleAnim struct {
+	_ [0]func() // equal guard
 	PixbufAnimation
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

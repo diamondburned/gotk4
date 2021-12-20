@@ -28,10 +28,8 @@ func init() {
 // VolumeButton is a subclass of ScaleButton that has been tailored for use as a
 // volume control widget with suitable icons, tooltips and accessible labels.
 type VolumeButton struct {
+	_ [0]func() // equal guard
 	ScaleButton
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -27,14 +27,12 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ GoDoc . 0 (OverrideSelfName .StructName) }}
 	type {{ .StructName }} struct {
+		_ [0]func() // equal guard
 		{{ index .Tree.ImplTypes 0 }}
 
 		{{ range (slice .Tree.ImplTypes 1) -}}
 		{{ . }}
 		{{ end }}
-
-		_ [0]func()     // equal guard
-		_ [0]sync.Mutex // copy guard
 	}
 
 	var (

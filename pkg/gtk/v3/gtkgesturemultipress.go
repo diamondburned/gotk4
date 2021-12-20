@@ -37,10 +37,8 @@ func init() {
 // touch/button press through gtk_gesture_multi_press_set_area(), so any click
 // happening outside that area is considered to be a first click of its own.
 type GestureMultiPress struct {
+	_ [0]func() // equal guard
 	GestureSingle
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

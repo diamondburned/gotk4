@@ -29,10 +29,8 @@ func init() {
 // filtering operations are character set conversion, compression and byte order
 // flipping.
 type FilterInputStream struct {
+	_ [0]func() // equal guard
 	InputStream
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

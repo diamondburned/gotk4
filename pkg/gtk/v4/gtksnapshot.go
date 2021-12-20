@@ -44,10 +44,8 @@ func init() {
 // GtkWidgetClass.snapshot() vfunc. If you need to create your own GtkSnapshot,
 // use gtk.Snapshot.New.
 type Snapshot struct {
+	_ [0]func() // equal guard
 	gdk.Snapshot
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

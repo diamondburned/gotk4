@@ -30,10 +30,8 @@ func init() {
 // implement their im-module property for switching between different input
 // methods.
 type IMMulticontext struct {
+	_ [0]func() // equal guard
 	IMContext
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

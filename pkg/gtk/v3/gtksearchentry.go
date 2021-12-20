@@ -63,10 +63,8 @@ type SearchEntryOverrider interface {
 // SearchBar. If that is not the case, you can use
 // gtk_search_entry_handle_event() to pass events.
 type SearchEntry struct {
+	_ [0]func() // equal guard
 	Entry
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

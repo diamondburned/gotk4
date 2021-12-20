@@ -139,10 +139,8 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 // gdk.FrameClock.GetFrameTime() and the value inside the gdkframeclock::update
 // signal of the clock, they will stay exactly synchronized.
 type FrameClock struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

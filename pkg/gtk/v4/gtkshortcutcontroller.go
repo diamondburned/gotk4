@@ -67,14 +67,12 @@ func init() {
 // kinds of GtkShortcutAction. See gtk.ShortcutTrigger.ParseString to learn more
 // about the syntax for triggers.
 type ShortcutController struct {
+	_ [0]func() // equal guard
 	EventController
 
 	*externglib.Object
 	gio.ListModel
 	Buildable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

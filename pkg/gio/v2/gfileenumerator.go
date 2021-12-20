@@ -158,10 +158,8 @@ type FileEnumeratorOverrider interface {
 // further actions may be performed on it, and it should be freed with
 // g_object_unref().
 type FileEnumerator struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

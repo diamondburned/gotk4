@@ -161,10 +161,8 @@ func FileChooserErrorQuark() glib.Quark {
 // a check button with the given label; if a choice has options, it will be
 // rendered as a combo box.
 type FileChooser struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

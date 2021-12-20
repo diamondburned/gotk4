@@ -132,10 +132,8 @@ func (b ButtonsType) String() string {
 // The GtkMessageDialog implementation of the GtkBuildable interface exposes the
 // message area as an internal child with the name “message_area”.
 type MessageDialog struct {
+	_ [0]func() // equal guard
 	Dialog
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

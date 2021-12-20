@@ -203,10 +203,8 @@ type IMContextOverrider interface {
 // [gtk-query-immodules-3.0][gtk-query-immodules-3.0], in order for the new
 // input method to become available to GTK+ applications.
 type IMContext struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

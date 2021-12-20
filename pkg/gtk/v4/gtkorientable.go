@@ -29,10 +29,8 @@ func init() {
 // GtkOrientable is more flexible in that it allows the orientation to be
 // changed at runtime, allowing the widgets to “flip”.
 type Orientable struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

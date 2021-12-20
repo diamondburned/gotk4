@@ -36,10 +36,8 @@ func init() {
 //
 // GtkHSeparator has been deprecated, use Separator instead.
 type HSeparator struct {
+	_ [0]func() // equal guard
 	Separator
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

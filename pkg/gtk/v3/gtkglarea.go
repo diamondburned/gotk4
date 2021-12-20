@@ -103,10 +103,8 @@ type GLAreaOverrider interface {
 // If you need to change the options for creating the GLContext you should use
 // the GLArea::create-context signal.
 type GLArea struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

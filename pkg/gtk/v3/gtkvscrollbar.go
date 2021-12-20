@@ -34,10 +34,8 @@ func init() {
 //
 // GtkVScrollbar has been deprecated, use Scrollbar instead.
 type VScrollbar struct {
+	_ [0]func() // equal guard
 	Scrollbar
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

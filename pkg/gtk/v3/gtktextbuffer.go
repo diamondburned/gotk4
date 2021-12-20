@@ -176,10 +176,8 @@ type TextBufferOverrider interface {
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
 type TextBuffer struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

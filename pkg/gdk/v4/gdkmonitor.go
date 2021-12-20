@@ -76,10 +76,8 @@ func (s SubpixelLayout) String() string {
 // gdk.Display.GetMonitors(). You can use gdk.Display.GetMonitorAtSurface() to
 // find a particular monitor.
 type Monitor struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

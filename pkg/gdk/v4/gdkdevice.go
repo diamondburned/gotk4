@@ -83,10 +83,8 @@ func (i InputSource) String() string {
 // See the gdk.Seat documentation for more information about the various kinds
 // of devices, and their relationships.
 type Device struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

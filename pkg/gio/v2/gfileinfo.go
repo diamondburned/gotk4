@@ -551,10 +551,8 @@ const FILE_ATTRIBUTE_UNIX_UID = "unix::uid"
 //
 // AttributeMatcher allows for searching through a Info for attributes.
 type FileInfo struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -45,10 +45,8 @@ func init() {
 // When contained offscreen widgets are redrawn, GtkOffscreenWindow will emit a
 // Widget::damage-event signal.
 type OffscreenWindow struct {
+	_ [0]func() // equal guard
 	Window
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

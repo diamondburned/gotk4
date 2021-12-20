@@ -31,12 +31,10 @@ func init() {
 // This model is meant to be used as a simple wrapper around a GListModel when a
 // GtkSelectionModel is required.
 type NoSelection struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	SelectionModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -29,10 +29,8 @@ func init() {
 //
 // The anchor can have multiple widgets anchored, to allow for multiple views.
 type TextChildAnchor struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

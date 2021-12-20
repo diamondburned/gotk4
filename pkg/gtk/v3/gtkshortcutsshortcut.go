@@ -89,10 +89,8 @@ func (s ShortcutType) String() string {
 // ShortcutsShortcut represents a single keyboard shortcut or gesture with a
 // short text. This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsShortcut struct {
+	_ [0]func() // equal guard
 	Box
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

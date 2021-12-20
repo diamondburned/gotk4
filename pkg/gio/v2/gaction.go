@@ -174,10 +174,8 @@ type ActionOverrider interface {
 // Probably the only useful thing to do with a #GAction is to put it inside of a
 // ActionGroup.
 type Action struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

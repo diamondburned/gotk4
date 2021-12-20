@@ -238,10 +238,8 @@ type RecentChooserOverrider interface {
 //
 // Recently used files are supported since GTK+ 2.10.
 type RecentChooser struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

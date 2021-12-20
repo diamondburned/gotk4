@@ -92,10 +92,8 @@ func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 // GtkWidget visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will also
 // change to reflect the gtk.Widget:visible property.
 type Accessible struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

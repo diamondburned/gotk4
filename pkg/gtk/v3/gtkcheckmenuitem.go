@@ -54,10 +54,8 @@ type CheckMenuItemOverrider interface {
 // GtkCheckMenuItem has a main CSS node with name menuitem, and a subnode with
 // name check, which gets the .left or .right style class.
 type CheckMenuItem struct {
+	_ [0]func() // equal guard
 	MenuItem
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

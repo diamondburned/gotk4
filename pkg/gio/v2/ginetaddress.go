@@ -46,10 +46,8 @@ type InetAddressOverrider interface {
 // To actually connect to a remote host, you will need a SocketAddress (which
 // includes a Address as well as a port number).
 type InetAddress struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

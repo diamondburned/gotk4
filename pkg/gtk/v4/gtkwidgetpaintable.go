@@ -45,12 +45,10 @@ func init() {
 // gtk.Picture:can-shrink property is set to TRUE or you might end up with an
 // infinitely growing widget.
 type WidgetPaintable struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gdk.Paintable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

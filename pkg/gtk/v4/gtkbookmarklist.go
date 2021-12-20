@@ -32,12 +32,10 @@ func init() {
 // The GFileInfos in the list have some attributes in the recent namespace
 // added: recent::private (boolean) and recent:applications (stringv).
 type BookmarkList struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

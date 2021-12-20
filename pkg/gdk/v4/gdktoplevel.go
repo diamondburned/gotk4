@@ -222,10 +222,8 @@ func (t ToplevelState) Has(other ToplevelState) bool {
 // windowing system, such as controlling maximization and size of the surface,
 // setting icons and transient parents for dialogs.
 type Toplevel struct {
+	_ [0]func() // equal guard
 	Surface
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

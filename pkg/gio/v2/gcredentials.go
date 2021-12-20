@@ -56,10 +56,8 @@ func init() {
 // On Solaris (including OpenSolaris and its derivatives), the native credential
 // type is a ucred_t. This corresponds to G_CREDENTIALS_TYPE_SOLARIS_UCRED.
 type Credentials struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

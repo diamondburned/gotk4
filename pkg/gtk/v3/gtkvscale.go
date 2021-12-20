@@ -34,10 +34,8 @@ func init() {
 //
 // GtkVScale has been deprecated, use Scale instead.
 type VScale struct {
+	_ [0]func() // equal guard
 	Scale
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -29,14 +29,12 @@ func init() {
 //
 // As of GLib 2.34, InputStream implements InputStream.
 type ConverterInputStream struct {
+	_ [0]func() // equal guard
 	FilterInputStream
 
 	*externglib.Object
 	InputStream
 	PollableInputStream
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

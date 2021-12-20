@@ -84,10 +84,8 @@ type RemoteActionGroupOverrider interface {
 // if available. This provides a mechanism by which to receive platform data for
 // action invocations that arrive by way of D-Bus.
 type RemoteActionGroup struct {
+	_ [0]func() // equal guard
 	ActionGroup
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var ()

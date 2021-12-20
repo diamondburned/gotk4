@@ -32,10 +32,8 @@ func init() {
 // properties which are updated to reflect focus changes inside the widget
 // hierarchy that is rooted at the controllers widget.
 type EventControllerFocus struct {
+	_ [0]func() // equal guard
 	EventController
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -104,10 +104,8 @@ type TreeDragDestOverrider interface {
 
 // TreeDragDest: interface for Drag-and-Drop destinations in GtkTreeView.
 type TreeDragDest struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -265,10 +263,8 @@ type TreeDragSourceOverrider interface {
 
 // TreeDragSource: interface for Drag-and-Drop destinations in GtkTreeView.
 type TreeDragSource struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

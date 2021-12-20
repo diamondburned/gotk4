@@ -30,10 +30,8 @@ func init() {
 // distance between clicks exceed the GTK defaults, gtk.GestureClick::stopped is
 // emitted, and the click counter is reset.
 type GestureClick struct {
+	_ [0]func() // equal guard
 	GestureSingle
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

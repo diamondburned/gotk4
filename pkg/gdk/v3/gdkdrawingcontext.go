@@ -36,10 +36,8 @@ func init() {
 //
 // DrawingContext is available since GDK 3.22.
 type DrawingContext struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

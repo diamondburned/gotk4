@@ -128,14 +128,12 @@ func (t ToolPaletteDragTargets) Has(other ToolPaletteDragTargets) bool {
 //
 // GtkToolPalette has a single CSS node named toolpalette.
 type ToolPalette struct {
+	_ [0]func() // equal guard
 	Container
 
 	*externglib.Object
 	Orientable
 	Scrollable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

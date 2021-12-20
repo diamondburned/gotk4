@@ -31,10 +31,8 @@ func init() {
 // there should be no need to manually wrap a AddressEnumerator instance with
 // one.
 type ProxyAddressEnumerator struct {
+	_ [0]func() // equal guard
 	SocketAddressEnumerator
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

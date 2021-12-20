@@ -30,10 +30,8 @@ func init() {
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
 type MountOperation struct {
+	_ [0]func() // equal guard
 	gio.MountOperation
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

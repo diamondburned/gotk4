@@ -182,10 +182,8 @@ func (p PopoverMenuFlags) Has(other PopoverMenuFlags) bool {
 // GTK_ACCESSIBLE_ROLE_MENU_ITEM_RADIO roles, depending on the action they are
 // connected to.
 type PopoverMenu struct {
+	_ [0]func() // equal guard
 	Popover
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

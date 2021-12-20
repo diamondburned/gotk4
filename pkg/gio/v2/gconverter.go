@@ -137,10 +137,8 @@ type ConverterOverrider interface {
 // Some example conversions are: character set conversion, compression,
 // decompression and regular expression replace.
 type Converter struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

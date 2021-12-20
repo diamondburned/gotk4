@@ -171,10 +171,8 @@ func QueryVisualTypes() []VisualType {
 
 // Visual contains information about a particular visual.
 type Visual struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

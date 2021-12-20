@@ -156,10 +156,8 @@ func (i IconLookupFlags) Has(other IconLookupFlags) bool {
 
 // IconInfo contains information found when looking up an icon in an icon theme.
 type IconInfo struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1160,10 +1158,8 @@ type IconThemeOverrider interface {
 //        g_object_unref (pixbuf);
 //      }.
 type IconTheme struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

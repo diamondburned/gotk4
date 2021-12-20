@@ -34,10 +34,8 @@ func init() {
 //
 // GtkSeparatorMenuItem has a single CSS node with name separator.
 type SeparatorMenuItem struct {
+	_ [0]func() // equal guard
 	MenuItem
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

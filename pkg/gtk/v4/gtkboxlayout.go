@@ -37,13 +37,11 @@ func init() {
 // If you want to specify the amount of space placed between each child, you can
 // use the gtk.BoxLayout:spacing property.
 type BoxLayout struct {
+	_ [0]func() // equal guard
 	LayoutManager
 
 	*externglib.Object
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

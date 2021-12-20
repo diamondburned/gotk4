@@ -86,10 +86,8 @@ func (r RevealerTransitionType) String() string {
 //
 // The GtkRevealer widget was added in GTK+ 3.10.
 type Revealer struct {
+	_ [0]func() // equal guard
 	Bin
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

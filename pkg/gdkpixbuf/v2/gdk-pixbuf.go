@@ -154,12 +154,10 @@ func init() {
 // buffer. GdkPixbuf can also call a user-defined callback on the data, which
 // allows to e.g. write the image to a socket or store it in a database.
 type Pixbuf struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.LoadableIcon
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

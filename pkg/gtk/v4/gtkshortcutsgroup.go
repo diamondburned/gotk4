@@ -31,10 +31,8 @@ func init() {
 //
 // This widget is only meant to be used with gtk.ShortcutsWindow.
 type ShortcutsGroup struct {
+	_ [0]func() // equal guard
 	Box
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

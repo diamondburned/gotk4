@@ -158,10 +158,8 @@ type AssistantOverrider interface {
 //
 // GtkAssistant has a single CSS node with the name assistant.
 type Assistant struct {
+	_ [0]func() // equal guard
 	Window
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

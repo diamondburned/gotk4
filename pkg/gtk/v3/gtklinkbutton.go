@@ -57,10 +57,8 @@ type LinkButtonOverrider interface {
 // GtkLinkButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .link style class.
 type LinkButton struct {
+	_ [0]func() // equal guard
 	Button
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

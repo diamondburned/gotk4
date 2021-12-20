@@ -102,10 +102,8 @@ type ActionableOverrider interface {
 // GtkApplication, but other action groups that are added with
 // gtk.Widget.InsertActionGroup() will be consulted as well.
 type Actionable struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

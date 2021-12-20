@@ -438,12 +438,10 @@ type PrintOperationOverrider interface {
 // gtk_print_operation_preview_is_selected() are useful when implementing a
 // print preview.
 type PrintOperation struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	PrintOperationPreview
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -130,10 +130,8 @@ func init() {
 // In GTK+ 3.20, a new Seat object has been introduced that supersedes
 // DeviceManager and should be preferred in newly written code.
 type DeviceManager struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -89,12 +89,10 @@ func init() {
 //      </widgets>
 //    </object>.
 type SizeGroup struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Buildable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

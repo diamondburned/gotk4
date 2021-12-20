@@ -102,10 +102,8 @@ func (m MemoryFormat) String() string {
 
 // MemoryTexture: GdkTexture representing image data in memory.
 type MemoryTexture struct {
+	_ [0]func() // equal guard
 	Texture
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

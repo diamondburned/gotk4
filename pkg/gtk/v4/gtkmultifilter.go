@@ -31,10 +31,8 @@ func init() {
 //
 // To add filters to a GtkAnyFilter, use gtk.MultiFilter.Append().
 type AnyFilter struct {
+	_ [0]func() // equal guard
 	MultiFilter
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -90,10 +88,8 @@ func NewAnyFilter() *AnyFilter {
 //
 // To add filters to a GtkEveryFilter, use gtk.MultiFilter.Append().
 type EveryFilter struct {
+	_ [0]func() // equal guard
 	MultiFilter
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -148,14 +144,12 @@ func NewEveryFilter() *EveryFilter {
 // MultiFilter: GtkMultiFilter is the base class for filters that combine
 // multiple filters.
 type MultiFilter struct {
+	_ [0]func() // equal guard
 	Filter
 
 	*externglib.Object
 	gio.ListModel
 	Buildable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

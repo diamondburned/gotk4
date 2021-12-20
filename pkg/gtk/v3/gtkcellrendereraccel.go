@@ -80,10 +80,8 @@ type CellRendererAccelOverrider interface {
 //
 // The CellRendererAccel cell renderer was added in GTK+ 2.10.
 type CellRendererAccel struct {
+	_ [0]func() // equal guard
 	CellRendererText
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

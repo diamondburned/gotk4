@@ -27,12 +27,10 @@ func init() {
 // CellRendererProgress renders a numeric value as a progress par in a cell.
 // Additionally, it can display a text on top of the progress bar.
 type CellRendererProgress struct {
+	_ [0]func() // equal guard
 	CellRenderer
 
 	Orientable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -63,10 +63,8 @@ func init() {
 // gtk.SignalListItemFactory::setup signal and removed again during
 // gtk.SignalListItemFactory::teardown.
 type SignalListItemFactory struct {
+	_ [0]func() // equal guard
 	ListItemFactory
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

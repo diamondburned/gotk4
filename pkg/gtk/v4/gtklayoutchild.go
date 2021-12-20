@@ -34,10 +34,8 @@ func init() {
 // A GtkLayoutChild instance is only ever valid while a widget is part of a
 // layout.
 type LayoutChild struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

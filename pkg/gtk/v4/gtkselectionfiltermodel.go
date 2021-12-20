@@ -28,12 +28,10 @@ func init() {
 // SelectionFilterModel: GtkSelectionFilterModel is a list model that presents
 // the selection from a GtkSelectionModel.
 type SelectionFilterModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gio.ListModel
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

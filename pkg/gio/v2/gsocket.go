@@ -79,13 +79,11 @@ func init() {
 // a #GSocket concurrently from multiple threads, you must implement your own
 // locking.
 type Socket struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	DatagramBased
 	Initable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

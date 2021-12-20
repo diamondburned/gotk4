@@ -32,12 +32,10 @@ func init() {
 // Note that Icon allows no control over the position of the emblems. See also
 // #GEmblem for more information.
 type EmblemedIcon struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	Icon
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

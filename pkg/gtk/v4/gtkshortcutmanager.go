@@ -48,10 +48,8 @@ type ShortcutManagerOverrider interface {
 // Every widget that implements GtkShortcutManager will be used as a
 // GTK_SHORTCUT_SCOPE_MANAGED.
 type ShortcutManager struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

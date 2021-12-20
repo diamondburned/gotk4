@@ -124,10 +124,8 @@ type ScaleOverrider interface {
 // If the scale is displaying the value (see Scale:draw-value), there is subnode
 // with name value.
 type Scale struct {
+	_ [0]func() // equal guard
 	Range
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

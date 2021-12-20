@@ -47,10 +47,8 @@ func (x X11DeviceType) String() string {
 }
 
 type X11DeviceXI2 struct {
+	_ [0]func() // equal guard
 	gdk.Device
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

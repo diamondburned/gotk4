@@ -24,14 +24,12 @@ func init() {
 
 // ListBase: GtkListBase is the abstract base class for GTK's list widgets.
 type ListBase struct {
+	_ [0]func() // equal guard
 	Widget
 
 	*externglib.Object
 	Orientable
 	Scrollable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

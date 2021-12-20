@@ -29,12 +29,10 @@ func init() {
 // DataOutputStream: data output stream implements Stream and includes functions
 // for writing data directly to an output stream.
 type DataOutputStream struct {
+	_ [0]func() // equal guard
 	FilterOutputStream
 
 	Seekable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

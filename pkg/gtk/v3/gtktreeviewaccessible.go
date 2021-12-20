@@ -26,15 +26,13 @@ func init() {
 }
 
 type TreeViewAccessible struct {
+	_ [0]func() // equal guard
 	ContainerAccessible
 
 	*externglib.Object
 	atk.Selection
 	atk.Table
 	CellAccessibleParent
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

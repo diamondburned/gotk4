@@ -93,10 +93,8 @@ type IconOverrider interface {
 // gives a result that is understood by g_icon_deserialize(), yielding one of
 // the built-in icon types.
 type Icon struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

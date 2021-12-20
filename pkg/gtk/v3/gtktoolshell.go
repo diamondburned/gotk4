@@ -111,10 +111,8 @@ type ToolShellOverrider interface {
 // ToolShell interface allows container widgets to provide additional
 // information when embedding ToolItem widgets.
 type ToolShell struct {
+	_ [0]func() // equal guard
 	Widget
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -29,10 +29,8 @@ func init() {
 //
 // The provided signals just relay the basic information of the stylus events.
 type GestureStylus struct {
+	_ [0]func() // equal guard
 	GestureSingle
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

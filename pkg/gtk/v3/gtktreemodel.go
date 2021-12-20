@@ -539,10 +539,8 @@ type TreeModelOverrider interface {
 // however, signals must be emitted at all times (however the root level is
 // always referenced when any view is attached).
 type TreeModel struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

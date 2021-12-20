@@ -26,12 +26,10 @@ func init() {
 }
 
 type ImageAccessible struct {
+	_ [0]func() // equal guard
 	WidgetAccessible
 
 	atk.Image
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

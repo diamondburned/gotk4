@@ -116,12 +116,10 @@ func (i IconLookupFlags) Has(other IconLookupFlags) bool {
 //
 // GtkIconPaintable implements GdkPaintable.
 type IconPaintable struct {
+	_ [0]func() // equal guard
 	*externglib.Object
 
 	gdk.Paintable
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -309,10 +307,8 @@ func (self *IconPaintable) IsSymbolic() bool {
 //    // Use the paintable
 //    g_object_unref (icon);.
 type IconTheme struct {
+	_ [0]func() // equal guard
 	*externglib.Object
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

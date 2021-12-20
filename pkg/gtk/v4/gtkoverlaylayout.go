@@ -31,10 +31,8 @@ func init() {
 // This is not a reusable layout manager, since it expects its widget to be a
 // GtkOverlay. It only listed here so that its layout properties get documented.
 type OverlayLayout struct {
+	_ [0]func() // equal guard
 	LayoutManager
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -74,10 +72,8 @@ func NewOverlayLayout() *OverlayLayout {
 // OverlayLayoutChild: GtkLayoutChild subclass for children in a
 // GtkOverlayLayout.
 type OverlayLayoutChild struct {
+	_ [0]func() // equal guard
 	LayoutChild
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

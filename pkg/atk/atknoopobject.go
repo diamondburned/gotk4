@@ -27,6 +27,7 @@ func init() {
 // is the type of AtkObject which is created if an accessible object is
 // requested for an object type for which no factory type is specified.
 type NoOpObject struct {
+	_ [0]func() // equal guard
 	ObjectClass
 
 	*externglib.Object
@@ -42,9 +43,6 @@ type NoOpObject struct {
 	Text
 	Value
 	Window
-
-	_ [0]func()     // equal guard
-	_ [0]sync.Mutex // copy guard
 }
 
 var (

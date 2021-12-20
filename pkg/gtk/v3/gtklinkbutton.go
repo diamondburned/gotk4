@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -57,6 +58,9 @@ type LinkButtonOverrider interface {
 // from a plain Button, it gets the .link style class.
 type LinkButton struct {
 	Button
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

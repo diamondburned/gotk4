@@ -6,6 +6,7 @@ import (
 	"context"
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -193,6 +194,9 @@ type Task struct {
 	*externglib.Object
 
 	AsyncResult
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

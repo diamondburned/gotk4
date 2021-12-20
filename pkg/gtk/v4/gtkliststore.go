@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -68,6 +69,9 @@ type ListStore struct {
 	TreeDragDest
 	TreeDragSource
 	TreeSortable
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

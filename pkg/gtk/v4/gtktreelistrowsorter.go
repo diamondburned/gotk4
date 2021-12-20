@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -35,6 +36,9 @@ func init() {
 //    gtk_column_view_set_model (view, G_LIST_MODEL (selection));.
 type TreeListRowSorter struct {
 	Sorter
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"runtime/cgo"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -539,6 +540,9 @@ type TreeModelOverrider interface {
 // always referenced when any view is attached).
 type TreeModel struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package gdk
 import (
 	"context"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -119,6 +120,9 @@ type ContentProviderOverrider interface {
 // for application-specific data formats.
 type ContentProvider struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

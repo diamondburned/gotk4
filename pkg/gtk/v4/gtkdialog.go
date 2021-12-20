@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -285,6 +286,9 @@ type DialogOverrider interface {
 // GtkDialog uses the GTK_ACCESSIBLE_ROLE_DIALOG role.
 type Dialog struct {
 	Window
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

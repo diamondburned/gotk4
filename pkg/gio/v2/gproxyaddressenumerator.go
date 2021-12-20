@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -31,6 +32,9 @@ func init() {
 // one.
 type ProxyAddressEnumerator struct {
 	SocketAddressEnumerator
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

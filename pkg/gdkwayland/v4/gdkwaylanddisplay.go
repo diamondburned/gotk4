@@ -4,6 +4,7 @@ package gdkwayland
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -34,6 +35,9 @@ func init() {
 // gdkwayland.WaylandDisplay.QueryRegistry().
 type WaylandDisplay struct {
 	gdk.Display
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

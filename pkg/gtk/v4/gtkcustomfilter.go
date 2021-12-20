@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -57,6 +58,9 @@ func _gotk4_gtk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboo
 // callback.
 type CustomFilter struct {
 	Filter
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -199,6 +200,9 @@ func (s StackTransitionType) String() string {
 // are the accessible parent objects of the child widgets.
 type Stack struct {
 	Widget
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -890,6 +894,9 @@ type StackPage struct {
 	*externglib.Object
 
 	Accessible
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

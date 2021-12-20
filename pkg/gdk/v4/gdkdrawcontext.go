@@ -5,6 +5,7 @@ package gdk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -35,6 +36,9 @@ func init() {
 // A GdkDrawContext is always associated with a single toplevel surface.
 type DrawContext struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

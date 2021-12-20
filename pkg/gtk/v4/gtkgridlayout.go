@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -39,6 +40,9 @@ func init() {
 // column, you should consider using GtkBoxLayout.
 type GridLayout struct {
 	LayoutManager
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -349,6 +353,9 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 // GridLayoutChild: GtkLayoutChild subclass for children in a GtkGridLayout.
 type GridLayoutChild struct {
 	LayoutChild
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package gio
 import (
 	"context"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -193,6 +194,9 @@ type TLSInteractionOverrider interface {
 // it must also implement the corresponding finish method.
 type TLSInteraction struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

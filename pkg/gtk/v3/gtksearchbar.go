@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -53,6 +54,9 @@ func init() {
 // (https://gitlab.gnome.org/GNOME/gtk/blob/gtk-3-24/examples/search-bar.c).
 type SearchBar struct {
 	Bin
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

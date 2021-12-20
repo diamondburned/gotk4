@@ -5,6 +5,7 @@ package gio
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -66,6 +67,9 @@ type TLSCertificateOverrider interface {
 // (which is needed when acting as a ServerConnection).
 type TLSCertificate struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

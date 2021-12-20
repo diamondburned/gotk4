@@ -5,6 +5,7 @@ package gtk
 import (
 	"fmt"
 	"strings"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -114,6 +115,9 @@ type BuilderScopeOverrider interface {
 // language which can be created via gtk.BuilderCScope.New.
 type BuilderScope struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -166,6 +170,9 @@ type BuilderCScope struct {
 	*externglib.Object
 
 	BuilderScope
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

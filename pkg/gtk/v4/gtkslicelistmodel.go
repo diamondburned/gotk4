@@ -5,6 +5,7 @@ package gtk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -34,6 +35,9 @@ type SliceListModel struct {
 	*externglib.Object
 
 	gio.ListModel
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

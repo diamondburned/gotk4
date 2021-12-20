@@ -5,6 +5,7 @@ package gsk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -39,6 +40,9 @@ func init() {
 // create the appropriate windowing system resources needed to render the scene.
 type Renderer struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

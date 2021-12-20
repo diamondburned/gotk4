@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -24,6 +25,9 @@ func init() {
 
 type X11DeviceXI2 struct {
 	gdk.Device
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

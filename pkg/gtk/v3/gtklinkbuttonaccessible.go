@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -29,6 +30,9 @@ type LinkButtonAccessible struct {
 
 	*externglib.Object
 	atk.HyperlinkImpl
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

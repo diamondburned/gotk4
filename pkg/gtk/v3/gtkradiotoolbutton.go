@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -40,6 +41,9 @@ func init() {
 // GtkRadioToolButton has a single CSS node with name toolbutton.
 type RadioToolButton struct {
 	ToggleToolButton
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

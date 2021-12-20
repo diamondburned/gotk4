@@ -5,6 +5,7 @@ package gtk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -32,6 +33,9 @@ func init() {
 // This object was added in 3.24.
 type EventControllerKey struct {
 	EventController
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package atk
 import (
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -122,6 +123,9 @@ type DocumentOverrider interface {
 // which can reasonably be considered a document in its own right.
 type Document struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

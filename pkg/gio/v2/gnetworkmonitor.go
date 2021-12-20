@@ -6,6 +6,7 @@ import (
 	"context"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -96,6 +97,9 @@ type NetworkMonitorOverrider interface {
 // There is also an implementation for use inside Flatpak sandboxes.
 type NetworkMonitor struct {
 	Initable
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var ()

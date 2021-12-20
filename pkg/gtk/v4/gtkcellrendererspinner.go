@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -34,6 +35,9 @@ func init() {
 // gtk_tree_view_column_add_attribute().
 type CellRendererSpinner struct {
 	CellRenderer
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

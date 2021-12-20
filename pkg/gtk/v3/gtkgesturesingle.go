@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -40,6 +41,9 @@ func init() {
 // can be known through gtk_gesture_single_get_current_button().
 type GestureSingle struct {
 	Gesture
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package atk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -27,6 +28,9 @@ func init() {
 // rather created when #atk_object_ref_state_set() is called.
 type StateSet struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

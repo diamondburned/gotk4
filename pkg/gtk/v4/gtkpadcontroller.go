@@ -5,6 +5,7 @@ package gtk
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -103,6 +104,9 @@ func (p PadActionType) String() string {
 // required that those are made stateful and accepting this GVariantType.
 type PadController struct {
 	EventController
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

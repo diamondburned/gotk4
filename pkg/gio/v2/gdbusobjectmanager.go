@@ -5,6 +5,7 @@ package gio
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -98,6 +99,9 @@ type DBusObjectManagerOverrider interface {
 // BusObjectManagerServer for the service-side implementation.
 type DBusObjectManager struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

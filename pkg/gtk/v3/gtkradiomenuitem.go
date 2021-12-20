@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -53,6 +54,9 @@ type RadioMenuItemOverrider interface {
 // name radio, which gets the .left or .right style class.
 type RadioMenuItem struct {
 	CheckMenuItem
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

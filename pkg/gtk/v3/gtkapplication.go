@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -181,6 +182,9 @@ type ApplicationOverrider interface {
 // (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3).
 type Application struct {
 	gio.Application
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

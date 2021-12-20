@@ -5,6 +5,7 @@ package gtk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -44,6 +45,9 @@ func init() {
 // use gtk.Snapshot.New.
 type Snapshot struct {
 	gdk.Snapshot
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

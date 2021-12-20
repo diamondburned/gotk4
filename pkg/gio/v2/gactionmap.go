@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -74,6 +75,9 @@ type ActionMapOverrider interface {
 // "win."). This is the motivation for the 'Map' part of the interface name.
 type ActionMap struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

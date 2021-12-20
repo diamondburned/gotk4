@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -62,6 +63,9 @@ type HandleBoxOverrider interface {
 // application design. Do not use it. There is no replacement.
 type HandleBox struct {
 	Bin
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

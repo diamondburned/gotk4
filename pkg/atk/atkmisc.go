@@ -4,6 +4,7 @@ package atk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -51,6 +52,9 @@ type MiscOverrider interface {
 // related methods are deprecated since 2.12.
 type Misc struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

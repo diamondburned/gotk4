@@ -5,6 +5,7 @@ package gdk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -43,6 +44,9 @@ func init() {
 // with gdk.Display.GetMonitorAtSurface() and similar APIs.
 type Display struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

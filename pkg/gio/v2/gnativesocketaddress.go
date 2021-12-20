@@ -5,6 +5,7 @@ package gio
 import (
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -26,6 +27,9 @@ func init() {
 // NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress struct {
 	SocketAddress
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

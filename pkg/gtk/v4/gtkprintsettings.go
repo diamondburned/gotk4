@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -107,6 +108,9 @@ func _gotk4_gtk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) 
 // moving such a document between systems still works.
 type PrintSettings struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package pango
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -164,6 +165,9 @@ func (w WrapMode) String() string {
 // results of a PangoLayout as a list of lines.
 type Layout struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -73,6 +74,9 @@ func (s Status) String() string {
 
 type DeviceTool struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -91,6 +95,9 @@ func marshalDeviceTooler(p uintptr) (interface{}, error) {
 
 type DragContext struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -109,6 +110,9 @@ func _gotk4_gtk3_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer
 // Printing support was added in GTK+ 2.10.
 type PrintSettings struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

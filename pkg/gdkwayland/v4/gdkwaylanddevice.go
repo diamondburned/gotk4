@@ -4,6 +4,7 @@ package gdkwayland
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -32,6 +33,9 @@ func init() {
 // gdkwayland.WaylandDevice.GetWlPointer().
 type WaylandDevice struct {
 	gdk.Device
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

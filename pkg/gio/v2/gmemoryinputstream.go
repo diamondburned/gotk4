@@ -4,6 +4,7 @@ package gio
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -34,6 +35,9 @@ type MemoryInputStream struct {
 	*externglib.Object
 	PollableInputStream
 	Seekable
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package gtk
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -176,6 +177,9 @@ type AboutDialogOverrider interface {
 // button returns the K_RESPONSE_CANCEL response id.
 type AboutDialog struct {
 	Dialog
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

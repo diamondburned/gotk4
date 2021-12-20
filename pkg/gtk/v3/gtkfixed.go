@@ -5,6 +5,7 @@ package gtk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -65,6 +66,9 @@ func init() {
 // child widgets and additionally adds custom drawing and scrollability.
 type Fixed struct {
 	Container
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -29,6 +30,9 @@ func init() {
 // The provided signals just relay the basic information of the stylus events.
 type GestureStylus struct {
 	GestureSingle
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -45,6 +46,9 @@ type CellRendererTextOverrider interface {
 // CellRendererText allows to edit its text using an entry.
 type CellRendererText struct {
 	CellRenderer
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

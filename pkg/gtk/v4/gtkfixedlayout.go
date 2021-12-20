@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -56,6 +57,9 @@ func init() {
 // long-term maintenance problem for your application.
 type FixedLayout struct {
 	LayoutManager
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -95,6 +99,9 @@ func NewFixedLayout() *FixedLayout {
 // FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.
 type FixedLayoutChild struct {
 	LayoutChild
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

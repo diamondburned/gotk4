@@ -5,6 +5,7 @@ package gdk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -36,6 +37,9 @@ func init() {
 // DrawingContext is available since GDK 3.22.
 type DrawingContext struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

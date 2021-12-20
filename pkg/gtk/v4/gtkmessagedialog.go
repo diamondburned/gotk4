@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -132,6 +133,9 @@ func (b ButtonsType) String() string {
 // message area as an internal child with the name “message_area”.
 type MessageDialog struct {
 	Dialog
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

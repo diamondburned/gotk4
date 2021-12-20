@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -134,6 +135,9 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 // signal of the clock, they will stay exactly synchronized.
 type FrameClock struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

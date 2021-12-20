@@ -5,6 +5,7 @@ package gio
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -29,6 +30,9 @@ func init() {
 // actually created is not directly a Connection.
 type TCPWrapperConnection struct {
 	TCPConnection
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package gio
 import (
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -140,6 +141,9 @@ type AsyncResultOverrider interface {
 // with G_PRIORITY_DEFAULT as a default.
 type AsyncResult struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

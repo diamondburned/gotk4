@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -32,6 +33,9 @@ func init() {
 // This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsGroup struct {
 	Box
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -192,6 +193,9 @@ type FileChooserDialog struct {
 
 	*externglib.Object
 	FileChooser
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

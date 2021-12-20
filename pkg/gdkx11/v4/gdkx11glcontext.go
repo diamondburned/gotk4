@@ -4,6 +4,7 @@ package gdkx11
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -57,6 +58,9 @@ func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
 
 type X11GLContext struct {
 	gdk.GLContext
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -385,6 +386,9 @@ type FontOverrider interface {
 // manner.
 type Font struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -779,6 +783,9 @@ type FontFaceOverrider interface {
 // family, slant, weight, and width, but varying sizes.
 type FontFace struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1048,6 +1055,9 @@ type FontFamilyOverrider interface {
 // weight, width or other aspects.
 type FontFamily struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

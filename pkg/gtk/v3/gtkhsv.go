@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -44,6 +45,9 @@ type HSVOverrider interface {
 // HSV has been deprecated together with ColorSelection, where it was used.
 type HSV struct {
 	Widget
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

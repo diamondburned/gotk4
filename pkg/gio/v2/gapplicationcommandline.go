@@ -5,6 +5,7 @@ package gio
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -126,6 +127,9 @@ type ApplicationCommandLineOverrider interface {
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c).
 type ApplicationCommandLine struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

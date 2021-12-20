@@ -3,6 +3,7 @@
 package gdkwayland
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -31,6 +32,9 @@ type WaylandPopup struct {
 	*externglib.Object
 	gdk.Popup
 	gdk.Surface
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -67,6 +71,9 @@ func marshalWaylandPopupper(p uintptr) (interface{}, error) {
 // Wayland wl_surface object with gdkwayland.WaylandSurface.GetWlSurface().
 type WaylandSurface struct {
 	gdk.Surface
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -97,6 +104,9 @@ type WaylandToplevel struct {
 	*externglib.Object
 	gdk.Surface
 	gdk.Toplevel
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

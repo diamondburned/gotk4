@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"runtime"
 	_ "runtime/cgo"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -582,6 +583,9 @@ func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 // Cairo was compiled to use.
 type Font struct {
 	pango.Font
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -625,6 +629,9 @@ func BaseFont(obj Fonter) *Font {
 // Cairo was compiled to use.
 type FontMap struct {
 	pango.FontMap
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

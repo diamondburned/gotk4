@@ -3,6 +3,7 @@
 package gdkwayland
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -25,6 +26,9 @@ func init() {
 // WaylandGLContext: wayland implementation of GdkGLContext.
 type WaylandGLContext struct {
 	gdk.GLContext
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

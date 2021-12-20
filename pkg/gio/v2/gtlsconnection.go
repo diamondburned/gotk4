@@ -6,6 +6,7 @@ import (
 	"context"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -109,6 +110,9 @@ type TLSConnectionOverrider interface {
 // For DTLS (Datagram TLS) support, see Connection.
 type TLSConnection struct {
 	IOStream
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

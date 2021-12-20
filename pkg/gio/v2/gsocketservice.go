@@ -4,6 +4,7 @@ package gio
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -61,6 +62,9 @@ type SocketServiceOverrider interface {
 // handle incoming clients.
 type SocketService struct {
 	SocketListener
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

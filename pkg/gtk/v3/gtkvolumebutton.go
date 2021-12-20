@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -28,6 +29,9 @@ func init() {
 // volume control widget with suitable icons, tooltips and accessible labels.
 type VolumeButton struct {
 	ScaleButton
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

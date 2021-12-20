@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -81,6 +82,9 @@ type SocketControlMessageOverrider interface {
 // g_socket_receive_message() to read such a message.
 type SocketControlMessage struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

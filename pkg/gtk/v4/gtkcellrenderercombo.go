@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -35,6 +36,9 @@ func init() {
 // can be set in a handler for the CellRenderer::editing-started signal.
 type CellRendererCombo struct {
 	CellRendererText
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

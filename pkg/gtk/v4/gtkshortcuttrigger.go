@@ -5,6 +5,7 @@ package gtk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -35,6 +36,9 @@ func init() {
 // This can be cascaded to combine more than two triggers.
 type AlternativeTrigger struct {
 	ShortcutTrigger
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -167,6 +171,9 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 // modifiers are pressed.
 type KeyvalTrigger struct {
 	ShortcutTrigger
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -267,6 +274,9 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 // pressed together with the mnemonic key.
 type MnemonicTrigger struct {
 	ShortcutTrigger
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -340,6 +350,9 @@ func (self *MnemonicTrigger) Keyval() uint {
 // NeverTrigger: GtkShortcutTrigger that never triggers.
 type NeverTrigger struct {
 	ShortcutTrigger
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -393,6 +406,9 @@ func NeverTriggerGet() *NeverTrigger {
 // with a new one.
 type ShortcutTrigger struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

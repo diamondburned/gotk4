@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -924,6 +925,9 @@ func _gotk4_atk1_Function(arg0 C.gpointer) (cret C.gboolean) {
 // iface->(ref_accessible)(implementor);.
 type ImplementorIface struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1155,6 +1159,9 @@ type ObjectClassOverrider interface {
 // See also: ObjectFactory, Registry. (GTK+ users see also Accessible).
 type ObjectClass struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

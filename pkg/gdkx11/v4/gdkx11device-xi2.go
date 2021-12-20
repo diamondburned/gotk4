@@ -4,6 +4,7 @@ package gdkx11
 
 import (
 	"fmt"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -47,6 +48,9 @@ func (x X11DeviceType) String() string {
 
 type X11DeviceXI2 struct {
 	gdk.Device
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

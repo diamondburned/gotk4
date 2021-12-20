@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -156,6 +157,9 @@ func (i IconLookupFlags) Has(other IconLookupFlags) bool {
 // IconInfo contains information found when looking up an icon in an icon theme.
 type IconInfo struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1157,6 +1161,9 @@ type IconThemeOverrider interface {
 //      }.
 type IconTheme struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

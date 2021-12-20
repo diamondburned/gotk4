@@ -4,6 +4,7 @@ package gio
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -35,6 +36,9 @@ type FilenameCompleterOverrider interface {
 // completion strings for widget implementations.
 type FilenameCompleter struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

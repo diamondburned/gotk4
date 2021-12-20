@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -118,6 +119,9 @@ type IconPaintable struct {
 	*externglib.Object
 
 	gdk.Paintable
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -306,6 +310,9 @@ func (self *IconPaintable) IsSymbolic() bool {
 //    g_object_unref (icon);.
 type IconTheme struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -152,6 +153,9 @@ type ScaleOverrider interface {
 // GtkScale uses the GTK_ACCESSIBLE_ROLE_SLIDER role.
 type Scale struct {
 	Range
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

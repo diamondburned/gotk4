@@ -5,6 +5,7 @@ package gtk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -32,6 +33,9 @@ func init() {
 // To obtain the strings to compare, this sorter evaluates a gtk.Expression.
 type StringSorter struct {
 	Sorter
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

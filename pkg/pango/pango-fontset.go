@@ -5,6 +5,7 @@ package pango
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -130,6 +131,9 @@ type FontsetOverrider interface {
 // for the entire fontset.
 type Fontset struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -270,6 +274,9 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 // that make up the fontset.
 type FontsetSimple struct {
 	Fontset
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

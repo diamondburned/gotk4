@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -36,6 +37,9 @@ func init() {
 // GtkHSeparator has been deprecated, use Separator instead.
 type HSeparator struct {
 	Separator
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

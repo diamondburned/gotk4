@@ -5,6 +5,7 @@ package gtk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -53,6 +54,9 @@ func init() {
 // GTK_ACCESSIBLE_ROLE_MENU role.
 type PopoverMenuBar struct {
 	Widget
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

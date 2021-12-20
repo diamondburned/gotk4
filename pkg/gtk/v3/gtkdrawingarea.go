@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -102,6 +103,9 @@ func init() {
 // the focus indicator. See gtk_render_focus() for one way to draw focus.
 type DrawingArea struct {
 	Widget
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

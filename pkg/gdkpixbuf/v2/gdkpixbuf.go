@@ -4,6 +4,7 @@ package gdkpixbuf
 
 import (
 	_ "runtime/cgo"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -39,6 +40,9 @@ func PixbufErrorQuark() glib.Quark {
 
 type PixbufSimpleAnimIter struct {
 	PixbufAnimationIter
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

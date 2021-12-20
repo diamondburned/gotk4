@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -43,6 +44,9 @@ type ToggleToolButtonOverrider interface {
 // GtkToggleToolButton has a single CSS node with name togglebutton.
 type ToggleToolButton struct {
 	ToolButton
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

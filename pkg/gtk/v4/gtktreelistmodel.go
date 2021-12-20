@@ -5,6 +5,7 @@ package gtk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -65,6 +66,9 @@ type TreeListModel struct {
 	*externglib.Object
 
 	gio.ListModel
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -347,6 +351,9 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 // to sort trees properly.
 type TreeListRow struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

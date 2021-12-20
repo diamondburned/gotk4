@@ -6,6 +6,7 @@ import (
 	"context"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -97,6 +98,9 @@ type ProxyOverrider interface {
 // g_io_extension_point_get_extension_by_name().
 type Proxy struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

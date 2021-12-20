@@ -5,6 +5,7 @@ package gdk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -42,6 +43,9 @@ func init() {
 // obtain using gdk_display_get_device_manager().
 type Display struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -31,6 +32,9 @@ func init() {
 // GtkOverlay. It only listed here so that its layout properties get documented.
 type OverlayLayout struct {
 	LayoutManager
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -71,6 +75,9 @@ func NewOverlayLayout() *OverlayLayout {
 // GtkOverlayLayout.
 type OverlayLayoutChild struct {
 	LayoutChild
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

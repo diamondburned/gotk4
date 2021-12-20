@@ -5,6 +5,7 @@ package gio
 import (
 	"context"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -109,6 +110,9 @@ type FileInputStream struct {
 
 	*externglib.Object
 	Seekable
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

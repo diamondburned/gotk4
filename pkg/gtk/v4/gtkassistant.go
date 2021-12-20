@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -156,6 +157,9 @@ func _gotk4_gtk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
 // .assistant.
 type Assistant struct {
 	Window
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -855,6 +859,9 @@ func (assistant *Assistant) UpdateButtonsState() {
 // AssistantPage: GtkAssistantPage is an auxiliary object used by `GtkAssistant.
 type AssistantPage struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

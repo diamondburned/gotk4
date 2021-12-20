@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -48,6 +49,9 @@ type ShortcutManagerOverrider interface {
 // GTK_SHORTCUT_SCOPE_MANAGED.
 type ShortcutManager struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

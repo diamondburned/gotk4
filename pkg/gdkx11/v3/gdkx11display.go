@@ -4,6 +4,7 @@ package gdkx11
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -83,6 +84,9 @@ func X11SetSmClientID(smClientId string) {
 
 type X11Display struct {
 	gdk.Display
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

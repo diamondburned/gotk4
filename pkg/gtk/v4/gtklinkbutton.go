@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -52,6 +53,9 @@ func init() {
 // GtkLinkButton uses the K_ACCESSIBLE_ROLE_LINK role.
 type LinkButton struct {
 	Button
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

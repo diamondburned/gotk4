@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -107,6 +108,9 @@ func (a AttachOptions) Has(other AttachOptions) bool {
 // does support height-for-width geometry management.
 type Table struct {
 	Container
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package gio
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -46,6 +47,9 @@ type InetAddressOverrider interface {
 // includes a Address as well as a port number).
 type InetAddress struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

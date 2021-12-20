@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -148,6 +149,9 @@ func (i ImageType) String() string {
 // appear on image CSS nodes: .icon-dropshadow, .lowres-icon.
 type Image struct {
 	Misc
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

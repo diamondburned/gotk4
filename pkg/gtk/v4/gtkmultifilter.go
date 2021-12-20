@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -31,6 +32,9 @@ func init() {
 // To add filters to a GtkAnyFilter, use gtk.MultiFilter.Append().
 type AnyFilter struct {
 	MultiFilter
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -87,6 +91,9 @@ func NewAnyFilter() *AnyFilter {
 // To add filters to a GtkEveryFilter, use gtk.MultiFilter.Append().
 type EveryFilter struct {
 	MultiFilter
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -146,6 +153,9 @@ type MultiFilter struct {
 	*externglib.Object
 	gio.ListModel
 	Buildable
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

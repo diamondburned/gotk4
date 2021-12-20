@@ -5,6 +5,7 @@ package gio
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -29,6 +30,9 @@ func init() {
 // specific subtypes implement.
 type TLSFileDatabase struct {
 	TLSDatabase
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

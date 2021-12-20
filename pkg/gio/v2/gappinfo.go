@@ -6,6 +6,7 @@ import (
 	"context"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -344,6 +345,9 @@ type AppInfoOverrider interface {
 // managers) may have different ideas of what a given URI means.
 type AppInfo struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1770,6 +1774,9 @@ type AppLaunchContextOverrider interface {
 // application on the same screen as the launching window.
 type AppLaunchContext struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

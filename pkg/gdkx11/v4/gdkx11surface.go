@@ -5,6 +5,7 @@ package gdkx11
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -53,6 +54,9 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 
 type X11Surface struct {
 	gdk.Surface
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

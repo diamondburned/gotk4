@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -91,6 +92,9 @@ func (a ArrowPlacement) String() string {
 // .bottom style classes.
 type Menu struct {
 	MenuShell
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

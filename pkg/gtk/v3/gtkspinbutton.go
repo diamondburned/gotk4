@@ -5,6 +5,7 @@ package gtk
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -178,6 +179,9 @@ type SpinButton struct {
 
 	*externglib.Object
 	Orientable
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

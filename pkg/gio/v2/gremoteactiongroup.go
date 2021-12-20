@@ -4,6 +4,7 @@ package gio
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -84,6 +85,9 @@ type RemoteActionGroupOverrider interface {
 // action invocations that arrive by way of D-Bus.
 type RemoteActionGroup struct {
 	ActionGroup
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var ()

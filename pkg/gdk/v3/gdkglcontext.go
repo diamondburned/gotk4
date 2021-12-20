@@ -5,6 +5,7 @@ package gdk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -72,6 +73,9 @@ func init() {
 // currently set by calling gdk_gl_context_clear_current().
 type GLContext struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

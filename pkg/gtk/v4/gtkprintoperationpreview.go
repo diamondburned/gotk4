@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -77,6 +78,9 @@ type PrintOperationPreviewOverrider interface {
 // gtk.PrintOperation::preview signal by gtk.PrintOperation.
 type PrintOperationPreview struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

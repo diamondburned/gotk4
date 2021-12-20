@@ -57,6 +57,11 @@ func SourceRemove(src SourceHandle) bool {
 	return externglib.SourceRemove(src)
 }
 
+// ObjectEq is an alias for pkg/core/glib.ObjectEq.
+func ObjectEq(obj1 Objector, obj2 Objector) bool {
+	return externglib.ObjectEq(obj1, obj2)
+}
+
 // Object is an alias for pkg/core/glib.Object.
 type Object = externglib.Object
 

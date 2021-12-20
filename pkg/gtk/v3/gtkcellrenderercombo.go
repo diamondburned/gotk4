@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -37,6 +38,9 @@ func init() {
 // The CellRendererCombo cell renderer was added in GTK+ 2.6.
 type CellRendererCombo struct {
 	CellRendererText
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

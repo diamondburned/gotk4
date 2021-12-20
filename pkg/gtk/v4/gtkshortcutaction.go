@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -135,6 +136,9 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 // ActivateAction: GtkShortcutAction that calls gtk_widget_activate().
 type ActivateAction struct {
 	ShortcutAction
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -177,6 +181,9 @@ func ActivateActionGet() *ActivateAction {
 // CallbackAction: GtkShortcutAction that invokes a callback.
 type CallbackAction struct {
 	ShortcutAction
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -231,6 +238,9 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 // MnemonicAction: GtkShortcutAction that calls gtk_widget_mnemonic_activate().
 type MnemonicAction struct {
 	ShortcutAction
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -273,6 +283,9 @@ func MnemonicActionGet() *MnemonicAction {
 // NamedAction: GtkShortcutAction that activates an action by name.
 type NamedAction struct {
 	ShortcutAction
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -348,6 +361,9 @@ func (self *NamedAction) ActionName() string {
 // NothingAction: GtkShortcutAction that does nothing.
 type NothingAction struct {
 	ShortcutAction
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -415,6 +431,9 @@ func NothingActionGet() *NothingAction {
 //    - gtk.NothingAction: a shortcut action that does nothing.
 type ShortcutAction struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -574,6 +593,9 @@ func (self *ShortcutAction) String() string {
 // they are expected to be defined with the G_SIGNAL_ACTION flag.
 type SignalAction struct {
 	ShortcutAction
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package gio
 import (
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -56,6 +57,9 @@ func init() {
 // type is a ucred_t. This corresponds to G_CREDENTIALS_TYPE_SOLARIS_UCRED.
 type Credentials struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

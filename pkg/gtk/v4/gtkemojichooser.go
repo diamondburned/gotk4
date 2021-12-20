@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -48,6 +49,9 @@ func init() {
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
 type EmojiChooser struct {
 	Popover
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

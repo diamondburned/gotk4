@@ -5,6 +5,7 @@ package gdk
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -73,6 +74,9 @@ func (d DevicePadFeature) String() string {
 // be notified through events of type K_PAD_GROUP_MODE.
 type DevicePad struct {
 	Device
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

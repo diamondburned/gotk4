@@ -4,6 +4,7 @@ package gdkx11
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -52,6 +53,9 @@ func X11GetServerTime(window *X11Window) uint32 {
 
 type X11Window struct {
 	gdk.Window
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package gio
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -25,6 +26,9 @@ func init() {
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress struct {
 	InetSocketAddress
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

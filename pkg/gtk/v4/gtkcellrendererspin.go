@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -38,6 +39,9 @@ func init() {
 // The CellRendererSpin cell renderer was added in GTK 2.10.
 type CellRendererSpin struct {
 	CellRendererText
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

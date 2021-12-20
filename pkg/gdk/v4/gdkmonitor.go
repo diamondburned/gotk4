@@ -5,6 +5,7 @@ package gdk
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -76,6 +77,9 @@ func (s SubpixelLayout) String() string {
 // find a particular monitor.
 type Monitor struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -146,6 +147,9 @@ func (p PlacesOpenFlags) Has(other PlacesOpenFlags) bool {
 // - .has-open-popup when a popup is open for a row.
 type PlacesSidebar struct {
 	ScrolledWindow
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

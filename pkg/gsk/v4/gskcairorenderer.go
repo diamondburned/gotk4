@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -26,6 +27,9 @@ func init() {
 // Since it is using cairo, this renderer cannot support 3D transformations.
 type CairoRenderer struct {
 	Renderer
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

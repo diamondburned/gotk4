@@ -5,6 +5,7 @@ package gtk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -118,6 +119,9 @@ func init() {
 // GDK_TOUCHPAD_SWIPE and GDK_TOUCHPAD_PINCH are handled by the GtkGesture.
 type Gesture struct {
 	EventController
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -32,6 +32,9 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{ range (slice .Tree.ImplTypes 1) -}}
 		{{ . }}
 		{{ end }}
+
+		_ [0]func()     // equal guard
+		_ [0]sync.Mutex // copy guard
 	}
 
 	var (
@@ -169,6 +172,7 @@ func (d ifacegenData) Recv() string {
 func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {
 	writer := FileWriterFromType(gen, igen)
 	writer.Header().NeedsExternGLib()
+	writer.Header().Import("sync")
 
 	// Import for implementation types.
 	for _, parent := range igen.Tree.Requires {

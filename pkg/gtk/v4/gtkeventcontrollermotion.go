@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -32,6 +33,9 @@ func init() {
 // reflect changes in the pointer position as it moves over the widget.
 type EventControllerMotion struct {
 	EventController
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package gtk
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -86,6 +87,9 @@ func (r RevealerTransitionType) String() string {
 // The GtkRevealer widget was added in GTK+ 3.10.
 type Revealer struct {
 	Bin
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

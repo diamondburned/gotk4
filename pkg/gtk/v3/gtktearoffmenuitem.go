@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -40,6 +41,9 @@ func init() {
 // code. Menus are not meant to be torn around.
 type TearoffMenuItem struct {
 	MenuItem
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

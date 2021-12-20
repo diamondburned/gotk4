@@ -5,6 +5,7 @@ package gtk
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -161,6 +162,9 @@ type SorterOverrider interface {
 // GtkSorter and provide one's own sorter.
 type Sorter struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

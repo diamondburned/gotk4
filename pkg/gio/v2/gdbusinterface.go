@@ -5,6 +5,7 @@ package gio
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -60,6 +61,9 @@ type DBusInterfaceOverrider interface {
 // side (see BusInterfaceSkeleton) and client side (see BusProxy).
 type DBusInterface struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

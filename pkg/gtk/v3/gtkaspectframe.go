@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -37,6 +38,9 @@ func init() {
 // GtkAspectFrame uses a CSS node with name frame.
 type AspectFrame struct {
 	Frame
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package pango
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -181,6 +182,9 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 // To obtain a PangoContext, use pango.FontMap.CreateContext().
 type Context struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

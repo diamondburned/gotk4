@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -127,6 +128,9 @@ func (b ButtonRole) String() string {
 // invisible in this case.
 type ModelButton struct {
 	Button
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

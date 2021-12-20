@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -99,6 +100,9 @@ func (s ShortcutType) String() string {
 // This widget is only meant to be used with GtkShortcutsWindow.
 type ShortcutsShortcut struct {
 	Widget
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

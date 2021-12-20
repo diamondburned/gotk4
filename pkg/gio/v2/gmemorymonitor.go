@@ -4,6 +4,7 @@ package gio
 
 import (
 	"reflect"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -89,6 +90,9 @@ type MemoryMonitorOverrider interface {
 // the Monitor itself when exiting.
 type MemoryMonitor struct {
 	Initable
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var ()

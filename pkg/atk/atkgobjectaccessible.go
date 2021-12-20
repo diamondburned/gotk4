@@ -4,6 +4,7 @@ package atk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -28,6 +29,9 @@ func init() {
 // accessible object for GnomeCanvasItem in the GAIL library.
 type GObjectAccessible struct {
 	ObjectClass
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

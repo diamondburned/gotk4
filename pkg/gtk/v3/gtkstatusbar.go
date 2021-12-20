@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -78,6 +79,9 @@ type StatusbarOverrider interface {
 // GtkStatusbar has a single CSS node with name statusbar.
 type Statusbar struct {
 	Box
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

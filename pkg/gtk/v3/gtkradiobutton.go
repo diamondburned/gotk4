@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -96,6 +97,9 @@ type RadioButtonOverrider interface {
 // be used to determine if the button has been selected or deselected.
 type RadioButton struct {
 	CheckButton
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

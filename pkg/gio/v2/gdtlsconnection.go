@@ -6,6 +6,7 @@ import (
 	"context"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -191,6 +192,9 @@ type DTLSConnectionOverrider interface {
 // Connection will not raise a G_IO_ERROR_NOT_CONNECTED error on further I/O.
 type DTLSConnection struct {
 	DatagramBased
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var ()

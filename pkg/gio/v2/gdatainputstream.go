@@ -5,6 +5,7 @@ package gio
 import (
 	"context"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -31,6 +32,9 @@ func init() {
 // for reading structured data directly from a binary input stream.
 type DataInputStream struct {
 	BufferedInputStream
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

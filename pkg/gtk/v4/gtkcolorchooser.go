@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -83,6 +84,9 @@ type ColorChooserOverrider interface {
 // gtk.ColorChooserWidget, gtk.ColorChooserDialog and gtk.ColorButton.
 type ColorChooser struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

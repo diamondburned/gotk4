@@ -426,8 +426,17 @@ type Objector interface {
 
 var _ Objector = (*Object)(nil)
 
-// Object is a representation of GLib's GObject.
+// ObjectEq returns true if both obj1 and obj2 point to the same GObject
+// pointers.
+func ObjectEq(obj1, obj2 Objector) bool {
+	return obj1.baseObject().Eq(obj2)
+}
+
+// Object is a representation of GLib's GObject. Object types cannot be
+// compared; pointer comparisons must be done using the Eq method.
 type Object struct {
+	_   [0]func()     // equal guard
+	_   [0]sync.Mutex // copy guard
 	box *intern.Box
 }
 
@@ -512,6 +521,14 @@ func (v *Object) native() *C.GObject {
 // Native returns a pointer to the underlying GObject.
 func (v *Object) Native() uintptr {
 	return uintptr(unsafe.Pointer(v.native()))
+}
+
+// Eq returns true if v's GObject pointer matches other's.
+func (v *Object) Eq(other Objector) bool {
+	if other == nil && v.native() == nil {
+		return true
+	}
+	return v.native() == other.baseObject().native()
 }
 
 // IsA is a wrapper around g_type_is_a().

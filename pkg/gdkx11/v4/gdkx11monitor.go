@@ -4,6 +4,7 @@ package gdkx11
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -26,6 +27,9 @@ func init() {
 
 type X11Monitor struct {
 	gdk.Monitor
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

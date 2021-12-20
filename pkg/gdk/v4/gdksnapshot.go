@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -26,6 +27,9 @@ func init() {
 // The subclass of GdkSnapshot used by GTK is gtk.Snapshot.
 type Snapshot struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -4,6 +4,7 @@ package atk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -38,6 +39,9 @@ type Plug struct {
 
 	*externglib.Object
 	Component
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

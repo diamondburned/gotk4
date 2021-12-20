@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -139,6 +140,9 @@ type ApplicationWindow struct {
 	*externglib.Object
 	gio.ActionGroup
 	gio.ActionMap
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

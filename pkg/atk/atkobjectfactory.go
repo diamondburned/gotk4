@@ -4,6 +4,7 @@ package atk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -40,6 +41,9 @@ type ObjectFactoryOverrider interface {
 // the factory type to be used to create an accessible of a particular GType.
 type ObjectFactory struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

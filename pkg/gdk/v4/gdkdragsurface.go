@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -25,6 +26,9 @@ func init() {
 // DragSurface is an interface for surfaces used during DND.
 type DragSurface struct {
 	Surface
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

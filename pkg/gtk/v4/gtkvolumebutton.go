@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -27,6 +28,9 @@ func init() {
 // !An example GtkVolumeButton (volumebutton.png).
 type VolumeButton struct {
 	ScaleButton
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

@@ -5,6 +5,7 @@ package gio
 import (
 	"context"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -137,6 +138,9 @@ type PermissionOverrider interface {
 // dialog and to provide the mechanism to invoke when that button is clicked.
 type Permission struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

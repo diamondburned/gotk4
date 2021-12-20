@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -306,6 +307,9 @@ type BuilderOverrider interface {
 // documentation][composite-templates] for details.
 type Builder struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

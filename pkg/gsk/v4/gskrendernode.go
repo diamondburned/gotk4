@@ -5,6 +5,7 @@ package gsk
 import (
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -2238,6 +2239,9 @@ func (node *RadialGradientNode) Vradius() float32 {
 // construction.
 type RenderNode struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

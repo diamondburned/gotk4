@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -43,6 +44,9 @@ type AdjustmentOverrider interface {
 // up to the owner of the GtkAdjustment to control the value.
 type Adjustment struct {
 	externglib.InitiallyUnowned
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var ()

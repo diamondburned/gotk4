@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -570,6 +571,9 @@ func EventsGetDistance(event1, event2 Eventer) (float64, bool) {
 // ButtonEvent: event related to a button on a pointer device.
 type ButtonEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -613,6 +617,9 @@ func (event *ButtonEvent) Button() uint {
 // CrossingEvent: event caused by a pointing device moving between surfaces.
 type CrossingEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -702,6 +709,9 @@ func (event *CrossingEvent) Mode() CrossingMode {
 // DNDEvent: event related to drag and drop operations.
 type DNDEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -757,6 +767,9 @@ func (event *DNDEvent) Drop() Dropper {
 // DeleteEvent: event related to closing a top-level surface.
 type DeleteEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -783,6 +796,9 @@ func marshalDeleteEventer(p uintptr) (interface{}, error) {
 // GdkEvent and its related API is rarely needed.
 type Event struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1268,6 +1284,9 @@ func (event *Event) TriggersContextMenu() bool {
 // FocusEvent: event related to a keyboard focus change.
 type FocusEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1314,6 +1333,9 @@ func (event *FocusEvent) In() bool {
 // GrabBrokenEvent: event related to a broken windowing system grab.
 type GrabBrokenEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1394,6 +1416,9 @@ func (event *GrabBrokenEvent) Implicit() bool {
 // KeyEvent: event related to a key-based device.
 type KeyEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1623,6 +1648,9 @@ func (event *KeyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 // MotionEvent: event related to a pointer or touch device motion.
 type MotionEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1644,6 +1672,9 @@ func marshalMotionEventer(p uintptr) (interface{}, error) {
 // PadEvent: event related to a pad-based device.
 type PadEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1739,6 +1770,9 @@ func (event *PadEvent) GroupMode() (group uint, mode uint) {
 // ProximityEvent: event related to the proximity of a tool to a device.
 type ProximityEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1760,6 +1794,9 @@ func marshalProximityEventer(p uintptr) (interface{}, error) {
 // ScrollEvent: event related to a scrolling motion.
 type ScrollEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1862,6 +1899,9 @@ func (event *ScrollEvent) IsStop() bool {
 // TouchEvent: event related to a touch-based device.
 type TouchEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1912,6 +1952,9 @@ func (event *TouchEvent) EmulatingPointer() bool {
 // events.
 type TouchpadEvent struct {
 	Event
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

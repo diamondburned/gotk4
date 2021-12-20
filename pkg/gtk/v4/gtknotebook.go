@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -145,6 +146,9 @@ func (n NotebookTab) String() string {
 //    - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page.
 type Notebook struct {
 	Widget
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (
@@ -1535,6 +1539,9 @@ func (notebook *Notebook) SetTabReorderable(child Widgetter, reorderable bool) {
 // NotebookPage: GtkNotebookPage is an auxiliary object used by GtkNotebook.
 type NotebookPage struct {
 	*externglib.Object
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

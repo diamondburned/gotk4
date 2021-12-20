@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -89,6 +90,9 @@ func (s ShortcutType) String() string {
 // short text. This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsShortcut struct {
 	Box
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

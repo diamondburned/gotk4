@@ -6,6 +6,7 @@ import (
 	"context"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -68,6 +69,9 @@ func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 // the OStream separately will not close the underlying #GSocket.
 type SocketConnection struct {
 	IOStream
+
+	_ [0]func()     // equal guard
+	_ [0]sync.Mutex // copy guard
 }
 
 var (

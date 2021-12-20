@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"sync"
-
 	"github.com/diamondburned/gotk4/pkg/atk"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )

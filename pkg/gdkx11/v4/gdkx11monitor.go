@@ -4,7 +4,6 @@ package gdkx11
 
 import (
 	"runtime"
-	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"

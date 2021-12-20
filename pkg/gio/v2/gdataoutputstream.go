@@ -5,7 +5,6 @@ package gio
 import (
 	"context"
 	"runtime"
-	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"

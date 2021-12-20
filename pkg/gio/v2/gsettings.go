@@ -8,7 +8,6 @@ import (
 	"runtime"
 	"runtime/cgo"
 	"strings"
-	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"

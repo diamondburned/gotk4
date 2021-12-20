@@ -5,7 +5,6 @@ package gtk
 import (
 	"fmt"
 	"strings"
-	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"

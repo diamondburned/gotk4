@@ -170,7 +170,6 @@ func (d ifacegenData) Recv() string {
 func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {
 	writer := FileWriterFromType(gen, igen)
 	writer.Header().NeedsExternGLib()
-	writer.Header().Import("sync")
 
 	// Import for implementation types.
 	for _, parent := range igen.Tree.Requires {

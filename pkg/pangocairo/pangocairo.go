@@ -6,7 +6,6 @@ import (
 	"reflect"
 	"runtime"
 	_ "runtime/cgo"
-	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"

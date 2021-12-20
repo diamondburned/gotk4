@@ -5,7 +5,6 @@ package gtk
 import (
 	"runtime"
 	"runtime/cgo"
-	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"

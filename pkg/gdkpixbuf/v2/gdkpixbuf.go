@@ -4,7 +4,6 @@ package gdkpixbuf
 
 import (
 	_ "runtime/cgo"
-	"sync"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"

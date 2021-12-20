@@ -6,7 +6,6 @@ import (
 	"reflect"
 	"runtime"
 	"runtime/cgo"
-	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"

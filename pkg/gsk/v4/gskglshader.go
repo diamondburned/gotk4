@@ -4,7 +4,6 @@ package gsk
 
 import (
 	"runtime"
-	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"

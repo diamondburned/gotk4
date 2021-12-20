@@ -78,8 +78,8 @@ func (e ExpanderStyle) String() string {
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - arrowType: type of arrow to draw.
 //    - fill: TRUE if the arrow tip should be filled.
 //    - x origin of the rectangle to draw the arrow in.
@@ -146,8 +146,8 @@ func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the box.
 //    - y origin of the box.
 //    - width of the box.
@@ -205,8 +205,8 @@ func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the rectangle.
 //    - y origin of the rectangle.
 //    - width of the rectangle.
@@ -276,8 +276,8 @@ func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the rectangle to draw the check in.
 //    - y origin of the rectangle to draw the check in.
 //    - width of the rectangle to draw the check in.
@@ -335,8 +335,8 @@ func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the rectangle to draw the diamond in.
 //    - y origin of the rectangle to draw the diamond in.
 //    - width of the rectangle to draw the diamond in.
@@ -399,12 +399,12 @@ func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 //    - style: Style.
 //    - cr: #cairo_t.
 //    - stateType: state.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x position to draw the expander at.
 //    - y position to draw the expander at.
 //    - expanderStyle: style to draw the expander in; determines whether the
-//    expander is collapsed, expanded, or in an intermediate state.
+//      expander is collapsed, expanded, or in an intermediate state.
 //
 func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle) {
 	var _arg1 *C.GtkStyle        // out
@@ -451,8 +451,8 @@ func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget 
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the extension.
 //    - y origin of the extension.
 //    - width of the extension.
@@ -513,8 +513,8 @@ func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadow
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the box.
 //    - y origin of the box.
 //    - width of the box.
@@ -571,8 +571,8 @@ func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 //    - style: Style.
 //    - cr: #cairo_t.
 //    - stateType: state.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the rectangle around which to draw a focus indicator.
 //    - y origin of the rectangle around which to draw a focus indicator.
 //    - width of the rectangle around which to draw a focus indicator.
@@ -626,8 +626,8 @@ func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the handle.
 //    - y origin of the handle.
 //    - width: with of the handle.
@@ -688,8 +688,8 @@ func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - style: Style.
 //    - cr: #caio_t.
 //    - stateType: state.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x1: starting x coordinate.
 //    - x2: ending x coordinate.
 //    - y coordinate.
@@ -738,10 +738,9 @@ func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 //    - style: Style.
 //    - cr: #cairo_t.
 //    - stateType: state.
-//    - useText: whether to use the text or foreground graphics context of
-//    style.
-//    - widget: widget.
-//    - detail: style detail.
+//    - useText: whether to use the text or foreground graphics context of style.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin.
 //    - y origin.
 //    - layout to draw.
@@ -797,8 +796,8 @@ func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText b
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the rectangle to draw the option in.
 //    - y origin of the rectangle to draw the option in.
 //    - width of the rectangle to draw the option in.
@@ -855,8 +854,8 @@ func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - style: Style.
 //    - cr: #cairo_t.
 //    - stateType: state.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - edge in which to draw the resize grip.
 //    - x origin of the rectangle in which to draw the resize grip.
 //    - y origin of the rectangle in which to draw the resize grip.
@@ -915,8 +914,8 @@ func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widge
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the rectangle.
 //    - y origin of the rectangle.
 //    - width of the rectangle.
@@ -974,8 +973,8 @@ func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the rectangle.
 //    - y origin of the rectangle.
 //    - width of the rectangle.
@@ -1045,8 +1044,8 @@ func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadow
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: shadow.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the rectangle in which to draw a slider.
 //    - y origin of the rectangle in which to draw a slider.
 //    - width of the rectangle in which to draw a slider.
@@ -1107,8 +1106,8 @@ func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - style: Style.
 //    - cr: #cairo_t.
 //    - stateType: state.
-//    - widget (may be NULL).
-//    - detail: style detail (may be NULL).
+//    - widget (optional) (may be NULL).
+//    - detail (optional): style detail (may be NULL).
 //    - step: nth step.
 //    - x origin of the rectangle in which to draw the spinner.
 //    - y origin of the rectangle in which to draw the spinner.
@@ -1167,8 +1166,8 @@ func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget W
 //    - cr: #cairo_t.
 //    - stateType: state.
 //    - shadowType: type of shadow to draw.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - x origin of the rectangle to draw the tab in.
 //    - y origin of the rectangle to draw the tab in.
 //    - width of the rectangle to draw the tab in.
@@ -1225,8 +1224,8 @@ func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 //    - style: Style.
 //    - cr: #cairo_t.
 //    - stateType: state.
-//    - widget: widget.
-//    - detail: style detail.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
 //    - y1: starting y coordinate.
 //    - y2: ending y coordinate.
 //    - x coordinate.
@@ -1271,38 +1270,306 @@ func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StyleOverrider interface {
+	// The function takes the following parameters:
+	//
 	Copy(src *Style)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - arrowType
+	//    - fill
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//    - gapSide
+	//    - gapX
+	//    - gapWidth
+	//
 	DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - expanderStyle
+	//
 	DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//    - gapSide
+	//
 	DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//    - orientation
+	//
 	DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - widget
+	//    - detail
+	//    - x1
+	//    - x2
+	//    - y
+	//
 	DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - useText
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - layout
+	//
 	DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - widget
+	//    - detail
+	//    - edge
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//    - gapSide
+	//    - gapX
+	//    - gapWidth
+	//
 	DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//    - orientation
+	//
 	DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - widget
+	//    - detail
+	//    - step
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - shadowType
+	//    - widget
+	//    - detail
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - stateType
+	//    - widget
+	//    - detail
+	//    - y1
+	//    - y2
+	//    - x
+	//
 	DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int)
+	// The function takes the following parameters:
+	//
 	InitFromRC(rcStyle *RCStyle)
 	Realize()
 	// RenderIcon renders the icon specified by source at the given size
 	// according to the given parameters and returns the result in a pixbuf.
 	//
 	// Deprecated: Use gtk_render_icon_pixbuf() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - source specifying the icon to render.
+	//    - direction: text direction.
+	//    - state: state.
+	//    - size to render the icon at (IconSize). A size of (GtkIconSize)-1
+	//      means render at the size of the source and don’t scale.
+	//    - widget (optional): widget.
+	//    - detail (optional): style detail.
+	//
+	// The function returns the following values:
+	//
+	//    - pixbuf: newly-created Pixbuf containing the rendered icon.
+	//
 	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
 	// SetBackground sets the background of window to the background color or
 	// pixmap specified by style for the given state.
 	//
 	// Deprecated: Use gtk_style_context_set_background() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - window: Window.
+	//    - stateType: state.
+	//
 	SetBackground(window gdk.Windower, stateType StateType)
 	Unrealize()
 }
@@ -1339,9 +1606,30 @@ func marshalStyler(p uintptr) (interface{}, error) {
 	return wrapStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectRealize: emitted when the style has been initialized for a particular
+// visual. Connecting to this signal is probably seldom useful since most of the
+// time applications and widgets only deal with styles that have been already
+// realized.
+func (style *Style) ConnectRealize(f func()) externglib.SignalHandle {
+	return style.Connect("realize", f)
+}
+
+// ConnectUnrealize: emitted when the aspects of the style specific to a
+// particular visual is being cleaned up. A connection to this signal can be
+// useful if a widget wants to cache objects as object data on Style. This
+// signal provides a convenient place to free such cached objects.
+func (style *Style) ConnectUnrealize(f func()) externglib.SignalHandle {
+	return style.Connect("unrealize", f)
+}
+
 // NewStyle creates a new Style.
 //
 // Deprecated: Use StyleContext.
+//
+// The function returns the following values:
+//
+//    - style: new Style.
+//
 func NewStyle() *Style {
 	var _cret *C.GtkStyle // in
 
@@ -1358,7 +1646,13 @@ func NewStyle() *Style {
 //
 // The function takes the following parameters:
 //
-
+//    - cr
+//    - window
+//    - stateType
+//    - x
+//    - y
+//    - width
+//    - height
 //
 func (style *Style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Windower, stateType StateType, x, y, width, height int) {
 	var _arg0 *C.GtkStyle    // out
@@ -1393,6 +1687,11 @@ func (style *Style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Windowe
 // Copy creates a copy of the passed in Style object.
 //
 // Deprecated: Use StyleContext instead.
+//
+// The function returns the following values:
+//
+//    - ret: copy of style.
+//
 func (style *Style) Copy() *Style {
 	var _arg0 *C.GtkStyle // out
 	var _cret *C.GtkStyle // in
@@ -1430,6 +1729,10 @@ func (style *Style) Detach() {
 //    - widgetType of a descendant of Widget.
 //    - propertyName: name of the style property to get.
 //
+// The function returns the following values:
+//
+//    - value where the value of the property being queried will be stored.
+//
 func (style *Style) StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value {
 	var _arg0 *C.GtkStyle // out
 	var _arg1 C.GType     // out
@@ -1454,6 +1757,11 @@ func (style *Style) StyleProperty(widgetType externglib.Type, propertyName strin
 }
 
 // HasContext returns whether style has an associated StyleContext.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if style has a StyleContext.
+//
 func (style *Style) HasContext() bool {
 	var _arg0 *C.GtkStyle // out
 	var _cret C.gboolean  // in
@@ -1482,6 +1790,11 @@ func (style *Style) HasContext() bool {
 // The function takes the following parameters:
 //
 //    - colorName: name of the logical color to look up.
+//
+// The function returns the following values:
+//
+//    - color to fill in.
+//    - ok: TRUE if the mapping was found.
 //
 func (style *Style) LookupColor(colorName string) (*gdk.Color, bool) {
 	var _arg0 *C.GtkStyle // out
@@ -1516,6 +1829,10 @@ func (style *Style) LookupColor(colorName string) (*gdk.Color, bool) {
 // The function takes the following parameters:
 //
 //    - stockId: icon name.
+//
+// The function returns the following values:
+//
+//    - iconSet: icon set of stock_id.
 //
 func (style *Style) LookupIconSet(stockId string) *IconSet {
 	var _arg0 *C.GtkStyle   // out
@@ -1555,9 +1872,13 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 //    - direction: text direction.
 //    - state: state.
 //    - size to render the icon at (IconSize). A size of (GtkIconSize)-1 means
-//    render at the size of the source and don’t scale.
-//    - widget: widget.
-//    - detail: style detail.
+//      render at the size of the source and don’t scale.
+//    - widget (optional): widget.
+//    - detail (optional): style detail.
+//
+// The function returns the following values:
+//
+//    - pixbuf: newly-created Pixbuf containing the rendered icon.
 //
 func (style *Style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkStyle        // out
@@ -1633,20 +1954,558 @@ func (style *Style) SetBackground(window gdk.Windower, stateType StateType) {
 	runtime.KeepAlive(stateType)
 }
 
-// ConnectRealize: emitted when the style has been initialized for a particular
-// visual. Connecting to this signal is probably seldom useful since most of the
-// time applications and widgets only deal with styles that have been already
-// realized.
-func (style *Style) ConnectRealize(f func()) externglib.SignalHandle {
-	return style.Connect("realize", f)
+// ClassPath: same as gtk_widget_path(), but always uses the name of a widget’s
+// type, never uses a custom name set with gtk_widget_set_name().
+//
+// Deprecated: Use gtk_widget_get_path() instead.
+//
+// The function returns the following values:
+//
+//    - pathLength (optional): location to store the length of the class path, or
+//      NULL.
+//    - path (optional): location to store the class path as an allocated string,
+//      or NULL.
+//    - pathReversed (optional): location to store the reverse class path as an
+//      allocated string, or NULL.
+//
+func (widget *Widget) ClassPath() (pathLength uint, path string, pathReversed string) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.guint      // in
+	var _arg2 *C.gchar     // in
+	var _arg3 *C.gchar     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_class_path(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(widget)
+
+	var _pathLength uint     // out
+	var _path string         // out
+	var _pathReversed string // out
+
+	_pathLength = uint(_arg1)
+	if _arg2 != nil {
+		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	if _arg3 != nil {
+		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	return _pathLength, _path, _pathReversed
 }
 
-// ConnectUnrealize: emitted when the aspects of the style specific to a
-// particular visual is being cleaned up. A connection to this signal can be
-// useful if a widget wants to cache objects as object data on Style. This
-// signal provides a convenient place to free such cached objects.
-func (style *Style) ConnectUnrealize(f func()) externglib.SignalHandle {
-	return style.Connect("unrealize", f)
+// EnsureStyle ensures that widget has a style (widget->style).
+//
+// Not a very useful function; most of the time, if you want the style, the
+// widget is realized, and realized widgets are guaranteed to have a style
+// already.
+//
+// Deprecated: Use StyleContext instead.
+func (widget *Widget) EnsureStyle() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_ensure_style(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// ModifierStyle returns the current modifier style for the widget. (As set by
+// gtk_widget_modify_style().) If no style has previously set, a new RcStyle
+// will be created with all values unset, and set as the modifier style for the
+// widget. If you make changes to this rc style, you must call
+// gtk_widget_modify_style(), passing in the returned rc style, to make sure
+// that your changes take effect.
+//
+// Caution: passing the style back to gtk_widget_modify_style() will normally
+// end up destroying it, because gtk_widget_modify_style() copies the passed-in
+// style and sets the copy as the new modifier style, thus dropping any
+// reference to the old modifier style. Add a reference to the modifier style if
+// you want to keep it alive.
+//
+// Deprecated: Use StyleContext with a custom StyleProvider instead.
+//
+// The function returns the following values:
+//
+//    - rcStyle: modifier style for the widget. This rc style is owned by the
+//      widget. If you want to keep a pointer to value this around, you must add
+//      a refcount using g_object_ref().
+//
+func (widget *Widget) ModifierStyle() *RCStyle {
+	var _arg0 *C.GtkWidget  // out
+	var _cret *C.GtkRcStyle // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_modifier_style(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _rcStyle *RCStyle // out
+
+	_rcStyle = wrapRCStyle(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _rcStyle
+}
+
+// Style: simply an accessor function that returns widget->style.
+//
+// Deprecated: Use StyleContext instead.
+//
+// The function returns the following values:
+//
+//    - style widget’s Style.
+//
+func (widget *Widget) Style() *Style {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GtkStyle  // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_style(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _style *Style // out
+
+	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _style
+}
+
+// HasRCStyle determines if the widget style has been looked up through the rc
+// mechanism.
+//
+// Deprecated: Use StyleContext instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget has been looked up through the rc mechanism, FALSE
+//      otherwise.
+//
+func (widget *Widget) HasRCStyle() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_has_rc_style(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ModifyBase sets the base color for a widget in a particular state. All other
+// style values are left untouched. The base color is the background color used
+// along with the text color (see gtk_widget_modify_text()) for widgets such as
+// Entry and TextView. See also gtk_widget_modify_style().
+//
+// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
+// draw on their parent container’s window and thus may > not draw any
+// background themselves. This is the case for e.g. > Label. > > To modify the
+// background of such widgets, you have to set the > base color on their parent;
+// if you want to set the background > of a rectangular area around a label, try
+// placing the label in > a EventBox widget and setting the base color on that.
+//
+// Deprecated: Use gtk_widget_override_background_color() instead.
+//
+// The function takes the following parameters:
+//
+//    - state for which to set the base color.
+//    - color (optional) to assign (does not need to be allocated), or NULL to
+//      undo the effect of previous calls to of gtk_widget_modify_base().
+//
+func (widget *Widget) ModifyBase(state StateType, color *gdk.Color) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+	var _arg2 *C.GdkColor    // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+	if color != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
+
+	C.gtk_widget_modify_base(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(color)
+}
+
+// ModifyBg sets the background color for a widget in a particular state.
+//
+// All other style values are left untouched. See also
+// gtk_widget_modify_style().
+//
+// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
+// draw on their parent container’s window and thus may > not draw any
+// background themselves. This is the case for e.g. > Label. > > To modify the
+// background of such widgets, you have to set the > background color on their
+// parent; if you want to set the background > of a rectangular area around a
+// label, try placing the label in > a EventBox widget and setting the
+// background color on that.
+//
+// Deprecated: Use gtk_widget_override_background_color() instead.
+//
+// The function takes the following parameters:
+//
+//    - state for which to set the background color.
+//    - color (optional) to assign (does not need to be allocated), or NULL to
+//      undo the effect of previous calls to of gtk_widget_modify_bg().
+//
+func (widget *Widget) ModifyBg(state StateType, color *gdk.Color) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+	var _arg2 *C.GdkColor    // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+	if color != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
+
+	C.gtk_widget_modify_bg(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(color)
+}
+
+// ModifyCursor sets the cursor color to use in a widget, overriding the Widget
+// cursor-color and secondary-cursor-color style properties.
+//
+// All other style values are left untouched. See also
+// gtk_widget_modify_style().
+//
+// Deprecated: Use gtk_widget_override_cursor() instead.
+//
+// The function takes the following parameters:
+//
+//    - primary (optional): color to use for primary cursor (does not need to be
+//      allocated), or NULL to undo the effect of previous calls to of
+//      gtk_widget_modify_cursor().
+//    - secondary (optional): color to use for secondary cursor (does not need to
+//      be allocated), or NULL to undo the effect of previous calls to of
+//      gtk_widget_modify_cursor().
+//
+func (widget *Widget) ModifyCursor(primary, secondary *gdk.Color) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkColor  // out
+	var _arg2 *C.GdkColor  // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if primary != nil {
+		_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(primary)))
+	}
+	if secondary != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(secondary)))
+	}
+
+	C.gtk_widget_modify_cursor(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(primary)
+	runtime.KeepAlive(secondary)
+}
+
+// ModifyFg sets the foreground color for a widget in a particular state.
+//
+// All other style values are left untouched. See also
+// gtk_widget_modify_style().
+//
+// Deprecated: Use gtk_widget_override_color() instead.
+//
+// The function takes the following parameters:
+//
+//    - state for which to set the foreground color.
+//    - color (optional) to assign (does not need to be allocated), or NULL to
+//      undo the effect of previous calls to of gtk_widget_modify_fg().
+//
+func (widget *Widget) ModifyFg(state StateType, color *gdk.Color) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+	var _arg2 *C.GdkColor    // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+	if color != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
+
+	C.gtk_widget_modify_fg(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(color)
+}
+
+// ModifyFont sets the font to use for a widget.
+//
+// All other style values are left untouched. See also
+// gtk_widget_modify_style().
+//
+// Deprecated: Use gtk_widget_override_font() instead.
+//
+// The function takes the following parameters:
+//
+//    - fontDesc (optional): font description to use, or NULL to undo the effect
+//      of previous calls to gtk_widget_modify_font().
+//
+func (widget *Widget) ModifyFont(fontDesc *pango.FontDescription) {
+	var _arg0 *C.GtkWidget            // out
+	var _arg1 *C.PangoFontDescription // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if fontDesc != nil {
+		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
+	}
+
+	C.gtk_widget_modify_font(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(fontDesc)
+}
+
+// ModifyStyle modifies style values on the widget.
+//
+// Modifications made using this technique take precedence over style values set
+// via an RC file, however, they will be overridden if a style is explicitly set
+// on the widget using gtk_widget_set_style(). The RcStyle-struct is designed so
+// each field can either be set or unset, so it is possible, using this
+// function, to modify some style values and leave the others unchanged.
+//
+// Note that modifications made with this function are not cumulative with
+// previous calls to gtk_widget_modify_style() or with such functions as
+// gtk_widget_modify_fg(). If you wish to retain previous values, you must first
+// call gtk_widget_get_modifier_style(), make your modifications to the returned
+// style, then call gtk_widget_modify_style() with that style. On the other
+// hand, if you first call gtk_widget_modify_style(), subsequent calls to such
+// functions gtk_widget_modify_fg() will have a cumulative effect with the
+// initial modifications.
+//
+// Deprecated: Use StyleContext with a custom StyleProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - style holding the style modifications.
+//
+func (widget *Widget) ModifyStyle(style *RCStyle) {
+	var _arg0 *C.GtkWidget  // out
+	var _arg1 *C.GtkRcStyle // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
+
+	C.gtk_widget_modify_style(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(style)
+}
+
+// ModifyText sets the text color for a widget in a particular state.
+//
+// All other style values are left untouched. The text color is the foreground
+// color used along with the base color (see gtk_widget_modify_base()) for
+// widgets such as Entry and TextView. See also gtk_widget_modify_style().
+//
+// Deprecated: Use gtk_widget_override_color() instead.
+//
+// The function takes the following parameters:
+//
+//    - state for which to set the text color.
+//    - color (optional) to assign (does not need to be allocated), or NULL to
+//      undo the effect of previous calls to of gtk_widget_modify_text().
+//
+func (widget *Widget) ModifyText(state StateType, color *gdk.Color) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+	var _arg2 *C.GdkColor    // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+	if color != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
+
+	C.gtk_widget_modify_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(color)
+}
+
+// Path obtains the full path to widget. The path is simply the name of a widget
+// and all its parents in the container hierarchy, separated by periods. The
+// name of a widget comes from gtk_widget_get_name(). Paths are used to apply
+// styles to a widget in gtkrc configuration files. Widget names are the type of
+// the widget by default (e.g. “GtkButton”) or can be set to an
+// application-specific value with gtk_widget_set_name(). By setting the name of
+// a widget, you allow users or theme authors to apply styles to that specific
+// widget in their gtkrc file. path_reversed_p fills in the path in reverse
+// order, i.e. starting with widget’s name instead of starting with the name of
+// widget’s outermost ancestor.
+//
+// Deprecated: Use gtk_widget_get_path() instead.
+//
+// The function returns the following values:
+//
+//    - pathLength (optional): location to store length of the path, or NULL.
+//    - path (optional): location to store allocated path string, or NULL.
+//    - pathReversed (optional): location to store allocated reverse path string,
+//      or NULL.
+//
+func (widget *Widget) Path() (pathLength uint, path string, pathReversed string) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.guint      // in
+	var _arg2 *C.gchar     // in
+	var _arg3 *C.gchar     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_path(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(widget)
+
+	var _pathLength uint     // out
+	var _path string         // out
+	var _pathReversed string // out
+
+	_pathLength = uint(_arg1)
+	if _arg2 != nil {
+		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	if _arg3 != nil {
+		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	return _pathLength, _path, _pathReversed
+}
+
+// RenderIcon: convenience function that uses the theme settings for widget to
+// look up stock_id and render it to a pixbuf. stock_id should be a stock icon
+// ID such as K_STOCK_OPEN or K_STOCK_OK. size should be a size such as
+// K_ICON_SIZE_MENU. detail should be a string that identifies the widget or
+// code doing the rendering, so that theme engines can special-case rendering
+// for that widget or code.
+//
+// The pixels in the returned Pixbuf are shared with the rest of the application
+// and should not be modified. The pixbuf should be freed after use with
+// g_object_unref().
+//
+// Deprecated: Use gtk_widget_render_icon_pixbuf() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock ID.
+//    - size: stock size (IconSize). A size of (GtkIconSize)-1 means render at
+//      the size of the source and don’t scale (if there are multiple source
+//      sizes, GTK+ picks one of the available sizes).
+//    - detail (optional): render detail to pass to theme engine.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): new pixbuf, or NULL if the stock ID wasn’t known.
+//
+func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkWidget  // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
+	var _arg3 *C.gchar      // out
+	var _cret *C.GdkPixbuf  // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkIconSize(size)
+	if detail != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	_cret = C.gtk_widget_render_icon(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(detail)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
+				},
+			}
+		}
+	}
+
+	return _pixbuf
+}
+
+// ResetRCStyles: reset the styles of widget and all descendents, so when they
+// are looked up again, they get the correct values for the currently loaded RC
+// file settings.
+//
+// This function is not useful for applications.
+//
+// Deprecated: Use StyleContext instead, and gtk_widget_reset_style().
+func (widget *Widget) ResetRCStyles() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_reset_rc_styles(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// SetStyle: used to set the Style for a widget (widget->style). Since GTK 3,
+// this function does nothing, the passed in style is ignored.
+//
+// Deprecated: Use StyleContext instead.
+//
+// The function takes the following parameters:
+//
+//    - style (optional) or NULL to remove the effect of a previous call to
+//      gtk_widget_set_style() and go back to the default style.
+//
+func (widget *Widget) SetStyle(style *Style) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkStyle  // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if style != nil {
+		_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
+	}
+
+	C.gtk_widget_set_style(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(style)
+}
+
+// StyleAttach: this function attaches the widget’s Style to the widget's
+// Window. It is a replacement for
+//
+//    widget->style = gtk_style_attach (widget->style, widget->window);
+//
+// and should only ever be called in a derived widget’s “realize” implementation
+// which does not chain up to its parent class' “realize” implementation,
+// because one of the parent classes (finally Widget) would attach the style
+// itself.
+//
+// Deprecated: This step is unnecessary with StyleContext.
+func (widget *Widget) StyleAttach() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_style_attach(_arg0)
+	runtime.KeepAlive(widget)
 }
 
 // WidgetGetDefaultStyle returns the default style used by all widgets
@@ -1654,6 +2513,12 @@ func (style *Style) ConnectUnrealize(f func()) externglib.SignalHandle {
 //
 // Deprecated: Use StyleContext instead, and gtk_css_provider_get_default() to
 // obtain a StyleProvider with the default widget style information.
+//
+// The function returns the following values:
+//
+//    - style: default style. This Style object is owned by GTK+ and should not
+//      be modified or freed.
+//
 func WidgetGetDefaultStyle() *Style {
 	var _cret *C.GtkStyle // in
 

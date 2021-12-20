@@ -68,8 +68,18 @@ const VOLUME_IDENTIFIER_KIND_UUID = "uuid"
 // yet, so the interface currently has no use.
 type VolumeOverrider interface {
 	// CanEject checks if a volume can be ejected.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the volume can be ejected. FALSE otherwise.
+	//
 	CanEject() bool
 	// CanMount checks if a volume can be mounted.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the volume can be mounted. FALSE otherwise.
+	//
 	CanMount() bool
 	Changed()
 	// Eject ejects a volume. This is an asynchronous operation, and is finished
@@ -77,24 +87,55 @@ type VolumeOverrider interface {
 	// the callback.
 	//
 	// Deprecated: Use g_volume_eject_with_operation() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the unmount if required for eject.
+	//    - callback (optional) or NULL.
+	//
 	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a volume. If any errors occurred during the
 	// operation, error will be set to contain the errors and FALSE will be
 	// returned.
 	//
 	// Deprecated: Use g_volume_eject_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	EjectFinish(result AsyncResulter) error
 	// EjectWithOperation ejects a volume. This is an asynchronous operation,
 	// and is finished by calling g_volume_eject_with_operation_finish() with
 	// the volume and Result data returned in the callback.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the unmount if required for eject.
+	//    - mountOperation (optional) or NULL to avoid user interaction.
+	//    - callback (optional) or NULL.
+	//
 	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a volume. If any errors
 	// occurred during the operation, error will be set to contain the errors
 	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	EjectWithOperationFinish(result AsyncResulter) error
 	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
 	// that volume has. Use g_volume_get_identifier() to obtain the identifiers
 	// themselves.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: NULL-terminated array of strings containing kinds of
+	//      identifiers. Use g_strfreev() to free.
+	//
 	EnumerateIdentifiers() []string
 	// ActivationRoot gets the activation root for a #GVolume if it is known
 	// ahead of mount time. Returns NULL otherwise. If not NULL and if volume is
@@ -110,26 +151,87 @@ type VolumeOverrider interface {
 	// Activation roots are typically used in Monitor implementations to find
 	// the underlying mount to shadow, see g_mount_is_shadowed() for more
 	// details.
+	//
+	// The function returns the following values:
+	//
+	//    - file (optional): activation root of volume or NULL. Use
+	//      g_object_unref() to free.
+	//
 	ActivationRoot() Filer
 	// Drive gets the drive for the volume.
+	//
+	// The function returns the following values:
+	//
+	//    - drive (optional) or NULL if volume is not associated with a drive.
+	//      The returned object should be unreffed with g_object_unref() when no
+	//      longer needed.
+	//
 	Drive() Driver
 	// Icon gets the icon for volume.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: #GIcon. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
 	Icon() Iconner
 	// Identifier gets the identifier of the given kind for volume. See the
 	// [introduction][volume-identifier] for more information about volume
 	// identifiers.
+	//
+	// The function takes the following parameters:
+	//
+	//    - kind of identifier to return.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): newly allocated string containing the requested
+	//      identifier, or NULL if the #GVolume doesn't have this kind of
+	//      identifier.
+	//
 	Identifier(kind string) string
 	// Mount gets the mount for the volume.
+	//
+	// The function returns the following values:
+	//
+	//    - mount (optional) or NULL if volume isn't mounted. The returned object
+	//      should be unreffed with g_object_unref() when no longer needed.
+	//
 	Mount() Mounter
 	// Name gets the name of volume.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: name for the given volume. The returned string should be freed
+	//      with g_free() when no longer needed.
+	//
 	Name() string
 	// SortKey gets the sort key for volume, if any.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): sorting key for volume or NULL if no such key is
+	//      available.
+	//
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for volume.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: #GIcon. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
 	SymbolicIcon() Iconner
 	// UUID gets the UUID for the volume. The reference is typically based on
 	// the file system UUID for the volume in question and should be considered
 	// an opaque string. Returns NULL if there is no UUID available.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): UUID for volume or NULL if no UUID can be computed.
+	//      The returned string should be freed with g_free() when no longer
+	//      needed.
+	//
 	UUID() string
 	// MountFinish finishes mounting a volume. If any errors occurred during the
 	// operation, error will be set to contain the errors and FALSE will be
@@ -138,14 +240,32 @@ type VolumeOverrider interface {
 	// If the mount operation succeeded, g_volume_get_mount() on volume is
 	// guaranteed to return the mount right after calling this function; there's
 	// no need to listen for the 'mount-added' signal on Monitor.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	MountFinish(result AsyncResulter) error
 	// MountFn mounts a volume. This is an asynchronous operation, and is
 	// finished by calling g_volume_mount_finish() with the volume and Result
 	// returned in the callback.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the operation.
+	//    - mountOperation (optional) or NULL to avoid user interaction.
+	//    - callback (optional) or NULL.
+	//
 	MountFn(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	Removed()
 	// ShouldAutomount returns whether the volume should be automatically
 	// mounted.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the volume should be automatically mounted.
+	//
 	ShouldAutomount() bool
 }
 
@@ -248,7 +368,24 @@ func marshalVolumer(p uintptr) (interface{}, error) {
 	return wrapVolume(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged: emitted when the volume has been changed.
+func (volume *Volume) ConnectChanged(f func()) externglib.SignalHandle {
+	return volume.Connect("changed", f)
+}
+
+// ConnectRemoved: this signal is emitted when the #GVolume have been removed.
+// If the recipient is holding references to the object they should release them
+// so the object can be finalized.
+func (volume *Volume) ConnectRemoved(f func()) externglib.SignalHandle {
+	return volume.Connect("removed", f)
+}
+
 // CanEject checks if a volume can be ejected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the volume can be ejected. FALSE otherwise.
+//
 func (volume *Volume) CanEject() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
@@ -268,6 +405,11 @@ func (volume *Volume) CanEject() bool {
 }
 
 // CanMount checks if a volume can be mounted.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the volume can be mounted. FALSE otherwise.
+//
 func (volume *Volume) CanMount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
@@ -294,9 +436,9 @@ func (volume *Volume) CanMount() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the unmount if required for eject.
-//    - callback or NULL.
+//    - callback (optional) or NULL.
 //
 func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
@@ -361,10 +503,10 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the unmount if required for eject.
-//    - mountOperation or NULL to avoid user interaction.
-//    - callback or NULL.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
 //
 func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
@@ -429,6 +571,12 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 // EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier] that
 // volume has. Use g_volume_get_identifier() to obtain the identifiers
 // themselves.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of strings containing kinds of identifiers.
+//      Use g_strfreev() to free.
+//
 func (volume *Volume) EnumerateIdentifiers() []string {
 	var _arg0 *C.GVolume // out
 	var _cret **C.char   // in
@@ -472,6 +620,12 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 //
 // Activation roots are typically used in Monitor implementations to find the
 // underlying mount to shadow, see g_mount_is_shadowed() for more details.
+//
+// The function returns the following values:
+//
+//    - file (optional): activation root of volume or NULL. Use g_object_unref()
+//      to free.
+//
 func (volume *Volume) ActivationRoot() Filer {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GFile   // in
@@ -501,6 +655,13 @@ func (volume *Volume) ActivationRoot() Filer {
 }
 
 // Drive gets the drive for the volume.
+//
+// The function returns the following values:
+//
+//    - drive (optional) or NULL if volume is not associated with a drive. The
+//      returned object should be unreffed with g_object_unref() when no longer
+//      needed.
+//
 func (volume *Volume) Drive() Driver {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GDrive  // in
@@ -530,6 +691,12 @@ func (volume *Volume) Drive() Driver {
 }
 
 // Icon gets the icon for volume.
+//
+// The function returns the following values:
+//
+//    - icon: #GIcon. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
 func (volume *Volume) Icon() Iconner {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
@@ -567,6 +734,11 @@ func (volume *Volume) Icon() Iconner {
 //
 //    - kind of identifier to return.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): newly allocated string containing the requested
+//      identifier, or NULL if the #GVolume doesn't have this kind of identifier.
+//
 func (volume *Volume) Identifier(kind string) string {
 	var _arg0 *C.GVolume // out
 	var _arg1 *C.char    // out
@@ -591,6 +763,12 @@ func (volume *Volume) Identifier(kind string) string {
 }
 
 // GetMount gets the mount for the volume.
+//
+// The function returns the following values:
+//
+//    - mount (optional) or NULL if volume isn't mounted. The returned object
+//      should be unreffed with g_object_unref() when no longer needed.
+//
 func (volume *Volume) GetMount() Mounter {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GMount  // in
@@ -620,6 +798,12 @@ func (volume *Volume) GetMount() Mounter {
 }
 
 // Name gets the name of volume.
+//
+// The function returns the following values:
+//
+//    - utf8: name for the given volume. The returned string should be freed with
+//      g_free() when no longer needed.
+//
 func (volume *Volume) Name() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
@@ -638,6 +822,12 @@ func (volume *Volume) Name() string {
 }
 
 // SortKey gets the sort key for volume, if any.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): sorting key for volume or NULL if no such key is
+//      available.
+//
 func (volume *Volume) SortKey() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.gchar   // in
@@ -657,6 +847,12 @@ func (volume *Volume) SortKey() string {
 }
 
 // SymbolicIcon gets the symbolic icon for volume.
+//
+// The function returns the following values:
+//
+//    - icon: #GIcon. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
 func (volume *Volume) SymbolicIcon() Iconner {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
@@ -689,6 +885,12 @@ func (volume *Volume) SymbolicIcon() Iconner {
 // UUID gets the UUID for the volume. The reference is typically based on the
 // file system UUID for the volume in question and should be considered an
 // opaque string. Returns NULL if there is no UUID available.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): UUID for volume or NULL if no UUID can be computed. The
+//      returned string should be freed with g_free() when no longer needed.
+//
 func (volume *Volume) UUID() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
@@ -714,10 +916,10 @@ func (volume *Volume) UUID() string {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the operation.
-//    - mountOperation or NULL to avoid user interaction.
-//    - callback or NULL.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
 //
 func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
@@ -784,6 +986,11 @@ func (volume *Volume) MountFinish(result AsyncResulter) error {
 }
 
 // ShouldAutomount returns whether the volume should be automatically mounted.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the volume should be automatically mounted.
+//
 func (volume *Volume) ShouldAutomount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
@@ -800,16 +1007,4 @@ func (volume *Volume) ShouldAutomount() bool {
 	}
 
 	return _ok
-}
-
-// ConnectChanged: emitted when the volume has been changed.
-func (volume *Volume) ConnectChanged(f func()) externglib.SignalHandle {
-	return volume.Connect("changed", f)
-}
-
-// ConnectRemoved: this signal is emitted when the #GVolume have been removed.
-// If the recipient is holding references to the object they should release them
-// so the object can be finalized.
-func (volume *Volume) ConnectRemoved(f func()) externglib.SignalHandle {
-	return volume.Connect("removed", f)
 }

@@ -314,6 +314,13 @@ func (h *Header) NeedsGLibObject() {
 	h.AddPackage("glib-2.0")
 }
 
+// CopyHeader copies the given header.
+func CopyHeader(src *Header) Header {
+	var dst Header
+	dst.ApplyFrom(src)
+	return dst
+}
+
 // ApplyFrom is ApplyTo but reversed.
 func (h *Header) ApplyFrom(src *Header) {
 	src.ApplyTo(h)

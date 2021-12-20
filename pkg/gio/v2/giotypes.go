@@ -370,6 +370,16 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 // if matcher was created using "*" and namespace is anything.)
 //
 // TODO: this is awkwardly worded.
+//
+// The function takes the following parameters:
+//
+//    - ns: string containing a file attribute namespace.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the matcher matches all of the entries in the given ns, FALSE
+//      otherwise.
+//
 func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
@@ -393,6 +403,12 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 }
 
 // EnumerateNext gets the next matched attribute from a AttributeMatcher.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string containing the next attribute or, NULL if no more
+//      attribute exist.
+//
 func (matcher *FileAttributeMatcher) EnumerateNext() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
@@ -414,6 +430,15 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 // Matches checks if an attribute will be matched by an attribute matcher. If
 // the matcher was created with the "*" matching string, this function will
 // always return TRUE.
+//
+// The function takes the following parameters:
+//
+//    - attribute: file attribute key.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if attribute matches matcher. FALSE otherwise.
+//
 func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
@@ -438,6 +463,15 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 
 // MatchesOnly checks if a attribute matcher only matches a given attribute.
 // Always returns FALSE if "*" was used when creating the matcher.
+//
+// The function takes the following parameters:
+//
+//    - attribute: file attribute key.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the matcher only matches attribute. FALSE otherwise.
+//
 func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
@@ -467,6 +501,16 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 // matcher matches the whole namespace - or remove a namespace or attribute when
 // the matcher matches everything. This is a limitation of the current
 // implementation, but may be fixed in the future.
+//
+// The function takes the following parameters:
+//
+//    - subtract (optional): matcher to subtract.
+//
+// The function returns the following values:
+//
+//    - fileAttributeMatcher (optional): file attribute matcher matching all
+//      attributes of matcher that are not matched by subtract.
+//
 func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.GFileAttributeMatcher // out
@@ -502,6 +546,12 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 // to the format passed to g_file_attribute_matcher_new(). The output however,
 // might not be identical, as the matcher may decide to use a different order or
 // omit needless parts.
+//
+// The function returns the following values:
+//
+//    - utf8: string describing the attributes the matcher matches against or
+//      NULL if matcher was NULL.
+//
 func (matcher *FileAttributeMatcher) String() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
@@ -823,6 +873,16 @@ func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 // G_RESOURCE_ERROR_NOT_FOUND will be returned.
 //
 // lookup_flags controls the behaviour of the lookup.
+//
+// The function takes the following parameters:
+//
+//    - path: pathname inside the resource.
+//    - lookupFlags: LookupFlags.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of constant strings.
+//
 func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -869,6 +929,19 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 // returns information about it.
 //
 // lookup_flags controls the behaviour of the lookup.
+//
+// The function takes the following parameters:
+//
+//    - path: pathname inside the resource.
+//    - lookupFlags: LookupFlags.
+//
+// The function returns the following values:
+//
+//    - size (optional): location to place the length of the contents of the
+//      file, or NULL if the length is not needed.
+//    - flags (optional): location to place the flags about the file, or NULL if
+//      the length is not needed.
+//
 func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -912,6 +985,16 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 // uncompress the data.
 //
 // lookup_flags controls the behaviour of the lookup.
+//
+// The function takes the following parameters:
+//
+//    - path: pathname inside the resource.
+//    - lookupFlags: LookupFlags.
+//
+// The function returns the following values:
+//
+//    - bytes or NULL on error. Free the returned object with g_bytes_unref().
+//
 func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) (*glib.Bytes, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -950,6 +1033,17 @@ func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlag
 // a Stream that lets you read the data.
 //
 // lookup_flags controls the behaviour of the lookup.
+//
+// The function takes the following parameters:
+//
+//    - path: pathname inside the resource.
+//    - lookupFlags: LookupFlags.
+//
+// The function returns the following values:
+//
+//    - inputStream or NULL on error. Free the returned object with
+//      g_object_unref().
+//
 func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (InputStreamer, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -1053,6 +1147,11 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 }
 
 // Copy copies target.
+//
+// The function returns the following values:
+//
+//    - srvTarget: copy of target.
+//
 func (target *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.GSrvTarget // in
@@ -1079,6 +1178,11 @@ func (target *SrvTarget) Copy() *SrvTarget {
 // this to the user, you should use g_hostname_is_ascii_encoded() to check if it
 // contains encoded Unicode segments, and use g_hostname_to_unicode() to convert
 // it if it does.).
+//
+// The function returns the following values:
+//
+//    - utf8 target's hostname.
+//
 func (target *SrvTarget) Hostname() string {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.gchar      // in
@@ -1096,6 +1200,11 @@ func (target *SrvTarget) Hostname() string {
 }
 
 // Port gets target's port.
+//
+// The function returns the following values:
+//
+//    - guint16 target's port.
+//
 func (target *SrvTarget) Port() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
@@ -1114,6 +1223,11 @@ func (target *SrvTarget) Port() uint16 {
 
 // Priority gets target's priority. You should not need to look at this;
 // #GResolver already sorts the targets according to the algorithm in RFC 2782.
+//
+// The function returns the following values:
+//
+//    - guint16 target's priority.
+//
 func (target *SrvTarget) Priority() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
@@ -1132,6 +1246,11 @@ func (target *SrvTarget) Priority() uint16 {
 
 // Weight gets target's weight. You should not need to look at this; #GResolver
 // already sorts the targets according to the algorithm in RFC 2782.
+//
+// The function returns the following values:
+//
+//    - guint16 target's weight.
+//
 func (target *SrvTarget) Weight() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in

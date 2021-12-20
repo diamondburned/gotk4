@@ -81,21 +81,6 @@ func marshalSignalListItemFactorier(p uintptr) (interface{}, error) {
 	return wrapSignalListItemFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewSignalListItemFactory creates a new GtkSignalListItemFactory.
-//
-// You need to connect signal handlers before you use it.
-func NewSignalListItemFactory() *SignalListItemFactory {
-	var _cret *C.GtkListItemFactory // in
-
-	_cret = C.gtk_signal_list_item_factory_new()
-
-	var _signalListItemFactory *SignalListItemFactory // out
-
-	_signalListItemFactory = wrapSignalListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _signalListItemFactory
-}
-
 // ConnectBind: emitted when a new gtk.ListItem:item has been set on the
 // listitem and should be bound for use.
 //
@@ -136,4 +121,24 @@ func (v *SignalListItemFactory) ConnectTeardown(f func(listitem ListItem)) exter
 // should be used to undo everything done in that signal.
 func (v *SignalListItemFactory) ConnectUnbind(f func(listitem ListItem)) externglib.SignalHandle {
 	return v.Connect("unbind", f)
+}
+
+// NewSignalListItemFactory creates a new GtkSignalListItemFactory.
+//
+// You need to connect signal handlers before you use it.
+//
+// The function returns the following values:
+//
+//    - signalListItemFactory: new GtkSignalListItemFactory.
+//
+func NewSignalListItemFactory() *SignalListItemFactory {
+	var _cret *C.GtkListItemFactory // in
+
+	_cret = C.gtk_signal_list_item_factory_new()
+
+	var _signalListItemFactory *SignalListItemFactory // out
+
+	_signalListItemFactory = wrapSignalListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _signalListItemFactory
 }

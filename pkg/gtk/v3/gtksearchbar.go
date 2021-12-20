@@ -86,6 +86,11 @@ func marshalSearchBarrer(p uintptr) (interface{}, error) {
 
 // NewSearchBar creates a SearchBar. You will need to tell it about which widget
 // is going to be your text entry using gtk_search_bar_connect_entry().
+//
+// The function returns the following values:
+//
+//    - searchBar: new SearchBar.
+//
 func NewSearchBar() *SearchBar {
 	var _cret *C.GtkWidget // in
 
@@ -120,6 +125,11 @@ func (bar *SearchBar) ConnectEntry(entry *Entry) {
 }
 
 // SearchMode returns whether the search mode is on or off.
+//
+// The function returns the following values:
+//
+//    - ok: whether search mode is toggled on.
+//
 func (bar *SearchBar) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
@@ -139,6 +149,11 @@ func (bar *SearchBar) SearchMode() bool {
 }
 
 // ShowCloseButton returns whether the close button is shown.
+//
+// The function returns the following values:
+//
+//    - ok: whether the close button is shown.
+//
 func (bar *SearchBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
@@ -196,6 +211,12 @@ func (bar *SearchBar) ShowCloseButton() bool {
 // The function takes the following parameters:
 //
 //    - event containing key press events.
+//
+// The function returns the following values:
+//
+//    - ok: GDK_EVENT_STOP if the key press event resulted in text being entered
+//      in the search entry (and revealing the search bar if necessary),
+//      GDK_EVENT_PROPAGATE otherwise.
 //
 func (bar *SearchBar) HandleEvent(event *gdk.Event) bool {
 	var _arg0 *C.GtkSearchBar // out

@@ -88,7 +88,7 @@ func marshalTooltipper(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - customWidget or NULL to unset the old custom widget.
+//    - customWidget (optional) or NULL to unset the old custom widget.
 //
 func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 	var _arg0 *C.GtkTooltip // out
@@ -109,7 +109,7 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf or NULL.
+//    - pixbuf (optional) or NULL.
 //
 func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkTooltip // out
@@ -131,7 +131,7 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 //
 // The function takes the following parameters:
 //
-//    - gicon representing the icon, or NULL.
+//    - gicon (optional) representing the icon, or NULL.
 //    - size: stock icon size (IconSize).
 //
 func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
@@ -157,7 +157,7 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name, or NULL.
+//    - iconName (optional): icon name, or NULL.
 //    - size: stock icon size (IconSize).
 //
 func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int) {
@@ -186,7 +186,7 @@ func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int) {
 //
 // The function takes the following parameters:
 //
-//    - stockId: stock id, or NULL.
+//    - stockId (optional): stock id, or NULL.
 //    - size: stock icon size (IconSize).
 //
 func (tooltip *Tooltip) SetIconFromStock(stockId string, size int) {
@@ -213,7 +213,8 @@ func (tooltip *Tooltip) SetIconFromStock(stockId string, size int) {
 //
 // The function takes the following parameters:
 //
-//    - markup string (see [Pango markup format][PangoMarkupFormat]) or NULL.
+//    - markup (optional) string (see [Pango markup format][PangoMarkupFormat])
+//      or NULL.
 //
 func (tooltip *Tooltip) SetMarkup(markup string) {
 	var _arg0 *C.GtkTooltip // out
@@ -235,7 +236,7 @@ func (tooltip *Tooltip) SetMarkup(markup string) {
 //
 // The function takes the following parameters:
 //
-//    - text string or NULL.
+//    - text (optional) string or NULL.
 //
 func (tooltip *Tooltip) SetText(text string) {
 	var _arg0 *C.GtkTooltip // out

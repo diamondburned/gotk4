@@ -67,6 +67,11 @@ func marshalMenuBarrer(p uintptr) (interface{}, error) {
 }
 
 // NewMenuBar creates a new MenuBar.
+//
+// The function returns the following values:
+//
+//    - menuBar: new menu bar, as a Widget.
+//
 func NewMenuBar() *MenuBar {
 	var _cret *C.GtkWidget // in
 
@@ -90,6 +95,10 @@ func NewMenuBar() *MenuBar {
 //
 //    - model: Model.
 //
+// The function returns the following values:
+//
+//    - menuBar: new MenuBar.
+//
 func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -108,6 +117,11 @@ func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 
 // ChildPackDirection retrieves the current child pack direction of the menubar.
 // See gtk_menu_bar_set_child_pack_direction().
+//
+// The function returns the following values:
+//
+//    - packDirection: child pack direction.
+//
 func (menubar *MenuBar) ChildPackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
@@ -126,6 +140,11 @@ func (menubar *MenuBar) ChildPackDirection() PackDirection {
 
 // PackDirection retrieves the current pack direction of the menubar. See
 // gtk_menu_bar_set_pack_direction().
+//
+// The function returns the following values:
+//
+//    - packDirection: pack direction.
+//
 func (menubar *MenuBar) PackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in

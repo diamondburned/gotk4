@@ -61,6 +61,11 @@ func marshalNumerableIconner(p uintptr) (interface{}, error) {
 // to the returned #GIcon.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - icon (optional) or NULL.
+//
 func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret *C.GIcon            // in
@@ -93,6 +98,11 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 // or NULL if there’s none.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name, or NULL.
+//
 func (self *NumerableIcon) BackgroundIconName() string {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret *C.gchar            // in
@@ -114,6 +124,11 @@ func (self *NumerableIcon) BackgroundIconName() string {
 // Count returns the value currently displayed by self.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - gint: currently displayed value.
+//
 func (self *NumerableIcon) Count() int {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret C.gint              // in
@@ -133,6 +148,11 @@ func (self *NumerableIcon) Count() int {
 // Label returns the currently displayed label of the icon, or NULL.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): currently displayed label.
+//
 func (self *NumerableIcon) Label() string {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret *C.gchar            // in
@@ -155,6 +175,12 @@ func (self *NumerableIcon) Label() string {
 // if there’s none.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - styleContext (optional) or NULL. This object is internal to GTK+ and
+//      should not be unreffed. Use g_object_ref() if you want to keep it around.
+//
 func (self *NumerableIcon) StyleContext() *StyleContext {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret *C.GtkStyleContext  // in
@@ -186,7 +212,7 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 //
 // The function takes the following parameters:
 //
-//    - icon or NULL.
+//    - icon (optional) or NULL.
 //
 func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -216,7 +242,7 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name, or NULL.
+//    - iconName (optional): icon name, or NULL.
 //
 func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -277,7 +303,7 @@ func (self *NumerableIcon) SetCount(count int) {
 //
 // The function takes the following parameters:
 //
-//    - label: short label, or NULL.
+//    - label (optional): short label, or NULL.
 //
 func (self *NumerableIcon) SetLabel(label string) {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -323,6 +349,10 @@ func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 //
 //    - baseIcon to overlay on.
 //
+// The function returns the following values:
+//
+//    - icon: new #GIcon.
+//
 func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 	var _arg1 *C.GIcon // out
 	var _cret *C.GIcon // in
@@ -362,6 +392,10 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 //
 //    - baseIcon to overlay on.
 //    - context: StyleContext.
+//
+// The function returns the following values:
+//
+//    - icon: new #GIcon.
 //
 func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContext) gio.Iconner {
 	var _arg1 *C.GIcon           // out

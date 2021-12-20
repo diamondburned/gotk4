@@ -39,6 +39,11 @@ type PollableOutputStreamOverrider interface {
 	//
 	// For any given stream, the value returned by this method is constant; a
 	// stream cannot switch from pollable to non-pollable or vice versa.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if stream is pollable, FALSE if not.
+	//
 	CanPoll() bool
 	// CreateSource creates a #GSource that triggers when stream can be written,
 	// or cancellable is triggered or an error occurs. The callback on the
@@ -48,6 +53,15 @@ type PollableOutputStreamOverrider interface {
 	// stream may not actually be writable even after the source triggers, so
 	// you should use g_pollable_output_stream_write_nonblocking() rather than
 	// g_output_stream_write() from the callback.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - source: new #GSource.
+	//
 	CreateSource(ctx context.Context) *glib.Source
 	// IsWritable checks if stream can be written.
 	//
@@ -56,6 +70,14 @@ type PollableOutputStreamOverrider interface {
 	// this returns TRUE would still block. To guarantee non-blocking behavior,
 	// you should always use g_pollable_output_stream_write_nonblocking(), which
 	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if stream is writable, FALSE if not. If an error has
+	//      occurred on stream, this will result in
+	//      g_pollable_output_stream_is_writable() returning TRUE, and the next
+	//      attempt to write will return the error.
+	//
 	IsWritable() bool
 	// WriteNonblocking attempts to write up to count bytes from buffer to
 	// stream, as with g_output_stream_write(). If stream is not currently
@@ -71,6 +93,16 @@ type PollableOutputStreamOverrider interface {
 	// Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
 	// transports like D/TLS require that you re-send the same buffer and count
 	// in the next write call.
+	//
+	// The function takes the following parameters:
+	//
+	//    - buffer (optional) to write data from.
+	//
+	// The function returns the following values:
+	//
+	//    - gssize: number of bytes written, or -1 on error (including
+	//      G_IO_ERROR_WOULD_BLOCK).
+	//
 	WriteNonblocking(buffer []byte) (int, error)
 	// WritevNonblocking attempts to write the bytes contained in the n_vectors
 	// vectors to stream, as with g_output_stream_writev(). If stream is not
@@ -88,6 +120,20 @@ type PollableOutputStreamOverrider interface {
 	// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some
 	// underlying transports like D/TLS require that you re-send the same
 	// vectors and n_vectors in the next write call.
+	//
+	// The function takes the following parameters:
+	//
+	//    - vectors: buffer containing the Vectors to write.
+	//
+	// The function returns the following values:
+	//
+	//    - bytesWritten (optional): location to store the number of bytes that
+	//      were written to the stream.
+	//    - pollableReturn: G_POLLABLE_RETURN_OK on success,
+	//      G_POLLABLE_RETURN_WOULD_BLOCK if the stream is not currently writable
+	//      (and error is *not* set), or G_POLLABLE_RETURN_FAILED if there was an
+	//      error in which case error will be set.
+	//
 	WritevNonblocking(vectors []OutputVector) (uint, PollableReturn, error)
 }
 
@@ -142,6 +188,11 @@ func marshalPollableOutputStreamer(p uintptr) (interface{}, error) {
 //
 // For any given stream, the value returned by this method is constant; a stream
 // cannot switch from pollable to non-pollable or vice versa.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if stream is pollable, FALSE if not.
+//
 func (stream *PollableOutputStream) CanPoll() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
@@ -171,7 +222,11 @@ func (stream *PollableOutputStream) CanPoll() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - source: new #GSource.
 //
 func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Source {
 	var _arg0 *C.GPollableOutputStream // out
@@ -209,6 +264,13 @@ func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Sour
 // TRUE would still block. To guarantee non-blocking behavior, you should always
 // use g_pollable_output_stream_write_nonblocking(), which will return a
 // G_IO_ERROR_WOULD_BLOCK error rather than blocking.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if stream is writable, FALSE if not. If an error has occurred on
+//      stream, this will result in g_pollable_output_stream_is_writable()
+//      returning TRUE, and the next attempt to write will return the error.
+//
 func (stream *PollableOutputStream) IsWritable() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
@@ -244,8 +306,13 @@ func (stream *PollableOutputStream) IsWritable() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - buffer to write data from.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes written, or -1 on error (including
+//      G_IO_ERROR_WOULD_BLOCK).
 //
 func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableOutputStream // out
@@ -300,8 +367,17 @@ func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - vectors: buffer containing the Vectors to write.
+//
+// The function returns the following values:
+//
+//    - bytesWritten (optional): location to store the number of bytes that were
+//      written to the stream.
+//    - pollableReturn: G_POLLABLE_RETURN_OK on success,
+//      G_POLLABLE_RETURN_WOULD_BLOCK if the stream is not currently writable
+//      (and error is *not* set), or G_POLLABLE_RETURN_FAILED if there was an
+//      error in which case error will be set.
 //
 func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vectors []OutputVector) (uint, PollableReturn, error) {
 	var _arg0 *C.GPollableOutputStream // out

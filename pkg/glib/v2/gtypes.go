@@ -220,6 +220,11 @@ func (t *TimeVal) TvUsec() int32 {
 //
 // Deprecated: Val is not year-2038-safe. Use guint64 for representing
 // microseconds since the epoch, or use Time.
+//
+// The function takes the following parameters:
+//
+//    - microseconds: number of microseconds to add to time.
+//
 func (time_ *TimeVal) Add(microseconds int32) {
 	var _arg0 *C.GTimeVal // out
 	var _arg1 C.glong     // out
@@ -266,6 +271,12 @@ func (time_ *TimeVal) Add(microseconds int32) {
 //
 // Deprecated: Val is not year-2038-safe. Use g_date_time_format_iso8601(dt)
 // instead.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): newly allocated string containing an ISO 8601 date, or
+//      NULL if time_ was too large.
+//
 func (time_ *TimeVal) ToISO8601() string {
 	var _arg0 *C.GTimeVal // out
 	var _cret *C.gchar    // in

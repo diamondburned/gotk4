@@ -136,6 +136,11 @@ func marshalTextIter(p uintptr) (interface{}, error) {
 // Assign assigns the value of other to iter. This function is not useful in
 // applications, because iterators can be assigned with GtkTextIter i = j;. The
 // function is used by language bindings.
+//
+// The function takes the following parameters:
+//
+//    - other TextIter.
+//
 func (iter *TextIter) Assign(other *TextIter) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
@@ -152,6 +157,11 @@ func (iter *TextIter) Assign(other *TextIter) {
 // was possible; if iter was the first in the buffer (character offset 0),
 // gtk_text_iter_backward_char() returns FALSE for convenience when writing
 // loops.
+//
+// The function returns the following values:
+//
+//    - ok: whether movement was possible.
+//
 func (iter *TextIter) BackwardChar() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -176,6 +186,15 @@ func (iter *TextIter) BackwardChar() bool {
 // dereferenceable position; if the iterator didn’t move, or moved onto the end
 // iterator, then FALSE is returned. If count is 0, the function does nothing
 // and returns FALSE.
+//
+// The function takes the following parameters:
+//
+//    - count: number of characters to move.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
 func (iter *TextIter) BackwardChars(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -199,6 +218,11 @@ func (iter *TextIter) BackwardChars(count int) bool {
 
 // BackwardCursorPosition: like gtk_text_iter_forward_cursor_position(), but
 // moves backward.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved.
+//
 func (iter *TextIter) BackwardCursorPosition() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -219,6 +243,15 @@ func (iter *TextIter) BackwardCursorPosition() bool {
 
 // BackwardCursorPositions moves up to count cursor positions. See
 // gtk_text_iter_forward_cursor_position() for details.
+//
+// The function takes the following parameters:
+//
+//    - count: number of positions to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
 func (iter *TextIter) BackwardCursorPositions(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -242,6 +275,16 @@ func (iter *TextIter) BackwardCursorPositions(count int) bool {
 
 // BackwardFindChar: same as gtk_text_iter_forward_find_char(), but goes
 // backward from iter.
+//
+// The function takes the following parameters:
+//
+//    - pred: function to be called on each character.
+//    - limit (optional): search limit, or NULL for none.
+//
+// The function returns the following values:
+//
+//    - ok: whether a match was found.
+//
 func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
 	var _arg0 *C.GtkTextIter         // out
 	var _arg1 C.GtkTextCharPredicate // out
@@ -278,6 +321,11 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 // returns TRUE. (Note that this implies that in a loop calling this function,
 // the line number may not change on every iteration, if your first iteration is
 // on line 0.).
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved.
+//
 func (iter *TextIter) BackwardLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -302,6 +350,15 @@ func (iter *TextIter) BackwardLine() bool {
 // dereferenceable position; if the iterator didn’t move, or moved onto the end
 // iterator, then FALSE is returned. If count is 0, the function does nothing
 // and returns FALSE. If count is negative, moves forward by 0 - count lines.
+//
+// The function takes the following parameters:
+//
+//    - count: number of lines to move backward.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
 func (iter *TextIter) BackwardLines(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -327,6 +384,20 @@ func (iter *TextIter) BackwardLines(count int) bool {
 //
 // match_end will never be set to a TextIter located after iter, even if there
 // is a possible match_start before or at iter.
+//
+// The function takes the following parameters:
+//
+//    - str: search string.
+//    - flags: bitmask of flags affecting the search.
+//    - limit (optional): location of last possible match_start, or NULL for
+//      start of buffer.
+//
+// The function returns the following values:
+//
+//    - matchStart (optional): return location for start of match, or NULL.
+//    - matchEnd (optional): return location for end of match, or NULL.
+//    - ok: whether a match was found.
+//
 func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart *TextIter, matchEnd *TextIter, ok bool) {
 	var _arg0 *C.GtkTextIter       // out
 	var _arg1 *C.gchar             // out
@@ -368,6 +439,11 @@ func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *T
 // Sentence boundaries are determined by Pango and should be correct for nearly
 // any language (if not, the correct fix would be to the Pango text boundary
 // algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) BackwardSentenceStart() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -389,6 +465,15 @@ func (iter *TextIter) BackwardSentenceStart() bool {
 // BackwardSentenceStarts calls gtk_text_iter_backward_sentence_start() up to
 // count times, or until it returns FALSE. If count is negative, moves forward
 // instead of backward.
+//
+// The function takes the following parameters:
+//
+//    - count: number of sentences to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) BackwardSentenceStarts(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -415,6 +500,15 @@ func (iter *TextIter) BackwardSentenceStarts(count int) bool {
 // tag toggles are found, returns FALSE, otherwise TRUE. Does not return toggles
 // located at iter, only toggles before iter. Sets iter to the location of the
 // toggle, or the start of the buffer if no toggle is found.
+//
+// The function takes the following parameters:
+//
+//    - tag (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - ok: whether we found a tag toggle before iter.
+//
 func (iter *TextIter) BackwardToTagToggle(tag *TextTag) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
@@ -440,6 +534,11 @@ func (iter *TextIter) BackwardToTagToggle(tag *TextTag) bool {
 
 // BackwardVisibleCursorPosition moves iter forward to the previous visible
 // cursor position. See gtk_text_iter_backward_cursor_position() for details.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
 func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -460,6 +559,15 @@ func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 
 // BackwardVisibleCursorPositions moves up to count visible cursor positions.
 // See gtk_text_iter_backward_cursor_position() for details.
+//
+// The function takes the following parameters:
+//
+//    - count: number of positions to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
 func (iter *TextIter) BackwardVisibleCursorPositions(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -488,6 +596,11 @@ func (iter *TextIter) BackwardVisibleCursorPositions(count int) bool {
 // function returns TRUE. (Note that this implies that in a loop calling this
 // function, the line number may not change on every iteration, if your first
 // iteration is on line 0.).
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved.
+//
 func (iter *TextIter) BackwardVisibleLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -513,6 +626,15 @@ func (iter *TextIter) BackwardVisibleLine() bool {
 // the end iterator, then FALSE is returned. If count is 0, the function does
 // nothing and returns FALSE. If count is negative, moves forward by 0 - count
 // lines.
+//
+// The function takes the following parameters:
+//
+//    - count: number of lines to move backward.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
 func (iter *TextIter) BackwardVisibleLines(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -539,6 +661,11 @@ func (iter *TextIter) BackwardVisibleLines(count int) bool {
 // that.) Word breaks are determined by Pango and should be correct for nearly
 // any language (if not, the correct fix would be to the Pango word break
 // algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) BackwardVisibleWordStart() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -559,6 +686,15 @@ func (iter *TextIter) BackwardVisibleWordStart() bool {
 
 // BackwardVisibleWordStarts calls gtk_text_iter_backward_visible_word_start()
 // up to count times.
+//
+// The function takes the following parameters:
+//
+//    - count: number of times to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) BackwardVisibleWordStarts(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -584,6 +720,11 @@ func (iter *TextIter) BackwardVisibleWordStarts(count int) bool {
 // currently on a word start, moves backward to the next one after that.) Word
 // breaks are determined by Pango and should be correct for nearly any language
 // (if not, the correct fix would be to the Pango word break algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) BackwardWordStart() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -604,6 +745,15 @@ func (iter *TextIter) BackwardWordStart() bool {
 
 // BackwardWordStarts calls gtk_text_iter_backward_word_start() up to count
 // times.
+//
+// The function takes the following parameters:
+//
+//    - count: number of times to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) BackwardWordStarts(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -635,6 +785,15 @@ func (iter *TextIter) BackwardWordStarts(count int) bool {
 // return TRUE for the same parameters.
 //
 // Deprecated: Use gtk_text_iter_starts_tag() instead.
+//
+// The function takes the following parameters:
+//
+//    - tag (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter is the start of a range tagged with tag.
+//
 func (iter *TextIter) BeginsTag(tag *TextTag) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
@@ -663,6 +822,15 @@ func (iter *TextIter) BeginsTag(tag *TextTag) bool {
 // editable. If text inserted at iter would be editable then the user should be
 // allowed to insert text at iter. gtk_text_buffer_insert_interactive() uses
 // this function to decide whether insertions are allowed at a given position.
+//
+// The function takes the following parameters:
+//
+//    - defaultEditability: TRUE if text is editable by default.
+//
+// The function returns the following values:
+//
+//    - ok: whether text inserted at iter would be editable.
+//
 func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gboolean     // out
@@ -690,6 +858,16 @@ func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 // rhs, positive if lhs is greater than rhs, and 0 if they’re equal. Ordering is
 // in character offset order, i.e. the first character in the buffer is less
 // than the second character in the buffer.
+//
+// The function takes the following parameters:
+//
+//    - rhs: another TextIter.
+//
+// The function returns the following values:
+//
+//    - gint: -1 if lhs is less than rhs, 1 if lhs is greater, 0 if they are
+//      equal.
+//
 func (lhs *TextIter) Compare(rhs *TextIter) int {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
@@ -712,6 +890,11 @@ func (lhs *TextIter) Compare(rhs *TextIter) int {
 // Copy creates a dynamically-allocated copy of an iterator. This function is
 // not useful in applications, because iterators can be copied with a simple
 // assignment (GtkTextIter i = j;). The function is used by language bindings.
+//
+// The function returns the following values:
+//
+//    - textIter: copy of the iter, free with gtk_text_iter_free().
+//
 func (iter *TextIter) Copy() *TextIter {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GtkTextIter // in
@@ -745,6 +928,15 @@ func (iter *TextIter) Copy() *TextIter {
 // is inside an editable range, you want to know whether a new character
 // inserted at iter would be inside an editable range. Use
 // gtk_text_iter_can_insert() to handle this case.
+//
+// The function takes the following parameters:
+//
+//    - defaultSetting: TRUE if text is editable by default.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter is inside an editable range.
+//
 func (iter *TextIter) Editable(defaultSetting bool) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gboolean     // out
@@ -775,6 +967,11 @@ func (iter *TextIter) Editable(defaultSetting bool) bool {
 // will not be counted as the end of a line, the line ends before the \r. The
 // end iterator is considered to be at the end of a line, even though there are
 // no paragraph delimiter chars there.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter is at the end of a line.
+//
 func (iter *TextIter) EndsLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -796,6 +993,11 @@ func (iter *TextIter) EndsLine() bool {
 // EndsSentence determines whether iter ends a sentence. Sentence boundaries are
 // determined by Pango and should be correct for nearly any language (if not,
 // the correct fix would be to the Pango text boundary algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter is at the end of a sentence.
+//
 func (iter *TextIter) EndsSentence() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -822,6 +1024,15 @@ func (iter *TextIter) EndsSentence() bool {
 // tagged range. In other words, unlike gtk_text_iter_starts_tag(), if
 // gtk_text_iter_ends_tag() returns TRUE, gtk_text_iter_has_tag() will return
 // FALSE for the same parameters.
+//
+// The function takes the following parameters:
+//
+//    - tag (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter is the end of a range tagged with tag.
+//
 func (iter *TextIter) EndsTag(tag *TextTag) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
@@ -848,6 +1059,11 @@ func (iter *TextIter) EndsTag(tag *TextTag) bool {
 // EndsWord determines whether iter ends a natural-language word. Word breaks
 // are determined by Pango and should be correct for nearly any language (if
 // not, the correct fix would be to the Pango word break algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter is at the end of a word.
+//
 func (iter *TextIter) EndsWord() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -870,6 +1086,15 @@ func (iter *TextIter) EndsWord() bool {
 // mechanism. This function is very fast; you can expect it to perform better
 // than e.g. getting the character offset for each iterator and comparing the
 // offsets yourself. Also, it’s a bit faster than gtk_text_iter_compare().
+//
+// The function takes the following parameters:
+//
+//    - rhs: another TextIter.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the iterators point to the same place in the buffer.
+//
 func (lhs *TextIter) Equal(rhs *TextIter) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
@@ -898,6 +1123,11 @@ func (lhs *TextIter) Equal(rhs *TextIter) bool {
 // one character before it, iter will now point at the end iterator, and
 // gtk_text_iter_forward_char() returns FALSE for convenience when writing
 // loops.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
 func (iter *TextIter) ForwardChar() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -922,6 +1152,15 @@ func (iter *TextIter) ForwardChar() bool {
 // original position, and dereferenceable (the last iterator in the buffer is
 // not dereferenceable). If count is 0, the function does nothing and returns
 // FALSE.
+//
+// The function takes the following parameters:
+//
+//    - count: number of characters to move, may be negative.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
 func (iter *TextIter) ForwardChars(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -952,6 +1191,11 @@ func (iter *TextIter) ForwardChars(count int) bool {
 // then a "combining mark" that causes the accent to be rendered; so the cursor
 // can’t go between those two characters. See also the LogAttr-struct and
 // pango_break() function.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
 func (iter *TextIter) ForwardCursorPosition() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -972,6 +1216,15 @@ func (iter *TextIter) ForwardCursorPosition() bool {
 
 // ForwardCursorPositions moves up to count cursor positions. See
 // gtk_text_iter_forward_cursor_position() for details.
+//
+// The function takes the following parameters:
+//
+//    - count: number of positions to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
 func (iter *TextIter) ForwardCursorPositions(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -996,6 +1249,16 @@ func (iter *TextIter) ForwardCursorPositions(count int) bool {
 // ForwardFindChar advances iter, calling pred on each character. If pred
 // returns TRUE, returns TRUE and stops scanning. If pred never returns TRUE,
 // iter is set to limit if limit is non-NULL, otherwise to the end iterator.
+//
+// The function takes the following parameters:
+//
+//    - pred: function to be called on each character.
+//    - limit (optional): search limit, or NULL for none.
+//
+// The function returns the following values:
+//
+//    - ok: whether a match was found.
+//
 func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
 	var _arg0 *C.GtkTextIter         // out
 	var _arg1 C.GtkTextCharPredicate // out
@@ -1029,6 +1292,11 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 // on the last line of the buffer, moves the iter to the end of the current
 // line. If after the operation, the iter is at the end of the buffer and not
 // dereferencable, returns FALSE. Otherwise, returns TRUE.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter can be dereferenced.
+//
 func (iter *TextIter) ForwardLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1053,6 +1321,15 @@ func (iter *TextIter) ForwardLine() bool {
 // position; if the iterator didn’t move, or moved onto the end iterator, then
 // FALSE is returned. If count is 0, the function does nothing and returns
 // FALSE. If count is negative, moves backward by 0 - count lines.
+//
+// The function takes the following parameters:
+//
+//    - count: number of lines to move forward.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
 func (iter *TextIter) ForwardLines(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -1082,6 +1359,20 @@ func (iter *TextIter) ForwardLines(count int) bool {
 //
 // match_start will never be set to a TextIter located before iter, even if
 // there is a possible match_end after or at iter.
+//
+// The function takes the following parameters:
+//
+//    - str: search string.
+//    - flags affecting how the search is done.
+//    - limit (optional): location of last possible match_end, or NULL for the
+//      end of the buffer.
+//
+// The function returns the following values:
+//
+//    - matchStart (optional): return location for start of match, or NULL.
+//    - matchEnd (optional): return location for end of match, or NULL.
+//    - ok: whether a match was found.
+//
 func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart *TextIter, matchEnd *TextIter, ok bool) {
 	var _arg0 *C.GtkTextIter       // out
 	var _arg1 *C.gchar             // out
@@ -1122,6 +1413,11 @@ func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *Te
 // end of a sentence, moves to the next end of sentence.) Sentence boundaries
 // are determined by Pango and should be correct for nearly any language (if
 // not, the correct fix would be to the Pango text boundary algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) ForwardSentenceEnd() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1143,6 +1439,15 @@ func (iter *TextIter) ForwardSentenceEnd() bool {
 // ForwardSentenceEnds calls gtk_text_iter_forward_sentence_end() count times
 // (or until gtk_text_iter_forward_sentence_end() returns FALSE). If count is
 // negative, moves backward instead of forward.
+//
+// The function takes the following parameters:
+//
+//    - count: number of sentences to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) ForwardSentenceEnds(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -1183,6 +1488,11 @@ func (iter *TextIter) ForwardToEnd() {
 // paragraph delimiter characters for the next line. If iter is on the last line
 // in the buffer, which does not end in paragraph delimiters, moves to the end
 // iterator (end of the last line), and returns FALSE.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new location is not the end iterator.
+//
 func (iter *TextIter) ForwardToLineEnd() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1206,6 +1516,15 @@ func (iter *TextIter) ForwardToLineEnd() bool {
 // tag toggles are found, returns FALSE, otherwise TRUE. Does not return toggles
 // located at iter, only toggles after iter. Sets iter to the location of the
 // toggle, or to the end of the buffer if no toggle is found.
+//
+// The function takes the following parameters:
+//
+//    - tag (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - ok: whether we found a tag toggle after iter.
+//
 func (iter *TextIter) ForwardToTagToggle(tag *TextTag) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
@@ -1231,6 +1550,11 @@ func (iter *TextIter) ForwardToTagToggle(tag *TextTag) bool {
 
 // ForwardVisibleCursorPosition moves iter forward to the next visible cursor
 // position. See gtk_text_iter_forward_cursor_position() for details.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
 func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1251,6 +1575,15 @@ func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 
 // ForwardVisibleCursorPositions moves up to count visible cursor positions. See
 // gtk_text_iter_forward_cursor_position() for details.
+//
+// The function takes the following parameters:
+//
+//    - count: number of positions to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
 func (iter *TextIter) ForwardVisibleCursorPositions(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -1276,6 +1609,11 @@ func (iter *TextIter) ForwardVisibleCursorPositions(count int) bool {
 // TRUE if there was a next line to move to, and FALSE if iter was simply moved
 // to the end of the buffer and is now not dereferenceable, or if iter was
 // already at the end of the buffer.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter can be dereferenced.
+//
 func (iter *TextIter) ForwardVisibleLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1300,6 +1638,15 @@ func (iter *TextIter) ForwardVisibleLine() bool {
 // dereferenceable position; if the iterator didn’t move, or moved onto the end
 // iterator, then FALSE is returned. If count is 0, the function does nothing
 // and returns FALSE. If count is negative, moves backward by 0 - count lines.
+//
+// The function takes the following parameters:
+//
+//    - count: number of lines to move forward.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
 func (iter *TextIter) ForwardVisibleLines(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -1325,6 +1672,11 @@ func (iter *TextIter) ForwardVisibleLines(count int) bool {
 // currently on a word end, moves forward to the next one after that.) Word
 // breaks are determined by Pango and should be correct for nearly any language
 // (if not, the correct fix would be to the Pango word break algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) ForwardVisibleWordEnd() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1345,6 +1697,15 @@ func (iter *TextIter) ForwardVisibleWordEnd() bool {
 
 // ForwardVisibleWordEnds calls gtk_text_iter_forward_visible_word_end() up to
 // count times.
+//
+// The function takes the following parameters:
+//
+//    - count: number of times to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) ForwardVisibleWordEnds(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -1370,6 +1731,11 @@ func (iter *TextIter) ForwardVisibleWordEnds(count int) bool {
 // word end, moves forward to the next one after that.) Word breaks are
 // determined by Pango and should be correct for nearly any language (if not,
 // the correct fix would be to the Pango word break algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) ForwardWordEnd() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1389,6 +1755,15 @@ func (iter *TextIter) ForwardWordEnd() bool {
 }
 
 // ForwardWordEnds calls gtk_text_iter_forward_word_end() up to count times.
+//
+// The function takes the following parameters:
+//
+//    - count: number of times to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
 func (iter *TextIter) ForwardWordEnds(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -1418,6 +1793,12 @@ func (iter *TextIter) ForwardWordEnds(count int) bool {
 // gtk_text_iter_get_attributes() will modify values, applying the effects of
 // any tags present at iter. If any tags affected values, the function returns
 // TRUE.
+//
+// The function returns the following values:
+//
+//    - values to be filled in.
+//    - ok: TRUE if values was modified.
+//
 func (iter *TextIter) Attributes() (*TextAttributes, bool) {
 	var _arg0 *C.GtkTextIter      // out
 	var _arg1 C.GtkTextAttributes // in
@@ -1447,6 +1828,11 @@ func (iter *TextIter) Attributes() (*TextAttributes, bool) {
 }
 
 // Buffer returns the TextBuffer this iterator is associated with.
+//
+// The function returns the following values:
+//
+//    - textBuffer: buffer.
+//
 func (iter *TextIter) Buffer() *TextBuffer {
 	var _arg0 *C.GtkTextIter   // out
 	var _cret *C.GtkTextBuffer // in
@@ -1465,6 +1851,11 @@ func (iter *TextIter) Buffer() *TextBuffer {
 
 // BytesInLine returns the number of bytes in the line containing iter,
 // including the paragraph delimiters.
+//
+// The function returns the following values:
+//
+//    - gint: number of bytes in the line.
+//
 func (iter *TextIter) BytesInLine() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -1487,6 +1878,11 @@ func (iter *TextIter) BytesInLine() int {
 // “unknown” character 0xFFFC is returned. If invoked on the end iterator, zero
 // is returned; zero is not a valid Unicode character. So you can write a loop
 // which ends when gtk_text_iter_get_char() returns 0.
+//
+// The function returns the following values:
+//
+//    - gunichar: unicode character, or 0 if iter is not dereferenceable.
+//
 func (iter *TextIter) Char() uint32 {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gunichar     // in
@@ -1505,6 +1901,11 @@ func (iter *TextIter) Char() uint32 {
 
 // CharsInLine returns the number of characters in the line containing iter,
 // including the paragraph delimiters.
+//
+// The function returns the following values:
+//
+//    - gint: number of characters in the line.
+//
 func (iter *TextIter) CharsInLine() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -1523,6 +1924,11 @@ func (iter *TextIter) CharsInLine() int {
 
 // ChildAnchor: if the location at iter contains a child anchor, the anchor is
 // returned (with no new reference count added). Otherwise, NULL is returned.
+//
+// The function returns the following values:
+//
+//    - textChildAnchor: anchor at iter.
+//
 func (iter *TextIter) ChildAnchor() *TextChildAnchor {
 	var _arg0 *C.GtkTextIter        // out
 	var _cret *C.GtkTextChildAnchor // in
@@ -1542,6 +1948,11 @@ func (iter *TextIter) ChildAnchor() *TextChildAnchor {
 // Language: convenience wrapper around gtk_text_iter_get_attributes(), which
 // returns the language in effect at iter. If no tags affecting language apply
 // to iter, the return value is identical to that of gtk_get_default_language().
+//
+// The function returns the following values:
+//
+//    - language in effect at iter.
+//
 func (iter *TextIter) Language() *pango.Language {
 	var _arg0 *C.GtkTextIter   // out
 	var _cret *C.PangoLanguage // in
@@ -1566,6 +1977,11 @@ func (iter *TextIter) Language() *pango.Language {
 
 // Line returns the line number containing the iterator. Lines in a TextBuffer
 // are numbered beginning with 0 for the first line in the buffer.
+//
+// The function returns the following values:
+//
+//    - gint: line number.
+//
 func (iter *TextIter) Line() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -1585,6 +2001,11 @@ func (iter *TextIter) Line() int {
 // LineIndex returns the byte index of the iterator, counting from the start of
 // a newline-terminated line. Remember that TextBuffer encodes text in UTF-8,
 // and that characters can require a variable number of bytes to represent.
+//
+// The function returns the following values:
+//
+//    - gint: distance from start of line, in bytes.
+//
 func (iter *TextIter) LineIndex() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -1604,6 +2025,11 @@ func (iter *TextIter) LineIndex() int {
 // LineOffset returns the character offset of the iterator, counting from the
 // start of a newline-terminated line. The first character on the line has
 // offset 0.
+//
+// The function returns the following values:
+//
+//    - gint: offset from start of line.
+//
 func (iter *TextIter) LineOffset() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -1624,6 +2050,11 @@ func (iter *TextIter) LineOffset() int {
 // iterable (they don’t take up any "space" in the buffer, they are just marks
 // in between iterable locations), multiple marks can exist in the same place.
 // The returned list is not in any meaningful order.
+//
+// The function returns the following values:
+//
+//    - sList: list of TextMark.
+//
 func (iter *TextIter) Marks() []TextMark {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GSList      // in
@@ -1650,6 +2081,11 @@ func (iter *TextIter) Marks() []TextMark {
 // TextBuffer has an offset, starting with 0 for the first character in the
 // buffer. Use gtk_text_buffer_get_iter_at_offset() to convert an offset back
 // into an iterator.
+//
+// The function returns the following values:
+//
+//    - gint: character offset.
+//
 func (iter *TextIter) Offset() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -1668,6 +2104,11 @@ func (iter *TextIter) Offset() int {
 
 // Pixbuf: if the element at iter is a pixbuf, the pixbuf is returned (with no
 // new reference count added). Otherwise, NULL is returned.
+//
+// The function returns the following values:
+//
+//    - pixbuf at iter.
+//
 func (iter *TextIter) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GdkPixbuf   // in
@@ -1701,6 +2142,15 @@ func (iter *TextIter) Pixbuf() *gdkpixbuf.Pixbuf {
 // returned array will correspond to byte offsets in the text buffer. Note that
 // 0xFFFC can occur in normal text as well, so it is not a reliable indicator
 // that a pixbuf or widget is in the buffer.
+//
+// The function takes the following parameters:
+//
+//    - end: iterator at end of a range.
+//
+// The function returns the following values:
+//
+//    - utf8: slice of text from the buffer.
+//
 func (start *TextIter) Slice(end *TextIter) string {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
@@ -1724,6 +2174,11 @@ func (start *TextIter) Slice(end *TextIter) string {
 // Tags returns a list of tags that apply to iter, in ascending order of
 // priority (highest-priority tags are last). The TextTag in the list don’t have
 // a reference added, but you have to free the list itself.
+//
+// The function returns the following values:
+//
+//    - sList: list of TextTag.
+//
 func (iter *TextIter) Tags() []TextTag {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GSList      // in
@@ -1750,6 +2205,15 @@ func (iter *TextIter) Tags() []TextTag {
 // such as images, the character and byte offsets in the returned string will
 // not correspond to character and byte offsets in the buffer. If you want
 // offsets to correspond, see gtk_text_iter_get_slice().
+//
+// The function takes the following parameters:
+//
+//    - end: iterator at end of a range.
+//
+// The function returns the following values:
+//
+//    - utf8: array of characters from the buffer.
+//
 func (start *TextIter) Text(end *TextIter) string {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
@@ -1775,6 +2239,15 @@ func (start *TextIter) Text(end *TextIter) string {
 // If a tag is toggled on at iter, then some non-empty range of characters
 // following iter has that tag applied to it. If a tag is toggled off, then some
 // non-empty range following iter does not have the tag applied to it.
+//
+// The function takes the following parameters:
+//
+//    - toggledOn: TRUE to get toggled-on tags.
+//
+// The function returns the following values:
+//
+//    - sList tags toggled at this point.
+//
 func (iter *TextIter) ToggledTags(toggledOn bool) []TextTag {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gboolean     // out
@@ -1805,6 +2278,11 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []TextTag {
 // VisibleLineIndex returns the number of bytes from the start of the line to
 // the given iter, not counting bytes that are invisible due to tags with the
 // “invisible” flag toggled on.
+//
+// The function returns the following values:
+//
+//    - gint: byte index of iter with respect to the start of the line.
+//
 func (iter *TextIter) VisibleLineIndex() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -1824,6 +2302,11 @@ func (iter *TextIter) VisibleLineIndex() int {
 // VisibleLineOffset returns the offset in characters from the start of the line
 // to the given iter, not counting characters that are invisible due to tags
 // with the “invisible” flag toggled on.
+//
+// The function returns the following values:
+//
+//    - gint: offset in visible characters from the start of the line.
+//
 func (iter *TextIter) VisibleLineOffset() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -1843,6 +2326,15 @@ func (iter *TextIter) VisibleLineOffset() int {
 // VisibleSlice: like gtk_text_iter_get_slice(), but invisible text is not
 // included. Invisible text is usually invisible because a TextTag with the
 // “invisible” attribute turned on has been applied to it.
+//
+// The function takes the following parameters:
+//
+//    - end: iterator at end of range.
+//
+// The function returns the following values:
+//
+//    - utf8: slice of text from the buffer.
+//
 func (start *TextIter) VisibleSlice(end *TextIter) string {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
@@ -1866,6 +2358,15 @@ func (start *TextIter) VisibleSlice(end *TextIter) string {
 // VisibleText: like gtk_text_iter_get_text(), but invisible text is not
 // included. Invisible text is usually invisible because a TextTag with the
 // “invisible” attribute turned on has been applied to it.
+//
+// The function takes the following parameters:
+//
+//    - end: iterator at end of range.
+//
+// The function returns the following values:
+//
+//    - utf8: string containing visible text in the range.
+//
 func (start *TextIter) VisibleText(end *TextIter) string {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
@@ -1889,6 +2390,15 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 // HasTag returns TRUE if iter points to a character that is part of a range
 // tagged with tag. See also gtk_text_iter_starts_tag() and
 // gtk_text_iter_ends_tag().
+//
+// The function takes the following parameters:
+//
+//    - tag: TextTag.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter is tagged with tag.
+//
 func (iter *TextIter) HasTag(tag *TextTag) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
@@ -1912,6 +2422,16 @@ func (iter *TextIter) HasTag(tag *TextTag) bool {
 
 // InRange checks whether iter falls in the range [start, end). start and end
 // must be in ascending order.
+//
+// The function takes the following parameters:
+//
+//    - start of range.
+//    - end of range.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter is in the range.
+//
 func (iter *TextIter) InRange(start *TextIter, end *TextIter) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
@@ -1941,6 +2461,11 @@ func (iter *TextIter) InRange(start *TextIter, end *TextIter) bool {
 // next sentence). Sentence boundaries are determined by Pango and should be
 // correct for nearly any language (if not, the correct fix would be to the
 // Pango text boundary algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter is inside a sentence.
+//
 func (iter *TextIter) InsideSentence() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1966,6 +2491,11 @@ func (iter *TextIter) InsideSentence() bool {
 //
 // Note that if gtk_text_iter_starts_word() returns TRUE, then this function
 // returns TRUE too, since iter points to the first character of the word.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter is inside a word.
+//
 func (iter *TextIter) InsideWord() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1986,6 +2516,11 @@ func (iter *TextIter) InsideWord() bool {
 
 // IsCursorPosition: see gtk_text_iter_forward_cursor_position() or LogAttr or
 // pango_break() for details on what a cursor position is.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the cursor can be placed at iter.
+//
 func (iter *TextIter) IsCursorPosition() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -2007,6 +2542,11 @@ func (iter *TextIter) IsCursorPosition() bool {
 // IsEnd returns TRUE if iter is the end iterator, i.e. one past the last
 // dereferenceable iterator in the buffer. gtk_text_iter_is_end() is the most
 // efficient way to check whether an iterator is the end iterator.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter is the end iterator.
+//
 func (iter *TextIter) IsEnd() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -2027,6 +2567,11 @@ func (iter *TextIter) IsEnd() bool {
 
 // IsStart returns TRUE if iter is the first iterator in the buffer, that is if
 // iter has a character offset of 0.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter is the first in the buffer.
+//
 func (iter *TextIter) IsStart() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -2050,6 +2595,11 @@ func (iter *TextIter) IsStart() bool {
 // buffer functions that take a range call this automatically on your behalf, so
 // there’s no real reason to call it yourself in those cases. There are some
 // exceptions, such as gtk_text_iter_in_range(), that expect a pre-sorted range.
+//
+// The function takes the following parameters:
+//
+//    - second: another TextIter.
+//
 func (first *TextIter) Order(second *TextIter) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
@@ -2065,6 +2615,11 @@ func (first *TextIter) Order(second *TextIter) {
 // SetLine moves iterator iter to the start of the line line_number. If
 // line_number is negative or larger than the number of lines in the buffer,
 // moves iter to the start of the last line in the buffer.
+//
+// The function takes the following parameters:
+//
+//    - lineNumber: line number (counted from 0).
+//
 func (iter *TextIter) SetLine(lineNumber int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -2080,6 +2635,11 @@ func (iter *TextIter) SetLine(lineNumber int) {
 // SetLineIndex: same as gtk_text_iter_set_line_offset(), but works with a byte
 // index. The given byte index must be at the start of a character, it can’t be
 // in the middle of a UTF-8 encoded character.
+//
+// The function takes the following parameters:
+//
+//    - byteOnLine: byte index relative to the start of iter’s current line.
+//
 func (iter *TextIter) SetLineIndex(byteOnLine int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -2097,6 +2657,12 @@ func (iter *TextIter) SetLineIndex(byteOnLine int) {
 // characters in the line; if equal, iter moves to the start of the next line.
 // See gtk_text_iter_set_line_index() if you have a byte index rather than a
 // character offset.
+//
+// The function takes the following parameters:
+//
+//    - charOnLine: character offset relative to the start of iter’s current
+//      line.
+//
 func (iter *TextIter) SetLineOffset(charOnLine int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -2111,6 +2677,11 @@ func (iter *TextIter) SetLineOffset(charOnLine int) {
 
 // SetOffset sets iter to point to char_offset. char_offset counts from the
 // start of the entire text buffer, starting with 0.
+//
+// The function takes the following parameters:
+//
+//    - charOffset: character number.
+//
 func (iter *TextIter) SetOffset(charOffset int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -2126,6 +2697,11 @@ func (iter *TextIter) SetOffset(charOffset int) {
 // SetVisibleLineIndex: like gtk_text_iter_set_line_index(), but the index is in
 // visible bytes, i.e. text with a tag making it invisible is not counted in the
 // index.
+//
+// The function takes the following parameters:
+//
+//    - byteOnLine: byte index.
+//
 func (iter *TextIter) SetVisibleLineIndex(byteOnLine int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -2141,6 +2717,11 @@ func (iter *TextIter) SetVisibleLineIndex(byteOnLine int) {
 // SetVisibleLineOffset: like gtk_text_iter_set_line_offset(), but the offset is
 // in visible characters, i.e. text with a tag making it invisible is not
 // counted in the offset.
+//
+// The function takes the following parameters:
+//
+//    - charOnLine: character offset.
+//
 func (iter *TextIter) SetVisibleLineOffset(charOnLine int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
@@ -2157,6 +2738,11 @@ func (iter *TextIter) SetVisibleLineOffset(charOnLine int) {
 // gtk_text_iter_get_line_offset() would return 0. However this function is
 // potentially more efficient than gtk_text_iter_get_line_offset() because it
 // doesn’t have to compute the offset, it just has to see whether it’s 0.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter begins a line.
+//
 func (iter *TextIter) StartsLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -2178,6 +2764,11 @@ func (iter *TextIter) StartsLine() bool {
 // StartsSentence determines whether iter begins a sentence. Sentence boundaries
 // are determined by Pango and should be correct for nearly any language (if
 // not, the correct fix would be to the Pango text boundary algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter is at the start of a sentence.
+//
 func (iter *TextIter) StartsSentence() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -2204,6 +2795,15 @@ func (iter *TextIter) StartsSentence() bool {
 // inside the tagged range. In other words, unlike gtk_text_iter_ends_tag(), if
 // gtk_text_iter_starts_tag() returns TRUE, gtk_text_iter_has_tag() will also
 // return TRUE for the same parameters.
+//
+// The function takes the following parameters:
+//
+//    - tag (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter is the start of a range tagged with tag.
+//
 func (iter *TextIter) StartsTag(tag *TextTag) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
@@ -2230,6 +2830,11 @@ func (iter *TextIter) StartsTag(tag *TextTag) bool {
 // StartsWord determines whether iter begins a natural-language word. Word
 // breaks are determined by Pango and should be correct for nearly any language
 // (if not, the correct fix would be to the Pango word break algorithms).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter is at the start of a word.
+//
 func (iter *TextIter) StartsWord() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -2251,6 +2856,15 @@ func (iter *TextIter) StartsWord() bool {
 // TogglesTag: this is equivalent to (gtk_text_iter_starts_tag() ||
 // gtk_text_iter_ends_tag()), i.e. it tells you whether a range with tag applied
 // to it begins or ends at iter.
+//
+// The function takes the following parameters:
+//
+//    - tag (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - ok: whether tag is toggled on or off at iter.
+//
 func (iter *TextIter) TogglesTag(tag *TextTag) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out

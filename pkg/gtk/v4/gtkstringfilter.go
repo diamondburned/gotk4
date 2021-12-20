@@ -96,7 +96,11 @@ func marshalStringFilterer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - expression to evaluate or NULL for none.
+//    - expression (optional) to evaluate or NULL for none.
+//
+// The function returns the following values:
+//
+//    - stringFilter: new GtkStringFilter.
 //
 func NewStringFilter(expression Expressioner) *StringFilter {
 	var _arg1 *C.GtkExpression   // out
@@ -119,6 +123,11 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 
 // Expression gets the expression that the string filter uses to obtain strings
 // from items.
+//
+// The function returns the following values:
+//
+//    - expression (optional): GtkExpression.
+//
 func (self *StringFilter) Expression() Expressioner {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.GtkExpression   // in
@@ -148,6 +157,11 @@ func (self *StringFilter) Expression() Expressioner {
 }
 
 // IgnoreCase returns whether the filter ignores case differences.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the filter ignores case.
+//
 func (self *StringFilter) IgnoreCase() bool {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret C.gboolean         // in
@@ -167,6 +181,11 @@ func (self *StringFilter) IgnoreCase() bool {
 }
 
 // MatchMode returns the match mode that the filter is using.
+//
+// The function returns the following values:
+//
+//    - stringFilterMatchMode: match mode of the filter.
+//
 func (self *StringFilter) MatchMode() StringFilterMatchMode {
 	var _arg0 *C.GtkStringFilter         // out
 	var _cret C.GtkStringFilterMatchMode // in
@@ -184,6 +203,11 @@ func (self *StringFilter) MatchMode() StringFilterMatchMode {
 }
 
 // Search gets the search term.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): search term.
+//
 func (self *StringFilter) Search() string {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.char            // in
@@ -209,7 +233,7 @@ func (self *StringFilter) Search() string {
 //
 // The function takes the following parameters:
 //
-//    - expression: GtkExpression.
+//    - expression (optional): GtkExpression.
 //
 func (self *StringFilter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkStringFilter // out
@@ -267,7 +291,7 @@ func (self *StringFilter) SetMatchMode(mode StringFilterMatchMode) {
 //
 // The function takes the following parameters:
 //
-//    - search: string to search for or NULL to clear the search.
+//    - search (optional): string to search for or NULL to clear the search.
 //
 func (self *StringFilter) SetSearch(search string) {
 	var _arg0 *C.GtkStringFilter // out

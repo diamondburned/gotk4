@@ -36,10 +36,34 @@ type EntryBufferOverrider interface {
 	// values.
 	//
 	// Note that the positions are specified in characters, not bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position at which to delete text.
+	//    - nChars: number of characters to delete.
+	//
+	// The function returns the following values:
+	//
+	//    - guint: number of characters deleted.
+	//
 	DeleteText(position, nChars uint) uint
+	// The function takes the following parameters:
+	//
+	//    - position
+	//    - nChars
+	//
 	DeletedText(position, nChars uint)
 	// Length retrieves the length in characters of the buffer.
+	//
+	// The function returns the following values:
+	//
+	//    - guint: number of characters in the buffer.
+	//
 	Length() uint
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	Text(nBytes *uint) string
 	// InsertText inserts n_chars characters of chars into the contents of the
 	// buffer, at position position.
@@ -50,7 +74,24 @@ type EntryBufferOverrider interface {
 	// values.
 	//
 	// Note that the position and length are in characters, not in bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position at which to insert text.
+	//    - chars: text to insert into the buffer.
+	//    - nChars: length of the text in characters, or -1.
+	//
+	// The function returns the following values:
+	//
+	//    - guint: number of characters actually inserted.
+	//
 	InsertText(position uint, chars string, nChars uint) uint
+	// The function takes the following parameters:
+	//
+	//    - position
+	//    - chars
+	//    - nChars
+	//
 	InsertedText(position uint, chars string, nChars uint)
 }
 
@@ -82,14 +123,32 @@ func marshalEntryBufferer(p uintptr) (interface{}, error) {
 	return wrapEntryBuffer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectDeletedText: text is altered in the default handler for this signal.
+//
+// If you want access to the text after the text has been modified, use
+// G_CONNECT_AFTER.
+func (buffer *EntryBuffer) ConnectDeletedText(f func(position, nChars uint)) externglib.SignalHandle {
+	return buffer.Connect("deleted-text", f)
+}
+
+// ConnectInsertedText: this signal is emitted after text is inserted into the
+// buffer.
+func (buffer *EntryBuffer) ConnectInsertedText(f func(position uint, chars string, nChars uint)) externglib.SignalHandle {
+	return buffer.Connect("inserted-text", f)
+}
+
 // NewEntryBuffer: create a new GtkEntryBuffer object.
 //
 // Optionally, specify initial text to set in the buffer.
 //
 // The function takes the following parameters:
 //
-//    - initialChars: initial buffer text, or NULL.
+//    - initialChars (optional): initial buffer text, or NULL.
 //    - nInitialChars: number of characters in initial_chars, or -1.
+//
+// The function returns the following values:
+//
+//    - entryBuffer: new GtkEntryBuffer object.
 //
 func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 	var _arg1 *C.char           // out
@@ -127,6 +186,10 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 //
 //    - position at which to delete text.
 //    - nChars: number of characters to delete.
+//
+// The function returns the following values:
+//
+//    - guint: number of characters deleted.
 //
 func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -202,6 +265,11 @@ func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars 
 // Bytes retrieves the length in bytes of the buffer.
 //
 // See gtk.EntryBuffer.GetLength().
+//
+// The function returns the following values:
+//
+//    - gsize: byte length of the buffer.
+//
 func (buffer *EntryBuffer) Bytes() uint {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _cret C.gsize           // in
@@ -219,6 +287,11 @@ func (buffer *EntryBuffer) Bytes() uint {
 }
 
 // Length retrieves the length in characters of the buffer.
+//
+// The function returns the following values:
+//
+//    - guint: number of characters in the buffer.
+//
 func (buffer *EntryBuffer) Length() uint {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _cret C.guint           // in
@@ -236,6 +309,12 @@ func (buffer *EntryBuffer) Length() uint {
 }
 
 // MaxLength retrieves the maximum allowed length of the text in buffer.
+//
+// The function returns the following values:
+//
+//    - gint: maximum allowed number of characters in EntryBuffer, or 0 if there
+//      is no maximum.
+//
 func (buffer *EntryBuffer) MaxLength() int {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _cret C.int             // in
@@ -256,6 +335,13 @@ func (buffer *EntryBuffer) MaxLength() int {
 //
 // The memory pointer returned by this call will not change unless this object
 // emits a signal, or is finalized.
+//
+// The function returns the following values:
+//
+//    - utf8: pointer to the contents of the widget as a string. This string
+//      points to internally allocated storage in the buffer and must not be
+//      freed, modified or stored.
+//
 func (buffer *EntryBuffer) Text() string {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _cret *C.char           // in
@@ -286,6 +372,10 @@ func (buffer *EntryBuffer) Text() string {
 //    - position at which to insert text.
 //    - chars: text to insert into the buffer.
 //    - nChars: length of the text in characters, or -1.
+//
+// The function returns the following values:
+//
+//    - guint: number of characters actually inserted.
 //
 func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) uint {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -321,8 +411,8 @@ func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) u
 // The function takes the following parameters:
 //
 //    - maxLength: maximum length of the entry buffer, or 0 for no maximum.
-//    (other than the maximum length of entries.) The value passed in will be
-//    clamped to the range 0-65536.
+//      (other than the maximum length of entries.) The value passed in will be
+//      clamped to the range 0-65536.
 //
 func (buffer *EntryBuffer) SetMaxLength(maxLength int) {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -362,18 +452,4 @@ func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(chars)
 	runtime.KeepAlive(nChars)
-}
-
-// ConnectDeletedText: text is altered in the default handler for this signal.
-//
-// If you want access to the text after the text has been modified, use
-// G_CONNECT_AFTER.
-func (buffer *EntryBuffer) ConnectDeletedText(f func(position, nChars uint)) externglib.SignalHandle {
-	return buffer.Connect("deleted-text", f)
-}
-
-// ConnectInsertedText: this signal is emitted after text is inserted into the
-// buffer.
-func (buffer *EntryBuffer) ConnectInsertedText(f func(position uint, chars string, nChars uint)) externglib.SignalHandle {
-	return buffer.Connect("inserted-text", f)
 }

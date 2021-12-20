@@ -165,7 +165,24 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 	return wrapPopover(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivateDefault: emitted whend the user activates the default widget.
+//
+// This is a keybinding signal (class.SignalAction.html).
+func (popover *Popover) ConnectActivateDefault(f func()) externglib.SignalHandle {
+	return popover.Connect("activate-default", f)
+}
+
+// ConnectClosed: emitted when the popover is closed.
+func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
+	return popover.Connect("closed", f)
+}
+
 // NewPopover creates a new GtkPopover.
+//
+// The function returns the following values:
+//
+//    - popover: new GtkPopover.
+//
 func NewPopover() *Popover {
 	var _cret *C.GtkWidget // in
 
@@ -181,6 +198,11 @@ func NewPopover() *Popover {
 // Autohide returns whether the popover is modal.
 //
 // See gtk.Popover.SetAutohide() for the implications of this.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if popover is modal.
+//
 func (popover *Popover) Autohide() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
@@ -201,6 +223,11 @@ func (popover *Popover) Autohide() bool {
 
 // CascadePopdown returns whether the popover will close after a modal child is
 // closed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if popover will close after a modal child.
+//
 func (popover *Popover) CascadePopdown() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
@@ -220,6 +247,11 @@ func (popover *Popover) CascadePopdown() bool {
 }
 
 // Child gets the child widget of popover.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of popover.
+//
 func (popover *Popover) Child() Widgetter {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
@@ -250,6 +282,11 @@ func (popover *Popover) Child() Widgetter {
 
 // HasArrow gets whether this popover is showing an arrow pointing at the widget
 // that it is relative to.
+//
+// The function returns the following values:
+//
+//    - ok: whether the popover has an arrow.
+//
 func (popover *Popover) HasArrow() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
@@ -269,6 +306,11 @@ func (popover *Popover) HasArrow() bool {
 }
 
 // MnemonicsVisible gets whether mnemonics are visible.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if mnemonics are supposed to be visible in this popover.
+//
 func (popover *Popover) MnemonicsVisible() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
@@ -288,6 +330,12 @@ func (popover *Popover) MnemonicsVisible() bool {
 }
 
 // Offset gets the offset previous set with gtk_popover_set_offset().
+//
+// The function returns the following values:
+//
+//    - xOffset (optional): location for the x_offset.
+//    - yOffset (optional): location for the y_offset.
+//
 func (popover *Popover) Offset() (xOffset int, yOffset int) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.int         // in
@@ -312,6 +360,12 @@ func (popover *Popover) Offset() (xOffset int, yOffset int) {
 // If a rectangle to point to has been set, this function will return TRUE and
 // fill in rect with such rectangle, otherwise it will return FALSE and fill in
 // rect with the parent widget coordinates.
+//
+// The function returns the following values:
+//
+//    - rect: location to store the rectangle.
+//    - ok: TRUE if a rectangle to point to was set.
+//
 func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkPopover  // out
 	var _arg1 C.GdkRectangle // in
@@ -334,6 +388,11 @@ func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
 }
 
 // Position returns the preferred position of popover.
+//
+// The function returns the following values:
+//
+//    - positionType: preferred position.
+//
 func (popover *Popover) Position() PositionType {
 	var _arg0 *C.GtkPopover     // out
 	var _cret C.GtkPositionType // in
@@ -441,7 +500,7 @@ func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (popover *Popover) SetChild(child Widgetter) {
 	var _arg0 *C.GtkPopover // out
@@ -465,8 +524,8 @@ func (popover *Popover) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - widget: child widget of popover to set as the default, or NULL to unset
-//    the default widget for the popover.
+//    - widget (optional): child widget of popover to set as the default, or NULL
+//      to unset the default widget for the popover.
 //
 func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg0 *C.GtkPopover // out
@@ -591,16 +650,4 @@ func (popover *Popover) SetPosition(position PositionType) {
 	C.gtk_popover_set_position(_arg0, _arg1)
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(position)
-}
-
-// ConnectActivateDefault: emitted whend the user activates the default widget.
-//
-// This is a keybinding signal (class.SignalAction.html).
-func (popover *Popover) ConnectActivateDefault(f func()) externglib.SignalHandle {
-	return popover.Connect("activate-default", f)
-}
-
-// ConnectClosed: emitted when the popover is closed.
-func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
-	return popover.Connect("closed", f)
 }

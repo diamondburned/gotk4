@@ -214,6 +214,11 @@ func marshalConstraintLayouter(p uintptr) (interface{}, error) {
 }
 
 // NewConstraintLayout creates a new GtkConstraintLayout layout manager.
+//
+// The function returns the following values:
+//
+//    - constraintLayout: newly created GtkConstraintLayout.
+//
 func NewConstraintLayout() *ConstraintLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -336,13 +341,16 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 // The function takes the following parameters:
 //
 //    - lines: array of Visual Format Language lines defining a set of
-//    constraints.
-//    - hspacing: default horizontal spacing value, or -1 for the fallback
-//    value.
+//      constraints.
+//    - hspacing: default horizontal spacing value, or -1 for the fallback value.
 //    - vspacing: default vertical spacing value, or -1 for the fallback value.
 //    - views: dictionary of [ name, target ] pairs; the name keys map to the
-//    view names in the VFL lines, while the target values map to children of
-//    the widget using a GtkConstraintLayout, or guides.
+//      view names in the VFL lines, while the target values map to children of
+//      the widget using a GtkConstraintLayout, or guides.
+//
+// The function returns the following values:
+//
+//    - list of gtk.Constraint instances that were added to the layout.
 //
 func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) ([]Constraint, error) {
 	var _arg0 *C.GtkConstraintLayout // out
@@ -435,6 +443,11 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 //
 // Applications should try hard to avoid calling this function because of the
 // slowdowns.
+//
+// The function returns the following values:
+//
+//    - listModel: a GListModel tracking the layout's constraints.
+//
 func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeller {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in
@@ -473,6 +486,11 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeller {
 //
 // Applications should try hard to avoid calling this function because of the
 // slowdowns.
+//
+// The function returns the following values:
+//
+//    - listModel: a GListModel tracking the layout's guides.
+//
 func (layout *ConstraintLayout) ObserveGuides() gio.ListModeller {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in

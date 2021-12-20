@@ -8,6 +8,8 @@ package glib
 // #include <glib.h>
 import "C"
 
+// The function returns the following values:
+//
 func ConvertErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -20,6 +22,8 @@ func ConvertErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func FileErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -32,6 +36,8 @@ func FileErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func MarkupErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -44,6 +50,8 @@ func MarkupErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func NumberParserErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -56,6 +64,8 @@ func NumberParserErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func OptionErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -68,6 +78,8 @@ func OptionErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func ShellErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -80,6 +92,8 @@ func ShellErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func SpawnErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -92,6 +106,8 @@ func SpawnErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func SpawnExitErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -104,6 +120,8 @@ func SpawnExitErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func IOChannelErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -116,6 +134,8 @@ func IOChannelErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func KeyFileErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -128,6 +148,8 @@ func KeyFileErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func RegexErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -140,6 +162,8 @@ func RegexErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func URIErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -152,6 +176,8 @@ func URIErrorQuark() Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func VariantParseErrorQuark() Quark {
 	var _cret C.GQuark // in
 

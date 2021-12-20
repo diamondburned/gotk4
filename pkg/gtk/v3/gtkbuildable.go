@@ -34,37 +34,118 @@ func init() {
 type BuildableOverrider interface {
 	// AddChild adds a child to buildable. type is an optional string describing
 	// how the child should be added.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder: Builder.
+	//    - child to add.
+	//    - typ (optional): kind of child or NULL.
+	//
 	AddChild(builder *Builder, child *externglib.Object, typ string)
 	// ConstructChild constructs a child of buildable with the name name.
 	//
 	// Builder calls this function if a “constructor” has been specified in the
 	// UI definition.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder used to construct this object.
+	//    - name of child to construct.
+	//
+	// The function returns the following values:
+	//
+	//    - object: constructed child.
+	//
 	ConstructChild(builder *Builder, name string) *externglib.Object
 	// CustomFinished: this is similar to gtk_buildable_parser_finished() but is
 	// called once for each custom tag handled by the buildable.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder: Builder.
+	//    - child (optional) object or NULL for non-child tags.
+	//    - tagname: name of the tag.
+	//    - data (optional): user data created in custom_tag_start.
+	//
 	CustomFinished(builder *Builder, child *externglib.Object, tagname string, data cgo.Handle)
 	// CustomTagEnd: this is called at the end of each custom element handled by
 	// the buildable.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder used to construct this object.
+	//    - child (optional) object or NULL for non-child tags.
+	//    - tagname: name of tag.
+	//    - data (optional): user data that will be passed in to parser
+	//      functions.
+	//
 	CustomTagEnd(builder *Builder, child *externglib.Object, tagname string, data *cgo.Handle)
 	// CustomTagStart: this is called for each unknown element under <child>.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder used to construct this object.
+	//    - child (optional) object or NULL for non-child tags.
+	//    - tagname: name of tag.
+	//
+	// The function returns the following values:
+	//
+	//    - parser to fill in.
+	//    - data (optional): return location for user data that will be passed in
+	//      to parser functions.
+	//    - ok: TRUE if a object has a custom implementation, FALSE if it
+	//      doesn't.
+	//
 	CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (*glib.MarkupParser, cgo.Handle, bool)
 	// InternalChild: get the internal child called childname of the buildable
 	// object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder: Builder.
+	//    - childname: name of child.
+	//
+	// The function returns the following values:
+	//
+	//    - object: internal child of the buildable object.
+	//
 	InternalChild(builder *Builder, childname string) *externglib.Object
 	// Name gets the name of the buildable object.
 	//
 	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
 	// used to construct the buildable.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: name set with gtk_buildable_set_name().
+	//
 	Name() string
 	// ParserFinished: called when the builder finishes the parsing of a
 	// [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called
 	// once for each time gtk_builder_add_from_file() or
 	// gtk_builder_add_from_string() is called on a builder.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder: Builder.
+	//
 	ParserFinished(builder *Builder)
 	// SetBuildableProperty sets the property name name to value on the
 	// buildable object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder: Builder.
+	//    - name of property.
+	//    - value of property.
+	//
 	SetBuildableProperty(builder *Builder, name string, value *externglib.Value)
 	// SetName sets the name of the buildable object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - name to set.
+	//
 	SetName(name string)
 }
 
@@ -138,7 +219,7 @@ func marshalBuildabler(p uintptr) (interface{}, error) {
 //
 //    - builder: Builder.
 //    - child to add.
-//    - typ: kind of child or NULL.
+//    - typ (optional): kind of child or NULL.
 //
 func (buildable *Buildable) AddChild(builder *Builder, child *externglib.Object, typ string) {
 	var _arg0 *C.GtkBuildable // out
@@ -171,6 +252,10 @@ func (buildable *Buildable) AddChild(builder *Builder, child *externglib.Object,
 //    - builder used to construct this object.
 //    - name of child to construct.
 //
+// The function returns the following values:
+//
+//    - object: constructed child.
+//
 func (buildable *Buildable) ConstructChild(builder *Builder, name string) *externglib.Object {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
@@ -200,9 +285,9 @@ func (buildable *Buildable) ConstructChild(builder *Builder, name string) *exter
 // The function takes the following parameters:
 //
 //    - builder: Builder.
-//    - child object or NULL for non-child tags.
+//    - child (optional) object or NULL for non-child tags.
 //    - tagname: name of the tag.
-//    - data: user data created in custom_tag_start.
+//    - data (optional): user data created in custom_tag_start.
 //
 func (buildable *Buildable) CustomFinished(builder *Builder, child *externglib.Object, tagname string, data cgo.Handle) {
 	var _arg0 *C.GtkBuildable // out
@@ -234,9 +319,9 @@ func (buildable *Buildable) CustomFinished(builder *Builder, child *externglib.O
 // The function takes the following parameters:
 //
 //    - builder used to construct this object.
-//    - child object or NULL for non-child tags.
+//    - child (optional) object or NULL for non-child tags.
 //    - tagname: name of tag.
-//    - data: user data that will be passed in to parser functions.
+//    - data (optional): user data that will be passed in to parser functions.
 //
 func (buildable *Buildable) CustomTagEnd(builder *Builder, child *externglib.Object, tagname string, data *cgo.Handle) {
 	var _arg0 *C.GtkBuildable // out
@@ -269,8 +354,15 @@ func (buildable *Buildable) CustomTagEnd(builder *Builder, child *externglib.Obj
 // The function takes the following parameters:
 //
 //    - builder used to construct this object.
-//    - child object or NULL for non-child tags.
+//    - child (optional) object or NULL for non-child tags.
 //    - tagname: name of tag.
+//
+// The function returns the following values:
+//
+//    - parser to fill in.
+//    - data (optional): return location for user data that will be passed in to
+//      parser functions.
+//    - ok: TRUE if a object has a custom implementation, FALSE if it doesn't.
 //
 func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (*glib.MarkupParser, cgo.Handle, bool) {
 	var _arg0 *C.GtkBuildable // out
@@ -316,6 +408,10 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.O
 //    - builder: Builder.
 //    - childname: name of child.
 //
+// The function returns the following values:
+//
+//    - object: internal child of the buildable object.
+//
 func (buildable *Buildable) InternalChild(builder *Builder, childname string) *externglib.Object {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
@@ -343,6 +439,11 @@ func (buildable *Buildable) InternalChild(builder *Builder, childname string) *e
 //
 // Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
 // used to construct the buildable.
+//
+// The function returns the following values:
+//
+//    - utf8: name set with gtk_buildable_set_name().
+//
 func (buildable *Buildable) Name() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.gchar        // in

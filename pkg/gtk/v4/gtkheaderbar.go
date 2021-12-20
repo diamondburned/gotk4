@@ -126,6 +126,11 @@ func marshalHeaderBarrer(p uintptr) (interface{}, error) {
 }
 
 // NewHeaderBar creates a new GtkHeaderBar widget.
+//
+// The function returns the following values:
+//
+//    - headerBar: new GtkHeaderBar.
+//
 func NewHeaderBar() *HeaderBar {
 	var _cret *C.GtkWidget // in
 
@@ -139,6 +144,11 @@ func NewHeaderBar() *HeaderBar {
 }
 
 // DecorationLayout gets the decoration layout of the GtkHeaderBar.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): decoration layout.
+//
 func (bar *HeaderBar) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.char         // in
@@ -159,6 +169,11 @@ func (bar *HeaderBar) DecorationLayout() string {
 
 // ShowTitleButtons returns whether this header bar shows the standard window
 // title buttons.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if title buttons are shown.
+//
 func (bar *HeaderBar) ShowTitleButtons() bool {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret C.gboolean      // in
@@ -180,6 +195,12 @@ func (bar *HeaderBar) ShowTitleButtons() bool {
 // TitleWidget retrieves the title widget of the header.
 //
 // See gtk.HeaderBar.SetTitleWidget().
+//
+// The function returns the following values:
+//
+//    - widget (optional): title widget of the header, or NULL if none has been
+//      set explicitly.
+//
 func (bar *HeaderBar) TitleWidget() Widgetter {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.GtkWidget    // in
@@ -284,7 +305,7 @@ func (bar *HeaderBar) Remove(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - layout: decoration layout, or NULL to unset the layout.
+//    - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (bar *HeaderBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -335,7 +356,7 @@ func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - titleWidget: widget to use for a title.
+//    - titleWidget (optional): widget to use for a title.
 //
 func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out

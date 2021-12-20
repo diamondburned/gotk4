@@ -135,6 +135,10 @@ func marshalMemoryTexturer(p uintptr) (interface{}, error) {
 //    - bytes: GBytes containing the pixel data.
 //    - stride for the data.
 //
+// The function returns the following values:
+//
+//    - memoryTexture: newly-created GdkTexture.
+//
 func NewMemoryTexture(width, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) *MemoryTexture {
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

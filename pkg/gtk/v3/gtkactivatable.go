@@ -35,7 +35,17 @@ type ActivatableOverrider interface {
 	// Activatable:use-action-appearance changes.
 	//
 	// Deprecated: since version 3.10.
+	//
+	// The function takes the following parameters:
+	//
+	//    - action (optional): related Action or NULL.
+	//
 	SyncActionProperties(action *Action)
+	// The function takes the following parameters:
+	//
+	//    - action
+	//    - propertyName
+	//
 	Update(action *Action, propertyName string)
 }
 
@@ -354,6 +364,11 @@ func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 // RelatedAction gets the related Action for activatable.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - action: related Action if one is set.
+//
 func (activatable *Activatable) RelatedAction() *Action {
 	var _arg0 *C.GtkActivatable // out
 	var _cret *C.GtkAction      // in
@@ -375,6 +390,11 @@ func (activatable *Activatable) RelatedAction() *Action {
 // appearance.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: whether activatable uses its actions appearance.
+//
 func (activatable *Activatable) UseActionAppearance() bool {
 	var _arg0 *C.GtkActivatable // out
 	var _cret C.gboolean        // in
@@ -453,7 +473,7 @@ func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 //
 // The function takes the following parameters:
 //
-//    - action: related Action or NULL.
+//    - action (optional): related Action or NULL.
 //
 func (activatable *Activatable) SyncActionProperties(action *Action) {
 	var _arg0 *C.GtkActivatable // out

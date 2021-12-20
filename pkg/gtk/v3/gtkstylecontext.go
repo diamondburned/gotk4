@@ -634,9 +634,9 @@ func (s StyleContextPrintFlags) Has(other StyleContextPrintFlags) bool {
 //    - location where to draw the cursor (location->width is ignored).
 //    - isPrimary: if the cursor should be the primary cursor color.
 //    - direction: whether the cursor is left-to-right or right-to-left. Should
-//    never be K_TEXT_DIR_NONE.
+//      never be K_TEXT_DIR_NONE.
 //    - drawArrow: TRUE to draw a directional arrow on the cursor. Should be
-//    FALSE unless the cursor is split.
+//      FALSE unless the cursor is split.
 //
 func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
 	var _arg1 *C.GtkWidget       // out
@@ -786,6 +786,16 @@ func marshalStyleContexter(p uintptr) (interface{}, error) {
 	return wrapStyleContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged signal is emitted when there is a change in the StyleContext.
+//
+// For a StyleContext returned by gtk_widget_get_style_context(), the
+// Widget::style-updated signal/vfunc might be more convenient to use.
+//
+// This signal is useful when using the theming layer standalone.
+func (context *StyleContext) ConnectChanged(f func()) externglib.SignalHandle {
+	return context.Connect("changed", f)
+}
+
 // NewStyleContext creates a standalone StyleContext, this style context won’t
 // be attached to any widget, so you may want to call
 // gtk_style_context_set_path() yourself.
@@ -794,6 +804,11 @@ func marshalStyleContexter(p uintptr) (interface{}, error) {
 // GTK+, if you are using StyleContext to theme Widgets, use
 // gtk_widget_get_style_context() in order to get a style context ready to theme
 // the widget.
+//
+// The function returns the following values:
+//
+//    - styleContext: newly created StyleContext.
+//
 func NewStyleContext() *StyleContext {
 	var _cret *C.GtkStyleContext // in
 
@@ -848,9 +863,9 @@ func (context *StyleContext) AddClass(className string) {
 //
 //    - provider: StyleProvider.
 //    - priority of the style provider. The lower it is, the earlier it will be
-//    used in the style construction. Typically this will be in the range
-//    between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
-//    GTK_STYLE_PROVIDER_PRIORITY_USER.
+//      used in the style construction. Typically this will be in the range
+//      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
@@ -921,8 +936,8 @@ func (context *StyleContext) AddRegion(regionName string, flags RegionFlags) {
 //
 // The function takes the following parameters:
 //
-//    - regionId: animatable region to stop, or NULL. See
-//    gtk_style_context_push_animatable_region().
+//    - regionId (optional): animatable region to stop, or NULL. See
+//      gtk_style_context_push_animatable_region().
 //
 func (context *StyleContext) CancelAnimations(regionId cgo.Handle) {
 	var _arg0 *C.GtkStyleContext // out
@@ -953,6 +968,10 @@ func (context *StyleContext) CancelAnimations(regionId cgo.Handle) {
 //
 //    - state to retrieve the color for.
 //
+// The function returns the following values:
+//
+//    - color: return value for the background color.
+//
 func (context *StyleContext) BackgroundColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
@@ -981,6 +1000,10 @@ func (context *StyleContext) BackgroundColor(state StateFlags) *gdk.RGBA {
 //
 //    - state to retrieve the border for.
 //
+// The function returns the following values:
+//
+//    - border: return value for the border settings.
+//
 func (context *StyleContext) Border(state StateFlags) *Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
@@ -1007,6 +1030,10 @@ func (context *StyleContext) Border(state StateFlags) *Border {
 // The function takes the following parameters:
 //
 //    - state to retrieve the color for.
+//
+// The function returns the following values:
+//
+//    - color: return value for the border color.
 //
 func (context *StyleContext) BorderColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
@@ -1035,6 +1062,10 @@ func (context *StyleContext) BorderColor(state StateFlags) *gdk.RGBA {
 //
 //    - state to retrieve the color for.
 //
+// The function returns the following values:
+//
+//    - color: return value for the foreground color.
+//
 func (context *StyleContext) Color(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
@@ -1058,6 +1089,11 @@ func (context *StyleContext) Color(state StateFlags) *gdk.RGBA {
 //
 // Deprecated: Use gtk_style_context_get_state() and check for
 // K_STATE_FLAG_DIR_LTR and K_STATE_FLAG_DIR_RTL instead.
+//
+// The function returns the following values:
+//
+//    - textDirection: widget direction.
+//
 func (context *StyleContext) Direction() TextDirection {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkTextDirection // in
@@ -1083,6 +1119,11 @@ func (context *StyleContext) Direction() TextDirection {
 //
 //    - state to retrieve the font for.
 //
+// The function returns the following values:
+//
+//    - fontDescription for the given state. This object is owned by GTK+ and
+//      should not be freed.
+//
 func (context *StyleContext) Font(state StateFlags) *pango.FontDescription {
 	var _arg0 *C.GtkStyleContext      // out
 	var _arg1 C.GtkStateFlags         // out
@@ -1103,6 +1144,12 @@ func (context *StyleContext) Font(state StateFlags) *pango.FontDescription {
 }
 
 // FrameClock returns the FrameClock to which context is attached.
+//
+// The function returns the following values:
+//
+//    - frameClock (optional) or NULL if context does not have an attached frame
+//      clock.
+//
 func (context *StyleContext) FrameClock() gdk.FrameClocker {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GdkFrameClock   // in
@@ -1133,6 +1180,11 @@ func (context *StyleContext) FrameClock() gdk.FrameClocker {
 
 // JunctionSides returns the sides where rendered elements connect visually with
 // others.
+//
+// The function returns the following values:
+//
+//    - junctionSides: junction sides.
+//
 func (context *StyleContext) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkJunctionSides // in
@@ -1155,6 +1207,10 @@ func (context *StyleContext) JunctionSides() JunctionSides {
 // The function takes the following parameters:
 //
 //    - state to retrieve the border for.
+//
+// The function returns the following values:
+//
+//    - margin: return value for the margin settings.
 //
 func (context *StyleContext) Margin(state StateFlags) *Border {
 	var _arg0 *C.GtkStyleContext // out
@@ -1182,6 +1238,10 @@ func (context *StyleContext) Margin(state StateFlags) *Border {
 //
 //    - state to retrieve the padding for.
 //
+// The function returns the following values:
+//
+//    - padding: return value for the padding settings.
+//
 func (context *StyleContext) Padding(state StateFlags) *Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
@@ -1203,6 +1263,11 @@ func (context *StyleContext) Padding(state StateFlags) *Border {
 
 // Parent gets the parent context set via gtk_style_context_set_parent(). See
 // that function for details.
+//
+// The function returns the following values:
+//
+//    - styleContext (optional): parent context or NULL.
+//
 func (context *StyleContext) Parent() *StyleContext {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GtkStyleContext // in
@@ -1222,6 +1287,11 @@ func (context *StyleContext) Parent() *StyleContext {
 }
 
 // Path returns the widget path used for style matching.
+//
+// The function returns the following values:
+//
+//    - widgetPath: WidgetPath.
+//
 func (context *StyleContext) Path() *WidgetPath {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GtkWidgetPath   // in
@@ -1263,6 +1333,10 @@ func (context *StyleContext) Path() *WidgetPath {
 //    - property: style property name.
 //    - state to retrieve the property value for.
 //
+// The function returns the following values:
+//
+//    - value: return location for the style property value.
+//
 func (context *StyleContext) Property(property string, state StateFlags) externglib.Value {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
@@ -1290,6 +1364,11 @@ func (context *StyleContext) Property(property string, state StateFlags) externg
 }
 
 // Scale returns the scale used for assets.
+//
+// The function returns the following values:
+//
+//    - gint: scale.
+//
 func (context *StyleContext) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.gint             // in
@@ -1307,6 +1386,11 @@ func (context *StyleContext) Scale() int {
 }
 
 // Screen returns the Screen to which context is attached.
+//
+// The function returns the following values:
+//
+//    - screen: Screen.
+//
 func (context *StyleContext) Screen() *gdk.Screen {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GdkScreen       // in
@@ -1344,6 +1428,11 @@ func (context *StyleContext) Screen() *gdk.Screen {
 //
 //    - property: style property name.
 //
+// The function returns the following values:
+//
+//    - cssSection (optional): NULL or the section where a value for property was
+//      defined.
+//
 func (context *StyleContext) Section(property string) *CSSSection {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out
@@ -1378,6 +1467,11 @@ func (context *StyleContext) Section(property string) *CSSSection {
 // This method should only be used to retrieve the StateFlags to pass to
 // StyleContext methods, like gtk_style_context_get_padding(). If you need to
 // retrieve the current state of a Widget, use gtk_widget_get_state_flags().
+//
+// The function returns the following values:
+//
+//    - stateFlags: state flags.
+//
 func (context *StyleContext) State() StateFlags {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkStateFlags    // in
@@ -1402,6 +1496,10 @@ func (context *StyleContext) State() StateFlags {
 // The function takes the following parameters:
 //
 //    - propertyName: name of the widget style property.
+//
+// The function returns the following values:
+//
+//    - value: return location for the property value.
 //
 func (context *StyleContext) StyleProperty(propertyName string) externglib.Value {
 	var _arg0 *C.GtkStyleContext // out
@@ -1428,6 +1526,10 @@ func (context *StyleContext) StyleProperty(propertyName string) externglib.Value
 // The function takes the following parameters:
 //
 //    - className class name.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if context has class_name defined.
 //
 func (context *StyleContext) HasClass(className string) bool {
 	var _arg0 *C.GtkStyleContext // out
@@ -1459,6 +1561,11 @@ func (context *StyleContext) HasClass(className string) bool {
 // The function takes the following parameters:
 //
 //    - regionName: region name.
+//
+// The function returns the following values:
+//
+//    - flagsReturn (optional): return location for region flags.
+//    - ok: TRUE if region is defined.
 //
 func (context *StyleContext) HasRegion(regionName string) (RegionFlags, bool) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1500,6 +1607,13 @@ func (context *StyleContext) Invalidate() {
 }
 
 // ListClasses returns the list of classes currently defined in context.
+//
+// The function returns the following values:
+//
+//    - list of strings with the currently defined classes. The contents of the
+//      list are owned by GTK+, but you must free the list itself with
+//      g_list_free() when you are done with it.
+//
 func (context *StyleContext) ListClasses() []string {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GList           // in
@@ -1525,6 +1639,13 @@ func (context *StyleContext) ListClasses() []string {
 // ListRegions returns the list of regions currently defined in context.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - list of strings with the currently defined regions. The contents of the
+//      list are owned by GTK+, but you must free the list itself with
+//      g_list_free() when you are done with it.
+//
 func (context *StyleContext) ListRegions() []string {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GList           // in
@@ -1552,6 +1673,11 @@ func (context *StyleContext) ListRegions() []string {
 // The function takes the following parameters:
 //
 //    - colorName: color name to lookup.
+//
+// The function returns the following values:
+//
+//    - color: return location for the looked up color.
+//    - ok: TRUE if color_name was found and resolved, FALSE otherwise.
 //
 func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1586,6 +1712,10 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 // The function takes the following parameters:
 //
 //    - stockId: icon name.
+//
+// The function returns the following values:
+//
+//    - iconSet (optional): looked up GtkIconSet, or NULL.
 //
 func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	var _arg0 *C.GtkStyleContext // out
@@ -1649,11 +1779,11 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 // The function takes the following parameters:
 //
 //    - window: Window.
-//    - regionId: animatable region to notify on, or NULL. See
-//    gtk_style_context_push_animatable_region().
+//    - regionId (optional): animatable region to notify on, or NULL. See
+//      gtk_style_context_push_animatable_region().
 //    - state to trigger transition for.
 //    - stateValue: TRUE if state is the state we are changing to, FALSE if we
-//    are changing away from it.
+//      are changing away from it.
 //
 func (context *StyleContext) NotifyStateChange(window gdk.Windower, regionId cgo.Handle, state StateType, stateValue bool) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1705,7 +1835,7 @@ func (context *StyleContext) PopAnimatableRegion() {
 //
 // The function takes the following parameters:
 //
-//    - regionId: unique identifier for the animatable region.
+//    - regionId (optional): unique identifier for the animatable region.
 //
 func (context *StyleContext) PushAnimatableRegion(regionId cgo.Handle) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1938,7 +2068,7 @@ func (context *StyleContext) SetJunctionSides(sides JunctionSides) {
 //
 // The function takes the following parameters:
 //
-//    - parent: new parent or NULL.
+//    - parent (optional): new parent or NULL.
 //
 func (context *StyleContext) SetParent(parent *StyleContext) {
 	var _arg0 *C.GtkStyleContext // out
@@ -2050,6 +2180,11 @@ func (context *StyleContext) SetState(flags StateFlags) {
 //
 //    - state: widget state.
 //
+// The function returns the following values:
+//
+//    - progress: return location for the transition progress.
+//    - ok: TRUE if there is a running transition animation for state.
+//
 func (context *StyleContext) StateIsRunning(state StateType) (float64, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateType     // out
@@ -2088,6 +2223,10 @@ func (context *StyleContext) StateIsRunning(state StateType) (float64, bool) {
 //
 //    - flags flags that determine what to print.
 //
+// The function returns the following values:
+//
+//    - utf8: newly allocated string representing context.
+//
 func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	var _arg0 *C.GtkStyleContext          // out
 	var _arg1 C.GtkStyleContextPrintFlags // out
@@ -2108,16 +2247,6 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	return _utf8
 }
 
-// ConnectChanged signal is emitted when there is a change in the StyleContext.
-//
-// For a StyleContext returned by gtk_widget_get_style_context(), the
-// Widget::style-updated signal/vfunc might be more convenient to use.
-//
-// This signal is useful when using the theming layer standalone.
-func (context *StyleContext) ConnectChanged(f func()) externglib.SignalHandle {
-	return context.Connect("changed", f)
-}
-
 // StyleContextAddProviderForScreen adds a global style provider to screen,
 // which will be used in style construction for all StyleContexts under screen.
 //
@@ -2132,9 +2261,9 @@ func (context *StyleContext) ConnectChanged(f func()) externglib.SignalHandle {
 //    - screen: Screen.
 //    - provider: StyleProvider.
 //    - priority of the style provider. The lower it is, the earlier it will be
-//    used in the style construction. Typically this will be in the range
-//    between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
-//    GTK_STYLE_PROVIDER_PRIORITY_USER.
+//      used in the style construction. Typically this will be in the range
+//      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProviderer, priority uint) {
 	var _arg1 *C.GdkScreen        // out

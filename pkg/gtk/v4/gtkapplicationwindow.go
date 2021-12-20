@@ -164,6 +164,10 @@ func marshalApplicationWindower(p uintptr) (interface{}, error) {
 //
 //    - application: GtkApplication.
 //
+// The function returns the following values:
+//
+//    - applicationWindow: newly created GtkApplicationWindow.
+//
 func NewApplicationWindow(application *Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
@@ -183,6 +187,11 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 // HelpOverlay gets the GtkShortcutsWindow that is associated with window.
 //
 // See gtk.ApplicationWindow.SetHelpOverlay().
+//
+// The function returns the following values:
+//
+//    - shortcutsWindow (optional): help overlay associated with window, or NULL.
+//
 func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret *C.GtkShortcutsWindow   // in
@@ -204,6 +213,12 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 // ID returns the unique ID of the window.
 //
 //    If the window has not yet been added to a GtkApplication, returns 0.
+//
+// The function returns the following values:
+//
+//    - guint: unique ID for window, or 0 if the window has not yet been added to
+//      a GtkApplication.
+//
 func (window *ApplicationWindow) ID() uint {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.guint                 // in
@@ -222,6 +237,11 @@ func (window *ApplicationWindow) ID() uint {
 
 // ShowMenubar returns whether the window will display a menubar for the app
 // menu and menubar as needed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if window will display a menubar when needed.
+//
 func (window *ApplicationWindow) ShowMenubar() bool {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.gboolean              // in
@@ -249,7 +269,7 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 //
 // The function takes the following parameters:
 //
-//    - helpOverlay: GtkShortcutsWindow.
+//    - helpOverlay (optional): GtkShortcutsWindow.
 //
 func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 	var _arg0 *C.GtkApplicationWindow // out

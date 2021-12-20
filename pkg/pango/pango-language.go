@@ -60,6 +60,12 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 // is, compare to:
 //
 //    pango_language_get_sample_string (pango_language_from_string ("xx")).
+//
+// The function returns the following values:
+//
+//    - utf8: sample string. This value is owned by Pango and should not be
+//      freed.
+//
 func (language *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
@@ -98,6 +104,15 @@ func (language *Language) SampleString() string {
 // Note: while the return value is declared as PangoScript, the returned values
 // are from the GUnicodeScript enumeration, which may have more values. Callers
 // need to handle unknown values.
+//
+// The function returns the following values:
+//
+//    - scripts (optional): array of PangoScript values, with the number of
+//      entries in the array stored in num_scripts, or NULL if Pango does not
+//      have any information about this particular language tag (also the case if
+//      language is NULL). The returned array is owned by Pango and should not be
+//      modified or freed.
+//
 func (language *Language) Scripts() []Script {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.PangoScript   // in
@@ -130,6 +145,17 @@ func (language *Language) Scripts() []Script {
 // probably is not useful for applications in most circumstances.
 //
 // This function uses pango.Language.GetScripts() internally.
+//
+// The function takes the following parameters:
+//
+//    - script: PangoScript.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if script is one of the scripts used to write language or if
+//      nothing is known about language (including the case that language is
+//      NULL), FALSE otherwise.
+//
 func (language *Language) IncludesScript(script Script) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 C.PangoScript    // out
@@ -159,6 +185,17 @@ func (language *Language) IncludesScript(script Script) bool {
 // A language tag is considered to match a range in the list if the range is
 // '*', the range is exactly the tag, or the range is a prefix of the tag, and
 // the character after it in the tag is '-'.
+//
+// The function takes the following parameters:
+//
+//    - rangeList: list of language ranges, separated by ';', ':', ',', or space
+//      characters. Each element must either be '*', or a RFC 3066 language range
+//      canonicalized as by pango.Language.FromString.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a match was found.
+//
 func (language *Language) Matches(rangeList string) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 *C.char          // out
@@ -184,6 +221,12 @@ func (language *Language) Matches(rangeList string) bool {
 }
 
 // String gets the RFC-3066 format string representing the given language tag.
+//
+// The function returns the following values:
+//
+//    - utf8: string representing the language tag. This is owned by Pango and
+//      should not be freed.
+//
 func (language *Language) String() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
@@ -214,7 +257,13 @@ func (language *Language) String() string {
 //
 // The function takes the following parameters:
 //
-//    - language: string representing a language tag, or NULL.
+//    - language (optional): string representing a language tag, or NULL.
+//
+// The function returns the following values:
+//
+//    - ret (optional): opaque pointer to a PangoLanguage structure, or NULL if
+//      language was NULL. The returned pointer will be valid forever after, and
+//      should not be freed.
 //
 func LanguageFromString(language string) *Language {
 	var _arg1 *C.char          // out
@@ -261,6 +310,11 @@ func LanguageFromString(language string) *Language {
 // calling gtk_set_locale()). See the setlocale() manpage for more details.
 //
 // Note that the default language can change over the life of an application.
+//
+// The function returns the following values:
+//
+//    - language: default language as a PangoLanguage, must not be freed.
+//
 func LanguageGetDefault() *Language {
 	var _cret *C.PangoLanguage // in
 

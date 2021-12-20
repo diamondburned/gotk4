@@ -28,6 +28,11 @@ func init() {
 // function, maintainers may call atk_registry_set_factory_type() to associate
 // an ObjectFactory subclass with the GType of objects for whom accessibility
 // information will be provided.
+//
+// The function returns the following values:
+//
+//    - registry: default implementation of the ObjectFactory/type registry.
+//
 func GetDefaultRegistry() *Registry {
 	var _cret *C.AtkRegistry // in
 
@@ -70,6 +75,10 @@ func marshalRegistrier(p uintptr) (interface{}, error) {
 //
 //    - typ with which to look up the associated ObjectFactory.
 //
+// The function returns the following values:
+//
+//    - objectFactory appropriate for creating Objects appropriate for type.
+//
 func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 	var _arg0 *C.AtkRegistry      // out
 	var _arg1 C.GType             // out
@@ -95,6 +104,10 @@ func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 // The function takes the following parameters:
 //
 //    - typ with which to look up the associated ObjectFactory subclass.
+//
+// The function returns the following values:
+//
+//    - gType associated with type type.
 //
 func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 	var _arg0 *C.AtkRegistry // out
@@ -123,7 +136,7 @@ func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 //
 //    - typ: Object type.
 //    - factoryType type to associate with type. Must implement AtkObject
-//    appropriate for type.
+//      appropriate for type.
 //
 func (registry *Registry) SetFactoryType(typ, factoryType externglib.Type) {
 	var _arg0 *C.AtkRegistry // out

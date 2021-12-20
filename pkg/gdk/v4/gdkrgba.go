@@ -101,6 +101,11 @@ func (r *RGBA) Alpha() float32 {
 // Copy makes a copy of a GdkRGBA.
 //
 // The result must be freed through gdk.RGBA.Free().
+//
+// The function returns the following values:
+//
+//    - rgbA: newly allocated GdkRGBA, with the same contents as rgba.
+//
 func (rgba *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
@@ -124,6 +129,15 @@ func (rgba *RGBA) Copy() *RGBA {
 }
 
 // Equal compares two GdkRGBA colors.
+//
+// The function takes the following parameters:
+//
+//    - p2: another GdkRGBA.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two colors compare equal.
+//
 func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -146,6 +160,11 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 }
 
 // Hash: hash function suitable for using for a hash table that stores GdkRGBAs.
+//
+// The function returns the following values:
+//
+//    - guint: hash value for p.
+//
 func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -165,6 +184,11 @@ func (p *RGBA) Hash() uint {
 // IsClear checks if an rgba value is transparent.
 //
 // That is, drawing with the value would not produce any change.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the rgba is clear.
+//
 func (rgba *RGBA) IsClear() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
@@ -187,6 +211,11 @@ func (rgba *RGBA) IsClear() bool {
 //
 // That is, drawing with the value will not retain any results from previous
 // contents.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the rgba is opaque.
+//
 func (rgba *RGBA) IsOpaque() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
@@ -226,6 +255,15 @@ func (rgba *RGBA) IsOpaque() bool {
 // color values. In the last two cases, “r”, “g”, and “b” are either integers in
 // the range 0 to 255 or percentage values in the range 0% to 100%, and a is a
 // floating point value in the range 0 to 1.
+//
+// The function takes the following parameters:
+//
+//    - spec: string specifying the color.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the parsing succeeded.
+//
 func (rgba *RGBA) Parse(spec string) bool {
 	var _arg0 *C.GdkRGBA // out
 	var _arg1 *C.char    // out
@@ -260,6 +298,11 @@ func (rgba *RGBA) Parse(spec string) bool {
 // Note that this string representation may lose some precision, since “r”, “g”
 // and “b” are represented as 8-bit integers. If this is a concern, you should
 // use a different representation.
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated text string.
+//
 func (rgba *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.char    // in

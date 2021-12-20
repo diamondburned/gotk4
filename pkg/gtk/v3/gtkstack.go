@@ -189,6 +189,11 @@ func marshalStacker(p uintptr) (interface{}, error) {
 }
 
 // NewStack creates a new Stack container.
+//
+// The function returns the following values:
+//
+//    - stack: new Stack.
+//
 func NewStack() *Stack {
 	var _cret *C.GtkWidget // in
 
@@ -261,6 +266,10 @@ func (stack *Stack) AddTitled(child Widgetter, name, title string) {
 //
 //    - name of the child to find.
 //
+// The function returns the following values:
+//
+//    - widget (optional): requested child of the Stack.
+//
 func (stack *Stack) ChildByName(name string) Widgetter {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.gchar     // out
@@ -295,6 +304,11 @@ func (stack *Stack) ChildByName(name string) Widgetter {
 
 // Hhomogeneous gets whether stack is horizontally homogeneous. See
 // gtk_stack_set_hhomogeneous().
+//
+// The function returns the following values:
+//
+//    - ok: whether stack is horizontally homogeneous.
+//
 func (stack *Stack) Hhomogeneous() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
@@ -315,6 +329,11 @@ func (stack *Stack) Hhomogeneous() bool {
 
 // Homogeneous gets whether stack is homogeneous. See
 // gtk_stack_set_homogeneous().
+//
+// The function returns the following values:
+//
+//    - ok: whether stack is homogeneous.
+//
 func (stack *Stack) Homogeneous() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
@@ -335,6 +354,11 @@ func (stack *Stack) Homogeneous() bool {
 
 // InterpolateSize returns wether the Stack is set up to interpolate between the
 // sizes of children on page switch.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if child sizes are interpolated.
+//
 func (stack *Stack) InterpolateSize() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
@@ -355,6 +379,11 @@ func (stack *Stack) InterpolateSize() bool {
 
 // TransitionDuration returns the amount of time (in milliseconds) that
 // transitions between pages in stack will take.
+//
+// The function returns the following values:
+//
+//    - guint: transition duration.
+//
 func (stack *Stack) TransitionDuration() uint {
 	var _arg0 *C.GtkStack // out
 	var _cret C.guint     // in
@@ -373,6 +402,11 @@ func (stack *Stack) TransitionDuration() uint {
 
 // TransitionRunning returns whether the stack is currently in a transition from
 // one page to another.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the transition is currently running, FALSE otherwise.
+//
 func (stack *Stack) TransitionRunning() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
@@ -393,6 +427,11 @@ func (stack *Stack) TransitionRunning() bool {
 
 // TransitionType gets the type of animation that will be used for transitions
 // between pages in stack.
+//
+// The function returns the following values:
+//
+//    - stackTransitionType: current transition type of stack.
+//
 func (stack *Stack) TransitionType() StackTransitionType {
 	var _arg0 *C.GtkStack              // out
 	var _cret C.GtkStackTransitionType // in
@@ -411,6 +450,11 @@ func (stack *Stack) TransitionType() StackTransitionType {
 
 // Vhomogeneous gets whether stack is vertically homogeneous. See
 // gtk_stack_set_vhomogeneous().
+//
+// The function returns the following values:
+//
+//    - ok: whether stack is vertically homogeneous.
+//
 func (stack *Stack) Vhomogeneous() bool {
 	var _arg0 *C.GtkStack // out
 	var _cret C.gboolean  // in
@@ -431,6 +475,11 @@ func (stack *Stack) Vhomogeneous() bool {
 
 // VisibleChild gets the currently visible child of stack, or NULL if there are
 // no visible children.
+//
+// The function returns the following values:
+//
+//    - widget (optional): visible child of the Stack.
+//
 func (stack *Stack) VisibleChild() Widgetter {
 	var _arg0 *C.GtkStack  // out
 	var _cret *C.GtkWidget // in
@@ -461,6 +510,11 @@ func (stack *Stack) VisibleChild() Widgetter {
 
 // VisibleChildName returns the name of the currently visible child of stack, or
 // NULL if there is no visible child.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the visible child of the Stack.
+//
 func (stack *Stack) VisibleChildName() string {
 	var _arg0 *C.GtkStack // out
 	var _cret *C.gchar    // in

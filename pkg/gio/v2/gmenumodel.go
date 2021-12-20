@@ -101,10 +101,24 @@ func marshalMenuAttributeIterer(p uintptr) (interface{}, error) {
 	return wrapMenuAttributeIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (iter *MenuAttributeIter) baseMenuAttributeIter() *MenuAttributeIter {
+	return iter
+}
+
+// BaseMenuAttributeIter returns the underlying base object.
+func BaseMenuAttributeIter(obj MenuAttributeIterer) *MenuAttributeIter {
+	return obj.baseMenuAttributeIter()
+}
+
 // Name gets the name of the attribute at the current iterator position, as a
 // string.
 //
 // The iterator is not advanced.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the attribute.
+//
 func (iter *MenuAttributeIter) Name() string {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret *C.gchar              // in
@@ -124,6 +138,11 @@ func (iter *MenuAttributeIter) Name() string {
 // Value gets the value of the attribute at the current iterator position.
 //
 // The iterator is not advanced.
+//
+// The function returns the following values:
+//
+//    - variant: value of the current attribute.
+//
 func (iter *MenuAttributeIter) Value() *glib.Variant {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret *C.GVariant           // in
@@ -152,6 +171,11 @@ func (iter *MenuAttributeIter) Value() *glib.Variant {
 //
 // You must call this function when you first acquire the iterator to advance it
 // to the first attribute (and determine if the first attribute exists at all).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE on success, or FALSE when there are no more attributes.
+//
 func (iter *MenuAttributeIter) Next() bool {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret C.gboolean            // in
@@ -168,15 +192,6 @@ func (iter *MenuAttributeIter) Next() bool {
 	}
 
 	return _ok
-}
-
-func (iter *MenuAttributeIter) baseMenuAttributeIter() *MenuAttributeIter {
-	return iter
-}
-
-// BaseMenuAttributeIter returns the underlying base object.
-func BaseMenuAttributeIter(obj MenuAttributeIterer) *MenuAttributeIter {
-	return obj.baseMenuAttributeIter()
 }
 
 // MenuLinkIterOverrider contains methods that are overridable.
@@ -198,6 +213,13 @@ type MenuLinkIterOverrider interface {
 	// The value returned in out_link remains valid for as long as the iterator
 	// remains at the current position. The value returned in value must be
 	// unreffed using g_object_unref() when it is no longer in use.
+	//
+	// The function returns the following values:
+	//
+	//    - outLink (optional): name of the link.
+	//    - value (optional): linked Model.
+	//    - ok: TRUE on success, or FALSE if there is no additional link.
+	//
 	Next() (string, MenuModeller, bool)
 }
 
@@ -232,9 +254,23 @@ func marshalMenuLinkIterer(p uintptr) (interface{}, error) {
 	return wrapMenuLinkIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (iter *MenuLinkIter) baseMenuLinkIter() *MenuLinkIter {
+	return iter
+}
+
+// BaseMenuLinkIter returns the underlying base object.
+func BaseMenuLinkIter(obj MenuLinkIterer) *MenuLinkIter {
+	return obj.baseMenuLinkIter()
+}
+
 // Name gets the name of the link at the current iterator position.
 //
 // The iterator is not advanced.
+//
+// The function returns the following values:
+//
+//    - utf8: type of the link.
+//
 func (iter *MenuLinkIter) Name() string {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret *C.gchar         // in
@@ -264,6 +300,13 @@ func (iter *MenuLinkIter) Name() string {
 // The value returned in out_link remains valid for as long as the iterator
 // remains at the current position. The value returned in value must be unreffed
 // using g_object_unref() when it is no longer in use.
+//
+// The function returns the following values:
+//
+//    - outLink (optional): name of the link.
+//    - value (optional): linked Model.
+//    - ok: TRUE on success, or FALSE if there is no additional link.
+//
 func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 	var _arg0 *C.GMenuLinkIter // out
 	var _arg1 *C.gchar         // in
@@ -305,6 +348,11 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 // Value gets the linked Model at the current iterator position.
 //
 // The iterator is not advanced.
+//
+// The function returns the following values:
+//
+//    - menuModel that is linked to.
+//
 func (iter *MenuLinkIter) Value() MenuModeller {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret *C.GMenuModel    // in
@@ -340,6 +388,11 @@ func (iter *MenuLinkIter) Value() MenuModeller {
 //
 // You must call this function when you first acquire the iterator to advance it
 // to the first link (and determine if the first link exists at all).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE on success, or FALSE when there are no more links.
+//
 func (iter *MenuLinkIter) Next() bool {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret C.gboolean       // in
@@ -358,15 +411,6 @@ func (iter *MenuLinkIter) Next() bool {
 	return _ok
 }
 
-func (iter *MenuLinkIter) baseMenuLinkIter() *MenuLinkIter {
-	return iter
-}
-
-// BaseMenuLinkIter returns the underlying base object.
-func BaseMenuLinkIter(obj MenuLinkIterer) *MenuLinkIter {
-	return obj.baseMenuLinkIter()
-}
-
 // MenuModelOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -383,34 +427,102 @@ type MenuModelOverrider interface {
 	//
 	// If the attribute does not exist, or does not match the expected type then
 	// NULL is returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - itemIndex: index of the item.
+	//    - attribute to query.
+	//    - expectedType (optional): expected type of the attribute, or NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - variant (optional): value of the attribute.
+	//
 	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemAttributes gets all the attributes associated with the item in the
 	// menu model.
+	//
+	// The function takes the following parameters:
+	//
+	//    - itemIndex to query.
+	//
+	// The function returns the following values:
+	//
+	//    - attributes attributes on the item.
+	//
 	ItemAttributes(itemIndex int) map[string]*glib.Variant
 	// ItemLink queries the item at position item_index in model for the link
 	// specified by link.
 	//
 	// If the link exists, the linked Model is returned. If the link does not
 	// exist, NULL is returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - itemIndex: index of the item.
+	//    - link to query.
+	//
+	// The function returns the following values:
+	//
+	//    - menuModel (optional): linked Model, or NULL.
+	//
 	ItemLink(itemIndex int, link string) MenuModeller
 	// ItemLinks gets all the links associated with the item in the menu model.
+	//
+	// The function takes the following parameters:
+	//
+	//    - itemIndex to query.
+	//
+	// The function returns the following values:
+	//
+	//    - links links from the item.
+	//
 	ItemLinks(itemIndex int) map[string]MenuModeller
 	// NItems: query the number of items in model.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of items.
+	//
 	NItems() int
 	// IsMutable queries if model is mutable.
 	//
 	// An immutable Model will never emit the Model::items-changed signal.
 	// Consumers of the model may make optimisations accordingly.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the model is mutable (ie: "items-changed" may be
+	//      emitted).
+	//
 	IsMutable() bool
 	// IterateItemAttributes creates a AttributeIter to iterate over the
 	// attributes of the item at position item_index in model.
 	//
 	// You must free the iterator with g_object_unref() when you are done.
+	//
+	// The function takes the following parameters:
+	//
+	//    - itemIndex: index of the item.
+	//
+	// The function returns the following values:
+	//
+	//    - menuAttributeIter: new AttributeIter.
+	//
 	IterateItemAttributes(itemIndex int) MenuAttributeIterer
 	// IterateItemLinks creates a LinkIter to iterate over the links of the item
 	// at position item_index in model.
 	//
 	// You must free the iterator with g_object_unref() when you are done.
+	//
+	// The function takes the following parameters:
+	//
+	//    - itemIndex: index of the item.
+	//
+	// The function returns the following values:
+	//
+	//    - menuLinkIter: new LinkIter.
+	//
 	IterateItemLinks(itemIndex int) MenuLinkIterer
 }
 
@@ -566,6 +678,37 @@ func marshalMenuModeller(p uintptr) (interface{}, error) {
 	return wrapMenuModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (model *MenuModel) baseMenuModel() *MenuModel {
+	return model
+}
+
+// BaseMenuModel returns the underlying base object.
+func BaseMenuModel(obj MenuModeller) *MenuModel {
+	return obj.baseMenuModel()
+}
+
+// ConnectItemsChanged: emitted when a change has occurred to the menu.
+//
+// The only changes that can occur to a menu is that items are removed or added.
+// Items may not change (except by being removed and added back in the same
+// location). This signal is capable of describing both of those changes (at the
+// same time).
+//
+// The signal means that starting at the index position, removed items were
+// removed and added items were added in their place. If removed is zero then
+// only items were added. If added is zero then only items were removed.
+//
+// As an example, if the menu contains items a, b, c, d (in that order) and the
+// signal (2, 1, 3) occurs then the new composition of the menu will be a, b, _,
+// _, _, d (with each _ representing some new item).
+//
+// Signal handlers may query the model (particularly the added items) and expect
+// to see the results of the modification that is being reported. The signal is
+// emitted after the modification.
+func (model *MenuModel) ConnectItemsChanged(f func(position, removed, added int)) externglib.SignalHandle {
+	return model.Connect("items-changed", f)
+}
+
 // ItemAttributeValue queries the item at position item_index in model for the
 // attribute specified by attribute.
 //
@@ -582,7 +725,11 @@ func marshalMenuModeller(p uintptr) (interface{}, error) {
 //
 //    - itemIndex: index of the item.
 //    - attribute to query.
-//    - expectedType: expected type of the attribute, or NULL.
+//    - expectedType (optional): expected type of the attribute, or NULL.
+//
+// The function returns the following values:
+//
+//    - variant (optional): value of the attribute.
 //
 func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuModel   // out
@@ -631,6 +778,10 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 //    - itemIndex: index of the item.
 //    - link to query.
 //
+// The function returns the following values:
+//
+//    - menuModel (optional): linked Model, or NULL.
+//
 func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
@@ -667,6 +818,11 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 }
 
 // NItems: query the number of items in model.
+//
+// The function returns the following values:
+//
+//    - gint: number of items.
+//
 func (model *MenuModel) NItems() int {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gint        // in
@@ -687,6 +843,11 @@ func (model *MenuModel) NItems() int {
 //
 // An immutable Model will never emit the Model::items-changed signal. Consumers
 // of the model may make optimisations accordingly.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the model is mutable (ie: "items-changed" may be emitted).
+//
 func (model *MenuModel) IsMutable() bool {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gboolean    // in
@@ -754,6 +915,10 @@ func (model *MenuModel) ItemsChanged(position, removed, added int) {
 //
 //    - itemIndex: index of the item.
 //
+// The function returns the following values:
+//
+//    - menuAttributeIter: new AttributeIter.
+//
 func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer {
 	var _arg0 *C.GMenuModel         // out
 	var _arg1 C.gint                // out
@@ -795,6 +960,10 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer
 //
 //    - itemIndex: index of the item.
 //
+// The function returns the following values:
+//
+//    - menuLinkIter: new LinkIter.
+//
 func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	var _arg0 *C.GMenuModel    // out
 	var _arg1 C.gint           // out
@@ -825,35 +994,4 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	}
 
 	return _menuLinkIter
-}
-
-func (model *MenuModel) baseMenuModel() *MenuModel {
-	return model
-}
-
-// BaseMenuModel returns the underlying base object.
-func BaseMenuModel(obj MenuModeller) *MenuModel {
-	return obj.baseMenuModel()
-}
-
-// ConnectItemsChanged: emitted when a change has occurred to the menu.
-//
-// The only changes that can occur to a menu is that items are removed or added.
-// Items may not change (except by being removed and added back in the same
-// location). This signal is capable of describing both of those changes (at the
-// same time).
-//
-// The signal means that starting at the index position, removed items were
-// removed and added items were added in their place. If removed is zero then
-// only items were added. If added is zero then only items were removed.
-//
-// As an example, if the menu contains items a, b, c, d (in that order) and the
-// signal (2, 1, 3) occurs then the new composition of the menu will be a, b, _,
-// _, _, d (with each _ representing some new item).
-//
-// Signal handlers may query the model (particularly the added items) and expect
-// to see the results of the modification that is being reported. The signal is
-// emitted after the modification.
-func (model *MenuModel) ConnectItemsChanged(f func(position, removed, added int)) externglib.SignalHandle {
-	return model.Connect("items-changed", f)
 }

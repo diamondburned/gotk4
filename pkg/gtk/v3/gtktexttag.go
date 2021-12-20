@@ -32,6 +32,17 @@ func init() {
 // yet, so the interface currently has no use.
 type TextTagOverrider interface {
 	// Event emits the “event” signal on the TextTag.
+	//
+	// The function takes the following parameters:
+	//
+	//    - eventObject: object that received the event, such as a widget.
+	//    - event: event.
+	//    - iter: location where the event was received.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: result of signal emission (whether the event was handled).
+	//
 	Event(eventObject *externglib.Object, event *gdk.Event, iter *TextIter) bool
 }
 
@@ -67,12 +78,22 @@ func marshalTextTagger(p uintptr) (interface{}, error) {
 	return wrapTextTag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEvent signal is emitted when an event occurs on a region of the buffer
+// marked with this tag.
+func (tag *TextTag) ConnectEvent(f func(object *externglib.Object, event *gdk.Event, iter *TextIter) bool) externglib.SignalHandle {
+	return tag.Connect("event", f)
+}
+
 // NewTextTag creates a TextTag. Configure the tag using object arguments, i.e.
 // using g_object_set().
 //
 // The function takes the following parameters:
 //
-//    - name: tag name, or NULL.
+//    - name (optional): tag name, or NULL.
+//
+// The function returns the following values:
+//
+//    - textTag: new TextTag.
 //
 func NewTextTag(name string) *TextTag {
 	var _arg1 *C.gchar      // out
@@ -125,6 +146,10 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 //    - event: event.
 //    - iter: location where the event was received.
 //
+// The function returns the following values:
+//
+//    - ok: result of signal emission (whether the event was handled).
+//
 func (tag *TextTag) Event(eventObject *externglib.Object, event *gdk.Event, iter *TextIter) bool {
 	var _arg0 *C.GtkTextTag  // out
 	var _arg1 *C.GObject     // out
@@ -153,6 +178,11 @@ func (tag *TextTag) Event(eventObject *externglib.Object, event *gdk.Event, iter
 }
 
 // Priority: get the tag priority.
+//
+// The function returns the following values:
+//
+//    - gint tag’s priority.
+//
 func (tag *TextTag) Priority() int {
 	var _arg0 *C.GtkTextTag // out
 	var _cret C.gint        // in
@@ -194,10 +224,4 @@ func (tag *TextTag) SetPriority(priority int) {
 	C.gtk_text_tag_set_priority(_arg0, _arg1)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)
-}
-
-// ConnectEvent signal is emitted when an event occurs on a region of the buffer
-// marked with this tag.
-func (tag *TextTag) ConnectEvent(f func(object *externglib.Object, event *gdk.Event, iter *TextIter) bool) externglib.SignalHandle {
-	return tag.Connect("event", f)
 }

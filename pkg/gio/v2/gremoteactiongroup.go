@@ -38,6 +38,13 @@ type RemoteActionGroupOverrider interface {
 	//
 	// platform_data must be non-NULL and must have the type
 	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
+	//
+	// The function takes the following parameters:
+	//
+	//    - actionName: name of the action to activate.
+	//    - parameter (optional): optional parameter to the activation.
+	//    - platformData: platform data to send.
+	//
 	ActivateActionFull(actionName string, parameter, platformData *glib.Variant)
 	// ChangeActionStateFull changes the state of a remote action.
 	//
@@ -48,6 +55,13 @@ type RemoteActionGroupOverrider interface {
 	//
 	// platform_data must be non-NULL and must have the type
 	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
+	//
+	// The function takes the following parameters:
+	//
+	//    - actionName: name of the action to change the state of.
+	//    - value: new requested value for the state.
+	//    - platformData: platform data to send.
+	//
 	ChangeActionStateFull(actionName string, value, platformData *glib.Variant)
 }
 
@@ -111,7 +125,7 @@ func marshalRemoteActionGrouper(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - actionName: name of the action to activate.
-//    - parameter: optional parameter to the activation.
+//    - parameter (optional): optional parameter to the activation.
 //    - platformData: platform data to send.
 //
 func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter, platformData *glib.Variant) {

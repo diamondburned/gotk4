@@ -33,6 +33,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FileInputStreamOverrider interface {
+	// The function returns the following values:
+	//
 	CanSeek() bool
 	// QueryInfo queries a file input stream the given attributes. This function
 	// blocks while querying the stream. For the asynchronous (non-blocking)
@@ -40,6 +42,16 @@ type FileInputStreamOverrider interface {
 	// While the stream is blocked, the stream will set the pending flag
 	// internally, and any other operations on the stream will fail with
 	// G_IO_ERROR_PENDING.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - attributes: file attribute query string.
+	//
+	// The function returns the following values:
+	//
+	//    - fileInfo or NULL on error.
+	//
 	QueryInfo(ctx context.Context, attributes string) (*FileInfo, error)
 	// QueryInfoAsync queries the stream information asynchronously. When the
 	// operation is finished callback will be called. You can then call
@@ -52,10 +64,35 @@ type FileInputStreamOverrider interface {
 	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - attributes: file attribute query string.
+	//    - ioPriority: [I/O priority][io-priority] of the request.
+	//    - callback (optional) to call when the request is satisfied.
+	//
 	QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous info query operation.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - fileInfo: Info.
+	//
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional)
+	//    - offset
+	//    - typ
+	//
 	Seek(ctx context.Context, offset int64, typ glib.SeekType) error
+	// The function returns the following values:
+	//
 	Tell() int64
 }
 
@@ -103,8 +140,12 @@ func marshalFileInputStreamer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - attributes: file attribute query string.
+//
+// The function returns the following values:
+//
+//    - fileInfo or NULL on error.
 //
 func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
@@ -151,10 +192,10 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - attributes: file attribute query string.
 //    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileInputStream   // out
@@ -191,6 +232,10 @@ func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes st
 // The function takes the following parameters:
 //
 //    - result: Result.
+//
+// The function returns the following values:
+//
+//    - fileInfo: Info.
 //
 func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out

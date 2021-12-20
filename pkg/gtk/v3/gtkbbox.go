@@ -119,6 +119,10 @@ func marshalButtonBoxer(p uintptr) (interface{}, error) {
 //
 //    - orientation box's orientation.
 //
+// The function returns the following values:
+//
+//    - buttonBox: new ButtonBox.
+//
 func NewButtonBox(orientation Orientation) *ButtonBox {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in
@@ -141,6 +145,10 @@ func NewButtonBox(orientation Orientation) *ButtonBox {
 // The function takes the following parameters:
 //
 //    - child of widget.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the child is not subject to homogenous sizing.
 //
 func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 	var _arg0 *C.GtkButtonBox // out
@@ -170,6 +178,10 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 //
 //    - child of widget.
 //
+// The function returns the following values:
+//
+//    - ok: whether child should appear in a secondary group of children.
+//
 func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
@@ -193,6 +205,11 @@ func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 
 // Layout retrieves the method being used to arrange the buttons in a button
 // box.
+//
+// The function returns the following values:
+//
+//    - buttonBoxStyle: method used to lay out buttons in widget.
+//
 func (widget *ButtonBox) Layout() ButtonBoxStyle {
 	var _arg0 *C.GtkButtonBox     // out
 	var _cret C.GtkButtonBoxStyle // in
@@ -250,7 +267,7 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 //
 //    - child of widget.
 //    - isSecondary: if TRUE, the child appears in a secondary group of the
-//    button box.
+//      button box.
 //
 func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
 	var _arg0 *C.GtkButtonBox // out

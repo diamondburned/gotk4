@@ -58,7 +58,11 @@ func marshalEmblemedIconner(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - icon: #GIcon.
-//    - emblem or NULL.
+//    - emblem (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - emblemedIcon: new #GIcon.
 //
 func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
@@ -110,6 +114,11 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 }
 
 // Emblems gets the list of emblems for the icon.
+//
+// The function returns the following values:
+//
+//    - list of #GEmblems that is owned by emblemed.
+//
 func (emblemed *EmblemedIcon) Emblems() []Emblem {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GList         // in
@@ -133,6 +142,11 @@ func (emblemed *EmblemedIcon) Emblems() []Emblem {
 }
 
 // GetIcon gets the main icon for emblemed.
+//
+// The function returns the following values:
+//
+//    - icon that is owned by emblemed.
+//
 func (emblemed *EmblemedIcon) GetIcon() Iconner {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in

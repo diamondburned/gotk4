@@ -31,6 +31,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FrameOverrider interface {
+	// The function takes the following parameters:
+	//
 	ComputeChildAllocation(allocation *Allocation)
 }
 
@@ -111,7 +113,11 @@ func marshalFramer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - label: text to use as the label of the frame.
+//    - label (optional): text to use as the label of the frame.
+//
+// The function returns the following values:
+//
+//    - frame: new Frame widget.
 //
 func NewFrame(label string) *Frame {
 	var _arg1 *C.gchar     // out
@@ -135,6 +141,13 @@ func NewFrame(label string) *Frame {
 // Label: if the frame’s label widget is a Label, returns the text in the label
 // widget. (The frame will have a Label for the label widget if a non-NULL
 // argument was passed to gtk_frame_new().).
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): text in the label, or NULL if there was no label widget
+//      or the lable widget was not a Label. This string is owned by GTK+ and
+//      must not be modified or freed.
+//
 func (frame *Frame) Label() string {
 	var _arg0 *C.GtkFrame // out
 	var _cret *C.gchar    // in
@@ -155,6 +168,14 @@ func (frame *Frame) Label() string {
 
 // LabelAlign retrieves the X and Y alignment of the frame’s label. See
 // gtk_frame_set_label_align().
+//
+// The function returns the following values:
+//
+//    - xalign (optional): location to store X alignment of frame’s label, or
+//      NULL.
+//    - yalign (optional): location to store X alignment of frame’s label, or
+//      NULL.
+//
 func (frame *Frame) LabelAlign() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 C.gfloat    // in
@@ -176,6 +197,11 @@ func (frame *Frame) LabelAlign() (xalign float32, yalign float32) {
 
 // LabelWidget retrieves the label widget for the frame. See
 // gtk_frame_set_label_widget().
+//
+// The function returns the following values:
+//
+//    - widget (optional): label widget, or NULL if there is none.
+//
 func (frame *Frame) LabelWidget() Widgetter {
 	var _arg0 *C.GtkFrame  // out
 	var _cret *C.GtkWidget // in
@@ -206,6 +232,11 @@ func (frame *Frame) LabelWidget() Widgetter {
 
 // ShadowType retrieves the shadow type of the frame. See
 // gtk_frame_set_shadow_type().
+//
+// The function returns the following values:
+//
+//    - shadowType: current shadow type of the frame.
+//
 func (frame *Frame) ShadowType() ShadowType {
 	var _arg0 *C.GtkFrame     // out
 	var _cret C.GtkShadowType // in
@@ -227,7 +258,7 @@ func (frame *Frame) ShadowType() ShadowType {
 //
 // The function takes the following parameters:
 //
-//    - label: text to use as the label of the frame.
+//    - label (optional): text to use as the label of the frame.
 //
 func (frame *Frame) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out
@@ -250,11 +281,11 @@ func (frame *Frame) SetLabel(label string) {
 // The function takes the following parameters:
 //
 //    - xalign: position of the label along the top edge of the widget. A value
-//    of 0.0 represents left alignment; 1.0 represents right alignment.
-//    - yalign: y alignment of the label. A value of 0.0 aligns under the
-//    frame; 1.0 aligns above the frame. If the values are exactly 0.0 or 1.0
-//    the gap in the frame won’t be painted because the label will be
-//    completely above or below the frame.
+//      of 0.0 represents left alignment; 1.0 represents right alignment.
+//    - yalign: y alignment of the label. A value of 0.0 aligns under the frame;
+//      1.0 aligns above the frame. If the values are exactly 0.0 or 1.0 the gap
+//      in the frame won’t be painted because the label will be completely above
+//      or below the frame.
 //
 func (frame *Frame) SetLabelAlign(xalign, yalign float32) {
 	var _arg0 *C.GtkFrame // out
@@ -276,7 +307,7 @@ func (frame *Frame) SetLabelAlign(xalign, yalign float32) {
 //
 // The function takes the following parameters:
 //
-//    - labelWidget: new label widget.
+//    - labelWidget (optional): new label widget.
 //
 func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkFrame  // out

@@ -77,6 +77,11 @@ func marshalCellAreaBoxer(p uintptr) (interface{}, error) {
 }
 
 // NewCellAreaBox creates a new CellAreaBox.
+//
+// The function returns the following values:
+//
+//    - cellAreaBox: newly created CellAreaBox.
+//
 func NewCellAreaBox() *CellAreaBox {
 	var _cret *C.GtkCellArea // in
 
@@ -90,6 +95,11 @@ func NewCellAreaBox() *CellAreaBox {
 }
 
 // Spacing gets the spacing added between cell renderers.
+//
+// The function returns the following values:
+//
+//    - gint: space added between cell renderers in box.
+//
 func (box *CellAreaBox) Spacing() int {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _cret C.gint            // in
@@ -115,7 +125,7 @@ func (box *CellAreaBox) Spacing() int {
 //
 //    - renderer to add.
 //    - expand: whether renderer should receive extra space when the area
-//    receives more than its natural size.
+//      receives more than its natural size.
 //    - align: whether renderer should be aligned in adjacent rows.
 //    - fixed: whether renderer should have the same size in all rows.
 //
@@ -155,7 +165,7 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bo
 //
 //    - renderer to add.
 //    - expand: whether renderer should receive extra space when the area
-//    receives more than its natural size.
+//      receives more than its natural size.
 //    - align: whether renderer should be aligned in adjacent rows.
 //    - fixed: whether renderer should have the same size in all rows.
 //

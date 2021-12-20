@@ -95,6 +95,14 @@ func (s ShapeFlags) Has(other ShapeFlags) bool {
 //
 //    - logicalItems: GList of PangoItem in logical order.
 //
+// The function returns the following values:
+//
+//    - list: #GList of Item structures in visual order.
+//
+//      (Please open a bug if you use this function. It is not a particularly
+//      convenient interface, and the code is duplicated elsewhere in Pango for
+//      that reason.).
+//
 func ReorderItems(logicalItems []*Item) []*Item {
 	var _arg1 *C.GList // out
 	var _cret *C.GList // in
@@ -188,11 +196,11 @@ func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 // The function takes the following parameters:
 //
 //    - itemText: valid UTF-8 text to shape.
-//    - itemLength: length (in bytes) of item_text. -1 means nul-terminated
-//    text.
-//    - paragraphText: text of the paragraph (see details). May be NULL.
+//    - itemLength: length (in bytes) of item_text. -1 means nul-terminated text.
+//    - paragraphText (optional): text of the paragraph (see details). May be
+//      NULL.
 //    - paragraphLength: length (in bytes) of paragraph_text. -1 means
-//    nul-terminated text.
+//      nul-terminated text.
 //    - analysis: PangoAnalysis structure from itemize.
 //    - glyphs: glyph string in which to store results.
 //
@@ -241,11 +249,11 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 // The function takes the following parameters:
 //
 //    - itemText: valid UTF-8 text to shape.
-//    - itemLength: length (in bytes) of item_text. -1 means nul-terminated
-//    text.
-//    - paragraphText: text of the paragraph (see details). May be NULL.
+//    - itemLength: length (in bytes) of item_text. -1 means nul-terminated text.
+//    - paragraphText (optional): text of the paragraph (see details). May be
+//      NULL.
 //    - paragraphLength: length (in bytes) of paragraph_text. -1 means
-//    nul-terminated text.
+//      nul-terminated text.
 //    - analysis: PangoAnalysis structure from itemize.
 //    - glyphs: glyph string in which to store results.
 //    - flags influencing the shaping process.
@@ -390,6 +398,12 @@ func NewGlyphString() *GlyphString {
 }
 
 // Copy a glyph string and associated storage.
+//
+// The function returns the following values:
+//
+//    - glyphString (optional): newly allocated PangoGlyphString, which should be
+//      freed with pango.GlyphString.Free(), or NULL if string was NULL.
+//
 func (str *GlyphString) Copy() *GlyphString {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret *C.PangoGlyphString // in
@@ -424,6 +438,18 @@ func (str *GlyphString) Copy() *GlyphString {
 // Examples of logical (red) and ink (green) rects:
 //
 // ! (rects1.png) ! (rects2.png).
+//
+// The function takes the following parameters:
+//
+//    - font: PangoFont.
+//
+// The function returns the following values:
+//
+//    - inkRect (optional): rectangle used to store the extents of the glyph
+//      string as drawn or NULL to indicate that the result is not needed.
+//    - logicalRect (optional): rectangle used to store the logical extents of
+//      the glyph string or NULL to indicate that the result is not needed.
+//
 func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out
@@ -451,6 +477,21 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect
 // The extents are relative to the start of the glyph string range (the origin
 // of their coordinate system is at the start of the range, not at the start of
 // the entire glyph string).
+//
+// The function takes the following parameters:
+//
+//    - start index.
+//    - end index (the range is the set of bytes with indices such that start <=
+//      index < end).
+//    - font: PangoFont.
+//
+// The function returns the following values:
+//
+//    - inkRect (optional): rectangle used to store the extents of the glyph
+//      string range as drawn or NULL to indicate that the result is not needed.
+//    - logicalRect (optional): rectangle used to store the logical extents of
+//      the glyph string range or NULL to indicate that the result is not needed.
+//
 func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.int               // out
@@ -485,6 +526,11 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRec
 // this only computes the width, it's much faster. This is in fact only a
 // convenience function that computes the sum of geometry.width for each glyph
 // in the glyphs.
+//
+// The function returns the following values:
+//
+//    - gint: logical width of the glyph string.
+//
 func (glyphs *GlyphString) Width() int {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret C.int               // in
@@ -505,6 +551,20 @@ func (glyphs *GlyphString) Width() int {
 //
 // The X position is measured from the left edge of the run. Character positions
 // are computed by dividing up each cluster into equal portions.
+//
+// The function takes the following parameters:
+//
+//    - text for the run.
+//    - length: number of bytes (not characters) in text.
+//    - analysis information return from itemize.
+//    - index_: byte index within text.
+//    - trailing: whether we should compute the result for the beginning (FALSE)
+//      or end (TRUE) of the character.
+//
+// The function returns the following values:
+//
+//    - xPos: location to store result.
+//
 func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis, index_ int, trailing bool) int {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.char             // out
@@ -540,6 +600,11 @@ func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis,
 }
 
 // SetSize: resize a glyph string to the given length.
+//
+// The function takes the following parameters:
+//
+//    - newLen: new length of the string.
+//
 func (str *GlyphString) SetSize(newLen int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.gint              // out
@@ -559,6 +624,20 @@ func (str *GlyphString) SetSize(newLen int) {
 // as Thai), the returned value may not be a valid cursor position; the caller
 // must combine the result with the logical attributes for the text to compute
 // the valid cursor position.
+//
+// The function takes the following parameters:
+//
+//    - text for the run.
+//    - length: number of bytes (not characters) in text.
+//    - analysis information return from itemize.
+//    - xPos: x offset (in Pango units).
+//
+// The function returns the following values:
+//
+//    - index_: location to store calculated byte index within text.
+//    - trailing: location to store a boolean indicating whether the user clicked
+//      on the leading or trailing edge of the character.
+//
 func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis, xPos int) (index_ int, trailing int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.char             // out

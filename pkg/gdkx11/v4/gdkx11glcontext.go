@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -20,6 +21,38 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_x11_gl_context_get_type()), F: marshalX11GLContexter},
 	})
+}
+
+// GLXVersion retrieves the version of the GLX implementation.
+//
+// The function returns the following values:
+//
+//    - major: return location for the GLX major version.
+//    - minor: return location for the GLX minor version.
+//    - ok: TRUE if GLX is available.
+//
+func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.int         // in
+	var _arg2 C.int         // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+
+	_cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(display)
+
+	var _major int // out
+	var _minor int // out
+	var _ok bool   // out
+
+	_major = int(_arg1)
+	_minor = int(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _major, _minor, _ok
 }
 
 type X11GLContext struct {

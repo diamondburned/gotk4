@@ -34,21 +34,151 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ThemingEngineOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	RenderActivity(cr *cairo.Context, x, y, width, height float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - angle
+	//    - x
+	//    - y
+	//    - size
+	//
 	RenderArrow(cr *cairo.Context, angle, x, y, size float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	RenderBackground(cr *cairo.Context, x, y, width, height float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	RenderCheck(cr *cairo.Context, x, y, width, height float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	RenderExpander(cr *cairo.Context, x, y, width, height float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//    - gapSide
+	//
 	RenderExtension(cr *cairo.Context, x, y, width, height float64, gapSide PositionType)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	RenderFocus(cr *cairo.Context, x, y, width, height float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	RenderFrame(cr *cairo.Context, x, y, width, height float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//    - gapSide
+	//    - xy0Gap
+	//    - xy1Gap
+	//
 	RenderFrameGap(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	RenderHandle(cr *cairo.Context, x, y, width, height float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - pixbuf
+	//    - x
+	//    - y
+	//
 	RenderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - surface
+	//    - x
+	//    - y
+	//
 	RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x, y float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - layout
+	//
 	RenderLayout(cr *cairo.Context, x, y float64, layout *pango.Layout)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x0
+	//    - y0
+	//    - x1
+	//    - y1
+	//
 	RenderLine(cr *cairo.Context, x0, y0, x1, y1 float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	RenderOption(cr *cairo.Context, x, y, width, height float64)
+	// The function takes the following parameters:
+	//
+	//    - cr
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//    - orientation
+	//
 	RenderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation)
 }
 
@@ -85,6 +215,10 @@ func marshalThemingEnginer(p uintptr) (interface{}, error) {
 //
 //    - state to retrieve the color for.
 //
+// The function returns the following values:
+//
+//    - color: return value for the background color.
+//
 func (engine *ThemingEngine) BackgroundColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -111,6 +245,10 @@ func (engine *ThemingEngine) BackgroundColor(state StateFlags) *gdk.RGBA {
 // The function takes the following parameters:
 //
 //    - state to retrieve the border for.
+//
+// The function returns the following values:
+//
+//    - border: return value for the border settings.
 //
 func (engine *ThemingEngine) Border(state StateFlags) *Border {
 	var _arg0 *C.GtkThemingEngine // out
@@ -139,6 +277,10 @@ func (engine *ThemingEngine) Border(state StateFlags) *Border {
 //
 //    - state to retrieve the color for.
 //
+// The function returns the following values:
+//
+//    - color: return value for the border color.
+//
 func (engine *ThemingEngine) BorderColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -166,6 +308,10 @@ func (engine *ThemingEngine) BorderColor(state StateFlags) *gdk.RGBA {
 //
 //    - state to retrieve the color for.
 //
+// The function returns the following values:
+//
+//    - color: return value for the foreground color.
+//
 func (engine *ThemingEngine) Color(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -189,6 +335,11 @@ func (engine *ThemingEngine) Color(state StateFlags) *gdk.RGBA {
 //
 // Deprecated: Use gtk_theming_engine_get_state() and check for
 // K_STATE_FLAG_DIR_LTR and K_STATE_FLAG_DIR_RTL instead.
+//
+// The function returns the following values:
+//
+//    - textDirection: widget direction.
+//
 func (engine *ThemingEngine) Direction() TextDirection {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkTextDirection  // in
@@ -213,6 +364,11 @@ func (engine *ThemingEngine) Direction() TextDirection {
 //
 //    - state to retrieve the font for.
 //
+// The function returns the following values:
+//
+//    - fontDescription for the given state. This object is owned by GTK+ and
+//      should not be freed.
+//
 func (engine *ThemingEngine) Font(state StateFlags) *pango.FontDescription {
 	var _arg0 *C.GtkThemingEngine     // out
 	var _arg1 C.GtkStateFlags         // out
@@ -235,6 +391,11 @@ func (engine *ThemingEngine) Font(state StateFlags) *pango.FontDescription {
 // JunctionSides returns the widget direction used for rendering.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - junctionSides: widget direction.
+//
 func (engine *ThemingEngine) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkJunctionSides  // in
@@ -258,6 +419,10 @@ func (engine *ThemingEngine) JunctionSides() JunctionSides {
 // The function takes the following parameters:
 //
 //    - state to retrieve the border for.
+//
+// The function returns the following values:
+//
+//    - margin: return value for the margin settings.
 //
 func (engine *ThemingEngine) Margin(state StateFlags) *Border {
 	var _arg0 *C.GtkThemingEngine // out
@@ -286,6 +451,10 @@ func (engine *ThemingEngine) Margin(state StateFlags) *Border {
 //
 //    - state to retrieve the padding for.
 //
+// The function returns the following values:
+//
+//    - padding: return value for the padding settings.
+//
 func (engine *ThemingEngine) Padding(state StateFlags) *Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -308,6 +477,11 @@ func (engine *ThemingEngine) Padding(state StateFlags) *Border {
 // Path returns the widget path used for style matching.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - widgetPath: WidgetPath.
+//
 func (engine *ThemingEngine) Path() *WidgetPath {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GtkWidgetPath    // in
@@ -341,6 +515,11 @@ func (engine *ThemingEngine) Path() *WidgetPath {
 //    - property name.
 //    - state to retrieve the value for.
 //
+// The function returns the following values:
+//
+//    - value: return location for the property value, you must free this memory
+//      using g_value_unset() once you are done with it.
+//
 func (engine *ThemingEngine) Property(property string, state StateFlags) externglib.Value {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
@@ -370,6 +549,11 @@ func (engine *ThemingEngine) Property(property string, state StateFlags) externg
 // Screen returns the Screen to which engine currently rendering to.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - screen (optional) or NULL.
+//
 func (engine *ThemingEngine) Screen() *gdk.Screen {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret *C.GdkScreen        // in
@@ -396,6 +580,11 @@ func (engine *ThemingEngine) Screen() *gdk.Screen {
 // State returns the state used when rendering.
 //
 // Deprecated: since version 3.14.
+//
+// The function returns the following values:
+//
+//    - stateFlags: state flags.
+//
 func (engine *ThemingEngine) State() StateFlags {
 	var _arg0 *C.GtkThemingEngine // out
 	var _cret C.GtkStateFlags     // in
@@ -419,6 +608,11 @@ func (engine *ThemingEngine) State() StateFlags {
 // The function takes the following parameters:
 //
 //    - propertyName: name of the widget style property.
+//
+// The function returns the following values:
+//
+//    - value: return location for the property value, free with g_value_unset()
+//      after use.
 //
 func (engine *ThemingEngine) StyleProperty(propertyName string) externglib.Value {
 	var _arg0 *C.GtkThemingEngine // out
@@ -448,6 +642,10 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) externglib.Value
 // The function takes the following parameters:
 //
 //    - styleClass class name to look up.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if engine has class_name defined.
 //
 func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	var _arg0 *C.GtkThemingEngine // out
@@ -480,6 +678,11 @@ func (engine *ThemingEngine) HasClass(styleClass string) bool {
 // The function takes the following parameters:
 //
 //    - styleRegion: region name.
+//
+// The function returns the following values:
+//
+//    - flags (optional): return location for region flags.
+//    - ok: TRUE if region is defined.
 //
 func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg0 *C.GtkThemingEngine // out
@@ -514,6 +717,11 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 // The function takes the following parameters:
 //
 //    - colorName: color name to lookup.
+//
+// The function returns the following values:
+//
+//    - color: return location for the looked up color.
+//    - ok: TRUE if color_name was found and resolved, FALSE otherwise.
 //
 func (engine *ThemingEngine) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkThemingEngine // out
@@ -554,6 +762,11 @@ func (engine *ThemingEngine) LookupColor(colorName string) (*gdk.RGBA, bool) {
 //
 //    - state: widget state.
 //
+// The function returns the following values:
+//
+//    - progress: return location for the transition progress.
+//    - ok: TRUE if there is a running transition animation for state.
+//
 func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateType      // out
@@ -586,6 +799,11 @@ func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
 // The function takes the following parameters:
 //
 //    - name: theme engine name to load.
+//
+// The function returns the following values:
+//
+//    - themingEngine (optional): theming engine, or NULL if the engine name
+//      doesn’t exist.
 //
 func ThemingEngineLoad(name string) *ThemingEngine {
 	var _arg1 *C.gchar            // out

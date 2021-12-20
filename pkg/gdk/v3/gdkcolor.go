@@ -100,6 +100,11 @@ func (c *Color) Blue() uint16 {
 // The result must be freed using gdk_color_free().
 //
 // Deprecated: Use RGBA.
+//
+// The function returns the following values:
+//
+//    - ret: copy of color.
+//
 func (color *Color) Copy() *Color {
 	var _arg0 *C.GdkColor // out
 	var _cret *C.GdkColor // in
@@ -125,6 +130,15 @@ func (color *Color) Copy() *Color {
 // Equal compares two colors.
 //
 // Deprecated: Use RGBA.
+//
+// The function takes the following parameters:
+//
+//    - colorb: another Color.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two colors compare equal.
+//
 func (colora *Color) Equal(colorb *Color) bool {
 	var _arg0 *C.GdkColor // out
 	var _arg1 *C.GdkColor // out
@@ -149,6 +163,11 @@ func (colora *Color) Equal(colorb *Color) bool {
 // Hash: hash function suitable for using for a hash table that stores Colors.
 //
 // Deprecated: Use RGBA.
+//
+// The function returns the following values:
+//
+//    - guint: hash function applied to color.
+//
 func (color *Color) Hash() uint {
 	var _arg0 *C.GdkColor // out
 	var _cret C.guint     // in
@@ -172,6 +191,11 @@ func (color *Color) Hash() uint {
 // The returned string can be parsed by gdk_color_parse().
 //
 // Deprecated: Use RGBA.
+//
+// The function returns the following values:
+//
+//    - utf8: newly-allocated text string.
+//
 func (color *Color) String() string {
 	var _arg0 *C.GdkColor // out
 	var _cret *C.gchar    // in
@@ -204,6 +228,11 @@ func (color *Color) String() string {
 // The function takes the following parameters:
 //
 //    - spec: string specifying the color.
+//
+// The function returns the following values:
+//
+//    - color to fill in.
+//    - ok: TRUE if the parsing succeeded.
 //
 func ColorParse(spec string) (*Color, bool) {
 	var _arg1 *C.gchar   // out

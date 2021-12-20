@@ -108,6 +108,10 @@ func marshalWindowControlser(p uintptr) (interface{}, error) {
 //
 //    - side: side.
 //
+// The function returns the following values:
+//
+//    - windowControls: new GtkWindowControls.
+//
 func NewWindowControls(side PackType) *WindowControls {
 	var _arg1 C.GtkPackType // out
 	var _cret *C.GtkWidget  // in
@@ -125,6 +129,11 @@ func NewWindowControls(side PackType) *WindowControls {
 }
 
 // DecorationLayout gets the decoration layout of this GtkWindowControls.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): decoration layout or NULL if it is unset.
+//
 func (self *WindowControls) DecorationLayout() string {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret *C.char              // in
@@ -144,6 +153,11 @@ func (self *WindowControls) DecorationLayout() string {
 }
 
 // Empty gets whether the widget has any window buttons.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget has window buttons, otherwise FALSE.
+//
 func (self *WindowControls) Empty() bool {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret C.gboolean           // in
@@ -163,6 +177,11 @@ func (self *WindowControls) Empty() bool {
 }
 
 // Side gets the side to which this GtkWindowControls instance belongs.
+//
+// The function returns the following values:
+//
+//    - packType: side.
+//
 func (self *WindowControls) Side() PackType {
 	var _arg0 *C.GtkWindowControls // out
 	var _cret C.GtkPackType        // in
@@ -196,7 +215,7 @@ func (self *WindowControls) Side() PackType {
 //
 // The function takes the following parameters:
 //
-//    - layout: decoration layout, or NULL to unset the layout.
+//    - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (self *WindowControls) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkWindowControls // out

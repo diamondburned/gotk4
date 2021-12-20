@@ -70,6 +70,11 @@ func marshalSpinnerer(p uintptr) (interface{}, error) {
 }
 
 // NewSpinner returns a new spinner widget. Not yet started.
+//
+// The function returns the following values:
+//
+//    - spinner: new GtkSpinner.
+//
 func NewSpinner() *Spinner {
 	var _cret *C.GtkWidget // in
 
@@ -83,6 +88,11 @@ func NewSpinner() *Spinner {
 }
 
 // Spinning returns whether the spinner is spinning.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the spinner is active.
+//
 func (spinner *Spinner) Spinning() bool {
 	var _arg0 *C.GtkSpinner // out
 	var _cret C.gboolean    // in

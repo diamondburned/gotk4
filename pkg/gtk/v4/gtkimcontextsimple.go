@@ -69,6 +69,11 @@ func marshalIMContextSimpler(p uintptr) (interface{}, error) {
 }
 
 // NewIMContextSimple creates a new IMContextSimple.
+//
+// The function returns the following values:
+//
+//    - imContextSimple: new IMContextSimple.
+//
 func NewIMContextSimple() *IMContextSimple {
 	var _cret *C.GtkIMContext // in
 

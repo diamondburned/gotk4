@@ -167,7 +167,11 @@ func (d DialogFlags) Has(other DialogFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - screen or NULL to use the default screen.
+//    - screen (optional) or NULL to use the default screen.
+//
+// The function returns the following values:
+//
+//    - ok: whether the alternative button order should be used.
 //
 func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 	var _arg1 *C.GdkScreen // out
@@ -199,6 +203,11 @@ type DialogOverrider interface {
 	// Used to indicate that the user has responded to the dialog in some way;
 	// typically either you or gtk_dialog_run() will be monitoring the
 	// ::response signal and take appropriate action.
+	//
+	// The function takes the following parameters:
+	//
+	//    - responseId: response ID.
+	//
 	Response(responseId int)
 }
 
@@ -348,10 +357,32 @@ func marshalDialogger(p uintptr) (interface{}, error) {
 	return wrapDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectClose signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user uses a keybinding to close the dialog.
+//
+// The default binding for this signal is the Escape key.
+func (dialog *Dialog) ConnectClose(f func()) externglib.SignalHandle {
+	return dialog.Connect("close", f)
+}
+
+// ConnectResponse: emitted when an action widget is clicked, the dialog
+// receives a delete event, or the application programmer calls
+// gtk_dialog_response(). On a delete event, the response ID is
+// K_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was
+// clicked.
+func (dialog *Dialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
+	return dialog.Connect("response", f)
+}
+
 // NewDialog creates a new dialog box.
 //
 // Widgets should not be packed into this Window directly, but into the vbox and
 // action_area, as described above.
+//
+// The function returns the following values:
+//
+//    - dialog: new dialog as a Widget.
+//
 func NewDialog() *Dialog {
 	var _cret *C.GtkWidget // in
 
@@ -400,6 +431,10 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 //    - buttonText: text of button.
 //    - responseId: response ID for the button.
 //
+// The function returns the following values:
+//
+//    - widget widget that was added.
+//
 func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.gchar     // out
@@ -440,6 +475,11 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 //
 // Deprecated: Direct access to the action area is discouraged; use
 // gtk_dialog_add_button(), etc.
+//
+// The function returns the following values:
+//
+//    - box: action area.
+//
 func (dialog *Dialog) ActionArea() *Box {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
@@ -457,6 +497,11 @@ func (dialog *Dialog) ActionArea() *Box {
 }
 
 // ContentArea returns the content area of dialog.
+//
+// The function returns the following values:
+//
+//    - box: content area Box.
+//
 func (dialog *Dialog) ContentArea() *Box {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
@@ -475,6 +520,11 @@ func (dialog *Dialog) ContentArea() *Box {
 
 // HeaderBar returns the header bar of dialog. Note that the headerbar is only
 // used by the dialog if the Dialog:use-header-bar property is TRUE.
+//
+// The function returns the following values:
+//
+//    - headerBar: header bar.
+//
 func (dialog *Dialog) HeaderBar() *HeaderBar {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
@@ -497,6 +547,11 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 // The function takes the following parameters:
 //
 //    - widget in the action area of dialog.
+//
+// The function returns the following values:
+//
+//    - gint: response id of widget, or GTK_RESPONSE_NONE if widget doesn’t have
+//      a response id set.
 //
 func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkDialog // out
@@ -523,6 +578,10 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 // The function takes the following parameters:
 //
 //    - responseId: response ID used by the dialog widget.
+//
+// The function returns the following values:
+//
+//    - widget (optional) button that uses the given response_id, or NULL.
 //
 func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
@@ -618,6 +677,11 @@ func (dialog *Dialog) Response(responseId int) {
 // dialog (it prevents the user from interacting with other windows in the same
 // window group while the dialog is run), callbacks such as timeouts, IO channel
 // watches, DND drops, etc, will be triggered during a gtk_dialog_run() call.
+//
+// The function returns the following values:
+//
+//    - gint: response ID.
+//
 func (dialog *Dialog) Run() int {
 	var _arg0 *C.GtkDialog // out
 	var _cret C.gint       // in
@@ -714,23 +778,6 @@ func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)
 	runtime.KeepAlive(setting)
-}
-
-// ConnectClose signal is a [keybinding signal][GtkBindingSignal] which gets
-// emitted when the user uses a keybinding to close the dialog.
-//
-// The default binding for this signal is the Escape key.
-func (dialog *Dialog) ConnectClose(f func()) externglib.SignalHandle {
-	return dialog.Connect("close", f)
-}
-
-// ConnectResponse: emitted when an action widget is clicked, the dialog
-// receives a delete event, or the application programmer calls
-// gtk_dialog_response(). On a delete event, the response ID is
-// K_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was
-// clicked.
-func (dialog *Dialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return dialog.Connect("response", f)
 }
 
 // NewDialogWithFlags is a slightly more advanced version of NewDialog,

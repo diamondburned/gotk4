@@ -92,6 +92,13 @@ func marshalCoverager(p uintptr) (interface{}, error) {
 }
 
 // NewCoverage: create a new PangoCoverage.
+//
+// The function returns the following values:
+//
+//    - coverage: newly allocated PangoCoverage, initialized to
+//      PANGO_COVERAGE_NONE with a reference count of one, which should be freed
+//      with pango_coverage_unref().
+//
 func NewCoverage() *Coverage {
 	var _cret *C.PangoCoverage // in
 
@@ -105,6 +112,12 @@ func NewCoverage() *Coverage {
 }
 
 // Copy an existing PangoCoverage.
+//
+// The function returns the following values:
+//
+//    - ret: newly allocated PangoCoverage, with a reference count of one, which
+//      should be freed with pango_coverage_unref().
+//
 func (coverage *Coverage) Copy() *Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
@@ -126,6 +139,10 @@ func (coverage *Coverage) Copy() *Coverage {
 // The function takes the following parameters:
 //
 //    - index_: index to check.
+//
+// The function returns the following values:
+//
+//    - coverageLevel: coverage level of coverage for character index_.
 //
 func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	var _arg0 *C.PangoCoverage     // out
@@ -193,6 +210,11 @@ func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 // ToBytes: convert a PangoCoverage structure into a flat binary format.
 //
 // Deprecated: This returns NULL.
+//
+// The function returns the following values:
+//
+//    - bytes: location to store result (must be freed with g_free()).
+//
 func (coverage *Coverage) ToBytes() []byte {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.guchar        // in
@@ -220,6 +242,11 @@ func (coverage *Coverage) ToBytes() []byte {
 // The function takes the following parameters:
 //
 //    - bytes: binary data representing a PangoCoverage.
+//
+// The function returns the following values:
+//
+//    - coverage (optional): newly allocated PangoCoverage, or NULL if the data
+//      was invalid.
 //
 func CoverageFromBytes(bytes []byte) *Coverage {
 	var _arg1 *C.guchar // out

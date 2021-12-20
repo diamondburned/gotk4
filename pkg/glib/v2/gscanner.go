@@ -207,6 +207,11 @@ type scanner struct {
 
 // CurLine returns the current line in the input stream (counting from 1). This
 // is the line of the last token parsed via g_scanner_get_next_token().
+//
+// The function returns the following values:
+//
+//    - guint: current line.
+//
 func (scanner *Scanner) CurLine() uint {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
@@ -226,6 +231,11 @@ func (scanner *Scanner) CurLine() uint {
 // CurPosition returns the current position in the current line (counting from
 // 0). This is the position of the last token parsed via
 // g_scanner_get_next_token().
+//
+// The function returns the following values:
+//
+//    - guint: current position on the line.
+//
 func (scanner *Scanner) CurPosition() uint {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
@@ -244,6 +254,11 @@ func (scanner *Scanner) CurPosition() uint {
 
 // CurToken gets the current token type. This is simply the token field in the
 // #GScanner structure.
+//
+// The function returns the following values:
+//
+//    - tokenType: current token type.
+//
 func (scanner *Scanner) CurToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
@@ -272,6 +287,11 @@ func (scanner *Scanner) Destroy() {
 
 // EOF returns TRUE if the scanner has reached the end of the file or text
 // buffer.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the scanner has reached the end of the file or text buffer.
+//
 func (scanner *Scanner) EOF() bool {
 	var _arg0 *C.GScanner // out
 	var _cret C.gboolean  // in
@@ -293,6 +313,11 @@ func (scanner *Scanner) EOF() bool {
 // NextToken parses the next token just like g_scanner_peek_next_token() and
 // also removes it from the input stream. The token data is placed in the token,
 // value, line, and position fields of the #GScanner structure.
+//
+// The function returns the following values:
+//
+//    - tokenType: type of the token.
+//
 func (scanner *Scanner) NextToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
@@ -310,6 +335,11 @@ func (scanner *Scanner) NextToken() TokenType {
 }
 
 // InputFile prepares to scan a file.
+//
+// The function takes the following parameters:
+//
+//    - inputFd: file descriptor.
+//
 func (scanner *Scanner) InputFile(inputFd int) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.gint      // out
@@ -323,6 +353,12 @@ func (scanner *Scanner) InputFile(inputFd int) {
 }
 
 // InputText prepares to scan a text buffer.
+//
+// The function takes the following parameters:
+//
+//    - text buffer to scan.
+//    - textLen: length of the text buffer.
+//
 func (scanner *Scanner) InputText(text string, textLen uint) {
 	var _arg0 *C.GScanner // out
 	var _arg1 *C.gchar    // out
@@ -341,6 +377,16 @@ func (scanner *Scanner) InputText(text string, textLen uint) {
 
 // LookupSymbol looks up a symbol in the current scope and return its value. If
 // the symbol is not bound in the current scope, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - symbol to look up.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): value of symbol in the current scope, or NULL if
+//      symbol is not bound in the current scope.
+//
 func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 	var _arg0 *C.GScanner // out
 	var _arg1 *C.gchar    // out
@@ -372,6 +418,11 @@ func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 // token after switching the scope or configuration will return whatever was
 // peeked before, regardless of any symbols that may have been added or removed
 // in the new scope.
+//
+// The function returns the following values:
+//
+//    - tokenType: type of the token.
+//
 func (scanner *Scanner) PeekNextToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
@@ -389,6 +440,13 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 }
 
 // ScopeAddSymbol adds a symbol to the given scope.
+//
+// The function takes the following parameters:
+//
+//    - scopeId: scope id.
+//    - symbol to add.
+//    - value (optional) of the symbol.
+//
 func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Handle) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
@@ -410,6 +468,17 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Ha
 
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
 // symbol is not bound in the scope, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - scopeId: scope id.
+//    - symbol to look up.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): value of symbol in the given scope, or NULL if
+//      symbol is not bound in the given scope.
+//
 func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handle {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
@@ -434,6 +503,12 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handl
 }
 
 // ScopeRemoveSymbol removes a symbol from a scope.
+//
+// The function takes the following parameters:
+//
+//    - scopeId: scope id.
+//    - symbol to remove.
+//
 func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
@@ -451,6 +526,15 @@ func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 }
 
 // SetScope sets the current scope.
+//
+// The function takes the following parameters:
+//
+//    - scopeId: new scope id.
+//
+// The function returns the following values:
+//
+//    - guint: old scope id.
+//
 func (scanner *Scanner) SetScope(scopeId uint) uint {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
@@ -488,6 +572,22 @@ func (scanner *Scanner) SyncFileOffset() {
 // intermediate call to g_scanner_get_next_token(), as g_scanner_unexp_token()
 // evaluates the scanner's current token (not the peeked token) to construct
 // part of the message.
+//
+// The function takes the following parameters:
+//
+//    - expectedToken: expected token.
+//    - identifierSpec: string describing how the scanner's user refers to
+//      identifiers (NULL defaults to "identifier"). This is used if
+//      expected_token is G_TOKEN_IDENTIFIER or G_TOKEN_IDENTIFIER_NULL.
+//    - symbolSpec: string describing how the scanner's user refers to symbols
+//      (NULL defaults to "symbol"). This is used if expected_token is
+//      G_TOKEN_SYMBOL or any token value greater than G_TOKEN_LAST.
+//    - symbolName: name of the symbol, if the scanner's current token is a
+//      symbol.
+//    - message string to output at the end of the warning/error, or NULL.
+//    - isError: if TRUE it is output as an error. If FALSE it is output as a
+//      warning.
+//
 func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
 	var _arg0 *C.GScanner  // out
 	var _arg1 C.GTokenType // out

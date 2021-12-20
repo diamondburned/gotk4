@@ -327,6 +327,13 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 
 // Copy makes a copy of a Type. It is appropriate to call g_variant_type_free()
 // on the return value. type may not be NULL.
+//
+// The function returns the following values:
+//
+//    - variantType: new Type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) Copy() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -352,6 +359,13 @@ func (typ *VariantType) Copy() *VariantType {
 // DupString returns a newly-allocated copy of the type string corresponding to
 // type. The returned string is nul-terminated. It is appropriate to call
 // g_free() on the return value.
+//
+// The function returns the following values:
+//
+//    - utf8: corresponding type string
+//
+//      Since 2.24.
+//
 func (typ *VariantType) DupString() string {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.gchar        // in
@@ -372,6 +386,13 @@ func (typ *VariantType) DupString() string {
 // Element determines the element type of an array or maybe type.
 //
 // This function may only be used with array or maybe types.
+//
+// The function returns the following values:
+//
+//    - variantType: element type of type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) Element() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -398,6 +419,17 @@ func (typ *VariantType) Element() *VariantType {
 // The argument types of type1 and type2 are only #gconstpointer to allow use
 // with Table without function pointer casting. For both arguments, a valid Type
 // must be provided.
+//
+// The function takes the following parameters:
+//
+//    - type2: Type.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type1 and type2 are exactly equal
+//
+//      Since 2.24.
+//
 func (type1 *VariantType) Equal(type2 *VariantType) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -430,6 +462,13 @@ func (type1 *VariantType) Equal(type2 *VariantType) bool {
 //
 // This call, together with g_variant_type_next() provides an iterator interface
 // over tuple and dictionary entry types.
+//
+// The function returns the following values:
+//
+//    - variantType: first item type of type, or NULL
+//
+//      Since 2.24.
+//
 func (typ *VariantType) First() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -449,6 +488,13 @@ func (typ *VariantType) First() *VariantType {
 // StringLength returns the length of the type string corresponding to the given
 // type. This function must be used to determine the valid extent of the memory
 // region returned by g_variant_type_peek_string().
+//
+// The function returns the following values:
+//
+//    - gsize: length of the corresponding type string
+//
+//      Since 2.24.
+//
 func (typ *VariantType) StringLength() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
@@ -469,6 +515,13 @@ func (typ *VariantType) StringLength() uint {
 //
 // The argument type of type is only #gconstpointer to allow use with Table
 // without function pointer casting. A valid Type must be provided.
+//
+// The function returns the following values:
+//
+//    - guint: hash value
+//
+//      Since 2.24.
+//
 func (typ *VariantType) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -490,6 +543,13 @@ func (typ *VariantType) Hash() uint {
 //
 // This function returns TRUE for any indefinite type for which every definite
 // subtype is an array type -- G_VARIANT_TYPE_ARRAY, for example.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type is an array type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) IsArray() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -517,6 +577,13 @@ func (typ *VariantType) IsArray() bool {
 //
 // This function returns FALSE for all indefinite types except
 // G_VARIANT_TYPE_BASIC.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type is a basic type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) IsBasic() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -542,6 +609,13 @@ func (typ *VariantType) IsBasic() bool {
 //
 // This function returns TRUE for any indefinite type for which every definite
 // subtype is a container -- G_VARIANT_TYPE_ARRAY, for example.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type is a container type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) IsContainer() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -569,6 +643,13 @@ func (typ *VariantType) IsContainer() bool {
 // function on the result of g_variant_get_type() will always result in TRUE
 // being returned. Calling this function on an indefinite type like
 // G_VARIANT_TYPE_ARRAY, however, will result in FALSE being returned.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type is definite
+//
+//      Since 2.24.
+//
 func (typ *VariantType) IsDefinite() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -592,6 +673,13 @@ func (typ *VariantType) IsDefinite() bool {
 //
 // This function returns TRUE for any indefinite type for which every definite
 // subtype is a dictionary entry type -- G_VARIANT_TYPE_DICT_ENTRY, for example.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type is a dictionary entry type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) IsDictEntry() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -615,6 +703,13 @@ func (typ *VariantType) IsDictEntry() bool {
 //
 // This function returns TRUE for any indefinite type for which every definite
 // subtype is a maybe type -- G_VARIANT_TYPE_MAYBE, for example.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type is a maybe type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) IsMaybe() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -638,6 +733,17 @@ func (typ *VariantType) IsMaybe() bool {
 // This function returns TRUE if type is a subtype of supertype. All types are
 // considered to be subtypes of themselves. Aside from that, only indefinite
 // types can have subtypes.
+//
+// The function takes the following parameters:
+//
+//    - supertype: Type.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type is a subtype of supertype
+//
+//      Since 2.24.
+//
 func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	var _arg0 *C.GVariantType // out
 	var _arg1 *C.GVariantType // out
@@ -664,6 +770,13 @@ func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 //
 // This function returns TRUE for any indefinite type for which every definite
 // subtype is a tuple type -- G_VARIANT_TYPE_TUPLE, for example.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type is a tuple type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) IsTuple() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -683,6 +796,13 @@ func (typ *VariantType) IsTuple() bool {
 }
 
 // IsVariant determines if the given type is the variant type.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type is the variant type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) IsVariant() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -705,6 +825,13 @@ func (typ *VariantType) IsVariant() bool {
 //
 // This function may only be used with a dictionary entry type. Other than the
 // additional restriction, this call is equivalent to g_variant_type_first().
+//
+// The function returns the following values:
+//
+//    - variantType: key type of the dictionary entry
+//
+//      Since 2.24.
+//
 func (typ *VariantType) Key() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -728,6 +855,13 @@ func (typ *VariantType) Key() *VariantType {
 // not be used with the generic tuple type G_VARIANT_TYPE_TUPLE.
 //
 // In the case of a dictionary entry type, this function will always return 2.
+//
+// The function returns the following values:
+//
+//    - gsize: number of items in type
+//
+//      Since 2.24.
+//
 func (typ *VariantType) NItems() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
@@ -754,6 +888,13 @@ func (typ *VariantType) NItems() uint {
 // returns NULL.
 //
 // For tuples, NULL is returned when type is the last item in a tuple.
+//
+// The function returns the following values:
+//
+//    - variantType: next Type after type, or NULL
+//
+//      Since 2.24.
+//
 func (typ *VariantType) Next() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -773,6 +914,13 @@ func (typ *VariantType) Next() *VariantType {
 // Value determines the value type of a dictionary entry type.
 //
 // This function may only be used with a dictionary entry type.
+//
+// The function returns the following values:
+//
+//    - variantType: value type of the dictionary entry
+//
+//      Since 2.24.
+//
 func (typ *VariantType) Value() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -789,10 +937,9 @@ func (typ *VariantType) Value() *VariantType {
 	return _variantType
 }
 
-//
 // The function takes the following parameters:
 //
-
+// The function returns the following values:
 //
 func VariantTypeChecked_(arg0 string) *VariantType {
 	var _arg1 *C.gchar        // out
@@ -811,10 +958,9 @@ func VariantTypeChecked_(arg0 string) *VariantType {
 	return _variantType
 }
 
-//
 // The function takes the following parameters:
 //
-
+// The function returns the following values:
 //
 func VariantTypeStringGetDepth_(typeString string) uint {
 	var _arg1 *C.gchar // out
@@ -840,6 +986,12 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 // The function takes the following parameters:
 //
 //    - typeString: pointer to any string.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if type_string is exactly one valid type string
+//
+//      Since 2.24.
 //
 func VariantTypeStringIsValid(typeString string) bool {
 	var _arg1 *C.gchar   // out
@@ -876,7 +1028,12 @@ func VariantTypeStringIsValid(typeString string) bool {
 // The function takes the following parameters:
 //
 //    - str: pointer to any string.
-//    - limit: end of string, or NULL.
+//    - limit (optional): end of string, or NULL.
+//
+// The function returns the following values:
+//
+//    - endptr (optional): location to store the end pointer, or NULL.
+//    - ok: TRUE if a valid type string was found.
 //
 func VariantTypeStringScan(str, limit string) (string, bool) {
 	var _arg1 *C.gchar   // out

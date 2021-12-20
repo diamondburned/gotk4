@@ -32,6 +32,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ToolItemOverrider interface {
+	// The function returns the following values:
+	//
 	CreateMenuProxy() bool
 	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
 	// tool_item. Toolbar and other ToolShell implementations use this function
@@ -89,7 +91,50 @@ func marshalToolItemmer(p uintptr) (interface{}, error) {
 	return wrapToolItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectCreateMenuProxy: this signal is emitted when the toolbar needs
+// information from tool_item about whether the item should appear in the
+// toolbar overflow menu. In response the tool item should either
+//
+// - call gtk_tool_item_set_proxy_menu_item() with a NULL pointer and return
+// TRUE to indicate that the item should not appear in the overflow menu
+//
+// - call gtk_tool_item_set_proxy_menu_item() with a new menu item and return
+// TRUE, or
+//
+// - return FALSE to indicate that the signal was not handled by the item. This
+// means that the item will not appear in the overflow menu unless a later
+// handler installs a menu item.
+//
+// The toolbar may cache the result of this signal. When the tool item changes
+// how it will respond to this signal it must call gtk_tool_item_rebuild_menu()
+// to invalidate the cache and ensure that the toolbar rebuilds its overflow
+// menu.
+func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() bool) externglib.SignalHandle {
+	return toolItem.Connect("create-menu-proxy", f)
+}
+
+// ConnectToolbarReconfigured: this signal is emitted when some property of the
+// toolbar that the item is a child of changes. For custom subclasses of
+// ToolItem, the default handler of this signal use the functions
+//
+// - gtk_tool_shell_get_orientation()
+//
+// - gtk_tool_shell_get_style()
+//
+// - gtk_tool_shell_get_icon_size()
+//
+// - gtk_tool_shell_get_relief_style() to find out what the toolbar should look
+// like and change themselves accordingly.
+func (toolItem *ToolItem) ConnectToolbarReconfigured(f func()) externglib.SignalHandle {
+	return toolItem.Connect("toolbar-reconfigured", f)
+}
+
 // NewToolItem creates a new ToolItem.
+//
+// The function returns the following values:
+//
+//    - toolItem: new ToolItem.
+//
 func NewToolItem() *ToolItem {
 	var _cret *C.GtkToolItem // in
 
@@ -105,6 +150,11 @@ func NewToolItem() *ToolItem {
 // EllipsizeMode returns the ellipsize mode used for tool_item. Custom
 // subclasses of ToolItem should call this function to find out how text should
 // be ellipsized.
+//
+// The function returns the following values:
+//
+//    - ellipsizeMode indicating how text in tool_item should be ellipsized.
+//
 func (toolItem *ToolItem) EllipsizeMode() pango.EllipsizeMode {
 	var _arg0 *C.GtkToolItem       // out
 	var _cret C.PangoEllipsizeMode // in
@@ -123,6 +173,11 @@ func (toolItem *ToolItem) EllipsizeMode() pango.EllipsizeMode {
 
 // Expand returns whether tool_item is allocated extra space. See
 // gtk_tool_item_set_expand().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if tool_item is allocated extra space.
+//
 func (toolItem *ToolItem) Expand() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
@@ -143,6 +198,11 @@ func (toolItem *ToolItem) Expand() bool {
 
 // Homogeneous returns whether tool_item is the same size as other homogeneous
 // items. See gtk_tool_item_set_homogeneous().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the item is the same size as other homogeneous items.
+//
 func (toolItem *ToolItem) Homogeneous() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
@@ -164,6 +224,11 @@ func (toolItem *ToolItem) Homogeneous() bool {
 // IconSize returns the icon size used for tool_item. Custom subclasses of
 // ToolItem should call this function to find out what size icons they should
 // use.
+//
+// The function returns the following values:
+//
+//    - gint indicating the icon size used for tool_item.
+//
 func (toolItem *ToolItem) IconSize() int {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.GtkIconSize  // in
@@ -182,6 +247,11 @@ func (toolItem *ToolItem) IconSize() int {
 
 // IsImportant returns whether tool_item is considered important. See
 // gtk_tool_item_set_is_important().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if tool_item is considered important.
+//
 func (toolItem *ToolItem) IsImportant() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
@@ -203,6 +273,11 @@ func (toolItem *ToolItem) IsImportant() bool {
 // Orientation returns the orientation used for tool_item. Custom subclasses of
 // ToolItem should call this function to find out what size icons they should
 // use.
+//
+// The function returns the following values:
+//
+//    - orientation indicating the orientation used for tool_item.
+//
 func (toolItem *ToolItem) Orientation() Orientation {
 	var _arg0 *C.GtkToolItem   // out
 	var _cret C.GtkOrientation // in
@@ -230,6 +305,11 @@ func (toolItem *ToolItem) Orientation() Orientation {
 // The function takes the following parameters:
 //
 //    - menuItemId: string used to identify the menu item.
+//
+// The function returns the following values:
+//
+//    - widget (optional) passed to gtk_tool_item_set_proxy_menu_item(), if the
+//      menu_item_ids match.
 //
 func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 	var _arg0 *C.GtkToolItem // out
@@ -267,6 +347,11 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 // gtk_button_set_relief(). Custom subclasses of ToolItem should call this
 // function in the handler of the ToolItem::toolbar_reconfigured signal to find
 // out the relief style of buttons.
+//
+// The function returns the following values:
+//
+//    - reliefStyle indicating the relief style used for tool_item.
+//
 func (toolItem *ToolItem) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolItem   // out
 	var _cret C.GtkReliefStyle // in
@@ -286,6 +371,11 @@ func (toolItem *ToolItem) ReliefStyle() ReliefStyle {
 // TextAlignment returns the text alignment used for tool_item. Custom
 // subclasses of ToolItem should call this function to find out how text should
 // be aligned.
+//
+// The function returns the following values:
+//
+//    - gfloat indicating the horizontal text alignment used for tool_item.
+//
 func (toolItem *ToolItem) TextAlignment() float32 {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gfloat       // in
@@ -305,6 +395,11 @@ func (toolItem *ToolItem) TextAlignment() float32 {
 // TextOrientation returns the text orientation used for tool_item. Custom
 // subclasses of ToolItem should call this function to find out how text should
 // be orientated.
+//
+// The function returns the following values:
+//
+//    - orientation indicating the text orientation used for tool_item.
+//
 func (toolItem *ToolItem) TextOrientation() Orientation {
 	var _arg0 *C.GtkToolItem   // out
 	var _cret C.GtkOrientation // in
@@ -324,6 +419,11 @@ func (toolItem *ToolItem) TextOrientation() Orientation {
 // TextSizeGroup returns the size group used for labels in tool_item. Custom
 // subclasses of ToolItem should call this function and use the size group for
 // labels.
+//
+// The function returns the following values:
+//
+//    - sizeGroup: SizeGroup.
+//
 func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 	var _arg0 *C.GtkToolItem  // out
 	var _cret *C.GtkSizeGroup // in
@@ -356,6 +456,11 @@ func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 //
 // - GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item should show both an icon and
 // a label, arranged horizontally.
+//
+// The function returns the following values:
+//
+//    - toolbarStyle indicating the toolbar style used for tool_item.
+//
 func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
 	var _arg0 *C.GtkToolItem    // out
 	var _cret C.GtkToolbarStyle // in
@@ -374,6 +479,11 @@ func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
 
 // UseDragWindow returns whether tool_item has a drag window. See
 // gtk_tool_item_set_use_drag_window().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if tool_item uses a drag window.
+//
 func (toolItem *ToolItem) UseDragWindow() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
@@ -394,6 +504,12 @@ func (toolItem *ToolItem) UseDragWindow() bool {
 
 // VisibleHorizontal returns whether the tool_item is visible on toolbars that
 // are docked horizontally.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if tool_item is visible on toolbars that are docked
+//      horizontally.
+//
 func (toolItem *ToolItem) VisibleHorizontal() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
@@ -414,6 +530,11 @@ func (toolItem *ToolItem) VisibleHorizontal() bool {
 
 // VisibleVertical returns whether tool_item is visible when the toolbar is
 // docked vertically. See gtk_tool_item_set_visible_vertical().
+//
+// The function returns the following values:
+//
+//    - ok: whether tool_item is visible when the toolbar is docked vertically.
+//
 func (toolItem *ToolItem) VisibleVertical() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
@@ -450,6 +571,11 @@ func (toolItem *ToolItem) RebuildMenu() {
 // RetrieveProxyMenuItem returns the MenuItem that was last set by
 // gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to appear
 // in the overflow menu.
+//
+// The function returns the following values:
+//
+//    - widget that is going to appear in the overflow menu for tool_item.
+//
 func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 	var _arg0 *C.GtkToolItem // out
 	var _cret *C.GtkWidget   // in
@@ -509,7 +635,7 @@ func (toolItem *ToolItem) SetExpand(expand bool) {
 // The function takes the following parameters:
 //
 //    - homogeneous: whether tool_item is the same size as other homogeneous
-//    items.
+//      items.
 //
 func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkToolItem // out
@@ -558,7 +684,7 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 // The function takes the following parameters:
 //
 //    - menuItemId: string used to identify menu_item.
-//    - menuItem to use in the overflow menu, or NULL.
+//    - menuItem (optional) to use in the overflow menu, or NULL.
 //
 func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter) {
 	var _arg0 *C.GtkToolItem // out
@@ -646,8 +772,7 @@ func (toolItem *ToolItem) SetUseDragWindow(useDragWindow bool) {
 //
 // The function takes the following parameters:
 //
-//    - visibleHorizontal: whether tool_item is visible when in horizontal
-//    mode.
+//    - visibleHorizontal: whether tool_item is visible when in horizontal mode.
 //
 func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkToolItem // out
@@ -671,7 +796,7 @@ func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 // The function takes the following parameters:
 //
 //    - visibleVertical: whether tool_item is visible when the toolbar is in
-//    vertical mode.
+//      vertical mode.
 //
 func (toolItem *ToolItem) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkToolItem // out
@@ -697,42 +822,4 @@ func (toolItem *ToolItem) ToolbarReconfigured() {
 
 	C.gtk_tool_item_toolbar_reconfigured(_arg0)
 	runtime.KeepAlive(toolItem)
-}
-
-// ConnectCreateMenuProxy: this signal is emitted when the toolbar needs
-// information from tool_item about whether the item should appear in the
-// toolbar overflow menu. In response the tool item should either
-//
-// - call gtk_tool_item_set_proxy_menu_item() with a NULL pointer and return
-// TRUE to indicate that the item should not appear in the overflow menu
-//
-// - call gtk_tool_item_set_proxy_menu_item() with a new menu item and return
-// TRUE, or
-//
-// - return FALSE to indicate that the signal was not handled by the item. This
-// means that the item will not appear in the overflow menu unless a later
-// handler installs a menu item.
-//
-// The toolbar may cache the result of this signal. When the tool item changes
-// how it will respond to this signal it must call gtk_tool_item_rebuild_menu()
-// to invalidate the cache and ensure that the toolbar rebuilds its overflow
-// menu.
-func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() bool) externglib.SignalHandle {
-	return toolItem.Connect("create-menu-proxy", f)
-}
-
-// ConnectToolbarReconfigured: this signal is emitted when some property of the
-// toolbar that the item is a child of changes. For custom subclasses of
-// ToolItem, the default handler of this signal use the functions
-//
-// - gtk_tool_shell_get_orientation()
-//
-// - gtk_tool_shell_get_style()
-//
-// - gtk_tool_shell_get_icon_size()
-//
-// - gtk_tool_shell_get_relief_style() to find out what the toolbar should look
-// like and change themselves accordingly.
-func (toolItem *ToolItem) ConnectToolbarReconfigured(f func()) externglib.SignalHandle {
-	return toolItem.Connect("toolbar-reconfigured", f)
 }

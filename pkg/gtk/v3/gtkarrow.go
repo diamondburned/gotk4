@@ -83,6 +83,10 @@ func marshalArrower(p uintptr) (interface{}, error) {
 //    - arrowType: valid ArrowType.
 //    - shadowType: valid ShadowType.
 //
+// The function returns the following values:
+//
+//    - arrow: new Arrow widget.
+//
 func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
 	var _arg1 C.GtkArrowType  // out
 	var _arg2 C.GtkShadowType // out

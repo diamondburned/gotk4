@@ -112,6 +112,11 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 // Bytes creates a new #GBytes which references the data mapped from file. The
 // mapped contents of the file must not be modified after creating this bytes
 // object, because a #GBytes should be immutable.
+//
+// The function returns the following values:
+//
+//    - bytes: newly allocated #GBytes referencing data from file.
+//
 func (file *MappedFile) Bytes() *Bytes {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.GBytes      // in
@@ -140,6 +145,11 @@ func (file *MappedFile) Bytes() *Bytes {
 // by a text file.
 //
 // If the file is empty then NULL is returned.
+//
+// The function returns the following values:
+//
+//    - utf8 contents of file, or NULL.
+//
 func (file *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.gchar       // in
@@ -158,6 +168,11 @@ func (file *MappedFile) Contents() string {
 }
 
 // Length returns the length of the contents of a File.
+//
+// The function returns the following values:
+//
+//    - gsize: length of the contents of file.
+//
 func (file *MappedFile) Length() uint {
 	var _arg0 *C.GMappedFile // out
 	var _cret C.gsize        // in

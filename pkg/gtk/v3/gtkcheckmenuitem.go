@@ -31,6 +31,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CheckMenuItemOverrider interface {
+	// The function takes the following parameters:
+	//
 	DrawIndicator(cr *cairo.Context)
 	// Toggled emits the CheckMenuItem::toggled signal.
 	Toggled()
@@ -104,7 +106,21 @@ func marshalCheckMenuItemmer(p uintptr) (interface{}, error) {
 	return wrapCheckMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectToggled: this signal is emitted when the state of the check box is
+// changed.
+//
+// A signal handler can use gtk_check_menu_item_get_active() to discover the new
+// state.
+func (checkMenuItem *CheckMenuItem) ConnectToggled(f func()) externglib.SignalHandle {
+	return checkMenuItem.Connect("toggled", f)
+}
+
 // NewCheckMenuItem creates a new CheckMenuItem.
+//
+// The function returns the following values:
+//
+//    - checkMenuItem: new CheckMenuItem.
+//
 func NewCheckMenuItem() *CheckMenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -122,6 +138,10 @@ func NewCheckMenuItem() *CheckMenuItem {
 // The function takes the following parameters:
 //
 //    - label: string to use for the label.
+//
+// The function returns the following values:
+//
+//    - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 	var _arg1 *C.gchar     // out
@@ -146,8 +166,11 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 //
 // The function takes the following parameters:
 //
-//    - label: text of the button, with an underscore in front of the
-//    character.
+//    - label: text of the button, with an underscore in front of the character.
+//
+// The function returns the following values:
+//
+//    - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 	var _arg1 *C.gchar     // out
@@ -168,6 +191,11 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 
 // Active returns whether the check menu item is active. See
 // gtk_check_menu_item_set_active ().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the menu item is checked.
+//
 func (checkMenuItem *CheckMenuItem) Active() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
@@ -187,6 +215,11 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 }
 
 // DrawAsRadio returns whether check_menu_item looks like a RadioMenuItem.
+//
+// The function returns the following values:
+//
+//    - ok: whether check_menu_item looks like a RadioMenuItem.
+//
 func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
@@ -207,6 +240,11 @@ func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 
 // Inconsistent retrieves the value set by
 // gtk_check_menu_item_set_inconsistent().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if inconsistent.
+//
 func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
@@ -300,13 +338,4 @@ func (checkMenuItem *CheckMenuItem) Toggled() {
 
 	C.gtk_check_menu_item_toggled(_arg0)
 	runtime.KeepAlive(checkMenuItem)
-}
-
-// ConnectToggled: this signal is emitted when the state of the check box is
-// changed.
-//
-// A signal handler can use gtk_check_menu_item_get_active() to discover the new
-// state.
-func (checkMenuItem *CheckMenuItem) ConnectToggled(f func()) externglib.SignalHandle {
-	return checkMenuItem.Connect("toggled", f)
 }

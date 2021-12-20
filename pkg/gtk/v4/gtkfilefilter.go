@@ -99,6 +99,11 @@ func marshalFileFilterer(p uintptr) (interface{}, error) {
 //
 //    GtkFileFilter *filter = gtk_file_filter_new ();
 //    gtk_file_filter_add_pattern (filter, "*");.
+//
+// The function returns the following values:
+//
+//    - fileFilter: new GtkFileFilter.
+//
 func NewFileFilter() *FileFilter {
 	var _cret *C.GtkFileFilter // in
 
@@ -118,6 +123,10 @@ func NewFileFilter() *FileFilter {
 // The function takes the following parameters:
 //
 //    - variant: a{sv} GVariant.
+//
+// The function returns the following values:
+//
+//    - fileFilter: new GtkFileFilter object.
 //
 func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
@@ -192,6 +201,11 @@ func (filter *FileFilter) AddPixbufFormats() {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of GtkFileChooser.
+//
+// The function returns the following values:
+//
+//    - utf8s: attributes.
+//
 func (filter *FileFilter) Attributes() []string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret **C.char         // in
@@ -223,6 +237,12 @@ func (filter *FileFilter) Attributes() []string {
 // Name gets the human-readable name for the filter.
 //
 // See gtk.FileFilter.SetName().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): human-readable name of the filter, or NULL. This value
+//      is owned by GTK and must not be modified or freed.
+//
 func (filter *FileFilter) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.char          // in
@@ -248,7 +268,7 @@ func (filter *FileFilter) Name() string {
 //
 // The function takes the following parameters:
 //
-//    - name for the filter, or NULL to remove any existing name.
+//    - name (optional) for the filter, or NULL to remove any existing name.
 //
 func (filter *FileFilter) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
@@ -266,6 +286,11 @@ func (filter *FileFilter) SetName(name string) {
 }
 
 // ToGVariant: serialize a file filter to an a{sv} variant.
+//
+// The function returns the following values:
+//
+//    - variant: new, floating, GVariant.
+//
 func (filter *FileFilter) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in

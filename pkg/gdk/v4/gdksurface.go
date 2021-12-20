@@ -63,6 +63,45 @@ func marshalSurfacer(p uintptr) (interface{}, error) {
 	return wrapSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (surface *Surface) baseSurface() *Surface {
+	return surface
+}
+
+// BaseSurface returns the underlying base object.
+func BaseSurface(obj Surfacer) *Surface {
+	return obj.baseSurface()
+}
+
+// ConnectEnterMonitor: emitted when surface starts being present on the
+// monitor.
+func (surface *Surface) ConnectEnterMonitor(f func(monitor Monitor)) externglib.SignalHandle {
+	return surface.Connect("enter-monitor", f)
+}
+
+// ConnectEvent: emitted when GDK receives an input event for surface.
+func (surface *Surface) ConnectEvent(f func(event Eventer) bool) externglib.SignalHandle {
+	return surface.Connect("event", f)
+}
+
+// ConnectLayout: emitted when the size of surface is changed, or when relayout
+// should be performed.
+//
+// Surface size is reported in ”application pixels”, not ”device pixels” (see
+// gdk_surface_get_scale_factor()).
+func (surface *Surface) ConnectLayout(f func(width, height int)) externglib.SignalHandle {
+	return surface.Connect("layout", f)
+}
+
+// ConnectLeaveMonitor: emitted when surface stops being present on the monitor.
+func (surface *Surface) ConnectLeaveMonitor(f func(monitor Monitor)) externglib.SignalHandle {
+	return surface.Connect("leave-monitor", f)
+}
+
+// ConnectRender: emitted when part of the surface needs to be redrawn.
+func (surface *Surface) ConnectRender(f func(region *cairo.Region) bool) externglib.SignalHandle {
+	return surface.Connect("render", f)
+}
+
 // NewSurfacePopup: create a new popup surface.
 //
 // The surface will be attached to parent and can be positioned relative to it
@@ -72,6 +111,10 @@ func marshalSurfacer(p uintptr) (interface{}, error) {
 //
 //    - parent surface to attach the surface to.
 //    - autohide: whether to hide the surface on outside clicks.
+//
+// The function returns the following values:
+//
+//    - surface: new GdkSurface.
 //
 func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 	var _arg1 *C.GdkSurface // out
@@ -99,6 +142,10 @@ func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 // The function takes the following parameters:
 //
 //    - display to create the surface on.
+//
+// The function returns the following values:
+//
+//    - surface: new GdkSurface.
 //
 func NewSurfaceToplevel(display *Display) *Surface {
 	var _arg1 *C.GdkDisplay // out
@@ -130,6 +177,11 @@ func (surface *Surface) Beep() {
 }
 
 // CreateCairoContext creates a new GdkCairoContext for rendering on surface.
+//
+// The function returns the following values:
+//
+//    - cairoContext: newly created GdkCairoContext.
+//
 func (surface *Surface) CreateCairoContext() CairoContexter {
 	var _arg0 *C.GdkSurface      // out
 	var _cret *C.GdkCairoContext // in
@@ -165,6 +217,11 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 // creation of the GdkGLContext failed, error will be set. Before using the
 // returned GdkGLContext, you will need to call gdk.GLContext.MakeCurrent() or
 // gdk.GLContext.Realize().
+//
+// The function returns the following values:
+//
+//    - glContext: newly created GdkGLContext, or NULL on error.
+//
 func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	var _arg0 *C.GdkSurface   // out
 	var _cret *C.GdkGLContext // in
@@ -220,6 +277,11 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 //    - width of the new surface.
 //    - height of the new surface.
 //
+// The function returns the following values:
+//
+//    - ret: pointer to the newly allocated surface. The caller owns the surface
+//      and should call cairo_surface_destroy() when done with it.
+//
 func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface {
 	var _arg0 *C.GdkSurface      // out
 	var _arg1 C.cairo_content_t  // out
@@ -251,6 +313,11 @@ func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, heigh
 // CreateVulkanContext creates a new GdkVulkanContext for rendering on surface.
 //
 // If the creation of the GdkVulkanContext failed, error will be set.
+//
+// The function returns the following values:
+//
+//    - vulkanContext: newly created GdkVulkanContext, or NULL on error.
+//
 func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	var _arg0 *C.GdkSurface       // out
 	var _cret *C.GdkVulkanContext // in
@@ -307,6 +374,13 @@ func (surface *Surface) Destroy() {
 //
 // If the return value is NULL then there is no custom cursor set on the
 // surface, and it is using the cursor for its parent surface.
+//
+// The function returns the following values:
+//
+//    - cursor (optional): GdkCursor, or NULL. The returned object is owned by
+//      the GdkSurface and should not be unreferenced directly. Use
+//      gdk.Surface.SetCursor() to unset the cursor of the surface.
+//
 func (surface *Surface) Cursor() *Cursor {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkCursor  // in
@@ -334,6 +408,12 @@ func (surface *Surface) Cursor() *Cursor {
 // The function takes the following parameters:
 //
 //    - device: pointer GdkDevice.
+//
+// The function returns the following values:
+//
+//    - cursor (optional): GdkCursor, or NULL. The returned object is owned by
+//      the GdkSurface and should not be unreferenced directly. Use
+//      gdk.Surface.SetCursor() to unset the cursor of the surface.
 //
 func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 	var _arg0 *C.GdkSurface // out
@@ -364,6 +444,13 @@ func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 // The function takes the following parameters:
 //
 //    - device: pointer GdkDevice to query to.
+//
+// The function returns the following values:
+//
+//    - x (optional): return locatio for the X coordinate of device, or NULL.
+//    - y (optional): return location for the Y coordinate of device, or NULL.
+//    - mask (optional): return location for the modifier mask, or NULL.
+//    - ok: TRUE if the device is over the surface.
 //
 func (surface *Surface) DevicePosition(device Devicer) (x float64, y float64, mask ModifierType, ok bool) {
 	var _arg0 *C.GdkSurface     // out
@@ -396,6 +483,11 @@ func (surface *Surface) DevicePosition(device Devicer) (x float64, y float64, ma
 }
 
 // Display gets the GdkDisplay associated with a GdkSurface.
+//
+// The function returns the following values:
+//
+//    - display: GdkDisplay associated with surface.
+//
 func (surface *Surface) Display() *Display {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkDisplay // in
@@ -416,6 +508,11 @@ func (surface *Surface) Display() *Display {
 //
 // The frame clock for a surface never changes unless the surface is reparented
 // to a new toplevel surface.
+//
+// The function returns the following values:
+//
+//    - frameClock: frame clock.
+//
 func (surface *Surface) FrameClock() FrameClocker {
 	var _arg0 *C.GdkSurface    // out
 	var _cret *C.GdkFrameClock // in
@@ -449,6 +546,11 @@ func (surface *Surface) FrameClock() FrameClocker {
 //
 // Surface size is reported in ”application pixels”, not ”device pixels” (see
 // gdk.Surface.GetScaleFactor()).
+//
+// The function returns the following values:
+//
+//    - gint: height of surface.
+//
 func (surface *Surface) Height() int {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
@@ -468,6 +570,11 @@ func (surface *Surface) Height() int {
 // Mapped checks whether the surface has been mapped.
 //
 // A surface is mapped with gdk.Toplevel.Present() or gdk.Popup.Present().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the surface is mapped.
+//
 func (surface *Surface) Mapped() bool {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.gboolean    // in
@@ -497,6 +604,11 @@ func (surface *Surface) Mapped() bool {
 // higher resolution data.
 //
 // The scale of a surface may change during runtime.
+//
+// The function returns the following values:
+//
+//    - gint: scale factor.
+//
 func (surface *Surface) ScaleFactor() int {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
@@ -517,6 +629,11 @@ func (surface *Surface) ScaleFactor() int {
 //
 // Surface size is reported in ”application pixels”, not ”device pixels” (see
 // gdk.Surface.GetScaleFactor()).
+//
+// The function returns the following values:
+//
+//    - gint: width of surface.
+//
 func (surface *Surface) Width() int {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
@@ -548,6 +665,11 @@ func (surface *Surface) Hide() {
 }
 
 // IsDestroyed: check to see if a surface is destroyed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the surface is destroyed.
+//
 func (surface *Surface) IsDestroyed() bool {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.gboolean    // in
@@ -603,7 +725,7 @@ func (surface *Surface) RequestLayout() {
 //
 // The function takes the following parameters:
 //
-//    - cursor: GdkCursor.
+//    - cursor (optional): GdkCursor.
 //
 func (surface *Surface) SetCursor(cursor *Cursor) {
 	var _arg0 *C.GdkSurface // out
@@ -695,7 +817,7 @@ func (surface *Surface) SetInputRegion(region *cairo.Region) {
 //
 // The function takes the following parameters:
 //
-//    - region: region, or NULL.
+//    - region (optional): region, or NULL.
 //
 func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
@@ -709,43 +831,4 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	C.gdk_surface_set_opaque_region(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(region)
-}
-
-func (surface *Surface) baseSurface() *Surface {
-	return surface
-}
-
-// BaseSurface returns the underlying base object.
-func BaseSurface(obj Surfacer) *Surface {
-	return obj.baseSurface()
-}
-
-// ConnectEnterMonitor: emitted when surface starts being present on the
-// monitor.
-func (surface *Surface) ConnectEnterMonitor(f func(monitor Monitor)) externglib.SignalHandle {
-	return surface.Connect("enter-monitor", f)
-}
-
-// ConnectEvent: emitted when GDK receives an input event for surface.
-func (surface *Surface) ConnectEvent(f func(event Eventer) bool) externglib.SignalHandle {
-	return surface.Connect("event", f)
-}
-
-// ConnectLayout: emitted when the size of surface is changed, or when relayout
-// should be performed.
-//
-// Surface size is reported in ”application pixels”, not ”device pixels” (see
-// gdk_surface_get_scale_factor()).
-func (surface *Surface) ConnectLayout(f func(width, height int)) externglib.SignalHandle {
-	return surface.Connect("layout", f)
-}
-
-// ConnectLeaveMonitor: emitted when surface stops being present on the monitor.
-func (surface *Surface) ConnectLeaveMonitor(f func(monitor Monitor)) externglib.SignalHandle {
-	return surface.Connect("leave-monitor", f)
-}
-
-// ConnectRender: emitted when part of the surface needs to be redrawn.
-func (surface *Surface) ConnectRender(f func(region *cairo.Region) bool) externglib.SignalHandle {
-	return surface.Connect("render", f)
 }

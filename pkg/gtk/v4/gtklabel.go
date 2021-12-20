@@ -231,13 +231,69 @@ func marshalLabeller(p uintptr) (interface{}, error) {
 	return wrapLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivateCurrentLink gets emitted when the user activates a link in the
+// label.
+//
+// The ::activate-current-link is a keybinding signal (class.SignalAction.html).
+//
+// Applications may also emit the signal with g_signal_emit_by_name() if they
+// need to control activation of URIs programmatically.
+//
+// The default bindings for this signal are all forms of the Enter key.
+func (self *Label) ConnectActivateCurrentLink(f func()) externglib.SignalHandle {
+	return self.Connect("activate-current-link", f)
+}
+
+// ConnectActivateLink gets emitted to activate a URI.
+//
+// Applications may connect to it to override the default behaviour, which is to
+// call gtk_show_uri().
+func (self *Label) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
+	return self.Connect("activate-link", f)
+}
+
+// ConnectCopyClipboard gets emitted to copy the slection to the clipboard.
+//
+// The ::copy-clipboard signal is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is Ctrl-c.
+func (self *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
+	return self.Connect("copy-clipboard", f)
+}
+
+// ConnectMoveCursor gets emitted when the user initiates a cursor movement.
+//
+// The ::move-cursor signal is a keybinding signal (class.SignalAction.html). If
+// the cursor is not visible in entry, this signal causes the viewport to be
+// moved instead.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the Shift modifier extends the selection, the variant without the Shift
+// modifier does not. There are too many key combinations to list them all here.
+//
+// - Arrow keys move by individual characters/lines
+//
+// - Ctrl-arrow key combinations move by words/paragraphs
+//
+// - Home/End keys move to the ends of the buffer.
+func (self *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
+	return self.Connect("move-cursor", f)
+}
+
 // NewLabel creates a new label with the given text inside it.
 //
 // You can pass NULL to get an empty label widget.
 //
 // The function takes the following parameters:
 //
-//    - str: text of the label.
+//    - str (optional): text of the label.
+//
+// The function returns the following values:
+//
+//    - label: new GtkLabel.
 //
 func NewLabel(str string) *Label {
 	var _arg1 *C.char      // out
@@ -274,8 +330,12 @@ func NewLabel(str string) *Label {
 //
 // The function takes the following parameters:
 //
-//    - str: text of the label, with an underscore in front of the mnemonic
-//    character.
+//    - str (optional): text of the label, with an underscore in front of the
+//      mnemonic character.
+//
+// The function returns the following values:
+//
+//    - label: new GtkLabel.
 //
 func NewLabelWithMnemonic(str string) *Label {
 	var _arg1 *C.char      // out
@@ -303,6 +363,11 @@ func NewLabelWithMnemonic(str string) *Label {
 // that come from the labels markup (see gtk.Label.SetMarkup()). If you want to
 // get the effective attributes for the label, use pango_layout_get_attribute
 // (gtk_label_get_layout (self)).
+//
+// The function returns the following values:
+//
+//    - attrList (optional): attribute list, or NULL if none was set.
+//
 func (self *Label) Attributes() *pango.AttrList {
 	var _arg0 *C.GtkLabel      // out
 	var _cret *C.PangoAttrList // in
@@ -335,6 +400,12 @@ func (self *Label) Attributes() *pango.AttrList {
 //
 // This function is intended for use in a gtk.Label::activate-link handler or
 // for use in a gtk.Widget::query-tooltip handler.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): currently active URI or NULL if there is none. The
+//      string is owned by GTK and must not be freed or modified.
+//
 func (self *Label) CurrentURI() string {
 	var _arg0 *C.GtkLabel // out
 	var _cret *C.char     // in
@@ -356,6 +427,11 @@ func (self *Label) CurrentURI() string {
 // Ellipsize returns the ellipsizing position of the label.
 //
 // See gtk.Label.SetEllipsize().
+//
+// The function returns the following values:
+//
+//    - ellipsizeMode: PangoEllipsizeMode.
+//
 func (self *Label) Ellipsize() pango.EllipsizeMode {
 	var _arg0 *C.GtkLabel          // out
 	var _cret C.PangoEllipsizeMode // in
@@ -375,6 +451,11 @@ func (self *Label) Ellipsize() pango.EllipsizeMode {
 // ExtraMenu gets the extra menu model of label.
 //
 // See gtk.Label.SetExtraMenu().
+//
+// The function returns the following values:
+//
+//    - menuModel (optional): menu model.
+//
 func (self *Label) ExtraMenu() gio.MenuModeller {
 	var _arg0 *C.GtkLabel   // out
 	var _cret *C.GMenuModel // in
@@ -406,6 +487,11 @@ func (self *Label) ExtraMenu() gio.MenuModeller {
 // Justify returns the justification of the label.
 //
 // See gtk.Label.SetJustify().
+//
+// The function returns the following values:
+//
+//    - justification: GtkJustification.
+//
 func (self *Label) Justify() Justification {
 	var _arg0 *C.GtkLabel        // out
 	var _cret C.GtkJustification // in
@@ -426,6 +512,12 @@ func (self *Label) Justify() Justification {
 //
 // The returned text includes any embedded underlines indicating mnemonics and
 // Pango markup. (See gtk.Label.GetText()).
+//
+// The function returns the following values:
+//
+//    - utf8: text of the label widget. This string is owned by the widget and
+//      must not be modified or freed.
+//
 func (self *Label) Label() string {
 	var _arg0 *C.GtkLabel // out
 	var _cret *C.char     // in
@@ -448,6 +540,11 @@ func (self *Label) Label() string {
 // combination with gtk.Label.GetLayoutOffsets(). The returned layout is owned
 // by the label so need not be freed by the caller. The label is free to
 // recreate its layout at any time, so it should be considered read-only.
+//
+// The function returns the following values:
+//
+//    - layout: pango.Layout for this label.
+//
 func (self *Label) Layout() *pango.Layout {
 	var _arg0 *C.GtkLabel    // out
 	var _cret *C.PangoLayout // in
@@ -476,6 +573,12 @@ func (self *Label) Layout() *pango.Layout {
 // the pango.Layout, e.g. to take some action if some part of the label is
 // clicked. Remember when using the pango.Layout functions you need to convert
 // to and from pixels using PANGO_PIXELS() or pango.SCALE.
+//
+// The function returns the following values:
+//
+//    - x (optional): location to store X offset of layout, or NULL.
+//    - y (optional): location to store Y offset of layout, or NULL.
+//
 func (self *Label) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.int       // in
@@ -499,6 +602,11 @@ func (self *Label) LayoutOffsets() (x int, y int) {
 // be limited.
 //
 // See gtk.Label.SetLines().
+//
+// The function returns the following values:
+//
+//    - gint: number of lines.
+//
 func (self *Label) Lines() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.int       // in
@@ -518,6 +626,11 @@ func (self *Label) Lines() int {
 // MaxWidthChars retrieves the desired maximum width of label, in characters.
 //
 // See gtk.Label.SetWidthChars().
+//
+// The function returns the following values:
+//
+//    - gint: maximum width of the label in characters.
+//
 func (self *Label) MaxWidthChars() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.int       // in
@@ -539,6 +652,11 @@ func (self *Label) MaxWidthChars() int {
 // If the label has been set so that it has a mnemonic key this function returns
 // the keyval used for the mnemonic accelerator. If there is no mnemonic set up
 // it returns GDK_KEY_VoidSymbol.
+//
+// The function returns the following values:
+//
+//    - guint: GDK keyval usable for accelerators, or GDK_KEY_VoidSymbol.
+//
 func (self *Label) MnemonicKeyval() uint {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.guint     // in
@@ -559,6 +677,12 @@ func (self *Label) MnemonicKeyval() uint {
 // this label.
 //
 // See gtk.Label.SetMnemonicWidget().
+//
+// The function returns the following values:
+//
+//    - widget (optional): target of the label’s mnemonic, or NULL if none has
+//      been set and the default algorithm will be used.
+//
 func (self *Label) MnemonicWidget() Widgetter {
 	var _arg0 *C.GtkLabel  // out
 	var _cret *C.GtkWidget // in
@@ -588,6 +712,11 @@ func (self *Label) MnemonicWidget() Widgetter {
 }
 
 // Selectable returns whether the label is selectable.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the user can copy text from the label.
+//
 func (self *Label) Selectable() bool {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gboolean  // in
@@ -607,6 +736,13 @@ func (self *Label) Selectable() bool {
 }
 
 // SelectionBounds gets the selected range of characters in the label.
+//
+// The function returns the following values:
+//
+//    - start: return location for start of selection, as a character offset.
+//    - end: return location for end of selection, as a character offset.
+//    - ok: TRUE if selection is non-empty.
+//
 func (self *Label) SelectionBounds() (start int, end int, ok bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.int       // in
@@ -632,6 +768,11 @@ func (self *Label) SelectionBounds() (start int, end int, ok bool) {
 }
 
 // SingleLineMode returns whether the label is in single line mode.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE when the label is in single line mode.
+//
 func (self *Label) SingleLineMode() bool {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gboolean  // in
@@ -655,6 +796,12 @@ func (self *Label) SingleLineMode() bool {
 // The returned text is as it appears on screen. This does not include any
 // embedded underlines indicating mnemonics or Pango markup. (See
 // gtk.Label.GetLabel()).
+//
+// The function returns the following values:
+//
+//    - utf8: text in the label widget. This is the internal string used by the
+//      label, and must not be modified.
+//
 func (self *Label) Text() string {
 	var _arg0 *C.GtkLabel // out
 	var _cret *C.char     // in
@@ -674,6 +821,11 @@ func (self *Label) Text() string {
 // UseMarkup returns whether the label’s text is interpreted as Pango markup.
 //
 // See gtk.Label.SetUseMarkup().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the label’s text will be parsed for markup.
+//
 func (self *Label) UseMarkup() bool {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gboolean  // in
@@ -696,6 +848,12 @@ func (self *Label) UseMarkup() bool {
 // mnemonics.
 //
 // See gtk.Label.SetUseUnderline().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE whether an embedded underline in the label indicates the
+//      mnemonic accelerator keys.
+//
 func (self *Label) UseUnderline() bool {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gboolean  // in
@@ -717,6 +875,11 @@ func (self *Label) UseUnderline() bool {
 // WidthChars retrieves the desired width of label, in characters.
 //
 // See gtk.Label.SetWidthChars().
+//
+// The function returns the following values:
+//
+//    - gint: width of the label in characters.
+//
 func (self *Label) WidthChars() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.int       // in
@@ -736,6 +899,11 @@ func (self *Label) WidthChars() int {
 // Wrap returns whether lines in the label are automatically wrapped.
 //
 // See gtk.Label.SetWrap().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the lines of the label are automatically wrapped.
+//
 func (self *Label) Wrap() bool {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gboolean  // in
@@ -757,6 +925,11 @@ func (self *Label) Wrap() bool {
 // WrapMode returns line wrap mode used by the label.
 //
 // See gtk.Label.SetWrapMode().
+//
+// The function returns the following values:
+//
+//    - wrapMode: TRUE if the lines of the label are automatically wrapped.
+//
 func (self *Label) WrapMode() pango.WrapMode {
 	var _arg0 *C.GtkLabel     // out
 	var _cret C.PangoWrapMode // in
@@ -776,6 +949,11 @@ func (self *Label) WrapMode() pango.WrapMode {
 // XAlign gets the xalign of the label.
 //
 // See the gtk.Label:xalign property.
+//
+// The function returns the following values:
+//
+//    - gfloat: xalign property.
+//
 func (self *Label) XAlign() float32 {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.float     // in
@@ -795,6 +973,11 @@ func (self *Label) XAlign() float32 {
 // YAlign gets the yalign of the label.
 //
 // See the gtk.Label:yalign property.
+//
+// The function returns the following values:
+//
+//    - gfloat: yalign property.
+//
 func (self *Label) YAlign() float32 {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.float     // in
@@ -848,7 +1031,7 @@ func (self *Label) SelectRegion(startOffset, endOffset int) {
 //
 // The function takes the following parameters:
 //
-//    - attrs: pango.AttrList, or NULL.
+//    - attrs (optional): pango.AttrList, or NULL.
 //
 func (self *Label) SetAttributes(attrs *pango.AttrList) {
 	var _arg0 *C.GtkLabel      // out
@@ -890,7 +1073,7 @@ func (self *Label) SetEllipsize(mode pango.EllipsizeMode) {
 //
 // The function takes the following parameters:
 //
-//    - model: GMenuModel.
+//    - model (optional): GMenuModel.
 //
 func (self *Label) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkLabel   // out
@@ -1082,7 +1265,7 @@ func (self *Label) SetMaxWidthChars(nChars int) {
 //
 // The function takes the following parameters:
 //
-//    - widget: target Widget, or NULL to unset.
+//    - widget (optional): target Widget, or NULL to unset.
 //
 func (self *Label) SetMnemonicWidget(widget Widgetter) {
 	var _arg0 *C.GtkLabel  // out
@@ -1341,56 +1524,4 @@ func (self *Label) SetYAlign(yalign float32) {
 	C.gtk_label_set_yalign(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(yalign)
-}
-
-// ConnectActivateCurrentLink gets emitted when the user activates a link in the
-// label.
-//
-// The ::activate-current-link is a keybinding signal (class.SignalAction.html).
-//
-// Applications may also emit the signal with g_signal_emit_by_name() if they
-// need to control activation of URIs programmatically.
-//
-// The default bindings for this signal are all forms of the Enter key.
-func (self *Label) ConnectActivateCurrentLink(f func()) externglib.SignalHandle {
-	return self.Connect("activate-current-link", f)
-}
-
-// ConnectActivateLink gets emitted to activate a URI.
-//
-// Applications may connect to it to override the default behaviour, which is to
-// call gtk_show_uri().
-func (self *Label) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
-	return self.Connect("activate-link", f)
-}
-
-// ConnectCopyClipboard gets emitted to copy the slection to the clipboard.
-//
-// The ::copy-clipboard signal is a keybinding signal (class.SignalAction.html).
-//
-// The default binding for this signal is Ctrl-c.
-func (self *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return self.Connect("copy-clipboard", f)
-}
-
-// ConnectMoveCursor gets emitted when the user initiates a cursor movement.
-//
-// The ::move-cursor signal is a keybinding signal (class.SignalAction.html). If
-// the cursor is not visible in entry, this signal causes the viewport to be
-// moved instead.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control the cursor programmatically.
-//
-// The default bindings for this signal come in two variants, the variant with
-// the Shift modifier extends the selection, the variant without the Shift
-// modifier does not. There are too many key combinations to list them all here.
-//
-// - Arrow keys move by individual characters/lines
-//
-// - Ctrl-arrow key combinations move by words/paragraphs
-//
-// - Home/End keys move to the ends of the buffer.
-func (self *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return self.Connect("move-cursor", f)
 }

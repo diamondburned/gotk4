@@ -70,6 +70,11 @@ func marshalWindowHandler(p uintptr) (interface{}, error) {
 }
 
 // NewWindowHandle creates a new GtkWindowHandle.
+//
+// The function returns the following values:
+//
+//    - windowHandle: new GtkWindowHandle.
+//
 func NewWindowHandle() *WindowHandle {
 	var _cret *C.GtkWidget // in
 
@@ -83,6 +88,11 @@ func NewWindowHandle() *WindowHandle {
 }
 
 // Child gets the child widget of self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of self.
+//
 func (self *WindowHandle) Child() Widgetter {
 	var _arg0 *C.GtkWindowHandle // out
 	var _cret *C.GtkWidget       // in
@@ -115,7 +125,7 @@ func (self *WindowHandle) Child() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (self *WindowHandle) SetChild(child Widgetter) {
 	var _arg0 *C.GtkWindowHandle // out

@@ -83,6 +83,11 @@ func marshalStackSwitcherer(p uintptr) (interface{}, error) {
 }
 
 // NewStackSwitcher: create a new GtkStackSwitcher.
+//
+// The function returns the following values:
+//
+//    - stackSwitcher: new GtkStackSwitcher.
+//
 func NewStackSwitcher() *StackSwitcher {
 	var _cret *C.GtkWidget // in
 
@@ -96,6 +101,11 @@ func NewStackSwitcher() *StackSwitcher {
 }
 
 // Stack retrieves the stack.
+//
+// The function returns the following values:
+//
+//    - stack (optional): stack, or NULL if none has been set explicitly.
+//
 func (switcher *StackSwitcher) Stack() *Stack {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _cret *C.GtkStack         // in
@@ -118,7 +128,7 @@ func (switcher *StackSwitcher) Stack() *Stack {
 //
 // The function takes the following parameters:
 //
-//    - stack: GtkStack.
+//    - stack (optional): GtkStack.
 //
 func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSwitcher // out

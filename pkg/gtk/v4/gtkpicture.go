@@ -106,6 +106,11 @@ func marshalPicturer(p uintptr) (interface{}, error) {
 }
 
 // NewPicture creates a new empty GtkPicture widget.
+//
+// The function returns the following values:
+//
+//    - picture: newly created GtkPicture widget.
+//
 func NewPicture() *Picture {
 	var _cret *C.GtkWidget // in
 
@@ -128,7 +133,11 @@ func NewPicture() *Picture {
 //
 // The function takes the following parameters:
 //
-//    - file: GFile.
+//    - file (optional): GFile.
+//
+// The function returns the following values:
+//
+//    - picture: new GtkPicture.
 //
 func NewPictureForFile(file gio.Filer) *Picture {
 	var _arg1 *C.GFile     // out
@@ -155,7 +164,11 @@ func NewPictureForFile(file gio.Filer) *Picture {
 //
 // The function takes the following parameters:
 //
-//    - filename: filename.
+//    - filename (optional): filename.
+//
+// The function returns the following values:
+//
+//    - picture: new GtkPicture.
 //
 func NewPictureForFilename(filename string) *Picture {
 	var _arg1 *C.char      // out
@@ -183,7 +196,11 @@ func NewPictureForFilename(filename string) *Picture {
 //
 // The function takes the following parameters:
 //
-//    - paintable: GdkPaintable, or NULL.
+//    - paintable (optional): GdkPaintable, or NULL.
+//
+// The function returns the following values:
+//
+//    - picture: new GtkPicture.
 //
 func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 	var _arg1 *C.GdkPaintable // out
@@ -212,7 +229,11 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf: GdkPixbuf, or NULL.
+//    - pixbuf (optional): GdkPixbuf, or NULL.
+//
+// The function returns the following values:
+//
+//    - picture: new GtkPicture.
 //
 func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 	var _arg1 *C.GdkPixbuf // out
@@ -240,7 +261,11 @@ func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: resource path to play back.
+//    - resourcePath (optional): resource path to play back.
+//
+// The function returns the following values:
+//
+//    - picture: new GtkPicture.
 //
 func NewPictureForResource(resourcePath string) *Picture {
 	var _arg1 *C.char      // out
@@ -265,6 +290,11 @@ func NewPictureForResource(resourcePath string) *Picture {
 //
 // The returned string will be NULL if the picture cannot be described
 // textually.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): alternative textual description of self.
+//
 func (self *Picture) AlternativeText() string {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.char       // in
@@ -284,6 +314,11 @@ func (self *Picture) AlternativeText() string {
 }
 
 // CanShrink returns whether the GtkPicture respects its contents size.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the picture can be made smaller than its contents.
+//
 func (self *Picture) CanShrink() bool {
 	var _arg0 *C.GtkPicture // out
 	var _cret C.gboolean    // in
@@ -306,6 +341,11 @@ func (self *Picture) CanShrink() bool {
 //
 // If self is not displaying a file, for example when gtk.Picture.SetPaintable()
 // was used, then NULL is returned.
+//
+// The function returns the following values:
+//
+//    - file (optional): GFile displayed by self.
+//
 func (self *Picture) File() gio.Filer {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.GFile      // in
@@ -336,6 +376,11 @@ func (self *Picture) File() gio.Filer {
 
 // KeepAspectRatio returns whether the GtkPicture preserves its contents aspect
 // ratio.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the self tries to keep the contents' aspect ratio.
+//
 func (self *Picture) KeepAspectRatio() bool {
 	var _arg0 *C.GtkPicture // out
 	var _cret C.gboolean    // in
@@ -355,6 +400,12 @@ func (self *Picture) KeepAspectRatio() bool {
 }
 
 // Paintable gets the GdkPaintable being displayed by the GtkPicture.
+//
+// The function returns the following values:
+//
+//    - paintable (optional): displayed paintable, or NULL if the picture is
+//      empty.
+//
 func (self *Picture) Paintable() gdk.Paintabler {
 	var _arg0 *C.GtkPicture   // out
 	var _cret *C.GdkPaintable // in
@@ -394,7 +445,7 @@ func (self *Picture) Paintable() gdk.Paintabler {
 //
 // The function takes the following parameters:
 //
-//    - alternativeText: textual description of the contents.
+//    - alternativeText (optional): textual description of the contents.
 //
 func (self *Picture) SetAlternativeText(alternativeText string) {
 	var _arg0 *C.GtkPicture // out
@@ -446,7 +497,7 @@ func (self *Picture) SetCanShrink(canShrink bool) {
 //
 // The function takes the following parameters:
 //
-//    - file: GFile or NULL.
+//    - file (optional): GFile or NULL.
 //
 func (self *Picture) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkPicture // out
@@ -468,7 +519,7 @@ func (self *Picture) SetFile(file gio.Filer) {
 //
 // The function takes the following parameters:
 //
-//    - filename to play.
+//    - filename (optional) to play.
 //
 func (self *Picture) SetFilename(filename string) {
 	var _arg0 *C.GtkPicture // out
@@ -520,7 +571,7 @@ func (self *Picture) SetKeepAspectRatio(keepAspectRatio bool) {
 //
 // The function takes the following parameters:
 //
-//    - paintable: GdkPaintable or NULL.
+//    - paintable (optional): GdkPaintable or NULL.
 //
 func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkPicture   // out
@@ -544,7 +595,7 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf: GdkPixbuf or NULL.
+//    - pixbuf (optional): GdkPixbuf or NULL.
 //
 func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkPicture // out
@@ -567,7 +618,7 @@ func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: resource to set.
+//    - resourcePath (optional): resource to set.
 //
 func (self *Picture) SetResource(resourcePath string) {
 	var _arg0 *C.GtkPicture // out

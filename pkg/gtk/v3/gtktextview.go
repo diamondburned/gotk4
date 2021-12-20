@@ -159,13 +159,42 @@ type TextViewOverrider interface {
 	Backspace()
 	CopyClipboard()
 	CutClipboard()
+	// The function takes the following parameters:
+	//
+	//    - typ
+	//    - count
+	//
 	DeleteFromCursor(typ DeleteType, count int)
+	// The function takes the following parameters:
+	//
+	//    - layer
+	//    - cr
+	//
 	DrawLayer(layer TextViewLayer, cr *cairo.Context)
+	// The function takes the following parameters:
+	//
+	//    - granularity
+	//    - location
+	//    - start
+	//    - end
+	//
+	// The function returns the following values:
+	//
 	ExtendSelection(granularity TextExtendSelection, location, start, end *TextIter) bool
+	// The function takes the following parameters:
+	//
 	InsertAtCursor(str string)
 	InsertEmoji()
+	// The function takes the following parameters:
+	//
+	//    - step
+	//    - count
+	//    - extendSelection
+	//
 	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
+	// The function takes the following parameters:
+	//
 	PopulatePopup(popup Widgetter)
 	SetAnchor()
 	ToggleOverwrite()
@@ -234,11 +263,177 @@ func marshalTextViewer(p uintptr) (interface{}, error) {
 	return wrapTextView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectBackspace signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user asks for it.
+//
+// The default bindings for this signal are Backspace and Shift-Backspace.
+func (textView *TextView) ConnectBackspace(f func()) externglib.SignalHandle {
+	return textView.Connect("backspace", f)
+}
+
+// ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to copy the selection to the clipboard.
+//
+// The default bindings for this signal are Ctrl-c and Ctrl-Insert.
+func (textView *TextView) ConnectCopyClipboard(f func()) externglib.SignalHandle {
+	return textView.Connect("copy-clipboard", f)
+}
+
+// ConnectCutClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to cut the selection to the clipboard.
+//
+// The default bindings for this signal are Ctrl-x and Shift-Delete.
+func (textView *TextView) ConnectCutClipboard(f func()) externglib.SignalHandle {
+	return textView.Connect("cut-clipboard", f)
+}
+
+// ConnectDeleteFromCursor signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted when the user initiates a text deletion.
+//
+// If the type is GTK_DELETE_CHARS, GTK+ deletes the selection if there is one,
+// otherwise it deletes the requested number of characters.
+//
+// The default bindings for this signal are Delete for deleting a character,
+// Ctrl-Delete for deleting a word and Ctrl-Backspace for deleting a word
+// backwords.
+func (textView *TextView) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) externglib.SignalHandle {
+	return textView.Connect("delete-from-cursor", f)
+}
+
+// ConnectExtendSelection signal is emitted when the selection needs to be
+// extended at location.
+func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end *TextIter) bool) externglib.SignalHandle {
+	return textView.Connect("extend-selection", f)
+}
+
+// ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates the insertion of a fixed string at the
+// cursor.
+//
+// This signal has no default bindings.
+func (textView *TextView) ConnectInsertAtCursor(f func(str string)) externglib.SignalHandle {
+	return textView.Connect("insert-at-cursor", f)
+}
+
+// ConnectInsertEmoji signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to present the Emoji chooser for the text_view.
+//
+// The default bindings for this signal are Ctrl-. and Ctrl-;.
+func (textView *TextView) ConnectInsertEmoji(f func()) externglib.SignalHandle {
+	return textView.Connect("insert-emoji", f)
+}
+
+// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a cursor movement. If the cursor is not
+// visible in text_view, this signal causes the viewport to be moved instead.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the Shift modifier extends the selection, the variant without the Shift
+// modifer does not. There are too many key combinations to list them all here.
+//
+// - Arrow keys move by individual characters/lines
+//
+// - Ctrl-arrow key combinations move by words/paragraphs
+//
+// - Home/End keys move to the ends of the buffer
+//
+// - PageUp/PageDown keys move vertically by pages
+//
+// - Ctrl-PageUp/PageDown keys move horizontally by pages.
+func (textView *TextView) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
+	return textView.Connect("move-cursor", f)
+}
+
+// ConnectMoveViewport signal is a [keybinding signal][GtkBindingSignal] which
+// can be bound to key combinations to allow the user to move the viewport, i.e.
+// change what part of the text view is visible in a containing scrolled window.
+//
+// There are no default bindings for this signal.
+func (textView *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)) externglib.SignalHandle {
+	return textView.Connect("move-viewport", f)
+}
+
+// ConnectPasteClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to paste the contents of the clipboard into the text view.
+//
+// The default bindings for this signal are Ctrl-v and Shift-Insert.
+func (textView *TextView) ConnectPasteClipboard(f func()) externglib.SignalHandle {
+	return textView.Connect("paste-clipboard", f)
+}
+
+// ConnectPopulatePopup signal gets emitted before showing the context menu of
+// the text view.
+//
+// If you need to add items to the context menu, connect to this signal and
+// append your items to the popup, which will be a Menu in this case.
+//
+// If TextView:populate-all is TRUE, this signal will also be emitted to
+// populate touch popups. In this case, popup will be a different container,
+// e.g. a Toolbar.
+//
+// The signal handler should not make assumptions about the type of widget, but
+// check whether popup is a Menu or Toolbar or another kind of container.
+func (textView *TextView) ConnectPopulatePopup(f func(popup Widgetter)) externglib.SignalHandle {
+	return textView.Connect("populate-popup", f)
+}
+
+// ConnectPreeditChanged: if an input method is used, the typed text will not
+// immediately be committed to the buffer. So if you are interested in the text,
+// connect to this signal.
+//
+// This signal is only emitted if the text at the given position is actually
+// editable.
+func (textView *TextView) ConnectPreeditChanged(f func(preedit string)) externglib.SignalHandle {
+	return textView.Connect("preedit-changed", f)
+}
+
+// ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted to select or unselect the complete contents of the text view.
+//
+// The default bindings for this signal are Ctrl-a and Ctrl-/ for selecting and
+// Shift-Ctrl-a and Ctrl-\ for unselecting.
+func (textView *TextView) ConnectSelectAll(f func(sel bool)) externglib.SignalHandle {
+	return textView.Connect("select-all", f)
+}
+
+// ConnectSetAnchor signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user initiates setting the "anchor" mark. The "anchor" mark
+// gets placed at the same position as the "insert" mark.
+//
+// This signal has no default bindings.
+func (textView *TextView) ConnectSetAnchor(f func()) externglib.SignalHandle {
+	return textView.Connect("set-anchor", f)
+}
+
+// ConnectToggleCursorVisible signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted to toggle the TextView:cursor-visible property.
+//
+// The default binding for this signal is F7.
+func (textView *TextView) ConnectToggleCursorVisible(f func()) externglib.SignalHandle {
+	return textView.Connect("toggle-cursor-visible", f)
+}
+
+// ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted to toggle the overwrite mode of the text view.
+//
+// The default bindings for this signal is Insert.
+func (textView *TextView) ConnectToggleOverwrite(f func()) externglib.SignalHandle {
+	return textView.Connect("toggle-overwrite", f)
+}
+
 // NewTextView creates a new TextView. If you don’t call
 // gtk_text_view_set_buffer() before using the text view, an empty default
 // buffer will be created for you. Get the buffer with
 // gtk_text_view_get_buffer(). If you want to specify your own buffer, consider
 // gtk_text_view_new_with_buffer().
+//
+// The function returns the following values:
+//
+//    - textView: new TextView.
+//
 func NewTextView() *TextView {
 	var _cret *C.GtkWidget // in
 
@@ -260,6 +455,10 @@ func NewTextView() *TextView {
 // The function takes the following parameters:
 //
 //    - buffer: TextBuffer.
+//
+// The function returns the following values:
+//
+//    - textView: new TextView.
 //
 func NewTextViewWithBuffer(buffer *TextBuffer) *TextView {
 	var _arg1 *C.GtkTextBuffer // out
@@ -349,6 +548,10 @@ func (textView *TextView) AddChildInWindow(child Widgetter, whichWindow TextWind
 //
 //    - iter: TextIter.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if iter was moved and is not on the end iterator.
+//
 func (textView *TextView) BackwardDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -382,6 +585,10 @@ func (textView *TextView) BackwardDisplayLine(iter *TextIter) bool {
 //
 //    - iter: TextIter.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if iter was moved and is not on the end iterator.
+//
 func (textView *TextView) BackwardDisplayLineStart(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -414,6 +621,11 @@ func (textView *TextView) BackwardDisplayLineStart(iter *TextIter) bool {
 //    - win except GTK_TEXT_WINDOW_PRIVATE.
 //    - bufferX: buffer x coordinate.
 //    - bufferY: buffer y coordinate.
+//
+// The function returns the following values:
+//
+//    - windowX (optional): window x coordinate return location or NULL.
+//    - windowY (optional): window y coordinate return location or NULL.
 //
 func (textView *TextView) BufferToWindowCoords(win TextWindowType, bufferX, bufferY int) (windowX int, windowY int) {
 	var _arg0 *C.GtkTextView      // out
@@ -455,6 +667,10 @@ func (textView *TextView) BufferToWindowCoords(win TextWindowType, bufferX, buff
 //
 //    - iter: TextIter.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if iter was moved and is not on the end iterator.
+//
 func (textView *TextView) ForwardDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -488,6 +704,10 @@ func (textView *TextView) ForwardDisplayLine(iter *TextIter) bool {
 //
 //    - iter: TextIter.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if iter was moved and is not on the end iterator.
+//
 func (textView *TextView) ForwardDisplayLineEnd(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -511,6 +731,12 @@ func (textView *TextView) ForwardDisplayLineEnd(iter *TextIter) bool {
 
 // AcceptsTab returns whether pressing the Tab key inserts a tab characters.
 // gtk_text_view_set_accepts_tab().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if pressing the Tab key inserts a tab character, FALSE if
+//      pressing the Tab key moves the keyboard focus.
+//
 func (textView *TextView) AcceptsTab() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
@@ -536,6 +762,10 @@ func (textView *TextView) AcceptsTab() bool {
 //
 //    - typ: window to return size from.
 //
+// The function returns the following values:
+//
+//    - gint: width of window.
+//
 func (textView *TextView) BorderWindowSize(typ TextWindowType) int {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
@@ -556,6 +786,11 @@ func (textView *TextView) BorderWindowSize(typ TextWindowType) int {
 }
 
 // BottomMargin gets the bottom margin for text in the text_view.
+//
+// The function returns the following values:
+//
+//    - gint: bottom margin in pixels.
+//
 func (textView *TextView) BottomMargin() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gint         // in
@@ -575,6 +810,11 @@ func (textView *TextView) BottomMargin() int {
 // Buffer returns the TextBuffer being displayed by this text view. The
 // reference count on the buffer is not incremented; the caller of this function
 // won’t own a new reference.
+//
+// The function returns the following values:
+//
+//    - textBuffer: TextBuffer.
+//
 func (textView *TextView) Buffer() *TextBuffer {
 	var _arg0 *C.GtkTextView   // out
 	var _cret *C.GtkTextBuffer // in
@@ -612,7 +852,14 @@ func (textView *TextView) Buffer() *TextBuffer {
 //
 // The function takes the following parameters:
 //
-//    - iter: TextIter.
+//    - iter (optional): TextIter.
+//
+// The function returns the following values:
+//
+//    - strong (optional): location to store the strong cursor position (may be
+//      NULL).
+//    - weak (optional): location to store the weak cursor position (may be
+//      NULL).
 //
 func (textView *TextView) CursorLocations(iter *TextIter) (strong *gdk.Rectangle, weak *gdk.Rectangle) {
 	var _arg0 *C.GtkTextView // out
@@ -639,6 +886,11 @@ func (textView *TextView) CursorLocations(iter *TextIter) (strong *gdk.Rectangle
 }
 
 // CursorVisible: find out whether the cursor should be displayed.
+//
+// The function returns the following values:
+//
+//    - ok: whether the insertion mark is visible.
+//
 func (textView *TextView) CursorVisible() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
@@ -664,6 +916,11 @@ func (textView *TextView) CursorVisible() bool {
 //
 // The return value is a copy owned by the caller of this function, and should
 // be freed with gtk_text_attributes_unref().
+//
+// The function returns the following values:
+//
+//    - textAttributes: new TextAttributes.
+//
 func (textView *TextView) DefaultAttributes() *TextAttributes {
 	var _arg0 *C.GtkTextView       // out
 	var _cret *C.GtkTextAttributes // in
@@ -688,6 +945,11 @@ func (textView *TextView) DefaultAttributes() *TextAttributes {
 
 // Editable returns the default editability of the TextView. Tags in the buffer
 // may override this setting for some ranges of text.
+//
+// The function returns the following values:
+//
+//    - ok: whether text is editable by default.
+//
 func (textView *TextView) Editable() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
@@ -709,6 +971,11 @@ func (textView *TextView) Editable() bool {
 // HAdjustment gets the horizontal-scrolling Adjustment.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment: pointer to the horizontal Adjustment.
+//
 func (textView *TextView) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkTextView   // out
 	var _cret *C.GtkAdjustment // in
@@ -727,6 +994,11 @@ func (textView *TextView) HAdjustment() *Adjustment {
 
 // Indent gets the default indentation of paragraphs in text_view. Tags in the
 // view’s buffer may override the default. The indentation may be negative.
+//
+// The function returns the following values:
+//
+//    - gint: number of pixels of indentation.
+//
 func (textView *TextView) Indent() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gint         // in
@@ -744,6 +1016,9 @@ func (textView *TextView) Indent() int {
 }
 
 // InputHints gets the value of the TextView:input-hints property.
+//
+// The function returns the following values:
+//
 func (textView *TextView) InputHints() InputHints {
 	var _arg0 *C.GtkTextView  // out
 	var _cret C.GtkInputHints // in
@@ -761,6 +1036,9 @@ func (textView *TextView) InputHints() InputHints {
 }
 
 // InputPurpose gets the value of the TextView:input-purpose property.
+//
+// The function returns the following values:
+//
 func (textView *TextView) InputPurpose() InputPurpose {
 	var _arg0 *C.GtkTextView    // out
 	var _cret C.GtkInputPurpose // in
@@ -787,6 +1065,11 @@ func (textView *TextView) InputPurpose() InputPurpose {
 //
 //    - x position, in buffer coordinates.
 //    - y position, in buffer coordinates.
+//
+// The function returns the following values:
+//
+//    - iter: TextIter.
+//    - ok: TRUE if the position is over text.
 //
 func (textView *TextView) IterAtLocation(x, y int) (*TextIter, bool) {
 	var _arg0 *C.GtkTextView // out
@@ -829,6 +1112,15 @@ func (textView *TextView) IterAtLocation(x, y int) (*TextIter, bool) {
 //    - x position, in buffer coordinates.
 //    - y position, in buffer coordinates.
 //
+// The function returns the following values:
+//
+//    - iter: TextIter.
+//    - trailing (optional): if non-NULL, location to store an integer indicating
+//      where in the grapheme the user clicked. It will either be zero, or the
+//      number of characters in the grapheme. 0 represents the trailing edge of
+//      the grapheme.
+//    - ok: TRUE if the position is over text.
+//
 func (textView *TextView) IterAtPosition(x, y int) (*TextIter, int, bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkTextIter  // in
@@ -868,6 +1160,10 @@ func (textView *TextView) IterAtPosition(x, y int) (*TextIter, int, bool) {
 //
 //    - iter: TextIter.
 //
+// The function returns the following values:
+//
+//    - location bounds of the character at iter.
+//
 func (textView *TextView) IterLocation(iter *TextIter) *gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -889,6 +1185,11 @@ func (textView *TextView) IterLocation(iter *TextIter) *gdk.Rectangle {
 
 // Justification gets the default justification of paragraphs in text_view. Tags
 // in the buffer may override the default.
+//
+// The function returns the following values:
+//
+//    - justification: default justification.
+//
 func (textView *TextView) Justification() Justification {
 	var _arg0 *C.GtkTextView     // out
 	var _cret C.GtkJustification // in
@@ -907,6 +1208,11 @@ func (textView *TextView) Justification() Justification {
 
 // LeftMargin gets the default left margin size of paragraphs in the text_view.
 // Tags in the buffer may override the default.
+//
+// The function returns the following values:
+//
+//    - gint: left margin in pixels.
+//
 func (textView *TextView) LeftMargin() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gint         // in
@@ -931,6 +1237,11 @@ func (textView *TextView) LeftMargin() int {
 // The function takes the following parameters:
 //
 //    - y coordinate.
+//
+// The function returns the following values:
+//
+//    - targetIter: TextIter.
+//    - lineTop: return location for top coordinate of the line.
 //
 func (textView *TextView) LineAtY(y int) (*TextIter, int) {
 	var _arg0 *C.GtkTextView // out
@@ -962,6 +1273,11 @@ func (textView *TextView) LineAtY(y int) (*TextIter, int) {
 //
 //    - iter: TextIter.
 //
+// The function returns the following values:
+//
+//    - y: return location for a y coordinate.
+//    - height: return location for a height.
+//
 func (textView *TextView) LineYrange(iter *TextIter) (y int, height int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -985,6 +1301,11 @@ func (textView *TextView) LineYrange(iter *TextIter) (y int, height int) {
 }
 
 // Monospace gets the value of the TextView:monospace property.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if monospace fonts are desired.
+//
 func (textView *TextView) Monospace() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
@@ -1004,6 +1325,11 @@ func (textView *TextView) Monospace() bool {
 }
 
 // Overwrite returns whether the TextView is in overwrite mode or not.
+//
+// The function returns the following values:
+//
+//    - ok: whether text_view is in overwrite mode or not.
+//
 func (textView *TextView) Overwrite() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
@@ -1025,6 +1351,11 @@ func (textView *TextView) Overwrite() bool {
 // PixelsAboveLines gets the default number of pixels to put above paragraphs.
 // Adding this function with gtk_text_view_get_pixels_below_lines() is equal to
 // the line space between each paragraph.
+//
+// The function returns the following values:
+//
+//    - gint: default number of pixels above paragraphs.
+//
 func (textView *TextView) PixelsAboveLines() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gint         // in
@@ -1046,6 +1377,11 @@ func (textView *TextView) PixelsAboveLines() int {
 //
 // The line space is the sum of the value returned by this function and the
 // value returned by gtk_text_view_get_pixels_above_lines().
+//
+// The function returns the following values:
+//
+//    - gint: default number of blank pixels below paragraphs.
+//
 func (textView *TextView) PixelsBelowLines() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gint         // in
@@ -1064,6 +1400,11 @@ func (textView *TextView) PixelsBelowLines() int {
 
 // PixelsInsideWrap gets the value set by
 // gtk_text_view_set_pixels_inside_wrap().
+//
+// The function returns the following values:
+//
+//    - gint: default number of pixels of blank space between wrapped lines.
+//
 func (textView *TextView) PixelsInsideWrap() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gint         // in
@@ -1082,6 +1423,11 @@ func (textView *TextView) PixelsInsideWrap() int {
 
 // RightMargin gets the default right margin for text in text_view. Tags in the
 // buffer may override the default.
+//
+// The function returns the following values:
+//
+//    - gint: right margin in pixels.
+//
 func (textView *TextView) RightMargin() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gint         // in
@@ -1101,6 +1447,12 @@ func (textView *TextView) RightMargin() int {
 // Tabs gets the default tabs for text_view. Tags in the buffer may override the
 // defaults. The returned array will be NULL if “standard” (8-space) tabs are
 // used. Free the return value with pango_tab_array_free().
+//
+// The function returns the following values:
+//
+//    - tabArray (optional): copy of default tab array, or NULL if “standard"
+//      tabs are used; must be freed with pango_tab_array_free().
+//
 func (textView *TextView) Tabs() *pango.TabArray {
 	var _arg0 *C.GtkTextView   // out
 	var _cret *C.PangoTabArray // in
@@ -1126,6 +1478,11 @@ func (textView *TextView) Tabs() *pango.TabArray {
 }
 
 // TopMargin gets the top margin for text in the text_view.
+//
+// The function returns the following values:
+//
+//    - gint: top margin in pixels.
+//
 func (textView *TextView) TopMargin() int {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gint         // in
@@ -1145,6 +1502,11 @@ func (textView *TextView) TopMargin() int {
 // VAdjustment gets the vertical-scrolling Adjustment.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment: pointer to the vertical Adjustment.
+//
 func (textView *TextView) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkTextView   // out
 	var _cret *C.GtkAdjustment // in
@@ -1164,6 +1526,11 @@ func (textView *TextView) VAdjustment() *Adjustment {
 // VisibleRect fills visible_rect with the currently-visible region of the
 // buffer, in buffer coordinates. Convert to window coordinates with
 // gtk_text_view_buffer_to_window_coords().
+//
+// The function returns the following values:
+//
+//    - visibleRect: rectangle to fill.
+//
 func (textView *TextView) VisibleRect() *gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GdkRectangle // in
@@ -1189,6 +1556,10 @@ func (textView *TextView) VisibleRect() *gdk.Rectangle {
 // The function takes the following parameters:
 //
 //    - win: window to get.
+//
+// The function returns the following values:
+//
+//    - window (optional) or NULL.
 //
 func (textView *TextView) Window(win TextWindowType) gdk.Windower {
 	var _arg0 *C.GtkTextView      // out
@@ -1230,6 +1601,10 @@ func (textView *TextView) Window(win TextWindowType) gdk.Windower {
 //
 //    - window type.
 //
+// The function returns the following values:
+//
+//    - textWindowType: window type.
+//
 func (textView *TextView) WindowType(window gdk.Windower) TextWindowType {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 *C.GdkWindow        // out
@@ -1250,6 +1625,11 @@ func (textView *TextView) WindowType(window gdk.Windower) TextWindowType {
 }
 
 // WrapMode gets the line wrapping for the view.
+//
+// The function returns the following values:
+//
+//    - wrapMode: line wrap setting.
+//
 func (textView *TextView) WrapMode() WrapMode {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.GtkWrapMode  // in
@@ -1298,6 +1678,10 @@ func (textView *TextView) WrapMode() WrapMode {
 // The function takes the following parameters:
 //
 //    - event: key event.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the input method handled the key event.
 //
 func (textView *TextView) IMContextFilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkTextView // out
@@ -1354,6 +1738,10 @@ func (textView *TextView) MoveChild(child Widgetter, xpos, ypos int) {
 //
 //    - mark: TextMark.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the mark moved (wasn’t already onscreen).
+//
 func (textView *TextView) MoveMarkOnscreen(mark *TextMark) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
@@ -1388,8 +1776,12 @@ func (textView *TextView) MoveMarkOnscreen(mark *TextMark) bool {
 // The function takes the following parameters:
 //
 //    - iter: TextIter.
-//    - count: number of characters to move (negative moves left, positive
-//    moves right).
+//    - count: number of characters to move (negative moves left, positive moves
+//      right).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not on the end iterator.
 //
 func (textView *TextView) MoveVisually(iter *TextIter, count int) bool {
 	var _arg0 *C.GtkTextView // out
@@ -1417,6 +1809,11 @@ func (textView *TextView) MoveVisually(iter *TextIter, count int) bool {
 
 // PlaceCursorOnscreen moves the cursor to the currently visible region of the
 // buffer, it it isn’t there already.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the cursor had to be moved.
+//
 func (textView *TextView) PlaceCursorOnscreen() bool {
 	var _arg0 *C.GtkTextView // out
 	var _cret C.gboolean     // in
@@ -1499,10 +1896,14 @@ func (textView *TextView) ScrollMarkOnscreen(mark *TextMark) {
 //
 //    - iter: TextIter.
 //    - withinMargin: margin as a [0.0,0.5) fraction of screen size.
-//    - useAlign: whether to use alignment arguments (if FALSE, just get the
-//    mark onscreen).
+//    - useAlign: whether to use alignment arguments (if FALSE, just get the mark
+//      onscreen).
 //    - xalign: horizontal alignment of mark within visible area.
 //    - yalign: vertical alignment of mark within visible area.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if scrolling occurred.
 //
 func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign, yalign float64) bool {
 	var _arg0 *C.GtkTextView // out
@@ -1550,8 +1951,8 @@ func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, use
 //
 //    - mark: TextMark.
 //    - withinMargin: margin as a [0.0,0.5) fraction of screen size.
-//    - useAlign: whether to use alignment arguments (if FALSE, just get the
-//    mark onscreen).
+//    - useAlign: whether to use alignment arguments (if FALSE, just get the mark
+//      onscreen).
 //    - xalign: horizontal alignment of mark within visible area.
 //    - yalign: vertical alignment of mark within visible area.
 //
@@ -1588,7 +1989,7 @@ func (textView *TextView) ScrollToMark(mark *TextMark, withinMargin float64, use
 // The function takes the following parameters:
 //
 //    - acceptsTab: TRUE if pressing the Tab key should insert a tab character,
-//    FALSE, if pressing the Tab key should move the keyboard focus.
+//      FALSE, if pressing the Tab key should move the keyboard focus.
 //
 func (textView *TextView) SetAcceptsTab(acceptsTab bool) {
 	var _arg0 *C.GtkTextView // out
@@ -1661,7 +2062,7 @@ func (textView *TextView) SetBottomMargin(bottomMargin int) {
 //
 // The function takes the following parameters:
 //
-//    - buffer: TextBuffer.
+//    - buffer (optional): TextBuffer.
 //
 func (textView *TextView) SetBuffer(buffer *TextBuffer) {
 	var _arg0 *C.GtkTextView   // out
@@ -2010,6 +2411,10 @@ func (textView *TextView) SetWrapMode(wrapMode WrapMode) {
 //
 //    - iter: TextIter.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if iter begins a wrapped line.
+//
 func (textView *TextView) StartsDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -2043,6 +2448,11 @@ func (textView *TextView) StartsDisplayLine(iter *TextIter) bool {
 //    - windowX: window x coordinate.
 //    - windowY: window y coordinate.
 //
+// The function returns the following values:
+//
+//    - bufferX (optional): buffer x coordinate return location or NULL.
+//    - bufferY (optional): buffer y coordinate return location or NULL.
+//
 func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX, windowY int) (bufferX int, bufferY int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
@@ -2069,165 +2479,4 @@ func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX, wind
 	_bufferY = int(_arg5)
 
 	return _bufferX, _bufferY
-}
-
-// ConnectBackspace signal is a [keybinding signal][GtkBindingSignal] which gets
-// emitted when the user asks for it.
-//
-// The default bindings for this signal are Backspace and Shift-Backspace.
-func (textView *TextView) ConnectBackspace(f func()) externglib.SignalHandle {
-	return textView.Connect("backspace", f)
-}
-
-// ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to copy the selection to the clipboard.
-//
-// The default bindings for this signal are Ctrl-c and Ctrl-Insert.
-func (textView *TextView) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return textView.Connect("copy-clipboard", f)
-}
-
-// ConnectCutClipboard signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to cut the selection to the clipboard.
-//
-// The default bindings for this signal are Ctrl-x and Shift-Delete.
-func (textView *TextView) ConnectCutClipboard(f func()) externglib.SignalHandle {
-	return textView.Connect("cut-clipboard", f)
-}
-
-// ConnectDeleteFromCursor signal is a [keybinding signal][GtkBindingSignal]
-// which gets emitted when the user initiates a text deletion.
-//
-// If the type is GTK_DELETE_CHARS, GTK+ deletes the selection if there is one,
-// otherwise it deletes the requested number of characters.
-//
-// The default bindings for this signal are Delete for deleting a character,
-// Ctrl-Delete for deleting a word and Ctrl-Backspace for deleting a word
-// backwords.
-func (textView *TextView) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) externglib.SignalHandle {
-	return textView.Connect("delete-from-cursor", f)
-}
-
-// ConnectExtendSelection signal is emitted when the selection needs to be
-// extended at location.
-func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end *TextIter) bool) externglib.SignalHandle {
-	return textView.Connect("extend-selection", f)
-}
-
-// ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted when the user initiates the insertion of a fixed string at the
-// cursor.
-//
-// This signal has no default bindings.
-func (textView *TextView) ConnectInsertAtCursor(f func(str string)) externglib.SignalHandle {
-	return textView.Connect("insert-at-cursor", f)
-}
-
-// ConnectInsertEmoji signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to present the Emoji chooser for the text_view.
-//
-// The default bindings for this signal are Ctrl-. and Ctrl-;.
-func (textView *TextView) ConnectInsertEmoji(f func()) externglib.SignalHandle {
-	return textView.Connect("insert-emoji", f)
-}
-
-// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted when the user initiates a cursor movement. If the cursor is not
-// visible in text_view, this signal causes the viewport to be moved instead.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control the cursor programmatically.
-//
-// The default bindings for this signal come in two variants, the variant with
-// the Shift modifier extends the selection, the variant without the Shift
-// modifer does not. There are too many key combinations to list them all here.
-//
-// - Arrow keys move by individual characters/lines
-//
-// - Ctrl-arrow key combinations move by words/paragraphs
-//
-// - Home/End keys move to the ends of the buffer
-//
-// - PageUp/PageDown keys move vertically by pages
-//
-// - Ctrl-PageUp/PageDown keys move horizontally by pages.
-func (textView *TextView) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return textView.Connect("move-cursor", f)
-}
-
-// ConnectMoveViewport signal is a [keybinding signal][GtkBindingSignal] which
-// can be bound to key combinations to allow the user to move the viewport, i.e.
-// change what part of the text view is visible in a containing scrolled window.
-//
-// There are no default bindings for this signal.
-func (textView *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)) externglib.SignalHandle {
-	return textView.Connect("move-viewport", f)
-}
-
-// ConnectPasteClipboard signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to paste the contents of the clipboard into the text view.
-//
-// The default bindings for this signal are Ctrl-v and Shift-Insert.
-func (textView *TextView) ConnectPasteClipboard(f func()) externglib.SignalHandle {
-	return textView.Connect("paste-clipboard", f)
-}
-
-// ConnectPopulatePopup signal gets emitted before showing the context menu of
-// the text view.
-//
-// If you need to add items to the context menu, connect to this signal and
-// append your items to the popup, which will be a Menu in this case.
-//
-// If TextView:populate-all is TRUE, this signal will also be emitted to
-// populate touch popups. In this case, popup will be a different container,
-// e.g. a Toolbar.
-//
-// The signal handler should not make assumptions about the type of widget, but
-// check whether popup is a Menu or Toolbar or another kind of container.
-func (textView *TextView) ConnectPopulatePopup(f func(popup Widgetter)) externglib.SignalHandle {
-	return textView.Connect("populate-popup", f)
-}
-
-// ConnectPreeditChanged: if an input method is used, the typed text will not
-// immediately be committed to the buffer. So if you are interested in the text,
-// connect to this signal.
-//
-// This signal is only emitted if the text at the given position is actually
-// editable.
-func (textView *TextView) ConnectPreeditChanged(f func(preedit string)) externglib.SignalHandle {
-	return textView.Connect("preedit-changed", f)
-}
-
-// ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
-// emitted to select or unselect the complete contents of the text view.
-//
-// The default bindings for this signal are Ctrl-a and Ctrl-/ for selecting and
-// Shift-Ctrl-a and Ctrl-\ for unselecting.
-func (textView *TextView) ConnectSelectAll(f func(sel bool)) externglib.SignalHandle {
-	return textView.Connect("select-all", f)
-}
-
-// ConnectSetAnchor signal is a [keybinding signal][GtkBindingSignal] which gets
-// emitted when the user initiates setting the "anchor" mark. The "anchor" mark
-// gets placed at the same position as the "insert" mark.
-//
-// This signal has no default bindings.
-func (textView *TextView) ConnectSetAnchor(f func()) externglib.SignalHandle {
-	return textView.Connect("set-anchor", f)
-}
-
-// ConnectToggleCursorVisible signal is a [keybinding signal][GtkBindingSignal]
-// which gets emitted to toggle the TextView:cursor-visible property.
-//
-// The default binding for this signal is F7.
-func (textView *TextView) ConnectToggleCursorVisible(f func()) externglib.SignalHandle {
-	return textView.Connect("toggle-cursor-visible", f)
-}
-
-// ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
-// which gets emitted to toggle the overwrite mode of the text view.
-//
-// The default bindings for this signal is Insert.
-func (textView *TextView) ConnectToggleOverwrite(f func()) externglib.SignalHandle {
-	return textView.Connect("toggle-overwrite", f)
 }

@@ -58,6 +58,11 @@ func marshalGridLayouter(p uintptr) (interface{}, error) {
 }
 
 // NewGridLayout creates a new GtkGridLayout.
+//
+// The function returns the following values:
+//
+//    - gridLayout: newly created GtkGridLayout.
+//
 func NewGridLayout() *GridLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -71,6 +76,11 @@ func NewGridLayout() *GridLayout {
 }
 
 // BaselineRow retrieves the row set with gtk_grid_layout_set_baseline_row().
+//
+// The function returns the following values:
+//
+//    - gint: global baseline row.
+//
 func (grid *GridLayout) BaselineRow() int {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.int            // in
@@ -89,6 +99,11 @@ func (grid *GridLayout) BaselineRow() int {
 
 // ColumnHomogeneous checks whether all columns of grid should have the same
 // width.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the columns are homogeneous, and FALSE otherwise.
+//
 func (grid *GridLayout) ColumnHomogeneous() bool {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.gboolean       // in
@@ -109,6 +124,11 @@ func (grid *GridLayout) ColumnHomogeneous() bool {
 
 // ColumnSpacing retrieves the spacing set with
 // gtk_grid_layout_set_column_spacing().
+//
+// The function returns the following values:
+//
+//    - guint: spacing between consecutive columns.
+//
 func (grid *GridLayout) ColumnSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.guint          // in
@@ -134,6 +154,10 @@ func (grid *GridLayout) ColumnSpacing() uint {
 //
 //    - row index.
 //
+// The function returns the following values:
+//
+//    - baselinePosition: baseline position of row.
+//
 func (grid *GridLayout) RowBaselinePosition(row int) BaselinePosition {
 	var _arg0 *C.GtkGridLayout      // out
 	var _arg1 C.int                 // out
@@ -154,6 +178,11 @@ func (grid *GridLayout) RowBaselinePosition(row int) BaselinePosition {
 }
 
 // RowHomogeneous checks whether all rows of grid should have the same height.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the rows are homogeneous, and FALSE otherwise.
+//
 func (grid *GridLayout) RowHomogeneous() bool {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.gboolean       // in
@@ -173,6 +202,11 @@ func (grid *GridLayout) RowHomogeneous() bool {
 }
 
 // RowSpacing retrieves the spacing set with gtk_grid_layout_set_row_spacing().
+//
+// The function returns the following values:
+//
+//    - guint: spacing between consecutive rows.
+//
 func (grid *GridLayout) RowSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.guint          // in
@@ -334,6 +368,11 @@ func marshalGridLayoutChilder(p uintptr) (interface{}, error) {
 }
 
 // Column retrieves the column number to which child attaches its left side.
+//
+// The function returns the following values:
+//
+//    - gint: column number.
+//
 func (child *GridLayoutChild) Column() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
@@ -351,6 +390,11 @@ func (child *GridLayoutChild) Column() int {
 }
 
 // ColumnSpan retrieves the number of columns that child spans to.
+//
+// The function returns the following values:
+//
+//    - gint: number of columns.
+//
 func (child *GridLayoutChild) ColumnSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
@@ -368,6 +412,11 @@ func (child *GridLayoutChild) ColumnSpan() int {
 }
 
 // Row retrieves the row number to which child attaches its top side.
+//
+// The function returns the following values:
+//
+//    - gint: row number.
+//
 func (child *GridLayoutChild) Row() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
@@ -385,6 +434,11 @@ func (child *GridLayoutChild) Row() int {
 }
 
 // RowSpan retrieves the number of rows that child spans to.
+//
+// The function returns the following values:
+//
+//    - gint: number of row.
+//
 func (child *GridLayoutChild) RowSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in

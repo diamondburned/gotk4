@@ -78,7 +78,21 @@ func marshalMediaFiler(p uintptr) (interface{}, error) {
 	return wrapMediaFile(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (self *MediaFile) baseMediaFile() *MediaFile {
+	return self
+}
+
+// BaseMediaFile returns the underlying base object.
+func BaseMediaFile(obj MediaFiler) *MediaFile {
+	return obj.baseMediaFile()
+}
+
 // NewMediaFile creates a new empty media file.
+//
+// The function returns the following values:
+//
+//    - mediaFile: new GtkMediaFile.
+//
 func NewMediaFile() *MediaFile {
 	var _cret *C.GtkMediaStream // in
 
@@ -96,6 +110,10 @@ func NewMediaFile() *MediaFile {
 // The function takes the following parameters:
 //
 //    - file to play.
+//
+// The function returns the following values:
+//
+//    - mediaFile: new GtkMediaFile playing file.
 //
 func NewMediaFileForFile(file gio.Filer) *MediaFile {
 	var _arg1 *C.GFile          // out
@@ -121,6 +139,10 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 // The function takes the following parameters:
 //
 //    - filename to open.
+//
+// The function returns the following values:
+//
+//    - mediaFile: new GtkMediaFile playing filename.
 //
 func NewMediaFileForFilename(filename string) *MediaFile {
 	var _arg1 *C.char           // out
@@ -148,6 +170,10 @@ func NewMediaFileForFilename(filename string) *MediaFile {
 //
 //    - stream to play.
 //
+// The function returns the following values:
+//
+//    - mediaFile: new GtkMediaFile.
+//
 func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 	var _arg1 *C.GInputStream   // out
 	var _cret *C.GtkMediaStream // in
@@ -172,6 +198,10 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 // The function takes the following parameters:
 //
 //    - resourcePath: resource path to open.
+//
+// The function returns the following values:
+//
+//    - mediaFile: new GtkMediaFile playing resource_path.
 //
 func NewMediaFileForResource(resourcePath string) *MediaFile {
 	var _arg1 *C.char           // out
@@ -203,6 +233,12 @@ func (self *MediaFile) Clear() {
 // File returns the file that self is currently playing from.
 //
 // When self is not playing or not playing from a file, NULL is returned.
+//
+// The function returns the following values:
+//
+//    - file (optional): currently playing file or NULL if not playing from a
+//      file.
+//
 func (self *MediaFile) File() gio.Filer {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GFile        // in
@@ -234,6 +270,12 @@ func (self *MediaFile) File() gio.Filer {
 // InputStream returns the stream that self is currently playing from.
 //
 // When self is not playing or not playing from a stream, NULL is returned.
+//
+// The function returns the following values:
+//
+//    - inputStream (optional): currently playing stream or NULL if not playing
+//      from a stream.
+//
 func (self *MediaFile) InputStream() gio.InputStreamer {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GInputStream // in
@@ -268,7 +310,7 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 //
 // The function takes the following parameters:
 //
-//    - file to play.
+//    - file (optional) to play.
 //
 func (self *MediaFile) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkMediaFile // out
@@ -291,7 +333,7 @@ func (self *MediaFile) SetFile(file gio.Filer) {
 //
 // The function takes the following parameters:
 //
-//    - filename: name of file to play.
+//    - filename (optional): name of file to play.
 //
 func (self *MediaFile) SetFilename(filename string) {
 	var _arg0 *C.GtkMediaFile // out
@@ -317,7 +359,7 @@ func (self *MediaFile) SetFilename(filename string) {
 //
 // The function takes the following parameters:
 //
-//    - stream to play from.
+//    - stream (optional) to play from.
 //
 func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 	var _arg0 *C.GtkMediaFile // out
@@ -340,7 +382,7 @@ func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: path to resource to play.
+//    - resourcePath (optional): path to resource to play.
 //
 func (self *MediaFile) SetResource(resourcePath string) {
 	var _arg0 *C.GtkMediaFile // out
@@ -355,13 +397,4 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	C.gtk_media_file_set_resource(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resourcePath)
-}
-
-func (self *MediaFile) baseMediaFile() *MediaFile {
-	return self
-}
-
-// BaseMediaFile returns the underlying base object.
-func BaseMediaFile(obj MediaFiler) *MediaFile {
-	return obj.baseMediaFile()
 }

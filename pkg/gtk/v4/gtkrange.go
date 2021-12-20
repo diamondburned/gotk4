@@ -29,9 +29,22 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RangeOverrider interface {
+	// The function takes the following parameters:
+	//
 	AdjustBounds(newValue float64)
+	// The function takes the following parameters:
+	//
+	//    - scroll
+	//    - newValue
+	//
+	// The function returns the following values:
+	//
 	ChangeValue(scroll ScrollType, newValue float64) bool
+	// The function takes the following parameters:
+	//
 	RangeBorder(border_ *Border)
+	// The function takes the following parameters:
+	//
 	MoveSlider(scroll ScrollType)
 	ValueChanged()
 }
@@ -84,7 +97,45 @@ func marshalRanger(p uintptr) (interface{}, error) {
 	return wrapRange(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAdjustBounds: emitted before clamping a value, to give the application
+// a chance to adjust the bounds.
+func (_range *Range) ConnectAdjustBounds(f func(value float64)) externglib.SignalHandle {
+	return _range.Connect("adjust-bounds", f)
+}
+
+// ConnectChangeValue: emitted when a scroll action is performed on a range.
+//
+// It allows an application to determine the type of scroll event that occurred
+// and the resultant new value. The application can handle the event itself and
+// return TRUE to prevent further processing. Or, by returning FALSE, it can
+// pass the event to other handlers until the default GTK handler is reached.
+//
+// The value parameter is unrounded. An application that overrides the
+// ::change-value signal is responsible for clamping the value to the desired
+// number of decimal digits; the default GTK handler clamps the value based on
+// gtk.Range:round-digits.
+func (_range *Range) ConnectChangeValue(f func(scroll ScrollType, value float64) bool) externglib.SignalHandle {
+	return _range.Connect("change-value", f)
+}
+
+// ConnectMoveSlider: virtual function that moves the slider.
+//
+// Used for keybindings.
+func (_range *Range) ConnectMoveSlider(f func(step ScrollType)) externglib.SignalHandle {
+	return _range.Connect("move-slider", f)
+}
+
+// ConnectValueChanged: emitted when the range value changes.
+func (_range *Range) ConnectValueChanged(f func()) externglib.SignalHandle {
+	return _range.Connect("value-changed", f)
+}
+
 // Adjustment: get the adjustment which is the “model” object for GtkRange.
+//
+// The function returns the following values:
+//
+//    - adjustment: GtkAdjustment.
+//
 func (_range *Range) Adjustment() *Adjustment {
 	var _arg0 *C.GtkRange      // out
 	var _cret *C.GtkAdjustment // in
@@ -102,6 +153,11 @@ func (_range *Range) Adjustment() *Adjustment {
 }
 
 // FillLevel gets the current position of the fill level indicator.
+//
+// The function returns the following values:
+//
+//    - gdouble: current fill level.
+//
 func (_range *Range) FillLevel() float64 {
 	var _arg0 *C.GtkRange // out
 	var _cret C.double    // in
@@ -121,6 +177,11 @@ func (_range *Range) FillLevel() float64 {
 // Flippable gets whether the GtkRange respects text direction.
 //
 // See gtk.Range.SetFlippable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the range is flippable.
+//
 func (_range *Range) Flippable() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
@@ -142,6 +203,11 @@ func (_range *Range) Flippable() bool {
 // Inverted gets whether the range is inverted.
 //
 // See gtk.Range.SetInverted().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the range is inverted.
+//
 func (_range *Range) Inverted() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
@@ -164,6 +230,11 @@ func (_range *Range) Inverted() bool {
 // in coordinates relative to range's origin.
 //
 // This function is useful mainly for GtkRange subclasses.
+//
+// The function returns the following values:
+//
+//    - rangeRect: return location for the range rectangle.
+//
 func (_range *Range) RangeRect() *gdk.Rectangle {
 	var _arg0 *C.GtkRange    // out
 	var _arg1 C.GdkRectangle // in
@@ -181,6 +252,11 @@ func (_range *Range) RangeRect() *gdk.Rectangle {
 }
 
 // RestrictToFillLevel gets whether the range is restricted to the fill level.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if range is restricted to the fill level.
+//
 func (_range *Range) RestrictToFillLevel() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
@@ -202,6 +278,11 @@ func (_range *Range) RestrictToFillLevel() bool {
 // RoundDigits gets the number of digits to round the value to when it changes.
 //
 // See gtk.Range::change-value.
+//
+// The function returns the following values:
+//
+//    - gint: number of digits to round to.
+//
 func (_range *Range) RoundDigits() int {
 	var _arg0 *C.GtkRange // out
 	var _cret C.int       // in
@@ -219,6 +300,11 @@ func (_range *Range) RoundDigits() int {
 }
 
 // ShowFillLevel gets whether the range displays the fill level graphically.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if range shows the fill level.
+//
 func (_range *Range) ShowFillLevel() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
@@ -241,6 +327,12 @@ func (_range *Range) ShowFillLevel() bool {
 // widget->window coordinates.
 //
 // This function is useful mainly for GtkRange subclasses.
+//
+// The function returns the following values:
+//
+//    - sliderStart (optional): return location for the slider's start, or NULL.
+//    - sliderEnd (optional): return location for the slider's end, or NULL.
+//
 func (_range *Range) SliderRange() (sliderStart int, sliderEnd int) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.int       // in
@@ -263,6 +355,11 @@ func (_range *Range) SliderRange() (sliderStart int, sliderEnd int) {
 // SliderSizeFixed: this function is useful mainly for GtkRange subclasses.
 //
 // See gtk.Range.SetSliderSizeFixed().
+//
+// The function returns the following values:
+//
+//    - ok: whether the range’s slider has a fixed size.
+//
 func (_range *Range) SliderSizeFixed() bool {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gboolean  // in
@@ -282,6 +379,11 @@ func (_range *Range) SliderSizeFixed() bool {
 }
 
 // Value gets the current value of the range.
+//
+// The function returns the following values:
+//
+//    - gdouble: current value of the range.
+//
 func (_range *Range) Value() float64 {
 	var _arg0 *C.GtkRange // out
 	var _cret C.double    // in
@@ -569,37 +671,4 @@ func (_range *Range) SetValue(value float64) {
 	C.gtk_range_set_value(_arg0, _arg1)
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(value)
-}
-
-// ConnectAdjustBounds: emitted before clamping a value, to give the application
-// a chance to adjust the bounds.
-func (_range *Range) ConnectAdjustBounds(f func(value float64)) externglib.SignalHandle {
-	return _range.Connect("adjust-bounds", f)
-}
-
-// ConnectChangeValue: emitted when a scroll action is performed on a range.
-//
-// It allows an application to determine the type of scroll event that occurred
-// and the resultant new value. The application can handle the event itself and
-// return TRUE to prevent further processing. Or, by returning FALSE, it can
-// pass the event to other handlers until the default GTK handler is reached.
-//
-// The value parameter is unrounded. An application that overrides the
-// ::change-value signal is responsible for clamping the value to the desired
-// number of decimal digits; the default GTK handler clamps the value based on
-// gtk.Range:round-digits.
-func (_range *Range) ConnectChangeValue(f func(scroll ScrollType, value float64) bool) externglib.SignalHandle {
-	return _range.Connect("change-value", f)
-}
-
-// ConnectMoveSlider: virtual function that moves the slider.
-//
-// Used for keybindings.
-func (_range *Range) ConnectMoveSlider(f func(step ScrollType)) externglib.SignalHandle {
-	return _range.Connect("move-slider", f)
-}
-
-// ConnectValueChanged: emitted when the range value changes.
-func (_range *Range) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return _range.Connect("value-changed", f)
 }

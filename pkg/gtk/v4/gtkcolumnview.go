@@ -128,6 +128,15 @@ func marshalColumnViewer(p uintptr) (interface{}, error) {
 	return wrapColumnView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate: emitted when a row has been activated by the user, usually
+// via activating the GtkListBase|list.activate-item action.
+//
+// This allows for a convenient way to handle activation in a columnview. See
+// gtk.ListItem.SetActivatable() for details on how to use this signal.
+func (self *ColumnView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
+	return self.Connect("activate", f)
+}
+
 // NewColumnView creates a new GtkColumnView.
 //
 // You most likely want to call gtk.ColumnView.AppendColumn() to add columns
@@ -135,7 +144,11 @@ func marshalColumnViewer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model: list model to use, or NULL.
+//    - model (optional): list model to use, or NULL.
+//
+// The function returns the following values:
+//
+//    - columnView: new GtkColumnView.
 //
 func NewColumnView(model SelectionModeller) *ColumnView {
 	var _arg1 *C.GtkSelectionModel // out
@@ -161,7 +174,7 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 // The function takes the following parameters:
 //
 //    - column: GtkColumnViewColumn that hasn't been added to a GtkColumnView
-//    yet.
+//      yet.
 //
 func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
@@ -179,6 +192,11 @@ func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 //
 // This list is constant over the lifetime of self and can be used to monitor
 // changes to the columns of self by connecting to the ::items-changed signal.
+//
+// The function returns the following values:
+//
+//    - listModel: list managing the columns.
+//
 func (self *ColumnView) Columns() gio.ListModeller {
 	var _arg0 *C.GtkColumnView // out
 	var _cret *C.GListModel    // in
@@ -210,6 +228,11 @@ func (self *ColumnView) Columns() gio.ListModeller {
 
 // EnableRubberband returns whether rows can be selected by dragging with the
 // mouse.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if rubberband selection is enabled.
+//
 func (self *ColumnView) EnableRubberband() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
@@ -229,6 +252,11 @@ func (self *ColumnView) EnableRubberband() bool {
 }
 
 // Model gets the model that's currently used to read the items displayed.
+//
+// The function returns the following values:
+//
+//    - selectionModel (optional): model in use.
+//
 func (self *ColumnView) Model() SelectionModeller {
 	var _arg0 *C.GtkColumnView     // out
 	var _cret *C.GtkSelectionModel // in
@@ -258,6 +286,11 @@ func (self *ColumnView) Model() SelectionModeller {
 }
 
 // Reorderable returns whether columns are reorderable.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if columns are reorderable.
+//
 func (self *ColumnView) Reorderable() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
@@ -278,6 +311,11 @@ func (self *ColumnView) Reorderable() bool {
 
 // ShowColumnSeparators returns whether the list should show separators between
 // columns.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the list shows column separators.
+//
 func (self *ColumnView) ShowColumnSeparators() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
@@ -298,6 +336,11 @@ func (self *ColumnView) ShowColumnSeparators() bool {
 
 // ShowRowSeparators returns whether the list should show separators between
 // rows.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the list shows separators.
+//
 func (self *ColumnView) ShowRowSeparators() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
@@ -318,6 +361,11 @@ func (self *ColumnView) ShowRowSeparators() bool {
 
 // SingleClickActivate returns whether rows will be activated on single click
 // and selected on hover.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if rows are activated on single click.
+//
 func (self *ColumnView) SingleClickActivate() bool {
 	var _arg0 *C.GtkColumnView // out
 	var _cret C.gboolean       // in
@@ -353,6 +401,11 @@ func (self *ColumnView) SingleClickActivate() bool {
 //    model = gtk_sort_list_model_new (store, sorter);
 //    selection = gtk_no_selection_new (model);
 //    gtk_column_view_set_model (view, selection);.
+//
+// The function returns the following values:
+//
+//    - sorter (optional): GtkSorter of self.
+//
 func (self *ColumnView) Sorter() *Sorter {
 	var _arg0 *C.GtkColumnView // out
 	var _cret *C.GtkSorter     // in
@@ -440,7 +493,7 @@ func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 //
 // The function takes the following parameters:
 //
-//    - model to use or NULL for none.
+//    - model (optional) to use or NULL for none.
 //
 func (self *ColumnView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkColumnView     // out
@@ -553,7 +606,7 @@ func (self *ColumnView) SetSingleClickActivate(singleClickActivate bool) {
 //
 // The function takes the following parameters:
 //
-//    - column: GtkColumnViewColumn to sort by, or NULL.
+//    - column (optional): GtkColumnViewColumn to sort by, or NULL.
 //    - direction to sort in.
 //
 func (self *ColumnView) SortByColumn(column *ColumnViewColumn, direction SortType) {
@@ -571,13 +624,4 @@ func (self *ColumnView) SortByColumn(column *ColumnViewColumn, direction SortTyp
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(direction)
-}
-
-// ConnectActivate: emitted when a row has been activated by the user, usually
-// via activating the GtkListBase|list.activate-item action.
-//
-// This allows for a convenient way to handle activation in a columnview. See
-// gtk.ListItem.SetActivatable() for details on how to use this signal.
-func (self *ColumnView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return self.Connect("activate", f)
 }

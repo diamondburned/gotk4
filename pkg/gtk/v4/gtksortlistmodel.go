@@ -62,8 +62,12 @@ func marshalSortListModeller(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model to sort, or NULL.
-//    - sorter: GtkSorter to sort model with, or NULL.
+//    - model (optional) to sort, or NULL.
+//    - sorter (optional): GtkSorter to sort model with, or NULL.
+//
+// The function returns the following values:
+//
+//    - sortListModel: new GtkSortListModel.
 //
 func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 	var _arg1 *C.GListModel       // out
@@ -93,6 +97,11 @@ func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 // Incremental returns whether incremental sorting is enabled.
 //
 // See gtk.SortListModel.SetIncremental().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if incremental sorting is enabled.
+//
 func (self *SortListModel) Incremental() bool {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret C.gboolean          // in
@@ -112,6 +121,11 @@ func (self *SortListModel) Incremental() bool {
 }
 
 // Model gets the model currently sorted or NULL if none.
+//
+// The function returns the following values:
+//
+//    - listModel (optional): model that gets sorted.
+//
 func (self *SortListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret *C.GListModel       // in
@@ -155,6 +169,11 @@ func (self *SortListModel) Model() gio.ListModeller {
 //
 // If no sort operation is ongoing - in particular when
 // gtk.SortListModel:incremental is FALSE - this function returns 0.
+//
+// The function returns the following values:
+//
+//    - guint progress estimate of remaining items to sort.
+//
 func (self *SortListModel) Pending() uint {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret C.guint             // in
@@ -172,6 +191,11 @@ func (self *SortListModel) Pending() uint {
 }
 
 // Sorter gets the sorter that is used to sort self.
+//
+// The function returns the following values:
+//
+//    - sorter (optional) of #self.
+//
 func (self *SortListModel) Sorter() *Sorter {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret *C.GtkSorter        // in
@@ -231,7 +255,7 @@ func (self *SortListModel) SetIncremental(incremental bool) {
 //
 // The function takes the following parameters:
 //
-//    - model to be sorted.
+//    - model (optional) to be sorted.
 //
 func (self *SortListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSortListModel // out
@@ -251,7 +275,7 @@ func (self *SortListModel) SetModel(model gio.ListModeller) {
 //
 // The function takes the following parameters:
 //
-//    - sorter: GtkSorter to sort model with.
+//    - sorter (optional): GtkSorter to sort model with.
 //
 func (self *SortListModel) SetSorter(sorter *Sorter) {
 	var _arg0 *C.GtkSortListModel // out

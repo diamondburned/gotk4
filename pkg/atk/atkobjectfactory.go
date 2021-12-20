@@ -63,6 +63,10 @@ func marshalObjectFactorier(p uintptr) (interface{}, error) {
 //
 //    - obj: #GObject.
 //
+// The function returns the following values:
+//
+//    - object that implements an accessibility interface on behalf of obj.
+//
 func (factory *ObjectFactory) CreateAccessible(obj *externglib.Object) *ObjectClass {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
@@ -84,6 +88,12 @@ func (factory *ObjectFactory) CreateAccessible(obj *externglib.Object) *ObjectCl
 
 // AccessibleType gets the GType of the accessible which is created by the
 // factory.
+//
+// The function returns the following values:
+//
+//    - gType: type of the accessible which is created by the factory. The value
+//      G_TYPE_INVALID is returned if no type if found.
+//
 func (factory *ObjectFactory) AccessibleType() externglib.Type {
 	var _arg0 *C.AtkObjectFactory // out
 	var _cret C.GType             // in

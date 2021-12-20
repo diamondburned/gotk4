@@ -80,8 +80,26 @@ type RendererOverrider interface {
 	//
 	// This should be called while renderer is already active. Use
 	// pango.Renderer.Activate() to activate a renderer.
+	//
+	// The function takes the following parameters:
+	//
+	//    - x: x coordinate of underline, in Pango units in user coordinate
+	//      system.
+	//    - y: y coordinate of underline, in Pango units in user coordinate
+	//      system.
+	//    - width of underline, in Pango units in user coordinate system.
+	//    - height of underline, in Pango units in user coordinate system.
+	//
 	DrawErrorUnderline(x, y, width, height int)
 	// DrawGlyph draws a single glyph with coordinates in device space.
+	//
+	// The function takes the following parameters:
+	//
+	//    - font: Font.
+	//    - glyph index of a single glyph.
+	//    - x: x coordinate of left edge of baseline of glyph.
+	//    - y: y coordinate of left edge of baseline of glyph.
+	//
 	DrawGlyph(font Fonter, glyph Glyph, x, y float64)
 	// DrawGlyphItem draws the glyphs in glyph_item with the specified
 	// PangoRenderer, embedding the text associated with the glyphs in the
@@ -96,18 +114,66 @@ type RendererOverrider interface {
 	//
 	// The default implementation of this method simply falls back to
 	// pango.Renderer.DrawGlyphs().
+	//
+	// The function takes the following parameters:
+	//
+	//    - text (optional): UTF-8 text that glyph_item refers to, or NULL.
+	//    - glyphItem: PangoGlyphItem.
+	//    - x: x position of left edge of baseline, in user space coordinates in
+	//      Pango units.
+	//    - y: y position of left edge of baseline, in user space coordinates in
+	//      Pango units.
+	//
 	DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
 	// DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
+	//
+	// The function takes the following parameters:
+	//
+	//    - font: PangoFont.
+	//    - glyphs: PangoGlyphString.
+	//    - x: x position of left edge of baseline, in user space coordinates in
+	//      Pango units.
+	//    - y: y position of left edge of baseline, in user space coordinates in
+	//      Pango units.
+	//
 	DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
 	// with the specified PangoRenderer.
 	//
 	// This should be called while renderer is already active. Use
 	// pango.Renderer.Activate() to activate a renderer.
+	//
+	// The function takes the following parameters:
+	//
+	//    - part: type of object this rectangle is part of.
+	//    - x: x position at which to draw rectangle, in user space coordinates
+	//      in Pango units.
+	//    - y: y position at which to draw rectangle, in user space coordinates
+	//      in Pango units.
+	//    - width of rectangle in Pango units.
+	//    - height of rectangle in Pango units.
+	//
 	DrawRectangle(part RenderPart, x, y, width, height int)
+	// The function takes the following parameters:
+	//
+	//    - attr
+	//    - x
+	//    - y
+	//
 	DrawShape(attr *AttrShape, x, y int)
 	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
 	// X axis using the given PangoRenderer; coordinates are in device space.
+	//
+	// The function takes the following parameters:
+	//
+	//    - part: type of object this trapezoid is part of.
+	//    - y1: y coordinate of top of trapezoid.
+	//    - x11: x coordinate of left end of top of trapezoid.
+	//    - x21: x coordinate of right end of top of trapezoid.
+	//    - y2: y coordinate of bottom of trapezoid.
+	//    - x12: x coordinate of left end of bottom of trapezoid.
+	//    - x22: x coordinate of right end of bottom of trapezoid.
+	//
 	DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
 	End()
 	// PartChanged informs Pango that the way that the rendering is done for
@@ -124,7 +190,14 @@ type RendererOverrider interface {
 	// When the stipple changes or underlines with different stipples might be
 	// joined together. Pango automatically calls this for changes to colors.
 	// (See pango.Renderer.SetColor()).
+	//
+	// The function takes the following parameters:
+	//
+	//    - part for which rendering has changed.
+	//
 	PartChanged(part RenderPart)
+	// The function takes the following parameters:
+	//
 	PrepareRun(run *LayoutRun)
 }
 
@@ -161,6 +234,15 @@ func wrapRenderer(obj *externglib.Object) *Renderer {
 
 func marshalRendererer(p uintptr) (interface{}, error) {
 	return wrapRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+func (renderer *Renderer) baseRenderer() *Renderer {
+	return renderer
+}
+
+// BaseRenderer returns the underlying base object.
+func BaseRenderer(obj Rendererer) *Renderer {
+	return obj.baseRenderer()
 }
 
 // Activate does initial setup before rendering operations on renderer.
@@ -273,12 +355,12 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 //
 // The function takes the following parameters:
 //
-//    - text: UTF-8 text that glyph_item refers to, or NULL.
+//    - text (optional): UTF-8 text that glyph_item refers to, or NULL.
 //    - glyphItem: PangoGlyphItem.
 //    - x: x position of left edge of baseline, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //    - y: y position of left edge of baseline, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //
 func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int) {
 	var _arg0 *C.PangoRenderer  // out
@@ -311,9 +393,9 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 //    - font: PangoFont.
 //    - glyphs: PangoGlyphString.
 //    - x: x position of left edge of baseline, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //    - y: y position of left edge of baseline, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //
 func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int) {
 	var _arg0 *C.PangoRenderer    // out
@@ -342,9 +424,9 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 //
 //    - layout: PangoLayout.
 //    - x: x position of left edge of baseline, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //    - y: y position of left edge of baseline, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //
 func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 	var _arg0 *C.PangoRenderer // out
@@ -370,9 +452,9 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 //
 //    - line: PangoLayoutLine.
 //    - x: x position of left edge of baseline, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //    - y: y position of left edge of baseline, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //
 func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 	var _arg0 *C.PangoRenderer   // out
@@ -402,9 +484,9 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 //
 //    - part: type of object this rectangle is part of.
 //    - x: x position at which to draw rectangle, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //    - y: y position at which to draw rectangle, in user space coordinates in
-//    Pango units.
+//      Pango units.
 //    - width of rectangle in Pango units.
 //    - height of rectangle in Pango units.
 //
@@ -481,6 +563,11 @@ func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, 
 //
 //    - part to get the alpha for.
 //
+// The function returns the following values:
+//
+//    - guint16: alpha for the specified part, or 0 if it hasn't been set and
+//      should be inherited from the environment.
+//
 func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -505,6 +592,11 @@ func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 // The function takes the following parameters:
 //
 //    - part to get the color for.
+//
+// The function returns the following values:
+//
+//    - color (optional) for the specified part, or NULL if it hasn't been set
+//      and should be inherited from the environment.
 //
 func (renderer *Renderer) Color(part RenderPart) *Color {
 	var _arg0 *C.PangoRenderer  // out
@@ -533,6 +625,12 @@ func (renderer *Renderer) Color(part RenderPart) *Color {
 // in its draw_shape vfunc, for example.
 //
 // The returned layout should not be modified while still being rendered.
+//
+// The function returns the following values:
+//
+//    - layout (optional): layout, or NULL if no layout is being rendered using
+//      renderer at this time.
+//
 func (renderer *Renderer) Layout() *Layout {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoLayout   // in
@@ -557,6 +655,12 @@ func (renderer *Renderer) Layout() *Layout {
 // in its draw_shape vfunc, for example.
 //
 // The returned layout line should not be modified while still being rendered.
+//
+// The function returns the following values:
+//
+//    - layoutLine (optional): layout line, or NULL if no layout line is being
+//      rendered using renderer at this time.
+//
 func (renderer *Renderer) LayoutLine() *LayoutLine {
 	var _arg0 *C.PangoRenderer   // out
 	var _cret *C.PangoLayoutLine // in
@@ -585,6 +689,13 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 // Matrix gets the transformation matrix that will be applied when rendering.
 //
 // See pango.Renderer.SetMatrix().
+//
+// The function returns the following values:
+//
+//    - matrix (optional): matrix, or NULL if no matrix has been set (which is
+//      the same as the identity matrix). The returned matrix is owned by Pango
+//      and must not be modified or freed.
+//
 func (renderer *Renderer) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
@@ -666,7 +777,7 @@ func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 // The function takes the following parameters:
 //
 //    - part to change the color of.
-//    - color: new color or NULL to unset the current color.
+//    - color (optional): new color or NULL to unset the current color.
 //
 func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 	var _arg0 *C.PangoRenderer  // out
@@ -689,8 +800,8 @@ func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 //
 // The function takes the following parameters:
 //
-//    - matrix: PangoMatrix, or NULL to unset any existing matrix. (No matrix
-//    set is the same as setting the identity matrix.).
+//    - matrix (optional): PangoMatrix, or NULL to unset any existing matrix. (No
+//      matrix set is the same as setting the identity matrix.).
 //
 func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
@@ -704,13 +815,4 @@ func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	C.pango_renderer_set_matrix(_arg0, _arg1)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(matrix)
-}
-
-func (renderer *Renderer) baseRenderer() *Renderer {
-	return renderer
-}
-
-// BaseRenderer returns the underlying base object.
-func BaseRenderer(obj Rendererer) *Renderer {
-	return obj.baseRenderer()
 }

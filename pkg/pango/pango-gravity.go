@@ -80,7 +80,12 @@ func (g Gravity) String() string {
 //
 // The function takes the following parameters:
 //
-//    - matrix: PangoMatrix.
+//    - matrix (optional): PangoMatrix.
+//
+// The function returns the following values:
+//
+//    - gravity of matrix, which will never be PANGO_GRAVITY_AUTO, or
+//      PANGO_GRAVITY_SOUTH if matrix is NULL.
 //
 func GravityGetForMatrix(matrix *Matrix) Gravity {
 	var _arg1 *C.PangoMatrix // out
@@ -113,6 +118,10 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 //    - script to query.
 //    - baseGravity: base gravity of the paragraph.
 //    - hint: orientation hint.
+//
+// The function returns the following values:
+//
+//    - gravity: resolved gravity suitable to use for a run of text with script.
 //
 func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out
@@ -158,6 +167,11 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 //    - baseGravity: base gravity of the paragraph.
 //    - hint: orientation hint.
 //
+// The function returns the following values:
+//
+//    - gravity: resolved gravity suitable to use for a run of text with script
+//      and wide.
+//
 func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out
 	var _arg2 C.gboolean         // out
@@ -195,6 +209,10 @@ func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, 
 // The function takes the following parameters:
 //
 //    - gravity to query, should not be PANGO_GRAVITY_AUTO.
+//
+// The function returns the following values:
+//
+//    - gdouble: rotation value corresponding to gravity.
 //
 func GravityToRotation(gravity Gravity) float64 {
 	var _arg1 C.PangoGravity // out

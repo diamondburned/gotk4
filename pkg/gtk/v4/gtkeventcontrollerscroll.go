@@ -145,12 +145,45 @@ func marshalEventControllerScroller(p uintptr) (interface{}, error) {
 	return wrapEventControllerScroll(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectDecelerate: emitted after scroll is finished if the
+// GTK_EVENT_CONTROLLER_SCROLL_KINETIC flag is set.
+//
+// vel_x and vel_y express the initial velocity that was imprinted by the scroll
+// events. vel_x and vel_y are expressed in pixels/ms.
+func (scroll *EventControllerScroll) ConnectDecelerate(f func(velX, velY float64)) externglib.SignalHandle {
+	return scroll.Connect("decelerate", f)
+}
+
+// ConnectScroll signals that the widget should scroll by the amount specified
+// by dx and dy.
+func (scroll *EventControllerScroll) ConnectScroll(f func(dx, dy float64) bool) externglib.SignalHandle {
+	return scroll.Connect("scroll", f)
+}
+
+// ConnectScrollBegin signals that a new scrolling operation has begun.
+//
+// It will only be emitted on devices capable of it.
+func (scroll *EventControllerScroll) ConnectScrollBegin(f func()) externglib.SignalHandle {
+	return scroll.Connect("scroll-begin", f)
+}
+
+// ConnectScrollEnd signals that a scrolling operation has finished.
+//
+// It will only be emitted on devices capable of it.
+func (scroll *EventControllerScroll) ConnectScrollEnd(f func()) externglib.SignalHandle {
+	return scroll.Connect("scroll-end", f)
+}
+
 // NewEventControllerScroll creates a new event controller that will handle
 // scroll events.
 //
 // The function takes the following parameters:
 //
 //    - flags affecting the controller behavior.
+//
+// The function returns the following values:
+//
+//    - eventControllerScroll: new GtkEventControllerScroll.
 //
 func NewEventControllerScroll(flags EventControllerScrollFlags) *EventControllerScroll {
 	var _arg1 C.GtkEventControllerScrollFlags // out
@@ -169,6 +202,11 @@ func NewEventControllerScroll(flags EventControllerScrollFlags) *EventController
 }
 
 // Flags gets the flags conditioning the scroll controller behavior.
+//
+// The function returns the following values:
+//
+//    - eventControllerScrollFlags: controller flags.
+//
 func (scroll *EventControllerScroll) Flags() EventControllerScrollFlags {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _cret C.GtkEventControllerScrollFlags // in
@@ -201,33 +239,4 @@ func (scroll *EventControllerScroll) SetFlags(flags EventControllerScrollFlags) 
 	C.gtk_event_controller_scroll_set_flags(_arg0, _arg1)
 	runtime.KeepAlive(scroll)
 	runtime.KeepAlive(flags)
-}
-
-// ConnectDecelerate: emitted after scroll is finished if the
-// GTK_EVENT_CONTROLLER_SCROLL_KINETIC flag is set.
-//
-// vel_x and vel_y express the initial velocity that was imprinted by the scroll
-// events. vel_x and vel_y are expressed in pixels/ms.
-func (scroll *EventControllerScroll) ConnectDecelerate(f func(velX, velY float64)) externglib.SignalHandle {
-	return scroll.Connect("decelerate", f)
-}
-
-// ConnectScroll signals that the widget should scroll by the amount specified
-// by dx and dy.
-func (scroll *EventControllerScroll) ConnectScroll(f func(dx, dy float64) bool) externglib.SignalHandle {
-	return scroll.Connect("scroll", f)
-}
-
-// ConnectScrollBegin signals that a new scrolling operation has begun.
-//
-// It will only be emitted on devices capable of it.
-func (scroll *EventControllerScroll) ConnectScrollBegin(f func()) externglib.SignalHandle {
-	return scroll.Connect("scroll-begin", f)
-}
-
-// ConnectScrollEnd signals that a scrolling operation has finished.
-//
-// It will only be emitted on devices capable of it.
-func (scroll *EventControllerScroll) ConnectScrollEnd(f func()) externglib.SignalHandle {
-	return scroll.Connect("scroll-end", f)
 }

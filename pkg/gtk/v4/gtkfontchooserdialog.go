@@ -108,8 +108,12 @@ func marshalFontChooserDialogger(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title: title of the dialog, or NULL.
-//    - parent: transient parent of the dialog, or NULL.
+//    - title (optional): title of the dialog, or NULL.
+//    - parent (optional): transient parent of the dialog, or NULL.
+//
+// The function returns the following values:
+//
+//    - fontChooserDialog: new GtkFontChooserDialog.
 //
 func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	var _arg1 *C.char      // out

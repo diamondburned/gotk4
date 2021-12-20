@@ -57,24 +57,6 @@ func marshalCellRendererCombor(p uintptr) (interface{}, error) {
 	return wrapCellRendererCombo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is
-// drawn using object properties. Object properties can be set globally (with
-// g_object_set()). Also, with TreeViewColumn, you can bind a property to a
-// value in a TreeModel. For example, you can bind the “text” property on the
-// cell renderer to a string value in the model, thus rendering a different
-// string in each row of the TreeView.
-func NewCellRendererCombo() *CellRendererCombo {
-	var _cret *C.GtkCellRenderer // in
-
-	_cret = C.gtk_cell_renderer_combo_new()
-
-	var _cellRendererCombo *CellRendererCombo // out
-
-	_cellRendererCombo = wrapCellRendererCombo(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _cellRendererCombo
-}
-
 // ConnectChanged: this signal is emitted each time after the user selected an
 // item in the combo box, either by using the mouse or the arrow keys. Contrary
 // to GtkComboBox, GtkCellRendererCombo::changed is not emitted for changes made
@@ -88,4 +70,27 @@ func NewCellRendererCombo() *CellRendererCombo {
 // renderer emits the edited or editing_canceled signal.
 func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *TreeIter)) externglib.SignalHandle {
 	return v.Connect("changed", f)
+}
+
+// NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is
+// drawn using object properties. Object properties can be set globally (with
+// g_object_set()). Also, with TreeViewColumn, you can bind a property to a
+// value in a TreeModel. For example, you can bind the “text” property on the
+// cell renderer to a string value in the model, thus rendering a different
+// string in each row of the TreeView.
+//
+// The function returns the following values:
+//
+//    - cellRendererCombo: new cell renderer.
+//
+func NewCellRendererCombo() *CellRendererCombo {
+	var _cret *C.GtkCellRenderer // in
+
+	_cret = C.gtk_cell_renderer_combo_new()
+
+	var _cellRendererCombo *CellRendererCombo // out
+
+	_cellRendererCombo = wrapCellRendererCombo(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _cellRendererCombo
 }

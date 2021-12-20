@@ -70,10 +70,14 @@ func marshalRecentActioner(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - name: unique name for the action.
-//    - label displayed in menu items and on buttons, or NULL.
-//    - tooltip for the action, or NULL.
-//    - stockId: stock icon to display in widgets representing the action, or
-//    NULL.
+//    - label (optional) displayed in menu items and on buttons, or NULL.
+//    - tooltip (optional) for the action, or NULL.
+//    - stockId (optional): stock icon to display in widgets representing the
+//      action, or NULL.
+//
+// The function returns the following values:
+//
+//    - recentAction: newly created RecentAction.
 //
 func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
 	var _arg1 *C.gchar     // out
@@ -119,11 +123,15 @@ func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
 // The function takes the following parameters:
 //
 //    - name: unique name for the action.
-//    - label displayed in menu items and on buttons, or NULL.
-//    - tooltip for the action, or NULL.
-//    - stockId: stock icon to display in widgets representing the action, or
-//    NULL.
-//    - manager or NULL for using the default RecentManager.
+//    - label (optional) displayed in menu items and on buttons, or NULL.
+//    - tooltip (optional) for the action, or NULL.
+//    - stockId (optional): stock icon to display in widgets representing the
+//      action, or NULL.
+//    - manager (optional) or NULL for using the default RecentManager.
+//
+// The function returns the following values:
+//
+//    - recentAction: newly created RecentAction.
 //
 func NewRecentActionForManager(name, label, tooltip, stockId string, manager *RecentManager) *RecentAction {
 	var _arg1 *C.gchar            // out
@@ -169,6 +177,11 @@ func NewRecentActionForManager(name, label, tooltip, stockId string, manager *Re
 // gtk_recent_chooser_menu_set_show_numbers().
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if numbers should be shown.
+//
 func (action *RecentAction) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentAction // out
 	var _cret C.gboolean         // in

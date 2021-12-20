@@ -36,6 +36,12 @@ type EditableOverrider interface {
 	// the characters deleted are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start position.
+	//    - endPos: end position.
+	//
 	DeleteText(startPos, endPos int)
 	// DoDeleteText deletes a sequence of characters.
 	//
@@ -44,11 +50,22 @@ type EditableOverrider interface {
 	// the characters deleted are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start position.
+	//    - endPos: end position.
+	//
 	DoDeleteText(startPos, endPos int)
 	// Delegate gets the GtkEditable that editable is delegating its
 	// implementation to.
 	//
 	// Typically, the delegate is a gtk.Text widget.
+	//
+	// The function returns the following values:
+	//
+	//    - ret (optional): delegate GtkEditable.
+	//
 	Delegate() Editabler
 	// SelectionBounds retrieves the selection bound of the editable.
 	//
@@ -57,10 +74,23 @@ type EditableOverrider interface {
 	// returned.
 	//
 	// Note that positions are specified in characters, not bytes.
+	//
+	// The function returns the following values:
+	//
+	//    - startPos (optional): location to store the starting position, or
+	//      NULL.
+	//    - endPos (optional): location to store the end position, or NULL.
+	//    - ok: TRUE if there is a non-empty selection, FALSE otherwise.
+	//
 	SelectionBounds() (startPos int, endPos int, ok bool)
 	// Text retrieves the contents of editable.
 	//
 	// The returned string is owned by GTK and must not be modified or freed.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: pointer to the contents of the editable.
+	//
 	Text() string
 	// SetSelectionBounds selects a region of text.
 	//
@@ -70,6 +100,12 @@ type EditableOverrider interface {
 	// the text.
 	//
 	// Note that positions are specified in characters, not bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start of region.
+	//    - endPos: end of region.
+	//
 	SetSelectionBounds(startPos, endPos int)
 }
 
@@ -287,6 +323,30 @@ func marshalEditabler(p uintptr) (interface{}, error) {
 	return wrapEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged: emitted at the end of a single user-visible operation on the
+// contents.
+//
+// E.g., a paste operation that replaces the contents of the selection will
+// cause only one signal emission (even though it is implemented by first
+// deleting the selection, then inserting the new content, and may cause
+// multiple ::notify::text signals to be emitted).
+func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
+	return editable.Connect("changed", f)
+}
+
+// ConnectDeleteText: emitted when text is deleted from the widget by the user.
+//
+// The default handler for this signal will normally be responsible for deleting
+// the text, so by connecting to this signal and then stopping the signal with
+// g_signal_stop_emission(), it is possible to modify the range of deleted text,
+// or prevent it from being deleted entirely.
+//
+// The start_pos and end_pos parameters are interpreted as for
+// gtk.Editable.DeleteText().
+func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) externglib.SignalHandle {
+	return editable.Connect("delete-text", f)
+}
+
 // DeleteSelection deletes the currently selected text of the editable.
 //
 // This call doesn’t do anything if there is no selected text.
@@ -341,6 +401,11 @@ func (editable *Editable) FinishDelegate() {
 }
 
 // Alignment gets the alignment of the editable.
+//
+// The function returns the following values:
+//
+//    - gfloat: alignment.
+//
 func (editable *Editable) Alignment() float32 {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.float        // in
@@ -371,6 +436,12 @@ func (editable *Editable) Alignment() float32 {
 //    - startPos: start of text.
 //    - endPos: end of text.
 //
+// The function returns the following values:
+//
+//    - utf8: pointer to the contents of the widget as a string. This string is
+//      allocated by the GtkEditable implementation and should be freed by the
+//      caller.
+//
 func (editable *Editable) Chars(startPos, endPos int) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
@@ -398,6 +469,11 @@ func (editable *Editable) Chars(startPos, endPos int) string {
 // to.
 //
 // Typically, the delegate is a gtk.Text widget.
+//
+// The function returns the following values:
+//
+//    - ret (optional): delegate GtkEditable.
+//
 func (editable *Editable) Delegate() Editabler {
 	var _arg0 *C.GtkEditable // out
 	var _cret *C.GtkEditable // in
@@ -427,6 +503,11 @@ func (editable *Editable) Delegate() Editabler {
 }
 
 // Editable retrieves whether editable is editable.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if editable is editable.
+//
 func (editable *Editable) Editable() bool {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gboolean     // in
@@ -446,6 +527,11 @@ func (editable *Editable) Editable() bool {
 }
 
 // EnableUndo gets if undo/redo actions are enabled for editable.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if undo is enabled.
+//
 func (editable *Editable) EnableUndo() bool {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gboolean     // in
@@ -465,6 +551,11 @@ func (editable *Editable) EnableUndo() bool {
 }
 
 // MaxWidthChars retrieves the desired maximum width of editable, in characters.
+//
+// The function returns the following values:
+//
+//    - gint: maximum width of the entry, in characters.
+//
 func (editable *Editable) MaxWidthChars() int {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.int          // in
@@ -485,6 +576,11 @@ func (editable *Editable) MaxWidthChars() int {
 // of the content of the editable.
 //
 // Note that this position is in characters, not in bytes.
+//
+// The function returns the following values:
+//
+//    - gint: cursor position.
+//
 func (editable *Editable) Position() int {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.int          // in
@@ -508,6 +604,13 @@ func (editable *Editable) Position() int {
 // returned.
 //
 // Note that positions are specified in characters, not bytes.
+//
+// The function returns the following values:
+//
+//    - startPos (optional): location to store the starting position, or NULL.
+//    - endPos (optional): location to store the end position, or NULL.
+//    - ok: TRUE if there is a non-empty selection, FALSE otherwise.
+//
 func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // in
@@ -535,6 +638,11 @@ func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) 
 // Text retrieves the contents of editable.
 //
 // The returned string is owned by GTK and must not be modified or freed.
+//
+// The function returns the following values:
+//
+//    - utf8: pointer to the contents of the editable.
+//
 func (editable *Editable) Text() string {
 	var _arg0 *C.GtkEditable // out
 	var _cret *C.char        // in
@@ -553,6 +661,11 @@ func (editable *Editable) Text() string {
 
 // WidthChars gets the number of characters of space reserved for the contents
 // of the editable.
+//
+// The function returns the following values:
+//
+//    - gint: number of chars to request space for, or negative if unset.
+//
 func (editable *Editable) WidthChars() int {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.int          // in
@@ -622,7 +735,7 @@ func (editable *Editable) SelectRegion(startPos, endPos int) {
 // The function takes the following parameters:
 //
 //    - xalign: horizontal alignment, from 0 (left) to 1 (right). Reversed for
-//    RTL layouts.
+//      RTL layouts.
 //
 func (editable *Editable) SetAlignment(xalign float32) {
 	var _arg0 *C.GtkEditable // out
@@ -765,28 +878,4 @@ func (editable *Editable) SetWidthChars(nChars int) {
 	C.gtk_editable_set_width_chars(_arg0, _arg1)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(nChars)
-}
-
-// ConnectChanged: emitted at the end of a single user-visible operation on the
-// contents.
-//
-// E.g., a paste operation that replaces the contents of the selection will
-// cause only one signal emission (even though it is implemented by first
-// deleting the selection, then inserting the new content, and may cause
-// multiple ::notify::text signals to be emitted).
-func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
-	return editable.Connect("changed", f)
-}
-
-// ConnectDeleteText: emitted when text is deleted from the widget by the user.
-//
-// The default handler for this signal will normally be responsible for deleting
-// the text, so by connecting to this signal and then stopping the signal with
-// g_signal_stop_emission(), it is possible to modify the range of deleted text,
-// or prevent it from being deleted entirely.
-//
-// The start_pos and end_pos parameters are interpreted as for
-// gtk.Editable.DeleteText().
-func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) externglib.SignalHandle {
-	return editable.Connect("delete-text", f)
 }

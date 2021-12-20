@@ -51,8 +51,12 @@ func marshalNativeSocketAddresser(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - native address object.
+//    - native (optional) address object.
 //    - len: length of native, in bytes.
+//
+// The function returns the following values:
+//
+//    - nativeSocketAddress: new SocketAddress.
 //
 func NewNativeSocketAddress(native cgo.Handle, len uint) *NativeSocketAddress {
 	var _arg1 C.gpointer        // out

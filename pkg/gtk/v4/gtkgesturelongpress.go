@@ -60,8 +60,25 @@ func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 	return wrapGestureLongPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectCancelled: emitted whenever a press moved too far, or was released
+// before gtk.GestureLongPress::pressed happened.
+func (gesture *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
+	return gesture.Connect("cancelled", f)
+}
+
+// ConnectPressed: emitted whenever a press goes unmoved/unreleased longer than
+// what the GTK defaults tell.
+func (gesture *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
+	return gesture.Connect("pressed", f)
+}
+
 // NewGestureLongPress returns a newly created GtkGesture that recognizes long
 // presses.
+//
+// The function returns the following values:
+//
+//    - gestureLongPress: newly created GtkGestureLongPress.
+//
 func NewGestureLongPress() *GestureLongPress {
 	var _cret *C.GtkGesture // in
 
@@ -75,6 +92,11 @@ func NewGestureLongPress() *GestureLongPress {
 }
 
 // DelayFactor returns the delay factor.
+//
+// The function returns the following values:
+//
+//    - gdouble: delay factor.
+//
 func (gesture *GestureLongPress) DelayFactor() float64 {
 	var _arg0 *C.GtkGestureLongPress // out
 	var _cret C.double               // in
@@ -110,16 +132,4 @@ func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
 	C.gtk_gesture_long_press_set_delay_factor(_arg0, _arg1)
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(delayFactor)
-}
-
-// ConnectCancelled: emitted whenever a press moved too far, or was released
-// before gtk.GestureLongPress::pressed happened.
-func (gesture *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
-	return gesture.Connect("cancelled", f)
-}
-
-// ConnectPressed: emitted whenever a press goes unmoved/unreleased longer than
-// what the GTK defaults tell.
-func (gesture *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("pressed", f)
 }

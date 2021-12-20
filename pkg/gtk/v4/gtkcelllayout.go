@@ -102,34 +102,79 @@ type CellLayoutOverrider interface {
 	// attribute is the parameter on cell to be set from the value. So for
 	// example if column 2 of the model contains strings, you could have the
 	// “text” attribute of a CellRendererText get its values from column 2.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell: CellRenderer.
+	//    - attribute on the renderer.
+	//    - column position on the model to get the attribute from.
+	//
 	AddAttribute(cell CellRendererer, attribute string, column int)
 	// Clear unsets all the mappings on all renderers on cell_layout and removes
 	// all renderers from cell_layout.
 	Clear()
 	// ClearAttributes clears all existing attributes previously set with
 	// gtk_cell_layout_set_attributes().
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell to clear the attribute mapping on.
+	//
 	ClearAttributes(cell CellRendererer)
 	// Area returns the underlying CellArea which might be cell_layout if called
 	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
+	//
+	// The function returns the following values:
+	//
+	//    - cellArea (optional): cell area used by cell_layout, or NULL in case
+	//      no cell area is used.
+	//
 	Area() CellAreaer
 	// Cells returns the cell renderers which have been added to cell_layout.
+	//
+	// The function returns the following values:
+	//
+	//    - list: a list of cell renderers. The list, but not the renderers has
+	//      been newly allocated and should be freed with g_list_free() when no
+	//      longer needed.
+	//
 	Cells() []CellRendererer
 	// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then
 	// the cell is allocated no more space than it needs. Any unused space is
 	// divided evenly between cells for which expand is TRUE.
 	//
 	// Note that reusing the same cell renderer is not supported.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell: CellRenderer.
+	//    - expand: TRUE if cell is to be given extra space allocated to
+	//      cell_layout.
+	//
 	PackEnd(cell CellRendererer, expand bool)
 	// PackStart packs the cell into the beginning of cell_layout. If expand is
 	// FALSE, then the cell is allocated no more space than it needs. Any unused
 	// space is divided evenly between cells for which expand is TRUE.
 	//
 	// Note that reusing the same cell renderer is not supported.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell: CellRenderer.
+	//    - expand: TRUE if cell is to be given extra space allocated to
+	//      cell_layout.
+	//
 	PackStart(cell CellRendererer, expand bool)
 	// Reorder re-inserts cell at position.
 	//
 	// Note that cell has already to be packed into cell_layout for this to
 	// function properly.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell to reorder.
+	//    - position: new position to insert cell at.
+	//
 	Reorder(cell CellRendererer, position int)
 	// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
 	//
@@ -138,6 +183,12 @@ type CellLayoutOverrider interface {
 	// renderer(s) as appropriate.
 	//
 	// func may be NULL to remove a previously set function.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell: CellRenderer.
+	//    - fn (optional) to use, or NULL.
+	//
 	SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc)
 }
 
@@ -340,6 +391,12 @@ func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 
 // Area returns the underlying CellArea which might be cell_layout if called on
 // a CellArea or might be NULL if no CellArea is used by cell_layout.
+//
+// The function returns the following values:
+//
+//    - cellArea (optional): cell area used by cell_layout, or NULL in case no
+//      cell area is used.
+//
 func (cellLayout *CellLayout) Area() CellAreaer {
 	var _arg0 *C.GtkCellLayout // out
 	var _cret *C.GtkCellArea   // in
@@ -369,6 +426,13 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 }
 
 // Cells returns the cell renderers which have been added to cell_layout.
+//
+// The function returns the following values:
+//
+//    - list: a list of cell renderers. The list, but not the renderers has been
+//      newly allocated and should be freed with g_list_free() when no longer
+//      needed.
+//
 func (cellLayout *CellLayout) Cells() []CellRendererer {
 	var _arg0 *C.GtkCellLayout // out
 	var _cret *C.GList         // in
@@ -413,8 +477,7 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 // The function takes the following parameters:
 //
 //    - cell: CellRenderer.
-//    - expand: TRUE if cell is to be given extra space allocated to
-//    cell_layout.
+//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
 //
 func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 	var _arg0 *C.GtkCellLayout   // out
@@ -442,8 +505,7 @@ func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 // The function takes the following parameters:
 //
 //    - cell: CellRenderer.
-//    - expand: TRUE if cell is to be given extra space allocated to
-//    cell_layout.
+//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
 //
 func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 	var _arg0 *C.GtkCellLayout   // out
@@ -498,7 +560,7 @@ func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 // The function takes the following parameters:
 //
 //    - cell: CellRenderer.
-//    - fn to use, or NULL.
+//    - fn (optional) to use, or NULL.
 //
 func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc) {
 	var _arg0 *C.GtkCellLayout        // out

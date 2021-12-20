@@ -22,6 +22,11 @@ import "C"
 //
 //    - symbol: keyval.
 //
+// The function returns the following values:
+//
+//    - lower: return location for lowercase version of symbol.
+//    - upper: return location for uppercase version of symbol.
+//
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	var _arg1 C.guint // out
 	var _arg2 C.guint // in
@@ -50,6 +55,11 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 //
 //    - keyvalName: key name.
 //
+// The function returns the following values:
+//
+//    - guint: corresponding key value, or GDK_KEY_VoidSymbol if the key name is
+//      not a valid key.
+//
 func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.char // out
 	var _cret C.guint // in
@@ -72,6 +82,11 @@ func KeyvalFromName(keyvalName string) uint {
 // The function takes the following parameters:
 //
 //    - keyval: key value.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if keyval is in lower case, or if keyval is not subject to case
+//      conversion.
 //
 func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
@@ -96,6 +111,11 @@ func KeyvalIsLower(keyval uint) bool {
 // The function takes the following parameters:
 //
 //    - keyval: key value.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if keyval is in upper case, or if keyval is not subject to case
+//      conversion.
 //
 func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
@@ -124,6 +144,11 @@ func KeyvalIsUpper(keyval uint) bool {
 //
 //    - keyval: key value.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): string containing the name of the key, or NULL if keyval
+//      is not a valid key. The string should not be modified.
+//
 func KeyvalName(keyval uint) string {
 	var _arg1 C.guint // out
 	var _cret *C.char // in
@@ -147,6 +172,11 @@ func KeyvalName(keyval uint) string {
 // The function takes the following parameters:
 //
 //    - keyval: key value.
+//
+// The function returns the following values:
+//
+//    - guint: lower case form of keyval, or keyval itself if it is already in
+//      lower case or it is not subject to case conversion.
 //
 func KeyvalToLower(keyval uint) uint {
 	var _arg1 C.guint // out
@@ -174,6 +204,11 @@ func KeyvalToLower(keyval uint) uint {
 //
 //    - keyval: GDK key symbol.
 //
+// The function returns the following values:
+//
+//    - guint32: corresponding unicode character, or 0 if there is no
+//      corresponding character.
+//
 func KeyvalToUnicode(keyval uint) uint32 {
 	var _arg1 C.guint   // out
 	var _cret C.guint32 // in
@@ -196,6 +231,11 @@ func KeyvalToUnicode(keyval uint) uint32 {
 //
 //    - keyval: key value.
 //
+// The function returns the following values:
+//
+//    - guint: upper case form of keyval, or keyval itself if it is already in
+//      upper case or it is not subject to case conversion.
+//
 func KeyvalToUpper(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
@@ -217,6 +257,11 @@ func KeyvalToUpper(keyval uint) uint {
 // The function takes the following parameters:
 //
 //    - wc: unicode character.
+//
+// The function returns the following values:
+//
+//    - guint: corresponding GDK key symbol, if one exists. or, if there is no
+//      corresponding symbol, wc | 0x01000000.
 //
 func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32 // out

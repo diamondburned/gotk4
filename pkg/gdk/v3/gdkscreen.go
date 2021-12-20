@@ -53,6 +53,27 @@ func marshalScreener(p uintptr) (interface{}, error) {
 	return wrapScreen(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectCompositedChanged signal is emitted when the composited status of the
+// screen changes.
+func (screen *Screen) ConnectCompositedChanged(f func()) externglib.SignalHandle {
+	return screen.Connect("composited-changed", f)
+}
+
+// ConnectMonitorsChanged signal is emitted when the number, size or position of
+// the monitors attached to the screen change.
+//
+// Only for X11 and OS X for now. A future implementation for Win32 may be a
+// possibility.
+func (screen *Screen) ConnectMonitorsChanged(f func()) externglib.SignalHandle {
+	return screen.Connect("monitors-changed", f)
+}
+
+// ConnectSizeChanged signal is emitted when the pixel width or height of a
+// screen changes.
+func (screen *Screen) ConnectSizeChanged(f func()) externglib.SignalHandle {
+	return screen.Connect("size-changed", f)
+}
+
 // ActiveWindow returns the screen’s currently active window.
 //
 // On X11, this is done by inspecting the _NET_ACTIVE_WINDOW property on the
@@ -68,6 +89,11 @@ func marshalScreener(p uintptr) (interface{}, error) {
 // needed.
 //
 // Deprecated: since version 3.22.
+//
+// The function returns the following values:
+//
+//    - window (optional): currently active window, or NULL.
+//
 func (screen *Screen) ActiveWindow() Windower {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkWindow // in
@@ -97,6 +123,11 @@ func (screen *Screen) ActiveWindow() Windower {
 }
 
 // Display gets the display to which the screen belongs.
+//
+// The function returns the following values:
+//
+//    - display to which screen belongs.
+//
 func (screen *Screen) Display() *Display {
 	var _arg0 *C.GdkScreen  // out
 	var _cret *C.GdkDisplay // in
@@ -115,6 +146,12 @@ func (screen *Screen) Display() *Display {
 
 // FontOptions gets any options previously set with
 // gdk_screen_set_font_options().
+//
+// The function returns the following values:
+//
+//    - fontOptions (optional): current font options, or NULL if no default font
+//      options have been set.
+//
 func (screen *Screen) FontOptions() *cairo.FontOptions {
 	var _arg0 *C.GdkScreen            // out
 	var _cret *C.cairo_font_options_t // in
@@ -138,6 +175,11 @@ func (screen *Screen) FontOptions() *cairo.FontOptions {
 // gdk_screen_get_monitor_scale_factor()).
 //
 // Deprecated: Use per-monitor information instead.
+//
+// The function returns the following values:
+//
+//    - gint: height of screen in pixels.
+//
 func (screen *Screen) Height() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
@@ -161,6 +203,11 @@ func (screen *Screen) Height() int {
 // dimensions instead.
 //
 // Deprecated: Use per-monitor information instead.
+//
+// The function returns the following values:
+//
+//    - gint: heigth of screen in millimeters.
+//
 func (screen *Screen) HeightMm() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
@@ -186,6 +233,11 @@ func (screen *Screen) HeightMm() int {
 //
 //    - x coordinate in the virtual screen.
 //    - y coordinate in the virtual screen.
+//
+// The function returns the following values:
+//
+//    - gint: monitor number in which the point (x,y) lies, or a monitor close to
+//      (x,y) if the point is not in any monitor.
 //
 func (screen *Screen) MonitorAtPoint(x, y int) int {
 	var _arg0 *C.GdkScreen // out
@@ -217,6 +269,11 @@ func (screen *Screen) MonitorAtPoint(x, y int) int {
 // The function takes the following parameters:
 //
 //    - window: Window.
+//
+// The function returns the following values:
+//
+//    - gint: monitor number in which most of window is located, or if window
+//      does not intersect any monitors, a monitor, close to window.
 //
 func (screen *Screen) MonitorAtWindow(window Windower) int {
 	var _arg0 *C.GdkScreen // out
@@ -254,6 +311,10 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 //
 //    - monitorNum: monitor number.
 //
+// The function returns the following values:
+//
+//    - dest (optional) to be filled with the monitor geometry.
+//
 func (screen *Screen) MonitorGeometry(monitorNum int) *Rectangle {
 	var _arg0 *C.GdkScreen   // out
 	var _arg1 C.gint         // out
@@ -280,7 +341,11 @@ func (screen *Screen) MonitorGeometry(monitorNum int) *Rectangle {
 // The function takes the following parameters:
 //
 //    - monitorNum: number of the monitor, between 0 and
-//    gdk_screen_get_n_monitors (screen).
+//      gdk_screen_get_n_monitors (screen).
+//
+// The function returns the following values:
+//
+//    - gint: height of the monitor, or -1 if not available.
 //
 func (screen *Screen) MonitorHeightMm(monitorNum int) int {
 	var _arg0 *C.GdkScreen // out
@@ -310,7 +375,12 @@ func (screen *Screen) MonitorHeightMm(monitorNum int) int {
 // The function takes the following parameters:
 //
 //    - monitorNum: number of the monitor, between 0 and
-//    gdk_screen_get_n_monitors (screen).
+//      gdk_screen_get_n_monitors (screen).
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): newly-allocated string containing the name of the
+//      monitor, or NULL if the name cannot be determined.
 //
 func (screen *Screen) MonitorPlugName(monitorNum int) string {
 	var _arg0 *C.GdkScreen // out
@@ -347,7 +417,11 @@ func (screen *Screen) MonitorPlugName(monitorNum int) string {
 // The function takes the following parameters:
 //
 //    - monitorNum: number of the monitor, between 0 and
-//    gdk_screen_get_n_monitors (screen).
+//      gdk_screen_get_n_monitors (screen).
+//
+// The function returns the following values:
+//
+//    - gint: scale factor.
 //
 func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
 	var _arg0 *C.GdkScreen // out
@@ -376,7 +450,11 @@ func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
 // The function takes the following parameters:
 //
 //    - monitorNum: number of the monitor, between 0 and
-//    gdk_screen_get_n_monitors (screen).
+//      gdk_screen_get_n_monitors (screen).
+//
+// The function returns the following values:
+//
+//    - gint: width of the monitor, or -1 if not available.
 //
 func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 	var _arg0 *C.GdkScreen // out
@@ -418,6 +496,10 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 //
 //    - monitorNum: monitor number.
 //
+// The function returns the following values:
+//
+//    - dest (optional) to be filled with the monitor workarea.
+//
 func (screen *Screen) MonitorWorkarea(monitorNum int) *Rectangle {
 	var _arg0 *C.GdkScreen   // out
 	var _arg1 C.gint         // out
@@ -440,6 +522,11 @@ func (screen *Screen) MonitorWorkarea(monitorNum int) *Rectangle {
 // NMonitors returns the number of monitors which screen consists of.
 //
 // Deprecated: Use gdk_display_get_n_monitors() instead.
+//
+// The function returns the following values:
+//
+//    - gint: number of monitors which screen consists of.
+//
 func (screen *Screen) NMonitors() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
@@ -460,6 +547,11 @@ func (screen *Screen) NMonitors() int {
 // belongs. (See gdk_screen_get_display())
 //
 // Deprecated: since version 3.22.
+//
+// The function returns the following values:
+//
+//    - gint: index.
+//
 func (screen *Screen) Number() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
@@ -486,6 +578,11 @@ func (screen *Screen) Number() int {
 // defaulting to the first monitor.
 //
 // Deprecated: Use gdk_display_get_primary_monitor() instead.
+//
+// The function returns the following values:
+//
+//    - gint: integer index for the primary monitor, or 0 if none is configured.
+//
 func (screen *Screen) PrimaryMonitor() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
@@ -504,6 +601,11 @@ func (screen *Screen) PrimaryMonitor() int {
 
 // Resolution gets the resolution for font handling on the screen; see
 // gdk_screen_set_resolution() for full details.
+//
+// The function returns the following values:
+//
+//    - gdouble: current resolution, or -1 if no resolution has been set.
+//
 func (screen *Screen) Resolution() float64 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gdouble    // in
@@ -532,6 +634,12 @@ func (screen *Screen) Resolution() float64 {
 //
 // For setting an overall opacity for a top-level window, see
 // gdk_window_set_opacity().
+//
+// The function returns the following values:
+//
+//    - visual (optional) to use for windows with an alpha channel or NULL if the
+//      capability is not available.
+//
 func (screen *Screen) RGBAVisual() *Visual {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkVisual // in
@@ -551,6 +659,11 @@ func (screen *Screen) RGBAVisual() *Visual {
 }
 
 // RootWindow gets the root window of screen.
+//
+// The function returns the following values:
+//
+//    - window: root window.
+//
 func (screen *Screen) RootWindow() Windower {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkWindow // in
@@ -590,6 +703,11 @@ func (screen *Screen) RootWindow() Windower {
 //    - name of the setting.
 //    - value: location to store the value of the setting.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the setting existed and a value was stored in value, FALSE
+//      otherwise.
+//
 func (screen *Screen) Setting(name string, value *externglib.Value) bool {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 *C.gchar     // out
@@ -617,6 +735,11 @@ func (screen *Screen) Setting(name string, value *externglib.Value) bool {
 
 // SystemVisual: get the system’s default visual for screen. This is the visual
 // for the root window of the display. The return value should not be freed.
+//
+// The function returns the following values:
+//
+//    - visual: system visual.
+//
 func (screen *Screen) SystemVisual() *Visual {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkVisual // in
@@ -639,6 +762,11 @@ func (screen *Screen) SystemVisual() *Visual {
 //
 // The returned list should be freed with g_list_free(), but its elements need
 // not be freed.
+//
+// The function returns the following values:
+//
+//    - list: list of toplevel windows, free with g_list_free().
+//
 func (screen *Screen) ToplevelWindows() []Windower {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GList     // in
@@ -679,6 +807,11 @@ func (screen *Screen) ToplevelWindows() []Windower {
 // gdk_screen_get_monitor_scale_factor()).
 //
 // Deprecated: Use per-monitor information instead.
+//
+// The function returns the following values:
+//
+//    - gint: width of screen in pixels.
+//
 func (screen *Screen) Width() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
@@ -702,6 +835,11 @@ func (screen *Screen) Width() int {
 // dimensions instead.
 //
 // Deprecated: Use per-monitor information instead.
+//
+// The function returns the following values:
+//
+//    - gint: width of screen in millimeters.
+//
 func (screen *Screen) WidthMm() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
@@ -732,6 +870,11 @@ func (screen *Screen) WidthMm() int {
 // The returned list is newly allocated and owns references to the windows it
 // contains, so it should be freed using g_list_free() and its windows unrefed
 // using g_object_unref() when no longer needed.
+//
+// The function returns the following values:
+//
+//    - list (optional): a list of Windows for the current window stack, or NULL.
+//
 func (screen *Screen) WindowStack() []Windower {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GList     // in
@@ -774,6 +917,12 @@ func (screen *Screen) WindowStack() []Windower {
 //
 // On X11 this function returns whether a compositing manager is compositing
 // screen.
+//
+// The function returns the following values:
+//
+//    - ok: whether windows with RGBA visuals can reasonably be expected to have
+//      their alpha channels drawn correctly on the screen.
+//
 func (screen *Screen) IsComposited() bool {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gboolean   // in
@@ -798,6 +947,11 @@ func (screen *Screen) IsComposited() bool {
 // format.
 //
 // Call g_list_free() on the return value when you’re finished with it.
+//
+// The function returns the following values:
+//
+//    - list: a list of visuals; the list must be freed, but not its contents.
+//
 func (screen *Screen) ListVisuals() []Visual {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GList     // in
@@ -824,6 +978,11 @@ func (screen *Screen) ListVisuals() []Visual {
 // Display with this screen as the default screen.
 //
 // Deprecated: since version 3.22.
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated string, free with g_free().
+//
 func (screen *Screen) MakeDisplayName() string {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.gchar     // in
@@ -848,7 +1007,8 @@ func (screen *Screen) MakeDisplayName() string {
 //
 // The function takes the following parameters:
 //
-//    - options or NULL to unset any previously set default font options.
+//    - options (optional) or NULL to unset any previously set default font
+//      options.
 //
 func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
 	var _arg0 *C.GdkScreen            // out
@@ -872,7 +1032,7 @@ func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
 // The function takes the following parameters:
 //
 //    - dpi: resolution in “dots per inch”. (Physical inches aren’t actually
-//    involved; the terminology is conventional.).
+//      involved; the terminology is conventional.).
 //
 func (screen *Screen) SetResolution(dpi float64) {
 	var _arg0 *C.GdkScreen // out
@@ -886,29 +1046,13 @@ func (screen *Screen) SetResolution(dpi float64) {
 	runtime.KeepAlive(dpi)
 }
 
-// ConnectCompositedChanged signal is emitted when the composited status of the
-// screen changes.
-func (screen *Screen) ConnectCompositedChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("composited-changed", f)
-}
-
-// ConnectMonitorsChanged signal is emitted when the number, size or position of
-// the monitors attached to the screen change.
-//
-// Only for X11 and OS X for now. A future implementation for Win32 may be a
-// possibility.
-func (screen *Screen) ConnectMonitorsChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("monitors-changed", f)
-}
-
-// ConnectSizeChanged signal is emitted when the pixel width or height of a
-// screen changes.
-func (screen *Screen) ConnectSizeChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("size-changed", f)
-}
-
 // ScreenGetDefault gets the default screen for the default display. (See
 // gdk_display_get_default ()).
+//
+// The function returns the following values:
+//
+//    - screen (optional) or NULL if there is no default display.
+//
 func ScreenGetDefault() *Screen {
 	var _cret *C.GdkScreen // in
 

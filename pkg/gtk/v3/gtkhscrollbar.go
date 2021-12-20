@@ -75,7 +75,11 @@ func marshalHScrollbarrer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment to use, or NULL to create a new adjustment.
+//    - adjustment (optional) to use, or NULL to create a new adjustment.
+//
+// The function returns the following values:
+//
+//    - hScrollbar: new HScrollbar.
 //
 func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
 	var _arg1 *C.GtkAdjustment // out

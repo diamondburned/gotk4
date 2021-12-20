@@ -17,8 +17,10 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	// yet, so the interface currently has no use.
 	type {{ .StructName }}Overrider interface {
 		{{ range .Virtuals -}}
+		{{ if $.IsInSameFile . -}}
 		{{- GoDoc . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
+		{{ end -}}
 		{{ end -}}
 	}
 	{{ end }}
@@ -58,8 +60,10 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		externglib.Objector
 
 		{{ range .Methods -}}
+		{{- if $.IsInSameFile . }}
 		{{- Synopsis . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
+		{{- end }}
 		{{ else }}
 		{{ $needsPrivate = true }}
 		base{{ .StructName }}() *{{ .StructName }}
@@ -81,34 +85,6 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	}
 	{{ end }}
 
-	{{ range .Constructors }}
-	{{ GoDoc . 0 }}
-	{{- if .ParamDocs }}
-	//
-	// The function takes the following parameters:
-	//
-	{{- range .ParamDocs }}
-	{{ GoDoc . 0 (OverrideSelfName .Name) (AdditionalPrefix "- ") (ParagraphIndent 1) }}
-	{{- end }}
-	//
-	{{- end }}
-	func {{ .Name }}{{ .Tail }} {{ .Block }}
-	{{ end }}
-
-	{{ range .Methods }}
-	{{ GoDoc . 0 }}
-	{{- if .ParamDocs }}
-	//
-	// The function takes the following parameters:
-	//
-	{{- range .ParamDocs }}
-	{{ GoDoc . 0 (OverrideSelfName .Name) (AdditionalPrefix "- ") (ParagraphIndent 1) }}
-	{{- end }}
-	//
-	{{- end }}
-	func ({{ .Recv }} *{{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
-	{{ end }}
-
 	{{ if $needsPrivate }}
 	func ({{ .Recv }} *{{ .StructName }}) base{{ .StructName }}() *{{ .StructName }} {
 		return {{ .Recv }}
@@ -121,11 +97,32 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	{{ range .Signals }}
+	{{ if $.IsInSameFile . }}
 	{{ $name := printf "Connect%s" (KebabToGo true .Name) }}
 	{{ GoDoc . 0 (OverrideSelfName $name) }}
 	func ({{ $.Recv }} *{{ $.StructName }}) {{ $name }}(f func{{ .Tail }}) externglib.SignalHandle {
 		return {{ $.Recv }}.Connect({{ Quote .Name }}, f)
 	}
+	{{ end }}
+	{{ end }}
+`)
+
+var constructorInterfaceImpl = gotmpl.NewGoTemplate(`
+	{{ GoDoc . 0 }}
+	func {{ .Name }}{{ .Tail }} {{ .Block }}
+`)
+
+// methodInterfaceTmpl needs the following type:
+//
+//    struct {
+//        Method
+//        StructName string
+//    }
+//
+var methodInterfaceTmpl = gotmpl.NewGoTemplate(`
+	{{ with .Method }}
+	{{ GoDoc . 0 }}
+	func ({{ .Recv }} *{{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 `)
 
@@ -191,4 +188,21 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 
 	writer.Pen().WriteTmpl(classInterfaceTmpl, data)
 	file.ApplyHeader(writer, igen)
+
+	for _, ctor := range igen.Constructors {
+		writer := FileWriterFromType(gen, ctor)
+		writer.Header().ApplyFrom(&ctor.Header)
+
+		writer.Pen().WriteTmpl(constructorInterfaceImpl, ctor)
+	}
+
+	for _, method := range igen.Methods {
+		writer := FileWriterFromType(gen, method)
+		writer.Header().ApplyFrom(&method.Header)
+
+		writer.Pen().WriteTmpl(methodInterfaceTmpl, gotmpl.M{
+			"Method":     method,
+			"StructName": igen.StructName,
+		})
+	}
 }

@@ -45,6 +45,11 @@ func marshalIMMulticontexter(p uintptr) (interface{}, error) {
 }
 
 // NewIMMulticontext creates a new IMMulticontext.
+//
+// The function returns the following values:
+//
+//    - imMulticontext: new IMMulticontext.
+//
 func NewIMMulticontext() *IMMulticontext {
 	var _cret *C.GtkIMContext // in
 
@@ -82,6 +87,11 @@ func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 }
 
 // ContextID gets the id of the currently active slave of the context.
+//
+// The function returns the following values:
+//
+//    - utf8: id of the currently active slave.
+//
 func (context *IMMulticontext) ContextID() string {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _cret *C.char              // in

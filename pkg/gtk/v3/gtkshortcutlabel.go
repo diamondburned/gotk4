@@ -71,6 +71,10 @@ func marshalShortcutLabeller(p uintptr) (interface{}, error) {
 //
 //    - accelerator: initial accelerator.
 //
+// The function returns the following values:
+//
+//    - shortcutLabel: newly-allocated ShortcutLabel.
+//
 func NewShortcutLabel(accelerator string) *ShortcutLabel {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -89,6 +93,11 @@ func NewShortcutLabel(accelerator string) *ShortcutLabel {
 }
 
 // Accelerator retrieves the current accelerator of self.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): current accelerator.
+//
 func (self *ShortcutLabel) Accelerator() string {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _cret *C.gchar            // in
@@ -108,6 +117,11 @@ func (self *ShortcutLabel) Accelerator() string {
 }
 
 // DisabledText retrieves the text that is displayed when no accelerator is set.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): current text displayed when no accelerator is set.
+//
 func (self *ShortcutLabel) DisabledText() string {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _cret *C.gchar            // in

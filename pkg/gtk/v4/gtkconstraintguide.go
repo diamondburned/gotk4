@@ -57,6 +57,11 @@ func marshalConstraintGuider(p uintptr) (interface{}, error) {
 }
 
 // NewConstraintGuide creates a new GtkConstraintGuide object.
+//
+// The function returns the following values:
+//
+//    - constraintGuide: new GtkConstraintGuide object.
+//
 func NewConstraintGuide() *ConstraintGuide {
 	var _cret *C.GtkConstraintGuide // in
 
@@ -73,8 +78,8 @@ func NewConstraintGuide() *ConstraintGuide {
 //
 // The function takes the following parameters:
 //
-//    - width: return location for the maximum width, or NULL.
-//    - height: return location for the maximum height, or NULL.
+//    - width (optional): return location for the maximum width, or NULL.
+//    - height (optional): return location for the maximum height, or NULL.
 //
 func (guide *ConstraintGuide) MaxSize(width, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
@@ -99,8 +104,8 @@ func (guide *ConstraintGuide) MaxSize(width, height *int) {
 //
 // The function takes the following parameters:
 //
-//    - width: return location for the minimum width, or NULL.
-//    - height: return location for the minimum height, or NULL.
+//    - width (optional): return location for the minimum width, or NULL.
+//    - height (optional): return location for the minimum height, or NULL.
 //
 func (guide *ConstraintGuide) MinSize(width, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
@@ -122,6 +127,11 @@ func (guide *ConstraintGuide) MinSize(width, height *int) {
 }
 
 // Name retrieves the name set using gtk_constraint_guide_set_name().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the guide.
+//
 func (guide *ConstraintGuide) Name() string {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _cret *C.char               // in
@@ -144,8 +154,8 @@ func (guide *ConstraintGuide) Name() string {
 //
 // The function takes the following parameters:
 //
-//    - width: return location for the natural width, or NULL.
-//    - height: return location for the natural height, or NULL.
+//    - width (optional): return location for the natural width, or NULL.
+//    - height (optional): return location for the natural height, or NULL.
 //
 func (guide *ConstraintGuide) NatSize(width, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
@@ -168,6 +178,11 @@ func (guide *ConstraintGuide) NatSize(width, height *int) {
 
 // Strength retrieves the strength set using
 // gtk_constraint_guide_set_strength().
+//
+// The function returns the following values:
+//
+//    - constraintStrength: strength of the constraint on the natural size.
+//
 func (guide *ConstraintGuide) Strength() ConstraintStrength {
 	var _arg0 *C.GtkConstraintGuide   // out
 	var _cret C.GtkConstraintStrength // in
@@ -240,7 +255,7 @@ func (guide *ConstraintGuide) SetMinSize(width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - name for the guide.
+//    - name (optional) for the guide.
 //
 func (guide *ConstraintGuide) SetName(name string) {
 	var _arg0 *C.GtkConstraintGuide // out

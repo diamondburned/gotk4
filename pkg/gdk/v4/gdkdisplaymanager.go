@@ -127,7 +127,17 @@ func marshalDisplayManagerer(p uintptr) (interface{}, error) {
 	return wrapDisplayManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectDisplayOpened: emitted when a display is opened.
+func (manager *DisplayManager) ConnectDisplayOpened(f func(display Display)) externglib.SignalHandle {
+	return manager.Connect("display-opened", f)
+}
+
 // DefaultDisplay gets the default GdkDisplay.
+//
+// The function returns the following values:
+//
+//    - display (optional): GdkDisplay, or NULL if there is no default display.
+//
 func (manager *DisplayManager) DefaultDisplay() *Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GdkDisplay        // in
@@ -147,6 +157,12 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 }
 
 // ListDisplays: list all currently open displays.
+//
+// The function returns the following values:
+//
+//    - sList: newly allocated GSList of GdkDisplay objects. Free with
+//      g_slist_free() when you are done with it.
+//
 func (manager *DisplayManager) ListDisplays() []Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GSList            // in
@@ -174,6 +190,11 @@ func (manager *DisplayManager) ListDisplays() []Display {
 // The function takes the following parameters:
 //
 //    - name of the display to open.
+//
+// The function returns the following values:
+//
+//    - display (optional): GdkDisplay, or NULL if the display could not be
+//      opened.
 //
 func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	var _arg0 *C.GdkDisplayManager // out
@@ -215,11 +236,6 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	runtime.KeepAlive(display)
 }
 
-// ConnectDisplayOpened: emitted when a display is opened.
-func (manager *DisplayManager) ConnectDisplayOpened(f func(display Display)) externglib.SignalHandle {
-	return manager.Connect("display-opened", f)
-}
-
 // DisplayManagerGet gets the singleton GdkDisplayManager object.
 //
 // When called for the first time, this function consults the GDK_BACKEND
@@ -227,6 +243,11 @@ func (manager *DisplayManager) ConnectDisplayOpened(f func(display Display)) ext
 // (in case GDK has been compiled with multiple backends).
 //
 // Applications can use set_allowed_backends to limit what backends wil be used.
+//
+// The function returns the following values:
+//
+//    - displayManager: global GdkDisplayManager singleton.
+//
 func DisplayManagerGet() *DisplayManager {
 	var _cret *C.GdkDisplayManager // in
 

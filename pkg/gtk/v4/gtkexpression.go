@@ -55,6 +55,10 @@ func _gotk4_gtk4_ExpressionNotify(arg0 C.gpointer) {
 //
 //    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
 //
+// The function returns the following values:
+//
+//    - expression (optional): GtkExpression.
+//
 func ValueDupExpression(value *externglib.Value) Expressioner {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
@@ -88,6 +92,10 @@ func ValueDupExpression(value *externglib.Value) Expressioner {
 // The function takes the following parameters:
 //
 //    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
+//
+// The function returns the following values:
+//
+//    - expression (optional): GtkExpression.
 //
 func ValueGetExpression(value *externglib.Value) Expressioner {
 	var _arg1 *C.GValue        // out
@@ -145,7 +153,7 @@ func ValueSetExpression(value *externglib.Value, expression Expressioner) {
 // The function takes the following parameters:
 //
 //    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
-//    - expression: GtkExpression.
+//    - expression (optional): GtkExpression.
 //
 func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 	var _arg1 *C.GValue        // out
@@ -233,6 +241,10 @@ func marshalConstantExpressioner(p uintptr) (interface{}, error) {
 //
 //    - value: GValue.
 //
+// The function returns the following values:
+//
+//    - constantExpression: new GtkExpression.
+//
 func NewConstantExpressionForValue(value *externglib.Value) *ConstantExpression {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
@@ -250,6 +262,11 @@ func NewConstantExpressionForValue(value *externglib.Value) *ConstantExpression 
 }
 
 // Value gets the value that a constant expression evaluates to.
+//
+// The function returns the following values:
+//
+//    - value: value.
+//
 func (expression *ConstantExpression) Value() *externglib.Value {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GValue        // in
@@ -416,6 +433,15 @@ func marshalExpressioner(p uintptr) (interface{}, error) {
 	return wrapExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (self *Expression) baseExpression() *Expression {
+	return self
+}
+
+// BaseExpression returns the underlying base object.
+func BaseExpression(obj Expressioner) *Expression {
+	return obj.baseExpression()
+}
+
 // Bind target's property named property to self.
 //
 // The value that self evaluates to is set via g_object_set() on target. This is
@@ -432,7 +458,11 @@ func marshalExpressioner(p uintptr) (interface{}, error) {
 //
 //    - target object to bind to.
 //    - property: name of the property on target to bind to.
-//    - this_: argument for the evaluation of self.
+//    - this_ (optional): argument for the evaluation of self.
+//
+// The function returns the following values:
+//
+//    - expressionWatch: GtkExpressionWatch.
 //
 func (self *Expression) Bind(target *externglib.Object, property string, this_ *externglib.Object) *ExpressionWatch {
 	var _arg0 *C.GtkExpression      // out
@@ -479,8 +509,12 @@ func (self *Expression) Bind(target *externglib.Object, property string, this_ *
 //
 // The function takes the following parameters:
 //
-//    - this_: argument for the evaluation.
+//    - this_ (optional): argument for the evaluation.
 //    - value: empty GValue.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the expression could be evaluated.
 //
 func (self *Expression) Evaluate(this_ *externglib.Object, value *externglib.Value) bool {
 	var _arg0 *C.GtkExpression // out
@@ -510,6 +544,11 @@ func (self *Expression) Evaluate(this_ *externglib.Object, value *externglib.Val
 //
 // This type is constant and will not change over the lifetime of this
 // expression.
+//
+// The function returns the following values:
+//
+//    - gType: type returned from gtk.Expression.Evaluate().
+//
 func (self *Expression) ValueType() externglib.Type {
 	var _arg0 *C.GtkExpression // out
 	var _cret C.GType          // in
@@ -533,6 +572,11 @@ func (self *Expression) ValueType() externglib.Type {
 //
 // That means a call to gtk.Expression.Watch() is not necessary because it will
 // never trigger a notify.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the expression is static.
+//
 func (self *Expression) IsStatic() bool {
 	var _arg0 *C.GtkExpression // out
 	var _cret C.gboolean       // in
@@ -560,8 +604,16 @@ func (self *Expression) IsStatic() bool {
 //
 // The function takes the following parameters:
 //
-//    - this_: this argument to watch.
+//    - this_ (optional): this argument to watch.
 //    - notify: callback to invoke when the expression changes.
+//
+// The function returns the following values:
+//
+//    - expressionWatch: newly installed watch. Note that the only reference held
+//      to the watch will be released when the watch is unwatched which can
+//      happen automatically, and not just via gtk.ExpressionWatch.Unwatch(). You
+//      should call gtk.ExpressionWatch.Ref() if you want to keep the watch
+//      around.
 //
 func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify) *ExpressionWatch {
 	var _arg0 *C.GtkExpression      // out
@@ -594,15 +646,6 @@ func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify)
 	)
 
 	return _expressionWatch
-}
-
-func (self *Expression) baseExpression() *Expression {
-	return self
-}
-
-// BaseExpression returns the underlying base object.
-func BaseExpression(obj Expressioner) *Expression {
-	return obj.baseExpression()
 }
 
 // ObjectExpression: GObject value in a GtkExpression.
@@ -639,6 +682,10 @@ func marshalObjectExpressioner(p uintptr) (interface{}, error) {
 //
 //    - object to watch.
 //
+// The function returns the following values:
+//
+//    - objectExpression: new GtkExpression.
+//
 func NewObjectExpression(object *externglib.Object) *ObjectExpression {
 	var _arg1 *C.GObject       // out
 	var _cret *C.GtkExpression // in
@@ -656,6 +703,11 @@ func NewObjectExpression(object *externglib.Object) *ObjectExpression {
 }
 
 // Object gets the object that the expression evaluates to.
+//
+// The function returns the following values:
+//
+//    - object (optional): object, or NULL.
+//
 func (expression *ObjectExpression) Object() *externglib.Object {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GObject       // in
@@ -707,9 +759,13 @@ func marshalPropertyExpressioner(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - thisType: type to expect for the this type.
-//    - expression: expression to evaluate to get the object to query or NULL
-//    to query the this object.
+//    - expression (optional): expression to evaluate to get the object to query
+//      or NULL to query the this object.
 //    - propertyName: name of the property.
+//
+// The function returns the following values:
+//
+//    - propertyExpression: new GtkExpression.
 //
 func NewPropertyExpression(thisType externglib.Type, expression Expressioner, propertyName string) *PropertyExpression {
 	var _arg1 C.GType          // out
@@ -739,6 +795,11 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 
 // GetExpression gets the expression specifying the object of a property
 // expression.
+//
+// The function returns the following values:
+//
+//    - ret: object expression.
+//
 func (expression *PropertyExpression) GetExpression() Expressioner {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
@@ -793,6 +854,15 @@ func marshalExpressionWatch(p uintptr) (interface{}, error) {
 //
 // This is equivalent to calling gtk.Expression.Evaluate() with the expression
 // and this pointer originally used to create watch.
+//
+// The function takes the following parameters:
+//
+//    - value: empty GValue to be set.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the expression could be evaluated and value was set.
+//
 func (watch *ExpressionWatch) Evaluate(value *externglib.Value) bool {
 	var _arg0 *C.GtkExpressionWatch // out
 	var _arg1 *C.GValue             // out

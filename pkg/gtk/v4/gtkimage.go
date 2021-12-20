@@ -141,6 +141,11 @@ func marshalImager(p uintptr) (interface{}, error) {
 }
 
 // NewImage creates a new empty GtkImage widget.
+//
+// The function returns the following values:
+//
+//    - image: newly created GtkImage widget.
+//
 func NewImage() *Image {
 	var _cret *C.GtkWidget // in
 
@@ -168,6 +173,10 @@ func NewImage() *Image {
 // The function takes the following parameters:
 //
 //    - filename: filename.
+//
+// The function returns the following values:
+//
+//    - image: new GtkImage.
 //
 func NewImageFromFile(filename string) *Image {
 	var _arg1 *C.char      // out
@@ -197,6 +206,10 @@ func NewImageFromFile(filename string) *Image {
 //
 //    - icon: icon.
 //
+// The function returns the following values:
+//
+//    - image: new GtkImage displaying the themed icon.
+//
 func NewImageFromGIcon(icon gio.Iconner) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
@@ -222,7 +235,11 @@ func NewImageFromGIcon(icon gio.Iconner) *Image {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name or NULL.
+//    - iconName (optional): icon name or NULL.
+//
+// The function returns the following values:
+//
+//    - image: new GtkImage displaying the themed icon.
 //
 func NewImageFromIconName(iconName string) *Image {
 	var _arg1 *C.char      // out
@@ -254,7 +271,11 @@ func NewImageFromIconName(iconName string) *Image {
 //
 // The function takes the following parameters:
 //
-//    - paintable: GdkPaintable, or NULL.
+//    - paintable (optional): GdkPaintable, or NULL.
+//
+// The function returns the following values:
+//
+//    - image: new GtkImage.
 //
 func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	var _arg1 *C.GdkPaintable // out
@@ -289,7 +310,11 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf: GdkPixbuf, or NULL.
+//    - pixbuf (optional): GdkPixbuf, or NULL.
+//
+// The function returns the following values:
+//
+//    - image: new GtkImage.
 //
 func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	var _arg1 *C.GdkPixbuf // out
@@ -327,6 +352,10 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 //
 //    - resourcePath: resource path.
 //
+// The function returns the following values:
+//
+//    - image: new GtkImage.
+//
 func NewImageFromResource(resourcePath string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -359,6 +388,11 @@ func (image *Image) Clear() {
 // The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk.Image.GetStorageType()). The caller of this function does not own a
 // reference to the returned GIcon.
+//
+// The function returns the following values:
+//
+//    - icon (optional): GIcon, or NULL.
+//
 func (image *Image) GIcon() gio.Iconner {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.GIcon    // in
@@ -392,6 +426,11 @@ func (image *Image) GIcon() gio.Iconner {
 // The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME
 // (see gtk.Image.GetStorageType()). The returned string is owned by the
 // GtkImage and should not be freed.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name, or NULL.
+//
 func (image *Image) IconName() string {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.char     // in
@@ -411,6 +450,11 @@ func (image *Image) IconName() string {
 }
 
 // IconSize gets the icon size used by the image when rendering icons.
+//
+// The function returns the following values:
+//
+//    - iconSize: image size used by icons.
+//
 func (image *Image) IconSize() IconSize {
 	var _arg0 *C.GtkImage   // out
 	var _cret C.GtkIconSize // in
@@ -432,6 +476,11 @@ func (image *Image) IconSize() IconSize {
 // The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PAINTABLE
 // (see gtk.Image.GetStorageType()). The caller of this function does not own a
 // reference to the returned paintable.
+//
+// The function returns the following values:
+//
+//    - paintable (optional): displayed paintable, or NULL if the image is empty.
+//
 func (image *Image) Paintable() gdk.Paintabler {
 	var _arg0 *C.GtkImage     // out
 	var _cret *C.GdkPaintable // in
@@ -461,6 +510,11 @@ func (image *Image) Paintable() gdk.Paintabler {
 }
 
 // PixelSize gets the pixel size used for named icons.
+//
+// The function returns the following values:
+//
+//    - gint: pixel size used for named icons.
+//
 func (image *Image) PixelSize() int {
 	var _arg0 *C.GtkImage // out
 	var _cret C.int       // in
@@ -481,6 +535,11 @@ func (image *Image) PixelSize() int {
 // store image data.
 //
 // If the GtkImage has no image data, the return value will be GTK_IMAGE_EMPTY.
+//
+// The function returns the following values:
+//
+//    - imageType: image representation being used.
+//
 func (image *Image) StorageType() ImageType {
 	var _arg0 *C.GtkImage    // out
 	var _cret C.GtkImageType // in
@@ -503,7 +562,7 @@ func (image *Image) StorageType() ImageType {
 //
 // The function takes the following parameters:
 //
-//    - filename or NULL.
+//    - filename (optional) or NULL.
 //
 func (image *Image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
@@ -546,7 +605,7 @@ func (image *Image) SetFromGIcon(icon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name or NULL.
+//    - iconName (optional): icon name or NULL.
 //
 func (image *Image) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkImage // out
@@ -569,7 +628,7 @@ func (image *Image) SetFromIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - paintable: GdkPaintable or NULL.
+//    - paintable (optional): GdkPaintable or NULL.
 //
 func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkImage     // out
@@ -594,7 +653,7 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf: GdkPixbuf or NULL.
+//    - pixbuf (optional): GdkPixbuf or NULL.
 //
 func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
@@ -616,7 +675,7 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: resource path or NULL.
+//    - resourcePath (optional): resource path or NULL.
 //
 func (image *Image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out

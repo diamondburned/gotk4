@@ -63,6 +63,12 @@ func (p PropMode) String() string {
 //
 //    - str: UTF-8 string.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): newly-allocated string, or NULL if the conversion
+//      failed. (It should not fail for any properly formed UTF-8 string unless
+//      system limits like memory or file descriptors are exceeded.).
+//
 func UTF8ToStringTarget(str string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in

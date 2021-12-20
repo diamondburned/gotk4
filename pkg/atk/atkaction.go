@@ -28,8 +28,27 @@ func init() {
 // yet, so the interface currently has no use.
 type ActionOverrider interface {
 	// DoAction: perform the specified action on the object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if success, FALSE otherwise.
+	//
 	DoAction(i int) bool
 	// Description returns a description of the specified action of the object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): description string, or NULL if action does not
+	//      implement this interface.
+	//
 	Description(i int) string
 	// Keybinding gets the keybinding which can be used to activate this action,
 	// if one exists. The string returned should contain localized,
@@ -56,13 +75,39 @@ type ActionOverrider interface {
 	// "N;Alt+D:N;Strg+N" for the German locale. If, hypothetically, this menu
 	// item lacked a mnemonic, it would be represented by ";;Ctrl+N" and
 	// ";;Strg+N" respectively.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): keybinding which can be used to activate this
+	//      action, or NULL if there is no keybinding for this action.
+	//
 	Keybinding(i int) string
 	// LocalizedName returns the localized name of the specified action of the
 	// object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): name string, or NULL if action does not implement
+	//      this interface.
+	//
 	LocalizedName(i int) string
 	// NActions gets the number of accessible actions available on the object.
 	// If there are more than one, the first one is considered the "default"
 	// action of the object.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: the number of actions, or 0 if action does not implement this
+	//      interface.
+	//
 	NActions() int
 	// Name returns a non-localized string naming the specified action of the
 	// object. This name is generally not descriptive of the end result of the
@@ -76,8 +121,28 @@ type ActionOverrider interface {
 	// For technical reasons, some toolkits cannot guarantee that the reported
 	// action is actually 'bound' to a nontrivial user event; i.e. the result of
 	// some actions via atk_action_do_action() may be NIL.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): name string, or NULL if action does not implement
+	//      this interface.
+	//
 	Name(i int) string
 	// SetDescription sets a description of the specified action of the object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i: action index corresponding to the action to be performed.
+	//    - desc: description to be assigned to this action.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: gboolean representing if the description was successfully set;.
+	//
 	SetDescription(i int, desc string) bool
 }
 
@@ -144,6 +209,10 @@ func marshalActioner(p uintptr) (interface{}, error) {
 //
 //    - i: action index corresponding to the action to be performed.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
+//
 func (action *Action) DoAction(i int) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -170,6 +239,11 @@ func (action *Action) DoAction(i int) bool {
 // The function takes the following parameters:
 //
 //    - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): description string, or NULL if action does not implement
+//      this interface.
 //
 func (action *Action) Description(i int) string {
 	var _arg0 *C.AtkAction // out
@@ -221,6 +295,11 @@ func (action *Action) Description(i int) string {
 //
 //    - i: action index corresponding to the action to be performed.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): keybinding which can be used to activate this action, or
+//      NULL if there is no keybinding for this action.
+//
 func (action *Action) Keybinding(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -249,6 +328,11 @@ func (action *Action) Keybinding(i int) string {
 //
 //    - i: action index corresponding to the action to be performed.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): name string, or NULL if action does not implement this
+//      interface.
+//
 func (action *Action) LocalizedName(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -273,6 +357,12 @@ func (action *Action) LocalizedName(i int) string {
 // NActions gets the number of accessible actions available on the object. If
 // there are more than one, the first one is considered the "default" action of
 // the object.
+//
+// The function returns the following values:
+//
+//    - gint: the number of actions, or 0 if action does not implement this
+//      interface.
+//
 func (action *Action) NActions() int {
 	var _arg0 *C.AtkAction // out
 	var _cret C.gint       // in
@@ -306,6 +396,11 @@ func (action *Action) NActions() int {
 //
 //    - i: action index corresponding to the action to be performed.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): name string, or NULL if action does not implement this
+//      interface.
+//
 func (action *Action) Name(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -333,6 +428,10 @@ func (action *Action) Name(i int) string {
 //
 //    - i: action index corresponding to the action to be performed.
 //    - desc: description to be assigned to this action.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing if the description was successfully set;.
 //
 func (action *Action) SetDescription(i int, desc string) bool {
 	var _arg0 *C.AtkAction // out

@@ -47,18 +47,34 @@ type PermissionOverrider interface {
 	// This call is blocking, likely for a very long time (in the case that user
 	// interaction is required). See g_permission_acquire_async() for the
 	// non-blocking version.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//
 	Acquire(ctx context.Context) error
 	// AcquireAsync attempts to acquire the permission represented by
 	// permission.
 	//
 	// This is the first half of the asynchronous version of
 	// g_permission_acquire().
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - callback (optional) to call when done.
+	//
 	AcquireAsync(ctx context.Context, callback AsyncReadyCallback)
 	// AcquireFinish collects the result of attempting to acquire the permission
 	// represented by permission.
 	//
 	// This is the second half of the asynchronous version of
 	// g_permission_acquire().
+	//
+	// The function takes the following parameters:
+	//
+	//    - result given to the ReadyCallback.
+	//
 	AcquireFinish(result AsyncResulter) error
 	// Release attempts to release the permission represented by permission.
 	//
@@ -75,18 +91,34 @@ type PermissionOverrider interface {
 	// This call is blocking, likely for a very long time (in the case that user
 	// interaction is required). See g_permission_release_async() for the
 	// non-blocking version.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//
 	Release(ctx context.Context) error
 	// ReleaseAsync attempts to release the permission represented by
 	// permission.
 	//
 	// This is the first half of the asynchronous version of
 	// g_permission_release().
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - callback (optional) to call when done.
+	//
 	ReleaseAsync(ctx context.Context, callback AsyncReadyCallback)
 	// ReleaseFinish collects the result of attempting to release the permission
 	// represented by permission.
 	//
 	// This is the second half of the asynchronous version of
 	// g_permission_release().
+	//
+	// The function takes the following parameters:
+	//
+	//    - result given to the ReadyCallback.
+	//
 	ReleaseFinish(result AsyncResulter) error
 }
 
@@ -132,6 +164,15 @@ func marshalPermissioner(p uintptr) (interface{}, error) {
 	return wrapPermission(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (permission *Permission) basePermission() *Permission {
+	return permission
+}
+
+// BasePermission returns the underlying base object.
+func BasePermission(obj Permissioner) *Permission {
+	return obj.basePermission()
+}
+
 // Acquire attempts to acquire the permission represented by permission.
 //
 // The precise method by which this happens depends on the permission and the
@@ -150,7 +191,7 @@ func marshalPermissioner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //
 func (permission *Permission) Acquire(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
@@ -183,8 +224,8 @@ func (permission *Permission) Acquire(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
-//    - callback to call when done.
+//    - ctx (optional) or NULL.
+//    - callback (optional) to call when done.
 //
 func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
@@ -243,6 +284,11 @@ func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 // Allowed gets the value of the 'allowed' property. This property is TRUE if
 // the caller currently has permission to perform the action that permission
 // represents the permission to perform.
+//
+// The function returns the following values:
+//
+//    - ok: value of the 'allowed' property.
+//
 func (permission *Permission) Allowed() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
@@ -264,6 +310,11 @@ func (permission *Permission) Allowed() bool {
 // CanAcquire gets the value of the 'can-acquire' property. This property is
 // TRUE if it is generally possible to acquire the permission by calling
 // g_permission_acquire().
+//
+// The function returns the following values:
+//
+//    - ok: value of the 'can-acquire' property.
+//
 func (permission *Permission) CanAcquire() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
@@ -285,6 +336,11 @@ func (permission *Permission) CanAcquire() bool {
 // CanRelease gets the value of the 'can-release' property. This property is
 // TRUE if it is generally possible to release the permission by calling
 // g_permission_release().
+//
+// The function returns the following values:
+//
+//    - ok: value of the 'can-release' property.
+//
 func (permission *Permission) CanRelease() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
@@ -357,7 +413,7 @@ func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //
 func (permission *Permission) Release(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
@@ -390,8 +446,8 @@ func (permission *Permission) Release(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
-//    - callback to call when done.
+//    - ctx (optional) or NULL.
+//    - callback (optional) to call when done.
 //
 func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
@@ -445,13 +501,4 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
-}
-
-func (permission *Permission) basePermission() *Permission {
-	return permission
-}
-
-// BasePermission returns the underlying base object.
-func BasePermission(obj Permissioner) *Permission {
-	return obj.basePermission()
 }

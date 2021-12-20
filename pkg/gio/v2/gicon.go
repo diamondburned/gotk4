@@ -33,8 +33,23 @@ func init() {
 // yet, so the interface currently has no use.
 type IconOverrider interface {
 	// Equal checks if two icons are equal.
+	//
+	// The function takes the following parameters:
+	//
+	//    - icon2 (optional): pointer to the second #GIcon.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
+	//
 	Equal(icon2 Iconner) bool
 	// Hash gets a hash for an icon.
+	//
+	// The function returns the following values:
+	//
+	//    - guint containing a hash for the icon, suitable for use in a Table or
+	//      similar data structure.
+	//
 	Hash() uint
 	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
 	// be retrieved back by calling g_icon_deserialize() on the returned value.
@@ -42,6 +57,12 @@ type IconOverrider interface {
 	// makes sense to transfer the #GVariant between processes on the same
 	// machine, (as opposed to over the network), and within the same file
 	// system namespace.
+	//
+	// The function returns the following values:
+	//
+	//    - variant (optional) or NULL when serialization fails. The #GVariant
+	//      will not be floating.
+	//
 	Serialize() *glib.Variant
 }
 
@@ -108,7 +129,11 @@ func marshalIconner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - icon2: pointer to the second #GIcon.
+//    - icon2 (optional): pointer to the second #GIcon.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
 //
 func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _arg0 *C.GIcon   // out
@@ -140,6 +165,12 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 // serialization will avoid using raw icon data when possible, it only makes
 // sense to transfer the #GVariant between processes on the same machine, (as
 // opposed to over the network), and within the same file system namespace.
+//
+// The function returns the following values:
+//
+//    - variant (optional) or NULL when serialization fails. The #GVariant will
+//      not be floating.
+//
 func (icon *Icon) Serialize() *glib.Variant {
 	var _arg0 *C.GIcon    // out
 	var _cret *C.GVariant // in
@@ -179,6 +210,12 @@ func (icon *Icon) Serialize() *glib.Variant {
 //
 // - If icon is a Icon with exactly one name and no fallbacks, the encoding is
 // simply the name (such as network-server).
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): allocated NUL-terminated UTF8 string or NULL if icon
+//      can't be serialized. Use g_free() to free.
+//
 func (icon *Icon) String() string {
 	var _arg0 *C.GIcon // out
 	var _cret *C.gchar // in
@@ -204,6 +241,10 @@ func (icon *Icon) String() string {
 // The function takes the following parameters:
 //
 //    - value created with g_icon_serialize().
+//
+// The function returns the following values:
+//
+//    - icon (optional) or NULL when deserialization fails.
 //
 func IconDeserialize(value *glib.Variant) Iconner {
 	var _arg1 *C.GVariant // out
@@ -239,6 +280,11 @@ func IconDeserialize(value *glib.Variant) Iconner {
 //
 //    - icon to an icon object.
 //
+// The function returns the following values:
+//
+//    - guint containing a hash for the icon, suitable for use in a Table or
+//      similar data structure.
+//
 func IconHash(icon cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -265,6 +311,10 @@ func IconHash(icon cgo.Handle) uint {
 // The function takes the following parameters:
 //
 //    - str: string obtained via g_icon_to_string().
+//
+// The function returns the following values:
+//
+//    - icon: object implementing the #GIcon interface or NULL if error is set.
 //
 func NewIconForString(str string) (Iconner, error) {
 	var _arg1 *C.gchar  // out

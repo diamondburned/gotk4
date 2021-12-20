@@ -62,6 +62,11 @@ func marshalCellRendererPixbuffer(p uintptr) (interface{}, error) {
 // a value in a TreeModel. For example, you can bind the “pixbuf” property on
 // the cell renderer to a pixbuf value in the model, thus rendering a different
 // image in each row of the TreeView.
+//
+// The function returns the following values:
+//
+//    - cellRendererPixbuf: new cell renderer.
+//
 func NewCellRendererPixbuf() *CellRendererPixbuf {
 	var _cret *C.GtkCellRenderer // in
 

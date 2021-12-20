@@ -74,6 +74,17 @@ func (p *Point) Y() float32 {
 }
 
 // Distance computes the distance between a and b.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point_t.
+//
+// The function returns the following values:
+//
+//    - dX (optional): distance component on the X axis.
+//    - dY (optional): distance component on the Y axis.
+//    - gfloat: distance between the two points.
+//
 func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -104,6 +115,15 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 // This function accounts for floating point fluctuations; if you want to
 // control the fuzziness of the match, you can use graphene_point_near()
 // instead.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the points have the same coordinates.
+//
 func (a *Point) Equal(b *Point) bool {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -128,6 +148,16 @@ func (a *Point) Equal(b *Point) bool {
 // Init initializes p to the given x and y coordinates.
 //
 // It's safe to call this function multiple times.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate.
+//    - y: y coordinate.
+//
+// The function returns the following values:
+//
+//    - point: initialized point.
+//
 func (p *Point) Init(x float32, y float32) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 C.float             // out
@@ -151,6 +181,15 @@ func (p *Point) Init(x float32, y float32) *Point {
 }
 
 // InitFromPoint initializes p with the same coordinates of src.
+//
+// The function takes the following parameters:
+//
+//    - src to use.
+//
+// The function returns the following values:
+//
+//    - point: initialized point.
+//
 func (p *Point) InitFromPoint(src *Point) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -172,6 +211,15 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 
 // InitFromVec2 initializes p with the coordinates inside the given
 // #graphene_vec2_t.
+//
+// The function takes the following parameters:
+//
+//    - src: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - point: initialized point.
+//
 func (p *Point) InitFromVec2(src *Vec2) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_vec2_t  // out
@@ -193,6 +241,16 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 
 // Interpolate: linearly interpolates the coordinates of a and b using the given
 // factor.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point_t.
+//    - factor: linear interpolation factor.
+//
+// The function returns the following values:
+//
+//    - res: return location for the interpolated point.
+//
 func (a *Point) Interpolate(b *Point, factor float64) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -217,6 +275,16 @@ func (a *Point) Interpolate(b *Point, factor float64) *Point {
 
 // Near checks whether the two points a and b are within the threshold of
 // epsilon.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point_t.
+//    - epsilon: threshold between the two points.
+//
+// The function returns the following values:
+//
+//    - ok: true if the distance is within epsilon.
+//
 func (a *Point) Near(b *Point, epsilon float32) bool {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -243,6 +311,11 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 
 // ToVec2 stores the coordinates of the given #graphene_point_t into a
 // #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - v: return location for the vertex.
+//
 func (p *Point) ToVec2() *Vec2 {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 C.graphene_vec2_t   // in
@@ -260,6 +333,11 @@ func (p *Point) ToVec2() *Vec2 {
 }
 
 // PointZero returns a point fixed at (0, 0).
+//
+// The function returns the following values:
+//
+//    - point: fixed point.
+//
 func PointZero() *Point {
 	var _cret *C.graphene_point_t // in
 

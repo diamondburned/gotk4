@@ -108,6 +108,21 @@ type ConverterOverrider interface {
 	// partial multibyte sequence). Converters are supposed to try to produce as
 	// much output as possible and then return an error (typically
 	// G_IO_ERROR_PARTIAL_INPUT).
+	//
+	// The function takes the following parameters:
+	//
+	//    - inbuf (optional): buffer containing the data to convert.
+	//    - outbuf (optional): buffer to write converted data in.
+	//    - flags controlling the conversion details.
+	//
+	// The function returns the following values:
+	//
+	//    - bytesRead will be set to the number of bytes read from inbuf on
+	//      success.
+	//    - bytesWritten will be set to the number of bytes written to outbuf on
+	//      success.
+	//    - converterResult G_CONVERTER_ERROR on error.
+	//
 	Convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
 	// Reset resets all internal state in the converter, making it behave as if
 	// it was just created. If the converter has any internal state that would
@@ -234,6 +249,13 @@ func marshalConverterer(p uintptr) (interface{}, error) {
 //    - inbuf: buffer containing the data to convert.
 //    - outbuf: buffer to write converted data in.
 //    - flags controlling the conversion details.
+//
+// The function returns the following values:
+//
+//    - bytesRead will be set to the number of bytes read from inbuf on success.
+//    - bytesWritten will be set to the number of bytes written to outbuf on
+//      success.
+//    - converterResult G_CONVERTER_ERROR on error.
 //
 func (converter *Converter) Convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
 	var _arg0 *C.GConverter // out

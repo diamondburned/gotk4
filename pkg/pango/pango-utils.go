@@ -26,6 +26,10 @@ import "C"
 //
 //    - ch: unicode character.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if ch is a zero-width character, FALSE otherwise.
+//
 func IsZeroWidth(ch uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -59,8 +63,13 @@ func IsZeroWidth(ch uint32) bool {
 //
 //    - text to itemize.
 //    - length: number of bytes (not characters) to process, or -1 if text is
-//    nul-terminated and the length should be calculated.
+//      nul-terminated and the length should be calculated.
 //    - pbaseDir: input base direction, and output resolved direction.
+//
+// The function returns the following values:
+//
+//    - guint8: newly allocated array of embedding levels, one item per character
+//      (not byte), that should be freed using g_free().
 //
 func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *byte {
 	var _arg1 *C.gchar          // out
@@ -99,8 +108,15 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 // The function takes the following parameters:
 //
 //    - typ: enum type to parse, eg. PANGO_TYPE_ELLIPSIZE_MODE.
-//    - str: string to parse. May be NULL.
+//    - str (optional): string to parse. May be NULL.
 //    - warn: if TRUE, issue a g_warning() on bad input.
+//
+// The function returns the following values:
+//
+//    - value (optional): integer to store the result in, or NULL.
+//    - possibleValues (optional): place to store list of possible values on
+//      failure, or NULL.
+//    - ok: TRUE if str was successfully parsed.
 //
 func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg1 C.GType    // out
@@ -152,6 +168,11 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 //    - str: string to parse.
 //    - warn: if TRUE, issue a g_warning() on bad input.
 //
+// The function returns the following values:
+//
+//    - stretch: PangoStretch to store the result in.
+//    - ok: TRUE if str was successfully parsed.
+//
 func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _arg1 *C.char        // out
 	var _arg2 C.PangoStretch // in
@@ -188,6 +209,11 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 //
 //    - str: string to parse.
 //    - warn: if TRUE, issue a g_warning() on bad input.
+//
+// The function returns the following values:
+//
+//    - style: PangoStyle to store the result in.
+//    - ok: TRUE if str was successfully parsed.
 //
 func ParseStyle(str string, warn bool) (Style, bool) {
 	var _arg1 *C.char      // out
@@ -226,6 +252,11 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 //    - str: string to parse.
 //    - warn: if TRUE, issue a g_warning() on bad input.
 //
+// The function returns the following values:
+//
+//    - variant: PangoVariant to store the result in.
+//    - ok: TRUE if str was successfully parsed.
+//
 func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _arg1 *C.char        // out
 	var _arg2 C.PangoVariant // in
@@ -263,6 +294,11 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 //    - str: string to parse.
 //    - warn: if TRUE, issue a g_warning() on bad input.
 //
+// The function returns the following values:
+//
+//    - weight: PangoWeight to store the result in.
+//    - ok: TRUE if str was successfully parsed.
+//
 func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _arg1 *C.char       // out
 	var _arg2 C.PangoWeight // in
@@ -298,6 +334,10 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 // The function takes the following parameters:
 //
 //    - str: G_SEARCHPATH_SEPARATOR separated list of filenames.
+//
+// The function returns the following values:
+//
+//    - utf8s: list of strings to be freed with g_strfreev().
 //
 func SplitFileList(str string) []string {
 	var _arg1 *C.char  // out
@@ -338,6 +378,10 @@ func SplitFileList(str string) []string {
 //
 //    - str: string.
 //
+// The function returns the following values:
+//
+//    - utf8: newly-allocated string that must be freed with g_free().
+//
 func TrimString(str string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -361,6 +405,11 @@ func TrimString(str string) string {
 // This is similar to the macro PANGO_VERSION except that the macro returns the
 // encoded version available at compile-time. A version number can be encoded
 // into an integer using PANGO_VERSION_ENCODE().
+//
+// The function returns the following values:
+//
+//    - gint: encoded version of Pango library available at run time.
+//
 func Version() int {
 	var _cret C.int // in
 
@@ -396,6 +445,12 @@ func Version() int {
 //    - requiredMinor: required minor version.
 //    - requiredMicro: required major version.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): NULL if the Pango library is compatible with the given
+//      version, or a string describing the version mismatch. The returned string
+//      is owned by Pango and should not be modified or freed.
+//
 func VersionCheck(requiredMajor, requiredMinor, requiredMicro int) string {
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -424,6 +479,13 @@ func VersionCheck(requiredMajor, requiredMinor, requiredMicro int) string {
 //
 // This is similar to the macro PANGO_VERSION_STRING except that the macro
 // returns the version available at compile-time.
+//
+// The function returns the following values:
+//
+//    - utf8: string containing the version of Pango library available at run
+//      time. The returned string is owned by Pango and should not be modified or
+//      freed.
+//
 func VersionString() string {
 	var _cret *C.char // in
 

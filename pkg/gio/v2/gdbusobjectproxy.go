@@ -56,6 +56,10 @@ func marshalDBusObjectProxier(p uintptr) (interface{}, error) {
 //    - connection: BusConnection.
 //    - objectPath: object path.
 //
+// The function returns the following values:
+//
+//    - dBusObjectProxy: new BusObjectProxy.
+//
 func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
@@ -77,6 +81,11 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 }
 
 // Connection gets the connection that proxy is for.
+//
+// The function returns the following values:
+//
+//    - dBusConnection Do not free, the object is owned by proxy.
+//
 func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectProxy // out
 	var _cret *C.GDBusConnection  // in

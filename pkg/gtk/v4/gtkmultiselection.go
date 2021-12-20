@@ -55,7 +55,11 @@ func marshalMultiSelectioner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model: GListModel to manage, or NULL.
+//    - model (optional): GListModel to manage, or NULL.
+//
+// The function returns the following values:
+//
+//    - multiSelection: new GtkMultiSelection.
 //
 func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 	var _arg1 *C.GListModel        // out
@@ -77,6 +81,11 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 }
 
 // Model returns the underlying model of self.
+//
+// The function returns the following values:
+//
+//    - listModel: underlying model.
+//
 func (self *MultiSelection) Model() gio.ListModeller {
 	var _arg0 *C.GtkMultiSelection // out
 	var _cret *C.GListModel        // in
@@ -112,7 +121,7 @@ func (self *MultiSelection) Model() gio.ListModeller {
 //
 // The function takes the following parameters:
 //
-//    - model: GListModel to wrap.
+//    - model (optional): GListModel to wrap.
 //
 func (self *MultiSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkMultiSelection // out

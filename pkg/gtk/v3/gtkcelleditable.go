@@ -48,6 +48,12 @@ type CellEditableOverrider interface {
 	// Note that the cell_editable is created on-demand for the current edit;
 	// its lifetime is temporary and does not persist across other edits and/or
 	// cells.
+	//
+	// The function takes the following parameters:
+	//
+	//    - event (optional) that began the editing process, or NULL if editing
+	//      was initiated programmatically.
+	//
 	StartEditing(event *gdk.Event)
 }
 
@@ -97,6 +103,36 @@ func marshalCellEditabler(p uintptr) (interface{}, error) {
 	return wrapCellEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEditingDone: this signal is a sign for the cell renderer to update its
+// value from the cell_editable.
+//
+// Implementations of CellEditable are responsible for emitting this signal when
+// they are done editing, e.g. Entry emits this signal when the user presses
+// Enter. Typical things to do in a handler for ::editing-done are to capture
+// the edited value, disconnect the cell_editable from signals on the
+// CellRenderer, etc.
+//
+// gtk_cell_editable_editing_done() is a convenience method for emitting
+// CellEditable::editing-done.
+func (cellEditable *CellEditable) ConnectEditingDone(f func()) externglib.SignalHandle {
+	return cellEditable.Connect("editing-done", f)
+}
+
+// ConnectRemoveWidget: this signal is meant to indicate that the cell is
+// finished editing, and the cell_editable widget is being removed and may
+// subsequently be destroyed.
+//
+// Implementations of CellEditable are responsible for emitting this signal when
+// they are done editing. It must be emitted after the
+// CellEditable::editing-done signal, to give the cell renderer a chance to
+// update the cell's value before the widget is removed.
+//
+// gtk_cell_editable_remove_widget() is a convenience method for emitting
+// CellEditable::remove-widget.
+func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) externglib.SignalHandle {
+	return cellEditable.Connect("remove-widget", f)
+}
+
 // EditingDone emits the CellEditable::editing-done signal.
 func (cellEditable *CellEditable) EditingDone() {
 	var _arg0 *C.GtkCellEditable // out
@@ -130,8 +166,8 @@ func (cellEditable *CellEditable) RemoveWidget() {
 //
 // The function takes the following parameters:
 //
-//    - event that began the editing process, or NULL if editing was initiated
-//    programmatically.
+//    - event (optional) that began the editing process, or NULL if editing was
+//      initiated programmatically.
 //
 func (cellEditable *CellEditable) StartEditing(event *gdk.Event) {
 	var _arg0 *C.GtkCellEditable // out
@@ -145,34 +181,4 @@ func (cellEditable *CellEditable) StartEditing(event *gdk.Event) {
 	C.gtk_cell_editable_start_editing(_arg0, _arg1)
 	runtime.KeepAlive(cellEditable)
 	runtime.KeepAlive(event)
-}
-
-// ConnectEditingDone: this signal is a sign for the cell renderer to update its
-// value from the cell_editable.
-//
-// Implementations of CellEditable are responsible for emitting this signal when
-// they are done editing, e.g. Entry emits this signal when the user presses
-// Enter. Typical things to do in a handler for ::editing-done are to capture
-// the edited value, disconnect the cell_editable from signals on the
-// CellRenderer, etc.
-//
-// gtk_cell_editable_editing_done() is a convenience method for emitting
-// CellEditable::editing-done.
-func (cellEditable *CellEditable) ConnectEditingDone(f func()) externglib.SignalHandle {
-	return cellEditable.Connect("editing-done", f)
-}
-
-// ConnectRemoveWidget: this signal is meant to indicate that the cell is
-// finished editing, and the cell_editable widget is being removed and may
-// subsequently be destroyed.
-//
-// Implementations of CellEditable are responsible for emitting this signal when
-// they are done editing. It must be emitted after the
-// CellEditable::editing-done signal, to give the cell renderer a chance to
-// update the cell's value before the widget is removed.
-//
-// gtk_cell_editable_remove_widget() is a convenience method for emitting
-// CellEditable::remove-widget.
-func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) externglib.SignalHandle {
-	return cellEditable.Connect("remove-widget", f)
 }

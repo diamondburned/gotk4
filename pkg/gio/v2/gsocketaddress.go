@@ -30,9 +30,19 @@ func init() {
 // yet, so the interface currently has no use.
 type SocketAddressOverrider interface {
 	// Family gets the socket family type of address.
+	//
+	// The function returns the following values:
+	//
+	//    - socketFamily: socket family type of address.
+	//
 	Family() SocketFamily
 	// NativeSize gets the size of address's native struct sockaddr. You can use
 	// this to allocate memory to pass to g_socket_address_to_native().
+	//
+	// The function returns the following values:
+	//
+	//    - gssize: size of the native struct sockaddr that address represents.
+	//
 	NativeSize() int
 	// ToNative converts a Address to a native struct sockaddr, which can be
 	// passed to low-level functions like connect() or bind().
@@ -40,6 +50,14 @@ type SocketAddressOverrider interface {
 	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
 	// returned. If the address type is not known on the system then a
 	// G_IO_ERROR_NOT_SUPPORTED error is returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - dest (optional): pointer to a memory location that will contain the
+	//      native struct sockaddr.
+	//    - destlen: size of dest. Must be at least as large as
+	//      g_socket_address_get_native_size().
+	//
 	ToNative(dest cgo.Handle, destlen uint) error
 }
 
@@ -80,6 +98,15 @@ func marshalSocketAddresser(p uintptr) (interface{}, error) {
 	return wrapSocketAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (address *SocketAddress) baseSocketAddress() *SocketAddress {
+	return address
+}
+
+// BaseSocketAddress returns the underlying base object.
+func BaseSocketAddress(obj SocketAddresser) *SocketAddress {
+	return obj.baseSocketAddress()
+}
+
 // NewSocketAddressFromNative creates a Address subclass corresponding to the
 // native struct sockaddr native.
 //
@@ -87,6 +114,11 @@ func marshalSocketAddresser(p uintptr) (interface{}, error) {
 //
 //    - native: pointer to a struct sockaddr.
 //    - len: size of the memory location pointed to by native.
+//
+// The function returns the following values:
+//
+//    - socketAddress: new Address if native could successfully be converted,
+//      otherwise NULL.
 //
 func NewSocketAddressFromNative(native cgo.Handle, len uint) *SocketAddress {
 	var _arg1 C.gpointer        // out
@@ -108,6 +140,11 @@ func NewSocketAddressFromNative(native cgo.Handle, len uint) *SocketAddress {
 }
 
 // Family gets the socket family type of address.
+//
+// The function returns the following values:
+//
+//    - socketFamily: socket family type of address.
+//
 func (address *SocketAddress) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
@@ -126,6 +163,11 @@ func (address *SocketAddress) Family() SocketFamily {
 
 // NativeSize gets the size of address's native struct sockaddr. You can use
 // this to allocate memory to pass to g_socket_address_to_native().
+//
+// The function returns the following values:
+//
+//    - gssize: size of the native struct sockaddr that address represents.
+//
 func (address *SocketAddress) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.gssize          // in
@@ -151,10 +193,10 @@ func (address *SocketAddress) NativeSize() int {
 //
 // The function takes the following parameters:
 //
-//    - dest: pointer to a memory location that will contain the native struct
-//    sockaddr.
+//    - dest (optional): pointer to a memory location that will contain the
+//      native struct sockaddr.
 //    - destlen: size of dest. Must be at least as large as
-//    g_socket_address_get_native_size().
+//      g_socket_address_get_native_size().
 //
 func (address *SocketAddress) ToNative(dest cgo.Handle, destlen uint) error {
 	var _arg0 *C.GSocketAddress // out
@@ -178,13 +220,4 @@ func (address *SocketAddress) ToNative(dest cgo.Handle, destlen uint) error {
 	}
 
 	return _goerr
-}
-
-func (address *SocketAddress) baseSocketAddress() *SocketAddress {
-	return address
-}
-
-// BaseSocketAddress returns the underlying base object.
-func BaseSocketAddress(obj SocketAddresser) *SocketAddress {
-	return obj.baseSocketAddress()
 }

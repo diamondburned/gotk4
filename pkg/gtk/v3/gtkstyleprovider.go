@@ -64,12 +64,31 @@ type StyleProviderOverrider interface {
 	// NULL if none is defined.
 	//
 	// Deprecated: Will always return NULL for all GTK-provided style providers.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path to query.
+	//
+	// The function returns the following values:
+	//
+	//    - iconFactory (optional): icon factory to use for path, or NULL.
+	//
 	IconFactory(path *WidgetPath) *IconFactory
 	// Style returns the style settings affecting a widget defined by path, or
 	// NULL if provider doesn’t contemplate styling path.
 	//
 	// Deprecated: Will always return NULL for all GTK-provided style providers
 	// as the interface cannot correctly work the way CSS is specified.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path to query.
+	//
+	// The function returns the following values:
+	//
+	//    - styleProperties (optional) containing the style settings affecting
+	//      path.
+	//
 	Style(path *WidgetPath) *StyleProperties
 }
 
@@ -117,6 +136,10 @@ func marshalStyleProviderer(p uintptr) (interface{}, error) {
 //
 //    - path to query.
 //
+// The function returns the following values:
+//
+//    - iconFactory (optional): icon factory to use for path, or NULL.
+//
 func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 	var _arg0 *C.GtkStyleProvider // out
 	var _arg1 *C.GtkWidgetPath    // out
@@ -147,6 +170,10 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 // The function takes the following parameters:
 //
 //    - path to query.
+//
+// The function returns the following values:
+//
+//    - styleProperties (optional) containing the style settings affecting path.
 //
 func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 	var _arg0 *C.GtkStyleProvider   // out

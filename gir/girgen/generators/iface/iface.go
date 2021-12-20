@@ -162,7 +162,6 @@ func (g *Generator) init(typ interface{}) bool {
 				continue
 			}
 
-			file.ApplyHeader(g, &g.cgen)
 			g.Constructors = append(g.Constructors, newMethod(&g.cgen))
 		}
 
@@ -253,6 +252,33 @@ func (g *Generator) ImplInterfaces() []string {
 	}
 
 	return names
+}
+
+// IsInSameFile returns true if the given GIR item is in the same file. It's
+// guessed using the InfoElements field in the given value.
+func (g *Generator) IsInSameFile(v interface{}) bool {
+	if g.InfoElements == nil {
+		// Maybe?
+		return true
+	}
+
+	ifields := cmt.GetInfoFields(v)
+	if ifields.Elements == nil {
+		return true
+	}
+
+	el1 := g.InfoElements
+	el2 := ifields.Elements
+
+	if el1.SourcePosition != nil && el2.SourcePosition != nil {
+		return el1.SourcePosition.Filename == el2.SourcePosition.Filename
+	}
+	if el1.Doc != nil && el2.Doc != nil {
+		return el1.Doc.Filename == el2.Doc.Filename
+	}
+
+	// Maybe?
+	return true
 }
 
 // Wrap creates a wrapper around the given object variable.

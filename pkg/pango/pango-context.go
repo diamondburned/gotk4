@@ -39,13 +39,18 @@ func init() {
 // The function takes the following parameters:
 //
 //    - context: structure holding information that affects the itemization
-//    process.
+//      process.
 //    - text to itemize. Must be valid UTF-8.
 //    - startIndex: first byte in text to process.
 //    - length: number of bytes (not characters) to process after start_index.
-//    This must be >= 0.
+//      This must be >= 0.
 //    - attrs: set of attributes that apply to text.
-//    - cachedIter: cached attribute iterator, or NULL.
+//    - cachedIter (optional): cached attribute iterator, or NULL.
+//
+// The function returns the following values:
+//
+//    - list: GList of pango.Item structures. The items should be freed using
+//      pango.Item.Free() probably in combination with g_list_free_full().
 //
 func Itemize(context *Context, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
 	var _arg1 *C.PangoContext      // out
@@ -103,14 +108,19 @@ func Itemize(context *Context, text string, startIndex, length int, attrs *AttrL
 // The function takes the following parameters:
 //
 //    - context: structure holding information that affects the itemization
-//    process.
+//      process.
 //    - baseDir: base direction to use for bidirectional processing.
 //    - text to itemize.
 //    - startIndex: first byte in text to process.
 //    - length: number of bytes (not characters) to process after start_index.
-//    This must be >= 0.
+//      This must be >= 0.
 //    - attrs: set of attributes that apply to text.
-//    - cachedIter: cached attribute iterator, or NULL.
+//    - cachedIter (optional): cached attribute iterator, or NULL.
+//
+// The function returns the following values:
+//
+//    - list: GList of pango.Item structures. The items should be freed using
+//      pango.Item.Free() probably in combination with g_list_free_full().
 //
 func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
 	var _arg1 *C.PangoContext      // out
@@ -197,6 +207,12 @@ func marshalContexter(p uintptr) (interface{}, error) {
 // If you are using Pango as part of a higher-level system, that system may have
 // it's own way of create a PangoContext. For instance, the GTK toolkit has,
 // among others, gtk_widget_get_pango_context(). Use those instead.
+//
+// The function returns the following values:
+//
+//    - context: newly allocated PangoContext, which should be freed with
+//      g_object_unref().
+//
 func NewContext() *Context {
 	var _cret *C.PangoContext // in
 
@@ -227,6 +243,11 @@ func (context *Context) Changed() {
 // BaseDir retrieves the base direction for the context.
 //
 // See pango.Context.SetBaseDir().
+//
+// The function returns the following values:
+//
+//    - direction: base direction for the context.
+//
 func (context *Context) BaseDir() Direction {
 	var _arg0 *C.PangoContext  // out
 	var _cret C.PangoDirection // in
@@ -246,6 +267,11 @@ func (context *Context) BaseDir() Direction {
 // BaseGravity retrieves the base gravity for the context.
 //
 // See pango.Context.SetBaseGravity().
+//
+// The function returns the following values:
+//
+//    - gravity: base gravity for the context.
+//
 func (context *Context) BaseGravity() Gravity {
 	var _arg0 *C.PangoContext // out
 	var _cret C.PangoGravity  // in
@@ -263,6 +289,12 @@ func (context *Context) BaseGravity() Gravity {
 }
 
 // FontDescription: retrieve the default font description for the context.
+//
+// The function returns the following values:
+//
+//    - fontDescription: pointer to the context's default font description. This
+//      value must not be modified or freed.
+//
 func (context *Context) FontDescription() *FontDescription {
 	var _arg0 *C.PangoContext         // out
 	var _cret *C.PangoFontDescription // in
@@ -280,6 +312,12 @@ func (context *Context) FontDescription() *FontDescription {
 }
 
 // FontMap gets the PangoFontMap used to look up fonts for this context.
+//
+// The function returns the following values:
+//
+//    - fontMap: font map for the PangoContext. This value is owned by Pango and
+//      should not be unreferenced.
+//
 func (context *Context) FontMap() FontMapper {
 	var _arg0 *C.PangoContext // out
 	var _cret *C.PangoFontMap // in
@@ -314,6 +352,11 @@ func (context *Context) FontMap() FontMapper {
 // This is similar to pango.Context.GetBaseGravity(), except for when the base
 // gravity is PANGO_GRAVITY_AUTO for which pango.Gravity.GetForMatrix is used to
 // return the gravity from the current context matrix.
+//
+// The function returns the following values:
+//
+//    - gravity: resolved gravity for the context.
+//
 func (context *Context) Gravity() Gravity {
 	var _arg0 *C.PangoContext // out
 	var _cret C.PangoGravity  // in
@@ -333,6 +376,11 @@ func (context *Context) Gravity() Gravity {
 // GravityHint retrieves the gravity hint for the context.
 //
 // See pango.Context.SetGravityHint() for details.
+//
+// The function returns the following values:
+//
+//    - gravityHint: gravity hint for the context.
+//
 func (context *Context) GravityHint() GravityHint {
 	var _arg0 *C.PangoContext    // out
 	var _cret C.PangoGravityHint // in
@@ -350,6 +398,11 @@ func (context *Context) GravityHint() GravityHint {
 }
 
 // Language retrieves the global language tag for the context.
+//
+// The function returns the following values:
+//
+//    - language: global language tag.
+//
 func (context *Context) Language() *Language {
 	var _arg0 *C.PangoContext  // out
 	var _cret *C.PangoLanguage // in
@@ -376,6 +429,13 @@ func (context *Context) Language() *Language {
 // with this context.
 //
 // See pango.Context.SetMatrix().
+//
+// The function returns the following values:
+//
+//    - matrix (optional): matrix, or NULL if no matrix has been set (which is
+//      the same as the identity matrix). The returned matrix is owned by Pango
+//      and must not be modified or freed.
+//
 func (context *Context) Matrix() *Matrix {
 	var _arg0 *C.PangoContext // out
 	var _cret *C.PangoMatrix  // in
@@ -408,12 +468,17 @@ func (context *Context) Matrix() *Matrix {
 //
 // The function takes the following parameters:
 //
-//    - desc: PangoFontDescription structure. NULL means that the font
-//    description from the context will be used.
-//    - language tag used to determine which script to get the metrics for.
-//    NULL means that the language tag from the context will be used. If no
-//    language tag is set on the context, metrics for the default language (as
-//    determined by pango.Language.GetDefault will be returned.
+//    - desc (optional): PangoFontDescription structure. NULL means that the font
+//      description from the context will be used.
+//    - language (optional) tag used to determine which script to get the metrics
+//      for. NULL means that the language tag from the context will be used. If
+//      no language tag is set on the context, metrics for the default language
+//      (as determined by pango.Language.GetDefault will be returned.
+//
+// The function returns the following values:
+//
+//    - fontMetrics: PangoFontMetrics object. The caller must call
+//      pango.FontMetrics.Unref() when finished using the object.
 //
 func (context *Context) Metrics(desc *FontDescription, language *Language) *FontMetrics {
 	var _arg0 *C.PangoContext         // out
@@ -449,6 +514,9 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 
 // RoundGlyphPositions returns whether font rendering with this context should
 // round glyph positions and widths.
+//
+// The function returns the following values:
+//
 func (context *Context) RoundGlyphPositions() bool {
 	var _arg0 *C.PangoContext // out
 	var _cret C.gboolean      // in
@@ -478,6 +546,11 @@ func (context *Context) RoundGlyphPositions() bool {
 // This can be used to automatically detect changes to a PangoContext, and is
 // only useful when implementing objects that need update when their
 // PangoContext changes, like PangoLayout.
+//
+// The function returns the following values:
+//
+//    - guint: current serial number of context.
+//
 func (context *Context) Serial() uint {
 	var _arg0 *C.PangoContext // out
 	var _cret C.guint         // in
@@ -495,6 +568,12 @@ func (context *Context) Serial() uint {
 }
 
 // ListFamilies: list all families for a context.
+//
+// The function returns the following values:
+//
+//    - families: location to store a pointer to an array of PangoFontFamily.
+//      This array should be freed with g_free().
+//
 func (context *Context) ListFamilies() []FontFamilier {
 	var _arg0 *C.PangoContext     // out
 	var _arg1 **C.PangoFontFamily // in
@@ -539,6 +618,11 @@ func (context *Context) ListFamilies() []FontFamilier {
 //
 //    - desc: PangoFontDescription describing the font to load.
 //
+// The function returns the following values:
+//
+//    - font (optional): newly allocated PangoFont that was loaded, or NULL if no
+//      font matched.
+//
 func (context *Context) LoadFont(desc *FontDescription) Fonter {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -577,6 +661,11 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 //
 //    - desc: PangoFontDescription describing the fonts to load.
 //    - language: PangoLanguage the fonts will be used for.
+//
+// The function returns the following values:
+//
+//    - fontset (optional): newly allocated PangoFontset loaded, or NULL if no
+//      font matched.
 //
 func (context *Context) LoadFontset(desc *FontDescription, language *Language) Fontsetter {
 	var _arg0 *C.PangoContext         // out
@@ -751,8 +840,8 @@ func (context *Context) SetLanguage(language *Language) {
 //
 // The function takes the following parameters:
 //
-//    - matrix: PangoMatrix, or NULL to unset any existing matrix. (No matrix
-//    set is the same as setting the identity matrix.).
+//    - matrix (optional): PangoMatrix, or NULL to unset any existing matrix. (No
+//      matrix set is the same as setting the identity matrix.).
 //
 func (context *Context) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoContext // out

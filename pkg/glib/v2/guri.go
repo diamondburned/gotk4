@@ -430,6 +430,11 @@ func marshalURI(p uintptr) (interface{}, error) {
 //
 // Depending on the URI scheme, g_uri_parse_params() may be useful for further
 // parsing this information.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) uri's authentication parameters.
+//
 func (uri *URI) AuthParams() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -449,6 +454,11 @@ func (uri *URI) AuthParams() string {
 }
 
 // Flags gets uri's flags set upon construction.
+//
+// The function returns the following values:
+//
+//    - uriFlags uri's flags.
+//
 func (uri *URI) Flags() URIFlags {
 	var _arg0 *C.GUri     // out
 	var _cret C.GUriFlags // in
@@ -467,6 +477,11 @@ func (uri *URI) Flags() URIFlags {
 
 // Fragment gets uri's fragment, which may contain %-encoding, depending on the
 // flags with which uri was created.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) uri's fragment.
+//
 func (uri *URI) Fragment() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -494,6 +509,11 @@ func (uri *URI) Fragment() string {
 // of the URI. Note that in this case there may also be a scope ID attached to
 // the address. Eg, fe80::1234em1 (or fe80::123425em1 if the string is still
 // encoded).
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) uri's host.
+//
 func (uri *URI) Host() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -515,6 +535,11 @@ func (uri *URI) Host() string {
 // Password gets uri's password, which may contain %-encoding, depending on the
 // flags with which uri was created. (If uri was not created with
 // G_URI_FLAGS_HAS_PASSWORD then this will be NULL.).
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) uri's password.
+//
 func (uri *URI) Password() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -535,6 +560,11 @@ func (uri *URI) Password() string {
 
 // Path gets uri's path, which may contain %-encoding, depending on the flags
 // with which uri was created.
+//
+// The function returns the following values:
+//
+//    - utf8 uri's path.
+//
 func (uri *URI) Path() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -552,6 +582,11 @@ func (uri *URI) Path() string {
 }
 
 // Port gets uri's port.
+//
+// The function returns the following values:
+//
+//    - gint uri's port, or -1 if no port was specified.
+//
 func (uri *URI) Port() int {
 	var _arg0 *C.GUri // out
 	var _cret C.gint  // in
@@ -573,6 +608,11 @@ func (uri *URI) Port() int {
 //
 // For queries consisting of a series of name=value parameters, ParamsIter or
 // g_uri_parse_params() may be useful.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) uri's query.
+//
 func (uri *URI) Query() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -593,6 +633,11 @@ func (uri *URI) Query() string {
 
 // Scheme gets uri's scheme. Note that this will always be all-lowercase,
 // regardless of the string or strings that uri was created from.
+//
+// The function returns the following values:
+//
+//    - utf8 uri's scheme.
+//
 func (uri *URI) Scheme() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -613,6 +658,11 @@ func (uri *URI) Scheme() string {
 // %-encoding, depending on the flags with which uri was created. If uri was not
 // created with G_URI_FLAGS_HAS_PASSWORD or G_URI_FLAGS_HAS_AUTH_PARAMS, this is
 // the same as g_uri_get_userinfo().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) uri's user.
+//
 func (uri *URI) User() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -633,6 +683,11 @@ func (uri *URI) User() string {
 
 // Userinfo gets uri's userinfo, which may contain %-encoding, depending on the
 // flags with which uri was created.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) uri's userinfo.
+//
 func (uri *URI) Userinfo() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -654,6 +709,16 @@ func (uri *URI) Userinfo() string {
 // ParseRelative parses uri_ref according to flags and, if it is a [relative
 // URI][relative-absolute-uris], resolves it relative to base_uri. If the result
 // is not a valid absolute URI, it will be discarded, and an error returned.
+//
+// The function takes the following parameters:
+//
+//    - uriRef: string representing a relative or absolute URI.
+//    - flags describing how to parse uri_ref.
+//
+// The function returns the following values:
+//
+//    - uri: new #GUri, or NULL on error.
+//
 func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	var _arg0 *C.GUri     // out
 	var _arg1 *C.gchar    // out
@@ -701,6 +766,11 @@ func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 // If uri might contain sensitive details, such as authentication parameters, or
 // private data in its query string, and the returned string is going to be
 // logged, then consider using g_uri_to_string_partial() to redact parts.
+//
+// The function returns the following values:
+//
+//    - utf8: string representing uri, which the caller must free.
+//
 func (uri *URI) String() string {
 	var _arg0 *C.GUri // out
 	var _cret *C.char // in
@@ -720,6 +790,15 @@ func (uri *URI) String() string {
 
 // ToStringPartial returns a string representing uri, subject to the options in
 // flags. See g_uri_to_string() and HideFlags for more details.
+//
+// The function takes the following parameters:
+//
+//    - flags describing what parts of uri to hide.
+//
+// The function returns the following values:
+//
+//    - utf8: string representing uri, which the caller must free.
+//
 func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 	var _arg0 *C.GUri         // out
 	var _arg1 C.GUriHideFlags // out
@@ -749,12 +828,16 @@ func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 //
 //    - flags describing how to build the #GUri.
 //    - scheme: URI scheme.
-//    - userinfo component, or NULL.
-//    - host component, or NULL.
+//    - userinfo (optional) component, or NULL.
+//    - host (optional) component, or NULL.
 //    - port: port, or -1.
 //    - path component.
-//    - query component, or NULL.
-//    - fragment: fragment, or NULL.
+//    - query (optional) component, or NULL.
+//    - fragment (optional): fragment, or NULL.
+//
+// The function returns the following values:
+//
+//    - uri: new #GUri.
 //
 func URIBuild(flags URIFlags, scheme, userinfo, host string, port int, path, query, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
@@ -826,14 +909,18 @@ func URIBuild(flags URIFlags, scheme, userinfo, host string, port int, path, que
 //
 //    - flags describing how to build the #GUri.
 //    - scheme: URI scheme.
-//    - user component of the userinfo, or NULL.
-//    - password component of the userinfo, or NULL.
-//    - authParams: auth params of the userinfo, or NULL.
-//    - host component, or NULL.
+//    - user (optional) component of the userinfo, or NULL.
+//    - password (optional) component of the userinfo, or NULL.
+//    - authParams (optional): auth params of the userinfo, or NULL.
+//    - host (optional) component, or NULL.
 //    - port: port, or -1.
 //    - path component.
-//    - query component, or NULL.
-//    - fragment: fragment, or NULL.
+//    - query (optional) component, or NULL.
+//    - fragment (optional): fragment, or NULL.
+//
+// The function returns the following values:
+//
+//    - uri: new #GUri.
 //
 func URIBuildWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int, path, query, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
@@ -917,8 +1004,13 @@ func URIBuildWithUser(flags URIFlags, scheme, user, password, authParams, host s
 // The function takes the following parameters:
 //
 //    - unescaped input data.
-//    - reservedCharsAllowed: string of reserved characters that are allowed to
-//    be used, or NULL.
+//    - reservedCharsAllowed (optional): string of reserved characters that are
+//      allowed to be used, or NULL.
+//
+// The function returns the following values:
+//
+//    - utf8: escaped version of unescaped. The returned string should be freed
+//      when no longer needed.
 //
 func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 	var _arg1 *C.guint8 // out
@@ -958,9 +1050,14 @@ func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 // The function takes the following parameters:
 //
 //    - unescaped input string.
-//    - reservedCharsAllowed: string of reserved characters that are allowed to
-//    be used, or NULL.
+//    - reservedCharsAllowed (optional): string of reserved characters that are
+//      allowed to be used, or NULL.
 //    - allowUtf8: TRUE if the result can include UTF-8 characters.
+//
+// The function returns the following values:
+//
+//    - utf8: escaped version of unescaped. The returned string should be freed
+//      when no longer needed.
 //
 func URIEscapeString(unescaped, reservedCharsAllowed string, allowUtf8 bool) string {
 	var _arg1 *C.char    // out
@@ -1045,13 +1142,17 @@ func URIIsValid(uriString string, flags URIFlags) error {
 // The function takes the following parameters:
 //
 //    - flags describing how to build the URI string.
-//    - scheme: URI scheme, or NULL.
-//    - userinfo component, or NULL.
-//    - host component, or NULL.
+//    - scheme (optional): URI scheme, or NULL.
+//    - userinfo (optional) component, or NULL.
+//    - host (optional) component, or NULL.
 //    - port: port, or -1.
 //    - path component.
-//    - query component, or NULL.
-//    - fragment: fragment, or NULL.
+//    - query (optional) component, or NULL.
+//    - fragment (optional): fragment, or NULL.
+//
+// The function returns the following values:
+//
+//    - utf8: absolute URI string.
 //
 func URIJoin(flags URIFlags, scheme, userinfo, host string, port int, path, query, fragment string) string {
 	var _arg1 C.GUriFlags // out
@@ -1120,15 +1221,19 @@ func URIJoin(flags URIFlags, scheme, userinfo, host string, port int, path, quer
 // The function takes the following parameters:
 //
 //    - flags describing how to build the URI string.
-//    - scheme: URI scheme, or NULL.
-//    - user component of the userinfo, or NULL.
-//    - password component of the userinfo, or NULL.
-//    - authParams: auth params of the userinfo, or NULL.
-//    - host component, or NULL.
+//    - scheme (optional): URI scheme, or NULL.
+//    - user (optional) component of the userinfo, or NULL.
+//    - password (optional) component of the userinfo, or NULL.
+//    - authParams (optional): auth params of the userinfo, or NULL.
+//    - host (optional) component, or NULL.
 //    - port: port, or -1.
 //    - path component.
-//    - query component, or NULL.
-//    - fragment: fragment, or NULL.
+//    - query (optional) component, or NULL.
+//    - fragment (optional): fragment, or NULL.
+//
+// The function returns the following values:
+//
+//    - utf8: absolute URI string.
 //
 func URIJoinWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int, path, query, fragment string) string {
 	var _arg1 C.GUriFlags // out
@@ -1205,6 +1310,10 @@ func URIJoinWithUser(flags URIFlags, scheme, user, password, authParams, host st
 //    - uriString: string representing an absolute URI.
 //    - flags describing how to parse uri_string.
 //
+// The function returns the following values:
+//
+//    - uri: new #GUri, or NULL on error.
+//
 func URIParse(uriString string, flags URIFlags) (*URI, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
@@ -1264,12 +1373,17 @@ func URIParse(uriString string, flags URIFlags) (*URI, error) {
 //
 //    - params: %-encoded string containing attribute=value parameters.
 //    - length of params, or -1 if it is nul-terminated.
-//    - separators: separator byte character set between parameters. (usually
-//    &, but sometimes ; or both &;). Note that this function works on bytes
-//    not characters, so it can't be used to delimit UTF-8 strings for anything
-//    but ASCII characters. You may pass an empty set, in which case no
-//    splitting will occur.
+//    - separators: separator byte character set between parameters. (usually &,
+//      but sometimes ; or both &;). Note that this function works on bytes not
+//      characters, so it can't be used to delimit UTF-8 strings for anything but
+//      ASCII characters. You may pass an empty set, in which case no splitting
+//      will occur.
 //    - flags to modify the way the parameters are handled.
+//
+// The function returns the following values:
+//
+//    - hashTable: A hash table of attribute/value pairs, with both names and
+//      values fully-decoded; or NULL on error.
 //
 func URIParseParams(params string, length int, separators string, flags URIParamsFlags) (map[string]string, error) {
 	var _arg1 *C.gchar          // out
@@ -1325,6 +1439,11 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 //
 //    - uri: valid URI.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): ‘scheme’ component of the URI, or NULL on error. The
+//      returned string should be freed when no longer needed.
+//
 func URIParseScheme(uri string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -1359,6 +1478,12 @@ func URIParseScheme(uri string) string {
 //
 //    - uri: valid URI.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): ‘scheme’ component of the URI, or NULL on error. The
+//      returned string is normalized to all-lowercase, and interned via
+//      g_intern_string(), so it does not need to be freed.
+//
 func URIPeekScheme(uri string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -1388,9 +1513,13 @@ func URIPeekScheme(uri string) string {
 //
 // The function takes the following parameters:
 //
-//    - baseUriString: string representing a base URI.
+//    - baseUriString (optional): string representing a base URI.
 //    - uriRef: string representing a relative or absolute URI.
 //    - flags describing how to parse uri_ref.
+//
+// The function returns the following values:
+//
+//    - utf8: resolved URI string, or NULL on error.
 //
 func URIResolveRelative(baseUriString, uriRef string, flags URIFlags) (string, error) {
 	var _arg1 *C.gchar    // out
@@ -1443,6 +1572,17 @@ func URIResolveRelative(baseUriString, uriRef string, flags URIFlags) (string, e
 //
 //    - uriRef: string containing a relative or absolute URI.
 //    - flags for parsing uri_ref.
+//
+// The function returns the following values:
+//
+//    - scheme (optional): on return, contains the scheme (converted to
+//      lowercase), or NULL.
+//    - userinfo (optional): on return, contains the userinfo, or NULL.
+//    - host (optional): on return, contains the host, or NULL.
+//    - port (optional): on return, contains the port, or -1.
+//    - path (optional): on return, contains the path.
+//    - query (optional): on return, contains the query, or NULL.
+//    - fragment (optional): on return, contains the fragment, or NULL.
 //
 func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int, path string, query string, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
@@ -1517,6 +1657,13 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 //    - uriString: string containing an absolute URI.
 //    - flags for parsing uri_string.
 //
+// The function returns the following values:
+//
+//    - scheme (optional): on return, contains the scheme (converted to
+//      lowercase), or NULL.
+//    - host (optional): on return, contains the host, or NULL.
+//    - port (optional): on return, contains the port, or -1.
+//
 func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
@@ -1569,6 +1716,19 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 //
 //    - uriRef: string containing a relative or absolute URI.
 //    - flags for parsing uri_ref.
+//
+// The function returns the following values:
+//
+//    - scheme (optional): on return, contains the scheme (converted to
+//      lowercase), or NULL.
+//    - user (optional): on return, contains the user, or NULL.
+//    - password (optional): on return, contains the password, or NULL.
+//    - authParams (optional): on return, contains the auth_params, or NULL.
+//    - host (optional): on return, contains the host, or NULL.
+//    - port (optional): on return, contains the port, or -1.
+//    - path (optional): on return, contains the path.
+//    - query (optional): on return, contains the query, or NULL.
+//    - fragment (optional): on return, contains the fragment, or NULL.
 //
 func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
@@ -1657,9 +1817,15 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 //
 //    - escapedString: URI-escaped string.
 //    - length (in bytes) of escaped_string to escape, or -1 if it is
-//    nul-terminated.
-//    - illegalCharacters: string of illegal characters not to be allowed, or
-//    NULL.
+//      nul-terminated.
+//    - illegalCharacters (optional): string of illegal characters not to be
+//      allowed, or NULL.
+//
+// The function returns the following values:
+//
+//    - bytes: unescaped version of escaped_string or NULL on error (if decoding
+//      failed, using G_URI_ERROR_FAILED error code). The returned #GBytes should
+//      be unreffed when no longer needed.
 //
 func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) (*Bytes, error) {
 	var _arg1 *C.char   // out
@@ -1711,10 +1877,17 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 //
 // The function takes the following parameters:
 //
-//    - escapedString: string, may be NULL.
-//    - escapedStringEnd: pointer to end of escaped_string, may be NULL.
-//    - illegalCharacters: optional string of illegal characters not to be
-//    allowed, may be NULL.
+//    - escapedString (optional): string, may be NULL.
+//    - escapedStringEnd (optional): pointer to end of escaped_string, may be
+//      NULL.
+//    - illegalCharacters (optional): optional string of illegal characters not
+//      to be allowed, may be NULL.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): unescaped version of escaped_string, or NULL on error.
+//      The returned string should be freed when no longer needed. As a special
+//      case if NULL is given for escaped_string, this function will return NULL.
 //
 func URIUnescapeSegment(escapedString, escapedStringEnd, illegalCharacters string) string {
 	var _arg1 *C.char // out
@@ -1761,8 +1934,13 @@ func URIUnescapeSegment(escapedString, escapedStringEnd, illegalCharacters strin
 // The function takes the following parameters:
 //
 //    - escapedString: escaped string to be unescaped.
-//    - illegalCharacters: string of illegal characters not to be allowed, or
-//    NULL.
+//    - illegalCharacters (optional): string of illegal characters not to be
+//      allowed, or NULL.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): unescaped version of escaped_string. The returned string
+//      should be freed when no longer needed.
 //
 func URIUnescapeString(escapedString, illegalCharacters string) string {
 	var _arg1 *C.char // out
@@ -1841,6 +2019,18 @@ type uriParamsIter struct {
 //      }
 //    if (error)
 //      // handle parsing error.
+//
+// The function takes the following parameters:
+//
+//    - params: %-encoded string containing attribute=value parameters.
+//    - length of params, or -1 if it is nul-terminated.
+//    - separators: separator byte character set between parameters. (usually &,
+//      but sometimes ; or both &;). Note that this function works on bytes not
+//      characters, so it can't be used to delimit UTF-8 strings for anything but
+//      ASCII characters. You may pass an empty set, in which case no splitting
+//      will occur.
+//    - flags to modify the way the parameters are handled.
+//
 func (iter *URIParamsIter) Init(params string, length int, separators string, flags URIParamsFlags) {
 	var _arg0 *C.GUriParamsIter // out
 	var _arg1 *C.gchar          // out
@@ -1872,6 +2062,12 @@ func (iter *URIParamsIter) Init(params string, length int, separators string, fl
 //
 // Note that the same attribute may be returned multiple times, since URIs allow
 // repeated attributes.
+//
+// The function returns the following values:
+//
+//    - attribute (optional): on return, contains the attribute, or NULL.
+//    - value (optional): on return, contains the value, or NULL.
+//
 func (iter *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var _arg0 *C.GUriParamsIter // out
 	var _arg1 *C.gchar          // in

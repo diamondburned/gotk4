@@ -98,7 +98,17 @@ func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
 	return wrapToggleToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectToggled: emitted whenever the toggle tool button changes state.
+func (button *ToggleToolButton) ConnectToggled(f func()) externglib.SignalHandle {
+	return button.Connect("toggled", f)
+}
+
 // NewToggleToolButton returns a new ToggleToolButton.
+//
+// The function returns the following values:
+//
+//    - toggleToolButton: newly created ToggleToolButton.
+//
 func NewToggleToolButton() *ToggleToolButton {
 	var _cret *C.GtkToolItem // in
 
@@ -123,6 +133,10 @@ func NewToggleToolButton() *ToggleToolButton {
 //
 //    - stockId: name of the stock item.
 //
+// The function returns the following values:
+//
+//    - toggleToolButton: new ToggleToolButton.
+//
 func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -142,6 +156,11 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 
 // Active queries a ToggleToolButton and returns its current state. Returns TRUE
 // if the toggle button is pressed in and FALSE if it is raised.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the toggle tool button is pressed in, FALSE if not.
+//
 func (button *ToggleToolButton) Active() bool {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _cret C.gboolean             // in
@@ -180,9 +199,4 @@ func (button *ToggleToolButton) SetActive(isActive bool) {
 	C.gtk_toggle_tool_button_set_active(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(isActive)
-}
-
-// ConnectToggled: emitted whenever the toggle tool button changes state.
-func (button *ToggleToolButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return button.Connect("toggled", f)
 }

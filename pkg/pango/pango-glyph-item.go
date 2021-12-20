@@ -77,6 +77,17 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 //
 // This function takes ownership of glyph_item; it will be reused as one of the
 // elements in the list.
+//
+// The function takes the following parameters:
+//
+//    - text that list applies to.
+//    - list: PangoAttrList.
+//
+// The function returns the following values:
+//
+//    - sList: a list of glyph items resulting from splitting glyph_item. Free
+//      the elements using pango.GlyphItem.Free(), the list using g_slist_free().
+//
 func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
@@ -113,6 +124,12 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 }
 
 // Copy: make a deep copy of an existing PangoGlyphItem structure.
+//
+// The function returns the following values:
+//
+//    - glyphItem (optional): newly allocated PangoGlyphItem, which should be
+//      freed with pango_glyph_item_free(), or NULL if orig was NULL.
+//
 func (orig *GlyphItem) Copy() *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _cret *C.PangoGlyphItem // in
@@ -149,6 +166,18 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 //
 // This function is similar in function to pango_item_split() (and uses it
 // internally.).
+//
+// The function takes the following parameters:
+//
+//    - text to which positions in orig apply.
+//    - splitIndex: byte index of position to split item, relative to the start
+//      of the item.
+//
+// The function returns the following values:
+//
+//    - glyphItem: newly allocated item representing text before split_index,
+//      which should be freed with pango_glyph_item_free().
+//
 func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
@@ -280,6 +309,13 @@ func (g *GlyphItemIter) EndChar() int {
 }
 
 // Copy: make a shallow copy of an existing PangoGlyphItemIter structure.
+//
+// The function returns the following values:
+//
+//    - glyphItemIter (optional): newly allocated PangoGlyphItemIter, which
+//      should be freed with pango_glyph_item_iter_free(), or NULL if orig was
+//      NULL.
+//
 func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret *C.PangoGlyphItemIter // in
@@ -310,6 +346,16 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 // cluster in a glyph item.
 //
 // See PangoGlyphItemIter for details of cluster orders.
+//
+// The function takes the following parameters:
+//
+//    - glyphItem: glyph item to iterate over.
+//    - text corresponding to the glyph item.
+//
+// The function returns the following values:
+//
+//    - ok: FALSE if there are no clusters in the glyph item.
+//
 func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _arg1 *C.PangoGlyphItem     // out
@@ -339,6 +385,16 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 // cluster in a glyph item.
 //
 // See PangoGlyphItemIter for details of cluster orders.
+//
+// The function takes the following parameters:
+//
+//    - glyphItem: glyph item to iterate over.
+//    - text corresponding to the glyph item.
+//
+// The function returns the following values:
+//
+//    - ok: FALSE if there are no clusters in the glyph item.
+//
 func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _arg1 *C.PangoGlyphItem     // out
@@ -367,6 +423,12 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 // NextCluster advances the iterator to the next cluster in the glyph item.
 //
 // See PangoGlyphItemIter for details of cluster orders.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the iterator was advanced, FALSE if we were already on the
+//      last cluster.
+//
 func (iter *GlyphItemIter) NextCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret C.gboolean            // in
@@ -387,6 +449,12 @@ func (iter *GlyphItemIter) NextCluster() bool {
 
 // PrevCluster moves the iterator to the preceding cluster in the glyph item.
 // See PangoGlyphItemIter for details of cluster orders.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the iterator was moved, FALSE if we were already on the first
+//      cluster.
+//
 func (iter *GlyphItemIter) PrevCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret C.gboolean            // in

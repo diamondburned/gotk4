@@ -32,6 +32,10 @@ import "C"
 //    - windowTitle: title of the window to be displayed.
 //    - dialogText: text inside the window to be displayed.
 //
+// The function returns the following values:
+//
+//    - widget pointer to the newly created GtkWindow.
+//
 func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -79,6 +83,10 @@ func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 //    - widget: valid label or container widget.
 //    - labelPattern: shell-glob pattern to match a label string.
 //
+// The function returns the following values:
+//
+//    - ret: gtkLabel widget if any is found.
+//
 func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -123,6 +131,10 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 //
 //    - baseWidget: valid widget, part of a widget hierarchy.
 //    - widgetType: type of a aearched for sibling widget.
+//
+// The function returns the following values:
+//
+//    - widget of type widget_type if any is found.
 //
 func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) Widgetter {
 	var _arg1 *C.GtkWidget // out
@@ -170,6 +182,10 @@ func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) Widgetter
 //    - labelPattern: shell-glob pattern to match a label string.
 //    - widgetType: type of a aearched for label sibling widget.
 //
+// The function returns the following values:
+//
+//    - ret (optional): valid widget if any is found or NULL.
+//
 func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib.Type) Widgetter {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -207,6 +223,11 @@ func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib
 
 // TestListAllTypes: return the type ids that have been registered after calling
 // gtk_test_register_all_types().
+//
+// The function returns the following values:
+//
+//    - gTypes: 0-terminated array of type ids.
+//
 func TestListAllTypes() []externglib.Type {
 	var _cret *C.GType // in
 	var _arg1 C.guint  // in
@@ -243,6 +264,11 @@ func TestRegisterAllTypes() {
 // The function takes the following parameters:
 //
 //    - widget: valid widget pointer.
+//
+// The function returns the following values:
+//
+//    - gdouble: gtk_adjustment_get_value (adjustment) for an adjustment
+//      belonging to widget.
 //
 func TestSliderGetValue(widget Widgetter) float64 {
 	var _arg1 *C.GtkWidget // out
@@ -296,6 +322,11 @@ func TestSliderSetPerc(widget Widgetter, percentage float64) {
 //    - button: number of the pointer button for the event, usually 1, 2 or 3.
 //    - upwards: TRUE for upwards arrow click, FALSE for downwards arrow click.
 //
+// The function returns the following values:
+//
+//    - ok: whether all actions neccessary for the button click simulation were
+//      carried out successfully.
+//
 func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
 	var _arg2 C.guint          // out
@@ -330,6 +361,10 @@ func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 // The function takes the following parameters:
 //
 //    - widget: valid widget pointer.
+//
+// The function returns the following values:
+//
+//    - utf8: new 0-terminated C string, needs to be released with g_free().
 //
 func TestTextGet(widget Widgetter) string {
 	var _arg1 *C.GtkWidget // out
@@ -388,6 +423,11 @@ func TestTextSet(widget Widgetter, str string) {
 //    - button: number of the pointer button for the event, usually 1, 2 or 3.
 //    - modifiers: keyboard modifiers the event is setup with.
 //
+// The function returns the following values:
+//
+//    - ok: whether all actions neccessary for the button click simulation were
+//      carried out successfully.
+//
 func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.guint           // out
@@ -425,6 +465,11 @@ func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) 
 //    - widget: widget to generate a key press and release on.
 //    - keyval: gdk keyboard value.
 //    - modifiers: keyboard modifiers the event is setup with.
+//
+// The function returns the following values:
+//
+//    - ok: whether all actions neccessary for the key event simulation were
+//      carried out successfully.
 //
 func TestWidgetSendKey(widget Widgetter, keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out

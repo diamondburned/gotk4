@@ -31,6 +31,12 @@ import "C"
 //    - requiredMinor: required minor version.
 //    - requiredMicro: required micro version.
 //
+// The function returns the following values:
+//
+//    - utf8: NULL if the GLib library is compatible with the given version, or a
+//      string describing the version mismatch. The returned string is owned by
+//      GLib and must not be modified or freed.
+//
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint  // out
 	var _arg2 C.guint  // out

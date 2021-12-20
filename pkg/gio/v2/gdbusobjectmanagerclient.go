@@ -35,6 +35,14 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectManagerClientOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - objectProxy
+	//    - interfaceProxy
+	//    - senderName
+	//    - signalName
+	//    - parameters
+	//
 	InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
 }
 
@@ -132,13 +140,45 @@ func marshalDBusObjectManagerClienter(p uintptr) (interface{}, error) {
 	return wrapDBusObjectManagerClient(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectInterfaceProxyPropertiesChanged: emitted when one or more D-Bus
+// properties on proxy changes. The local cache has already been updated when
+// this signal fires. Note that both changed_properties and
+// invalidated_properties are guaranteed to never be NULL (either may be empty
+// though).
+//
+// This signal exists purely as a convenience to avoid having to connect signals
+// to all interface proxies managed by manager.
+//
+// This signal is emitted in the [thread-default main
+// context][g-main-context-push-thread-default] that manager was constructed in.
+func (manager *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
+	return manager.Connect("interface-proxy-properties-changed", f)
+}
+
+// ConnectInterfaceProxySignal: emitted when a D-Bus signal is received on
+// interface_proxy.
+//
+// This signal exists purely as a convenience to avoid having to connect signals
+// to all interface proxies managed by manager.
+//
+// This signal is emitted in the [thread-default main
+// context][g-main-context-push-thread-default] that manager was constructed in.
+func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
+	return manager.Connect("interface-proxy-signal", f)
+}
+
 // NewDBusObjectManagerClientFinish finishes an operation started with
 // g_dbus_object_manager_client_new().
 //
 // The function takes the following parameters:
 //
 //    - res obtained from the ReadyCallback passed to
-//    g_dbus_object_manager_client_new().
+//      g_dbus_object_manager_client_new().
+//
+// The function returns the following values:
+//
+//    - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
+//      is set. Free with g_object_unref().
 //
 func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
@@ -167,7 +207,12 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 // The function takes the following parameters:
 //
 //    - res obtained from the ReadyCallback passed to
-//    g_dbus_object_manager_client_new_for_bus().
+//      g_dbus_object_manager_client_new_for_bus().
+//
+// The function returns the following values:
+//
+//    - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
+//      is set. Free with g_object_unref().
 //
 func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
@@ -200,13 +245,19 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - busType: Type.
 //    - flags: zero or more flags from the BusObjectManagerClientFlags
-//    enumeration.
+//      enumeration.
 //    - name: owner of the control object (unique or well-known name).
 //    - objectPath: object path of the control object.
-//    - getProxyTypeFunc function or NULL to always construct BusProxy proxies.
+//    - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
+//      proxies.
+//
+// The function returns the following values:
+//
+//    - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
+//      is set. Free with g_object_unref().
 //
 func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
 	var _arg8 *C.GCancellable                 // out
@@ -264,14 +315,20 @@ func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, 
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - connection: BusConnection.
 //    - flags: zero or more flags from the BusObjectManagerClientFlags
-//    enumeration.
-//    - name: owner of the control object (unique or well-known name), or NULL
-//    when not using a message bus connection.
+//      enumeration.
+//    - name (optional): owner of the control object (unique or well-known name),
+//      or NULL when not using a message bus connection.
 //    - objectPath: object path of the control object.
-//    - getProxyTypeFunc function or NULL to always construct BusProxy proxies.
+//    - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
+//      proxies.
+//
+// The function returns the following values:
+//
+//    - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
+//      is set. Free with g_object_unref().
 //
 func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
 	var _arg8 *C.GCancellable                 // out
@@ -324,6 +381,11 @@ func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnect
 }
 
 // Connection gets the BusConnection used by manager.
+//
+// The function returns the following values:
+//
+//    - dBusConnection object. Do not free, the object belongs to manager.
+//
 func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.GDBusConnection          // in
@@ -341,6 +403,12 @@ func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 }
 
 // Flags gets the flags that manager was constructed with.
+//
+// The function returns the following values:
+//
+//    - dBusObjectManagerClientFlags: zero of more flags from the
+//      BusObjectManagerClientFlags enumeration.
+//
 func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	var _arg0 *C.GDBusObjectManagerClient     // out
 	var _cret C.GDBusObjectManagerClientFlags // in
@@ -359,6 +427,12 @@ func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 
 // Name gets the name that manager is for, or NULL if not a message bus
 // connection.
+//
+// The function returns the following values:
+//
+//    - utf8: unique or well-known name. Do not free, the string belongs to
+//      manager.
+//
 func (manager *DBusObjectManagerClient) Name() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
@@ -378,6 +452,12 @@ func (manager *DBusObjectManagerClient) Name() string {
 // NameOwner: unique name that owns the name that manager is for or NULL if
 // no-one currently owns that name. You can connect to the #GObject::notify
 // signal to track changes to the BusObjectManagerClient:name-owner property.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name owner or NULL if no name owner exists. Free with
+//      g_free().
+//
 func (manager *DBusObjectManagerClient) NameOwner() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
@@ -397,33 +477,6 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 	return _utf8
 }
 
-// ConnectInterfaceProxyPropertiesChanged: emitted when one or more D-Bus
-// properties on proxy changes. The local cache has already been updated when
-// this signal fires. Note that both changed_properties and
-// invalidated_properties are guaranteed to never be NULL (either may be empty
-// though).
-//
-// This signal exists purely as a convenience to avoid having to connect signals
-// to all interface proxies managed by manager.
-//
-// This signal is emitted in the [thread-default main
-// context][g-main-context-push-thread-default] that manager was constructed in.
-func (manager *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
-	return manager.Connect("interface-proxy-properties-changed", f)
-}
-
-// ConnectInterfaceProxySignal: emitted when a D-Bus signal is received on
-// interface_proxy.
-//
-// This signal exists purely as a convenience to avoid having to connect signals
-// to all interface proxies managed by manager.
-//
-// This signal is emitted in the [thread-default main
-// context][g-main-context-push-thread-default] that manager was constructed in.
-func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
-	return manager.Connect("interface-proxy-signal", f)
-}
-
 // NewDBusObjectManagerClient: asynchronously creates a new
 // BusObjectManagerClient object.
 //
@@ -436,14 +489,15 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objec
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - connection: BusConnection.
 //    - flags: zero or more flags from the BusObjectManagerClientFlags
-//    enumeration.
+//      enumeration.
 //    - name: owner of the control object (unique or well-known name).
 //    - objectPath: object path of the control object.
-//    - getProxyTypeFunc function or NULL to always construct BusProxy proxies.
-//    - callback to call when the request is satisfied.
+//    - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
+//      proxies.
+//    - callback (optional) to call when the request is satisfied.
 //
 func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
 	var _arg8 *C.GCancellable                 // out
@@ -500,14 +554,15 @@ func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection,
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - busType: Type.
 //    - flags: zero or more flags from the BusObjectManagerClientFlags
-//    enumeration.
+//      enumeration.
 //    - name: owner of the control object (unique or well-known name).
 //    - objectPath: object path of the control object.
-//    - getProxyTypeFunc function or NULL to always construct BusProxy proxies.
-//    - callback to call when the request is satisfied.
+//    - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
+//      proxies.
+//    - callback (optional) to call when the request is satisfied.
 //
 func NewDBusObjectManagerClientForBus(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
 	var _arg8 *C.GCancellable                 // out

@@ -101,6 +101,11 @@ func (f FileChooserError) String() string {
 }
 
 // FileChooserErrorQuark registers an error quark for GtkFileChooser errors.
+//
+// The function returns the following values:
+//
+//    - quark: error quark used for GtkFileChooser errors.
+//
 func FileChooserErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -254,10 +259,10 @@ func marshalFileChooserer(p uintptr) (interface{}, error) {
 //
 //    - id for the added choice.
 //    - label: user-visible label for the added choice.
-//    - options ids for the options of the choice, or NULL for a boolean
-//    choice.
-//    - optionLabels: user-visible labels for the options, must be the same
-//    length as options.
+//    - options (optional) ids for the options of the choice, or NULL for a
+//      boolean choice.
+//    - optionLabels (optional): user-visible labels for the options, must be the
+//      same length as options.
 //
 func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []string) {
 	var _arg0 *C.GtkFileChooser // out
@@ -360,6 +365,11 @@ func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
 }
 
 // Action gets the type of operation that the file chooser is performing.
+//
+// The function returns the following values:
+//
+//    - fileChooserAction: action that the file selector is performing.
+//
 func (chooser *FileChooser) Action() FileChooserAction {
 	var _arg0 *C.GtkFileChooser      // out
 	var _cret C.GtkFileChooserAction // in
@@ -382,6 +392,10 @@ func (chooser *FileChooser) Action() FileChooserAction {
 //
 //    - id: ID of the choice to get.
 //
+// The function returns the following values:
+//
+//    - utf8: ID of the currently selected option.
+//
 func (chooser *FileChooser) Choice(id string) string {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -403,6 +417,11 @@ func (chooser *FileChooser) Choice(id string) string {
 }
 
 // CreateFolders gets whether file chooser will offer to create new folders.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the Create Folder button should be displayed.
+//
 func (chooser *FileChooser) CreateFolders() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
@@ -422,6 +441,11 @@ func (chooser *FileChooser) CreateFolders() bool {
 }
 
 // CurrentFolder gets the current folder of chooser as #GFile.
+//
+// The function returns the following values:
+//
+//    - file: GFile for the current folder.
+//
 func (chooser *FileChooser) CurrentFolder() gio.Filer {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
@@ -456,6 +480,14 @@ func (chooser *FileChooser) CurrentFolder() gio.Filer {
 //
 // This is meant to be used in save dialogs, to get the currently typed filename
 // when the file itself does not exist yet.
+//
+// The function returns the following values:
+//
+//    - utf8: raw text from the file chooser’s “Name” entry. Free with g_free().
+//      Note that this string is not a full pathname or URI; it is whatever the
+//      contents of the entry are. Note also that this string is in UTF-8
+//      encoding, which is not necessarily the system’s encoding for filenames.
+//
 func (chooser *FileChooser) CurrentName() string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.char           // in
@@ -479,6 +511,12 @@ func (chooser *FileChooser) CurrentName() string {
 //
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
+//
+// The function returns the following values:
+//
+//    - file: selected GFile. You own the returned file; use g_object_unref() to
+//      release it.
+//
 func (chooser *FileChooser) File() gio.Filer {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
@@ -510,6 +548,13 @@ func (chooser *FileChooser) File() gio.Filer {
 
 // Files lists all the selected files and subfolders in the current folder of
 // chooser as #GFile.
+//
+// The function returns the following values:
+//
+//    - listModel: list model containing a GFile for each selected file and
+//      subfolder in the current folder. Free the returned list with
+//      g_object_unref().
+//
 func (chooser *FileChooser) Files() gio.ListModeller {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
@@ -540,6 +585,11 @@ func (chooser *FileChooser) Files() gio.ListModeller {
 }
 
 // Filter gets the current filter.
+//
+// The function returns the following values:
+//
+//    - fileFilter (optional): current filter, or NULL.
+//
 func (chooser *FileChooser) Filter() *FileFilter {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GtkFileFilter  // in
@@ -565,6 +615,12 @@ func (chooser *FileChooser) Filter() *FileFilter {
 //
 // You should not modify the returned list model. Future changes to chooser may
 // or may not affect the returned model.
+//
+// The function returns the following values:
+//
+//    - listModel: GListModel containing the current set of user-selectable
+//      filters.
+//
 func (chooser *FileChooser) Filters() gio.ListModeller {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
@@ -596,6 +652,11 @@ func (chooser *FileChooser) Filters() gio.ListModeller {
 
 // SelectMultiple gets whether multiple files can be selected in the file
 // chooser.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if multiple files can be selected.
+//
 func (chooser *FileChooser) SelectMultiple() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
@@ -618,6 +679,11 @@ func (chooser *FileChooser) SelectMultiple() bool {
 //
 // You should not modify the returned list model. Future changes to chooser may
 // or may not affect the returned model.
+//
+// The function returns the following values:
+//
+//    - listModel: list model of GFiles.
+//
 func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in

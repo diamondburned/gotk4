@@ -119,82 +119,6 @@ func marshalSearchEntrier(p uintptr) (interface{}, error) {
 	return wrapSearchEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewSearchEntry creates a GtkSearchEntry.
-func NewSearchEntry() *SearchEntry {
-	var _cret *C.GtkWidget // in
-
-	_cret = C.gtk_search_entry_new()
-
-	var _searchEntry *SearchEntry // out
-
-	_searchEntry = wrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _searchEntry
-}
-
-// KeyCaptureWidget gets the widget that entry is capturing key events from.
-func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
-	var _arg0 *C.GtkSearchEntry // out
-	var _cret *C.GtkWidget      // in
-
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
-
-	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
-	runtime.KeepAlive(entry)
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.Cast()
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	return _widget
-}
-
-// SetKeyCaptureWidget sets widget as the widget that entry will capture key
-// events from.
-//
-// Key events are consumed by the search entry to start or continue a search.
-//
-// If the entry is part of a GtkSearchBar, it is preferable to call
-// gtk.SearchBar.SetKeyCaptureWidget() instead, which will reveal the entry in
-// addition to triggering the search entry.
-//
-// Note that despite the name of this function, the events are only 'captured'
-// in the bubble phase, which means that editable child widgets of widget will
-// receive text input before it gets captured. If that is not desired, you can
-// capture and forward the events yourself with
-// gtk.EventControllerKey.Forward().
-//
-// The function takes the following parameters:
-//
-//    - widget: Widget.
-//
-func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
-	var _arg0 *C.GtkSearchEntry // out
-	var _arg1 *C.GtkWidget      // out
-
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
-	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	}
-
-	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
-	runtime.KeepAlive(entry)
-	runtime.KeepAlive(widget)
-}
-
 // ConnectActivate: emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
@@ -247,4 +171,90 @@ func (entry *SearchEntry) ConnectSearchStarted(f func()) externglib.SignalHandle
 // The default bindings for this signal is Escape.
 func (entry *SearchEntry) ConnectStopSearch(f func()) externglib.SignalHandle {
 	return entry.Connect("stop-search", f)
+}
+
+// NewSearchEntry creates a GtkSearchEntry.
+//
+// The function returns the following values:
+//
+//    - searchEntry: new GtkSearchEntry.
+//
+func NewSearchEntry() *SearchEntry {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_search_entry_new()
+
+	var _searchEntry *SearchEntry // out
+
+	_searchEntry = wrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _searchEntry
+}
+
+// KeyCaptureWidget gets the widget that entry is capturing key events from.
+//
+// The function returns the following values:
+//
+//    - widget: key capture widget.
+//
+func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
+	var _arg0 *C.GtkSearchEntry // out
+	var _cret *C.GtkWidget      // in
+
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
+
+	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
+// SetKeyCaptureWidget sets widget as the widget that entry will capture key
+// events from.
+//
+// Key events are consumed by the search entry to start or continue a search.
+//
+// If the entry is part of a GtkSearchBar, it is preferable to call
+// gtk.SearchBar.SetKeyCaptureWidget() instead, which will reveal the entry in
+// addition to triggering the search entry.
+//
+// Note that despite the name of this function, the events are only 'captured'
+// in the bubble phase, which means that editable child widgets of widget will
+// receive text input before it gets captured. If that is not desired, you can
+// capture and forward the events yourself with
+// gtk.EventControllerKey.Forward().
+//
+// The function takes the following parameters:
+//
+//    - widget (optional): Widget.
+//
+func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
+	var _arg0 *C.GtkSearchEntry // out
+	var _arg1 *C.GtkWidget      // out
+
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
+
+	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(widget)
 }

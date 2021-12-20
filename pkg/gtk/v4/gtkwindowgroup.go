@@ -60,6 +60,11 @@ func marshalWindowGrouper(p uintptr) (interface{}, error) {
 // NewWindowGroup creates a new GtkWindowGroup object.
 //
 // Modality of windows only affects windows within the same GtkWindowGroup.
+//
+// The function returns the following values:
+//
+//    - windowGroup: new GtkWindowGroup.
+//
 func NewWindowGroup() *WindowGroup {
 	var _cret *C.GtkWindowGroup // in
 
@@ -91,6 +96,11 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 }
 
 // ListWindows returns a list of the GtkWindows that belong to window_group.
+//
+// The function returns the following values:
+//
+//    - list: a newly-allocated list of windows inside the group.
+//
 func (windowGroup *WindowGroup) ListWindows() []Window {
 	var _arg0 *C.GtkWindowGroup // out
 	var _cret *C.GList          // in

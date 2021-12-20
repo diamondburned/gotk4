@@ -41,12 +41,12 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object.
+//    - ctx (optional): optional #GCancellable object.
 //    - stream: GOutputStream to write the serialized content to.
 //    - mimeType: mime type to serialize to.
 //    - value: content to serialize.
 //    - ioPriority: i/O priority of the operation.
-//    - callback to call when the operation is done.
+//    - callback (optional) to call when the operation is done.
 //
 func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeType string, value *externglib.Value, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
@@ -143,6 +143,11 @@ func marshalContentSerializerer(p uintptr) (interface{}, error) {
 // Cancellable gets the cancellable for the current operation.
 //
 // This is the GCancellable that was passed to [content_serialize_async].
+//
+// The function returns the following values:
+//
+//    - cancellable for the current operation.
+//
 func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GCancellable         // in
@@ -165,6 +170,11 @@ func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 }
 
 // GType gets the GType to of the object to serialize.
+//
+// The function returns the following values:
+//
+//    - gType: GType for the current operation.
+//
 func (serializer *ContentSerializer) GType() externglib.Type {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.GType                 // in
@@ -182,6 +192,11 @@ func (serializer *ContentSerializer) GType() externglib.Type {
 }
 
 // MIMEType gets the mime type to serialize to.
+//
+// The function returns the following values:
+//
+//    - utf8: mime type for the current operation.
+//
 func (serializer *ContentSerializer) MIMEType() string {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.char                 // in
@@ -201,6 +216,11 @@ func (serializer *ContentSerializer) MIMEType() string {
 // OutputStream gets the output stream for the current operation.
 //
 // This is the stream that was passed to content_serialize_async.
+//
+// The function returns the following values:
+//
+//    - outputStream: output stream for the current operation.
+//
 func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GOutputStream        // in
@@ -233,6 +253,11 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 // Priority gets the I/O priority for the current operation.
 //
 // This is the priority that was passed to content_serialize_async.
+//
+// The function returns the following values:
+//
+//    - gint: i/O priority for the current operation.
+//
 func (serializer *ContentSerializer) Priority() int {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.int                   // in
@@ -252,6 +277,11 @@ func (serializer *ContentSerializer) Priority() int {
 // TaskData gets the data that was associated with the current operation.
 //
 // See gdk.ContentSerializer.SetTaskData().
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): task data for serializer.
+//
 func (serializer *ContentSerializer) TaskData() cgo.Handle {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.gpointer              // in
@@ -270,6 +300,11 @@ func (serializer *ContentSerializer) TaskData() cgo.Handle {
 
 // UserData gets the user data that was passed when the serializer was
 // registered.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): user data for this serializer.
+//
 func (serializer *ContentSerializer) UserData() cgo.Handle {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.gpointer              // in
@@ -287,6 +322,11 @@ func (serializer *ContentSerializer) UserData() cgo.Handle {
 }
 
 // Value gets the GValue to read the object to serialize from.
+//
+// The function returns the following values:
+//
+//    - value: GValue for the current operation.
+//
 func (serializer *ContentSerializer) Value() *externglib.Value {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GValue               // in

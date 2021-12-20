@@ -55,6 +55,10 @@ func (s ShellError) String() string {
 //
 //    - commandLine: command line to parse.
 //
+// The function returns the following values:
+//
+//    - argvp (optional): return location for array of args.
+//
 func ShellParseArgv(commandLine string) ([]string, error) {
 	var _arg1 *C.gchar  // out
 	var _arg3 **C.gchar // in
@@ -98,6 +102,10 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 //
 //    - unquotedString: literal string.
 //
+// The function returns the following values:
+//
+//    - filename: quoted string.
+//
 func ShellQuote(unquotedString string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -138,6 +146,10 @@ func ShellQuote(unquotedString string) string {
 // The function takes the following parameters:
 //
 //    - quotedString: shell-quoted string.
+//
+// The function returns the following values:
+//
+//    - filename: unquoted string.
 //
 func ShellUnquote(quotedString string) (string, error) {
 	var _arg1 *C.gchar  // out

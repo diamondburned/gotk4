@@ -128,6 +128,11 @@ func marshalComboBoxTexter(p uintptr) (interface{}, error) {
 
 // NewComboBoxText creates a new ComboBoxText, which is a ComboBox just
 // displaying strings.
+//
+// The function returns the following values:
+//
+//    - comboBoxText: new ComboBoxText.
+//
 func NewComboBoxText() *ComboBoxText {
 	var _cret *C.GtkWidget // in
 
@@ -142,6 +147,11 @@ func NewComboBoxText() *ComboBoxText {
 
 // NewComboBoxTextWithEntry creates a new ComboBoxText, which is a ComboBox just
 // displaying strings. The combo box created by this function has an entry.
+//
+// The function returns the following values:
+//
+//    - comboBoxText: new ComboBoxText.
+//
 func NewComboBoxTextWithEntry() *ComboBoxText {
 	var _cret *C.GtkWidget // in
 
@@ -162,7 +172,7 @@ func NewComboBoxTextWithEntry() *ComboBoxText {
 //
 // The function takes the following parameters:
 //
-//    - id: string ID for this value, or NULL.
+//    - id (optional): string ID for this value, or NULL.
 //    - text: string.
 //
 func (comboBox *ComboBoxText) Append(id, text string) {
@@ -209,6 +219,12 @@ func (comboBox *ComboBoxText) AppendText(text string) {
 // ActiveText returns the currently active string in combo_box, or NULL if none
 // is selected. If combo_box contains an entry, this function will return its
 // contents (which will not necessarily be an item from the list).
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated string containing the currently active text. Must
+//      be freed with g_free().
+//
 func (comboBox *ComboBoxText) ActiveText() string {
 	var _arg0 *C.GtkComboBoxText // out
 	var _cret *C.gchar           // in
@@ -235,7 +251,7 @@ func (comboBox *ComboBoxText) ActiveText() string {
 // The function takes the following parameters:
 //
 //    - position: index to insert text.
-//    - id: string ID for this value, or NULL.
+//    - id (optional): string ID for this value, or NULL.
 //    - text: string to display.
 //
 func (comboBox *ComboBoxText) Insert(position int, id, text string) {
@@ -296,7 +312,7 @@ func (comboBox *ComboBoxText) InsertText(position int, text string) {
 //
 // The function takes the following parameters:
 //
-//    - id: string ID for this value, or NULL.
+//    - id (optional): string ID for this value, or NULL.
 //    - text: string.
 //
 func (comboBox *ComboBoxText) Prepend(id, text string) {

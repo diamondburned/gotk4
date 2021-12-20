@@ -172,6 +172,16 @@ func (n *Node) Children() *Node {
 
 // ChildIndex gets the position of the first child of a #GNode which contains
 // the given data.
+//
+// The function takes the following parameters:
+//
+//    - data (optional) to find.
+//
+// The function returns the following values:
+//
+//    - gint: index of the child of node which contains data, or -1 if the data
+//      is not found.
+//
 func (node *Node) ChildIndex(data cgo.Handle) int {
 	var _arg0 *C.GNode   // out
 	var _arg1 C.gpointer // out
@@ -194,6 +204,15 @@ func (node *Node) ChildIndex(data cgo.Handle) int {
 // ChildPosition gets the position of a #GNode with respect to its siblings.
 // child must be a child of node. The first child is numbered 0, the second 1,
 // and so on.
+//
+// The function takes the following parameters:
+//
+//    - child of node.
+//
+// The function returns the following values:
+//
+//    - gint: position of child with respect to its siblings.
+//
 func (node *Node) ChildPosition(child *Node) int {
 	var _arg0 *C.GNode // out
 	var _arg1 *C.GNode // out
@@ -217,6 +236,11 @@ func (node *Node) ChildPosition(child *Node) int {
 //
 // If node is NULL the depth is 0. The root node has a depth of 1. For the
 // children of the root node the depth is 2. And so on.
+//
+// The function returns the following values:
+//
+//    - guint: depth of the #GNode.
+//
 func (node *Node) Depth() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
@@ -247,6 +271,15 @@ func (root *Node) Destroy() {
 // IsAncestor returns TRUE if node is an ancestor of descendant. This is true if
 // node is the parent of descendant, or if node is the grandparent of descendant
 // etc.
+//
+// The function takes the following parameters:
+//
+//    - descendant: #GNode.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if node is an ancestor of descendant.
+//
 func (node *Node) IsAncestor(descendant *Node) bool {
 	var _arg0 *C.GNode   // out
 	var _arg1 *C.GNode   // out
@@ -273,6 +306,11 @@ func (node *Node) IsAncestor(descendant *Node) bool {
 //
 // If root is NULL, 0 is returned. If root has no children, 1 is returned. If
 // root has children, 2 is returned. And so on.
+//
+// The function returns the following values:
+//
+//    - guint: maximum height of the tree beneath root.
+//
 func (root *Node) MaxHeight() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
@@ -290,6 +328,11 @@ func (root *Node) MaxHeight() uint {
 }
 
 // NChildren gets the number of children of a #GNode.
+//
+// The function returns the following values:
+//
+//    - guint: number of children of node.
+//
 func (node *Node) NChildren() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
@@ -307,6 +350,16 @@ func (node *Node) NChildren() uint {
 }
 
 // NNodes gets the number of nodes in a tree.
+//
+// The function takes the following parameters:
+//
+//    - flags: which types of children are to be counted, one of G_TRAVERSE_ALL,
+//      G_TRAVERSE_LEAVES and G_TRAVERSE_NON_LEAVES.
+//
+// The function returns the following values:
+//
+//    - guint: number of nodes in the tree.
+//
 func (root *Node) NNodes(flags TraverseFlags) uint {
 	var _arg0 *C.GNode         // out
 	var _arg1 C.GTraverseFlags // out

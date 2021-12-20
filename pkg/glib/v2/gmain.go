@@ -117,6 +117,11 @@ func GetCurrentTime(result *TimeVal) {
 // We try to use the clock that corresponds as closely as possible to the
 // passage of time as measured by system calls such as poll() but it may not
 // always be possible to do this.
+//
+// The function returns the following values:
+//
+//    - gint64: monotonic time, in microseconds.
+//
 func GetMonotonicTime() int64 {
 	var _cret C.gint64 // in
 
@@ -137,6 +142,11 @@ func GetMonotonicTime() int64 {
 // You should only use this call if you are actually interested in the real
 // wall-clock time. g_get_monotonic_time() is probably more useful for measuring
 // intervals.
+//
+// The function returns the following values:
+//
+//    - gint64: number of microseconds since January 1, 1970 UTC.
+//
 func GetRealTime() int64 {
 	var _cret C.gint64 // in
 
@@ -153,7 +163,11 @@ func GetRealTime() int64 {
 //
 // The function takes the following parameters:
 //
-//    - data for the idle source's callback.
+//    - data (optional) for the idle source's callback.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if an idle source was found and removed.
 //
 func IdleRemoveByData(data cgo.Handle) bool {
 	var _arg1 C.gpointer // out
@@ -179,6 +193,11 @@ func IdleRemoveByData(data cgo.Handle) bool {
 // added to one with g_source_attach() before it will be executed. Note that the
 // default priority for idle sources is G_PRIORITY_DEFAULT_IDLE, as compared to
 // other sources which have a default priority of G_PRIORITY_DEFAULT.
+//
+// The function returns the following values:
+//
+//    - source: newly-created idle source.
+//
 func NewIdleSource() *Source {
 	var _cret *C.GSource // in
 
@@ -198,6 +217,11 @@ func NewIdleSource() *Source {
 }
 
 // MainCurrentSource returns the currently firing source for this thread.
+//
+// The function returns the following values:
+//
+//    - source (optional): currently firing source or NULL.
+//
 func MainCurrentSource() *Source {
 	var _cret *C.GSource // in
 
@@ -276,6 +300,11 @@ func MainCurrentSource() *Source {
 // 2. Avoid main loop recursion in situations where you can't handle arbitrary
 // callbacks. Instead, structure your code so that you simply return to the main
 // loop and then get called again when there is more work to do.
+//
+// The function returns the following values:
+//
+//    - gint: main loop recursion level in the current thread.
+//
 func MainDepth() int {
 	var _cret C.gint // in
 
@@ -299,6 +328,10 @@ func MainDepth() int {
 // The function takes the following parameters:
 //
 //    - interval: timeout interval in milliseconds.
+//
+// The function returns the following values:
+//
+//    - source: newly-created timeout source.
 //
 func NewTimeoutSource(interval uint) *Source {
 	var _arg1 C.guint    // out
@@ -336,6 +369,10 @@ func NewTimeoutSource(interval uint) *Source {
 // The function takes the following parameters:
 //
 //    - interval: timeout interval in seconds.
+//
+// The function returns the following values:
+//
+//    - source: newly-created timeout source.
 //
 func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _arg1 C.guint    // out
@@ -405,6 +442,12 @@ func NewMainContext() *MainContext {
 // You must be the owner of a context before you can call
 // g_main_context_prepare(), g_main_context_query(), g_main_context_check(),
 // g_main_context_dispatch().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the operation succeeded, and this thread is now the owner of
+//      context.
+//
 func (context *MainContext) Acquire() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -439,6 +482,16 @@ func (context *MainContext) Dispatch() {
 // FindSourceByFuncsUserData finds a source with the given source functions and
 // user data. If multiple sources exist with the same source function and user
 // data, the first one found will be returned.
+//
+// The function takes the following parameters:
+//
+//    - funcs passed to g_source_new().
+//    - userData (optional): user data from the callback.
+//
+// The function returns the following values:
+//
+//    - source: source, if one was found, otherwise NULL.
+//
 func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 *C.GSourceFuncs // out
@@ -481,6 +534,15 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 // been removed by the time this function is called on its (now invalid) source
 // ID. This source ID may have been reissued, leading to the operation being
 // performed against the wrong source.
+//
+// The function takes the following parameters:
+//
+//    - sourceId: source ID, as returned by g_source_get_id().
+//
+// The function returns the following values:
+//
+//    - source: #GSource.
+//
 func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.guint         // out
@@ -512,6 +574,15 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 // FindSourceByUserData finds a source with the given user data for the
 // callback. If multiple sources exist with the same user data, the first one
 // found will be returned.
+//
+// The function takes the following parameters:
+//
+//    - userData (optional): user_data for the callback.
+//
+// The function returns the following values:
+//
+//    - source: source, if one was found, otherwise NULL.
+//
 func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gpointer      // out
@@ -541,6 +612,11 @@ func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 // IsOwner determines whether this thread holds the (recursive) ownership of
 // this Context. This is useful to know before waiting on another thread that
 // may be blocking to get ownership of context.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if current thread is owner of context.
+//
 func (context *MainContext) IsOwner() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -570,6 +646,15 @@ func (context *MainContext) IsOwner() bool {
 // Note that even when may_block is TRUE, it is still possible for
 // g_main_context_iteration() to return FALSE, since the wait may be interrupted
 // for other reasons than an event source becoming ready.
+//
+// The function takes the following parameters:
+//
+//    - mayBlock: whether the call may block.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if events were dispatched.
+//
 func (context *MainContext) Iteration(mayBlock bool) bool {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gboolean      // out
@@ -596,6 +681,11 @@ func (context *MainContext) Iteration(mayBlock bool) bool {
 }
 
 // Pending checks if any sources have pending events for the given context.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if events are pending.
+//
 func (context *MainContext) Pending() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -634,6 +724,13 @@ func (context *MainContext) PopThreadDefault() {
 //
 // You must have successfully acquired the context with g_main_context_acquire()
 // before you may call this function.
+//
+// The function returns the following values:
+//
+//    - priority (optional): location to store priority of highest priority
+//      source already ready.
+//    - ok: TRUE if some source is ready to be dispatched prior to polling.
+//
 func (context *MainContext) Prepare() (int, bool) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // in
@@ -739,6 +836,11 @@ func (context *MainContext) Wakeup() {
 // context used for main loop functions when a main loop is not explicitly
 // specified, and corresponds to the "main" main loop. See also
 // g_main_context_get_thread_default().
+//
+// The function returns the following values:
+//
+//    - mainContext: global default main context.
+//
 func MainContextDefault() *MainContext {
 	var _cret *C.GMainContext // in
 
@@ -768,6 +870,12 @@ func MainContextDefault() *MainContext {
 //
 // If you need to hold a reference on the context, use
 // g_main_context_ref_thread_default() instead.
+//
+// The function returns the following values:
+//
+//    - mainContext (optional): thread-default Context, or NULL if the
+//      thread-default context is the global default context.
+//
 func MainContextGetThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in
 
@@ -795,6 +903,12 @@ func MainContextGetThreadDefault() *MainContext {
 // g_main_context_get_thread_default(), if the thread-default context is the
 // global default context, this will return that Context (with a ref added to
 // it) rather than returning NULL.
+//
+// The function returns the following values:
+//
+//    - mainContext: thread-default Context. Unref with g_main_context_unref()
+//      when you are done with it.
+//
 func MainContextRefThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in
 
@@ -862,6 +976,11 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 }
 
 // Context returns the Context of loop.
+//
+// The function returns the following values:
+//
+//    - mainContext of loop.
+//
 func (loop *MainLoop) Context() *MainContext {
 	var _arg0 *C.GMainLoop    // out
 	var _cret *C.GMainContext // in
@@ -887,6 +1006,11 @@ func (loop *MainLoop) Context() *MainContext {
 
 // IsRunning checks to see if the main loop is currently being run via
 // g_main_loop_run().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the mainloop is currently being run.
+//
 func (loop *MainLoop) IsRunning() bool {
 	var _arg0 *C.GMainLoop // out
 	var _cret C.gboolean   // in
@@ -990,6 +1114,11 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
+//
+// The function takes the following parameters:
+//
+//    - childSource: second #GSource that source should "poll".
+//
 func (source *Source) AddChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
@@ -1007,6 +1136,15 @@ func (source *Source) AddChildSource(childSource *Source) {
 //
 // This function is safe to call from any thread, regardless of which thread the
 // context is running in.
+//
+// The function takes the following parameters:
+//
+//    - context (optional) (if NULL, the default context will be used).
+//
+// The function returns the following values:
+//
+//    - guint: ID (greater than 0) for the source within the Context.
+//
 func (source *Source) Attach(context *MainContext) uint {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GMainContext // out
@@ -1048,6 +1186,11 @@ func (source *Source) Destroy() {
 
 // CanRecurse checks whether a source is allowed to be called recursively. see
 // g_source_set_can_recurse().
+//
+// The function returns the following values:
+//
+//    - ok: whether recursion is allowed.
+//
 func (source *Source) CanRecurse() bool {
 	var _arg0 *C.GSource // out
 	var _cret C.gboolean // in
@@ -1073,6 +1216,12 @@ func (source *Source) CanRecurse() bool {
 // Context). In particular, you can always call this function on the source
 // returned from g_main_current_source(). But calling this function on a source
 // whose Context has been destroyed is an error.
+//
+// The function returns the following values:
+//
+//    - mainContext (optional) with which the source is associated, or NULL if
+//      the context has not yet been added to a source.
+//
 func (source *Source) Context() *MainContext {
 	var _arg0 *C.GSource      // out
 	var _cret *C.GMainContext // in
@@ -1102,6 +1251,11 @@ func (source *Source) Context() *MainContext {
 // g_get_current_time().
 //
 // Deprecated: use g_source_get_time() instead.
+//
+// The function takes the following parameters:
+//
+//    - timeval structure in which to store current time.
+//
 func (source *Source) CurrentTime(timeval *TimeVal) {
 	var _arg0 *C.GSource  // out
 	var _arg1 *C.GTimeVal // out
@@ -1123,6 +1277,11 @@ func (source *Source) CurrentTime(timeval *TimeVal) {
 // instance; calling this function before g_source_attach() or after
 // g_source_destroy() yields undefined behavior. The ID returned is unique
 // within the Context instance passed to g_source_attach().
+//
+// The function returns the following values:
+//
+//    - guint: ID (greater than 0) for the source.
+//
 func (source *Source) ID() uint {
 	var _arg0 *C.GSource // out
 	var _cret C.guint    // in
@@ -1141,6 +1300,11 @@ func (source *Source) ID() uint {
 
 // Name gets a name for the source, used in debugging and profiling. The name
 // may be LL if it has never been set with g_source_set_name().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the source.
+//
 func (source *Source) Name() string {
 	var _arg0 *C.GSource // out
 	var _cret *C.char    // in
@@ -1160,6 +1324,11 @@ func (source *Source) Name() string {
 }
 
 // Priority gets the priority of a source.
+//
+// The function returns the following values:
+//
+//    - gint: priority of the source.
+//
 func (source *Source) Priority() int {
 	var _arg0 *C.GSource // out
 	var _cret C.gint     // in
@@ -1181,6 +1350,11 @@ func (source *Source) Priority() int {
 //
 // Any time before the current monotonic time (including 0) is an indication
 // that the source will fire immediately.
+//
+// The function returns the following values:
+//
+//    - gint64: monotonic ready time, -1 for "never".
+//
 func (source *Source) ReadyTime() int64 {
 	var _arg0 *C.GSource // out
 	var _cret C.gint64   // in
@@ -1204,6 +1378,11 @@ func (source *Source) ReadyTime() int64 {
 //
 // The time here is the system monotonic time, if available, or some other
 // reasonable alternative otherwise. See g_get_monotonic_time().
+//
+// The function returns the following values:
+//
+//    - gint64: monotonic time in microseconds.
+//
 func (source *Source) Time() int64 {
 	var _arg0 *C.GSource // out
 	var _cret C.gint64   // in
@@ -1246,6 +1425,11 @@ func (source *Source) Time() int64 {
 // could be destroyed immediately after this function returns. However, once a
 // source is destroyed it cannot be un-destroyed, so this function can be used
 // for opportunistic checks from any thread.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the source has been destroyed.
+//
 func (source *Source) IsDestroyed() bool {
 	var _arg0 *C.GSource // out
 	var _cret C.gboolean // in
@@ -1268,6 +1452,11 @@ func (source *Source) IsDestroyed() bool {
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
+//
+// The function takes the following parameters:
+//
+//    - childSource previously passed to g_source_add_child_source().
+//
 func (source *Source) RemoveChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
@@ -1289,6 +1478,13 @@ func (source *Source) RemoveChildSource(childSource *Source) {
 // It is safe to call this function multiple times on a source which has already
 // been attached to a context. The changes will take effect for the next time
 // the source is dispatched after this call returns.
+//
+// The function takes the following parameters:
+//
+//    - callbackData (optional): pointer to callback data "object".
+//    - callbackFuncs functions for reference counting callback_data and getting
+//      the callback and data.
+//
 func (source *Source) SetCallbackIndirect(callbackData cgo.Handle, callbackFuncs *SourceCallbackFuncs) {
 	var _arg0 *C.GSource              // out
 	var _arg1 C.gpointer              // out
@@ -1308,6 +1504,11 @@ func (source *Source) SetCallbackIndirect(callbackData cgo.Handle, callbackFuncs
 // is TRUE, then while the source is being dispatched then this source will be
 // processed normally. Otherwise, all processing of this source is blocked until
 // the dispatch function returns.
+//
+// The function takes the following parameters:
+//
+//    - canRecurse: whether recursion is allowed for this source.
+//
 func (source *Source) SetCanRecurse(canRecurse bool) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gboolean // out
@@ -1324,6 +1525,11 @@ func (source *Source) SetCanRecurse(canRecurse bool) {
 
 // SetFuncs sets the source functions (can be used to override default
 // implementations) of an unattached source.
+//
+// The function takes the following parameters:
+//
+//    - funcs: new Funcs.
+//
 func (source *Source) SetFuncs(funcs *SourceFuncs) {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GSourceFuncs // out
@@ -1351,6 +1557,11 @@ func (source *Source) SetFuncs(funcs *SourceFuncs) {
 // Use caution if changing the name while another thread may be accessing it
 // with g_source_get_name(); that function does not copy the value, and changing
 // the value will free it while the other thread may be attempting to use it.
+//
+// The function takes the following parameters:
+//
+//    - name: debug name for the source.
+//
 func (source *Source) SetName(name string) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.char    // out
@@ -1371,6 +1582,11 @@ func (source *Source) SetName(name string) {
 // A child source always has the same priority as its parent. It is not
 // permitted to change the priority of a source once it has been added as a
 // child of another source.
+//
+// The function takes the following parameters:
+//
+//    - priority: new priority.
+//
 func (source *Source) SetPriority(priority int) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gint     // out
@@ -1404,6 +1620,12 @@ func (source *Source) SetPriority(priority int) {
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
+//
+// The function takes the following parameters:
+//
+//    - readyTime: monotonic time at which the source will be ready, 0 for
+//      "immediately", -1 for "never".
+//
 func (source *Source) SetReadyTime(readyTime int64) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gint64   // out
@@ -1423,7 +1645,11 @@ func (source *Source) SetReadyTime(readyTime int64) {
 // The function takes the following parameters:
 //
 //    - funcs passed to g_source_new().
-//    - userData: user data for the callback.
+//    - userData (optional): user data for the callback.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a source was found and removed.
 //
 func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) bool {
 	var _arg1 *C.GSourceFuncs // out
@@ -1452,7 +1678,11 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) bool {
 //
 // The function takes the following parameters:
 //
-//    - userData: user_data for the callback.
+//    - userData (optional): user_data for the callback.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a source was found and removed.
 //
 func SourceRemoveByUserData(userData cgo.Handle) bool {
 	var _arg1 C.gpointer // out

@@ -101,14 +101,18 @@ func marshalConstrainter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - target of the constraint.
+//    - target (optional) of the constraint.
 //    - targetAttribute: attribute of target to be set.
 //    - relation equivalence between target_attribute and source_attribute.
-//    - source of the constraint.
+//    - source (optional) of the constraint.
 //    - sourceAttribute: attribute of source to be read.
 //    - multiplier: multiplication factor to be applied to source_attribute.
 //    - constant factor to be added to source_attribute.
 //    - strength of the constraint.
+//
+// The function returns the following values:
+//
+//    - constraint: newly created constraint.
 //
 func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
@@ -156,11 +160,15 @@ func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribu
 //
 // The function takes the following parameters:
 //
-//    - target: the target of the constraint.
+//    - target (optional): the target of the constraint.
 //    - targetAttribute: attribute of target to be set.
 //    - relation equivalence between target_attribute and constant.
 //    - constant factor to be set on target_attribute.
 //    - strength of the constraint.
+//
+// The function returns the following values:
+//
+//    - constraint: newly created constraint.
 //
 func NewConstraintConstant(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
@@ -193,6 +201,11 @@ func NewConstraintConstant(target ConstraintTargetter, targetAttribute Constrain
 }
 
 // Constant retrieves the constant factor added to the source attributes' value.
+//
+// The function returns the following values:
+//
+//    - gdouble: constant factor.
+//
 func (constraint *Constraint) Constant() float64 {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.double         // in
@@ -211,6 +224,11 @@ func (constraint *Constraint) Constant() float64 {
 
 // Multiplier retrieves the multiplication factor applied to the source
 // attribute's value.
+//
+// The function returns the following values:
+//
+//    - gdouble: multiplication factor.
+//
 func (constraint *Constraint) Multiplier() float64 {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.double         // in
@@ -228,6 +246,11 @@ func (constraint *Constraint) Multiplier() float64 {
 }
 
 // Relation: order relation between the terms of the constraint.
+//
+// The function returns the following values:
+//
+//    - constraintRelation: relation type.
+//
 func (constraint *Constraint) Relation() ConstraintRelation {
 	var _arg0 *C.GtkConstraint        // out
 	var _cret C.GtkConstraintRelation // in
@@ -249,6 +272,11 @@ func (constraint *Constraint) Relation() ConstraintRelation {
 //
 // If the source is set to NULL at creation, the constraint will use the widget
 // using the gtk.ConstraintLayout as the source.
+//
+// The function returns the following values:
+//
+//    - constraintTarget (optional): source of the constraint.
+//
 func (constraint *Constraint) Source() ConstraintTargetter {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
@@ -279,6 +307,11 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 
 // SourceAttribute retrieves the attribute of the source to be read by the
 // constraint.
+//
+// The function returns the following values:
+//
+//    - constraintAttribute source's attribute.
+//
 func (constraint *Constraint) SourceAttribute() ConstraintAttribute {
 	var _arg0 *C.GtkConstraint         // out
 	var _cret C.GtkConstraintAttribute // in
@@ -296,6 +329,11 @@ func (constraint *Constraint) SourceAttribute() ConstraintAttribute {
 }
 
 // Strength retrieves the strength of the constraint.
+//
+// The function returns the following values:
+//
+//    - gint: strength value.
+//
 func (constraint *Constraint) Strength() int {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.int            // in
@@ -317,6 +355,11 @@ func (constraint *Constraint) Strength() int {
 //
 // If the targe is set to NULL at creation, the constraint will use the widget
 // using the gtk.ConstraintLayout as the target.
+//
+// The function returns the following values:
+//
+//    - constraintTarget (optional): ConstraintTarget.
+//
 func (constraint *Constraint) Target() ConstraintTargetter {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
@@ -347,6 +390,11 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 
 // TargetAttribute retrieves the attribute of the target to be set by the
 // constraint.
+//
+// The function returns the following values:
+//
+//    - constraintAttribute target's attribute.
+//
 func (constraint *Constraint) TargetAttribute() ConstraintAttribute {
 	var _arg0 *C.GtkConstraint         // out
 	var _cret C.GtkConstraintAttribute // in
@@ -365,6 +413,11 @@ func (constraint *Constraint) TargetAttribute() ConstraintAttribute {
 
 // IsAttached checks whether the constraint is attached to a
 // gtk.ConstraintLayout, and it is contributing to the layout.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the constraint is attached.
+//
 func (constraint *Constraint) IsAttached() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in
@@ -385,6 +438,11 @@ func (constraint *Constraint) IsAttached() bool {
 
 // IsConstant checks whether the constraint describes a relation between an
 // attribute on the gtk.Constraint:target and a constant value.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the constraint is a constant relation.
+//
 func (constraint *Constraint) IsConstant() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in
@@ -405,6 +463,11 @@ func (constraint *Constraint) IsConstant() bool {
 
 // IsRequired checks whether the constraint is a required relation for solving
 // the constraint layout.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the constraint is required.
+//
 func (constraint *Constraint) IsRequired() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in

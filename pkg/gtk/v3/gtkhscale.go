@@ -75,7 +75,11 @@ func marshalHScaler(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment which sets the range of the scale.
+//    - adjustment (optional) which sets the range of the scale.
+//
+// The function returns the following values:
+//
+//    - hScale: new HScale.
 //
 func NewHScale(adjustment *Adjustment) *HScale {
 	var _arg1 *C.GtkAdjustment // out
@@ -112,6 +116,10 @@ func NewHScale(adjustment *Adjustment) *HScale {
 //    - min: minimum value.
 //    - max: maximum value.
 //    - step increment (tick size) used with keyboard shortcuts.
+//
+// The function returns the following values:
+//
+//    - hScale: new HScale.
 //
 func NewHScaleWithRange(min, max, step float64) *HScale {
 	var _arg1 C.gdouble    // out

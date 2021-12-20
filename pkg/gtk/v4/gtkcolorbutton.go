@@ -81,12 +81,29 @@ func marshalColorButtonner(p uintptr) (interface{}, error) {
 	return wrapColorButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectColorSet: emitted when the user selects a color.
+//
+// When handling this signal, use gtk.ColorChooser.GetRGBA() to find out which
+// color was just selected.
+//
+// Note that this signal is only emitted when the user changes the color. If you
+// need to react to programmatic color changes as well, use the notify::color
+// signal.
+func (button *ColorButton) ConnectColorSet(f func()) externglib.SignalHandle {
+	return button.Connect("color-set", f)
+}
+
 // NewColorButton creates a new color button.
 //
 // This returns a widget in the form of a small button containing a swatch
 // representing the current selected color. When the button is clicked, a color
 // chooser dialog will open, allowing the user to select a color. The swatch
 // will be updated to reflect the new color when the user finishes.
+//
+// The function returns the following values:
+//
+//    - colorButton: new color button.
+//
 func NewColorButton() *ColorButton {
 	var _cret *C.GtkWidget // in
 
@@ -105,6 +122,10 @@ func NewColorButton() *ColorButton {
 //
 //    - rgba: GdkRGBA to set the current color with.
 //
+// The function returns the following values:
+//
+//    - colorButton: new color button.
+//
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
@@ -122,6 +143,11 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 }
 
 // Modal gets whether the dialog is modal.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the dialog is modal.
+//
 func (button *ColorButton) Modal() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
@@ -141,6 +167,11 @@ func (button *ColorButton) Modal() bool {
 }
 
 // Title gets the title of the color chooser dialog.
+//
+// The function returns the following values:
+//
+//    - utf8: internal string, do not free the return value.
+//
 func (button *ColorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
 	var _cret *C.char           // in
@@ -194,16 +225,4 @@ func (button *ColorButton) SetTitle(title string) {
 	C.gtk_color_button_set_title(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(title)
-}
-
-// ConnectColorSet: emitted when the user selects a color.
-//
-// When handling this signal, use gtk.ColorChooser.GetRGBA() to find out which
-// color was just selected.
-//
-// Note that this signal is only emitted when the user changes the color. If you
-// need to react to programmatic color changes as well, use the notify::color
-// signal.
-func (button *ColorButton) ConnectColorSet(f func()) externglib.SignalHandle {
-	return button.Connect("color-set", f)
 }

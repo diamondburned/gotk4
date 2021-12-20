@@ -313,6 +313,11 @@ func marshalBuilderer(p uintptr) (interface{}, error) {
 // gtk.Builder.AddFromFile(), gtk.Builder.AddFromResource() or
 // gtk.Builder.AddFromString() in order to merge multiple UI descriptions into a
 // single builder.
+//
+// The function returns the following values:
+//
+//    - builder: new (empty) GtkBuilder object.
+//
 func NewBuilder() *Builder {
 	var _cret *C.GtkBuilder // in
 
@@ -334,6 +339,10 @@ func NewBuilder() *Builder {
 // The function takes the following parameters:
 //
 //    - filename of user interface description file.
+//
+// The function returns the following values:
+//
+//    - builder: GtkBuilder containing the described interface.
 //
 func NewBuilderFromFile(filename string) *Builder {
 	var _arg1 *C.char       // out
@@ -360,6 +369,10 @@ func NewBuilderFromFile(filename string) *Builder {
 // The function takes the following parameters:
 //
 //    - resourcePath: GResource resource path.
+//
+// The function returns the following values:
+//
+//    - builder: GtkBuilder containing the described interface.
 //
 func NewBuilderFromResource(resourcePath string) *Builder {
 	var _arg1 *C.char       // out
@@ -391,6 +404,10 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 //
 //    - str: user interface (XML) description.
 //    - length of string, or -1.
+//
+// The function returns the following values:
+//
+//    - builder: GtkBuilder containing the interface described by string.
 //
 func NewBuilderFromString(str string, length int) *Builder {
 	var _arg1 *C.char       // out
@@ -769,6 +786,11 @@ func (builder *Builder) ExtendWithTemplate(object *externglib.Object, templateTy
 
 // CurrentObject gets the current object set via
 // gtk_builder_set_current_object().
+//
+// The function returns the following values:
+//
+//    - object (optional): current object.
+//
 func (builder *Builder) CurrentObject() *externglib.Object {
 	var _arg0 *C.GtkBuilder // out
 	var _cret *C.GObject    // in
@@ -796,6 +818,11 @@ func (builder *Builder) CurrentObject() *externglib.Object {
 //
 //    - name of object to get.
 //
+// The function returns the following values:
+//
+//    - object (optional) named name or NULL if it could not be found in the
+//      object tree.
+//
 func (builder *Builder) GetObject(name string) *externglib.Object {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.char       // out
@@ -822,6 +849,12 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 //
 // Note that this function does not increment the reference counts of the
 // returned objects.
+//
+// The function returns the following values:
+//
+//    - sList: a newly-allocated GSList containing all the objects constructed by
+//      the GtkBuilder instance. It should be freed by g_slist_free().
+//
 func (builder *Builder) Objects() []*externglib.Object {
 	var _arg0 *C.GtkBuilder // out
 	var _cret *C.GSList     // in
@@ -845,6 +878,11 @@ func (builder *Builder) Objects() []*externglib.Object {
 }
 
 // Scope gets the scope in use that was set via gtk_builder_set_scope().
+//
+// The function returns the following values:
+//
+//    - builderScope: current scope.
+//
 func (builder *Builder) Scope() BuilderScoper {
 	var _arg0 *C.GtkBuilder      // out
 	var _cret *C.GtkBuilderScope // in
@@ -875,6 +913,12 @@ func (builder *Builder) Scope() BuilderScoper {
 }
 
 // TranslationDomain gets the translation domain of builder.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): translation domain or NULL. This string is owned by the
+//      builder object and must not be modified or freed.
+//
 func (builder *Builder) TranslationDomain() string {
 	var _arg0 *C.GtkBuilder // out
 	var _cret *C.char       // in
@@ -901,6 +945,10 @@ func (builder *Builder) TranslationDomain() string {
 // The function takes the following parameters:
 //
 //    - typeName: type name to lookup.
+//
+// The function returns the following values:
+//
+//    - gType: GType found for type_name or G_TYPE_INVALID if no type was found.
 //
 func (builder *Builder) TypeFromName(typeName string) externglib.Type {
 	var _arg0 *C.GtkBuilder // out
@@ -934,7 +982,7 @@ func (builder *Builder) TypeFromName(typeName string) externglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - currentObject: new current object or NULL for none.
+//    - currentObject (optional): new current object or NULL for none.
 //
 func (builder *Builder) SetCurrentObject(currentObject *externglib.Object) {
 	var _arg0 *C.GtkBuilder // out
@@ -956,7 +1004,7 @@ func (builder *Builder) SetCurrentObject(currentObject *externglib.Object) {
 //
 // The function takes the following parameters:
 //
-//    - scope to use or NULL for the default.
+//    - scope (optional) to use or NULL for the default.
 //
 func (builder *Builder) SetScope(scope BuilderScoper) {
 	var _arg0 *C.GtkBuilder      // out
@@ -976,7 +1024,7 @@ func (builder *Builder) SetScope(scope BuilderScoper) {
 //
 // The function takes the following parameters:
 //
-//    - domain: translation domain or NULL.
+//    - domain (optional): translation domain or NULL.
 //
 func (builder *Builder) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkBuilder // out
@@ -1008,6 +1056,10 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 //
 //    - typ: GType of the value.
 //    - str: string representation of the value.
+//
+// The function returns the following values:
+//
+//    - value to store the result in.
 //
 func (builder *Builder) ValueFromStringType(typ externglib.Type, str string) (externglib.Value, error) {
 	var _arg0 *C.GtkBuilder // out

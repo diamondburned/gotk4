@@ -18,6 +18,11 @@ import "C"
 
 // TestListAllTypes: return the type ids that have been registered after calling
 // gtk_test_register_all_types().
+//
+// The function returns the following values:
+//
+//    - gTypes: 0-terminated array of type ids.
+//
 func TestListAllTypes() []externglib.Type {
 	var _cret *C.GType // in
 	var _arg1 C.guint  // in

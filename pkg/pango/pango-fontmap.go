@@ -37,6 +37,15 @@ type FontMapOverrider interface {
 	// they have attached extra data to the context and such data is changed.
 	Changed()
 	// Family gets a font family by name.
+	//
+	// The function takes the following parameters:
+	//
+	//    - name: family name.
+	//
+	// The function returns the following values:
+	//
+	//    - fontFamily: PangoFontFamily.
+	//
 	Family(name string) FontFamilier
 	// Serial returns the current serial number of fontmap.
 	//
@@ -50,14 +59,48 @@ type FontMapOverrider interface {
 	//
 	// This can be used to automatically detect changes to a PangoFontMap, like
 	// in PangoContext.
+	//
+	// The function returns the following values:
+	//
+	//    - guint: current serial number of fontmap.
+	//
 	Serial() uint
 	// ListFamilies: list all families for a fontmap.
+	//
+	// The function returns the following values:
+	//
+	//    - families: location to store a pointer to an array of PangoFontFamily
+	//      *. This array should be freed with g_free().
+	//
 	ListFamilies() []FontFamilier
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// desc.
+	//
+	// The function takes the following parameters:
+	//
+	//    - context: PangoContext the font will be used with.
+	//    - desc: PangoFontDescription describing the font to load.
+	//
+	// The function returns the following values:
+	//
+	//    - font (optional): newly allocated PangoFont loaded, or NULL if no font
+	//      matched.
+	//
 	LoadFont(context *Context, desc *FontDescription) Fonter
 	// LoadFontset: load a set of fonts in the fontmap that can be used to
 	// render a font matching desc.
+	//
+	// The function takes the following parameters:
+	//
+	//    - context: PangoContext the font will be used with.
+	//    - desc: PangoFontDescription describing the font to load.
+	//    - language: PangoLanguage the fonts will be used for.
+	//
+	// The function returns the following values:
+	//
+	//    - fontset (optional): newly allocated PangoFontset loaded, or NULL if
+	//      no font matched.
+	//
 	LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter
 }
 
@@ -95,6 +138,15 @@ func marshalFontMapper(p uintptr) (interface{}, error) {
 	return wrapFontMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (fontmap *FontMap) baseFontMap() *FontMap {
+	return fontmap
+}
+
+// BaseFontMap returns the underlying base object.
+func BaseFontMap(obj FontMapper) *FontMap {
+	return obj.baseFontMap()
+}
+
 // Changed forces a change in the context, which will cause any PangoContext
 // using this fontmap to change.
 //
@@ -118,6 +170,12 @@ func (fontmap *FontMap) Changed() {
 // If you are using Pango as part of a higher-level system, that system may have
 // it's own way of create a PangoContext. For instance, the GTK toolkit has,
 // among others, gtk_widget_get_pango_context(). Use those instead.
+//
+// The function returns the following values:
+//
+//    - context: newly allocated PangoContext, which should be freed with
+//      g_object_unref().
+//
 func (fontmap *FontMap) CreateContext() *Context {
 	var _arg0 *C.PangoFontMap // out
 	var _cret *C.PangoContext // in
@@ -139,6 +197,10 @@ func (fontmap *FontMap) CreateContext() *Context {
 // The function takes the following parameters:
 //
 //    - name: family name.
+//
+// The function returns the following values:
+//
+//    - fontFamily: PangoFontFamily.
 //
 func (fontmap *FontMap) Family(name string) FontFamilier {
 	var _arg0 *C.PangoFontMap    // out
@@ -185,6 +247,11 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 //
 // This can be used to automatically detect changes to a PangoFontMap, like in
 // PangoContext.
+//
+// The function returns the following values:
+//
+//    - guint: current serial number of fontmap.
+//
 func (fontmap *FontMap) Serial() uint {
 	var _arg0 *C.PangoFontMap // out
 	var _cret C.guint         // in
@@ -202,6 +269,12 @@ func (fontmap *FontMap) Serial() uint {
 }
 
 // ListFamilies: list all families for a fontmap.
+//
+// The function returns the following values:
+//
+//    - families: location to store a pointer to an array of PangoFontFamily *.
+//      This array should be freed with g_free().
+//
 func (fontmap *FontMap) ListFamilies() []FontFamilier {
 	var _arg0 *C.PangoFontMap     // out
 	var _arg1 **C.PangoFontFamily // in
@@ -246,6 +319,11 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 //    - context: PangoContext the font will be used with.
 //    - desc: PangoFontDescription describing the font to load.
 //
+// The function returns the following values:
+//
+//    - font (optional): newly allocated PangoFont loaded, or NULL if no font
+//      matched.
+//
 func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
@@ -289,6 +367,11 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 //    - desc: PangoFontDescription describing the font to load.
 //    - language: PangoLanguage the fonts will be used for.
 //
+// The function returns the following values:
+//
+//    - fontset (optional): newly allocated PangoFontset loaded, or NULL if no
+//      font matched.
+//
 func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
@@ -324,13 +407,4 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 	}
 
 	return _fontset
-}
-
-func (fontmap *FontMap) baseFontMap() *FontMap {
-	return fontmap
-}
-
-// BaseFontMap returns the underlying base object.
-func BaseFontMap(obj FontMapper) *FontMap {
-	return obj.baseFontMap()
 }

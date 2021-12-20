@@ -98,10 +98,28 @@ type ResolverOverrider interface {
 	//
 	// If cancellable is non-NULL, it can be used to cancel the operation, in
 	// which case error (if non-NULL) will be set to G_IO_ERROR_CANCELLED.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - address to reverse-resolve.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL
+	//      on error.
+	//
 	LookupByAddress(ctx context.Context, address *InetAddress) (string, error)
 	// LookupByAddressAsync begins asynchronously reverse-resolving address to
 	// determine its associated hostname, and eventually calls callback, which
 	// must call g_resolver_lookup_by_address_finish() to get the final result.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - address to reverse-resolve.
+	//    - callback (optional) to call after resolution completes.
+	//
 	LookupByAddressAsync(ctx context.Context, address *InetAddress, callback AsyncReadyCallback)
 	// LookupByAddressFinish retrieves the result of a previous call to
 	// g_resolver_lookup_by_address_async().
@@ -109,6 +127,16 @@ type ResolverOverrider interface {
 	// If the DNS resolution failed, error (if non-NULL) will be set to a value
 	// from Error. If the operation was cancelled, error will be set to
 	// G_IO_ERROR_CANCELLED.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result passed to your ReadyCallback.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL
+	//      on error.
+	//
 	LookupByAddressFinish(result AsyncResulter) (string, error)
 	// LookupByName: synchronously resolves hostname to determine its associated
 	// IP address(es). hostname may be an ASCII-only or UTF-8 hostname, or the
@@ -131,11 +159,30 @@ type ResolverOverrider interface {
 	//
 	// If you are planning to connect to a socket on the resolved IP address, it
 	// may be easier to create a Address and use its Connectable interface.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - hostname to look up.
+	//
+	// The function returns the following values:
+	//
+	//    - list: non-empty #GList of Address, or NULL on error. You must unref
+	//      each of the addresses and free the list when you are done with it.
+	//      (You can use g_resolver_free_addresses() to do this.).
+	//
 	LookupByName(ctx context.Context, hostname string) ([]InetAddress, error)
 	// LookupByNameAsync begins asynchronously resolving hostname to determine
 	// its associated IP address(es), and eventually calls callback, which must
 	// call g_resolver_lookup_by_name_finish() to get the result. See
 	// g_resolver_lookup_by_name() for more details.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - hostname to look up the address of.
+	//    - callback (optional) to call after resolution completes.
+	//
 	LookupByNameAsync(ctx context.Context, hostname string, callback AsyncReadyCallback)
 	// LookupByNameFinish retrieves the result of a call to
 	// g_resolver_lookup_by_name_async().
@@ -143,15 +190,46 @@ type ResolverOverrider interface {
 	// If the DNS resolution failed, error (if non-NULL) will be set to a value
 	// from Error. If the operation was cancelled, error will be set to
 	// G_IO_ERROR_CANCELLED.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result passed to your ReadyCallback.
+	//
+	// The function returns the following values:
+	//
+	//    - list Address, or NULL on error. See g_resolver_lookup_by_name() for
+	//      more details.
+	//
 	LookupByNameFinish(result AsyncResulter) ([]InetAddress, error)
 	// LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
 	// that you can modify the lookup behavior with flags. For example this can
 	// be used to limit results with RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - hostname to look up.
+	//    - flags: extra NameLookupFlags for the lookup.
+	//
+	// The function returns the following values:
+	//
+	//    - list: non-empty #GList of Address, or NULL on error. You must unref
+	//      each of the addresses and free the list when you are done with it.
+	//      (You can use g_resolver_free_addresses() to do this.).
+	//
 	LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error)
 	// LookupByNameWithFlagsAsync begins asynchronously resolving hostname to
 	// determine its associated IP address(es), and eventually calls callback,
 	// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
 	// result. See g_resolver_lookup_by_name() for more details.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - hostname to look up the address of.
+	//    - flags: extra NameLookupFlags for the lookup.
+	//    - callback (optional) to call after resolution completes.
+	//
 	LookupByNameWithFlagsAsync(ctx context.Context, hostname string, flags ResolverNameLookupFlags, callback AsyncReadyCallback)
 	// LookupByNameWithFlagsFinish retrieves the result of a call to
 	// g_resolver_lookup_by_name_with_flags_async().
@@ -159,6 +237,16 @@ type ResolverOverrider interface {
 	// If the DNS resolution failed, error (if non-NULL) will be set to a value
 	// from Error. If the operation was cancelled, error will be set to
 	// G_IO_ERROR_CANCELLED.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result passed to your ReadyCallback.
+	//
+	// The function returns the following values:
+	//
+	//    - list Address, or NULL on error. See g_resolver_lookup_by_name() for
+	//      more details.
+	//
 	LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error)
 	// LookupRecords: synchronously performs a DNS record lookup for the given
 	// rrname and returns a list of records as #GVariant tuples. See RecordType
@@ -169,11 +257,32 @@ type ResolverOverrider interface {
 	//
 	// If cancellable is non-NULL, it can be used to cancel the operation, in
 	// which case error (if non-NULL) will be set to G_IO_ERROR_CANCELLED.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - rrname: DNS name to look up the record for.
+	//    - recordType: type of DNS record to look up.
+	//
+	// The function returns the following values:
+	//
+	//    - list: non-empty #GList of #GVariant, or NULL on error. You must free
+	//      each of the records and the list when you are done with it. (You can
+	//      use g_list_free_full() with g_variant_unref() to do this.).
+	//
 	LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error)
 	// LookupRecordsAsync begins asynchronously performing a DNS lookup for the
 	// given rrname, and eventually calls callback, which must call
 	// g_resolver_lookup_records_finish() to get the final result. See
 	// g_resolver_lookup_records() for more details.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - rrname: DNS name to look up the record for.
+	//    - recordType: type of DNS record to look up.
+	//    - callback (optional) to call after resolution completes.
+	//
 	LookupRecordsAsync(ctx context.Context, rrname string, recordType ResolverRecordType, callback AsyncReadyCallback)
 	// LookupRecordsFinish retrieves the result of a previous call to
 	// g_resolver_lookup_records_async(). Returns a non-empty list of records as
@@ -183,7 +292,24 @@ type ResolverOverrider interface {
 	// If the DNS resolution failed, error (if non-NULL) will be set to a value
 	// from Error. If the operation was cancelled, error will be set to
 	// G_IO_ERROR_CANCELLED.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result passed to your ReadyCallback.
+	//
+	// The function returns the following values:
+	//
+	//    - list: non-empty #GList of #GVariant, or NULL on error. You must free
+	//      each of the records and the list when you are done with it. (You can
+	//      use g_list_free_full() with g_variant_unref() to do this.).
+	//
 	LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error)
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional)
+	//    - rrname
+	//    - callback (optional)
+	//
 	LookupServiceAsync(ctx context.Context, rrname string, callback AsyncReadyCallback)
 	// LookupServiceFinish retrieves the result of a previous call to
 	// g_resolver_lookup_service_async().
@@ -191,6 +317,16 @@ type ResolverOverrider interface {
 	// If the DNS resolution failed, error (if non-NULL) will be set to a value
 	// from Error. If the operation was cancelled, error will be set to
 	// G_IO_ERROR_CANCELLED.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result passed to your ReadyCallback.
+	//
+	// The function returns the following values:
+	//
+	//    - list: non-empty #GList of Target, or NULL on error. See
+	//      g_resolver_lookup_service() for more details.
+	//
 	LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error)
 	Reload()
 }
@@ -232,6 +368,21 @@ func marshalResolverer(p uintptr) (interface{}, error) {
 	return wrapResolver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (resolver *Resolver) baseResolver() *Resolver {
+	return resolver
+}
+
+// BaseResolver returns the underlying base object.
+func BaseResolver(obj Resolverer) *Resolver {
+	return obj.baseResolver()
+}
+
+// ConnectReload: emitted when the resolver notices that the system resolver
+// configuration has changed.
+func (resolver *Resolver) ConnectReload(f func()) externglib.SignalHandle {
+	return resolver.Connect("reload", f)
+}
+
 // LookupByAddress: synchronously reverse-resolves address to determine its
 // associated hostname.
 //
@@ -243,8 +394,13 @@ func marshalResolverer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - address to reverse-resolve.
+//
+// The function returns the following values:
+//
+//    - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL on
+//      error.
 //
 func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddress) (string, error) {
 	var _arg0 *C.GResolver    // out
@@ -284,9 +440,9 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - address to reverse-resolve.
-//    - callback to call after resolution completes.
+//    - callback (optional) to call after resolution completes.
 //
 func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *InetAddress, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
@@ -324,6 +480,11 @@ func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *Ine
 // The function takes the following parameters:
 //
 //    - result passed to your ReadyCallback.
+//
+// The function returns the following values:
+//
+//    - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL on
+//      error.
 //
 func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, error) {
 	var _arg0 *C.GResolver    // out
@@ -373,8 +534,14 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - hostname to look up.
+//
+// The function returns the following values:
+//
+//    - list: non-empty #GList of Address, or NULL on error. You must unref each
+//      of the addresses and free the list when you are done with it. (You can
+//      use g_resolver_free_addresses() to do this.).
 //
 func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]InetAddress, error) {
 	var _arg0 *C.GResolver    // out
@@ -421,9 +588,9 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - hostname to look up the address of.
-//    - callback to call after resolution completes.
+//    - callback (optional) to call after resolution completes.
 //
 func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
@@ -463,6 +630,11 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 //
 //    - result passed to your ReadyCallback.
 //
+// The function returns the following values:
+//
+//    - list Address, or NULL on error. See g_resolver_lookup_by_name() for more
+//      details.
+//
 func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -499,9 +671,15 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - hostname to look up.
 //    - flags: extra NameLookupFlags for the lookup.
+//
+// The function returns the following values:
+//
+//    - list: non-empty #GList of Address, or NULL on error. You must unref each
+//      of the addresses and free the list when you are done with it. (You can
+//      use g_resolver_free_addresses() to do this.).
 //
 func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error) {
 	var _arg0 *C.GResolver               // out
@@ -551,10 +729,10 @@ func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname st
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - hostname to look up the address of.
 //    - flags: extra NameLookupFlags for the lookup.
-//    - callback to call after resolution completes.
+//    - callback (optional) to call after resolution completes.
 //
 func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostname string, flags ResolverNameLookupFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver               // out
@@ -596,6 +774,11 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostna
 // The function takes the following parameters:
 //
 //    - result passed to your ReadyCallback.
+//
+// The function returns the following values:
+//
+//    - list Address, or NULL on error. See g_resolver_lookup_by_name() for more
+//      details.
 //
 func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error) {
 	var _arg0 *C.GResolver    // out
@@ -639,9 +822,15 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]I
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - rrname: DNS name to look up the record for.
 //    - recordType: type of DNS record to look up.
+//
+// The function returns the following values:
+//
+//    - list: non-empty #GList of #GVariant, or NULL on error. You must free each
+//      of the records and the list when you are done with it. (You can use
+//      g_list_free_full() with g_variant_unref() to do this.).
 //
 func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error) {
 	var _arg0 *C.GResolver          // out
@@ -697,10 +886,10 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - rrname: DNS name to look up the record for.
 //    - recordType: type of DNS record to look up.
-//    - callback to call after resolution completes.
+//    - callback (optional) to call after resolution completes.
 //
 func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string, recordType ResolverRecordType, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
@@ -743,6 +932,12 @@ func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string,
 // The function takes the following parameters:
 //
 //    - result passed to your ReadyCallback.
+//
+// The function returns the following values:
+//
+//    - list: non-empty #GList of #GVariant, or NULL on error. You must free each
+//      of the records and the list when you are done with it. (You can use
+//      g_list_free_full() with g_variant_unref() to do this.).
 //
 func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error) {
 	var _arg0 *C.GResolver    // out
@@ -801,10 +996,16 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - service type to look up (eg, "ldap").
 //    - protocol: networking protocol to use for service (eg, "tcp").
 //    - domain: DNS domain to look up the service in.
+//
+// The function returns the following values:
+//
+//    - list: non-empty #GList of Target, or NULL on error. You must free each of
+//      the targets and the list when you are done with it. (You can use
+//      g_resolver_free_targets() to do this.).
 //
 func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, domain string) ([]*SrvTarget, error) {
 	var _arg0 *C.GResolver    // out
@@ -865,11 +1066,11 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - service type to look up (eg, "ldap").
 //    - protocol: networking protocol to use for service (eg, "tcp").
 //    - domain: DNS domain to look up the service in.
-//    - callback to call after resolution completes.
+//    - callback (optional) to call after resolution completes.
 //
 func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, protocol, domain string, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
@@ -916,6 +1117,11 @@ func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, proto
 // The function takes the following parameters:
 //
 //    - result passed to your ReadyCallback.
+//
+// The function returns the following values:
+//
+//    - list: non-empty #GList of Target, or NULL on error. See
+//      g_resolver_lookup_service() for more details.
 //
 func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error) {
 	var _arg0 *C.GResolver    // out
@@ -971,24 +1177,14 @@ func (resolver *Resolver) SetDefault() {
 	runtime.KeepAlive(resolver)
 }
 
-func (resolver *Resolver) baseResolver() *Resolver {
-	return resolver
-}
-
-// BaseResolver returns the underlying base object.
-func BaseResolver(obj Resolverer) *Resolver {
-	return obj.baseResolver()
-}
-
-// ConnectReload: emitted when the resolver notices that the system resolver
-// configuration has changed.
-func (resolver *Resolver) ConnectReload(f func()) externglib.SignalHandle {
-	return resolver.Connect("reload", f)
-}
-
 // ResolverGetDefault gets the default #GResolver. You should unref it when you
 // are done with it. #GResolver may use its reference count as a hint about how
 // many threads it should allocate for concurrent DNS resolutions.
+//
+// The function returns the following values:
+//
+//    - resolver: default #GResolver.
+//
 func ResolverGetDefault() Resolverer {
 	var _cret *C.GResolver // in
 

@@ -157,6 +157,40 @@ func marshalDeviceManagerer(p uintptr) (interface{}, error) {
 	return wrapDeviceManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (deviceManager *DeviceManager) baseDeviceManager() *DeviceManager {
+	return deviceManager
+}
+
+// BaseDeviceManager returns the underlying base object.
+func BaseDeviceManager(obj DeviceManagerer) *DeviceManager {
+	return obj.baseDeviceManager()
+}
+
+// ConnectDeviceAdded signal is emitted either when a new master pointer is
+// created, or when a slave (Hardware) input device is plugged in.
+func (deviceManager *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
+	return deviceManager.Connect("device-added", f)
+}
+
+// ConnectDeviceChanged signal is emitted whenever a device has changed in the
+// hierarchy, either slave devices being disconnected from their master device
+// or connected to another one, or master devices being added or removed a slave
+// device.
+//
+// If a slave device is detached from all master devices
+// (gdk_device_get_associated_device() returns NULL), its DeviceType will change
+// to GDK_DEVICE_TYPE_FLOATING, if it's attached, it will change to
+// GDK_DEVICE_TYPE_SLAVE.
+func (deviceManager *DeviceManager) ConnectDeviceChanged(f func(device Devicer)) externglib.SignalHandle {
+	return deviceManager.Connect("device-changed", f)
+}
+
+// ConnectDeviceRemoved signal is emitted either when a master pointer is
+// removed, or when a slave (Hardware) input device is unplugged.
+func (deviceManager *DeviceManager) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
+	return deviceManager.Connect("device-removed", f)
+}
+
 // ClientPointer returns the client pointer, that is, the master pointer that
 // acts as the core pointer for this application. In X11, window managers may
 // change this depending on the interaction pattern under the presence of
@@ -166,6 +200,12 @@ func marshalDeviceManagerer(p uintptr) (interface{}, error) {
 // Event and there aren’t other means to get a meaningful Device to operate on.
 //
 // Deprecated: Use gdk_seat_get_pointer() instead.
+//
+// The function returns the following values:
+//
+//    - device: client pointer. This memory is owned by GDK and must not be freed
+//      or unreferenced.
+//
 func (deviceManager *DeviceManager) ClientPointer() Devicer {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDevice        // in
@@ -196,6 +236,12 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 }
 
 // Display gets the Display associated to device_manager.
+//
+// The function returns the following values:
+//
+//    - display (optional) to which device_manager is associated to, or NULL.
+//      This memory is owned by GDK and must not be freed or unreferenced.
+//
 func (deviceManager *DeviceManager) Display() *Display {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDisplay       // in
@@ -223,6 +269,11 @@ func (deviceManager *DeviceManager) Display() *Display {
 // The function takes the following parameters:
 //
 //    - typ: device type to get.
+//
+// The function returns the following values:
+//
+//    - list of Devices. The returned list must be freed with g_list_free (). The
+//      list elements are owned by GTK+ and must not be freed or unreffed.
 //
 func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	var _arg0 *C.GdkDeviceManager // out
@@ -260,38 +311,4 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	})
 
 	return _list
-}
-
-func (deviceManager *DeviceManager) baseDeviceManager() *DeviceManager {
-	return deviceManager
-}
-
-// BaseDeviceManager returns the underlying base object.
-func BaseDeviceManager(obj DeviceManagerer) *DeviceManager {
-	return obj.baseDeviceManager()
-}
-
-// ConnectDeviceAdded signal is emitted either when a new master pointer is
-// created, or when a slave (Hardware) input device is plugged in.
-func (deviceManager *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
-	return deviceManager.Connect("device-added", f)
-}
-
-// ConnectDeviceChanged signal is emitted whenever a device has changed in the
-// hierarchy, either slave devices being disconnected from their master device
-// or connected to another one, or master devices being added or removed a slave
-// device.
-//
-// If a slave device is detached from all master devices
-// (gdk_device_get_associated_device() returns NULL), its DeviceType will change
-// to GDK_DEVICE_TYPE_FLOATING, if it's attached, it will change to
-// GDK_DEVICE_TYPE_SLAVE.
-func (deviceManager *DeviceManager) ConnectDeviceChanged(f func(device Devicer)) externglib.SignalHandle {
-	return deviceManager.Connect("device-changed", f)
-}
-
-// ConnectDeviceRemoved signal is emitted either when a master pointer is
-// removed, or when a slave (Hardware) input device is unplugged.
-func (deviceManager *DeviceManager) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
-	return deviceManager.Connect("device-removed", f)
 }

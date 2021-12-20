@@ -135,7 +135,16 @@ func _gotk4_gtk3_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChil
 // yet, so the interface currently has no use.
 type FlowBoxOverrider interface {
 	ActivateCursorChild()
+	// The function takes the following parameters:
+	//
 	ChildActivated(child *FlowBoxChild)
+	// The function takes the following parameters:
+	//
+	//    - step
+	//    - count
+	//
+	// The function returns the following values:
+	//
 	MoveCursor(step MovementStep, count int) bool
 	// SelectAll: select all children of box, if the selection mode allows it.
 	SelectAll()
@@ -223,7 +232,77 @@ func marshalFlowBoxer(p uintptr) (interface{}, error) {
 	return wrapFlowBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivateCursorChild signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted when the user activates the box.
+func (box *FlowBox) ConnectActivateCursorChild(f func()) externglib.SignalHandle {
+	return box.Connect("activate-cursor-child", f)
+}
+
+// ConnectChildActivated signal is emitted when a child has been activated by
+// the user.
+func (box *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) externglib.SignalHandle {
+	return box.Connect("child-activated", f)
+}
+
+// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a cursor movement.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the Shift modifier extends the selection, the variant without the Shift
+// modifer does not. There are too many key combinations to list them all here.
+//
+// - Arrow keys move by individual children
+//
+// - Home/End keys move to the ends of the box
+//
+// - PageUp/PageDown keys move vertically by pages.
+func (box *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int) bool) externglib.SignalHandle {
+	return box.Connect("move-cursor", f)
+}
+
+// ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted to select all children of the box, if the selection mode permits it.
+//
+// The default bindings for this signal is Ctrl-a.
+func (box *FlowBox) ConnectSelectAll(f func()) externglib.SignalHandle {
+	return box.Connect("select-all", f)
+}
+
+// ConnectSelectedChildrenChanged signal is emitted when the set of selected
+// children changes.
+//
+// Use gtk_flow_box_selected_foreach() or gtk_flow_box_get_selected_children()
+// to obtain the selected children.
+func (box *FlowBox) ConnectSelectedChildrenChanged(f func()) externglib.SignalHandle {
+	return box.Connect("selected-children-changed", f)
+}
+
+// ConnectToggleCursorChild signal is a [keybinding signal][GtkBindingSignal]
+// which toggles the selection of the child that has the focus.
+//
+// The default binding for this signal is Ctrl-Space.
+func (box *FlowBox) ConnectToggleCursorChild(f func()) externglib.SignalHandle {
+	return box.Connect("toggle-cursor-child", f)
+}
+
+// ConnectUnselectAll signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to unselect all children of the box, if the selection mode
+// permits it.
+//
+// The default bindings for this signal is Ctrl-Shift-a.
+func (box *FlowBox) ConnectUnselectAll(f func()) externglib.SignalHandle {
+	return box.Connect("unselect-all", f)
+}
+
 // NewFlowBox creates a GtkFlowBox.
+//
+// The function returns the following values:
+//
+//    - flowBox: new FlowBox container.
+//
 func NewFlowBox() *FlowBox {
 	var _cret *C.GtkWidget // in
 
@@ -253,7 +332,7 @@ func NewFlowBox() *FlowBox {
 //
 // The function takes the following parameters:
 //
-//    - model to be bound to box.
+//    - model (optional) to be bound to box.
 //    - createWidgetFunc: function that creates widgets for items.
 //
 func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
@@ -278,6 +357,11 @@ func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCr
 }
 
 // ActivateOnSingleClick returns whether children activate on single clicks.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if children are activated on single click, FALSE otherwise.
+//
 func (box *FlowBox) ActivateOnSingleClick() bool {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.gboolean    // in
@@ -301,6 +385,11 @@ func (box *FlowBox) ActivateOnSingleClick() bool {
 // The function takes the following parameters:
 //
 //    - idx: position of the child.
+//
+// The function returns the following values:
+//
+//    - flowBoxChild (optional): child widget, which will always be a
+//      FlowBoxChild or NULL in case no child widget with the given index exists.
 //
 func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 	var _arg0 *C.GtkFlowBox      // out
@@ -330,6 +419,12 @@ func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 //    - x coordinate of the child.
 //    - y coordinate of the child.
 //
+// The function returns the following values:
+//
+//    - flowBoxChild (optional): child widget, which will always be a
+//      FlowBoxChild or NULL in case no child widget exists for the given x and y
+//      coordinates.
+//
 func (box *FlowBox) ChildAtPos(x, y int) *FlowBoxChild {
 	var _arg0 *C.GtkFlowBox      // out
 	var _arg1 C.gint             // out
@@ -355,6 +450,11 @@ func (box *FlowBox) ChildAtPos(x, y int) *FlowBoxChild {
 }
 
 // ColumnSpacing gets the horizontal spacing.
+//
+// The function returns the following values:
+//
+//    - guint: horizontal spacing.
+//
 func (box *FlowBox) ColumnSpacing() uint {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.guint       // in
@@ -373,6 +473,11 @@ func (box *FlowBox) ColumnSpacing() uint {
 
 // Homogeneous returns whether the box is homogeneous (all children are the same
 // size). See gtk_box_set_homogeneous().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the box is homogeneous.
+//
 func (box *FlowBox) Homogeneous() bool {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.gboolean    // in
@@ -392,6 +497,11 @@ func (box *FlowBox) Homogeneous() bool {
 }
 
 // MaxChildrenPerLine gets the maximum number of children per line.
+//
+// The function returns the following values:
+//
+//    - guint: maximum number of children per line.
+//
 func (box *FlowBox) MaxChildrenPerLine() uint {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.guint       // in
@@ -409,6 +519,11 @@ func (box *FlowBox) MaxChildrenPerLine() uint {
 }
 
 // MinChildrenPerLine gets the minimum number of children per line.
+//
+// The function returns the following values:
+//
+//    - guint: minimum number of children per line.
+//
 func (box *FlowBox) MinChildrenPerLine() uint {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.guint       // in
@@ -426,6 +541,11 @@ func (box *FlowBox) MinChildrenPerLine() uint {
 }
 
 // RowSpacing gets the vertical spacing.
+//
+// The function returns the following values:
+//
+//    - guint: vertical spacing.
+//
 func (box *FlowBox) RowSpacing() uint {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.guint       // in
@@ -443,6 +563,12 @@ func (box *FlowBox) RowSpacing() uint {
 }
 
 // SelectedChildren creates a list of all selected children.
+//
+// The function returns the following values:
+//
+//    - list: A #GList containing the Widget for each selected child. Free with
+//      g_list_free() when done.
+//
 func (box *FlowBox) SelectedChildren() []FlowBoxChild {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret *C.GList      // in
@@ -466,6 +592,11 @@ func (box *FlowBox) SelectedChildren() []FlowBoxChild {
 }
 
 // SelectionMode gets the selection mode of box.
+//
+// The function returns the following values:
+//
+//    - selectionMode: SelectionMode.
+//
 func (box *FlowBox) SelectionMode() SelectionMode {
 	var _arg0 *C.GtkFlowBox      // out
 	var _cret C.GtkSelectionMode // in
@@ -644,7 +775,8 @@ func (box *FlowBox) SetColumnSpacing(spacing uint) {
 //
 // The function takes the following parameters:
 //
-//    - filterFunc: callback that lets you filter which children to show.
+//    - filterFunc (optional): callback that lets you filter which children to
+//      show.
 //
 func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
 	var _arg0 *C.GtkFlowBox          // out
@@ -676,7 +808,7 @@ func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
 // The function takes the following parameters:
 //
 //    - adjustment which should be adjusted when the focus is moved among the
-//    descendents of container.
+//      descendents of container.
 //
 func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkFlowBox    // out
@@ -696,7 +828,7 @@ func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
 // The function takes the following parameters:
 //
 //    - homogeneous: TRUE to create equal allotments, FALSE for variable
-//    allotments.
+//      allotments.
 //
 func (box *FlowBox) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkFlowBox // out
@@ -804,7 +936,7 @@ func (box *FlowBox) SetSelectionMode(mode SelectionMode) {
 //
 // The function takes the following parameters:
 //
-//    - sortFunc: sort function.
+//    - sortFunc (optional): sort function.
 //
 func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
 	var _arg0 *C.GtkFlowBox        // out
@@ -836,7 +968,7 @@ func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
 // The function takes the following parameters:
 //
 //    - adjustment which should be adjusted when the focus is moved among the
-//    descendents of container.
+//      descendents of container.
 //
 func (box *FlowBox) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkFlowBox    // out
@@ -877,71 +1009,6 @@ func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 	C.gtk_flow_box_unselect_child(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
-}
-
-// ConnectActivateCursorChild signal is a [keybinding signal][GtkBindingSignal]
-// which gets emitted when the user activates the box.
-func (box *FlowBox) ConnectActivateCursorChild(f func()) externglib.SignalHandle {
-	return box.Connect("activate-cursor-child", f)
-}
-
-// ConnectChildActivated signal is emitted when a child has been activated by
-// the user.
-func (box *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) externglib.SignalHandle {
-	return box.Connect("child-activated", f)
-}
-
-// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted when the user initiates a cursor movement.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control the cursor programmatically.
-//
-// The default bindings for this signal come in two variants, the variant with
-// the Shift modifier extends the selection, the variant without the Shift
-// modifer does not. There are too many key combinations to list them all here.
-//
-// - Arrow keys move by individual children
-//
-// - Home/End keys move to the ends of the box
-//
-// - PageUp/PageDown keys move vertically by pages.
-func (box *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int) bool) externglib.SignalHandle {
-	return box.Connect("move-cursor", f)
-}
-
-// ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
-// emitted to select all children of the box, if the selection mode permits it.
-//
-// The default bindings for this signal is Ctrl-a.
-func (box *FlowBox) ConnectSelectAll(f func()) externglib.SignalHandle {
-	return box.Connect("select-all", f)
-}
-
-// ConnectSelectedChildrenChanged signal is emitted when the set of selected
-// children changes.
-//
-// Use gtk_flow_box_selected_foreach() or gtk_flow_box_get_selected_children()
-// to obtain the selected children.
-func (box *FlowBox) ConnectSelectedChildrenChanged(f func()) externglib.SignalHandle {
-	return box.Connect("selected-children-changed", f)
-}
-
-// ConnectToggleCursorChild signal is a [keybinding signal][GtkBindingSignal]
-// which toggles the selection of the child that has the focus.
-//
-// The default binding for this signal is Ctrl-Space.
-func (box *FlowBox) ConnectToggleCursorChild(f func()) externglib.SignalHandle {
-	return box.Connect("toggle-cursor-child", f)
-}
-
-// ConnectUnselectAll signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to unselect all children of the box, if the selection mode
-// permits it.
-//
-// The default bindings for this signal is Ctrl-Shift-a.
-func (box *FlowBox) ConnectUnselectAll(f func()) externglib.SignalHandle {
-	return box.Connect("unselect-all", f)
 }
 
 // FlowBoxChildOverrider contains methods that are overridable.
@@ -985,8 +1052,23 @@ func marshalFlowBoxChilder(p uintptr) (interface{}, error) {
 	return wrapFlowBoxChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate signal is emitted when the user activates a child widget in a
+// FlowBox, either by clicking or double-clicking, or by using the Space or
+// Enter key.
+//
+// While this signal is used as a [keybinding signal][GtkBindingSignal], it can
+// be used by applications for their own purposes.
+func (child *FlowBoxChild) ConnectActivate(f func()) externglib.SignalHandle {
+	return child.Connect("activate", f)
+}
+
 // NewFlowBoxChild creates a new FlowBoxChild, to be used as a child of a
 // FlowBox.
+//
+// The function returns the following values:
+//
+//    - flowBoxChild: new FlowBoxChild.
+//
 func NewFlowBoxChild() *FlowBoxChild {
 	var _cret *C.GtkWidget // in
 
@@ -1024,6 +1106,11 @@ func (child *FlowBoxChild) Changed() {
 }
 
 // Index gets the current index of the child in its FlowBox container.
+//
+// The function returns the following values:
+//
+//    - gint: index of the child, or -1 if the child is not in a flow box.
+//
 func (child *FlowBoxChild) Index() int {
 	var _arg0 *C.GtkFlowBoxChild // out
 	var _cret C.gint             // in
@@ -1042,6 +1129,11 @@ func (child *FlowBoxChild) Index() int {
 
 // IsSelected returns whether the child is currently selected in its FlowBox
 // container.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if child is selected.
+//
 func (child *FlowBoxChild) IsSelected() bool {
 	var _arg0 *C.GtkFlowBoxChild // out
 	var _cret C.gboolean         // in
@@ -1058,14 +1150,4 @@ func (child *FlowBoxChild) IsSelected() bool {
 	}
 
 	return _ok
-}
-
-// ConnectActivate signal is emitted when the user activates a child widget in a
-// FlowBox, either by clicking or double-clicking, or by using the Space or
-// Enter key.
-//
-// While this signal is used as a [keybinding signal][GtkBindingSignal], it can
-// be used by applications for their own purposes.
-func (child *FlowBoxChild) ConnectActivate(f func()) externglib.SignalHandle {
-	return child.Connect("activate", f)
 }

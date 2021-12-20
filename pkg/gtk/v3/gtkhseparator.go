@@ -73,6 +73,11 @@ func marshalHSeparatorrer(p uintptr) (interface{}, error) {
 // NewHSeparator creates a new HSeparator.
 //
 // Deprecated: Use gtk_separator_new() with GTK_ORIENTATION_HORIZONTAL instead.
+//
+// The function returns the following values:
+//
+//    - hSeparator: new HSeparator.
+//
 func NewHSeparator() *HSeparator {
 	var _cret *C.GtkWidget // in
 

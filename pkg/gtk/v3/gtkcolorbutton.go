@@ -105,12 +105,28 @@ func marshalColorButtonner(p uintptr) (interface{}, error) {
 	return wrapColorButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectColorSet signal is emitted when the user selects a color. When
+// handling this signal, use gtk_color_button_get_rgba() to find out which color
+// was just selected.
+//
+// Note that this signal is only emitted when the user changes the color. If you
+// need to react to programmatic color changes as well, use the notify::color
+// signal.
+func (button *ColorButton) ConnectColorSet(f func()) externglib.SignalHandle {
+	return button.Connect("color-set", f)
+}
+
 // NewColorButton creates a new color button.
 //
 // This returns a widget in the form of a small button containing a swatch
 // representing the current selected color. When the button is clicked, a
 // color-selection dialog will open, allowing the user to select a color. The
 // swatch will be updated to reflect the new color when the user finishes.
+//
+// The function returns the following values:
+//
+//    - colorButton: new color button.
+//
 func NewColorButton() *ColorButton {
 	var _cret *C.GtkWidget // in
 
@@ -130,6 +146,10 @@ func NewColorButton() *ColorButton {
 // The function takes the following parameters:
 //
 //    - color to set the current color with.
+//
+// The function returns the following values:
+//
+//    - colorButton: new color button.
 //
 func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 	var _arg1 *C.GdkColor  // out
@@ -153,6 +173,10 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 //
 //    - rgba to set the current color with.
 //
+// The function returns the following values:
+//
+//    - colorButton: new color button.
+//
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
@@ -172,6 +196,11 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 // Alpha returns the current alpha value.
 //
 // Deprecated: Use gtk_color_chooser_get_rgba() instead.
+//
+// The function returns the following values:
+//
+//    - guint16: integer between 0 and 65535.
+//
 func (button *ColorButton) Alpha() uint16 {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.guint16         // in
@@ -191,6 +220,11 @@ func (button *ColorButton) Alpha() uint16 {
 // Color sets color to be the current color in the ColorButton widget.
 //
 // Deprecated: Use gtk_color_chooser_get_rgba() instead.
+//
+// The function returns the following values:
+//
+//    - color to fill in with the current color.
+//
 func (button *ColorButton) Color() *gdk.Color {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.GdkColor        // in
@@ -208,6 +242,11 @@ func (button *ColorButton) Color() *gdk.Color {
 }
 
 // Title gets the title of the color selection dialog.
+//
+// The function returns the following values:
+//
+//    - utf8: internal string, do not free the return value.
+//
 func (button *ColorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
 	var _cret *C.gchar          // in
@@ -227,6 +266,11 @@ func (button *ColorButton) Title() string {
 // UseAlpha does the color selection dialog use the alpha channel ?
 //
 // Deprecated: Use gtk_color_chooser_get_use_alpha() instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the color sample uses alpha channel, FALSE if not.
+//
 func (button *ColorButton) UseAlpha() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
@@ -325,15 +369,4 @@ func (button *ColorButton) SetUseAlpha(useAlpha bool) {
 	C.gtk_color_button_set_use_alpha(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useAlpha)
-}
-
-// ConnectColorSet signal is emitted when the user selects a color. When
-// handling this signal, use gtk_color_button_get_rgba() to find out which color
-// was just selected.
-//
-// Note that this signal is only emitted when the user changes the color. If you
-// need to react to programmatic color changes as well, use the notify::color
-// signal.
-func (button *ColorButton) ConnectColorSet(f func()) externglib.SignalHandle {
-	return button.Connect("color-set", f)
 }

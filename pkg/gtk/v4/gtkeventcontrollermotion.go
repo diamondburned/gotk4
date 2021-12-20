@@ -50,8 +50,28 @@ func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 	return wrapEventControllerMotion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEnter signals that the pointer has entered the widget.
+func (self *EventControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
+	return self.Connect("enter", f)
+}
+
+// ConnectLeave signals that the pointer has left the widget.
+func (self *EventControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
+	return self.Connect("leave", f)
+}
+
+// ConnectMotion: emitted when the pointer moves inside the widget.
+func (self *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
+	return self.Connect("motion", f)
+}
+
 // NewEventControllerMotion creates a new event controller that will handle
 // motion events.
+//
+// The function returns the following values:
+//
+//    - eventControllerMotion: new GtkEventControllerMotion.
+//
 func NewEventControllerMotion() *EventControllerMotion {
 	var _cret *C.GtkEventController // in
 
@@ -65,6 +85,11 @@ func NewEventControllerMotion() *EventControllerMotion {
 }
 
 // ContainsPointer returns if a pointer is within self or one of its children.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a pointer is within self or one of its children.
+//
 func (self *EventControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
@@ -84,6 +109,11 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 }
 
 // IsPointer returns if a pointer is within self, but not one of its children.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a pointer is within self but not one of its children.
+//
 func (self *EventControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
@@ -100,19 +130,4 @@ func (self *EventControllerMotion) IsPointer() bool {
 	}
 
 	return _ok
-}
-
-// ConnectEnter signals that the pointer has entered the widget.
-func (self *EventControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
-	return self.Connect("enter", f)
-}
-
-// ConnectLeave signals that the pointer has left the widget.
-func (self *EventControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
-	return self.Connect("leave", f)
-}
-
-// ConnectMotion: emitted when the pointer moves inside the widget.
-func (self *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return self.Connect("motion", f)
 }

@@ -92,6 +92,11 @@ func marshalNativeSurfacer(p uintptr) (interface{}, error) {
 }
 
 // Renderer returns the renderer that is used for this GtkNative.
+//
+// The function returns the following values:
+//
+//    - renderer for self.
+//
 func (self *NativeSurface) Renderer() gsk.Rendererer {
 	var _arg0 *C.GtkNative   // out
 	var _cret *C.GskRenderer // in
@@ -122,6 +127,11 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 }
 
 // Surface returns the surface of this GtkNative.
+//
+// The function returns the following values:
+//
+//    - surface of self.
+//
 func (self *NativeSurface) Surface() gdk.Surfacer {
 	var _arg0 *C.GtkNative  // out
 	var _cret *C.GdkSurface // in
@@ -155,6 +165,12 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 //
 // This is the translation from self's surface coordinates into self's widget
 // coordinates.
+//
+// The function returns the following values:
+//
+//    - x: return location for the x coordinate.
+//    - y: return location for the y coordinate.
+//
 func (self *NativeSurface) SurfaceTransform() (x float64, y float64) {
 	var _arg0 *C.GtkNative // out
 	var _arg1 C.double     // in
@@ -203,6 +219,10 @@ func (self *NativeSurface) Unrealize() {
 // The function takes the following parameters:
 //
 //    - surface: GdkSurface.
+//
+// The function returns the following values:
+//
+//    - native: GtkNative that is associated with surface.
 //
 func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 	var _arg1 *C.GdkSurface // out

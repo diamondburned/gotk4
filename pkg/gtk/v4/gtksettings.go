@@ -99,6 +99,12 @@ func (settings *Settings) ResetProperty(name string) {
 // creating it if necessary.
 //
 // See gtk.Settings.GetForDisplay.
+//
+// The function returns the following values:
+//
+//    - settings (optional): GtkSettings object. If there is no default display,
+//      then returns NULL.
+//
 func SettingsGetDefault() *Settings {
 	var _cret *C.GtkSettings // in
 
@@ -119,6 +125,10 @@ func SettingsGetDefault() *Settings {
 // The function takes the following parameters:
 //
 //    - display: GdkDisplay.
+//
+// The function returns the following values:
+//
+//    - settings: GtkSettings object.
 //
 func SettingsGetForDisplay(display *gdk.Display) *Settings {
 	var _arg1 *C.GdkDisplay  // out

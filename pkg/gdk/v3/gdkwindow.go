@@ -686,6 +686,11 @@ func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gbo
 
 // GetDefaultRootWindow obtains the root window (parent all other windows are
 // inside) for the default display and screen.
+//
+// The function returns the following values:
+//
+//    - window: default root window.
+//
 func GetDefaultRootWindow() Windower {
 	var _cret *C.GdkWindow // in
 
@@ -716,6 +721,11 @@ func GetDefaultRootWindow() Windower {
 // The function takes the following parameters:
 //
 //    - window: Window.
+//
+// The function returns the following values:
+//
+//    - ret (optional): embedding Window, or NULL if window is not an mbedded
+//      offscreen window.
 //
 func OffscreenWindowGetEmbedder(window Windower) Windower {
 	var _arg1 *C.GdkWindow // out
@@ -752,6 +762,10 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 // The function takes the following parameters:
 //
 //    - window: Window.
+//
+// The function returns the following values:
+//
+//    - surface (optional): offscreen surface, or NULL if not offscreen.
 //
 func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 	var _arg1 *C.GdkWindow       // out
@@ -804,8 +818,29 @@ func OffscreenWindowSetEmbedder(window, embedder Windower) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WindowOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - width
+	//    - height
+	//
+	// The function returns the following values:
+	//
 	CreateSurface(width, height int) *cairo.Surface
+	// The function takes the following parameters:
+	//
+	//    - embedderX
+	//    - embedderY
+	//    - offscreenX
+	//    - offscreenY
+	//
 	FromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64)
+	// The function takes the following parameters:
+	//
+	//    - offscreenX
+	//    - offscreenY
+	//    - embedderX
+	//    - embedderY
+	//
 	ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
 }
 
@@ -838,16 +873,63 @@ func marshalWindower(p uintptr) (interface{}, error) {
 	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (window *Window) baseWindow() *Window {
+	return window
+}
+
+// BaseWindow returns the underlying base object.
+func BaseWindow(obj Windower) *Window {
+	return obj.baseWindow()
+}
+
+// ConnectCreateSurface signal is emitted when an offscreen window needs its
+// surface (re)created, which happens either when the window is first drawn to,
+// or when the window is being resized. The first signal handler that returns a
+// non-NULL surface will stop any further signal emission, and its surface will
+// be used.
+//
+// Note that it is not possible to access the window's previous surface from
+// within any callback of this signal. Calling
+// gdk_offscreen_window_get_surface() will lead to a crash.
+func (window *Window) ConnectCreateSurface(f func(width, height int) *cairo.Surface) externglib.SignalHandle {
+	return window.Connect("create-surface", f)
+}
+
+// ConnectMovedToRect: emitted when the position of window is finalized after
+// being moved to a destination rectangle.
+//
+// window might be flipped over the destination rectangle in order to keep it
+// on-screen, in which case flipped_x and flipped_y will be set to TRUE
+// accordingly.
+//
+// flipped_rect is the ideal position of window after any possible flipping, but
+// before any possible sliding. final_rect is flipped_rect, but possibly
+// translated in the case that flipping is still ineffective in keeping window
+// on-screen.
+func (window *Window) ConnectMovedToRect(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
+	return window.Connect("moved-to-rect", f)
+}
+
+// ConnectPickEmbeddedChild signal is emitted to find an embedded child at the
+// given position.
+func (window *Window) ConnectPickEmbeddedChild(f func(x, y float64) Windower) externglib.SignalHandle {
+	return window.Connect("pick-embedded-child", f)
+}
+
 // NewWindow creates a new Window using the attributes from attributes. See
 // WindowAttr and WindowAttributesType for more details. Note: to use this on
 // displays other than the default display, parent must be specified.
 //
 // The function takes the following parameters:
 //
-//    - parent or NULL to create the window as a child of the default root
-//    window for the default display.
+//    - parent (optional) or NULL to create the window as a child of the default
+//      root window for the default display.
 //    - attributes of the new window.
 //    - attributesMask: mask indicating which fields in attributes are valid.
+//
+// The function returns the following values:
+//
+//    - window: new Window.
 //
 func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAttributesType) *Window {
 	var _arg1 *C.GdkWindow     // out
@@ -914,6 +996,11 @@ func (window *Window) Beep() {
 // The function takes the following parameters:
 //
 //    - region: cairo region.
+//
+// The function returns the following values:
+//
+//    - drawingContext context that should be used to draw the contents of the
+//      window; the returned context is owned by GDK.
 //
 func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 	var _arg0 *C.GdkWindow         // out
@@ -1093,8 +1180,7 @@ func (window *Window) BeginPaintRegion(region *cairo.Region) {
 //    - button being used to drag, or 0 for a keyboard-initiated drag.
 //    - rootX: root window X coordinate of mouse click that began the drag.
 //    - rootY: root window Y coordinate of mouse click that began the drag.
-//    - timestamp of mouse click that began the drag (use
-//    gdk_event_get_time()).
+//    - timestamp of mouse click that began the drag (use gdk_event_get_time()).
 //
 func (window *Window) BeginResizeDrag(edge WindowEdge, button, rootX, rootY int, timestamp uint32) {
 	var _arg0 *C.GdkWindow    // out
@@ -1134,8 +1220,7 @@ func (window *Window) BeginResizeDrag(edge WindowEdge, button, rootX, rootY int,
 //    - button being used to drag, or 0 for a keyboard-initiated drag.
 //    - rootX: root window X coordinate of mouse click that began the drag.
 //    - rootY: root window Y coordinate of mouse click that began the drag.
-//    - timestamp of mouse click that began the drag (use
-//    gdk_event_get_time()).
+//    - timestamp of mouse click that began the drag (use gdk_event_get_time()).
 //
 func (window *Window) BeginResizeDragForDevice(edge WindowEdge, device Devicer, button, rootX, rootY int, timestamp uint32) {
 	var _arg0 *C.GdkWindow    // out
@@ -1197,6 +1282,13 @@ func (window *Window) ConfigureFinished() {
 //    - parentX: x coordinate in parent’s coordinate system.
 //    - parentY: y coordinate in parent’s coordinate system.
 //
+// The function returns the following values:
+//
+//    - x (optional): return location for X coordinate in child’s coordinate
+//      system.
+//    - y (optional): return location for Y coordinate in child’s coordinate
+//      system.
+//
 func (window *Window) CoordsFromParent(parentX, parentY float64) (x float64, y float64) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gdouble    // out
@@ -1242,6 +1334,13 @@ func (window *Window) CoordsFromParent(parentX, parentY float64) (x float64, y f
 //    - x: x coordinate in child’s coordinate system.
 //    - y: y coordinate in child’s coordinate system.
 //
+// The function returns the following values:
+//
+//    - parentX (optional): return location for X coordinate in parent’s
+//      coordinate system, or NULL.
+//    - parentY (optional): return location for Y coordinate in parent’s
+//      coordinate system, or NULL.
+//
 func (window *Window) CoordsToParent(x, y float64) (parentX float64, parentY float64) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gdouble    // out
@@ -1275,6 +1374,11 @@ func (window *Window) CoordsToParent(x, y float64) (parentX float64, parentY flo
 //
 // Before using the returned GLContext, you will need to call
 // gdk_gl_context_make_current() or gdk_gl_context_realize().
+//
+// The function returns the following values:
+//
+//    - glContext: newly created GLContext, or NULL on error.
+//
 func (window *Window) CreateGLContext() (GLContexter, error) {
 	var _arg0 *C.GdkWindow    // out
 	var _cret *C.GdkGLContext // in
@@ -1341,6 +1445,15 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 //    - height of the new surface.
 //    - scale of the new surface, or 0 to use same as window.
 //
+// The function returns the following values:
+//
+//    - surface: pointer to the newly allocated surface. The caller owns the
+//      surface and should call cairo_surface_destroy() when done with it.
+//
+//      This function always returns a valid pointer, but it will return a
+//      pointer to a “nil” surface if other is already in an error state or any
+//      other error occurs.
+//
 func (window *Window) CreateSimilarImageSurface(format cairo.Format, width, height, scale int) *cairo.Surface {
 	var _arg0 *C.GdkWindow       // out
 	var _arg1 C.cairo_format_t   // out
@@ -1389,6 +1502,15 @@ func (window *Window) CreateSimilarImageSurface(format cairo.Format, width, heig
 //    - content for the new surface.
 //    - width of the new surface.
 //    - height of the new surface.
+//
+// The function returns the following values:
+//
+//    - surface: pointer to the newly allocated surface. The caller owns the
+//      surface and should call cairo_surface_destroy() when done with it.
+//
+//      This function always returns a valid pointer, but it will return a
+//      pointer to a “nil” surface if other is already in an error state or any
+//      other error occurs.
 //
 func (window *Window) CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface {
 	var _arg0 *C.GdkWindow       // out
@@ -1506,6 +1628,11 @@ func (window *Window) EndPaint() {
 // Offscreen window and children of them can never have native windows.
 //
 // Some backends may not support native child windows.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window has a native window, FALSE otherwise.
+//
 func (window *Window) EnsureNative() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -1646,6 +1773,11 @@ func (window *Window) GeometryChanged() {
 
 // AcceptFocus determines whether or not the desktop environment shuld be hinted
 // that the window does not want to receive input focus.
+//
+// The function returns the following values:
+//
+//    - ok: whether or not the window should receive input focus.
+//
 func (window *Window) AcceptFocus() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -1667,6 +1799,12 @@ func (window *Window) AcceptFocus() bool {
 // BackgroundPattern gets the pattern used to clear the background on window.
 //
 // Deprecated: Don't use this function.
+//
+// The function returns the following values:
+//
+//    - pattern (optional) to use for the background or NULL if there is no
+//      background.
+//
 func (window *Window) BackgroundPattern() *cairo.Pattern {
 	var _arg0 *C.GdkWindow       // out
 	var _cret *C.cairo_pattern_t // in
@@ -1697,6 +1835,11 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 // the root window; it only returns windows an application created itself.
 //
 // The returned list must be freed, but the elements in the list need not be.
+//
+// The function returns the following values:
+//
+//    - list: list of child windows inside window.
+//
 func (window *Window) Children() []Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GList     // in
@@ -1742,7 +1885,11 @@ func (window *Window) Children() []Windower {
 //
 // The function takes the following parameters:
 //
-//    - userData: user data to look for.
+//    - userData (optional): user data to look for.
+//
+// The function returns the following values:
+//
+//    - list: list of child windows inside window.
 //
 func (window *Window) ChildrenWithUserData(userData cgo.Handle) []Windower {
 	var _arg0 *C.GdkWindow // out
@@ -1786,6 +1933,11 @@ func (window *Window) ChildrenWithUserData(userData cgo.Handle) []Windower {
 // by drawing primitives. This region may not take into account other factors
 // such as if the window is obscured by other windows, but no area outside of
 // this region will be affected by drawing primitives.
+//
+// The function returns the following values:
+//
+//    - region This must be freed with cairo_region_destroy() when you are done.
+//
 func (window *Window) ClipRegion() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
@@ -1814,6 +1966,11 @@ func (window *Window) ClipRegion() *cairo.Region {
 //
 // Deprecated: Compositing is an outdated technology that only ever worked on
 // X11.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window is composited.
+//
 func (window *Window) Composited() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -1836,6 +1993,13 @@ func (window *Window) Composited() bool {
 // specified Window, or NULL. If the return value is NULL then there is no
 // custom cursor set on the specified window, and it is using the cursor for its
 // parent window.
+//
+// The function returns the following values:
+//
+//    - cursor (optional) or NULL. The returned object is owned by the Window and
+//      should not be unreferenced directly. Use gdk_window_set_cursor() to unset
+//      the cursor of the window.
+//
 func (window *Window) Cursor() Cursorrer {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkCursor // in
@@ -1866,6 +2030,12 @@ func (window *Window) Cursor() Cursorrer {
 
 // Decorations returns the decorations set on the GdkWindow with
 // gdk_window_set_decorations().
+//
+// The function returns the following values:
+//
+//    - decorations: window decorations will be written here.
+//    - ok: TRUE if the window has decorations set, FALSE otherwise.
+//
 func (window *Window) Decorations() (WMDecoration, bool) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 C.GdkWMDecoration // in
@@ -1895,6 +2065,12 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 // The function takes the following parameters:
 //
 //    - device: master, pointer Device.
+//
+// The function returns the following values:
+//
+//    - cursor (optional) or NULL. The returned object is owned by the Window and
+//      should not be unreferenced directly. Use gdk_window_set_cursor() to unset
+//      the cursor of the window.
 //
 func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 	var _arg0 *C.GdkWindow // out
@@ -1934,6 +2110,10 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 //
 //    - device: Device.
 //
+// The function returns the following values:
+//
+//    - eventMask: device event mask for window.
+//
 func (window *Window) DeviceEvents(device Devicer) EventMask {
 	var _arg0 *C.GdkWindow   // out
 	var _arg1 *C.GdkDevice   // out
@@ -1961,6 +2141,15 @@ func (window *Window) DeviceEvents(device Devicer) EventMask {
 // The function takes the following parameters:
 //
 //    - device: pointer Device to query to.
+//
+// The function returns the following values:
+//
+//    - x (optional): return location for the X coordinate of device, or NULL.
+//    - y (optional): return location for the Y coordinate of device, or NULL.
+//    - mask (optional): return location for the modifier mask, or NULL.
+//    - ret (optional): window underneath device (as with
+//      gdk_device_get_window_at_position()), or NULL if the window is not known
+//      to GDK.
 //
 func (window *Window) DevicePosition(device Devicer) (x int, y int, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
@@ -2010,6 +2199,15 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 //
 //    - device: pointer Device to query to.
 //
+// The function returns the following values:
+//
+//    - x (optional): return location for the X coordinate of device, or NULL.
+//    - y (optional): return location for the Y coordinate of device, or NULL.
+//    - mask (optional): return location for the modifier mask, or NULL.
+//    - ret (optional): window underneath device (as with
+//      gdk_device_get_window_at_position()), or NULL if the window is not known
+//      to GDK.
+//
 func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.GdkDevice      // out
@@ -2051,6 +2249,11 @@ func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64
 }
 
 // Display gets the Display associated with a Window.
+//
+// The function returns the following values:
+//
+//    - display associated with window.
+//
 func (window *Window) Display() *Display {
 	var _arg0 *C.GdkWindow  // out
 	var _cret *C.GdkDisplay // in
@@ -2068,6 +2271,14 @@ func (window *Window) Display() *Display {
 }
 
 // DragProtocol finds out the DND protocol supported by a window.
+//
+// The function returns the following values:
+//
+//    - target (optional): location of the window where the drop should happen.
+//      This may be window or a proxy window, or NULL if window does not support
+//      Drag and Drop.
+//    - dragProtocol: supported DND protocol.
+//
 func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.GdkWindow      // in
@@ -2104,6 +2315,11 @@ func (window *Window) DragProtocol() (Windower, DragProtocol) {
 // for offscreen windows.
 //
 // See also: gdk_offscreen_window_get_embedder().
+//
+// The function returns the following values:
+//
+//    - ret: effective parent of window.
+//
 func (window *Window) EffectiveParent() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
@@ -2139,6 +2355,11 @@ func (window *Window) EffectiveParent() Windower {
 // embedder as its parent, using gdk_window_get_effective_parent().
 //
 // See also: gdk_offscreen_window_get_embedder().
+//
+// The function returns the following values:
+//
+//    - ret: effective toplevel window containing window.
+//
 func (window *Window) EffectiveToplevel() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
@@ -2169,6 +2390,11 @@ func (window *Window) EffectiveToplevel() Windower {
 }
 
 // EventCompression: get the current event compression setting for this window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if motion events will be compressed.
+//
 func (window *Window) EventCompression() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -2189,6 +2415,11 @@ func (window *Window) EventCompression() bool {
 
 // Events gets the event mask for window for all master input devices. See
 // gdk_window_set_events().
+//
+// The function returns the following values:
+//
+//    - eventMask: event mask for window.
+//
 func (window *Window) Events() EventMask {
 	var _arg0 *C.GdkWindow   // out
 	var _cret C.GdkEventMask // in
@@ -2207,6 +2438,12 @@ func (window *Window) Events() EventMask {
 
 // FocusOnMap determines whether or not the desktop environment should be hinted
 // that the window does not want to receive input focus when it is mapped.
+//
+// The function returns the following values:
+//
+//    - ok: whether or not the window wants to receive input focus when it is
+//      mapped.
+//
 func (window *Window) FocusOnMap() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -2227,6 +2464,11 @@ func (window *Window) FocusOnMap() bool {
 
 // FrameClock gets the frame clock for the window. The frame clock for a window
 // never changes unless the window is reparented to a new toplevel window.
+//
+// The function returns the following values:
+//
+//    - frameClock: frame clock.
+//
 func (window *Window) FrameClock() FrameClocker {
 	var _arg0 *C.GdkWindow     // out
 	var _cret *C.GdkFrameClock // in
@@ -2260,6 +2502,11 @@ func (window *Window) FrameClock() FrameClocker {
 // titlebar/borders if any. The frame position is given in root window
 // coordinates. To get the position of the window itself (rather than the frame)
 // in root window coordinates, use gdk_window_get_origin().
+//
+// The function returns the following values:
+//
+//    - rect: rectangle to fill with bounding box of the window frame.
+//
 func (window *Window) FrameExtents() *Rectangle {
 	var _arg0 *C.GdkWindow   // out
 	var _arg1 C.GdkRectangle // in
@@ -2277,6 +2524,11 @@ func (window *Window) FrameExtents() *Rectangle {
 }
 
 // FullscreenMode obtains the FullscreenMode of the window.
+//
+// The function returns the following values:
+//
+//    - fullscreenMode applied to the window when fullscreen.
+//
 func (window *Window) FullscreenMode() FullscreenMode {
 	var _arg0 *C.GdkWindow        // out
 	var _cret C.GdkFullscreenMode // in
@@ -2312,6 +2564,16 @@ func (window *Window) FullscreenMode() FullscreenMode {
 // instead, because it avoids the roundtrip to the X server and because these
 // functions support the full 32-bit coordinate space, whereas
 // gdk_window_get_geometry() is restricted to the 16-bit coordinates of X11.
+//
+// The function returns the following values:
+//
+//    - x (optional): return location for X coordinate of window (relative to its
+//      parent).
+//    - y (optional): return location for Y coordinate of window (relative to its
+//      parent).
+//    - width (optional): return location for width of window.
+//    - height (optional): return location for height of window.
+//
 func (window *Window) Geometry() (x int, y int, width int, height int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // in
@@ -2338,6 +2600,11 @@ func (window *Window) Geometry() (x int, y int, width int, height int) {
 }
 
 // Group returns the group leader window for window. See gdk_window_set_group().
+//
+// The function returns the following values:
+//
+//    - ret: group leader window for window.
+//
 func (window *Window) Group() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
@@ -2372,6 +2639,11 @@ func (window *Window) Group() Windower {
 // On the X11 platform the returned size is the size reported in the
 // most-recently-processed configure event, rather than the current size on the
 // X server.
+//
+// The function returns the following values:
+//
+//    - gint: height of window.
+//
 func (window *Window) Height() int {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.int        // in
@@ -2390,6 +2662,11 @@ func (window *Window) Height() int {
 
 // ModalHint determines whether or not the window manager is hinted that window
 // has modal behaviour.
+//
+// The function returns the following values:
+//
+//    - ok: whether or not the window has the modal hint set.
+//
 func (window *Window) ModalHint() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -2411,6 +2688,13 @@ func (window *Window) ModalHint() bool {
 // Origin obtains the position of a window in root window coordinates. (Compare
 // with gdk_window_get_position() and gdk_window_get_geometry() which return the
 // position of a window relative to its parent window.).
+//
+// The function returns the following values:
+//
+//    - x (optional): return location for X coordinate.
+//    - y (optional): return location for Y coordinate.
+//    - gint: not meaningful, ignore.
+//
 func (window *Window) Origin() (x int, y int, gint int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // in
@@ -2443,6 +2727,11 @@ func (window *Window) Origin() (x int, y int, gint int) {
 // generic code that walks up a window hierarchy, because
 // gdk_window_get_parent() will most likely not do what you expect if there are
 // offscreen windows in the hierarchy.
+//
+// The function returns the following values:
+//
+//    - ret: parent of window.
+//
 func (window *Window) Parent() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
@@ -2476,6 +2765,9 @@ func (window *Window) Parent() Windower {
 // window below.
 //
 // See gdk_window_set_pass_through() for details.
+//
+// The function returns the following values:
+//
 func (window *Window) PassThrough() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -2498,6 +2790,19 @@ func (window *Window) PassThrough() bool {
 // is given in coordinates relative to the upper left corner of window.
 //
 // Deprecated: Use gdk_window_get_device_position() instead.
+//
+// The function returns the following values:
+//
+//    - x (optional): return location for X coordinate of pointer or NULL to not
+//      return the X coordinate.
+//    - y (optional): return location for Y coordinate of pointer or NULL to not
+//      return the Y coordinate.
+//    - mask (optional): return location for modifier mask or NULL to not return
+//      the modifier mask.
+//    - ret (optional): window containing the pointer (as with
+//      gdk_window_at_pointer()), or NULL if the window containing the pointer
+//      isn’t known to GDK.
+//
 func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 C.gint            // in
@@ -2541,6 +2846,12 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) 
 // position, regardless of which events have been received or processed.
 //
 // The position coordinates are relative to the window’s parent window.
+//
+// The function returns the following values:
+//
+//    - x (optional): x coordinate of window.
+//    - y (optional): y coordinate of window.
+//
 func (window *Window) Position() (x int, y int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // in
@@ -2569,6 +2880,11 @@ func (window *Window) Position() (x int, y int) {
 //    - x: x coordinate in window.
 //    - y: y coordinate in window.
 //
+// The function returns the following values:
+//
+//    - rootX: return location for X coordinate.
+//    - rootY: return location for Y coordinate.
+//
 func (window *Window) RootCoords(x, y int) (rootX int, rootY int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
@@ -2596,6 +2912,12 @@ func (window *Window) RootCoords(x, y int) (rootX int, rootY int) {
 
 // RootOrigin obtains the top-left corner of the window manager frame in root
 // window coordinates.
+//
+// The function returns the following values:
+//
+//    - x: return location for X position of window frame.
+//    - y: return location for Y position of window frame.
+//
 func (window *Window) RootOrigin() (x int, y int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // in
@@ -2626,6 +2948,11 @@ func (window *Window) RootOrigin() (x int, y int) {
 //
 // The scale of a window may change during runtime, if this happens a configure
 // event will be sent to the toplevel window.
+//
+// The function returns the following values:
+//
+//    - gint: scale factor.
+//
 func (window *Window) ScaleFactor() int {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gint       // in
@@ -2643,6 +2970,11 @@ func (window *Window) ScaleFactor() int {
 }
 
 // Screen gets the Screen associated with a Window.
+//
+// The function returns the following values:
+//
+//    - screen associated with window.
+//
 func (window *Window) Screen() *Screen {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkScreen // in
@@ -2666,6 +2998,10 @@ func (window *Window) Screen() *Screen {
 //
 //    - source to define the source class.
 //
+// The function returns the following values:
+//
+//    - eventMask: source event mask for window.
+//
 func (window *Window) SourceEvents(source InputSource) EventMask {
 	var _arg0 *C.GdkWindow     // out
 	var _arg1 C.GdkInputSource // out
@@ -2687,6 +3023,11 @@ func (window *Window) SourceEvents(source InputSource) EventMask {
 
 // State gets the bitwise OR of the currently active window state flags, from
 // the WindowState enumeration.
+//
+// The function returns the following values:
+//
+//    - windowState: window state bitfield.
+//
 func (window *Window) State() WindowState {
 	var _arg0 *C.GdkWindow     // out
 	var _cret C.GdkWindowState // in
@@ -2705,6 +3046,11 @@ func (window *Window) State() WindowState {
 
 // SupportMultidevice returns TRUE if the window is aware of the existence of
 // multiple devices.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window handles multidevice features.
+//
 func (window *Window) SupportMultidevice() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -2732,6 +3078,11 @@ func (window *Window) SupportMultidevice() bool {
 // get to a window’s toplevel as seen on screen, because
 // gdk_window_get_toplevel() will most likely not do what you expect if there
 // are offscreen windows in the hierarchy.
+//
+// The function returns the following values:
+//
+//    - ret: toplevel window containing window.
+//
 func (window *Window) Toplevel() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
@@ -2762,6 +3113,11 @@ func (window *Window) Toplevel() Windower {
 }
 
 // TypeHint: this function returns the type hint set for a window.
+//
+// The function returns the following values:
+//
+//    - windowTypeHint: type hint set for window.
+//
 func (window *Window) TypeHint() WindowTypeHint {
 	var _arg0 *C.GdkWindow        // out
 	var _cret C.GdkWindowTypeHint // in
@@ -2784,6 +3140,11 @@ func (window *Window) TypeHint() WindowTypeHint {
 // handed to you. If a window has no update area, gdk_window_get_update_area()
 // returns NULL. You are responsible for calling cairo_region_destroy() on the
 // returned region if it’s non-NULL.
+//
+// The function returns the following values:
+//
+//    - region: update area for window.
+//
 func (window *Window) UpdateArea() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
@@ -2808,6 +3169,11 @@ func (window *Window) UpdateArea() *cairo.Region {
 
 // UserData retrieves the user data for window, which is normally the widget
 // that window belongs to. See gdk_window_set_user_data().
+//
+// The function returns the following values:
+//
+//    - data (optional): return location for user data.
+//
 func (window *Window) UserData() cgo.Handle {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gpointer   // in
@@ -2827,6 +3193,11 @@ func (window *Window) UserData() cgo.Handle {
 // VisibleRegion computes the region of the window that is potentially visible.
 // This does not necessarily take into account if the window is obscured by
 // other windows, but no area outside of this region is visible.
+//
+// The function returns the following values:
+//
+//    - region This must be freed with cairo_region_destroy() when you are done.
+//
 func (window *Window) VisibleRegion() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
 	var _cret *C.cairo_region_t // in
@@ -2850,6 +3221,11 @@ func (window *Window) VisibleRegion() *cairo.Region {
 }
 
 // Visual gets the Visual describing the pixel format of window.
+//
+// The function returns the following values:
+//
+//    - visual: Visual.
+//
 func (window *Window) Visual() *Visual {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkVisual // in
@@ -2871,6 +3247,11 @@ func (window *Window) Visual() *Visual {
 // On the X11 platform the returned size is the size reported in the
 // most-recently-processed configure event, rather than the current size on the
 // X server.
+//
+// The function returns the following values:
+//
+//    - gint: width of window.
+//
 func (window *Window) Width() int {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.int        // in
@@ -2888,6 +3269,11 @@ func (window *Window) Width() int {
 }
 
 // WindowType gets the type of the window. See WindowType.
+//
+// The function returns the following values:
+//
+//    - windowType: type of window.
+//
 func (window *Window) WindowType() WindowType {
 	var _arg0 *C.GdkWindow    // out
 	var _cret C.GdkWindowType // in
@@ -2906,6 +3292,11 @@ func (window *Window) WindowType() WindowType {
 
 // HasNative checks whether the window has a native window or not. Note that you
 // can use gdk_window_ensure_native() if a native window is needed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window has a native window, FALSE otherwise.
+//
 func (window *Window) HasNative() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -3006,8 +3397,8 @@ func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX
 // The function takes the following parameters:
 //
 //    - region: #cairo_region_t.
-//    - childFunc: function to use to decide if to recurse to a child, NULL
-//    means never recurse.
+//    - childFunc (optional): function to use to decide if to recurse to a child,
+//      NULL means never recurse.
 //
 func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc WindowChildFunc) {
 	var _arg0 *C.GdkWindow         // out
@@ -3035,7 +3426,8 @@ func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 //
 // The function takes the following parameters:
 //
-//    - rect: rectangle to invalidate or NULL to invalidate the whole window.
+//    - rect (optional): rectangle to invalidate or NULL to invalidate the whole
+//      window.
 //    - invalidateChildren: whether to also invalidate child windows.
 //
 func (window *Window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
@@ -3097,6 +3489,11 @@ func (window *Window) InvalidateRegion(region *cairo.Region, invalidateChildren 
 }
 
 // IsDestroyed: check to see if a window is destroyed..
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window is destroyed.
+//
 func (window *Window) IsDestroyed() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -3116,6 +3513,11 @@ func (window *Window) IsDestroyed() bool {
 }
 
 // IsInputOnly determines whether or not the window is an input only window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if window is input only.
+//
 func (window *Window) IsInputOnly() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -3135,6 +3537,11 @@ func (window *Window) IsInputOnly() bool {
 }
 
 // IsShaped determines whether or not the window is shaped.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if window is shaped.
+//
 func (window *Window) IsShaped() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -3156,6 +3563,11 @@ func (window *Window) IsShaped() bool {
 // IsViewable: check if the window and all ancestors of the window are mapped.
 // (This is not necessarily "viewable" in the X sense, since we only check as
 // far as we have GDK window parents, not to the root window.).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window is viewable.
+//
 func (window *Window) IsViewable() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -3176,6 +3588,11 @@ func (window *Window) IsViewable() bool {
 
 // IsVisible checks whether the window has been mapped (with gdk_window_show()
 // or gdk_window_show_unraised()).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window is mapped.
+//
 func (window *Window) IsVisible() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -3403,9 +3820,8 @@ func (window *Window) MoveResize(x, y, width, height int) {
 //    - windowAnchor: point on window to align with rect's anchor point.
 //    - anchorHints: positioning hints to use when limited on space.
 //    - rectAnchorDx: horizontal offset to shift window, i.e. rect's anchor
-//    point.
-//    - rectAnchorDy: vertical offset to shift window, i.e. rect's anchor
-//    point.
+//      point.
+//    - rectAnchorDy: vertical offset to shift window, i.e. rect's anchor point.
 //
 func (window *Window) MoveToRect(rect *Rectangle, rectAnchor, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx, rectAnchorDy int) {
 	var _arg0 *C.GdkWindow     // out
@@ -3436,6 +3852,11 @@ func (window *Window) MoveToRect(rect *Rectangle, rectAnchor, windowAnchor Gravi
 
 // PeekChildren: like gdk_window_get_children(), but does not copy the list of
 // children, so the list does not need to be freed.
+//
+// The function returns the following values:
+//
+//    - list: a reference to the list of child windows in window.
+//
 func (window *Window) PeekChildren() []Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GList     // in
@@ -3595,7 +4016,7 @@ func (window *Window) Resize(width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - sibling that is a sibling of window, or NULL.
+//    - sibling (optional) that is a sibling of window, or NULL.
 //    - above: boolean.
 //
 func (window *Window) Restack(sibling Windower, above bool) {
@@ -3708,7 +4129,7 @@ func (window *Window) SetBackground(color *Color) {
 //
 // The function takes the following parameters:
 //
-//    - pattern to use, or NULL.
+//    - pattern (optional) to use, or NULL.
 //
 func (window *Window) SetBackgroundPattern(pattern *cairo.Pattern) {
 	var _arg0 *C.GdkWindow       // out
@@ -3823,7 +4244,7 @@ func (window *Window) SetComposited(composited bool) {
 //
 // The function takes the following parameters:
 //
-//    - cursor: cursor.
+//    - cursor (optional): cursor.
 //
 func (window *Window) SetCursor(cursor Cursorrer) {
 	var _arg0 *C.GdkWindow // out
@@ -4115,8 +4536,8 @@ func (window *Window) SetGeometryHints(geometry *Geometry, geomMask WindowHints)
 //
 // The function takes the following parameters:
 //
-//    - leader: group leader window, or NULL to restore the default group
-//    leader window.
+//    - leader (optional): group leader window, or NULL to restore the default
+//      group leader window.
 //
 func (window *Window) SetGroup(leader Windower) {
 	var _arg0 *C.GdkWindow // out
@@ -4178,7 +4599,7 @@ func (window *Window) SetIconList(pixbufs []gdkpixbuf.Pixbuf) {
 //
 // The function takes the following parameters:
 //
-//    - name of window while iconified (minimized).
+//    - name (optional) of window while iconified (minimized).
 //
 func (window *Window) SetIconName(name string) {
 	var _arg0 *C.GdkWindow // out
@@ -4324,7 +4745,7 @@ func (window *Window) SetOpacity(opacity float64) {
 //
 // The function takes the following parameters:
 //
-//    - region: region, or NULL.
+//    - region (optional): region, or NULL.
 //
 func (window *Window) SetOpaqueRegion(region *cairo.Region) {
 	var _arg0 *C.GdkWindow      // out
@@ -4576,6 +4997,10 @@ func (window *Window) SetStartupID(startupId string) {
 //
 //    - useStatic: TRUE to turn on static gravity.
 //
+// The function returns the following values:
+//
+//    - ok: FALSE.
+//
 func (window *Window) SetStaticGravities(useStatic bool) bool {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
@@ -4720,7 +5145,7 @@ func (window *Window) SetUrgencyHint(urgent bool) {
 //
 // The function takes the following parameters:
 //
-//    - userData: user data.
+//    - userData (optional): user data.
 //
 func (window *Window) SetUserData(userData *externglib.Object) {
 	var _arg0 *C.GdkWindow // out
@@ -4749,7 +5174,7 @@ func (window *Window) SetUserData(userData *externglib.Object) {
 //
 // The function takes the following parameters:
 //
-//    - shapeRegion: region of window to be non-transparent.
+//    - shapeRegion (optional): region of window to be non-transparent.
 //    - offsetX: x position of shape_region in window coordinates.
 //    - offsetY: y position of shape_region in window coordinates.
 //
@@ -4815,6 +5240,10 @@ func (window *Window) ShowUnraised() {
 // The function takes the following parameters:
 //
 //    - event to show the menu for.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window menu was shown and FALSE otherwise.
 //
 func (window *Window) ShowWindowMenu(event *Event) bool {
 	var _arg0 *C.GdkWindow // out
@@ -4940,49 +5369,6 @@ func (window *Window) Withdraw() {
 	runtime.KeepAlive(window)
 }
 
-func (window *Window) baseWindow() *Window {
-	return window
-}
-
-// BaseWindow returns the underlying base object.
-func BaseWindow(obj Windower) *Window {
-	return obj.baseWindow()
-}
-
-// ConnectCreateSurface signal is emitted when an offscreen window needs its
-// surface (re)created, which happens either when the window is first drawn to,
-// or when the window is being resized. The first signal handler that returns a
-// non-NULL surface will stop any further signal emission, and its surface will
-// be used.
-//
-// Note that it is not possible to access the window's previous surface from
-// within any callback of this signal. Calling
-// gdk_offscreen_window_get_surface() will lead to a crash.
-func (window *Window) ConnectCreateSurface(f func(width, height int) *cairo.Surface) externglib.SignalHandle {
-	return window.Connect("create-surface", f)
-}
-
-// ConnectMovedToRect: emitted when the position of window is finalized after
-// being moved to a destination rectangle.
-//
-// window might be flipped over the destination rectangle in order to keep it
-// on-screen, in which case flipped_x and flipped_y will be set to TRUE
-// accordingly.
-//
-// flipped_rect is the ideal position of window after any possible flipping, but
-// before any possible sliding. final_rect is flipped_rect, but possibly
-// translated in the case that flipping is still ineffective in keeping window
-// on-screen.
-func (window *Window) ConnectMovedToRect(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
-	return window.Connect("moved-to-rect", f)
-}
-
-// ConnectPickEmbeddedChild signal is emitted to find an embedded child at the
-// given position.
-func (window *Window) ConnectPickEmbeddedChild(f func(x, y float64) Windower) externglib.SignalHandle {
-	return window.Connect("pick-embedded-child", f)
-}
-
 // WindowAtPointer obtains the window underneath the mouse pointer, returning
 // the location of that window in win_x, win_y. Returns NULL if the window under
 // the mouse pointer is not known to GDK (if the window belongs to another
@@ -4993,6 +5379,15 @@ func (window *Window) ConnectPickEmbeddedChild(f func(x, y float64) Windower) ex
 // gdk_display_get_window_at_pointer() instead.
 //
 // Deprecated: Use gdk_device_get_window_at_position() instead.
+//
+// The function returns the following values:
+//
+//    - winX (optional): return location for origin of the window under the
+//      pointer.
+//    - winY (optional): return location for origin of the window under the
+//      pointer.
+//    - window under the mouse pointer.
+//
 func WindowAtPointer() (winX int, winY int, window Windower) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -5033,6 +5428,11 @@ func WindowAtPointer() (winX int, winY int, window Windower) {
 //    - flags: mask indicating what portions of geometry are set.
 //    - width: desired width of window.
 //    - height: desired height of the window.
+//
+// The function returns the following values:
+//
+//    - newWidth: location to store resulting width.
+//    - newHeight: location to store resulting height.
 //
 func WindowConstrainSize(geometry *Geometry, flags WindowHints, width, height int) (newWidth int, newHeight int) {
 	var _arg1 *C.GdkGeometry   // out

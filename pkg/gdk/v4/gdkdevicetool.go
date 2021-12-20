@@ -95,6 +95,11 @@ func marshalDeviceTooler(p uintptr) (interface{}, error) {
 }
 
 // Axes gets the axes of the tool.
+//
+// The function returns the following values:
+//
+//    - axisFlags axes of tool.
+//
 func (tool *DeviceTool) Axes() AxisFlags {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.GdkAxisFlags   // in
@@ -121,6 +126,11 @@ func (tool *DeviceTool) Axes() AxisFlags {
 // GdkDeviceTool than gdk.DeviceTool.GetToolType(), as a tablet may support
 // multiple devices with the same GdkDeviceToolType, but different hardware
 // identificators.
+//
+// The function returns the following values:
+//
+//    - guint64: hardware identificator of this tool.
+//
 func (tool *DeviceTool) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
@@ -141,6 +151,11 @@ func (tool *DeviceTool) HardwareID() uint64 {
 //
 // This value can be used to identify a physical tool (eg. a tablet pen) across
 // program executions.
+//
+// The function returns the following values:
+//
+//    - guint64: serial ID for this tool.
+//
 func (tool *DeviceTool) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
@@ -158,6 +173,12 @@ func (tool *DeviceTool) Serial() uint64 {
 }
 
 // ToolType gets the GdkDeviceToolType of the tool.
+//
+// The function returns the following values:
+//
+//    - deviceToolType: physical type for this tool. This can be used to figure
+//      out what sort of pen is being used, such as an airbrush or a pencil.
+//
 func (tool *DeviceTool) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
 	var _cret C.GdkDeviceToolType // in

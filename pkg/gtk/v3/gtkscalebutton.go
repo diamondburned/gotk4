@@ -31,6 +31,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ScaleButtonOverrider interface {
+	// The function takes the following parameters:
+	//
 	ValueChanged(value float64)
 }
 
@@ -106,6 +108,27 @@ func marshalScaleButtonner(p uintptr) (interface{}, error) {
 	return wrapScaleButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectPopdown signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted to popdown the scale widget.
+//
+// The default binding for this signal is Escape.
+func (button *ScaleButton) ConnectPopdown(f func()) externglib.SignalHandle {
+	return button.Connect("popdown", f)
+}
+
+// ConnectPopup signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted to popup the scale widget.
+//
+// The default bindings for this signal are Space, Enter and Return.
+func (button *ScaleButton) ConnectPopup(f func()) externglib.SignalHandle {
+	return button.Connect("popup", f)
+}
+
+// ConnectValueChanged signal is emitted when the value field has changed.
+func (button *ScaleButton) ConnectValueChanged(f func(value float64)) externglib.SignalHandle {
+	return button.Connect("value-changed", f)
+}
+
 // NewScaleButton creates a ScaleButton, with a range between min and max, with
 // a stepping of step.
 //
@@ -114,10 +137,14 @@ func marshalScaleButtonner(p uintptr) (interface{}, error) {
 //    - size: stock icon size (IconSize).
 //    - min: minimum value of the scale (usually 0).
 //    - max: maximum value of the scale (usually 100).
-//    - step: stepping of value when a scroll-wheel event, or up/down arrow
-//    event occurs (usually 2).
-//    - icons: NULL-terminated array of icon names, or NULL if you want to set
-//    the list later with gtk_scale_button_set_icons().
+//    - step: stepping of value when a scroll-wheel event, or up/down arrow event
+//      occurs (usually 2).
+//    - icons (optional): NULL-terminated array of icon names, or NULL if you
+//      want to set the list later with gtk_scale_button_set_icons().
+//
+// The function returns the following values:
+//
+//    - scaleButton: new ScaleButton.
 //
 func NewScaleButton(size int, min, max, step float64, icons []string) *ScaleButton {
 	var _arg1 C.GtkIconSize // out
@@ -161,6 +188,11 @@ func NewScaleButton(size int, min, max, step float64, icons []string) *ScaleButt
 
 // Adjustment gets the Adjustment associated with the ScaleButton’s scale. See
 // gtk_range_get_adjustment() for details.
+//
+// The function returns the following values:
+//
+//    - adjustment associated with the scale.
+//
 func (button *ScaleButton) Adjustment() *Adjustment {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkAdjustment  // in
@@ -178,6 +210,11 @@ func (button *ScaleButton) Adjustment() *Adjustment {
 }
 
 // MinusButton retrieves the minus button of the ScaleButton.
+//
+// The function returns the following values:
+//
+//    - ret minus button of the ScaleButton as a Button.
+//
 func (button *ScaleButton) MinusButton() *Button {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
@@ -195,6 +232,11 @@ func (button *ScaleButton) MinusButton() *Button {
 }
 
 // PlusButton retrieves the plus button of the ScaleButton.
+//
+// The function returns the following values:
+//
+//    - ret plus button of the ScaleButton as a Button.
+//
 func (button *ScaleButton) PlusButton() *Button {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
@@ -212,6 +254,11 @@ func (button *ScaleButton) PlusButton() *Button {
 }
 
 // Popup retrieves the popup of the ScaleButton.
+//
+// The function returns the following values:
+//
+//    - widget: popup of the ScaleButton.
+//
 func (button *ScaleButton) Popup() Widgetter {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
@@ -242,6 +289,11 @@ func (button *ScaleButton) Popup() Widgetter {
 }
 
 // Value gets the current value of the scale button.
+//
+// The function returns the following values:
+//
+//    - gdouble: current value of the scale button.
+//
 func (button *ScaleButton) Value() float64 {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret C.gdouble         // in
@@ -327,25 +379,4 @@ func (button *ScaleButton) SetValue(value float64) {
 	C.gtk_scale_button_set_value(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(value)
-}
-
-// ConnectPopdown signal is a [keybinding signal][GtkBindingSignal] which gets
-// emitted to popdown the scale widget.
-//
-// The default binding for this signal is Escape.
-func (button *ScaleButton) ConnectPopdown(f func()) externglib.SignalHandle {
-	return button.Connect("popdown", f)
-}
-
-// ConnectPopup signal is a [keybinding signal][GtkBindingSignal] which gets
-// emitted to popup the scale widget.
-//
-// The default bindings for this signal are Space, Enter and Return.
-func (button *ScaleButton) ConnectPopup(f func()) externglib.SignalHandle {
-	return button.Connect("popup", f)
-}
-
-// ConnectValueChanged signal is emitted when the value field has changed.
-func (button *ScaleButton) ConnectValueChanged(f func(value float64)) externglib.SignalHandle {
-	return button.Connect("value-changed", f)
 }

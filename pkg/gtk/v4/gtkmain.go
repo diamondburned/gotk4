@@ -42,6 +42,11 @@ func DisableSetlocale() {
 //
 // This function is equivalent to pango_language_get_default(). See that
 // function for details.
+//
+// The function returns the following values:
+//
+//    - language: default language as a Language, must not be freed.
+//
 func GetDefaultLanguage() *pango.Language {
 	var _cret *C.PangoLanguage // in
 
@@ -72,6 +77,11 @@ func GetDefaultLanguage() *pango.Language {
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
 //    gtk_widget_set_default_direction (direction);.
+//
+// The function returns the following values:
+//
+//    - textDirection of the current locale.
+//
 func GetLocaleDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
 
@@ -110,6 +120,12 @@ func Init() {
 //
 // This way the application can fall back to some other means of communication
 // with the user - for example a curses or command line interface.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the windowing system has been successfully initialized, FALSE
+//      otherwise.
+//
 func InitCheck() bool {
 	var _cret C.gboolean // in
 
@@ -126,6 +142,11 @@ func InitCheck() bool {
 
 // IsInitialized: use this function to check if GTK has been initialized with
 // gtk_init() or gtk_init_check().
+//
+// The function returns the following values:
+//
+//    - ok: initialization status.
+//
 func IsInitialized() bool {
 	var _cret C.gboolean // in
 

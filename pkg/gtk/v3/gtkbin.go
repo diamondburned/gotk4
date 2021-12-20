@@ -74,9 +74,23 @@ func marshalBinner(p uintptr) (interface{}, error) {
 	return wrapBin(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (bin *Bin) baseBin() *Bin {
+	return bin
+}
+
+// BaseBin returns the underlying base object.
+func BaseBin(obj Binner) *Bin {
+	return obj.baseBin()
+}
+
 // Child gets the child of the Bin, or NULL if the bin contains no child widget.
 // The returned widget does not have a reference added, so you do not need to
 // unref it.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child of bin, or NULL if it does not have a child.
+//
 func (bin *Bin) Child() Widgetter {
 	var _arg0 *C.GtkBin    // out
 	var _cret *C.GtkWidget // in
@@ -103,13 +117,4 @@ func (bin *Bin) Child() Widgetter {
 	}
 
 	return _widget
-}
-
-func (bin *Bin) baseBin() *Bin {
-	return bin
-}
-
-// BaseBin returns the underlying base object.
-func BaseBin(obj Binner) *Bin {
-	return obj.baseBin()
 }

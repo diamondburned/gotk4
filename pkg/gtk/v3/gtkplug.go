@@ -86,7 +86,17 @@ func marshalPlugger(p uintptr) (interface{}, error) {
 	return wrapPlug(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEmbedded gets emitted when the plug becomes embedded in a socket.
+func (plug *Plug) ConnectEmbedded(f func()) externglib.SignalHandle {
+	return plug.Connect("embedded", f)
+}
+
 // Embedded determines whether the plug is embedded in a socket.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the plug is embedded in a socket.
+//
 func (plug *Plug) Embedded() bool {
 	var _arg0 *C.GtkPlug // out
 	var _cret C.gboolean // in
@@ -106,6 +116,11 @@ func (plug *Plug) Embedded() bool {
 }
 
 // SocketWindow retrieves the socket the plug is embedded in.
+//
+// The function returns the following values:
+//
+//    - window (optional) of the socket, or NULL.
+//
 func (plug *Plug) SocketWindow() gdk.Windower {
 	var _arg0 *C.GtkPlug   // out
 	var _cret *C.GdkWindow // in
@@ -132,9 +147,4 @@ func (plug *Plug) SocketWindow() gdk.Windower {
 	}
 
 	return _window
-}
-
-// ConnectEmbedded gets emitted when the plug becomes embedded in a socket.
-func (plug *Plug) ConnectEmbedded(f func()) externglib.SignalHandle {
-	return plug.Connect("embedded", f)
 }

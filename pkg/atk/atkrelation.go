@@ -29,6 +29,11 @@ func init() {
 //
 //    - name: string which is the (non-localized) name of an ATK relation type.
 //
+// The function returns the following values:
+//
+//    - relationType enumerated type corresponding to the specified name, or
+//      K_RELATION_NULL if no matching relation type is found.
+//
 func RelationTypeForName(name string) RelationType {
 	var _arg1 *C.gchar          // out
 	var _cret C.AtkRelationType // in
@@ -53,6 +58,10 @@ func RelationTypeForName(name string) RelationType {
 //
 //    - typ whose name is required.
 //
+// The function returns the following values:
+//
+//    - utf8: string describing the AtkRelationType.
+//
 func RelationTypeGetName(typ RelationType) string {
 	var _arg1 C.AtkRelationType // out
 	var _cret *C.gchar          // in
@@ -74,6 +83,10 @@ func RelationTypeGetName(typ RelationType) string {
 // The function takes the following parameters:
 //
 //    - name string.
+//
+// The function returns the following values:
+//
+//    - relationType associated with name.
 //
 func RelationTypeRegister(name string) RelationType {
 	var _arg1 *C.gchar          // out
@@ -120,6 +133,10 @@ func marshalRelationer(p uintptr) (interface{}, error) {
 //
 //    - targets: array of pointers to Objects.
 //    - relationship with which to create the new Relation.
+//
+// The function returns the following values:
+//
+//    - relation: pointer to a new Relation.
 //
 func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 	var _arg1 **C.AtkObject // out
@@ -169,6 +186,11 @@ func (relation *Relation) AddTarget(target *ObjectClass) {
 }
 
 // RelationType gets the type of relation.
+//
+// The function returns the following values:
+//
+//    - relationType: type of relation.
+//
 func (relation *Relation) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
 	var _cret C.AtkRelationType // in
@@ -191,6 +213,10 @@ func (relation *Relation) RelationType() RelationType {
 // The function takes the following parameters:
 //
 //    - target: Object.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the removal is successful.
 //
 func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 	var _arg0 *C.AtkRelation // out

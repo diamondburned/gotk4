@@ -23,6 +23,10 @@ import "C"
 //    - pattern: UTF-8 encoded pattern.
 //    - str: UTF-8 encoded string to match.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if string matches pspec.
+//
 func PatternMatchSimple(pattern, str string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out

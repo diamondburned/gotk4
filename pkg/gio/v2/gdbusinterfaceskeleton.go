@@ -38,11 +38,26 @@ type DBusInterfaceSkeletonOverrider interface {
 	// later (e.g. in an idle handler). This technique is useful for collapsing
 	// multiple property changes into one.
 	Flush()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	GAuthorizeMethod(invocation *DBusMethodInvocation) bool
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by interface_.
+	//
+	// The function returns the following values:
+	//
+	//    - dBusInterfaceInfo (never NULL). Do not free.
+	//
 	Info() *DBusInterfaceInfo
 	// Properties gets all D-Bus properties for interface_.
+	//
+	// The function returns the following values:
+	//
+	//    - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
+	//      g_variant_unref().
+	//
 	Properties() *glib.Variant
 }
 
@@ -80,6 +95,48 @@ func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 
 func marshalDBusInterfaceSkeletonner(p uintptr) (interface{}, error) {
 	return wrapDBusInterfaceSkeleton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+func (interface_ *DBusInterfaceSkeleton) baseDBusInterfaceSkeleton() *DBusInterfaceSkeleton {
+	return interface_
+}
+
+// BaseDBusInterfaceSkeleton returns the underlying base object.
+func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkeleton {
+	return obj.baseDBusInterfaceSkeleton()
+}
+
+// ConnectGAuthorizeMethod: emitted when a method is invoked by a remote caller
+// and used to determine if the method call is authorized.
+//
+// Note that this signal is emitted in a thread dedicated to handling the method
+// call so handlers are allowed to perform blocking IO. This means that it is
+// appropriate to call e.g. polkit_authority_check_authorization_sync()
+// (http://hal.freedesktop.org/docs/polkit/PolkitAuthority.html#polkit-authority-check-authorization-sync)
+// with the POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION
+// (http://hal.freedesktop.org/docs/polkit/PolkitAuthority.htmlLKIT-CHECK-AUTHORIZATION-FLAGS-ALLOW-USER-INTERACTION:CAPS)
+// flag set.
+//
+// If FALSE is returned then no further handlers are run and the signal handler
+// must take a reference to invocation and finish handling the call (e.g. return
+// an error via g_dbus_method_invocation_return_error()).
+//
+// Otherwise, if TRUE is returned, signal emission continues. If no handlers
+// return FALSE, then the method is dispatched. If interface has an enclosing
+// BusObjectSkeleton, then the BusObjectSkeleton::authorize-method signal
+// handlers run before the handlers for this signal.
+//
+// The default class handler just returns TRUE.
+//
+// Please note that the common case is optimized: if no signals handlers are
+// connected and the default class handler isn't overridden (for both interface
+// and the enclosing BusObjectSkeleton, if any) and BusInterfaceSkeleton:g-flags
+// does not have the
+// G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD flags
+// set, no dedicated thread is ever used and the call will be handled in the
+// same thread as the object that interface belongs to was exported in.
+func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocation DBusMethodInvocation) bool) externglib.SignalHandle {
+	return interface_.Connect("g-authorize-method", f)
 }
 
 // Export exports interface_ at object_path on connection.
@@ -137,6 +194,12 @@ func (interface_ *DBusInterfaceSkeleton) Flush() {
 }
 
 // Connection gets the first connection that interface_ is exported on, if any.
+//
+// The function returns the following values:
+//
+//    - dBusConnection (optional) or NULL if interface_ is not exported anywhere.
+//      Do not free, the object belongs to interface_.
+//
 func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusConnection        // in
@@ -156,6 +219,13 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 }
 
 // Connections gets a list of the connections that interface_ is exported on.
+//
+// The function returns the following values:
+//
+//    - list of all the connections that interface_ is exported on. The returned
+//      list should be freed with g_list_free() after each element has been freed
+//      with g_object_unref().
+//
 func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GList                  // in
@@ -180,6 +250,12 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
 
 // Flags gets the BusInterfaceSkeletonFlags that describes what the behavior of
 // interface_.
+//
+// The function returns the following values:
+//
+//    - dBusInterfaceSkeletonFlags: one or more flags from the
+//      BusInterfaceSkeletonFlags enumeration.
+//
 func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
 	var _cret C.GDBusInterfaceSkeletonFlags // in
@@ -198,6 +274,11 @@ func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 
 // Info gets D-Bus introspection information for the D-Bus interface implemented
 // by interface_.
+//
+// The function returns the following values:
+//
+//    - dBusInterfaceInfo (never NULL). Do not free.
+//
 func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusInterfaceInfo     // in
@@ -222,6 +303,12 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 }
 
 // ObjectPath gets the object path that interface_ is exported on, if any.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string owned by interface_ or NULL if interface_ is not
+//      exported anywhere. Do not free, the string belongs to interface_.
+//
 func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.gchar                  // in
@@ -241,6 +328,12 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 }
 
 // Properties gets all D-Bus properties for interface_.
+//
+// The function returns the following values:
+//
+//    - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
+//      g_variant_unref().
+//
 func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GVariant               // in
@@ -268,6 +361,10 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 // The function takes the following parameters:
 //
 //    - connection: BusConnection.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if interface_ is exported on connection, FALSE otherwise.
 //
 func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnection) bool {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
@@ -340,46 +437,4 @@ func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBus
 	C.g_dbus_interface_skeleton_unexport_from_connection(_arg0, _arg1)
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)
-}
-
-func (interface_ *DBusInterfaceSkeleton) baseDBusInterfaceSkeleton() *DBusInterfaceSkeleton {
-	return interface_
-}
-
-// BaseDBusInterfaceSkeleton returns the underlying base object.
-func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkeleton {
-	return obj.baseDBusInterfaceSkeleton()
-}
-
-// ConnectGAuthorizeMethod: emitted when a method is invoked by a remote caller
-// and used to determine if the method call is authorized.
-//
-// Note that this signal is emitted in a thread dedicated to handling the method
-// call so handlers are allowed to perform blocking IO. This means that it is
-// appropriate to call e.g. polkit_authority_check_authorization_sync()
-// (http://hal.freedesktop.org/docs/polkit/PolkitAuthority.html#polkit-authority-check-authorization-sync)
-// with the POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION
-// (http://hal.freedesktop.org/docs/polkit/PolkitAuthority.htmlLKIT-CHECK-AUTHORIZATION-FLAGS-ALLOW-USER-INTERACTION:CAPS)
-// flag set.
-//
-// If FALSE is returned then no further handlers are run and the signal handler
-// must take a reference to invocation and finish handling the call (e.g. return
-// an error via g_dbus_method_invocation_return_error()).
-//
-// Otherwise, if TRUE is returned, signal emission continues. If no handlers
-// return FALSE, then the method is dispatched. If interface has an enclosing
-// BusObjectSkeleton, then the BusObjectSkeleton::authorize-method signal
-// handlers run before the handlers for this signal.
-//
-// The default class handler just returns TRUE.
-//
-// Please note that the common case is optimized: if no signals handlers are
-// connected and the default class handler isn't overridden (for both interface
-// and the enclosing BusObjectSkeleton, if any) and BusInterfaceSkeleton:g-flags
-// does not have the
-// G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD flags
-// set, no dedicated thread is ever used and the call will be handled in the
-// same thread as the object that interface belongs to was exported in.
-func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocation DBusMethodInvocation) bool) externglib.SignalHandle {
-	return interface_.Connect("g-authorize-method", f)
 }

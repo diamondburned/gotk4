@@ -110,8 +110,12 @@ func marshalMapListModeller(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model to map or NULL for none.
-//    - mapFunc: map function or NULL to not map items.
+//    - model (optional) to map or NULL for none.
+//    - mapFunc (optional): map function or NULL to not map items.
+//
+// The function returns the following values:
+//
+//    - mapListModel: new GtkMapListModel.
 //
 func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapListModel {
 	var _arg1 *C.GListModel            // out
@@ -142,6 +146,11 @@ func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapLi
 }
 
 // Model gets the model that is currently being mapped or NULL if none.
+//
+// The function returns the following values:
+//
+//    - listModel (optional): model that gets mapped.
+//
 func (self *MapListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret *C.GListModel      // in
@@ -171,6 +180,11 @@ func (self *MapListModel) Model() gio.ListModeller {
 }
 
 // HasMap checks if a map function is currently set on self.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a map function is set.
+//
 func (self *MapListModel) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
@@ -203,7 +217,7 @@ func (self *MapListModel) HasMap() bool {
 //
 // The function takes the following parameters:
 //
-//    - mapFunc: map function or NULL to not map items.
+//    - mapFunc (optional): map function or NULL to not map items.
 //
 func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 	var _arg0 *C.GtkMapListModel       // out
@@ -231,7 +245,7 @@ func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 //
 // The function takes the following parameters:
 //
-//    - model to be mapped.
+//    - model (optional) to be mapped.
 //
 func (self *MapListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkMapListModel // out

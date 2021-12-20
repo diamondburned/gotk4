@@ -80,6 +80,11 @@ func marshalFontChooserWidgetter(p uintptr) (interface{}, error) {
 }
 
 // NewFontChooserWidget creates a new GtkFontChooserWidget.
+//
+// The function returns the following values:
+//
+//    - fontChooserWidget: new GtkFontChooserWidget.
+//
 func NewFontChooserWidget() *FontChooserWidget {
 	var _cret *C.GtkWidget // in
 

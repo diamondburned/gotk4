@@ -62,6 +62,11 @@ func marshalGestureSingler(p uintptr) (interface{}, error) {
 
 // Button returns the button number gesture listens for, or 0 if gesture reacts
 // to any button press.
+//
+// The function returns the following values:
+//
+//    - guint: button number, or 0 for any button.
+//
 func (gesture *GestureSingle) Button() uint {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.guint             // in
@@ -80,6 +85,11 @@ func (gesture *GestureSingle) Button() uint {
 
 // CurrentButton returns the button number currently interacting with gesture,
 // or 0 if there is none.
+//
+// The function returns the following values:
+//
+//    - guint: current button number.
+//
 func (gesture *GestureSingle) CurrentButton() uint {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.guint             // in
@@ -98,6 +108,11 @@ func (gesture *GestureSingle) CurrentButton() uint {
 
 // CurrentSequence returns the event sequence currently interacting with
 // gesture. This is only meaningful if gtk_gesture_is_active() returns TRUE.
+//
+// The function returns the following values:
+//
+//    - eventSequence (optional): current sequence.
+//
 func (gesture *GestureSingle) CurrentSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret *C.GdkEventSequence // in
@@ -124,6 +139,11 @@ func (gesture *GestureSingle) CurrentSequence() *gdk.EventSequence {
 
 // Exclusive gets whether a gesture is exclusive. For more information, see
 // gtk_gesture_single_set_exclusive().
+//
+// The function returns the following values:
+//
+//    - ok: whether the gesture is exclusive.
+//
 func (gesture *GestureSingle) Exclusive() bool {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.gboolean          // in
@@ -143,6 +163,11 @@ func (gesture *GestureSingle) Exclusive() bool {
 }
 
 // TouchOnly returns TRUE if the gesture is only triggered by touch events.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the gesture only handles touch events.
+//
 func (gesture *GestureSingle) TouchOnly() bool {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.gboolean          // in

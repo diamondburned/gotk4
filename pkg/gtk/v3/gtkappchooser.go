@@ -88,6 +88,12 @@ func marshalAppChooserer(p uintptr) (interface{}, error) {
 }
 
 // AppInfo returns the currently selected application.
+//
+// The function returns the following values:
+//
+//    - appInfo (optional) for the currently selected application, or NULL if
+//      none is selected. Free with g_object_unref().
+//
 func (self *AppChooser) AppInfo() gio.AppInfor {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.GAppInfo      // in
@@ -118,6 +124,11 @@ func (self *AppChooser) AppInfo() gio.AppInfor {
 
 // ContentType returns the current value of the AppChooser:content-type
 // property.
+//
+// The function returns the following values:
+//
+//    - utf8: content type of self. Free with g_free().
+//
 func (self *AppChooser) ContentType() string {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.gchar         // in

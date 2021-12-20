@@ -63,6 +63,11 @@ func marshalSnapshotter(p uintptr) (interface{}, error) {
 }
 
 // NewSnapshot creates a new GtkSnapshot.
+//
+// The function returns the following values:
+//
+//    - snapshot: newly-allocated GtkSnapshot.
+//
 func NewSnapshot() *Snapshot {
 	var _cret *C.GtkSnapshot // in
 
@@ -83,7 +88,7 @@ func NewSnapshot() *Snapshot {
 //
 //    - outline: GskRoundedRect describing the outline of the border.
 //    - borderWidth: stroke width of the border on the top, right, bottom and
-//    left side respectively.
+//      left side respectively.
 //    - borderColor: color used on the top, right, bottom and left side.
 //
 func (snapshot *Snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) {
@@ -116,6 +121,11 @@ func (snapshot *Snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]
 // The function takes the following parameters:
 //
 //    - bounds for the new node.
+//
+// The function returns the following values:
+//
+//    - context: cairo_t suitable for drawing the contents of the newly created
+//      render node.
 //
 func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	var _arg0 *C.GtkSnapshot     // out
@@ -172,7 +182,7 @@ func (snapshot *Snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
 //    - bounds: rectangle to render the gradient into.
 //    - center point of the conic gradient.
 //    - rotation: clockwise rotation in degrees of the starting angle. 0 means
-//    the starting angle is the top.
+//      the starting angle is the top.
 //    - stops: pointer to an array of GskColorStop defining the gradient.
 //
 func (snapshot *Snapshot) AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop) {
@@ -243,10 +253,10 @@ func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk
 	runtime.KeepAlive(blurRadius)
 }
 
-//
 // The function takes the following parameters:
 //
-
+//    - layout
+//    - color
 //
 func (snapshot *Snapshot) AppendLayout(layout *pango.Layout, color *gdk.RGBA) {
 	var _arg0 *C.GtkSnapshot // out
@@ -774,8 +784,8 @@ func (snapshot *Snapshot) PushOpacity(opacity float64) {
 // The function takes the following parameters:
 //
 //    - bounds within which to repeat.
-//    - childBounds bounds of the child or NULL to use the full size of the
-//    collected child node.
+//    - childBounds (optional) bounds of the child or NULL to use the full size
+//      of the collected child node.
 //
 func (snapshot *Snapshot) PushRepeat(bounds, childBounds *graphene.Rect) {
 	var _arg0 *C.GtkSnapshot     // out
@@ -1148,6 +1158,11 @@ func (snapshot *Snapshot) Scale3D(factorX, factorY, factorZ float32) {
 // After calling this function, it is no longer possible to add more nodes to
 // snapshot. The only function that should be called after this is
 // g_object_unref().
+//
+// The function returns the following values:
+//
+//    - renderNode: constructed GskRenderNode.
+//
 func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 	var _arg0 *C.GtkSnapshot   // out
 	var _cret *C.GskRenderNode // in
@@ -1186,8 +1201,12 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 //
 // The function takes the following parameters:
 //
-//    - size of the resulting paintable or NULL to use the bounds of the
-//    snapshot.
+//    - size (optional) of the resulting paintable or NULL to use the bounds of
+//      the snapshot.
+//
+// The function returns the following values:
+//
+//    - paintable: new Paintable.
 //
 func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 	var _arg0 *C.GtkSnapshot     // out
@@ -1227,7 +1246,7 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 //
 // The function takes the following parameters:
 //
-//    - transform to apply.
+//    - transform (optional) to apply.
 //
 func (snapshot *Snapshot) Transform(transform *gsk.Transform) {
 	var _arg0 *C.GtkSnapshot  // out

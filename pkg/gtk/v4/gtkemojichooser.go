@@ -102,7 +102,17 @@ func marshalEmojiChooserer(p uintptr) (interface{}, error) {
 	return wrapEmojiChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEmojiPicked: emitted when the user selects an Emoji.
+func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) externglib.SignalHandle {
+	return v.Connect("emoji-picked", f)
+}
+
 // NewEmojiChooser creates a new GtkEmojiChooser.
+//
+// The function returns the following values:
+//
+//    - emojiChooser: new GtkEmojiChooser.
+//
 func NewEmojiChooser() *EmojiChooser {
 	var _cret *C.GtkWidget // in
 
@@ -113,9 +123,4 @@ func NewEmojiChooser() *EmojiChooser {
 	_emojiChooser = wrapEmojiChooser(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _emojiChooser
-}
-
-// ConnectEmojiPicked: emitted when the user selects an Emoji.
-func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) externglib.SignalHandle {
-	return v.Connect("emoji-picked", f)
 }

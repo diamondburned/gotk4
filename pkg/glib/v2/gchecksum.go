@@ -73,6 +73,12 @@ func (c ChecksumType) String() string {
 //    - checksumType: Type.
 //    - data: binary blob to compute the digest of.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): digest of the binary data as a string in hexadecimal, or
+//      NULL if g_checksum_new() fails for checksum_type. The returned string
+//      should be freed with g_free() when done using it.
+//
 func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.GBytes       // out
@@ -105,6 +111,12 @@ func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 //
 //    - checksumType: Type.
 //    - data: binary blob to compute the digest of.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): digest of the binary data as a string in hexadecimal, or
+//      NULL if g_checksum_new() fails for checksum_type. The returned string
+//      should be freed with g_free() when done using it.
 //
 func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 	var _arg1 C.GChecksumType // out
@@ -141,6 +153,12 @@ func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 //    - checksumType: Type.
 //    - str: string to compute the checksum of.
 //    - length of the string, or -1 if the string is null-terminated.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): checksum as a hexadecimal string, or NULL if
+//      g_checksum_new() fails for checksum_type. The returned string should be
+//      freed with g_free() when done using it.
 //
 func ComputeChecksumForString(checksumType ChecksumType, str string, length int) string {
 	var _arg1 C.GChecksumType // out
@@ -215,6 +233,12 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 // Copy copies a #GChecksum. If checksum has been closed, by calling
 // g_checksum_get_string() or g_checksum_get_digest(), the copied checksum will
 // be closed as well.
+//
+// The function returns the following values:
+//
+//    - ret: copy of the passed #GChecksum. Use g_checksum_free() when finished
+//      using it.
+//
 func (checksum *Checksum) Copy() *Checksum {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.GChecksum // in
@@ -243,6 +267,12 @@ func (checksum *Checksum) Copy() *Checksum {
 // with g_checksum_update().
 //
 // The hexadecimal characters will be lower case.
+//
+// The function returns the following values:
+//
+//    - utf8: hexadecimal representation of the checksum. The returned string is
+//      owned by the checksum and should not be modified or freed.
+//
 func (checksum *Checksum) String() string {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.gchar     // in
@@ -272,6 +302,11 @@ func (checksum *Checksum) Reset() {
 // Update feeds data into an existing #GChecksum. The checksum must still be
 // open, that is g_checksum_get_string() or g_checksum_get_digest() must not
 // have been called on checksum.
+//
+// The function takes the following parameters:
+//
+//    - data: buffer used to compute the checksum.
+//
 func (checksum *Checksum) Update(data []byte) {
 	var _arg0 *C.GChecksum // out
 	var _arg1 *C.guchar    // out
@@ -294,6 +329,10 @@ func (checksum *Checksum) Update(data []byte) {
 // The function takes the following parameters:
 //
 //    - checksumType: Type.
+//
+// The function returns the following values:
+//
+//    - gssize: checksum length, or -1 if checksum_type is not supported.
 //
 func ChecksumTypeGetLength(checksumType ChecksumType) int {
 	var _arg1 C.GChecksumType // out

@@ -30,7 +30,17 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StatusbarOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - contextId
+	//    - text
+	//
 	TextPopped(contextId uint, text string)
+	// The function takes the following parameters:
+	//
+	//    - contextId
+	//    - text
+	//
 	TextPushed(contextId uint, text string)
 }
 
@@ -104,7 +114,24 @@ func marshalStatusbarrer(p uintptr) (interface{}, error) {
 	return wrapStatusbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectTextPopped is emitted whenever a new message is popped off a
+// statusbar's stack.
+func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) externglib.SignalHandle {
+	return statusbar.Connect("text-popped", f)
+}
+
+// ConnectTextPushed is emitted whenever a new message gets pushed onto a
+// statusbar's stack.
+func (statusbar *Statusbar) ConnectTextPushed(f func(contextId uint, text string)) externglib.SignalHandle {
+	return statusbar.Connect("text-pushed", f)
+}
+
 // NewStatusbar creates a new Statusbar ready for messages.
+//
+// The function returns the following values:
+//
+//    - statusbar: new Statusbar.
+//
 func NewStatusbar() *Statusbar {
 	var _cret *C.GtkWidget // in
 
@@ -123,7 +150,11 @@ func NewStatusbar() *Statusbar {
 // The function takes the following parameters:
 //
 //    - contextDescription: textual description of what context the new message
-//    is being used in.
+//      is being used in.
+//
+// The function returns the following values:
+//
+//    - guint: integer id.
 //
 func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	var _arg0 *C.GtkStatusbar // out
@@ -146,6 +177,11 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 }
 
 // MessageArea retrieves the box containing the label widget.
+//
+// The function returns the following values:
+//
+//    - box: Box.
+//
 func (statusbar *Statusbar) MessageArea() *Box {
 	var _arg0 *C.GtkStatusbar // out
 	var _cret *C.GtkWidget    // in
@@ -189,8 +225,12 @@ func (statusbar *Statusbar) Pop(contextId uint) {
 // The function takes the following parameters:
 //
 //    - contextId message’s context id, as returned by
-//    gtk_statusbar_get_context_id().
+//      gtk_statusbar_get_context_id().
 //    - text: message to add to the statusbar.
+//
+// The function returns the following values:
+//
+//    - guint: message id that can be used with gtk_statusbar_remove().
 //
 func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 	var _arg0 *C.GtkStatusbar // out
@@ -255,16 +295,4 @@ func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	C.gtk_statusbar_remove_all(_arg0, _arg1)
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
-}
-
-// ConnectTextPopped is emitted whenever a new message is popped off a
-// statusbar's stack.
-func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) externglib.SignalHandle {
-	return statusbar.Connect("text-popped", f)
-}
-
-// ConnectTextPushed is emitted whenever a new message gets pushed onto a
-// statusbar's stack.
-func (statusbar *Statusbar) ConnectTextPushed(f func(contextId uint, text string)) externglib.SignalHandle {
-	return statusbar.Connect("text-pushed", f)
 }

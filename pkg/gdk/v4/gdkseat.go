@@ -129,7 +129,47 @@ func marshalSeater(p uintptr) (interface{}, error) {
 	return wrapSeat(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (seat *Seat) baseSeat() *Seat {
+	return seat
+}
+
+// BaseSeat returns the underlying base object.
+func BaseSeat(obj Seater) *Seat {
+	return obj.baseSeat()
+}
+
+// ConnectDeviceAdded: emitted when a new input device is related to this seat.
+func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
+	return seat.Connect("device-added", f)
+}
+
+// ConnectDeviceRemoved: emitted when an input device is removed (e.g.
+// unplugged).
+func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
+	return seat.Connect("device-removed", f)
+}
+
+// ConnectToolAdded: emitted whenever a new tool is made known to the seat.
+//
+// The tool may later be assigned to a device (i.e. on proximity with a tablet).
+// The device will emit the [signalGdkDevice::tool-changed] signal accordingly.
+//
+// A same tool may be used by several devices.
+func (seat *Seat) ConnectToolAdded(f func(tool DeviceTool)) externglib.SignalHandle {
+	return seat.Connect("tool-added", f)
+}
+
+// ConnectToolRemoved: emitted whenever a tool is no longer known to this seat.
+func (seat *Seat) ConnectToolRemoved(f func(tool DeviceTool)) externglib.SignalHandle {
+	return seat.Connect("tool-removed", f)
+}
+
 // Capabilities returns the capabilities this GdkSeat currently has.
+//
+// The function returns the following values:
+//
+//    - seatCapabilities: seat capabilities.
+//
 func (seat *Seat) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
@@ -151,6 +191,11 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 // The function takes the following parameters:
 //
 //    - capabilities to get devices for.
+//
+// The function returns the following values:
+//
+//    - list: list of GdkDevices. The list must be freed with g_list_free(), the
+//      elements are owned by GTK and must not be freed.
 //
 func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 	var _arg0 *C.GdkSeat            // out
@@ -191,6 +236,11 @@ func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 }
 
 // Display returns the GdkDisplay this seat belongs to.
+//
+// The function returns the following values:
+//
+//    - display: GdkDisplay. This object is owned by GTK and must not be freed.
+//
 func (seat *Seat) Display() *Display {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in
@@ -208,6 +258,12 @@ func (seat *Seat) Display() *Display {
 }
 
 // Keyboard returns the device that routes keyboard events.
+//
+// The function returns the following values:
+//
+//    - device (optional): GdkDevice with keyboard capabilities. This object is
+//      owned by GTK and must not be freed.
+//
 func (seat *Seat) Keyboard() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
@@ -237,6 +293,12 @@ func (seat *Seat) Keyboard() Devicer {
 }
 
 // Pointer returns the device that routes pointer events.
+//
+// The function returns the following values:
+//
+//    - device (optional): GdkDevice with pointer capabilities. This object is
+//      owned by GTK and must not be freed.
+//
 func (seat *Seat) Pointer() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
@@ -266,6 +328,11 @@ func (seat *Seat) Pointer() Devicer {
 }
 
 // Tools returns all GdkDeviceTools that are known to the application.
+//
+// The function returns the following values:
+//
+//    - list: A list of tools. Free with g_list_free().
+//
 func (seat *Seat) Tools() []DeviceTool {
 	var _arg0 *C.GdkSeat // out
 	var _cret *C.GList   // in
@@ -286,39 +353,4 @@ func (seat *Seat) Tools() []DeviceTool {
 	})
 
 	return _list
-}
-
-func (seat *Seat) baseSeat() *Seat {
-	return seat
-}
-
-// BaseSeat returns the underlying base object.
-func BaseSeat(obj Seater) *Seat {
-	return obj.baseSeat()
-}
-
-// ConnectDeviceAdded: emitted when a new input device is related to this seat.
-func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
-	return seat.Connect("device-added", f)
-}
-
-// ConnectDeviceRemoved: emitted when an input device is removed (e.g.
-// unplugged).
-func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
-	return seat.Connect("device-removed", f)
-}
-
-// ConnectToolAdded: emitted whenever a new tool is made known to the seat.
-//
-// The tool may later be assigned to a device (i.e. on proximity with a tablet).
-// The device will emit the [signalGdkDevice::tool-changed] signal accordingly.
-//
-// A same tool may be used by several devices.
-func (seat *Seat) ConnectToolAdded(f func(tool DeviceTool)) externglib.SignalHandle {
-	return seat.Connect("tool-added", f)
-}
-
-// ConnectToolRemoved: emitted whenever a tool is no longer known to this seat.
-func (seat *Seat) ConnectToolRemoved(f func(tool DeviceTool)) externglib.SignalHandle {
-	return seat.Connect("tool-removed", f)
 }

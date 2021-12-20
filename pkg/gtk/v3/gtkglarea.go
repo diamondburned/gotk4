@@ -33,7 +33,16 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type GLAreaOverrider interface {
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	Render(context gdk.GLContexter) bool
+	// The function takes the following parameters:
+	//
+	//    - width
+	//    - height
+	//
 	Resize(width, height int)
 }
 
@@ -121,7 +130,46 @@ func marshalGLAreaer(p uintptr) (interface{}, error) {
 	return wrapGLArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectCreateContext signal is emitted when the widget is being realized, and
+// allows you to override how the GL context is created. This is useful when you
+// want to reuse an existing GL context, or if you want to try creating
+// different kinds of GL options.
+//
+// If context creation fails then the signal handler can use
+// gtk_gl_area_set_error() to register a more detailed error of how the
+// construction failed.
+func (area *GLArea) ConnectCreateContext(f func() gdk.GLContexter) externglib.SignalHandle {
+	return area.Connect("create-context", f)
+}
+
+// ConnectRender signal is emitted every time the contents of the GLArea should
+// be redrawn.
+//
+// The context is bound to the area prior to emitting this function, and the
+// buffers are painted to the window once the emission terminates.
+func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) externglib.SignalHandle {
+	return area.Connect("render", f)
+}
+
+// ConnectResize signal is emitted once when the widget is realized, and then
+// each time the widget is changed while realized. This is useful in order to
+// keep GL state up to date with the widget size, like for instance camera
+// properties which may depend on the width/height ratio.
+//
+// The GL context for the area is guaranteed to be current when this signal is
+// emitted.
+//
+// The default handler sets up the GL viewport.
+func (area *GLArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
+	return area.Connect("resize", f)
+}
+
 // NewGLArea creates a new GLArea widget.
+//
+// The function returns the following values:
+//
+//    - glArea: new GLArea.
+//
 func NewGLArea() *GLArea {
 	var _cret *C.GtkWidget // in
 
@@ -150,6 +198,11 @@ func (area *GLArea) AttachBuffers() {
 }
 
 // AutoRender returns whether the area is in auto render mode or not.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the area is auto rendering, FALSE otherwise.
+//
 func (area *GLArea) AutoRender() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
@@ -169,6 +222,11 @@ func (area *GLArea) AutoRender() bool {
 }
 
 // Context retrieves the GLContext used by area.
+//
+// The function returns the following values:
+//
+//    - glContext: GLContext.
+//
 func (area *GLArea) Context() gdk.GLContexter {
 	var _arg0 *C.GtkGLArea    // out
 	var _cret *C.GdkGLContext // in
@@ -199,6 +257,11 @@ func (area *GLArea) Context() gdk.GLContexter {
 }
 
 // Error gets the current error set on the area.
+//
+// The function returns the following values:
+//
+//    - err (optional) or NULL.
+//
 func (area *GLArea) Error() error {
 	var _arg0 *C.GtkGLArea // out
 	var _cret *C.GError    // in
@@ -218,6 +281,11 @@ func (area *GLArea) Error() error {
 }
 
 // HasAlpha returns whether the area has an alpha component.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the area has an alpha component, FALSE otherwise.
+//
 func (area *GLArea) HasAlpha() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
@@ -237,6 +305,11 @@ func (area *GLArea) HasAlpha() bool {
 }
 
 // HasDepthBuffer returns whether the area has a depth buffer.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the area has a depth buffer, FALSE otherwise.
+//
 func (area *GLArea) HasDepthBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
@@ -256,6 +329,11 @@ func (area *GLArea) HasDepthBuffer() bool {
 }
 
 // HasStencilBuffer returns whether the area has a stencil buffer.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the area has a stencil buffer, FALSE otherwise.
+//
 func (area *GLArea) HasStencilBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
@@ -276,6 +354,12 @@ func (area *GLArea) HasStencilBuffer() bool {
 
 // RequiredVersion retrieves the required version of OpenGL set using
 // gtk_gl_area_set_required_version().
+//
+// The function returns the following values:
+//
+//    - major: return location for the required major version.
+//    - minor: return location for the required minor version.
+//
 func (area *GLArea) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gint       // in
@@ -296,6 +380,12 @@ func (area *GLArea) RequiredVersion() (major int, minor int) {
 }
 
 // UseES retrieves the value set by gtk_gl_area_set_use_es().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the GLArea should create an OpenGL ES context and FALSE
+//      otherwise.
+//
 func (area *GLArea) UseES() bool {
 	var _arg0 *C.GtkGLArea // out
 	var _cret C.gboolean   // in
@@ -378,7 +468,7 @@ func (area *GLArea) SetAutoRender(autoRender bool) {
 //
 // The function takes the following parameters:
 //
-//    - err: new #GError, or NULL to unset the error.
+//    - err (optional): new #GError, or NULL to unset the error.
 //
 func (area *GLArea) SetError(err error) {
 	var _arg0 *C.GtkGLArea // out
@@ -508,38 +598,4 @@ func (area *GLArea) SetUseES(useEs bool) {
 	C.gtk_gl_area_set_use_es(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(useEs)
-}
-
-// ConnectCreateContext signal is emitted when the widget is being realized, and
-// allows you to override how the GL context is created. This is useful when you
-// want to reuse an existing GL context, or if you want to try creating
-// different kinds of GL options.
-//
-// If context creation fails then the signal handler can use
-// gtk_gl_area_set_error() to register a more detailed error of how the
-// construction failed.
-func (area *GLArea) ConnectCreateContext(f func() gdk.GLContexter) externglib.SignalHandle {
-	return area.Connect("create-context", f)
-}
-
-// ConnectRender signal is emitted every time the contents of the GLArea should
-// be redrawn.
-//
-// The context is bound to the area prior to emitting this function, and the
-// buffers are painted to the window once the emission terminates.
-func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) externglib.SignalHandle {
-	return area.Connect("render", f)
-}
-
-// ConnectResize signal is emitted once when the widget is realized, and then
-// each time the widget is changed while realized. This is useful in order to
-// keep GL state up to date with the widget size, like for instance camera
-// properties which may depend on the width/height ratio.
-//
-// The GL context for the area is guaranteed to be current when this signal is
-// emitted.
-//
-// The default handler sets up the GL viewport.
-func (area *GLArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
-	return area.Connect("resize", f)
 }

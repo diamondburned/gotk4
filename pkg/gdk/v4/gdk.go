@@ -12,6 +12,8 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
+// The function returns the following values:
+//
 func GLErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -24,6 +26,8 @@ func GLErrorQuark() glib.Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func VulkanErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 

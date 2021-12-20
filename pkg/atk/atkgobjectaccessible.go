@@ -47,6 +47,11 @@ func marshalGObjectAccessibler(p uintptr) (interface{}, error) {
 }
 
 // Object gets the GObject for which obj is the accessible object.
+//
+// The function returns the following values:
+//
+//    - object which is the object for which obj is the accessible object.
+//
 func (obj *GObjectAccessible) Object() *externglib.Object {
 	var _arg0 *C.AtkGObjectAccessible // out
 	var _cret *C.GObject              // in
@@ -68,6 +73,10 @@ func (obj *GObjectAccessible) Object() *externglib.Object {
 // The function takes the following parameters:
 //
 //    - obj: #GObject.
+//
+// The function returns the following values:
+//
+//    - object which is the accessible object for the obj.
 //
 func GObjectAccessibleForObject(obj *externglib.Object) *ObjectClass {
 	var _arg1 *C.GObject   // out

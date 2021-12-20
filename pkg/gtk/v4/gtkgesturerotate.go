@@ -48,8 +48,19 @@ func marshalGestureRotater(p uintptr) (interface{}, error) {
 	return wrapGestureRotate(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAngleChanged: emitted when the angle between both tracked points
+// changes.
+func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) externglib.SignalHandle {
+	return gesture.Connect("angle-changed", f)
+}
+
 // NewGestureRotate returns a newly created GtkGesture that recognizes 2-touch
 // rotation gestures.
+//
+// The function returns the following values:
+//
+//    - gestureRotate: newly created GtkGestureRotate.
+//
 func NewGestureRotate() *GestureRotate {
 	var _cret *C.GtkGesture // in
 
@@ -67,6 +78,11 @@ func NewGestureRotate() *GestureRotate {
 // If gesture is active, this function returns the angle difference in radians
 // since the gesture was first recognized. If gesture is not active, 0 is
 // returned.
+//
+// The function returns the following values:
+//
+//    - gdouble: angle delta in radians.
+//
 func (gesture *GestureRotate) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out
 	var _cret C.double            // in
@@ -81,10 +97,4 @@ func (gesture *GestureRotate) AngleDelta() float64 {
 	_gdouble = float64(_cret)
 
 	return _gdouble
-}
-
-// ConnectAngleChanged: emitted when the angle between both tracked points
-// changes.
-func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) externglib.SignalHandle {
-	return gesture.Connect("angle-changed", f)
 }

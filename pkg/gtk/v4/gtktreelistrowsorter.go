@@ -61,7 +61,11 @@ func marshalTreeListRowSorterer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - sorter: GtkSorter, or NULL.
+//    - sorter (optional): GtkSorter, or NULL.
+//
+// The function returns the following values:
+//
+//    - treeListRowSorter: new GtkTreeListRowSorter.
 //
 func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 	var _arg1 *C.GtkSorter            // out
@@ -83,6 +87,11 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 }
 
 // GetSorter returns the sorter used by self.
+//
+// The function returns the following values:
+//
+//    - sorter (optional) used.
+//
 func (self *TreeListRowSorter) GetSorter() *Sorter {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _cret *C.GtkSorter            // in
@@ -108,7 +117,7 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 //
 // The function takes the following parameters:
 //
-//    - sorter to use, or NULL.
+//    - sorter (optional) to use, or NULL.
 //
 func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
 	var _arg0 *C.GtkTreeListRowSorter // out

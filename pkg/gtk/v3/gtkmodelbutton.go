@@ -180,6 +180,11 @@ func marshalModelButtonner(p uintptr) (interface{}, error) {
 }
 
 // NewModelButton creates a new GtkModelButton.
+//
+// The function returns the following values:
+//
+//    - modelButton: newly created ModelButton widget.
+//
 func NewModelButton() *ModelButton {
 	var _cret *C.GtkWidget // in
 

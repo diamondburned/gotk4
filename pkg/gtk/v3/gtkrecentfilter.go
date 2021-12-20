@@ -205,6 +205,11 @@ func marshalRecentFilterer(p uintptr) (interface{}, error) {
 //
 //    GtkRecentFilter *filter = gtk_recent_filter_new ();
 //    gtk_recent_filter_add_pattern (filter, "*");.
+//
+// The function returns the following values:
+//
+//    - recentFilter: new RecentFilter.
+//
 func NewRecentFilter() *RecentFilter {
 	var _cret *C.GtkRecentFilter // in
 
@@ -265,9 +270,9 @@ func (filter *RecentFilter) AddApplication(application string) {
 // The function takes the following parameters:
 //
 //    - needed: bitfield of flags indicating the information that the custom
-//    filter function needs.
+//      filter function needs.
 //    - fn: callback function; if the function returns TRUE, then the file will
-//    be displayed.
+//      be displayed.
 //
 func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterFunc) {
 	var _arg0 *C.GtkRecentFilter     // out
@@ -371,6 +376,10 @@ func (filter *RecentFilter) AddPixbufFormats() {
 //
 //    - filterInfo containing information about a recently used resource.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the file should be displayed.
+//
 func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _arg1 *C.GtkRecentFilterInfo // out
@@ -394,6 +403,12 @@ func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 
 // Name gets the human-readable name for the filter. See
 // gtk_recent_filter_set_name().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the filter, or NULL. The returned string is
+//      owned by the filter object and should not be freed.
+//
 func (filter *RecentFilter) Name() string {
 	var _arg0 *C.GtkRecentFilter // out
 	var _cret *C.gchar           // in
@@ -417,6 +432,12 @@ func (filter *RecentFilter) Name() string {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
+//
+// The function returns the following values:
+//
+//    - recentFilterFlags: bitfield of flags indicating needed fields when
+//      calling gtk_recent_filter_filter().
+//
 func (filter *RecentFilter) Needed() RecentFilterFlags {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _cret C.GtkRecentFilterFlags // in

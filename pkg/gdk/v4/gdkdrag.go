@@ -65,6 +65,10 @@ func (d DragCancelReason) String() string {
 //
 //    - action: GdkDragAction.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if exactly one action was given.
+//
 func DragActionIsUnique(action DragAction) bool {
 	var _arg1 C.GdkDragAction // out
 	var _cret C.gboolean      // in
@@ -122,6 +126,34 @@ func marshalDragger(p uintptr) (interface{}, error) {
 	return wrapDrag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (drag *Drag) baseDrag() *Drag {
+	return drag
+}
+
+// BaseDrag returns the underlying base object.
+func BaseDrag(obj Dragger) *Drag {
+	return obj.baseDrag()
+}
+
+// ConnectCancel: emitted when the drag operation is cancelled.
+func (drag *Drag) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
+	return drag.Connect("cancel", f)
+}
+
+// ConnectDNDFinished: emitted when the destination side has finished reading
+// all data.
+//
+// The drag object can now free all miscellaneous data.
+func (drag *Drag) ConnectDNDFinished(f func()) externglib.SignalHandle {
+	return drag.Connect("dnd-finished", f)
+}
+
+// ConnectDropPerformed: emitted when the drop operation is performed on an
+// accepting client.
+func (drag *Drag) ConnectDropPerformed(f func()) externglib.SignalHandle {
+	return drag.Connect("drop-performed", f)
+}
+
 // DropDone informs GDK that the drop ended.
 //
 // Passing FALSE for success may trigger a drag cancellation animation.
@@ -152,6 +184,11 @@ func (drag *Drag) DropDone(success bool) {
 }
 
 // Actions determines the bitmask of possible actions proposed by the source.
+//
+// The function returns the following values:
+//
+//    - dragAction: GdkDragAction flags.
+//
 func (drag *Drag) Actions() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
@@ -169,6 +206,11 @@ func (drag *Drag) Actions() DragAction {
 }
 
 // Content returns the GdkContentProvider associated to the GdkDrag object.
+//
+// The function returns the following values:
+//
+//    - contentProvider: GdkContentProvider associated to drag.
+//
 func (drag *Drag) Content() *ContentProvider {
 	var _arg0 *C.GdkDrag            // out
 	var _cret *C.GdkContentProvider // in
@@ -186,6 +228,11 @@ func (drag *Drag) Content() *ContentProvider {
 }
 
 // Device returns the GdkDevice associated to the GdkDrag object.
+//
+// The function returns the following values:
+//
+//    - device: GdkDevice associated to drag.
+//
 func (drag *Drag) Device() Devicer {
 	var _arg0 *C.GdkDrag   // out
 	var _cret *C.GdkDevice // in
@@ -216,6 +263,11 @@ func (drag *Drag) Device() Devicer {
 }
 
 // Display gets the GdkDisplay that the drag object was created for.
+//
+// The function returns the following values:
+//
+//    - display: GdkDisplay.
+//
 func (drag *Drag) Display() *Display {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkDisplay // in
@@ -239,6 +291,11 @@ func (drag *Drag) Display() *Display {
 // begun. GDK will move the surface in accordance with the ongoing drag
 // operation. The surface is owned by drag and will be destroyed when the drag
 // operation is over.
+//
+// The function returns the following values:
+//
+//    - surface (optional): drag surface, or NULL.
+//
 func (drag *Drag) DragSurface() Surfacer {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
@@ -268,6 +325,11 @@ func (drag *Drag) DragSurface() Surfacer {
 }
 
 // Formats retrieves the formats supported by this GdkDrag object.
+//
+// The function returns the following values:
+//
+//    - contentFormats: GdkContentFormats.
+//
 func (drag *Drag) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrag           // out
 	var _cret *C.GdkContentFormats // in
@@ -292,6 +354,11 @@ func (drag *Drag) Formats() *ContentFormats {
 }
 
 // SelectedAction determines the action chosen by the drag destination.
+//
+// The function returns the following values:
+//
+//    - dragAction: GdkDragAction value.
+//
 func (drag *Drag) SelectedAction() DragAction {
 	var _arg0 *C.GdkDrag      // out
 	var _cret C.GdkDragAction // in
@@ -309,6 +376,11 @@ func (drag *Drag) SelectedAction() DragAction {
 }
 
 // Surface returns the GdkSurface where the drag originates.
+//
+// The function returns the following values:
+//
+//    - surface: GdkSurface where the drag originates.
+//
 func (drag *Drag) Surface() Surfacer {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
@@ -363,34 +435,6 @@ func (drag *Drag) SetHotspot(hotX, hotY int) {
 	runtime.KeepAlive(hotY)
 }
 
-func (drag *Drag) baseDrag() *Drag {
-	return drag
-}
-
-// BaseDrag returns the underlying base object.
-func BaseDrag(obj Dragger) *Drag {
-	return obj.baseDrag()
-}
-
-// ConnectCancel: emitted when the drag operation is cancelled.
-func (drag *Drag) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
-	return drag.Connect("cancel", f)
-}
-
-// ConnectDNDFinished: emitted when the destination side has finished reading
-// all data.
-//
-// The drag object can now free all miscellaneous data.
-func (drag *Drag) ConnectDNDFinished(f func()) externglib.SignalHandle {
-	return drag.Connect("dnd-finished", f)
-}
-
-// ConnectDropPerformed: emitted when the drop operation is performed on an
-// accepting client.
-func (drag *Drag) ConnectDropPerformed(f func()) externglib.SignalHandle {
-	return drag.Connect("drop-performed", f)
-}
-
 // DragBegin starts a drag and creates a new drag context for it.
 //
 // This function is called by the drag source. After this call, you probably
@@ -412,6 +456,10 @@ func (drag *Drag) ConnectDropPerformed(f func()) externglib.SignalHandle {
 //    - actions supported by this drag.
 //    - dx: x offset to device's position where the drag nominally started.
 //    - dy: y offset to device's position where the drag nominally started.
+//
+// The function returns the following values:
+//
+//    - drag (optional): newly created gdk.Drag or NULL on error.
 //
 func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx, dy float64) Dragger {
 	var _arg1 *C.GdkSurface         // out

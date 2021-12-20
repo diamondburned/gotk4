@@ -90,6 +90,15 @@ func NewRayAlloc() *Ray {
 }
 
 // Equal checks whether the two given #graphene_ray_t are equal.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_ray_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the given rays are equal.
+//
 func (a *Ray) Equal(b *Ray) bool {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 *C.graphene_ray_t // out
@@ -113,6 +122,15 @@ func (a *Ray) Equal(b *Ray) bool {
 
 // ClosestPointToPoint computes the point on the given #graphene_ray_t that is
 // closest to the given point p.
+//
+// The function takes the following parameters:
+//
+//    - p: #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the closest point3d.
+//
 func (r *Ray) ClosestPointToPoint(p *Point3D) *Point3D {
 	var _arg0 *C.graphene_ray_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -133,6 +151,11 @@ func (r *Ray) ClosestPointToPoint(p *Point3D) *Point3D {
 }
 
 // Direction retrieves the direction of the given #graphene_ray_t.
+//
+// The function returns the following values:
+//
+//    - direction: return location for the direction.
+//
 func (r *Ray) Direction() *Vec3 {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 C.graphene_vec3_t // in
@@ -153,6 +176,15 @@ func (r *Ray) Direction() *Vec3 {
 // #graphene_ray_t from the given plane.
 //
 // If the ray does not intersect the plane, this function returns INFINITY.
+//
+// The function takes the following parameters:
+//
+//    - p: #graphene_plane_t.
+//
+// The function returns the following values:
+//
+//    - gfloat: distance of the origin of the ray from the plane.
+//
 func (r *Ray) DistanceToPlane(p *Plane) float32 {
 	var _arg0 *C.graphene_ray_t   // out
 	var _arg1 *C.graphene_plane_t // out
@@ -177,6 +209,15 @@ func (r *Ray) DistanceToPlane(p *Plane) float32 {
 //
 // The closest approach to a ray from a point is the distance between the point
 // and the projection of the point on the ray itself.
+//
+// The function takes the following parameters:
+//
+//    - p: #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - gfloat: distance of the point.
+//
 func (r *Ray) DistanceToPoint(p *Point3D) float32 {
 	var _arg0 *C.graphene_ray_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -197,6 +238,11 @@ func (r *Ray) DistanceToPoint(p *Point3D) float32 {
 }
 
 // Origin retrieves the origin of the given #graphene_ray_t.
+//
+// The function returns the following values:
+//
+//    - origin: return location for the origin.
+//
 func (r *Ray) Origin() *Point3D {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 C.graphene_point3d_t // in
@@ -215,6 +261,15 @@ func (r *Ray) Origin() *Point3D {
 
 // PositionAt retrieves the coordinates of a point at the distance t along the
 // given #graphene_ray_t.
+//
+// The function takes the following parameters:
+//
+//    - t: distance along the ray.
+//
+// The function returns the following values:
+//
+//    - position: return location for the position.
+//
 func (r *Ray) PositionAt(t float32) *Point3D {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 C.float              // out
@@ -236,6 +291,16 @@ func (r *Ray) PositionAt(t float32) *Point3D {
 
 // Init initializes the given #graphene_ray_t using the given origin and
 // direction values.
+//
+// The function takes the following parameters:
+//
+//    - origin (optional) of the ray.
+//    - direction (optional) vector.
+//
+// The function returns the following values:
+//
+//    - ray: initialized ray.
+//
 func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
 	var _arg0 *C.graphene_ray_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -264,6 +329,15 @@ func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
 
 // InitFromRay initializes the given #graphene_ray_t using the origin and
 // direction values of another #graphene_ray_t.
+//
+// The function takes the following parameters:
+//
+//    - src: #graphene_ray_t.
+//
+// The function returns the following values:
+//
+//    - ray: initialized ray.
+//
 func (r *Ray) InitFromRay(src *Ray) *Ray {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 *C.graphene_ray_t // out
@@ -284,6 +358,16 @@ func (r *Ray) InitFromRay(src *Ray) *Ray {
 }
 
 // InitFromVec3 initializes the given #graphene_ray_t using the given vectors.
+//
+// The function takes the following parameters:
+//
+//    - origin (optional): #graphene_vec3_t.
+//    - direction (optional): #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - ray: initialized ray.
+//
 func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
 	var _arg0 *C.graphene_ray_t  // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -312,6 +396,16 @@ func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
 
 // IntersectBox intersects the given #graphene_ray_t r with the given
 // #graphene_box_t b.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_box_t.
+//
+// The function returns the following values:
+//
+//    - tOut: distance of the point on the ray that intersects the box.
+//    - rayIntersectionKind: type of intersection.
+//
 func (r *Ray) IntersectBox(b *Box) (float32, RayIntersectionKind) {
 	var _arg0 *C.graphene_ray_t                  // out
 	var _arg1 *C.graphene_box_t                  // out
@@ -336,6 +430,16 @@ func (r *Ray) IntersectBox(b *Box) (float32, RayIntersectionKind) {
 
 // IntersectSphere intersects the given #graphene_ray_t r with the given
 // #graphene_sphere_t s.
+//
+// The function takes the following parameters:
+//
+//    - s: #graphene_sphere_t.
+//
+// The function returns the following values:
+//
+//    - tOut: distance of the point on the ray that intersects the sphere.
+//    - rayIntersectionKind: type of intersection.
+//
 func (r *Ray) IntersectSphere(s *Sphere) (float32, RayIntersectionKind) {
 	var _arg0 *C.graphene_ray_t                  // out
 	var _arg1 *C.graphene_sphere_t               // out
@@ -360,6 +464,16 @@ func (r *Ray) IntersectSphere(s *Sphere) (float32, RayIntersectionKind) {
 
 // IntersectTriangle intersects the given #graphene_ray_t r with the given
 // #graphene_triangle_t t.
+//
+// The function takes the following parameters:
+//
+//    - t: #graphene_triangle_t.
+//
+// The function returns the following values:
+//
+//    - tOut: distance of the point on the ray that intersects the triangle.
+//    - rayIntersectionKind: type of intersection.
+//
 func (r *Ray) IntersectTriangle(t *Triangle) (float32, RayIntersectionKind) {
 	var _arg0 *C.graphene_ray_t                  // out
 	var _arg1 *C.graphene_triangle_t             // out
@@ -386,6 +500,15 @@ func (r *Ray) IntersectTriangle(t *Triangle) (float32, RayIntersectionKind) {
 // #graphene_box_t b.
 //
 // See also: graphene_ray_intersect_box().
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_box_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the ray intersects the box.
+//
 func (r *Ray) IntersectsBox(b *Box) bool {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 *C.graphene_box_t // out
@@ -411,6 +534,15 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 // #graphene_sphere_t s.
 //
 // See also: graphene_ray_intersect_sphere().
+//
+// The function takes the following parameters:
+//
+//    - s: #graphene_sphere_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the ray intersects the sphere.
+//
 func (r *Ray) IntersectsSphere(s *Sphere) bool {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 *C.graphene_sphere_t // out
@@ -436,6 +568,15 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 // given #graphene_triangle_t b.
 //
 // See also: graphene_ray_intersect_triangle().
+//
+// The function takes the following parameters:
+//
+//    - t: #graphene_triangle_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the ray intersects the triangle.
+//
 func (r *Ray) IntersectsTriangle(t *Triangle) bool {
 	var _arg0 *C.graphene_ray_t      // out
 	var _arg1 *C.graphene_triangle_t // out

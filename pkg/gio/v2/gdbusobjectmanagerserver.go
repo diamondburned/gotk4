@@ -77,6 +77,10 @@ func marshalDBusObjectManagerServerer(p uintptr) (interface{}, error) {
 //
 //    - objectPath: object path to export the manager object at.
 //
+// The function returns the following values:
+//
+//    - dBusObjectManagerServer object. Free with g_object_unref().
+//
 func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 	var _arg1 *C.gchar                    // out
 	var _cret *C.GDBusObjectManagerServer // in
@@ -143,6 +147,12 @@ func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleto
 }
 
 // Connection gets the BusConnection used by manager.
+//
+// The function returns the following values:
+//
+//    - dBusConnection object or NULL if manager isn't exported on a connection.
+//      The returned object should be freed with g_object_unref().
+//
 func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _cret *C.GDBusConnection          // in
@@ -164,6 +174,10 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 // The function takes the following parameters:
 //
 //    - object: object.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if object is exported.
 //
 func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
@@ -191,7 +205,7 @@ func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) b
 //
 // The function takes the following parameters:
 //
-//    - connection or NULL.
+//    - connection (optional) or NULL.
 //
 func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection) {
 	var _arg0 *C.GDBusObjectManagerServer // out
@@ -216,6 +230,10 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 // The function takes the following parameters:
 //
 //    - objectPath: object path.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if object at object_path was removed, FALSE otherwise.
 //
 func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out

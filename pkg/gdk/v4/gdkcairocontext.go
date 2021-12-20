@@ -60,6 +60,15 @@ func marshalCairoContexter(p uintptr) (interface{}, error) {
 	return wrapCairoContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (self *CairoContext) baseCairoContext() *CairoContext {
+	return self
+}
+
+// BaseCairoContext returns the underlying base object.
+func BaseCairoContext(obj CairoContexter) *CairoContext {
+	return obj.baseCairoContext()
+}
+
 // CairoCreate retrieves a Cairo context to be used to draw on the GdkSurface of
 // context.
 //
@@ -68,6 +77,12 @@ func marshalCairoContexter(p uintptr) (interface{}, error) {
 //
 // The returned context is guaranteed to be valid until
 // gdk.DrawContext.EndFrame() is called.
+//
+// The function returns the following values:
+//
+//    - context (optional): cairo context to be used to draw the contents of the
+//      GdkSurface. NULL is returned when context is not drawing.
+//
 func (self *CairoContext) CairoCreate() *cairo.Context {
 	var _arg0 *C.GdkCairoContext // out
 	var _cret *C.cairo_t         // in
@@ -87,13 +102,4 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 	}
 
 	return _context
-}
-
-func (self *CairoContext) baseCairoContext() *CairoContext {
-	return self
-}
-
-// BaseCairoContext returns the underlying base object.
-func BaseCairoContext(obj CairoContexter) *CairoContext {
-	return obj.baseCairoContext()
 }

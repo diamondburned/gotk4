@@ -71,31 +71,6 @@ func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
 	return wrapFileChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewFileChooserWidget creates a new GtkFileChooserWidget.
-//
-// This is a file chooser widget that can be embedded in custom windows, and it
-// is the same widget that is used by GtkFileChooserDialog.
-//
-// The function takes the following parameters:
-//
-//    - action: open or save mode for the widget.
-//
-func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
-	var _arg1 C.GtkFileChooserAction // out
-	var _cret *C.GtkWidget           // in
-
-	_arg1 = C.GtkFileChooserAction(action)
-
-	_cret = C.gtk_file_chooser_widget_new(_arg1)
-	runtime.KeepAlive(action)
-
-	var _fileChooserWidget *FileChooserWidget // out
-
-	_fileChooserWidget = wrapFileChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _fileChooserWidget
-}
-
 // ConnectDesktopFolder: emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -245,4 +220,33 @@ func (v *FileChooserWidget) ConnectShowHidden(f func()) externglib.SignalHandle 
 // The default binding for this signal is <kbd>Alt</kbd>-<kbd>Up</kbd>.
 func (v *FileChooserWidget) ConnectUpFolder(f func()) externglib.SignalHandle {
 	return v.Connect("up-folder", f)
+}
+
+// NewFileChooserWidget creates a new GtkFileChooserWidget.
+//
+// This is a file chooser widget that can be embedded in custom windows, and it
+// is the same widget that is used by GtkFileChooserDialog.
+//
+// The function takes the following parameters:
+//
+//    - action: open or save mode for the widget.
+//
+// The function returns the following values:
+//
+//    - fileChooserWidget: new GtkFileChooserWidget.
+//
+func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
+	var _arg1 C.GtkFileChooserAction // out
+	var _cret *C.GtkWidget           // in
+
+	_arg1 = C.GtkFileChooserAction(action)
+
+	_cret = C.gtk_file_chooser_widget_new(_arg1)
+	runtime.KeepAlive(action)
+
+	var _fileChooserWidget *FileChooserWidget // out
+
+	_fileChooserWidget = wrapFileChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _fileChooserWidget
 }

@@ -58,6 +58,10 @@ func marshalInetAddressMasker(p uintptr) (interface{}, error) {
 //    - addr: Address.
 //    - length: number of bits of addr to use.
 //
+// The function returns the following values:
+//
+//    - inetAddressMask: new AddressMask, or NULL on error.
+//
 func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error) {
 	var _arg1 *C.GInetAddress     // out
 	var _arg2 C.guint             // out
@@ -91,6 +95,11 @@ func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error
 //
 //    - maskString: IP address or address/length string.
 //
+// The function returns the following values:
+//
+//    - inetAddressMask: new AddressMask corresponding to string, or NULL on
+//      error.
+//
 func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GInetAddressMask // in
@@ -119,6 +128,10 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 //
 //    - mask2: another AddressMask.
 //
+// The function returns the following values:
+//
+//    - ok: whether mask and mask2 are the same mask.
+//
 func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddressMask // out
@@ -141,6 +154,11 @@ func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 }
 
 // Address gets mask's base address.
+//
+// The function returns the following values:
+//
+//    - inetAddress mask's base address.
+//
 func (mask *InetAddressMask) Address() *InetAddress {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret *C.GInetAddress     // in
@@ -158,6 +176,11 @@ func (mask *InetAddressMask) Address() *InetAddress {
 }
 
 // Family gets the Family of mask's address.
+//
+// The function returns the following values:
+//
+//    - socketFamily of mask's address.
+//
 func (mask *InetAddressMask) Family() SocketFamily {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.GSocketFamily     // in
@@ -175,6 +198,11 @@ func (mask *InetAddressMask) Family() SocketFamily {
 }
 
 // Length gets mask's length.
+//
+// The function returns the following values:
+//
+//    - guint mask's length.
+//
 func (mask *InetAddressMask) Length() uint {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.guint             // in
@@ -196,6 +224,10 @@ func (mask *InetAddressMask) Length() uint {
 // The function takes the following parameters:
 //
 //    - address: Address.
+//
+// The function returns the following values:
+//
+//    - ok: whether address falls within the range described by mask.
 //
 func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 	var _arg0 *C.GInetAddressMask // out
@@ -219,6 +251,11 @@ func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 }
 
 // String converts mask back to its corresponding string form.
+//
+// The function returns the following values:
+//
+//    - utf8: string corresponding to mask.
+//
 func (mask *InetAddressMask) String() string {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret *C.gchar            // in

@@ -236,6 +236,15 @@ func NewEulerAlloc() *Euler {
 }
 
 // Equal checks if two #graphene_euler_t are equal.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_euler_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the two #graphene_euler_t are equal.
+//
 func (a *Euler) Equal(b *Euler) bool {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 *C.graphene_euler_t // out
@@ -261,6 +270,11 @@ func (a *Euler) Equal(b *Euler) bool {
 // the order of rotation.
 //
 // See also: graphene_euler_get_x().
+//
+// The function returns the following values:
+//
+//    - gfloat: first component of the Euler angle vector, in radians.
+//
 func (e *Euler) Alpha() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -281,6 +295,11 @@ func (e *Euler) Alpha() float32 {
 // the order of rotation.
 //
 // See also: graphene_euler_get_y().
+//
+// The function returns the following values:
+//
+//    - gfloat: second component of the Euler angle vector, in radians.
+//
 func (e *Euler) Beta() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -301,6 +320,11 @@ func (e *Euler) Beta() float32 {
 // the order of rotation.
 //
 // See also: graphene_euler_get_z().
+//
+// The function returns the following values:
+//
+//    - gfloat: third component of the Euler angle vector, in radians.
+//
 func (e *Euler) Gamma() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -323,6 +347,11 @@ func (e *Euler) Gamma() float32 {
 //
 // This function does not return the GRAPHENE_EULER_ORDER_DEFAULT enumeration
 // value; it will return the effective order of rotation instead.
+//
+// The function returns the following values:
+//
+//    - eulerOrder: order used to apply the rotations.
+//
 func (e *Euler) Order() EulerOrder {
 	var _arg0 *C.graphene_euler_t      // out
 	var _cret C.graphene_euler_order_t // in
@@ -340,6 +369,11 @@ func (e *Euler) Order() EulerOrder {
 }
 
 // X retrieves the rotation angle on the X axis, in degrees.
+//
+// The function returns the following values:
+//
+//    - gfloat: rotation angle.
+//
 func (e *Euler) X() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -357,6 +391,11 @@ func (e *Euler) X() float32 {
 }
 
 // Y retrieves the rotation angle on the Y axis, in degrees.
+//
+// The function returns the following values:
+//
+//    - gfloat: rotation angle.
+//
 func (e *Euler) Y() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -374,6 +413,11 @@ func (e *Euler) Y() float32 {
 }
 
 // Z retrieves the rotation angle on the Z axis, in degrees.
+//
+// The function returns the following values:
+//
+//    - gfloat: rotation angle.
+//
 func (e *Euler) Z() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -393,6 +437,17 @@ func (e *Euler) Z() float32 {
 // Init initializes a #graphene_euler_t using the given angles.
 //
 // The order of the rotations is GRAPHENE_EULER_ORDER_DEFAULT.
+//
+// The function takes the following parameters:
+//
+//    - x: rotation angle on the X axis, in degrees.
+//    - y: rotation angle on the Y axis, in degrees.
+//    - z: rotation angle on the Z axis, in degrees.
+//
+// The function returns the following values:
+//
+//    - euler: initialized #graphene_euler_t.
+//
 func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 C.float             // out
@@ -423,6 +478,15 @@ func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 //
 // If the #graphene_euler_t src is NULL, this function is equivalent to calling
 // graphene_euler_init() with all angles set to 0.
+//
+// The function takes the following parameters:
+//
+//    - src (optional): #graphene_euler_t.
+//
+// The function returns the following values:
+//
+//    - euler: initialized #graphene_euler_t.
+//
 func (e *Euler) InitFromEuler(src *Euler) *Euler {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 *C.graphene_euler_t // out
@@ -449,6 +513,16 @@ func (e *Euler) InitFromEuler(src *Euler) *Euler {
 //
 // If the #graphene_matrix_t m is NULL, the #graphene_euler_t will be
 // initialized with all angles set to 0.
+//
+// The function takes the following parameters:
+//
+//    - m (optional): rotation matrix.
+//    - order used to apply the rotations.
+//
+// The function returns the following values:
+//
+//    - euler: initialized #graphene_euler_t.
+//
 func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 *C.graphene_matrix_t     // out
@@ -478,6 +552,16 @@ func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
 //
 // If the #graphene_quaternion_t q is NULL, the #graphene_euler_t will be
 // initialized with all angles set to 0.
+//
+// The function takes the following parameters:
+//
+//    - q (optional): normalized #graphene_quaternion_t.
+//    - order used to apply the rotations.
+//
+// The function returns the following values:
+//
+//    - euler: initialized #graphene_euler_t.
+//
 func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -504,6 +588,18 @@ func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 
 // InitFromRadians initializes a #graphene_euler_t using the given angles and
 // order of rotation.
+//
+// The function takes the following parameters:
+//
+//    - x: rotation angle on the X axis, in radians.
+//    - y: rotation angle on the Y axis, in radians.
+//    - z: rotation angle on the Z axis, in radians.
+//    - order of rotations.
+//
+// The function returns the following values:
+//
+//    - euler: initialized #graphene_euler_t.
+//
 func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.float                  // out
@@ -537,6 +633,16 @@ func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrde
 //
 // If the #graphene_vec3_t v is NULL, the #graphene_euler_t will be initialized
 // with all angles set to 0.
+//
+// The function takes the following parameters:
+//
+//    - v (optional) containing the rotation angles in degrees.
+//    - order used to apply the rotations.
+//
+// The function returns the following values:
+//
+//    - euler: initialized #graphene_euler_t.
+//
 func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 *C.graphene_vec3_t       // out
@@ -563,6 +669,18 @@ func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 
 // InitWithOrder initializes a #graphene_euler_t with the given angles and
 // order.
+//
+// The function takes the following parameters:
+//
+//    - x: rotation angle on the X axis, in degrees.
+//    - y: rotation angle on the Y axis, in degrees.
+//    - z: rotation angle on the Z axis, in degrees.
+//    - order used to apply the rotations.
+//
+// The function returns the following values:
+//
+//    - euler: initialized #graphene_euler_t.
+//
 func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.float                  // out
@@ -596,6 +714,15 @@ func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder)
 // This function is equivalent to creating a #graphene_quaternion_t from the
 // given #graphene_euler_t, and then converting the quaternion into another
 // #graphene_euler_t.
+//
+// The function takes the following parameters:
+//
+//    - order: new order.
+//
+// The function returns the following values:
+//
+//    - res: return location for the reordered #graphene_euler_t.
+//
 func (e *Euler) Reorder(order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.graphene_euler_order_t // out
@@ -631,6 +758,11 @@ func (e *Euler) Reorder(order EulerOrder) *Euler {
 //
 // The rotation sign convention is right-handed, to preserve compatibility
 // between Euler-based, quaternion-based, and angle-axis-based rotations.
+//
+// The function returns the following values:
+//
+//    - res: return location for a #graphene_matrix_t.
+//
 func (e *Euler) ToMatrix() *Matrix {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 C.graphene_matrix_t // in
@@ -648,6 +780,11 @@ func (e *Euler) ToMatrix() *Matrix {
 }
 
 // ToQuaternion converts a #graphene_euler_t into a #graphene_quaternion_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for a #graphene_quaternion_t.
+//
 func (e *Euler) ToQuaternion() *Quaternion {
 	var _arg0 *C.graphene_euler_t     // out
 	var _arg1 C.graphene_quaternion_t // in
@@ -666,6 +803,11 @@ func (e *Euler) ToQuaternion() *Quaternion {
 
 // ToVec3 retrieves the angles of a #graphene_euler_t and initializes a
 // #graphene_vec3_t with them.
+//
+// The function returns the following values:
+//
+//    - res: return location for a #graphene_vec3_t.
+//
 func (e *Euler) ToVec3() *Vec3 {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 C.graphene_vec3_t   // in

@@ -40,7 +40,7 @@ func (f PreprocessorFunc) Preprocess(repos gir.Repositories) {
 // RemovePkgconfig removes the given pkgconfig packages from the given
 // repository.
 func RemovePkgconfig(girFile string, pkgs ...string) Preprocessor {
-	matchers := makeMatchers(pkgs)
+	match := MakePathMatcher(pkgs)
 
 	return PreprocessorFunc(func(repos gir.Repositories) {
 		repo := repos.FromGIRFile(girFile)
@@ -53,10 +53,8 @@ func RemovePkgconfig(girFile string, pkgs ...string) Preprocessor {
 
 	findPkg:
 		for _, pkg := range repo.Packages {
-			for _, match := range matchers {
-				if match(pkg.Name) {
-					continue findPkg
-				}
+			if match(pkg.Name) {
+				continue findPkg
 			}
 			packages = append(packages, pkg)
 		}
@@ -67,7 +65,7 @@ func RemovePkgconfig(girFile string, pkgs ...string) Preprocessor {
 
 // RemoveCIncludes removes the given C includes from the given repository.
 func RemoveCIncludes(girFile string, cincls ...string) Preprocessor {
-	matchers := makeMatchers(cincls)
+	match := MakePathMatcher(cincls)
 
 	return PreprocessorFunc(func(repos gir.Repositories) {
 		repo := repos.FromGIRFile(girFile)
@@ -80,10 +78,8 @@ func RemoveCIncludes(girFile string, cincls ...string) Preprocessor {
 
 	findCIncl:
 		for _, cincl := range repo.CIncludes {
-			for _, match := range matchers {
-				if match(cincl.Name) {
-					continue findCIncl
-				}
+			if match(cincl.Name) {
+				continue findCIncl
 			}
 			cIncludes = append(cIncludes, cincl)
 		}
@@ -92,7 +88,8 @@ func RemoveCIncludes(girFile string, cincls ...string) Preprocessor {
 	})
 }
 
-func makeMatchers(inputs []string) []func(string) bool {
+// MakePathMatcher makes a matcher from the given file name inputs.
+func MakePathMatcher(inputs []string) func(string) bool {
 	fns := make([]func(string) bool, len(inputs))
 
 	for i, input := range inputs {
@@ -106,7 +103,14 @@ func makeMatchers(inputs []string) []func(string) bool {
 		}
 	}
 
-	return fns
+	return func(str string) bool {
+		for _, match := range fns {
+			if match(str) {
+				return true
+			}
+		}
+		return false
+	}
 }
 
 func girTypeMustBeVersioned(girType string) {

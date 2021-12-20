@@ -14,6 +14,11 @@ import "C"
 
 // RandomDouble returns a random #gdouble equally distributed over the range
 // [0..1).
+//
+// The function returns the following values:
+//
+//    - gdouble: random number.
+//
 func RandomDouble() float64 {
 	var _cret C.gdouble // in
 
@@ -33,6 +38,10 @@ func RandomDouble() float64 {
 //
 //    - begin: lower closed bound of the interval.
 //    - end: upper open bound of the interval.
+//
+// The function returns the following values:
+//
+//    - gdouble: random number.
 //
 func RandomDoubleRange(begin, end float64) float64 {
 	var _arg1 C.gdouble // out
@@ -55,6 +64,11 @@ func RandomDoubleRange(begin, end float64) float64 {
 
 // RandomInt: return a random #guint32 equally distributed over the range
 // [0..2^32-1].
+//
+// The function returns the following values:
+//
+//    - guint32: random number.
+//
 func RandomInt() uint32 {
 	var _cret C.guint32 // in
 
@@ -74,6 +88,10 @@ func RandomInt() uint32 {
 //
 //    - begin: lower closed bound of the interval.
 //    - end: upper open bound of the interval.
+//
+// The function returns the following values:
+//
+//    - gint32: random number.
 //
 func RandomIntRange(begin, end int32) int32 {
 	var _arg1 C.gint32 // out

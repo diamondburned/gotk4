@@ -60,6 +60,12 @@ func marshalToggleActioner(p uintptr) (interface{}, error) {
 	return wrapToggleAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectToggled: should be connected if you wish to perform an action whenever
+// the ToggleAction state is changed.
+func (action *ToggleAction) ConnectToggled(f func()) externglib.SignalHandle {
+	return action.Connect("toggled", f)
+}
+
 // NewToggleAction creates a new ToggleAction object. To add the action to a
 // ActionGroup and set the accelerator for the action, call
 // gtk_action_group_add_action_with_accel().
@@ -69,10 +75,14 @@ func marshalToggleActioner(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - name: unique name for the action.
-//    - label displayed in menu items and on buttons, or NULL.
-//    - tooltip for the action, or NULL.
-//    - stockId: stock icon to display in widgets representing the action, or
-//    NULL.
+//    - label (optional) displayed in menu items and on buttons, or NULL.
+//    - tooltip (optional) for the action, or NULL.
+//    - stockId (optional): stock icon to display in widgets representing the
+//      action, or NULL.
+//
+// The function returns the following values:
+//
+//    - toggleAction: new ToggleAction.
 //
 func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
 	var _arg1 *C.gchar           // out
@@ -112,6 +122,11 @@ func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
 // Active returns the checked state of the toggle action.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: checked state of the toggle action.
+//
 func (action *ToggleAction) Active() bool {
 	var _arg0 *C.GtkToggleAction // out
 	var _cret C.gboolean         // in
@@ -134,6 +149,11 @@ func (action *ToggleAction) Active() bool {
 // action.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: whether the action should have proxies like a radio action.
+//
 func (action *ToggleAction) DrawAsRadio() bool {
 	var _arg0 *C.GtkToggleAction // out
 	var _cret C.gboolean         // in
@@ -181,8 +201,7 @@ func (action *ToggleAction) SetActive(isActive bool) {
 //
 // The function takes the following parameters:
 //
-//    - drawAsRadio: whether the action should have proxies like a radio
-//    action.
+//    - drawAsRadio: whether the action should have proxies like a radio action.
 //
 func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkToggleAction // out
@@ -208,10 +227,4 @@ func (action *ToggleAction) Toggled() {
 
 	C.gtk_toggle_action_toggled(_arg0)
 	runtime.KeepAlive(action)
-}
-
-// ConnectToggled: should be connected if you wish to perform an action whenever
-// the ToggleAction state is changed.
-func (action *ToggleAction) ConnectToggled(f func()) externglib.SignalHandle {
-	return action.Connect("toggled", f)
 }

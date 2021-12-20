@@ -92,6 +92,11 @@ func marshalDragIconner(p uintptr) (interface{}, error) {
 }
 
 // Child gets the widget currently used as drag icon.
+//
+// The function returns the following values:
+//
+//    - widget (optional): drag icon or NULL if none.
+//
 func (self *DragIcon) Child() Widgetter {
 	var _arg0 *C.GtkDragIcon // out
 	var _cret *C.GtkWidget   // in
@@ -124,7 +129,7 @@ func (self *DragIcon) Child() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget or NULL.
+//    - child (optional): GtkWidget or NULL.
 //
 func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg0 *C.GtkDragIcon // out
@@ -153,6 +158,10 @@ func (self *DragIcon) SetChild(child Widgetter) {
 // The function takes the following parameters:
 //
 //    - value: GValue.
+//
+// The function returns the following values:
+//
+//    - widget (optional): new GtkWidget for displaying value as a drag icon.
 //
 func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 	var _arg1 *C.GValue    // out
@@ -189,6 +198,10 @@ func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 // The function takes the following parameters:
 //
 //    - drag: GdkDrag.
+//
+// The function returns the following values:
+//
+//    - widget: GtkDragIcon.
 //
 func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	var _arg1 *C.GdkDrag   // out

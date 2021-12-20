@@ -72,8 +72,12 @@ func marshalBuilderListItemFactorier(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - scope to use when instantiating.
+//    - scope (optional) to use when instantiating.
 //    - bytes: GBytes containing the ui file to instantiate.
+//
+// The function returns the following values:
+//
+//    - builderListItemFactory: new GtkBuilderListItemFactory.
 //
 func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
@@ -102,8 +106,12 @@ func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) 
 //
 // The function takes the following parameters:
 //
-//    - scope to use when instantiating.
+//    - scope (optional) to use when instantiating.
 //    - resourcePath: valid path to a resource that contains the data.
+//
+// The function returns the following values:
+//
+//    - builderListItemFactory: new GtkBuilderListItemFactory.
 //
 func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath string) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
@@ -129,6 +137,11 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 
 // Bytes gets the data used as the GtkBuilder UI template for constructing
 // listitems.
+//
+// The function returns the following values:
+//
+//    - bytes: GtkBuilder data.
+//
 func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GBytes                    // in
@@ -153,6 +166,11 @@ func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 }
 
 // Resource: if the data references a resource, gets the path of that resource.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): path to the resource or NULL if none.
+//
 func (self *BuilderListItemFactory) Resource() string {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.char                      // in
@@ -172,6 +190,11 @@ func (self *BuilderListItemFactory) Resource() string {
 }
 
 // Scope gets the scope used when constructing listitems.
+//
+// The function returns the following values:
+//
+//    - builderScope (optional): scope used when constructing listitems.
+//
 func (self *BuilderListItemFactory) Scope() BuilderScoper {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GtkBuilderScope           // in

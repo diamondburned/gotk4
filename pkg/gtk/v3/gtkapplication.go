@@ -94,7 +94,11 @@ func (a ApplicationInhibitFlags) Has(other ApplicationInhibitFlags) bool {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ApplicationOverrider interface {
+	// The function takes the following parameters:
+	//
 	WindowAdded(window *Window)
+	// The function takes the following parameters:
+	//
 	WindowRemoved(window *Window)
 }
 
@@ -201,6 +205,28 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 	return wrapApplication(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectQueryEnd: emitted when the session manager is about to end the
+// session, only if Application::register-session is TRUE. Applications can
+// connect to this signal and call gtk_application_inhibit() with
+// GTK_APPLICATION_INHIBIT_LOGOUT to delay the end of the session until state
+// has been saved.
+func (application *Application) ConnectQueryEnd(f func()) externglib.SignalHandle {
+	return application.Connect("query-end", f)
+}
+
+// ConnectWindowAdded: emitted when a Window is added to application through
+// gtk_application_add_window().
+func (application *Application) ConnectWindowAdded(f func(window Window)) externglib.SignalHandle {
+	return application.Connect("window-added", f)
+}
+
+// ConnectWindowRemoved: emitted when a Window is removed from application,
+// either as a side-effect of being destroyed or explicitly through
+// gtk_application_remove_window().
+func (application *Application) ConnectWindowRemoved(f func(window Window)) externglib.SignalHandle {
+	return application.Connect("window-removed", f)
+}
+
 // NewApplication creates a new Application instance.
 //
 // When using Application, it is not necessary to call gtk_init() manually. It
@@ -226,8 +252,12 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - applicationId: application ID.
+//    - applicationId (optional): application ID.
 //    - flags: application flags.
+//
+// The function returns the following values:
+//
+//    - application: new Application instance.
 //
 func NewApplication(applicationId string, flags gio.ApplicationFlags) *Application {
 	var _arg1 *C.gchar            // out
@@ -272,8 +302,8 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 //
 //    - accelerator string.
 //    - actionName: name of the action to activate.
-//    - parameter to pass when activating the action, or NULL if the action
-//    does not accept an activation parameter.
+//    - parameter (optional) to pass when activating the action, or NULL if the
+//      action does not accept an activation parameter.
 //
 func (application *Application) AddAccelerator(accelerator, actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
@@ -333,8 +363,13 @@ func (application *Application) AddWindow(window *Window) {
 //
 // The function takes the following parameters:
 //
-//    - detailedActionName: detailed action name, specifying an action and
-//    target to obtain accelerators for.
+//    - detailedActionName: detailed action name, specifying an action and target
+//      to obtain accelerators for.
+//
+// The function returns the following values:
+//
+//    - utf8s accelerators for detailed_action_name, as a NULL-terminated array.
+//      Free with g_strfreev() when no longer needed.
 //
 func (application *Application) AccelsForAction(detailedActionName string) []string {
 	var _arg0 *C.GtkApplication // out
@@ -389,6 +424,10 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 //
 //    - accel: accelerator that can be parsed by gtk_accelerator_parse().
 //
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of actions for accel.
+//
 func (application *Application) ActionsForAccel(accel string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
@@ -429,6 +468,11 @@ func (application *Application) ActionsForAccel(accel string) []string {
 // application). This window may not have the focus at the moment if another
 // application has it — this is just the most recently-focused window within
 // this application.
+//
+// The function returns the following values:
+//
+//    - window (optional): active window, or NULL if there isn't one.
+//
 func (application *Application) ActiveWindow() *Window {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GtkWindow      // in
@@ -449,6 +493,12 @@ func (application *Application) ActiveWindow() *Window {
 
 // AppMenu returns the menu model that has been set with
 // gtk_application_set_app_menu().
+//
+// The function returns the following values:
+//
+//    - menuModel (optional): application menu of application or NULL if no
+//      application menu has been set.
+//
 func (application *Application) AppMenu() gio.MenuModeller {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
@@ -484,6 +534,11 @@ func (application *Application) AppMenu() gio.MenuModeller {
 //
 //    - id of the menu to look up.
 //
+// The function returns the following values:
+//
+//    - menu gets the menu with the given id from the automatically loaded
+//      resources.
+//
 func (application *Application) MenuByID(id string) *gio.Menu {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
@@ -513,6 +568,11 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 
 // Menubar returns the menu model that has been set with
 // gtk_application_set_menubar().
+//
+// The function returns the following values:
+//
+//    - menuModel: menubar for windows of application.
+//
 func (application *Application) Menubar() gio.MenuModeller {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
@@ -551,6 +611,10 @@ func (application *Application) Menubar() gio.MenuModeller {
 //
 //    - id: identifier number.
 //
+// The function returns the following values:
+//
+//    - window (optional) with ID id, or NULL if there is no window with this ID.
+//
 func (application *Application) WindowByID(id uint) *Window {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
@@ -580,6 +644,11 @@ func (application *Application) WindowByID(id uint) *Window {
 //
 // The list that is returned should not be modified in any way. It will only
 // remain valid until the next focus change or window creation or deletion.
+//
+// The function returns the following values:
+//
+//    - list of Window.
+//
 func (application *Application) Windows() []Window {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GList          // in
@@ -625,10 +694,17 @@ func (application *Application) Windows() []Window {
 //
 // The function takes the following parameters:
 //
-//    - window or NULL.
+//    - window (optional) or NULL.
 //    - flags: what types of actions should be inhibited.
-//    - reason: short, human-readable string that explains why these operations
-//    are inhibited.
+//    - reason (optional): short, human-readable string that explains why these
+//      operations are inhibited.
+//
+// The function returns the following values:
+//
+//    - guint: non-zero cookie that is used to uniquely identify this request. It
+//      should be used as an argument to gtk_application_uninhibit() in order to
+//      remove the request. If the platform does not support inhibiting or the
+//      request failed for some reason, 0 is returned.
 //
 func (application *Application) Inhibit(window *Window, flags ApplicationInhibitFlags, reason string) uint {
 	var _arg0 *C.GtkApplication            // out
@@ -670,6 +746,10 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 //
 //    - flags: what types of actions should be queried.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if any of the actions specified in flags are inhibited.
+//
 func (application *Application) IsInhibited(flags ApplicationInhibitFlags) bool {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 C.GtkApplicationInhibitFlags // out
@@ -693,6 +773,12 @@ func (application *Application) IsInhibited(flags ApplicationInhibitFlags) bool 
 
 // ListActionDescriptions lists the detailed action names which have associated
 // accelerators. See gtk_application_set_accels_for_action().
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of strings, free with g_strfreev() when
+//      done.
+//
 func (application *Application) ListActionDescriptions() []string {
 	var _arg0 *C.GtkApplication // out
 	var _cret **C.gchar         // in
@@ -753,6 +839,11 @@ func (application *Application) ListActionDescriptions() []string {
 // created automatically with the "usual" contents of that menu typical to most
 // Mac OS applications. If you call gtk_application_set_app_menu() anyway, then
 // this menu will be replaced with your own.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if you should set an app menu.
+//
 func (application *Application) PrefersAppMenu() bool {
 	var _arg0 *C.GtkApplication // out
 	var _cret C.gboolean        // in
@@ -779,8 +870,8 @@ func (application *Application) PrefersAppMenu() bool {
 // The function takes the following parameters:
 //
 //    - actionName: name of the action to activate.
-//    - parameter to pass when activating the action, or NULL if the action
-//    does not accept an activation parameter.
+//    - parameter (optional) to pass when activating the action, or NULL if the
+//      action does not accept an activation parameter.
 //
 func (application *Application) RemoveAccelerator(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
@@ -835,10 +926,10 @@ func (application *Application) RemoveWindow(window *Window) {
 //
 // The function takes the following parameters:
 //
-//    - detailedActionName: detailed action name, specifying an action and
-//    target to associate accelerators with.
+//    - detailedActionName: detailed action name, specifying an action and target
+//      to associate accelerators with.
 //    - accels: list of accelerators in the format understood by
-//    gtk_accelerator_parse().
+//      gtk_accelerator_parse().
 //
 func (application *Application) SetAccelsForAction(detailedActionName string, accels []string) {
 	var _arg0 *C.GtkApplication // out
@@ -886,7 +977,7 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 //
 // The function takes the following parameters:
 //
-//    - appMenu or NULL.
+//    - appMenu (optional) or NULL.
 //
 func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 	var _arg0 *C.GtkApplication // out
@@ -922,7 +1013,7 @@ func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - menubar or NULL.
+//    - menubar (optional) or NULL.
 //
 func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg0 *C.GtkApplication // out
@@ -956,26 +1047,4 @@ func (application *Application) Uninhibit(cookie uint) {
 	C.gtk_application_uninhibit(_arg0, _arg1)
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(cookie)
-}
-
-// ConnectQueryEnd: emitted when the session manager is about to end the
-// session, only if Application::register-session is TRUE. Applications can
-// connect to this signal and call gtk_application_inhibit() with
-// GTK_APPLICATION_INHIBIT_LOGOUT to delay the end of the session until state
-// has been saved.
-func (application *Application) ConnectQueryEnd(f func()) externglib.SignalHandle {
-	return application.Connect("query-end", f)
-}
-
-// ConnectWindowAdded: emitted when a Window is added to application through
-// gtk_application_add_window().
-func (application *Application) ConnectWindowAdded(f func(window Window)) externglib.SignalHandle {
-	return application.Connect("window-added", f)
-}
-
-// ConnectWindowRemoved: emitted when a Window is removed from application,
-// either as a side-effect of being destroyed or explicitly through
-// gtk_application_remove_window().
-func (application *Application) ConnectWindowRemoved(f func(window Window)) externglib.SignalHandle {
-	return application.Connect("window-removed", f)
 }

@@ -48,6 +48,11 @@ const VERSION_MIN_REQUIRED = 2
 
 // GetBinaryAge returns the binary age as passed to libtool when building the
 // ATK library the process is running against.
+//
+// The function returns the following values:
+//
+//    - guint: binary age of the ATK library.
+//
 func GetBinaryAge() uint {
 	var _cret C.guint // in
 
@@ -62,6 +67,11 @@ func GetBinaryAge() uint {
 
 // GetInterfaceAge returns the interface age as passed to libtool when building
 // the ATK library the process is running against.
+//
+// The function returns the following values:
+//
+//    - guint: interface age of the ATK library.
+//
 func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
@@ -80,6 +90,11 @@ func GetInterfaceAge() uint {
 // This function is in the library, so it represents the ATK library your code
 // is running against. In contrast, the K_MAJOR_VERSION macro represents the
 // major version of the ATK headers you have included when compiling your code.
+//
+// The function returns the following values:
+//
+//    - guint: major version number of the ATK library.
+//
 func GetMajorVersion() uint {
 	var _cret C.guint // in
 
@@ -98,6 +113,11 @@ func GetMajorVersion() uint {
 // This function is in the library, so it represents the ATK library your code
 // is are running against. In contrast, the K_MICRO_VERSION macro represents the
 // micro version of the ATK headers you have included when compiling your code.
+//
+// The function returns the following values:
+//
+//    - guint: micro version number of the ATK library.
+//
 func GetMicroVersion() uint {
 	var _cret C.guint // in
 
@@ -116,6 +136,11 @@ func GetMicroVersion() uint {
 // This function is in the library, so it represents the ATK library your code
 // is are running against. In contrast, the K_MINOR_VERSION macro represents the
 // minor version of the ATK headers you have included when compiling your code.
+//
+// The function returns the following values:
+//
+//    - guint: minor version number of the ATK library.
+//
 func GetMinorVersion() uint {
 	var _cret C.guint // in
 

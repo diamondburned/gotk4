@@ -133,7 +133,11 @@ func marshalPadControllerer(p uintptr) (interface{}, error) {
 //
 //    - window: Window.
 //    - group to trigger actions from.
-//    - pad: GDK_SOURCE_TABLET_PAD device, or NULL to handle all pads.
+//    - pad (optional): GDK_SOURCE_TABLET_PAD device, or NULL to handle all pads.
+//
+// The function returns the following values:
+//
+//    - padController: newly created PadController.
 //
 func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _arg1 *C.GtkWindow        // out
@@ -171,11 +175,10 @@ func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) 
 // The function takes the following parameters:
 //
 //    - typ: type of pad feature that will trigger this action.
-//    - index: 0-indexed button/ring/strip number that will trigger this
-//    action.
+//    - index: 0-indexed button/ring/strip number that will trigger this action.
 //    - mode that will trigger this action, or -1 for all modes.
 //    - label: human readable description of this action, this string should be
-//    deemed user-visible.
+//      deemed user-visible.
 //    - actionName: action name that will be activated in the Group.
 //
 func (controller *PadController) SetAction(typ PadActionType, index, mode int, label, actionName string) {

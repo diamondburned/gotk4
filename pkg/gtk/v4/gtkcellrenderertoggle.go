@@ -49,12 +49,26 @@ func marshalCellRendererToggler(p uintptr) (interface{}, error) {
 	return wrapCellRendererToggle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectToggled signal is emitted when the cell is toggled.
+//
+// It is the responsibility of the application to update the model with the
+// correct value to store at path. Often this is simply the opposite of the
+// value currently stored at path.
+func (toggle *CellRendererToggle) ConnectToggled(f func(path string)) externglib.SignalHandle {
+	return toggle.Connect("toggled", f)
+}
+
 // NewCellRendererToggle creates a new CellRendererToggle. Adjust rendering
 // parameters using object properties. Object properties can be set globally
 // (with g_object_set()). Also, with TreeViewColumn, you can bind a property to
 // a value in a TreeModel. For example, you can bind the “active” property on
 // the cell renderer to a boolean value in the model, thus causing the check
 // button to reflect the state of the model.
+//
+// The function returns the following values:
+//
+//    - cellRendererToggle: new cell renderer.
+//
 func NewCellRendererToggle() *CellRendererToggle {
 	var _cret *C.GtkCellRenderer // in
 
@@ -69,6 +83,11 @@ func NewCellRendererToggle() *CellRendererToggle {
 
 // Activatable returns whether the cell renderer is activatable. See
 // gtk_cell_renderer_toggle_set_activatable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the cell renderer is activatable.
+//
 func (toggle *CellRendererToggle) Activatable() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _cret C.gboolean               // in
@@ -89,6 +108,11 @@ func (toggle *CellRendererToggle) Activatable() bool {
 
 // Active returns whether the cell renderer is active. See
 // gtk_cell_renderer_toggle_set_active().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the cell renderer is active.
+//
 func (toggle *CellRendererToggle) Active() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _cret C.gboolean               // in
@@ -108,6 +132,11 @@ func (toggle *CellRendererToggle) Active() bool {
 }
 
 // Radio returns whether we’re rendering radio toggles rather than checkboxes.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we’re rendering radio toggles rather than checkboxes.
+//
 func (toggle *CellRendererToggle) Radio() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _cret C.gboolean               // in
@@ -189,13 +218,4 @@ func (toggle *CellRendererToggle) SetRadio(radio bool) {
 	C.gtk_cell_renderer_toggle_set_radio(_arg0, _arg1)
 	runtime.KeepAlive(toggle)
 	runtime.KeepAlive(radio)
-}
-
-// ConnectToggled signal is emitted when the cell is toggled.
-//
-// It is the responsibility of the application to update the model with the
-// correct value to store at path. Often this is simply the opposite of the
-// value currently stored at path.
-func (toggle *CellRendererToggle) ConnectToggled(f func(path string)) externglib.SignalHandle {
-	return toggle.Connect("toggled", f)
 }

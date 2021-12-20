@@ -39,6 +39,11 @@ type PollableInputStreamOverrider interface {
 	//
 	// For any given stream, the value returned by this method is constant; a
 	// stream cannot switch from pollable to non-pollable or vice versa.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if stream is pollable, FALSE if not.
+	//
 	CanPoll() bool
 	// CreateSource creates a #GSource that triggers when stream can be read, or
 	// cancellable is triggered or an error occurs. The callback on the source
@@ -48,6 +53,15 @@ type PollableInputStreamOverrider interface {
 	// stream may not actually be readable even after the source triggers, so
 	// you should use g_pollable_input_stream_read_nonblocking() rather than
 	// g_input_stream_read() from the callback.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - source: new #GSource.
+	//
 	CreateSource(ctx context.Context) *glib.Source
 	// IsReadable checks if stream can be read.
 	//
@@ -56,6 +70,14 @@ type PollableInputStreamOverrider interface {
 	// this returns TRUE would still block. To guarantee non-blocking behavior,
 	// you should always use g_pollable_input_stream_read_nonblocking(), which
 	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if stream is readable, FALSE if not. If an error has
+	//      occurred on stream, this will result in
+	//      g_pollable_input_stream_is_readable() returning TRUE, and the next
+	//      attempt to read will return the error.
+	//
 	IsReadable() bool
 	// ReadNonblocking attempts to read up to count bytes from stream into
 	// buffer, as with g_input_stream_read(). If stream is not currently
@@ -67,6 +89,17 @@ type PollableInputStreamOverrider interface {
 	// cancellable to cancel it. However, it will return an error if cancellable
 	// has already been cancelled when you call, which may happen if you call
 	// this method after a source triggers due to having been cancelled.
+	//
+	// The function takes the following parameters:
+	//
+	//    - buffer (optional) to read data into (which should be at least count
+	//      bytes long).
+	//
+	// The function returns the following values:
+	//
+	//    - gssize: number of bytes read, or -1 on error (including
+	//      G_IO_ERROR_WOULD_BLOCK).
+	//
 	ReadNonblocking(buffer []byte) (int, error)
 }
 
@@ -118,6 +151,11 @@ func marshalPollableInputStreamer(p uintptr) (interface{}, error) {
 //
 // For any given stream, the value returned by this method is constant; a stream
 // cannot switch from pollable to non-pollable or vice versa.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if stream is pollable, FALSE if not.
+//
 func (stream *PollableInputStream) CanPoll() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
@@ -147,7 +185,11 @@ func (stream *PollableInputStream) CanPoll() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - source: new #GSource.
 //
 func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Source {
 	var _arg0 *C.GPollableInputStream // out
@@ -185,6 +227,13 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 // TRUE would still block. To guarantee non-blocking behavior, you should always
 // use g_pollable_input_stream_read_nonblocking(), which will return a
 // G_IO_ERROR_WOULD_BLOCK error rather than blocking.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if stream is readable, FALSE if not. If an error has occurred on
+//      stream, this will result in g_pollable_input_stream_is_readable()
+//      returning TRUE, and the next attempt to read will return the error.
+//
 func (stream *PollableInputStream) IsReadable() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
@@ -216,8 +265,13 @@ func (stream *PollableInputStream) IsReadable() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - buffer to read data into (which should be at least count bytes long).
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read, or -1 on error (including
+//      G_IO_ERROR_WOULD_BLOCK).
 //
 func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableInputStream // out

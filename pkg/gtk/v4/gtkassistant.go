@@ -212,7 +212,52 @@ func marshalAssistanter(p uintptr) (interface{}, error) {
 	return wrapAssistant(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectApply: emitted when the apply button is clicked.
+//
+// The default behavior of the GtkAssistant is to switch to the page after the
+// current page, unless the current page is the last one.
+//
+// A handler for the ::apply signal should carry out the actions for which the
+// wizard has collected data. If the action takes a long time to complete, you
+// might consider putting a page of type GTK_ASSISTANT_PAGE_PROGRESS after the
+// confirmation page and handle this operation within the gtk.Assistant::prepare
+// signal of the progress page.
+func (assistant *Assistant) ConnectApply(f func()) externglib.SignalHandle {
+	return assistant.Connect("apply", f)
+}
+
+// ConnectCancel: emitted when then the cancel button is clicked.
+func (assistant *Assistant) ConnectCancel(f func()) externglib.SignalHandle {
+	return assistant.Connect("cancel", f)
+}
+
+// ConnectClose: emitted either when the close button of a summary page is
+// clicked, or when the apply button in the last page in the flow (of type
+// GTK_ASSISTANT_PAGE_CONFIRM) is clicked.
+func (assistant *Assistant) ConnectClose(f func()) externglib.SignalHandle {
+	return assistant.Connect("close", f)
+}
+
+// ConnectEscape: action signal for the Escape binding.
+func (assistant *Assistant) ConnectEscape(f func()) externglib.SignalHandle {
+	return assistant.Connect("escape", f)
+}
+
+// ConnectPrepare: emitted when a new page is set as the assistant's current
+// page, before making the new page visible.
+//
+// A handler for this signal can do any preparations which are necessary before
+// showing page.
+func (assistant *Assistant) ConnectPrepare(f func(page Widgetter)) externglib.SignalHandle {
+	return assistant.Connect("prepare", f)
+}
+
 // NewAssistant creates a new GtkAssistant.
+//
+// The function returns the following values:
+//
+//    - assistant: newly created GtkAssistant.
+//
 func NewAssistant() *Assistant {
 	var _cret *C.GtkWidget // in
 
@@ -248,6 +293,10 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 // The function takes the following parameters:
 //
 //    - page: GtkWidget.
+//
+// The function returns the following values:
+//
+//    - gint: index (starting at 0) of the inserted page.
 //
 func (assistant *Assistant) AppendPage(page Widgetter) int {
 	var _arg0 *C.GtkAssistant // out
@@ -287,6 +336,12 @@ func (assistant *Assistant) Commit() {
 }
 
 // CurrentPage returns the page number of the current page.
+//
+// The function returns the following values:
+//
+//    - gint: index (starting from 0) of the current page in the assistant, or -1
+//      if the assistant has no pages, or no current page.
+//
 func (assistant *Assistant) CurrentPage() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.int           // in
@@ -304,6 +359,11 @@ func (assistant *Assistant) CurrentPage() int {
 }
 
 // NPages returns the number of pages in the assistant.
+//
+// The function returns the following values:
+//
+//    - gint: number of pages in the assistant.
+//
 func (assistant *Assistant) NPages() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.int           // in
@@ -325,6 +385,10 @@ func (assistant *Assistant) NPages() int {
 // The function takes the following parameters:
 //
 //    - pageNum: index of a page in the assistant, or -1 to get the last page.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget, or NULL if page_num is out of bounds.
 //
 func (assistant *Assistant) NthPage(pageNum int) Widgetter {
 	var _arg0 *C.GtkAssistant // out
@@ -363,6 +427,10 @@ func (assistant *Assistant) NthPage(pageNum int) Widgetter {
 //
 //    - child of assistant.
 //
+// The function returns the following values:
+//
+//    - assistantPage: GtkAssistantPage for child.
+//
 func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
 	var _arg0 *C.GtkAssistant     // out
 	var _arg1 *C.GtkWidget        // out
@@ -387,6 +455,10 @@ func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
 // The function takes the following parameters:
 //
 //    - page of assistant.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if page is complete.
 //
 func (assistant *Assistant) PageComplete(page Widgetter) bool {
 	var _arg0 *C.GtkAssistant // out
@@ -415,6 +487,10 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 //
 //    - page of assistant.
 //
+// The function returns the following values:
+//
+//    - utf8: title for page.
+//
 func (assistant *Assistant) PageTitle(page Widgetter) string {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -440,6 +516,10 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 //
 //    - page of assistant.
 //
+// The function returns the following values:
+//
+//    - assistantPageType: page type of page.
+//
 func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out
@@ -460,6 +540,11 @@ func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 }
 
 // Pages gets a list model of the assistant pages.
+//
+// The function returns the following values:
+//
+//    - listModel: list model of the pages.
+//
 func (assistant *Assistant) Pages() gio.ListModeller {
 	var _arg0 *C.GtkAssistant // out
 	var _cret *C.GListModel   // in
@@ -495,7 +580,11 @@ func (assistant *Assistant) Pages() gio.ListModeller {
 //
 //    - page: GtkWidget.
 //    - position: index (starting at 0) at which to insert the page, or -1 to
-//    append the page to the assistant.
+//      append the page to the assistant.
+//
+// The function returns the following values:
+//
+//    - gint: index (starting from 0) of the inserted page.
 //
 func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
 	var _arg0 *C.GtkAssistant // out
@@ -539,6 +628,10 @@ func (assistant *Assistant) NextPage() {
 // The function takes the following parameters:
 //
 //    - page: GtkWidget.
+//
+// The function returns the following values:
+//
+//    - gint: index (starting at 0) of the inserted page.
 //
 func (assistant *Assistant) PrependPage(page Widgetter) int {
 	var _arg0 *C.GtkAssistant // out
@@ -597,8 +690,7 @@ func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - pageNum: index of a page in the assistant, or -1 to remove the last
-//    page.
+//    - pageNum: index of a page in the assistant, or -1 to remove the last page.
 //
 func (assistant *Assistant) RemovePage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
@@ -620,8 +712,8 @@ func (assistant *Assistant) RemovePage(pageNum int) {
 // The function takes the following parameters:
 //
 //    - pageNum: index of the page to switch to, starting from 0. If negative,
-//    the last page will be used. If greater than the number of pages in the
-//    assistant, nothing will be done.
+//      the last page will be used. If greater than the number of pages in the
+//      assistant, nothing will be done.
 //
 func (assistant *Assistant) SetCurrentPage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
@@ -644,7 +736,8 @@ func (assistant *Assistant) SetCurrentPage(pageNum int) {
 //
 // The function takes the following parameters:
 //
-//    - pageFunc: GtkAssistantPageFunc, or NULL to use the default one.
+//    - pageFunc (optional): GtkAssistantPageFunc, or NULL to use the default
+//      one.
 //
 func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
 	var _arg0 *C.GtkAssistant        // out
@@ -759,46 +852,6 @@ func (assistant *Assistant) UpdateButtonsState() {
 	runtime.KeepAlive(assistant)
 }
 
-// ConnectApply: emitted when the apply button is clicked.
-//
-// The default behavior of the GtkAssistant is to switch to the page after the
-// current page, unless the current page is the last one.
-//
-// A handler for the ::apply signal should carry out the actions for which the
-// wizard has collected data. If the action takes a long time to complete, you
-// might consider putting a page of type GTK_ASSISTANT_PAGE_PROGRESS after the
-// confirmation page and handle this operation within the gtk.Assistant::prepare
-// signal of the progress page.
-func (assistant *Assistant) ConnectApply(f func()) externglib.SignalHandle {
-	return assistant.Connect("apply", f)
-}
-
-// ConnectCancel: emitted when then the cancel button is clicked.
-func (assistant *Assistant) ConnectCancel(f func()) externglib.SignalHandle {
-	return assistant.Connect("cancel", f)
-}
-
-// ConnectClose: emitted either when the close button of a summary page is
-// clicked, or when the apply button in the last page in the flow (of type
-// GTK_ASSISTANT_PAGE_CONFIRM) is clicked.
-func (assistant *Assistant) ConnectClose(f func()) externglib.SignalHandle {
-	return assistant.Connect("close", f)
-}
-
-// ConnectEscape: action signal for the Escape binding.
-func (assistant *Assistant) ConnectEscape(f func()) externglib.SignalHandle {
-	return assistant.Connect("escape", f)
-}
-
-// ConnectPrepare: emitted when a new page is set as the assistant's current
-// page, before making the new page visible.
-//
-// A handler for this signal can do any preparations which are necessary before
-// showing page.
-func (assistant *Assistant) ConnectPrepare(f func(page Widgetter)) externglib.SignalHandle {
-	return assistant.Connect("prepare", f)
-}
-
 // AssistantPage: GtkAssistantPage is an auxiliary object used by `GtkAssistant.
 type AssistantPage struct {
 	*externglib.Object
@@ -819,6 +872,11 @@ func marshalAssistantPager(p uintptr) (interface{}, error) {
 }
 
 // Child returns the child to which page belongs.
+//
+// The function returns the following values:
+//
+//    - widget: child to which page belongs.
+//
 func (page *AssistantPage) Child() Widgetter {
 	var _arg0 *C.GtkAssistantPage // out
 	var _cret *C.GtkWidget        // in

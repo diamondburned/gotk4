@@ -110,12 +110,71 @@ func _gotk4_gtk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 	return cret
 }
 
+// NewFilter creates a new TreeModel, with child_model as the child_model and
+// root as the virtual root.
+//
+// The function takes the following parameters:
+//
+//    - root (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - treeModel: new TreeModel.
+//
+func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
+	var _arg0 *C.GtkTreeModel // out
+	var _arg1 *C.GtkTreePath  // out
+	var _cret *C.GtkTreeModel // in
+
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(childModel.Native()))
+	if root != nil {
+		_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(root)))
+	}
+
+	_cret = C.gtk_tree_model_filter_new(_arg0, _arg1)
+	runtime.KeepAlive(childModel)
+	runtime.KeepAlive(root)
+
+	var _treeModel TreeModeller // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
+		casted := object.Cast()
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
+		}
+		_treeModel = rv
+	}
+
+	return _treeModel
+}
+
 // TreeModelFilterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TreeModelFilterOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - childModel
+	//    - iter
+	//    - value
+	//    - column
+	//
 	Modify(childModel TreeModeller, iter *TreeIter, value *externglib.Value, column int)
+	// The function takes the following parameters:
+	//
+	//    - childModel
+	//    - iter
+	//
+	// The function returns the following values:
+	//
 	Visible(childModel TreeModeller, iter *TreeIter) bool
 }
 
@@ -232,6 +291,12 @@ func (filter *TreeModelFilter) ClearCache() {
 //
 //    - childIter: valid TreeIter pointing to a row on the child model.
 //
+// The function returns the following values:
+//
+//    - filterIter: uninitialized TreeIter.
+//    - ok: TRUE, if filter_iter was set, i.e. if child_iter is a valid iterator
+//      pointing to a visible row in child model.
+//
 func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
@@ -265,6 +330,10 @@ func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (*Tre
 // The function takes the following parameters:
 //
 //    - childPath to convert.
+//
+// The function returns the following values:
+//
+//    - treePath (optional): newly allocated TreePath, or NULL.
 //
 func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
@@ -300,6 +369,10 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 //
 //    - filterIter: valid TreeIter pointing to a row on filter.
 //
+// The function returns the following values:
+//
+//    - childIter: uninitialized TreeIter.
+//
 func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) *TreeIter {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
@@ -329,6 +402,10 @@ func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) *Tre
 //
 //    - filterPath to convert.
 //
+// The function returns the following values:
+//
+//    - treePath (optional): newly allocated TreePath, or NULL.
+//
 func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 *C.GtkTreePath        // out
@@ -357,6 +434,11 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 }
 
 // Model returns a pointer to the child model of filter.
+//
+// The function returns the following values:
+//
+//    - treeModel: pointer to a TreeModel.
+//
 func (filter *TreeModelFilter) Model() TreeModeller {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _cret *C.GtkTreeModel       // in

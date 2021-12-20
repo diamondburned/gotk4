@@ -62,12 +62,22 @@ func marshalGesturePanner(p uintptr) (interface{}, error) {
 	return wrapGesturePan(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectPan: this signal is emitted once a panning gesture along the expected
+// axis is detected.
+func (gesture *GesturePan) ConnectPan(f func(direction PanDirection, offset float64)) externglib.SignalHandle {
+	return gesture.Connect("pan", f)
+}
+
 // NewGesturePan returns a newly created Gesture that recognizes pan gestures.
 //
 // The function takes the following parameters:
 //
 //    - widget: Widget.
 //    - orientation: expected orientation.
+//
+// The function returns the following values:
+//
+//    - gesturePan: newly created GesturePan.
 //
 func NewGesturePan(widget Widgetter, orientation Orientation) *GesturePan {
 	var _arg1 *C.GtkWidget     // out
@@ -90,6 +100,11 @@ func NewGesturePan(widget Widgetter, orientation Orientation) *GesturePan {
 
 // Orientation returns the orientation of the pan gestures that this gesture
 // expects.
+//
+// The function returns the following values:
+//
+//    - orientation: expected orientation for pan gestures.
+//
 func (gesture *GesturePan) Orientation() Orientation {
 	var _arg0 *C.GtkGesturePan // out
 	var _cret C.GtkOrientation // in
@@ -122,10 +137,4 @@ func (gesture *GesturePan) SetOrientation(orientation Orientation) {
 	C.gtk_gesture_pan_set_orientation(_arg0, _arg1)
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(orientation)
-}
-
-// ConnectPan: this signal is emitted once a panning gesture along the expected
-// axis is detected.
-func (gesture *GesturePan) ConnectPan(f func(direction PanDirection, offset float64)) externglib.SignalHandle {
-	return gesture.Connect("pan", f)
 }

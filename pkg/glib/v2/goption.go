@@ -310,6 +310,11 @@ func marshalOptionGroup(p uintptr) (interface{}, error) {
 }
 
 // AddEntries adds the options specified in entries to group.
+//
+// The function takes the following parameters:
+//
+//    - entries: NULL-terminated array of Entrys.
+//
 func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.GOptionEntry // out
@@ -335,6 +340,11 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 
 // SetTranslationDomain: convenience function to use gettext() for translating
 // user-visible strings.
+//
+// The function takes the following parameters:
+//
+//    - domain to use.
+//
 func (group *OptionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.gchar        // out

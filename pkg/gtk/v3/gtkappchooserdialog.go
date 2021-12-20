@@ -97,9 +97,13 @@ func marshalAppChooserDialogger(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - parent or NULL.
+//    - parent (optional) or NULL.
 //    - flags for this dialog.
 //    - file: #GFile.
+//
+// The function returns the following values:
+//
+//    - appChooserDialog: newly created AppChooserDialog.
 //
 func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
@@ -130,9 +134,13 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *App
 //
 // The function takes the following parameters:
 //
-//    - parent or NULL.
+//    - parent (optional) or NULL.
 //    - flags for this dialog.
 //    - contentType: content type string.
+//
+// The function returns the following values:
+//
+//    - appChooserDialog: newly created AppChooserDialog.
 //
 func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, contentType string) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
@@ -160,6 +168,12 @@ func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, conten
 }
 
 // Heading returns the text to display at the top of the dialog.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): text to display at the top of the dialog, or NULL, in
+//      which case a default text is displayed.
+//
 func (self *AppChooserDialog) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.gchar               // in
@@ -179,6 +193,11 @@ func (self *AppChooserDialog) Heading() string {
 }
 
 // Widget returns the AppChooserWidget of this dialog.
+//
+// The function returns the following values:
+//
+//    - widget of self.
+//
 func (self *AppChooserDialog) Widget() Widgetter {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.GtkWidget           // in

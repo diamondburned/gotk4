@@ -110,10 +110,41 @@ func marshalDevicer(p uintptr) (interface{}, error) {
 	return wrapDevice(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (device *Device) baseDevice() *Device {
+	return device
+}
+
+// BaseDevice returns the underlying base object.
+func BaseDevice(obj Devicer) *Device {
+	return obj.baseDevice()
+}
+
+// ConnectChanged: emitted either when the the number of either axes or keys
+// changes.
+//
+// On X11 this will normally happen when the physical device routing events
+// through the logical device changes (for example, user switches from the USB
+// mouse to a tablet); in that case the logical device will change to reflect
+// the axes and keys on the new physical device.
+func (device *Device) ConnectChanged(f func()) externglib.SignalHandle {
+	return device.Connect("changed", f)
+}
+
+// ConnectToolChanged: emitted on pen/eraser devices whenever tools enter or
+// leave proximity.
+func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.SignalHandle {
+	return device.Connect("tool-changed", f)
+}
+
 // CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
 // locked.
 //
 // This is only relevant for keyboard devices.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if Caps Lock is on for device.
+//
 func (device *Device) CapsLockState() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
@@ -133,6 +164,11 @@ func (device *Device) CapsLockState() bool {
 }
 
 // DeviceTool retrieves the current tool for device.
+//
+// The function returns the following values:
+//
+//    - deviceTool: GdkDeviceTool, or NULL.
+//
 func (device *Device) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkDevice     // out
 	var _cret *C.GdkDeviceTool // in
@@ -155,6 +191,12 @@ func (device *Device) DeviceTool() *DeviceTool {
 //
 // The direction of a layout is the direction of the majority of its symbols.
 // See pango.UnicharDirection().
+//
+// The function returns the following values:
+//
+//    - direction: PANGO_DIRECTION_LTR or PANGO_DIRECTION_RTL if it can determine
+//      the direction. PANGO_DIRECTION_NEUTRAL otherwise.
+//
 func (device *Device) Direction() pango.Direction {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.PangoDirection // in
@@ -172,6 +214,11 @@ func (device *Device) Direction() pango.Direction {
 }
 
 // Display returns the GdkDisplay to which device pertains.
+//
+// The function returns the following values:
+//
+//    - display: GdkDisplay.
+//
 func (device *Device) Display() *Display {
 	var _arg0 *C.GdkDevice  // out
 	var _cret *C.GdkDisplay // in
@@ -191,6 +238,11 @@ func (device *Device) Display() *Display {
 // HasCursor determines whether the pointer follows device motion.
 //
 // This is not meaningful for keyboard devices, which don't have a pointer.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the pointer follows device motion.
+//
 func (device *Device) HasCursor() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
@@ -212,6 +264,11 @@ func (device *Device) HasCursor() bool {
 // ModifierState retrieves the current modifier state of the keyboard.
 //
 // This is only relevant for keyboard devices.
+//
+// The function returns the following values:
+//
+//    - modifierType: current modifier state.
+//
 func (device *Device) ModifierState() ModifierType {
 	var _arg0 *C.GdkDevice      // out
 	var _cret C.GdkModifierType // in
@@ -229,6 +286,11 @@ func (device *Device) ModifierState() ModifierType {
 }
 
 // Name: name of the device, suitable for showing in a user interface.
+//
+// The function returns the following values:
+//
+//    - utf8: name.
+//
 func (device *Device) Name() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
@@ -249,6 +311,11 @@ func (device *Device) Name() string {
 // locked.
 //
 // This is only relevant for keyboard devices.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if Num Lock is on for device.
+//
 func (device *Device) NumLockState() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
@@ -268,6 +335,11 @@ func (device *Device) NumLockState() bool {
 }
 
 // NumTouches retrieves the number of touch points associated to device.
+//
+// The function returns the following values:
+//
+//    - guint: number of touch points.
+//
 func (device *Device) NumTouches() uint {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.guint      // in
@@ -288,6 +360,11 @@ func (device *Device) NumTouches() uint {
 //
 // This ID is retrieved from the device, and does not change. See
 // gdk.Device.GetVendorID() for more information.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): product ID, or NULL.
+//
 func (device *Device) ProductID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
@@ -310,6 +387,11 @@ func (device *Device) ProductID() string {
 // locked.
 //
 // This is only relevant for keyboard devices.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if Scroll Lock is on for device.
+//
 func (device *Device) ScrollLockState() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
@@ -329,6 +411,11 @@ func (device *Device) ScrollLockState() bool {
 }
 
 // Seat returns the GdkSeat the device belongs to.
+//
+// The function returns the following values:
+//
+//    - seat: GdkSeat.
+//
 func (device *Device) Seat() Seater {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkSeat   // in
@@ -359,6 +446,11 @@ func (device *Device) Seat() Seater {
 }
 
 // Source determines the type of the device.
+//
+// The function returns the following values:
+//
+//    - inputSource: GdkInputSource.
+//
 func (device *Device) Source() InputSource {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.GdkInputSource // in
@@ -380,6 +472,15 @@ func (device *Device) Source() InputSource {
 //
 // Returns NULL if the surface tree under device is not known to GDK (for
 // example, belongs to another application).
+//
+// The function returns the following values:
+//
+//    - winX (optional): return location for the X coordinate of the device
+//      location, relative to the surface origin, or NULL.
+//    - winY (optional): return location for the Y coordinate of the device
+//      location, relative to the surface origin, or NULL.
+//    - surface (optional): GdkSurface under the device position, or NULL.
+//
 func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface Surfacer) {
 	var _arg0 *C.GdkDevice  // out
 	var _arg1 C.double      // in
@@ -419,6 +520,11 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface S
 // In practice, this means the timestamp of the last event that was received
 // from the OS for this device. (GTK may occasionally produce events for a
 // device that are not received from the OS, and will not update the timestamp).
+//
+// The function returns the following values:
+//
+//    - guint32: timestamp of the last activity for this device.
+//
 func (device *Device) Timestamp() uint32 {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.guint32    // in
@@ -459,6 +565,11 @@ func (device *Device) Timestamp() uint32 {
 //
 //       return settings;
 //     }.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): vendor ID, or NULL.
+//
 func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
@@ -481,6 +592,11 @@ func (device *Device) VendorID() string {
 // languages are in use on the keyboard.
 //
 // This is only relevant for keyboard devices.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if there are layouts with both directions, FALSE otherwise.
+//
 func (device *Device) HasBidiLayouts() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
@@ -497,32 +613,6 @@ func (device *Device) HasBidiLayouts() bool {
 	}
 
 	return _ok
-}
-
-func (device *Device) baseDevice() *Device {
-	return device
-}
-
-// BaseDevice returns the underlying base object.
-func BaseDevice(obj Devicer) *Device {
-	return obj.baseDevice()
-}
-
-// ConnectChanged: emitted either when the the number of either axes or keys
-// changes.
-//
-// On X11 this will normally happen when the physical device routing events
-// through the logical device changes (for example, user switches from the USB
-// mouse to a tablet); in that case the logical device will change to reflect
-// the axes and keys on the new physical device.
-func (device *Device) ConnectChanged(f func()) externglib.SignalHandle {
-	return device.Connect("changed", f)
-}
-
-// ConnectToolChanged: emitted on pen/eraser devices whenever tools enter or
-// leave proximity.
-func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.SignalHandle {
-	return device.Connect("tool-changed", f)
 }
 
 // TimeCoord stores a single event in a motion history.

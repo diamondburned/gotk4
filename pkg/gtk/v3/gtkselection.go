@@ -114,6 +114,10 @@ func SelectionRemoveAll(widget Widgetter) {
 //
 //    - list: TargetList.
 //
+// The function returns the following values:
+//
+//    - targetEntrys: new table.
+//
 func TargetTableNewFromList(list *TargetList) []TargetEntry {
 	var _arg1 *C.GtkTargetList  // out
 	var _cret *C.GtkTargetEntry // in
@@ -216,6 +220,12 @@ func (t *TargetEntry) Info() uint {
 }
 
 // Copy makes a copy of a TargetEntry and its data.
+//
+// The function returns the following values:
+//
+//    - targetEntry: pointer to a copy of data. Free with
+//      gtk_target_entry_free().
+//
 func (data *TargetEntry) Copy() *TargetEntry {
 	var _arg0 *C.GtkTargetEntry // out
 	var _cret *C.GtkTargetEntry // in
@@ -290,6 +300,13 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 
 // AddImageTargets appends the image targets supported by SelectionData to the
 // target list. All targets are added with the same info.
+//
+// The function takes the following parameters:
+//
+//    - info: ID that will be passed back to the application.
+//    - writable: whether to add only targets for which GTK+ knows how to convert
+//      a pixbuf into the format.
+//
 func (list *TargetList) AddImageTargets(info uint, writable bool) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
@@ -311,6 +328,14 @@ func (list *TargetList) AddImageTargets(info uint, writable bool) {
 // gtk_text_buffer_register_serialize_format() or
 // gtk_text_buffer_register_deserialize_format() to the target list. All targets
 // are added with the same info.
+//
+// The function takes the following parameters:
+//
+//    - info: ID that will be passed back to the application.
+//    - deserializable: if TRUE, then deserializable rich text formats will be
+//      added, serializable formats otherwise.
+//    - buffer: TextBuffer.
+//
 func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer *TextBuffer) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
@@ -332,6 +357,11 @@ func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffe
 }
 
 // AddTable prepends a table of TargetEntry to a target list.
+//
+// The function takes the following parameters:
+//
+//    - targets: table of TargetEntry.
+//
 func (list *TargetList) AddTable(targets []TargetEntry) {
 	var _arg0 *C.GtkTargetList  // out
 	var _arg1 *C.GtkTargetEntry // out
@@ -355,6 +385,11 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 
 // AddTextTargets appends the text targets supported by SelectionData to the
 // target list. All targets are added with the same info.
+//
+// The function takes the following parameters:
+//
+//    - info: ID that will be passed back to the application.
+//
 func (list *TargetList) AddTextTargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
@@ -369,6 +404,11 @@ func (list *TargetList) AddTextTargets(info uint) {
 
 // AddURITargets appends the URI targets supported by SelectionData to the
 // target list. All targets are added with the same info.
+//
+// The function takes the following parameters:
+//
+//    - info: ID that will be passed back to the application.
+//
 func (list *TargetList) AddURITargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out

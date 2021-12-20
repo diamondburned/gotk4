@@ -13,15 +13,6 @@ import (
 
 var functionTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 }}
-	{{- if .ParamDocs }}
-	//
-	// The function takes the following parameters:
-	//
-	{{- range .ParamDocs }}
-	{{ GoDoc . 0 (OverrideSelfName .Name) (AdditionalPrefix "- ") (ParagraphIndent 1) }}
-	{{- end }}
-	//
-	{{- end }}
 	func {{ .Name }}{{ .Tail }} {{ .Block }}
 `)
 

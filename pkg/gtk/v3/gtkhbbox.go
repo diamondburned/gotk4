@@ -67,6 +67,11 @@ func marshalHButtonBoxer(p uintptr) (interface{}, error) {
 // NewHButtonBox creates a new horizontal button box.
 //
 // Deprecated: Use gtk_button_box_new() with GTK_ORIENTATION_HORIZONTAL instead.
+//
+// The function returns the following values:
+//
+//    - hButtonBox: new button box Widget.
+//
 func NewHButtonBox() *HButtonBox {
 	var _cret *C.GtkWidget // in
 

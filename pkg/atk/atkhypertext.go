@@ -28,12 +28,38 @@ func init() {
 // yet, so the interface currently has no use.
 type HypertextOverrider interface {
 	// Link gets the link in this hypertext document at index link_index.
+	//
+	// The function takes the following parameters:
+	//
+	//    - linkIndex: integer specifying the desired link.
+	//
+	// The function returns the following values:
+	//
+	//    - hyperlink: link in this hypertext document at index link_index.
+	//
 	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by char_index.
+	//
+	// The function takes the following parameters:
+	//
+	//    - charIndex: character index.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: index into the array of hyperlinks in hypertext, or -1 if there
+	//      is no hyperlink associated with this character.
+	//
 	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of links within this hypertext document.
+	//
 	NLinks() int
+	// The function takes the following parameters:
+	//
 	LinkSelected(linkIndex int)
 }
 
@@ -77,11 +103,21 @@ func marshalHypertexter(p uintptr) (interface{}, error) {
 	return wrapHypertext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectLinkSelected: "link-selected" signal is emitted by an AtkHyperText
+// object when one of the hyperlinks associated with the object is selected.
+func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) externglib.SignalHandle {
+	return hypertext.Connect("link-selected", f)
+}
+
 // Link gets the link in this hypertext document at index link_index.
 //
 // The function takes the following parameters:
 //
 //    - linkIndex: integer specifying the desired link.
+//
+// The function returns the following values:
+//
+//    - hyperlink: link in this hypertext document at index link_index.
 //
 func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	var _arg0 *C.AtkHypertext // out
@@ -109,6 +145,11 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 //
 //    - charIndex: character index.
 //
+// The function returns the following values:
+//
+//    - gint: index into the array of hyperlinks in hypertext, or -1 if there is
+//      no hyperlink associated with this character.
+//
 func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
@@ -129,6 +170,11 @@ func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 }
 
 // NLinks gets the number of links within this hypertext document.
+//
+// The function returns the following values:
+//
+//    - gint: number of links within this hypertext document.
+//
 func (hypertext *Hypertext) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
 	var _cret C.gint          // in
@@ -143,10 +189,4 @@ func (hypertext *Hypertext) NLinks() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// ConnectLinkSelected: "link-selected" signal is emitted by an AtkHyperText
-// object when one of the hyperlinks associated with the object is selected.
-func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) externglib.SignalHandle {
-	return hypertext.Connect("link-selected", f)
 }

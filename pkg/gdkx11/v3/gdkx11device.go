@@ -25,6 +25,10 @@ import "C"
 //
 //    - device: Device.
 //
+// The function returns the following values:
+//
+//    - gint: XInput2 device ID.
+//
 func X11DeviceGetID(device *X11DeviceCore) int {
 	var _arg1 *C.GdkDevice // out
 	var _cret C.gint       // in

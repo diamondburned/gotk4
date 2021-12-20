@@ -1124,6 +1124,11 @@ func NewVariantVariant(value *Variant) *Variant {
 // containing only these things (recursively).
 //
 // The returned value is always in normal form and is marked as trusted.
+//
+// The function returns the following values:
+//
+//    - variant (optional): byteswapped form of value.
+//
 func (value *Variant) Byteswap() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -1162,6 +1167,16 @@ func (value *Variant) Byteswap() *Variant {
 // This function is meant to be used by functions that wish to provide varargs
 // accessors to #GVariant values of uncertain values (eg: g_variant_lookup() or
 // g_menu_model_get_item_attribute()).
+//
+// The function takes the following parameters:
+//
+//    - formatString: valid #GVariant format string.
+//    - copyOnly: TRUE to ensure the format string makes deep copies.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if format_string is safe to use.
+//
 func (value *Variant) CheckFormatString(formatString string, copyOnly bool) bool {
 	var _arg0 *C.GVariant // out
 	var _arg1 *C.gchar    // out
@@ -1190,6 +1205,11 @@ func (value *Variant) CheckFormatString(formatString string, copyOnly bool) bool
 }
 
 // Classify classifies value according to its top-level type.
+//
+// The function returns the following values:
+//
+//    - variantClass of value.
+//
 func (value *Variant) Classify() VariantClass {
 	var _arg0 *C.GVariant     // out
 	var _cret C.GVariantClass // in
@@ -1224,6 +1244,15 @@ func (value *Variant) Classify() VariantClass {
 //
 // If you only require an equality comparison, g_variant_equal() is more
 // general.
+//
+// The function takes the following parameters:
+//
+//    - two instance of the same type.
+//
+// The function returns the following values:
+//
+//    - gint: negative value if a < b; zero if a = b; positive value if a > b.
+//
 func (one *Variant) Compare(two *Variant) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -1247,6 +1276,11 @@ func (one *Variant) Compare(two *Variant) int {
 // returning a constant string, the string is duplicated.
 //
 // The return value must be freed using g_free().
+//
+// The function returns the following values:
+//
+//    - guint8s: a newly allocated string.
+//
 func (value *Variant) DupBytestring() []byte {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar    // in
@@ -1275,6 +1309,11 @@ func (value *Variant) DupBytestring() []byte {
 //
 // For an empty array, length will be set to 0 and a pointer to a NULL pointer
 // will be returned.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of strings.
+//
 func (value *Variant) DupBytestringArray() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -1308,6 +1347,11 @@ func (value *Variant) DupBytestringArray() []string {
 //
 // For an empty array, length will be set to 0 and a pointer to a NULL pointer
 // will be returned.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of strings.
+//
 func (value *Variant) DupObjv() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -1339,6 +1383,12 @@ func (value *Variant) DupObjv() []string {
 // The string will always be UTF-8 encoded.
 //
 // The return value must be freed using g_free().
+//
+// The function returns the following values:
+//
+//    - length: pointer to a #gsize, to store the length.
+//    - utf8: newly allocated string, UTF-8 encoded.
+//
 func (value *Variant) DupString() (uint, string) {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gsize     // in
@@ -1367,6 +1417,11 @@ func (value *Variant) DupString() (uint, string) {
 //
 // For an empty array, length will be set to 0 and a pointer to a NULL pointer
 // will be returned.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of strings.
+//
 func (value *Variant) DupStrv() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -1396,6 +1451,15 @@ func (value *Variant) DupStrv() []string {
 //
 // The types of one and two are #gconstpointer only to allow use of this
 // function with Table. They must each be a #GVariant.
+//
+// The function takes the following parameters:
+//
+//    - two: #GVariant instance.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if one and two are equal.
+//
 func (one *Variant) Equal(two *Variant) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -1421,6 +1485,11 @@ func (one *Variant) Equal(two *Variant) bool {
 //
 // It is an error to call this function with a value of any type other than
 // G_VARIANT_TYPE_BOOLEAN.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE or FALSE.
+//
 func (value *Variant) Boolean() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
@@ -1443,6 +1512,11 @@ func (value *Variant) Boolean() bool {
 //
 // It is an error to call this function with a value of any type other than
 // G_VARIANT_TYPE_BYTE.
+//
+// The function returns the following values:
+//
+//    - guint8: #guint8.
+//
 func (value *Variant) Byte() byte {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint8    // in
@@ -1477,6 +1551,11 @@ func (value *Variant) Byte() byte {
 // bytes.
 //
 // The return value remains valid as long as value exists.
+//
+// The function returns the following values:
+//
+//    - guint8s: the constant string.
+//
 func (value *Variant) Bytestring() []byte {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar    // in
@@ -1514,6 +1593,11 @@ func (value *Variant) Bytestring() []byte {
 //
 // For an empty array, length will be set to 0 and a pointer to a NULL pointer
 // will be returned.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of constant strings.
+//
 func (value *Variant) BytestringArray() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -1560,6 +1644,15 @@ func (value *Variant) BytestringArray() []string {
 // up to at least 64 levels.
 //
 // This function is O(1).
+//
+// The function takes the following parameters:
+//
+//    - index_: index of the child to fetch.
+//
+// The function returns the following values:
+//
+//    - variant (optional): child at the specified index.
+//
 func (value *Variant) ChildValue(index_ uint) *Variant {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gsize     // out
@@ -1609,6 +1702,11 @@ func (value *Variant) ChildValue(index_ uint) *Variant {
 // file always contains a G_VARIANT_TYPE_VARIANT and it is always in
 // little-endian order") or explicitly (by storing the type and/or endianness in
 // addition to the serialised data).
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): serialised form of value, or NULL.
+//
 func (value *Variant) Data() cgo.Handle {
 	var _arg0 *C.GVariant     // out
 	var _cret C.gconstpointer // in
@@ -1628,6 +1726,11 @@ func (value *Variant) Data() cgo.Handle {
 // DataAsBytes returns a pointer to the serialised form of a #GVariant instance.
 // The semantics of this function are exactly the same as g_variant_get_data(),
 // except that the returned #GBytes holds a reference to the variant data.
+//
+// The function returns the following values:
+//
+//    - bytes: new #GBytes representing the variant data.
+//
 func (value *Variant) DataAsBytes() *Bytes {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GBytes   // in
@@ -1654,6 +1757,11 @@ func (value *Variant) DataAsBytes() *Bytes {
 //
 // It is an error to call this function with a value of any type other than
 // G_VARIANT_TYPE_DOUBLE.
+//
+// The function returns the following values:
+//
+//    - gdouble: #gdouble.
+//
 func (value *Variant) Double() float64 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gdouble   // in
@@ -1678,6 +1786,11 @@ func (value *Variant) Double() float64 {
 // By convention, handles are indexes into an array of file descriptors that are
 // sent alongside a D-Bus message. If you're not interacting with D-Bus, you
 // probably don't need them.
+//
+// The function returns the following values:
+//
+//    - gint32: #gint32.
+//
 func (value *Variant) Handle() int32 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint32    // in
@@ -1698,6 +1811,11 @@ func (value *Variant) Handle() int32 {
 //
 // It is an error to call this function with a value of any type other than
 // G_VARIANT_TYPE_INT16.
+//
+// The function returns the following values:
+//
+//    - gint16: #gint16.
+//
 func (value *Variant) Int16() int16 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint16    // in
@@ -1718,6 +1836,11 @@ func (value *Variant) Int16() int16 {
 //
 // It is an error to call this function with a value of any type other than
 // G_VARIANT_TYPE_INT32.
+//
+// The function returns the following values:
+//
+//    - gint32: #gint32.
+//
 func (value *Variant) Int32() int32 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint32    // in
@@ -1738,6 +1861,11 @@ func (value *Variant) Int32() int32 {
 //
 // It is an error to call this function with a value of any type other than
 // G_VARIANT_TYPE_INT64.
+//
+// The function returns the following values:
+//
+//    - gint64: #gint64.
+//
 func (value *Variant) Int64() int64 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint64    // in
@@ -1756,6 +1884,11 @@ func (value *Variant) Int64() int64 {
 
 // Maybe: given a maybe-typed #GVariant instance, extract its value. If the
 // value is Nothing, then this function returns NULL.
+//
+// The function returns the following values:
+//
+//    - variant (optional) contents of value, or NULL.
+//
 func (value *Variant) Maybe() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -1803,6 +1936,11 @@ func (value *Variant) Maybe() *Variant {
 // reference. Typically, g_variant_take_ref() should be called on the return
 // value from this function to guarantee ownership of a single non-floating
 // reference to it.
+//
+// The function returns the following values:
+//
+//    - variant (optional): trusted #GVariant.
+//
 func (value *Variant) NormalForm() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -1836,6 +1974,11 @@ func (value *Variant) NormalForm() *Variant {
 //
 // For an empty array, length will be set to 0 and a pointer to a NULL pointer
 // will be returned.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of constant strings.
+//
 func (value *Variant) Objv() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -1870,6 +2013,11 @@ func (value *Variant) Objv() []string {
 // been calculated (ie: this function has been called before) then this function
 // is O(1). Otherwise, the size is calculated, an operation which is
 // approximately O(n) in the number of values involved.
+//
+// The function returns the following values:
+//
+//    - gsize: serialised size of value.
+//
 func (value *Variant) Size() uint {
 	var _arg0 *C.GVariant // out
 	var _cret C.gsize     // in
@@ -1903,6 +2051,11 @@ func (value *Variant) Size() uint {
 // those three.
 //
 // The return value remains valid as long as value exists.
+//
+// The function returns the following values:
+//
+//    - utf8: constant string, UTF-8 encoded.
+//
 func (value *Variant) String() string {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar    // in
@@ -1929,6 +2082,11 @@ func (value *Variant) String() string {
 //
 // For an empty array, length will be set to 0 and a pointer to a NULL pointer
 // will be returned.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of constant strings.
+//
 func (value *Variant) Strv() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -1956,6 +2114,11 @@ func (value *Variant) Strv() []string {
 // Type determines the type of value.
 //
 // The return value is valid for the lifetime of value and must not be freed.
+//
+// The function returns the following values:
+//
+//    - variantType: Type.
+//
 func (value *Variant) Type() *VariantType {
 	var _arg0 *C.GVariant     // out
 	var _cret *C.GVariantType // in
@@ -1975,6 +2138,11 @@ func (value *Variant) Type() *VariantType {
 // TypeString returns the type string of value. Unlike the result of calling
 // g_variant_type_peek_string(), this string is nul-terminated. This string
 // belongs to #GVariant and must not be freed.
+//
+// The function returns the following values:
+//
+//    - utf8: type string for the type of value.
+//
 func (value *Variant) TypeString() string {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar    // in
@@ -1995,6 +2163,11 @@ func (value *Variant) TypeString() string {
 //
 // It is an error to call this function with a value of any type other than
 // G_VARIANT_TYPE_UINT16.
+//
+// The function returns the following values:
+//
+//    - guint16: #guint16.
+//
 func (value *Variant) Uint16() uint16 {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint16   // in
@@ -2015,6 +2188,11 @@ func (value *Variant) Uint16() uint16 {
 //
 // It is an error to call this function with a value of any type other than
 // G_VARIANT_TYPE_UINT32.
+//
+// The function returns the following values:
+//
+//    - guint32: #guint32.
+//
 func (value *Variant) Uint32() uint32 {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint32   // in
@@ -2035,6 +2213,11 @@ func (value *Variant) Uint32() uint32 {
 //
 // It is an error to call this function with a value of any type other than
 // G_VARIANT_TYPE_UINT64.
+//
+// The function returns the following values:
+//
+//    - guint64: #guint64.
+//
 func (value *Variant) Uint64() uint64 {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint64   // in
@@ -2053,6 +2236,11 @@ func (value *Variant) Uint64() uint64 {
 
 // Variant unboxes value. The result is the #GVariant instance that was
 // contained in value.
+//
+// The function returns the following values:
+//
+//    - variant (optional): item contained in the variant.
+//
 func (value *Variant) Variant() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -2086,6 +2274,11 @@ func (value *Variant) Variant() *Variant {
 //
 // The type of value is #gconstpointer only to allow use of this function with
 // Table. value must be a #GVariant.
+//
+// The function returns the following values:
+//
+//    - guint: hash value corresponding to value.
+//
 func (value *Variant) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -2103,6 +2296,11 @@ func (value *Variant) Hash() uint {
 }
 
 // IsContainer checks if value is a container.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if value is a container.
+//
 func (value *Variant) IsContainer() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
@@ -2130,6 +2328,11 @@ func (value *Variant) IsContainer() bool {
 //
 // See g_variant_ref_sink() for more information about floating reference
 // counts.
+//
+// The function returns the following values:
+//
+//    - ok: whether value is floating.
+//
 func (value *Variant) IsFloating() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
@@ -2160,6 +2363,11 @@ func (value *Variant) IsFloating() bool {
 //
 // There may be implementation specific restrictions on deeply nested values.
 // GVariant is guaranteed to handle nesting up to at least 64 levels.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if value is in normal form.
+//
 func (value *Variant) IsNormalForm() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
@@ -2179,6 +2387,15 @@ func (value *Variant) IsNormalForm() bool {
 }
 
 // IsOfType checks if a value has a type matching the provided type.
+//
+// The function takes the following parameters:
+//
+//    - typ: Type.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the type of value matches type.
+//
 func (value *Variant) IsOfType(typ *VariantType) bool {
 	var _arg0 *C.GVariant     // out
 	var _arg1 *C.GVariantType // out
@@ -2221,6 +2438,16 @@ func (value *Variant) IsOfType(typ *VariantType) bool {
 //
 // This function is currently implemented with a linear scan. If you plan to do
 // many lookups then Dict may be more efficient.
+//
+// The function takes the following parameters:
+//
+//    - key to look up in the dictionary.
+//    - expectedType (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - variant (optional): value of the dictionary key, or NULL.
+//
 func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *Variant {
 	var _arg0 *C.GVariant     // out
 	var _arg1 *C.gchar        // out
@@ -2264,6 +2491,11 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 // dictionary entries, it is always 2
 //
 // This function is O(1).
+//
+// The function returns the following values:
+//
+//    - gsize: number of children in the container.
+//
 func (value *Variant) NChildren() uint {
 	var _arg0 *C.GVariant // out
 	var _cret C.gsize     // in
@@ -2285,6 +2517,15 @@ func (value *Variant) NChildren() uint {
 // The format is described [here][gvariant-text].
 //
 // If type_annotate is TRUE, then type information is included in the output.
+//
+// The function takes the following parameters:
+//
+//    - typeAnnotate: TRUE if type information should be included in the output.
+//
+// The function returns the following values:
+//
+//    - utf8: newly-allocated string holding the result.
+//
 func (value *Variant) Print(typeAnnotate bool) string {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gboolean  // out
@@ -2327,6 +2568,11 @@ func (value *Variant) Print(typeAnnotate bool) string {
 // need to unreference it. This makes certain common styles of programming much
 // easier while still maintaining normal refcounting semantics in situations
 // where values are not floating.
+//
+// The function returns the following values:
+//
+//    - variant (optional): same value.
+//
 func (value *Variant) RefSink() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -2363,6 +2609,11 @@ func (value *Variant) RefSink() *Variant {
 // different) its endianness must also be available.
 //
 // This function is approximately O(n) in the size of data.
+//
+// The function takes the following parameters:
+//
+//    - data: location to store the serialised data at.
+//
 func (value *Variant) Store(data cgo.Handle) {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gpointer  // out
@@ -2387,6 +2638,10 @@ func (value *Variant) Store(data cgo.Handle) {
 // The function takes the following parameters:
 //
 //    - str: normal C nul-terminated string.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if string is a D-Bus object path.
 //
 func VariantIsObjectPath(str string) bool {
 	var _arg1 *C.gchar   // out
@@ -2417,6 +2672,10 @@ func VariantIsObjectPath(str string) bool {
 // The function takes the following parameters:
 //
 //    - str: normal C nul-terminated string.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if string is a D-Bus type signature.
 //
 func VariantIsSignature(str string) bool {
 	var _arg1 *C.gchar   // out
@@ -2466,6 +2725,10 @@ func VariantIsSignature(str string) bool {
 //
 //    - err from the ParseError domain.
 //    - sourceStr: string that was given to the parser.
+//
+// The function returns the following values:
+//
+//    - utf8: printed message.
 //
 func VariantParseErrorPrintContext(err error, sourceStr string) string {
 	var _arg1 *C.GError // out
@@ -2544,6 +2807,11 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 //
 // If value is a floating reference (see g_variant_ref_sink()), the builder
 // instance takes ownership of value.
+//
+// The function takes the following parameters:
+//
+//    - value: #GVariant.
+//
 func (builder *VariantBuilder) AddValue(value *Variant) {
 	var _arg0 *C.GVariantBuilder // out
 	var _arg1 *C.GVariant        // out
@@ -2586,6 +2854,11 @@ func (builder *VariantBuilder) Close() {
 // error to call this function if the builder was created with an indefinite
 // array or maybe type and no children have been added; in this case it is
 // impossible to infer the type of the empty array.
+//
+// The function returns the following values:
+//
+//    - variant: new, floating, #GVariant.
+//
 func (builder *VariantBuilder) End() *Variant {
 	var _arg0 *C.GVariantBuilder // out
 	var _cret *C.GVariant        // in
@@ -2644,6 +2917,11 @@ func (builder *VariantBuilder) End() *Variant {
 //    g_variant_builder_close (&builder);
 //
 //    output = g_variant_builder_end (&builder);.
+//
+// The function takes the following parameters:
+//
+//    - typ of the container.
+//
 func (builder *VariantBuilder) Open(typ *VariantType) {
 	var _arg0 *C.GVariantBuilder // out
 	var _arg1 *C.GVariantType    // out
@@ -2776,6 +3054,15 @@ func (dict *VariantDict) Clear() {
 }
 
 // Contains checks if key exists in dict.
+//
+// The function takes the following parameters:
+//
+//    - key to look up in the dictionary.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if key is in dict.
+//
 func (dict *VariantDict) Contains(key string) bool {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
@@ -2805,6 +3092,11 @@ func (dict *VariantDict) Contains(key string) bool {
 // reference counting operations (in the case of a heap-allocated Dict) or by
 // reinitialising it with g_variant_dict_init() (in the case of
 // stack-allocated).
+//
+// The function returns the following values:
+//
+//    - variant: new, floating, #GVariant.
+//
 func (dict *VariantDict) End() *Variant {
 	var _arg0 *C.GVariantDict // out
 	var _cret *C.GVariant     // in
@@ -2831,6 +3123,12 @@ func (dict *VariantDict) End() *Variant {
 // InsertValue inserts (or replaces) a key in a Dict.
 //
 // value is consumed if it is floating.
+//
+// The function takes the following parameters:
+//
+//    - key to insert a value for.
+//    - value to insert.
+//
 func (dict *VariantDict) InsertValue(key string, value *Variant) {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
@@ -2857,6 +3155,16 @@ func (dict *VariantDict) InsertValue(key string, value *Variant) {
 // If the key is found and the value has the correct type, it is returned. If
 // expected_type was specified then any non-NULL return value will have this
 // type.
+//
+// The function takes the following parameters:
+//
+//    - key to look up in the dictionary.
+//    - expectedType (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - variant: value of the dictionary key, or NULL.
+//
 func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Variant {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
@@ -2889,6 +3197,15 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 }
 
 // Remove removes a key and its associated value from a Dict.
+//
+// The function takes the following parameters:
+//
+//    - key to remove.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the key was found and removed.
+//
 func (dict *VariantDict) Remove(key string) bool {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
@@ -2911,9 +3228,9 @@ func (dict *VariantDict) Remove(key string) bool {
 	return _ok
 }
 
-// Foreach iterates over items in value. The iteration breaks out once f
+// ForEach iterates over items in value. The iteration breaks out once f
 // returns true. This method wraps around g_variant_iter_new.
-func (value *Variant) Foreach(f func(*Variant) (stop bool)) {
+func (value *Variant) ForEach(f func(*Variant) (stop bool)) {
 	valueNative := (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	var iter C.GVariantIter

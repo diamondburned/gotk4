@@ -47,7 +47,17 @@ func marshalEventControllerLegacier(p uintptr) (interface{}, error) {
 	return wrapEventControllerLegacy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEvent: emitted for each GDK event delivered to controller.
+func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) bool) externglib.SignalHandle {
+	return v.Connect("event", f)
+}
+
 // NewEventControllerLegacy creates a new legacy event controller.
+//
+// The function returns the following values:
+//
+//    - eventControllerLegacy: newly created event controller.
+//
 func NewEventControllerLegacy() *EventControllerLegacy {
 	var _cret *C.GtkEventController // in
 
@@ -58,9 +68,4 @@ func NewEventControllerLegacy() *EventControllerLegacy {
 	_eventControllerLegacy = wrapEventControllerLegacy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerLegacy
-}
-
-// ConnectEvent: emitted for each GDK event delivered to controller.
-func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) bool) externglib.SignalHandle {
-	return v.Connect("event", f)
 }

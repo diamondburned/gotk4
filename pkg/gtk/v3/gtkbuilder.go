@@ -121,6 +121,15 @@ type BuilderOverrider interface {
 	// TypeFromName looks up a type by name, using the virtual function that
 	// Builder has for that purpose. This is mainly used when implementing the
 	// Buildable interface on a type.
+	//
+	// The function takes the following parameters:
+	//
+	//    - typeName: type name to lookup.
+	//
+	// The function returns the following values:
+	//
+	//    - gType found for type_name or TYPE_INVALID if no type was found.
+	//
 	TypeFromName(typeName string) externglib.Type
 }
 
@@ -322,6 +331,11 @@ func marshalBuilderer(p uintptr) (interface{}, error) {
 //
 // Most users will probably want to use gtk_builder_new_from_file(),
 // gtk_builder_new_from_resource() or gtk_builder_new_from_string().
+//
+// The function returns the following values:
+//
+//    - builder: new (empty) Builder object.
+//
 func NewBuilder() *Builder {
 	var _cret *C.GtkBuilder // in
 
@@ -344,6 +358,10 @@ func NewBuilder() *Builder {
 // The function takes the following parameters:
 //
 //    - filename of user interface description file.
+//
+// The function returns the following values:
+//
+//    - builder containing the described interface.
 //
 func NewBuilderFromFile(filename string) *Builder {
 	var _arg1 *C.gchar      // out
@@ -371,6 +389,10 @@ func NewBuilderFromFile(filename string) *Builder {
 // The function takes the following parameters:
 //
 //    - resourcePath resource path.
+//
+// The function returns the following values:
+//
+//    - builder containing the described interface.
 //
 func NewBuilderFromResource(resourcePath string) *Builder {
 	var _arg1 *C.gchar      // out
@@ -403,6 +425,10 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 //
 //    - str: user interface (XML) description.
 //    - length of string, or -1.
+//
+// The function returns the following values:
+//
+//    - builder containing the interface described by string.
 //
 func NewBuilderFromString(str string, length int) *Builder {
 	var _arg1 *C.gchar      // out
@@ -442,6 +468,10 @@ func NewBuilderFromString(str string, length int) *Builder {
 // The function takes the following parameters:
 //
 //    - filename: name of the file to parse.
+//
+// The function returns the following values:
+//
+//    - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddFromFile(filename string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -483,6 +513,10 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 //
 //    - resourcePath: path of the resource file to parse.
 //
+// The function returns the following values:
+//
+//    - guint: positive value on success, 0 if an error occurred.
+//
 func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -523,6 +557,10 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 //
 //    - buffer: string to parse.
 //    - length of buffer (may be -1 if buffer is nul-terminated).
+//
+// The function returns the following values:
+//
+//    - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -567,6 +605,10 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 //
 //    - filename: name of the file to parse.
 //    - objectIds: nul-terminated array of objects to build.
+//
+// The function returns the following values:
+//
+//    - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -624,6 +666,10 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 //    - resourcePath: path of the resource file to parse.
 //    - objectIds: nul-terminated array of objects to build.
 //
+// The function returns the following values:
+//
+//    - guint: positive value on success, 0 if an error occurred.
+//
 func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -680,6 +726,10 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 //    - buffer: string to parse.
 //    - length of buffer (may be -1 if buffer is nul-terminated).
 //    - objectIds: nul-terminated array of objects to build.
+//
+// The function returns the following values:
+//
+//    - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -748,7 +798,7 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 //
 // The function takes the following parameters:
 //
-//    - userData: user data to pass back with all signals.
+//    - userData (optional): user data to pass back with all signals.
 //
 func (builder *Builder) ConnectSignals(userData cgo.Handle) {
 	var _arg0 *C.GtkBuilder // out
@@ -799,6 +849,10 @@ func (builder *Builder) ExposeObject(name string, object *externglib.Object) {
 //    - buffer: string to parse.
 //    - length of buffer (may be -1 if buffer is nul-terminated).
 //
+// The function returns the following values:
+//
+//    - guint: positive value on success, 0 if an error occurred.
+//
 func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType externglib.Type, buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.GtkWidget  // out
@@ -841,6 +895,11 @@ func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType extern
 // By default, the builder uses the default application: the one from
 // g_application_get_default(). If you want to use another application for
 // constructing proxies, use gtk_builder_set_application().
+//
+// The function returns the following values:
+//
+//    - application (optional) being used by the builder, or NULL.
+//
 func (builder *Builder) Application() *Application {
 	var _arg0 *C.GtkBuilder     // out
 	var _cret *C.GtkApplication // in
@@ -865,6 +924,11 @@ func (builder *Builder) Application() *Application {
 // The function takes the following parameters:
 //
 //    - name of object to get.
+//
+// The function returns the following values:
+//
+//    - object (optional) named name or NULL if it could not be found in the
+//      object tree.
 //
 func (builder *Builder) GetObject(name string) *externglib.Object {
 	var _arg0 *C.GtkBuilder // out
@@ -891,6 +955,12 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 // Objects gets all objects that have been constructed by builder. Note that
 // this function does not increment the reference counts of the returned
 // objects.
+//
+// The function returns the following values:
+//
+//    - sList: newly-allocated List containing all the objects constructed by the
+//      Builder instance. It should be freed by g_slist_free().
+//
 func (builder *Builder) Objects() []*externglib.Object {
 	var _arg0 *C.GtkBuilder // out
 	var _cret *C.GSList     // in
@@ -914,6 +984,12 @@ func (builder *Builder) Objects() []*externglib.Object {
 }
 
 // TranslationDomain gets the translation domain of builder.
+//
+// The function returns the following values:
+//
+//    - utf8: translation domain. This string is owned by the builder object and
+//      must not be modified or freed.
+//
 func (builder *Builder) TranslationDomain() string {
 	var _arg0 *C.GtkBuilder // out
 	var _cret *C.gchar      // in
@@ -937,6 +1013,10 @@ func (builder *Builder) TranslationDomain() string {
 // The function takes the following parameters:
 //
 //    - typeName: type name to lookup.
+//
+// The function returns the following values:
+//
+//    - gType found for type_name or TYPE_INVALID if no type was found.
 //
 func (builder *Builder) TypeFromName(typeName string) externglib.Type {
 	var _arg0 *C.GtkBuilder // out
@@ -984,7 +1064,7 @@ func (builder *Builder) SetApplication(application *Application) {
 //
 // The function takes the following parameters:
 //
-//    - domain: translation domain or NULL.
+//    - domain (optional): translation domain or NULL.
 //
 func (builder *Builder) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkBuilder // out
@@ -1013,6 +1093,10 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 //
 //    - typ of the value.
 //    - str: string representation of the value.
+//
+// The function returns the following values:
+//
+//    - value to store the result in.
 //
 func (builder *Builder) ValueFromStringType(typ externglib.Type, str string) (externglib.Value, error) {
 	var _arg0 *C.GtkBuilder // out

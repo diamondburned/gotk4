@@ -541,6 +541,10 @@ func (s Script) String() string {
 //
 //    - ch: unicode character.
 //
+// The function returns the following values:
+//
+//    - script: PangoScript for the character.
+//
 func ScriptForUnichar(ch uint32) Script {
 	var _arg1 C.gunichar    // out
 	var _cret C.PangoScript // in
@@ -586,6 +590,11 @@ func ScriptForUnichar(ch uint32) Script {
 // The function takes the following parameters:
 //
 //    - script: PangoScript.
+//
+// The function returns the following values:
+//
+//    - language (optional): PangoLanguage that is representative of the script,
+//      or NULL if no such language exists.
 //
 func ScriptGetSampleLanguage(script Script) *Language {
 	var _arg1 C.PangoScript    // out
@@ -663,6 +672,13 @@ func NewScriptIter(text string, length int) *ScriptIter {
 // Note that while the type of the script argument is declared as PangoScript,
 // as of Pango 1.18, this function simply returns GUnicodeScript values. Callers
 // must be prepared to handle unknown values.
+//
+// The function returns the following values:
+//
+//    - start (optional): location to store start position of the range, or NULL.
+//    - end (optional): location to store end position of the range, or NULL.
+//    - script (optional): location to store script for range, or NULL.
+//
 func (iter *ScriptIter) Range() (start string, end string, script Script) {
 	var _arg0 *C.PangoScriptIter // out
 	var _arg1 *C.char            // in
@@ -693,6 +709,11 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 
 // Next advances a ScriptIter to the next range. If iter is already at the end,
 // it is left unchanged and FALSE is returned.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter was successfully advanced.
+//
 func (iter *ScriptIter) Next() bool {
 	var _arg0 *C.PangoScriptIter // out
 	var _cret C.gboolean         // in

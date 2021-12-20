@@ -69,6 +69,10 @@ func marshalBoxLayouter(p uintptr) (interface{}, error) {
 //
 //    - orientation for the new layout.
 //
+// The function returns the following values:
+//
+//    - boxLayout: new box layout.
+//
 func NewBoxLayout(orientation Orientation) *BoxLayout {
 	var _arg1 C.GtkOrientation    // out
 	var _cret *C.GtkLayoutManager // in
@@ -87,6 +91,11 @@ func NewBoxLayout(orientation Orientation) *BoxLayout {
 
 // BaselinePosition gets the value set by
 // gtk_box_layout_set_baseline_position().
+//
+// The function returns the following values:
+//
+//    - baselinePosition: baseline position.
+//
 func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _cret C.GtkBaselinePosition // in
@@ -104,6 +113,11 @@ func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
 }
 
 // Homogeneous returns whether the layout is set to be homogeneous.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the layout is homogeneous.
+//
 func (boxLayout *BoxLayout) Homogeneous() bool {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.gboolean      // in
@@ -123,6 +137,11 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 }
 
 // Spacing returns the space that box_layout puts between children.
+//
+// The function returns the following values:
+//
+//    - guint: spacing of the layout.
+//
 func (boxLayout *BoxLayout) Spacing() uint {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.guint         // in

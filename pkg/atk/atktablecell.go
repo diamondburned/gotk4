@@ -29,8 +29,21 @@ func init() {
 type TableCellOverrider interface {
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
+	//
+	// The function returns the following values:
+	//
+	//    - gint representing the number of columns occupied by this cell, or 0
+	//      if the cell does not implement this method.
+	//
 	ColumnSpan() int
 	// Position retrieves the tabular position of this cell.
+	//
+	// The function returns the following values:
+	//
+	//    - row of the given cell.
+	//    - column of the given cell.
+	//    - ok: TRUE if successful; FALSE otherwise.
+	//
 	Position() (row int, column int, ok bool)
 	// RowColumnSpan gets the row and column indexes and span of this cell
 	// accessible.
@@ -38,10 +51,30 @@ type TableCellOverrider interface {
 	// Note: If the object does not implement this function, then, by default,
 	// atk will implement this function by calling get_row_span and
 	// get_column_span on the object.
+	//
+	// The function returns the following values:
+	//
+	//    - row index of the given cell.
+	//    - column index of the given cell.
+	//    - rowSpan: number of rows occupied by this cell.
+	//    - columnSpan: number of columns occupied by this cell.
+	//    - ok: TRUE if successful; FALSE otherwise.
+	//
 	RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
 	// RowSpan returns the number of rows occupied by this cell accessible.
+	//
+	// The function returns the following values:
+	//
+	//    - gint representing the number of rows occupied by this cell, or 0 if
+	//      the cell does not implement this method.
+	//
 	RowSpan() int
 	// Table returns a reference to the accessible of the containing table.
+	//
+	// The function returns the following values:
+	//
+	//    - object: atk object for the containing table.
+	//
 	Table() *ObjectClass
 }
 
@@ -91,6 +124,12 @@ func marshalTableCeller(p uintptr) (interface{}, error) {
 }
 
 // ColumnSpan returns the number of columns occupied by this cell accessible.
+//
+// The function returns the following values:
+//
+//    - gint representing the number of columns occupied by this cell, or 0 if
+//      the cell does not implement this method.
+//
 func (cell *TableCell) ColumnSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
@@ -108,6 +147,13 @@ func (cell *TableCell) ColumnSpan() int {
 }
 
 // Position retrieves the tabular position of this cell.
+//
+// The function returns the following values:
+//
+//    - row of the given cell.
+//    - column of the given cell.
+//    - ok: TRUE if successful; FALSE otherwise.
+//
 func (cell *TableCell) Position() (row int, column int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
@@ -138,6 +184,15 @@ func (cell *TableCell) Position() (row int, column int, ok bool) {
 // Note: If the object does not implement this function, then, by default, atk
 // will implement this function by calling get_row_span and get_column_span on
 // the object.
+//
+// The function returns the following values:
+//
+//    - row index of the given cell.
+//    - column index of the given cell.
+//    - rowSpan: number of rows occupied by this cell.
+//    - columnSpan: number of columns occupied by this cell.
+//    - ok: TRUE if successful; FALSE otherwise.
+//
 func (cell *TableCell) RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
@@ -169,6 +224,12 @@ func (cell *TableCell) RowColumnSpan() (row int, column int, rowSpan int, column
 }
 
 // RowSpan returns the number of rows occupied by this cell accessible.
+//
+// The function returns the following values:
+//
+//    - gint representing the number of rows occupied by this cell, or 0 if the
+//      cell does not implement this method.
+//
 func (cell *TableCell) RowSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
@@ -186,6 +247,11 @@ func (cell *TableCell) RowSpan() int {
 }
 
 // Table returns a reference to the accessible of the containing table.
+//
+// The function returns the following values:
+//
+//    - object: atk object for the containing table.
+//
 func (cell *TableCell) Table() *ObjectClass {
 	var _arg0 *C.AtkTableCell // out
 	var _cret *C.AtkObject    // in

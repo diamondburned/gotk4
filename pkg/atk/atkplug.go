@@ -27,6 +27,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PlugOverrider interface {
+	// The function returns the following values:
+	//
 	ObjectID() string
 }
 
@@ -59,6 +61,11 @@ func marshalPlugger(p uintptr) (interface{}, error) {
 }
 
 // NewPlug creates a new Plug instance.
+//
+// The function returns the following values:
+//
+//    - plug: newly created Plug.
+//
 func NewPlug() *Plug {
 	var _cret *C.AtkObject // in
 
@@ -78,6 +85,11 @@ func NewPlug() *Plug {
 // layer (usually at-spi2-atk). The implementor of an Plug object should call
 // this function (after atk-bridge is loaded) and pass the value to the process
 // implementing the Socket, so it could embed the plug.
+//
+// The function returns the following values:
+//
+//    - utf8: unique ID for the plug.
+//
 func (plug *Plug) ID() string {
 	var _arg0 *C.AtkPlug // out
 	var _cret *C.gchar   // in

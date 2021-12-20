@@ -173,6 +173,13 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, ar
 //
 //    - filename: name of the file to identify.
 //
+// The function returns the following values:
+//
+//    - width (optional): return location for the width of the image.
+//    - height (optional): return location for the height of the image.
+//    - pixbufFormat (optional): GdkPixbufFormat describing the image format of
+//      the file.
+//
 func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *PixbufFormat) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // in
@@ -210,9 +217,10 @@ func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *Pi
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional GCancellable object, NULL to ignore.
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
 //    - filename: name of the file to identify.
-//    - callback: GAsyncReadyCallback to call when the file info is available.
+//    - callback (optional): GAsyncReadyCallback to call when the file info is
+//      available.
 //
 func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
@@ -245,6 +253,13 @@ func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.A
 //
 //    - asyncResult: GAsyncResult.
 //
+// The function returns the following values:
+//
+//    - width: return location for the width of the image, or NULL.
+//    - height: return location for the height of the image, or NULL.
+//    - pixbufFormat (optional): GdkPixbufFormat describing the image format of
+//      the file.
+//
 func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height int, pixbufFormat *PixbufFormat, goerr error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 C.gint             // in
@@ -276,6 +291,11 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height i
 
 // PixbufGetFormats obtains the available information about the image formats
 // supported by GdkPixbuf.
+//
+// The function returns the following values:
+//
+//    - sList: list of support image formats.
+//
 func PixbufGetFormats() []*PixbufFormat {
 	var _cret *C.GSList // in
 
@@ -352,6 +372,12 @@ func marshalPixbufFormat(p uintptr) (interface{}, error) {
 }
 
 // Copy creates a copy of format.
+//
+// The function returns the following values:
+//
+//    - pixbufFormat: newly allocated copy of a GdkPixbufFormat. Use
+//      gdk_pixbuf_format_free() to free the resources when done.
+//
 func (format *PixbufFormat) Copy() *PixbufFormat {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.GdkPixbufFormat // in
@@ -375,6 +401,11 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 }
 
 // Description returns a description of the format.
+//
+// The function returns the following values:
+//
+//    - utf8: description of the format.
+//
 func (format *PixbufFormat) Description() string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.gchar           // in
@@ -394,6 +425,11 @@ func (format *PixbufFormat) Description() string {
 
 // Extensions returns the filename extensions typically used for files in the
 // given format.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of filename extensions.
+//
 func (format *PixbufFormat) Extensions() []string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret **C.gchar          // in
@@ -429,6 +465,11 @@ func (format *PixbufFormat) Extensions() []string {
 //
 // The returned string should be a shorthand for a well known license, e.g.
 // "LGPL", "GPL", "QPL", "GPL/QPL", or "other" to indicate some other license.
+//
+// The function returns the following values:
+//
+//    - utf8: string describing the license of the pixbuf format.
+//
 func (format *PixbufFormat) License() string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.gchar           // in
@@ -447,6 +488,11 @@ func (format *PixbufFormat) License() string {
 }
 
 // MIMETypes returns the mime types supported by the format.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of mime types.
+//
 func (format *PixbufFormat) MIMETypes() []string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret **C.gchar          // in
@@ -478,6 +524,11 @@ func (format *PixbufFormat) MIMETypes() []string {
 }
 
 // Name returns the name of the format.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the format.
+//
 func (format *PixbufFormat) Name() string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.gchar           // in
@@ -498,6 +549,11 @@ func (format *PixbufFormat) Name() string {
 // IsDisabled returns whether this image format is disabled.
 //
 // See gdk_pixbuf_format_set_disabled().
+//
+// The function returns the following values:
+//
+//    - ok: whether this image format is disabled.
+//
 func (format *PixbufFormat) IsDisabled() bool {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret C.gboolean         // in
@@ -520,6 +576,15 @@ func (format *PixbufFormat) IsDisabled() bool {
 // is supported when saving a pixbuf using the module implementing format.
 //
 // See gdk_pixbuf_save() for more information about option keys.
+//
+// The function takes the following parameters:
+//
+//    - optionKey: name of an option.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the specified option is supported.
+//
 func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _arg1 *C.gchar           // out
@@ -547,6 +612,11 @@ func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 // If a file is in a scalable format, it is preferable to load it at the desired
 // size, rather than loading it at the default size and scaling the resulting
 // pixbuf to the desired size.
+//
+// The function returns the following values:
+//
+//    - ok: whether this image format is scalable.
+//
 func (format *PixbufFormat) IsScalable() bool {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret C.gboolean         // in
@@ -566,6 +636,11 @@ func (format *PixbufFormat) IsScalable() bool {
 }
 
 // IsWritable returns whether pixbufs can be saved in the given format.
+//
+// The function returns the following values:
+//
+//    - ok: whether pixbufs can be saved in the given format.
+//
 func (format *PixbufFormat) IsWritable() bool {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret C.gboolean         // in
@@ -591,6 +666,11 @@ func (format *PixbufFormat) IsWritable() bool {
 //
 // Applications can use this to avoid using image loaders with an inappropriate
 // license, see gdk_pixbuf_format_get_license().
+//
+// The function takes the following parameters:
+//
+//    - disabled: TRUE to disable the format format.
+//
 func (format *PixbufFormat) SetDisabled(disabled bool) {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _arg1 C.gboolean         // out

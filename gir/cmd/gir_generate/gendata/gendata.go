@@ -384,9 +384,9 @@ func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
 
 	p := fg.Pen()
 	p.Line(`
-		// Foreach iterates over items in value. The iteration breaks out once f
+		// ForEach iterates over items in value. The iteration breaks out once f
 		// returns true. This method wraps around g_variant_iter_new.
-		func (value *Variant) Foreach(f func(*Variant) (stop bool)) {
+		func (value *Variant) ForEach(f func(*Variant) (stop bool)) {
 			valueNative := (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 			var iter C.GVariantIter

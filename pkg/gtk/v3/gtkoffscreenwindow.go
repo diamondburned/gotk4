@@ -80,6 +80,11 @@ func marshalOffscreenWindower(p uintptr) (interface{}, error) {
 
 // NewOffscreenWindow creates a toplevel container widget that is used to
 // retrieve snapshots of widgets without showing them on the screen.
+//
+// The function returns the following values:
+//
+//    - offscreenWindow: pointer to a Widget.
+//
 func NewOffscreenWindow() *OffscreenWindow {
 	var _cret *C.GtkWidget // in
 
@@ -95,6 +100,11 @@ func NewOffscreenWindow() *OffscreenWindow {
 // Pixbuf retrieves a snapshot of the contained widget in the form of a Pixbuf.
 // This is a new pixbuf with a reference count of 1, and the application should
 // unreference it once it is no longer needed.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional) pointer, or NULL.
+//
 func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.GdkPixbuf          // in
@@ -126,6 +136,11 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 // Surface retrieves a snapshot of the contained widget in the form of a
 // #cairo_surface_t. If you need to keep this around over window resizes then
 // you should add a reference to it.
+//
+// The function returns the following values:
+//
+//    - surface (optional) pointer to the offscreen surface, or NULL.
+//
 func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.cairo_surface_t    // in

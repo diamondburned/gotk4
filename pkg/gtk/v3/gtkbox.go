@@ -117,6 +117,10 @@ func marshalBoxer(p uintptr) (interface{}, error) {
 //    - orientation box’s orientation.
 //    - spacing: number of pixels to place by default between children.
 //
+// The function returns the following values:
+//
+//    - box: new Box.
+//
 func NewBox(orientation Orientation, spacing int) *Box {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.gint           // out
@@ -137,6 +141,11 @@ func NewBox(orientation Orientation, spacing int) *Box {
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
+//
+// The function returns the following values:
+//
+//    - baselinePosition: baseline position.
+//
 func (box *Box) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBox             // out
 	var _cret C.GtkBaselinePosition // in
@@ -154,6 +163,11 @@ func (box *Box) BaselinePosition() BaselinePosition {
 }
 
 // CenterWidget retrieves the center widget of the box.
+//
+// The function returns the following values:
+//
+//    - widget (optional): center widget or NULL in case no center widget is set.
+//
 func (box *Box) CenterWidget() Widgetter {
 	var _arg0 *C.GtkBox    // out
 	var _cret *C.GtkWidget // in
@@ -184,6 +198,11 @@ func (box *Box) CenterWidget() Widgetter {
 
 // Homogeneous returns whether the box is homogeneous (all children are the same
 // size). See gtk_box_set_homogeneous().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the box is homogeneous.
+//
 func (box *Box) Homogeneous() bool {
 	var _arg0 *C.GtkBox  // out
 	var _cret C.gboolean // in
@@ -203,6 +222,11 @@ func (box *Box) Homogeneous() bool {
 }
 
 // Spacing gets the value set by gtk_box_set_spacing().
+//
+// The function returns the following values:
+//
+//    - gint: spacing between children.
+//
 func (box *Box) Spacing() int {
 	var _arg0 *C.GtkBox // out
 	var _cret C.gint    // in
@@ -227,17 +251,17 @@ func (box *Box) Spacing() int {
 //
 //    - child to be added to box.
 //    - expand: TRUE if the new child is to be given extra space allocated to
-//    box. The extra space will be divided evenly between all children of box
-//    that use this option.
+//      box. The extra space will be divided evenly between all children of box
+//      that use this option.
 //    - fill: TRUE if space given to child by the expand option is actually
-//    allocated to child, rather than just padding it. This parameter has no
-//    effect if expand is set to FALSE. A child is always allocated the full
-//    height of a horizontal Box and the full width of a vertical Box. This
-//    option affects the other dimension.
+//      allocated to child, rather than just padding it. This parameter has no
+//      effect if expand is set to FALSE. A child is always allocated the full
+//      height of a horizontal Box and the full width of a vertical Box. This
+//      option affects the other dimension.
 //    - padding: extra space in pixels to put between this child and its
-//    neighbors, over and above the global amount specified by Box:spacing
-//    property. If child is a widget at one of the reference ends of box, then
-//    padding pixels are also put between child and the reference edge of box.
+//      neighbors, over and above the global amount specified by Box:spacing
+//      property. If child is a widget at one of the reference ends of box, then
+//      padding pixels are also put between child and the reference edge of box.
 //
 func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
@@ -272,17 +296,17 @@ func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint) {
 //
 //    - child to be added to box.
 //    - expand: TRUE if the new child is to be given extra space allocated to
-//    box. The extra space will be divided evenly between all children that use
-//    this option.
+//      box. The extra space will be divided evenly between all children that use
+//      this option.
 //    - fill: TRUE if space given to child by the expand option is actually
-//    allocated to child, rather than just padding it. This parameter has no
-//    effect if expand is set to FALSE. A child is always allocated the full
-//    height of a horizontal Box and the full width of a vertical Box. This
-//    option affects the other dimension.
+//      allocated to child, rather than just padding it. This parameter has no
+//      effect if expand is set to FALSE. A child is always allocated the full
+//      height of a horizontal Box and the full width of a vertical Box. This
+//      option affects the other dimension.
 //    - padding: extra space in pixels to put between this child and its
-//    neighbors, over and above the global amount specified by Box:spacing
-//    property. If child is a widget at one of the reference ends of box, then
-//    padding pixels are also put between child and the reference edge of box.
+//      neighbors, over and above the global amount specified by Box:spacing
+//      property. If child is a widget at one of the reference ends of box, then
+//      padding pixels are also put between child and the reference edge of box.
 //
 func (box *Box) PackStart(child Widgetter, expand, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
@@ -314,6 +338,13 @@ func (box *Box) PackStart(child Widgetter, expand, fill bool, padding uint) {
 // The function takes the following parameters:
 //
 //    - child of the child to query.
+//
+// The function returns the following values:
+//
+//    - expand: pointer to return location for expand child property.
+//    - fill: pointer to return location for fill child property.
+//    - padding: pointer to return location for padding child property.
+//    - packType: pointer to return location for pack-type child property.
 //
 func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
@@ -359,8 +390,8 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 // The function takes the following parameters:
 //
 //    - child to move.
-//    - position: new position for child in the list of children of box,
-//    starting from 0. If negative, indicates the end of the list.
+//    - position: new position for child in the list of children of box, starting
+//      from 0. If negative, indicates the end of the list.
 //
 func (box *Box) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkBox    // out
@@ -405,7 +436,7 @@ func (box *Box) SetBaselinePosition(position BaselinePosition) {
 //
 // The function takes the following parameters:
 //
-//    - widget to center.
+//    - widget (optional) to center.
 //
 func (box *Box) SetCenterWidget(widget Widgetter) {
 	var _arg0 *C.GtkBox    // out
@@ -465,7 +496,7 @@ func (box *Box) SetChildPacking(child Widgetter, expand, fill bool, padding uint
 // The function takes the following parameters:
 //
 //    - homogeneous: boolean value, TRUE to create equal allotments, FALSE for
-//    variable allotments.
+//      variable allotments.
 //
 func (box *Box) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBox  // out

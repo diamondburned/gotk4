@@ -32,9 +32,19 @@ func init() {
 // yet, so the interface currently has no use.
 type SeekableOverrider interface {
 	// CanSeek tests if the stream supports the Iface.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if seekable can be seeked. FALSE otherwise.
+	//
 	CanSeek() bool
 	// CanTruncate tests if the length of the stream can be adjusted with
 	// g_seekable_truncate().
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the stream can be truncated, FALSE otherwise.
+	//
 	CanTruncate() bool
 	// Seek seeks in the stream by the given offset, modified by type.
 	//
@@ -50,8 +60,20 @@ type SeekableOverrider interface {
 	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - offset: #goffset.
+	//    - typ: Type.
+	//
 	Seek(ctx context.Context, offset int64, typ glib.SeekType) error
 	// Tell tells the current position within the stream.
+	//
+	// The function returns the following values:
+	//
+	//    - gint64: offset from the beginning of the buffer.
+	//
 	Tell() int64
 	// TruncateFn sets the length of the stream to offset. If the stream was
 	// previously larger than offset, the extra data is discarded. If the stream
@@ -62,6 +84,12 @@ type SeekableOverrider interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - offset: new length for seekable, in bytes.
+	//
 	TruncateFn(ctx context.Context, offset int64) error
 }
 
@@ -115,6 +143,11 @@ func marshalSeekabler(p uintptr) (interface{}, error) {
 }
 
 // CanSeek tests if the stream supports the Iface.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if seekable can be seeked. FALSE otherwise.
+//
 func (seekable *Seekable) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
@@ -135,6 +168,11 @@ func (seekable *Seekable) CanSeek() bool {
 
 // CanTruncate tests if the length of the stream can be adjusted with
 // g_seekable_truncate().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the stream can be truncated, FALSE otherwise.
+//
 func (seekable *Seekable) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
@@ -170,7 +208,7 @@ func (seekable *Seekable) CanTruncate() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - offset: #goffset.
 //    - typ: Type.
 //
@@ -206,6 +244,11 @@ func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekT
 }
 
 // Tell tells the current position within the stream.
+//
+// The function returns the following values:
+//
+//    - gint64: offset from the beginning of the buffer.
+//
 func (seekable *Seekable) Tell() int64 {
 	var _arg0 *C.GSeekable // out
 	var _cret C.goffset    // in
@@ -234,7 +277,7 @@ func (seekable *Seekable) Tell() int64 {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - offset: new length for seekable, in bytes.
 //
 func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {

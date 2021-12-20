@@ -56,6 +56,11 @@ type TLSClientConnectionOverrider interface {
 	// that has not previously been used for session resumption, since session
 	// ticket reuse would be a privacy weakness. Using this function causes the
 	// ticket to be copied without regard for privacy considerations.
+	//
+	// The function takes the following parameters:
+	//
+	//    - source: ClientConnection.
+	//
 	CopySessionState(source TLSClientConnectioner)
 }
 
@@ -154,6 +159,12 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 }
 
 // ServerIdentity gets conn's expected server identity.
+//
+// The function returns the following values:
+//
+//    - socketConnectable (optional) describing the expected server identity, or
+//      NULL if the expected identity is not known.
+//
 func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
@@ -186,6 +197,11 @@ func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 // g_tls_client_connection_set_use_ssl3() for details.
 //
 // Deprecated: SSL 3.0 is insecure.
+//
+// The function returns the following values:
+//
+//    - ok: FALSE.
+//
 func (conn *TLSClientConnection) UseSSL3() bool {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.gboolean              // in
@@ -205,6 +221,11 @@ func (conn *TLSClientConnection) UseSSL3() bool {
 }
 
 // ValidationFlags gets conn's validation flags.
+//
+// The function returns the following values:
+//
+//    - tlsCertificateFlags: validation flags.
+//
 func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.GTlsCertificateFlags  // in
@@ -303,7 +324,11 @@ func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 // The function takes the following parameters:
 //
 //    - baseIoStream to wrap.
-//    - serverIdentity: expected identity of the server.
+//    - serverIdentity (optional): expected identity of the server.
+//
+// The function returns the following values:
+//
+//    - tlsClientConnection: new ClientConnection, or NULL on error.
 //
 func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (TLSClientConnectioner, error) {
 	var _arg1 *C.GIOStream          // out

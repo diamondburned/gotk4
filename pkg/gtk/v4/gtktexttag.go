@@ -61,7 +61,11 @@ func marshalTextTagger(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name: tag name, or NULL.
+//    - name (optional): tag name, or NULL.
+//
+// The function returns the following values:
+//
+//    - textTag: new GtkTextTag.
 //
 func NewTextTag(name string) *TextTag {
 	var _arg1 *C.char       // out
@@ -107,6 +111,11 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 }
 
 // Priority: get the tag priority.
+//
+// The function returns the following values:
+//
+//    - gint tag’s priority.
+//
 func (tag *TextTag) Priority() int {
 	var _arg0 *C.GtkTextTag // out
 	var _cret C.int         // in

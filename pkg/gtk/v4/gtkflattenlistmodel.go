@@ -56,7 +56,11 @@ func marshalFlattenListModeller(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model to be flattened.
+//    - model (optional) to be flattened.
+//
+// The function returns the following values:
+//
+//    - flattenListModel: new GtkFlattenListModel.
 //
 func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 	var _arg1 *C.GListModel          // out
@@ -78,6 +82,11 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 }
 
 // Model gets the model set via gtk_flatten_list_model_set_model().
+//
+// The function returns the following values:
+//
+//    - listModel (optional): model flattened by self.
+//
 func (self *FlattenListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _cret *C.GListModel          // in
@@ -111,6 +120,10 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 // The function takes the following parameters:
 //
 //    - position: position.
+//
+// The function returns the following values:
+//
+//    - listModel: model containing the item at position.
 //
 func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 	var _arg0 *C.GtkFlattenListModel // out
@@ -148,7 +161,7 @@ func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 //
 // The function takes the following parameters:
 //
-//    - model: new model or NULL.
+//    - model (optional): new model or NULL.
 //
 func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkFlattenListModel // out

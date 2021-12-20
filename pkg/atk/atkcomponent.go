@@ -86,26 +86,71 @@ func (s ScrollType) String() string {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ComponentOverrider interface {
+	// The function takes the following parameters:
+	//
 	BoundsChanged(bounds *Rectangle)
 	// Contains checks whether the specified point is within the extent of the
 	// component.
 	//
 	// Toolkit implementor note: ATK provides a default implementation for this
 	// virtual method. In general there are little reason to re-implement it.
+	//
+	// The function takes the following parameters:
+	//
+	//    - x coordinate.
+	//    - y coordinate.
+	//    - coordType specifies whether the coordinates are relative to the
+	//      screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE or FALSE indicating whether the specified point is within
+	//      the extent of the component or not.
+	//
 	Contains(x, y int, coordType CoordType) bool
 	// Alpha returns the alpha value (i.e. the opacity) for this component, on a
 	// scale from 0 (fully transparent) to 1.0 (fully opaque).
+	//
+	// The function returns the following values:
+	//
+	//    - gdouble: alpha value from 0 to 1.0, inclusive.
+	//
 	Alpha() float64
 	// Extents gets the rectangle which gives the extent of the component.
 	//
 	// If the extent can not be obtained (e.g. a non-embedded plug or missing
 	// support), all of x, y, width, height are set to -1.
+	//
+	// The function takes the following parameters:
+	//
+	//    - coordType specifies whether the coordinates are relative to the
+	//      screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//    - x (optional) address of #gint to put x coordinate.
+	//    - y (optional) address of #gint to put y coordinate.
+	//    - width (optional) address of #gint to put width.
+	//    - height (optional) address of #gint to put height.
+	//
 	Extents(coordType CoordType) (x int, y int, width int, height int)
 	// Layer gets the layer of the component.
+	//
+	// The function returns the following values:
+	//
+	//    - layer which is the layer of the component.
+	//
 	Layer() Layer
 	// MDIZOrder gets the zorder of the component. The value G_MININT will be
 	// returned if the layer of the component is not ATK_LAYER_MDI or
 	// ATK_LAYER_WINDOW.
+	//
+	// The function returns the following values:
+	//
+	//    - gint which is the zorder of the component, i.e. the depth at which
+	//      the component is shown in relation to other components in the same
+	//      container.
+	//
 	MDIZOrder() int
 	// Position gets the position of component in the form of a point specifying
 	// component's top-left corner.
@@ -114,6 +159,17 @@ type ComponentOverrider interface {
 	// support), x and y are set to -1.
 	//
 	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - coordType specifies whether the coordinates are relative to the
+	//      screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//    - x (optional) address of #gint to put x coordinate position.
+	//    - y (optional) address of #gint to put y coordinate position.
+	//
 	Position(coordType CoordType) (x int, y int)
 	// Size gets the size of the component in terms of width and height.
 	//
@@ -121,11 +177,34 @@ type ComponentOverrider interface {
 	// support), width and height are set to -1.
 	//
 	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - width (optional) address of #gint to put width of component.
+	//    - height (optional) address of #gint to put height of component.
+	//
 	Size() (width int, height int)
 	// GrabFocus grabs focus for this component.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if successful, FALSE otherwise.
+	//
 	GrabFocus() bool
 	// RefAccessibleAtPoint gets a reference to the accessible child, if one
 	// exists, at the coordinate point specified by x and y.
+	//
+	// The function takes the following parameters:
+	//
+	//    - x coordinate.
+	//    - y coordinate.
+	//    - coordType specifies whether the coordinates are relative to the
+	//      screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//    - object (optional): reference to the accessible child, if one exists.
+	//
 	RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
 	// list of functions to be executed when this object receives focus events
@@ -133,6 +212,12 @@ type ComponentOverrider interface {
 	//
 	// Deprecated: If you need to track when an object gains or lose the focus,
 	// use the Object::state-change "focused" notification instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - handlerId: handler id of the focus handler to be removed from
+	//      component.
+	//
 	RemoveFocusHandler(handlerId uint)
 	// ScrollTo makes component visible on the screen by scrolling all necessary
 	// parents.
@@ -141,18 +226,75 @@ type ComponentOverrider interface {
 	// component in its parent, this only makes the parents scroll so that the
 	// object shows up on the screen, given its current position within the
 	// parents.
+	//
+	// The function takes the following parameters:
+	//
+	//    - typ: specify where the object should be made visible.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: whether scrolling was successful.
+	//
 	ScrollTo(typ ScrollType) bool
 	// ScrollToPoint: move the top-left of component to a given position of the
 	// screen by scrolling all necessary parents.
+	//
+	// The function takes the following parameters:
+	//
+	//    - coords: specify whether coordinates are relative to the screen or to
+	//      the parent object.
+	//    - x: x-position where to scroll to.
+	//    - y: y-position where to scroll to.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: whether scrolling was successful.
+	//
 	ScrollToPoint(coords CoordType, x, y int) bool
 	// SetExtents sets the extents of component.
+	//
+	// The function takes the following parameters:
+	//
+	//    - x coordinate.
+	//    - y coordinate.
+	//    - width to set for component.
+	//    - height to set for component.
+	//    - coordType specifies whether the coordinates are relative to the
+	//      screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE or FALSE whether the extents were set or not.
+	//
 	SetExtents(x, y, width, height int, coordType CoordType) bool
 	// SetPosition sets the position of component.
 	//
 	// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
 	// this just moves component in its parent.
+	//
+	// The function takes the following parameters:
+	//
+	//    - x coordinate.
+	//    - y coordinate.
+	//    - coordType specifies whether the coordinates are relative to the
+	//      screen or to the component's top level window.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE or FALSE whether or not the position was set or not.
+	//
 	SetPosition(x, y int, coordType CoordType) bool
 	// SetSize: set the size of the component in terms of width and height.
+	//
+	// The function takes the following parameters:
+	//
+	//    - width to set for component.
+	//    - height to set for component.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE or FALSE whether the size was set or not.
+	//
 	SetSize(width, height int) bool
 }
 
@@ -229,6 +371,12 @@ func marshalComponenter(p uintptr) (interface{}, error) {
 	return wrapComponent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectBoundsChanged: 'bounds-changed" signal is emitted when the bposition
+// or size of the component changes.
+func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) externglib.SignalHandle {
+	return component.Connect("bounds-changed", f)
+}
+
 // Contains checks whether the specified point is within the extent of the
 // component.
 //
@@ -239,8 +387,13 @@ func marshalComponenter(p uintptr) (interface{}, error) {
 //
 //    - x coordinate.
 //    - y coordinate.
-//    - coordType specifies whether the coordinates are relative to the screen
-//    or to the components top level window.
+//    - coordType specifies whether the coordinates are relative to the screen or
+//      to the components top level window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE or FALSE indicating whether the specified point is within the
+//      extent of the component or not.
 //
 func (component *Component) Contains(x, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
@@ -271,6 +424,11 @@ func (component *Component) Contains(x, y int, coordType CoordType) bool {
 
 // Alpha returns the alpha value (i.e. the opacity) for this component, on a
 // scale from 0 (fully transparent) to 1.0 (fully opaque).
+//
+// The function returns the following values:
+//
+//    - gdouble: alpha value from 0 to 1.0, inclusive.
+//
 func (component *Component) Alpha() float64 {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gdouble       // in
@@ -294,8 +452,15 @@ func (component *Component) Alpha() float64 {
 //
 // The function takes the following parameters:
 //
-//    - coordType specifies whether the coordinates are relative to the screen
-//    or to the components top level window.
+//    - coordType specifies whether the coordinates are relative to the screen or
+//      to the components top level window.
+//
+// The function returns the following values:
+//
+//    - x (optional) address of #gint to put x coordinate.
+//    - y (optional) address of #gint to put y coordinate.
+//    - width (optional) address of #gint to put width.
+//    - height (optional) address of #gint to put height.
 //
 func (component *Component) Extents(coordType CoordType) (x int, y int, width int, height int) {
 	var _arg0 *C.AtkComponent // out
@@ -326,6 +491,11 @@ func (component *Component) Extents(coordType CoordType) (x int, y int, width in
 }
 
 // Layer gets the layer of the component.
+//
+// The function returns the following values:
+//
+//    - layer which is the layer of the component.
+//
 func (component *Component) Layer() Layer {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.AtkLayer      // in
@@ -345,6 +515,12 @@ func (component *Component) Layer() Layer {
 // MDIZOrder gets the zorder of the component. The value G_MININT will be
 // returned if the layer of the component is not ATK_LAYER_MDI or
 // ATK_LAYER_WINDOW.
+//
+// The function returns the following values:
+//
+//    - gint which is the zorder of the component, i.e. the depth at which the
+//      component is shown in relation to other components in the same container.
+//
 func (component *Component) MDIZOrder() int {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gint          // in
@@ -371,8 +547,13 @@ func (component *Component) MDIZOrder() int {
 //
 // The function takes the following parameters:
 //
-//    - coordType specifies whether the coordinates are relative to the screen
-//    or to the components top level window.
+//    - coordType specifies whether the coordinates are relative to the screen or
+//      to the components top level window.
+//
+// The function returns the following values:
+//
+//    - x (optional) address of #gint to put x coordinate position.
+//    - y (optional) address of #gint to put y coordinate position.
 //
 func (component *Component) Position(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkComponent // out
@@ -402,6 +583,12 @@ func (component *Component) Position(coordType CoordType) (x int, y int) {
 // support), width and height are set to -1.
 //
 // Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+//
+// The function returns the following values:
+//
+//    - width (optional) address of #gint to put width of component.
+//    - height (optional) address of #gint to put height of component.
+//
 func (component *Component) Size() (width int, height int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
@@ -422,6 +609,11 @@ func (component *Component) Size() (width int, height int) {
 }
 
 // GrabFocus grabs focus for this component.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if successful, FALSE otherwise.
+//
 func (component *Component) GrabFocus() bool {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gboolean      // in
@@ -447,8 +639,12 @@ func (component *Component) GrabFocus() bool {
 //
 //    - x coordinate.
 //    - y coordinate.
-//    - coordType specifies whether the coordinates are relative to the screen
-//    or to the components top level window.
+//    - coordType specifies whether the coordinates are relative to the screen or
+//      to the components top level window.
+//
+// The function returns the following values:
+//
+//    - object (optional): reference to the accessible child, if one exists.
 //
 func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass {
 	var _arg0 *C.AtkComponent // out
@@ -486,8 +682,7 @@ func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) 
 //
 // The function takes the following parameters:
 //
-//    - handlerId: handler id of the focus handler to be removed from
-//    component.
+//    - handlerId: handler id of the focus handler to be removed from component.
 //
 func (component *Component) RemoveFocusHandler(handlerId uint) {
 	var _arg0 *C.AtkComponent // out
@@ -511,6 +706,10 @@ func (component *Component) RemoveFocusHandler(handlerId uint) {
 // The function takes the following parameters:
 //
 //    - typ: specify where the object should be made visible.
+//
+// The function returns the following values:
+//
+//    - ok: whether scrolling was successful.
 //
 func (component *Component) ScrollTo(typ ScrollType) bool {
 	var _arg0 *C.AtkComponent // out
@@ -538,10 +737,14 @@ func (component *Component) ScrollTo(typ ScrollType) bool {
 //
 // The function takes the following parameters:
 //
-//    - coords: specify whether coordinates are relative to the screen or to
-//    the parent object.
+//    - coords: specify whether coordinates are relative to the screen or to the
+//      parent object.
 //    - x: x-position where to scroll to.
 //    - y: y-position where to scroll to.
+//
+// The function returns the following values:
+//
+//    - ok: whether scrolling was successful.
 //
 func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
 	var _arg0 *C.AtkComponent // out
@@ -578,8 +781,12 @@ func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
 //    - y coordinate.
 //    - width to set for component.
 //    - height to set for component.
-//    - coordType specifies whether the coordinates are relative to the screen
-//    or to the components top level window.
+//    - coordType specifies whether the coordinates are relative to the screen or
+//      to the components top level window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE or FALSE whether the extents were set or not.
 //
 func (component *Component) SetExtents(x, y, width, height int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
@@ -623,8 +830,12 @@ func (component *Component) SetExtents(x, y, width, height int, coordType CoordT
 //
 //    - x coordinate.
 //    - y coordinate.
-//    - coordType specifies whether the coordinates are relative to the screen
-//    or to the component's top level window.
+//    - coordType specifies whether the coordinates are relative to the screen or
+//      to the component's top level window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE or FALSE whether or not the position was set or not.
 //
 func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
@@ -660,6 +871,10 @@ func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
 //    - width to set for component.
 //    - height to set for component.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE or FALSE whether the size was set or not.
+//
 func (component *Component) SetSize(width, height int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -682,12 +897,6 @@ func (component *Component) SetSize(width, height int) bool {
 	}
 
 	return _ok
-}
-
-// ConnectBoundsChanged: 'bounds-changed" signal is emitted when the bposition
-// or size of the component changes.
-func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) externglib.SignalHandle {
-	return component.Connect("bounds-changed", f)
 }
 
 // Rectangle: data structure for holding a rectangle. Those coordinates are

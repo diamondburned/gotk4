@@ -32,9 +32,13 @@ import "C"
 // The function takes the following parameters:
 //
 //    - connection: BusConnection.
-//    - busName bus name which exports the action group or NULL if connection
-//    is not a message bus connection.
+//    - busName (optional) bus name which exports the action group or NULL if
+//      connection is not a message bus connection.
 //    - objectPath: object path at which the action group is exported.
+//
+// The function returns the following values:
+//
+//    - dBusActionGroup: BusActionGroup.
 //
 func DBusActionGroupGet(connection *DBusConnection, busName, objectPath string) *DBusActionGroup {
 	var _arg1 *C.GDBusConnection  // out

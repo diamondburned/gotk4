@@ -56,6 +56,11 @@ func marshalCellRendererSpinnerer(p uintptr) (interface{}, error) {
 
 // NewCellRendererSpinner returns a new cell renderer which will show a spinner
 // to indicate activity.
+//
+// The function returns the following values:
+//
+//    - cellRendererSpinner: new CellRenderer.
+//
 func NewCellRendererSpinner() *CellRendererSpinner {
 	var _cret *C.GtkCellRenderer // in
 

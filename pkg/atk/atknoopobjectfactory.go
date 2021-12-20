@@ -46,6 +46,11 @@ func marshalNoOpObjectFactorier(p uintptr) (interface{}, error) {
 
 // NewNoOpObjectFactory creates an instance of an ObjectFactory which generates
 // primitive (non-functioning) Objects.
+//
+// The function returns the following values:
+//
+//    - noOpObjectFactory: instance of an ObjectFactory.
+//
 func NewNoOpObjectFactory() *NoOpObjectFactory {
 	var _cret *C.AtkObjectFactory // in
 

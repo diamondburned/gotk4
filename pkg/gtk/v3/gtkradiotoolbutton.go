@@ -101,8 +101,12 @@ func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - group: an existing radio button group, or NULL if you are creating a
-//    new group.
+//    - group (optional): an existing radio button group, or NULL if you are
+//      creating a new group.
+//
+// The function returns the following values:
+//
+//    - radioToolButton: new RadioToolButton.
 //
 func NewRadioToolButton(group []RadioButton) *RadioToolButton {
 	var _arg1 *C.GSList      // out
@@ -136,9 +140,13 @@ func NewRadioToolButton(group []RadioButton) *RadioToolButton {
 //
 // The function takes the following parameters:
 //
-//    - group: existing radio button group, or NULL if you are creating a new
-//    group.
+//    - group (optional): existing radio button group, or NULL if you are
+//      creating a new group.
 //    - stockId: name of a stock item.
+//
+// The function returns the following values:
+//
+//    - radioToolButton: new RadioToolButton.
 //
 func NewRadioToolButtonFromStock(group []RadioButton, stockId string) *RadioToolButton {
 	var _arg1 *C.GSList      // out
@@ -173,7 +181,11 @@ func NewRadioToolButtonFromStock(group []RadioButton, stockId string) *RadioTool
 //
 // The function takes the following parameters:
 //
-//    - group: existing RadioToolButton, or NULL.
+//    - group (optional): existing RadioToolButton, or NULL.
+//
+// The function returns the following values:
+//
+//    - radioToolButton: new RadioToolButton.
 //
 func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
@@ -201,8 +213,12 @@ func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
 //
 // The function takes the following parameters:
 //
-//    - group: existing RadioToolButton.
+//    - group (optional): existing RadioToolButton.
 //    - stockId: name of a stock item.
+//
+// The function returns the following values:
+//
+//    - radioToolButton: new RadioToolButton.
 //
 func NewRadioToolButtonWithStockFromWidget(group *RadioToolButton, stockId string) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
@@ -227,6 +243,11 @@ func NewRadioToolButtonWithStockFromWidget(group *RadioToolButton, stockId strin
 }
 
 // Group returns the radio button group button belongs to.
+//
+// The function returns the following values:
+//
+//    - sList: group button belongs to.
+//
 func (button *RadioToolButton) Group() []RadioButton {
 	var _arg0 *C.GtkRadioToolButton // out
 	var _cret *C.GSList             // in
@@ -254,7 +275,7 @@ func (button *RadioToolButton) Group() []RadioButton {
 //
 // The function takes the following parameters:
 //
-//    - group: existing radio button group, or NULL.
+//    - group (optional): existing radio button group, or NULL.
 //
 func (button *RadioToolButton) SetGroup(group []RadioButton) {
 	var _arg0 *C.GtkRadioToolButton // out

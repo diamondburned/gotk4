@@ -111,7 +111,19 @@ func marshalPasswordEntrier(p uintptr) (interface{}, error) {
 	return wrapPasswordEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate: emitted when the entry is activated.
+//
+// The keybindings for this signal are all forms of the Enter key.
+func (entry *PasswordEntry) ConnectActivate(f func()) externglib.SignalHandle {
+	return entry.Connect("activate", f)
+}
+
 // NewPasswordEntry creates a GtkPasswordEntry.
+//
+// The function returns the following values:
+//
+//    - passwordEntry: new GtkPasswordEntry.
+//
 func NewPasswordEntry() *PasswordEntry {
 	var _cret *C.GtkWidget // in
 
@@ -125,6 +137,11 @@ func NewPasswordEntry() *PasswordEntry {
 }
 
 // ExtraMenu gets the menu model set with gtk_password_entry_set_extra_menu().
+//
+// The function returns the following values:
+//
+//    - menuModel: (nullable): the menu model.
+//
 func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret *C.GMenuModel       // in
@@ -156,6 +173,11 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 
 // ShowPeekIcon returns whether the entry is showing an icon to reveal the
 // contents.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if an icon is shown.
+//
 func (entry *PasswordEntry) ShowPeekIcon() bool {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret C.gboolean          // in
@@ -179,7 +201,7 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 //
 // The function takes the following parameters:
 //
-//    - model: GMenuModel.
+//    - model (optional): GMenuModel.
 //
 func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkPasswordEntry // out
@@ -216,11 +238,4 @@ func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	C.gtk_password_entry_set_show_peek_icon(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(showPeekIcon)
-}
-
-// ConnectActivate: emitted when the entry is activated.
-//
-// The keybindings for this signal are all forms of the Enter key.
-func (entry *PasswordEntry) ConnectActivate(f func()) externglib.SignalHandle {
-	return entry.Connect("activate", f)
 }

@@ -61,8 +61,12 @@ func marshalFilterListModeller(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model to sort, or NULL.
-//    - filter or NULL to not filter items.
+//    - model (optional) to sort, or NULL.
+//    - filter (optional) or NULL to not filter items.
+//
+// The function returns the following values:
+//
+//    - filterListModel: new GtkFilterListModel.
 //
 func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel {
 	var _arg1 *C.GListModel         // out
@@ -90,6 +94,11 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 }
 
 // Filter gets the GtkFilter currently set on self.
+//
+// The function returns the following values:
+//
+//    - filter (optional) currently in use or NULL if the list isn't filtered.
+//
 func (self *FilterListModel) Filter() *Filter {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret *C.GtkFilter          // in
@@ -111,6 +120,11 @@ func (self *FilterListModel) Filter() *Filter {
 // Incremental returns whether incremental filtering is enabled.
 //
 // See gtk.FilterListModel.SetIncremental().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if incremental filtering is enabled.
+//
 func (self *FilterListModel) Incremental() bool {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret C.gboolean            // in
@@ -130,6 +144,11 @@ func (self *FilterListModel) Incremental() bool {
 }
 
 // Model gets the model currently filtered or NULL if none.
+//
+// The function returns the following values:
+//
+//    - listModel (optional): model that gets filtered.
+//
 func (self *FilterListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret *C.GListModel         // in
@@ -172,6 +191,11 @@ func (self *FilterListModel) Model() gio.ListModeller {
 //
 // If no filter operation is ongoing - in particular when
 // gtk.FilterListModel:incremental is FALSE - this function returns 0.
+//
+// The function returns the following values:
+//
+//    - guint: number of items not yet filtered.
+//
 func (self *FilterListModel) Pending() uint {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret C.guint               // in
@@ -192,7 +216,7 @@ func (self *FilterListModel) Pending() uint {
 //
 // The function takes the following parameters:
 //
-//    - filter to use or NULL to not filter items.
+//    - filter (optional) to use or NULL to not filter items.
 //
 func (self *FilterListModel) SetFilter(filter *Filter) {
 	var _arg0 *C.GtkFilterListModel // out
@@ -251,7 +275,7 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 //
 // The function takes the following parameters:
 //
-//    - model to be filtered.
+//    - model (optional) to be filtered.
 //
 func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkFilterListModel // out

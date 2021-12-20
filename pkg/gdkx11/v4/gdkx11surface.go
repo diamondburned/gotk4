@@ -29,7 +29,11 @@ func init() {
 // The function takes the following parameters:
 //
 //    - surface used for communication with the server. The surface must have
-//    GDK_PROPERTY_CHANGE_MASK in its events mask or a hang will result.
+//      GDK_PROPERTY_CHANGE_MASK in its events mask or a hang will result.
+//
+// The function returns the following values:
+//
+//    - guint32: time stamp.
 //
 func X11GetServerTime(surface *X11Surface) uint32 {
 	var _arg1 *C.GdkSurface // out
@@ -68,6 +72,11 @@ func marshalX11Surfacer(p uintptr) (interface{}, error) {
 }
 
 // Desktop gets the number of the workspace surface is on.
+//
+// The function returns the following values:
+//
+//    - guint32: current workspace of surface.
+//
 func (surface *X11Surface) Desktop() uint32 {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.guint32     // in
@@ -85,6 +94,11 @@ func (surface *X11Surface) Desktop() uint32 {
 }
 
 // Group returns the group this surface belongs to.
+//
+// The function returns the following values:
+//
+//    - ret: group of this surface;.
+//
 func (surface *X11Surface) Group() gdk.Surfacer {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkSurface // in
@@ -316,7 +330,7 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 // The function takes the following parameters:
 //
 //    - name: property name, will be interned as an X atom.
-//    - value: property value, or NULL to delete.
+//    - value (optional): property value, or NULL to delete.
 //
 func (surface *X11Surface) SetUTF8Property(name, value string) {
 	var _arg0 *C.GdkSurface // out

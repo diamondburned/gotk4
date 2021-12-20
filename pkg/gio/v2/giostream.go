@@ -43,15 +43,39 @@ type IOStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional cancellable object.
+	//    - ioPriority: io priority of the request.
+	//    - callback (optional) to call when the request is satisfied.
+	//
 	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish closes a stream.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	CloseFinish(result AsyncResulter) error
+	// The function takes the following parameters:
+	//
 	CloseFn(ctx context.Context) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
+	//
+	// The function returns the following values:
+	//
+	//    - inputStream owned by the OStream. Do not free.
+	//
 	InputStream() InputStreamer
 	// OutputStream gets the output stream for this object. This is used for
 	// writing.
+	//
+	// The function returns the following values:
+	//
+	//    - outputStream owned by the OStream. Do not free.
+	//
 	OutputStream() OutputStreamer
 }
 
@@ -128,6 +152,15 @@ func marshalIOStreamer(p uintptr) (interface{}, error) {
 	return wrapIOStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (stream *IOStream) baseIOStream() *IOStream {
+	return stream
+}
+
+// BaseIOStream returns the underlying base object.
+func BaseIOStream(obj IOStreamer) *IOStream {
+	return obj.baseIOStream()
+}
+
 // ClearPending clears the pending flag on stream.
 func (stream *IOStream) ClearPending() {
 	var _arg0 *C.GIOStream // out
@@ -173,7 +206,7 @@ func (stream *IOStream) ClearPending() {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (stream *IOStream) Close(ctx context.Context) error {
 	var _arg0 *C.GIOStream    // out
@@ -212,9 +245,9 @@ func (stream *IOStream) Close(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional cancellable object.
+//    - ctx (optional): optional cancellable object.
 //    - ioPriority: io priority of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream          // out
@@ -270,6 +303,11 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 }
 
 // InputStream gets the input stream for this object. This is used for reading.
+//
+// The function returns the following values:
+//
+//    - inputStream owned by the OStream. Do not free.
+//
 func (stream *IOStream) InputStream() InputStreamer {
 	var _arg0 *C.GIOStream    // out
 	var _cret *C.GInputStream // in
@@ -301,6 +339,11 @@ func (stream *IOStream) InputStream() InputStreamer {
 
 // OutputStream gets the output stream for this object. This is used for
 // writing.
+//
+// The function returns the following values:
+//
+//    - outputStream owned by the OStream. Do not free.
+//
 func (stream *IOStream) OutputStream() OutputStreamer {
 	var _arg0 *C.GIOStream     // out
 	var _cret *C.GOutputStream // in
@@ -331,6 +374,11 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 }
 
 // HasPending checks if a stream has pending actions.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if stream has pending actions.
+//
 func (stream *IOStream) HasPending() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
@@ -350,6 +398,11 @@ func (stream *IOStream) HasPending() bool {
 }
 
 // IsClosed checks if a stream is closed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the stream is closed.
+//
 func (stream *IOStream) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
@@ -397,11 +450,11 @@ func (stream *IOStream) SetPending() error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - stream2: OStream.
 //    - flags: set of OStreamSpliceFlags.
 //    - ioPriority: io priority of the request.
-//    - callback: ReadyCallback.
+//    - callback (optional): ReadyCallback.
 //
 func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream           // out
@@ -433,15 +486,6 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(ioPriority)
 	runtime.KeepAlive(callback)
-}
-
-func (stream *IOStream) baseIOStream() *IOStream {
-	return stream
-}
-
-// BaseIOStream returns the underlying base object.
-func BaseIOStream(obj IOStreamer) *IOStream {
-	return obj.baseIOStream()
 }
 
 // IOStreamSpliceFinish finishes an asynchronous io stream splice operation.

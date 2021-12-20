@@ -174,7 +174,48 @@ func marshalSeater(p uintptr) (interface{}, error) {
 	return wrapSeat(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (seat *Seat) baseSeat() *Seat {
+	return seat
+}
+
+// BaseSeat returns the underlying base object.
+func BaseSeat(obj Seater) *Seat {
+	return obj.baseSeat()
+}
+
+// ConnectDeviceAdded signal is emitted when a new input device is related to
+// this seat.
+func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
+	return seat.Connect("device-added", f)
+}
+
+// ConnectDeviceRemoved signal is emitted when an input device is removed (e.g.
+// unplugged).
+func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
+	return seat.Connect("device-removed", f)
+}
+
+// ConnectToolAdded signal is emitted whenever a new tool is made known to the
+// seat. The tool may later be assigned to a device (i.e. on proximity with a
+// tablet). The device will emit the Device::tool-changed signal accordingly.
+//
+// A same tool may be used by several devices.
+func (seat *Seat) ConnectToolAdded(f func(tool DeviceTool)) externglib.SignalHandle {
+	return seat.Connect("tool-added", f)
+}
+
+// ConnectToolRemoved: this signal is emitted whenever a tool is no longer known
+// to this seat.
+func (seat *Seat) ConnectToolRemoved(f func(tool DeviceTool)) externglib.SignalHandle {
+	return seat.Connect("tool-removed", f)
+}
+
 // Capabilities returns the capabilities this Seat currently has.
+//
+// The function returns the following values:
+//
+//    - seatCapabilities: seat capabilities.
+//
 func (seat *Seat) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
@@ -192,6 +233,11 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 }
 
 // Display returns the Display this seat belongs to.
+//
+// The function returns the following values:
+//
+//    - display This object is owned by GTK+ and must not be freed.
+//
 func (seat *Seat) Display() *Display {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in
@@ -209,6 +255,12 @@ func (seat *Seat) Display() *Display {
 }
 
 // Keyboard returns the master device that routes keyboard events.
+//
+// The function returns the following values:
+//
+//    - device (optional): master Device with keyboard capabilities. This object
+//      is owned by GTK+ and must not be freed.
+//
 func (seat *Seat) Keyboard() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
@@ -238,6 +290,12 @@ func (seat *Seat) Keyboard() Devicer {
 }
 
 // Pointer returns the master device that routes pointer events.
+//
+// The function returns the following values:
+//
+//    - device (optional): master Device with pointer capabilities. This object
+//      is owned by GTK+ and must not be freed.
+//
 func (seat *Seat) Pointer() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
@@ -271,6 +329,11 @@ func (seat *Seat) Pointer() Devicer {
 // The function takes the following parameters:
 //
 //    - capabilities to get devices for.
+//
+// The function returns the following values:
+//
+//    - list of Devices. The list must be freed with g_list_free(), the elements
+//      are owned by GDK and must not be freed.
 //
 func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 	var _arg0 *C.GdkSeat            // out
@@ -338,18 +401,23 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 //
 //    - window which will own the grab.
 //    - capabilities that will be grabbed.
-//    - ownerEvents: if FALSE then all device events are reported with respect
-//    to window and are only reported if selected by event_mask. If TRUE then
-//    pointer events for this application are reported as normal, but pointer
-//    events outside this application are reported with respect to window and
-//    only if selected by event_mask. In either mode, unreported events are
-//    discarded.
-//    - cursor to display while the grab is active. If this is NULL then the
-//    normal cursors are used for window and its descendants, and the cursor
-//    for window is used elsewhere.
-//    - event that is triggering the grab, or NULL if none is available.
-//    - prepareFunc: function to prepare the window to be grabbed, it can be
-//    NULL if window is visible before this call.
+//    - ownerEvents: if FALSE then all device events are reported with respect to
+//      window and are only reported if selected by event_mask. If TRUE then
+//      pointer events for this application are reported as normal, but pointer
+//      events outside this application are reported with respect to window and
+//      only if selected by event_mask. In either mode, unreported events are
+//      discarded.
+//    - cursor (optional) to display while the grab is active. If this is NULL
+//      then the normal cursors are used for window and its descendants, and the
+//      cursor for window is used elsewhere.
+//    - event (optional) that is triggering the grab, or NULL if none is
+//      available.
+//    - prepareFunc (optional): function to prepare the window to be grabbed, it
+//      can be NULL if window is visible before this call.
+//
+// The function returns the following values:
+//
+//    - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
 //
 func (seat *Seat) Grab(window Windower, capabilities SeatCapabilities, ownerEvents bool, cursor Cursorrer, event *Event, prepareFunc SeatGrabPrepareFunc) GrabStatus {
 	var _arg0 *C.GdkSeat               // out
@@ -404,40 +472,4 @@ func (seat *Seat) Ungrab() {
 
 	C.gdk_seat_ungrab(_arg0)
 	runtime.KeepAlive(seat)
-}
-
-func (seat *Seat) baseSeat() *Seat {
-	return seat
-}
-
-// BaseSeat returns the underlying base object.
-func BaseSeat(obj Seater) *Seat {
-	return obj.baseSeat()
-}
-
-// ConnectDeviceAdded signal is emitted when a new input device is related to
-// this seat.
-func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
-	return seat.Connect("device-added", f)
-}
-
-// ConnectDeviceRemoved signal is emitted when an input device is removed (e.g.
-// unplugged).
-func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
-	return seat.Connect("device-removed", f)
-}
-
-// ConnectToolAdded signal is emitted whenever a new tool is made known to the
-// seat. The tool may later be assigned to a device (i.e. on proximity with a
-// tablet). The device will emit the Device::tool-changed signal accordingly.
-//
-// A same tool may be used by several devices.
-func (seat *Seat) ConnectToolAdded(f func(tool DeviceTool)) externglib.SignalHandle {
-	return seat.Connect("tool-added", f)
-}
-
-// ConnectToolRemoved: this signal is emitted whenever a tool is no longer known
-// to this seat.
-func (seat *Seat) ConnectToolRemoved(f func(tool DeviceTool)) externglib.SignalHandle {
-	return seat.Connect("tool-removed", f)
 }

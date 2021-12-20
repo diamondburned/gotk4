@@ -70,6 +70,11 @@ func marshalStackSidebarrer(p uintptr) (interface{}, error) {
 }
 
 // NewStackSidebar creates a new GtkStackSidebar.
+//
+// The function returns the following values:
+//
+//    - stackSidebar: new GtkStackSidebar.
+//
 func NewStackSidebar() *StackSidebar {
 	var _cret *C.GtkWidget // in
 
@@ -83,6 +88,12 @@ func NewStackSidebar() *StackSidebar {
 }
 
 // Stack retrieves the stack.
+//
+// The function returns the following values:
+//
+//    - stack (optional): associated Stack or NULL if none has been set
+//      explicitly.
+//
 func (self *StackSidebar) Stack() *Stack {
 	var _arg0 *C.GtkStackSidebar // out
 	var _cret *C.GtkStack        // in

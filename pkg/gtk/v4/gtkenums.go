@@ -1757,6 +1757,10 @@ func (o Ordering) String() string {
 //
 //    - cmpfuncResult: result of a comparison function.
 //
+// The function returns the following values:
+//
+//    - ordering: corresponding GtkOrdering.
+//
 func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
 	var _arg1 C.int         // out
 	var _cret C.GtkOrdering // in

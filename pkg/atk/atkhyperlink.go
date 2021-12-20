@@ -75,32 +75,77 @@ func (h HyperlinkStateFlags) Has(other HyperlinkStateFlags) bool {
 type HyperlinkOverrider interface {
 	// EndIndex gets the index with the hypertext document at which this link
 	// ends.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: index with the hypertext document at which this link ends.
+	//
 	EndIndex() int
 	// NAnchors gets the number of anchors associated with this hyperlink.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of anchors associated with this hyperlink.
+	//
 	NAnchors() int
 	// GetObject returns the item associated with this hyperlinks nth anchor.
 	// For instance, the returned Object will implement Text if link_ is a text
 	// hyperlink, Image if link_ is an image hyperlink etc.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i: (zero-index) integer specifying the desired anchor.
+	//
+	// The function returns the following values:
+	//
+	//    - object associated with this hyperlinks i-th anchor.
+	//
 	GetObject(i int) *ObjectClass
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: index with the hypertext document at which this link begins.
+	//
 	StartIndex() int
 	// URI: get a the URI associated with the anchor specified by i of link_.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i: (zero-index) integer specifying the desired anchor.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: string specifying the URI.
+	//
 	URI(i int) string
 	// IsSelectedLink determines whether this AtkHyperlink is selected
 	//
 	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
 	// ATK_STATE_FOCUSED for focused links.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: true if the AtkHyperlink is selected, False otherwise.
+	//
 	IsSelectedLink() bool
 	// IsValid: since the document that a link is associated with may have
 	// changed this method returns TRUE if the link is still valid (with respect
 	// to the document it references) and FALSE otherwise.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: whether or not this link is still valid.
+	//
 	IsValid() bool
 	LinkActivated()
+	// The function returns the following values:
+	//
 	LinkState() uint
 }
 
@@ -132,7 +177,18 @@ func marshalHyperlinker(p uintptr) (interface{}, error) {
 	return wrapHyperlink(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectLinkActivated: signal link-activated is emitted when a link is
+// activated.
+func (link_ *Hyperlink) ConnectLinkActivated(f func()) externglib.SignalHandle {
+	return link_.Connect("link-activated", f)
+}
+
 // EndIndex gets the index with the hypertext document at which this link ends.
+//
+// The function returns the following values:
+//
+//    - gint: index with the hypertext document at which this link ends.
+//
 func (link_ *Hyperlink) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
@@ -150,6 +206,11 @@ func (link_ *Hyperlink) EndIndex() int {
 }
 
 // NAnchors gets the number of anchors associated with this hyperlink.
+//
+// The function returns the following values:
+//
+//    - gint: number of anchors associated with this hyperlink.
+//
 func (link_ *Hyperlink) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
@@ -176,6 +237,10 @@ func (link_ *Hyperlink) NAnchors() int {
 //
 //    - i: (zero-index) integer specifying the desired anchor.
 //
+// The function returns the following values:
+//
+//    - object associated with this hyperlinks i-th anchor.
+//
 func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
@@ -197,6 +262,11 @@ func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 
 // StartIndex gets the index with the hypertext document at which this link
 // begins.
+//
+// The function returns the following values:
+//
+//    - gint: index with the hypertext document at which this link begins.
+//
 func (link_ *Hyperlink) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
@@ -221,6 +291,10 @@ func (link_ *Hyperlink) StartIndex() int {
 //
 //    - i: (zero-index) integer specifying the desired anchor.
 //
+// The function returns the following values:
+//
+//    - utf8: string specifying the URI.
+//
 func (link_ *Hyperlink) URI(i int) string {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
@@ -244,6 +318,11 @@ func (link_ *Hyperlink) URI(i int) string {
 // IsInline indicates whether the link currently displays some or all of its
 // content inline. Ordinary HTML links will usually return FALSE, but an inline
 // &lt;src&gt; HTML element will return TRUE.
+//
+// The function returns the following values:
+//
+//    - ok: whether or not this link displays its content inline.
+//
 func (link_ *Hyperlink) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
@@ -266,6 +345,11 @@ func (link_ *Hyperlink) IsInline() bool {
 //
 // Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
 // ATK_STATE_FOCUSED for focused links.
+//
+// The function returns the following values:
+//
+//    - ok: true if the AtkHyperlink is selected, False otherwise.
+//
 func (link_ *Hyperlink) IsSelectedLink() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
@@ -287,6 +371,11 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 // IsValid: since the document that a link is associated with may have changed
 // this method returns TRUE if the link is still valid (with respect to the
 // document it references) and FALSE otherwise.
+//
+// The function returns the following values:
+//
+//    - ok: whether or not this link is still valid.
+//
 func (link_ *Hyperlink) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
@@ -303,10 +392,4 @@ func (link_ *Hyperlink) IsValid() bool {
 	}
 
 	return _ok
-}
-
-// ConnectLinkActivated: signal link-activated is emitted when a link is
-// activated.
-func (link_ *Hyperlink) ConnectLinkActivated(f func()) externglib.SignalHandle {
-	return link_.Connect("link-activated", f)
 }

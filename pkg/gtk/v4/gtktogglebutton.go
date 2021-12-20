@@ -152,9 +152,19 @@ func marshalToggleButtonner(p uintptr) (interface{}, error) {
 	return wrapToggleButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectToggled: emitted whenever the GtkToggleButton's state is changed.
+func (toggleButton *ToggleButton) ConnectToggled(f func()) externglib.SignalHandle {
+	return toggleButton.Connect("toggled", f)
+}
+
 // NewToggleButton creates a new toggle button.
 //
 // A widget should be packed into the button, as in gtk.Button.New.
+//
+// The function returns the following values:
+//
+//    - toggleButton: new toggle button.
+//
 func NewToggleButton() *ToggleButton {
 	var _cret *C.GtkWidget // in
 
@@ -172,6 +182,10 @@ func NewToggleButton() *ToggleButton {
 // The function takes the following parameters:
 //
 //    - label: string containing the message to be placed in the toggle button.
+//
+// The function returns the following values:
+//
+//    - toggleButton: new toggle button.
 //
 func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _arg1 *C.char      // out
@@ -198,7 +212,11 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 // The function takes the following parameters:
 //
 //    - label: text of the button, with an underscore in front of the mnemonic
-//    character.
+//      character.
+//
+// The function returns the following values:
+//
+//    - toggleButton: new GtkToggleButton.
 //
 func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _arg1 *C.char      // out
@@ -220,6 +238,11 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 // Active queries a GtkToggleButton and returns its current state.
 //
 // Returns TRUE if the toggle button is pressed in and FALSE if it is raised.
+//
+// The function returns the following values:
+//
+//    - ok: whether the button is pressed.
+//
 func (toggleButton *ToggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
@@ -277,7 +300,7 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 //
 // The function takes the following parameters:
 //
-//    - group: another GtkToggleButton to form a group with.
+//    - group (optional): another GtkToggleButton to form a group with.
 //
 func (toggleButton *ToggleButton) SetGroup(group *ToggleButton) {
 	var _arg0 *C.GtkToggleButton // out
@@ -303,9 +326,4 @@ func (toggleButton *ToggleButton) Toggled() {
 
 	C.gtk_toggle_button_toggled(_arg0)
 	runtime.KeepAlive(toggleButton)
-}
-
-// ConnectToggled: emitted whenever the GtkToggleButton's state is changed.
-func (toggleButton *ToggleButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return toggleButton.Connect("toggled", f)
 }

@@ -30,6 +30,10 @@ import "C"
 //    - keyval: key value of the binding.
 //    - modifiers: key modifier of the binding.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if a binding was found and activated.
+//
 func BindingsActivate(object *externglib.Object, keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GObject        // out
 	var _arg2 C.guint           // out
@@ -61,6 +65,10 @@ func BindingsActivate(object *externglib.Object, keyval uint, modifiers gdk.Modi
 //
 //    - object (generally must be a widget).
 //    - event: EventKey.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a matching key binding was found.
 //
 func BindingsActivateEvent(object *externglib.Object, event *gdk.EventKey) bool {
 	var _arg1 *C.GObject     // out
@@ -179,6 +187,11 @@ func (b *BindingEntry) Signals() *BindingSignal {
 //
 //    - bindingSet: BindingSet.
 //    - signalDesc: signal description.
+//
+// The function returns the following values:
+//
+//    - tokenType: G_TOKEN_NONE if the signal was successfully parsed and added,
+//      the expected token otherwise.
 //
 func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) glib.TokenType {
 	var _arg1 *C.GtkBindingSet // out
@@ -333,6 +346,17 @@ func (b *BindingSet) Current() *BindingEntry {
 
 // Activate: find a key binding matching keyval and modifiers within binding_set
 // and activate the binding on object.
+//
+// The function takes the following parameters:
+//
+//    - keyval: key value of the binding.
+//    - modifiers: key modifier of the binding.
+//    - object to activate when binding found.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a binding was found and activated.
+//
 func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object *externglib.Object) bool {
 	var _arg0 *C.GtkBindingSet  // out
 	var _arg1 C.guint           // out
@@ -366,6 +390,13 @@ func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, 
 // In GTK+ 3, these match patterns are unused.
 //
 // Deprecated: since version 3.0.
+//
+// The function takes the following parameters:
+//
+//    - pathType: path type the pattern applies to.
+//    - pathPattern: actual match pattern.
+//    - priority: binding priority.
+//
 func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, priority PathPriorityType) {
 	var _arg0 *C.GtkBindingSet      // out
 	var _arg1 C.GtkPathType         // out
@@ -393,6 +424,10 @@ func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, pri
 // The function takes the following parameters:
 //
 //    - setName: unique binding set name.
+//
+// The function returns the following values:
+//
+//    - bindingSet (optional): NULL or the specified binding set.
 //
 func BindingSetFind(setName string) *BindingSet {
 	var _arg1 *C.gchar         // out

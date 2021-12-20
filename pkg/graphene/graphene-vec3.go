@@ -64,6 +64,15 @@ func NewVec3Alloc() *Vec3 {
 }
 
 // Add adds each component of the two given vectors.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the resulting vector.
+//
 func (a *Vec3) Add(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -84,6 +93,15 @@ func (a *Vec3) Add(b *Vec3) *Vec3 {
 }
 
 // Cross computes the cross product of the two given vectors.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the resulting vector.
+//
 func (a *Vec3) Cross(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -106,6 +124,15 @@ func (a *Vec3) Cross(b *Vec3) *Vec3 {
 // Divide divides each component of the first operand a by the corresponding
 // component of the second operand b, and places the results into the vector
 // res.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the resulting vector.
+//
 func (a *Vec3) Divide(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -126,6 +153,15 @@ func (a *Vec3) Divide(b *Vec3) *Vec3 {
 }
 
 // Dot computes the dot product of the two given vectors.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - gfloat: value of the dot product.
+//
 func (a *Vec3) Dot(b *Vec3) float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -146,6 +182,15 @@ func (a *Vec3) Dot(b *Vec3) float32 {
 }
 
 // Equal checks whether the two given #graphene_vec3_t are equal.
+//
+// The function takes the following parameters:
+//
+//    - v2: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the two vectors are equal, and false otherwise.
+//
 func (v1 *Vec3) Equal(v2 *Vec3) bool {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -168,6 +213,11 @@ func (v1 *Vec3) Equal(v2 *Vec3) bool {
 }
 
 // X retrieves the first component of the given vector v.
+//
+// The function returns the following values:
+//
+//    - gfloat: value of the first component of the vector.
+//
 func (v *Vec3) X() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -186,6 +236,11 @@ func (v *Vec3) X() float32 {
 
 // XY creates a #graphene_vec2_t that contains the first and second components
 // of the given #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for a #graphene_vec2_t.
+//
 func (v *Vec3) XY() *Vec2 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec2_t  // in
@@ -204,6 +259,11 @@ func (v *Vec3) XY() *Vec2 {
 
 // XY0 creates a #graphene_vec3_t that contains the first two components of the
 // given #graphene_vec3_t, and the third component set to 0.
+//
+// The function returns the following values:
+//
+//    - res: return location for a #graphene_vec3_t.
+//
 func (v *Vec3) XY0() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec3_t  // in
@@ -222,6 +282,11 @@ func (v *Vec3) XY0() *Vec3 {
 
 // XYZ0 converts a #graphene_vec3_t in a #graphene_vec4_t using 0.0 as the value
 // for the fourth component of the resulting vector.
+//
+// The function returns the following values:
+//
+//    - res: return location for the vector.
+//
 func (v *Vec3) XYZ0() *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec4_t  // in
@@ -240,6 +305,11 @@ func (v *Vec3) XYZ0() *Vec4 {
 
 // XYZ1 converts a #graphene_vec3_t in a #graphene_vec4_t using 1.0 as the value
 // for the fourth component of the resulting vector.
+//
+// The function returns the following values:
+//
+//    - res: return location for the vector.
+//
 func (v *Vec3) XYZ1() *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec4_t  // in
@@ -258,6 +328,15 @@ func (v *Vec3) XYZ1() *Vec4 {
 
 // Xyzw converts a #graphene_vec3_t in a #graphene_vec4_t using w as the value
 // of the fourth component of the resulting vector.
+//
+// The function takes the following parameters:
+//
+//    - w: value of the W component.
+//
+// The function returns the following values:
+//
+//    - res: return location for the vector.
+//
 func (v *Vec3) Xyzw(w float32) *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
@@ -278,6 +357,11 @@ func (v *Vec3) Xyzw(w float32) *Vec4 {
 }
 
 // Y retrieves the second component of the given vector v.
+//
+// The function returns the following values:
+//
+//    - gfloat: value of the second component of the vector.
+//
 func (v *Vec3) Y() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -295,6 +379,11 @@ func (v *Vec3) Y() float32 {
 }
 
 // Z retrieves the third component of the given vector v.
+//
+// The function returns the following values:
+//
+//    - gfloat: value of the third component of the vector.
+//
 func (v *Vec3) Z() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -314,6 +403,17 @@ func (v *Vec3) Z() float32 {
 // Init initializes a #graphene_vec3_t using the given values.
 //
 // This function can be called multiple times.
+//
+// The function takes the following parameters:
+//
+//    - x: x field of the vector.
+//    - y: y field of the vector.
+//    - z: z field of the vector.
+//
+// The function returns the following values:
+//
+//    - vec3: pointer to the initialized vector.
+//
 func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
@@ -340,6 +440,15 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 }
 
 // InitFromFloat initializes a #graphene_vec3_t with the values from an array.
+//
+// The function takes the following parameters:
+//
+//    - src: array of 3 floating point values.
+//
+// The function returns the following values:
+//
+//    - vec3: initialized vector.
+//
 func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.float           // out
@@ -361,6 +470,15 @@ func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 
 // InitFromVec3 initializes a #graphene_vec3_t with the values of another
 // #graphene_vec3_t.
+//
+// The function takes the following parameters:
+//
+//    - src: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - vec3: initialized vector.
+//
 func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -381,6 +499,16 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 }
 
 // Interpolate: linearly interpolates v1 and v2 using the given factor.
+//
+// The function takes the following parameters:
+//
+//    - v2: #graphene_vec3_t.
+//    - factor: interpolation factor.
+//
+// The function returns the following values:
+//
+//    - res: interpolated vector.
+//
 func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -404,6 +532,11 @@ func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) *Vec3 {
 }
 
 // Length retrieves the length of the given vector v.
+//
+// The function returns the following values:
+//
+//    - gfloat: value of the length of the vector.
+//
 func (v *Vec3) Length() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -422,6 +555,15 @@ func (v *Vec3) Length() float32 {
 
 // Max compares each component of the two given vectors and creates a vector
 // that contains the maximum values.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result vector.
+//
 func (a *Vec3) Max(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -443,6 +585,15 @@ func (a *Vec3) Max(b *Vec3) *Vec3 {
 
 // Min compares each component of the two given vectors and creates a vector
 // that contains the minimum values.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result vector.
+//
 func (a *Vec3) Min(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -463,6 +614,15 @@ func (a *Vec3) Min(b *Vec3) *Vec3 {
 }
 
 // Multiply multiplies each component of the two given vectors.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the resulting vector.
+//
 func (a *Vec3) Multiply(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -484,6 +644,16 @@ func (a *Vec3) Multiply(b *Vec3) *Vec3 {
 
 // Near compares the two given #graphene_vec3_t vectors and checks whether their
 // values are within the given epsilon.
+//
+// The function takes the following parameters:
+//
+//    - v2: #graphene_vec3_t.
+//    - epsilon: threshold between the two vectors.
+//
+// The function returns the following values:
+//
+//    - ok: true if the two vectors are near each other.
+//
 func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -509,6 +679,11 @@ func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 }
 
 // Negate negates the given #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result vector.
+//
 func (v *Vec3) Negate() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec3_t  // in
@@ -526,6 +701,11 @@ func (v *Vec3) Negate() *Vec3 {
 }
 
 // Normalize normalizes the given #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the normalized vector.
+//
 func (v *Vec3) Normalize() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec3_t  // in
@@ -544,6 +724,15 @@ func (v *Vec3) Normalize() *Vec3 {
 
 // Scale multiplies all components of the given vector with the given scalar
 // factor.
+//
+// The function takes the following parameters:
+//
+//    - factor: scalar factor.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result vector.
+//
 func (v *Vec3) Scale(factor float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
@@ -566,6 +755,15 @@ func (v *Vec3) Scale(factor float32) *Vec3 {
 // Subtract subtracts from each component of the first operand a the
 // corresponding component of the second operand b and places each result into
 // the components of res.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the resulting vector.
+//
 func (a *Vec3) Subtract(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -586,6 +784,11 @@ func (a *Vec3) Subtract(b *Vec3) *Vec3 {
 }
 
 // ToFloat copies the components of a #graphene_vec3_t into the given array.
+//
+// The function returns the following values:
+//
+//    - dest: return location for an array of floating point values.
+//
 func (v *Vec3) ToFloat() [3]float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 [3]C.float         // in
@@ -604,6 +807,11 @@ func (v *Vec3) ToFloat() [3]float32 {
 
 // Vec3One provides a constant pointer to a vector with three components, all
 // sets to 1.
+//
+// The function returns the following values:
+//
+//    - vec3: constant vector.
+//
 func Vec3One() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
@@ -618,6 +826,11 @@ func Vec3One() *Vec3 {
 
 // Vec3XAxis provides a constant pointer to a vector with three components with
 // values set to (1, 0, 0).
+//
+// The function returns the following values:
+//
+//    - vec3: constant vector.
+//
 func Vec3XAxis() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
@@ -632,6 +845,11 @@ func Vec3XAxis() *Vec3 {
 
 // Vec3YAxis provides a constant pointer to a vector with three components with
 // values set to (0, 1, 0).
+//
+// The function returns the following values:
+//
+//    - vec3: constant vector.
+//
 func Vec3YAxis() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
@@ -646,6 +864,11 @@ func Vec3YAxis() *Vec3 {
 
 // Vec3ZAxis provides a constant pointer to a vector with three components with
 // values set to (0, 0, 1).
+//
+// The function returns the following values:
+//
+//    - vec3: constant vector.
+//
 func Vec3ZAxis() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
@@ -660,6 +883,11 @@ func Vec3ZAxis() *Vec3 {
 
 // Vec3Zero provides a constant pointer to a vector with three components, all
 // sets to 0.
+//
+// The function returns the following values:
+//
+//    - vec3: constant vector.
+//
 func Vec3Zero() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 

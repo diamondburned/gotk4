@@ -140,6 +140,11 @@ func marshalRevealerer(p uintptr) (interface{}, error) {
 }
 
 // NewRevealer creates a new GtkRevealer.
+//
+// The function returns the following values:
+//
+//    - revealer: newly created GtkRevealer.
+//
 func NewRevealer() *Revealer {
 	var _cret *C.GtkWidget // in
 
@@ -153,6 +158,11 @@ func NewRevealer() *Revealer {
 }
 
 // Child gets the child widget of revealer.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of revealer.
+//
 func (revealer *Revealer) Child() Widgetter {
 	var _arg0 *C.GtkRevealer // out
 	var _cret *C.GtkWidget   // in
@@ -185,6 +195,11 @@ func (revealer *Revealer) Child() Widgetter {
 //
 // In other words, this returns whether the transition to the revealed state is
 // completed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the child is fully revealed.
+//
 func (revealer *Revealer) ChildRevealed() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
@@ -208,6 +223,11 @@ func (revealer *Revealer) ChildRevealed() bool {
 // This function returns TRUE as soon as the transition is to the revealed state
 // is started. To learn whether the child is fully revealed (ie the transition
 // is completed), use gtk.Revealer.GetChildRevealed().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the child is revealed.
+//
 func (revealer *Revealer) RevealChild() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
@@ -228,6 +248,11 @@ func (revealer *Revealer) RevealChild() bool {
 
 // TransitionDuration returns the amount of time (in milliseconds) that
 // transitions will take.
+//
+// The function returns the following values:
+//
+//    - guint: transition duration.
+//
 func (revealer *Revealer) TransitionDuration() uint {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.guint        // in
@@ -246,6 +271,11 @@ func (revealer *Revealer) TransitionDuration() uint {
 
 // TransitionType gets the type of animation that will be used for transitions
 // in revealer.
+//
+// The function returns the following values:
+//
+//    - revealerTransitionType: current transition type of revealer.
+//
 func (revealer *Revealer) TransitionType() RevealerTransitionType {
 	var _arg0 *C.GtkRevealer              // out
 	var _cret C.GtkRevealerTransitionType // in
@@ -266,7 +296,7 @@ func (revealer *Revealer) TransitionType() RevealerTransitionType {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (revealer *Revealer) SetChild(child Widgetter) {
 	var _arg0 *C.GtkRevealer // out

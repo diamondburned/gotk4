@@ -790,6 +790,11 @@ func (r Role) String() string {
 //
 //    - name: string which is the (non-localized) name of an ATK role.
 //
+// The function returns the following values:
+//
+//    - role enumerated type corresponding to the specified name, or
+//      K_ROLE_INVALID if no matching role is found.
+//
 func RoleForName(name string) Role {
 	var _arg1 *C.gchar  // out
 	var _cret C.AtkRole // in
@@ -814,6 +819,10 @@ func RoleForName(name string) Role {
 //
 //    - role whose localized name is required.
 //
+// The function returns the following values:
+//
+//    - utf8: localized string describing the AtkRole.
+//
 func RoleGetLocalizedName(role Role) string {
 	var _arg1 C.AtkRole // out
 	var _cret *C.gchar  // in
@@ -835,6 +844,10 @@ func RoleGetLocalizedName(role Role) string {
 // The function takes the following parameters:
 //
 //    - role whose name is required.
+//
+// The function returns the following values:
+//
+//    - utf8: string describing the AtkRole.
 //
 func RoleGetName(role Role) string {
 	var _arg1 C.AtkRole // out
@@ -862,6 +875,11 @@ func RoleGetName(role Role) string {
 // The function takes the following parameters:
 //
 //    - name: character string describing the new role.
+//
+// The function returns the following values:
+//
+//    - role for the new role if added properly. ATK_ROLE_INVALID in case of
+//      error.
 //
 func RoleRegister(name string) Role {
 	var _arg1 *C.gchar  // out
@@ -945,28 +963,74 @@ func BaseImplementorIface(obj ImplementorIfacer) *ImplementorIface {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ObjectClassOverrider interface {
+	// The function takes the following parameters:
+	//
 	ActiveDescendantChanged(child *cgo.Handle)
+	// The function takes the following parameters:
+	//
+	//    - changeIndex
+	//    - changedChild (optional)
+	//
 	ChildrenChanged(changeIndex uint, changedChild cgo.Handle)
+	// The function takes the following parameters:
+	//
 	FocusEvent(focusIn bool)
 	// Description gets the accessible description of the accessible.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: character string representing the accessible description of the
+	//      accessible.
+	//
 	Description() string
 	// IndexInParent gets the 0-based index of this accessible in its parent;
 	// returns -1 if the accessible does not have an accessible parent.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: integer which is the index of the accessible in its parent.
+	//
 	IndexInParent() int
 	// Layer gets the layer of the accessible.
 	//
 	// Deprecated: Use atk_component_get_layer instead.
+	//
+	// The function returns the following values:
+	//
+	//    - layer which is the layer of the accessible.
+	//
 	Layer() Layer
 	// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
 	// returned if the layer of the accessible is not ATK_LAYER_MDI.
 	//
 	// Deprecated: Use atk_component_get_mdi_zorder instead.
+	//
+	// The function returns the following values:
+	//
+	//    - gint which is the zorder of the accessible, i.e. the depth at which
+	//      the component is shown in relation to other components in the same
+	//      container.
+	//
 	MDIZOrder() int
+	// The function returns the following values:
+	//
 	NChildren() int
 	// Name gets the accessible name of the accessible.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: character string representing the accessible name of the
+	//      object.
+	//
 	Name() string
 	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
 	// locale of accessible.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+	//      accessible.
+	//
 	ObjectLocale() string
 	// Parent gets the accessible parent of the accessible. By default this is
 	// the one assigned with atk_object_set_parent(), but it is assumed that ATK
@@ -976,39 +1040,99 @@ type ObjectClassOverrider interface {
 	//
 	// If you are only interested on the parent assigned with
 	// atk_object_set_parent(), use atk_object_peek_parent().
+	//
+	// The function returns the following values:
+	//
+	//    - object representing the accessible parent of the accessible.
+	//
 	Parent() *ObjectClass
 	// Role gets the role of the accessible.
+	//
+	// The function returns the following values:
+	//
+	//    - role which is the role of the accessible.
+	//
 	Role() Role
 	// Initialize: this function is called when implementing subclasses of
 	// Object. It does initialization required for the new object. It is
 	// intended that this function should called only in the ..._new() functions
 	// used to create an instance of a subclass of Object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - data (optional) which identifies the object for which the AtkObject
+	//      was created.
+	//
 	Initialize(data cgo.Handle)
+	// The function takes the following parameters:
+	//
 	PropertyChange(values *PropertyValues)
 	// RefRelationSet gets the RelationSet associated with the object.
+	//
+	// The function returns the following values:
+	//
+	//    - relationSet representing the relation set of the object.
+	//
 	RefRelationSet() *RelationSet
 	// RefStateSet gets a reference to the state set of the accessible; the
 	// caller must unreference it when it is no longer needed.
+	//
+	// The function returns the following values:
+	//
+	//    - stateSet: reference to an StateSet which is the state set of the
+	//      accessible.
+	//
 	RefStateSet() *StateSet
 	// RemovePropertyChangeHandler removes a property change handler.
 	//
 	// Deprecated: See atk_object_connect_property_change_handler().
+	//
+	// The function takes the following parameters:
+	//
+	//    - handlerId: guint which identifies the handler to be removed.
+	//
 	RemovePropertyChangeHandler(handlerId uint)
 	// SetDescription sets the accessible description of the accessible. You
 	// can't set the description to NULL. This is reserved for the initial
 	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
 	// set the name to a empty value you can use "".
+	//
+	// The function takes the following parameters:
+	//
+	//    - description: character string to be set as the accessible
+	//      description.
+	//
 	SetDescription(description string)
 	// SetName sets the accessible name of the accessible. You can't set the
 	// name to NULL. This is reserved for the initial value. In this aspect NULL
 	// is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a empty
 	// value you can use "".
+	//
+	// The function takes the following parameters:
+	//
+	//    - name: character string to be set as the accessible name.
+	//
 	SetName(name string)
 	// SetParent sets the accessible parent of the accessible. parent can be
 	// NULL.
+	//
+	// The function takes the following parameters:
+	//
+	//    - parent to be set as the accessible parent.
+	//
 	SetParent(parent *ObjectClass)
 	// SetRole sets the role of the accessible.
+	//
+	// The function takes the following parameters:
+	//
+	//    - role to be set as the role.
+	//
 	SetRole(role Role)
+	// The function takes the following parameters:
+	//
+	//    - name
+	//    - stateSet
+	//
 	StateChange(name string, stateSet bool)
 	VisibleDataChanged()
 }
@@ -1047,6 +1171,53 @@ func marshalObjectClasser(p uintptr) (interface{}, error) {
 	return wrapObject(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActiveDescendantChanged: "active-descendant-changed" signal is emitted
+// by an object which has the state ATK_STATE_MANAGES_DESCENDANTS when the focus
+// object in the object changes. For instance, a table will emit the signal when
+// the cell in the table which has focus changes.
+func (object *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) externglib.SignalHandle {
+	return object.Connect("active-descendant-changed", f)
+}
+
+// ConnectChildrenChanged: signal "children-changed" is emitted when a child is
+// added or removed form an object. It supports two details: "add" and "remove".
+func (object *ObjectClass) ConnectChildrenChanged(f func(arg1 uint, arg2 *ObjectClass)) externglib.SignalHandle {
+	return object.Connect("children-changed", f)
+}
+
+// ConnectFocusEvent: signal "focus-event" is emitted when an object gained or
+// lost focus.
+func (object *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) externglib.SignalHandle {
+	return object.Connect("focus-event", f)
+}
+
+// ConnectPropertyChange: signal "property-change" is emitted when an object's
+// property value changes. arg1 contains an PropertyValues with the name and the
+// new value of the property whose value has changed. Note that, as with GObject
+// notify, getting this signal does not guarantee that the value of the property
+// has actually changed; it may also be emitted when the setter of the property
+// is called to reinstate the previous value.
+//
+// Toolkit implementor note: ATK implementors should use g_object_notify() to
+// emit property-changed notifications. Object::property-changed is needed by
+// the implementation of atk_add_global_event_listener() because GObject notify
+// doesn't support emission hooks.
+func (object *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) externglib.SignalHandle {
+	return object.Connect("property-change", f)
+}
+
+// ConnectStateChange: "state-change" signal is emitted when an object's state
+// changes. The detail value identifies the state type which has changed.
+func (object *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) externglib.SignalHandle {
+	return object.Connect("state-change", f)
+}
+
+// ConnectVisibleDataChanged: "visible-data-changed" signal is emitted when the
+// visual appearance of the object changed.
+func (object *ObjectClass) ConnectVisibleDataChanged(f func()) externglib.SignalHandle {
+	return object.Connect("visible-data-changed", f)
+}
+
 // AddRelationship adds a relationship of the specified type with the specified
 // target.
 //
@@ -1054,6 +1225,10 @@ func marshalObjectClasser(p uintptr) (interface{}, error) {
 //
 //    - relationship of the relation.
 //    - target which is to be the target of the relation.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the relationship is added.
 //
 func (object *ObjectClass) AddRelationship(relationship RelationType, target *ObjectClass) bool {
 	var _arg0 *C.AtkObject      // out
@@ -1080,6 +1255,12 @@ func (object *ObjectClass) AddRelationship(relationship RelationType, target *Ob
 }
 
 // AccessibleID gets the accessible id of the accessible.
+//
+// The function returns the following values:
+//
+//    - utf8: character string representing the accessible id of the object, or
+//      NULL if no such string was set.
+//
 func (accessible *ObjectClass) AccessibleID() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
@@ -1097,6 +1278,12 @@ func (accessible *ObjectClass) AccessibleID() string {
 }
 
 // Description gets the accessible description of the accessible.
+//
+// The function returns the following values:
+//
+//    - utf8: character string representing the accessible description of the
+//      accessible.
+//
 func (accessible *ObjectClass) Description() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
@@ -1115,6 +1302,11 @@ func (accessible *ObjectClass) Description() string {
 
 // IndexInParent gets the 0-based index of this accessible in its parent;
 // returns -1 if the accessible does not have an accessible parent.
+//
+// The function returns the following values:
+//
+//    - gint: integer which is the index of the accessible in its parent.
+//
 func (accessible *ObjectClass) IndexInParent() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
@@ -1134,6 +1326,11 @@ func (accessible *ObjectClass) IndexInParent() int {
 // Layer gets the layer of the accessible.
 //
 // Deprecated: Use atk_component_get_layer instead.
+//
+// The function returns the following values:
+//
+//    - layer which is the layer of the accessible.
+//
 func (accessible *ObjectClass) Layer() Layer {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkLayer   // in
@@ -1154,6 +1351,12 @@ func (accessible *ObjectClass) Layer() Layer {
 // returned if the layer of the accessible is not ATK_LAYER_MDI.
 //
 // Deprecated: Use atk_component_get_mdi_zorder instead.
+//
+// The function returns the following values:
+//
+//    - gint which is the zorder of the accessible, i.e. the depth at which the
+//      component is shown in relation to other components in the same container.
+//
 func (accessible *ObjectClass) MDIZOrder() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
@@ -1171,6 +1374,12 @@ func (accessible *ObjectClass) MDIZOrder() int {
 }
 
 // NAccessibleChildren gets the number of accessible children of the accessible.
+//
+// The function returns the following values:
+//
+//    - gint: integer representing the number of accessible children of the
+//      accessible.
+//
 func (accessible *ObjectClass) NAccessibleChildren() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
@@ -1188,6 +1397,11 @@ func (accessible *ObjectClass) NAccessibleChildren() int {
 }
 
 // Name gets the accessible name of the accessible.
+//
+// The function returns the following values:
+//
+//    - utf8: character string representing the accessible name of the object.
+//
 func (accessible *ObjectClass) Name() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
@@ -1206,6 +1420,12 @@ func (accessible *ObjectClass) Name() string {
 
 // ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
 // locale of accessible.
+//
+// The function returns the following values:
+//
+//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+//      accessible.
+//
 func (accessible *ObjectClass) ObjectLocale() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
@@ -1230,6 +1450,11 @@ func (accessible *ObjectClass) ObjectLocale() string {
 //
 // If you are only interested on the parent assigned with
 // atk_object_set_parent(), use atk_object_peek_parent().
+//
+// The function returns the following values:
+//
+//    - object representing the accessible parent of the accessible.
+//
 func (accessible *ObjectClass) Parent() *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
@@ -1247,6 +1472,11 @@ func (accessible *ObjectClass) Parent() *ObjectClass {
 }
 
 // Role gets the role of the accessible.
+//
+// The function returns the following values:
+//
+//    - role which is the role of the accessible.
+//
 func (accessible *ObjectClass) Role() Role {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkRole    // in
@@ -1270,7 +1500,8 @@ func (accessible *ObjectClass) Role() Role {
 //
 // The function takes the following parameters:
 //
-//    - data which identifies the object for which the AtkObject was created.
+//    - data (optional) which identifies the object for which the AtkObject was
+//      created.
 //
 func (accessible *ObjectClass) Initialize(data cgo.Handle) {
 	var _arg0 *C.AtkObject // out
@@ -1292,8 +1523,7 @@ func (accessible *ObjectClass) Initialize(data cgo.Handle) {
 // The function takes the following parameters:
 //
 //    - state whose state is changed.
-//    - value: gboolean which indicates whether the state is being set on or
-//    off.
+//    - value: gboolean which indicates whether the state is being set on or off.
 //
 func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
 	var _arg0 *C.AtkObject // out
@@ -1319,6 +1549,11 @@ func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
 // This method is intended as an utility for ATK implementors, and not to be
 // exposed to accessible tools. See atk_object_get_parent() for further
 // reference.
+//
+// The function returns the following values:
+//
+//    - object representing the accessible parent of the accessible if assigned.
+//
 func (accessible *ObjectClass) PeekParent() *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
@@ -1343,6 +1578,10 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 //
 //    - i: gint representing the position of the child, starting from 0.
 //
+// The function returns the following values:
+//
+//    - object representing the specified accessible child of the accessible.
+//
 func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gint       // out
@@ -1363,6 +1602,11 @@ func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 }
 
 // RefRelationSet gets the RelationSet associated with the object.
+//
+// The function returns the following values:
+//
+//    - relationSet representing the relation set of the object.
+//
 func (accessible *ObjectClass) RefRelationSet() *RelationSet {
 	var _arg0 *C.AtkObject      // out
 	var _cret *C.AtkRelationSet // in
@@ -1381,6 +1625,12 @@ func (accessible *ObjectClass) RefRelationSet() *RelationSet {
 
 // RefStateSet gets a reference to the state set of the accessible; the caller
 // must unreference it when it is no longer needed.
+//
+// The function returns the following values:
+//
+//    - stateSet: reference to an StateSet which is the state set of the
+//      accessible.
+//
 func (accessible *ObjectClass) RefStateSet() *StateSet {
 	var _arg0 *C.AtkObject   // out
 	var _cret *C.AtkStateSet // in
@@ -1424,6 +1674,10 @@ func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 //
 //    - relationship of the relation.
 //    - target which is the target of the relation to be removed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the relationship is removed.
 //
 func (object *ObjectClass) RemoveRelationship(relationship RelationType, target *ObjectClass) bool {
 	var _arg0 *C.AtkObject      // out
@@ -1550,53 +1804,6 @@ func (accessible *ObjectClass) SetRole(role Role) {
 	C.atk_object_set_role(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(role)
-}
-
-// ConnectActiveDescendantChanged: "active-descendant-changed" signal is emitted
-// by an object which has the state ATK_STATE_MANAGES_DESCENDANTS when the focus
-// object in the object changes. For instance, a table will emit the signal when
-// the cell in the table which has focus changes.
-func (object *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) externglib.SignalHandle {
-	return object.Connect("active-descendant-changed", f)
-}
-
-// ConnectChildrenChanged: signal "children-changed" is emitted when a child is
-// added or removed form an object. It supports two details: "add" and "remove".
-func (object *ObjectClass) ConnectChildrenChanged(f func(arg1 uint, arg2 *ObjectClass)) externglib.SignalHandle {
-	return object.Connect("children-changed", f)
-}
-
-// ConnectFocusEvent: signal "focus-event" is emitted when an object gained or
-// lost focus.
-func (object *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) externglib.SignalHandle {
-	return object.Connect("focus-event", f)
-}
-
-// ConnectPropertyChange: signal "property-change" is emitted when an object's
-// property value changes. arg1 contains an PropertyValues with the name and the
-// new value of the property whose value has changed. Note that, as with GObject
-// notify, getting this signal does not guarantee that the value of the property
-// has actually changed; it may also be emitted when the setter of the property
-// is called to reinstate the previous value.
-//
-// Toolkit implementor note: ATK implementors should use g_object_notify() to
-// emit property-changed notifications. Object::property-changed is needed by
-// the implementation of atk_add_global_event_listener() because GObject notify
-// doesn't support emission hooks.
-func (object *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) externglib.SignalHandle {
-	return object.Connect("property-change", f)
-}
-
-// ConnectStateChange: "state-change" signal is emitted when an object's state
-// changes. The detail value identifies the state type which has changed.
-func (object *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) externglib.SignalHandle {
-	return object.Connect("state-change", f)
-}
-
-// ConnectVisibleDataChanged: "visible-data-changed" signal is emitted when the
-// visual appearance of the object changed.
-func (object *ObjectClass) ConnectVisibleDataChanged(f func()) externglib.SignalHandle {
-	return object.Connect("visible-data-changed", f)
 }
 
 // Attribute is a string name/value pair representing a generic attribute. This

@@ -180,6 +180,10 @@ func AccelMapAddFilter(filterPattern string) {
 //    - accelMods: new accelerator modifiers.
 //    - replace: TRUE if other accelerators may be deleted upon conflicts.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the accelerator could be changed, FALSE otherwise.
+//
 func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.ModifierType, replace bool) bool {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.guint           // out
@@ -213,6 +217,11 @@ func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.Modifier
 // AccelMapGet gets the singleton global AccelMap object. This object is useful
 // only for notification of changes to the accelerator map via the ::changed
 // signal; it isn’t a parameter to the other accelerator map functions.
+//
+// The function returns the following values:
+//
+//    - accelMap: global AccelMap object.
+//
 func AccelMapGet() *AccelMap {
 	var _cret *C.GtkAccelMap // in
 
@@ -231,7 +240,7 @@ func AccelMapGet() *AccelMap {
 // The function takes the following parameters:
 //
 //    - fileName: file containing accelerator specifications, in the GLib file
-//    name encoding.
+//      name encoding.
 //
 func AccelMapLoad(fileName string) {
 	var _arg1 *C.gchar // out
@@ -311,6 +320,11 @@ func AccelMapLockPath(accelPath string) {
 //
 //    - accelPath: valid accelerator path.
 //
+// The function returns the following values:
+//
+//    - key (optional): accelerator key to be filled in (optional).
+//    - ok: TRUE if accel_path is known, FALSE otherwise.
+//
 func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkAccelKey // in
@@ -339,8 +353,8 @@ func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
 //
 // The function takes the following parameters:
 //
-//    - fileName: name of the file to contain accelerator specifications, in
-//    the GLib file name encoding.
+//    - fileName: name of the file to contain accelerator specifications, in the
+//      GLib file name encoding.
 //
 func AccelMapSave(fileName string) {
 	var _arg1 *C.gchar // out

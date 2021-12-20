@@ -97,6 +97,12 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 }
 
 // Copy copies a PangoTabArray.
+//
+// The function returns the following values:
+//
+//    - tabArray: newly allocated PangoTabArray, which should be freed with
+//      pango.TabArray.Free().
+//
 func (src *TabArray) Copy() *TabArray {
 	var _arg0 *C.PangoTabArray // out
 	var _cret *C.PangoTabArray // in
@@ -121,6 +127,11 @@ func (src *TabArray) Copy() *TabArray {
 
 // PositionsInPixels returns TRUE if the tab positions are in pixels, FALSE if
 // they are in Pango units.
+//
+// The function returns the following values:
+//
+//    - ok: whether positions are in pixels.
+//
 func (tabArray *TabArray) PositionsInPixels() bool {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gboolean       // in
@@ -140,6 +151,11 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 }
 
 // Size gets the number of tab stops in tab_array.
+//
+// The function returns the following values:
+//
+//    - gint: number of tab stops in the array.
+//
 func (tabArray *TabArray) Size() int {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gint           // in
@@ -157,6 +173,16 @@ func (tabArray *TabArray) Size() int {
 }
 
 // Tab gets the alignment and position of a tab stop.
+//
+// The function takes the following parameters:
+//
+//    - tabIndex: tab stop index.
+//
+// The function returns the following values:
+//
+//    - alignment (optional): location to store alignment, or NULL.
+//    - location (optional) to store tab position, or NULL.
+//
 func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
@@ -183,6 +209,11 @@ func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 //
 // You must subsequently initialize any tabs that were added as a result of
 // growing the array.
+//
+// The function takes the following parameters:
+//
+//    - newSize: new size of the array.
+//
 func (tabArray *TabArray) Resize(newSize int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
@@ -198,6 +229,13 @@ func (tabArray *TabArray) Resize(newSize int) {
 // SetTab sets the alignment and location of a tab stop.
 //
 // alignment must always be PANGO_TAB_LEFT in the current implementation.
+//
+// The function takes the following parameters:
+//
+//    - tabIndex: index of a tab stop.
+//    - alignment: tab alignment.
+//    - location: tab location in Pango units.
+//
 func (tabArray *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out

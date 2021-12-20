@@ -107,6 +107,10 @@ func marshalNoOpObjector(p uintptr) (interface{}, error) {
 //
 //    - obj: #GObject.
 //
+// The function returns the following values:
+//
+//    - noOpObject: default (non-functioning stub) Object.
+//
 func NewNoOpObject(obj *externglib.Object) *NoOpObject {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in

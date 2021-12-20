@@ -104,7 +104,9 @@ func (settings *Settings) ResetProperty(name string) {
 //
 // The function takes the following parameters:
 //
-
+//    - name
+//    - vDouble
+//    - origin
 //
 func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin string) {
 	var _arg0 *C.GtkSettings // out
@@ -130,7 +132,9 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 //
 // The function takes the following parameters:
 //
-
+//    - name
+//    - vLong
+//    - origin
 //
 func (settings *Settings) SetLongProperty(name string, vLong int32, origin string) {
 	var _arg0 *C.GtkSettings // out
@@ -156,7 +160,8 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 //
 // The function takes the following parameters:
 //
-
+//    - name
+//    - svalue
 //
 func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	var _arg0 *C.GtkSettings      // out
@@ -178,7 +183,9 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 //
 // The function takes the following parameters:
 //
-
+//    - name
+//    - vString
+//    - origin
 //
 func (settings *Settings) SetStringProperty(name, vString, origin string) {
 	var _arg0 *C.GtkSettings // out
@@ -203,6 +210,12 @@ func (settings *Settings) SetStringProperty(name, vString, origin string) {
 
 // SettingsGetDefault gets the Settings object for the default GDK screen,
 // creating it if necessary. See gtk_settings_get_for_screen().
+//
+// The function returns the following values:
+//
+//    - settings (optional) object. If there is no default screen, then returns
+//      NULL.
+//
 func SettingsGetDefault() *Settings {
 	var _cret *C.GtkSettings // in
 
@@ -223,6 +236,10 @@ func SettingsGetDefault() *Settings {
 // The function takes the following parameters:
 //
 //    - screen: Screen.
+//
+// The function returns the following values:
+//
+//    - settings Settings object.
 //
 func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	var _arg1 *C.GdkScreen   // out

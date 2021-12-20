@@ -90,6 +90,10 @@ func (a AccelFlags) Has(other AccelFlags) bool {
 //    - accelKey: accelerator keyval from a key event.
 //    - accelMods: keyboard state mask from a key event.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if an accelerator was activated and handled this keypress.
+//
 func AccelGroupsActivate(object *externglib.Object, accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg1 *C.GObject        // out
 	var _arg2 C.guint           // out
@@ -121,6 +125,10 @@ func AccelGroupsActivate(object *externglib.Object, accelKey uint, accelMods gdk
 //
 //    - object usually a Window.
 //
+// The function returns the following values:
+//
+//    - sList: list of all accel groups which are attached to object.
+//
 func AccelGroupsFromObject(object *externglib.Object) []AccelGroup {
 	var _arg1 *C.GObject // out
 	var _cret *C.GSList  // in
@@ -147,6 +155,11 @@ func AccelGroupsFromObject(object *externglib.Object) []AccelGroup {
 //
 // The modifier mask determines which modifiers are considered significant for
 // keyboard accelerators. See gtk_accelerator_set_default_mod_mask().
+//
+// The function returns the following values:
+//
+//    - modifierType: default accelerator modifier mask.
+//
 func AcceleratorGetDefaultModMask() gdk.ModifierType {
 	var _cret C.GdkModifierType // in
 
@@ -166,6 +179,10 @@ func AcceleratorGetDefaultModMask() gdk.ModifierType {
 //
 //    - acceleratorKey: accelerator keyval.
 //    - acceleratorMods: accelerator modifier mask.
+//
+// The function returns the following values:
+//
+//    - utf8: newly-allocated string representing the accelerator.
 //
 func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 C.guint           // out
@@ -196,10 +213,14 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 //
 // The function takes the following parameters:
 //
-//    - display or NULL to use the default display.
+//    - display (optional) or NULL to use the default display.
 //    - acceleratorKey: accelerator keyval.
 //    - keycode: accelerator keycode.
 //    - acceleratorMods: accelerator modifier mask.
+//
+// The function returns the following values:
+//
+//    - utf8: newly-allocated string representing the accelerator.
 //
 func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
@@ -241,6 +262,10 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycod
 //    - acceleratorKey: accelerator keyval.
 //    - acceleratorMods: accelerator modifier mask.
 //
+// The function returns the following values:
+//
+//    - utf8: newly-allocated accelerator name.
+//
 func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -269,10 +294,14 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 //
 // The function takes the following parameters:
 //
-//    - display or NULL to use the default display.
+//    - display (optional) or NULL to use the default display.
 //    - acceleratorKey: accelerator keyval.
 //    - keycode: accelerator keycode.
 //    - acceleratorMods: accelerator modifier mask.
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated accelerator name.
 //
 func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
@@ -318,6 +347,13 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 //
 //    - accelerator: string representing an accelerator.
 //
+// The function returns the following values:
+//
+//    - acceleratorKey (optional): return location for accelerator keyval, or
+//      NULL.
+//    - acceleratorMods (optional): return location for accelerator modifier
+//      mask, NULL.
+//
 func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.guint           // in
@@ -355,6 +391,15 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 // The function takes the following parameters:
 //
 //    - accelerator: string representing an accelerator.
+//
+// The function returns the following values:
+//
+//    - acceleratorKey (optional): return location for accelerator keyval, or
+//      NULL.
+//    - acceleratorCodes (optional): return location for accelerator keycodes, or
+//      NULL.
+//    - acceleratorMods (optional): return location for accelerator modifier
+//      mask, NULL.
 //
 func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.ModifierType) {
 	var _arg1 *C.gchar          // out
@@ -430,6 +475,10 @@ func AcceleratorSetDefaultModMask(defaultModMask gdk.ModifierType) {
 //    - keyval: GDK keyval.
 //    - modifiers: modifier mask.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the accelerator is valid.
+//
 func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -456,6 +505,12 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type AccelGroupOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - keyval
+	//    - modifier
+	//    - accelClosure
+	//
 	AccelChanged(keyval uint, modifier gdk.ModifierType, accelClosure externglib.AnyClosure)
 }
 
@@ -490,7 +545,18 @@ func marshalAccelGrouper(p uintptr) (interface{}, error) {
 	return wrapAccelGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAccelActivate signal is an implementation detail of AccelGroup and not
+// meant to be used by applications.
+func (accelGroup *AccelGroup) ConnectAccelActivate(f func(acceleratable *externglib.Object, keyval uint, modifier gdk.ModifierType) bool) externglib.SignalHandle {
+	return accelGroup.Connect("accel-activate", f)
+}
+
 // NewAccelGroup creates a new AccelGroup.
+//
+// The function returns the following values:
+//
+//    - accelGroup: new AccelGroup object.
+//
 func NewAccelGroup() *AccelGroup {
 	var _cret *C.GtkAccelGroup // in
 
@@ -512,6 +578,10 @@ func NewAccelGroup() *AccelGroup {
 //    - acceleratable usually a Window, on which to activate the accelerator.
 //    - accelKey: accelerator keyval from a key event.
 //    - accelMods: keyboard state mask from a key event.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if an accelerator was activated and handled this keypress.
 //
 func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *externglib.Object, accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg0 *C.GtkAccelGroup  // out
@@ -622,8 +692,12 @@ func (accelGroup *AccelGroup) ConnectByPath(accelPath string, closure externglib
 //
 // The function takes the following parameters:
 //
-//    - closure to remove from this accelerator group, or NULL to remove all
-//    closures.
+//    - closure (optional) to remove from this accelerator group, or NULL to
+//      remove all closures.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the closure was found and got disconnected.
 //
 func (accelGroup *AccelGroup) Disconnect(closure externglib.AnyClosure) bool {
 	var _arg0 *C.GtkAccelGroup // out
@@ -654,6 +728,11 @@ func (accelGroup *AccelGroup) Disconnect(closure externglib.AnyClosure) bool {
 //    - accelKey: key value of the accelerator.
 //    - accelMods: modifier combination of the accelerator.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if there was an accelerator which could be removed, FALSE
+//      otherwise.
+//
 func (accelGroup *AccelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _arg1 C.guint           // out
@@ -680,6 +759,12 @@ func (accelGroup *AccelGroup) DisconnectKey(accelKey uint, accelMods gdk.Modifie
 
 // IsLocked locks are added and removed using gtk_accel_group_lock() and
 // gtk_accel_group_unlock().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if there are 1 or more locks on the accel_group, FALSE
+//      otherwise.
+//
 func (accelGroup *AccelGroup) IsLocked() bool {
 	var _arg0 *C.GtkAccelGroup // out
 	var _cret C.gboolean       // in
@@ -700,6 +785,11 @@ func (accelGroup *AccelGroup) IsLocked() bool {
 
 // ModifierMask gets a ModifierType representing the mask for this accel_group.
 // For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
+//
+// The function returns the following values:
+//
+//    - modifierType: modifier mask for this accel group.
+//
 func (accelGroup *AccelGroup) ModifierMask() gdk.ModifierType {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _cret C.GdkModifierType // in
@@ -741,6 +831,11 @@ func (accelGroup *AccelGroup) Lock() {
 //    - accelKey: key value of the accelerator.
 //    - accelMods: modifier combination of the accelerator.
 //
+// The function returns the following values:
+//
+//    - accelGroupEntrys (optional): array of n_entries AccelGroupEntry elements,
+//      or NULL. The array is owned by GTK+ and must not be freed.
+//
 func (accelGroup *AccelGroup) Query(accelKey uint, accelMods gdk.ModifierType) []AccelGroupEntry {
 	var _arg0 *C.GtkAccelGroup      // out
 	var _arg1 C.guint               // out
@@ -780,12 +875,6 @@ func (accelGroup *AccelGroup) Unlock() {
 
 	C.gtk_accel_group_unlock(_arg0)
 	runtime.KeepAlive(accelGroup)
-}
-
-// ConnectAccelActivate signal is an implementation detail of AccelGroup and not
-// meant to be used by applications.
-func (accelGroup *AccelGroup) ConnectAccelActivate(f func(acceleratable *externglib.Object, keyval uint, modifier gdk.ModifierType) bool) externglib.SignalHandle {
-	return accelGroup.Connect("accel-activate", f)
 }
 
 // AccelGroupEntry: instance of this type is always passed by reference.

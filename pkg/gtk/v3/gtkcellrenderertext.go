@@ -29,6 +29,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellRendererTextOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - path
+	//    - newText
+	//
 	Edited(path, newText string)
 }
 
@@ -60,12 +65,25 @@ func marshalCellRendererTexter(p uintptr) (interface{}, error) {
 	return wrapCellRendererText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEdited: this signal is emitted after renderer has been edited.
+//
+// It is the responsibility of the application to update the model and store
+// new_text at the position indicated by path.
+func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) externglib.SignalHandle {
+	return renderer.Connect("edited", f)
+}
+
 // NewCellRendererText creates a new CellRendererText. Adjust how text is drawn
 // using object properties. Object properties can be set globally (with
 // g_object_set()). Also, with TreeViewColumn, you can bind a property to a
 // value in a TreeModel. For example, you can bind the “text” property on the
 // cell renderer to a string value in the model, thus rendering a different
 // string in each row of the TreeView.
+//
+// The function returns the following values:
+//
+//    - cellRendererText: new cell renderer.
+//
 func NewCellRendererText() *CellRendererText {
 	var _cret *C.GtkCellRenderer // in
 
@@ -88,8 +106,8 @@ func NewCellRendererText() *CellRendererText {
 //
 // The function takes the following parameters:
 //
-//    - numberOfRows: number of rows of text each cell renderer is allocated,
-//    or -1.
+//    - numberOfRows: number of rows of text each cell renderer is allocated, or
+//      -1.
 //
 func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg0 *C.GtkCellRendererText // out
@@ -101,12 +119,4 @@ func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(numberOfRows)
-}
-
-// ConnectEdited: this signal is emitted after renderer has been edited.
-//
-// It is the responsibility of the application to update the model and store
-// new_text at the position indicated by path.
-func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) externglib.SignalHandle {
-	return renderer.Connect("edited", f)
 }

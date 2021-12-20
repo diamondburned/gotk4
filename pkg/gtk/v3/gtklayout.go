@@ -84,8 +84,12 @@ func marshalLayouter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - hadjustment: horizontal scroll adjustment, or NULL.
-//    - vadjustment: vertical scroll adjustment, or NULL.
+//    - hadjustment (optional): horizontal scroll adjustment, or NULL.
+//    - vadjustment (optional): vertical scroll adjustment, or NULL.
+//
+// The function returns the following values:
+//
+//    - layout: new Layout.
 //
 func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 	var _arg1 *C.GtkAdjustment // out
@@ -111,6 +115,11 @@ func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 }
 
 // BinWindow: retrieve the bin window of the layout used for drawing operations.
+//
+// The function returns the following values:
+//
+//    - window: Window.
+//
 func (layout *Layout) BinWindow() gdk.Windower {
 	var _arg0 *C.GtkLayout // out
 	var _cret *C.GdkWindow // in
@@ -148,6 +157,11 @@ func (layout *Layout) BinWindow() gdk.Windower {
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment: horizontal scroll adjustment.
+//
 func (layout *Layout) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
@@ -166,6 +180,12 @@ func (layout *Layout) HAdjustment() *Adjustment {
 
 // Size gets the size that has been set on the layout, and that determines the
 // total extents of the layout’s scrollbar area. See gtk_layout_set_size ().
+//
+// The function returns the following values:
+//
+//    - width (optional): location to store the width set on layout, or NULL.
+//    - height (optional): location to store the height set on layout, or NULL.
+//
 func (layout *Layout) Size() (width uint, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // in
@@ -193,6 +213,11 @@ func (layout *Layout) Size() (width uint, height uint) {
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment: vertical scroll adjustment.
+//
 func (layout *Layout) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
@@ -270,7 +295,7 @@ func (layout *Layout) Put(childWidget Widgetter, x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment: new scroll adjustment.
+//    - adjustment (optional): new scroll adjustment.
 //
 func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out
@@ -316,7 +341,7 @@ func (layout *Layout) SetSize(width, height uint) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment: new scroll adjustment.
+//    - adjustment (optional): new scroll adjustment.
 //
 func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out

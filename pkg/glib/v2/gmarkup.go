@@ -228,6 +228,10 @@ func (m MarkupParseFlags) Has(other MarkupParseFlags) bool {
 //    - text: some valid UTF-8 text.
 //    - length of text in bytes, or -1 if the text is nul-terminated.
 //
+// The function returns the following values:
+//
+//    - utf8: newly allocated string with the escaped text.
+//
 func MarkupEscapeText(text string, length int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -297,6 +301,11 @@ func (context *MarkupParseContext) EndParse() error {
 // If called from the start_element or end_element handlers this will give the
 // element_name as passed to those functions. For the parent elements, see
 // g_markup_parse_context_get_element_stack().
+//
+// The function returns the following values:
+//
+//    - utf8: name of the currently open element, or NULL.
+//
 func (context *MarkupParseContext) Element() string {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.gchar               // in
@@ -317,6 +326,13 @@ func (context *MarkupParseContext) Element() string {
 // that line. Intended for use in error messages; there are no strict semantics
 // for what constitutes the "current" line number other than "the best number we
 // could come up with for error messages.".
+//
+// The function returns the following values:
+//
+//    - lineNumber (optional): return location for a line number, or NULL.
+//    - charNumber (optional): return location for a char-on-line number, or
+//      NULL.
+//
 func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 C.gint                 // in
@@ -341,6 +357,13 @@ func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 // This will either be the user_data that was provided to
 // g_markup_parse_context_new() or to the most recent call of
 // g_markup_parse_context_push().
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): provided user_data. The returned data belongs to the
+//      markup context and will be freed when g_markup_parse_context_free() is
+//      called.
+//
 func (context *MarkupParseContext) UserData() cgo.Handle {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
@@ -366,6 +389,12 @@ func (context *MarkupParseContext) UserData() cgo.Handle {
 // of data into this function, aborting the process if an error occurs. Once an
 // error is reported, no further data may be fed to the ParseContext; all errors
 // are fatal.
+//
+// The function takes the following parameters:
+//
+//    - text: chunk of text to parse.
+//    - textLen: length of text in bytes.
+//
 func (context *MarkupParseContext) Parse(text string, textLen int) error {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.gchar               // out
@@ -403,6 +432,11 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 // This function is not intended to be directly called by users interested in
 // invoking subparsers. Instead, it is intended to be used by the subparsers
 // themselves to implement a higher-level interface.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): user data passed to g_markup_parse_context_push().
+//
 func (context *MarkupParseContext) Pop() cgo.Handle {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
@@ -462,6 +496,12 @@ func (context *MarkupParseContext) Pop() cgo.Handle {
 //
 //      // else, handle other tags...
 //    }.
+//
+// The function takes the following parameters:
+//
+//    - parser: Parser.
+//    - userData (optional): user data to pass to Parser functions.
+//
 func (context *MarkupParseContext) Push(parser *MarkupParser, userData cgo.Handle) {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.GMarkupParser       // out

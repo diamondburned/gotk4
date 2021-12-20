@@ -54,6 +54,11 @@ func marshalWaylandDisplayer(p uintptr) (interface{}, error) {
 
 // StartupNotificationID gets the startup notification ID for a Wayland display,
 // or NULL if no ID has been defined.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): startup notification ID for display, or NULL.
+//
 func (display *WaylandDisplay) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
@@ -78,6 +83,10 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 // The function takes the following parameters:
 //
 //    - global interface to query in the registry.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the global is offered by the compositor.
 //
 func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out

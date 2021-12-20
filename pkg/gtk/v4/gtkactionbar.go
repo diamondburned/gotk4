@@ -72,6 +72,11 @@ func marshalActionBarrer(p uintptr) (interface{}, error) {
 }
 
 // NewActionBar creates a new GtkActionBar widget.
+//
+// The function returns the following values:
+//
+//    - actionBar: new GtkActionBar.
+//
 func NewActionBar() *ActionBar {
 	var _cret *C.GtkWidget // in
 
@@ -85,6 +90,11 @@ func NewActionBar() *ActionBar {
 }
 
 // CenterWidget retrieves the center bar widget of the bar.
+//
+// The function returns the following values:
+//
+//    - widget (optional): center GtkWidget or NULL.
+//
 func (actionBar *ActionBar) CenterWidget() Widgetter {
 	var _arg0 *C.GtkActionBar // out
 	var _cret *C.GtkWidget    // in
@@ -114,6 +124,11 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 }
 
 // Revealed gets whether the contents of the action bar are revealed.
+//
+// The function returns the following values:
+//
+//    - ok: current value of the gtk.ActionBar:revealed property.
+//
 func (actionBar *ActionBar) Revealed() bool {
 	var _arg0 *C.GtkActionBar // out
 	var _cret C.gboolean      // in
@@ -192,7 +207,7 @@ func (actionBar *ActionBar) Remove(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - centerWidget: widget to use for the center.
+//    - centerWidget (optional): widget to use for the center.
 //
 func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg0 *C.GtkActionBar // out

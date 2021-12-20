@@ -35,6 +35,11 @@ type SocketOverrider interface {
 	// function and pass the id for the plug as returned by atk_plug_get_id().
 	// It is the responsibility of the application to pass the plug id on to the
 	// process implementing the Socket as needed.
+	//
+	// The function takes the following parameters:
+	//
+	//    - plugId: ID of an Plug.
+	//
 	Embed(plugId string)
 }
 
@@ -86,6 +91,11 @@ func marshalSocketter(p uintptr) (interface{}, error) {
 }
 
 // NewSocket creates a new Socket.
+//
+// The function returns the following values:
+//
+//    - socket: newly created Socket instance.
+//
 func NewSocket() *Socket {
 	var _cret *C.AtkObject // in
 
@@ -125,6 +135,11 @@ func (obj *Socket) Embed(plugId string) {
 }
 
 // IsOccupied determines whether or not the socket has an embedded plug.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a plug is embedded in the socket.
+//
 func (obj *Socket) IsOccupied() bool {
 	var _arg0 *C.AtkSocket // out
 	var _cret C.gboolean   // in

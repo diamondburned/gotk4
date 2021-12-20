@@ -87,8 +87,12 @@ func marshalViewporter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - hadjustment: horizontal adjustment.
-//    - vadjustment: vertical adjustment.
+//    - hadjustment (optional): horizontal adjustment.
+//    - vadjustment (optional): vertical adjustment.
+//
+// The function returns the following values:
+//
+//    - viewport: new GtkViewport.
 //
 func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	var _arg1 *C.GtkAdjustment // out
@@ -114,6 +118,11 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 }
 
 // Child gets the child widget of viewport.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of viewport.
+//
 func (viewport *Viewport) Child() Widgetter {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GtkWidget   // in
@@ -144,6 +153,11 @@ func (viewport *Viewport) Child() Widgetter {
 
 // ScrollToFocus gets whether the viewport is scrolling to keep the focused
 // child in view.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the viewport keeps the focus child scrolled to view.
+//
 func (viewport *Viewport) ScrollToFocus() bool {
 	var _arg0 *C.GtkViewport // out
 	var _cret C.gboolean     // in
@@ -166,7 +180,7 @@ func (viewport *Viewport) ScrollToFocus() bool {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (viewport *Viewport) SetChild(child Widgetter) {
 	var _arg0 *C.GtkViewport // out

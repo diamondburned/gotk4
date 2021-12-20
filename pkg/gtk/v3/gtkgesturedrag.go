@@ -53,11 +53,30 @@ func marshalGestureDragger(p uintptr) (interface{}, error) {
 	return wrapGestureDrag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectDragBegin: this signal is emitted whenever dragging starts.
+func (gesture *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) externglib.SignalHandle {
+	return gesture.Connect("drag-begin", f)
+}
+
+// ConnectDragEnd: this signal is emitted whenever the dragging is finished.
+func (gesture *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) externglib.SignalHandle {
+	return gesture.Connect("drag-end", f)
+}
+
+// ConnectDragUpdate: this signal is emitted whenever the dragging point moves.
+func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) externglib.SignalHandle {
+	return gesture.Connect("drag-update", f)
+}
+
 // NewGestureDrag returns a newly created Gesture that recognizes drags.
 //
 // The function takes the following parameters:
 //
 //    - widget: Widget.
+//
+// The function returns the following values:
+//
+//    - gestureDrag: newly created GestureDrag.
 //
 func NewGestureDrag(widget Widgetter) *GestureDrag {
 	var _arg1 *C.GtkWidget  // out
@@ -78,6 +97,13 @@ func NewGestureDrag(widget Widgetter) *GestureDrag {
 // Offset: if the gesture is active, this function returns TRUE and fills in x
 // and y with the coordinates of the current point, as an offset to the starting
 // drag point.
+//
+// The function returns the following values:
+//
+//    - x (optional): x offset for the current point.
+//    - y (optional): y offset for the current point.
+//    - ok: TRUE if the gesture is active.
+//
 func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
 	var _arg1 C.gdouble         // in
@@ -104,6 +130,13 @@ func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
 
 // StartPoint: if the gesture is active, this function returns TRUE and fills in
 // x and y with the drag start coordinates, in window-relative coordinates.
+//
+// The function returns the following values:
+//
+//    - x (optional): x coordinate for the drag start point.
+//    - y (optional): y coordinate for the drag start point.
+//    - ok: TRUE if the gesture is active.
+//
 func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
 	var _arg1 C.gdouble         // in
@@ -126,19 +159,4 @@ func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	}
 
 	return _x, _y, _ok
-}
-
-// ConnectDragBegin: this signal is emitted whenever dragging starts.
-func (gesture *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) externglib.SignalHandle {
-	return gesture.Connect("drag-begin", f)
-}
-
-// ConnectDragEnd: this signal is emitted whenever the dragging is finished.
-func (gesture *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) externglib.SignalHandle {
-	return gesture.Connect("drag-end", f)
-}
-
-// ConnectDragUpdate: this signal is emitted whenever the dragging point moves.
-func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) externglib.SignalHandle {
-	return gesture.Connect("drag-update", f)
 }

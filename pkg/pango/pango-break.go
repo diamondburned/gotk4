@@ -68,7 +68,7 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 //
 //    - text to break. Must be valid UTF-8.
 //    - length of text in bytes (may be -1 if text is nul-terminated).
-//    - analysis for the text.
+//    - analysis (optional) for the text.
 //    - attrs: logical attributes to fill in.
 //    - attrsLen: size of the array passed as attrs.
 //
@@ -113,6 +113,11 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 //    - text: UTF-8 text.
 //    - length of text in bytes, or -1 if nul-terminated.
 //
+// The function returns the following values:
+//
+//    - paragraphDelimiterIndex: return location for index of delimiter.
+//    - nextParagraphStart: return location for start of next paragraph.
+//
 func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int, nextParagraphStart int) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
@@ -151,7 +156,7 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 //    - level: embedding level, or -1 if unknown.
 //    - language tag.
 //    - logAttrs: array with one PangoLogAttr per character in text, plus one
-//    extra, to be filled in.
+//      extra, to be filled in.
 //
 func GetLogAttrs(text string, length, level int, language *Language, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
@@ -196,10 +201,10 @@ func GetLogAttrs(text string, length, level int, language *Language, logAttrs []
 //    - text to process. Must be valid UTF-8.
 //    - length in bytes of text.
 //    - analysis: PangoAnalysis structure from itemize for text.
-//    - offset: byte offset of text from the beginning of the paragraph, or -1
-//    to ignore attributes from analysis.
+//    - offset: byte offset of text from the beginning of the paragraph, or -1 to
+//      ignore attributes from analysis.
 //    - logAttrs: array with one PangoLogAttr per character in text, plus one
-//    extra, to be filled in.
+//      extra, to be filled in.
 //
 func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out

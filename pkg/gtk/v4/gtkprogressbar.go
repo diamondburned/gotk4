@@ -110,6 +110,11 @@ func marshalProgressBarrer(p uintptr) (interface{}, error) {
 }
 
 // NewProgressBar creates a new GtkProgressBar.
+//
+// The function returns the following values:
+//
+//    - progressBar: GtkProgressBar.
+//
 func NewProgressBar() *ProgressBar {
 	var _cret *C.GtkWidget // in
 
@@ -125,6 +130,11 @@ func NewProgressBar() *ProgressBar {
 // Ellipsize returns the ellipsizing position of the progress bar.
 //
 // See gtk.ProgressBar.SetEllipsize().
+//
+// The function returns the following values:
+//
+//    - ellipsizeMode: PangoEllipsizeMode.
+//
 func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
 	var _arg0 *C.GtkProgressBar    // out
 	var _cret C.PangoEllipsizeMode // in
@@ -142,6 +152,11 @@ func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
 }
 
 // Fraction returns the current fraction of the task that’s been completed.
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
 func (pbar *ProgressBar) Fraction() float64 {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.double          // in
@@ -159,6 +174,11 @@ func (pbar *ProgressBar) Fraction() float64 {
 }
 
 // Inverted returns whether the progress bar is inverted.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the progress bar is inverted.
+//
 func (pbar *ProgressBar) Inverted() bool {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gboolean        // in
@@ -180,6 +200,11 @@ func (pbar *ProgressBar) Inverted() bool {
 // PulseStep retrieves the pulse step.
 //
 // See gtk.ProgressBar.SetPulseStep().
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
 func (pbar *ProgressBar) PulseStep() float64 {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.double          // in
@@ -199,6 +224,11 @@ func (pbar *ProgressBar) PulseStep() float64 {
 // ShowText returns whether the GtkProgressBar shows text.
 //
 // See gtk.ProgressBar.SetShowText().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if text is shown in the progress bar.
+//
 func (pbar *ProgressBar) ShowText() bool {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gboolean        // in
@@ -221,6 +251,12 @@ func (pbar *ProgressBar) ShowText() bool {
 //
 // The return value is a reference to the text, not a copy of it, so will become
 // invalid if you change the text in the progress bar.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): text, or NULL; this string is owned by the widget and
+//      should not be modified or freed.
+//
 func (pbar *ProgressBar) Text() string {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret *C.char           // in
@@ -380,7 +416,7 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 //
 // The function takes the following parameters:
 //
-//    - text: UTF-8 string, or NULL.
+//    - text (optional): UTF-8 string, or NULL.
 //
 func (pbar *ProgressBar) SetText(text string) {
 	var _arg0 *C.GtkProgressBar // out

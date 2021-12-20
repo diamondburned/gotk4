@@ -178,6 +178,11 @@ func marshalImager(p uintptr) (interface{}, error) {
 }
 
 // NewImage creates a new empty Image widget.
+//
+// The function returns the following values:
+//
+//    - image: newly created Image widget.
+//
 func NewImage() *Image {
 	var _cret *C.GtkWidget // in
 
@@ -203,6 +208,10 @@ func NewImage() *Image {
 // The function takes the following parameters:
 //
 //    - animation: animation.
+//
+// The function returns the following values:
+//
+//    - image: new Image widget.
 //
 func NewImageFromAnimation(animation *gdkpixbuf.PixbufAnimation) *Image {
 	var _arg1 *C.GdkPixbufAnimation // out
@@ -239,6 +248,10 @@ func NewImageFromAnimation(animation *gdkpixbuf.PixbufAnimation) *Image {
 //
 //    - filename: filename.
 //
+// The function returns the following values:
+//
+//    - image: new Image.
+//
 func NewImageFromFile(filename string) *Image {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -266,6 +279,10 @@ func NewImageFromFile(filename string) *Image {
 //    - icon: icon.
 //    - size: stock icon size (IconSize).
 //
+// The function returns the following values:
+//
+//    - image: new Image displaying the themed icon.
+//
 func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
@@ -292,8 +309,12 @@ func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name or NULL.
+//    - iconName (optional): icon name or NULL.
 //    - size: stock icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - image: new Image displaying the themed icon.
 //
 func NewImageFromIconName(iconName string, size int) *Image {
 	var _arg1 *C.gchar      // out
@@ -335,6 +356,10 @@ func NewImageFromIconName(iconName string, size int) *Image {
 //    - iconSet: IconSet.
 //    - size: stock icon size (IconSize).
 //
+// The function returns the following values:
+//
+//    - image: new Image.
+//
 func NewImageFromIconSet(iconSet *IconSet, size int) *Image {
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
@@ -364,7 +389,11 @@ func NewImageFromIconSet(iconSet *IconSet, size int) *Image {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf or NULL.
+//    - pixbuf (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - image: new Image.
 //
 func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	var _arg1 *C.GdkPixbuf // out
@@ -403,6 +432,10 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 //
 //    - resourcePath: resource path.
 //
+// The function returns the following values:
+//
+//    - image: new Image.
+//
 func NewImageFromResource(resourcePath string) *Image {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -433,6 +466,10 @@ func NewImageFromResource(resourcePath string) *Image {
 //    - stockId: stock icon name.
 //    - size: stock icon size (IconSize).
 //
+// The function returns the following values:
+//
+//    - image: new Image displaying the stock icon.
+//
 func NewImageFromStock(stockId string, size int) *Image {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -459,7 +496,11 @@ func NewImageFromStock(stockId string, size int) *Image {
 //
 // The function takes the following parameters:
 //
-//    - surface or NULL.
+//    - surface (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - image: new Image.
 //
 func NewImageFromSurface(surface *cairo.Surface) *Image {
 	var _arg1 *C.cairo_surface_t // out
@@ -493,6 +534,12 @@ func (image *Image) Clear() {
 // type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ANIMATION (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
 // reference to the returned animation.
+//
+// The function returns the following values:
+//
+//    - pixbufAnimation (optional): displayed animation, or NULL if the image is
+//      empty.
+//
 func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 	var _arg0 *C.GtkImage           // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -520,6 +567,12 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 // of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
 // reference to the returned #GIcon.
+//
+// The function returns the following values:
+//
+//    - gicon (optional): place to store a #GIcon, or NULL.
+//    - size (optional): place to store an icon size (IconSize), or NULL.
+//
 func (image *Image) GIcon() (gio.Iconner, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // in
@@ -555,6 +608,12 @@ func (image *Image) GIcon() (gio.Iconner, int) {
 // storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME (see
 // gtk_image_get_storage_type()). The returned string is owned by the Image and
 // should not be freed.
+//
+// The function returns the following values:
+//
+//    - iconName (optional): place to store an icon name, or NULL.
+//    - size (optional): place to store an icon size (IconSize), or NULL.
+//
 func (image *Image) IconName() (string, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // in
@@ -580,6 +639,11 @@ func (image *Image) IconName() (string, int) {
 // image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PIXBUF (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
 // reference to the returned pixbuf.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): displayed pixbuf, or NULL if the image is empty.
+//
 func (image *Image) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkImage  // out
 	var _cret *C.GdkPixbuf // in
@@ -609,6 +673,11 @@ func (image *Image) Pixbuf() *gdkpixbuf.Pixbuf {
 }
 
 // PixelSize gets the pixel size used for named icons.
+//
+// The function returns the following values:
+//
+//    - gint: pixel size used for named icons.
+//
 func (image *Image) PixelSize() int {
 	var _arg0 *C.GtkImage // out
 	var _cret C.gint      // in
@@ -631,6 +700,12 @@ func (image *Image) PixelSize() int {
 // should not be freed.
 //
 // Deprecated: Use gtk_image_get_icon_name() instead.
+//
+// The function returns the following values:
+//
+//    - stockId (optional): place to store a stock icon name, or NULL.
+//    - size (optional): place to store a stock icon size (IconSize), or NULL.
+//
 func (image *Image) Stock() (string, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // in
@@ -655,6 +730,11 @@ func (image *Image) Stock() (string, int) {
 // StorageType gets the type of representation being used by the Image to store
 // image data. If the Image has no image data, the return value will be
 // GTK_IMAGE_EMPTY.
+//
+// The function returns the following values:
+//
+//    - imageType: image representation being used.
+//
 func (image *Image) StorageType() ImageType {
 	var _arg0 *C.GtkImage    // out
 	var _cret C.GtkImageType // in
@@ -694,7 +774,7 @@ func (image *Image) SetFromAnimation(animation *gdkpixbuf.PixbufAnimation) {
 //
 // The function takes the following parameters:
 //
-//    - filename or NULL.
+//    - filename (optional) or NULL.
 //
 func (image *Image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
@@ -737,7 +817,7 @@ func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name or NULL.
+//    - iconName (optional): icon name or NULL.
 //    - size: icon size (IconSize).
 //
 func (image *Image) SetFromIconName(iconName string, size int) {
@@ -786,7 +866,7 @@ func (image *Image) SetFromIconSet(iconSet *IconSet, size int) {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf or NULL.
+//    - pixbuf (optional) or NULL.
 //
 func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
@@ -806,7 +886,7 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: resource path or NULL.
+//    - resourcePath (optional): resource path or NULL.
 //
 func (image *Image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
@@ -852,7 +932,7 @@ func (image *Image) SetFromStock(stockId string, size int) {
 //
 // The function takes the following parameters:
 //
-//    - surface: cairo_surface_t or NULL.
+//    - surface (optional): cairo_surface_t or NULL.
 //
 func (image *Image) SetFromSurface(surface *cairo.Surface) {
 	var _arg0 *C.GtkImage        // out

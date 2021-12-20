@@ -211,9 +211,24 @@ func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.g
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SettingsOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - keys
+	//    - nKeys
+	//
+	// The function returns the following values:
+	//
 	ChangeEvent(keys *glib.Quark, nKeys int) bool
+	// The function takes the following parameters:
+	//
 	Changed(key string)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	WritableChangeEvent(key glib.Quark) bool
+	// The function takes the following parameters:
+	//
 	WritableChanged(key string)
 }
 
@@ -508,6 +523,68 @@ func marshalSettingser(p uintptr) (interface{}, error) {
 	return wrapSettings(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChangeEvent: "change-event" signal is emitted once per change event
+// that affects this settings object. You should connect to this signal only if
+// you are interested in viewing groups of changes before they are split out
+// into multiple emissions of the "changed" signal. For most use cases it is
+// more appropriate to use the "changed" signal.
+//
+// In the event that the change event applies to one or more specified keys,
+// keys will be an array of #GQuark of length n_keys. In the event that the
+// change event applies to the #GSettings object as a whole (ie: potentially
+// every key has been changed) then keys will be NULL and n_keys will be 0.
+//
+// The default handler for this signal invokes the "changed" signal for each
+// affected key. If any other connected handler returns TRUE then this default
+// functionality will be suppressed.
+func (settings *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) externglib.SignalHandle {
+	return settings.Connect("change-event", f)
+}
+
+// ConnectChanged: "changed" signal is emitted when a key has potentially
+// changed. You should call one of the g_settings_get() calls to check the new
+// value.
+//
+// This signal supports detailed connections. You can connect to the detailed
+// signal "changed::x" in order to only receive callbacks when key "x" changes.
+//
+// Note that settings only emits this signal if you have read key at least once
+// while a signal handler was already connected for key.
+func (settings *Settings) ConnectChanged(f func(key string)) externglib.SignalHandle {
+	return settings.Connect("changed", f)
+}
+
+// ConnectWritableChangeEvent: "writable-change-event" signal is emitted once
+// per writability change event that affects this settings object. You should
+// connect to this signal if you are interested in viewing groups of changes
+// before they are split out into multiple emissions of the "writable-changed"
+// signal. For most use cases it is more appropriate to use the
+// "writable-changed" signal.
+//
+// In the event that the writability change applies only to a single key, key
+// will be set to the #GQuark for that key. In the event that the writability
+// change affects the entire settings object, key will be 0.
+//
+// The default handler for this signal invokes the "writable-changed" and
+// "changed" signals for each affected key. This is done because changes in
+// writability might also imply changes in value (if for example, a new
+// mandatory setting is introduced). If any other connected handler returns TRUE
+// then this default functionality will be suppressed.
+func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) bool) externglib.SignalHandle {
+	return settings.Connect("writable-change-event", f)
+}
+
+// ConnectWritableChanged: "writable-changed" signal is emitted when the
+// writability of a key has potentially changed. You should call
+// g_settings_is_writable() in order to determine the new status.
+//
+// This signal supports detailed connections. You can connect to the detailed
+// signal "writable-changed::x" in order to only receive callbacks when the
+// writability of "x" changes.
+func (settings *Settings) ConnectWritableChanged(f func(key string)) externglib.SignalHandle {
+	return settings.Connect("writable-changed", f)
+}
+
 // NewSettings creates a new #GSettings object with the schema specified by
 // schema_id.
 //
@@ -525,6 +602,10 @@ func marshalSettingser(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - schemaId: id of the schema.
+//
+// The function returns the following values:
+//
+//    - settings: new #GSettings object.
 //
 func NewSettings(schemaId string) *Settings {
 	var _arg1 *C.gchar     // out
@@ -560,6 +641,10 @@ func NewSettings(schemaId string) *Settings {
 //
 //    - schemaId: id of the schema.
 //    - path to use.
+//
+// The function returns the following values:
+//
+//    - settings: new #GSettings object.
 //
 func NewSettingsWithPath(schemaId, path string) *Settings {
 	var _arg1 *C.gchar     // out
@@ -708,6 +793,10 @@ func (settings *Settings) BindWritable(key string, object *externglib.Object, pr
 //
 //    - key: name of a key in settings.
 //
+// The function returns the following values:
+//
+//    - action: new #GAction.
+//
 func (settings *Settings) CreateAction(key string) Actioner {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -764,6 +853,10 @@ func (settings *Settings) Delay() {
 //
 //    - key to get the value for.
 //
+// The function returns the following values:
+//
+//    - ok: boolean.
+//
 func (settings *Settings) Boolean(key string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -795,6 +888,10 @@ func (settings *Settings) Boolean(key string) bool {
 // The function takes the following parameters:
 //
 //    - name of the child schema.
+//
+// The function returns the following values:
+//
+//    - ret: 'child' settings object.
 //
 func (settings *Settings) Child(name string) *Settings {
 	var _arg0 *C.GSettings // out
@@ -841,6 +938,10 @@ func (settings *Settings) Child(name string) *Settings {
 //
 //    - key to get the default value for.
 //
+// The function returns the following values:
+//
+//    - variant (optional): default value.
+//
 func (settings *Settings) DefaultValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -880,6 +981,10 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 //
 //    - key to get the value for.
 //
+// The function returns the following values:
+//
+//    - gdouble: double.
+//
 func (settings *Settings) Double(key string) float64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -915,6 +1020,10 @@ func (settings *Settings) Double(key string) float64 {
 // The function takes the following parameters:
 //
 //    - key to get the value for.
+//
+// The function returns the following values:
+//
+//    - gint: enum value.
 //
 func (settings *Settings) Enum(key string) int {
 	var _arg0 *C.GSettings // out
@@ -952,6 +1061,10 @@ func (settings *Settings) Enum(key string) int {
 //
 //    - key to get the value for.
 //
+// The function returns the following values:
+//
+//    - guint flags value.
+//
 func (settings *Settings) Flags(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -974,6 +1087,11 @@ func (settings *Settings) Flags(key string) uint {
 
 // HasUnapplied returns whether the #GSettings object has any unapplied changes.
 // This can only be the case if it is in 'delayed-apply' mode.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if settings has unapplied changes.
+//
 func (settings *Settings) HasUnapplied() bool {
 	var _arg0 *C.GSettings // out
 	var _cret C.gboolean   // in
@@ -1002,6 +1120,10 @@ func (settings *Settings) HasUnapplied() bool {
 // The function takes the following parameters:
 //
 //    - key to get the value for.
+//
+// The function returns the following values:
+//
+//    - gint: integer.
 //
 func (settings *Settings) Int(key string) int {
 	var _arg0 *C.GSettings // out
@@ -1033,6 +1155,10 @@ func (settings *Settings) Int(key string) int {
 // The function takes the following parameters:
 //
 //    - key to get the value for.
+//
+// The function returns the following values:
+//
+//    - gint64: 64-bit integer.
 //
 func (settings *Settings) Int64(key string) int64 {
 	var _arg0 *C.GSettings // out
@@ -1084,8 +1210,12 @@ func (settings *Settings) Int64(key string) int64 {
 // The function takes the following parameters:
 //
 //    - key to get the value for.
-//    - mapping: function to map the value in the settings database to the
-//    value used by the application.
+//    - mapping: function to map the value in the settings database to the value
+//      used by the application.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): result, which may be NULL.
 //
 func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) cgo.Handle {
 	var _arg0 *C.GSettings          // out
@@ -1120,6 +1250,8 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) cgo.Han
 // The function takes the following parameters:
 //
 //    - key to query the range of.
+//
+// The function returns the following values:
 //
 func (settings *Settings) Range(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
@@ -1158,6 +1290,10 @@ func (settings *Settings) Range(key string) *glib.Variant {
 //
 //    - key to get the value for.
 //
+// The function returns the following values:
+//
+//    - utf8: newly-allocated string.
+//
 func (settings *Settings) String(key string) string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1187,6 +1323,11 @@ func (settings *Settings) String(key string) string {
 // The function takes the following parameters:
 //
 //    - key to get the value for.
+//
+// The function returns the following values:
+//
+//    - utf8s: a newly-allocated, NULL-terminated array of strings, the value
+//      that is stored at key in settings.
 //
 func (settings *Settings) Strv(key string) []string {
 	var _arg0 *C.GSettings // out
@@ -1233,6 +1374,10 @@ func (settings *Settings) Strv(key string) []string {
 //
 //    - key to get the value for.
 //
+// The function returns the following values:
+//
+//    - guint: unsigned integer.
+//
 func (settings *Settings) Uint(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1263,6 +1408,10 @@ func (settings *Settings) Uint(key string) uint {
 // The function takes the following parameters:
 //
 //    - key to get the value for.
+//
+// The function returns the following values:
+//
+//    - guint64: 64-bit unsigned integer.
 //
 func (settings *Settings) Uint64(key string) uint64 {
 	var _arg0 *C.GSettings // out
@@ -1306,6 +1455,10 @@ func (settings *Settings) Uint64(key string) uint64 {
 //
 //    - key to get the user value for.
 //
+// The function returns the following values:
+//
+//    - variant (optional) user's value, if set.
+//
 func (settings *Settings) UserValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1343,6 +1496,10 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 //
 //    - key to get the value for.
 //
+// The function returns the following values:
+//
+//    - variant: new #GVariant.
+//
 func (settings *Settings) Value(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1374,6 +1531,10 @@ func (settings *Settings) Value(key string) *glib.Variant {
 // The function takes the following parameters:
 //
 //    - name of a key.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the key name is writable.
 //
 func (settings *Settings) IsWritable(name string) bool {
 	var _arg0 *C.GSettings // out
@@ -1407,6 +1568,11 @@ func (settings *Settings) IsWritable(name string) bool {
 // be useful there for introspection reasons, however.
 //
 // You should free the return value with g_strfreev() when you are done with it.
+//
+// The function returns the following values:
+//
+//    - utf8s: list of the children on settings, in no defined order.
+//
 func (settings *Settings) ListChildren() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar    // in
@@ -1446,6 +1612,11 @@ func (settings *Settings) ListChildren() []string {
 // You should free the return value with g_strfreev() when you are done with it.
 //
 // Deprecated: Use g_settings_schema_list_keys() instead.
+//
+// The function returns the following values:
+//
+//    - utf8s: list of the keys on settings, in no defined order.
+//
 func (settings *Settings) ListKeys() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar    // in
@@ -1485,6 +1656,10 @@ func (settings *Settings) ListKeys() []string {
 //
 //    - key to check.
 //    - value to check.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if value is valid for key.
 //
 func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
@@ -1560,6 +1735,10 @@ func (settings *Settings) Revert() {
 //    - key: name of the key to set.
 //    - value to set it to.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//
 func (settings *Settings) SetBoolean(key string, value bool) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1598,6 +1777,10 @@ func (settings *Settings) SetBoolean(key string, value bool) bool {
 //
 //    - key: name of the key to set.
 //    - value to set it to.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetDouble(key string, value float64) bool {
 	var _arg0 *C.GSettings // out
@@ -1639,6 +1822,10 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 //    - key: key, within settings.
 //    - value: enumerated value.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE, if the set succeeds.
+//
 func (settings *Settings) SetEnum(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1679,6 +1866,10 @@ func (settings *Settings) SetEnum(key string, value int) bool {
 //    - key: key, within settings.
 //    - value flags value.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE, if the set succeeds.
+//
 func (settings *Settings) SetFlags(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1715,6 +1906,10 @@ func (settings *Settings) SetFlags(key string, value uint) bool {
 //
 //    - key: name of the key to set.
 //    - value to set it to.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetInt(key string, value int) bool {
 	var _arg0 *C.GSettings // out
@@ -1753,6 +1948,10 @@ func (settings *Settings) SetInt(key string, value int) bool {
 //    - key: name of the key to set.
 //    - value to set it to.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//
 func (settings *Settings) SetInt64(key string, value int64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1789,6 +1988,10 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 //
 //    - key: name of the key to set.
 //    - value to set it to.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetString(key, value string) bool {
 	var _arg0 *C.GSettings // out
@@ -1827,7 +2030,11 @@ func (settings *Settings) SetString(key, value string) bool {
 // The function takes the following parameters:
 //
 //    - key: name of the key to set.
-//    - value to set it to, or NULL.
+//    - value (optional) to set it to, or NULL.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetStrv(key string, value []string) bool {
 	var _arg0 *C.GSettings // out
@@ -1878,6 +2085,10 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 //    - key: name of the key to set.
 //    - value to set it to.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//
 func (settings *Settings) SetUint(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1914,6 +2125,10 @@ func (settings *Settings) SetUint(key string, value uint) bool {
 //
 //    - key: name of the key to set.
 //    - value to set it to.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetUint64(key string, value uint64) bool {
 	var _arg0 *C.GSettings // out
@@ -1952,6 +2167,10 @@ func (settings *Settings) SetUint64(key string, value uint64) bool {
 //    - key: name of the key to set.
 //    - value of the correct type.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//
 func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1977,71 +2196,15 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	return _ok
 }
 
-// ConnectChangeEvent: "change-event" signal is emitted once per change event
-// that affects this settings object. You should connect to this signal only if
-// you are interested in viewing groups of changes before they are split out
-// into multiple emissions of the "changed" signal. For most use cases it is
-// more appropriate to use the "changed" signal.
-//
-// In the event that the change event applies to one or more specified keys,
-// keys will be an array of #GQuark of length n_keys. In the event that the
-// change event applies to the #GSettings object as a whole (ie: potentially
-// every key has been changed) then keys will be NULL and n_keys will be 0.
-//
-// The default handler for this signal invokes the "changed" signal for each
-// affected key. If any other connected handler returns TRUE then this default
-// functionality will be suppressed.
-func (settings *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) externglib.SignalHandle {
-	return settings.Connect("change-event", f)
-}
-
-// ConnectChanged: "changed" signal is emitted when a key has potentially
-// changed. You should call one of the g_settings_get() calls to check the new
-// value.
-//
-// This signal supports detailed connections. You can connect to the detailed
-// signal "changed::x" in order to only receive callbacks when key "x" changes.
-//
-// Note that settings only emits this signal if you have read key at least once
-// while a signal handler was already connected for key.
-func (settings *Settings) ConnectChanged(f func(key string)) externglib.SignalHandle {
-	return settings.Connect("changed", f)
-}
-
-// ConnectWritableChangeEvent: "writable-change-event" signal is emitted once
-// per writability change event that affects this settings object. You should
-// connect to this signal if you are interested in viewing groups of changes
-// before they are split out into multiple emissions of the "writable-changed"
-// signal. For most use cases it is more appropriate to use the
-// "writable-changed" signal.
-//
-// In the event that the writability change applies only to a single key, key
-// will be set to the #GQuark for that key. In the event that the writability
-// change affects the entire settings object, key will be 0.
-//
-// The default handler for this signal invokes the "writable-changed" and
-// "changed" signals for each affected key. This is done because changes in
-// writability might also imply changes in value (if for example, a new
-// mandatory setting is introduced). If any other connected handler returns TRUE
-// then this default functionality will be suppressed.
-func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) bool) externglib.SignalHandle {
-	return settings.Connect("writable-change-event", f)
-}
-
-// ConnectWritableChanged: "writable-changed" signal is emitted when the
-// writability of a key has potentially changed. You should call
-// g_settings_is_writable() in order to determine the new status.
-//
-// This signal supports detailed connections. You can connect to the detailed
-// signal "writable-changed::x" in order to only receive callbacks when the
-// writability of "x" changes.
-func (settings *Settings) ConnectWritableChanged(f func(key string)) externglib.SignalHandle {
-	return settings.Connect("writable-changed", f)
-}
-
 // SettingsListRelocatableSchemas: deprecated.
 //
 // Deprecated: Use g_settings_schema_source_list_schemas() instead.
+//
+// The function returns the following values:
+//
+//    - utf8s: list of relocatable #GSettings schemas that are available, in no
+//      defined order. The list must not be modified or freed.
+//
 func SettingsListRelocatableSchemas() []string {
 	var _cret **C.gchar // in
 
@@ -2071,6 +2234,12 @@ func SettingsListRelocatableSchemas() []string {
 // Deprecated: Use g_settings_schema_source_list_schemas() instead. If you used
 // g_settings_list_schemas() to check for the presence of a particular schema,
 // use g_settings_schema_source_lookup() instead of your whole loop.
+//
+// The function returns the following values:
+//
+//    - utf8s: list of #GSettings schemas that are available, in no defined
+//      order. The list must not be modified or freed.
+//
 func SettingsListSchemas() []string {
 	var _cret **C.gchar // in
 

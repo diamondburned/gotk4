@@ -68,6 +68,11 @@ func marshalVSeparatorrer(p uintptr) (interface{}, error) {
 // NewVSeparator creates a new VSeparator.
 //
 // Deprecated: Use gtk_separator_new() with GTK_ORIENTATION_VERTICAL instead.
+//
+// The function returns the following values:
+//
+//    - vSeparator: new VSeparator.
+//
 func NewVSeparator() *VSeparator {
 	var _cret *C.GtkWidget // in
 

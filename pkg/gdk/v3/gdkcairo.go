@@ -39,6 +39,11 @@ import "C"
 //
 //    - window: Window.
 //
+// The function returns the following values:
+//
+//    - context: newly created Cairo context. Free with cairo_destroy() when you
+//      are done drawing.
+//
 func CairoCreate(window Windower) *cairo.Context {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.cairo_t   // in
@@ -127,6 +132,12 @@ func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, buf
 //
 //    - cr: cairo context.
 //
+// The function returns the following values:
+//
+//    - rect (optional): return location for the clip, or NULL.
+//    - ok: TRUE if a clip rectangle exists, FALSE if all of cr is clipped and
+//      all drawing can be skipped.
+//
 func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 	var _arg1 *C.cairo_t     // out
 	var _arg2 C.GdkRectangle // in
@@ -154,6 +165,10 @@ func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 // The function takes the following parameters:
 //
 //    - cr: cairo context.
+//
+// The function returns the following values:
+//
+//    - drawingContext (optional) if any is set.
 //
 func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 	var _arg1 *C.cairo_t           // out
@@ -220,6 +235,10 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 // The function takes the following parameters:
 //
 //    - surface: cairo surface.
+//
+// The function returns the following values:
+//
+//    - region must be freed with cairo_region_destroy().
 //
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out
@@ -354,7 +373,11 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 //
 //    - pixbuf: Pixbuf.
 //    - scale of the new surface, or 0 to use same as window.
-//    - forWindow: window this will be drawn to, or NULL.
+//    - forWindow (optional): window this will be drawn to, or NULL.
+//
+// The function returns the following values:
+//
+//    - surface: new cairo surface, must be freed with cairo_surface_destroy().
 //
 func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow Windower) *cairo.Surface {
 	var _arg1 *C.GdkPixbuf       // out

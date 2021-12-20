@@ -34,8 +34,18 @@ func init() {
 // yet, so the interface currently has no use.
 type MountOverrider interface {
 	// CanEject checks if mount can be ejected.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the mount can be ejected.
+	//
 	CanEject() bool
 	// CanUnmount checks if mount can be unmounted.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the mount can be unmounted.
+	//
 	CanUnmount() bool
 	Changed()
 	// Eject ejects a mount. This is an asynchronous operation, and is finished
@@ -43,45 +53,127 @@ type MountOverrider interface {
 	// in the callback.
 	//
 	// Deprecated: Use g_mount_eject_with_operation() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the unmount if required for eject.
+	//    - callback (optional) or NULL.
+	//
 	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a mount. If any errors occurred during the
 	// operation, error will be set to contain the errors and FALSE will be
 	// returned.
 	//
 	// Deprecated: Use g_mount_eject_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	EjectFinish(result AsyncResulter) error
 	// EjectWithOperation ejects a mount. This is an asynchronous operation, and
 	// is finished by calling g_mount_eject_with_operation_finish() with the
 	// mount and Result data returned in the callback.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the unmount if required for eject.
+	//    - mountOperation (optional) or NULL to avoid user interaction.
+	//    - callback (optional) or NULL.
+	//
 	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a mount. If any errors
 	// occurred during the operation, error will be set to contain the errors
 	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	EjectWithOperationFinish(result AsyncResulter) error
 	// DefaultLocation gets the default location of mount. The default location
 	// of the given mount is a path that reflects the main entry point for the
 	// user (e.g. the home directory, or the root of the volume).
+	//
+	// The function returns the following values:
+	//
+	//    - file: #GFile. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
 	DefaultLocation() Filer
 	// Drive gets the drive for the mount.
 	//
 	// This is a convenience method for getting the #GVolume and then using that
 	// object to get the #GDrive.
+	//
+	// The function returns the following values:
+	//
+	//    - drive (optional) or NULL if mount is not associated with a volume or
+	//      a drive. The returned object should be unreffed with g_object_unref()
+	//      when no longer needed.
+	//
 	Drive() Driver
 	// Icon gets the icon for mount.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: #GIcon. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
 	Icon() Iconner
 	// Name gets the name of mount.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: name for the given mount. The returned string should be freed
+	//      with g_free() when no longer needed.
+	//
 	Name() string
 	// Root gets the root directory on mount.
+	//
+	// The function returns the following values:
+	//
+	//    - file: #GFile. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
 	Root() Filer
 	// SortKey gets the sort key for mount, if any.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): sorting key for mount or NULL if no such key is
+	//      available.
+	//
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for mount.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: #GIcon. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
 	SymbolicIcon() Iconner
 	// UUID gets the UUID for the mount. The reference is typically based on the
 	// file system UUID for the mount in question and should be considered an
 	// opaque string. Returns NULL if there is no UUID available.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): UUID for mount or NULL if no UUID can be computed.
+	//      The returned string should be freed with g_free() when no longer
+	//      needed.
+	//
 	UUID() string
 	// Volume gets the volume for the mount.
+	//
+	// The function returns the following values:
+	//
+	//    - volume (optional) or NULL if mount is not associated with a volume.
+	//      The returned object should be unreffed with g_object_unref() when no
+	//      longer needed.
+	//
 	Volume() Volumer
 	// GuessContentType tries to guess the type of content stored on mount.
 	// Returns one or more textual identifiers of well-known content types
@@ -94,11 +186,29 @@ type MountOverrider interface {
 	// for the synchronous version), and is finished by calling
 	// g_mount_guess_content_type_finish() with the mount and Result data
 	// returned in the callback.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - forceRescan: whether to force a rescan of the content. Otherwise a
+	//      cached result will be used if available.
+	//    - callback (optional): ReadyCallback.
+	//
 	GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback)
 	// GuessContentTypeFinish finishes guessing content types of mount. If any
 	// errors occurred during the operation, error will be set to contain the
 	// errors and FALSE will be returned. In particular, you may get an
 	// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: NULL-terminated array of content types or NULL on error.
+	//      Caller should free this array with g_strfreev() when done with it.
+	//
 	GuessContentTypeFinish(result AsyncResulter) ([]string, error)
 	// GuessContentTypeSync tries to guess the type of content stored on mount.
 	// Returns one or more textual identifiers of well-known content types
@@ -109,6 +219,18 @@ type MountOverrider interface {
 	//
 	// This is a synchronous operation and as such may block doing IO; see
 	// g_mount_guess_content_type() for the asynchronous version.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - forceRescan: whether to force a rescan of the content. Otherwise a
+	//      cached result will be used if available.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: NULL-terminated array of content types or NULL on error.
+	//      Caller should free this array with g_strfreev() when done with it.
+	//
 	GuessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error)
 	PreUnmount()
 	// Remount remounts a mount. This is an asynchronous operation, and is
@@ -119,30 +241,68 @@ type MountOverrider interface {
 	// volume has been changed, as these may need a remount to take affect.
 	// While this is semantically equivalent with unmounting and then remounting
 	// not all backends might need to actually be unmounted.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the operation.
+	//    - mountOperation (optional) or NULL to avoid user interaction.
+	//    - callback (optional) or NULL.
+	//
 	Remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// RemountFinish finishes remounting a mount. If any errors occurred during
 	// the operation, error will be set to contain the errors and FALSE will be
 	// returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	RemountFinish(result AsyncResulter) error
 	// Unmount unmounts a mount. This is an asynchronous operation, and is
 	// finished by calling g_mount_unmount_finish() with the mount and Result
 	// data returned in the callback.
 	//
 	// Deprecated: Use g_mount_unmount_with_operation() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the operation.
+	//    - callback (optional) or NULL.
+	//
 	Unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// UnmountFinish finishes unmounting a mount. If any errors occurred during
 	// the operation, error will be set to contain the errors and FALSE will be
 	// returned.
 	//
 	// Deprecated: Use g_mount_unmount_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	UnmountFinish(result AsyncResulter) error
 	// UnmountWithOperation unmounts a mount. This is an asynchronous operation,
 	// and is finished by calling g_mount_unmount_with_operation_finish() with
 	// the mount and Result data returned in the callback.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the operation.
+	//    - mountOperation (optional) or NULL to avoid user interaction.
+	//    - callback (optional) or NULL.
+	//
 	UnmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
 	// occurred during the operation, error will be set to contain the errors
 	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	UnmountWithOperationFinish(result AsyncResulter) error
 	Unmounted()
 }
@@ -245,7 +405,33 @@ func marshalMounter(p uintptr) (interface{}, error) {
 	return wrapMount(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged: emitted when the mount has been changed.
+func (mount *Mount) ConnectChanged(f func()) externglib.SignalHandle {
+	return mount.Connect("changed", f)
+}
+
+// ConnectPreUnmount: this signal may be emitted when the #GMount is about to be
+// unmounted.
+//
+// This signal depends on the backend and is only emitted if GIO was used to
+// unmount.
+func (mount *Mount) ConnectPreUnmount(f func()) externglib.SignalHandle {
+	return mount.Connect("pre-unmount", f)
+}
+
+// ConnectUnmounted: this signal is emitted when the #GMount have been
+// unmounted. If the recipient is holding references to the object they should
+// release them so the object can be finalized.
+func (mount *Mount) ConnectUnmounted(f func()) externglib.SignalHandle {
+	return mount.Connect("unmounted", f)
+}
+
 // CanEject checks if mount can be ejected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the mount can be ejected.
+//
 func (mount *Mount) CanEject() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -265,6 +451,11 @@ func (mount *Mount) CanEject() bool {
 }
 
 // CanUnmount checks if mount can be unmounted.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the mount can be unmounted.
+//
 func (mount *Mount) CanUnmount() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -291,9 +482,9 @@ func (mount *Mount) CanUnmount() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the unmount if required for eject.
-//    - callback or NULL.
+//    - callback (optional) or NULL.
 //
 func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
@@ -358,10 +549,10 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the unmount if required for eject.
-//    - mountOperation or NULL to avoid user interaction.
-//    - callback or NULL.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
 //
 func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
@@ -426,6 +617,12 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 // DefaultLocation gets the default location of mount. The default location of
 // the given mount is a path that reflects the main entry point for the user
 // (e.g. the home directory, or the root of the volume).
+//
+// The function returns the following values:
+//
+//    - file: #GFile. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
 func (mount *Mount) DefaultLocation() Filer {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
@@ -459,6 +656,13 @@ func (mount *Mount) DefaultLocation() Filer {
 //
 // This is a convenience method for getting the #GVolume and then using that
 // object to get the #GDrive.
+//
+// The function returns the following values:
+//
+//    - drive (optional) or NULL if mount is not associated with a volume or a
+//      drive. The returned object should be unreffed with g_object_unref() when
+//      no longer needed.
+//
 func (mount *Mount) Drive() Driver {
 	var _arg0 *C.GMount // out
 	var _cret *C.GDrive // in
@@ -488,6 +692,12 @@ func (mount *Mount) Drive() Driver {
 }
 
 // Icon gets the icon for mount.
+//
+// The function returns the following values:
+//
+//    - icon: #GIcon. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
 func (mount *Mount) Icon() Iconner {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
@@ -518,6 +728,12 @@ func (mount *Mount) Icon() Iconner {
 }
 
 // Name gets the name of mount.
+//
+// The function returns the following values:
+//
+//    - utf8: name for the given mount. The returned string should be freed with
+//      g_free() when no longer needed.
+//
 func (mount *Mount) Name() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
@@ -536,6 +752,12 @@ func (mount *Mount) Name() string {
 }
 
 // Root gets the root directory on mount.
+//
+// The function returns the following values:
+//
+//    - file: #GFile. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
 func (mount *Mount) Root() Filer {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
@@ -566,6 +788,12 @@ func (mount *Mount) Root() Filer {
 }
 
 // SortKey gets the sort key for mount, if any.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): sorting key for mount or NULL if no such key is
+//      available.
+//
 func (mount *Mount) SortKey() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.gchar  // in
@@ -585,6 +813,12 @@ func (mount *Mount) SortKey() string {
 }
 
 // SymbolicIcon gets the symbolic icon for mount.
+//
+// The function returns the following values:
+//
+//    - icon: #GIcon. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
 func (mount *Mount) SymbolicIcon() Iconner {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
@@ -617,6 +851,12 @@ func (mount *Mount) SymbolicIcon() Iconner {
 // UUID gets the UUID for the mount. The reference is typically based on the
 // file system UUID for the mount in question and should be considered an opaque
 // string. Returns NULL if there is no UUID available.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): UUID for mount or NULL if no UUID can be computed. The
+//      returned string should be freed with g_free() when no longer needed.
+//
 func (mount *Mount) UUID() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
@@ -637,6 +877,13 @@ func (mount *Mount) UUID() string {
 }
 
 // Volume gets the volume for the mount.
+//
+// The function returns the following values:
+//
+//    - volume (optional) or NULL if mount is not associated with a volume. The
+//      returned object should be unreffed with g_object_unref() when no longer
+//      needed.
+//
 func (mount *Mount) Volume() Volumer {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
@@ -679,10 +926,10 @@ func (mount *Mount) Volume() Volumer {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - forceRescan: whether to force a rescan of the content. Otherwise a
-//    cached result will be used if available.
-//    - callback: ReadyCallback.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - forceRescan: whether to force a rescan of the content. Otherwise a cached
+//      result will be used if available.
+//    - callback (optional): ReadyCallback.
 //
 func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
@@ -720,6 +967,11 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 // The function takes the following parameters:
 //
 //    - result: Result.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of content types or NULL on error. Caller
+//      should free this array with g_strfreev() when done with it.
 //
 func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GMount       // out
@@ -771,9 +1023,14 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - forceRescan: whether to force a rescan of the content. Otherwise a
-//    cached result will be used if available.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - forceRescan: whether to force a rescan of the content. Otherwise a cached
+//      result will be used if available.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of content types or NULL on error. Caller
+//      should free this array with g_strfreev() when done with it.
 //
 func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error) {
 	var _arg0 *C.GMount       // out
@@ -842,6 +1099,11 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 // The proxy monitor in GVfs 2.26 and later, automatically creates and manage
 // shadow mounts (and shadows the underlying mount) if the activation root on a
 // #GVolume is set.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if mount is shadowed.
+//
 func (mount *Mount) IsShadowed() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -871,10 +1133,10 @@ func (mount *Mount) IsShadowed() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the operation.
-//    - mountOperation or NULL to avoid user interaction.
-//    - callback or NULL.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
 //
 func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
@@ -957,9 +1219,9 @@ func (mount *Mount) Shadow() {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the operation.
-//    - callback or NULL.
+//    - callback (optional) or NULL.
 //
 func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
@@ -1024,10 +1286,10 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the operation.
-//    - mountOperation or NULL to avoid user interaction.
-//    - callback or NULL.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
 //
 func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
@@ -1100,25 +1362,4 @@ func (mount *Mount) Unshadow() {
 
 	C.g_mount_unshadow(_arg0)
 	runtime.KeepAlive(mount)
-}
-
-// ConnectChanged: emitted when the mount has been changed.
-func (mount *Mount) ConnectChanged(f func()) externglib.SignalHandle {
-	return mount.Connect("changed", f)
-}
-
-// ConnectPreUnmount: this signal may be emitted when the #GMount is about to be
-// unmounted.
-//
-// This signal depends on the backend and is only emitted if GIO was used to
-// unmount.
-func (mount *Mount) ConnectPreUnmount(f func()) externglib.SignalHandle {
-	return mount.Connect("pre-unmount", f)
-}
-
-// ConnectUnmounted: this signal is emitted when the #GMount have been
-// unmounted. If the recipient is holding references to the object they should
-// release them so the object can be finalized.
-func (mount *Mount) ConnectUnmounted(f func()) externglib.SignalHandle {
-	return mount.Connect("unmounted", f)
 }

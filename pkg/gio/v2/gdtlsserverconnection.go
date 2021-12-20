@@ -69,7 +69,11 @@ func BaseDTLSServerConnection(obj DTLSServerConnectioner) *DTLSServerConnection 
 // The function takes the following parameters:
 //
 //    - baseSocket to wrap.
-//    - certificate: default server certificate, or NULL.
+//    - certificate (optional): default server certificate, or NULL.
+//
+// The function returns the following values:
+//
+//    - dtlsServerConnection: new ServerConnection, or NULL on error.
 //
 func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertificater) (DTLSServerConnectioner, error) {
 	var _arg1 *C.GDatagramBased  // out

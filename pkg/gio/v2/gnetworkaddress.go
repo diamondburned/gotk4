@@ -67,6 +67,10 @@ func marshalNetworkAddresser(p uintptr) (interface{}, error) {
 //    - hostname: hostname.
 //    - port: port.
 //
+// The function returns the following values:
+//
+//    - networkAddress: new Address.
+//
 func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -103,6 +107,10 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 //
 //    - port: port.
 //
+// The function returns the following values:
+//
+//    - networkAddress: new Address.
+//
 func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 	var _arg1 C.guint16             // out
 	var _cret *C.GSocketConnectable // in
@@ -121,6 +129,11 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 
 // Hostname gets addr's hostname. This might be either UTF-8 or ASCII-encoded,
 // depending on what addr was created with.
+//
+// The function returns the following values:
+//
+//    - utf8 addr's hostname.
+//
 func (addr *NetworkAddress) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
@@ -138,6 +151,11 @@ func (addr *NetworkAddress) Hostname() string {
 }
 
 // Port gets addr's port number.
+//
+// The function returns the following values:
+//
+//    - guint16 addr's port (which may be 0).
+//
 func (addr *NetworkAddress) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret C.guint16          // in
@@ -155,6 +173,11 @@ func (addr *NetworkAddress) Port() uint16 {
 }
 
 // Scheme gets addr's scheme.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) addr's scheme (NULL if not built from URI).
+//
 func (addr *NetworkAddress) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
@@ -199,6 +222,10 @@ func (addr *NetworkAddress) Scheme() string {
 //    - hostAndPort: hostname and optionally a port.
 //    - defaultPort: default port if not in host_and_port.
 //
+// The function returns the following values:
+//
+//    - networkAddress: new Address, or NULL on error.
+//
 func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddress, error) {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -234,6 +261,10 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 //
 //    - uri: hostname and optionally a port.
 //    - defaultPort: default port if none is found in the URI.
+//
+// The function returns the following values:
+//
+//    - networkAddress: new Address, or NULL on error.
 //
 func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, error) {
 	var _arg1 *C.gchar              // out

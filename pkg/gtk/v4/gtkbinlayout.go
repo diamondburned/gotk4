@@ -49,6 +49,11 @@ func marshalBinLayouter(p uintptr) (interface{}, error) {
 }
 
 // NewBinLayout creates a new GtkBinLayout instance.
+//
+// The function returns the following values:
+//
+//    - binLayout: newly created GtkBinLayout.
+//
 func NewBinLayout() *BinLayout {
 	var _cret *C.GtkLayoutManager // in
 

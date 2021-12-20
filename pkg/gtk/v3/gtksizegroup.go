@@ -118,6 +118,10 @@ func marshalSizeGrouper(p uintptr) (interface{}, error) {
 //
 //    - mode for the new size group.
 //
+// The function returns the following values:
+//
+//    - sizeGroup: newly created SizeGroup.
+//
 func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
 	var _cret *C.GtkSizeGroup    // in
@@ -167,6 +171,11 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 // their size will not affect the other size group members. In effect, size
 // groups will always operate as if this property was TRUE. Use a Stack instead
 // to hide widgets while still having their size taken into account.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if invisible widgets are ignored.
+//
 func (sizeGroup *SizeGroup) IgnoreHidden() bool {
 	var _arg0 *C.GtkSizeGroup // out
 	var _cret C.gboolean      // in
@@ -186,6 +195,11 @@ func (sizeGroup *SizeGroup) IgnoreHidden() bool {
 }
 
 // Mode gets the current mode of the size group. See gtk_size_group_set_mode().
+//
+// The function returns the following values:
+//
+//    - sizeGroupMode: current mode of the size group.
+//
 func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _cret C.GtkSizeGroupMode // in
@@ -203,6 +217,11 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 }
 
 // Widgets returns the list of widgets associated with size_group.
+//
+// The function returns the following values:
+//
+//    - sList of widgets. The list is owned by GTK+ and should not be modified.
+//
 func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 	var _arg0 *C.GtkSizeGroup // out
 	var _cret *C.GSList       // in
@@ -267,8 +286,8 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - ignoreHidden: whether unmapped widgets should be ignored when
-//    calculating the size.
+//    - ignoreHidden: whether unmapped widgets should be ignored when calculating
+//      the size.
 //
 func (sizeGroup *SizeGroup) SetIgnoreHidden(ignoreHidden bool) {
 	var _arg0 *C.GtkSizeGroup // out

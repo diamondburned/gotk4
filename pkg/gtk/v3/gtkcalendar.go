@@ -191,7 +191,48 @@ func marshalCalendarrer(p uintptr) (interface{}, error) {
 	return wrapCalendar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectDaySelected: emitted when the user selects a day.
+func (calendar *Calendar) ConnectDaySelected(f func()) externglib.SignalHandle {
+	return calendar.Connect("day-selected", f)
+}
+
+// ConnectDaySelectedDoubleClick: emitted when the user double-clicks a day.
+func (calendar *Calendar) ConnectDaySelectedDoubleClick(f func()) externglib.SignalHandle {
+	return calendar.Connect("day-selected-double-click", f)
+}
+
+// ConnectMonthChanged: emitted when the user clicks a button to change the
+// selected month on a calendar.
+func (calendar *Calendar) ConnectMonthChanged(f func()) externglib.SignalHandle {
+	return calendar.Connect("month-changed", f)
+}
+
+// ConnectNextMonth: emitted when the user switched to the next month.
+func (calendar *Calendar) ConnectNextMonth(f func()) externglib.SignalHandle {
+	return calendar.Connect("next-month", f)
+}
+
+// ConnectNextYear: emitted when user switched to the next year.
+func (calendar *Calendar) ConnectNextYear(f func()) externglib.SignalHandle {
+	return calendar.Connect("next-year", f)
+}
+
+// ConnectPrevMonth: emitted when the user switched to the previous month.
+func (calendar *Calendar) ConnectPrevMonth(f func()) externglib.SignalHandle {
+	return calendar.Connect("prev-month", f)
+}
+
+// ConnectPrevYear: emitted when user switched to the previous year.
+func (calendar *Calendar) ConnectPrevYear(f func()) externglib.SignalHandle {
+	return calendar.Connect("prev-year", f)
+}
+
 // NewCalendar creates a new calendar, with the current date being selected.
+//
+// The function returns the following values:
+//
+//    - calendar: newly Calendar widget.
+//
 func NewCalendar() *Calendar {
 	var _cret *C.GtkWidget // in
 
@@ -215,6 +256,16 @@ func (calendar *Calendar) ClearMarks() {
 }
 
 // Date obtains the selected date from a Calendar.
+//
+// The function returns the following values:
+//
+//    - year (optional): location to store the year as a decimal number (e.g.
+//      2011), or NULL.
+//    - month (optional): location to store the month number (between 0 and 11),
+//      or NULL.
+//    - day (optional): location to store the day number (between 1 and 31), or
+//      NULL.
+//
 func (calendar *Calendar) Date() (year uint, month uint, day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // in
@@ -243,6 +294,10 @@ func (calendar *Calendar) Date() (year uint, month uint, day uint) {
 //
 //    - day number between 1 and 31.
 //
+// The function returns the following values:
+//
+//    - ok: whether the day is marked.
+//
 func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
@@ -266,6 +321,11 @@ func (calendar *Calendar) DayIsMarked(day uint) bool {
 
 // DetailHeightRows queries the height of detail cells, in rows. See
 // Calendar:detail-width-chars.
+//
+// The function returns the following values:
+//
+//    - gint: height of detail cells, in rows.
+//
 func (calendar *Calendar) DetailHeightRows() int {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gint         // in
@@ -284,6 +344,11 @@ func (calendar *Calendar) DetailHeightRows() int {
 
 // DetailWidthChars queries the width of detail cells, in characters. See
 // Calendar:detail-width-chars.
+//
+// The function returns the following values:
+//
+//    - gint: width of detail cells, in characters.
+//
 func (calendar *Calendar) DetailWidthChars() int {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gint         // in
@@ -301,6 +366,11 @@ func (calendar *Calendar) DetailWidthChars() int {
 }
 
 // DisplayOptions returns the current display options of calendar.
+//
+// The function returns the following values:
+//
+//    - calendarDisplayOptions: display options.
+//
 func (calendar *Calendar) DisplayOptions() CalendarDisplayOptions {
 	var _arg0 *C.GtkCalendar              // out
 	var _cret C.GtkCalendarDisplayOptions // in
@@ -339,8 +409,7 @@ func (calendar *Calendar) MarkDay(day uint) {
 //
 // The function takes the following parameters:
 //
-//    - day number between 1 and 31, or 0 to unselect the currently selected
-//    day.
+//    - day number between 1 and 31, or 0 to unselect the currently selected day.
 //
 func (calendar *Calendar) SelectDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
@@ -479,40 +548,4 @@ func (calendar *Calendar) UnmarkDay(day uint) {
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
-}
-
-// ConnectDaySelected: emitted when the user selects a day.
-func (calendar *Calendar) ConnectDaySelected(f func()) externglib.SignalHandle {
-	return calendar.Connect("day-selected", f)
-}
-
-// ConnectDaySelectedDoubleClick: emitted when the user double-clicks a day.
-func (calendar *Calendar) ConnectDaySelectedDoubleClick(f func()) externglib.SignalHandle {
-	return calendar.Connect("day-selected-double-click", f)
-}
-
-// ConnectMonthChanged: emitted when the user clicks a button to change the
-// selected month on a calendar.
-func (calendar *Calendar) ConnectMonthChanged(f func()) externglib.SignalHandle {
-	return calendar.Connect("month-changed", f)
-}
-
-// ConnectNextMonth: emitted when the user switched to the next month.
-func (calendar *Calendar) ConnectNextMonth(f func()) externglib.SignalHandle {
-	return calendar.Connect("next-month", f)
-}
-
-// ConnectNextYear: emitted when user switched to the next year.
-func (calendar *Calendar) ConnectNextYear(f func()) externglib.SignalHandle {
-	return calendar.Connect("next-year", f)
-}
-
-// ConnectPrevMonth: emitted when the user switched to the previous month.
-func (calendar *Calendar) ConnectPrevMonth(f func()) externglib.SignalHandle {
-	return calendar.Connect("prev-month", f)
-}
-
-// ConnectPrevYear: emitted when user switched to the previous year.
-func (calendar *Calendar) ConnectPrevYear(f func()) externglib.SignalHandle {
-	return calendar.Connect("prev-year", f)
 }

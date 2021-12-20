@@ -81,6 +81,15 @@ func (p *Point3D) Z() float32 {
 }
 
 // Cross computes the cross product of the two given #graphene_point3d_t.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the cross product.
+//
 func (a *Point3D) Cross(b *Point3D) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -101,6 +110,17 @@ func (a *Point3D) Cross(b *Point3D) *Point3D {
 }
 
 // Distance computes the distance between the two given #graphene_point3d_t.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - delta (optional): return location for the distance components on the X,
+//      Y, and Z axis.
+//    - gfloat: distance between two points.
+//
 func (a *Point3D) Distance(b *Point3D) (*Vec3, float32) {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -124,6 +144,15 @@ func (a *Point3D) Distance(b *Point3D) (*Vec3, float32) {
 }
 
 // Dot computes the dot product of the two given #graphene_point3d_t.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - gfloat: value of the dot product.
+//
 func (a *Point3D) Dot(b *Point3D) float32 {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -144,6 +173,15 @@ func (a *Point3D) Dot(b *Point3D) float32 {
 }
 
 // Equal checks whether two given points are equal.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the points are equal.
+//
 func (a *Point3D) Equal(b *Point3D) bool {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -166,6 +204,17 @@ func (a *Point3D) Equal(b *Point3D) bool {
 }
 
 // Init initializes a #graphene_point3d_t with the given coordinates.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate of the point.
+//    - y: y coordinate of the point.
+//    - z: z coordinate of the point.
+//
+// The function returns the following values:
+//
+//    - point3D: initialized #graphene_point3d_t.
+//
 func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.float               // out
@@ -193,6 +242,15 @@ func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 
 // InitFromPoint initializes a #graphene_point3d_t using the coordinates of
 // another #graphene_point3d_t.
+//
+// The function takes the following parameters:
+//
+//    - src: #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - point3D: initialized point.
+//
 func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -214,6 +272,15 @@ func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
 
 // InitFromVec3 initializes a #graphene_point3d_t using the components of a
 // #graphene_vec3_t.
+//
+// The function takes the following parameters:
+//
+//    - v: #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - point3D: initialized #graphene_point3d_t.
+//
 func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_vec3_t    // out
@@ -235,6 +302,16 @@ func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 
 // Interpolate: linearly interpolates each component of a and b using the
 // provided factor, and places the result in res.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point3d_t.
+//    - factor: interpolation factor.
+//
+// The function returns the following values:
+//
+//    - res: return location for the interpolated #graphene_point3d_t.
+//
 func (a *Point3D) Interpolate(b *Point3D, factor float64) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -259,6 +336,11 @@ func (a *Point3D) Interpolate(b *Point3D, factor float64) *Point3D {
 
 // Length computes the length of the vector represented by the coordinates of
 // the given #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - gfloat: length of the vector represented by the point.
+//
 func (p *Point3D) Length() float32 {
 	var _arg0 *C.graphene_point3d_t // out
 	var _cret C.float               // in
@@ -277,6 +359,16 @@ func (p *Point3D) Length() float32 {
 
 // Near checks whether the two points are near each other, within an epsilon
 // factor.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_point3d_t.
+//    - epsilon fuzzyness factor.
+//
+// The function returns the following values:
+//
+//    - ok: true if the points are near each other.
+//
 func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -303,6 +395,11 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 
 // Normalize computes the normalization of the vector represented by the
 // coordinates of the given #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the normalized #graphene_point3d_t.
+//
 func (p *Point3D) Normalize() *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.graphene_point3d_t  // in
@@ -324,6 +421,19 @@ func (p *Point3D) Normalize() *Point3D {
 //
 // The coordinates of the resulting #graphene_point3d_t will be in the [ -1, 1 ]
 // range.
+//
+// The function takes the following parameters:
+//
+//    - viewport representing a viewport.
+//    - zNear: coordinate of the near clipping plane, or 0 for the default near
+//      clipping plane.
+//    - zFar: coordinate of the far clipping plane, or 1 for the default far
+//      clipping plane.
+//
+// The function returns the following values:
+//
+//    - res: return location for the normalized #graphene_point3d_t.
+//
 func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_rect_t    // out
@@ -351,6 +461,15 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 
 // Scale scales the coordinates of the given #graphene_point3d_t by the given
 // factor.
+//
+// The function takes the following parameters:
+//
+//    - factor: scaling factor.
+//
+// The function returns the following values:
+//
+//    - res: return location for the scaled point.
+//
 func (p *Point3D) Scale(factor float32) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.float               // out
@@ -372,6 +491,11 @@ func (p *Point3D) Scale(factor float32) *Point3D {
 
 // ToVec3 stores the coordinates of a #graphene_point3d_t into a
 // #graphene_vec3_t.
+//
+// The function returns the following values:
+//
+//    - v: return location for a #graphene_vec3_t.
+//
 func (p *Point3D) ToVec3() *Vec3 {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.graphene_vec3_t     // in
@@ -389,6 +513,11 @@ func (p *Point3D) ToVec3() *Vec3 {
 }
 
 // Point3DZero retrieves a constant point with all three coordinates set to 0.
+//
+// The function returns the following values:
+//
+//    - point3D: zero point.
+//
 func Point3DZero() *Point3D {
 	var _cret *C.graphene_point3d_t // in
 

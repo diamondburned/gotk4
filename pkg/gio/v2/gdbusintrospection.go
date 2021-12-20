@@ -101,8 +101,13 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 //
 // The function takes the following parameters:
 //
-//    - annotations: NULL-terminated array of annotations or NULL.
+//    - annotations (optional): NULL-terminated array of annotations or NULL.
 //    - name of the annotation to look up.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): value or NULL if not found. Do not free, it is owned by
+//      annotations.
 //
 func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
 	var _arg1 **C.GDBusAnnotationInfo // out
@@ -377,6 +382,16 @@ func (info *DBusInterfaceInfo) CacheRelease() {
 //
 // The cost of this function is O(n) in number of methods unless
 // g_dbus_interface_info_cache_build() has been used on info.
+//
+// The function takes the following parameters:
+//
+//    - name d-Bus method name (typically in CamelCase).
+//
+// The function returns the following values:
+//
+//    - dBusMethodInfo (optional) or NULL if not found. Do not free, it is owned
+//      by info.
+//
 func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
@@ -410,6 +425,16 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 //
 // The cost of this function is O(n) in number of properties unless
 // g_dbus_interface_info_cache_build() has been used on info.
+//
+// The function takes the following parameters:
+//
+//    - name d-Bus property name (typically in CamelCase).
+//
+// The function returns the following values:
+//
+//    - dBusPropertyInfo (optional) or NULL if not found. Do not free, it is
+//      owned by info.
+//
 func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
@@ -443,6 +468,16 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 //
 // The cost of this function is O(n) in number of signals unless
 // g_dbus_interface_info_cache_build() has been used on info.
+//
+// The function takes the following parameters:
+//
+//    - name d-Bus signal name (typically in CamelCase).
+//
+// The function returns the following values:
+//
+//    - dBusSignalInfo (optional) or NULL if not found. Do not free, it is owned
+//      by info.
+//
 func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
@@ -729,6 +764,16 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 // LookupInterface looks up information about an interface.
 //
 // The cost of this function is O(n) in number of interfaces.
+//
+// The function takes the following parameters:
+//
+//    - name d-Bus interface name.
+//
+// The function returns the following values:
+//
+//    - dBusInterfaceInfo (optional) or NULL if not found. Do not free, it is
+//      owned by info.
+//
 func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var _arg0 *C.GDBusNodeInfo      // out
 	var _arg1 *C.gchar              // out

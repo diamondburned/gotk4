@@ -65,8 +65,22 @@ func marshalEventControllerer(p uintptr) (interface{}, error) {
 	return wrapEventController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (controller *EventController) baseEventController() *EventController {
+	return controller
+}
+
+// BaseEventController returns the underlying base object.
+func BaseEventController(obj EventControllerer) *EventController {
+	return obj.baseEventController()
+}
+
 // CurrentEvent returns the event that is currently being handled by the
 // controller, and NULL at other times.
+//
+// The function returns the following values:
+//
+//    - event (optional) that is currently handled by controller.
+//
 func (controller *EventController) CurrentEvent() gdk.Eventer {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkEvent           // in
@@ -97,6 +111,11 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 
 // CurrentEventDevice returns the device of the event that is currently being
 // handled by the controller, and NULL otherwise.
+//
+// The function returns the following values:
+//
+//    - device (optional) of the event is currently handled by controller.
+//
 func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkDevice          // in
@@ -127,6 +146,12 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 
 // CurrentEventState returns the modifier state of the event that is currently
 // being handled by the controller, and 0 otherwise.
+//
+// The function returns the following values:
+//
+//    - modifierType: modifier state of the event is currently handled by
+//      controller.
+//
 func (controller *EventController) CurrentEventState() gdk.ModifierType {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GdkModifierType     // in
@@ -145,6 +170,11 @@ func (controller *EventController) CurrentEventState() gdk.ModifierType {
 
 // CurrentEventTime returns the timestamp of the event that is currently being
 // handled by the controller, and 0 otherwise.
+//
+// The function returns the following values:
+//
+//    - guint32: timestamp of the event is currently handled by controller.
+//
 func (controller *EventController) CurrentEventTime() uint32 {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.guint32             // in
@@ -162,6 +192,9 @@ func (controller *EventController) CurrentEventTime() uint32 {
 }
 
 // Name gets the name of controller.
+//
+// The function returns the following values:
+//
 func (controller *EventController) Name() string {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.char               // in
@@ -179,6 +212,11 @@ func (controller *EventController) Name() string {
 }
 
 // PropagationLimit gets the propagation limit of the event controller.
+//
+// The function returns the following values:
+//
+//    - propagationLimit: propagation limit.
+//
 func (controller *EventController) PropagationLimit() PropagationLimit {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationLimit // in
@@ -197,6 +235,11 @@ func (controller *EventController) PropagationLimit() PropagationLimit {
 
 // PropagationPhase gets the propagation phase at which controller handles
 // events.
+//
+// The function returns the following values:
+//
+//    - propagationPhase: propagation phase.
+//
 func (controller *EventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
@@ -214,6 +257,11 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 }
 
 // Widget returns the Widget this controller relates to.
+//
+// The function returns the following values:
+//
+//    - widget: GtkWidget.
+//
 func (controller *EventController) Widget() Widgetter {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
@@ -313,13 +361,4 @@ func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(phase)
-}
-
-func (controller *EventController) baseEventController() *EventController {
-	return controller
-}
-
-// BaseEventController returns the underlying base object.
-func BaseEventController(obj EventControllerer) *EventController {
-	return obj.baseEventController()
 }

@@ -25,6 +25,8 @@ func init() {
 	})
 }
 
+// The function returns the following values:
+//
 func BuilderErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -37,6 +39,8 @@ func BuilderErrorQuark() glib.Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func ConstraintVflParserErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -93,6 +97,8 @@ func (e EditableProperties) String() string {
 	}
 }
 
+// The function returns the following values:
+//
 func IconThemeErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -105,6 +111,8 @@ func IconThemeErrorQuark() glib.Quark {
 	return _quark
 }
 
+// The function returns the following values:
+//
 func RecentManagerErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -212,6 +220,8 @@ func (d DebugFlags) Has(other DebugFlags) bool {
 	return (d & other) == other
 }
 
+// The function returns the following values:
+//
 func CSSParserErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 

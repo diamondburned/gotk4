@@ -80,7 +80,21 @@ func (b BuilderClosureFlags) Has(other BuilderClosureFlags) bool {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type BuilderScopeOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - builder
+	//    - functionName
+	//
+	// The function returns the following values:
+	//
 	TypeFromFunction(builder *Builder, functionName string) externglib.Type
+	// The function takes the following parameters:
+	//
+	//    - builder
+	//    - typeName
+	//
+	// The function returns the following values:
+	//
 	TypeFromName(builder *Builder, typeName string) externglib.Type
 }
 
@@ -176,6 +190,11 @@ func marshalBuilderCScoper(p uintptr) (interface{}, error) {
 //
 // Calling this function is only necessary if you want to add custom callbacks
 // via gtk.BuilderCScope.AddCallbackSymbol().
+//
+// The function returns the following values:
+//
+//    - builderCScope: new GtkBuilderCScope.
+//
 func NewBuilderCScope() *BuilderCScope {
 	var _cret *C.GtkBuilderScope // in
 

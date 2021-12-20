@@ -58,6 +58,10 @@ func marshalCharsetConverterer(p uintptr) (interface{}, error) {
 //    - toCharset: destination charset.
 //    - fromCharset: source charset.
 //
+// The function returns the following values:
+//
+//    - charsetConverter: new Converter or NULL on error.
+//
 func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, error) {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
@@ -85,6 +89,11 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 }
 
 // NumFallbacks gets the number of fallbacks that converter has applied so far.
+//
+// The function returns the following values:
+//
+//    - guint: number of fallbacks that converter has applied.
+//
 func (converter *CharsetConverter) NumFallbacks() uint {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.guint              // in
@@ -102,6 +111,11 @@ func (converter *CharsetConverter) NumFallbacks() uint {
 }
 
 // UseFallback gets the Converter:use-fallback property.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if fallbacks are used by converter.
+//
 func (converter *CharsetConverter) UseFallback() bool {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.gboolean           // in

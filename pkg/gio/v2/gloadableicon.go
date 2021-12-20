@@ -35,13 +35,43 @@ func init() {
 type LoadableIconOverrider interface {
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - size: integer.
+	//
+	// The function returns the following values:
+	//
+	//    - typ (optional): location to store the type of the loaded icon, NULL
+	//      to ignore.
+	//    - inputStream to read the icon from.
+	//
 	Load(ctx context.Context, size int) (string, InputStreamer, error)
 	// LoadAsync loads an icon asynchronously. To finish this function, see
 	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
 	// this function, see g_loadable_icon_load().
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - size: integer.
+	//    - callback (optional) to call when the request is satisfied.
+	//
 	LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - typ (optional): location to store the type of the loaded icon, NULL
+	//      to ignore.
+	//    - inputStream to read the icon from.
+	//
 	LoadFinish(res AsyncResulter) (string, InputStreamer, error)
 }
 
@@ -85,8 +115,14 @@ func marshalLoadableIconner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - size: integer.
+//
+// The function returns the following values:
+//
+//    - typ (optional): location to store the type of the loaded icon, NULL to
+//      ignore.
+//    - inputStream to read the icon from.
 //
 func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
@@ -144,9 +180,9 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - size: integer.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
 	var _arg0 *C.GLoadableIcon      // out
@@ -180,6 +216,12 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback Asyn
 // The function takes the following parameters:
 //
 //    - res: Result.
+//
+// The function returns the following values:
+//
+//    - typ (optional): location to store the type of the loaded icon, NULL to
+//      ignore.
+//    - inputStream to read the icon from.
 //
 func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out

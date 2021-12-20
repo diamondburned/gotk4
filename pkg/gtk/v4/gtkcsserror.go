@@ -12,6 +12,8 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// The function returns the following values:
+//
 func CSSParserWarningQuark() glib.Quark {
 	var _cret C.GQuark // in
 

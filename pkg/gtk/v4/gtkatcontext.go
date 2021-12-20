@@ -59,6 +59,21 @@ func marshalATContexter(p uintptr) (interface{}, error) {
 	return wrapATContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (self *ATContext) baseATContext() *ATContext {
+	return self
+}
+
+// BaseATContext returns the underlying base object.
+func BaseATContext(obj ATContexter) *ATContext {
+	return obj.baseATContext()
+}
+
+// ConnectStateChange: emitted when the attributes of the accessible for the
+// GtkATContext instance change.
+func (self *ATContext) ConnectStateChange(f func()) externglib.SignalHandle {
+	return self.Connect("state-change", f)
+}
+
 // NewATContextCreate creates a new GtkATContext instance for the given
 // accessible role, accessible instance, and display connection.
 //
@@ -70,6 +85,10 @@ func marshalATContexter(p uintptr) (interface{}, error) {
 //    - accessibleRole: accessible role used by the GtkATContext.
 //    - accessible: GtkAccessible implementation using the GtkATContext.
 //    - display: GdkDisplay used by the GtkATContext.
+//
+// The function returns the following values:
+//
+//    - atContext (optional): GtkATContext.
 //
 func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, display *gdk.Display) *ATContext {
 	var _arg1 C.GtkAccessibleRole // out
@@ -96,6 +115,11 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 }
 
 // Accessible retrieves the GtkAccessible using this context.
+//
+// The function returns the following values:
+//
+//    - accessible: GtkAccessible.
+//
 func (self *ATContext) Accessible() Accessibler {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
@@ -126,6 +150,11 @@ func (self *ATContext) Accessible() Accessibler {
 }
 
 // AccessibleRole retrieves the accessible role of this context.
+//
+// The function returns the following values:
+//
+//    - accessibleRole: GtkAccessibleRole.
+//
 func (self *ATContext) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkATContext     // out
 	var _cret C.GtkAccessibleRole // in
@@ -140,19 +169,4 @@ func (self *ATContext) AccessibleRole() AccessibleRole {
 	_accessibleRole = AccessibleRole(_cret)
 
 	return _accessibleRole
-}
-
-func (self *ATContext) baseATContext() *ATContext {
-	return self
-}
-
-// BaseATContext returns the underlying base object.
-func BaseATContext(obj ATContexter) *ATContext {
-	return obj.baseATContext()
-}
-
-// ConnectStateChange: emitted when the attributes of the accessible for the
-// GtkATContext instance change.
-func (self *ATContext) ConnectStateChange(f func()) externglib.SignalHandle {
-	return self.Connect("state-change", f)
 }

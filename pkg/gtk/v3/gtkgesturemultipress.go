@@ -59,12 +59,36 @@ func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
 	return wrapGestureMultiPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectPressed: this signal is emitted whenever a button or touch press
+// happens.
+func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
+	return gesture.Connect("pressed", f)
+}
+
+// ConnectReleased: this signal is emitted when a button or touch is released.
+// n_press will report the number of press that is paired to this event, note
+// that GestureMultiPress::stopped may have been emitted between the press and
+// its release, n_press will only start over at the next press.
+func (gesture *GestureMultiPress) ConnectReleased(f func(nPress int, x, y float64)) externglib.SignalHandle {
+	return gesture.Connect("released", f)
+}
+
+// ConnectStopped: this signal is emitted whenever any time/distance threshold
+// has been exceeded.
+func (gesture *GestureMultiPress) ConnectStopped(f func()) externglib.SignalHandle {
+	return gesture.Connect("stopped", f)
+}
+
 // NewGestureMultiPress returns a newly created Gesture that recognizes single
 // and multiple presses.
 //
 // The function takes the following parameters:
 //
 //    - widget: Widget.
+//
+// The function returns the following values:
+//
+//    - gestureMultiPress: newly created GestureMultiPress.
 //
 func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
@@ -86,6 +110,12 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 // function will return TRUE and fill in rect with the press area. See
 // gtk_gesture_multi_press_set_area() for more details on what the press area
 // represents.
+//
+// The function returns the following values:
+//
+//    - rect: return location for the press area.
+//    - ok: TRUE if rect was filled with the press area.
+//
 func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGestureMultiPress // out
 	var _arg1 C.GdkRectangle          // in
@@ -117,7 +147,7 @@ func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 //
 // The function takes the following parameters:
 //
-//    - rect: rectangle to receive coordinates on.
+//    - rect (optional): rectangle to receive coordinates on.
 //
 func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkGestureMultiPress // out
@@ -131,24 +161,4 @@ func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	C.gtk_gesture_multi_press_set_area(_arg0, _arg1)
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(rect)
-}
-
-// ConnectPressed: this signal is emitted whenever a button or touch press
-// happens.
-func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("pressed", f)
-}
-
-// ConnectReleased: this signal is emitted when a button or touch is released.
-// n_press will report the number of press that is paired to this event, note
-// that GestureMultiPress::stopped may have been emitted between the press and
-// its release, n_press will only start over at the next press.
-func (gesture *GestureMultiPress) ConnectReleased(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("released", f)
-}
-
-// ConnectStopped: this signal is emitted whenever any time/distance threshold
-// has been exceeded.
-func (gesture *GestureMultiPress) ConnectStopped(f func()) externglib.SignalHandle {
-	return gesture.Connect("stopped", f)
 }

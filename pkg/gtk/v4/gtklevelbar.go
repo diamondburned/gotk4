@@ -170,7 +170,24 @@ func marshalLevelBarrer(p uintptr) (interface{}, error) {
 	return wrapLevelBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectOffsetChanged: emitted when an offset specified on the bar changes
+// value.
+//
+// This typically is the result of a gtk.LevelBar.AddOffsetValue() call.
+//
+// The signal supports detailed connections; you can connect to the detailed
+// signal "changed::x" in order to only receive callbacks when the value of
+// offset "x" changes.
+func (self *LevelBar) ConnectOffsetChanged(f func(name string)) externglib.SignalHandle {
+	return self.Connect("offset-changed", f)
+}
+
 // NewLevelBar creates a new GtkLevelBar.
+//
+// The function returns the following values:
+//
+//    - levelBar: GtkLevelBar.
+//
 func NewLevelBar() *LevelBar {
 	var _cret *C.GtkWidget // in
 
@@ -189,6 +206,10 @@ func NewLevelBar() *LevelBar {
 //
 //    - minValue: positive value.
 //    - maxValue: positive value.
+//
+// The function returns the following values:
+//
+//    - levelBar: GtkLevelBar.
 //
 func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
 	var _arg1 C.double     // out
@@ -241,6 +262,11 @@ func (self *LevelBar) AddOffsetValue(name string, value float64) {
 }
 
 // Inverted returns whether the levelbar is inverted.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the level bar is inverted.
+//
 func (self *LevelBar) Inverted() bool {
 	var _arg0 *C.GtkLevelBar // out
 	var _cret C.gboolean     // in
@@ -260,6 +286,11 @@ func (self *LevelBar) Inverted() bool {
 }
 
 // MaxValue returns the max-value of the GtkLevelBar.
+//
+// The function returns the following values:
+//
+//    - gdouble: positive value.
+//
 func (self *LevelBar) MaxValue() float64 {
 	var _arg0 *C.GtkLevelBar // out
 	var _cret C.double       // in
@@ -277,6 +308,11 @@ func (self *LevelBar) MaxValue() float64 {
 }
 
 // MinValue returns the min-value of the GtkLevelBar`.
+//
+// The function returns the following values:
+//
+//    - gdouble: positive value.
+//
 func (self *LevelBar) MinValue() float64 {
 	var _arg0 *C.GtkLevelBar // out
 	var _cret C.double       // in
@@ -294,6 +330,11 @@ func (self *LevelBar) MinValue() float64 {
 }
 
 // Mode returns the mode of the GtkLevelBar.
+//
+// The function returns the following values:
+//
+//    - levelBarMode: GtkLevelBarMode.
+//
 func (self *LevelBar) Mode() LevelBarMode {
 	var _arg0 *C.GtkLevelBar    // out
 	var _cret C.GtkLevelBarMode // in
@@ -314,7 +355,12 @@ func (self *LevelBar) Mode() LevelBarMode {
 //
 // The function takes the following parameters:
 //
-//    - name of an offset in the bar.
+//    - name (optional) of an offset in the bar.
+//
+// The function returns the following values:
+//
+//    - value: location where to store the value.
+//    - ok: TRUE if the specified offset is found.
 //
 func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 	var _arg0 *C.GtkLevelBar // out
@@ -344,6 +390,12 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 }
 
 // Value returns the value of the GtkLevelBar.
+//
+// The function returns the following values:
+//
+//    - gdouble: value in the interval between GtkLevelBar:min-value and
+//      GtkLevelBar:max-value.
+//
 func (self *LevelBar) Value() float64 {
 	var _arg0 *C.GtkLevelBar // out
 	var _cret C.double       // in
@@ -367,7 +419,7 @@ func (self *LevelBar) Value() float64 {
 //
 // The function takes the following parameters:
 //
-//    - name of an offset in the bar.
+//    - name (optional) of an offset in the bar.
 //
 func (self *LevelBar) RemoveOffsetValue(name string) {
 	var _arg0 *C.GtkLevelBar // out
@@ -469,7 +521,7 @@ func (self *LevelBar) SetMode(mode LevelBarMode) {
 // The function takes the following parameters:
 //
 //    - value in the interval between gtk.LevelBar:min-value and
-//    gtk.LevelBar:max-value.
+//      gtk.LevelBar:max-value.
 //
 func (self *LevelBar) SetValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
@@ -481,16 +533,4 @@ func (self *LevelBar) SetValue(value float64) {
 	C.gtk_level_bar_set_value(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
-}
-
-// ConnectOffsetChanged: emitted when an offset specified on the bar changes
-// value.
-//
-// This typically is the result of a gtk.LevelBar.AddOffsetValue() call.
-//
-// The signal supports detailed connections; you can connect to the detailed
-// signal "changed::x" in order to only receive callbacks when the value of
-// offset "x" changes.
-func (self *LevelBar) ConnectOffsetChanged(f func(name string)) externglib.SignalHandle {
-	return self.Connect("offset-changed", f)
 }

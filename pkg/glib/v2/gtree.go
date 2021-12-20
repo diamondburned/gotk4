@@ -62,6 +62,11 @@ func (tree *Tree) Destroy() {
 // If the #GTree contains no nodes, the height is 0. If the #GTree contains only
 // one root node the height is 1. If the root node has children the height is 2,
 // etc.
+//
+// The function returns the following values:
+//
+//    - gint: height of tree.
+//
 func (tree *Tree) Height() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
@@ -82,6 +87,12 @@ func (tree *Tree) Height() int {
 //
 // Inserts a new key and value into a #GTree as g_tree_insert_node() does, only
 // this function does not return the inserted or set node.
+//
+// The function takes the following parameters:
+//
+//    - key (optional) to insert.
+//    - value (optional) corresponding to the key.
+//
 func (tree *Tree) Insert(key cgo.Handle, value cgo.Handle) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
@@ -100,6 +111,16 @@ func (tree *Tree) Insert(key cgo.Handle, value cgo.Handle) {
 // Lookup gets the value corresponding to the given key. Since a #GTree is
 // automatically balanced as key/value pairs are added, key lookup is O(log n)
 // (where n is the number of key/value pairs in the tree).
+//
+// The function takes the following parameters:
+//
+//    - key (optional) to look up.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): value corresponding to the key, or NULL if the key
+//      was not found.
+//
 func (tree *Tree) Lookup(key cgo.Handle) cgo.Handle {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
@@ -122,6 +143,17 @@ func (tree *Tree) Lookup(key cgo.Handle) cgo.Handle {
 // LookupExtended looks up a key in the #GTree, returning the original key and
 // the associated value. This is useful if you need to free the memory allocated
 // for the original key, for example before calling g_tree_remove().
+//
+// The function takes the following parameters:
+//
+//    - lookupKey (optional): key to look up.
+//
+// The function returns the following values:
+//
+//    - origKey (optional) returns the original key.
+//    - value (optional) returns the value associated with the key.
+//    - ok: TRUE if the key was found in the #GTree.
+//
 func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, value cgo.Handle, ok bool) {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
@@ -150,6 +182,11 @@ func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, valu
 }
 
 // Nnodes gets the number of nodes in a #GTree.
+//
+// The function returns the following values:
+//
+//    - gint: number of nodes in tree.
+//
 func (tree *Tree) Nnodes() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
@@ -175,6 +212,16 @@ func (tree *Tree) Nnodes() int {
 //
 // The cost of maintaining a balanced tree while removing a key/value result in
 // a O(n log(n)) operation where most of the other operations are O(log(n)).
+//
+// The function takes the following parameters:
+//
+//    - key (optional) to remove.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the key was found (prior to 2.8, this function returned
+//      nothing).
+//
 func (tree *Tree) Remove(key cgo.Handle) bool {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
@@ -198,6 +245,12 @@ func (tree *Tree) Remove(key cgo.Handle) bool {
 
 // Replace inserts a new key and value into a #GTree as g_tree_replace_node()
 // does, only this function does not return the inserted or set node.
+//
+// The function takes the following parameters:
+//
+//    - key (optional) to insert.
+//    - value (optional) corresponding to the key.
+//
 func (tree *Tree) Replace(key cgo.Handle, value cgo.Handle) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
@@ -217,6 +270,16 @@ func (tree *Tree) Replace(key cgo.Handle, value cgo.Handle) {
 // the key and value destroy functions.
 //
 // If the key does not exist in the #GTree, the function does nothing.
+//
+// The function takes the following parameters:
+//
+//    - key (optional) to remove.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the key was found (prior to 2.8, this function returned
+//      nothing).
+//
 func (tree *Tree) Steal(key cgo.Handle) bool {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out

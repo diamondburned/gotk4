@@ -80,6 +80,11 @@ func marshalSeparatorToolItemmer(p uintptr) (interface{}, error) {
 }
 
 // NewSeparatorToolItem: create a new SeparatorToolItem.
+//
+// The function returns the following values:
+//
+//    - separatorToolItem: new SeparatorToolItem.
+//
 func NewSeparatorToolItem() *SeparatorToolItem {
 	var _cret *C.GtkToolItem // in
 
@@ -94,6 +99,11 @@ func NewSeparatorToolItem() *SeparatorToolItem {
 
 // Draw returns whether item is drawn as a line, or just blank. See
 // gtk_separator_tool_item_set_draw().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if item is drawn as a line, or just blank.
+//
 func (item *SeparatorToolItem) Draw() bool {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _cret C.gboolean              // in

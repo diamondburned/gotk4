@@ -33,6 +33,10 @@ func init() {
 //
 //    - name to look up.
 //
+// The function returns the following values:
+//
+//    - gint: icon size (IconSize).
+//
 func IconSizeFromName(name string) int {
 	var _arg1 *C.gchar      // out
 	var _cret C.GtkIconSize // in
@@ -58,6 +62,10 @@ func IconSizeFromName(name string) int {
 // The function takes the following parameters:
 //
 //    - size: IconSize.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the given icon size.
 //
 func IconSizeGetName(size int) string {
 	var _arg1 C.GtkIconSize // out
@@ -86,6 +94,12 @@ func IconSizeGetName(size int) string {
 // The function takes the following parameters:
 //
 //    - size: icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - width (optional): location to store icon width.
+//    - height (optional): location to store icon height.
+//    - ok: TRUE if size was a valid size.
 //
 func IconSizeLookup(size int) (width int, height int, ok bool) {
 	var _arg1 C.GtkIconSize // out
@@ -124,9 +138,14 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - settings object, used to determine which set of user preferences to
-//    used.
+//    - settings object, used to determine which set of user preferences to used.
 //    - size: icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - width (optional): location to store icon width.
+//    - height (optional): location to store icon height.
+//    - ok: TRUE if size was a valid size.
 //
 func IconSizeLookupForSettings(settings *Settings, size int) (width int, height int, ok bool) {
 	var _arg1 *C.GtkSettings // out
@@ -165,6 +184,10 @@ func IconSizeLookupForSettings(settings *Settings, size int) (width int, height 
 //    - name of the icon size.
 //    - width: icon width.
 //    - height: icon height.
+//
+// The function returns the following values:
+//
+//    - gint: integer value representing the size (IconSize).
 //
 func IconSizeRegister(name string, width, height int) int {
 	var _arg1 *C.gchar      // out
@@ -316,6 +339,11 @@ func marshalIconFactorier(p uintptr) (interface{}, error) {
 // which will allow themes to override the icons for the application.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - iconFactory: new IconFactory.
+//
 func NewIconFactory() *IconFactory {
 	var _cret *C.GtkIconFactory // in
 
@@ -388,6 +416,10 @@ func (factory *IconFactory) AddDefault() {
 //
 //    - stockId: icon name.
 //
+// The function returns the following values:
+//
+//    - iconSet: icon set of stock_id.
+//
 func (factory *IconFactory) Lookup(stockId string) *IconSet {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out
@@ -440,6 +472,10 @@ func (factory *IconFactory) RemoveDefault() {
 // The function takes the following parameters:
 //
 //    - stockId: icon name.
+//
+// The function returns the following values:
+//
+//    - iconSet or NULL.
 //
 func IconFactoryLookupDefault(stockId string) *IconSet {
 	var _arg1 *C.gchar      // out

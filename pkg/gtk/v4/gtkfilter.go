@@ -113,8 +113,23 @@ type FilterOverrider interface {
 	//
 	// This function is meant purely for optimization purposes, filters can
 	// choose to omit implementing it, but FilterListModel uses it.
+	//
+	// The function returns the following values:
+	//
+	//    - filterMatch strictness of self.
+	//
 	Strictness() FilterMatch
 	// Match checks if the given item is matched by the filter or not.
+	//
+	// The function takes the following parameters:
+	//
+	//    - item (optional) to check.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the filter matches the item and a filter model should
+	//      keep it, FALSE if not.
+	//
 	Match(item *externglib.Object) bool
 }
 
@@ -154,6 +169,18 @@ func marshalFilterer(p uintptr) (interface{}, error) {
 	return wrapFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged: emitted whenever the filter changed.
+//
+// Users of the filter should then check items again via gtk.Filter.Match().
+//
+// GtkFilterListModel handles this signal automatically.
+//
+// Depending on the change parameter, not all items need to be checked, but only
+// some. Refer to the gtk.FilterChange documentation for details.
+func (self *Filter) ConnectChanged(f func(change FilterChange)) externglib.SignalHandle {
+	return self.Connect("changed", f)
+}
+
 // Changed emits the Filter::changed signal to notify all users of the filter
 // that the filter changed. Users of the filter should then check items again
 // via gtk_filter_match().
@@ -187,6 +214,11 @@ func (self *Filter) Changed(change FilterChange) {
 //
 // This function is meant purely for optimization purposes, filters can choose
 // to omit implementing it, but FilterListModel uses it.
+//
+// The function returns the following values:
+//
+//    - filterMatch strictness of self.
+//
 func (self *Filter) Strictness() FilterMatch {
 	var _arg0 *C.GtkFilter     // out
 	var _cret C.GtkFilterMatch // in
@@ -209,6 +241,11 @@ func (self *Filter) Strictness() FilterMatch {
 //
 //    - item to check.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the filter matches the item and a filter model should keep
+//      it, FALSE if not.
+//
 func (self *Filter) Match(item *externglib.Object) bool {
 	var _arg0 *C.GtkFilter // out
 	var _arg1 C.gpointer   // out
@@ -228,16 +265,4 @@ func (self *Filter) Match(item *externglib.Object) bool {
 	}
 
 	return _ok
-}
-
-// ConnectChanged: emitted whenever the filter changed.
-//
-// Users of the filter should then check items again via gtk.Filter.Match().
-//
-// GtkFilterListModel handles this signal automatically.
-//
-// Depending on the change parameter, not all items need to be checked, but only
-// some. Refer to the gtk.FilterChange documentation for details.
-func (self *Filter) ConnectChanged(f func(change FilterChange)) externglib.SignalHandle {
-	return self.Connect("changed", f)
 }

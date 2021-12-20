@@ -98,6 +98,11 @@ func marshalCenterBoxer(p uintptr) (interface{}, error) {
 }
 
 // NewCenterBox creates a new GtkCenterBox.
+//
+// The function returns the following values:
+//
+//    - centerBox: new GtkCenterBox.
+//
 func NewCenterBox() *CenterBox {
 	var _cret *C.GtkWidget // in
 
@@ -112,6 +117,11 @@ func NewCenterBox() *CenterBox {
 
 // BaselinePosition gets the value set by
 // gtk_center_box_set_baseline_position().
+//
+// The function returns the following values:
+//
+//    - baselinePosition: baseline position.
+//
 func (self *CenterBox) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkCenterBox       // out
 	var _cret C.GtkBaselinePosition // in
@@ -129,6 +139,11 @@ func (self *CenterBox) BaselinePosition() BaselinePosition {
 }
 
 // CenterWidget gets the center widget, or NULL if there is none.
+//
+// The function returns the following values:
+//
+//    - widget (optional): center widget.
+//
 func (self *CenterBox) CenterWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
@@ -158,6 +173,11 @@ func (self *CenterBox) CenterWidget() Widgetter {
 }
 
 // EndWidget gets the end widget, or NULL if there is none.
+//
+// The function returns the following values:
+//
+//    - widget (optional): end widget.
+//
 func (self *CenterBox) EndWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
@@ -187,6 +207,11 @@ func (self *CenterBox) EndWidget() Widgetter {
 }
 
 // StartWidget gets the start widget, or NULL if there is none.
+//
+// The function returns the following values:
+//
+//    - widget (optional): start widget.
+//
 func (self *CenterBox) StartWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
@@ -244,7 +269,7 @@ func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 //
 // The function takes the following parameters:
 //
-//    - child: new center widget, or NULL.
+//    - child (optional): new center widget, or NULL.
 //
 func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
@@ -266,7 +291,7 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child: new end widget, or NULL.
+//    - child (optional): new end widget, or NULL.
 //
 func (self *CenterBox) SetEndWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
@@ -288,7 +313,7 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child: new start widget, or NULL.
+//    - child (optional): new start widget, or NULL.
 //
 func (self *CenterBox) SetStartWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out

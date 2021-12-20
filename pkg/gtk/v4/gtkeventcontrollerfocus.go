@@ -50,58 +50,6 @@ func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
 	return wrapEventControllerFocus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewEventControllerFocus creates a new event controller that will handle focus
-// events.
-func NewEventControllerFocus() *EventControllerFocus {
-	var _cret *C.GtkEventController // in
-
-	_cret = C.gtk_event_controller_focus_new()
-
-	var _eventControllerFocus *EventControllerFocus // out
-
-	_eventControllerFocus = wrapEventControllerFocus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _eventControllerFocus
-}
-
-// ContainsFocus returns TRUE if focus is within self or one of its children.
-func (self *EventControllerFocus) ContainsFocus() bool {
-	var _arg0 *C.GtkEventControllerFocus // out
-	var _cret C.gboolean                 // in
-
-	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(self.Native()))
-
-	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IsFocus returns TRUE if focus is within self, but not one of its children.
-func (self *EventControllerFocus) IsFocus() bool {
-	var _arg0 *C.GtkEventControllerFocus // out
-	var _cret C.gboolean                 // in
-
-	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(self.Native()))
-
-	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // ConnectEnter: emitted whenever the focus enters into the widget or one of its
 // descendents.
 //
@@ -123,4 +71,71 @@ func (self *EventControllerFocus) ConnectEnter(f func()) externglib.SignalHandle
 // can monitor the gtk.EventControllerFocus:is-focus property for changes.
 func (self *EventControllerFocus) ConnectLeave(f func()) externglib.SignalHandle {
 	return self.Connect("leave", f)
+}
+
+// NewEventControllerFocus creates a new event controller that will handle focus
+// events.
+//
+// The function returns the following values:
+//
+//    - eventControllerFocus: new GtkEventControllerFocus.
+//
+func NewEventControllerFocus() *EventControllerFocus {
+	var _cret *C.GtkEventController // in
+
+	_cret = C.gtk_event_controller_focus_new()
+
+	var _eventControllerFocus *EventControllerFocus // out
+
+	_eventControllerFocus = wrapEventControllerFocus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _eventControllerFocus
+}
+
+// ContainsFocus returns TRUE if focus is within self or one of its children.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if focus is within self or one of its children.
+//
+func (self *EventControllerFocus) ContainsFocus() bool {
+	var _arg0 *C.GtkEventControllerFocus // out
+	var _cret C.gboolean                 // in
+
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsFocus returns TRUE if focus is within self, but not one of its children.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if focus is within self, but not one of its children.
+//
+func (self *EventControllerFocus) IsFocus() bool {
+	var _arg0 *C.GtkEventControllerFocus // out
+	var _cret C.gboolean                 // in
+
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

@@ -65,6 +65,11 @@ func marshalAnyFilterer(p uintptr) (interface{}, error) {
 // This filter matches an item if any of the filters added to it matches the
 // item. In particular, this means that if no filter has been added to it, the
 // filter matches no item.
+//
+// The function returns the following values:
+//
+//    - anyFilter: new GtkAnyFilter.
+//
 func NewAnyFilter() *AnyFilter {
 	var _cret *C.GtkAnyFilter // in
 
@@ -116,6 +121,11 @@ func marshalEveryFilterer(p uintptr) (interface{}, error) {
 // This filter matches an item if each of the filters added to it matches the
 // item. In particular, this means that if no filter has been added to it, the
 // filter matches every item.
+//
+// The function returns the following values:
+//
+//    - everyFilter: new GtkEveryFilter.
+//
 func NewEveryFilter() *EveryFilter {
 	var _cret *C.GtkEveryFilter // in
 
@@ -172,6 +182,15 @@ func marshalMultiFilterer(p uintptr) (interface{}, error) {
 	return wrapMultiFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (self *MultiFilter) baseMultiFilter() *MultiFilter {
+	return self
+}
+
+// BaseMultiFilter returns the underlying base object.
+func BaseMultiFilter(obj MultiFilterer) *MultiFilter {
+	return obj.baseMultiFilter()
+}
+
 // Append adds a filter to self to use for matching.
 //
 // The function takes the following parameters:
@@ -211,13 +230,4 @@ func (self *MultiFilter) Remove(position uint) {
 	C.gtk_multi_filter_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
-}
-
-func (self *MultiFilter) baseMultiFilter() *MultiFilter {
-	return self
-}
-
-// BaseMultiFilter returns the underlying base object.
-func BaseMultiFilter(obj MultiFilterer) *MultiFilter {
-	return obj.baseMultiFilter()
 }

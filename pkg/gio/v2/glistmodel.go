@@ -32,18 +32,37 @@ type ListModelOverrider interface {
 	//
 	// NULL is never returned for an index that is smaller than the length of
 	// the list. See g_list_model_get_n_items().
+	//
+	// The function takes the following parameters:
+	//
+	//    - position of the item to fetch.
+	//
+	// The function returns the following values:
+	//
+	//    - object (optional) at position.
+	//
 	Item(position uint) *externglib.Object
 	// ItemType gets the type of the items in list. All items returned from
 	// g_list_model_get_type() are of that type or a subtype, or are an
 	// implementation of that interface.
 	//
 	// The item type of a Model can not change during the life of the model.
+	//
+	// The function returns the following values:
+	//
+	//    - gType of the items contained in list.
+	//
 	ItemType() externglib.Type
 	// NItems gets the number of items in list.
 	//
 	// Depending on the model implementation, calling this function may be less
 	// efficient than iterating the list with increasing values for position
 	// until g_list_model_get_item() returns NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - guint: number of items in list.
+	//
 	NItems() uint
 }
 
@@ -123,11 +142,26 @@ func marshalListModeller(p uintptr) (interface{}, error) {
 	return wrapListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectItemsChanged: this signal is emitted whenever items were added to or
+// removed from list. At position, removed items were removed and added items
+// were added in their place.
+//
+// Note: If removed != added, the positions of all later items in the model
+// change.
+func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) externglib.SignalHandle {
+	return list.Connect("items-changed", f)
+}
+
 // ItemType gets the type of the items in list. All items returned from
 // g_list_model_get_type() are of that type or a subtype, or are an
 // implementation of that interface.
 //
 // The item type of a Model can not change during the life of the model.
+//
+// The function returns the following values:
+//
+//    - gType of the items contained in list.
+//
 func (list *ListModel) ItemType() externglib.Type {
 	var _arg0 *C.GListModel // out
 	var _cret C.GType       // in
@@ -149,6 +183,11 @@ func (list *ListModel) ItemType() externglib.Type {
 // Depending on the model implementation, calling this function may be less
 // efficient than iterating the list with increasing values for position until
 // g_list_model_get_item() returns NULL.
+//
+// The function returns the following values:
+//
+//    - guint: number of items in list.
+//
 func (list *ListModel) NItems() uint {
 	var _arg0 *C.GListModel // out
 	var _cret C.guint       // in
@@ -174,6 +213,10 @@ func (list *ListModel) NItems() uint {
 // The function takes the following parameters:
 //
 //    - position of the item to fetch.
+//
+// The function returns the following values:
+//
+//    - object (optional) at position.
 //
 func (list *ListModel) Item(position uint) *externglib.Object {
 	var _arg0 *C.GListModel // out
@@ -237,14 +280,4 @@ func (list *ListModel) ItemsChanged(position, removed, added uint) {
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(removed)
 	runtime.KeepAlive(added)
-}
-
-// ConnectItemsChanged: this signal is emitted whenever items were added to or
-// removed from list. At position, removed items were removed and added items
-// were added in their place.
-//
-// Note: If removed != added, the positions of all later items in the model
-// change.
-func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) externglib.SignalHandle {
-	return list.Connect("items-changed", f)
 }

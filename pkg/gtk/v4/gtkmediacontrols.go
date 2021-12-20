@@ -65,7 +65,11 @@ func marshalMediaControlser(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - stream to manage or NULL for none.
+//    - stream (optional) to manage or NULL for none.
+//
+// The function returns the following values:
+//
+//    - mediaControls: new GtkMediaControls.
 //
 func NewMediaControls(stream MediaStreamer) *MediaControls {
 	var _arg1 *C.GtkMediaStream // out
@@ -86,6 +90,11 @@ func NewMediaControls(stream MediaStreamer) *MediaControls {
 }
 
 // MediaStream gets the media stream managed by controls or NULL if none.
+//
+// The function returns the following values:
+//
+//    - mediaStream (optional): media stream managed by controls.
+//
 func (controls *MediaControls) MediaStream() MediaStreamer {
 	var _arg0 *C.GtkMediaControls // out
 	var _cret *C.GtkMediaStream   // in
@@ -118,7 +127,7 @@ func (controls *MediaControls) MediaStream() MediaStreamer {
 //
 // The function takes the following parameters:
 //
-//    - stream: GtkMediaStream, or NULL.
+//    - stream (optional): GtkMediaStream, or NULL.
 //
 func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
 	var _arg0 *C.GtkMediaControls // out

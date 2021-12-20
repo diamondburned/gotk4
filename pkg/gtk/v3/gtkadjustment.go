@@ -70,6 +70,18 @@ func marshalAdjustmenter(p uintptr) (interface{}, error) {
 	return wrapAdjustment(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged: emitted when one or more of the Adjustment properties have
+// been changed, other than the Adjustment:value property.
+func (adjustment *Adjustment) ConnectChanged(f func()) externglib.SignalHandle {
+	return adjustment.Connect("changed", f)
+}
+
+// ConnectValueChanged: emitted when the Adjustment:value property has been
+// changed.
+func (adjustment *Adjustment) ConnectValueChanged(f func()) externglib.SignalHandle {
+	return adjustment.Connect("value-changed", f)
+}
+
 // NewAdjustment creates a new Adjustment.
 //
 // The function takes the following parameters:
@@ -80,6 +92,10 @@ func marshalAdjustmenter(p uintptr) (interface{}, error) {
 //    - stepIncrement: step increment.
 //    - pageIncrement: page increment.
 //    - pageSize: page size.
+//
+// The function returns the following values:
+//
+//    - adjustment: new Adjustment.
 //
 func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) *Adjustment {
 	var _arg1 C.gdouble        // out
@@ -197,6 +213,11 @@ func (adjustment *Adjustment) Configure(value, lower, upper, stepIncrement, page
 }
 
 // Lower retrieves the minimum value of the adjustment.
+//
+// The function returns the following values:
+//
+//    - gdouble: current minimum value of the adjustment.
+//
 func (adjustment *Adjustment) Lower() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
@@ -214,6 +235,11 @@ func (adjustment *Adjustment) Lower() float64 {
 }
 
 // MinimumIncrement gets the smaller of step increment and page increment.
+//
+// The function returns the following values:
+//
+//    - gdouble: minimum increment of adjustment.
+//
 func (adjustment *Adjustment) MinimumIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
@@ -231,6 +257,11 @@ func (adjustment *Adjustment) MinimumIncrement() float64 {
 }
 
 // PageIncrement retrieves the page increment of the adjustment.
+//
+// The function returns the following values:
+//
+//    - gdouble: current page increment of the adjustment.
+//
 func (adjustment *Adjustment) PageIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
@@ -248,6 +279,11 @@ func (adjustment *Adjustment) PageIncrement() float64 {
 }
 
 // PageSize retrieves the page size of the adjustment.
+//
+// The function returns the following values:
+//
+//    - gdouble: current page size of the adjustment.
+//
 func (adjustment *Adjustment) PageSize() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
@@ -265,6 +301,11 @@ func (adjustment *Adjustment) PageSize() float64 {
 }
 
 // StepIncrement retrieves the step increment of the adjustment.
+//
+// The function returns the following values:
+//
+//    - gdouble: current step increment of the adjustment.
+//
 func (adjustment *Adjustment) StepIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
@@ -282,6 +323,11 @@ func (adjustment *Adjustment) StepIncrement() float64 {
 }
 
 // Upper retrieves the maximum value of the adjustment.
+//
+// The function returns the following values:
+//
+//    - gdouble: current maximum value of the adjustment.
+//
 func (adjustment *Adjustment) Upper() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
@@ -300,6 +346,11 @@ func (adjustment *Adjustment) Upper() float64 {
 
 // Value gets the current value of the adjustment. See
 // gtk_adjustment_set_value().
+//
+// The function returns the following values:
+//
+//    - gdouble: current value of the adjustment.
+//
 func (adjustment *Adjustment) Value() float64 {
 	var _arg0 *C.GtkAdjustment // out
 	var _cret C.gdouble        // in
@@ -469,16 +520,4 @@ func (adjustment *Adjustment) ValueChanged() {
 
 	C.gtk_adjustment_value_changed(_arg0)
 	runtime.KeepAlive(adjustment)
-}
-
-// ConnectChanged: emitted when one or more of the Adjustment properties have
-// been changed, other than the Adjustment:value property.
-func (adjustment *Adjustment) ConnectChanged(f func()) externglib.SignalHandle {
-	return adjustment.Connect("changed", f)
-}
-
-// ConnectValueChanged: emitted when the Adjustment:value property has been
-// changed.
-func (adjustment *Adjustment) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return adjustment.Connect("value-changed", f)
 }

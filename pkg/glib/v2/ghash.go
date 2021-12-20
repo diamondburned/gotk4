@@ -65,8 +65,12 @@ func _gotk4_glib2_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cre
 //
 // The function takes the following parameters:
 //
-//    - v1: key.
-//    - v2: key to compare with v1.
+//    - v1 (optional): key.
+//    - v2 (optional): key to compare with v1.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two keys match.
 //
 func DirectEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
@@ -98,7 +102,11 @@ func DirectEqual(v1, v2 cgo.Handle) bool {
 //
 // The function takes the following parameters:
 //
-//    - v: #gpointer key.
+//    - v (optional): #gpointer key.
+//
+// The function returns the following values:
+//
+//    - guint: hash value corresponding to the key.
 //
 func DirectHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
@@ -125,6 +133,10 @@ func DirectHash(v cgo.Handle) uint {
 //
 //    - v1: pointer to a #gdouble key.
 //    - v2: pointer to a #gdouble key to compare with v1.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two keys match.
 //
 func DoubleEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
@@ -156,6 +168,10 @@ func DoubleEqual(v1, v2 cgo.Handle) bool {
 //
 //    - v: pointer to a #gdouble key.
 //
+// The function returns the following values:
+//
+//    - guint: hash value corresponding to the key.
+//
 func DoubleHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -181,6 +197,10 @@ func DoubleHash(v cgo.Handle) uint {
 //
 //    - v1: pointer to a #gint64 key.
 //    - v2: pointer to a #gint64 key to compare with v1.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two keys match.
 //
 func Int64Equal(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
@@ -212,6 +232,10 @@ func Int64Equal(v1, v2 cgo.Handle) bool {
 //
 //    - v: pointer to a #gint64 key.
 //
+// The function returns the following values:
+//
+//    - guint: hash value corresponding to the key.
+//
 func Int64Hash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -240,6 +264,10 @@ func Int64Hash(v cgo.Handle) uint {
 //
 //    - v1: pointer to a #gint key.
 //    - v2: pointer to a #gint key to compare with v1.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two keys match.
 //
 func IntEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
@@ -274,6 +302,10 @@ func IntEqual(v1, v2 cgo.Handle) bool {
 //
 //    - v: pointer to a #gint key.
 //
+// The function returns the following values:
+//
+//    - guint: hash value corresponding to the key.
+//
 func IntHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -302,6 +334,10 @@ func IntHash(v cgo.Handle) uint {
 //
 //    - v1: key.
 //    - v2: key to compare with v1.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two keys match.
 //
 func StrEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
@@ -340,6 +376,10 @@ func StrEqual(v1, v2 cgo.Handle) bool {
 // The function takes the following parameters:
 //
 //    - v: string key.
+//
+// The function returns the following values:
+//
+//    - guint: hash value corresponding to the key.
 //
 func StrHash(v cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
@@ -394,7 +434,11 @@ func marshalHashTable(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - hashTable: Table.
-//    - key to insert.
+//    - key (optional) to insert.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the key did not exist yet.
 //
 func HashTableAdd(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 	var _arg1 *C.GHashTable // out
@@ -430,7 +474,11 @@ func HashTableAdd(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 // The function takes the following parameters:
 //
 //    - hashTable: Table.
-//    - key to check.
+//    - key (optional) to check.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if key is in hash_table, FALSE otherwise.
 //
 func HashTableContains(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 	var _arg1 *C.GHashTable   // out
@@ -501,8 +549,12 @@ func HashTableDestroy(hashTable map[cgo.Handle]cgo.Handle) {
 // The function takes the following parameters:
 //
 //    - hashTable: Table.
-//    - key to insert.
-//    - value to associate with the key.
+//    - key (optional) to insert.
+//    - value (optional) to associate with the key.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the key did not exist yet.
 //
 func HashTableInsert(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle) bool {
 	var _arg1 *C.GHashTable // out
@@ -544,7 +596,11 @@ func HashTableInsert(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle)
 // The function takes the following parameters:
 //
 //    - hashTable: Table.
-//    - key to look up.
+//    - key (optional) to look up.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): associated value, or NULL if the key is not found.
 //
 func HashTableLookup(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) cgo.Handle {
 	var _arg1 *C.GHashTable   // out
@@ -584,7 +640,13 @@ func HashTableLookup(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) cgo.Ha
 // The function takes the following parameters:
 //
 //    - hashTable: Table.
-//    - lookupKey: key to look up.
+//    - lookupKey (optional): key to look up.
+//
+// The function returns the following values:
+//
+//    - origKey (optional): return location for the original key.
+//    - value (optional): return location for the value associated with the key.
+//    - ok: TRUE if the key was found in the Table.
 //
 func HashTableLookupExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.Handle) (origKey cgo.Handle, value cgo.Handle, ok bool) {
 	var _arg1 *C.GHashTable   // out
@@ -630,7 +692,11 @@ func HashTableLookupExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.
 // The function takes the following parameters:
 //
 //    - hashTable: Table.
-//    - key to remove.
+//    - key (optional) to remove.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the key was found and removed from the Table.
 //
 func HashTableRemove(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 	var _arg1 *C.GHashTable   // out
@@ -701,8 +767,12 @@ func HashTableRemoveAll(hashTable map[cgo.Handle]cgo.Handle) {
 // The function takes the following parameters:
 //
 //    - hashTable: Table.
-//    - key to insert.
-//    - value to associate with the key.
+//    - key (optional) to insert.
+//    - value (optional) to associate with the key.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the key did not exist yet.
 //
 func HashTableReplace(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle) bool {
 	var _arg1 *C.GHashTable // out
@@ -742,6 +812,10 @@ func HashTableReplace(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle
 //
 //    - hashTable: Table.
 //
+// The function returns the following values:
+//
+//    - guint: number of key/value pairs in the Table.
+//
 func HashTableSize(hashTable map[cgo.Handle]cgo.Handle) uint {
 	var _arg1 *C.GHashTable // out
 	var _cret C.guint       // in
@@ -772,7 +846,11 @@ func HashTableSize(hashTable map[cgo.Handle]cgo.Handle) uint {
 // The function takes the following parameters:
 //
 //    - hashTable: Table.
-//    - key to remove.
+//    - key (optional) to remove.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the key was found and removed from the Table.
 //
 func HashTableSteal(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 	var _arg1 *C.GHashTable   // out
@@ -841,7 +919,14 @@ func HashTableStealAll(hashTable map[cgo.Handle]cgo.Handle) {
 // The function takes the following parameters:
 //
 //    - hashTable: Table.
-//    - lookupKey: key to look up.
+//    - lookupKey (optional): key to look up.
+//
+// The function returns the following values:
+//
+//    - stolenKey (optional): return location for the original key.
+//    - stolenValue (optional): return location for the value associated with the
+//      key.
+//    - ok: TRUE if the key was found in the Table.
 //
 func HashTableStealExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.Handle) (stolenKey cgo.Handle, stolenValue cgo.Handle, ok bool) {
 	var _arg1 *C.GHashTable   // out
@@ -910,6 +995,11 @@ type hashTableIter struct {
 //      {
 //        // do something with key and value
 //      }.
+//
+// The function takes the following parameters:
+//
+//    - hashTable: Table.
+//
 func (iter *HashTableIter) Init(hashTable map[cgo.Handle]cgo.Handle) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 *C.GHashTable     // out
@@ -933,6 +1023,13 @@ func (iter *HashTableIter) Init(hashTable map[cgo.Handle]cgo.Handle) {
 // Next advances iter and retrieves the key and/or value that are now pointed to
 // as a result of this advancement. If FALSE is returned, key and value are not
 // set, and the iterator becomes invalid.
+//
+// The function returns the following values:
+//
+//    - key (optional): location to store the key.
+//    - value (optional): location to store the value.
+//    - ok: FALSE if the end of the Table has been reached.
+//
 func (iter *HashTableIter) Next() (key cgo.Handle, value cgo.Handle, ok bool) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 C.gpointer        // in
@@ -988,6 +1085,11 @@ func (iter *HashTableIter) Remove() {
 //
 // If you supplied a value_destroy_func when creating the Table, the old value
 // is freed using that function.
+//
+// The function takes the following parameters:
+//
+//    - value (optional) to replace with.
+//
 func (iter *HashTableIter) Replace(value cgo.Handle) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 C.gpointer        // out

@@ -60,7 +60,16 @@ func (c CellRendererAccelMode) String() string {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellRendererAccelOverrider interface {
+	// The function takes the following parameters:
+	//
 	AccelCleared(pathString string)
+	// The function takes the following parameters:
+	//
+	//    - pathString
+	//    - accelKey
+	//    - accelMods
+	//    - hardwareKeycode
+	//
 	AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 }
 
@@ -93,7 +102,22 @@ func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
 	return wrapCellRendererAccel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAccelCleared gets emitted when the user has removed the accelerator.
+func (accel *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) externglib.SignalHandle {
+	return accel.Connect("accel-cleared", f)
+}
+
+// ConnectAccelEdited gets emitted when the user has selected a new accelerator.
+func (accel *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) externglib.SignalHandle {
+	return accel.Connect("accel-edited", f)
+}
+
 // NewCellRendererAccel creates a new CellRendererAccel.
+//
+// The function returns the following values:
+//
+//    - cellRendererAccel: new cell renderer.
+//
 func NewCellRendererAccel() *CellRendererAccel {
 	var _cret *C.GtkCellRenderer // in
 
@@ -104,14 +128,4 @@ func NewCellRendererAccel() *CellRendererAccel {
 	_cellRendererAccel = wrapCellRendererAccel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererAccel
-}
-
-// ConnectAccelCleared gets emitted when the user has removed the accelerator.
-func (accel *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) externglib.SignalHandle {
-	return accel.Connect("accel-cleared", f)
-}
-
-// ConnectAccelEdited gets emitted when the user has selected a new accelerator.
-func (accel *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) externglib.SignalHandle {
-	return accel.Connect("accel-edited", f)
 }

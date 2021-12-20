@@ -49,7 +49,11 @@ func marshalBoolFilterer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - expression to evaluate or NULL for none.
+//    - expression (optional) to evaluate or NULL for none.
+//
+// The function returns the following values:
+//
+//    - boolFilter: new GtkBoolFilter.
 //
 func NewBoolFilter(expression Expressioner) *BoolFilter {
 	var _arg1 *C.GtkExpression // out
@@ -72,6 +76,11 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 
 // Expression gets the expression that the filter uses to evaluate if an item
 // should be filtered.
+//
+// The function returns the following values:
+//
+//    - expression (optional): GtkExpression.
+//
 func (self *BoolFilter) Expression() Expressioner {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret *C.GtkExpression // in
@@ -101,6 +110,11 @@ func (self *BoolFilter) Expression() Expressioner {
 }
 
 // Invert returns whether the filter inverts the expression.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the filter inverts.
+//
 func (self *BoolFilter) Invert() bool {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret C.gboolean       // in
@@ -126,7 +140,7 @@ func (self *BoolFilter) Invert() bool {
 //
 // The function takes the following parameters:
 //
-//    - expression: GtkExpression.
+//    - expression (optional): GtkExpression.
 //
 func (self *BoolFilter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkBoolFilter // out

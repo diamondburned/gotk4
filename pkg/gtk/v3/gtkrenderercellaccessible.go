@@ -64,10 +64,9 @@ func marshalRendererCellAccessibler(p uintptr) (interface{}, error) {
 	return wrapRendererCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//
 // The function takes the following parameters:
 //
-
+// The function returns the following values:
 //
 func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible {
 	var _arg1 *C.GtkCellRenderer // out

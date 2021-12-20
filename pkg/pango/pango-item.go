@@ -196,6 +196,11 @@ func (i *Item) Analysis() *Analysis {
 // The iter should be positioned before the range of the item, and will be
 // advanced past it. This function is meant to be called in a loop over the
 // items resulting from itemization, while passing the iter to each call.
+//
+// The function takes the following parameters:
+//
+//    - iter: PangoAttrIterator.
+//
 func (item *Item) ApplyAttrs(iter *AttrIterator) {
 	var _arg0 *C.PangoItem         // out
 	var _arg1 *C.PangoAttrIterator // out
@@ -209,6 +214,12 @@ func (item *Item) ApplyAttrs(iter *AttrIterator) {
 }
 
 // Copy an existing PangoItem structure.
+//
+// The function returns the following values:
+//
+//    - ret (optional): newly allocated PangoItem, which should be freed with
+//      pango.Item.Free(), or NULL if item was NULL.
+//
 func (item *Item) Copy() *Item {
 	var _arg0 *C.PangoItem // out
 	var _cret *C.PangoItem // in
@@ -245,6 +256,18 @@ func (item *Item) Copy() *Item {
 // chars, and must be provided because the text used to generate the item isn't
 // available, so pango_item_split() can't count the char length of the split
 // items itself.
+//
+// The function takes the following parameters:
+//
+//    - splitIndex: byte index of position to split item, relative to the start
+//      of the item.
+//    - splitOffset: number of chars between start of orig and split_index.
+//
+// The function returns the following values:
+//
+//    - item: new item representing text before split_index, which should be
+//      freed with pango.Item.Free().
+//
 func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out

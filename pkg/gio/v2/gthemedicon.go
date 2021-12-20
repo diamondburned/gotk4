@@ -57,6 +57,10 @@ func marshalThemedIconner(p uintptr) (interface{}, error) {
 //
 //    - iconname: string containing an icon name.
 //
+// The function returns the following values:
+//
+//    - themedIcon: new Icon.
+//
 func NewThemedIcon(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
@@ -79,6 +83,10 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 // The function takes the following parameters:
 //
 //    - iconnames: array of strings containing icon names.
+//
+// The function returns the following values:
+//
+//    - themedIcon: new Icon.
 //
 func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	var _arg1 **C.char // out
@@ -125,6 +133,10 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 //
 //    - iconname: string containing an icon name.
 //
+// The function returns the following values:
+//
+//    - themedIcon: new Icon.
+//
 func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
@@ -165,6 +177,11 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 }
 
 // Names gets the names of icons from within icon.
+//
+// The function returns the following values:
+//
+//    - utf8s: list of icon names.
+//
 func (icon *ThemedIcon) Names() []string {
 	var _arg0 *C.GThemedIcon // out
 	var _cret **C.gchar      // in

@@ -587,6 +587,15 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 }
 
 // ContainGType checks if a given GType is part of the given formats.
+//
+// The function takes the following parameters:
+//
+//    - typ: GType to search for.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the #GType was found.
+//
 func (formats *ContentFormats) ContainGType(typ externglib.Type) bool {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 C.GType              // out
@@ -609,6 +618,15 @@ func (formats *ContentFormats) ContainGType(typ externglib.Type) bool {
 }
 
 // ContainMIMEType checks if a given mime type is part of the given formats.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: mime type to search for.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the mime_type was found.
+//
 func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.char              // out
@@ -635,6 +653,12 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 //
 // Note that formats may not contain any #GTypes, in particular when they are
 // empty. In that case NULL will be returned.
+//
+// The function returns the following values:
+//
+//    - gTypes (optional): G_TYPE_INVALID-terminated array of types included in
+//      formats or NULL if none.
+//
 func (formats *ContentFormats) GTypes() []externglib.Type {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GType             // in
@@ -664,6 +688,12 @@ func (formats *ContentFormats) GTypes() []externglib.Type {
 //
 // Note that formats may not contain any mime types, in particular when they are
 // empty. In that case NULL will be returned.
+//
+// The function returns the following values:
+//
+//    - utf8s (optional): NULL-terminated array of interned strings of mime types
+//      included in formats or NULL if none.
+//
 func (formats *ContentFormats) MIMETypes() []string {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret **C.char             // in
@@ -690,6 +720,15 @@ func (formats *ContentFormats) MIMETypes() []string {
 }
 
 // Match checks if first and second have any matching formats.
+//
+// The function takes the following parameters:
+//
+//    - second: GdkContentFormats to intersect with.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a matching format was found.
+//
 func (first *ContentFormats) Match(second *ContentFormats) bool {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
@@ -714,6 +753,15 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 // MatchGType finds the first GType from first that is also contained in second.
 //
 // If no matching GType is found, G_TYPE_INVALID is returned.
+//
+// The function takes the following parameters:
+//
+//    - second: GdkContentFormats to intersect with.
+//
+// The function returns the following values:
+//
+//    - gType: first common GType or G_TYPE_INVALID if none.
+//
 func (first *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
@@ -737,6 +785,15 @@ func (first *ContentFormats) MatchGType(second *ContentFormats) externglib.Type 
 // second.
 //
 // If no matching mime type is found, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - second: GdkContentFormats to intersect with.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): first common mime type or NULL if none.
+//
 func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
@@ -762,6 +819,11 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 //
 // This is a small wrapper around gdk.ContentFormats.Print() to help when
 // debugging.
+//
+// The function returns the following values:
+//
+//    - utf8: new string.
+//
 func (formats *ContentFormats) String() string {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.char              // in
@@ -781,6 +843,15 @@ func (formats *ContentFormats) String() string {
 
 // Union: append all missing types from second to first, in the order they had
 // in second.
+//
+// The function takes the following parameters:
+//
+//    - second: GdkContentFormats to merge from.
+//
+// The function returns the following values:
+//
+//    - contentFormats: new GdkContentFormats.
+//
 func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
@@ -808,6 +879,11 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 
 // UnionDeserializeGTypes: add GTypes for mime types in formats for which
 // deserializers are registered.
+//
+// The function returns the following values:
+//
+//    - contentFormats: new GdkContentFormats.
+//
 func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
@@ -832,6 +908,11 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 
 // UnionDeserializeMIMETypes: add mime types for GTypes in formats for which
 // deserializers are registered.
+//
+// The function returns the following values:
+//
+//    - contentFormats: new GdkContentFormats.
+//
 func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
@@ -856,6 +937,11 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 
 // UnionSerializeGTypes: add GTypes for the mime types in formats for which
 // serializers are registered.
+//
+// The function returns the following values:
+//
+//    - contentFormats: new GdkContentFormats.
+//
 func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
@@ -880,6 +966,11 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 
 // UnionSerializeMIMETypes: add mime types for GTypes in formats for which
 // serializers are registered.
+//
+// The function returns the following values:
+//
+//    - contentFormats: new GdkContentFormats.
+//
 func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
@@ -1044,6 +1135,16 @@ func (r *Rectangle) Height() int {
 }
 
 // ContainsPoint returns UE if rect contains the point described by x and y.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate.
+//    - y: y coordinate.
+//
+// The function returns the following values:
+//
+//    - ok if rect contains the point.
+//
 func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 C.int           // out
@@ -1069,6 +1170,15 @@ func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 }
 
 // Equal checks if the two given rectangles are equal.
+//
+// The function takes the following parameters:
+//
+//    - rect2: GdkRectangle.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the rectangles are equal.
+//
 func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
@@ -1097,6 +1207,17 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 // and y values are undefined. If you are only interested in whether the
 // rectangles intersect, but not in the intersecting area itself, pass NULL for
 // dest.
+//
+// The function takes the following parameters:
+//
+//    - src2: GdkRectangle.
+//
+// The function returns the following values:
+//
+//    - dest (optional): return location for the intersection of src1 and src2,
+//      or NULL.
+//    - ok: TRUE if the rectangles intersect.
+//
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
@@ -1129,6 +1250,15 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
+//
+// The function takes the following parameters:
+//
+//    - src2: GdkRectangle.
+//
+// The function returns the following values:
+//
+//    - dest: return location for the union of src1 and src2.
+//
 func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out

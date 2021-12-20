@@ -113,13 +113,24 @@ func marshalToolButtonner(p uintptr) (interface{}, error) {
 	return wrapToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectClicked: this signal is emitted when the tool button is clicked with
+// the mouse or activated with the keyboard.
+func (button *ToolButton) ConnectClicked(f func()) externglib.SignalHandle {
+	return button.Connect("clicked", f)
+}
+
 // NewToolButton creates a new ToolButton using icon_widget as contents and
 // label as label.
 //
 // The function takes the following parameters:
 //
-//    - iconWidget: widget that will be used as the button contents, or NULL.
-//    - label: string that will be used as label, or NULL.
+//    - iconWidget (optional): widget that will be used as the button contents,
+//      or NULL.
+//    - label (optional): string that will be used as label, or NULL.
+//
+// The function returns the following values:
+//
+//    - toolButton: new ToolButton.
 //
 func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 	var _arg1 *C.GtkWidget   // out
@@ -158,6 +169,10 @@ func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 //
 //    - stockId: name of the stock item.
 //
+// The function returns the following values:
+//
+//    - toolButton: new ToolButton.
+//
 func NewToolButtonFromStock(stockId string) *ToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -177,6 +192,11 @@ func NewToolButtonFromStock(stockId string) *ToolButton {
 
 // IconName returns the name of the themed icon for the tool button, see
 // gtk_tool_button_set_icon_name().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name or NULL if the tool button has no themed icon.
+//
 func (button *ToolButton) IconName() string {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.gchar         // in
@@ -197,6 +217,11 @@ func (button *ToolButton) IconName() string {
 
 // IconWidget: return the widget used as icon widget on button. See
 // gtk_tool_button_set_icon_widget().
+//
+// The function returns the following values:
+//
+//    - widget (optional) used as icon on button, or NULL.
+//
 func (button *ToolButton) IconWidget() Widgetter {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.GtkWidget     // in
@@ -228,6 +253,11 @@ func (button *ToolButton) IconWidget() Widgetter {
 // Label returns the label used by the tool button, or NULL if the tool button
 // doesn’t have a label. or uses a the label from a stock item. The returned
 // string is owned by GTK+, and must not be modified or freed.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): label, or NULL.
+//
 func (button *ToolButton) Label() string {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.gchar         // in
@@ -248,6 +278,11 @@ func (button *ToolButton) Label() string {
 
 // LabelWidget returns the widget used as label on button. See
 // gtk_tool_button_set_label_widget().
+//
+// The function returns the following values:
+//
+//    - widget (optional) used as label on button, or NULL.
+//
 func (button *ToolButton) LabelWidget() Widgetter {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.GtkWidget     // in
@@ -281,6 +316,11 @@ func (button *ToolButton) LabelWidget() Widgetter {
 // not be freed or modifed.
 //
 // Deprecated: Use gtk_tool_button_get_icon_name() instead.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the stock item for button.
+//
 func (button *ToolButton) StockID() string {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.gchar         // in
@@ -300,6 +340,12 @@ func (button *ToolButton) StockID() string {
 // UseUnderline returns whether underscores in the label property are used as
 // mnemonics on menu items on the overflow menu. See
 // gtk_tool_button_set_use_underline().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if underscores in the label property are used as mnemonics on
+//      menu items on the overflow menu.
+//
 func (button *ToolButton) UseUnderline() bool {
 	var _arg0 *C.GtkToolButton // out
 	var _cret C.gboolean       // in
@@ -325,7 +371,7 @@ func (button *ToolButton) UseUnderline() bool {
 //
 // The function takes the following parameters:
 //
-//    - iconName: name of the themed icon.
+//    - iconName (optional): name of the themed icon.
 //
 func (button *ToolButton) SetIconName(iconName string) {
 	var _arg0 *C.GtkToolButton // out
@@ -348,7 +394,7 @@ func (button *ToolButton) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - iconWidget: widget used as icon, or NULL.
+//    - iconWidget (optional): widget used as icon, or NULL.
 //
 func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
@@ -373,7 +419,7 @@ func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - label: string that will be used as label, or NULL.
+//    - label (optional): string that will be used as label, or NULL.
 //
 func (button *ToolButton) SetLabel(label string) {
 	var _arg0 *C.GtkToolButton // out
@@ -398,7 +444,7 @@ func (button *ToolButton) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - labelWidget: widget used as label, or NULL.
+//    - labelWidget (optional): widget used as label, or NULL.
 //
 func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
@@ -423,7 +469,7 @@ func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - stockId: name of a stock item, or NULL.
+//    - stockId (optional): name of a stock item, or NULL.
 //
 func (button *ToolButton) SetStockID(stockId string) {
 	var _arg0 *C.GtkToolButton // out
@@ -465,10 +511,4 @@ func (button *ToolButton) SetUseUnderline(useUnderline bool) {
 	C.gtk_tool_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)
-}
-
-// ConnectClicked: this signal is emitted when the tool button is clicked with
-// the mouse or activated with the keyboard.
-func (button *ToolButton) ConnectClicked(f func()) externglib.SignalHandle {
-	return button.Connect("clicked", f)
 }

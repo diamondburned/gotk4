@@ -60,7 +60,11 @@ func marshalMountOperationer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - parent: transient parent of the window, or NULL.
+//    - parent (optional): transient parent of the window, or NULL.
+//
+// The function returns the following values:
+//
+//    - mountOperation: new GtkMountOperation.
 //
 func NewMountOperation(parent *Window) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
@@ -82,6 +86,11 @@ func NewMountOperation(parent *Window) *MountOperation {
 
 // Display gets the display on which windows of the GtkMountOperation will be
 // shown.
+//
+// The function returns the following values:
+//
+//    - display on which windows of op are shown.
+//
 func (op *MountOperation) Display() *gdk.Display {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GdkDisplay        // in
@@ -104,6 +113,11 @@ func (op *MountOperation) Display() *gdk.Display {
 }
 
 // Parent gets the transient parent used by the GtkMountOperation.
+//
+// The function returns the following values:
+//
+//    - window: transient parent for windows shown by op.
+//
 func (op *MountOperation) Parent() *Window {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GtkWindow         // in
@@ -122,6 +136,11 @@ func (op *MountOperation) Parent() *Window {
 
 // IsShowing returns whether the GtkMountOperation is currently displaying a
 // window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if op is currently displaying a window.
+//
 func (op *MountOperation) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret C.gboolean           // in
@@ -163,7 +182,7 @@ func (op *MountOperation) SetDisplay(display *gdk.Display) {
 //
 // The function takes the following parameters:
 //
-//    - parent: transient parent of the window, or NULL.
+//    - parent (optional): transient parent of the window, or NULL.
 //
 func (op *MountOperation) SetParent(parent *Window) {
 	var _arg0 *C.GtkMountOperation // out

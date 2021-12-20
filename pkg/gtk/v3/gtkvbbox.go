@@ -67,6 +67,11 @@ func marshalVButtonBoxer(p uintptr) (interface{}, error) {
 // NewVButtonBox creates a new vertical button box.
 //
 // Deprecated: Use gtk_button_box_new() with GTK_ORIENTATION_VERTICAL instead.
+//
+// The function returns the following values:
+//
+//    - vButtonBox: new button box Widget.
+//
 func NewVButtonBox() *VButtonBox {
 	var _cret *C.GtkWidget // in
 

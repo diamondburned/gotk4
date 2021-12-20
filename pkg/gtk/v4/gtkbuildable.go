@@ -30,21 +30,82 @@ func init() {
 type BuildableOverrider interface {
 	// AddChild adds a child to buildable. type is an optional string describing
 	// how the child should be added.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder: Builder.
+	//    - child to add.
+	//    - typ (optional): kind of child or NULL.
+	//
 	AddChild(builder *Builder, child *externglib.Object, typ string)
 	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
 	// once for each custom tag handled by the buildable.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder: Builder.
+	//    - child (optional) object or NULL for non-child tags.
+	//    - tagname: name of the tag.
+	//    - data (optional): user data created in custom_tag_start.
+	//
 	CustomFinished(builder *Builder, child *externglib.Object, tagname string, data cgo.Handle)
 	// CustomTagEnd: called at the end of each custom element handled by the
 	// buildable.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder used to construct this object.
+	//    - child (optional) object or NULL for non-child tags.
+	//    - tagname: name of tag.
+	//    - data (optional): user data that will be passed in to parser
+	//      functions.
+	//
 	CustomTagEnd(builder *Builder, child *externglib.Object, tagname string, data cgo.Handle)
 	// CustomTagStart: called for each unknown element under <child>.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder used to construct this object.
+	//    - child (optional) object or NULL for non-child tags.
+	//    - tagname: name of tag.
+	//
+	// The function returns the following values:
+	//
+	//    - parser to fill in.
+	//    - data (optional): return location for user data that will be passed in
+	//      to parser functions.
+	//    - ok: TRUE if an object has a custom implementation, FALSE if it
+	//      doesn't.
+	//
 	CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (*BuildableParser, cgo.Handle, bool)
+	// The function returns the following values:
+	//
 	ID() string
 	// InternalChild retrieves the internal child called childname of the
 	// buildable object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - builder: Builder.
+	//    - childname: name of child.
+	//
+	// The function returns the following values:
+	//
+	//    - object: internal child of the buildable object.
+	//
 	InternalChild(builder *Builder, childname string) *externglib.Object
+	// The function takes the following parameters:
+	//
 	ParserFinished(builder *Builder)
+	// The function takes the following parameters:
+	//
+	//    - builder
+	//    - name
+	//    - value
+	//
 	SetBuildableProperty(builder *Builder, name string, value *externglib.Value)
+	// The function takes the following parameters:
+	//
 	SetID(id string)
 }
 
@@ -93,6 +154,11 @@ func marshalBuildabler(p uintptr) (interface{}, error) {
 //
 // GtkBuilder sets the name based on the ID attribute of the <object> tag used
 // to construct the buildable.
+//
+// The function returns the following values:
+//
+//    - utf8: ID of the buildable object.
+//
 func (buildable *Buildable) BuildableID() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.char         // in

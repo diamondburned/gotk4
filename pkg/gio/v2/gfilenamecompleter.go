@@ -51,7 +51,18 @@ func marshalFilenameCompleterer(p uintptr) (interface{}, error) {
 	return wrapFilenameCompleter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectGotCompletionData: emitted when the file name completion information
+// comes available.
+func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) externglib.SignalHandle {
+	return completer.Connect("got-completion-data", f)
+}
+
 // NewFilenameCompleter creates a new filename completer.
+//
+// The function returns the following values:
+//
+//    - filenameCompleter: Completer.
+//
 func NewFilenameCompleter() *FilenameCompleter {
 	var _cret *C.GFilenameCompleter // in
 
@@ -69,6 +80,11 @@ func NewFilenameCompleter() *FilenameCompleter {
 // The function takes the following parameters:
 //
 //    - initialText: text to be completed.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): completed string, or NULL if no completion exists. This
+//      string is not owned by GIO, so remember to g_free() it when finished.
 //
 func (completer *FilenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
@@ -98,6 +114,11 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 // The function takes the following parameters:
 //
 //    - initialText: text to be completed.
+//
+// The function returns the following values:
+//
+//    - utf8s: array of strings with possible completions for initial_text. This
+//      array must be freed by g_strfreev() when finished.
 //
 func (completer *FilenameCompleter) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
@@ -152,10 +173,4 @@ func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	C.g_filename_completer_set_dirs_only(_arg0, _arg1)
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(dirsOnly)
-}
-
-// ConnectGotCompletionData: emitted when the file name completion information
-// comes available.
-func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) externglib.SignalHandle {
-	return completer.Connect("got-completion-data", f)
 }

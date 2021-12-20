@@ -54,12 +54,28 @@ func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 	return wrapGestureLongPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectCancelled: this signal is emitted whenever a press moved too far, or
+// was released before GestureLongPress::pressed happened.
+func (v *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
+	return v.Connect("cancelled", f)
+}
+
+// ConnectPressed: this signal is emitted whenever a press goes
+// unmoved/unreleased longer than what the GTK+ defaults tell.
+func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
+	return v.Connect("pressed", f)
+}
+
 // NewGestureLongPress returns a newly created Gesture that recognizes long
 // presses.
 //
 // The function takes the following parameters:
 //
 //    - widget: Widget.
+//
+// The function returns the following values:
+//
+//    - gestureLongPress: newly created GestureLongPress.
 //
 func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	var _arg1 *C.GtkWidget  // out
@@ -75,16 +91,4 @@ func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	_gestureLongPress = wrapGestureLongPress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureLongPress
-}
-
-// ConnectCancelled: this signal is emitted whenever a press moved too far, or
-// was released before GestureLongPress::pressed happened.
-func (v *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
-	return v.Connect("cancelled", f)
-}
-
-// ConnectPressed: this signal is emitted whenever a press goes
-// unmoved/unreleased longer than what the GTK+ defaults tell.
-func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
-	return v.Connect("pressed", f)
 }

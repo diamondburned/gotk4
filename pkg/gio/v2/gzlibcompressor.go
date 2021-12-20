@@ -53,6 +53,10 @@ func marshalZlibCompressorrer(p uintptr) (interface{}, error) {
 //    - format to use for the compressed data.
 //    - level: compression level (0-9), -1 for default.
 //
+// The function returns the following values:
+//
+//    - zlibCompressor: new Compressor.
+//
 func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _arg2 C.int                   // out
@@ -73,6 +77,11 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 }
 
 // FileInfo returns the Compressor:file-info property.
+//
+// The function returns the following values:
+//
+//    - fileInfo (optional) or NULL.
+//
 func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 	var _arg0 *C.GZlibCompressor // out
 	var _cret *C.GFileInfo       // in
@@ -102,7 +111,7 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 //
 // The function takes the following parameters:
 //
-//    - fileInfo: Info.
+//    - fileInfo (optional): Info.
 //
 func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
 	var _arg0 *C.GZlibCompressor // out

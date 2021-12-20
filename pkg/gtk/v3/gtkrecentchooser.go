@@ -144,28 +144,66 @@ type RecentChooserOverrider interface {
 	//
 	// If no previous filter objects were defined, this function will call
 	// gtk_recent_chooser_set_filter().
+	//
+	// The function takes the following parameters:
+	//
+	//    - filter: RecentFilter.
+	//
 	AddFilter(filter *RecentFilter)
 	// CurrentURI gets the URI currently selected by chooser.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: newly allocated string holding a URI.
+	//
 	CurrentURI() string
 	// Items gets the list of recently used resources in form of RecentInfo
 	// objects.
 	//
 	// The return value of this function is affected by the “sort-type” and
 	// “limit” properties of chooser.
+	//
+	// The function returns the following values:
+	//
+	//    - list: newly allocated list of RecentInfo objects. You should use
+	//      gtk_recent_info_unref() on every item of the list, and then free the
+	//      list itself using g_list_free().
+	//
 	Items() []*RecentInfo
 	ItemActivated()
 	// ListFilters gets the RecentFilter objects held by chooser.
+	//
+	// The function returns the following values:
+	//
+	//    - sList: singly linked list of RecentFilter objects. You should just
+	//      free the returned list using g_slist_free().
+	//
 	ListFilters() []RecentFilter
 	// RemoveFilter removes filter from the list of RecentFilter objects held by
 	// chooser.
+	//
+	// The function takes the following parameters:
+	//
+	//    - filter: RecentFilter.
+	//
 	RemoveFilter(filter *RecentFilter)
 	// SelectAll selects all the items inside chooser, if the chooser supports
 	// multiple selection.
 	SelectAll()
 	// SelectURI selects uri inside chooser.
+	//
+	// The function takes the following parameters:
+	//
+	//    - uri: URI.
+	//
 	SelectURI(uri string) error
 	SelectionChanged()
 	// SetCurrentURI sets uri as the current URI for chooser.
+	//
+	// The function takes the following parameters:
+	//
+	//    - uri: URI.
+	//
 	SetCurrentURI(uri string) error
 	// SetSortFunc sets the comparison function used when sorting to be
 	// sort_func. If the chooser has the sort type set to K_RECENT_SORT_CUSTOM
@@ -175,10 +213,20 @@ type RecentChooserOverrider interface {
 	// sort_data; sort_func should return a positive integer if the first item
 	// comes before the second, zero if the two items are equal and a negative
 	// integer if the first item comes after the second.
+	//
+	// The function takes the following parameters:
+	//
+	//    - sortFunc: comparison function.
+	//
 	SetSortFunc(sortFunc RecentSortFunc)
 	// UnselectAll unselects all the items inside chooser.
 	UnselectAll()
 	// UnselectURI unselects uri inside chooser.
+	//
+	// The function takes the following parameters:
+	//
+	//    - uri: URI.
+	//
 	UnselectURI(uri string)
 }
 
@@ -297,6 +345,21 @@ func marshalRecentChooserer(p uintptr) (interface{}, error) {
 	return wrapRecentChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectItemActivated: this signal is emitted when the user "activates" a
+// recent item in the recent chooser. This can happen by double-clicking on an
+// item in the recently used resources list, or by pressing Enter.
+func (chooser *RecentChooser) ConnectItemActivated(f func()) externglib.SignalHandle {
+	return chooser.Connect("item-activated", f)
+}
+
+// ConnectSelectionChanged: this signal is emitted when there is a change in the
+// set of selected recently used resources. This can happen when a user modifies
+// the selection with the mouse or the keyboard, or when explicitly calling
+// functions to change the selection.
+func (chooser *RecentChooser) ConnectSelectionChanged(f func()) externglib.SignalHandle {
+	return chooser.Connect("selection-changed", f)
+}
+
 // AddFilter adds filter to the list of RecentFilter objects held by chooser.
 //
 // If no previous filter objects were defined, this function will call
@@ -319,6 +382,12 @@ func (chooser *RecentChooser) AddFilter(filter *RecentFilter) {
 }
 
 // CurrentItem gets the RecentInfo currently selected by chooser.
+//
+// The function returns the following values:
+//
+//    - recentInfo: RecentInfo. Use gtk_recent_info_unref() when when you have
+//      finished using it.
+//
 func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GtkRecentInfo    // in
@@ -342,6 +411,11 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 }
 
 // CurrentURI gets the URI currently selected by chooser.
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated string holding a URI.
+//
 func (chooser *RecentChooser) CurrentURI() string {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.gchar            // in
@@ -361,6 +435,11 @@ func (chooser *RecentChooser) CurrentURI() string {
 
 // Filter gets the RecentFilter object currently used by chooser to affect the
 // display of the recently used resources.
+//
+// The function returns the following values:
+//
+//    - recentFilter: RecentFilter object.
+//
 func (chooser *RecentChooser) Filter() *RecentFilter {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GtkRecentFilter  // in
@@ -381,6 +460,13 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 //
 // The return value of this function is affected by the “sort-type” and “limit”
 // properties of chooser.
+//
+// The function returns the following values:
+//
+//    - list: newly allocated list of RecentInfo objects. You should use
+//      gtk_recent_info_unref() on every item of the list, and then free the list
+//      itself using g_list_free().
+//
 func (chooser *RecentChooser) Items() []*RecentInfo {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GList            // in
@@ -411,6 +497,11 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 
 // Limit gets the number of items returned by gtk_recent_chooser_get_items() and
 // gtk_recent_chooser_get_uris().
+//
+// The function returns the following values:
+//
+//    - gint: positive integer, or -1 meaning that all items are returned.
+//
 func (chooser *RecentChooser) Limit() int {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gint              // in
@@ -429,6 +520,11 @@ func (chooser *RecentChooser) Limit() int {
 
 // LocalOnly gets whether only local resources should be shown in the recently
 // used resources selector. See gtk_recent_chooser_set_local_only().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if only local resources should be shown.
+//
 func (chooser *RecentChooser) LocalOnly() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
@@ -448,6 +544,11 @@ func (chooser *RecentChooser) LocalOnly() bool {
 }
 
 // SelectMultiple gets whether chooser can select multiple items.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if chooser can select more than one item.
+//
 func (chooser *RecentChooser) SelectMultiple() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
@@ -467,6 +568,11 @@ func (chooser *RecentChooser) SelectMultiple() bool {
 }
 
 // ShowIcons retrieves whether chooser should show an icon near the resource.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the icons should be displayed, FALSE otherwise.
+//
 func (chooser *RecentChooser) ShowIcons() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
@@ -487,6 +593,12 @@ func (chooser *RecentChooser) ShowIcons() bool {
 
 // ShowNotFound retrieves whether chooser should show the recently used
 // resources that were not found.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the resources not found should be displayed, and FALSE
+//      otheriwse.
+//
 func (chooser *RecentChooser) ShowNotFound() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
@@ -507,6 +619,12 @@ func (chooser *RecentChooser) ShowNotFound() bool {
 
 // ShowPrivate returns whether chooser should display recently used resources
 // registered as private.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the recent chooser should show private items, FALSE
+//      otherwise.
+//
 func (chooser *RecentChooser) ShowPrivate() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
@@ -527,6 +645,11 @@ func (chooser *RecentChooser) ShowPrivate() bool {
 
 // ShowTips gets whether chooser should display tooltips containing the full
 // path of a recently user resource.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the recent chooser should show tooltips, FALSE otherwise.
+//
 func (chooser *RecentChooser) ShowTips() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in
@@ -546,6 +669,11 @@ func (chooser *RecentChooser) ShowTips() bool {
 }
 
 // SortType gets the value set by gtk_recent_chooser_set_sort_type().
+//
+// The function returns the following values:
+//
+//    - recentSortType: sorting order of the chooser.
+//
 func (chooser *RecentChooser) SortType() RecentSortType {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.GtkRecentSortType // in
@@ -568,6 +696,12 @@ func (chooser *RecentChooser) SortType() RecentSortType {
 // properties of chooser.
 //
 // Since the returned array is NULL terminated, length may be NULL.
+//
+// The function returns the following values:
+//
+//    - utf8s: A newly allocated, NULL-terminated array of strings. Use
+//      g_strfreev() to free it.
+//
 func (chooser *RecentChooser) URIs() []string {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret **C.gchar           // in
@@ -594,6 +728,12 @@ func (chooser *RecentChooser) URIs() []string {
 }
 
 // ListFilters gets the RecentFilter objects held by chooser.
+//
+// The function returns the following values:
+//
+//    - sList: singly linked list of RecentFilter objects. You should just free
+//      the returned list using g_slist_free().
+//
 func (chooser *RecentChooser) ListFilters() []RecentFilter {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GSList           // in
@@ -707,7 +847,7 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 //
 // The function takes the following parameters:
 //
-//    - filter: RecentFilter.
+//    - filter (optional): RecentFilter.
 //
 func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 	var _arg0 *C.GtkRecentChooser // out
@@ -944,19 +1084,4 @@ func (chooser *RecentChooser) UnselectURI(uri string) {
 	C.gtk_recent_chooser_unselect_uri(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
-}
-
-// ConnectItemActivated: this signal is emitted when the user "activates" a
-// recent item in the recent chooser. This can happen by double-clicking on an
-// item in the recently used resources list, or by pressing Enter.
-func (chooser *RecentChooser) ConnectItemActivated(f func()) externglib.SignalHandle {
-	return chooser.Connect("item-activated", f)
-}
-
-// ConnectSelectionChanged: this signal is emitted when there is a change in the
-// set of selected recently used resources. This can happen when a user modifies
-// the selection with the mouse or the keyboard, or when explicitly calling
-// functions to change the selection.
-func (chooser *RecentChooser) ConnectSelectionChanged(f func()) externglib.SignalHandle {
-	return chooser.Connect("selection-changed", f)
 }

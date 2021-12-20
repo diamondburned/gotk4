@@ -148,8 +148,19 @@ func marshalToggleButtonner(p uintptr) (interface{}, error) {
 	return wrapToggleButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectToggled: should be connected if you wish to perform an action whenever
+// the ToggleButton's state is changed.
+func (toggleButton *ToggleButton) ConnectToggled(f func()) externglib.SignalHandle {
+	return toggleButton.Connect("toggled", f)
+}
+
 // NewToggleButton creates a new toggle button. A widget should be packed into
 // the button, as in gtk_button_new().
+//
+// The function returns the following values:
+//
+//    - toggleButton: new toggle button.
+//
 func NewToggleButton() *ToggleButton {
 	var _cret *C.GtkWidget // in
 
@@ -167,6 +178,10 @@ func NewToggleButton() *ToggleButton {
 // The function takes the following parameters:
 //
 //    - label: string containing the message to be placed in the toggle button.
+//
+// The function returns the following values:
+//
+//    - toggleButton: new toggle button.
 //
 func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _arg1 *C.gchar     // out
@@ -192,7 +207,11 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 // The function takes the following parameters:
 //
 //    - label: text of the button, with an underscore in front of the mnemonic
-//    character.
+//      character.
+//
+// The function returns the following values:
+//
+//    - toggleButton: new ToggleButton.
 //
 func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _arg1 *C.gchar     // out
@@ -213,6 +232,11 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 
 // Active queries a ToggleButton and returns its current state. Returns TRUE if
 // the toggle button is pressed in and FALSE if it is raised.
+//
+// The function returns the following values:
+//
+//    - ok: #gboolean value.
+//
 func (toggleButton *ToggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
@@ -232,6 +256,11 @@ func (toggleButton *ToggleButton) Active() bool {
 }
 
 // Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the button is displayed as inconsistent, FALSE otherwise.
+//
 func (toggleButton *ToggleButton) Inconsistent() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
@@ -252,6 +281,11 @@ func (toggleButton *ToggleButton) Inconsistent() bool {
 
 // Mode retrieves whether the button is displayed as a separate indicator and
 // label. See gtk_toggle_button_set_mode().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the togglebutton is drawn as a separate indicator and label.
+//
 func (toggleButton *ToggleButton) Mode() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
@@ -334,7 +368,7 @@ func (toggleButton *ToggleButton) SetInconsistent(setting bool) {
 // The function takes the following parameters:
 //
 //    - drawIndicator: if TRUE, draw the button as a separate indicator and
-//    label; if FALSE, draw the button like a normal button.
+//      label; if FALSE, draw the button like a normal button.
 //
 func (toggleButton *ToggleButton) SetMode(drawIndicator bool) {
 	var _arg0 *C.GtkToggleButton // out
@@ -359,10 +393,4 @@ func (toggleButton *ToggleButton) Toggled() {
 
 	C.gtk_toggle_button_toggled(_arg0)
 	runtime.KeepAlive(toggleButton)
-}
-
-// ConnectToggled: should be connected if you wish to perform an action whenever
-// the ToggleButton's state is changed.
-func (toggleButton *ToggleButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return toggleButton.Connect("toggled", f)
 }

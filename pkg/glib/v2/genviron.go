@@ -18,9 +18,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - envp: an environment list (eg, as returned from g_get_environ()), or
-//    NULL for an empty environment list.
+//    - envp (optional): an environment list (eg, as returned from
+//      g_get_environ()), or NULL for an empty environment list.
 //    - variable: environment variable to get.
+//
+// The function returns the following values:
+//
+//    - filename: value of the environment variable, or NULL if the environment
+//      variable is not set in envp. The returned string is owned by envp, and
+//      will be freed if variable is set or unset again.
 //
 func EnvironGetenv(envp []string, variable string) string {
 	var _arg1 **C.gchar // out
@@ -59,11 +65,16 @@ func EnvironGetenv(envp []string, variable string) string {
 //
 // The function takes the following parameters:
 //
-//    - envp: an environment list that can be freed using g_strfreev() (e.g.,
-//    as returned from g_get_environ()), or NULL for an empty environment list.
+//    - envp (optional): an environment list that can be freed using g_strfreev()
+//      (e.g., as returned from g_get_environ()), or NULL for an empty
+//      environment list.
 //    - variable: environment variable to set, must not contain '='.
 //    - value for to set the variable to.
 //    - overwrite: whether to change the variable if it already exists.
+//
+// The function returns the following values:
+//
+//    - filenames: the updated environment list. Free it using g_strfreev().
 //
 func EnvironSetenv(envp []string, variable, value string, overwrite bool) []string {
 	var _arg1 **C.gchar  // out
@@ -123,9 +134,14 @@ func EnvironSetenv(envp []string, variable, value string, overwrite bool) []stri
 //
 // The function takes the following parameters:
 //
-//    - envp: an environment list that can be freed using g_strfreev() (e.g.,
-//    as returned from g_get_environ()), or NULL for an empty environment list.
+//    - envp (optional): an environment list that can be freed using g_strfreev()
+//      (e.g., as returned from g_get_environ()), or NULL for an empty
+//      environment list.
 //    - variable: environment variable to remove, must not contain '='.
+//
+// The function returns the following values:
+//
+//    - filenames: the updated environment list. Free it using g_strfreev().
 //
 func EnvironUnsetenv(envp []string, variable string) []string {
 	var _arg1 **C.gchar // out
@@ -181,6 +197,11 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 //
 // The return value is freshly allocated and it should be freed with
 // g_strfreev() when it is no longer needed.
+//
+// The function returns the following values:
+//
+//    - filenames: the list of environment variables.
+//
 func GetEnviron() []string {
 	var _cret **C.gchar // in
 
@@ -218,6 +239,12 @@ func GetEnviron() []string {
 //
 //    - variable: environment variable to get.
 //
+// The function returns the following values:
+//
+//    - filename: value of the environment variable, or NULL if the environment
+//      variable is not found. The returned string may be overwritten by the next
+//      call to g_getenv(), g_setenv() or g_unsetenv().
+//
 func Getenv(variable string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -243,6 +270,12 @@ func Getenv(variable string) string {
 // encoding, while in most of the typical use cases for environment variables in
 // GLib-using programs you want the UTF-8 encoding that this function and
 // g_getenv() provide.
+//
+// The function returns the following values:
+//
+//    - filenames: a NULL-terminated list of strings which must be freed with
+//      g_strfreev().
+//
 func Listenv() []string {
 	var _cret **C.gchar // in
 
@@ -293,6 +326,10 @@ func Listenv() []string {
 //    - variable: environment variable to set, must not contain '='.
 //    - value for to set the variable to.
 //    - overwrite: whether to change the variable if it already exists.
+//
+// The function returns the following values:
+//
+//    - ok: FALSE if the environment variable couldn't be set.
 //
 func Setenv(variable, value string, overwrite bool) bool {
 	var _arg1 *C.gchar   // out

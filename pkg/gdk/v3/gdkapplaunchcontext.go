@@ -63,6 +63,11 @@ func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
 // NewAppLaunchContext creates a new AppLaunchContext.
 //
 // Deprecated: Use gdk_display_get_app_launch_context() instead.
+//
+// The function returns the following values:
+//
+//    - appLaunchContext: new AppLaunchContext.
+//
 func NewAppLaunchContext() *AppLaunchContext {
 	var _cret *C.GdkAppLaunchContext // in
 
@@ -129,7 +134,7 @@ func (context *AppLaunchContext) SetDisplay(display *Display) {
 //
 // The function takes the following parameters:
 //
-//    - icon or NULL.
+//    - icon (optional) or NULL.
 //
 func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -156,7 +161,7 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name, or NULL.
+//    - iconName (optional): icon name, or NULL.
 //
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out

@@ -53,6 +53,11 @@ func TestRenderSync(window Windower) {
 //    - modifiers: keyboard modifiers the event is setup with.
 //    - buttonPressrelease: either GDK_BUTTON_PRESS or GDK_BUTTON_RELEASE.
 //
+// The function returns the following values:
+//
+//    - ok: whether all actions necessary for a button event simulation were
+//      carried out successfully.
+//
 func TestSimulateButton(window Windower, x, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.gint            // out
@@ -109,6 +114,11 @@ func TestSimulateButton(window Windower, x, y int, button uint, modifiers Modifi
 //    - keyval: GDK keyboard value.
 //    - modifiers: keyboard modifiers the event is setup with.
 //    - keyPressrelease: either GDK_KEY_PRESS or GDK_KEY_RELEASE.
+//
+// The function returns the following values:
+//
+//    - ok: whether all actions necessary for a key event simulation were carried
+//      out successfully.
 //
 func TestSimulateKey(window Windower, x, y int, keyval uint, modifiers ModifierType, keyPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out

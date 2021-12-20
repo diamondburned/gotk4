@@ -35,11 +35,41 @@ func init() {
 // yet, so the interface currently has no use.
 type StatusIconOverrider interface {
 	Activate()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ButtonPressEvent(event *gdk.EventButton) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ButtonReleaseEvent(event *gdk.EventButton) bool
+	// The function takes the following parameters:
+	//
+	//    - button
+	//    - activateTime
+	//
 	PopupMenu(button uint, activateTime uint32)
+	// The function takes the following parameters:
+	//
+	//    - x
+	//    - y
+	//    - keyboardMode
+	//    - tooltip
+	//
+	// The function returns the following values:
+	//
 	QueryTooltip(x, y int, keyboardMode bool, tooltip *Tooltip) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ScrollEvent(event *gdk.EventScroll) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	SizeChanged(size int) bool
 }
 
@@ -95,10 +125,88 @@ func marshalStatusIconner(p uintptr) (interface{}, error) {
 	return wrapStatusIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate gets emitted when the user activates the status icon. If and
+// how status icons can activated is platform-dependent.
+//
+// Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
+// applications and should be wrapped by language bindings.
+func (statusIcon *StatusIcon) ConnectActivate(f func()) externglib.SignalHandle {
+	return statusIcon.Connect("activate", f)
+}
+
+// ConnectButtonPressEvent signal will be emitted when a button (typically from
+// a mouse) is pressed.
+//
+// Whether this event is emitted is platform-dependent. Use the ::activate and
+// ::popup-menu signals in preference.
+func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
+	return statusIcon.Connect("button-press-event", f)
+}
+
+// ConnectButtonReleaseEvent signal will be emitted when a button (typically
+// from a mouse) is released.
+//
+// Whether this event is emitted is platform-dependent. Use the ::activate and
+// ::popup-menu signals in preference.
+func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
+	return statusIcon.Connect("button-release-event", f)
+}
+
+// ConnectPopupMenu gets emitted when the user brings up the context menu of the
+// status icon. Whether status icons can have context menus and how these are
+// activated is platform-dependent.
+//
+// The button and activate_time parameters should be passed as the last to
+// arguments to gtk_menu_popup().
+//
+// Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
+// applications and should be wrapped by language bindings.
+func (statusIcon *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)) externglib.SignalHandle {
+	return statusIcon.Connect("popup-menu", f)
+}
+
+// ConnectQueryTooltip: emitted when the hover timeout has expired with the
+// cursor hovering above status_icon; or emitted when status_icon got focus in
+// keyboard mode.
+//
+// Using the given coordinates, the signal handler should determine whether a
+// tooltip should be shown for status_icon. If this is the case TRUE should be
+// returned, FALSE otherwise. Note that if keyboard_mode is TRUE, the values of
+// x and y are undefined and should not be used.
+//
+// The signal handler is free to manipulate tooltip with the therefore destined
+// function calls.
+//
+// Whether this signal is emitted is platform-dependent. For plain text
+// tooltips, use StatusIcon:tooltip-text in preference.
+func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
+	return statusIcon.Connect("query-tooltip", f)
+}
+
+// ConnectScrollEvent signal is emitted when a button in the 4 to 7 range is
+// pressed. Wheel mice are usually configured to generate button press events
+// for buttons 4 and 5 when the wheel is turned.
+//
+// Whether this event is emitted is platform-dependent.
+func (statusIcon *StatusIcon) ConnectScrollEvent(f func(event *gdk.EventScroll) bool) externglib.SignalHandle {
+	return statusIcon.Connect("scroll-event", f)
+}
+
+// ConnectSizeChanged gets emitted when the size available for the image
+// changes, e.g. because the notification area got resized.
+func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int) bool) externglib.SignalHandle {
+	return statusIcon.Connect("size-changed", f)
+}
+
 // NewStatusIcon creates an empty status icon object.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
+//
+// The function returns the following values:
+//
+//    - statusIcon: new StatusIcon.
+//
 func NewStatusIcon() *StatusIcon {
 	var _cret *C.GtkStatusIcon // in
 
@@ -122,6 +230,10 @@ func NewStatusIcon() *StatusIcon {
 // The function takes the following parameters:
 //
 //    - filename: filename.
+//
+// The function returns the following values:
+//
+//    - statusIcon: new StatusIcon.
 //
 func NewStatusIconFromFile(filename string) *StatusIcon {
 	var _arg1 *C.gchar         // out
@@ -150,6 +262,10 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 //
 //    - icon: #GIcon.
 //
+// The function returns the following values:
+//
+//    - statusIcon: new StatusIcon.
+//
 func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 	var _arg1 *C.GIcon         // out
 	var _cret *C.GtkStatusIcon // in
@@ -176,6 +292,10 @@ func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 // The function takes the following parameters:
 //
 //    - iconName: icon name.
+//
+// The function returns the following values:
+//
+//    - statusIcon: new StatusIcon.
 //
 func NewStatusIconFromIconName(iconName string) *StatusIcon {
 	var _arg1 *C.gchar         // out
@@ -206,6 +326,10 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 //
 //    - pixbuf: Pixbuf.
 //
+// The function returns the following values:
+//
+//    - statusIcon: new StatusIcon.
+//
 func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 	var _arg1 *C.GdkPixbuf     // out
 	var _cret *C.GtkStatusIcon // in
@@ -233,6 +357,10 @@ func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 // The function takes the following parameters:
 //
 //    - stockId: stock icon id.
+//
+// The function returns the following values:
+//
+//    - statusIcon: new StatusIcon.
 //
 func NewStatusIconFromStock(stockId string) *StatusIcon {
 	var _arg1 *C.gchar         // out
@@ -266,6 +394,19 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as the
 // platform is responsible for the presentation of notifications.
+//
+// The function returns the following values:
+//
+//    - screen (optional): return location for the screen, or NULL if the
+//      information is not needed.
+//    - area (optional): return location for the area occupied by the status
+//      icon, or NULL.
+//    - orientation (optional): return location for the orientation of the panel
+//      in which the status icon is embedded, or NULL. A panel at the top or
+//      bottom of the screen is horizontal, a panel at the left or right is
+//      vertical.
+//    - ok: TRUE if the location information has been filled in.
+//
 func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientation, bool) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkScreen     // in
@@ -309,6 +450,11 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientati
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - icon (optional): displayed icon, or NULL if the image is empty.
+//
 func (statusIcon *StatusIcon) GIcon() gio.Iconner {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.GIcon         // in
@@ -342,6 +488,11 @@ func (statusIcon *StatusIcon) GIcon() gio.Iconner {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - ok: current value of has-tooltip on status_icon.
+//
 func (statusIcon *StatusIcon) HasTooltip() bool {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret C.gboolean       // in
@@ -367,6 +518,12 @@ func (statusIcon *StatusIcon) HasTooltip() bool {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the displayed icon, or NULL if the image is
+//      empty.
+//
 func (statusIcon *StatusIcon) IconName() string {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.gchar         // in
@@ -392,6 +549,11 @@ func (statusIcon *StatusIcon) IconName() string {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): displayed pixbuf, or NULL if the image is empty.
+//
 func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.GdkPixbuf     // in
@@ -425,6 +587,11 @@ func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as
 // notifications are managed by the platform.
+//
+// The function returns the following values:
+//
+//    - screen: Screen.
+//
 func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.GdkScreen     // in
@@ -457,6 +624,11 @@ func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as the
 // representation of a notification is left to the platform.
+//
+// The function returns the following values:
+//
+//    - gint: size that is available for the image.
+//
 func (statusIcon *StatusIcon) Size() int {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret C.gint           // in
@@ -479,6 +651,12 @@ func (statusIcon *StatusIcon) Size() int {
 // StatusIcon and should not be freed or modified.
 //
 // Deprecated: Use gtk_status_icon_get_icon_name() instead.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): stock id of the displayed stock icon, or NULL if the
+//      image is empty.
+//
 func (statusIcon *StatusIcon) Stock() string {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.gchar         // in
@@ -504,6 +682,11 @@ func (statusIcon *StatusIcon) Stock() string {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, and
 // #GNotification only supports #GIcon instances.
+//
+// The function returns the following values:
+//
+//    - imageType: image representation being used.
+//
 func (statusIcon *StatusIcon) StorageType() ImageType {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret C.GtkImageType   // in
@@ -524,6 +707,11 @@ func (statusIcon *StatusIcon) StorageType() ImageType {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - utf8: title of the status icon.
+//
 func (statusIcon *StatusIcon) Title() string {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.gchar         // in
@@ -544,6 +732,12 @@ func (statusIcon *StatusIcon) Title() string {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. You should free the returned
+//      string with g_free() when done.
+//
 func (statusIcon *StatusIcon) TooltipMarkup() string {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.gchar         // in
@@ -567,6 +761,12 @@ func (statusIcon *StatusIcon) TooltipMarkup() string {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. You should free the returned
+//      string with g_free() when done.
+//
 func (statusIcon *StatusIcon) TooltipText() string {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.gchar         // in
@@ -592,6 +792,11 @@ func (statusIcon *StatusIcon) TooltipText() string {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the status icon is visible.
+//
 func (statusIcon *StatusIcon) Visible() bool {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret C.gboolean       // in
@@ -624,6 +829,12 @@ func (statusIcon *StatusIcon) Visible() bool {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - guint32: 32 bit unsigned integer identifier for the underlying X11
+//      Window.
+//
 func (statusIcon *StatusIcon) X11WindowID() uint32 {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret C.guint32        // in
@@ -645,6 +856,11 @@ func (statusIcon *StatusIcon) X11WindowID() uint32 {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the status icon is embedded in a notification area.
+//
 func (statusIcon *StatusIcon) IsEmbedded() bool {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret C.gboolean       // in
@@ -743,7 +959,7 @@ func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf or NULL.
+//    - pixbuf (optional) or NULL.
 //
 func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -894,7 +1110,7 @@ func (statusIcon *StatusIcon) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - markup contents of the tooltip for status_icon, or NULL.
+//    - markup (optional) contents of the tooltip for status_icon, or NULL.
 //
 func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -960,77 +1176,4 @@ func (statusIcon *StatusIcon) SetVisible(visible bool) {
 	C.gtk_status_icon_set_visible(_arg0, _arg1)
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(visible)
-}
-
-// ConnectActivate gets emitted when the user activates the status icon. If and
-// how status icons can activated is platform-dependent.
-//
-// Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
-// applications and should be wrapped by language bindings.
-func (statusIcon *StatusIcon) ConnectActivate(f func()) externglib.SignalHandle {
-	return statusIcon.Connect("activate", f)
-}
-
-// ConnectButtonPressEvent signal will be emitted when a button (typically from
-// a mouse) is pressed.
-//
-// Whether this event is emitted is platform-dependent. Use the ::activate and
-// ::popup-menu signals in preference.
-func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return statusIcon.Connect("button-press-event", f)
-}
-
-// ConnectButtonReleaseEvent signal will be emitted when a button (typically
-// from a mouse) is released.
-//
-// Whether this event is emitted is platform-dependent. Use the ::activate and
-// ::popup-menu signals in preference.
-func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return statusIcon.Connect("button-release-event", f)
-}
-
-// ConnectPopupMenu gets emitted when the user brings up the context menu of the
-// status icon. Whether status icons can have context menus and how these are
-// activated is platform-dependent.
-//
-// The button and activate_time parameters should be passed as the last to
-// arguments to gtk_menu_popup().
-//
-// Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
-// applications and should be wrapped by language bindings.
-func (statusIcon *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)) externglib.SignalHandle {
-	return statusIcon.Connect("popup-menu", f)
-}
-
-// ConnectQueryTooltip: emitted when the hover timeout has expired with the
-// cursor hovering above status_icon; or emitted when status_icon got focus in
-// keyboard mode.
-//
-// Using the given coordinates, the signal handler should determine whether a
-// tooltip should be shown for status_icon. If this is the case TRUE should be
-// returned, FALSE otherwise. Note that if keyboard_mode is TRUE, the values of
-// x and y are undefined and should not be used.
-//
-// The signal handler is free to manipulate tooltip with the therefore destined
-// function calls.
-//
-// Whether this signal is emitted is platform-dependent. For plain text
-// tooltips, use StatusIcon:tooltip-text in preference.
-func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
-	return statusIcon.Connect("query-tooltip", f)
-}
-
-// ConnectScrollEvent signal is emitted when a button in the 4 to 7 range is
-// pressed. Wheel mice are usually configured to generate button press events
-// for buttons 4 and 5 when the wheel is turned.
-//
-// Whether this event is emitted is platform-dependent.
-func (statusIcon *StatusIcon) ConnectScrollEvent(f func(event *gdk.EventScroll) bool) externglib.SignalHandle {
-	return statusIcon.Connect("scroll-event", f)
-}
-
-// ConnectSizeChanged gets emitted when the size available for the image
-// changes, e.g. because the notification area got resized.
-func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int) bool) externglib.SignalHandle {
-	return statusIcon.Connect("size-changed", f)
 }

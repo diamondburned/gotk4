@@ -31,6 +31,12 @@ import "C"
 // can perhaps avoid calling g_convert().
 //
 // The string returned in charset is not allocated, and should not be freed.
+//
+// The function returns the following values:
+//
+//    - charset (optional): return location for character set name, or NULL.
+//    - ok: TRUE if the returned charset is UTF-8.
+//
 func GetCharset() (string, bool) {
 	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
@@ -51,6 +57,12 @@ func GetCharset() (string, bool) {
 }
 
 // GetCodeset gets the character set for the current locale.
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated string containing the name of the character set.
+//      This string must be freed with g_free().
+//
 func GetCodeset() string {
 	var _cret *C.gchar // in
 
@@ -80,6 +92,12 @@ func GetCodeset() string {
 // can perhaps avoid calling g_convert().
 //
 // The string returned in charset is not allocated, and should not be freed.
+//
+// The function returns the following values:
+//
+//    - charset (optional): return location for character set name, or NULL.
+//    - ok: TRUE if the returned charset is UTF-8.
+//
 func GetConsoleCharset() (string, bool) {
 	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
@@ -109,6 +127,12 @@ func GetConsoleCharset() (string, bool) {
 //
 // This function consults the environment variables LANGUAGE, LC_ALL,
 // LC_MESSAGES and LANG to find the list of locales specified by the user.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of strings owned by GLib that must not be
+//      modified or freed.
+//
 func GetLanguageNames() []string {
 	var _cret **C.gchar // in
 
@@ -147,6 +171,13 @@ func GetLanguageNames() []string {
 // The function takes the following parameters:
 //
 //    - categoryName: locale category name.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of strings owned by the thread
+//      g_get_language_names_with_category was called from. It must not be
+//      modified or freed. It must be copied if planned to be used in another
+//      thread.
 //
 func GetLanguageNamesWithCategory(categoryName string) []string {
 	var _arg1 *C.gchar  // out
@@ -195,6 +226,11 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 // The function takes the following parameters:
 //
 //    - locale identifier.
+//
+// The function returns the following values:
+//
+//    - utf8s: newly allocated array of newly allocated strings with the locale
+//      variants. Free with g_strfreev().
 //
 func GetLocaleVariants(locale string) []string {
 	var _arg1 *C.gchar  // out

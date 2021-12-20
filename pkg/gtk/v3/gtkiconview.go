@@ -101,9 +101,23 @@ func _gotk4_gtk3_IconViewForEachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, a
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type IconViewOverrider interface {
+	// The function returns the following values:
+	//
 	ActivateCursorItem() bool
 	// ItemActivated activates the item determined by path.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path to be activated.
+	//
 	ItemActivated(path *TreePath)
+	// The function takes the following parameters:
+	//
+	//    - step
+	//    - count
+	//
+	// The function returns the following values:
+	//
 	MoveCursor(step MovementStep, count int) bool
 	// SelectAll selects all the icons. icon_view must has its selection mode
 	// set to K_SELECTION_MULTIPLE.
@@ -176,7 +190,103 @@ func marshalIconViewer(p uintptr) (interface{}, error) {
 	return wrapIconView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivateCursorItem: [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user activates the currently focused item.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control activation programmatically.
+//
+// The default bindings for this signal are Space, Return and Enter.
+func (iconView *IconView) ConnectActivateCursorItem(f func() bool) externglib.SignalHandle {
+	return iconView.Connect("activate-cursor-item", f)
+}
+
+// ConnectItemActivated signal is emitted when the method
+// gtk_icon_view_item_activated() is called, when the user double clicks an item
+// with the "activate-on-single-click" property set to FALSE, or when the user
+// single clicks an item when the "activate-on-single-click" property set to
+// TRUE. It is also emitted when a non-editable item is selected and one of the
+// keys: Space, Return or Enter is pressed.
+func (iconView *IconView) ConnectItemActivated(f func(path *TreePath)) externglib.SignalHandle {
+	return iconView.Connect("item-activated", f)
+}
+
+// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a cursor movement.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+//
+// The default bindings for this signal include
+//
+// - Arrow keys which move by individual steps
+//
+// - Home/End keys which move to the first/last item
+//
+// - PageUp/PageDown which move by "pages" All of these will extend the
+// selection when combined with the Shift modifier.
+func (iconView *IconView) ConnectMoveCursor(f func(step MovementStep, count int) bool) externglib.SignalHandle {
+	return iconView.Connect("move-cursor", f)
+}
+
+// ConnectSelectAll: [keybinding signal][GtkBindingSignal] which gets emitted
+// when the user selects all items.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control selection programmatically.
+//
+// The default binding for this signal is Ctrl-a.
+func (iconView *IconView) ConnectSelectAll(f func()) externglib.SignalHandle {
+	return iconView.Connect("select-all", f)
+}
+
+// ConnectSelectCursorItem: [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user selects the item that is currently focused.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control selection programmatically.
+//
+// There is no default binding for this signal.
+func (iconView *IconView) ConnectSelectCursorItem(f func()) externglib.SignalHandle {
+	return iconView.Connect("select-cursor-item", f)
+}
+
+// ConnectSelectionChanged signal is emitted when the selection (i.e. the set of
+// selected items) changes.
+func (iconView *IconView) ConnectSelectionChanged(f func()) externglib.SignalHandle {
+	return iconView.Connect("selection-changed", f)
+}
+
+// ConnectToggleCursorItem: [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user toggles whether the currently focused item is selected
+// or not. The exact effect of this depend on the selection mode.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control selection programmatically.
+//
+// There is no default binding for this signal is Ctrl-Space.
+func (iconView *IconView) ConnectToggleCursorItem(f func()) externglib.SignalHandle {
+	return iconView.Connect("toggle-cursor-item", f)
+}
+
+// ConnectUnselectAll: [keybinding signal][GtkBindingSignal] which gets emitted
+// when the user unselects all items.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control selection programmatically.
+//
+// The default binding for this signal is Ctrl-Shift-a.
+func (iconView *IconView) ConnectUnselectAll(f func()) externglib.SignalHandle {
+	return iconView.Connect("unselect-all", f)
+}
+
 // NewIconView creates a new IconView widget.
+//
+// The function returns the following values:
+//
+//    - iconView: newly created IconView widget.
+//
 func NewIconView() *IconView {
 	var _cret *C.GtkWidget // in
 
@@ -195,6 +305,10 @@ func NewIconView() *IconView {
 // The function takes the following parameters:
 //
 //    - area to use to layout cells.
+//
+// The function returns the following values:
+//
+//    - iconView: newly created IconView widget.
 //
 func NewIconViewWithArea(area CellAreaer) *IconView {
 	var _arg1 *C.GtkCellArea // out
@@ -217,6 +331,10 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 // The function takes the following parameters:
 //
 //    - model: model.
+//
+// The function returns the following values:
+//
+//    - iconView: newly created IconView widget.
 //
 func NewIconViewWithModel(model TreeModeller) *IconView {
 	var _arg1 *C.GtkTreeModel // out
@@ -241,6 +359,11 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 //
 //    - wx: x coordinate relative to the widget.
 //    - wy: y coordinate relative to the widget.
+//
+// The function returns the following values:
+//
+//    - bx: return location for bin_window X coordinate.
+//    - by: return location for bin_window Y coordinate.
 //
 func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int) (bx int, by int) {
 	var _arg0 *C.GtkIconView // out
@@ -273,6 +396,10 @@ func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int) (bx int, by
 // The function takes the following parameters:
 //
 //    - path in icon_view.
+//
+// The function returns the following values:
+//
+//    - surface: newly-allocated surface of the drag icon.
 //
 func (iconView *IconView) CreateDragIcon(path *TreePath) *cairo.Surface {
 	var _arg0 *C.GtkIconView     // out
@@ -366,6 +493,11 @@ func (iconView *IconView) EnableModelDragSource(startButtonMask gdk.ModifierType
 
 // ActivateOnSingleClick gets the setting set by
 // gtk_icon_view_set_activate_on_single_click().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if item-activated will be emitted on a single click.
+//
 func (iconView *IconView) ActivateOnSingleClick() bool {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gboolean     // in
@@ -392,7 +524,12 @@ func (iconView *IconView) ActivateOnSingleClick() bool {
 // The function takes the following parameters:
 //
 //    - path: TreePath.
-//    - cell or NULL.
+//    - cell (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - rect: rectangle to fill with cell rect.
+//    - ok: FALSE if there is no such item, TRUE otherwise.
 //
 func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkIconView     // out
@@ -424,6 +561,11 @@ func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (*gdk.Re
 }
 
 // ColumnSpacing returns the value of the ::column-spacing property.
+//
+// The function returns the following values:
+//
+//    - gint: space between columns.
+//
 func (iconView *IconView) ColumnSpacing() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -441,6 +583,11 @@ func (iconView *IconView) ColumnSpacing() int {
 }
 
 // Columns returns the value of the ::columns property.
+//
+// The function returns the following values:
+//
+//    - gint: number of columns, or -1.
+//
 func (iconView *IconView) Columns() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -464,6 +611,10 @@ func (iconView *IconView) Columns() int {
 //
 //    - path of the item.
 //
+// The function returns the following values:
+//
+//    - gint: column in which the item is displayed.
+//
 func (iconView *IconView) ItemColumn(path *TreePath) int {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
@@ -485,6 +636,11 @@ func (iconView *IconView) ItemColumn(path *TreePath) int {
 
 // ItemOrientation returns the value of the ::item-orientation property which
 // determines whether the labels are drawn beside the icons instead of below.
+//
+// The function returns the following values:
+//
+//    - orientation: relative position of texts and icons.
+//
 func (iconView *IconView) ItemOrientation() Orientation {
 	var _arg0 *C.GtkIconView   // out
 	var _cret C.GtkOrientation // in
@@ -502,6 +658,11 @@ func (iconView *IconView) ItemOrientation() Orientation {
 }
 
 // ItemPadding returns the value of the ::item-padding property.
+//
+// The function returns the following values:
+//
+//    - gint: padding around items.
+//
 func (iconView *IconView) ItemPadding() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -525,6 +686,10 @@ func (iconView *IconView) ItemPadding() int {
 //
 //    - path of the item.
 //
+// The function returns the following values:
+//
+//    - gint: row in which the item is displayed.
+//
 func (iconView *IconView) ItemRow(path *TreePath) int {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
@@ -545,6 +710,11 @@ func (iconView *IconView) ItemRow(path *TreePath) int {
 }
 
 // ItemWidth returns the value of the ::item-width property.
+//
+// The function returns the following values:
+//
+//    - gint: width of a single item, or -1.
+//
 func (iconView *IconView) ItemWidth() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -562,6 +732,11 @@ func (iconView *IconView) ItemWidth() int {
 }
 
 // Margin returns the value of the ::margin property.
+//
+// The function returns the following values:
+//
+//    - gint: space at the borders.
+//
 func (iconView *IconView) Margin() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -579,6 +754,11 @@ func (iconView *IconView) Margin() int {
 }
 
 // MarkupColumn returns the column with markup text for icon_view.
+//
+// The function returns the following values:
+//
+//    - gint: markup column, or -1 if it’s unset.
+//
 func (iconView *IconView) MarkupColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -597,6 +777,11 @@ func (iconView *IconView) MarkupColumn() int {
 
 // Model returns the model the IconView is based on. Returns NULL if the model
 // is unset.
+//
+// The function returns the following values:
+//
+//    - treeModel (optional) or NULL if none is currently being used.
+//
 func (iconView *IconView) Model() TreeModeller {
 	var _arg0 *C.GtkIconView  // out
 	var _cret *C.GtkTreeModel // in
@@ -636,6 +821,11 @@ func (iconView *IconView) Model() TreeModeller {
 //    - x position to be identified.
 //    - y position to be identified.
 //
+// The function returns the following values:
+//
+//    - treePath (optional) corresponding to the icon or NULL if no icon exists
+//      at that position.
+//
 func (iconView *IconView) PathAtPos(x, y int) *TreePath {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
@@ -667,6 +857,11 @@ func (iconView *IconView) PathAtPos(x, y int) *TreePath {
 }
 
 // PixbufColumn returns the column with pixbufs for icon_view.
+//
+// The function returns the following values:
+//
+//    - gint: pixbuf column, or -1 if it’s unset.
+//
 func (iconView *IconView) PixbufColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -685,6 +880,11 @@ func (iconView *IconView) PixbufColumn() int {
 
 // Reorderable retrieves whether the user can reorder the list via
 // drag-and-drop. See gtk_icon_view_set_reorderable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the list can be reordered.
+//
 func (iconView *IconView) Reorderable() bool {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gboolean     // in
@@ -704,6 +904,11 @@ func (iconView *IconView) Reorderable() bool {
 }
 
 // RowSpacing returns the value of the ::row-spacing property.
+//
+// The function returns the following values:
+//
+//    - gint: space between rows.
+//
 func (iconView *IconView) RowSpacing() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -728,6 +933,11 @@ func (iconView *IconView) RowSpacing() int {
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);.
+//
+// The function returns the following values:
+//
+//    - list containing a TreePath for each selected row.
+//
 func (iconView *IconView) SelectedItems() []*TreePath {
 	var _arg0 *C.GtkIconView // out
 	var _cret *C.GList       // in
@@ -757,6 +967,11 @@ func (iconView *IconView) SelectedItems() []*TreePath {
 }
 
 // SelectionMode gets the selection mode of the icon_view.
+//
+// The function returns the following values:
+//
+//    - selectionMode: current selection mode.
+//
 func (iconView *IconView) SelectionMode() SelectionMode {
 	var _arg0 *C.GtkIconView     // out
 	var _cret C.GtkSelectionMode // in
@@ -774,6 +989,11 @@ func (iconView *IconView) SelectionMode() SelectionMode {
 }
 
 // Spacing returns the value of the ::spacing property.
+//
+// The function returns the following values:
+//
+//    - gint: space between cells.
+//
 func (iconView *IconView) Spacing() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -791,6 +1011,11 @@ func (iconView *IconView) Spacing() int {
 }
 
 // TextColumn returns the column with text for icon_view.
+//
+// The function returns the following values:
+//
+//    - gint: text column, or -1 if it’s unset.
+//
 func (iconView *IconView) TextColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -809,6 +1034,12 @@ func (iconView *IconView) TextColumn() int {
 
 // TooltipColumn returns the column of icon_view’s model which is being used for
 // displaying tooltips on icon_view’s rows.
+//
+// The function returns the following values:
+//
+//    - gint: index of the tooltip column that is currently being used, or -1 if
+//      this is disabled.
+//
 func (iconView *IconView) TooltipColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
@@ -849,6 +1080,10 @@ func (iconView *IconView) ItemActivated(path *TreePath) {
 // The function takes the following parameters:
 //
 //    - path to check selection on.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if path is selected.
 //
 func (iconView *IconView) PathIsSelected(path *TreePath) bool {
 	var _arg0 *C.GtkIconView // out
@@ -1039,7 +1274,7 @@ func (iconView *IconView) SetColumns(columns int) {
 // The function takes the following parameters:
 //
 //    - path: TreePath.
-//    - cell: one of the cell renderers of icon_view, or NULL.
+//    - cell (optional): one of the cell renderers of icon_view, or NULL.
 //    - startEditing: TRUE if the specified cell should start being edited.
 //
 func (iconView *IconView) SetCursor(path *TreePath, cell CellRendererer, startEditing bool) {
@@ -1068,7 +1303,7 @@ func (iconView *IconView) SetCursor(path *TreePath, cell CellRendererer, startEd
 //
 // The function takes the following parameters:
 //
-//    - path of the item to highlight, or NULL.
+//    - path (optional) of the item to highlight, or NULL.
 //    - pos specifies where to drop, relative to the item.
 //
 func (iconView *IconView) SetDragDestItem(path *TreePath, pos IconViewDropPosition) {
@@ -1192,7 +1427,7 @@ func (iconView *IconView) SetMarkupColumn(column int) {
 //
 // The function takes the following parameters:
 //
-//    - model: model.
+//    - model (optional): model.
 //
 func (iconView *IconView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkIconView  // out
@@ -1342,7 +1577,7 @@ func (iconView *IconView) SetTextColumn(column int) {
 //
 //    - tooltip: Tooltip.
 //    - path: TreePath.
-//    - cell or NULL.
+//    - cell (optional) or NULL.
 //
 func (iconView *IconView) SetTooltipCell(tooltip *Tooltip, path *TreePath, cell CellRendererer) {
 	var _arg0 *C.GtkIconView     // out
@@ -1465,95 +1700,4 @@ func (iconView *IconView) UnsetModelDragSource() {
 
 	C.gtk_icon_view_unset_model_drag_source(_arg0)
 	runtime.KeepAlive(iconView)
-}
-
-// ConnectActivateCursorItem: [keybinding signal][GtkBindingSignal] which gets
-// emitted when the user activates the currently focused item.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control activation programmatically.
-//
-// The default bindings for this signal are Space, Return and Enter.
-func (iconView *IconView) ConnectActivateCursorItem(f func() bool) externglib.SignalHandle {
-	return iconView.Connect("activate-cursor-item", f)
-}
-
-// ConnectItemActivated signal is emitted when the method
-// gtk_icon_view_item_activated() is called, when the user double clicks an item
-// with the "activate-on-single-click" property set to FALSE, or when the user
-// single clicks an item when the "activate-on-single-click" property set to
-// TRUE. It is also emitted when a non-editable item is selected and one of the
-// keys: Space, Return or Enter is pressed.
-func (iconView *IconView) ConnectItemActivated(f func(path *TreePath)) externglib.SignalHandle {
-	return iconView.Connect("item-activated", f)
-}
-
-// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted when the user initiates a cursor movement.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control the cursor programmatically.
-//
-//
-// The default bindings for this signal include
-//
-// - Arrow keys which move by individual steps
-//
-// - Home/End keys which move to the first/last item
-//
-// - PageUp/PageDown which move by "pages" All of these will extend the
-// selection when combined with the Shift modifier.
-func (iconView *IconView) ConnectMoveCursor(f func(step MovementStep, count int) bool) externglib.SignalHandle {
-	return iconView.Connect("move-cursor", f)
-}
-
-// ConnectSelectAll: [keybinding signal][GtkBindingSignal] which gets emitted
-// when the user selects all items.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control selection programmatically.
-//
-// The default binding for this signal is Ctrl-a.
-func (iconView *IconView) ConnectSelectAll(f func()) externglib.SignalHandle {
-	return iconView.Connect("select-all", f)
-}
-
-// ConnectSelectCursorItem: [keybinding signal][GtkBindingSignal] which gets
-// emitted when the user selects the item that is currently focused.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control selection programmatically.
-//
-// There is no default binding for this signal.
-func (iconView *IconView) ConnectSelectCursorItem(f func()) externglib.SignalHandle {
-	return iconView.Connect("select-cursor-item", f)
-}
-
-// ConnectSelectionChanged signal is emitted when the selection (i.e. the set of
-// selected items) changes.
-func (iconView *IconView) ConnectSelectionChanged(f func()) externglib.SignalHandle {
-	return iconView.Connect("selection-changed", f)
-}
-
-// ConnectToggleCursorItem: [keybinding signal][GtkBindingSignal] which gets
-// emitted when the user toggles whether the currently focused item is selected
-// or not. The exact effect of this depend on the selection mode.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control selection programmatically.
-//
-// There is no default binding for this signal is Ctrl-Space.
-func (iconView *IconView) ConnectToggleCursorItem(f func()) externglib.SignalHandle {
-	return iconView.Connect("toggle-cursor-item", f)
-}
-
-// ConnectUnselectAll: [keybinding signal][GtkBindingSignal] which gets emitted
-// when the user unselects all items.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control selection programmatically.
-//
-// The default binding for this signal is Ctrl-Shift-a.
-func (iconView *IconView) ConnectUnselectAll(f func()) externglib.SignalHandle {
-	return iconView.Connect("unselect-all", f)
 }

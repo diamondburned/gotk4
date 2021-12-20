@@ -49,6 +49,11 @@ func marshalIMMulticontexter(p uintptr) (interface{}, error) {
 }
 
 // NewIMMulticontext creates a new GtkIMMulticontext.
+//
+// The function returns the following values:
+//
+//    - imMulticontext: new GtkIMMulticontext.
+//
 func NewIMMulticontext() *IMMulticontext {
 	var _cret *C.GtkIMContext // in
 
@@ -62,6 +67,11 @@ func NewIMMulticontext() *IMMulticontext {
 }
 
 // ContextID gets the id of the currently active delegate of the context.
+//
+// The function returns the following values:
+//
+//    - utf8: id of the currently active delegate.
+//
 func (context *IMMulticontext) ContextID() string {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _cret *C.char              // in

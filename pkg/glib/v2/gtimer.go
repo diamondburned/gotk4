@@ -62,6 +62,11 @@ func Usleep(microseconds uint32) {
 //
 //    - isoDate: ISO 8601 encoded date string.
 //
+// The function returns the following values:
+//
+//    - time_: Val.
+//    - ok: TRUE if the conversion was successful.
+//
 func TimeValFromISO8601(isoDate string) (*TimeVal, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.GTimeVal // in

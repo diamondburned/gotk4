@@ -26,6 +26,10 @@ import "C"
 //
 //    - hostname: hostname.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if hostname contains any ASCII-encoded segments.
+//
 func HostnameIsASCIIEncoded(hostname string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -53,6 +57,10 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 // The function takes the following parameters:
 //
 //    - hostname (or IP address in string form).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if hostname is an IP address.
 //
 func HostnameIsIPAddress(hostname string) bool {
 	var _arg1 *C.gchar   // out
@@ -85,6 +93,10 @@ func HostnameIsIPAddress(hostname string) bool {
 //
 //    - hostname: hostname.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if hostname contains any non-ASCII characters.
+//
 func HostnameIsNonASCII(hostname string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -110,6 +122,11 @@ func HostnameIsNonASCII(hostname string) bool {
 // The function takes the following parameters:
 //
 //    - hostname: valid UTF-8 or ASCII hostname.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): ASCII hostname, which must be freed, or NULL if hostname
+//      is in some way invalid.
 //
 func HostnameToASCII(hostname string) string {
 	var _arg1 *C.gchar // out
@@ -142,6 +159,11 @@ func HostnameToASCII(hostname string) string {
 // The function takes the following parameters:
 //
 //    - hostname: valid UTF-8 or ASCII hostname.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): UTF-8 hostname, which must be freed, or NULL if hostname
+//      is in some way invalid.
 //
 func HostnameToUnicode(hostname string) string {
 	var _arg1 *C.gchar // out

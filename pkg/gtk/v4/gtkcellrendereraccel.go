@@ -82,7 +82,22 @@ func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
 	return wrapCellRendererAccel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAccelCleared gets emitted when the user has removed the accelerator.
+func (v *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) externglib.SignalHandle {
+	return v.Connect("accel-cleared", f)
+}
+
+// ConnectAccelEdited gets emitted when the user has selected a new accelerator.
+func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) externglib.SignalHandle {
+	return v.Connect("accel-edited", f)
+}
+
 // NewCellRendererAccel creates a new CellRendererAccel.
+//
+// The function returns the following values:
+//
+//    - cellRendererAccel: new cell renderer.
+//
 func NewCellRendererAccel() *CellRendererAccel {
 	var _cret *C.GtkCellRenderer // in
 
@@ -93,14 +108,4 @@ func NewCellRendererAccel() *CellRendererAccel {
 	_cellRendererAccel = wrapCellRendererAccel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererAccel
-}
-
-// ConnectAccelCleared gets emitted when the user has removed the accelerator.
-func (v *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) externglib.SignalHandle {
-	return v.Connect("accel-cleared", f)
-}
-
-// ConnectAccelEdited gets emitted when the user has selected a new accelerator.
-func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) externglib.SignalHandle {
-	return v.Connect("accel-edited", f)
 }

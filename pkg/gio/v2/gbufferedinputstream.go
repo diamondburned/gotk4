@@ -56,6 +56,17 @@ type BufferedInputStreamOverrider interface {
 	//
 	// For the asynchronous, non-blocking, version of this function, see
 	// g_buffered_input_stream_fill_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - count: number of bytes that will be read from the stream.
+	//
+	// The function returns the following values:
+	//
+	//    - gssize: number of bytes read into stream's buffer, up to count, or -1
+	//      on error.
+	//
 	Fill(ctx context.Context, count int) (int, error)
 	// FillAsync reads data into stream's buffer asynchronously, up to count
 	// size. io_priority can be used to prioritize reads. For the synchronous
@@ -63,8 +74,25 @@ type BufferedInputStreamOverrider interface {
 	//
 	// If count is -1 then the attempted read size is equal to the number of
 	// bytes that are required to fill the buffer.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object.
+	//    - count: number of bytes that will be read from the stream.
+	//    - ioPriority: [I/O priority][io-priority] of the request.
+	//    - callback (optional): ReadyCallback.
+	//
 	FillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback)
 	// FillFinish finishes an asynchronous read.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - gssize of the read stream, or -1 on an error.
+	//
 	FillFinish(result AsyncResulter) (int, error)
 }
 
@@ -116,6 +144,10 @@ func marshalBufferedInputStreamer(p uintptr) (interface{}, error) {
 //
 //    - baseStream: Stream.
 //
+// The function returns the following values:
+//
+//    - bufferedInputStream for the given base_stream.
+//
 func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _cret *C.GInputStream // in
@@ -139,6 +171,10 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 //
 //    - baseStream: Stream.
 //    - size: #gsize.
+//
+// The function returns the following values:
+//
+//    - bufferedInputStream: Stream.
 //
 func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
@@ -186,8 +222,13 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - count: number of bytes that will be read from the stream.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read into stream's buffer, up to count, or -1 on
+//      error.
 //
 func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
@@ -229,10 +270,10 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object.
+//    - ctx (optional): optional #GCancellable object.
 //    - count: number of bytes that will be read from the stream.
 //    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback: ReadyCallback.
+//    - callback (optional): ReadyCallback.
 //
 func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GBufferedInputStream // out
@@ -269,6 +310,10 @@ func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPrior
 //
 //    - result: Result.
 //
+// The function returns the following values:
+//
+//    - gssize of the read stream, or -1 on an error.
+//
 func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GAsyncResult         // out
@@ -294,6 +339,11 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 }
 
 // Available gets the size of the available data within the stream.
+//
+// The function returns the following values:
+//
+//    - gsize: size of the available stream.
+//
 func (stream *BufferedInputStream) Available() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
@@ -311,6 +361,11 @@ func (stream *BufferedInputStream) Available() uint {
 }
 
 // BufferSize gets the size of the input buffer.
+//
+// The function returns the following values:
+//
+//    - gsize: current buffer size.
+//
 func (stream *BufferedInputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
@@ -334,6 +389,10 @@ func (stream *BufferedInputStream) BufferSize() uint {
 //
 //    - buffer: pointer to an allocated chunk of memory.
 //    - offset: #gsize.
+//
+// The function returns the following values:
+//
+//    - gsize of the number of bytes peeked, or -1 on error.
 //
 func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	var _arg0 *C.GBufferedInputStream // out
@@ -364,6 +423,11 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 // PeekBuffer returns the buffer with the currently available bytes. The
 // returned buffer must not be modified and will become invalid when reading
 // from the stream or filling the buffer.
+//
+// The function returns the following values:
+//
+//    - guint8s: read-only buffer.
+//
 func (stream *BufferedInputStream) PeekBuffer() []byte {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret unsafe.Pointer          // in
@@ -398,7 +462,11 @@ func (stream *BufferedInputStream) PeekBuffer() []byte {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//
+// The function returns the following values:
+//
+//    - gint: byte read from the stream, or -1 on end of stream or error.
 //
 func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out

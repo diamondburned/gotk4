@@ -129,6 +129,11 @@ func marshalPopoverMenuer(p uintptr) (interface{}, error) {
 }
 
 // NewPopoverMenu creates a new popover menu.
+//
+// The function returns the following values:
+//
+//    - popoverMenu: new PopoverMenu.
+//
 func NewPopoverMenu() *PopoverMenu {
 	var _cret *C.GtkWidget // in
 

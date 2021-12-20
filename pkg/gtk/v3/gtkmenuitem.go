@@ -38,13 +38,29 @@ type MenuItemOverrider interface {
 	// Deselect emits the MenuItem::deselect signal on the given item.
 	Deselect()
 	// Label sets text on the menu_item label.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: text in the menu_item label. This is the internal string used
+	//      by the label, and must not be modified.
+	//
 	Label() string
 	// Select emits the MenuItem::select signal on the given item.
 	Select()
 	// SetLabel sets text on the menu_item label.
+	//
+	// The function takes the following parameters:
+	//
+	//    - label: text you want to set.
+	//
 	SetLabel(label string)
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 	// given item.
+	//
+	// The function takes the following parameters:
+	//
+	//    - allocation to use as signal data.
+	//
 	ToggleSizeAllocate(allocation int)
 }
 
@@ -124,7 +140,40 @@ func marshalMenuItemmer(p uintptr) (interface{}, error) {
 	return wrapMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate: emitted when the item is activated.
+func (menuItem *MenuItem) ConnectActivate(f func()) externglib.SignalHandle {
+	return menuItem.Connect("activate", f)
+}
+
+// ConnectActivateItem: emitted when the item is activated, but also if the menu
+// item has a submenu. For normal applications, the relevant signal is
+// MenuItem::activate.
+func (menuItem *MenuItem) ConnectActivateItem(f func()) externglib.SignalHandle {
+	return menuItem.Connect("activate-item", f)
+}
+
+func (menuItem *MenuItem) ConnectDeselect(f func()) externglib.SignalHandle {
+	return menuItem.Connect("deselect", f)
+}
+
+func (menuItem *MenuItem) ConnectSelect(f func()) externglib.SignalHandle {
+	return menuItem.Connect("select", f)
+}
+
+func (menuItem *MenuItem) ConnectToggleSizeAllocate(f func(object int)) externglib.SignalHandle {
+	return menuItem.Connect("toggle-size-allocate", f)
+}
+
+func (menuItem *MenuItem) ConnectToggleSizeRequest(f func(object cgo.Handle)) externglib.SignalHandle {
+	return menuItem.Connect("toggle-size-request", f)
+}
+
 // NewMenuItem creates a new MenuItem.
+//
+// The function returns the following values:
+//
+//    - menuItem: newly created MenuItem.
+//
 func NewMenuItem() *MenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -142,6 +191,10 @@ func NewMenuItem() *MenuItem {
 // The function takes the following parameters:
 //
 //    - label: text for the label.
+//
+// The function returns the following values:
+//
+//    - menuItem: newly created MenuItem.
 //
 func NewMenuItemWithLabel(label string) *MenuItem {
 	var _arg1 *C.gchar     // out
@@ -168,7 +221,11 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 // The function takes the following parameters:
 //
 //    - label: text of the button, with an underscore in front of the mnemonic
-//    character.
+//      character.
+//
+// The function returns the following values:
+//
+//    - menuItem: new MenuItem.
 //
 func NewMenuItemWithMnemonic(label string) *MenuItem {
 	var _arg1 *C.gchar     // out
@@ -211,6 +268,12 @@ func (menuItem *MenuItem) Deselect() {
 // menu_item.
 //
 // See gtk_menu_item_set_accel_path() for details.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): accelerator path corresponding to this menu item’s
+//      functionality, or NULL if not set.
+//
 func (menuItem *MenuItem) AccelPath() string {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret *C.gchar       // in
@@ -230,6 +293,12 @@ func (menuItem *MenuItem) AccelPath() string {
 }
 
 // Label sets text on the menu_item label.
+//
+// The function returns the following values:
+//
+//    - utf8: text in the menu_item label. This is the internal string used by
+//      the label, and must not be modified.
+//
 func (menuItem *MenuItem) Label() string {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret *C.gchar       // in
@@ -248,6 +317,11 @@ func (menuItem *MenuItem) Label() string {
 
 // ReserveIndicator returns whether the menu_item reserves space for the submenu
 // indicator, regardless if it has a submenu or not.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if menu_item always reserves space for the submenu indicator.
+//
 func (menuItem *MenuItem) ReserveIndicator() bool {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret C.gboolean     // in
@@ -270,6 +344,12 @@ func (menuItem *MenuItem) ReserveIndicator() bool {
 // of the menu bar.
 //
 // Deprecated: See gtk_menu_item_set_right_justified().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the menu item will appear at the far right if added to a menu
+//      bar.
+//
 func (menuItem *MenuItem) RightJustified() bool {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret C.gboolean     // in
@@ -290,6 +370,11 @@ func (menuItem *MenuItem) RightJustified() bool {
 
 // Submenu gets the submenu underneath this menu item, if any. See
 // gtk_menu_item_set_submenu().
+//
+// The function returns the following values:
+//
+//    - widget (optional): submenu for this menu item, or NULL if none.
+//
 func (menuItem *MenuItem) Submenu() Widgetter {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret *C.GtkWidget   // in
@@ -320,6 +405,12 @@ func (menuItem *MenuItem) Submenu() Widgetter {
 
 // UseUnderline checks if an underline in the text indicates the next character
 // should be used for the mnemonic accelerator key.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if an embedded underline in the label indicates the mnemonic
+//      accelerator key.
+//
 func (menuItem *MenuItem) UseUnderline() bool {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret C.gboolean     // in
@@ -369,8 +460,8 @@ func (menuItem *MenuItem) Select() {
 //
 // The function takes the following parameters:
 //
-//    - accelPath: accelerator path, corresponding to this menu item’s
-//    functionality, or NULL to unset the current path.
+//    - accelPath (optional): accelerator path, corresponding to this menu item’s
+//      functionality, or NULL to unset the current path.
 //
 func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkMenuItem // out
@@ -441,7 +532,7 @@ func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 // The function takes the following parameters:
 //
 //    - rightJustified: if TRUE the menu item will appear at the far right if
-//    added to a menu bar.
+//      added to a menu bar.
 //
 func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 	var _arg0 *C.GtkMenuItem // out
@@ -462,7 +553,7 @@ func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 //
 // The function takes the following parameters:
 //
-//    - submenu: submenu, or NULL.
+//    - submenu (optional): submenu, or NULL.
 //
 func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 	var _arg0 *C.GtkMenuItem // out
@@ -516,32 +607,4 @@ func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(allocation)
-}
-
-// ConnectActivate: emitted when the item is activated.
-func (menuItem *MenuItem) ConnectActivate(f func()) externglib.SignalHandle {
-	return menuItem.Connect("activate", f)
-}
-
-// ConnectActivateItem: emitted when the item is activated, but also if the menu
-// item has a submenu. For normal applications, the relevant signal is
-// MenuItem::activate.
-func (menuItem *MenuItem) ConnectActivateItem(f func()) externglib.SignalHandle {
-	return menuItem.Connect("activate-item", f)
-}
-
-func (menuItem *MenuItem) ConnectDeselect(f func()) externglib.SignalHandle {
-	return menuItem.Connect("deselect", f)
-}
-
-func (menuItem *MenuItem) ConnectSelect(f func()) externglib.SignalHandle {
-	return menuItem.Connect("select", f)
-}
-
-func (menuItem *MenuItem) ConnectToggleSizeAllocate(f func(object int)) externglib.SignalHandle {
-	return menuItem.Connect("toggle-size-allocate", f)
-}
-
-func (menuItem *MenuItem) ConnectToggleSizeRequest(f func(object cgo.Handle)) externglib.SignalHandle {
-	return menuItem.Connect("toggle-size-request", f)
 }

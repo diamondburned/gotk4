@@ -75,6 +75,11 @@ func marshalFixedLayouter(p uintptr) (interface{}, error) {
 }
 
 // NewFixedLayout creates a new GtkFixedLayout.
+//
+// The function returns the following values:
+//
+//    - fixedLayout: newly created GtkFixedLayout.
+//
 func NewFixedLayout() *FixedLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -109,6 +114,11 @@ func marshalFixedLayoutChilder(p uintptr) (interface{}, error) {
 }
 
 // Transform retrieves the transformation of the child.
+//
+// The function returns the following values:
+//
+//    - transform (optional): GskTransform.
+//
 func (child *FixedLayoutChild) Transform() *gsk.Transform {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _cret *C.GskTransform        // in

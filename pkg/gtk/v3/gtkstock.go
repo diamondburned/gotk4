@@ -679,6 +679,11 @@ func StockAddStatic(items []StockItem) {
 // g_slist_free(), and each string in the list must be freed with g_free().
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - sList: list of known stock IDs.
+//
 func StockListIDs() []string {
 	var _cret *C.GSList // in
 
@@ -706,6 +711,11 @@ func StockListIDs() []string {
 // The function takes the following parameters:
 //
 //    - stockId: stock item name.
+//
+// The function returns the following values:
+//
+//    - item: stock item to initialize with values.
+//    - ok: TRUE if item was initialized.
 //
 func StockLookup(stockId string) (*StockItem, bool) {
 	var _arg1 *C.gchar       // out

@@ -33,7 +33,19 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TLSConnectionOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - peerCert
+	//    - errors
+	//
+	// The function returns the following values:
+	//
 	AcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
+	// The function takes the following parameters:
+	//
+	//    - typ
+	//    - data
+	//
 	BindingData(typ TLSChannelBindingType, data []byte) error
 	// Handshake attempts a TLS handshake on conn.
 	//
@@ -63,12 +75,29 @@ type TLSConnectionOverrider interface {
 	// initial handshake, so calling this function manually is not recommended.
 	//
 	// Connection::accept_certificate may be emitted during the handshake.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//
 	Handshake(ctx context.Context) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
 	// g_tls_connection_handshake() for more information.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - ioPriority: [I/O priority][io-priority] of the request.
+	//    - callback (optional) to call when the handshake is complete.
+	//
 	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
 	// g_tls_connection_handshake() for more information.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	HandshakeFinish(result AsyncResulter) error
 }
 
@@ -109,6 +138,48 @@ func marshalTLSConnectioner(p uintptr) (interface{}, error) {
 	return wrapTLSConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (conn *TLSConnection) baseTLSConnection() *TLSConnection {
+	return conn
+}
+
+// BaseTLSConnection returns the underlying base object.
+func BaseTLSConnection(obj TLSConnectioner) *TLSConnection {
+	return obj.baseTLSConnection()
+}
+
+// ConnectAcceptCertificate: emitted during the TLS handshake after the peer
+// certificate has been received. You can examine peer_cert's certification path
+// by calling g_tls_certificate_get_issuer() on it.
+//
+// For a client-side connection, peer_cert is the server's certificate, and the
+// signal will only be emitted if the certificate was not acceptable according
+// to conn's ClientConnection:validation_flags. If you would like the
+// certificate to be accepted despite errors, return TRUE from the signal
+// handler. Otherwise, if no handler accepts the certificate, the handshake will
+// fail with G_TLS_ERROR_BAD_CERTIFICATE.
+//
+// For a server-side connection, peer_cert is the certificate presented by the
+// client, if this was requested via the server's
+// ServerConnection:authentication_mode. On the server side, the signal is
+// always emitted when the client presents a certificate, and the certificate
+// will only be accepted if a handler returns TRUE.
+//
+// Note that if this signal is emitted as part of asynchronous I/O in the main
+// thread, then you should not attempt to interact with the user before
+// returning from the signal handler. If you want to let the user decide whether
+// or not to accept the certificate, you would have to return FALSE from the
+// signal handler on the first attempt, and then after the connection attempt
+// returns a G_TLS_ERROR_BAD_CERTIFICATE, you can interact with the user, and if
+// the user decides to accept the certificate, remember that fact, create a new
+// connection, and return TRUE from the signal handler the next time.
+//
+// If you are doing I/O in another thread, you do not need to worry about this,
+// and can simply block in the signal handler until the UI thread returns an
+// answer.
+func (conn *TLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) externglib.SignalHandle {
+	return conn.Connect("accept-certificate", f)
+}
+
 // EmitAcceptCertificate: used by Connection implementations to emit the
 // Connection::accept-certificate signal.
 //
@@ -116,6 +187,11 @@ func marshalTLSConnectioner(p uintptr) (interface{}, error) {
 //
 //    - peerCert peer's Certificate.
 //    - errors problems with peer_cert.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if one of the signal handlers has returned TRUE to accept
+//      peer_cert.
 //
 func (conn *TLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
 	var _arg0 *C.GTlsConnection      // out
@@ -143,6 +219,11 @@ func (conn *TLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, error
 
 // Certificate gets conn's certificate, as set by
 // g_tls_connection_set_certificate().
+//
+// The function returns the following values:
+//
+//    - tlsCertificate (optional) conn's certificate, or NULL.
+//
 func (conn *TLSConnection) Certificate() TLSCertificater {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsCertificate // in
@@ -189,6 +270,10 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 //
 //    - typ type of data to fetch.
 //
+// The function returns the following values:
+//
+//    - data (optional) is filled with the binding data, or NULL.
+//
 func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GTlsConnection        // out
 	var _arg1 C.GTlsChannelBindingType // out
@@ -216,6 +301,11 @@ func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte
 
 // Database gets the certificate database that conn uses to verify peer
 // certificates. See g_tls_connection_set_database().
+//
+// The function returns the following values:
+//
+//    - tlsDatabase (optional): certificate database that conn uses or NULL.
+//
 func (conn *TLSConnection) Database() TLSDatabaser {
 	var _arg0 *C.GTlsConnection // out
 	var _cret *C.GTlsDatabase   // in
@@ -247,6 +337,11 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 // Interaction: get the object that will be used to interact with the user. It
 // will be used for things like prompting the user for passwords. If NULL is
 // returned, then no user interaction will occur for this connection.
+//
+// The function returns the following values:
+//
+//    - tlsInteraction (optional): interaction object.
+//
 func (conn *TLSConnection) Interaction() *TLSInteraction {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsInteraction // in
@@ -272,6 +367,11 @@ func (conn *TLSConnection) Interaction() *TLSInteraction {
 // that matched one of conn's protocols, or the TLS backend does not support
 // ALPN, then this will be NULL. See
 // g_tls_connection_set_advertised_protocols().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): negotiated protocol, or NULL.
+//
 func (conn *TLSConnection) NegotiatedProtocol() string {
 	var _arg0 *C.GTlsConnection // out
 	var _cret *C.gchar          // in
@@ -293,6 +393,11 @@ func (conn *TLSConnection) NegotiatedProtocol() string {
 // PeerCertificate gets conn's peer's certificate after the handshake has
 // completed or failed. (It is not set during the emission of
 // Connection::accept-certificate.).
+//
+// The function returns the following values:
+//
+//    - tlsCertificate (optional) conn's peer's certificate, or NULL.
+//
 func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsCertificate // in
@@ -324,6 +429,11 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 // PeerCertificateErrors gets the errors associated with validating conn's
 // peer's certificate, after the handshake has completed or failed. (It is not
 // set during the emission of Connection::accept-certificate.).
+//
+// The function returns the following values:
+//
+//    - tlsCertificateFlags conn's peer's certificate errors.
+//
 func (conn *TLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	var _arg0 *C.GTlsConnection      // out
 	var _cret C.GTlsCertificateFlags // in
@@ -346,6 +456,11 @@ func (conn *TLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 // Deprecated: Changing the rehandshake mode is no longer required for
 // compatibility. Also, rehandshaking has been removed from the TLS protocol in
 // TLS 1.3.
+//
+// The function returns the following values:
+//
+//    - tlsRehandshakeMode: G_TLS_REHANDSHAKE_SAFELY.
+//
 func (conn *TLSConnection) RehandshakeMode() TLSRehandshakeMode {
 	var _arg0 *C.GTlsConnection     // out
 	var _cret C.GTlsRehandshakeMode // in
@@ -365,6 +480,11 @@ func (conn *TLSConnection) RehandshakeMode() TLSRehandshakeMode {
 // RequireCloseNotify tests whether or not conn expects a proper TLS close
 // notification when the connection is closed. See
 // g_tls_connection_set_require_close_notify() for details.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if conn requires a proper TLS close notification.
+//
 func (conn *TLSConnection) RequireCloseNotify() bool {
 	var _arg0 *C.GTlsConnection // out
 	var _cret C.gboolean        // in
@@ -387,6 +507,11 @@ func (conn *TLSConnection) RequireCloseNotify() bool {
 // verify peer certificates. See g_tls_connection_set_use_system_certdb().
 //
 // Deprecated: Use g_tls_connection_get_database() instead.
+//
+// The function returns the following values:
+//
+//    - ok: whether conn uses the system certificate database.
+//
 func (conn *TLSConnection) UseSystemCertDB() bool {
 	var _arg0 *C.GTlsConnection // out
 	var _cret C.gboolean        // in
@@ -435,7 +560,7 @@ func (conn *TLSConnection) UseSystemCertDB() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //
 func (conn *TLSConnection) Handshake(ctx context.Context) error {
 	var _arg0 *C.GTlsConnection // out
@@ -467,9 +592,9 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback to call when the handshake is complete.
+//    - callback (optional) to call when the handshake is complete.
 //
 func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsConnection     // out
@@ -539,8 +664,8 @@ func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - protocols: NULL-terminated array of ALPN protocol names (eg,
-//    "http/1.1", "h2"), or NULL.
+//    - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
+//      "http/1.1", "h2"), or NULL.
 //
 func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg0 *C.GTlsConnection // out
@@ -608,7 +733,7 @@ func (conn *TLSConnection) SetCertificate(certificate TLSCertificater) {
 //
 // The function takes the following parameters:
 //
-//    - database: Database.
+//    - database (optional): Database.
 //
 func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 	var _arg0 *C.GTlsConnection // out
@@ -633,7 +758,7 @@ func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 //
 // The function takes the following parameters:
 //
-//    - interaction object, or NULL.
+//    - interaction (optional) object, or NULL.
 //
 func (conn *TLSConnection) SetInteraction(interaction *TLSInteraction) {
 	var _arg0 *C.GTlsConnection  // out
@@ -743,46 +868,4 @@ func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 	C.g_tls_connection_set_use_system_certdb(_arg0, _arg1)
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(useSystemCertdb)
-}
-
-func (conn *TLSConnection) baseTLSConnection() *TLSConnection {
-	return conn
-}
-
-// BaseTLSConnection returns the underlying base object.
-func BaseTLSConnection(obj TLSConnectioner) *TLSConnection {
-	return obj.baseTLSConnection()
-}
-
-// ConnectAcceptCertificate: emitted during the TLS handshake after the peer
-// certificate has been received. You can examine peer_cert's certification path
-// by calling g_tls_certificate_get_issuer() on it.
-//
-// For a client-side connection, peer_cert is the server's certificate, and the
-// signal will only be emitted if the certificate was not acceptable according
-// to conn's ClientConnection:validation_flags. If you would like the
-// certificate to be accepted despite errors, return TRUE from the signal
-// handler. Otherwise, if no handler accepts the certificate, the handshake will
-// fail with G_TLS_ERROR_BAD_CERTIFICATE.
-//
-// For a server-side connection, peer_cert is the certificate presented by the
-// client, if this was requested via the server's
-// ServerConnection:authentication_mode. On the server side, the signal is
-// always emitted when the client presents a certificate, and the certificate
-// will only be accepted if a handler returns TRUE.
-//
-// Note that if this signal is emitted as part of asynchronous I/O in the main
-// thread, then you should not attempt to interact with the user before
-// returning from the signal handler. If you want to let the user decide whether
-// or not to accept the certificate, you would have to return FALSE from the
-// signal handler on the first attempt, and then after the connection attempt
-// returns a G_TLS_ERROR_BAD_CERTIFICATE, you can interact with the user, and if
-// the user decides to accept the certificate, remember that fact, create a new
-// connection, and return TRUE from the signal handler the next time.
-//
-// If you are doing I/O in another thread, you do not need to worry about this,
-// and can simply block in the signal handler until the UI thread returns an
-// answer.
-func (conn *TLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) externglib.SignalHandle {
-	return conn.Connect("accept-certificate", f)
 }

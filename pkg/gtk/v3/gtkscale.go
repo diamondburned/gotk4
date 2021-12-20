@@ -32,6 +32,10 @@ func init() {
 // yet, so the interface currently has no use.
 type ScaleOverrider interface {
 	DrawValue()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	FormatValue(value float64) string
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// Layout representing the text in the scale. Remember when using the Layout
@@ -40,6 +44,12 @@ type ScaleOverrider interface {
 	//
 	// If the Scale:draw-value property is FALSE, the return values are
 	// undefined.
+	//
+	// The function returns the following values:
+	//
+	//    - x (optional): location to store X offset of layout, or NULL.
+	//    - y (optional): location to store Y offset of layout, or NULL.
+	//
 	LayoutOffsets() (x int, y int)
 }
 
@@ -147,13 +157,39 @@ func marshalScaler(p uintptr) (interface{}, error) {
 	return wrapScale(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectFormatValue: signal which allows you to change how the scale value is
+// displayed. Connect a signal handler which returns an allocated string
+// representing value. That string will then be used to display the scale's
+// value.
+//
+// If no user-provided handlers are installed, the value will be displayed on
+// its own, rounded according to the value of the Scale:digits property.
+//
+// Here's an example signal handler which displays a value 1.0 as with
+// "-->1.0<--".
+//
+//    static gchar*
+//    format_value_callback (GtkScale *scale,
+//                           gdouble   value)
+//    {
+//      return g_strdup_printf ("-->\0.*g<--",
+//                              gtk_scale_get_digits (scale), value);
+//     }.
+func (scale *Scale) ConnectFormatValue(f func(value float64) string) externglib.SignalHandle {
+	return scale.Connect("format-value", f)
+}
+
 // NewScale creates a new Scale.
 //
 // The function takes the following parameters:
 //
 //    - orientation scale’s orientation.
-//    - adjustment which sets the range of the scale, or NULL to create a new
-//    adjustment.
+//    - adjustment (optional) which sets the range of the scale, or NULL to
+//      create a new adjustment.
+//
+// The function returns the following values:
+//
+//    - scale: new Scale.
 //
 func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 	var _arg1 C.GtkOrientation // out
@@ -191,6 +227,10 @@ func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 //    - min: minimum value.
 //    - max: maximum value.
 //    - step increment (tick size) used with keyboard shortcuts.
+//
+// The function returns the following values:
+//
+//    - scale: new Scale.
 //
 func NewScaleWithRange(orientation Orientation, min, max, step float64) *Scale {
 	var _arg1 C.GtkOrientation // out
@@ -230,13 +270,13 @@ func NewScaleWithRange(orientation Orientation, min, max, step float64) *Scale {
 // The function takes the following parameters:
 //
 //    - value at which the mark is placed, must be between the lower and upper
-//    limits of the scales’ adjustment.
+//      limits of the scales’ adjustment.
 //    - position: where to draw the mark. For a horizontal scale, K_POS_TOP and
-//    GTK_POS_LEFT are drawn above the scale, anything else below. For a
-//    vertical scale, K_POS_LEFT and GTK_POS_TOP are drawn to the left of the
-//    scale, anything else to the right.
-//    - markup: text to be shown at the mark, using [Pango
-//    markup][PangoMarkupFormat], or NULL.
+//      GTK_POS_LEFT are drawn above the scale, anything else below. For a
+//      vertical scale, K_POS_LEFT and GTK_POS_TOP are drawn to the left of the
+//      scale, anything else to the right.
+//    - markup (optional): text to be shown at the mark, using [Pango
+//      markup][PangoMarkupFormat], or NULL.
 //
 func (scale *Scale) AddMark(value float64, position PositionType, markup string) {
 	var _arg0 *C.GtkScale       // out
@@ -270,6 +310,11 @@ func (scale *Scale) ClearMarks() {
 }
 
 // Digits gets the number of decimal places that are displayed in the value.
+//
+// The function returns the following values:
+//
+//    - gint: number of decimal places that are displayed.
+//
 func (scale *Scale) Digits() int {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gint      // in
@@ -288,6 +333,11 @@ func (scale *Scale) Digits() int {
 
 // DrawValue returns whether the current value is displayed as a string next to
 // the slider.
+//
+// The function returns the following values:
+//
+//    - ok: whether the current value is displayed as a string.
+//
 func (scale *Scale) DrawValue() bool {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gboolean  // in
@@ -307,6 +357,11 @@ func (scale *Scale) DrawValue() bool {
 }
 
 // HasOrigin returns whether the scale has an origin.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the scale has an origin.
+//
 func (scale *Scale) HasOrigin() bool {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gboolean  // in
@@ -327,6 +382,12 @@ func (scale *Scale) HasOrigin() bool {
 
 // Layout gets the Layout used to display the scale. The returned object is
 // owned by the scale so does not need to be freed by the caller.
+//
+// The function returns the following values:
+//
+//    - layout (optional) for this scale, or NULL if the Scale:draw-value
+//      property is FALSE.
+//
 func (scale *Scale) Layout() *pango.Layout {
 	var _arg0 *C.GtkScale    // out
 	var _cret *C.PangoLayout // in
@@ -355,6 +416,12 @@ func (scale *Scale) Layout() *pango.Layout {
 // you need to convert to and from pixels using PANGO_PIXELS() or NGO_SCALE.
 //
 // If the Scale:draw-value property is FALSE, the return values are undefined.
+//
+// The function returns the following values:
+//
+//    - x (optional): location to store X offset of layout, or NULL.
+//    - y (optional): location to store Y offset of layout, or NULL.
+//
 func (scale *Scale) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gint      // in
@@ -375,6 +442,11 @@ func (scale *Scale) LayoutOffsets() (x int, y int) {
 }
 
 // ValuePos gets the position in which the current value is displayed.
+//
+// The function returns the following values:
+//
+//    - positionType: position in which the current value is displayed.
+//
 func (scale *Scale) ValuePos() PositionType {
 	var _arg0 *C.GtkScale       // out
 	var _cret C.GtkPositionType // in
@@ -403,8 +475,8 @@ func (scale *Scale) ValuePos() PositionType {
 //
 // The function takes the following parameters:
 //
-//    - digits: number of decimal places to display, e.g. use 1 to display 1.0,
-//    2 to display 1.00, etc.
+//    - digits: number of decimal places to display, e.g. use 1 to display 1.0, 2
+//      to display 1.00, etc.
 //
 func (scale *Scale) SetDigits(digits int) {
 	var _arg0 *C.GtkScale // out
@@ -477,26 +549,4 @@ func (scale *Scale) SetValuePos(pos PositionType) {
 	C.gtk_scale_set_value_pos(_arg0, _arg1)
 	runtime.KeepAlive(scale)
 	runtime.KeepAlive(pos)
-}
-
-// ConnectFormatValue: signal which allows you to change how the scale value is
-// displayed. Connect a signal handler which returns an allocated string
-// representing value. That string will then be used to display the scale's
-// value.
-//
-// If no user-provided handlers are installed, the value will be displayed on
-// its own, rounded according to the value of the Scale:digits property.
-//
-// Here's an example signal handler which displays a value 1.0 as with
-// "-->1.0<--".
-//
-//    static gchar*
-//    format_value_callback (GtkScale *scale,
-//                           gdouble   value)
-//    {
-//      return g_strdup_printf ("-->\0.*g<--",
-//                              gtk_scale_get_digits (scale), value);
-//     }.
-func (scale *Scale) ConnectFormatValue(f func(value float64) string) externglib.SignalHandle {
-	return scale.Connect("format-value", f)
 }

@@ -72,6 +72,11 @@ func marshalSettingsSchema(p uintptr) (interface{}, error) {
 }
 
 // ID: get the ID of schema.
+//
+// The function returns the following values:
+//
+//    - utf8: ID.
+//
 func (schema *SettingsSchema) ID() string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret *C.gchar           // in
@@ -92,6 +97,15 @@ func (schema *SettingsSchema) ID() string {
 //
 // It is a programmer error to request a key that does not exist. See
 // g_settings_schema_list_keys().
+//
+// The function takes the following parameters:
+//
+//    - name of a key.
+//
+// The function returns the following values:
+//
+//    - settingsSchemaKey for name.
+//
 func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	var _arg0 *C.GSettingsSchema    // out
 	var _arg1 *C.gchar              // out
@@ -127,6 +141,11 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 // Relocatable schemas can be referenced by other schemas and can therefore
 // describe multiple sets of keys at different locations. For relocatable
 // schemas, this function will return NULL.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): path of the schema, or NULL.
+//
 func (schema *SettingsSchema) Path() string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret *C.gchar           // in
@@ -146,6 +165,15 @@ func (schema *SettingsSchema) Path() string {
 }
 
 // HasKey checks if schema has a key named name.
+//
+// The function takes the following parameters:
+//
+//    - name of a key.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if such a key exists.
+//
 func (schema *SettingsSchema) HasKey(name string) bool {
 	var _arg0 *C.GSettingsSchema // out
 	var _arg1 *C.gchar           // out
@@ -171,6 +199,11 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 // ListChildren gets the list of children in schema.
 //
 // You should free the return value with g_strfreev() when you are done with it.
+//
+// The function returns the following values:
+//
+//    - utf8s: list of the children on settings, in no defined order.
+//
 func (schema *SettingsSchema) ListChildren() []string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret **C.gchar          // in
@@ -206,6 +239,11 @@ func (schema *SettingsSchema) ListChildren() []string {
 // You should probably not be calling this function from "normal" code (since
 // you should already know what keys are in your schema). This function is
 // intended for introspection reasons.
+//
+// The function returns the following values:
+//
+//    - utf8s: list of the keys on schema, in no defined order.
+//
 func (schema *SettingsSchema) ListKeys() []string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret **C.gchar          // in
@@ -258,6 +296,11 @@ func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 //
 // Note that this is the default value according to the schema. System
 // administrator defaults and lockdown are not visible via this API.
+//
+// The function returns the following values:
+//
+//    - variant: default value for the key.
+//
 func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GVariant           // in
@@ -292,6 +335,11 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 // This function is slow. The summary and description information for the
 // schemas is not stored in the compiled schema database so this function has to
 // parse all of the source XML files in the schema directory.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): description for key, or NULL.
+//
 func (key *SettingsSchemaKey) Description() string {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.gchar              // in
@@ -311,6 +359,11 @@ func (key *SettingsSchemaKey) Description() string {
 }
 
 // Name gets the name of key.
+//
+// The function returns the following values:
+//
+//    - utf8: name of key.
+//
 func (key *SettingsSchemaKey) Name() string {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.gchar              // in
@@ -361,6 +414,11 @@ func (key *SettingsSchemaKey) Name() string {
 //
 // You should free the returned value with g_variant_unref() when it is no
 // longer needed.
+//
+// The function returns the following values:
+//
+//    - variant describing the range.
+//
 func (key *SettingsSchemaKey) Range() *glib.Variant {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GVariant           // in
@@ -394,6 +452,11 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 // This function is slow. The summary and description information for the
 // schemas is not stored in the compiled schema database so this function has to
 // parse all of the source XML files in the schema directory.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): summary for key, or NULL.
+//
 func (key *SettingsSchemaKey) Summary() string {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.gchar              // in
@@ -413,6 +476,11 @@ func (key *SettingsSchemaKey) Summary() string {
 }
 
 // ValueType gets the Type of key.
+//
+// The function returns the following values:
+//
+//    - variantType: type of key.
+//
 func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GVariantType       // in
@@ -434,6 +502,15 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 //
 // It is a programmer error if value is not of the correct type -- you must
 // check for this first.
+//
+// The function takes the following parameters:
+//
+//    - value to check.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if value is valid for key.
+//
 func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _arg1 *C.GVariant           // out
@@ -523,6 +600,16 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 //
 // Do not call this function from normal programs. This is designed for use by
 // database editors, commandline tools, etc.
+//
+// The function takes the following parameters:
+//
+//    - recursive: if we should recurse.
+//
+// The function returns the following values:
+//
+//    - nonRelocatable: the list of non-relocatable schemas, in no defined order.
+//    - relocatable: list of relocatable schemas, in no defined order.
+//
 func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []string, relocatable []string) {
 	var _arg0 *C.GSettingsSchemaSource // out
 	var _arg1 C.gboolean               // out
@@ -585,6 +672,16 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 // parent sources will also be checked.
 //
 // If the schema isn't found, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - schemaId: schema ID.
+//    - recursive: TRUE if the lookup should be recursive.
+//
+// The function returns the following values:
+//
+//    - settingsSchema (optional): new Schema.
+//
 func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *SettingsSchema {
 	var _arg0 *C.GSettingsSchemaSource // out
 	var _arg1 *C.gchar                 // out
@@ -630,6 +727,11 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 // different directories, depending on which directories were given in
 // XDG_DATA_DIRS and GSETTINGS_SCHEMA_DIR. For this reason, all lookups
 // performed against the default source should probably be done recursively.
+//
+// The function returns the following values:
+//
+//    - settingsSchemaSource (optional): default schema source.
+//
 func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 	var _cret *C.GSettingsSchemaSource // in
 

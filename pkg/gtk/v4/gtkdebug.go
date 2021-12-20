@@ -16,6 +16,11 @@ import "C"
 //
 // This function is intended for GTK modules that want to adjust their debug
 // output based on GTK debug flags.
+//
+// The function returns the following values:
+//
+//    - debugFlags: GTK debug flags.
+//
 func GetDebugFlags() DebugFlags {
 	var _cret C.GtkDebugFlags // in
 

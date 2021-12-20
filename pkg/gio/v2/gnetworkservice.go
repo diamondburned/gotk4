@@ -62,6 +62,10 @@ func marshalNetworkServicer(p uintptr) (interface{}, error) {
 //    - protocol: networking protocol to use for service (eg, "tcp").
 //    - domain: DNS domain to look up the service in.
 //
+// The function returns the following values:
+//
+//    - networkService: new Service.
+//
 func NewNetworkService(service, protocol, domain string) *NetworkService {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -89,6 +93,11 @@ func NewNetworkService(service, protocol, domain string) *NetworkService {
 
 // Domain gets the domain that srv serves. This might be either UTF-8 or
 // ASCII-encoded, depending on what srv was created with.
+//
+// The function returns the following values:
+//
+//    - utf8 srv's domain name.
+//
 func (srv *NetworkService) Domain() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -106,6 +115,11 @@ func (srv *NetworkService) Domain() string {
 }
 
 // Protocol gets srv's protocol name (eg, "tcp").
+//
+// The function returns the following values:
+//
+//    - utf8 srv's protocol name.
+//
 func (srv *NetworkService) Protocol() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -124,6 +138,11 @@ func (srv *NetworkService) Protocol() string {
 
 // Scheme gets the URI scheme used to resolve proxies. By default, the service
 // name is used as scheme.
+//
+// The function returns the following values:
+//
+//    - utf8 srv's scheme name.
+//
 func (srv *NetworkService) Scheme() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -141,6 +160,11 @@ func (srv *NetworkService) Scheme() string {
 }
 
 // Service gets srv's service name (eg, "ldap").
+//
+// The function returns the following values:
+//
+//    - utf8 srv's service name.
+//
 func (srv *NetworkService) Service() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in

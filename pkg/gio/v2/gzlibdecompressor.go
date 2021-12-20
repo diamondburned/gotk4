@@ -52,6 +52,10 @@ func marshalZlibDecompressorrer(p uintptr) (interface{}, error) {
 //
 //    - format to use for the compressed data.
 //
+// The function returns the following values:
+//
+//    - zlibDecompressor: new Decompressor.
+//
 func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _cret *C.GZlibDecompressor    // in
@@ -73,6 +77,11 @@ func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
 // Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
 // header data was not fully processed yet, or it not present in the data stream
 // at all.
+//
+// The function returns the following values:
+//
+//    - fileInfo (optional) or NULL.
+//
 func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 	var _arg0 *C.GZlibDecompressor // out
 	var _cret *C.GFileInfo         // in

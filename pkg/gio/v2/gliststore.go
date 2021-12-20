@@ -60,6 +60,10 @@ func marshalListStorer(p uintptr) (interface{}, error) {
 //
 //    - itemType of items in the list.
 //
+// The function returns the following values:
+//
+//    - listStore: new Store.
+//
 func NewListStore(itemType externglib.Type) *ListStore {
 	var _arg1 C.GType       // out
 	var _cret *C.GListStore // in
@@ -109,6 +113,12 @@ func (store *ListStore) Append(item *externglib.Object) {
 // The function takes the following parameters:
 //
 //    - item: item.
+//
+// The function returns the following values:
+//
+//    - position (optional): first position of item, if it was found.
+//    - ok: whether store contains item. If it was found, position will be set to
+//      the position where item occurred for the first time.
 //
 func (store *ListStore) Find(item *externglib.Object) (uint, bool) {
 	var _arg0 *C.GListStore // out
@@ -176,6 +186,10 @@ func (store *ListStore) Insert(position uint, item *externglib.Object) {
 //
 //    - item: new item.
 //    - compareFunc: pairwise comparison function for sorting.
+//
+// The function returns the following values:
+//
+//    - guint: position at which item was inserted.
 //
 func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.CompareDataFunc) uint {
 	var _arg0 *C.GListStore      // out

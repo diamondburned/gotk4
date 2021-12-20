@@ -185,6 +185,11 @@ func marshalFileFilterer(p uintptr) (interface{}, error) {
 //
 //    GtkFileFilter *filter = gtk_file_filter_new ();
 //    gtk_file_filter_add_pattern (filter, "*");.
+//
+// The function returns the following values:
+//
+//    - fileFilter: new FileFilter.
+//
 func NewFileFilter() *FileFilter {
 	var _cret *C.GtkFileFilter // in
 
@@ -203,6 +208,10 @@ func NewFileFilter() *FileFilter {
 // The function takes the following parameters:
 //
 //    - variant: a{sv} #GVariant.
+//
+// The function returns the following values:
+//
+//    - fileFilter: new FileFilter object.
 //
 func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
@@ -228,9 +237,9 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 // The function takes the following parameters:
 //
 //    - needed: bitfield of flags indicating the information that the custom
-//    filter function needs.
+//      filter function needs.
 //    - fn: callback function; if the function returns TRUE, then the file will
-//    be displayed.
+//      be displayed.
 //
 func (filter *FileFilter) AddCustom(needed FileFilterFlags, fn FileFilterFunc) {
 	var _arg0 *C.GtkFileFilter     // out
@@ -311,6 +320,10 @@ func (filter *FileFilter) AddPixbufFormats() {
 //
 //    - filterInfo containing information about a file.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the file should be displayed.
+//
 func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	var _arg0 *C.GtkFileFilter     // out
 	var _arg1 *C.GtkFileFilterInfo // out
@@ -334,6 +347,12 @@ func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 
 // Name gets the human-readable name for the filter. See
 // gtk_file_filter_set_name().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): human-readable name of the filter, or NULL. This value
+//      is owned by GTK+ and must not be modified or freed.
+//
 func (filter *FileFilter) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.gchar         // in
@@ -357,6 +376,12 @@ func (filter *FileFilter) Name() string {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of FileChooser.
+//
+// The function returns the following values:
+//
+//    - fileFilterFlags: bitfield of flags indicating needed fields when calling
+//      gtk_file_filter_filter().
+//
 func (filter *FileFilter) Needed() FileFilterFlags {
 	var _arg0 *C.GtkFileFilter     // out
 	var _cret C.GtkFileFilterFlags // in
@@ -379,7 +404,7 @@ func (filter *FileFilter) Needed() FileFilterFlags {
 //
 // The function takes the following parameters:
 //
-//    - name for the filter, or NULL to remove any existing name.
+//    - name (optional) for the filter, or NULL to remove any existing name.
 //
 func (filter *FileFilter) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
@@ -397,6 +422,11 @@ func (filter *FileFilter) SetName(name string) {
 }
 
 // ToGVariant: serialize a file filter to an a{sv} variant.
+//
+// The function returns the following values:
+//
+//    - variant: new, floating, #GVariant.
+//
 func (filter *FileFilter) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in

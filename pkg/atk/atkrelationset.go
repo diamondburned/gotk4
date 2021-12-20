@@ -47,6 +47,11 @@ func marshalRelationSetter(p uintptr) (interface{}, error) {
 }
 
 // NewRelationSet creates a new empty relation set.
+//
+// The function returns the following values:
+//
+//    - relationSet: new RelationSet.
+//
 func NewRelationSet() *RelationSet {
 	var _cret *C.AtkRelationSet // in
 
@@ -112,6 +117,11 @@ func (set *RelationSet) AddRelationByType(relationship RelationType, target *Obj
 //
 //    - relationship: RelationType.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if relationship is the relationship type of a relation in set,
+//      FALSE otherwise.
+//
 func (set *RelationSet) Contains(relationship RelationType) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -141,6 +151,11 @@ func (set *RelationSet) Contains(relationship RelationType) bool {
 //    - relationship: RelationType.
 //    - target: Object.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if set contains a relation with the relationship type
+//      relationship with an object target, FALSE otherwise.
+//
 func (set *RelationSet) ContainsTarget(relationship RelationType, target *ObjectClass) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -166,6 +181,11 @@ func (set *RelationSet) ContainsTarget(relationship RelationType, target *Object
 }
 
 // NRelations determines the number of relations in a relation set.
+//
+// The function returns the following values:
+//
+//    - gint: integer representing the number of relations in the set.
+//
 func (set *RelationSet) NRelations() int {
 	var _arg0 *C.AtkRelationSet // out
 	var _cret C.gint            // in
@@ -188,6 +208,10 @@ func (set *RelationSet) NRelations() int {
 // The function takes the following parameters:
 //
 //    - i: gint representing a position in the set, starting from 0.
+//
+// The function returns the following values:
+//
+//    - relation which is the relation at position i in the set.
 //
 func (set *RelationSet) Relation(i int) *Relation {
 	var _arg0 *C.AtkRelationSet // out
@@ -213,6 +237,10 @@ func (set *RelationSet) Relation(i int) *Relation {
 // The function takes the following parameters:
 //
 //    - relationship: RelationType.
+//
+// The function returns the following values:
+//
+//    - relation which is a relation matching the specified type.
 //
 func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 	var _arg0 *C.AtkRelationSet // out

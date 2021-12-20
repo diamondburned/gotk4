@@ -48,8 +48,17 @@ func _gotk4_gtk3_TextTagTableForEach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TextTagTableOverrider interface {
+	// The function takes the following parameters:
+	//
 	TagAdded(tag *TextTag)
+	// The function takes the following parameters:
+	//
+	//    - tag
+	//    - sizeChanged
+	//
 	TagChanged(tag *TextTag, sizeChanged bool)
+	// The function takes the following parameters:
+	//
 	TagRemoved(tag *TextTag)
 }
 
@@ -93,8 +102,25 @@ func marshalTextTagTabler(p uintptr) (interface{}, error) {
 	return wrapTextTagTable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (table *TextTagTable) ConnectTagAdded(f func(tag TextTag)) externglib.SignalHandle {
+	return table.Connect("tag-added", f)
+}
+
+func (table *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged bool)) externglib.SignalHandle {
+	return table.Connect("tag-changed", f)
+}
+
+func (table *TextTagTable) ConnectTagRemoved(f func(tag TextTag)) externglib.SignalHandle {
+	return table.Connect("tag-removed", f)
+}
+
 // NewTextTagTable creates a new TextTagTable. The table contains no tags by
 // default.
+//
+// The function returns the following values:
+//
+//    - textTagTable: new TextTagTable.
+//
 func NewTextTagTable() *TextTagTable {
 	var _cret *C.GtkTextTagTable // in
 
@@ -116,6 +142,10 @@ func NewTextTagTable() *TextTagTable {
 // The function takes the following parameters:
 //
 //    - tag: TextTag.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE on success.
 //
 func (table *TextTagTable) Add(tag *TextTag) bool {
 	var _arg0 *C.GtkTextTagTable // out
@@ -162,6 +192,11 @@ func (table *TextTagTable) ForEach(fn TextTagTableForEach) {
 }
 
 // Size returns the size of the table (number of tags).
+//
+// The function returns the following values:
+//
+//    - gint: number of tags in table.
+//
 func (table *TextTagTable) Size() int {
 	var _arg0 *C.GtkTextTagTable // out
 	var _cret C.gint             // in
@@ -183,6 +218,10 @@ func (table *TextTagTable) Size() int {
 // The function takes the following parameters:
 //
 //    - name of a tag.
+//
+// The function returns the following values:
+//
+//    - textTag (optional): tag, or NULL if none by that name is in the table.
 //
 func (table *TextTagTable) Lookup(name string) *TextTag {
 	var _arg0 *C.GtkTextTagTable // out
@@ -224,16 +263,4 @@ func (table *TextTagTable) Remove(tag *TextTag) {
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(tag)
-}
-
-func (table *TextTagTable) ConnectTagAdded(f func(tag TextTag)) externglib.SignalHandle {
-	return table.Connect("tag-added", f)
-}
-
-func (table *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged bool)) externglib.SignalHandle {
-	return table.Connect("tag-changed", f)
-}
-
-func (table *TextTagTable) ConnectTagRemoved(f func(tag TextTag)) externglib.SignalHandle {
-	return table.Connect("tag-removed", f)
 }

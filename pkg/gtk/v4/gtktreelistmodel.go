@@ -92,9 +92,13 @@ func marshalTreeListModeller(p uintptr) (interface{}, error) {
 //    - root: GListModel to use as root.
 //    - passthrough: TRUE to pass through items from the models.
 //    - autoexpand: TRUE to set the autoexpand property and expand the root
-//    model.
-//    - createFunc: function to call to create the GListModel for the children
-//    of an item.
+//      model.
+//    - createFunc: function to call to create the GListModel for the children of
+//      an item.
+//
+// The function returns the following values:
+//
+//    - treeListModel: newly created GtkTreeListModel.
 //
 func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
 	var _arg1 *C.GListModel                     // out
@@ -135,6 +139,11 @@ func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, creat
 //
 // This can be either rows added by changes to the underlying models or via
 // gtk.TreeListRow.SetExpanded().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the model is set to autoexpand.
+//
 func (self *TreeListModel) Autoexpand() bool {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret C.gboolean          // in
@@ -165,6 +174,10 @@ func (self *TreeListModel) Autoexpand() bool {
 //
 //    - position of the child to get.
 //
+// The function returns the following values:
+//
+//    - treeListRow (optional): child in position.
+//
 func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.guint             // out
@@ -187,6 +200,11 @@ func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 }
 
 // Model gets the root model that self was created with.
+//
+// The function returns the following values:
+//
+//    - listModel: root model.
+//
 func (self *TreeListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret *C.GListModel       // in
@@ -225,6 +243,11 @@ func (self *TreeListModel) Model() gio.ListModeller {
 // If TRUE, the values of the child models are passed through in their original
 // state. You then need to call gtk.TreeListModel.GetRow() to get the custom
 // GtkTreeListRows.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the model is passing through original row items.
+//
 func (self *TreeListModel) Passthrough() bool {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret C.gboolean          // in
@@ -261,6 +284,10 @@ func (self *TreeListModel) Passthrough() bool {
 // The function takes the following parameters:
 //
 //    - position of the row to fetch.
+//
+// The function returns the following values:
+//
+//    - treeListRow (optional): row item.
 //
 func (self *TreeListModel) Row(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
@@ -343,6 +370,10 @@ func marshalTreeListRower(p uintptr) (interface{}, error) {
 //
 //    - position of the child to get.
 //
+// The function returns the following values:
+//
+//    - treeListRow (optional): child in position.
+//
 func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListRow // out
 	var _arg1 C.guint           // out
@@ -370,6 +401,11 @@ func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 // This model is the model created by the gtk.TreeListModelCreateModelFunc and
 // contains the original items, no matter what value
 // gtk.TreeListModel:passthrough is set to.
+//
+// The function returns the following values:
+//
+//    - listModel (optional): model containing the children.
+//
 func (self *TreeListRow) Children() gio.ListModeller {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret *C.GListModel     // in
@@ -405,6 +441,11 @@ func (self *TreeListRow) Children() gio.ListModeller {
 // depth of 1 and so on.
 //
 // The depth of a row never changes until the row is destroyed.
+//
+// The function returns the following values:
+//
+//    - guint: depth of this row.
+//
 func (self *TreeListRow) Depth() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
@@ -422,6 +463,11 @@ func (self *TreeListRow) Depth() uint {
 }
 
 // Expanded gets if a row is currently expanded.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the row is expanded.
+//
 func (self *TreeListRow) Expanded() bool {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gboolean        // in
@@ -443,6 +489,11 @@ func (self *TreeListRow) Expanded() bool {
 // Item gets the item corresponding to this row,
 //
 // The value returned by this function never changes until the row is destroyed.
+//
+// The function returns the following values:
+//
+//    - object (optional): item of this row or NULL when the row was destroyed.
+//
 func (self *TreeListRow) Item() *externglib.Object {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gpointer        // in
@@ -466,6 +517,11 @@ func (self *TreeListRow) Item() *externglib.Object {
 // If self is a row corresponding to the root model, NULL is returned.
 //
 // The value returned by this function never changes until the row is destroyed.
+//
+// The function returns the following values:
+//
+//    - treeListRow (optional): parent of self.
+//
 func (self *TreeListRow) Parent() *TreeListRow {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret *C.GtkTreeListRow // in
@@ -486,6 +542,11 @@ func (self *TreeListRow) Parent() *TreeListRow {
 
 // Position returns the position in the GtkTreeListModel that self occupies at
 // the moment.
+//
+// The function returns the following values:
+//
+//    - guint: position in the model.
+//
 func (self *TreeListRow) Position() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
@@ -508,6 +569,11 @@ func (self *TreeListRow) Position() uint {
 // with gtk.TreeListRow.GetExpanded().
 //
 // If a row is expandable never changes until the row is destroyed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the row is expandable.
+//
 func (self *TreeListRow) IsExpandable() bool {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gboolean        // in

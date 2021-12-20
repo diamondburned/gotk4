@@ -29,6 +29,11 @@ func init() {
 // yet, so the interface currently has no use.
 type SocketConnectableOverrider interface {
 	// Enumerate creates a AddressEnumerator for connectable.
+	//
+	// The function returns the following values:
+	//
+	//    - socketAddressEnumerator: new AddressEnumerator.
+	//
 	Enumerate() SocketAddressEnumeratorrer
 	// ProxyEnumerate creates a AddressEnumerator for connectable that will
 	// return a Address for each of its addresses that you must connect to via a
@@ -36,6 +41,11 @@ type SocketConnectableOverrider interface {
 	//
 	// If connectable does not implement g_socket_connectable_proxy_enumerate(),
 	// this will fall back to calling g_socket_connectable_enumerate().
+	//
+	// The function returns the following values:
+	//
+	//    - socketAddressEnumerator: new AddressEnumerator.
+	//
 	ProxyEnumerate() SocketAddressEnumeratorrer
 	// String: format a Connectable as a string. This is a human-readable format
 	// for use in debugging output, and is not a stable serialization format. It
@@ -44,6 +54,11 @@ type SocketConnectableOverrider interface {
 	//
 	// If the Connectable implementation does not support string formatting, the
 	// implementation’s type name will be returned as a fallback.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: formatted string.
+	//
 	String() string
 }
 
@@ -136,6 +151,11 @@ func marshalSocketConnectabler(p uintptr) (interface{}, error) {
 }
 
 // Enumerate creates a AddressEnumerator for connectable.
+//
+// The function returns the following values:
+//
+//    - socketAddressEnumerator: new AddressEnumerator.
+//
 func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
@@ -170,6 +190,11 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 //
 // If connectable does not implement g_socket_connectable_proxy_enumerate(),
 // this will fall back to calling g_socket_connectable_enumerate().
+//
+// The function returns the following values:
+//
+//    - socketAddressEnumerator: new AddressEnumerator.
+//
 func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorrer {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
@@ -206,6 +231,11 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 //
 // If the Connectable implementation does not support string formatting, the
 // implementation’s type name will be returned as a fallback.
+//
+// The function returns the following values:
+//
+//    - utf8: formatted string.
+//
 func (connectable *SocketConnectable) String() string {
 	var _arg0 *C.GSocketConnectable // out
 	var _cret *C.gchar              // in

@@ -36,6 +36,12 @@ type EditableOverrider interface {
 	// are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start position.
+	//    - endPos: end position.
+	//
 	DeleteText(startPos, endPos int)
 	// DoDeleteText deletes a sequence of characters. The characters that are
 	// deleted are those characters at positions from start_pos up to, but not
@@ -43,6 +49,12 @@ type EditableOverrider interface {
 	// are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start position.
+	//    - endPos: end position.
+	//
 	DoDeleteText(startPos, endPos int)
 	// Chars retrieves a sequence of characters. The characters that are
 	// retrieved are those characters at positions from start_pos up to, but not
@@ -50,17 +62,42 @@ type EditableOverrider interface {
 	// are those characters from start_pos to the end of the text.
 	//
 	// Note that positions are specified in characters, not bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start of text.
+	//    - endPos: end of text.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: pointer to the contents of the widget as a string. This string
+	//      is allocated by the Editable implementation and should be freed by
+	//      the caller.
+	//
 	Chars(startPos, endPos int) string
 	// Position retrieves the current position of the cursor relative to the
 	// start of the content of the editable.
 	//
 	// Note that this position is in characters, not in bytes.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: cursor position.
+	//
 	Position() int
 	// SelectionBounds retrieves the selection bound of the editable. start_pos
 	// will be filled with the start of the selection and end_pos with end. If
 	// no text was selected both will be identical and FALSE will be returned.
 	//
 	// Note that positions are specified in characters, not bytes.
+	//
+	// The function returns the following values:
+	//
+	//    - startPos (optional): location to store the starting position, or
+	//      NULL.
+	//    - endPos (optional): location to store the end position, or NULL.
+	//    - ok: TRUE if an area is selected, FALSE otherwise.
+	//
 	SelectionBounds() (startPos int, endPos int, ok bool)
 	// SetPosition sets the cursor position in the editable to the given value.
 	//
@@ -69,6 +106,11 @@ type EditableOverrider interface {
 	// equal to the number of characters in the editable. A value of -1
 	// indicates that the position should be set after the last character of the
 	// editable. Note that position is in characters, not in bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position of the cursor.
+	//
 	SetPosition(position int)
 	// SetSelectionBounds selects a region of text. The characters that are
 	// selected are those characters at positions from start_pos up to, but not
@@ -76,6 +118,12 @@ type EditableOverrider interface {
 	// are those characters from start_pos to the end of the text.
 	//
 	// Note that positions are specified in characters, not bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start of region.
+	//    - endPos: end of region.
+	//
 	SetSelectionBounds(startPos, endPos int)
 }
 
@@ -167,6 +215,28 @@ func marshalEditabler(p uintptr) (interface{}, error) {
 	return wrapEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged signal is emitted at the end of a single user-visible
+// operation on the contents of the Editable.
+//
+// E.g., a paste operation that replaces the contents of the selection will
+// cause only one signal emission (even though it is implemented by first
+// deleting the selection, then inserting the new content, and may cause
+// multiple ::notify::text signals to be emitted).
+func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
+	return editable.Connect("changed", f)
+}
+
+// ConnectDeleteText: this signal is emitted when text is deleted from the
+// widget by the user. The default handler for this signal will normally be
+// responsible for deleting the text, so by connecting to this signal and then
+// stopping the signal with g_signal_stop_emission(), it is possible to modify
+// the range of deleted text, or prevent it from being deleted entirely. The
+// start_pos and end_pos parameters are interpreted as for
+// gtk_editable_delete_text().
+func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) externglib.SignalHandle {
+	return editable.Connect("delete-text", f)
+}
+
 // CopyClipboard copies the contents of the currently selected content in the
 // editable and puts it on the clipboard.
 func (editable *Editable) CopyClipboard() {
@@ -239,6 +309,12 @@ func (editable *Editable) DeleteText(startPos, endPos int) {
 //    - startPos: start of text.
 //    - endPos: end of text.
 //
+// The function returns the following values:
+//
+//    - utf8: pointer to the contents of the widget as a string. This string is
+//      allocated by the Editable implementation and should be freed by the
+//      caller.
+//
 func (editable *Editable) Chars(startPos, endPos int) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
@@ -264,6 +340,11 @@ func (editable *Editable) Chars(startPos, endPos int) string {
 
 // Editable retrieves whether editable is editable. See
 // gtk_editable_set_editable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if editable is editable.
+//
 func (editable *Editable) Editable() bool {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gboolean     // in
@@ -286,6 +367,11 @@ func (editable *Editable) Editable() bool {
 // of the content of the editable.
 //
 // Note that this position is in characters, not in bytes.
+//
+// The function returns the following values:
+//
+//    - gint: cursor position.
+//
 func (editable *Editable) Position() int {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gint         // in
@@ -307,6 +393,13 @@ func (editable *Editable) Position() int {
 // was selected both will be identical and FALSE will be returned.
 //
 // Note that positions are specified in characters, not bytes.
+//
+// The function returns the following values:
+//
+//    - startPos (optional): location to store the starting position, or NULL.
+//    - endPos (optional): location to store the end position, or NULL.
+//    - ok: TRUE if an area is selected, FALSE otherwise.
+//
 func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // in
@@ -412,26 +505,4 @@ func (editable *Editable) SetPosition(position int) {
 	C.gtk_editable_set_position(_arg0, _arg1)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(position)
-}
-
-// ConnectChanged signal is emitted at the end of a single user-visible
-// operation on the contents of the Editable.
-//
-// E.g., a paste operation that replaces the contents of the selection will
-// cause only one signal emission (even though it is implemented by first
-// deleting the selection, then inserting the new content, and may cause
-// multiple ::notify::text signals to be emitted).
-func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
-	return editable.Connect("changed", f)
-}
-
-// ConnectDeleteText: this signal is emitted when text is deleted from the
-// widget by the user. The default handler for this signal will normally be
-// responsible for deleting the text, so by connecting to this signal and then
-// stopping the signal with g_signal_stop_emission(), it is possible to modify
-// the range of deleted text, or prevent it from being deleted entirely. The
-// start_pos and end_pos parameters are interpreted as for
-// gtk_editable_delete_text().
-func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) externglib.SignalHandle {
-	return editable.Connect("delete-text", f)
 }

@@ -103,11 +103,27 @@ func marshalLinkButtonner(p uintptr) (interface{}, error) {
 	return wrapLinkButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivateLink: emitted each time the GtkLinkButton is clicked.
+//
+// The default handler will call gtk.ShowURI() with the URI stored inside the
+// gtk.LinkButton:uri property.
+//
+// To override the default behavior, you can connect to the ::activate-link
+// signal and stop the propagation of the signal by returning TRUE from your
+// handler.
+func (linkButton *LinkButton) ConnectActivateLink(f func() bool) externglib.SignalHandle {
+	return linkButton.Connect("activate-link", f)
+}
+
 // NewLinkButton creates a new GtkLinkButton with the URI as its text.
 //
 // The function takes the following parameters:
 //
 //    - uri: valid URI.
+//
+// The function returns the following values:
+//
+//    - linkButton: new link button widget.
 //
 func NewLinkButton(uri string) *LinkButton {
 	var _arg1 *C.char      // out
@@ -131,7 +147,11 @@ func NewLinkButton(uri string) *LinkButton {
 // The function takes the following parameters:
 //
 //    - uri: valid URI.
-//    - label: text of the button.
+//    - label (optional): text of the button.
+//
+// The function returns the following values:
+//
+//    - linkButton: new link button widget.
 //
 func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 	var _arg1 *C.char      // out
@@ -157,6 +177,12 @@ func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 }
 
 // URI retrieves the URI of the GtkLinkButton.
+//
+// The function returns the following values:
+//
+//    - utf8: valid URI. The returned string is owned by the link button and
+//      should not be modified or freed.
+//
 func (linkButton *LinkButton) URI() string {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret *C.char          // in
@@ -179,6 +205,11 @@ func (linkButton *LinkButton) URI() string {
 // button, the “visited” state is unset again.
 //
 // The state may also be changed using gtk.LinkButton.SetVisited().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the link has been visited, FALSE otherwise.
+//
 func (linkButton *LinkButton) Visited() bool {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret C.gboolean       // in
@@ -238,16 +269,4 @@ func (linkButton *LinkButton) SetVisited(visited bool) {
 	C.gtk_link_button_set_visited(_arg0, _arg1)
 	runtime.KeepAlive(linkButton)
 	runtime.KeepAlive(visited)
-}
-
-// ConnectActivateLink: emitted each time the GtkLinkButton is clicked.
-//
-// The default handler will call gtk.ShowURI() with the URI stored inside the
-// gtk.LinkButton:uri property.
-//
-// To override the default behavior, you can connect to the ::activate-link
-// signal and stop the propagation of the signal by returning TRUE from your
-// handler.
-func (linkButton *LinkButton) ConnectActivateLink(f func() bool) externglib.SignalHandle {
-	return linkButton.Connect("activate-link", f)
 }

@@ -31,6 +31,10 @@ func init() {
 // yet, so the interface currently has no use.
 type SwitchOverrider interface {
 	Activate()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	StateSet(state bool) bool
 }
 
@@ -99,7 +103,35 @@ func marshalSwitcher(p uintptr) (interface{}, error) {
 	return wrapSwitch(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate signal on GtkSwitch is an action signal and emitting it
+// causes the switch to animate. Applications should never connect to this
+// signal, but use the notify::active signal.
+func (sw *Switch) ConnectActivate(f func()) externglib.SignalHandle {
+	return sw.Connect("activate", f)
+}
+
+// ConnectStateSet signal on GtkSwitch is emitted to change the underlying
+// state. It is emitted when the user changes the switch position. The default
+// handler keeps the state in sync with the Switch:active property.
+//
+// To implement delayed state change, applications can connect to this signal,
+// initiate the change of the underlying state, and call gtk_switch_set_state()
+// when the underlying state change is complete. The signal handler should
+// return TRUE to prevent the default handler from running.
+//
+// Visually, the underlying state is represented by the trough color of the
+// switch, while the Switch:active property is represented by the position of
+// the switch.
+func (sw *Switch) ConnectStateSet(f func(state bool) bool) externglib.SignalHandle {
+	return sw.Connect("state-set", f)
+}
+
 // NewSwitch creates a new Switch widget.
+//
+// The function returns the following values:
+//
+//    - _switch: newly created Switch instance.
+//
 func NewSwitch() *Switch {
 	var _cret *C.GtkWidget // in
 
@@ -113,6 +145,11 @@ func NewSwitch() *Switch {
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the Switch is active, and FALSE otherwise.
+//
 func (sw *Switch) Active() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
@@ -132,6 +169,11 @@ func (sw *Switch) Active() bool {
 }
 
 // State gets the underlying state of the Switch.
+//
+// The function returns the following values:
+//
+//    - ok: underlying state.
+//
 func (sw *Switch) State() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
@@ -194,27 +236,4 @@ func (sw *Switch) SetState(state bool) {
 	C.gtk_switch_set_state(_arg0, _arg1)
 	runtime.KeepAlive(sw)
 	runtime.KeepAlive(state)
-}
-
-// ConnectActivate signal on GtkSwitch is an action signal and emitting it
-// causes the switch to animate. Applications should never connect to this
-// signal, but use the notify::active signal.
-func (sw *Switch) ConnectActivate(f func()) externglib.SignalHandle {
-	return sw.Connect("activate", f)
-}
-
-// ConnectStateSet signal on GtkSwitch is emitted to change the underlying
-// state. It is emitted when the user changes the switch position. The default
-// handler keeps the state in sync with the Switch:active property.
-//
-// To implement delayed state change, applications can connect to this signal,
-// initiate the change of the underlying state, and call gtk_switch_set_state()
-// when the underlying state change is complete. The signal handler should
-// return TRUE to prevent the default handler from running.
-//
-// Visually, the underlying state is represented by the trough color of the
-// switch, while the Switch:active property is represented by the position of
-// the switch.
-func (sw *Switch) ConnectStateSet(f func(state bool) bool) externglib.SignalHandle {
-	return sw.Connect("state-set", f)
 }

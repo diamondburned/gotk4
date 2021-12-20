@@ -115,6 +115,10 @@ func marshalDevicePadder(p uintptr) (interface{}, error) {
 //    - feature type to get the group from.
 //    - featureIdx: index of the feature to get the group from.
 //
+// The function returns the following values:
+//
+//    - gint: group number of the queried pad feature.
+//
 func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 	var _arg0 *C.GdkDevicePad       // out
 	var _arg1 C.GdkDevicePadFeature // out
@@ -143,6 +147,10 @@ func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int
 //
 //    - groupIdx: group to get the number of available modes from.
 //
+// The function returns the following values:
+//
+//    - gint: number of modes available in group.
+//
 func (pad *DevicePad) GroupNModes(groupIdx int) int {
 	var _arg0 *C.GdkDevicePad // out
 	var _arg1 C.gint          // out
@@ -168,6 +176,10 @@ func (pad *DevicePad) GroupNModes(groupIdx int) int {
 //
 //    - feature: pad feature.
 //
+// The function returns the following values:
+//
+//    - gint: amount of elements of type feature that this pad has.
+//
 func (pad *DevicePad) NFeatures(feature DevicePadFeature) int {
 	var _arg0 *C.GdkDevicePad       // out
 	var _arg1 C.GdkDevicePadFeature // out
@@ -190,6 +202,11 @@ func (pad *DevicePad) NFeatures(feature DevicePadFeature) int {
 // NGroups returns the number of groups this pad device has. Pads have at least
 // one group. A pad group is a subcollection of buttons/strip/rings that is
 // affected collectively by a same current mode.
+//
+// The function returns the following values:
+//
+//    - gint: number of button/ring/strip groups in the pad.
+//
 func (pad *DevicePad) NGroups() int {
 	var _arg0 *C.GdkDevicePad // out
 	var _cret C.gint          // in

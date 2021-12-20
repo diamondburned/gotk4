@@ -66,6 +66,11 @@ func NewToplevelLayout() *ToplevelLayout {
 }
 
 // Copy: create a new ToplevelLayout and copy the contents of layout into it.
+//
+// The function returns the following values:
+//
+//    - toplevelLayout: copy of layout.
+//
 func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
@@ -89,6 +94,16 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 }
 
 // Equal: check whether layout and other has identical layout properties.
+//
+// The function takes the following parameters:
+//
+//    - other ToplevelLayout.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if layout and other have identical layout properties, otherwise
+//      FALSE.
+//
 func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 *C.GdkToplevelLayout // out
@@ -113,6 +128,12 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 // Fullscreen: if the layout specifies whether to the toplevel should go
 // fullscreen, the value pointed to by fullscreen is set to TRUE if it should go
 // fullscreen, or FALSE, if it should go unfullscreen.
+//
+// The function returns the following values:
+//
+//    - fullscreen: location to store whether the toplevel should be fullscreen.
+//    - ok: whether the layout specifies the fullscreen state for the toplevel.
+//
 func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // in
@@ -138,6 +159,11 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 
 // FullscreenMonitor returns the monitor that the layout is fullscreening the
 // surface on.
+//
+// The function returns the following values:
+//
+//    - monitor (optional) on which layout fullscreens.
+//
 func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkMonitor        // in
@@ -159,6 +185,12 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 // Maximized: if the layout specifies whether to the toplevel should go
 // maximized, the value pointed to by maximized is set to TRUE if it should go
 // fullscreen, or FALSE, if it should go unmaximized.
+//
+// The function returns the following values:
+//
+//    - maximized: set to TRUE if the toplevel should be maximized.
+//    - ok: whether the layout specifies the maximized state for the toplevel.
+//
 func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // in
@@ -184,6 +216,11 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 
 // Resizable returns whether the layout should allow the user to resize the
 // surface.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the layout is resizable.
+//
 func (layout *ToplevelLayout) Resizable() bool {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret C.gboolean           // in
@@ -204,6 +241,12 @@ func (layout *ToplevelLayout) Resizable() bool {
 
 // SetFullscreen sets whether the layout should cause the surface to be
 // fullscreen when presented.
+//
+// The function takes the following parameters:
+//
+//    - fullscreen: TRUE to fullscreen the surface.
+//    - monitor (optional) to fullscreen on.
+//
 func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
@@ -225,6 +268,11 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 
 // SetMaximized sets whether the layout should cause the surface to be maximized
 // when presented.
+//
+// The function takes the following parameters:
+//
+//    - maximized: TRUE to maximize.
+//
 func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
@@ -241,6 +289,11 @@ func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 
 // SetResizable sets whether the layout should allow the user to resize the
 // surface after it has been presented.
+//
+// The function takes the following parameters:
+//
+//    - resizable: TRUE to allow resizing.
+//
 func (layout *ToplevelLayout) SetResizable(resizable bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out

@@ -57,6 +57,10 @@ func marshalEmblemmer(p uintptr) (interface{}, error) {
 //
 //    - icon: GIcon containing the icon.
 //
+// The function returns the following values:
+//
+//    - emblem: new #GEmblem.
+//
 func NewEmblem(icon Iconner) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
@@ -80,6 +84,10 @@ func NewEmblem(icon Iconner) *Emblem {
 //    - icon: GIcon containing the icon.
 //    - origin: GEmblemOrigin enum defining the emblem's origin.
 //
+// The function returns the following values:
+//
+//    - emblem: new #GEmblem.
+//
 func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 	var _arg1 *C.GIcon        // out
 	var _arg2 C.GEmblemOrigin // out
@@ -100,6 +108,12 @@ func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 }
 
 // GetIcon gives back the icon from emblem.
+//
+// The function returns the following values:
+//
+//    - icon The returned object belongs to the emblem and should not be modified
+//      or freed.
+//
 func (emblem *Emblem) GetIcon() Iconner {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
@@ -130,6 +144,11 @@ func (emblem *Emblem) GetIcon() Iconner {
 }
 
 // Origin gets the origin of the emblem.
+//
+// The function returns the following values:
+//
+//    - emblemOrigin: origin of the emblem.
+//
 func (emblem *Emblem) Origin() EmblemOrigin {
 	var _arg0 *C.GEmblem      // out
 	var _cret C.GEmblemOrigin // in

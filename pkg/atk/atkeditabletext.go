@@ -29,17 +29,54 @@ func init() {
 type EditableTextOverrider interface {
 	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start position.
+	//    - endPos: end position.
+	//
 	CopyText(startPos, endPos int)
 	// CutText: copy text from start_pos up to, but not including end_pos to the
 	// clipboard and then delete from the widget.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start position.
+	//    - endPos: end position.
+	//
 	CutText(startPos, endPos int)
 	// DeleteText: delete text start_pos up to, but not including end_pos.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startPos: start position.
+	//    - endPos: end position.
+	//
 	DeleteText(startPos, endPos int)
 	// InsertText: insert text at a given position.
+	//
+	// The function takes the following parameters:
+	//
+	//    - str: text to insert.
+	//    - length of text to insert, in bytes.
+	//    - position: caller initializes this to the position at which to insert
+	//      the text. After the call it points at the position after the newly
+	//      inserted text.
+	//
 	InsertText(str string, length int, position *int)
 	// PasteText: paste text from clipboard to specified position.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position to paste.
+	//
 	PasteText(position int)
 	// SetTextContents: set text contents of text.
+	//
+	// The function takes the following parameters:
+	//
+	//    - str: string to set for text contents of text.
+	//
 	SetTextContents(str string)
 }
 
@@ -165,9 +202,9 @@ func (text *EditableText) DeleteText(startPos, endPos int) {
 //
 //    - str: text to insert.
 //    - length of text to insert, in bytes.
-//    - position: caller initializes this to the position at which to insert
-//    the text. After the call it points at the position after the newly
-//    inserted text.
+//    - position: caller initializes this to the position at which to insert the
+//      text. After the call it points at the position after the newly inserted
+//      text.
 //
 func (text *EditableText) InsertText(str string, length int, position *int) {
 	var _arg0 *C.AtkEditableText // out

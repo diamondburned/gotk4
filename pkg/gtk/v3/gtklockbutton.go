@@ -115,7 +115,11 @@ func marshalLockButtonner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - permission: #GPermission.
+//    - permission (optional): #GPermission.
+//
+// The function returns the following values:
+//
+//    - lockButton: new LockButton.
 //
 func NewLockButton(permission gio.Permissioner) *LockButton {
 	var _arg1 *C.GPermission // out
@@ -136,6 +140,11 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 }
 
 // Permission obtains the #GPermission object that controls button.
+//
+// The function returns the following values:
+//
+//    - permission of button.
+//
 func (button *LockButton) Permission() gio.Permissioner {
 	var _arg0 *C.GtkLockButton // out
 	var _cret *C.GPermission   // in
@@ -169,7 +178,7 @@ func (button *LockButton) Permission() gio.Permissioner {
 //
 // The function takes the following parameters:
 //
-//    - permission object, or NULL.
+//    - permission (optional) object, or NULL.
 //
 func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	var _arg0 *C.GtkLockButton // out

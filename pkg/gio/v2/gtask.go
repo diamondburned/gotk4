@@ -230,9 +230,13 @@ func marshalTasker(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - sourceObject that owns this task, or NULL.
-//    - callback: ReadyCallback.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - sourceObject (optional) that owns this task, or NULL.
+//    - callback (optional): ReadyCallback.
+//
+// The function returns the following values:
+//
+//    - task: #GTask.
 //
 func NewTask(ctx context.Context, sourceObject *externglib.Object, callback AsyncReadyCallback) *Task {
 	var _arg2 *C.GCancellable       // out
@@ -265,6 +269,11 @@ func NewTask(ctx context.Context, sourceObject *externglib.Object, callback Asyn
 }
 
 // Cancellable gets task's #GCancellable.
+//
+// The function returns the following values:
+//
+//    - cancellable task's #GCancellable.
+//
 func (task *Task) Cancellable() *Cancellable {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GCancellable // in
@@ -283,6 +292,9 @@ func (task *Task) Cancellable() *Cancellable {
 
 // CheckCancellable gets task's check-cancellable flag. See
 // g_task_set_check_cancellable() for more details.
+//
+// The function returns the following values:
+//
 func (task *Task) CheckCancellable() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -304,6 +316,11 @@ func (task *Task) CheckCancellable() bool {
 // Completed gets the value of #GTask:completed. This changes from FALSE to TRUE
 // after the task’s callback is invoked, and will return FALSE if called from
 // inside the callback.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the task has completed, FALSE otherwise.
+//
 func (task *Task) Completed() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -329,6 +346,11 @@ func (task *Task) Completed() bool {
 //
 // This will always return a non-NULL value, even if the task's context is the
 // default Context.
+//
+// The function returns the following values:
+//
+//    - mainContext task's Context.
+//
 func (task *Task) Context() *glib.MainContext {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GMainContext // in
@@ -353,6 +375,11 @@ func (task *Task) Context() *glib.MainContext {
 }
 
 // Name gets task’s name. See g_task_set_name().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) task’s name, or NULL.
+//
 func (task *Task) Name() string {
 	var _arg0 *C.GTask // out
 	var _cret *C.gchar // in
@@ -372,6 +399,11 @@ func (task *Task) Name() string {
 }
 
 // Priority gets task's priority.
+//
+// The function returns the following values:
+//
+//    - gint task's priority.
+//
 func (task *Task) Priority() int {
 	var _arg0 *C.GTask // out
 	var _cret C.gint   // in
@@ -390,6 +422,9 @@ func (task *Task) Priority() int {
 
 // ReturnOnCancel gets task's return-on-cancel flag. See
 // g_task_set_return_on_cancel() for more details.
+//
+// The function returns the following values:
+//
 func (task *Task) ReturnOnCancel() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -410,6 +445,11 @@ func (task *Task) ReturnOnCancel() bool {
 
 // SourceObject gets the source object from task. Like
 // g_async_result_get_source_object(), but does not ref the object.
+//
+// The function returns the following values:
+//
+//    - object (optional) task's source object, or NULL.
+//
 func (task *Task) SourceObject() *externglib.Object {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
@@ -427,6 +467,11 @@ func (task *Task) SourceObject() *externglib.Object {
 }
 
 // SourceTag gets task's source tag. See g_task_set_source_tag().
+//
+// The function returns the following values:
+//
+//    - gpointer (optional) task's source tag.
+//
 func (task *Task) SourceTag() cgo.Handle {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
@@ -444,6 +489,11 @@ func (task *Task) SourceTag() cgo.Handle {
 }
 
 // TaskData gets task's task_data.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional) task's task_data.
+//
 func (task *Task) TaskData() cgo.Handle {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
@@ -461,6 +511,11 @@ func (task *Task) TaskData() cgo.Handle {
 }
 
 // HadError tests if task resulted in an error.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the task resulted in an error, FALSE otherwise.
+//
 func (task *Task) HadError() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -511,6 +566,11 @@ func (task *Task) PropagateBoolean() error {
 //
 // Since this method transfers ownership of the return value (or error) to the
 // caller, you may only call it once.
+//
+// The function returns the following values:
+//
+//    - gssize: task result, or -1 on error.
+//
 func (task *Task) PropagateInt() (int, error) {
 	var _arg0 *C.GTask  // out
 	var _cret C.gssize  // in
@@ -540,6 +600,11 @@ func (task *Task) PropagateInt() (int, error) {
 //
 // Since this method transfers ownership of the return value (or error) to the
 // caller, you may only call it once.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): task result, or NULL on error.
+//
 func (task *Task) PropagatePointer() (cgo.Handle, error) {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
@@ -571,6 +636,11 @@ func (task *Task) PropagatePointer() (cgo.Handle, error) {
 //
 // Since this method transfers ownership of the return value (or error) to the
 // caller, you may only call it once.
+//
+// The function returns the following values:
+//
+//    - value: return location for the #GValue.
+//
 func (task *Task) PropagateValue() (externglib.Value, error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 C.GValue  // in
@@ -643,6 +713,11 @@ func (task *Task) ReturnError(err error) {
 // ReturnErrorIfCancelled checks if task's #GCancellable has been cancelled, and
 // if so, sets task's error accordingly and completes the task (see
 // g_task_return_pointer() for more discussion of exactly what this means).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if task has been cancelled, FALSE if not.
+//
 func (task *Task) ReturnErrorIfCancelled() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -692,7 +767,7 @@ func (task *Task) ReturnInt(result int) {
 //
 // The function takes the following parameters:
 //
-//    - result result of a task function.
+//    - result (optional) result of a task function.
 //
 func (task *Task) ReturnValue(result *externglib.Value) {
 	var _arg0 *C.GTask  // out
@@ -725,7 +800,7 @@ func (task *Task) ReturnValue(result *externglib.Value) {
 // The function takes the following parameters:
 //
 //    - checkCancellable: whether #GTask will check the state of its
-//    #GCancellable for you.
+//      #GCancellable for you.
 //
 func (task *Task) SetCheckCancellable(checkCancellable bool) {
 	var _arg0 *C.GTask   // out
@@ -753,7 +828,7 @@ func (task *Task) SetCheckCancellable(checkCancellable bool) {
 //
 // The function takes the following parameters:
 //
-//    - name: human readable name for the task, or NULL to unset it.
+//    - name (optional): human readable name for the task, or NULL to unset it.
 //
 func (task *Task) SetName(name string) {
 	var _arg0 *C.GTask // out
@@ -822,7 +897,12 @@ func (task *Task) SetPriority(priority int) {
 // The function takes the following parameters:
 //
 //    - returnOnCancel: whether the task returns automatically when it is
-//    cancelled.
+//      cancelled.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if task's return-on-cancel flag was changed to match
+//      return_on_cancel. FALSE if task has already been cancelled.
 //
 func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 	var _arg0 *C.GTask   // out
@@ -855,7 +935,7 @@ func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - sourceTag: opaque pointer indicating the source of this task.
+//    - sourceTag (optional): opaque pointer indicating the source of this task.
 //
 func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 	var _arg0 *C.GTask   // out
@@ -876,7 +956,12 @@ func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 // The function takes the following parameters:
 //
 //    - result: Result.
-//    - sourceObject: source object expected to be associated with the task.
+//    - sourceObject (optional): source object expected to be associated with the
+//      task.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if result and source_object are valid, FALSE if not.
 //
 func TaskIsValid(result AsyncResulter, sourceObject *externglib.Object) bool {
 	var _arg1 C.gpointer // out
@@ -910,9 +995,9 @@ func TaskIsValid(result AsyncResulter, sourceObject *externglib.Object) bool {
 //
 // The function takes the following parameters:
 //
-//    - sourceObject that owns this task, or NULL.
-//    - callback: ReadyCallback.
-//    - sourceTag: opaque pointer indicating the source of this task.
+//    - sourceObject (optional) that owns this task, or NULL.
+//    - callback (optional): ReadyCallback.
+//    - sourceTag (optional): opaque pointer indicating the source of this task.
 //    - err: error to report.
 //
 func TaskReportError(sourceObject *externglib.Object, callback AsyncReadyCallback, sourceTag cgo.Handle, err error) {

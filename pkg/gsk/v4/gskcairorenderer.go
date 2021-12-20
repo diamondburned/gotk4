@@ -51,6 +51,11 @@ func marshalCairoRendererer(p uintptr) (interface{}, error) {
 //
 // The Cairo renderer is incomplete. It cannot render 3D transformed content and
 // will instead render an error marker. Its usage should be avoided.
+//
+// The function returns the following values:
+//
+//    - cairoRenderer: new Cairo renderer.
+//
 func NewCairoRenderer() *CairoRenderer {
 	var _cret *C.GskRenderer // in
 

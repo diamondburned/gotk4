@@ -52,20 +52,6 @@ func marshalGestureClicker(p uintptr) (interface{}, error) {
 	return wrapGestureClick(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewGestureClick returns a newly created GtkGesture that recognizes single and
-// multiple presses.
-func NewGestureClick() *GestureClick {
-	var _cret *C.GtkGesture // in
-
-	_cret = C.gtk_gesture_click_new()
-
-	var _gestureClick *GestureClick // out
-
-	_gestureClick = wrapGestureClick(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _gestureClick
-}
-
 // ConnectPressed: emitted whenever a button or touch press happens.
 func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
 	return v.Connect("pressed", f)
@@ -94,4 +80,23 @@ func (v *GestureClick) ConnectStopped(f func()) externglib.SignalHandle {
 // its implicit grab.
 func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint, sequence *gdk.EventSequence)) externglib.SignalHandle {
 	return v.Connect("unpaired-release", f)
+}
+
+// NewGestureClick returns a newly created GtkGesture that recognizes single and
+// multiple presses.
+//
+// The function returns the following values:
+//
+//    - gestureClick: newly created GtkGestureClick.
+//
+func NewGestureClick() *GestureClick {
+	var _cret *C.GtkGesture // in
+
+	_cret = C.gtk_gesture_click_new()
+
+	var _gestureClick *GestureClick // out
+
+	_gestureClick = wrapGestureClick(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _gestureClick
 }

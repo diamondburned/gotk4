@@ -162,7 +162,20 @@ func marshalTreeSelectioner(p uintptr) (interface{}, error) {
 	return wrapTreeSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged: emitted whenever the selection has (possibly) changed. Please
+// note that this signal is mostly a hint. It may only be emitted once when a
+// range of rows are selected, and it may occasionally be emitted when nothing
+// has happened.
+func (selection *TreeSelection) ConnectChanged(f func()) externglib.SignalHandle {
+	return selection.Connect("changed", f)
+}
+
 // CountSelectedRows returns the number of rows that have been selected in tree.
+//
+// The function returns the following values:
+//
+//    - gint: number of rows selected.
+//
 func (selection *TreeSelection) CountSelectedRows() int {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret C.gint              // in
@@ -181,6 +194,11 @@ func (selection *TreeSelection) CountSelectedRows() int {
 
 // Mode gets the selection mode for selection. See
 // gtk_tree_selection_set_mode().
+//
+// The function returns the following values:
+//
+//    - selectionMode: current selection mode.
+//
 func (selection *TreeSelection) Mode() SelectionMode {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret C.GtkSelectionMode  // in
@@ -202,6 +220,13 @@ func (selection *TreeSelection) Mode() SelectionMode {
 // to test if selection has any selected nodes. model is filled with the current
 // model as a convenience. This function will not work if you use selection is
 // K_SELECTION_MULTIPLE.
+//
+// The function returns the following values:
+//
+//    - model (optional): pointer to set to the TreeModel, or NULL.
+//    - iter (optional) or NULL.
+//    - ok: TRUE, if there is a selected node.
+//
 func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
@@ -246,6 +271,12 @@ func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);.
+//
+// The function returns the following values:
+//
+//    - model (optional): pointer to set to the TreeModel, or NULL.
+//    - list containing a TreePath for each selected row.
+//
 func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
@@ -290,6 +321,11 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 }
 
 // TreeView returns the tree view associated with selection.
+//
+// The function returns the following values:
+//
+//    - treeView: TreeView.
+//
 func (selection *TreeSelection) TreeView() *TreeView {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret *C.GtkTreeView      // in
@@ -311,6 +347,10 @@ func (selection *TreeSelection) TreeView() *TreeView {
 // The function takes the following parameters:
 //
 //    - iter: valid TreeIter.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE, if iter is selected.
 //
 func (selection *TreeSelection) IterIsSelected(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeSelection // out
@@ -339,6 +379,10 @@ func (selection *TreeSelection) IterIsSelected(iter *TreeIter) bool {
 // The function takes the following parameters:
 //
 //    - path to check selection on.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if path is selected.
 //
 func (selection *TreeSelection) PathIsSelected(path *TreePath) bool {
 	var _arg0 *C.GtkTreeSelection // out
@@ -483,7 +527,7 @@ func (selection *TreeSelection) SetMode(typ SelectionMode) {
 //
 // The function takes the following parameters:
 //
-//    - fn: selection function. May be NULL.
+//    - fn (optional): selection function. May be NULL.
 //
 func (selection *TreeSelection) SetSelectFunction(fn TreeSelectionFunc) {
 	var _arg0 *C.GtkTreeSelection    // out
@@ -570,12 +614,4 @@ func (selection *TreeSelection) UnselectRange(startPath, endPath *TreePath) {
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(startPath)
 	runtime.KeepAlive(endPath)
-}
-
-// ConnectChanged: emitted whenever the selection has (possibly) changed. Please
-// note that this signal is mostly a hint. It may only be emitted once when a
-// range of rows are selected, and it may occasionally be emitted when nothing
-// has happened.
-func (selection *TreeSelection) ConnectChanged(f func()) externglib.SignalHandle {
-	return selection.Connect("changed", f)
 }

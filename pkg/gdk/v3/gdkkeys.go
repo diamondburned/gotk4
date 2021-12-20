@@ -31,6 +31,11 @@ func init() {
 //
 //    - symbol: keyval.
 //
+// The function returns the following values:
+//
+//    - lower: return location for lowercase version of symbol.
+//    - upper: return location for uppercase version of symbol.
+//
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	var _arg1 C.guint // out
 	var _arg2 C.guint // in
@@ -59,6 +64,11 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 //
 //    - keyvalName: key name.
 //
+// The function returns the following values:
+//
+//    - guint: corresponding key value, or GDK_KEY_VoidSymbol if the key name is
+//      not a valid key.
+//
 func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.gchar // out
 	var _cret C.guint  // in
@@ -81,6 +91,11 @@ func KeyvalFromName(keyvalName string) uint {
 // The function takes the following parameters:
 //
 //    - keyval: key value.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if keyval is in lower case, or if keyval is not subject to case
+//      conversion.
 //
 func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
@@ -105,6 +120,11 @@ func KeyvalIsLower(keyval uint) bool {
 // The function takes the following parameters:
 //
 //    - keyval: key value.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if keyval is in upper case, or if keyval is not subject to case
+//      conversion.
 //
 func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
@@ -133,6 +153,11 @@ func KeyvalIsUpper(keyval uint) bool {
 //
 //    - keyval: key value.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): string containing the name of the key, or NULL if keyval
+//      is not a valid key. The string should not be modified.
+//
 func KeyvalName(keyval uint) string {
 	var _arg1 C.guint  // out
 	var _cret *C.gchar // in
@@ -157,6 +182,11 @@ func KeyvalName(keyval uint) string {
 //
 //    - keyval: key value.
 //
+// The function returns the following values:
+//
+//    - guint: lower case form of keyval, or keyval itself if it is already in
+//      lower case or it is not subject to case conversion.
+//
 func KeyvalToLower(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
@@ -180,6 +210,11 @@ func KeyvalToLower(keyval uint) uint {
 //
 //    - keyval: GDK key symbol.
 //
+// The function returns the following values:
+//
+//    - guint32: corresponding unicode character, or 0 if there is no
+//      corresponding character.
+//
 func KeyvalToUnicode(keyval uint) uint32 {
 	var _arg1 C.guint   // out
 	var _cret C.guint32 // in
@@ -202,6 +237,11 @@ func KeyvalToUnicode(keyval uint) uint32 {
 //
 //    - keyval: key value.
 //
+// The function returns the following values:
+//
+//    - guint: upper case form of keyval, or keyval itself if it is already in
+//      upper case or it is not subject to case conversion.
+//
 func KeyvalToUpper(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
@@ -223,6 +263,11 @@ func KeyvalToUpper(keyval uint) uint {
 // The function takes the following parameters:
 //
 //    - wc: ISO10646 encoded character.
+//
+// The function returns the following values:
+//
+//    - guint: corresponding GDK key symbol, if one exists. or, if there is no
+//      corresponding symbol, wc | 0x01000000.
 //
 func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32 // out
@@ -265,6 +310,11 @@ func marshalKeymapper(p uintptr) (interface{}, error) {
 }
 
 // CapsLockState returns whether the Caps Lock modifer is locked.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if Caps Lock is on.
+//
 func (keymap *Keymap) CapsLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
@@ -284,6 +334,12 @@ func (keymap *Keymap) CapsLockState() bool {
 }
 
 // Direction returns the direction of effective layout of the keymap.
+//
+// The function returns the following values:
+//
+//    - direction: PANGO_DIRECTION_LTR or PANGO_DIRECTION_RTL if it can determine
+//      the direction. PANGO_DIRECTION_NEUTRAL otherwise.
+//
 func (keymap *Keymap) Direction() pango.Direction {
 	var _arg0 *C.GdkKeymap     // out
 	var _cret C.PangoDirection // in
@@ -309,6 +365,12 @@ func (keymap *Keymap) Direction() pango.Direction {
 // The function takes the following parameters:
 //
 //    - hardwareKeycode: keycode.
+//
+// The function returns the following values:
+//
+//    - keys (optional): return location for array of KeymapKey, or NULL.
+//    - keyvals (optional): return location for array of keyvals, or NULL.
+//    - ok: TRUE if there were any entries.
 //
 func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkKeymap    // out
@@ -376,6 +438,11 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 //
 //    - keyval: keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
 //
+// The function returns the following values:
+//
+//    - keys: return location for an array of KeymapKey.
+//    - ok: TRUE if keys were found and returned.
+//
 func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 C.guint         // out
@@ -427,6 +494,10 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 //
 //    - intent: use case for the modifier mask.
 //
+// The function returns the following values:
+//
+//    - modifierType: modifier mask used for intent.
+//
 func (keymap *Keymap) ModifierMask(intent ModifierIntent) ModifierType {
 	var _arg0 *C.GdkKeymap        // out
 	var _arg1 C.GdkModifierIntent // out
@@ -447,6 +518,11 @@ func (keymap *Keymap) ModifierMask(intent ModifierIntent) ModifierType {
 }
 
 // ModifierState returns the current modifier state.
+//
+// The function returns the following values:
+//
+//    - guint: current modifier state.
+//
 func (keymap *Keymap) ModifierState() uint {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.guint      // in
@@ -464,6 +540,11 @@ func (keymap *Keymap) ModifierState() uint {
 }
 
 // NumLockState returns whether the Num Lock modifer is locked.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if Num Lock is on.
+//
 func (keymap *Keymap) NumLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
@@ -483,6 +564,11 @@ func (keymap *Keymap) NumLockState() bool {
 }
 
 // ScrollLockState returns whether the Scroll Lock modifer is locked.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if Scroll Lock is on.
+//
 func (keymap *Keymap) ScrollLockState() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
@@ -503,6 +589,11 @@ func (keymap *Keymap) ScrollLockState() bool {
 
 // HaveBidiLayouts determines if keyboard layouts for both right-to-left and
 // left-to-right languages are in use.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if there are layouts in both directions, FALSE otherwise.
+//
 func (keymap *Keymap) HaveBidiLayouts() bool {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.gboolean   // in
@@ -529,6 +620,10 @@ func (keymap *Keymap) HaveBidiLayouts() bool {
 // The function takes the following parameters:
 //
 //    - key with keycode, group, and level initialized.
+//
+// The function returns the following values:
+//
+//    - guint: keyval, or 0 if none was mapped to the given key.
 //
 func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 	var _arg0 *C.GdkKeymap    // out
@@ -583,6 +678,15 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 //    - state: modifier state.
 //    - group: active keyboard group.
 //
+// The function returns the following values:
+//
+//    - keyval (optional): return location for keyval, or NULL.
+//    - effectiveGroup (optional): return location for effective group, or NULL.
+//    - level (optional): return location for level, or NULL.
+//    - consumedModifiers (optional): return location for modifiers that were
+//      used to determine the group or level, or NULL.
+//    - ok: TRUE if there was a keyval bound to the keycode/state/group.
+//
 func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool) {
 	var _arg0 *C.GdkKeymap      // out
 	var _arg1 C.guint           // out
@@ -622,27 +726,14 @@ func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state Modifie
 	return _keyval, _effectiveGroup, _level, _consumedModifiers, _ok
 }
 
-// ConnectDirectionChanged signal gets emitted when the direction of the keymap
-// changes.
-func (keymap *Keymap) ConnectDirectionChanged(f func()) externglib.SignalHandle {
-	return keymap.Connect("direction-changed", f)
-}
-
-// ConnectKeysChanged signal is emitted when the mapping represented by keymap
-// changes.
-func (keymap *Keymap) ConnectKeysChanged(f func()) externglib.SignalHandle {
-	return keymap.Connect("keys-changed", f)
-}
-
-// ConnectStateChanged signal is emitted when the state of the keyboard changes,
-// e.g when Caps Lock is turned on or off. See gdk_keymap_get_caps_lock_state().
-func (keymap *Keymap) ConnectStateChanged(f func()) externglib.SignalHandle {
-	return keymap.Connect("state-changed", f)
-}
-
 // KeymapGetDefault returns the Keymap attached to the default display.
 //
 // Deprecated: Use gdk_keymap_get_for_display() instead.
+//
+// The function returns the following values:
+//
+//    - keymap attached to the default display.
+//
 func KeymapGetDefault() *Keymap {
 	var _cret *C.GdkKeymap // in
 
@@ -660,6 +751,10 @@ func KeymapGetDefault() *Keymap {
 // The function takes the following parameters:
 //
 //    - display: Display.
+//
+// The function returns the following values:
+//
+//    - keymap attached to display.
 //
 func KeymapGetForDisplay(display *Display) *Keymap {
 	var _arg1 *C.GdkDisplay // out

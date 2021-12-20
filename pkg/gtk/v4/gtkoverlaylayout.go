@@ -50,6 +50,11 @@ func marshalOverlayLayouter(p uintptr) (interface{}, error) {
 }
 
 // NewOverlayLayout creates a new GtkOverlayLayout instance.
+//
+// The function returns the following values:
+//
+//    - overlayLayout: newly created instance.
+//
 func NewOverlayLayout() *OverlayLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -85,6 +90,11 @@ func marshalOverlayLayoutChilder(p uintptr) (interface{}, error) {
 }
 
 // ClipOverlay retrieves whether the child is clipped.
+//
+// The function returns the following values:
+//
+//    - ok: whether the child is clipped.
+//
 func (child *OverlayLayoutChild) ClipOverlay() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
@@ -104,6 +114,11 @@ func (child *OverlayLayoutChild) ClipOverlay() bool {
 }
 
 // Measure retrieves whether the child is measured.
+//
+// The function returns the following values:
+//
+//    - ok: whether the child is measured.
+//
 func (child *OverlayLayoutChild) Measure() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in

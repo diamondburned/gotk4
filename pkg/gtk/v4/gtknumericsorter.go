@@ -53,7 +53,11 @@ func marshalNumericSorterer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - expression to evaluate.
+//    - expression (optional) to evaluate.
+//
+// The function returns the following values:
+//
+//    - numericSorter: new GtkNumericSorter.
 //
 func NewNumericSorter(expression Expressioner) *NumericSorter {
 	var _arg1 *C.GtkExpression    // out
@@ -76,6 +80,11 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 
 // Expression gets the expression that is evaluated to obtain numbers from
 // items.
+//
+// The function returns the following values:
+//
+//    - expression (optional): GtkExpression, or NULL.
+//
 func (self *NumericSorter) Expression() Expressioner {
 	var _arg0 *C.GtkNumericSorter // out
 	var _cret *C.GtkExpression    // in
@@ -105,6 +114,11 @@ func (self *NumericSorter) Expression() Expressioner {
 }
 
 // SortOrder gets whether this sorter will sort smaller numbers first.
+//
+// The function returns the following values:
+//
+//    - sortType: order of the numbers.
+//
 func (self *NumericSorter) SortOrder() SortType {
 	var _arg0 *C.GtkNumericSorter // out
 	var _cret C.GtkSortType       // in
@@ -132,7 +146,7 @@ func (self *NumericSorter) SortOrder() SortType {
 //
 // The function takes the following parameters:
 //
-//    - expression: GtkExpression, or NULL.
+//    - expression (optional): GtkExpression, or NULL.
 //
 func (self *NumericSorter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkNumericSorter // out

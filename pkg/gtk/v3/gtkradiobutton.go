@@ -152,13 +152,27 @@ func marshalRadioButtonner(p uintptr) (interface{}, error) {
 	return wrapRadioButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectGroupChanged: emitted when the group of radio buttons that a radio
+// button belongs to changes. This is emitted when a radio button switches from
+// being alone to being part of a group of 2 or more buttons, or vice-versa, and
+// when a button is moved from one group of 2 or more buttons to a different
+// one, but not when the composition of the group that a button belongs to
+// changes.
+func (radioButton *RadioButton) ConnectGroupChanged(f func()) externglib.SignalHandle {
+	return radioButton.Connect("group-changed", f)
+}
+
 // NewRadioButton creates a new RadioButton. To be of any practical value, a
 // widget should then be packed into the radio button.
 //
 // The function takes the following parameters:
 //
-//    - group: existing radio button group, or NULL if you are creating a new
-//    group.
+//    - group (optional): existing radio button group, or NULL if you are
+//      creating a new group.
+//
+// The function returns the following values:
+//
+//    - radioButton: new radio button.
 //
 func NewRadioButton(group []RadioButton) *RadioButton {
 	var _arg1 *C.GSList    // out
@@ -190,7 +204,11 @@ func NewRadioButton(group []RadioButton) *RadioButton {
 //
 // The function takes the following parameters:
 //
-//    - radioGroupMember: existing RadioButton.
+//    - radioGroupMember (optional): existing RadioButton.
+//
+// The function returns the following values:
+//
+//    - radioButton: new radio button.
 //
 func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
@@ -214,9 +232,13 @@ func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 //
 // The function takes the following parameters:
 //
-//    - group: existing radio button group, or NULL if you are creating a new
-//    group.
+//    - group (optional): existing radio button group, or NULL if you are
+//      creating a new group.
 //    - label: text label to display next to the radio button.
+//
+// The function returns the following values:
+//
+//    - radioButton: new radio button.
 //
 func NewRadioButtonWithLabel(group []RadioButton, label string) *RadioButton {
 	var _arg1 *C.GSList    // out
@@ -251,8 +273,12 @@ func NewRadioButtonWithLabel(group []RadioButton, label string) *RadioButton {
 //
 // The function takes the following parameters:
 //
-//    - radioGroupMember: widget to get radio group from or NULL.
+//    - radioGroupMember (optional): widget to get radio group from or NULL.
 //    - label: text string to display next to the radio button.
+//
+// The function returns the following values:
+//
+//    - radioButton: new radio button.
 //
 func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label string) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
@@ -283,9 +309,13 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 //
 // The function takes the following parameters:
 //
-//    - group: radio button group, or NULL.
+//    - group (optional): radio button group, or NULL.
 //    - label: text of the button, with an underscore in front of the mnemonic
-//    character.
+//      character.
+//
+// The function returns the following values:
+//
+//    - radioButton: new RadioButton.
 //
 func NewRadioButtonWithMnemonic(group []RadioButton, label string) *RadioButton {
 	var _arg1 *C.GSList    // out
@@ -321,9 +351,13 @@ func NewRadioButtonWithMnemonic(group []RadioButton, label string) *RadioButton 
 //
 // The function takes the following parameters:
 //
-//    - radioGroupMember: widget to get radio group from or NULL.
+//    - radioGroupMember (optional): widget to get radio group from or NULL.
 //    - label: text of the button, with an underscore in front of the mnemonic
-//    character.
+//      character.
+//
+// The function returns the following values:
+//
+//    - radioButton: new RadioButton.
 //
 func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label string) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
@@ -348,6 +382,13 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label s
 }
 
 // Group retrieves the group assigned to a radio button.
+//
+// The function returns the following values:
+//
+//    - sList: linked list containing all the radio buttons in the same group as
+//      radio_button. The returned list is owned by the radio button and must not
+//      be modified or freed.
+//
 func (radioButton *RadioButton) Group() []RadioButton {
 	var _arg0 *C.GtkRadioButton // out
 	var _cret *C.GSList         // in
@@ -391,8 +432,8 @@ func (radioButton *RadioButton) Group() []RadioButton {
 //
 // The function takes the following parameters:
 //
-//    - groupSource: radio button object whos group we are joining, or NULL to
-//    remove the radio button from its group.
+//    - groupSource (optional): radio button object whos group we are joining, or
+//      NULL to remove the radio button from its group.
 //
 func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
@@ -415,8 +456,8 @@ func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 //
 // The function takes the following parameters:
 //
-//    - group: existing radio button group, such as one returned from
-//    gtk_radio_button_get_group(), or NULL.
+//    - group (optional): existing radio button group, such as one returned from
+//      gtk_radio_button_get_group(), or NULL.
 //
 func (radioButton *RadioButton) SetGroup(group []RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
@@ -436,14 +477,4 @@ func (radioButton *RadioButton) SetGroup(group []RadioButton) {
 	C.gtk_radio_button_set_group(_arg0, _arg1)
 	runtime.KeepAlive(radioButton)
 	runtime.KeepAlive(group)
-}
-
-// ConnectGroupChanged: emitted when the group of radio buttons that a radio
-// button belongs to changes. This is emitted when a radio button switches from
-// being alone to being part of a group of 2 or more buttons, or vice-versa, and
-// when a button is moved from one group of 2 or more buttons to a different
-// one, but not when the composition of the group that a button belongs to
-// changes.
-func (radioButton *RadioButton) ConnectGroupChanged(f func()) externglib.SignalHandle {
-	return radioButton.Connect("group-changed", f)
 }

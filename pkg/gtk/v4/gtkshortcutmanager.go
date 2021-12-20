@@ -26,7 +26,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ShortcutManagerOverrider interface {
+	// The function takes the following parameters:
+	//
 	AddController(controller *ShortcutController)
+	// The function takes the following parameters:
+	//
 	RemoveController(controller *ShortcutController)
 }
 

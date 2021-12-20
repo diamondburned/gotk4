@@ -109,6 +109,11 @@ func marshalPrintContexter(p uintptr) (interface{}, error) {
 
 // CreatePangoContext creates a new PangoContext that can be used with the
 // GtkPrintContext.
+//
+// The function returns the following values:
+//
+//    - ret: new Pango context for context.
+//
 func (context *PrintContext) CreatePangoContext() *pango.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoContext    // in
@@ -132,6 +137,11 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 
 // CreatePangoLayout creates a new PangoLayout that is suitable for use with the
 // GtkPrintContext.
+//
+// The function returns the following values:
+//
+//    - layout: new Pango layout for context.
+//
 func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoLayout     // in
@@ -155,6 +165,11 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 
 // CairoContext obtains the cairo context that is associated with the
 // GtkPrintContext.
+//
+// The function returns the following values:
+//
+//    - ret: cairo context of context.
+//
 func (context *PrintContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.cairo_t         // in
@@ -177,6 +192,11 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 
 // DPIX obtains the horizontal resolution of the GtkPrintContext, in dots per
 // inch.
+//
+// The function returns the following values:
+//
+//    - gdouble: horizontal resolution of context.
+//
 func (context *PrintContext) DPIX() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
@@ -195,6 +215,11 @@ func (context *PrintContext) DPIX() float64 {
 
 // DPIY obtains the vertical resolution of the GtkPrintContext, in dots per
 // inch.
+//
+// The function returns the following values:
+//
+//    - gdouble: vertical resolution of context.
+//
 func (context *PrintContext) DPIY() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
@@ -213,6 +238,15 @@ func (context *PrintContext) DPIY() float64 {
 
 // HardMargins obtains the hardware printer margins of the GtkPrintContext, in
 // units.
+//
+// The function returns the following values:
+//
+//    - top hardware printer margin.
+//    - bottom hardware printer margin.
+//    - left hardware printer margin.
+//    - right hardware printer margin.
+//    - ok: TRUE if the hard margins were retrieved.
+//
 func (context *PrintContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrintContext // out
 	var _arg1 C.double           // in
@@ -244,6 +278,11 @@ func (context *PrintContext) HardMargins() (top float64, bottom float64, left fl
 }
 
 // Height obtains the height of the GtkPrintContext, in pixels.
+//
+// The function returns the following values:
+//
+//    - gdouble: height of context.
+//
 func (context *PrintContext) Height() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
@@ -262,6 +301,11 @@ func (context *PrintContext) Height() float64 {
 
 // PageSetup obtains the GtkPageSetup that determines the page dimensions of the
 // GtkPrintContext.
+//
+// The function returns the following values:
+//
+//    - pageSetup: page setup of context.
+//
 func (context *PrintContext) PageSetup() *PageSetup {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.GtkPageSetup    // in
@@ -280,6 +324,11 @@ func (context *PrintContext) PageSetup() *PageSetup {
 
 // PangoFontmap returns a PangoFontMap that is suitable for use with the
 // GtkPrintContext.
+//
+// The function returns the following values:
+//
+//    - fontMap: font map of context.
+//
 func (context *PrintContext) PangoFontmap() pango.FontMapper {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoFontMap    // in
@@ -310,6 +359,11 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 }
 
 // Width obtains the width of the GtkPrintContext, in pixels.
+//
+// The function returns the following values:
+//
+//    - gdouble: width of context.
+//
 func (context *PrintContext) Width() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in

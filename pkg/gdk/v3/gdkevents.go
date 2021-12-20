@@ -793,6 +793,11 @@ func (w WindowState) Has(other WindowState) bool {
 //    - event1: first Event.
 //    - event2: second Event.
 //
+// The function returns the following values:
+//
+//    - angle: return location for the relative angle between both events.
+//    - ok: TRUE if the angle could be calculated.
+//
 func EventsGetAngle(event1, event2 *Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
@@ -824,6 +829,12 @@ func EventsGetAngle(event1, event2 *Event) (float64, bool) {
 //
 //    - event1: first Event.
 //    - event2: second Event.
+//
+// The function returns the following values:
+//
+//    - x: return location for the X coordinate of the center.
+//    - y: return location for the Y coordinate of the center.
+//    - ok: TRUE if the center could be calculated.
 //
 func EventsGetCenter(event1, event2 *Event) (x float64, y float64, ok bool) {
 	var _arg1 *C.GdkEvent // out
@@ -861,6 +872,11 @@ func EventsGetCenter(event1, event2 *Event) (x float64, y float64, ok bool) {
 //    - event1: first Event.
 //    - event2: second Event.
 //
+// The function returns the following values:
+//
+//    - distance: return location for the distance.
+//    - ok: TRUE if the distance could be calculated.
+//
 func EventsGetDistance(event1, event2 *Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
@@ -886,6 +902,11 @@ func EventsGetDistance(event1, event2 *Event) (float64, bool) {
 }
 
 // EventsPending checks if any events are ready to be processed for any display.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if any events are pending.
+//
 func EventsPending() bool {
 	var _cret C.gboolean // in
 
@@ -901,6 +922,11 @@ func EventsPending() bool {
 }
 
 // GetShowEvents gets whether event debugging output is enabled.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if event debugging output is enabled.
+//
 func GetShowEvents() bool {
 	var _cret C.gboolean // in
 
@@ -941,6 +967,11 @@ func SetShowEvents(showEvents bool) {
 //
 //    - name of the setting.
 //    - value: location to store the value of the setting.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the setting existed and a value was stored in value, FALSE
+//      otherwise.
 //
 func SettingGet(name string, value *externglib.Value) bool {
 	var _arg1 *C.gchar   // out

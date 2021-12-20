@@ -62,6 +62,11 @@ func marshalEventBoxer(p uintptr) (interface{}, error) {
 }
 
 // NewEventBox creates a new EventBox.
+//
+// The function returns the following values:
+//
+//    - eventBox: new EventBox.
+//
 func NewEventBox() *EventBox {
 	var _cret *C.GtkWidget // in
 
@@ -76,6 +81,11 @@ func NewEventBox() *EventBox {
 
 // AboveChild returns whether the event box window is above or below the windows
 // of its child. See gtk_event_box_set_above_child() for details.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the event box window is above the window of its child.
+//
 func (eventBox *EventBox) AboveChild() bool {
 	var _arg0 *C.GtkEventBox // out
 	var _cret C.gboolean     // in
@@ -96,6 +106,11 @@ func (eventBox *EventBox) AboveChild() bool {
 
 // VisibleWindow returns whether the event box has a visible window. See
 // gtk_event_box_set_visible_window() for details.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the event box window is visible.
+//
 func (eventBox *EventBox) VisibleWindow() bool {
 	var _arg0 *C.GtkEventBox // out
 	var _cret C.gboolean     // in

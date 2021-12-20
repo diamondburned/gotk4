@@ -32,6 +32,11 @@ func init() {
 //
 //    - str: string of a potential mime type.
 //
+// The function returns the following values:
+//
+//    - utf8: interned string for the canonicalized mime type or NULL if the
+//      string wasn't a valid mime type.
+//
 func InternMIMEType(str string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -88,6 +93,11 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 
 // AddFormats appends all formats from formats to builder, skipping those that
 // already exist.
+//
+// The function takes the following parameters:
+//
+//    - formats to add.
+//
 func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 *C.GdkContentFormats        // out
@@ -101,6 +111,11 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 }
 
 // AddGType appends type to builder if it has not already been added.
+//
+// The function takes the following parameters:
+//
+//    - typ: GType.
+//
 func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 C.GType                     // out
@@ -114,6 +129,11 @@ func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 }
 
 // AddMIMEType appends mime_type to builder if it has not already been added.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: mime type.
+//
 func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 *C.char                     // out
@@ -134,6 +154,12 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 //
 // This function is intended primarily for bindings. C code should use
 // gdk.ContentFormatsBuilder.FreeToFormats().
+//
+// The function returns the following values:
+//
+//    - contentFormats: newly created GdkContentFormats with all the formats
+//      added to builder.
+//
 func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _cret *C.GdkContentFormats        // in

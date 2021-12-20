@@ -68,9 +68,21 @@ type AsyncInitableOverrider interface {
 	// a thread, so if you want to support asynchronous initialization via
 	// threads, just implement the Initable interface without overriding any
 	// interface methods.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - ioPriority: [I/O priority][io-priority] of the operation.
+	//    - callback (optional) to call when the request is satisfied.
+	//
 	InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - res: Result.
+	//
 	InitFinish(res AsyncResulter) error
 }
 
@@ -244,9 +256,9 @@ func marshalAsyncInitabler(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - ioPriority: [I/O priority][io-priority] of the operation.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GAsyncInitable     // out
@@ -308,6 +320,11 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 // The function takes the following parameters:
 //
 //    - res from the callback.
+//
+// The function returns the following values:
+//
+//    - object: newly created #GObject, or NULL on error. Free with
+//      g_object_unref().
 //
 func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object, error) {
 	var _arg0 *C.GAsyncInitable // out

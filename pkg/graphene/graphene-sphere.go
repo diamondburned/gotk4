@@ -61,6 +61,15 @@ func NewSphereAlloc() *Sphere {
 
 // ContainsPoint checks whether the given point is contained in the volume of a
 // #graphene_sphere_t.
+//
+// The function takes the following parameters:
+//
+//    - point: #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the sphere contains the point.
+//
 func (s *Sphere) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -84,6 +93,15 @@ func (s *Sphere) ContainsPoint(point *Point3D) bool {
 
 // Distance computes the distance of the given point from the surface of a
 // #graphene_sphere_t.
+//
+// The function takes the following parameters:
+//
+//    - point: #graphene_point3d_t.
+//
+// The function returns the following values:
+//
+//    - gfloat: distance of the point.
+//
 func (s *Sphere) Distance(point *Point3D) float32 {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -104,6 +122,15 @@ func (s *Sphere) Distance(point *Point3D) float32 {
 }
 
 // Equal checks whether two #graphene_sphere_t are equal.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_sphere_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the spheres are equal.
+//
 func (a *Sphere) Equal(b *Sphere) bool {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 *C.graphene_sphere_t // out
@@ -127,6 +154,11 @@ func (a *Sphere) Equal(b *Sphere) bool {
 
 // BoundingBox computes the bounding box capable of containing the given
 // #graphene_sphere_t.
+//
+// The function returns the following values:
+//
+//    - box: return location for the bounding box.
+//
 func (s *Sphere) BoundingBox() *Box {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 C.graphene_box_t     // in
@@ -144,6 +176,11 @@ func (s *Sphere) BoundingBox() *Box {
 }
 
 // Center retrieves the coordinates of the center of a #graphene_sphere_t.
+//
+// The function returns the following values:
+//
+//    - center: return location for the coordinates of the center.
+//
 func (s *Sphere) Center() *Point3D {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 C.graphene_point3d_t // in
@@ -161,6 +198,9 @@ func (s *Sphere) Center() *Point3D {
 }
 
 // Radius retrieves the radius of a #graphene_sphere_t.
+//
+// The function returns the following values:
+//
 func (s *Sphere) Radius() float32 {
 	var _arg0 *C.graphene_sphere_t // out
 	var _cret C.float              // in
@@ -179,6 +219,17 @@ func (s *Sphere) Radius() float32 {
 
 // Init initializes the given #graphene_sphere_t with the given center and
 // radius.
+//
+// The function takes the following parameters:
+//
+//    - center (optional) coordinates of the center of the sphere, or NULL for a
+//      center in (0, 0, 0).
+//    - radius of the sphere.
+//
+// The function returns the following values:
+//
+//    - sphere: initialized #graphene_sphere_t.
+//
 func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -208,6 +259,16 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 //
 // The center of the sphere can either be specified, or will be center of the 3D
 // volume that encompasses all points.
+//
+// The function takes the following parameters:
+//
+//    - points: array of #graphene_point3d_t.
+//    - center (optional) of the sphere.
+//
+// The function returns the following values:
+//
+//    - sphere: initialized #graphene_sphere_t.
+//
 func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg2 *C.graphene_point3d_t // out
@@ -246,6 +307,16 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 //
 // The center of the sphere can either be specified, or will be center of the 3D
 // volume that encompasses all vectors.
+//
+// The function takes the following parameters:
+//
+//    - vectors: array of #graphene_vec3_t.
+//    - center (optional) of the sphere.
+//
+// The function returns the following values:
+//
+//    - sphere: initialized #graphene_sphere_t.
+//
 func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg2 *C.graphene_vec3_t   // out
@@ -280,6 +351,11 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 }
 
 // IsEmpty checks whether the sphere has a zero radius.
+//
+// The function returns the following values:
+//
+//    - ok: true if the sphere is empty.
+//
 func (s *Sphere) IsEmpty() bool {
 	var _arg0 *C.graphene_sphere_t // out
 	var _cret C._Bool              // in
@@ -300,6 +376,15 @@ func (s *Sphere) IsEmpty() bool {
 
 // Translate translates the center of the given #graphene_sphere_t using the
 // point coordinates as the delta of the translation.
+//
+// The function takes the following parameters:
+//
+//    - point coordinates of the translation.
+//
+// The function returns the following values:
+//
+//    - res: return location for the translated sphere.
+//
 func (s *Sphere) Translate(point *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out

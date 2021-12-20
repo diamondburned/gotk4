@@ -154,24 +154,56 @@ func _gotk4_gtk3_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, 
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FontChooserOverrider interface {
+	// The function takes the following parameters:
+	//
 	FontActivated(fontname string)
 	// FontFace gets the FontFace representing the selected font group details
 	// (i.e. family, slant, weight, width, etc).
 	//
 	// If the selected font is not installed, returns NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - fontFace (optional) representing the selected font group details, or
+	//      NULL. The returned object is owned by fontchooser and must not be
+	//      modified or freed.
+	//
 	FontFace() pango.FontFacer
 	// FontFamily gets the FontFamily representing the selected font family.
 	// Font families are a collection of font faces.
 	//
 	// If the selected font is not installed, returns NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - fontFamily (optional) representing the selected font family, or NULL.
+	//      The returned object is owned by fontchooser and must not be modified
+	//      or freed.
+	//
 	FontFamily() pango.FontFamilier
 	// FontMap gets the custom font map of this font chooser widget, or NULL if
 	// it does not have one.
+	//
+	// The function returns the following values:
+	//
+	//    - fontMap (optional) or NULL.
+	//
 	FontMap() pango.FontMapper
 	// FontSize: selected font size.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: n integer representing the selected font size, or -1 if no font
+	//      size is selected.
+	//
 	FontSize() int
 	// SetFilterFunc adds a filter function that decides which fonts to display
 	// in the font chooser.
+	//
+	// The function takes the following parameters:
+	//
+	//    - filter (optional) or NULL.
+	//
 	SetFilterFunc(filter FontFilterFunc)
 	// SetFontMap sets a custom font map to use for this font chooser widget. A
 	// custom font map can be used to present application-specific fonts instead
@@ -193,6 +225,11 @@ type FontChooserOverrider interface {
 	//
 	//    context = gtk_widget_get_pango_context (label);
 	//    pango_context_set_font_map (context, fontmap);.
+	//
+	// The function takes the following parameters:
+	//
+	//    - fontmap (optional): FontMap.
+	//
 	SetFontMap(fontmap pango.FontMapper)
 }
 
@@ -267,6 +304,13 @@ func marshalFontChooserer(p uintptr) (interface{}, error) {
 	return wrapFontChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectFontActivated: emitted when a font is activated. This usually happens
+// when the user double clicks an item, or an item is selected and the user
+// presses one of the keys Space, Shift+Space, Return or Enter.
+func (fontchooser *FontChooser) ConnectFontActivated(f func(fontname string)) externglib.SignalHandle {
+	return fontchooser.Connect("font-activated", f)
+}
+
 // Font gets the currently-selected font name.
 //
 // Note that this can be a different string than what you set with
@@ -276,6 +320,12 @@ func marshalFontChooserer(p uintptr) (interface{}, error) {
 //
 // Use pango_font_description_equal() if you want to compare two font
 // descriptions.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string with the name of the current font, or NULL if no
+//      font is selected. You must free this string with g_free().
+//
 func (fontchooser *FontChooser) Font() string {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.gchar          // in
@@ -304,6 +354,12 @@ func (fontchooser *FontChooser) Font() string {
 //
 // Use pango_font_description_equal() if you want to compare two font
 // descriptions.
+//
+// The function returns the following values:
+//
+//    - fontDescription (optional) for the current font, or NULL if no font is
+//      selected.
+//
 func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 	var _arg0 *C.GtkFontChooser       // out
 	var _cret *C.PangoFontDescription // in
@@ -332,6 +388,13 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 // family, slant, weight, width, etc).
 //
 // If the selected font is not installed, returns NULL.
+//
+// The function returns the following values:
+//
+//    - fontFace (optional) representing the selected font group details, or
+//      NULL. The returned object is owned by fontchooser and must not be
+//      modified or freed.
+//
 func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.PangoFontFace  // in
@@ -364,6 +427,13 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 // families are a collection of font faces.
 //
 // If the selected font is not installed, returns NULL.
+//
+// The function returns the following values:
+//
+//    - fontFamily (optional) representing the selected font family, or NULL. The
+//      returned object is owned by fontchooser and must not be modified or
+//      freed.
+//
 func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 	var _arg0 *C.GtkFontChooser  // out
 	var _cret *C.PangoFontFamily // in
@@ -393,6 +463,11 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 }
 
 // FontFeatures gets the currently-selected font features.
+//
+// The function returns the following values:
+//
+//    - utf8: currently selected font features.
+//
 func (fontchooser *FontChooser) FontFeatures() string {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.char           // in
@@ -412,6 +487,11 @@ func (fontchooser *FontChooser) FontFeatures() string {
 
 // FontMap gets the custom font map of this font chooser widget, or NULL if it
 // does not have one.
+//
+// The function returns the following values:
+//
+//    - fontMap (optional) or NULL.
+//
 func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.PangoFontMap   // in
@@ -441,6 +521,12 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 }
 
 // FontSize: selected font size.
+//
+// The function returns the following values:
+//
+//    - gint: n integer representing the selected font size, or -1 if no font
+//      size is selected.
+//
 func (fontchooser *FontChooser) FontSize() int {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret C.gint            // in
@@ -458,6 +544,11 @@ func (fontchooser *FontChooser) FontSize() int {
 }
 
 // Language gets the language that is used for font features.
+//
+// The function returns the following values:
+//
+//    - utf8: currently selected language.
+//
 func (fontchooser *FontChooser) Language() string {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.char           // in
@@ -476,6 +567,11 @@ func (fontchooser *FontChooser) Language() string {
 }
 
 // Level returns the current level of granularity for selecting fonts.
+//
+// The function returns the following values:
+//
+//    - fontChooserLevel: current granularity level.
+//
 func (fontchooser *FontChooser) Level() FontChooserLevel {
 	var _arg0 *C.GtkFontChooser     // out
 	var _cret C.GtkFontChooserLevel // in
@@ -493,6 +589,11 @@ func (fontchooser *FontChooser) Level() FontChooserLevel {
 }
 
 // PreviewText gets the text displayed in the preview area.
+//
+// The function returns the following values:
+//
+//    - utf8: text displayed in the preview area.
+//
 func (fontchooser *FontChooser) PreviewText() string {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.gchar          // in
@@ -511,6 +612,11 @@ func (fontchooser *FontChooser) PreviewText() string {
 }
 
 // ShowPreviewEntry returns whether the preview entry is shown or not.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the preview entry is shown or FALSE if it is hidden.
+//
 func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret C.gboolean        // in
@@ -534,7 +640,7 @@ func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 //
 // The function takes the following parameters:
 //
-//    - filter or NULL.
+//    - filter (optional) or NULL.
 //
 func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
 	var _arg0 *C.GtkFontChooser   // out
@@ -614,7 +720,7 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 //
 // The function takes the following parameters:
 //
-//    - fontmap: FontMap.
+//    - fontmap (optional): FontMap.
 //
 func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _arg0 *C.GtkFontChooser // out
@@ -705,11 +811,4 @@ func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	C.gtk_font_chooser_set_show_preview_entry(_arg0, _arg1)
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(showPreviewEntry)
-}
-
-// ConnectFontActivated: emitted when a font is activated. This usually happens
-// when the user double clicks an item, or an item is selected and the user
-// presses one of the keys Space, Shift+Space, Return or Enter.
-func (fontchooser *FontChooser) ConnectFontActivated(f func(fontname string)) externglib.SignalHandle {
-	return fontchooser.Connect("font-activated", f)
 }

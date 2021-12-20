@@ -101,8 +101,24 @@ type WidgetOverrider interface {
 	//
 	// The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
 	// assumed to be the top left of widget's content area.
+	//
+	// The function takes the following parameters:
+	//
+	//    - x: x coordinate to test, relative to widget's origin.
+	//    - y: y coordinate to test, relative to widget's origin.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if widget contains (x, y).
+	//
 	Contains(x, y float64) bool
+	// The function takes the following parameters:
+	//
 	DirectionChanged(previousDirection TextDirection)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	Focus(direction DirectionType) bool
 	// RequestMode gets whether the widget prefers a height-for-width layout or
 	// a width-for-height layout.
@@ -110,6 +126,11 @@ type WidgetOverrider interface {
 	// Single-child widgets generally propagate the preference of their child,
 	// more complex widgets need to request something either in context of their
 	// children or in context of their allocation capabilities.
+	//
+	// The function returns the following values:
+	//
+	//    - sizeRequestMode: GtkSizeRequestMode preferred by widget.
+	//
 	RequestMode() SizeRequestMode
 	// GrabFocus causes widget to have the keyboard focus for the GtkWindow it's
 	// inside.
@@ -120,6 +141,11 @@ type WidgetOverrider interface {
 	//
 	// Calling gtk.Widget.GrabFocus() on an already focused widget is allowed,
 	// should not have an effect, and return TRUE.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if focus is now inside widget.
+	//
 	GrabFocus() bool
 	// Hide reverses the effects of gtk_widget_show().
 	//
@@ -150,6 +176,17 @@ type WidgetOverrider interface {
 	// widgets where the user should be able to navigate the entire row with the
 	// cursor keys, as e.g. known from user interfaces that require entering
 	// license keys.
+	//
+	// The function takes the following parameters:
+	//
+	//    - direction of focus movement.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if stopping keyboard navigation is fine, FALSE if the
+	//      emitting widget should try to handle the keyboard navigation attempt
+	//      in its parent container(s).
+	//
 	KeynavFailed(direction DirectionType) bool
 	// Map causes a widget to be mapped if it isn’t already.
 	//
@@ -165,10 +202,49 @@ type WidgetOverrider interface {
 	// See GtkWidget’s geometry management section
 	// (class.Widget.html#height-for-width-geometry-management) for a more
 	// details on implementing WidgetClass.measure().
+	//
+	// The function takes the following parameters:
+	//
+	//    - orientation to measure.
+	//    - forSize: size for the opposite of orientation, i.e. if orientation is
+	//      GTK_ORIENTATION_HORIZONTAL, this is the height the widget should be
+	//      measured with. The GTK_ORIENTATION_VERTICAL case is analogous. This
+	//      way, both height-for-width and width-for-height requests can be
+	//      implemented. If no size is known, -1 can be passed.
+	//
+	// The function returns the following values:
+	//
+	//    - minimum (optional): location to store the minimum size, or NULL.
+	//    - natural (optional): location to store the natural size, or NULL.
+	//    - minimumBaseline (optional): location to store the baseline position
+	//      for the minimum size, or NULL.
+	//    - naturalBaseline (optional): location to store the baseline position
+	//      for the natural size, or NULL.
+	//
 	Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 	// MnemonicActivate emits the GtkWidget::mnemonic-activate signal.
+	//
+	// The function takes the following parameters:
+	//
+	//    - groupCycling: TRUE if there are other widgets with the same mnemonic.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the signal has been handled.
+	//
 	MnemonicActivate(groupCycling bool) bool
+	// The function takes the following parameters:
+	//
 	MoveFocus(direction DirectionType)
+	// The function takes the following parameters:
+	//
+	//    - x
+	//    - y
+	//    - keyboardTooltip
+	//    - tooltip
+	//
+	// The function returns the following values:
+	//
 	QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	// Realize creates the GDK resources associated with a widget.
 	//
@@ -193,6 +269,12 @@ type WidgetOverrider interface {
 	//
 	// This function is only suitable for widget implementations. If you want a
 	// certain widget to get the input focus, call gtk.Widget.GrabFocus() on it.
+	//
+	// The function takes the following parameters:
+	//
+	//    - child (optional): direct child widget of widget or NULL to unset the
+	//      focus child of widget.
+	//
 	SetFocusChild(child Widgetter)
 	// Show flags a widget to be displayed.
 	//
@@ -205,9 +287,21 @@ type WidgetOverrider interface {
 	// mapped; other shown widgets are realized and mapped when their toplevel
 	// container is realized and mapped.
 	Show()
+	// The function takes the following parameters:
+	//
+	//    - width
+	//    - height
+	//    - baseline
+	//
 	SizeAllocate(width, height, baseline int)
+	// The function takes the following parameters:
+	//
 	Snapshot(snapshot *Snapshot)
+	// The function takes the following parameters:
+	//
 	StateFlagsChanged(previousStateFlags StateFlags)
+	// The function takes the following parameters:
+	//
 	SystemSettingChanged(settings SystemSetting)
 	// Unmap causes a widget to be unmapped if it’s currently mapped.
 	//
@@ -614,6 +708,125 @@ func marshalWidgetter(p uintptr) (interface{}, error) {
 	return wrapWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (widget *Widget) baseWidget() *Widget {
+	return widget
+}
+
+// BaseWidget returns the underlying base object.
+func BaseWidget(obj Widgetter) *Widget {
+	return obj.baseWidget()
+}
+
+// ConnectDestroy signals that all holders of a reference to the widget should
+// release the reference that they hold.
+//
+// May result in finalization of the widget if all references are released.
+//
+// This signal is not suitable for saving widget state.
+func (widget *Widget) ConnectDestroy(f func()) externglib.SignalHandle {
+	return widget.Connect("destroy", f)
+}
+
+// ConnectDirectionChanged: emitted when the text direction of a widget changes.
+func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) externglib.SignalHandle {
+	return widget.Connect("direction-changed", f)
+}
+
+// ConnectHide: emitted when widget is hidden.
+func (widget *Widget) ConnectHide(f func()) externglib.SignalHandle {
+	return widget.Connect("hide", f)
+}
+
+// ConnectKeynavFailed: emitted if keyboard navigation fails.
+//
+// See gtk.Widget.KeynavFailed() for details.
+func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) externglib.SignalHandle {
+	return widget.Connect("keynav-failed", f)
+}
+
+// ConnectMap: emitted when widget is going to be mapped.
+//
+// A widget is mapped when the widget is visible (which is controlled with
+// gtk.Widget:visible) and all its parents up to the toplevel widget are also
+// visible.
+//
+// The ::map signal can be used to determine whether a widget will be drawn, for
+// instance it can resume an animation that was stopped during the emission of
+// gtk.Widget::unmap.
+func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
+	return widget.Connect("map", f)
+}
+
+// ConnectMnemonicActivate: emitted when a widget is activated via a mnemonic.
+//
+// The default handler for this signal activates widget if group_cycling is
+// FALSE, or just makes widget grab focus if group_cycling is TRUE.
+func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) externglib.SignalHandle {
+	return widget.Connect("mnemonic-activate", f)
+}
+
+// ConnectMoveFocus: emitted when the focus is moved.
+func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) externglib.SignalHandle {
+	return widget.Connect("move-focus", f)
+}
+
+// ConnectQueryTooltip: emitted when the widgets tooltip is about to be shown.
+//
+// This happens when the gtk.Widget:has-tooltip property is TRUE and the hover
+// timeout has expired with the cursor hovering "above" widget; or emitted when
+// widget got focus in keyboard mode.
+//
+// Using the given coordinates, the signal handler should determine whether a
+// tooltip should be shown for widget. If this is the case TRUE should be
+// returned, FALSE otherwise. Note that if keyboard_mode is TRUE, the values of
+// x and y are undefined and should not be used.
+//
+// The signal handler is free to manipulate tooltip with the therefore destined
+// function calls.
+func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
+	return widget.Connect("query-tooltip", f)
+}
+
+// ConnectRealize: emitted when widget is associated with a GdkSurface.
+//
+// This means that gtk.Widget.Realize() has been called or the widget has been
+// mapped (that is, it is going to be drawn).
+func (widget *Widget) ConnectRealize(f func()) externglib.SignalHandle {
+	return widget.Connect("realize", f)
+}
+
+// ConnectShow: emitted when widget is shown.
+func (widget *Widget) ConnectShow(f func()) externglib.SignalHandle {
+	return widget.Connect("show", f)
+}
+
+// ConnectStateFlagsChanged: emitted when the widget state changes.
+//
+// See gtk.Widget.GetStateFlags().
+func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externglib.SignalHandle {
+	return widget.Connect("state-flags-changed", f)
+}
+
+// ConnectUnmap: emitted when widget is going to be unmapped.
+//
+// A widget is unmapped when either it or any of its parents up to the toplevel
+// widget have been set as hidden.
+//
+// As ::unmap indicates that a widget will not be shown any longer, it can be
+// used to, for example, stop an animation on the widget.
+func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
+	return widget.Connect("unmap", f)
+}
+
+// ConnectUnrealize: emitted when the GdkSurface associated with widget is
+// destroyed.
+//
+// This means that gtk.Widget.Unrealize() has been called or the widget has been
+// unmapped (that is, it is going to be hidden).
+func (widget *Widget) ConnectUnrealize(f func()) externglib.SignalHandle {
+	return widget.Connect("unrealize", f)
+}
+
 // ActionSetEnabled: enable or disable an action installed with
 // gtk_widget_class_install_action().
 //
@@ -654,6 +867,11 @@ func (widget *Widget) ActionSetEnabled(actionName string, enabled bool) {
 // gtk_signal_action_new().
 //
 // If widget isn't activatable, the function returns FALSE.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget was activatable.
+//
 func (widget *Widget) Activate() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -685,7 +903,11 @@ func (widget *Widget) Activate() bool {
 // The function takes the following parameters:
 //
 //    - name of the action to activate.
-//    - args parameters to use, or NULL.
+//    - args (optional) parameters to use, or NULL.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the action was activated, FALSE if the action does not exist.
 //
 func (widget *Widget) ActivateAction(name string, args *glib.Variant) bool {
 	var _arg0 *C.GtkWidget // out
@@ -755,8 +977,8 @@ func (widget *Widget) AddController(controller EventControllerer) {
 //
 // The function takes the following parameters:
 //
-//    - cssClass: style class to add to widget, without the leading '.' used
-//    for notation of style classes.
+//    - cssClass: style class to add to widget, without the leading '.' used for
+//      notation of style classes.
 //
 func (widget *Widget) AddCSSClass(cssClass string) {
 	var _arg0 *C.GtkWidget // out
@@ -819,6 +1041,12 @@ func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 //
 //    - callback: function to call for updating animations.
 //
+// The function returns the following values:
+//
+//    - guint: id for the connection of this callback. Remove the callback by
+//      passing the id returned from this function to
+//      gtk.Widget.RemoveTickCallback().
+//
 func (widget *Widget) AddTickCallback(callback TickCallback) uint {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 C.GtkTickCallback // out
@@ -856,7 +1084,7 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint {
 //    - width: new width of widget.
 //    - height: new height of widget.
 //    - baseline: new baseline of widget, or -1.
-//    - transform: transformation to be applied to widget.
+//    - transform (optional): transformation to be applied to widget.
 //
 func (widget *Widget) Allocate(width, height, baseline int, transform *gsk.Transform) {
 	var _arg0 *C.GtkWidget    // out
@@ -906,6 +1134,10 @@ func (widget *Widget) Allocate(width, height, baseline int, transform *gsk.Trans
 //
 //    - direction of focus movement.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if focus ended up inside widget.
+//
 func (widget *Widget) ChildFocus(direction DirectionType) bool {
 	var _arg0 *C.GtkWidget       // out
 	var _arg1 C.GtkDirectionType // out
@@ -942,6 +1174,11 @@ func (widget *Widget) ChildFocus(direction DirectionType) bool {
 // The function takes the following parameters:
 //
 //    - target: GtkWidget.
+//
+// The function returns the following values:
+//
+//    - outBounds: rectangle taking the bounds.
+//    - ok: TRUE if the bounds could be computed.
 //
 func (widget *Widget) ComputeBounds(target Widgetter) (*graphene.Rect, bool) {
 	var _arg0 *C.GtkWidget      // out
@@ -984,6 +1221,10 @@ func (widget *Widget) ComputeBounds(target Widgetter) (*graphene.Rect, bool) {
 //
 //    - orientation: expand direction.
 //
+// The function returns the following values:
+//
+//    - ok: whether widget tree rooted here should be expanded.
+//
 func (widget *Widget) ComputeExpand(orientation Orientation) bool {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkOrientation // out
@@ -1015,6 +1256,13 @@ func (widget *Widget) ComputeExpand(orientation Orientation) bool {
 //
 //    - target: GtkWidget to transform into.
 //    - point in widget's coordinate system.
+//
+// The function returns the following values:
+//
+//    - outPoint: set to the corresponding coordinates in target's coordinate
+//      system.
+//    - ok: TRUE if the point could be determined, FALSE on failure. In this
+//      case, 0 is stored in out_point.
 //
 func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (*graphene.Point, bool) {
 	var _arg0 *C.GtkWidget        // out
@@ -1050,6 +1298,14 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (*gr
 //
 //    - target widget that the matrix will transform to.
 //
+// The function returns the following values:
+//
+//    - outTransform: location to store the final transformation.
+//    - ok: TRUE if the transform could be computed, FALSE otherwise. The
+//      transform can not be computed in certain cases, for example when widget
+//      and target do not share a common ancestor. In that case out_transform
+//      gets set to the identity matrix.
+//
 func (widget *Widget) ComputeTransform(target Widgetter) (*graphene.Matrix, bool) {
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
@@ -1084,6 +1340,10 @@ func (widget *Widget) ComputeTransform(target Widgetter) (*graphene.Matrix, bool
 //    - x: x coordinate to test, relative to widget's origin.
 //    - y: y coordinate to test, relative to widget's origin.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if widget contains (x, y).
+//
 func (widget *Widget) Contains(x, y float64) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.double     // out
@@ -1113,6 +1373,11 @@ func (widget *Widget) Contains(x, y float64) bool {
 // widget.
 //
 // See also gtk.Widget.GetPangoContext().
+//
+// The function returns the following values:
+//
+//    - context: new PangoContext.
+//
 func (widget *Widget) CreatePangoContext() *pango.Context {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.PangoContext // in
@@ -1143,7 +1408,11 @@ func (widget *Widget) CreatePangoContext() *pango.Context {
 //
 // The function takes the following parameters:
 //
-//    - text to set on the layout (can be NULL).
+//    - text (optional) to set on the layout (can be NULL).
+//
+// The function returns the following values:
+//
+//    - layout: new PangoLayout.
 //
 func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	var _arg0 *C.GtkWidget   // out
@@ -1172,46 +1441,6 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	return _layout
 }
 
-// DragCheckThreshold checks to see if a drag movement has passed the GTK drag
-// threshold.
-//
-// The function takes the following parameters:
-//
-//    - startX: x coordinate of start of drag.
-//    - startY: y coordinate of start of drag.
-//    - currentX: current X coordinate.
-//    - currentY: current Y coordinate.
-//
-func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int) bool {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.int        // out
-	var _arg2 C.int        // out
-	var _arg3 C.int        // out
-	var _arg4 C.int        // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.int(startX)
-	_arg2 = C.int(startY)
-	_arg3 = C.int(currentX)
-	_arg4 = C.int(currentY)
-
-	_cret = C.gtk_drag_check_threshold(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(startX)
-	runtime.KeepAlive(startY)
-	runtime.KeepAlive(currentX)
-	runtime.KeepAlive(currentY)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // ErrorBell notifies the user about an input-related error on this widget.
 //
 // If the gtk.Settings:gtk-error-bell setting is TRUE, it calls
@@ -1235,6 +1464,11 @@ func (widget *Widget) ErrorBell() {
 // This function is intended to be used when implementing handlers for the
 // GtkWidgetClass.snapshot() function, and when allocating child widgets in
 // GtkWidgetClass.size_allocate().
+//
+// The function returns the following values:
+//
+//    - gint: baseline of the widget, or -1 if none.
+//
 func (widget *Widget) AllocatedBaseline() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -1253,6 +1487,11 @@ func (widget *Widget) AllocatedBaseline() int {
 
 // AllocatedHeight returns the height that has currently been allocated to
 // widget.
+//
+// The function returns the following values:
+//
+//    - gint: height of the widget.
+//
 func (widget *Widget) AllocatedHeight() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -1270,6 +1509,11 @@ func (widget *Widget) AllocatedHeight() int {
 }
 
 // AllocatedWidth returns the width that has currently been allocated to widget.
+//
+// The function returns the following values:
+//
+//    - gint: width of the widget.
+//
 func (widget *Widget) AllocatedWidth() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -1300,6 +1544,11 @@ func (widget *Widget) AllocatedWidth() int {
 // So a layout container is guaranteed that its children stay inside the
 // assigned bounds, but not that they have exactly the bounds the container
 // assigned.
+//
+// The function returns the following values:
+//
+//    - allocation: pointer to a GtkAllocation to copy to.
+//
 func (widget *Widget) Allocation() *Allocation {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkAllocation // in
@@ -1328,6 +1577,10 @@ func (widget *Widget) Allocation() *Allocation {
 // The function takes the following parameters:
 //
 //    - widgetType: ancestor type.
+//
+// The function returns the following values:
+//
+//    - ret (optional): ancestor widget, or NULL if not found.
 //
 func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 	var _arg0 *C.GtkWidget // out
@@ -1364,6 +1617,11 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 // children.
 //
 // See gtk.Widget.SetFocusable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the input focus can enter widget, FALSE otherwise.
+//
 func (widget *Widget) CanFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -1383,6 +1641,11 @@ func (widget *Widget) CanFocus() bool {
 }
 
 // CanTarget queries whether widget can be the target of pointer events.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget can receive pointer events.
+//
 func (widget *Widget) CanTarget() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -1408,6 +1671,11 @@ func (widget *Widget) CanTarget() bool {
 //
 // This function is only useful for container implementations and should never
 // be called by an application.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is mapped with the parent.
+//
 func (widget *Widget) ChildVisible() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -1432,6 +1700,11 @@ func (widget *Widget) ChildVisible() bool {
 // that widget is using.
 //
 // Note that this function always works, even when widget is not realized yet.
+//
+// The function returns the following values:
+//
+//    - clipboard: appropriate clipboard object.
+//
 func (widget *Widget) Clipboard() *gdk.Clipboard {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.GdkClipboard // in
@@ -1454,6 +1727,12 @@ func (widget *Widget) Clipboard() *gdk.Clipboard {
 }
 
 // CSSClasses returns the list of style classes applied to widget.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated list of css classes currently applied to widget.
+//      The returned list can be freed using g_strfreev().
+//
 func (widget *Widget) CSSClasses() []string {
 	var _arg0 *C.GtkWidget // out
 	var _cret **C.char     // in
@@ -1485,6 +1764,11 @@ func (widget *Widget) CSSClasses() []string {
 }
 
 // CSSName returns the CSS name that is used for self.
+//
+// The function returns the following values:
+//
+//    - utf8: CSS name.
+//
 func (self *Widget) CSSName() string {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.char      // in
@@ -1504,6 +1788,11 @@ func (self *Widget) CSSName() string {
 // Cursor queries the cursor set on widget.
 //
 // See gtk.Widget.SetCursor() for details.
+//
+// The function returns the following values:
+//
+//    - cursor (optional): cursor currently in use or NULL to use the default.
+//
 func (widget *Widget) Cursor() *gdk.Cursor {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkCursor // in
@@ -1530,6 +1819,11 @@ func (widget *Widget) Cursor() *gdk.Cursor {
 // Direction gets the reading direction for a particular widget.
 //
 // See gtk.Widget.SetDirection().
+//
+// The function returns the following values:
+//
+//    - textDirection: reading direction for the widget.
+//
 func (widget *Widget) Direction() TextDirection {
 	var _arg0 *C.GtkWidget       // out
 	var _cret C.GtkTextDirection // in
@@ -1555,6 +1849,11 @@ func (widget *Widget) Direction() TextDirection {
 // In general, you should only create display specific resources when a widget
 // has been realized, and you should free those resources when the widget is
 // unrealized.
+//
+// The function returns the following values:
+//
+//    - display: GdkDisplay for the toplevel for this widget.
+//
 func (widget *Widget) Display() *gdk.Display {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GdkDisplay // in
@@ -1579,6 +1878,11 @@ func (widget *Widget) Display() *gdk.Display {
 // FirstChild returns the widgets first child.
 //
 // This API is primarily meant for widget implementations.
+//
+// The function returns the following values:
+//
+//    - ret (optional) widget's first child.
+//
 func (widget *Widget) FirstChild() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -1608,6 +1912,12 @@ func (widget *Widget) FirstChild() Widgetter {
 }
 
 // FocusChild returns the current focus child of widget.
+//
+// The function returns the following values:
+//
+//    - ret (optional): current focus child of widget, or NULL in case the focus
+//      child is unset.
+//
 func (widget *Widget) FocusChild() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -1640,6 +1950,12 @@ func (widget *Widget) FocusChild() Widgetter {
 // with the mouse.
 //
 // See gtk.Widget.SetFocusOnClick().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget should grab focus when it is clicked with the
+//      mouse.
+//
 func (widget *Widget) FocusOnClick() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -1661,6 +1977,11 @@ func (widget *Widget) FocusOnClick() bool {
 // Focusable determines whether widget can own the input focus.
 //
 // See gtk.Widget.SetFocusable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget can own the input focus, FALSE otherwise.
+//
 func (widget *Widget) Focusable() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -1682,6 +2003,11 @@ func (widget *Widget) Focusable() bool {
 // FontMap gets the font map of widget.
 //
 // See gtk.Widget.SetFontMap().
+//
+// The function returns the following values:
+//
+//    - fontMap (optional): PangoFontMap, or NULL.
+//
 func (widget *Widget) FontMap() pango.FontMapper {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.PangoFontMap // in
@@ -1713,6 +2039,11 @@ func (widget *Widget) FontMap() pango.FontMapper {
 // FontOptions returns the cairo_font_options_t used for Pango rendering.
 //
 // When not set, the defaults font options for the GdkDisplay will be used.
+//
+// The function returns the following values:
+//
+//    - fontOptions (optional): cairo_font_options_t or NULL if not set.
+//
 func (widget *Widget) FontOptions() *cairo.FontOptions {
 	var _arg0 *C.GtkWidget            // out
 	var _cret *C.cairo_font_options_t // in
@@ -1751,6 +2082,11 @@ func (widget *Widget) FontOptions() *cairo.FontOptions {
 // widget’s frame clock.
 //
 // Unrealized widgets do not have a frame clock.
+//
+// The function returns the following values:
+//
+//    - frameClock (optional): GdkFrameClock, or NULL if widget is unrealized.
+//
 func (widget *Widget) FrameClock() gdk.FrameClocker {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GdkFrameClock // in
@@ -1784,6 +2120,11 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 // For backwards compatibility reasons this method will never return
 // GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL.
 // Baselines are not supported for horizontal alignment.
+//
+// The function returns the following values:
+//
+//    - align: horizontal alignment of widget.
+//
 func (widget *Widget) HAlign() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
@@ -1801,6 +2142,11 @@ func (widget *Widget) HAlign() Align {
 }
 
 // HasTooltip returns the current value of the has-tooltip property.
+//
+// The function returns the following values:
+//
+//    - ok: current value of has-tooltip on widget.
+//
 func (widget *Widget) HasTooltip() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -1825,6 +2171,11 @@ func (widget *Widget) HasTooltip() bool {
 // which is the size you should be using in GtkWidgetClass.snapshot().
 //
 // For pointer events, see gtk.Widget.Contains().
+//
+// The function returns the following values:
+//
+//    - gint: height of widget.
+//
 func (widget *Widget) Height() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -1855,6 +2206,11 @@ func (widget *Widget) Height() int {
 // This function only looks at the widget’s own hexpand flag, rather than
 // computing whether the entire widget tree rooted at this widget wants to
 // expand.
+//
+// The function returns the following values:
+//
+//    - ok: whether hexpand flag is set.
+//
 func (widget *Widget) HExpand() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -1882,6 +2238,11 @@ func (widget *Widget) HExpand() bool {
 //
 // There are few reasons to use this function, but it’s here for completeness
 // and consistency.
+//
+// The function returns the following values:
+//
+//    - ok: whether hexpand has been explicitly set.
+//
 func (widget *Widget) HExpandSet() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -1903,6 +2264,11 @@ func (widget *Widget) HExpandSet() bool {
 // LastChild returns the widgets last child.
 //
 // This API is primarily meant for widget implementations.
+//
+// The function returns the following values:
+//
+//    - ret (optional) widget's last child.
+//
 func (widget *Widget) LastChild() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -1934,6 +2300,11 @@ func (widget *Widget) LastChild() Widgetter {
 // LayoutManager retrieves the layout manager used by widget
 //
 // See gtk.Widget.SetLayoutManager().
+//
+// The function returns the following values:
+//
+//    - layoutManager (optional): GtkLayoutManager.
+//
 func (widget *Widget) LayoutManager() LayoutManagerer {
 	var _arg0 *C.GtkWidget        // out
 	var _cret *C.GtkLayoutManager // in
@@ -1963,6 +2334,11 @@ func (widget *Widget) LayoutManager() LayoutManagerer {
 }
 
 // Mapped: whether the widget is mapped.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is mapped, FALSE otherwise.
+//
 func (widget *Widget) Mapped() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -1982,6 +2358,11 @@ func (widget *Widget) Mapped() bool {
 }
 
 // MarginBottom gets the bottom margin of widget.
+//
+// The function returns the following values:
+//
+//    - gint: bottom margin of widget.
+//
 func (widget *Widget) MarginBottom() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -1999,6 +2380,11 @@ func (widget *Widget) MarginBottom() int {
 }
 
 // MarginEnd gets the end margin of widget.
+//
+// The function returns the following values:
+//
+//    - gint: end margin of widget.
+//
 func (widget *Widget) MarginEnd() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -2016,6 +2402,11 @@ func (widget *Widget) MarginEnd() int {
 }
 
 // MarginStart gets the start margin of widget.
+//
+// The function returns the following values:
+//
+//    - gint: start margin of widget.
+//
 func (widget *Widget) MarginStart() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -2033,6 +2424,11 @@ func (widget *Widget) MarginStart() int {
 }
 
 // MarginTop gets the top margin of widget.
+//
+// The function returns the following values:
+//
+//    - gint: top margin of widget.
+//
 func (widget *Widget) MarginTop() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -2052,6 +2448,12 @@ func (widget *Widget) MarginTop() int {
 // Name retrieves the name of a widget.
 //
 // See gtk.Widget.SetName() for the significance of widget names.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the widget. This string is owned by GTK and should not be
+//      modified or freed.
+//
 func (widget *Widget) Name() string {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.char      // in
@@ -2074,6 +2476,11 @@ func (widget *Widget) Name() string {
 // tree with a native ancestor.
 //
 // GtkNative widgets will return themselves here.
+//
+// The function returns the following values:
+//
+//    - native (optional): GtkNative widget of widget, or NULL.
+//
 func (widget *Widget) GetNative() NativeSurfacer {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkNative // in
@@ -2105,6 +2512,11 @@ func (widget *Widget) GetNative() NativeSurfacer {
 // NextSibling returns the widgets next sibling.
 //
 // This API is primarily meant for widget implementations.
+//
+// The function returns the following values:
+//
+//    - ret (optional) widget's next sibling.
+//
 func (widget *Widget) NextSibling() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -2136,6 +2548,11 @@ func (widget *Widget) NextSibling() Widgetter {
 // Opacity the requested opacity for this widget.
 //
 // See gtk.Widget.SetOpacity().
+//
+// The function returns the following values:
+//
+//    - gdouble: requested opacity for this widget.
+//
 func (widget *Widget) Opacity() float64 {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.double     // in
@@ -2153,6 +2570,11 @@ func (widget *Widget) Opacity() float64 {
 }
 
 // Overflow returns the widgets overflow value.
+//
+// The function returns the following values:
+//
+//    - overflow widget's overflow.
+//
 func (widget *Widget) Overflow() Overflow {
 	var _arg0 *C.GtkWidget  // out
 	var _cret C.GtkOverflow // in
@@ -2177,6 +2599,11 @@ func (widget *Widget) Overflow() Overflow {
 // changes or the widget is removed from its toplevel), and will be updated to
 // match any changes to the widget’s attributes. This can be tracked by
 // listening to changes of the gtk.Widget:root property on the widget.
+//
+// The function returns the following values:
+//
+//    - context: PangoContext for the widget.
+//
 func (widget *Widget) PangoContext() *pango.Context {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.PangoContext // in
@@ -2199,6 +2626,11 @@ func (widget *Widget) PangoContext() *pango.Context {
 }
 
 // Parent returns the parent widget of widget.
+//
+// The function returns the following values:
+//
+//    - ret (optional): parent widget of widget, or NULL.
+//
 func (widget *Widget) Parent() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -2241,6 +2673,12 @@ func (widget *Widget) Parent() Widgetter {
 // for the minimum width.
 //
 // Use gtk_widget_measure if you want to support baseline alignment.
+//
+// The function returns the following values:
+//
+//    - minimumSize (optional): location for storing the minimum size, or NULL.
+//    - naturalSize (optional): location for storing the natural size, or NULL.
+//
 func (widget *Widget) PreferredSize() (minimumSize *Requisition, naturalSize *Requisition) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkRequisition // in
@@ -2263,6 +2701,11 @@ func (widget *Widget) PreferredSize() (minimumSize *Requisition, naturalSize *Re
 // PrevSibling returns the widgets previous sibling.
 //
 // This API is primarily meant for widget implementations.
+//
+// The function returns the following values:
+//
+//    - ret (optional) widget's previous sibling.
+//
 func (widget *Widget) PrevSibling() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -2297,6 +2740,11 @@ func (widget *Widget) PrevSibling() Widgetter {
 // GdkDisplay that widget is using.
 //
 // Note that this function always works, even when widget is not realized yet.
+//
+// The function returns the following values:
+//
+//    - clipboard: appropriate clipboard object.
+//
 func (widget *Widget) PrimaryClipboard() *gdk.Clipboard {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.GdkClipboard // in
@@ -2319,6 +2767,11 @@ func (widget *Widget) PrimaryClipboard() *gdk.Clipboard {
 }
 
 // Realized determines whether widget is realized.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is realized, FALSE otherwise.
+//
 func (widget *Widget) Realized() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2342,6 +2795,12 @@ func (widget *Widget) Realized() bool {
 // the default.
 //
 // See gtk.Widget.SetReceivesDefault().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget acts as the default widget when focused, FALSE
+//      otherwise.
+//
 func (widget *Widget) ReceivesDefault() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2366,6 +2825,11 @@ func (widget *Widget) ReceivesDefault() bool {
 // Single-child widgets generally propagate the preference of their child, more
 // complex widgets need to request something either in context of their children
 // or in context of their allocation capabilities.
+//
+// The function returns the following values:
+//
+//    - sizeRequestMode: GtkSizeRequestMode preferred by widget.
+//
 func (widget *Widget) RequestMode() SizeRequestMode {
 	var _arg0 *C.GtkWidget         // out
 	var _cret C.GtkSizeRequestMode // in
@@ -2388,6 +2852,11 @@ func (widget *Widget) RequestMode() SizeRequestMode {
 // tree with a root widget.
 //
 // GtkRoot widgets will return themselves here.
+//
+// The function returns the following values:
+//
+//    - root (optional) widget of widget, or NULL.
+//
 func (widget *Widget) Root() Rooter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkRoot   // in
@@ -2423,6 +2892,11 @@ func (widget *Widget) Root() Rooter {
 // value (typically 2).
 //
 // See gdk.Surface.GetScaleFactor().
+//
+// The function returns the following values:
+//
+//    - gint: scale factor for widget.
+//
 func (widget *Widget) ScaleFactor() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -2446,6 +2920,11 @@ func (widget *Widget) ScaleFactor() int {
 //
 // The effective sensitivity of a widget is however determined by both its own
 // and its parent widget’s sensitivity. See gtk.Widget.IsSensitive().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is sensitive.
+//
 func (widget *Widget) Sensitive() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2470,6 +2949,11 @@ func (widget *Widget) Sensitive() bool {
 // a toplevel, since the settings object is specific to a particular GdkDisplay.
 // If you want to monitor the widget for changes in its settings, connect to
 // notify::display.
+//
+// The function returns the following values:
+//
+//    - settings: relevant Settings object.
+//
 func (widget *Widget) Settings() *Settings {
 	var _arg0 *C.GtkWidget   // out
 	var _cret *C.GtkSettings // in
@@ -2500,6 +2984,10 @@ func (widget *Widget) Settings() *Settings {
 //
 //    - orientation to query.
 //
+// The function returns the following values:
+//
+//    - gint: size of widget in orientation.
+//
 func (widget *Widget) Size(orientation Orientation) int {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkOrientation // out
@@ -2526,6 +3014,12 @@ func (widget *Widget) Size(orientation Orientation) int {
 // been set explicitly and the natural requisition of the widget will be used
 // instead. See gtk.Widget.SetSizeRequest(). To get the size a widget will
 // actually request, call gtk.Widget.Measure() instead of this function.
+//
+// The function returns the following values:
+//
+//    - width (optional): return location for width, or NULL.
+//    - height (optional): return location for height, or NULL.
+//
 func (widget *Widget) SizeRequest() (width int, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // in
@@ -2554,6 +3048,11 @@ func (widget *Widget) SizeRequest() (width int, height int) {
 // Also note that if you are looking for a way to obtain the gtk.StateFlags to
 // pass to a gtk.StyleContext method, you should look at
 // gtk.StyleContext.GetState().
+//
+// The function returns the following values:
+//
+//    - stateFlags: state flags for widget.
+//
 func (widget *Widget) StateFlags() StateFlags {
 	var _arg0 *C.GtkWidget    // out
 	var _cret C.GtkStateFlags // in
@@ -2573,6 +3072,12 @@ func (widget *Widget) StateFlags() StateFlags {
 // StyleContext returns the style context associated to widget.
 //
 // The returned object is guaranteed to be the same for the lifetime of widget.
+//
+// The function returns the following values:
+//
+//    - styleContext: GtkStyleContext. This memory is owned by widget and must
+//      not be freed.
+//
 func (widget *Widget) StyleContext() *StyleContext {
 	var _arg0 *C.GtkWidget       // out
 	var _cret *C.GtkStyleContext // in
@@ -2604,6 +3109,10 @@ func (widget *Widget) StyleContext() *StyleContext {
 //    - widgetType to get a template child for.
 //    - name: “id” of the child defined in the template XML.
 //
+// The function returns the following values:
+//
+//    - object built in the template XML with the id name.
+//
 func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *externglib.Object {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GType      // out
@@ -2631,6 +3140,11 @@ func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *ex
 //
 // If the tooltip has not been set using gtk.Widget.SetTooltipMarkup(), this
 // function returns NULL.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text.
+//
 func (widget *Widget) TooltipMarkup() string {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.char      // in
@@ -2653,6 +3167,11 @@ func (widget *Widget) TooltipMarkup() string {
 //
 // If the widget's tooltip was set using gtk.Widget.SetTooltipMarkup(), this
 // function will return the escaped text.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text.
+//
 func (widget *Widget) TooltipText() string {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.char      // in
@@ -2672,6 +3191,11 @@ func (widget *Widget) TooltipText() string {
 }
 
 // VAlign gets the vertical alignment of widget.
+//
+// The function returns the following values:
+//
+//    - align: vertical alignment of widget.
+//
 func (widget *Widget) VAlign() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
@@ -2692,6 +3216,11 @@ func (widget *Widget) VAlign() Align {
 // space.
 //
 // See gtk.Widget.GetHExpand() for more detail.
+//
+// The function returns the following values:
+//
+//    - ok: whether vexpand flag is set.
+//
 func (widget *Widget) VExpand() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2714,6 +3243,11 @@ func (widget *Widget) VExpand() bool {
 // set the expand flag on this widget.
 //
 // See gtk.Widget.GetHExpandSet() for more detail.
+//
+// The function returns the following values:
+//
+//    - ok: whether vexpand has been explicitly set.
+//
 func (widget *Widget) VExpandSet() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2740,6 +3274,11 @@ func (widget *Widget) VExpandSet() bool {
 // This function does not check if the widget is obscured in any way.
 //
 // See gtk.Widget.SetVisible().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is visible.
+//
 func (widget *Widget) Visible() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2764,6 +3303,11 @@ func (widget *Widget) Visible() bool {
 // which is the size you should be using in GtkWidgetClass.snapshot().
 //
 // For pointer events, see gtk.Widget.Contains().
+//
+// The function returns the following values:
+//
+//    - gint: width of widget.
+//
 func (widget *Widget) Width() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -2789,6 +3333,11 @@ func (widget *Widget) Width() int {
 //
 // Calling gtk.Widget.GrabFocus() on an already focused widget is allowed,
 // should not have an effect, and return TRUE.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if focus is now inside widget.
+//
 func (widget *Widget) GrabFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2811,8 +3360,12 @@ func (widget *Widget) GrabFocus() bool {
 //
 // The function takes the following parameters:
 //
-//    - cssClass: style class, without the leading '.' used for notation of
-//    style classes.
+//    - cssClass: style class, without the leading '.' used for notation of style
+//      classes.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if css_class is currently applied to widget, FALSE otherwise.
 //
 func (widget *Widget) HasCSSClass(cssClass string) bool {
 	var _arg0 *C.GtkWidget // out
@@ -2838,6 +3391,12 @@ func (widget *Widget) HasCSSClass(cssClass string) bool {
 
 // HasDefault determines whether widget is the current default widget within its
 // toplevel.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is the current default widget within its toplevel,
+//      FALSE otherwise.
+//
 func (widget *Widget) HasDefault() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2860,6 +3419,11 @@ func (widget *Widget) HasDefault() bool {
 //
 // See gtk.Widget.IsFocus() for the difference between having the global input
 // focus, and only having the focus within a toplevel.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget has the global input focus.
+//
 func (widget *Widget) HasFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2887,6 +3451,11 @@ func (widget *Widget) HasFocus() bool {
 //
 // To find out if the widget has the global input focus, use
 // gtk.Widget.HasFocus().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget should display a “focus rectangle”.
+//
 func (widget *Widget) HasVisibleFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2920,6 +3489,11 @@ func (widget *Widget) Hide() {
 // InDestruction returns whether the widget is currently being destroyed.
 //
 // This information can sometimes be used to avoid doing unnecessary work.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is being destroyed.
+//
 func (widget *Widget) InDestruction() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2982,7 +3556,7 @@ func (widget *Widget) InitTemplate() {
 // The function takes the following parameters:
 //
 //    - name: prefix for actions in group.
-//    - group or NULL.
+//    - group (optional) or NULL.
 //
 func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 	var _arg0 *C.GtkWidget    // out
@@ -3019,7 +3593,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 // The function takes the following parameters:
 //
 //    - parent GtkWidget to insert widget into.
-//    - previousSibling: new previous sibling of widget or NULL.
+//    - previousSibling (optional): new previous sibling of widget or NULL.
 //
 func (widget *Widget) InsertAfter(parent, previousSibling Widgetter) {
 	var _arg0 *C.GtkWidget // out
@@ -3054,7 +3628,7 @@ func (widget *Widget) InsertAfter(parent, previousSibling Widgetter) {
 // The function takes the following parameters:
 //
 //    - parent GtkWidget to insert widget into.
-//    - nextSibling: new next sibling of widget or NULL.
+//    - nextSibling (optional): new next sibling of widget or NULL.
 //
 func (widget *Widget) InsertBefore(parent, nextSibling Widgetter) {
 	var _arg0 *C.GtkWidget // out
@@ -3080,6 +3654,11 @@ func (widget *Widget) InsertBefore(parent, nextSibling Widgetter) {
 //
 //    - ancestor: another GtkWidget.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if ancestor contains widget as a child, grandchild, great
+//      grandchild, etc.
+//
 func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -3104,6 +3683,11 @@ func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 // IsDrawable determines whether widget can be drawn to.
 //
 // A widget can be drawn if it is mapped and visible.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is drawable, FALSE otherwise.
+//
 func (widget *Widget) IsDrawable() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -3127,6 +3711,11 @@ func (widget *Widget) IsDrawable() bool {
 // This does not mean that the gtk.Widget:has-focus property is necessarily set;
 // gtk,widget:has-focus will only be set if the toplevel widget additionally has
 // the global input focus.).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is the focus widget.
+//
 func (widget *Widget) IsFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -3148,6 +3737,11 @@ func (widget *Widget) IsFocus() bool {
 // IsSensitive returns the widget’s effective sensitivity.
 //
 // This means it is sensitive itself and also its parent widget is sensitive.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is effectively sensitive.
+//
 func (widget *Widget) IsSensitive() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -3172,6 +3766,11 @@ func (widget *Widget) IsSensitive() bool {
 // This function does not check if the widget is obscured in any way.
 //
 // See also gtk.Widget.GetVisible() and gtk.Widget.SetVisible().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget and all its parents are visible.
+//
 func (widget *Widget) IsVisible() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -3218,6 +3817,12 @@ func (widget *Widget) IsVisible() bool {
 //
 //    - direction of focus movement.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if stopping keyboard navigation is fine, FALSE if the emitting
+//      widget should try to handle the keyboard navigation attempt in its parent
+//      container(s).
+//
 func (widget *Widget) KeynavFailed(direction DirectionType) bool {
 	var _arg0 *C.GtkWidget       // out
 	var _arg1 C.GtkDirectionType // out
@@ -3249,6 +3854,12 @@ func (widget *Widget) KeynavFailed(direction DirectionType) bool {
 // iterate through the list and perform actions involving callbacks that might
 // destroy the widgets, you must call g_list_foreach (result,
 // (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
+//
+// The function returns the following values:
+//
+//    - list: list of mnemonic labels; free this list with g_list_free() when you
+//      are done with it.
+//
 func (widget *Widget) ListMnemonicLabels() []Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GList     // in
@@ -3311,10 +3922,19 @@ func (widget *Widget) Map() {
 //
 //    - orientation to measure.
 //    - forSize: size for the opposite of orientation, i.e. if orientation is
-//    GTK_ORIENTATION_HORIZONTAL, this is the height the widget should be
-//    measured with. The GTK_ORIENTATION_VERTICAL case is analogous. This way,
-//    both height-for-width and width-for-height requests can be implemented.
-//    If no size is known, -1 can be passed.
+//      GTK_ORIENTATION_HORIZONTAL, this is the height the widget should be
+//      measured with. The GTK_ORIENTATION_VERTICAL case is analogous. This way,
+//      both height-for-width and width-for-height requests can be implemented.
+//      If no size is known, -1 can be passed.
+//
+// The function returns the following values:
+//
+//    - minimum (optional): location to store the minimum size, or NULL.
+//    - natural (optional): location to store the natural size, or NULL.
+//    - minimumBaseline (optional): location to store the baseline position for
+//      the minimum size, or NULL.
+//    - naturalBaseline (optional): location to store the baseline position for
+//      the natural size, or NULL.
 //
 func (widget *Widget) Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
 	var _arg0 *C.GtkWidget     // out
@@ -3353,6 +3973,10 @@ func (widget *Widget) Measure(orientation Orientation, forSize int) (minimum int
 //
 //    - groupCycling: TRUE if there are other widgets with the same mnemonic.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the signal has been handled.
+//
 func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -3384,6 +4008,11 @@ func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 //
 // Applications should try hard to avoid calling this function because of the
 // slowdowns.
+//
+// The function returns the following values:
+//
+//    - listModel: a GListModel tracking widget's children.
+//
 func (widget *Widget) ObserveChildren() gio.ListModeller {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GListModel // in
@@ -3422,6 +4051,11 @@ func (widget *Widget) ObserveChildren() gio.ListModeller {
 //
 // Applications should try hard to avoid calling this function because of the
 // slowdowns.
+//
+// The function returns the following values:
+//
+//    - listModel: a GListModel tracking widget's controllers.
+//
 func (widget *Widget) ObserveControllers() gio.ListModeller {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GListModel // in
@@ -3470,6 +4104,11 @@ func (widget *Widget) ObserveControllers() gio.ListModeller {
 //    - x: x coordinate to test, relative to widget's origin.
 //    - y: y coordinate to test, relative to widget's origin.
 //    - flags flags to influence what is picked.
+//
+// The function returns the following values:
+//
+//    - ret (optional): widget descendant at the given coordinate or NULL if
+//      none.
 //
 func (widget *Widget) Pick(x, y float64, flags PickFlags) Widgetter {
 	var _arg0 *C.GtkWidget   // out
@@ -3613,8 +4252,8 @@ func (widget *Widget) RemoveController(controller EventControllerer) {
 //
 // The function takes the following parameters:
 //
-//    - cssClass: style class to remove from widget, without the leading '.'
-//    used for notation of style classes.
+//    - cssClass: style class to remove from widget, without the leading '.' used
+//      for notation of style classes.
 //
 func (widget *Widget) RemoveCSSClass(cssClass string) {
 	var _arg0 *C.GtkWidget // out
@@ -3638,7 +4277,7 @@ func (widget *Widget) RemoveCSSClass(cssClass string) {
 // The function takes the following parameters:
 //
 //    - label: GtkWidget that was previously set as a mnemonic label for widget
-//    with gtk.Widget.AddMnemonicLabel().
+//      with gtk.Widget.AddMnemonicLabel().
 //
 func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 	var _arg0 *C.GtkWidget // out
@@ -3687,7 +4326,7 @@ func (widget *Widget) RemoveTickCallback(id uint) {
 // The function takes the following parameters:
 //
 //    - canFocus: whether or not the input focus can enter the widget or any of
-//    its children.
+//      its children.
 //
 func (widget *Widget) SetCanFocus(canFocus bool) {
 	var _arg0 *C.GtkWidget // out
@@ -3707,8 +4346,7 @@ func (widget *Widget) SetCanFocus(canFocus bool) {
 //
 // The function takes the following parameters:
 //
-//    - canTarget: whether this widget should be able to receive pointer
-//    events.
+//    - canTarget: whether this widget should be able to receive pointer events.
 //
 func (widget *Widget) SetCanTarget(canTarget bool) {
 	var _arg0 *C.GtkWidget // out
@@ -3796,7 +4434,7 @@ func (widget *Widget) SetCSSClasses(classes []string) {
 //
 // The function takes the following parameters:
 //
-//    - cursor: new cursor or NULL to use the default cursor.
+//    - cursor (optional): new cursor or NULL to use the default cursor.
 //
 func (widget *Widget) SetCursor(cursor *gdk.Cursor) {
 	var _arg0 *C.GtkWidget // out
@@ -3824,7 +4462,7 @@ func (widget *Widget) SetCursor(cursor *gdk.Cursor) {
 //
 // The function takes the following parameters:
 //
-//    - name of the cursor or NULL to use the default cursor.
+//    - name (optional) of the cursor or NULL to use the default cursor.
 //
 func (widget *Widget) SetCursorFromName(name string) {
 	var _arg0 *C.GtkWidget // out
@@ -3879,8 +4517,8 @@ func (widget *Widget) SetDirection(dir TextDirection) {
 //
 // The function takes the following parameters:
 //
-//    - child: direct child widget of widget or NULL to unset the focus child
-//    of widget.
+//    - child (optional): direct child widget of widget or NULL to unset the
+//      focus child of widget.
 //
 func (widget *Widget) SetFocusChild(child Widgetter) {
 	var _arg0 *C.GtkWidget // out
@@ -3905,8 +4543,8 @@ func (widget *Widget) SetFocusChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - focusOnClick: whether the widget should grab focus when clicked with
-//    the mouse.
+//    - focusOnClick: whether the widget should grab focus when clicked with the
+//      mouse.
 //
 func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkWidget // out
@@ -3962,7 +4600,8 @@ func (widget *Widget) SetFocusable(focusable bool) {
 //
 // The function takes the following parameters:
 //
-//    - fontMap: PangoFontMap, or NULL to unset any previously set font map.
+//    - fontMap (optional): PangoFontMap, or NULL to unset any previously set
+//      font map.
 //
 func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 	var _arg0 *C.GtkWidget    // out
@@ -3985,7 +4624,8 @@ func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 //
 // The function takes the following parameters:
 //
-//    - options or NULL to unset any previously set default font options.
+//    - options (optional) or NULL to unset any previously set default font
+//      options.
 //
 func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
 	var _arg0 *C.GtkWidget            // out
@@ -4118,7 +4758,7 @@ func (widget *Widget) SetHExpandSet(set bool) {
 //
 // The function takes the following parameters:
 //
-//    - layoutManager: GtkLayoutManager.
+//    - layoutManager (optional): GtkLayoutManager.
 //
 func (widget *Widget) SetLayoutManager(layoutManager LayoutManagerer) {
 	var _arg0 *C.GtkWidget        // out
@@ -4458,7 +5098,7 @@ func (widget *Widget) SetStateFlags(flags StateFlags, clear bool) {
 //
 // The function takes the following parameters:
 //
-//    - markup contents of the tooltip for widget.
+//    - markup (optional) contents of the tooltip for widget.
 //
 func (widget *Widget) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkWidget // out
@@ -4486,7 +5126,7 @@ func (widget *Widget) SetTooltipMarkup(markup string) {
 //
 // The function takes the following parameters:
 //
-//    - text contents of the tooltip for widget.
+//    - text (optional) contents of the tooltip for widget.
 //
 func (widget *Widget) SetTooltipText(text string) {
 	var _arg0 *C.GtkWidget // out
@@ -4597,6 +5237,11 @@ func (widget *Widget) SetVisible(visible bool) {
 //
 // This is FALSE for invisible children, but also for children that have their
 // own surface.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if child should be included in measuring and allocating.
+//
 func (widget *Widget) ShouldLayout() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -4676,7 +5321,7 @@ func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int) {
 //
 //    - child of widget.
 //    - snapshot as passed to the widget. In particular, no calls to
-//    gtk_snapshot_translate() or other transform calls should have been made.
+//      gtk_snapshot_translate() or other transform calls should have been made.
 //
 func (widget *Widget) SnapshotChild(child Widgetter, snapshot *Snapshot) {
 	var _arg0 *C.GtkWidget   // out
@@ -4703,6 +5348,13 @@ func (widget *Widget) SnapshotChild(child Widgetter, snapshot *Snapshot) {
 //    - destWidget: GtkWidget.
 //    - srcX: x position relative to src_widget.
 //    - srcY: y position relative to src_widget.
+//
+// The function returns the following values:
+//
+//    - destX (optional): location to store X position relative to dest_widget.
+//    - destY (optional): location to store Y position relative to dest_widget.
+//    - ok: FALSE if src_widget and dest_widget have no common ancestor. In this
+//      case, 0 is stored in *dest_x and *dest_y. Otherwise TRUE.
 //
 func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY float64) (destX float64, destY float64, ok bool) {
 	var _arg0 *C.GtkWidget // out
@@ -4808,128 +5460,14 @@ func (widget *Widget) UnsetStateFlags(flags StateFlags) {
 	runtime.KeepAlive(flags)
 }
 
-func (widget *Widget) baseWidget() *Widget {
-	return widget
-}
-
-// BaseWidget returns the underlying base object.
-func BaseWidget(obj Widgetter) *Widget {
-	return obj.baseWidget()
-}
-
-// ConnectDestroy signals that all holders of a reference to the widget should
-// release the reference that they hold.
-//
-// May result in finalization of the widget if all references are released.
-//
-// This signal is not suitable for saving widget state.
-func (widget *Widget) ConnectDestroy(f func()) externglib.SignalHandle {
-	return widget.Connect("destroy", f)
-}
-
-// ConnectDirectionChanged: emitted when the text direction of a widget changes.
-func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) externglib.SignalHandle {
-	return widget.Connect("direction-changed", f)
-}
-
-// ConnectHide: emitted when widget is hidden.
-func (widget *Widget) ConnectHide(f func()) externglib.SignalHandle {
-	return widget.Connect("hide", f)
-}
-
-// ConnectKeynavFailed: emitted if keyboard navigation fails.
-//
-// See gtk.Widget.KeynavFailed() for details.
-func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) externglib.SignalHandle {
-	return widget.Connect("keynav-failed", f)
-}
-
-// ConnectMap: emitted when widget is going to be mapped.
-//
-// A widget is mapped when the widget is visible (which is controlled with
-// gtk.Widget:visible) and all its parents up to the toplevel widget are also
-// visible.
-//
-// The ::map signal can be used to determine whether a widget will be drawn, for
-// instance it can resume an animation that was stopped during the emission of
-// gtk.Widget::unmap.
-func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
-	return widget.Connect("map", f)
-}
-
-// ConnectMnemonicActivate: emitted when a widget is activated via a mnemonic.
-//
-// The default handler for this signal activates widget if group_cycling is
-// FALSE, or just makes widget grab focus if group_cycling is TRUE.
-func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) externglib.SignalHandle {
-	return widget.Connect("mnemonic-activate", f)
-}
-
-// ConnectMoveFocus: emitted when the focus is moved.
-func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) externglib.SignalHandle {
-	return widget.Connect("move-focus", f)
-}
-
-// ConnectQueryTooltip: emitted when the widgets tooltip is about to be shown.
-//
-// This happens when the gtk.Widget:has-tooltip property is TRUE and the hover
-// timeout has expired with the cursor hovering "above" widget; or emitted when
-// widget got focus in keyboard mode.
-//
-// Using the given coordinates, the signal handler should determine whether a
-// tooltip should be shown for widget. If this is the case TRUE should be
-// returned, FALSE otherwise. Note that if keyboard_mode is TRUE, the values of
-// x and y are undefined and should not be used.
-//
-// The signal handler is free to manipulate tooltip with the therefore destined
-// function calls.
-func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
-	return widget.Connect("query-tooltip", f)
-}
-
-// ConnectRealize: emitted when widget is associated with a GdkSurface.
-//
-// This means that gtk.Widget.Realize() has been called or the widget has been
-// mapped (that is, it is going to be drawn).
-func (widget *Widget) ConnectRealize(f func()) externglib.SignalHandle {
-	return widget.Connect("realize", f)
-}
-
-// ConnectShow: emitted when widget is shown.
-func (widget *Widget) ConnectShow(f func()) externglib.SignalHandle {
-	return widget.Connect("show", f)
-}
-
-// ConnectStateFlagsChanged: emitted when the widget state changes.
-//
-// See gtk.Widget.GetStateFlags().
-func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externglib.SignalHandle {
-	return widget.Connect("state-flags-changed", f)
-}
-
-// ConnectUnmap: emitted when widget is going to be unmapped.
-//
-// A widget is unmapped when either it or any of its parents up to the toplevel
-// widget have been set as hidden.
-//
-// As ::unmap indicates that a widget will not be shown any longer, it can be
-// used to, for example, stop an animation on the widget.
-func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
-	return widget.Connect("unmap", f)
-}
-
-// ConnectUnrealize: emitted when the GdkSurface associated with widget is
-// destroyed.
-//
-// This means that gtk.Widget.Unrealize() has been called or the widget has been
-// unmapped (that is, it is going to be hidden).
-func (widget *Widget) ConnectUnrealize(f func()) externglib.SignalHandle {
-	return widget.Connect("unrealize", f)
-}
-
 // WidgetGetDefaultDirection obtains the current default reading direction.
 //
 // See gtk.Widget().SetDefaultDirection.
+//
+// The function returns the following values:
+//
+//    - textDirection: current default direction.
+//
 func WidgetGetDefaultDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
 
@@ -5011,6 +5549,11 @@ func (r *Requisition) Height() int {
 }
 
 // Copy copies a GtkRequisition.
+//
+// The function returns the following values:
+//
+//    - ret: copy of requisition.
+//
 func (requisition *Requisition) Copy() *Requisition {
 	var _arg0 *C.GtkRequisition // out
 	var _cret *C.GtkRequisition // in

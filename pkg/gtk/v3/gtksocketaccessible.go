@@ -54,10 +54,7 @@ func marshalSocketAccessibler(p uintptr) (interface{}, error) {
 	return wrapSocketAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//
 // The function takes the following parameters:
-//
-
 //
 func (socket *SocketAccessible) Embed(path string) {
 	var _arg0 *C.GtkSocketAccessible // out

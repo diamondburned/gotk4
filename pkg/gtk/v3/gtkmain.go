@@ -94,6 +94,12 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 //    - requiredMinor: required minor version.
 //    - requiredMicro: required micro version.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): NULL if the GTK+ library is compatible with the given
+//      version, or a string describing the version mismatch. The returned string
+//      is owned by GTK+ and should not be modified or freed.
+//
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint  // out
 	var _arg2 C.guint  // out
@@ -191,6 +197,11 @@ func DisableSetlocale() {
 //       gtk_main_iteration ();
 //
 //     // ...computation continued.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if any events are pending, FALSE otherwise.
+//
 func EventsPending() bool {
 	var _cret C.gboolean // in
 
@@ -207,6 +218,11 @@ func EventsPending() bool {
 
 // False: analogical to gtk_true(), this function does nothing but always
 // returns FALSE.
+//
+// The function returns the following values:
+//
+//    - ok: FALSE.
+//
 func False() bool {
 	var _cret C.gboolean // in
 
@@ -224,6 +240,11 @@ func False() bool {
 // GetBinaryAge returns the binary age as passed to libtool when building the
 // GTK+ library the process is running against. If libtool means nothing to you,
 // don't worry about it.
+//
+// The function returns the following values:
+//
+//    - guint: binary age of the GTK+ library.
+//
 func GetBinaryAge() uint {
 	var _cret C.guint // in
 
@@ -238,6 +259,11 @@ func GetBinaryAge() uint {
 
 // GetCurrentEventDevice: if there is a current event and it has a device,
 // return that device, otherwise return NULL.
+//
+// The function returns the following values:
+//
+//    - device (optional) or NULL.
+//
 func GetCurrentEventDevice() gdk.Devicer {
 	var _cret *C.GdkDevice // in
 
@@ -264,6 +290,12 @@ func GetCurrentEventDevice() gdk.Devicer {
 
 // GetCurrentEventState: if there is a current event and it has a state field,
 // place that state field in state and return TRUE, otherwise return FALSE.
+//
+// The function returns the following values:
+//
+//    - state: location to store the state of the current event.
+//    - ok: TRUE if there was a current event and it had a state field.
+//
 func GetCurrentEventState() (gdk.ModifierType, bool) {
 	var _arg1 C.GdkModifierType // in
 	var _cret C.gboolean        // in
@@ -283,6 +315,11 @@ func GetCurrentEventState() (gdk.ModifierType, bool) {
 
 // GetCurrentEventTime: if there is a current event and it has a timestamp,
 // return that timestamp, otherwise return GDK_CURRENT_TIME.
+//
+// The function returns the following values:
+//
+//    - guint32: timestamp from the current event, or GDK_CURRENT_TIME.
+//
 func GetCurrentEventTime() uint32 {
 	var _cret C.guint32 // in
 
@@ -302,6 +339,11 @@ func GetCurrentEventTime() uint32 {
 //
 // This function is equivalent to pango_language_get_default(). See that
 // function for details.
+//
+// The function returns the following values:
+//
+//    - language: default language as a Language, must not be freed.
+//
 func GetDefaultLanguage() *pango.Language {
 	var _cret *C.PangoLanguage // in
 
@@ -321,6 +363,10 @@ func GetDefaultLanguage() *pango.Language {
 // The function takes the following parameters:
 //
 //    - event: Event.
+//
+// The function returns the following values:
+//
+//    - widget (optional) that originally received event, or NULL.
 //
 func GetEventWidget(event *gdk.Event) Widgetter {
 	var _arg1 *C.GdkEvent  // out
@@ -353,6 +399,11 @@ func GetEventWidget(event *gdk.Event) Widgetter {
 // GetInterfaceAge returns the interface age as passed to libtool when building
 // the GTK+ library the process is running against. If libtool means nothing to
 // you, don't worry about it.
+//
+// The function returns the following values:
+//
+//    - guint: interface age of the GTK+ library.
+//
 func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
@@ -383,6 +434,11 @@ func GetInterfaceAge() uint {
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
 //    gtk_widget_set_default_direction (direction);.
+//
+// The function returns the following values:
+//
+//    - textDirection of the current locale.
+//
 func GetLocaleDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
 
@@ -402,6 +458,11 @@ func GetLocaleDirection() TextDirection {
 // is running against. Contrast with the K_MAJOR_VERSION macro, which represents
 // the major version of the GTK+ headers you have included when compiling your
 // code.
+//
+// The function returns the following values:
+//
+//    - guint: major version number of the GTK+ library.
+//
 func GetMajorVersion() uint {
 	var _cret C.guint // in
 
@@ -421,6 +482,11 @@ func GetMajorVersion() uint {
 // is are running against. Contrast with the K_MICRO_VERSION macro, which
 // represents the micro version of the GTK+ headers you have included when
 // compiling your code.
+//
+// The function returns the following values:
+//
+//    - guint: micro version number of the GTK+ library.
+//
 func GetMicroVersion() uint {
 	var _cret C.guint // in
 
@@ -440,6 +506,11 @@ func GetMicroVersion() uint {
 // is are running against. Contrast with the K_MINOR_VERSION macro, which
 // represents the minor version of the GTK+ headers you have included when
 // compiling your code.
+//
+// The function returns the following values:
+//
+//    - guint: minor version number of the GTK+ library.
+//
 func GetMinorVersion() uint {
 	var _cret C.guint // in
 
@@ -461,8 +532,12 @@ func GetMinorVersion() uint {
 //
 // The function takes the following parameters:
 //
-//    - openDefaultDisplay: whether to open the default display when parsing
-//    the commandline arguments.
+//    - openDefaultDisplay: whether to open the default display when parsing the
+//      commandline arguments.
+//
+// The function returns the following values:
+//
+//    - optionGroup for the commandline arguments recognized by GTK+.
 //
 func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	var _arg1 C.gboolean      // out
@@ -489,6 +564,12 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 }
 
 // GrabGetCurrent queries the current grab of the default window group.
+//
+// The function returns the following values:
+//
+//    - widget (optional) which currently has the grab or NULL if no grab is
+//      active.
+//
 func GrabGetCurrent() Widgetter {
 	var _cret *C.GtkWidget // in
 
@@ -591,6 +672,11 @@ func MainDoEvent(event *gdk.Event) {
 // If no events are waiting to be processed GTK+ will block until the next event
 // is noticed. If you don’t want to block look at gtk_main_iteration_do() or
 // check if any events are pending with gtk_events_pending() first.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if gtk_main_quit() has been called for the innermost mainloop.
+//
 func MainIteration() bool {
 	var _cret C.gboolean // in
 
@@ -611,6 +697,10 @@ func MainIteration() bool {
 // The function takes the following parameters:
 //
 //    - blocking: TRUE if you want GTK+ to block if no events are pending.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if gtk_main_quit() has been called for the innermost mainloop.
 //
 func MainIterationDo(blocking bool) bool {
 	var _arg1 C.gboolean // out
@@ -633,6 +723,11 @@ func MainIterationDo(blocking bool) bool {
 }
 
 // MainLevel asks for the current nesting level of the main loop.
+//
+// The function returns the following values:
+//
+//    - guint: nesting level of the current invocation of the main loop.
+//
 func MainLevel() uint {
 	var _cret C.guint // in
 
@@ -725,6 +820,11 @@ func PropagateEvent(widget Widgetter, event *gdk.Event) {
 //
 //      return 0;
 //    }.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE.
+//
 func True() bool {
 	var _cret C.gboolean // in
 
@@ -737,4 +837,34 @@ func True() bool {
 	}
 
 	return _ok
+}
+
+// GrabAdd makes widget the current grabbed widget.
+//
+// This means that interaction with other widgets in the same application is
+// blocked and mouse as well as keyboard events are delivered to this widget.
+//
+// If widget is not sensitive, it is not set as the current grabbed widget and
+// this function does nothing.
+func (widget *Widget) GrabAdd() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_grab_add(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// GrabRemove removes the grab from the given widget.
+//
+// You have to pair calls to gtk_grab_add() and gtk_grab_remove().
+//
+// If widget does not have the grab, this function does nothing.
+func (widget *Widget) GrabRemove() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_grab_remove(_arg0)
+	runtime.KeepAlive(widget)
 }

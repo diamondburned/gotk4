@@ -109,12 +109,23 @@ func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
 	return wrapFileChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectFileSet signal is emitted when the user selects a file.
+//
+// Note that this signal is only emitted when the user changes the file.
+func (button *FileChooserButton) ConnectFileSet(f func()) externglib.SignalHandle {
+	return button.Connect("file-set", f)
+}
+
 // NewFileChooserButton creates a new file-selecting button widget.
 //
 // The function takes the following parameters:
 //
 //    - title of the browse dialog.
 //    - action: open mode for the widget.
+//
+// The function returns the following values:
+//
+//    - fileChooserButton: new button widget.
 //
 func NewFileChooserButton(title string, action FileChooserAction) *FileChooserButton {
 	var _arg1 *C.gchar               // out
@@ -150,6 +161,10 @@ func NewFileChooserButton(title string, action FileChooserAction) *FileChooserBu
 //
 //    - dialog: widget to use as dialog.
 //
+// The function returns the following values:
+//
+//    - fileChooserButton: new button widget.
+//
 func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -170,6 +185,11 @@ func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 // the mouse. See gtk_file_chooser_button_set_focus_on_click().
 //
 // Deprecated: Use gtk_widget_get_focus_on_click() instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the button grabs focus when it is clicked with the mouse.
+//
 func (button *FileChooserButton) FocusOnClick() bool {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _cret C.gboolean              // in
@@ -190,6 +210,11 @@ func (button *FileChooserButton) FocusOnClick() bool {
 
 // Title retrieves the title of the browse dialog used by button. The returned
 // value should not be modified or freed.
+//
+// The function returns the following values:
+//
+//    - utf8: pointer to the browse dialog’s title.
+//
 func (button *FileChooserButton) Title() string {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _cret *C.gchar                // in
@@ -208,6 +233,12 @@ func (button *FileChooserButton) Title() string {
 
 // WidthChars retrieves the width in characters of the button widget’s entry
 // and/or label.
+//
+// The function returns the following values:
+//
+//    - gint: integer width (in characters) that the button will use to size
+//      itself.
+//
 func (button *FileChooserButton) WidthChars() int {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _cret C.gint                  // in
@@ -233,8 +264,7 @@ func (button *FileChooserButton) WidthChars() int {
 //
 // The function takes the following parameters:
 //
-//    - focusOnClick: whether the button grabs focus when clicked with the
-//    mouse.
+//    - focusOnClick: whether the button grabs focus when clicked with the mouse.
 //
 func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkFileChooserButton // out
@@ -285,11 +315,4 @@ func (button *FileChooserButton) SetWidthChars(nChars int) {
 	C.gtk_file_chooser_button_set_width_chars(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(nChars)
-}
-
-// ConnectFileSet signal is emitted when the user selects a file.
-//
-// Note that this signal is only emitted when the user changes the file.
-func (button *FileChooserButton) ConnectFileSet(f func()) externglib.SignalHandle {
-	return button.Connect("file-set", f)
 }

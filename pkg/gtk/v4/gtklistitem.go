@@ -57,6 +57,11 @@ func marshalListItemmer(p uintptr) (interface{}, error) {
 
 // Activatable checks if a list item has been set to be activatable via
 // gtk_list_item_set_activatable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the item is activatable.
+//
 func (self *ListItem) Activatable() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
@@ -77,6 +82,11 @@ func (self *ListItem) Activatable() bool {
 
 // Child gets the child previously set via gtk_list_item_set_child() or NULL if
 // none was set.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child.
+//
 func (self *ListItem) Child() Widgetter {
 	var _arg0 *C.GtkListItem // out
 	var _cret *C.GtkWidget   // in
@@ -108,6 +118,11 @@ func (self *ListItem) Child() Widgetter {
 // Item gets the model item that associated with self.
 //
 // If self is unbound, this function returns NULL.
+//
+// The function returns the following values:
+//
+//    - object (optional): item displayed.
+//
 func (self *ListItem) Item() *externglib.Object {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gpointer     // in
@@ -127,6 +142,11 @@ func (self *ListItem) Item() *externglib.Object {
 // Position gets the position in the model that self currently displays.
 //
 // If self is unbound, GTK_INVALID_LIST_POSITION is returned.
+//
+// The function returns the following values:
+//
+//    - guint: position of this item.
+//
 func (self *ListItem) Position() uint {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.guint        // in
@@ -147,6 +167,11 @@ func (self *ListItem) Position() uint {
 // gtk_list_item_set_selectable().
 //
 // Do not confuse this function with gtk.ListItem.GetSelected().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the item is selectable.
+//
 func (self *ListItem) Selectable() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
@@ -169,6 +194,11 @@ func (self *ListItem) Selectable() bool {
 //
 // The selected state is maintained by the liste widget and its model and cannot
 // be set otherwise.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the item is selected.
+//
 func (self *ListItem) Selected() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
@@ -221,7 +251,7 @@ func (self *ListItem) SetActivatable(activatable bool) {
 //
 // The function takes the following parameters:
 //
-//    - child: list item's child or NULL to unset.
+//    - child (optional): list item's child or NULL to unset.
 //
 func (self *ListItem) SetChild(child Widgetter) {
 	var _arg0 *C.GtkListItem // out

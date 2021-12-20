@@ -80,10 +80,25 @@ func marshalMiscer(p uintptr) (interface{}, error) {
 	return wrapMisc(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (misc *Misc) baseMisc() *Misc {
+	return misc
+}
+
+// BaseMisc returns the underlying base object.
+func BaseMisc(obj Miscer) *Misc {
+	return obj.baseMisc()
+}
+
 // Alignment gets the X and Y alignment of the widget within its allocation. See
 // gtk_misc_set_alignment().
 //
 // Deprecated: Use Widget alignment and margin properties.
+//
+// The function returns the following values:
+//
+//    - xalign (optional): location to store X alignment of misc, or NULL.
+//    - yalign (optional): location to store Y alignment of misc, or NULL.
+//
 func (misc *Misc) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gfloat   // in
@@ -107,6 +122,12 @@ func (misc *Misc) Alignment() (xalign float32, yalign float32) {
 // gtk_misc_set_padding().
 //
 // Deprecated: Use Widget alignment and margin properties.
+//
+// The function returns the following values:
+//
+//    - xpad (optional): location to store padding in the X direction, or NULL.
+//    - ypad (optional): location to store padding in the Y direction, or NULL.
+//
 func (misc *Misc) Padding() (xpad int, ypad int) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gint     // in
@@ -158,9 +179,9 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 // The function takes the following parameters:
 //
 //    - xpad: amount of space to add on the left and right of the widget, in
-//    pixels.
+//      pixels.
 //    - ypad: amount of space to add on the top and bottom of the widget, in
-//    pixels.
+//      pixels.
 //
 func (misc *Misc) SetPadding(xpad, ypad int) {
 	var _arg0 *C.GtkMisc // out
@@ -175,13 +196,4 @@ func (misc *Misc) SetPadding(xpad, ypad int) {
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xpad)
 	runtime.KeepAlive(ypad)
-}
-
-func (misc *Misc) baseMisc() *Misc {
-	return misc
-}
-
-// BaseMisc returns the underlying base object.
-func BaseMisc(obj Miscer) *Misc {
-	return obj.baseMisc()
 }

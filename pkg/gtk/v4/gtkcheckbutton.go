@@ -137,7 +137,29 @@ func marshalCheckButtonner(p uintptr) (interface{}, error) {
 	return wrapCheckButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate: emitted to when the check button is activated.
+//
+// The ::activate signal on GtkCheckButton is an action signal and emitting it
+// causes the button to animate press then release.
+//
+// Applications should never connect to this signal, but use the
+// gtk.CheckButton::toggled signal.
+func (self *CheckButton) ConnectActivate(f func()) externglib.SignalHandle {
+	return self.Connect("activate", f)
+}
+
+// ConnectToggled: emitted when the buttons's gtk.CheckButton:active property
+// changes.
+func (self *CheckButton) ConnectToggled(f func()) externglib.SignalHandle {
+	return self.Connect("toggled", f)
+}
+
 // NewCheckButton creates a new GtkCheckButton.
+//
+// The function returns the following values:
+//
+//    - checkButton: new GtkCheckButton.
+//
 func NewCheckButton() *CheckButton {
 	var _cret *C.GtkWidget // in
 
@@ -154,7 +176,11 @@ func NewCheckButton() *CheckButton {
 //
 // The function takes the following parameters:
 //
-//    - label: text for the check button.
+//    - label (optional): text for the check button.
+//
+// The function returns the following values:
+//
+//    - checkButton: new GtkCheckButton.
 //
 func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _arg1 *C.char      // out
@@ -180,8 +206,12 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 //
 // The function takes the following parameters:
 //
-//    - label: text of the button, with an underscore in front of the mnemonic
-//    character.
+//    - label (optional): text of the button, with an underscore in front of the
+//      mnemonic character.
+//
+// The function returns the following values:
+//
+//    - checkButton: new GtkCheckButton.
 //
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _arg1 *C.char      // out
@@ -203,6 +233,11 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 }
 
 // Active returns whether the check button is active.
+//
+// The function returns the following values:
+//
+//    - ok: whether the check button is active.
+//
 func (self *CheckButton) Active() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
@@ -222,6 +257,11 @@ func (self *CheckButton) Active() bool {
 }
 
 // Inconsistent returns whether the check button is in an inconsistent state.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if check_button is currently in an inconsistent state.
+//
 func (checkButton *CheckButton) Inconsistent() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
@@ -241,6 +281,12 @@ func (checkButton *CheckButton) Inconsistent() bool {
 }
 
 // Label returns the label of the check button.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): label self shows next to the indicator. If no label is
+//      shown, NULL will be returned.
+//
 func (self *CheckButton) Label() string {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret *C.char           // in
@@ -260,6 +306,12 @@ func (self *CheckButton) Label() string {
 }
 
 // UseUnderline returns whether underlines in the label indicate mnemonics.
+//
+// The function returns the following values:
+//
+//    - ok: value of the gtk.CheckButton:use-underline property. See
+//      gtk.CheckButton.SetUseUnderline() for details on how to set a new value.
+//
 func (self *CheckButton) UseUnderline() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
@@ -315,7 +367,7 @@ func (self *CheckButton) SetActive(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - group: another GtkCheckButton to form a group with.
+//    - group (optional): another GtkCheckButton to form a group with.
 //
 func (self *CheckButton) SetGroup(group *CheckButton) {
 	var _arg0 *C.GtkCheckButton // out
@@ -362,7 +414,8 @@ func (checkButton *CheckButton) SetInconsistent(inconsistent bool) {
 //
 // The function takes the following parameters:
 //
-//    - label: text shown next to the indicator, or NULL to show no text.
+//    - label (optional): text shown next to the indicator, or NULL to show no
+//      text.
 //
 func (self *CheckButton) SetLabel(label string) {
 	var _arg0 *C.GtkCheckButton // out
@@ -401,21 +454,4 @@ func (self *CheckButton) SetUseUnderline(setting bool) {
 	C.gtk_check_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
-}
-
-// ConnectActivate: emitted to when the check button is activated.
-//
-// The ::activate signal on GtkCheckButton is an action signal and emitting it
-// causes the button to animate press then release.
-//
-// Applications should never connect to this signal, but use the
-// gtk.CheckButton::toggled signal.
-func (self *CheckButton) ConnectActivate(f func()) externglib.SignalHandle {
-	return self.Connect("activate", f)
-}
-
-// ConnectToggled: emitted when the buttons's gtk.CheckButton:active property
-// changes.
-func (self *CheckButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return self.Connect("toggled", f)
 }

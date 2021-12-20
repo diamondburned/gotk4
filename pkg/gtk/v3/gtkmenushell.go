@@ -32,6 +32,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type MenuShellOverrider interface {
+	// The function takes the following parameters:
+	//
 	ActivateCurrent(forceHide bool)
 	// Cancel cancels the selection within the menu shell.
 	Cancel()
@@ -39,13 +41,33 @@ type MenuShellOverrider interface {
 	//
 	// Typically this results in the menu shell being erased from the screen.
 	Deactivate()
+	// The function returns the following values:
+	//
 	PopupDelay() int
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
 	// indicated by position.
+	//
+	// The function takes the following parameters:
+	//
+	//    - child to add.
+	//    - position in the item list where child is added. Positions are
+	//      numbered from 0 to n-1.
+	//
 	Insert(child Widgetter, position int)
+	// The function takes the following parameters:
+	//
 	MoveCurrent(direction MenuDirectionType)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	MoveSelected(distance int) bool
 	// SelectItem selects the menu item from the menu shell.
+	//
+	// The function takes the following parameters:
+	//
+	//    - menuItem to select.
+	//
 	SelectItem(menuItem Widgetter)
 	SelectionDone()
 }
@@ -116,13 +138,71 @@ func marshalMenuSheller(p uintptr) (interface{}, error) {
 	return wrapMenuShell(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (menuShell *MenuShell) baseMenuShell() *MenuShell {
+	return menuShell
+}
+
+// BaseMenuShell returns the underlying base object.
+func BaseMenuShell(obj MenuSheller) *MenuShell {
+	return obj.baseMenuShell()
+}
+
+// ConnectActivateCurrent: action signal that activates the current menu item
+// within the menu shell.
+func (menuShell *MenuShell) ConnectActivateCurrent(f func(forceHide bool)) externglib.SignalHandle {
+	return menuShell.Connect("activate-current", f)
+}
+
+// ConnectCancel: action signal which cancels the selection within the menu
+// shell. Causes the MenuShell::selection-done signal to be emitted.
+func (menuShell *MenuShell) ConnectCancel(f func()) externglib.SignalHandle {
+	return menuShell.Connect("cancel", f)
+}
+
+// ConnectCycleFocus: keybinding signal which moves the focus in the given
+// direction.
+func (menuShell *MenuShell) ConnectCycleFocus(f func(direction DirectionType)) externglib.SignalHandle {
+	return menuShell.Connect("cycle-focus", f)
+}
+
+// ConnectDeactivate: this signal is emitted when a menu shell is deactivated.
+func (menuShell *MenuShell) ConnectDeactivate(f func()) externglib.SignalHandle {
+	return menuShell.Connect("deactivate", f)
+}
+
+// ConnectInsert signal is emitted when a new MenuItem is added to a MenuShell.
+// A separate signal is used instead of GtkContainer::add because of the need
+// for an additional position parameter.
+//
+// The inverse of this signal is the GtkContainer::removed signal.
+func (menuShell *MenuShell) ConnectInsert(f func(child Widgetter, position int)) externglib.SignalHandle {
+	return menuShell.Connect("insert", f)
+}
+
+// ConnectMoveCurrent: keybinding signal which moves the current menu item in
+// the direction specified by direction.
+func (menuShell *MenuShell) ConnectMoveCurrent(f func(direction MenuDirectionType)) externglib.SignalHandle {
+	return menuShell.Connect("move-current", f)
+}
+
+// ConnectMoveSelected signal is emitted to move the selection to another item.
+func (menuShell *MenuShell) ConnectMoveSelected(f func(distance int) bool) externglib.SignalHandle {
+	return menuShell.Connect("move-selected", f)
+}
+
+// ConnectSelectionDone: this signal is emitted when a selection has been
+// completed within a menu shell.
+func (menuShell *MenuShell) ConnectSelectionDone(f func()) externglib.SignalHandle {
+	return menuShell.Connect("selection-done", f)
+}
+
 // ActivateItem activates the menu item within the menu shell.
 //
 // The function takes the following parameters:
 //
 //    - menuItem to activate.
-//    - forceDeactivate: if TRUE, force the deactivation of the menu shell
-//    after the menu item is activated.
+//    - forceDeactivate: if TRUE, force the deactivation of the menu shell after
+//      the menu item is activated.
 //
 func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate bool) {
 	var _arg0 *C.GtkMenuShell // out
@@ -190,10 +270,10 @@ func (menuShell *MenuShell) Append(child *MenuItem) {
 //
 // The function takes the following parameters:
 //
-//    - model to bind to or NULL to remove binding.
-//    - actionNamespace: namespace for actions in model.
+//    - model (optional) to bind to or NULL to remove binding.
+//    - actionNamespace (optional): namespace for actions in model.
 //    - withSeparators: TRUE if toplevel items in shell should have separators
-//    between them.
+//      between them.
 //
 func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace string, withSeparators bool) {
 	var _arg0 *C.GtkMenuShell // out
@@ -256,6 +336,11 @@ func (menuShell *MenuShell) Deselect() {
 //
 // The parent menu shell of a submenu is the Menu or MenuBar from which it was
 // opened up.
+//
+// The function returns the following values:
+//
+//    - widget: parent MenuShell.
+//
 func (menuShell *MenuShell) ParentShell() Widgetter {
 	var _arg0 *C.GtkMenuShell // out
 	var _cret *C.GtkWidget    // in
@@ -286,6 +371,11 @@ func (menuShell *MenuShell) ParentShell() Widgetter {
 }
 
 // SelectedItem gets the currently selected item.
+//
+// The function returns the following values:
+//
+//    - widget: currently selected item.
+//
 func (menuShell *MenuShell) SelectedItem() Widgetter {
 	var _arg0 *C.GtkMenuShell // out
 	var _cret *C.GtkWidget    // in
@@ -317,6 +407,11 @@ func (menuShell *MenuShell) SelectedItem() Widgetter {
 
 // TakeFocus returns TRUE if the menu shell will take the keyboard focus on
 // popup.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the menu shell will take the keyboard focus on popup.
+//
 func (menuShell *MenuShell) TakeFocus() bool {
 	var _arg0 *C.GtkMenuShell // out
 	var _cret C.gboolean      // in
@@ -342,7 +437,7 @@ func (menuShell *MenuShell) TakeFocus() bool {
 //
 //    - child to add.
 //    - position in the item list where child is added. Positions are numbered
-//    from 0 to n-1.
+//      from 0 to n-1.
 //
 func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkMenuShell // out
@@ -383,8 +478,8 @@ func (menuShell *MenuShell) Prepend(child Widgetter) {
 // The function takes the following parameters:
 //
 //    - searchSensitive: if TRUE, search for the first selectable menu item,
-//    otherwise select nothing if the first item isn’t sensitive. This should
-//    be FALSE if the menu is being popped up initially.
+//      otherwise select nothing if the first item isn’t sensitive. This should
+//      be FALSE if the menu is being popped up initially.
 //
 func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 	var _arg0 *C.GtkMenuShell // out
@@ -446,7 +541,7 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 // The function takes the following parameters:
 //
 //    - takeFocus: TRUE if the menu shell should take the keyboard focus on
-//    popup.
+//      popup.
 //
 func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	var _arg0 *C.GtkMenuShell // out
@@ -460,62 +555,4 @@ func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	C.gtk_menu_shell_set_take_focus(_arg0, _arg1)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(takeFocus)
-}
-
-func (menuShell *MenuShell) baseMenuShell() *MenuShell {
-	return menuShell
-}
-
-// BaseMenuShell returns the underlying base object.
-func BaseMenuShell(obj MenuSheller) *MenuShell {
-	return obj.baseMenuShell()
-}
-
-// ConnectActivateCurrent: action signal that activates the current menu item
-// within the menu shell.
-func (menuShell *MenuShell) ConnectActivateCurrent(f func(forceHide bool)) externglib.SignalHandle {
-	return menuShell.Connect("activate-current", f)
-}
-
-// ConnectCancel: action signal which cancels the selection within the menu
-// shell. Causes the MenuShell::selection-done signal to be emitted.
-func (menuShell *MenuShell) ConnectCancel(f func()) externglib.SignalHandle {
-	return menuShell.Connect("cancel", f)
-}
-
-// ConnectCycleFocus: keybinding signal which moves the focus in the given
-// direction.
-func (menuShell *MenuShell) ConnectCycleFocus(f func(direction DirectionType)) externglib.SignalHandle {
-	return menuShell.Connect("cycle-focus", f)
-}
-
-// ConnectDeactivate: this signal is emitted when a menu shell is deactivated.
-func (menuShell *MenuShell) ConnectDeactivate(f func()) externglib.SignalHandle {
-	return menuShell.Connect("deactivate", f)
-}
-
-// ConnectInsert signal is emitted when a new MenuItem is added to a MenuShell.
-// A separate signal is used instead of GtkContainer::add because of the need
-// for an additional position parameter.
-//
-// The inverse of this signal is the GtkContainer::removed signal.
-func (menuShell *MenuShell) ConnectInsert(f func(child Widgetter, position int)) externglib.SignalHandle {
-	return menuShell.Connect("insert", f)
-}
-
-// ConnectMoveCurrent: keybinding signal which moves the current menu item in
-// the direction specified by direction.
-func (menuShell *MenuShell) ConnectMoveCurrent(f func(direction MenuDirectionType)) externglib.SignalHandle {
-	return menuShell.Connect("move-current", f)
-}
-
-// ConnectMoveSelected signal is emitted to move the selection to another item.
-func (menuShell *MenuShell) ConnectMoveSelected(f func(distance int) bool) externglib.SignalHandle {
-	return menuShell.Connect("move-selected", f)
-}
-
-// ConnectSelectionDone: this signal is emitted when a selection has been
-// completed within a menu shell.
-func (menuShell *MenuShell) ConnectSelectionDone(f func()) externglib.SignalHandle {
-	return menuShell.Connect("selection-done", f)
 }

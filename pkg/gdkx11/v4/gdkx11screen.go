@@ -40,10 +40,19 @@ func marshalX11Screener(p uintptr) (interface{}, error) {
 	return wrapX11Screen(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (screen *X11Screen) ConnectWindowManagerChanged(f func()) externglib.SignalHandle {
+	return screen.Connect("window-manager-changed", f)
+}
+
 // CurrentDesktop returns the current workspace for screen when running under a
 // window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
+//
+// The function returns the following values:
+//
+//    - guint32: current workspace, or 0 if workspaces are not supported.
+//
 func (screen *X11Screen) CurrentDesktop() uint32 {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret C.guint32       // in
@@ -64,6 +73,11 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 // under a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
+//
+// The function returns the following values:
+//
+//    - guint32: number of workspaces, or 0 if workspaces are not supported.
+//
 func (screen *X11Screen) NumberOfDesktops() uint32 {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret C.guint32       // in
@@ -81,6 +95,11 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 }
 
 // ScreenNumber returns the index of a X11Screen.
+//
+// The function returns the following values:
+//
+//    - gint: position of screen among the screens of its display.
+//
 func (screen *X11Screen) ScreenNumber() int {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret C.int           // in
@@ -98,6 +117,13 @@ func (screen *X11Screen) ScreenNumber() int {
 }
 
 // WindowManagerName returns the name of the window manager for screen.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the window manager screen screen, or "unknown" if the
+//      window manager is unknown. The string is owned by GDK and should not be
+//      freed.
+//
 func (screen *X11Screen) WindowManagerName() string {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret *C.char         // in
@@ -131,6 +157,10 @@ func (screen *X11Screen) WindowManagerName() string {
 //
 //    - propertyName: name of the WM property.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the window manager supports property.
+//
 func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 	var _arg0 *C.GdkX11Screen // out
 	var _arg1 *C.char         // out
@@ -151,8 +181,4 @@ func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 	}
 
 	return _ok
-}
-
-func (screen *X11Screen) ConnectWindowManagerChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("window-manager-changed", f)
 }

@@ -57,6 +57,11 @@ func marshalWaylandDevicer(p uintptr) (interface{}, error) {
 //
 // This is most notably implemented for devices of type GDK_SOURCE_PEN,
 // GDK_SOURCE_TABLET_PAD.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): /dev/input/event* path of this device.
+//
 func (device *WaylandDevice) NodePath() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in

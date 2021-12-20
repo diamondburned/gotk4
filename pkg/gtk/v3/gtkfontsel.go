@@ -69,6 +69,11 @@ func marshalFontSelectioner(p uintptr) (interface{}, error) {
 // NewFontSelection creates a new FontSelection.
 //
 // Deprecated: Use FontChooserWidget instead.
+//
+// The function returns the following values:
+//
+//    - fontSelection: new FontSelection.
+//
 func NewFontSelection() *FontSelection {
 	var _cret *C.GtkWidget // in
 
@@ -85,6 +90,12 @@ func NewFontSelection() *FontSelection {
 // family, slant, weight, width, etc).
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - fontFace representing the selected font group details. The returned
+//      object is owned by fontsel and must not be modified or freed.
+//
 func (fontsel *FontSelection) Face() pango.FontFacer {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFace    // in
@@ -118,6 +129,11 @@ func (fontsel *FontSelection) Face() pango.FontFacer {
 // selected font. For example, “Regular”, “Bold”, etc.
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
 func (fontsel *FontSelection) FaceList() Widgetter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
@@ -150,6 +166,13 @@ func (fontsel *FontSelection) FaceList() Widgetter {
 // Family gets the FontFamily representing the selected font family.
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - fontFamily representing the selected font family. Font families are a
+//      collection of font faces. The returned object is owned by fontsel and
+//      must not be modified or freed.
+//
 func (fontsel *FontSelection) Family() pango.FontFamilier {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFamily  // in
@@ -183,6 +206,11 @@ func (fontsel *FontSelection) Family() pango.FontFamilier {
 // “Sans”, “Serif”, etc.
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
 func (fontsel *FontSelection) FamilyList() Widgetter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
@@ -222,6 +250,12 @@ func (fontsel *FontSelection) FamilyList() Widgetter {
 // font descriptions.
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - utf8: string with the name of the current font, or NULL if no font is
+//      selected. You must free this string with g_free().
+//
 func (fontsel *FontSelection) FontName() string {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.gchar            // in
@@ -242,6 +276,11 @@ func (fontsel *FontSelection) FontName() string {
 // PreviewEntry: this returns the Entry used to display the font as a preview.
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
 func (fontsel *FontSelection) PreviewEntry() Widgetter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
@@ -274,6 +313,12 @@ func (fontsel *FontSelection) PreviewEntry() Widgetter {
 // PreviewText gets the text displayed in the preview area.
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - utf8: text displayed in the preview area. This string is owned by the
+//      widget and should not be modified or freed.
+//
 func (fontsel *FontSelection) PreviewText() string {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.gchar            // in
@@ -293,6 +338,12 @@ func (fontsel *FontSelection) PreviewText() string {
 // Size: selected font size.
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - gint: n integer representing the selected font size, or -1 if no font
+//      size is selected.
+//
 func (fontsel *FontSelection) Size() int {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret C.gint              // in
@@ -313,6 +364,11 @@ func (fontsel *FontSelection) Size() int {
 // number manually instead of selecting it from the list of font sizes.
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
 func (fontsel *FontSelection) SizeEntry() Widgetter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
@@ -345,6 +401,11 @@ func (fontsel *FontSelection) SizeEntry() Widgetter {
 // SizeList: this returns the TreeView used to list font sizes.
 //
 // Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
 func (fontsel *FontSelection) SizeList() Widgetter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
@@ -385,6 +446,11 @@ func (fontsel *FontSelection) SizeList() Widgetter {
 // The function takes the following parameters:
 //
 //    - fontname: font name like “Helvetica 12” or “Times Bold 18”.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the font could be set successfully; FALSE if no such font
+//      exists or if the fontsel doesn’t belong to a particular screen yet.
 //
 func (fontsel *FontSelection) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontSelection // out
@@ -475,6 +541,10 @@ func marshalFontSelectionDialogger(p uintptr) (interface{}, error) {
 //
 //    - title of the dialog window.
 //
+// The function returns the following values:
+//
+//    - fontSelectionDialog: new FontSelectionDialog.
+//
 func NewFontSelectionDialog(title string) *FontSelectionDialog {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -495,6 +565,11 @@ func NewFontSelectionDialog(title string) *FontSelectionDialog {
 // CancelButton gets the “Cancel” button.
 //
 // Deprecated: Use FontChooserDialog.
+//
+// The function returns the following values:
+//
+//    - widget used in the dialog for the “Cancel” button.
+//
 func (fsd *FontSelectionDialog) CancelButton() Widgetter {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
@@ -534,6 +609,12 @@ func (fsd *FontSelectionDialog) CancelButton() Widgetter {
 // font descriptions.
 //
 // Deprecated: Use FontChooserDialog.
+//
+// The function returns the following values:
+//
+//    - utf8: string with the name of the current font, or NULL if no font is
+//      selected. You must free this string with g_free().
+//
 func (fsd *FontSelectionDialog) FontName() string {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.gchar                  // in
@@ -554,6 +635,11 @@ func (fsd *FontSelectionDialog) FontName() string {
 // FontSelection retrieves the FontSelection widget embedded in the dialog.
 //
 // Deprecated: Use FontChooserDialog.
+//
+// The function returns the following values:
+//
+//    - widget: embedded FontSelection.
+//
 func (fsd *FontSelectionDialog) FontSelection() Widgetter {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
@@ -586,6 +672,11 @@ func (fsd *FontSelectionDialog) FontSelection() Widgetter {
 // OKButton gets the “OK” button.
 //
 // Deprecated: Use FontChooserDialog.
+//
+// The function returns the following values:
+//
+//    - widget used in the dialog for the “OK” button.
+//
 func (fsd *FontSelectionDialog) OKButton() Widgetter {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
@@ -618,6 +709,12 @@ func (fsd *FontSelectionDialog) OKButton() Widgetter {
 // PreviewText gets the text displayed in the preview area.
 //
 // Deprecated: Use FontChooserDialog.
+//
+// The function returns the following values:
+//
+//    - utf8: text displayed in the preview area. This string is owned by the
+//      widget and should not be modified or freed.
+//
 func (fsd *FontSelectionDialog) PreviewText() string {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.gchar                  // in
@@ -641,6 +738,11 @@ func (fsd *FontSelectionDialog) PreviewText() string {
 // The function takes the following parameters:
 //
 //    - fontname: font name like “Helvetica 12” or “Times Bold 18”.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the font selected in fsd is now the fontname specified, FALSE
+//      otherwise.
 //
 func (fsd *FontSelectionDialog) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontSelectionDialog // out

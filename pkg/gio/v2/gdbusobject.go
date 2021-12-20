@@ -31,12 +31,38 @@ func init() {
 type DBusObjectOverrider interface {
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
+	//
+	// The function takes the following parameters:
+	//
+	//    - interfaceName d-Bus interface name.
+	//
+	// The function returns the following values:
+	//
+	//    - dBusInterface (optional): NULL if not found, otherwise a BusInterface
+	//      that must be freed with g_object_unref().
+	//
 	Interface(interfaceName string) DBusInterfacer
 	// Interfaces gets the D-Bus interfaces associated with object.
+	//
+	// The function returns the following values:
+	//
+	//    - list of BusInterface instances. The returned list must be freed by
+	//      g_list_free() after each element has been freed with
+	//      g_object_unref().
+	//
 	Interfaces() []DBusInterfacer
 	// ObjectPath gets the object path for object.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: string owned by object. Do not free.
+	//
 	ObjectPath() string
+	// The function takes the following parameters:
+	//
 	InterfaceAdded(interface_ DBusInterfacer)
+	// The function takes the following parameters:
+	//
 	InterfaceRemoved(interface_ DBusInterfacer)
 }
 
@@ -76,12 +102,27 @@ func marshalDBusObjector(p uintptr) (interface{}, error) {
 	return wrapDBusObject(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectInterfaceAdded: emitted when interface is added to object.
+func (object *DBusObject) ConnectInterfaceAdded(f func(iface DBusInterfacer)) externglib.SignalHandle {
+	return object.Connect("interface-added", f)
+}
+
+// ConnectInterfaceRemoved: emitted when interface is removed from object.
+func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) externglib.SignalHandle {
+	return object.Connect("interface-removed", f)
+}
+
 // Interface gets the D-Bus interface with name interface_name associated with
 // object, if any.
 //
 // The function takes the following parameters:
 //
 //    - interfaceName d-Bus interface name.
+//
+// The function returns the following values:
+//
+//    - dBusInterface (optional): NULL if not found, otherwise a BusInterface
+//      that must be freed with g_object_unref().
 //
 func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 	var _arg0 *C.GDBusObject    // out
@@ -116,6 +157,12 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 }
 
 // Interfaces gets the D-Bus interfaces associated with object.
+//
+// The function returns the following values:
+//
+//    - list of BusInterface instances. The returned list must be freed by
+//      g_list_free() after each element has been freed with g_object_unref().
+//
 func (object *DBusObject) Interfaces() []DBusInterfacer {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.GList       // in
@@ -152,6 +199,11 @@ func (object *DBusObject) Interfaces() []DBusInterfacer {
 }
 
 // ObjectPath gets the object path for object.
+//
+// The function returns the following values:
+//
+//    - utf8: string owned by object. Do not free.
+//
 func (object *DBusObject) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in
@@ -166,14 +218,4 @@ func (object *DBusObject) ObjectPath() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// ConnectInterfaceAdded: emitted when interface is added to object.
-func (object *DBusObject) ConnectInterfaceAdded(f func(iface DBusInterfacer)) externglib.SignalHandle {
-	return object.Connect("interface-added", f)
-}
-
-// ConnectInterfaceRemoved: emitted when interface is removed from object.
-func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) externglib.SignalHandle {
-	return object.Connect("interface-removed", f)
 }

@@ -114,6 +114,58 @@ func marshalDropTargetter(p uintptr) (interface{}, error) {
 	return wrapDropTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAccept: emitted on the drop site when a drop operation is about to
+// begin.
+//
+// If the drop is not accepted, FALSE will be returned and the drop target will
+// ignore the drop. If TRUE is returned, the drop is accepted for now but may be
+// rejected later via a call to gtk.DropTarget.Reject() or ultimately by
+// returning FALSE from a gtk.DropTarget::drop handler.
+//
+// The default handler for this signal decides whether to accept the drop based
+// on the formats provided by the drop.
+//
+// If the decision whether the drop will be accepted or rejected depends on the
+// data, this function should return TRUE, the gtk.DropTarget:preload property
+// should be set and the value should be inspected via the ::notify:value
+// signal, calling gtk.DropTarget.Reject() if required.
+func (self *DropTarget) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.SignalHandle {
+	return self.Connect("accept", f)
+}
+
+// ConnectDrop: emitted on the drop site when the user drops the data onto the
+// widget.
+//
+// The signal handler must determine whether the pointer position is in a drop
+// zone or not. If it is not in a drop zone, it returns FALSE and no further
+// processing is necessary.
+//
+// Otherwise, the handler returns TRUE. In this case, this handler will accept
+// the drop. The handler is responsible for rading the given value and
+// performing the drop operation.
+func (self *DropTarget) ConnectDrop(f func(value externglib.Value, x, y float64) bool) externglib.SignalHandle {
+	return self.Connect("drop", f)
+}
+
+// ConnectEnter: emitted on the drop site when the pointer enters the widget.
+//
+// It can be used to set up custom highlighting.
+func (self *DropTarget) ConnectEnter(f func(x, y float64) gdk.DragAction) externglib.SignalHandle {
+	return self.Connect("enter", f)
+}
+
+// ConnectLeave: emitted on the drop site when the pointer leaves the widget.
+//
+// Its main purpose it to undo things done in gtk.DropTarget::enter.
+func (self *DropTarget) ConnectLeave(f func()) externglib.SignalHandle {
+	return self.Connect("leave", f)
+}
+
+// ConnectMotion: emitted while the pointer is moving over the drop target.
+func (self *DropTarget) ConnectMotion(f func(x, y float64) gdk.DragAction) externglib.SignalHandle {
+	return self.Connect("motion", f)
+}
+
 // NewDropTarget creates a new GtkDropTarget object.
 //
 // If the drop target should support more than 1 type, pass G_TYPE_INVALID for
@@ -123,6 +175,10 @@ func marshalDropTargetter(p uintptr) (interface{}, error) {
 //
 //    - typ: supported type or G_TYPE_INVALID.
 //    - actions: supported actions.
+//
+// The function returns the following values:
+//
+//    - dropTarget: new GtkDropTarget.
 //
 func NewDropTarget(typ externglib.Type, actions gdk.DragAction) *DropTarget {
 	var _arg1 C.GType          // out
@@ -144,6 +200,11 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) *DropTarget {
 }
 
 // Actions gets the actions that this drop target supports.
+//
+// The function returns the following values:
+//
+//    - dragAction actions that this drop target supports.
+//
 func (self *DropTarget) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.GdkDragAction  // in
@@ -163,6 +224,11 @@ func (self *DropTarget) Actions() gdk.DragAction {
 // Drop gets the currently handled drop operation.
 //
 // If no drop operation is going on, NULL is returned.
+//
+// The function returns the following values:
+//
+//    - drop (optional): current drop.
+//
 func (self *DropTarget) Drop() gdk.Dropper {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GdkDrop       // in
@@ -194,6 +260,11 @@ func (self *DropTarget) Drop() gdk.Dropper {
 // Formats gets the data formats that this drop target accepts.
 //
 // If the result is NULL, all formats are expected to be supported.
+//
+// The function returns the following values:
+//
+//    - contentFormats (optional): supported data formats.
+//
 func (self *DropTarget) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTarget     // out
 	var _cret *C.GdkContentFormats // in
@@ -221,6 +292,12 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 // GTypes gets the list of supported GTypes for self.
 //
 // If no type have been set, NULL will be returned.
+//
+// The function returns the following values:
+//
+//    - gTypes (optional): G_TYPE_INVALID-terminated array of types included in
+//      formats or NULL if none.
+//
 func (self *DropTarget) GTypes() []externglib.Type {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GType         // in
@@ -247,6 +324,11 @@ func (self *DropTarget) GTypes() []externglib.Type {
 }
 
 // Preload gets whether data should be preloaded on hover.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if drop data should be preloaded.
+//
 func (self *DropTarget) Preload() bool {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.gboolean       // in
@@ -266,6 +348,11 @@ func (self *DropTarget) Preload() bool {
 }
 
 // Value gets the current drop data, as a GValue.
+//
+// The function returns the following values:
+//
+//    - value (optional): current drop data.
+//
 func (self *DropTarget) Value() *externglib.Value {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GValue        // in
@@ -322,7 +409,7 @@ func (self *DropTarget) SetActions(actions gdk.DragAction) {
 //
 // The function takes the following parameters:
 //
-//    - types: all supported #GTypes that can be dropped.
+//    - types (optional): all supported #GTypes that can be dropped.
 //
 func (self *DropTarget) SetGTypes(types []externglib.Type) {
 	var _arg0 *C.GtkDropTarget // out
@@ -363,56 +450,4 @@ func (self *DropTarget) SetPreload(preload bool) {
 	C.gtk_drop_target_set_preload(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(preload)
-}
-
-// ConnectAccept: emitted on the drop site when a drop operation is about to
-// begin.
-//
-// If the drop is not accepted, FALSE will be returned and the drop target will
-// ignore the drop. If TRUE is returned, the drop is accepted for now but may be
-// rejected later via a call to gtk.DropTarget.Reject() or ultimately by
-// returning FALSE from a gtk.DropTarget::drop handler.
-//
-// The default handler for this signal decides whether to accept the drop based
-// on the formats provided by the drop.
-//
-// If the decision whether the drop will be accepted or rejected depends on the
-// data, this function should return TRUE, the gtk.DropTarget:preload property
-// should be set and the value should be inspected via the ::notify:value
-// signal, calling gtk.DropTarget.Reject() if required.
-func (self *DropTarget) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.SignalHandle {
-	return self.Connect("accept", f)
-}
-
-// ConnectDrop: emitted on the drop site when the user drops the data onto the
-// widget.
-//
-// The signal handler must determine whether the pointer position is in a drop
-// zone or not. If it is not in a drop zone, it returns FALSE and no further
-// processing is necessary.
-//
-// Otherwise, the handler returns TRUE. In this case, this handler will accept
-// the drop. The handler is responsible for rading the given value and
-// performing the drop operation.
-func (self *DropTarget) ConnectDrop(f func(value externglib.Value, x, y float64) bool) externglib.SignalHandle {
-	return self.Connect("drop", f)
-}
-
-// ConnectEnter: emitted on the drop site when the pointer enters the widget.
-//
-// It can be used to set up custom highlighting.
-func (self *DropTarget) ConnectEnter(f func(x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("enter", f)
-}
-
-// ConnectLeave: emitted on the drop site when the pointer leaves the widget.
-//
-// Its main purpose it to undo things done in gtk.DropTarget::enter.
-func (self *DropTarget) ConnectLeave(f func()) externglib.SignalHandle {
-	return self.Connect("leave", f)
-}
-
-// ConnectMotion: emitted while the pointer is moving over the drop target.
-func (self *DropTarget) ConnectMotion(f func(x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("motion", f)
 }

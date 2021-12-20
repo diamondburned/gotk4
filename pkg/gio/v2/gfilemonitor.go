@@ -28,7 +28,18 @@ func init() {
 // yet, so the interface currently has no use.
 type FileMonitorOverrider interface {
 	// Cancel cancels a file monitor.
+	//
+	// The function returns the following values:
+	//
+	//    - ok always TRUE.
+	//
 	Cancel() bool
+	// The function takes the following parameters:
+	//
+	//    - file
+	//    - otherFile
+	//    - eventType
+	//
 	Changed(file, otherFile Filer, eventType FileMonitorEvent)
 }
 
@@ -72,7 +83,51 @@ func marshalFileMonitorrer(p uintptr) (interface{}, error) {
 	return wrapFileMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (monitor *FileMonitor) baseFileMonitor() *FileMonitor {
+	return monitor
+}
+
+// BaseFileMonitor returns the underlying base object.
+func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
+	return obj.baseFileMonitor()
+}
+
+// ConnectChanged: emitted when file has been changed.
+//
+// If using G_FILE_MONITOR_WATCH_MOVES on a directory monitor, and the
+// information is available (and if supported by the backend), event_type may be
+// G_FILE_MONITOR_EVENT_RENAMED, G_FILE_MONITOR_EVENT_MOVED_IN or
+// G_FILE_MONITOR_EVENT_MOVED_OUT.
+//
+// In all cases file will be a child of the monitored directory. For renames,
+// file will be the old name and other_file is the new name. For "moved in"
+// events, file is the name of the file that appeared and other_file is the old
+// name that it was moved from (in another directory). For "moved out" events,
+// file is the name of the file that used to be in this directory and other_file
+// is the name of the file at its new location.
+//
+// It makes sense to treat G_FILE_MONITOR_EVENT_MOVED_IN as equivalent to
+// G_FILE_MONITOR_EVENT_CREATED and G_FILE_MONITOR_EVENT_MOVED_OUT as equivalent
+// to G_FILE_MONITOR_EVENT_DELETED, with extra information.
+// G_FILE_MONITOR_EVENT_RENAMED is equivalent to a delete/create pair. This is
+// exactly how the events will be reported in the case that the
+// G_FILE_MONITOR_WATCH_MOVES flag is not in use.
+//
+// If using the deprecated flag G_FILE_MONITOR_SEND_MOVED flag and event_type is
+// FILE_MONITOR_EVENT_MOVED, file will be set to a #GFile containing the old
+// path, and other_file will be set to a #GFile containing the new path.
+//
+// In all the other cases, other_file will be set to LL.
+func (monitor *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventType FileMonitorEvent)) externglib.SignalHandle {
+	return monitor.Connect("changed", f)
+}
+
 // Cancel cancels a file monitor.
+//
+// The function returns the following values:
+//
+//    - ok always TRUE.
+//
 func (monitor *FileMonitor) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
@@ -123,6 +178,11 @@ func (monitor *FileMonitor) EmitEvent(child, otherFile Filer, eventType FileMoni
 }
 
 // IsCancelled returns whether the monitor is canceled.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if monitor is canceled. FALSE otherwise.
+//
 func (monitor *FileMonitor) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
@@ -147,7 +207,7 @@ func (monitor *FileMonitor) IsCancelled() bool {
 // The function takes the following parameters:
 //
 //    - limitMsecs: non-negative integer with the limit in milliseconds to poll
-//    for changes.
+//      for changes.
 //
 func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
@@ -159,43 +219,4 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	C.g_file_monitor_set_rate_limit(_arg0, _arg1)
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(limitMsecs)
-}
-
-func (monitor *FileMonitor) baseFileMonitor() *FileMonitor {
-	return monitor
-}
-
-// BaseFileMonitor returns the underlying base object.
-func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
-	return obj.baseFileMonitor()
-}
-
-// ConnectChanged: emitted when file has been changed.
-//
-// If using G_FILE_MONITOR_WATCH_MOVES on a directory monitor, and the
-// information is available (and if supported by the backend), event_type may be
-// G_FILE_MONITOR_EVENT_RENAMED, G_FILE_MONITOR_EVENT_MOVED_IN or
-// G_FILE_MONITOR_EVENT_MOVED_OUT.
-//
-// In all cases file will be a child of the monitored directory. For renames,
-// file will be the old name and other_file is the new name. For "moved in"
-// events, file is the name of the file that appeared and other_file is the old
-// name that it was moved from (in another directory). For "moved out" events,
-// file is the name of the file that used to be in this directory and other_file
-// is the name of the file at its new location.
-//
-// It makes sense to treat G_FILE_MONITOR_EVENT_MOVED_IN as equivalent to
-// G_FILE_MONITOR_EVENT_CREATED and G_FILE_MONITOR_EVENT_MOVED_OUT as equivalent
-// to G_FILE_MONITOR_EVENT_DELETED, with extra information.
-// G_FILE_MONITOR_EVENT_RENAMED is equivalent to a delete/create pair. This is
-// exactly how the events will be reported in the case that the
-// G_FILE_MONITOR_WATCH_MOVES flag is not in use.
-//
-// If using the deprecated flag G_FILE_MONITOR_SEND_MOVED flag and event_type is
-// FILE_MONITOR_EVENT_MOVED, file will be set to a #GFile containing the old
-// path, and other_file will be set to a #GFile containing the new path.
-//
-// In all the other cases, other_file will be set to LL.
-func (monitor *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventType FileMonitorEvent)) externglib.SignalHandle {
-	return monitor.Connect("changed", f)
 }

@@ -131,8 +131,46 @@ func marshalButtonner(p uintptr) (interface{}, error) {
 	return wrapButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate signal on GtkButton is an action signal and emitting it
+// causes the button to animate press then release. Applications should never
+// connect to this signal, but use the Button::clicked signal.
+func (button *Button) ConnectActivate(f func()) externglib.SignalHandle {
+	return button.Connect("activate", f)
+}
+
+// ConnectClicked: emitted when the button has been activated (pressed and
+// released).
+func (button *Button) ConnectClicked(f func()) externglib.SignalHandle {
+	return button.Connect("clicked", f)
+}
+
+// ConnectEnter: emitted when the pointer enters the button.
+func (button *Button) ConnectEnter(f func()) externglib.SignalHandle {
+	return button.Connect("enter", f)
+}
+
+// ConnectLeave: emitted when the pointer leaves the button.
+func (button *Button) ConnectLeave(f func()) externglib.SignalHandle {
+	return button.Connect("leave", f)
+}
+
+// ConnectPressed: emitted when the button is pressed.
+func (button *Button) ConnectPressed(f func()) externglib.SignalHandle {
+	return button.Connect("pressed", f)
+}
+
+// ConnectReleased: emitted when the button is released.
+func (button *Button) ConnectReleased(f func()) externglib.SignalHandle {
+	return button.Connect("released", f)
+}
+
 // NewButton creates a new Button widget. To add a child widget to the button,
 // use gtk_container_add().
+//
+// The function returns the following values:
+//
+//    - button: newly created Button widget.
+//
 func NewButton() *Button {
 	var _cret *C.GtkWidget // in
 
@@ -157,8 +195,12 @@ func NewButton() *Button {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name or NULL.
+//    - iconName (optional): icon name or NULL.
 //    - size: icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - button: new Button displaying the themed icon.
 //
 func NewButtonFromIconName(iconName string, size int) *Button {
 	var _arg1 *C.gchar      // out
@@ -196,6 +238,10 @@ func NewButtonFromIconName(iconName string, size int) *Button {
 //
 //    - stockId: name of the stock item.
 //
+// The function returns the following values:
+//
+//    - button: new Button.
+//
 func NewButtonFromStock(stockId string) *Button {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -219,6 +265,10 @@ func NewButtonFromStock(stockId string) *Button {
 // The function takes the following parameters:
 //
 //    - label: text you want the Label to hold.
+//
+// The function returns the following values:
+//
+//    - button: newly created Button widget.
 //
 func NewButtonWithLabel(label string) *Button {
 	var _arg1 *C.gchar     // out
@@ -246,7 +296,11 @@ func NewButtonWithLabel(label string) *Button {
 // The function takes the following parameters:
 //
 //    - label: text of the button, with an underscore in front of the mnemonic
-//    character.
+//      character.
+//
+// The function returns the following values:
+//
+//    - button: new Button.
 //
 func NewButtonWithMnemonic(label string) *Button {
 	var _arg1 *C.gchar     // out
@@ -291,6 +345,12 @@ func (button *Button) Enter() {
 //
 // Deprecated: Access the child widget directly if you need to control its
 // alignment.
+//
+// The function returns the following values:
+//
+//    - xalign: return location for horizontal alignment.
+//    - yalign: return location for vertical alignment.
+//
 func (button *Button) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gfloat     // in
@@ -312,6 +372,11 @@ func (button *Button) Alignment() (xalign float32, yalign float32) {
 
 // AlwaysShowImage returns whether the button will ignore the
 // Settings:gtk-button-images setting and always show the image, if available.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the button will always show the image.
+//
 func (button *Button) AlwaysShowImage() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
@@ -332,6 +397,11 @@ func (button *Button) AlwaysShowImage() bool {
 
 // EventWindow returns the button’s event window if it is realized, NULL
 // otherwise. This function should be rarely needed.
+//
+// The function returns the following values:
+//
+//    - window button’s event window.
+//
 func (button *Button) EventWindow() gdk.Windower {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GdkWindow // in
@@ -365,6 +435,11 @@ func (button *Button) EventWindow() gdk.Windower {
 // the mouse. See gtk_button_set_focus_on_click().
 //
 // Deprecated: Use gtk_widget_get_focus_on_click() instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the button grabs focus when it is clicked with the mouse.
+//
 func (button *Button) FocusOnClick() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
@@ -386,6 +461,11 @@ func (button *Button) FocusOnClick() bool {
 // Image gets the widget that is currenty set as the image of button. This may
 // have been explicitly set by gtk_button_set_image() or constructed by
 // gtk_button_new_from_stock().
+//
+// The function returns the following values:
+//
+//    - widget (optional) or NULL in case there is no image.
+//
 func (button *Button) Image() Widgetter {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GtkWidget // in
@@ -416,6 +496,11 @@ func (button *Button) Image() Widgetter {
 
 // ImagePosition gets the position of the image relative to the text inside the
 // button.
+//
+// The function returns the following values:
+//
+//    - positionType: position.
+//
 func (button *Button) ImagePosition() PositionType {
 	var _arg0 *C.GtkButton      // out
 	var _cret C.GtkPositionType // in
@@ -436,6 +521,12 @@ func (button *Button) ImagePosition() PositionType {
 // gtk_button_set_label(). If the label text has not been set the return value
 // will be NULL. This will be the case if you create an empty button with
 // gtk_button_new() to use as a container.
+//
+// The function returns the following values:
+//
+//    - utf8: text of the label widget. This string is owned by the widget and
+//      must not be modified or freed.
+//
 func (button *Button) Label() string {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.gchar     // in
@@ -453,6 +544,11 @@ func (button *Button) Label() string {
 }
 
 // Relief returns the current relief style of the given Button.
+//
+// The function returns the following values:
+//
+//    - reliefStyle: current ReliefStyle.
+//
 func (button *Button) Relief() ReliefStyle {
 	var _arg0 *C.GtkButton     // out
 	var _cret C.GtkReliefStyle // in
@@ -472,6 +568,12 @@ func (button *Button) Relief() ReliefStyle {
 // UseStock returns whether the button label is a stock item.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the button label is used to select a stock item instead of
+//      being used directly as the label text.
+//
 func (button *Button) UseStock() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
@@ -492,6 +594,12 @@ func (button *Button) UseStock() bool {
 
 // UseUnderline returns whether an embedded underline in the button label
 // indicates a mnemonic. See gtk_button_set_use_underline ().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if an embedded underline in the button label indicates the
+//      mnemonic accelerator keys.
+//
 func (button *Button) UseUnderline() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
@@ -555,9 +663,9 @@ func (button *Button) Released() {
 // The function takes the following parameters:
 //
 //    - xalign: horizontal position of the child, 0.0 is left aligned, 1.0 is
-//    right aligned.
-//    - yalign: vertical position of the child, 0.0 is top aligned, 1.0 is
-//    bottom aligned.
+//      right aligned.
+//    - yalign: vertical position of the child, 0.0 is top aligned, 1.0 is bottom
+//      aligned.
 //
 func (button *Button) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkButton // out
@@ -607,8 +715,7 @@ func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
 //
 // The function takes the following parameters:
 //
-//    - focusOnClick: whether the button grabs focus when clicked with the
-//    mouse.
+//    - focusOnClick: whether the button grabs focus when clicked with the mouse.
 //
 func (button *Button) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkButton // out
@@ -630,7 +737,8 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 //
 // The function takes the following parameters:
 //
-//    - image: widget to set as the image for the button, or NULL to unset.
+//    - image (optional): widget to set as the image for the button, or NULL to
+//      unset.
 //
 func (button *Button) SetImage(image Widgetter) {
 	var _arg0 *C.GtkButton // out
@@ -750,37 +858,4 @@ func (button *Button) SetUseUnderline(useUnderline bool) {
 	C.gtk_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)
-}
-
-// ConnectActivate signal on GtkButton is an action signal and emitting it
-// causes the button to animate press then release. Applications should never
-// connect to this signal, but use the Button::clicked signal.
-func (button *Button) ConnectActivate(f func()) externglib.SignalHandle {
-	return button.Connect("activate", f)
-}
-
-// ConnectClicked: emitted when the button has been activated (pressed and
-// released).
-func (button *Button) ConnectClicked(f func()) externglib.SignalHandle {
-	return button.Connect("clicked", f)
-}
-
-// ConnectEnter: emitted when the pointer enters the button.
-func (button *Button) ConnectEnter(f func()) externglib.SignalHandle {
-	return button.Connect("enter", f)
-}
-
-// ConnectLeave: emitted when the pointer leaves the button.
-func (button *Button) ConnectLeave(f func()) externglib.SignalHandle {
-	return button.Connect("leave", f)
-}
-
-// ConnectPressed: emitted when the button is pressed.
-func (button *Button) ConnectPressed(f func()) externglib.SignalHandle {
-	return button.Connect("pressed", f)
-}
-
-// ConnectReleased: emitted when the button is released.
-func (button *Button) ConnectReleased(f func()) externglib.SignalHandle {
-	return button.Connect("released", f)
 }

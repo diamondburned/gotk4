@@ -57,8 +57,12 @@ func marshalBookmarkLister(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - filename: bookmark file to load.
-//    - attributes to query.
+//    - filename (optional): bookmark file to load.
+//    - attributes (optional) to query.
+//
+// The function returns the following values:
+//
+//    - bookmarkList: new GtkBookmarkList.
 //
 func NewBookmarkList(filename, attributes string) *BookmarkList {
 	var _arg1 *C.char            // out
@@ -86,6 +90,11 @@ func NewBookmarkList(filename, attributes string) *BookmarkList {
 }
 
 // Attributes gets the attributes queried on the children.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): queried attributes.
+//
 func (self *BookmarkList) Attributes() string {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret *C.char            // in
@@ -105,6 +114,11 @@ func (self *BookmarkList) Attributes() string {
 }
 
 // Filename returns the filename of the bookmark file that this list is loading.
+//
+// The function returns the following values:
+//
+//    - utf8: filename of the .xbel file.
+//
 func (self *BookmarkList) Filename() string {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret *C.char            // in
@@ -122,6 +136,11 @@ func (self *BookmarkList) Filename() string {
 }
 
 // IOPriority gets the IO priority to use while loading file.
+//
+// The function returns the following values:
+//
+//    - gint: IO priority.
+//
 func (self *BookmarkList) IOPriority() int {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret C.int              // in
@@ -142,6 +161,11 @@ func (self *BookmarkList) IOPriority() int {
 //
 // Files will be added to self from time to time while loading is going on. The
 // order in which are added is undefined and may change in between runs.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if self is loading.
+//
 func (self *BookmarkList) IsLoading() bool {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret C.gboolean         // in
@@ -168,7 +192,7 @@ func (self *BookmarkList) IsLoading() bool {
 //
 // The function takes the following parameters:
 //
-//    - attributes to enumerate.
+//    - attributes (optional) to enumerate.
 //
 func (self *BookmarkList) SetAttributes(attributes string) {
 	var _arg0 *C.GtkBookmarkList // out

@@ -212,11 +212,17 @@ func marshalFileChooserNativer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title: title of the native, or NULL.
-//    - parent: transient parent of the native, or NULL.
+//    - title (optional): title of the native, or NULL.
+//    - parent (optional): transient parent of the native, or NULL.
 //    - action: open or save mode for the dialog.
-//    - acceptLabel: text to go in the accept button, or NULL for the default.
-//    - cancelLabel: text to go in the cancel button, or NULL for the default.
+//    - acceptLabel (optional): text to go in the accept button, or NULL for the
+//      default.
+//    - cancelLabel (optional): text to go in the cancel button, or NULL for the
+//      default.
+//
+// The function returns the following values:
+//
+//    - fileChooserNative: new FileChooserNative.
 //
 func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel, cancelLabel string) *FileChooserNative {
 	var _arg1 *C.gchar                // out
@@ -258,6 +264,12 @@ func NewFileChooserNative(title string, parent *Window, action FileChooserAction
 }
 
 // AcceptLabel retrieves the custom label text for the accept button.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): custom label, or NULL for the default. This string is
+//      owned by GTK+ and should not be modified or freed.
+//
 func (self *FileChooserNative) AcceptLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _cret *C.char                 // in
@@ -277,6 +289,12 @@ func (self *FileChooserNative) AcceptLabel() string {
 }
 
 // CancelLabel retrieves the custom label text for the cancel button.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): custom label, or NULL for the default. This string is
+//      owned by GTK+ and should not be modified or freed.
+//
 func (self *FileChooserNative) CancelLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _cret *C.char                 // in
@@ -305,7 +323,7 @@ func (self *FileChooserNative) CancelLabel() string {
 //
 // The function takes the following parameters:
 //
-//    - acceptLabel: custom label or NULL for the default.
+//    - acceptLabel (optional): custom label or NULL for the default.
 //
 func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
@@ -332,7 +350,7 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 //
 // The function takes the following parameters:
 //
-//    - cancelLabel: custom label or NULL for the default.
+//    - cancelLabel (optional): custom label or NULL for the default.
 //
 func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out

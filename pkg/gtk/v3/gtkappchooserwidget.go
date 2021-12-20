@@ -31,8 +31,17 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type AppChooserWidgetOverrider interface {
+	// The function takes the following parameters:
+	//
 	ApplicationActivated(appInfo gio.AppInfor)
+	// The function takes the following parameters:
+	//
 	ApplicationSelected(appInfo gio.AppInfor)
+	// The function takes the following parameters:
+	//
+	//    - menu
+	//    - appInfo
+	//
 	PopulatePopup(menu *Menu, appInfo gio.AppInfor)
 }
 
@@ -111,12 +120,40 @@ func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
 	return wrapAppChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectApplicationActivated: emitted when an application item is activated
+// from the widget's list.
+//
+// This usually happens when the user double clicks an item, or an item is
+// selected and the user presses one of the keys Space, Shift+Space, Return or
+// Enter.
+func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) externglib.SignalHandle {
+	return self.Connect("application-activated", f)
+}
+
+// ConnectApplicationSelected: emitted when an application item is selected from
+// the widget's list.
+func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) externglib.SignalHandle {
+	return self.Connect("application-selected", f)
+}
+
+// ConnectPopulatePopup: emitted when a context menu is about to popup over an
+// application item. Clients can insert menu items into the provided Menu object
+// in the callback of this signal; the context menu will be shown over the item
+// if at least one item has been added to the menu.
+func (self *AppChooserWidget) ConnectPopulatePopup(f func(menu Menu, application gio.AppInfor)) externglib.SignalHandle {
+	return self.Connect("populate-popup", f)
+}
+
 // NewAppChooserWidget creates a new AppChooserWidget for applications that can
 // handle content of the given type.
 //
 // The function takes the following parameters:
 //
 //    - contentType: content type to show applications for.
+//
+// The function returns the following values:
+//
+//    - appChooserWidget: newly created AppChooserWidget.
 //
 func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	var _arg1 *C.gchar     // out
@@ -137,6 +174,11 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 
 // DefaultText returns the text that is shown if there are not applications that
 // can handle the content type.
+//
+// The function returns the following values:
+//
+//    - utf8: value of AppChooserWidget:default-text.
+//
 func (self *AppChooserWidget) DefaultText() string {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret *C.gchar               // in
@@ -154,6 +196,11 @@ func (self *AppChooserWidget) DefaultText() string {
 }
 
 // ShowAll returns the current value of the AppChooserWidget:show-all property.
+//
+// The function returns the following values:
+//
+//    - ok: value of AppChooserWidget:show-all.
+//
 func (self *AppChooserWidget) ShowAll() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
@@ -174,6 +221,11 @@ func (self *AppChooserWidget) ShowAll() bool {
 
 // ShowDefault returns the current value of the AppChooserWidget:show-default
 // property.
+//
+// The function returns the following values:
+//
+//    - ok: value of AppChooserWidget:show-default.
+//
 func (self *AppChooserWidget) ShowDefault() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
@@ -194,6 +246,11 @@ func (self *AppChooserWidget) ShowDefault() bool {
 
 // ShowFallback returns the current value of the AppChooserWidget:show-fallback
 // property.
+//
+// The function returns the following values:
+//
+//    - ok: value of AppChooserWidget:show-fallback.
+//
 func (self *AppChooserWidget) ShowFallback() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
@@ -214,6 +271,11 @@ func (self *AppChooserWidget) ShowFallback() bool {
 
 // ShowOther returns the current value of the AppChooserWidget:show-other
 // property.
+//
+// The function returns the following values:
+//
+//    - ok: value of AppChooserWidget:show-other.
+//
 func (self *AppChooserWidget) ShowOther() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
@@ -234,6 +296,11 @@ func (self *AppChooserWidget) ShowOther() bool {
 
 // ShowRecommended returns the current value of the
 // AppChooserWidget:show-recommended property.
+//
+// The function returns the following values:
+//
+//    - ok: value of AppChooserWidget:show-recommended.
+//
 func (self *AppChooserWidget) ShowRecommended() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _cret C.gboolean             // in
@@ -375,28 +442,4 @@ func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
-}
-
-// ConnectApplicationActivated: emitted when an application item is activated
-// from the widget's list.
-//
-// This usually happens when the user double clicks an item, or an item is
-// selected and the user presses one of the keys Space, Shift+Space, Return or
-// Enter.
-func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) externglib.SignalHandle {
-	return self.Connect("application-activated", f)
-}
-
-// ConnectApplicationSelected: emitted when an application item is selected from
-// the widget's list.
-func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) externglib.SignalHandle {
-	return self.Connect("application-selected", f)
-}
-
-// ConnectPopulatePopup: emitted when a context menu is about to popup over an
-// application item. Clients can insert menu items into the provided Menu object
-// in the callback of this signal; the context menu will be shown over the item
-// if at least one item has been added to the menu.
-func (self *AppChooserWidget) ConnectPopulatePopup(f func(menu Menu, application gio.AppInfor)) externglib.SignalHandle {
-	return self.Connect("populate-popup", f)
 }

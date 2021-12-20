@@ -48,6 +48,11 @@ func marshalTCPConnectioner(p uintptr) (interface{}, error) {
 
 // GracefulDisconnect checks if graceful disconnects are used. See
 // g_tcp_connection_set_graceful_disconnect().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if graceful disconnect is used on close, FALSE otherwise.
+//
 func (connection *TCPConnection) GracefulDisconnect() bool {
 	var _arg0 *C.GTcpConnection // out
 	var _cret C.gboolean        // in

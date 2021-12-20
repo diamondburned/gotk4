@@ -142,6 +142,11 @@ func marshalMenuButtonner(p uintptr) (interface{}, error) {
 // arrow as the only child.
 //
 // You can replace the child widget with another GtkWidget should you wish to.
+//
+// The function returns the following values:
+//
+//    - menuButton: newly created GtkMenuButton.
+//
 func NewMenuButton() *MenuButton {
 	var _cret *C.GtkWidget // in
 
@@ -155,6 +160,11 @@ func NewMenuButton() *MenuButton {
 }
 
 // Direction returns the direction the popup will be pointing at when popped up.
+//
+// The function returns the following values:
+//
+//    - arrowType: GtkArrowType value.
+//
 func (menuButton *MenuButton) Direction() ArrowType {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret C.GtkArrowType   // in
@@ -172,6 +182,11 @@ func (menuButton *MenuButton) Direction() ArrowType {
 }
 
 // HasFrame returns whether the button has a frame.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the button has a frame.
+//
 func (menuButton *MenuButton) HasFrame() bool {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret C.gboolean       // in
@@ -191,6 +206,11 @@ func (menuButton *MenuButton) HasFrame() bool {
 }
 
 // IconName gets the name of the icon shown in the button.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the icon shown in the button.
+//
 func (menuButton *MenuButton) IconName() string {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.char          // in
@@ -208,6 +228,11 @@ func (menuButton *MenuButton) IconName() string {
 }
 
 // Label gets the label shown in the button.
+//
+// The function returns the following values:
+//
+//    - utf8: label shown in the button.
+//
 func (menuButton *MenuButton) Label() string {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.char          // in
@@ -225,6 +250,11 @@ func (menuButton *MenuButton) Label() string {
 }
 
 // MenuModel returns the GMenuModel used to generate the popup.
+//
+// The function returns the following values:
+//
+//    - menuModel (optional): GMenuModel or NULL.
+//
 func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GMenuModel    // in
@@ -256,6 +286,11 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 // Popover returns the GtkPopover that pops out of the button.
 //
 // If the button is not using a GtkPopover, this function returns NULL.
+//
+// The function returns the following values:
+//
+//    - popover (optional): GtkPopover or NULL.
+//
 func (menuButton *MenuButton) Popover() *Popover {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkPopover    // in
@@ -276,6 +311,12 @@ func (menuButton *MenuButton) Popover() *Popover {
 
 // UseUnderline returns whether an embedded underline in the text indicates a
 // mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE whether an embedded underline in the text indicates the mnemonic
+//      accelerator keys.
+//
 func (menuButton *MenuButton) UseUnderline() bool {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret C.gboolean       // in
@@ -329,8 +370,9 @@ func (menuButton *MenuButton) Popup() {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call when a popup is about to be shown, but none has
-//    been provided via other means, or NULL to reset to default behavior.
+//    - fn (optional): function to call when a popup is about to be shown, but
+//      none has been provided via other means, or NULL to reset to default
+//      behavior.
 //
 func (menuButton *MenuButton) SetCreatePopupFunc(fn MenuButtonCreatePopupFunc) {
 	var _arg0 *C.GtkMenuButton               // out
@@ -448,7 +490,8 @@ func (menuButton *MenuButton) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - menuModel: GMenuModel, or NULL to unset and disable the button.
+//    - menuModel (optional): GMenuModel, or NULL to unset and disable the
+//      button.
 //
 func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.GtkMenuButton // out
@@ -474,7 +517,7 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - popover: GtkPopover, or NULL to unset and disable the button.
+//    - popover (optional): GtkPopover, or NULL to unset and disable the button.
 //
 func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg0 *C.GtkMenuButton // out

@@ -77,6 +77,11 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 }
 
 // EndLocation returns the location in the CSS document where this section ends.
+//
+// The function returns the following values:
+//
+//    - cssLocation: end location of this section.
+//
 func (section *CSSSection) EndLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
 	var _cret *C.GtkCssLocation // in
@@ -97,6 +102,11 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 //
 // If no such file exists, for example because the CSS was loaded via
 // gtk.CSSProvider.LoadFromData(), then NULL is returned.
+//
+// The function returns the following values:
+//
+//    - file: GFile from which the section was parsed.
+//
 func (section *CSSSection) File() gio.Filer {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GFile         // in
@@ -133,6 +143,11 @@ func (section *CSSSection) File() gio.Filer {
 // NULL if they are the original CSS document that was loaded by
 // gtk.CSSProvider.LoadFromFile() or a section of type GTK_CSS_SECTION_IMPORT if
 // it was loaded with an import rule from a different file.
+//
+// The function returns the following values:
+//
+//    - cssSection (optional): parent section.
+//
 func (section *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
@@ -160,6 +175,11 @@ func (section *CSSSection) Parent() *CSSSection {
 
 // StartLocation returns the location in the CSS document where this section
 // starts.
+//
+// The function returns the following values:
+//
+//    - cssLocation: start location of this section.
+//
 func (section *CSSSection) StartLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
 	var _cret *C.GtkCssLocation // in
@@ -178,6 +198,11 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 
 // String prints the section into a human-readable text form using
 // gtk.CSSSection.Print().
+//
+// The function returns the following values:
+//
+//    - utf8: new string.
+//
 func (section *CSSSection) String() string {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.char          // in

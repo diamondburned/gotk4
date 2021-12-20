@@ -265,6 +265,10 @@ func (i IOFlags) Has(other IOFlags) bool {
 //    - channel to watch.
 //    - condition conditions to watch for.
 //
+// The function returns the following values:
+//
+//    - source: new #GSource.
+//
 func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	var _arg1 *C.GIOChannel  // out
 	var _arg2 C.GIOCondition // out
@@ -379,6 +383,12 @@ func (channel *IOChannel) Close() {
 }
 
 // Flush flushes the write buffer for the GIOChannel.
+//
+// The function returns the following values:
+//
+//    - ioStatus status of the operation: One of IO_STATUS_NORMAL,
+//      IO_STATUS_AGAIN, or IO_STATUS_ERROR.
+//
 func (channel *IOChannel) Flush() (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.GIOStatus   // in
@@ -403,6 +413,11 @@ func (channel *IOChannel) Flush() (IOStatus, error) {
 // BufferCondition: this function returns a OCondition depending on whether
 // there is data to be read/space to write data in the internal buffers in the
 // OChannel. Only the flags G_IO_IN and G_IO_OUT may be set.
+//
+// The function returns the following values:
+//
+//    - ioCondition: OCondition.
+//
 func (channel *IOChannel) BufferCondition() IOCondition {
 	var _arg0 *C.GIOChannel  // out
 	var _cret C.GIOCondition // in
@@ -420,6 +435,11 @@ func (channel *IOChannel) BufferCondition() IOCondition {
 }
 
 // BufferSize gets the buffer size.
+//
+// The function returns the following values:
+//
+//    - gsize: size of the buffer.
+//
 func (channel *IOChannel) BufferSize() uint {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gsize       // in
@@ -437,6 +457,11 @@ func (channel *IOChannel) BufferSize() uint {
 }
 
 // Buffered returns whether channel is buffered.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the channel is buffered.
+//
 func (channel *IOChannel) Buffered() bool {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gboolean    // in
@@ -458,6 +483,12 @@ func (channel *IOChannel) Buffered() bool {
 // Encoding gets the encoding for the input/output of the channel. The internal
 // encoding is always UTF-8. The encoding NULL makes the channel safe for binary
 // data.
+//
+// The function returns the following values:
+//
+//    - utf8: string containing the encoding, this string is owned by GLib and
+//      must not be freed.
+//
 func (channel *IOChannel) Encoding() string {
 	var _arg0 *C.GIOChannel // out
 	var _cret *C.gchar      // in
@@ -482,6 +513,11 @@ func (channel *IOChannel) Encoding() string {
 // change at some later point (e.g. partial shutdown of a socket with the UNIX
 // shutdown() function), the user should immediately call
 // g_io_channel_get_flags() to update the internal values of these flags.
+//
+// The function returns the following values:
+//
+//    - ioFlags flags which are set on the channel.
+//
 func (channel *IOChannel) Flags() IOFlags {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.GIOFlags    // in
@@ -500,6 +536,16 @@ func (channel *IOChannel) Flags() IOFlags {
 
 // LineTerm: this returns the string that OChannel uses to determine where in
 // the file a line break occurs. A value of NULL indicates autodetection.
+//
+// The function takes the following parameters:
+//
+//    - length: location to return the length of the line terminator.
+//
+// The function returns the following values:
+//
+//    - utf8: line termination string. This value is owned by GLib and must not
+//      be freed.
+//
 func (channel *IOChannel) LineTerm(length *int) string {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gint       // out
@@ -534,6 +580,18 @@ func (channel *IOChannel) Init() {
 }
 
 // ReadChars: replacement for g_io_channel_read() with the new API.
+//
+// The function takes the following parameters:
+//
+//    - buf: a buffer to read data into.
+//
+// The function returns the following values:
+//
+//    - bytesRead (optional): number of bytes read. This may be zero even on
+//      success if count < 6 and the channel's encoding is non-NULL. This
+//      indicates that the next UTF-8 character is too wide for the buffer.
+//    - ioStatus status of the operation.
+//
 func (channel *IOChannel) ReadChars(buf []byte) (uint, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -567,6 +625,18 @@ func (channel *IOChannel) ReadChars(buf []byte) (uint, IOStatus, error) {
 // ReadLine reads a line, including the terminating character(s), from a
 // OChannel into a newly-allocated string. str_return will contain allocated
 // memory if the return is G_IO_STATUS_NORMAL.
+//
+// The function returns the following values:
+//
+//    - strReturn: line read from the OChannel, including the line terminator.
+//      This data should be freed with g_free() when no longer needed. This is a
+//      nul-terminated string. If a length of zero is returned, this will be NULL
+//      instead.
+//    - length (optional): location to store length of the read data, or NULL.
+//    - terminatorPos (optional): location to store position of line terminator,
+//      or NULL.
+//    - ioStatus status of the operation.
+//
 func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uint, ioStatus IOStatus, goerr error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // in
@@ -599,6 +669,16 @@ func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorP
 }
 
 // ReadToEnd reads all the remaining data from the file.
+//
+// The function returns the following values:
+//
+//    - strReturn: location to store a pointer to a string holding the remaining
+//      data in the OChannel. This data should be freed with g_free() when no
+//      longer needed. This data is terminated by an extra nul character, but
+//      there may be other nuls in the intervening data.
+//    - ioStatus: G_IO_STATUS_NORMAL on success. This function never returns
+//      G_IO_STATUS_EOF.
+//
 func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // in
@@ -628,6 +708,12 @@ func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 
 // ReadUnichar reads a Unicode character from channel. This function cannot be
 // called on a channel with NULL encoding.
+//
+// The function returns the following values:
+//
+//    - thechar: location to return a character.
+//    - ioStatus: OStatus.
+//
 func (channel *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gunichar    // in
@@ -656,6 +742,19 @@ func (channel *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 // library function fseek().
 //
 // Deprecated: Use g_io_channel_seek_position() instead.
+//
+// The function takes the following parameters:
+//
+//    - offset: offset, in bytes, which is added to the position specified by
+//      type.
+//    - typ: position in the file, which can be G_SEEK_CUR (the current
+//      position), G_SEEK_SET (the start of the file), or G_SEEK_END (the end of
+//      the file).
+//
+// The function returns the following values:
+//
+//    - ioError: G_IO_ERROR_NONE if the operation was successful.
+//
 func (channel *IOChannel) Seek(offset int64, typ SeekType) IOError {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gint64      // out
@@ -679,6 +778,18 @@ func (channel *IOChannel) Seek(offset int64, typ SeekType) IOError {
 }
 
 // SeekPosition: replacement for g_io_channel_seek() with the new API.
+//
+// The function takes the following parameters:
+//
+//    - offset in bytes from the position specified by type.
+//    - typ The type G_SEEK_CUR is only allowed in those cases where a call to
+//      g_io_channel_set_encoding () is allowed. See the documentation for
+//      g_io_channel_set_encoding () for details.
+//
+// The function returns the following values:
+//
+//    - ioStatus status of the operation.
+//
 func (channel *IOChannel) SeekPosition(offset int64, typ SeekType) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gint64      // out
@@ -707,6 +818,11 @@ func (channel *IOChannel) SeekPosition(offset int64, typ SeekType) (IOStatus, er
 }
 
 // SetBufferSize sets the buffer size.
+//
+// The function takes the following parameters:
+//
+//    - size of the buffer, or 0 to let GLib pick a good size.
+//
 func (channel *IOChannel) SetBufferSize(size uint) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gsize       // out
@@ -735,6 +851,11 @@ func (channel *IOChannel) SetBufferSize(size uint) {
 // and old APIs, if this is necessary for maintaining old code.
 //
 // The default state of the channel is buffered.
+//
+// The function takes the following parameters:
+//
+//    - buffered: whether to set the channel buffered or unbuffered.
+//
 func (channel *IOChannel) SetBuffered(buffered bool) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gboolean    // out
@@ -781,6 +902,15 @@ func (channel *IOChannel) SetBuffered(buffered bool) {
 // g_io_channel_seek_position() with an offset of G_SEEK_CUR, and, if they are
 // "seekable", cannot call g_io_channel_write_chars() after calling one of the
 // API "read" functions.
+//
+// The function takes the following parameters:
+//
+//    - encoding (optional) type.
+//
+// The function returns the following values:
+//
+//    - ioStatus: G_IO_STATUS_NORMAL if the encoding was successfully set.
+//
 func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -810,6 +940,15 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 
 // SetFlags sets the (writeable) flags in channel to (flags &
 // G_IO_FLAG_SET_MASK).
+//
+// The function takes the following parameters:
+//
+//    - flags to set on the IO channel.
+//
+// The function returns the following values:
+//
+//    - ioStatus status of the operation.
+//
 func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.GIOFlags    // out
@@ -836,6 +975,17 @@ func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 
 // SetLineTerm: this sets the string that OChannel uses to determine where in
 // the file a line break occurs.
+//
+// The function takes the following parameters:
+//
+//    - lineTerm (optional): line termination string. Use NULL for autodetect.
+//      Autodetection breaks on "\n", "\r\n", "\r", "\0", and the Unicode
+//      paragraph separator. Autodetection should not be used for anything other
+//      than file-based channels.
+//    - length of the termination string. If -1 is passed, the string is assumed
+//      to be nul-terminated. This option allows termination strings with
+//      embedded nuls.
+//
 func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -857,6 +1007,15 @@ func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 // Shutdown: close an IO channel. Any pending data to be written will be flushed
 // if flush is TRUE. The channel will not be freed until the last reference is
 // dropped using g_io_channel_unref().
+//
+// The function takes the following parameters:
+//
+//    - flush: if TRUE, flush pending.
+//
+// The function returns the following values:
+//
+//    - ioStatus status of the operation.
+//
 func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gboolean    // out
@@ -887,6 +1046,11 @@ func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 //
 // On Windows this function returns the file descriptor or socket of the
 // OChannel.
+//
+// The function returns the following values:
+//
+//    - gint: file descriptor of the OChannel.
+//
 func (channel *IOChannel) UnixGetFd() int {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gint        // in
@@ -906,6 +1070,17 @@ func (channel *IOChannel) UnixGetFd() int {
 // Write writes data to a OChannel.
 //
 // Deprecated: Use g_io_channel_write_chars() instead.
+//
+// The function takes the following parameters:
+//
+//    - buf: buffer containing the data to write.
+//    - count: number of bytes to write.
+//    - bytesWritten: number of bytes actually written.
+//
+// The function returns the following values:
+//
+//    - ioError: G_IO_ERROR_NONE if the operation was successful.
+//
 func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOError {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -938,6 +1113,21 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 // of reading and writing is not allowed. A call to g_io_channel_write_chars ()
 // may only be made on a channel from which data has been read in the cases
 // described in the documentation for g_io_channel_set_encoding ().
+//
+// The function takes the following parameters:
+//
+//    - buf: buffer to write data from.
+//    - count: size of the buffer. If -1, the buffer is taken to be a
+//      nul-terminated string.
+//
+// The function returns the following values:
+//
+//    - bytesWritten: number of bytes written. This can be nonzero even if the
+//      return value is not G_IO_STATUS_NORMAL. If the return value is
+//      G_IO_STATUS_NORMAL and the channel is blocking, this will always be equal
+//      to count if count >= 0.
+//    - ioStatus status of the operation.
+//
 func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -972,6 +1162,15 @@ func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, err
 
 // WriteUnichar writes a Unicode character to channel. This function cannot be
 // called on a channel with NULL encoding.
+//
+// The function takes the following parameters:
+//
+//    - thechar: character.
+//
+// The function returns the following values:
+//
+//    - ioStatus: OStatus.
+//
 func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gunichar    // out
@@ -1001,6 +1200,10 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 // The function takes the following parameters:
 //
 //    - en: errno error number, e.g. EINVAL.
+//
+// The function returns the following values:
+//
+//    - ioChannelError error number, e.g. G_IO_CHANNEL_ERROR_INVAL.
 //
 func IOChannelErrorFromErrno(en int) IOChannelError {
 	var _arg1 C.gint            // out

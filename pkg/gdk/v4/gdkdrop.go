@@ -73,6 +73,15 @@ func marshalDropper(p uintptr) (interface{}, error) {
 	return wrapDrop(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (self *Drop) baseDrop() *Drop {
+	return self
+}
+
+// BaseDrop returns the underlying base object.
+func BaseDrop(obj Dropper) *Drop {
+	return obj.baseDrop()
+}
+
 // Finish ends the drag operation after a drop.
 //
 // The action must be a single action selected from the actions available via
@@ -107,6 +116,11 @@ func (self *Drop) Finish(action DragAction) {
 // source side actions as well as to calls to gdk.Drop.Status() or
 // gdk.Drop.Finish(). The source side will not change this value anymore once a
 // drop has started.
+//
+// The function returns the following values:
+//
+//    - dragAction: possible GdkDragActions.
+//
 func (self *Drop) Actions() DragAction {
 	var _arg0 *C.GdkDrop      // out
 	var _cret C.GdkDragAction // in
@@ -124,6 +138,11 @@ func (self *Drop) Actions() DragAction {
 }
 
 // Device returns the GdkDevice performing the drop.
+//
+// The function returns the following values:
+//
+//    - device: GdkDevice performing the drop.
+//
 func (self *Drop) Device() Devicer {
 	var _arg0 *C.GdkDrop   // out
 	var _cret *C.GdkDevice // in
@@ -154,6 +173,11 @@ func (self *Drop) Device() Devicer {
 }
 
 // Display gets the GdkDisplay that self was created for.
+//
+// The function returns the following values:
+//
+//    - display: GdkDisplay.
+//
 func (self *Drop) Display() *Display {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkDisplay // in
@@ -174,6 +198,11 @@ func (self *Drop) Display() *Display {
 // corresponds to this drop.
 //
 // If it is not, NULL is returned.
+//
+// The function returns the following values:
+//
+//    - drag (optional): corresponding GdkDrag.
+//
 func (self *Drop) Drag() Dragger {
 	var _arg0 *C.GdkDrop // out
 	var _cret *C.GdkDrag // in
@@ -204,6 +233,11 @@ func (self *Drop) Drag() Dragger {
 
 // Formats returns the GdkContentFormats that the drop offers the data to be
 // read in.
+//
+// The function returns the following values:
+//
+//    - contentFormats: possible GdkContentFormats.
+//
 func (self *Drop) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrop           // out
 	var _cret *C.GdkContentFormats // in
@@ -228,6 +262,11 @@ func (self *Drop) Formats() *ContentFormats {
 }
 
 // Surface returns the GdkSurface performing the drop.
+//
+// The function returns the following values:
+//
+//    - surface: GdkSurface performing the drop.
+//
 func (self *Drop) Surface() Surfacer {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkSurface // in
@@ -262,10 +301,11 @@ func (self *Drop) Surface() Surfacer {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional GCancellable object, NULL to ignore.
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
 //    - mimeTypes: pointer to an array of mime types.
 //    - ioPriority: i/O priority for the read operation.
-//    - callback: GAsyncReadyCallback to call when the request is satisfied.
+//    - callback (optional): GAsyncReadyCallback to call when the request is
+//      satisfied.
 //
 func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
@@ -321,6 +361,11 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 //
 //    - result: GAsyncResult.
 //
+// The function returns the following values:
+//
+//    - outMimeType: return location for the used mime type.
+//    - inputStream (optional): GInputStream, or NULL.
+//
 func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 *C.GAsyncResult // out
@@ -373,10 +418,10 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional GCancellable object, NULL to ignore.
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
 //    - typ: GType to read.
 //    - ioPriority: i/O priority of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
@@ -414,6 +459,10 @@ func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPri
 // The function takes the following parameters:
 //
 //    - result: GAsyncResult.
+//
+// The function returns the following values:
+//
+//    - value: GValue containing the result.
 //
 func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error) {
 	var _arg0 *C.GdkDrop      // out
@@ -456,9 +505,9 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, 
 // The function takes the following parameters:
 //
 //    - actions: supported actions of the destination, or 0 to indicate that a
-//    drop will not be accepted.
+//      drop will not be accepted.
 //    - preferred: unique action that's a member of actions indicating the
-//    preferred action.
+//      preferred action.
 //
 func (self *Drop) Status(actions, preferred DragAction) {
 	var _arg0 *C.GdkDrop      // out
@@ -473,13 +522,4 @@ func (self *Drop) Status(actions, preferred DragAction) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(actions)
 	runtime.KeepAlive(preferred)
-}
-
-func (self *Drop) baseDrop() *Drop {
-	return self
-}
-
-// BaseDrop returns the underlying base object.
-func BaseDrop(obj Dropper) *Drop {
-	return obj.baseDrop()
 }

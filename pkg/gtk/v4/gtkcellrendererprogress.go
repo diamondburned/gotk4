@@ -53,6 +53,11 @@ func marshalCellRendererProgresser(p uintptr) (interface{}, error) {
 }
 
 // NewCellRendererProgress creates a new CellRendererProgress.
+//
+// The function returns the following values:
+//
+//    - cellRendererProgress: new cell renderer.
+//
 func NewCellRendererProgress() *CellRendererProgress {
 	var _cret *C.GtkCellRenderer // in
 

@@ -104,12 +104,28 @@ func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
 	return wrapAppChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged: emitted when the active application changes.
+func (self *AppChooserButton) ConnectChanged(f func()) externglib.SignalHandle {
+	return self.Connect("changed", f)
+}
+
+// ConnectCustomItemActivated: emitted when a custom item is activated.
+//
+// Use gtk.AppChooserButton.AppendCustomItem(), to add custom items.
+func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) externglib.SignalHandle {
+	return self.Connect("custom-item-activated", f)
+}
+
 // NewAppChooserButton creates a new GtkAppChooserButton for applications that
 // can handle content of the given type.
 //
 // The function takes the following parameters:
 //
 //    - contentType: content type to show applications for.
+//
+// The function returns the following values:
+//
+//    - appChooserButton: newly created GtkAppChooserButton.
 //
 func NewAppChooserButton(contentType string) *AppChooserButton {
 	var _arg1 *C.char      // out
@@ -175,6 +191,12 @@ func (self *AppChooserButton) AppendSeparator() {
 }
 
 // Heading returns the text to display at the top of the dialog.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): text to display at the top of the dialog, or NULL, in
+//      which case a default text is displayed.
+//
 func (self *AppChooserButton) Heading() string {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret *C.char                // in
@@ -194,6 +216,11 @@ func (self *AppChooserButton) Heading() string {
 }
 
 // Modal gets whether the dialog is modal.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the dialog is modal.
+//
 func (self *AppChooserButton) Modal() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
@@ -214,6 +241,11 @@ func (self *AppChooserButton) Modal() bool {
 
 // ShowDefaultItem returns whether the dropdown menu should show the default
 // application at the top.
+//
+// The function returns the following values:
+//
+//    - ok: value of gtk.AppChooserButton:show-default-item.
+//
 func (self *AppChooserButton) ShowDefaultItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
@@ -234,6 +266,11 @@ func (self *AppChooserButton) ShowDefaultItem() bool {
 
 // ShowDialogItem returns whether the dropdown menu shows an item for a
 // GtkAppChooserDialog.
+//
+// The function returns the following values:
+//
+//    - ok: value of gtk.AppChooserButton:show-dialog-item.
+//
 func (self *AppChooserButton) ShowDialogItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
@@ -356,16 +393,4 @@ func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
-}
-
-// ConnectChanged: emitted when the active application changes.
-func (self *AppChooserButton) ConnectChanged(f func()) externglib.SignalHandle {
-	return self.Connect("changed", f)
-}
-
-// ConnectCustomItemActivated: emitted when a custom item is activated.
-//
-// Use gtk.AppChooserButton.AppendCustomItem(), to add custom items.
-func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) externglib.SignalHandle {
-	return self.Connect("custom-item-activated", f)
 }

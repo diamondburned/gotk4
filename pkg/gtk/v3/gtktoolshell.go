@@ -34,31 +34,68 @@ type ToolShellOverrider interface {
 	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_ellipsize_mode() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - ellipsizeMode: current ellipsize mode of shell.
+	//
 	EllipsizeMode() pango.EllipsizeMode
+	// The function returns the following values:
+	//
 	IconSize() IconSize
 	// Orientation retrieves the current orientation for the tool shell. Tool
 	// items must not call this function directly, but rely on
 	// gtk_tool_item_get_orientation() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - orientation: current orientation of shell.
+	//
 	Orientation() Orientation
 	// ReliefStyle returns the relief style of buttons on shell. Tool items must
 	// not call this function directly, but rely on
 	// gtk_tool_item_get_relief_style() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - reliefStyle: relief style of buttons on shell.
+	//
 	ReliefStyle() ReliefStyle
 	// Style retrieves whether the tool shell has text, icons, or both. Tool
 	// items must not call this function directly, but rely on
 	// gtk_tool_item_get_toolbar_style() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - toolbarStyle: current style of shell.
+	//
 	Style() ToolbarStyle
 	// TextAlignment retrieves the current text alignment for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_text_alignment() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - gfloat: current text alignment of shell.
+	//
 	TextAlignment() float32
 	// TextOrientation retrieves the current text orientation for the tool
 	// shell. Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_text_orientation() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - orientation: current text orientation of shell.
+	//
 	TextOrientation() Orientation
 	// TextSizeGroup retrieves the current text size group for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_text_size_group() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - sizeGroup: current text size group of shell.
+	//
 	TextSizeGroup() *SizeGroup
 	// RebuildMenu: calling this function signals the tool shell that the
 	// overflow menu item for tool items have changed. If there is an overflow
@@ -132,6 +169,11 @@ func marshalToolSheller(p uintptr) (interface{}, error) {
 // EllipsizeMode retrieves the current ellipsize mode for the tool shell. Tool
 // items must not call this function directly, but rely on
 // gtk_tool_item_get_ellipsize_mode() instead.
+//
+// The function returns the following values:
+//
+//    - ellipsizeMode: current ellipsize mode of shell.
+//
 func (shell *ToolShell) EllipsizeMode() pango.EllipsizeMode {
 	var _arg0 *C.GtkToolShell      // out
 	var _cret C.PangoEllipsizeMode // in
@@ -150,6 +192,11 @@ func (shell *ToolShell) EllipsizeMode() pango.EllipsizeMode {
 
 // IconSize retrieves the icon size for the tool shell. Tool items must not call
 // this function directly, but rely on gtk_tool_item_get_icon_size() instead.
+//
+// The function returns the following values:
+//
+//    - gint: current size (IconSize) for icons of shell.
+//
 func (shell *ToolShell) IconSize() int {
 	var _arg0 *C.GtkToolShell // out
 	var _cret C.GtkIconSize   // in
@@ -169,6 +216,11 @@ func (shell *ToolShell) IconSize() int {
 // Orientation retrieves the current orientation for the tool shell. Tool items
 // must not call this function directly, but rely on
 // gtk_tool_item_get_orientation() instead.
+//
+// The function returns the following values:
+//
+//    - orientation: current orientation of shell.
+//
 func (shell *ToolShell) Orientation() Orientation {
 	var _arg0 *C.GtkToolShell  // out
 	var _cret C.GtkOrientation // in
@@ -188,6 +240,11 @@ func (shell *ToolShell) Orientation() Orientation {
 // ReliefStyle returns the relief style of buttons on shell. Tool items must not
 // call this function directly, but rely on gtk_tool_item_get_relief_style()
 // instead.
+//
+// The function returns the following values:
+//
+//    - reliefStyle: relief style of buttons on shell.
+//
 func (shell *ToolShell) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolShell  // out
 	var _cret C.GtkReliefStyle // in
@@ -207,6 +264,11 @@ func (shell *ToolShell) ReliefStyle() ReliefStyle {
 // Style retrieves whether the tool shell has text, icons, or both. Tool items
 // must not call this function directly, but rely on
 // gtk_tool_item_get_toolbar_style() instead.
+//
+// The function returns the following values:
+//
+//    - toolbarStyle: current style of shell.
+//
 func (shell *ToolShell) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolShell   // out
 	var _cret C.GtkToolbarStyle // in
@@ -226,6 +288,11 @@ func (shell *ToolShell) Style() ToolbarStyle {
 // TextAlignment retrieves the current text alignment for the tool shell. Tool
 // items must not call this function directly, but rely on
 // gtk_tool_item_get_text_alignment() instead.
+//
+// The function returns the following values:
+//
+//    - gfloat: current text alignment of shell.
+//
 func (shell *ToolShell) TextAlignment() float32 {
 	var _arg0 *C.GtkToolShell // out
 	var _cret C.gfloat        // in
@@ -245,6 +312,11 @@ func (shell *ToolShell) TextAlignment() float32 {
 // TextOrientation retrieves the current text orientation for the tool shell.
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_orientation() instead.
+//
+// The function returns the following values:
+//
+//    - orientation: current text orientation of shell.
+//
 func (shell *ToolShell) TextOrientation() Orientation {
 	var _arg0 *C.GtkToolShell  // out
 	var _cret C.GtkOrientation // in
@@ -264,6 +336,11 @@ func (shell *ToolShell) TextOrientation() Orientation {
 // TextSizeGroup retrieves the current text size group for the tool shell. Tool
 // items must not call this function directly, but rely on
 // gtk_tool_item_get_text_size_group() instead.
+//
+// The function returns the following values:
+//
+//    - sizeGroup: current text size group of shell.
+//
 func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 	var _arg0 *C.GtkToolShell // out
 	var _cret *C.GtkSizeGroup // in

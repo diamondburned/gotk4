@@ -64,6 +64,11 @@ func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
 }
 
 // Display gets the GdkDisplay that context is for.
+//
+// The function returns the following values:
+//
+//    - display of context.
+//
 func (context *AppLaunchContext) Display() *Display {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _cret *C.GdkDisplay          // in
@@ -114,7 +119,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 //
 // The function takes the following parameters:
 //
-//    - icon or NULL.
+//    - icon (optional) or NULL.
 //
 func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -143,7 +148,7 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name, or NULL.
+//    - iconName (optional): icon name, or NULL.
 //
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out

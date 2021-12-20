@@ -30,6 +30,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RadioActionOverrider interface {
+	// The function takes the following parameters:
+	//
 	Changed(current *RadioAction)
 }
 
@@ -60,6 +62,13 @@ func marshalRadioActioner(p uintptr) (interface{}, error) {
 	return wrapRadioAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged signal is emitted on every member of a radio group when the
+// active member is changed. The signal gets emitted after the ::activate
+// signals for the previous and current active members.
+func (action *RadioAction) ConnectChanged(f func(current RadioAction)) externglib.SignalHandle {
+	return action.Connect("changed", f)
+}
+
 // NewRadioAction creates a new RadioAction object. To add the action to a
 // ActionGroup and set the accelerator for the action, call
 // gtk_action_group_add_action_with_accel().
@@ -69,12 +78,16 @@ func marshalRadioActioner(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - name: unique name for the action.
-//    - label displayed in menu items and on buttons, or NULL.
-//    - tooltip for this action, or NULL.
-//    - stockId: stock icon to display in widgets representing this action, or
-//    NULL.
+//    - label (optional) displayed in menu items and on buttons, or NULL.
+//    - tooltip (optional) for this action, or NULL.
+//    - stockId (optional): stock icon to display in widgets representing this
+//      action, or NULL.
 //    - value which gtk_radio_action_get_current_value() should return if this
-//    action is selected.
+//      action is selected.
+//
+// The function returns the following values:
+//
+//    - radioAction: new RadioAction.
 //
 func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioAction {
 	var _arg1 *C.gchar          // out
@@ -118,6 +131,11 @@ func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioActio
 // group to which action belongs.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - gint: value of the currently active group member.
+//
 func (action *RadioAction) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret C.gint            // in
@@ -151,6 +169,11 @@ func (action *RadioAction) CurrentValue() int {
 //       }
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - sList: list representing the radio group for this object.
+//
 func (action *RadioAction) Group() []RadioAction {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret *C.GSList         // in
@@ -196,8 +219,8 @@ func (action *RadioAction) Group() []RadioAction {
 //
 // The function takes the following parameters:
 //
-//    - groupSource: radio action object whos group we are joining, or NULL to
-//    remove the radio action from its group.
+//    - groupSource (optional): radio action object whos group we are joining, or
+//      NULL to remove the radio action from its group.
 //
 func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
@@ -240,7 +263,7 @@ func (action *RadioAction) SetCurrentValue(currentValue int) {
 //
 // The function takes the following parameters:
 //
-//    - group: list representing a radio group, or NULL.
+//    - group (optional): list representing a radio group, or NULL.
 //
 func (action *RadioAction) SetGroup(group []RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
@@ -260,11 +283,4 @@ func (action *RadioAction) SetGroup(group []RadioAction) {
 	C.gtk_radio_action_set_group(_arg0, _arg1)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(group)
-}
-
-// ConnectChanged signal is emitted on every member of a radio group when the
-// active member is changed. The signal gets emitted after the ::activate
-// signals for the previous and current active members.
-func (action *RadioAction) ConnectChanged(f func(current RadioAction)) externglib.SignalHandle {
-	return action.Connect("changed", f)
 }

@@ -28,14 +28,39 @@ func init() {
 // yet, so the interface currently has no use.
 type ImageOverrider interface {
 	// ImageDescription: get a textual description of this image.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: string representing the image description.
+	//
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
+	//      used by the image description, or NULL if the image does not specify
+	//      a locale.
+	//
 	ImageLocale() string
 	// ImagePosition gets the position of the image in the form of a point
 	// specifying the images top-left corner.
 	//
 	// If the position can not be obtained (e.g. missing support), x and y are
 	// set to -1.
+	//
+	// The function takes the following parameters:
+	//
+	//    - coordType specifies whether the coordinates are relative to the
+	//      screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//    - x (optional) address of #gint to put x coordinate position;
+	//      otherwise, -1 if value cannot be obtained.
+	//    - y (optional) address of #gint to put y coordinate position;
+	//      otherwise, -1 if value cannot be obtained.
+	//
 	ImagePosition(coordType CoordType) (x int, y int)
 	// ImageSize: get the width and height in pixels for the specified image.
 	// The values of width and height are returned as -1 if the values cannot be
@@ -43,8 +68,25 @@ type ImageOverrider interface {
 	//
 	// If the size can not be obtained (e.g. missing support), x and y are set
 	// to -1.
+	//
+	// The function returns the following values:
+	//
+	//    - width (optional): filled with the image width, or -1 if the value
+	//      cannot be obtained.
+	//    - height (optional): filled with the image height, or -1 if the value
+	//      cannot be obtained.
+	//
 	ImageSize() (width int, height int)
 	// SetImageDescription sets the textual description for this image.
+	//
+	// The function takes the following parameters:
+	//
+	//    - description: string description to set for image.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: boolean TRUE, or FALSE if operation could not be completed.
+	//
 	SetImageDescription(description string) bool
 }
 
@@ -97,6 +139,11 @@ func marshalImager(p uintptr) (interface{}, error) {
 }
 
 // ImageDescription: get a textual description of this image.
+//
+// The function returns the following values:
+//
+//    - utf8: string representing the image description.
+//
 func (image *Image) ImageDescription() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
@@ -114,6 +161,13 @@ func (image *Image) ImageDescription() string {
 }
 
 // ImageLocale retrieves the locale identifier associated to the Image.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
+//      used by the image description, or NULL if the image does not specify a
+//      locale.
+//
 func (image *Image) ImageLocale() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
@@ -140,8 +194,15 @@ func (image *Image) ImageLocale() string {
 //
 // The function takes the following parameters:
 //
-//    - coordType specifies whether the coordinates are relative to the screen
-//    or to the components top level window.
+//    - coordType specifies whether the coordinates are relative to the screen or
+//      to the components top level window.
+//
+// The function returns the following values:
+//
+//    - x (optional) address of #gint to put x coordinate position; otherwise, -1
+//      if value cannot be obtained.
+//    - y (optional) address of #gint to put y coordinate position; otherwise, -1
+//      if value cannot be obtained.
 //
 func (image *Image) ImagePosition(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkImage    // out
@@ -171,6 +232,14 @@ func (image *Image) ImagePosition(coordType CoordType) (x int, y int) {
 //
 // If the size can not be obtained (e.g. missing support), x and y are set to
 // -1.
+//
+// The function returns the following values:
+//
+//    - width (optional): filled with the image width, or -1 if the value cannot
+//      be obtained.
+//    - height (optional): filled with the image height, or -1 if the value
+//      cannot be obtained.
+//
 func (image *Image) ImageSize() (width int, height int) {
 	var _arg0 *C.AtkImage // out
 	var _arg1 C.gint      // in
@@ -195,6 +264,10 @@ func (image *Image) ImageSize() (width int, height int) {
 // The function takes the following parameters:
 //
 //    - description: string description to set for image.
+//
+// The function returns the following values:
+//
+//    - ok: boolean TRUE, or FALSE if operation could not be completed.
 //
 func (image *Image) SetImageDescription(description string) bool {
 	var _arg0 *C.AtkImage // out

@@ -92,6 +92,11 @@ func marshalFixedder(p uintptr) (interface{}, error) {
 }
 
 // NewFixed creates a new GtkFixed.
+//
+// The function returns the following values:
+//
+//    - fixed: new GtkFixed.
+//
 func NewFixed() *Fixed {
 	var _cret *C.GtkWidget // in
 
@@ -112,6 +117,11 @@ func NewFixed() *Fixed {
 // The function takes the following parameters:
 //
 //    - widget: child of fixed.
+//
+// The function returns the following values:
+//
+//    - x: horizontal position of the widget.
+//    - y: vertical position of the widget.
 //
 func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
@@ -141,6 +151,11 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 // The function takes the following parameters:
 //
 //    - widget: GtkWidget, child of fixed.
+//
+// The function returns the following values:
+//
+//    - transform (optional): GskTransform or NULL in case no transform has been
+//      set on widget.
 //
 func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	var _arg0 *C.GtkFixed     // out
@@ -249,8 +264,8 @@ func (fixed *Fixed) Remove(widget Widgetter) {
 // The function takes the following parameters:
 //
 //    - widget: GtkWidget, child of fixed.
-//    - transform: transformation assigned to widget or NULL to reset widget's
-//    transform.
+//    - transform (optional): transformation assigned to widget or NULL to reset
+//      widget's transform.
 //
 func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform) {
 	var _arg0 *C.GtkFixed     // out

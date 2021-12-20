@@ -63,6 +63,11 @@ func NewQuadAlloc() *Quad {
 }
 
 // Bounds computes the bounding rectangle of q and places it into r.
+//
+// The function returns the following values:
+//
+//    - r: return location for a #graphene_rect_t.
+//
 func (q *Quad) Bounds() *Rect {
 	var _arg0 *C.graphene_quad_t // out
 	var _arg1 C.graphene_rect_t  // in
@@ -81,6 +86,15 @@ func (q *Quad) Bounds() *Rect {
 
 // Contains checks if the given #graphene_quad_t contains the given
 // #graphene_point_t.
+//
+// The function takes the following parameters:
+//
+//    - p: #graphene_point_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the point is inside the #graphene_quad_t.
+//
 func (q *Quad) Contains(p *Point) bool {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 *C.graphene_point_t // out
@@ -103,6 +117,15 @@ func (q *Quad) Contains(p *Point) bool {
 }
 
 // Point retrieves the point of a #graphene_quad_t at the given index.
+//
+// The function takes the following parameters:
+//
+//    - index_: index of the point to retrieve.
+//
+// The function returns the following values:
+//
+//    - point: #graphene_point_t.
+//
 func (q *Quad) Point(index_ uint) *Point {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 C.uint              // out
@@ -123,6 +146,18 @@ func (q *Quad) Point(index_ uint) *Point {
 }
 
 // Init initializes a #graphene_quad_t with the given points.
+//
+// The function takes the following parameters:
+//
+//    - p1: first point of the quadrilateral.
+//    - p2: second point of the quadrilateral.
+//    - p3: third point of the quadrilateral.
+//    - p4: fourth point of the quadrilateral.
+//
+// The function returns the following values:
+//
+//    - quad: initialized #graphene_quad_t.
+//
 func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 *C.graphene_point_t // out
@@ -152,6 +187,15 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 }
 
 // InitFromPoints initializes a #graphene_quad_t using an array of points.
+//
+// The function takes the following parameters:
+//
+//    - points: array of 4 #graphene_point_t.
+//
+// The function returns the following values:
+//
+//    - quad: initialized #graphene_quad_t.
+//
 func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 *C.graphene_point_t // out
@@ -179,6 +223,15 @@ func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 
 // InitFromRect initializes a #graphene_quad_t using the four corners of the
 // given #graphene_rect_t.
+//
+// The function takes the following parameters:
+//
+//    - r: #graphene_rect_t.
+//
+// The function returns the following values:
+//
+//    - quad: initialized #graphene_quad_t.
+//
 func (q *Quad) InitFromRect(r *Rect) *Quad {
 	var _arg0 *C.graphene_quad_t // out
 	var _arg1 *C.graphene_rect_t // out

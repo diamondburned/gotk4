@@ -114,12 +114,28 @@ type SorterOverrider interface {
 	//
 	// The sorter may signal it conforms to additional constraints via the
 	// return value of gtk.Sorter.GetOrder().
+	//
+	// The function takes the following parameters:
+	//
+	//    - item1 (optional): first item to compare.
+	//    - item2 (optional): second item to compare.
+	//
+	// The function returns the following values:
+	//
+	//    - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER
+	//      if item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
+	//
 	Compare(item1, item2 *externglib.Object) Ordering
 	// Order gets the order that self conforms to.
 	//
 	// See gtk.SorterOrder for details of the possible return values.
 	//
 	// This function is intended to allow optimizations.
+	//
+	// The function returns the following values:
+	//
+	//    - sorterOrder: order.
+	//
 	Order() SorterOrder
 }
 
@@ -159,6 +175,20 @@ func wrapSorter(obj *externglib.Object) *Sorter {
 
 func marshalSorterer(p uintptr) (interface{}, error) {
 	return wrapSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectChanged: emitted whenever the sorter changed.
+//
+// Users of the sorter should then update the sort order again via
+// gtk_sorter_compare().
+//
+// gtk.SortListModel handles this signal automatically.
+//
+// Depending on the change parameter, it may be possible to update the sort
+// order without a full resorting. Refer to the gtk.SorterChange documentation
+// for details.
+func (self *Sorter) ConnectChanged(f func(change SorterChange)) externglib.SignalHandle {
+	return self.Connect("changed", f)
 }
 
 // Changed emits the gtk.Sorter::changed signal to notify all users of the
@@ -207,6 +237,11 @@ func (self *Sorter) Changed(change SorterChange) {
 //    - item1: first item to compare.
 //    - item2: second item to compare.
 //
+// The function returns the following values:
+//
+//    - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER if
+//      item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
+//
 func (self *Sorter) Compare(item1, item2 *externglib.Object) Ordering {
 	var _arg0 *C.GtkSorter  // out
 	var _arg1 C.gpointer    // out
@@ -234,6 +269,11 @@ func (self *Sorter) Compare(item1, item2 *externglib.Object) Ordering {
 // See gtk.SorterOrder for details of the possible return values.
 //
 // This function is intended to allow optimizations.
+//
+// The function returns the following values:
+//
+//    - sorterOrder: order.
+//
 func (self *Sorter) Order() SorterOrder {
 	var _arg0 *C.GtkSorter     // out
 	var _cret C.GtkSorterOrder // in
@@ -248,18 +288,4 @@ func (self *Sorter) Order() SorterOrder {
 	_sorterOrder = SorterOrder(_cret)
 
 	return _sorterOrder
-}
-
-// ConnectChanged: emitted whenever the sorter changed.
-//
-// Users of the sorter should then update the sort order again via
-// gtk_sorter_compare().
-//
-// gtk.SortListModel handles this signal automatically.
-//
-// Depending on the change parameter, it may be possible to update the sort
-// order without a full resorting. Refer to the gtk.SorterChange documentation
-// for details.
-func (self *Sorter) ConnectChanged(f func(change SorterChange)) externglib.SignalHandle {
-	return self.Connect("changed", f)
 }

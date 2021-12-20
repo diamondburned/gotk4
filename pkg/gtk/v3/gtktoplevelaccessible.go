@@ -46,6 +46,10 @@ func marshalToplevelAccessibler(p uintptr) (interface{}, error) {
 	return wrapToplevelAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// The function returns the following values:
+//
+//    - list: list of children.
+//
 func (accessible *ToplevelAccessible) Children() []Window {
 	var _arg0 *C.GtkToplevelAccessible // out
 	var _cret *C.GList                 // in

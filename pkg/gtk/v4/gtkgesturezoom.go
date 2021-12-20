@@ -48,8 +48,19 @@ func marshalGestureZoomer(p uintptr) (interface{}, error) {
 	return wrapGestureZoom(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectScaleChanged: emitted whenever the distance between both tracked
+// sequences changes.
+func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) externglib.SignalHandle {
+	return gesture.Connect("scale-changed", f)
+}
+
 // NewGestureZoom returns a newly created GtkGesture that recognizes pinch/zoom
 // gestures.
+//
+// The function returns the following values:
+//
+//    - gestureZoom: newly created GtkGestureZoom.
+//
 func NewGestureZoom() *GestureZoom {
 	var _cret *C.GtkGesture // in
 
@@ -67,6 +78,11 @@ func NewGestureZoom() *GestureZoom {
 // If gesture is active, this function returns the zooming difference since the
 // gesture was recognized (hence the starting point is considered 1:1). If
 // gesture is not active, 1 is returned.
+//
+// The function returns the following values:
+//
+//    - gdouble: scale delta.
+//
 func (gesture *GestureZoom) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out
 	var _cret C.double          // in
@@ -81,10 +97,4 @@ func (gesture *GestureZoom) ScaleDelta() float64 {
 	_gdouble = float64(_cret)
 
 	return _gdouble
-}
-
-// ConnectScaleChanged: emitted whenever the distance between both tracked
-// sequences changes.
-func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) externglib.SignalHandle {
-	return gesture.Connect("scale-changed", f)
 }

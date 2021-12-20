@@ -55,6 +55,11 @@ func marshalSimpleActionGrouper(p uintptr) (interface{}, error) {
 }
 
 // NewSimpleActionGroup creates a new, empty, ActionGroup.
+//
+// The function returns the following values:
+//
+//    - simpleActionGroup: new ActionGroup.
+//
 func NewSimpleActionGroup() *SimpleActionGroup {
 	var _cret *C.GSimpleActionGroup // in
 
@@ -75,7 +80,7 @@ func NewSimpleActionGroup() *SimpleActionGroup {
 // The function takes the following parameters:
 //
 //    - entries: pointer to the first item in an array of Entry structs.
-//    - userData: user data for signal connections.
+//    - userData (optional): user data for signal connections.
 //
 func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.Handle) {
 	var _arg0 *C.GSimpleActionGroup // out
@@ -135,6 +140,10 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 // The function takes the following parameters:
 //
 //    - actionName: name of an action.
+//
+// The function returns the following values:
+//
+//    - action or NULL.
 //
 func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 	var _arg0 *C.GSimpleActionGroup // out

@@ -34,6 +34,11 @@ func init() {
 // yet, so the interface currently has no use.
 type SocketListenerOverrider interface {
 	Changed()
+	// The function takes the following parameters:
+	//
+	//    - event
+	//    - socket
+	//
 	Event(event SocketListenerEvent, socket *Socket)
 }
 
@@ -66,9 +71,21 @@ func marshalSocketListenerer(p uintptr) (interface{}, error) {
 	return wrapSocketListener(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEvent: emitted when listener's activity on socket changes state. Note
+// that when listener is used to listen on both IPv4 and IPv6, a separate set of
+// signals will be emitted for each, and the order they happen in is undefined.
+func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, socket Socket)) externglib.SignalHandle {
+	return listener.Connect("event", f)
+}
+
 // NewSocketListener creates a new Listener with no sockets to listen for. New
 // listeners can be added with e.g. g_socket_listener_add_address() or
 // g_socket_listener_add_inet_port().
+//
+// The function returns the following values:
+//
+//    - socketListener: new Listener.
+//
 func NewSocketListener() *SocketListener {
 	var _cret *C.GSocketListener // in
 
@@ -93,7 +110,13 @@ func NewSocketListener() *SocketListener {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//
+// The function returns the following values:
+//
+//    - sourceObject (optional): location where #GObject pointer will be stored,
+//      or NULL.
+//    - socketConnection on success, NULL on error.
 //
 func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
@@ -135,8 +158,8 @@ func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object,
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
-//    - callback: ReadyCallback.
+//    - ctx (optional) or NULL.
+//    - callback (optional): ReadyCallback.
 //
 func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
@@ -167,6 +190,11 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 // The function takes the following parameters:
 //
 //    - result: Result.
+//
+// The function returns the following values:
+//
+//    - sourceObject (optional): optional #GObject identifying this source.
+//    - socketConnection on success, NULL on error.
 //
 func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
@@ -212,7 +240,13 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//
+// The function returns the following values:
+//
+//    - sourceObject (optional): location where #GObject pointer will be stored,
+//      or NULL.
+//    - socket on success, NULL on error.
 //
 func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
@@ -255,8 +289,8 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.O
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
-//    - callback: ReadyCallback.
+//    - ctx (optional) or NULL.
+//    - callback (optional): ReadyCallback.
 //
 func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
@@ -287,6 +321,11 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 // The function takes the following parameters:
 //
 //    - result: Result.
+//
+// The function returns the following values:
+//
+//    - sourceObject (optional): optional #GObject identifying this source.
+//    - socket on success, NULL on error.
 //
 func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*externglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
@@ -343,7 +382,12 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 //    - address: Address.
 //    - typ: Type.
 //    - protocol: Protocol.
-//    - sourceObject: optional #GObject identifying this source.
+//    - sourceObject (optional): optional #GObject identifying this source.
+//
+// The function returns the following values:
+//
+//    - effectiveAddress (optional): location to store the address that was bound
+//      to, or NULL.
 //
 func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *externglib.Object) (SocketAddresser, error) {
 	var _arg0 *C.GSocketListener // out
@@ -404,7 +448,11 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 //
 // The function takes the following parameters:
 //
-//    - sourceObject: optional #GObject identifying this source.
+//    - sourceObject (optional): optional #GObject identifying this source.
+//
+// The function returns the following values:
+//
+//    - guint16: port number, or 0 in case of failure.
 //
 func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) (uint16, error) {
 	var _arg0 *C.GSocketListener // out
@@ -447,7 +495,7 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) 
 // The function takes the following parameters:
 //
 //    - port: IP port number (non-zero).
-//    - sourceObject: optional #GObject identifying this source.
+//    - sourceObject (optional): optional #GObject identifying this source.
 //
 func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externglib.Object) error {
 	var _arg0 *C.GSocketListener // out
@@ -490,7 +538,7 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externgli
 // The function takes the following parameters:
 //
 //    - socket: listening #GSocket.
-//    - sourceObject: optional #GObject identifying this source.
+//    - sourceObject (optional): optional #GObject identifying this source.
 //
 func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *externglib.Object) error {
 	var _arg0 *C.GSocketListener // out
@@ -548,11 +596,4 @@ func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	C.g_socket_listener_set_backlog(_arg0, _arg1)
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(listenBacklog)
-}
-
-// ConnectEvent: emitted when listener's activity on socket changes state. Note
-// that when listener is used to listen on both IPv4 and IPv6, a separate set of
-// signals will be emitted for each, and the order they happen in is undefined.
-func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, socket Socket)) externglib.SignalHandle {
-	return listener.Connect("event", f)
 }

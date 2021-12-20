@@ -127,7 +127,31 @@ func marshalInfoBarrer(p uintptr) (interface{}, error) {
 	return wrapInfoBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectClose gets emitted when the user uses a keybinding to dismiss the info
+// bar.
+//
+// The ::close signal is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is the Escape key.
+func (infoBar *InfoBar) ConnectClose(f func()) externglib.SignalHandle {
+	return infoBar.Connect("close", f)
+}
+
+// ConnectResponse: emitted when an action widget is clicked.
+//
+// The signal is also emitted when the application programmer calls
+// gtk.InfoBar.Response(). The response_id depends on which action widget was
+// clicked.
+func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
+	return infoBar.Connect("response", f)
+}
+
 // NewInfoBar creates a new GtkInfoBar object.
+//
+// The function returns the following values:
+//
+//    - infoBar: new GtkInfoBar object.
+//
 func NewInfoBar() *InfoBar {
 	var _cret *C.GtkWidget // in
 
@@ -178,6 +202,10 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 //    - buttonText: text of button.
 //    - responseId: response ID for the button.
 //
+// The function returns the following values:
+//
+//    - button: GtkButton widget that was added.
+//
 func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.char       // out
@@ -220,6 +248,11 @@ func (infoBar *InfoBar) AddChild(widget Widgetter) {
 }
 
 // MessageType returns the message type of the message area.
+//
+// The function returns the following values:
+//
+//    - messageType: message type of the message area.
+//
 func (infoBar *InfoBar) MessageType() MessageType {
 	var _arg0 *C.GtkInfoBar    // out
 	var _cret C.GtkMessageType // in
@@ -237,6 +270,11 @@ func (infoBar *InfoBar) MessageType() MessageType {
 }
 
 // Revealed returns whether the info bar is currently revealed.
+//
+// The function returns the following values:
+//
+//    - ok: current value of the gtk.InfoBar:revealed property.
+//
 func (infoBar *InfoBar) Revealed() bool {
 	var _arg0 *C.GtkInfoBar // out
 	var _cret C.gboolean    // in
@@ -257,6 +295,11 @@ func (infoBar *InfoBar) Revealed() bool {
 
 // ShowCloseButton returns whether the widget will display a standard close
 // button.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget displays standard close button.
+//
 func (infoBar *InfoBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkInfoBar // out
 	var _cret C.gboolean    // in
@@ -450,23 +493,4 @@ func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
 	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(setting)
-}
-
-// ConnectClose gets emitted when the user uses a keybinding to dismiss the info
-// bar.
-//
-// The ::close signal is a keybinding signal (class.SignalAction.html).
-//
-// The default binding for this signal is the Escape key.
-func (infoBar *InfoBar) ConnectClose(f func()) externglib.SignalHandle {
-	return infoBar.Connect("close", f)
-}
-
-// ConnectResponse: emitted when an action widget is clicked.
-//
-// The signal is also emitted when the application programmer calls
-// gtk.InfoBar.Response(). The response_id depends on which action widget was
-// clicked.
-func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return infoBar.Connect("response", f)
 }

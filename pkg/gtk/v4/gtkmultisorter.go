@@ -63,6 +63,11 @@ func marshalMultiSorterer(p uintptr) (interface{}, error) {
 // This sorter compares items by trying each of the sorters in turn, until one
 // returns non-zero. In particular, if no sorter has been added to it, it will
 // always compare items as equal.
+//
+// The function returns the following values:
+//
+//    - multiSorter: new GtkMultiSorter.
+//
 func NewMultiSorter() *MultiSorter {
 	var _cret *C.GtkMultiSorter // in
 

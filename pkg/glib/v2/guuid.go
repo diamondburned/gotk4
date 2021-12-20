@@ -26,6 +26,10 @@ import "C"
 //
 //    - str: string representing a UUID.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if str is a valid UUID, FALSE otherwise.
+//
 func UUIDStringIsValid(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -49,6 +53,11 @@ func UUIDStringIsValid(str string) bool {
 // has the same randomness guarantees as #GRand, so must not be used for
 // cryptographic purposes such as key generation, nonces, salts or one-time
 // pads.
+//
+// The function returns the following values:
+//
+//    - utf8: string that should be freed with g_free().
+//
 func UUIDStringRandom() string {
 	var _cret *C.gchar // in
 

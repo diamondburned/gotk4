@@ -103,6 +103,11 @@ func marshalSearchBarrer(p uintptr) (interface{}, error) {
 //
 // You will need to tell it about which widget is going to be your text entry
 // using gtk.SearchBar.ConnectEntry().
+//
+// The function returns the following values:
+//
+//    - searchBar: new GtkSearchBar.
+//
 func NewSearchBar() *SearchBar {
 	var _cret *C.GtkWidget // in
 
@@ -139,6 +144,11 @@ func (bar *SearchBar) ConnectEntry(entry Editabler) {
 }
 
 // Child gets the child widget of bar.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of bar.
+//
 func (bar *SearchBar) Child() Widgetter {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
@@ -168,6 +178,11 @@ func (bar *SearchBar) Child() Widgetter {
 }
 
 // KeyCaptureWidget gets the widget that bar is capturing key events from.
+//
+// The function returns the following values:
+//
+//    - widget: key capture widget.
+//
 func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
@@ -198,6 +213,11 @@ func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 }
 
 // SearchMode returns whether the search mode is on or off.
+//
+// The function returns the following values:
+//
+//    - ok: whether search mode is toggled on.
+//
 func (bar *SearchBar) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
@@ -217,6 +237,11 @@ func (bar *SearchBar) SearchMode() bool {
 }
 
 // ShowCloseButton returns whether the close button is shown.
+//
+// The function returns the following values:
+//
+//    - ok: whether the close button is shown.
+//
 func (bar *SearchBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
@@ -239,7 +264,7 @@ func (bar *SearchBar) ShowCloseButton() bool {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (bar *SearchBar) SetChild(child Widgetter) {
 	var _arg0 *C.GtkSearchBar // out
@@ -269,7 +294,7 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - widget: GtkWidget.
+//    - widget (optional): GtkWidget.
 //
 func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg0 *C.GtkSearchBar // out

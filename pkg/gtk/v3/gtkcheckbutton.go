@@ -31,6 +31,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CheckButtonOverrider interface {
+	// The function takes the following parameters:
+	//
 	DrawIndicator(cr *cairo.Context)
 }
 
@@ -107,6 +109,11 @@ func marshalCheckButtonner(p uintptr) (interface{}, error) {
 }
 
 // NewCheckButton creates a new CheckButton.
+//
+// The function returns the following values:
+//
+//    - checkButton: Widget.
+//
 func NewCheckButton() *CheckButton {
 	var _cret *C.GtkWidget // in
 
@@ -125,6 +132,10 @@ func NewCheckButton() *CheckButton {
 // The function takes the following parameters:
 //
 //    - label: text for the check button.
+//
+// The function returns the following values:
+//
+//    - checkButton: Widget.
 //
 func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _arg1 *C.gchar     // out
@@ -150,7 +161,11 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 // The function takes the following parameters:
 //
 //    - label: text of the button, with an underscore in front of the mnemonic
-//    character.
+//      character.
+//
+// The function returns the following values:
+//
+//    - checkButton: new CheckButton.
 //
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _arg1 *C.gchar     // out

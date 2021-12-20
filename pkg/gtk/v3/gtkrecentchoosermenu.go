@@ -101,6 +101,11 @@ func marshalRecentChooserMenuer(p uintptr) (interface{}, error) {
 // This widget creates its own RecentManager object. See the
 // gtk_recent_chooser_menu_new_for_manager() function to know how to create a
 // RecentChooserMenu widget bound to another RecentManager object.
+//
+// The function returns the following values:
+//
+//    - recentChooserMenu: new RecentChooserMenu.
+//
 func NewRecentChooserMenu() *RecentChooserMenu {
 	var _cret *C.GtkWidget // in
 
@@ -124,6 +129,10 @@ func NewRecentChooserMenu() *RecentChooserMenu {
 //
 //    - manager: RecentManager.
 //
+// The function returns the following values:
+//
+//    - recentChooserMenu: new RecentChooserMenu, bound to manager.
+//
 func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
@@ -142,6 +151,11 @@ func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if numbers should be shown.
+//
 func (menu *RecentChooserMenu) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _cret C.gboolean              // in

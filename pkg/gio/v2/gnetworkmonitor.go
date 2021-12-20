@@ -52,6 +52,12 @@ type NetworkMonitorOverrider interface {
 	// may still block for a brief period of time (eg, trying to do multicast
 	// DNS on the local network), so if you do not want to block, you should use
 	// g_network_monitor_can_reach_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - connectable: Connectable.
+	//
 	CanReach(ctx context.Context, connectable SocketConnectabler) error
 	// CanReachAsync: asynchronously attempts to determine whether or not the
 	// host pointed to by connectable can be reached, without actually trying to
@@ -62,10 +68,24 @@ type NetworkMonitorOverrider interface {
 	// When the operation is finished, callback will be called. You can then
 	// call g_network_monitor_can_reach_finish() to get the result of the
 	// operation.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - connectable: Connectable.
+	//    - callback (optional) to call when the request is satisfied.
+	//
 	CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback)
 	// CanReachFinish finishes an async network connectivity test. See
 	// g_network_monitor_can_reach_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	CanReachFinish(result AsyncResulter) error
+	// The function takes the following parameters:
+	//
 	NetworkChanged(networkAvailable bool)
 }
 
@@ -116,6 +136,11 @@ func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 	return wrapNetworkMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectNetworkChanged: emitted when the network configuration changes.
+func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable bool)) externglib.SignalHandle {
+	return monitor.Connect("network-changed", f)
+}
+
 // CanReach attempts to determine whether or not the host pointed to by
 // connectable can be reached, without actually trying to connect to it.
 //
@@ -134,7 +159,7 @@ func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - connectable: Connectable.
 //
 func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketConnectabler) error {
@@ -176,9 +201,9 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - connectable: Connectable.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GNetworkMonitor    // out
@@ -253,6 +278,11 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 // but others are not. In this case, applications can attempt to connect to
 // remote servers, but should gracefully fall back to their "offline" behavior
 // if the connection attempt fails.
+//
+// The function returns the following values:
+//
+//    - networkConnectivity: network connectivity state.
+//
 func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 	var _arg0 *C.GNetworkMonitor     // out
 	var _cret C.GNetworkConnectivity // in
@@ -273,6 +303,11 @@ func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 // that the system has a default route available for at least one of IPv4 or
 // IPv6. It does not necessarily imply that the public Internet is reachable.
 // See Monitor:network-available for more details.
+//
+// The function returns the following values:
+//
+//    - ok: whether the network is available.
+//
 func (monitor *NetworkMonitor) NetworkAvailable() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
@@ -293,6 +328,11 @@ func (monitor *NetworkMonitor) NetworkAvailable() bool {
 
 // NetworkMetered checks if the network is metered. See Monitor:network-metered
 // for more details.
+//
+// The function returns the following values:
+//
+//    - ok: whether the connection is metered.
+//
 func (monitor *NetworkMonitor) NetworkMetered() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
@@ -311,12 +351,13 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 	return _ok
 }
 
-// ConnectNetworkChanged: emitted when the network configuration changes.
-func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable bool)) externglib.SignalHandle {
-	return monitor.Connect("network-changed", f)
-}
-
 // NetworkMonitorGetDefault gets the default Monitor for the system.
+//
+// The function returns the following values:
+//
+//    - networkMonitor which will be a dummy object if no network monitor is
+//      available.
+//
 func NetworkMonitorGetDefault() NetworkMonitorrer {
 	var _cret *C.GNetworkMonitor // in
 

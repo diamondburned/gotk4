@@ -59,8 +59,22 @@ func marshalEventControllerer(p uintptr) (interface{}, error) {
 	return wrapEventController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (controller *EventController) baseEventController() *EventController {
+	return controller
+}
+
+// BaseEventController returns the underlying base object.
+func BaseEventController(obj EventControllerer) *EventController {
+	return obj.baseEventController()
+}
+
 // PropagationPhase gets the propagation phase at which controller handles
 // events.
+//
+// The function returns the following values:
+//
+//    - propagationPhase: propagation phase.
+//
 func (controller *EventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
@@ -78,6 +92,11 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 }
 
 // Widget returns the Widget this controller relates to.
+//
+// The function returns the following values:
+//
+//    - widget: Widget.
+//
 func (controller *EventController) Widget() Widgetter {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
@@ -113,6 +132,11 @@ func (controller *EventController) Widget() Widgetter {
 // The function takes the following parameters:
 //
 //    - event: Event.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the event was potentially useful to trigger the controller
+//      action.
 //
 func (controller *EventController) HandleEvent(event *gdk.Event) bool {
 	var _arg0 *C.GtkEventController // out
@@ -168,13 +192,4 @@ func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(phase)
-}
-
-func (controller *EventController) baseEventController() *EventController {
-	return controller
-}
-
-// BaseEventController returns the underlying base object.
-func BaseEventController(obj EventControllerer) *EventController {
-	return obj.baseEventController()
 }

@@ -70,6 +70,10 @@ func marshalBufferedOutputStreamer(p uintptr) (interface{}, error) {
 //
 //    - baseStream: Stream.
 //
+// The function returns the following values:
+//
+//    - bufferedOutputStream for the given base_stream.
+//
 func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _cret *C.GOutputStream // in
@@ -94,6 +98,10 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 //    - baseStream: Stream.
 //    - size: #gsize.
 //
+// The function returns the following values:
+//
+//    - bufferedOutputStream with an internal buffer set to size.
+//
 func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 C.gsize          // out
@@ -114,6 +122,11 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 }
 
 // AutoGrow checks if the buffer automatically grows as data is added.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the stream's buffer automatically grows, FALSE otherwise.
+//
 func (stream *BufferedOutputStream) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gboolean               // in
@@ -133,6 +146,11 @@ func (stream *BufferedOutputStream) AutoGrow() bool {
 }
 
 // BufferSize gets the size of the buffer in the stream.
+//
+// The function returns the following values:
+//
+//    - gsize: current size of the buffer.
+//
 func (stream *BufferedOutputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gsize                  // in

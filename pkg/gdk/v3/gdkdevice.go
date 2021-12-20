@@ -193,6 +193,30 @@ func marshalDevicer(p uintptr) (interface{}, error) {
 	return wrapDevice(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (device *Device) baseDevice() *Device {
+	return device
+}
+
+// BaseDevice returns the underlying base object.
+func BaseDevice(obj Devicer) *Device {
+	return obj.baseDevice()
+}
+
+// ConnectChanged signal is emitted either when the Device has changed the
+// number of either axes or keys. For example In X this will normally happen
+// when the slave device routing events through the master device changes (for
+// example, user switches from the USB mouse to a tablet), in that case the
+// master device will change to reflect the new slave device axes and keys.
+func (device *Device) ConnectChanged(f func()) externglib.SignalHandle {
+	return device.Connect("changed", f)
+}
+
+// ConnectToolChanged signal is emitted on pen/eraser Devices whenever tools
+// enter or leave proximity.
+func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.SignalHandle {
+	return device.Connect("tool-changed", f)
+}
+
 // AssociatedDevice returns the associated device to device, if device is of
 // type GDK_DEVICE_TYPE_MASTER, it will return the paired pointer or keyboard.
 //
@@ -201,6 +225,11 @@ func marshalDevicer(p uintptr) (interface{}, error) {
 //
 // If device is of type GDK_DEVICE_TYPE_FLOATING, NULL will be returned, as
 // there is no associated device.
+//
+// The function returns the following values:
+//
+//    - ret (optional): associated device, or NULL.
+//
 func (device *Device) AssociatedDevice() Devicer {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkDevice // in
@@ -230,6 +259,9 @@ func (device *Device) AssociatedDevice() Devicer {
 }
 
 // Axes returns the axes currently available on the device.
+//
+// The function returns the following values:
+//
 func (device *Device) Axes() AxisFlags {
 	var _arg0 *C.GdkDevice   // out
 	var _cret C.GdkAxisFlags // in
@@ -252,6 +284,10 @@ func (device *Device) Axes() AxisFlags {
 //
 //    - index_: index of the axis.
 //
+// The function returns the following values:
+//
+//    - axisUse specifying how the axis is used.
+//
 func (device *Device) AxisUse(index_ uint) AxisUse {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint      // out
@@ -272,6 +308,11 @@ func (device *Device) AxisUse(index_ uint) AxisUse {
 }
 
 // DeviceType returns the device type for device.
+//
+// The function returns the following values:
+//
+//    - deviceType for device.
+//
 func (device *Device) DeviceType() DeviceType {
 	var _arg0 *C.GdkDevice    // out
 	var _cret C.GdkDeviceType // in
@@ -289,6 +330,11 @@ func (device *Device) DeviceType() DeviceType {
 }
 
 // Display returns the Display to which device pertains.
+//
+// The function returns the following values:
+//
+//    - display This memory is owned by GTK+, and must not be freed or unreffed.
+//
 func (device *Device) Display() *Display {
 	var _arg0 *C.GdkDevice  // out
 	var _cret *C.GdkDisplay // in
@@ -307,6 +353,11 @@ func (device *Device) Display() *Display {
 
 // HasCursor determines whether the pointer follows device motion. This is not
 // meaningful for keyboard devices, which don't have a pointer.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the pointer follows device motion.
+//
 func (device *Device) HasCursor() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
@@ -331,6 +382,12 @@ func (device *Device) HasCursor() bool {
 // The function takes the following parameters:
 //
 //    - index_: index of the macro button to get.
+//
+// The function returns the following values:
+//
+//    - keyval: return value for the keyval.
+//    - modifiers: return value for modifiers.
+//    - ok: TRUE if keyval is set for index.
 //
 func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 	var _arg0 *C.GdkDevice      // out
@@ -364,6 +421,11 @@ func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 // server. If another application has a pointer grab, or this application has a
 // grab with owner_events = FALSE, NULL may be returned even if the pointer is
 // physically over one of this application's windows.
+//
+// The function returns the following values:
+//
+//    - window (optional): last window the device.
+//
 func (device *Device) LastEventWindow() Windower {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkWindow // in
@@ -393,6 +455,11 @@ func (device *Device) LastEventWindow() Windower {
 }
 
 // Mode determines the mode of the device.
+//
+// The function returns the following values:
+//
+//    - inputMode: InputSource.
+//
 func (device *Device) Mode() InputMode {
 	var _arg0 *C.GdkDevice   // out
 	var _cret C.GdkInputMode // in
@@ -410,6 +477,11 @@ func (device *Device) Mode() InputMode {
 }
 
 // NAxes returns the number of axes the device currently has.
+//
+// The function returns the following values:
+//
+//    - gint: number of axes.
+//
 func (device *Device) NAxes() int {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
@@ -427,6 +499,11 @@ func (device *Device) NAxes() int {
 }
 
 // NKeys returns the number of keys the device currently has.
+//
+// The function returns the following values:
+//
+//    - gint: number of keys.
+//
 func (device *Device) NKeys() int {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
@@ -444,6 +521,11 @@ func (device *Device) NKeys() int {
 }
 
 // Name determines the name of the device.
+//
+// The function returns the following values:
+//
+//    - utf8: name.
+//
 func (device *Device) Name() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
@@ -464,6 +546,16 @@ func (device *Device) Name() string {
 // are those of its master pointer, This function may not be called on devices
 // of type GDK_DEVICE_TYPE_SLAVE, unless there is an ongoing grab on them, see
 // gdk_device_grab().
+//
+// The function returns the following values:
+//
+//    - screen (optional): location to store the Screen the device is on, or
+//      NULL.
+//    - x (optional): location to store root window X coordinate of device, or
+//      NULL.
+//    - y (optional): location to store root window Y coordinate of device, or
+//      NULL.
+//
 func (device *Device) Position() (screen *Screen, x int, y int) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // in
@@ -492,6 +584,16 @@ func (device *Device) Position() (screen *Screen, x int, y int) {
 // slave device's coordinates are those of its master pointer, this function may
 // not be called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is an
 // ongoing grab on them. See gdk_device_grab().
+//
+// The function returns the following values:
+//
+//    - screen (optional): location to store the Screen the device is on, or
+//      NULL.
+//    - x (optional): location to store root window X coordinate of device, or
+//      NULL.
+//    - y (optional): location to store root window Y coordinate of device, or
+//      NULL.
+//
 func (device *Device) PositionDouble() (screen *Screen, x float64, y float64) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // in
@@ -519,6 +621,11 @@ func (device *Device) PositionDouble() (screen *Screen, x float64, y float64) {
 // ProductID returns the product ID of this device, or NULL if this information
 // couldn't be obtained. This ID is retrieved from the device, and is thus
 // constant for it. See gdk_device_get_vendor_id() for more information.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): product ID, or NULL.
+//
 func (device *Device) ProductID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
@@ -538,6 +645,11 @@ func (device *Device) ProductID() string {
 }
 
 // Seat returns the Seat the device belongs to.
+//
+// The function returns the following values:
+//
+//    - seat This memory is owned by GTK+ and must not be freed.
+//
 func (device *Device) Seat() Seater {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkSeat   // in
@@ -568,6 +680,11 @@ func (device *Device) Seat() Seater {
 }
 
 // Source determines the type of the device.
+//
+// The function returns the following values:
+//
+//    - inputSource: InputSource.
+//
 func (device *Device) Source() InputSource {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.GdkInputSource // in
@@ -608,6 +725,11 @@ func (device *Device) Source() InputSource {
 //
 //       return settings;
 //     }.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): vendor ID, or NULL.
+//
 func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
@@ -633,6 +755,15 @@ func (device *Device) VendorID() string {
 // As a slave device coordinates are those of its master pointer, This function
 // may not be called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is
 // an ongoing grab on them, see gdk_device_grab().
+//
+// The function returns the following values:
+//
+//    - winX (optional): return location for the X coordinate of the device
+//      location, relative to the window origin, or NULL.
+//    - winY (optional): return location for the Y coordinate of the device
+//      location, relative to the window origin, or NULL.
+//    - window (optional) under the device position, or NULL.
+//
 func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.gint       // in
@@ -675,6 +806,15 @@ func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
 // As a slave device coordinates are those of its master pointer, This function
 // may not be called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is
 // an ongoing grab on them, see gdk_device_grab().
+//
+// The function returns the following values:
+//
+//    - winX (optional): return location for the X coordinate of the device
+//      location, relative to the window origin, or NULL.
+//    - winY (optional): return location for the Y coordinate of the device
+//      location, relative to the window origin, or NULL.
+//    - window (optional) under the device position, or NULL.
+//
 func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, window Windower) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.gdouble    // in
@@ -737,20 +877,24 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 //
 //    - window which will own the grab (the grab window).
 //    - grabOwnership specifies the grab ownership.
-//    - ownerEvents: if FALSE then all device events are reported with respect
-//    to window and are only reported if selected by event_mask. If TRUE then
-//    pointer events for this application are reported as normal, but pointer
-//    events outside this application are reported with respect to window and
-//    only if selected by event_mask. In either mode, unreported events are
-//    discarded.
+//    - ownerEvents: if FALSE then all device events are reported with respect to
+//      window and are only reported if selected by event_mask. If TRUE then
+//      pointer events for this application are reported as normal, but pointer
+//      events outside this application are reported with respect to window and
+//      only if selected by event_mask. In either mode, unreported events are
+//      discarded.
 //    - eventMask specifies the event mask, which is used in accordance with
-//    owner_events.
-//    - cursor to display while the grab is active if the device is a pointer.
-//    If this is NULL then the normal cursors are used for window and its
-//    descendants, and the cursor for window is used elsewhere.
+//      owner_events.
+//    - cursor (optional) to display while the grab is active if the device is a
+//      pointer. If this is NULL then the normal cursors are used for window and
+//      its descendants, and the cursor for window is used elsewhere.
 //    - time_: timestamp of the event which led to this pointer grab. This
-//    usually comes from the Event struct, though GDK_CURRENT_TIME can be used
-//    if the time isn’t known.
+//      usually comes from the Event struct, though GDK_CURRENT_TIME can be used
+//      if the time isn’t known.
+//
+// The function returns the following values:
+//
+//    - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
 //
 func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus {
 	var _arg0 *C.GdkDevice       // out
@@ -793,6 +937,13 @@ func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEv
 // ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it will
 // return the list of slave devices attached to it, otherwise it will return
 // NULL.
+//
+// The function returns the following values:
+//
+//    - list (optional): the list of slave devices, or NULL. The list must be
+//      freed with g_list_free(), the contents of the list are owned by GTK+ and
+//      should not be freed.
+//
 func (device *Device) ListSlaveDevices() []Devicer {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GList     // in
@@ -891,6 +1042,10 @@ func (device *Device) SetKey(index_, keyval uint, modifiers ModifierType) {
 //
 //    - mode: input mode.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the mode was successfully changed.
+//
 func (device *Device) SetMode(mode InputMode) bool {
 	var _arg0 *C.GdkDevice   // out
 	var _arg1 C.GdkInputMode // out
@@ -965,30 +1120,6 @@ func (device *Device) Warp(screen *Screen, x, y int) {
 	runtime.KeepAlive(y)
 }
 
-func (device *Device) baseDevice() *Device {
-	return device
-}
-
-// BaseDevice returns the underlying base object.
-func BaseDevice(obj Devicer) *Device {
-	return obj.baseDevice()
-}
-
-// ConnectChanged signal is emitted either when the Device has changed the
-// number of either axes or keys. For example In X this will normally happen
-// when the slave device routing events through the master device changes (for
-// example, user switches from the USB mouse to a tablet), in that case the
-// master device will change to reflect the new slave device axes and keys.
-func (device *Device) ConnectChanged(f func()) externglib.SignalHandle {
-	return device.Connect("changed", f)
-}
-
-// ConnectToolChanged signal is emitted on pen/eraser Devices whenever tools
-// enter or leave proximity.
-func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.SignalHandle {
-	return device.Connect("tool-changed", f)
-}
-
 // DeviceGrabInfoLibgtkOnly determines information about the current keyboard
 // grab. This is not public API and must not be used by applications.
 //
@@ -998,6 +1129,13 @@ func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.Sig
 //
 //    - display for which to get the grab information.
 //    - device to get the grab information from.
+//
+// The function returns the following values:
+//
+//    - grabWindow: location to store current grab window.
+//    - ownerEvents: location to store boolean indicating whether the
+//      owner_events flag to gdk_keyboard_grab() or gdk_pointer_grab() was TRUE.
+//    - ok: TRUE if this application currently has the keyboard grabbed.
 //
 func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Windower, ownerEvents bool, ok bool) {
 	var _arg1 *C.GdkDisplay // out

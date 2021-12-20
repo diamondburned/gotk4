@@ -120,6 +120,11 @@ func (m *Matrix) Y0() float64 {
 // Concat changes the transformation represented by matrix to be the
 // transformation given by first applying transformation given by new_matrix
 // then applying the original transformation.
+//
+// The function takes the following parameters:
+//
+//    - newMatrix: PangoMatrix.
+//
 func (matrix *Matrix) Concat(newMatrix *Matrix) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 *C.PangoMatrix // out
@@ -133,6 +138,12 @@ func (matrix *Matrix) Concat(newMatrix *Matrix) {
 }
 
 // Copy copies a PangoMatrix.
+//
+// The function returns the following values:
+//
+//    - ret (optional): newly allocated PangoMatrix, which should be freed with
+//      pango.Matrix.Free(), or NULL if matrix was NULL.
+//
 func (matrix *Matrix) Copy() *Matrix {
 	var _arg0 *C.PangoMatrix // out
 	var _cret *C.PangoMatrix // in
@@ -165,6 +176,12 @@ func (matrix *Matrix) Copy() *Matrix {
 // That is, the scale factor in the direction perpendicular to the vector that
 // the X coordinate is mapped to. If the scale in the X coordinate is needed as
 // well, use pango.Matrix.GetFontScaleFactors().
+//
+// The function returns the following values:
+//
+//    - gdouble: scale factor of matrix on the height of the font, or 1.0 if
+//      matrix is NULL.
+//
 func (matrix *Matrix) FontScaleFactor() float64 {
 	var _arg0 *C.PangoMatrix // out
 	var _cret C.double       // in
@@ -191,6 +208,13 @@ func (matrix *Matrix) FontScaleFactor() float64 {
 // the X coordinate is mapped to.
 //
 // Note that output numbers will always be non-negative.
+//
+// The function returns the following values:
+//
+//    - xscale (optional): output scale factor in the x direction, or NULL.
+//    - yscale (optional): output scale factor perpendicular to the x direction,
+//      or NULL.
+//
 func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // in
@@ -215,6 +239,11 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 // Rotate changes the transformation represented by matrix to be the
 // transformation given by first rotating by degrees degrees counter-clockwise
 // then applying the original transformation.
+//
+// The function takes the following parameters:
+//
+//    - degrees to rotate counter-clockwise.
+//
 func (matrix *Matrix) Rotate(degrees float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
@@ -230,6 +259,12 @@ func (matrix *Matrix) Rotate(degrees float64) {
 // Scale changes the transformation represented by matrix to be the
 // transformation given by first scaling by sx in the X direction and sy in the
 // Y direction then applying the original transformation.
+//
+// The function takes the following parameters:
+//
+//    - scaleX: amount to scale by in X direction.
+//    - scaleY: amount to scale by in Y direction.
+//
 func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
@@ -248,6 +283,12 @@ func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 // Translate changes the transformation represented by matrix to be the
 // transformation given by first translating by (tx, ty) then applying the
 // original transformation.
+//
+// The function takes the following parameters:
+//
+//    - tx: amount to translate in the X direction.
+//    - ty: amount to translate in the Y direction.
+//
 func (matrix *Matrix) Translate(tx float64, ty float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out

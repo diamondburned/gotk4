@@ -120,6 +120,11 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 // GtkCssProvider::parsing-error signal. The end position and line may be
 // identical to the start position and line for sections which failed to parse
 // anything successfully.
+//
+// The function returns the following values:
+//
+//    - guint: line number.
+//
 func (section *CSSSection) EndLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
@@ -142,6 +147,11 @@ func (section *CSSSection) EndLine() uint {
 // will for example happen in the GtkCssProvider::parsing-error signal. The end
 // position and line may be identical to the start position and line for
 // sections which failed to parse anything successfully.
+//
+// The function returns the following values:
+//
+//    - guint: offset in bytes from the start of the line.
+//
 func (section *CSSSection) EndPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
@@ -161,6 +171,12 @@ func (section *CSSSection) EndPosition() uint {
 // File gets the file that section was parsed from. If no such file exists, for
 // example because the CSS was loaded via gtk_css_provider_load_from_data(),
 // then NULL is returned.
+//
+// The function returns the following values:
+//
+//    - file that section was parsed from or NULL if section was parsed from
+//      other data.
+//
 func (section *CSSSection) File() gio.Filer {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GFile         // in
@@ -196,6 +212,11 @@ func (section *CSSSection) File() gio.Filer {
 // original CSS document that was loaded by gtk_css_provider_load_from_file() or
 // a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
 // from a different file.
+//
+// The function returns the following values:
+//
+//    - cssSection (optional): parent section or NULL if none.
+//
 func (section *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
@@ -222,6 +243,11 @@ func (section *CSSSection) Parent() *CSSSection {
 }
 
 // SectionType gets the type of information that section describes.
+//
+// The function returns the following values:
+//
+//    - cssSectionType: type of section.
+//
 func (section *CSSSection) SectionType() CSSSectionType {
 	var _arg0 *C.GtkCssSection    // out
 	var _cret C.GtkCssSectionType // in
@@ -240,6 +266,11 @@ func (section *CSSSection) SectionType() CSSSectionType {
 
 // StartLine returns the line in the CSS document where this section starts. The
 // line number is 0-indexed, so the first line of the document will return 0.
+//
+// The function returns the following values:
+//
+//    - guint: line number.
+//
 func (section *CSSSection) StartLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
@@ -258,6 +289,11 @@ func (section *CSSSection) StartLine() uint {
 
 // StartPosition returns the offset in bytes from the start of the current line
 // returned via gtk_css_section_get_start_line().
+//
+// The function returns the following values:
+//
+//    - guint: offset in bytes from the start of the line.
+//
 func (section *CSSSection) StartPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in

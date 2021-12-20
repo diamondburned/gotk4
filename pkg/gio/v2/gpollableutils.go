@@ -30,6 +30,10 @@ import "C"
 //
 //    - pollableStream: stream associated with the new source.
 //
+// The function returns the following values:
+//
+//    - source: new #GSource.
+//
 func NewPollableSource(pollableStream *externglib.Object) *glib.Source {
 	var _arg1 *C.GObject // out
 	var _cret *C.GSource // in
@@ -59,9 +63,13 @@ func NewPollableSource(pollableStream *externglib.Object) *glib.Source {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable to attach.
+//    - ctx (optional): optional #GCancellable to attach.
 //    - pollableStream: stream associated with the new source.
-//    - childSource: optional child source to attach.
+//    - childSource (optional): optional child source to attach.
+//
+// The function returns the following values:
+//
+//    - source: new #GSource.
 //
 func PollableSourceNewFull(ctx context.Context, pollableStream *externglib.Object, childSource *glib.Source) *glib.Source {
 	var _arg3 *C.GCancellable // out
@@ -109,10 +117,14 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *externglib.Objec
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - stream: Stream.
 //    - buffer to read data into.
 //    - blocking: whether to do blocking I/O.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read, or -1 on error.
 //
 func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte, blocking bool) (int, error) {
 	var _arg5 *C.GCancellable // out
@@ -166,10 +178,14 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - stream: Stream.
 //    - buffer: buffer containing the data to write.
 //    - blocking: whether to do blocking I/O.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes written, or -1 on error.
 //
 func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (int, error) {
 	var _arg5 *C.GCancellable  // out
@@ -230,10 +246,15 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - stream: Stream.
 //    - buffer: buffer containing the data to write.
 //    - blocking: whether to do blocking I/O.
+//
+// The function returns the following values:
+//
+//    - bytesWritten: location to store the number of bytes that was written to
+//      the stream.
 //
 func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (uint, error) {
 	var _arg6 *C.GCancellable  // out

@@ -50,6 +50,11 @@ func marshalTextChildAnchorrer(p uintptr) (interface{}, error) {
 // Usually you would then insert it into a GtkTextBuffer with
 // gtk.TextBuffer.InsertChildAnchor(). To perform the creation and insertion in
 // one step, use the convenience function gtk.TextBuffer.CreateChildAnchor().
+//
+// The function returns the following values:
+//
+//    - textChildAnchor: new GtkTextChildAnchor.
+//
 func NewTextChildAnchor() *TextChildAnchor {
 	var _cret *C.GtkTextChildAnchor // in
 
@@ -68,6 +73,11 @@ func NewTextChildAnchor() *TextChildAnchor {
 // buffer, so you need to hold your own reference (with g_object_ref()) if you
 // plan to use this function — otherwise all deleted child anchors will also be
 // finalized.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the child anchor has been deleted from its buffer.
+//
 func (anchor *TextChildAnchor) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret C.gboolean            // in
@@ -89,6 +99,11 @@ func (anchor *TextChildAnchor) Deleted() bool {
 // Widgets gets a list of all widgets anchored at this child anchor.
 //
 // The order in which the widgets are returned is not defined.
+//
+// The function returns the following values:
+//
+//    - widgets: an array of widgets anchored at anchor.
+//
 func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret **C.GtkWidget         // in

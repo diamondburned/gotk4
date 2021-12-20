@@ -81,6 +81,11 @@ func marshalRecentChooserWidgetter(p uintptr) (interface{}, error) {
 
 // NewRecentChooserWidget creates a new RecentChooserWidget object. This is an
 // embeddable widget used to access the recently used resources list.
+//
+// The function returns the following values:
+//
+//    - recentChooserWidget: new RecentChooserWidget.
+//
 func NewRecentChooserWidget() *RecentChooserWidget {
 	var _cret *C.GtkWidget // in
 
@@ -102,6 +107,10 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 // The function takes the following parameters:
 //
 //    - manager: RecentManager.
+//
+// The function returns the following values:
+//
+//    - recentChooserWidget: new RecentChooserWidget.
 //
 func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidget {
 	var _arg1 *C.GtkRecentManager // out

@@ -70,6 +70,11 @@ func marshalHPanedder(p uintptr) (interface{}, error) {
 // NewHPaned: create a new HPaned
 //
 // Deprecated: Use gtk_paned_new() with GTK_ORIENTATION_HORIZONTAL instead.
+//
+// The function returns the following values:
+//
+//    - hPaned: new HPaned.
+//
 func NewHPaned() *HPaned {
 	var _cret *C.GtkWidget // in
 

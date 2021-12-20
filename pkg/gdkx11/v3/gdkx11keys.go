@@ -51,6 +51,10 @@ func marshalX11Keymapper(p uintptr) (interface{}, error) {
 //
 //    - state: raw state returned from X.
 //
+// The function returns the following values:
+//
+//    - gint: index of the active keyboard group for the event.
+//
 func (keymap *X11Keymap) GroupForState(state uint) int {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
@@ -79,6 +83,10 @@ func (keymap *X11Keymap) GroupForState(state uint) int {
 // The function takes the following parameters:
 //
 //    - keycode: hardware keycode from a key event.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the hardware keycode is a modifier key.
 //
 func (keymap *X11Keymap) KeyIsModifier(keycode uint) bool {
 	var _arg0 *C.GdkKeymap // out

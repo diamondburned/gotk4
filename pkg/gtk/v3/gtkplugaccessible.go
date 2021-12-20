@@ -61,6 +61,8 @@ func marshalPlugAccessibler(p uintptr) (interface{}, error) {
 	return wrapPlugAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// The function returns the following values:
+//
 func (plug *PlugAccessible) ID() string {
 	var _arg0 *C.GtkPlugAccessible // out
 	var _cret *C.gchar             // in

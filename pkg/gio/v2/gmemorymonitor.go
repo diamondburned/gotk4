@@ -31,6 +31,8 @@ const MEMORY_MONITOR_EXTENSION_POINT_NAME = "gio-memory-monitor"
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type MemoryMonitorOverrider interface {
+	// The function takes the following parameters:
+	//
 	LowMemoryWarning(level MemoryMonitorWarningLevel)
 }
 
@@ -130,6 +132,11 @@ func (monitor *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitor
 
 // MemoryMonitorDupDefault gets a reference to the default Monitor for the
 // system.
+//
+// The function returns the following values:
+//
+//    - memoryMonitor: new reference to the default Monitor.
+//
 func MemoryMonitorDupDefault() MemoryMonitorrer {
 	var _cret *C.GMemoryMonitor // in
 

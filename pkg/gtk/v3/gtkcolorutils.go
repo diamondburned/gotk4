@@ -25,6 +25,12 @@ import "C"
 //    - g: green.
 //    - b: blue.
 //
+// The function returns the following values:
+//
+//    - h: return value for the hue component.
+//    - s: return value for the saturation component.
+//    - v: return value for the value component.
+//
 func RGBToHSV(r, g, b float64) (h float64, s float64, v float64) {
 	var _arg1 C.gdouble // out
 	var _arg2 C.gdouble // out
@@ -63,6 +69,12 @@ func RGBToHSV(r, g, b float64) (h float64, s float64, v float64) {
 //    - h: hue.
 //    - s: saturation.
 //    - v: value.
+//
+// The function returns the following values:
+//
+//    - r: return value for the red component.
+//    - g: return value for the green component.
+//    - b: return value for the blue component.
 //
 func HSVToRGB(h, s, v float64) (r float64, g float64, b float64) {
 	var _arg1 C.gdouble // out

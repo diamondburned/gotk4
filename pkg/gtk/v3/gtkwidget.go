@@ -169,6 +169,10 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 //    - cr: cairo context.
 //    - window to check. window may not be an input-only window.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if window should be drawn.
+//
 func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
@@ -225,11 +229,40 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Wind
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WidgetOverrider interface {
+	// The function takes the following parameters:
+	//
 	AdjustBaselineAllocation(baseline *int)
+	// The function takes the following parameters:
+	//
+	//    - minimumBaseline
+	//    - naturalBaseline
+	//
 	AdjustBaselineRequest(minimumBaseline, naturalBaseline *int)
+	// The function takes the following parameters:
+	//
+	//    - orientation
+	//    - minimumSize
+	//    - naturalSize
+	//    - allocatedPos
+	//    - allocatedSize
+	//
 	AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int)
+	// The function takes the following parameters:
+	//
+	//    - orientation
+	//    - minimumSize
+	//    - naturalSize
+	//
 	AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ButtonPressEvent(event *gdk.EventButton) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ButtonReleaseEvent(event *gdk.EventButton) bool
 	// CanActivateAccel determines whether an accelerator that activates the
 	// signal identified by signal_id can currently be activated. This is done
@@ -237,10 +270,31 @@ type WidgetOverrider interface {
 	// signal isn’t overridden by a handler or in a derived widget, then the
 	// default check is that the widget must be sensitive, and the widget and
 	// all its ancestors mapped.
+	//
+	// The function takes the following parameters:
+	//
+	//    - signalId: ID of a signal installed on widget.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the accelerator can be activated.
+	//
 	CanActivateAccel(signalId uint) bool
 	CompositedChanged()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ConfigureEvent(event *gdk.EventConfigure) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	DamageEvent(event *gdk.EventExpose) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	DeleteEvent(event *gdk.EventAny) bool
 	// Destroy destroys a widget.
 	//
@@ -274,18 +328,84 @@ type WidgetOverrider interface {
 	//
 	// See also: gtk_container_remove().
 	Destroy()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	DestroyEvent(event *gdk.EventAny) bool
+	// The function takes the following parameters:
+	//
 	DirectionChanged(previousDirection TextDirection)
+	// The function takes the following parameters:
+	//
 	DragBegin(context *gdk.DragContext)
+	// The function takes the following parameters:
+	//
 	DragDataDelete(context *gdk.DragContext)
+	// The function takes the following parameters:
+	//
+	//    - context
+	//    - selectionData
+	//    - info
+	//    - time_
+	//
 	DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint)
+	// The function takes the following parameters:
+	//
+	//    - context
+	//    - x
+	//    - y
+	//    - selectionData
+	//    - info
+	//    - time_
+	//
 	DragDataReceived(context *gdk.DragContext, x, y int, selectionData *SelectionData, info, time_ uint)
+	// The function takes the following parameters:
+	//
+	//    - context
+	//    - x
+	//    - y
+	//    - time_
+	//
+	// The function returns the following values:
+	//
 	DragDrop(context *gdk.DragContext, x, y int, time_ uint) bool
+	// The function takes the following parameters:
+	//
 	DragEnd(context *gdk.DragContext)
+	// The function takes the following parameters:
+	//
+	//    - context
+	//    - result
+	//
+	// The function returns the following values:
+	//
 	DragFailed(context *gdk.DragContext, result DragResult) bool
+	// The function takes the following parameters:
+	//
+	//    - context
+	//    - time_
+	//
 	DragLeave(context *gdk.DragContext, time_ uint)
+	// The function takes the following parameters:
+	//
+	//    - context
+	//    - x
+	//    - y
+	//    - time_
+	//
+	// The function returns the following values:
+	//
 	DragMotion(context *gdk.DragContext, x, y int, time_ uint) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	Draw(cr *cairo.Context) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	EnterNotifyEvent(event *gdk.EventCrossing) bool
 	// Event: rarely-used function. This function is used to emit the event
 	// signals on a widget (those signals should never be emitted without using
@@ -294,9 +414,31 @@ type WidgetOverrider interface {
 	// behave as if it were in the event queue. Don’t synthesize expose events;
 	// instead, use gdk_window_invalidate_rect() to invalidate a region of the
 	// window.
+	//
+	// The function takes the following parameters:
+	//
+	//    - event: Event.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: return from the event signal emission (TRUE if the event was
+	//      handled).
+	//
 	Event(event *gdk.Event) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	Focus(direction DirectionType) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	FocusInEvent(event *gdk.EventFocus) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	FocusOutEvent(event *gdk.EventFocus) bool
 	// Accessible returns the accessible object that describes the widget to an
 	// assistive technology.
@@ -310,6 +452,11 @@ type WidgetOverrider interface {
 	// The documentation of the ATK (http://developer.gnome.org/atk/stable/)
 	// library contains more information about accessible objects and their
 	// uses.
+	//
+	// The function returns the following values:
+	//
+	//    - object associated with widget.
+	//
 	Accessible() *atk.ObjectClass
 	// PreferredHeight retrieves a widget’s initial minimum and natural height.
 	//
@@ -320,6 +467,14 @@ type WidgetOverrider interface {
 	// that have been applied. That is, the returned request is the one that
 	// should be used for layout, not necessarily the one returned by the widget
 	// itself.
+	//
+	// The function returns the following values:
+	//
+	//    - minimumHeight (optional): location to store the minimum height, or
+	//      NULL.
+	//    - naturalHeight (optional): location to store the natural height, or
+	//      NULL.
+	//
 	PreferredHeight() (minimumHeight int, naturalHeight int)
 	// PreferredHeightAndBaselineForWidth retrieves a widget’s minimum and
 	// natural height and the corresponding baselines if it would be given the
@@ -332,6 +487,22 @@ type WidgetOverrider interface {
 	// SizeGroups that have been applied. That is, the returned request is the
 	// one that should be used for layout, not necessarily the one returned by
 	// the widget itself.
+	//
+	// The function takes the following parameters:
+	//
+	//    - width which is available for allocation, or -1 if none.
+	//
+	// The function returns the following values:
+	//
+	//    - minimumHeight (optional): location for storing the minimum height, or
+	//      NULL.
+	//    - naturalHeight (optional): location for storing the natural height, or
+	//      NULL.
+	//    - minimumBaseline (optional): location for storing the baseline for the
+	//      minimum height, or NULL.
+	//    - naturalBaseline (optional): location for storing the baseline for the
+	//      natural height, or NULL.
+	//
 	PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int)
 	// PreferredHeightForWidth retrieves a widget’s minimum and natural height
 	// if it would be given the specified width.
@@ -341,6 +512,18 @@ type WidgetOverrider interface {
 	// that have been applied. That is, the returned request is the one that
 	// should be used for layout, not necessarily the one returned by the widget
 	// itself.
+	//
+	// The function takes the following parameters:
+	//
+	//    - width which is available for allocation.
+	//
+	// The function returns the following values:
+	//
+	//    - minimumHeight (optional): location for storing the minimum height, or
+	//      NULL.
+	//    - naturalHeight (optional): location for storing the natural height, or
+	//      NULL.
+	//
 	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth retrieves a widget’s initial minimum and natural width.
 	//
@@ -351,6 +534,14 @@ type WidgetOverrider interface {
 	// that have been applied. That is, the returned request is the one that
 	// should be used for layout, not necessarily the one returned by the widget
 	// itself.
+	//
+	// The function returns the following values:
+	//
+	//    - minimumWidth (optional): location to store the minimum width, or
+	//      NULL.
+	//    - naturalWidth (optional): location to store the natural width, or
+	//      NULL.
+	//
 	PreferredWidth() (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight retrieves a widget’s minimum and natural width if
 	// it would be given the specified height.
@@ -360,6 +551,18 @@ type WidgetOverrider interface {
 	// that have been applied. That is, the returned request is the one that
 	// should be used for layout, not necessarily the one returned by the widget
 	// itself.
+	//
+	// The function takes the following parameters:
+	//
+	//    - height which is available for allocation.
+	//
+	// The function returns the following values:
+	//
+	//    - minimumWidth (optional): location for storing the minimum width, or
+	//      NULL.
+	//    - naturalWidth (optional): location for storing the natural width, or
+	//      NULL.
+	//
 	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the widget prefers a height-for-width layout or
 	// a width-for-height layout.
@@ -367,7 +570,16 @@ type WidgetOverrider interface {
 	// Bin widgets generally propagate the preference of their child, container
 	// widgets need to request something either in context of their children or
 	// in context of their allocation capabilities.
+	//
+	// The function returns the following values:
+	//
+	//    - sizeRequestMode preferred by widget.
+	//
 	RequestMode() SizeRequestMode
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	GrabBrokenEvent(event *gdk.EventGrabBroken) bool
 	// GrabFocus causes widget to have the keyboard focus for the Window it's
 	// inside. widget must be a focusable widget, such as a Entry; something
@@ -380,12 +592,24 @@ type WidgetOverrider interface {
 	// related signals. Grabbing the focus immediately after creating the widget
 	// will likely fail and cause critical warnings.
 	GrabFocus()
+	// The function takes the following parameters:
+	//
 	GrabNotify(wasGrabbed bool)
 	// Hide reverses the effects of gtk_widget_show(), causing the widget to be
 	// hidden (invisible to the user).
 	Hide()
+	// The function takes the following parameters:
+	//
 	HierarchyChanged(previousToplevel Widgetter)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	KeyPressEvent(event *gdk.EventKey) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	KeyReleaseEvent(event *gdk.EventKey) bool
 	// KeynavFailed: this function should be called whenever keyboard navigation
 	// within a single widget hits a boundary. The function emits the
@@ -413,21 +637,80 @@ type WidgetOverrider interface {
 	// where the user should be able to navigate the entire row with the cursor
 	// keys, as e.g. known from user interfaces that require entering license
 	// keys.
+	//
+	// The function takes the following parameters:
+	//
+	//    - direction of focus movement.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if stopping keyboard navigation is fine, FALSE if the
+	//      emitting widget should try to handle the keyboard navigation attempt
+	//      in its parent container(s).
+	//
 	KeynavFailed(direction DirectionType) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	LeaveNotifyEvent(event *gdk.EventCrossing) bool
 	// Map: this function is only for use in widget implementations. Causes a
 	// widget to be mapped if it isn’t already.
 	Map()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	MapEvent(event *gdk.EventAny) bool
 	// MnemonicActivate emits the Widget::mnemonic-activate signal.
+	//
+	// The function takes the following parameters:
+	//
+	//    - groupCycling: TRUE if there are other widgets with the same mnemonic.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the signal has been handled.
+	//
 	MnemonicActivate(groupCycling bool) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	MotionNotifyEvent(event *gdk.EventMotion) bool
+	// The function takes the following parameters:
+	//
 	MoveFocus(direction DirectionType)
+	// The function takes the following parameters:
+	//
 	ParentSet(previousParent Widgetter)
+	// The function returns the following values:
+	//
 	PopupMenu() bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	PropertyNotifyEvent(event *gdk.EventProperty) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ProximityInEvent(event *gdk.EventProximity) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ProximityOutEvent(event *gdk.EventProximity) bool
+	// The function takes the following parameters:
+	//
+	//    - x
+	//    - y
+	//    - keyboardTooltip
+	//    - tooltip
+	//
+	// The function returns the following values:
+	//
 	QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	// QueueDrawRegion invalidates the area of widget defined by region by
 	// calling gdk_window_invalidate_region() on the widget’s window and all its
@@ -438,6 +721,11 @@ type WidgetOverrider interface {
 	// Normally you would only use this function in widget implementations. You
 	// might also use it to schedule a redraw of a DrawingArea or some portion
 	// thereof.
+	//
+	// The function takes the following parameters:
+	//
+	//    - region to draw.
+	//
 	QueueDrawRegion(region *cairo.Region)
 	// Realize creates the GDK (windowing system) resources associated with a
 	// widget. For example, widget->window will be created when a widget is
@@ -456,12 +744,41 @@ type WidgetOverrider interface {
 	// is realized automatically, such as Widget::draw. Or simply
 	// g_signal_connect () to the Widget::realize signal.
 	Realize()
+	// The function takes the following parameters:
+	//
 	ScreenChanged(previousScreen *gdk.Screen)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ScrollEvent(event *gdk.EventScroll) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	SelectionClearEvent(event *gdk.EventSelection) bool
+	// The function takes the following parameters:
+	//
+	//    - selectionData
+	//    - info
+	//    - time_
+	//
 	SelectionGet(selectionData *SelectionData, info, time_ uint)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	SelectionNotifyEvent(event *gdk.EventSelection) bool
+	// The function takes the following parameters:
+	//
+	//    - selectionData
+	//    - time_
+	//
 	SelectionReceived(selectionData *SelectionData, time_ uint)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	SelectionRequestEvent(event *gdk.EventSelection) bool
 	// Show flags a widget to be displayed. Any widget that isn’t shown will not
 	// appear on the screen. If you want to show all the widgets in a container,
@@ -478,6 +795,10 @@ type WidgetOverrider interface {
 	// ShowAll: recursively shows a widget, and any child widgets (if the widget
 	// is a container).
 	ShowAll()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	ShowHelp(helpType WidgetHelpType) bool
 	// SizeAllocate: this function is only used by Container subclasses, to
 	// assign a size and position to their child widgets.
@@ -490,21 +811,48 @@ type WidgetOverrider interface {
 	//
 	// For baseline support in containers you need to use
 	// gtk_widget_size_allocate_with_baseline() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - allocation: position and size to be allocated to widget.
+	//
 	SizeAllocate(allocation *Allocation)
+	// The function takes the following parameters:
+	//
 	StateChanged(previousState StateType)
+	// The function takes the following parameters:
+	//
 	StateFlagsChanged(previousStateFlags StateFlags)
+	// The function takes the following parameters:
+	//
 	StyleSet(previousStyle *Style)
 	StyleUpdated()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	TouchEvent(event *gdk.EventTouch) bool
 	// Unmap: this function is only for use in widget implementations. Causes a
 	// widget to be unmapped if it’s currently mapped.
 	Unmap()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	UnmapEvent(event *gdk.EventAny) bool
 	// Unrealize: this function is only useful in widget implementations. Causes
 	// a widget to be unrealized (frees all GDK resources associated with the
 	// widget, such as widget->window).
 	Unrealize()
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	VisibilityNotifyEvent(event *gdk.EventVisibility) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	WindowStateEvent(event *gdk.EventWindowState) bool
 }
 
@@ -646,6634 +994,6 @@ func wrapWidget(obj *externglib.Object) *Widget {
 
 func marshalWidgetter(p uintptr) (interface{}, error) {
 	return wrapWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
-// this function activates them. Activation is what happens when you press Enter
-// on a widget during key navigation. If widget isn't activatable, the function
-// returns FALSE.
-func (widget *Widget) Activate() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_activate(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// AddAccelerator installs an accelerator for this widget in accel_group that
-// causes accel_signal to be emitted if the accelerator is activated. The
-// accel_group needs to be added to the widget’s toplevel via
-// gtk_window_add_accel_group(), and the signal must be of type G_SIGNAL_ACTION.
-// Accelerators added through this function are not user changeable during
-// runtime. If you want to support accelerators that can be changed by the user,
-// use gtk_accel_map_add_entry() and gtk_widget_set_accel_path() or
-// gtk_menu_item_set_accel_path() instead.
-//
-// The function takes the following parameters:
-//
-//    - accelSignal: widget signal to emit on accelerator activation.
-//    - accelGroup: accel group for this widget, added to its toplevel.
-//    - accelKey: GDK keyval of the accelerator.
-//    - accelMods: modifier key combination of the accelerator.
-//    - accelFlags: flag accelerators, e.g. GTK_ACCEL_VISIBLE.
-//
-func (widget *Widget) AddAccelerator(accelSignal string, accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.gchar          // out
-	var _arg2 *C.GtkAccelGroup  // out
-	var _arg3 C.guint           // out
-	var _arg4 C.GdkModifierType // out
-	var _arg5 C.GtkAccelFlags   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelSignal)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
-	_arg3 = C.guint(accelKey)
-	_arg4 = C.GdkModifierType(accelMods)
-	_arg5 = C.GtkAccelFlags(accelFlags)
-
-	C.gtk_widget_add_accelerator(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(accelSignal)
-	runtime.KeepAlive(accelGroup)
-	runtime.KeepAlive(accelKey)
-	runtime.KeepAlive(accelMods)
-	runtime.KeepAlive(accelFlags)
-}
-
-// AddDeviceEvents adds the device events in the bitfield events to the event
-// mask for widget. See gtk_widget_set_device_events() for details.
-//
-// The function takes the following parameters:
-//
-//    - device: Device.
-//    - events: event mask, see EventMask.
-//
-func (widget *Widget) AddDeviceEvents(device gdk.Devicer, events gdk.EventMask) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 *C.GdkDevice   // out
-	var _arg2 C.GdkEventMask // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg2 = C.GdkEventMask(events)
-
-	C.gtk_widget_add_device_events(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(device)
-	runtime.KeepAlive(events)
-}
-
-// AddEvents adds the events in the bitfield events to the event mask for
-// widget. See gtk_widget_set_events() and the [input handling
-// overview][event-masks] for details.
-//
-// The function takes the following parameters:
-//
-//    - events: event mask, see EventMask.
-//
-func (widget *Widget) AddEvents(events int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(events)
-
-	C.gtk_widget_add_events(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(events)
-}
-
-// AddMnemonicLabel adds a widget to the list of mnemonic labels for this
-// widget. (See gtk_widget_list_mnemonic_labels()). Note the list of mnemonic
-// labels for the widget is cleared when the widget is destroyed, so the caller
-// must make sure to update its internal state at this point as well, by using a
-// connection to the Widget::destroy signal or a weak notifier.
-//
-// The function takes the following parameters:
-//
-//    - label that acts as a mnemonic label for widget.
-//
-func (widget *Widget) AddMnemonicLabel(label Widgetter) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
-
-	C.gtk_widget_add_mnemonic_label(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(label)
-}
-
-// AddTickCallback queues an animation frame update and adds a callback to be
-// called before each frame. Until the tick callback is removed, it will be
-// called frequently (usually at the frame rate of the output device or as
-// quickly as the application can be repainted, whichever is slower). For this
-// reason, is most suitable for handling graphics that change every frame or
-// every few frames. The tick callback does not automatically imply a relayout
-// or repaint. If you want a repaint or relayout, and aren’t changing widget
-// properties that would trigger that (for example, changing the text of a
-// Label), then you will have to call gtk_widget_queue_resize() or
-// gtk_widget_queue_draw_area() yourself.
-//
-// gdk_frame_clock_get_frame_time() should generally be used for timing
-// continuous animations and gdk_frame_timings_get_predicted_presentation_time()
-// if you are trying to display isolated frames at particular times.
-//
-// This is a more convenient alternative to connecting directly to the
-// FrameClock::update signal of FrameClock, since you don't have to worry about
-// when a FrameClock is assigned to a widget.
-//
-// The function takes the following parameters:
-//
-//    - callback: function to call for updating animations.
-//
-func (widget *Widget) AddTickCallback(callback TickCallback) uint {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 C.GtkTickCallback // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-	var _cret C.guint // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TickCallback)
-	_arg2 = C.gpointer(gbox.Assign(callback))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	_cret = C.gtk_widget_add_tick_callback(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(callback)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// CanActivateAccel determines whether an accelerator that activates the signal
-// identified by signal_id can currently be activated. This is done by emitting
-// the Widget::can-activate-accel signal on widget; if the signal isn’t
-// overridden by a handler or in a derived widget, then the default check is
-// that the widget must be sensitive, and the widget and all its ancestors
-// mapped.
-//
-// The function takes the following parameters:
-//
-//    - signalId: ID of a signal installed on widget.
-//
-func (widget *Widget) CanActivateAccel(signalId uint) bool {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.guint      // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.guint(signalId)
-
-	_cret = C.gtk_widget_can_activate_accel(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(signalId)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ChildFocus: this function is used by custom widget implementations; if you're
-// writing an app, you’d use gtk_widget_grab_focus() to move the focus to a
-// particular widget, and gtk_container_set_focus_chain() to change the focus
-// tab order. So you may want to investigate those functions instead.
-//
-// gtk_widget_child_focus() is called by containers as the user moves around the
-// window using keyboard shortcuts. direction indicates what kind of motion is
-// taking place (up, down, left, right, tab forward, tab backward).
-// gtk_widget_child_focus() emits the Widget::focus signal; widgets override the
-// default handler for this signal in order to implement appropriate focus
-// behavior.
-//
-// The default ::focus handler for a widget should return TRUE if moving in
-// direction left the focus on a focusable location inside that widget, and
-// FALSE if moving in direction moved the focus outside the widget. If returning
-// TRUE, widgets normally call gtk_widget_grab_focus() to place the focus
-// accordingly; if returning FALSE, they don’t modify the current focus
-// location.
-//
-// The function takes the following parameters:
-//
-//    - direction of focus movement.
-//
-func (widget *Widget) ChildFocus(direction DirectionType) bool {
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkDirectionType // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkDirectionType(direction)
-
-	_cret = C.gtk_widget_child_focus(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(direction)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ChildNotify emits a Widget::child-notify signal for the [child
-// property][child-properties] child_property on widget.
-//
-// This is the analogue of g_object_notify() for child properties.
-//
-// Also see gtk_container_child_notify().
-//
-// The function takes the following parameters:
-//
-//    - childProperty: name of a child property installed on the class of
-//    widget’s parent.
-//
-func (widget *Widget) ChildNotify(childProperty string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_widget_child_notify(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(childProperty)
-}
-
-// ClassPath: same as gtk_widget_path(), but always uses the name of a widget’s
-// type, never uses a custom name set with gtk_widget_set_name().
-//
-// Deprecated: Use gtk_widget_get_path() instead.
-func (widget *Widget) ClassPath() (pathLength uint, path string, pathReversed string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.guint      // in
-	var _arg2 *C.gchar     // in
-	var _arg3 *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_class_path(_arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(widget)
-
-	var _pathLength uint     // out
-	var _path string         // out
-	var _pathReversed string // out
-
-	_pathLength = uint(_arg1)
-	if _arg2 != nil {
-		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	if _arg3 != nil {
-		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	return _pathLength, _path, _pathReversed
-}
-
-// ComputeExpand computes whether a container should give this widget extra
-// space when possible. Containers should check this, rather than looking at
-// gtk_widget_get_hexpand() or gtk_widget_get_vexpand().
-//
-// This function already checks whether the widget is visible, so visibility
-// does not need to be checked separately. Non-visible widgets are not expanded.
-//
-// The computed expand value uses either the expand setting explicitly set on
-// the widget itself, or, if none has been explicitly set, the widget may expand
-// if some of its children do.
-//
-// The function takes the following parameters:
-//
-//    - orientation: expand direction.
-//
-func (widget *Widget) ComputeExpand(orientation Orientation) bool {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkOrientation // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkOrientation(orientation)
-
-	_cret = C.gtk_widget_compute_expand(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(orientation)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// CreatePangoContext creates a new Context with the appropriate font map, font
-// options, font description, and base direction for drawing text for this
-// widget. See also gtk_widget_get_pango_context().
-func (widget *Widget) CreatePangoContext() *pango.Context {
-	var _arg0 *C.GtkWidget    // out
-	var _cret *C.PangoContext // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_create_pango_context(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _context *pango.Context // out
-
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_context = &pango.Context{
-			Object: obj,
-		}
-	}
-
-	return _context
-}
-
-// CreatePangoLayout creates a new Layout with the appropriate font map, font
-// description, and base direction for drawing text for this widget.
-//
-// If you keep a Layout created in this way around, you need to re-create it
-// when the widget Context is replaced. This can be tracked by using the
-// Widget::screen-changed signal on the widget.
-//
-// The function takes the following parameters:
-//
-//    - text to set on the layout (can be NULL).
-//
-func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 *C.gchar       // out
-	var _cret *C.PangoLayout // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if text != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-
-	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(text)
-
-	var _layout *pango.Layout // out
-
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_layout = &pango.Layout{
-			Object: obj,
-		}
-	}
-
-	return _layout
-}
-
-// Destroy destroys a widget.
-//
-// When a widget is destroyed all references it holds on other objects will be
-// released:
-//
-//    - if the widget is inside a container, it will be removed from its
-//    parent
-//    - if the widget is a container, all its children will be destroyed,
-//    recursively
-//    - if the widget is a top level, it will be removed from the list
-//    of top level widgets that GTK+ maintains internally
-//
-// It's expected that all references held on the widget will also be released;
-// you should connect to the Widget::destroy signal if you hold a reference to
-// widget and you wish to remove it when this function is called. It is not
-// necessary to do so if you are implementing a Container, as you'll be able to
-// use the ContainerClass.remove() virtual function for that.
-//
-// It's important to notice that gtk_widget_destroy() will only cause the widget
-// to be finalized if no additional references, acquired using g_object_ref(),
-// are held on it. In case additional references are in place, the widget will
-// be in an "inert" state after calling this function; widget will still point
-// to valid memory, allowing you to release the references you hold, but you may
-// not query the widget's own state.
-//
-// You should typically call this function on top level widgets, and rarely on
-// child widgets.
-//
-// See also: gtk_container_remove().
-func (widget *Widget) Destroy() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_destroy(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DeviceIsShadowed returns TRUE if device has been shadowed by a GTK+ device
-// grab on another widget, so it would stop sending events to widget. This may
-// be used in the Widget::grab-notify signal to check for specific devices. See
-// gtk_device_grab_add().
-//
-// The function takes the following parameters:
-//
-//    - device: Device.
-//
-func (widget *Widget) DeviceIsShadowed(device gdk.Devicer) bool {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkDevice // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	_cret = C.gtk_widget_device_is_shadowed(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(device)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DragBegin: this function is equivalent to gtk_drag_begin_with_coordinates(),
-// passing -1, -1 as coordinates.
-//
-// Deprecated: Use gtk_drag_begin_with_coordinates() instead.
-//
-// The function takes the following parameters:
-//
-//    - targets (data formats) in which the source can provide the data.
-//    - actions: bitmask of the allowed drag actions for this drag.
-//    - button the user clicked to start the drag.
-//    - event that triggered the start of the drag, or NULL if none can be
-//    obtained.
-//
-func (widget *Widget) DragBegin(targets *TargetList, actions gdk.DragAction, button int, event *gdk.Event) *gdk.DragContext {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkTargetList  // out
-	var _arg2 C.GdkDragAction   // out
-	var _arg3 C.gint            // out
-	var _arg4 *C.GdkEvent       // out
-	var _cret *C.GdkDragContext // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targets)))
-	_arg2 = C.GdkDragAction(actions)
-	_arg3 = C.gint(button)
-	if event != nil {
-		_arg4 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
-	}
-
-	_cret = C.gtk_drag_begin(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(targets)
-	runtime.KeepAlive(actions)
-	runtime.KeepAlive(button)
-	runtime.KeepAlive(event)
-
-	var _dragContext *gdk.DragContext // out
-
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_dragContext = &gdk.DragContext{
-			Object: obj,
-		}
-	}
-
-	return _dragContext
-}
-
-// DragBeginWithCoordinates initiates a drag on the source side. The function
-// only needs to be used when the application is starting drags itself, and is
-// not needed when gtk_drag_source_set() is used.
-//
-// The event is used to retrieve the timestamp that will be used internally to
-// grab the pointer. If event is NULL, then GDK_CURRENT_TIME will be used.
-// However, you should try to pass a real event in all cases, since that can be
-// used to get information about the drag.
-//
-// Generally there are three cases when you want to start a drag by hand by
-// calling this function:
-//
-// 1. During a Widget::button-press-event handler, if you want to start a drag
-// immediately when the user presses the mouse button. Pass the event that you
-// have in your Widget::button-press-event handler.
-//
-// 2. During a Widget::motion-notify-event handler, if you want to start a drag
-// when the mouse moves past a certain threshold distance after a button-press.
-// Pass the event that you have in your Widget::motion-notify-event handler.
-//
-// 3. During a timeout handler, if you want to start a drag after the mouse
-// button is held down for some time. Try to save the last event that you got
-// from the mouse, using gdk_event_copy(), and pass it to this function
-// (remember to free the event with gdk_event_free() when you are done). If you
-// really cannot pass a real event, pass NULL instead.
-//
-// The function takes the following parameters:
-//
-//    - targets (data formats) in which the source can provide the data.
-//    - actions: bitmask of the allowed drag actions for this drag.
-//    - button the user clicked to start the drag.
-//    - event that triggered the start of the drag, or NULL if none can be
-//    obtained.
-//    - x: initial x coordinate to start dragging from, in the coordinate space
-//    of widget. If -1 is passed, the coordinates are retrieved from event or
-//    the current pointer position.
-//    - y: initial y coordinate to start dragging from, in the coordinate space
-//    of widget. If -1 is passed, the coordinates are retrieved from event or
-//    the current pointer position.
-//
-func (widget *Widget) DragBeginWithCoordinates(targets *TargetList, actions gdk.DragAction, button int, event *gdk.Event, x, y int) *gdk.DragContext {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkTargetList  // out
-	var _arg2 C.GdkDragAction   // out
-	var _arg3 C.gint            // out
-	var _arg4 *C.GdkEvent       // out
-	var _arg5 C.gint            // out
-	var _arg6 C.gint            // out
-	var _cret *C.GdkDragContext // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targets)))
-	_arg2 = C.GdkDragAction(actions)
-	_arg3 = C.gint(button)
-	if event != nil {
-		_arg4 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
-	}
-	_arg5 = C.gint(x)
-	_arg6 = C.gint(y)
-
-	_cret = C.gtk_drag_begin_with_coordinates(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(targets)
-	runtime.KeepAlive(actions)
-	runtime.KeepAlive(button)
-	runtime.KeepAlive(event)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-
-	var _dragContext *gdk.DragContext // out
-
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_dragContext = &gdk.DragContext{
-			Object: obj,
-		}
-	}
-
-	return _dragContext
-}
-
-// DragCheckThreshold checks to see if a mouse drag starting at (start_x,
-// start_y) and ending at (current_x, current_y) has passed the GTK+ drag
-// threshold, and thus should trigger the beginning of a drag-and-drop
-// operation.
-//
-// The function takes the following parameters:
-//
-//    - startX: x coordinate of start of drag.
-//    - startY: y coordinate of start of drag.
-//    - currentX: current X coordinate.
-//    - currentY: current Y coordinate.
-//
-func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int) bool {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-	var _arg2 C.gint       // out
-	var _arg3 C.gint       // out
-	var _arg4 C.gint       // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(startX)
-	_arg2 = C.gint(startY)
-	_arg3 = C.gint(currentX)
-	_arg4 = C.gint(currentY)
-
-	_cret = C.gtk_drag_check_threshold(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(startX)
-	runtime.KeepAlive(startY)
-	runtime.KeepAlive(currentX)
-	runtime.KeepAlive(currentY)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DragDestAddImageTargets: add the image targets supported by SelectionData to
-// the target list of the drag destination. The targets are added with info = 0.
-// If you need another value, use gtk_target_list_add_image_targets() and
-// gtk_drag_dest_set_target_list().
-func (widget *Widget) DragDestAddImageTargets() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_dest_add_image_targets(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragDestAddTextTargets: add the text targets supported by SelectionData to
-// the target list of the drag destination. The targets are added with info = 0.
-// If you need another value, use gtk_target_list_add_text_targets() and
-// gtk_drag_dest_set_target_list().
-func (widget *Widget) DragDestAddTextTargets() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_dest_add_text_targets(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragDestAddURITargets: add the URI targets supported by SelectionData to the
-// target list of the drag destination. The targets are added with info = 0. If
-// you need another value, use gtk_target_list_add_uri_targets() and
-// gtk_drag_dest_set_target_list().
-func (widget *Widget) DragDestAddURITargets() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_dest_add_uri_targets(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragDestGetTargetList returns the list of targets this widget can accept from
-// drag-and-drop.
-func (widget *Widget) DragDestGetTargetList() *TargetList {
-	var _arg0 *C.GtkWidget     // out
-	var _cret *C.GtkTargetList // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_drag_dest_get_target_list(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _targetList *TargetList // out
-
-	if _cret != nil {
-		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gtk_target_list_ref(_cret)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_targetList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
-			},
-		)
-	}
-
-	return _targetList
-}
-
-// DragDestGetTrackMotion returns whether the widget has been configured to
-// always emit Widget::drag-motion signals.
-func (widget *Widget) DragDestGetTrackMotion() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_drag_dest_get_track_motion(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DragDestSet sets a widget as a potential drop destination, and adds default
-// behaviors.
-//
-// The default behaviors listed in flags have an effect similar to installing
-// default handlers for the widget’s drag-and-drop signals (Widget::drag-motion,
-// Widget::drag-drop, ...). They all exist for convenience. When passing
-// K_DEST_DEFAULT_ALL for instance it is sufficient to connect to the widget’s
-// Widget::drag-data-received signal to get primitive, but consistent
-// drag-and-drop support.
-//
-// Things become more complicated when you try to preview the dragged data, as
-// described in the documentation for Widget::drag-motion. The default behaviors
-// described by flags make some assumptions, that can conflict with your own
-// signal handlers. For instance K_DEST_DEFAULT_DROP causes invokations of
-// gdk_drag_status() in the context of Widget::drag-motion, and invokations of
-// gtk_drag_finish() in Widget::drag-data-received. Especially the later is
-// dramatic, when your own Widget::drag-motion handler calls gtk_drag_get_data()
-// to inspect the dragged data.
-//
-// There’s no way to set a default action here, you can use the
-// Widget::drag-motion callback for that. Here’s an example which selects the
-// action to use depending on whether the control key is pressed or not:
-//
-//    static void
-//    drag_motion (GtkWidget *widget,
-//                 GdkDragContext *context,
-//                 gint x,
-//                 gint y,
-//                 guint time)
-//    {
-//      GdkModifierType mask;
-//
-//      gdk_window_get_pointer (gtk_widget_get_window (widget),
-//                              NULL, NULL, &mask);
-//      if (mask & GDK_CONTROL_MASK)
-//        gdk_drag_status (context, GDK_ACTION_COPY, time);
-//      else
-//        gdk_drag_status (context, GDK_ACTION_MOVE, time);
-//    }.
-//
-// The function takes the following parameters:
-//
-//    - flags: which types of default drag behavior to use.
-//    - targets: pointer to an array of TargetEntrys indicating the drop types
-//    that this widget will accept, or NULL. Later you can access the list with
-//    gtk_drag_dest_get_target_list() and gtk_drag_dest_find_target().
-//    - actions: bitmask of possible actions for a drop onto this widget.
-//
-func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, actions gdk.DragAction) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 C.GtkDestDefaults // out
-	var _arg2 *C.GtkTargetEntry // out
-	var _arg3 C.gint
-	var _arg4 C.GdkDragAction // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkDestDefaults(flags)
-	_arg3 = (C.gint)(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.GtkTargetEntry)(_arg2), len(targets))
-		for i := range targets {
-			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
-		}
-	}
-	_arg4 = C.GdkDragAction(actions)
-
-	C.gtk_drag_dest_set(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(targets)
-	runtime.KeepAlive(actions)
-}
-
-// DragDestSetProxy sets this widget as a proxy for drops to another window.
-//
-// Deprecated: since version 3.22.
-//
-// The function takes the following parameters:
-//
-//    - proxyWindow: window to which to forward drag events.
-//    - protocol: drag protocol which the proxy_window accepts (You can use
-//    gdk_drag_get_protocol() to determine this).
-//    - useCoordinates: if TRUE, send the same coordinates to the destination,
-//    because it is an embedded subwindow.
-//
-func (widget *Widget) DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GdkWindow      // out
-	var _arg2 C.GdkDragProtocol // out
-	var _arg3 C.gboolean        // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(proxyWindow.Native()))
-	_arg2 = C.GdkDragProtocol(protocol)
-	if useCoordinates {
-		_arg3 = C.TRUE
-	}
-
-	C.gtk_drag_dest_set_proxy(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(proxyWindow)
-	runtime.KeepAlive(protocol)
-	runtime.KeepAlive(useCoordinates)
-}
-
-// DragDestSetTargetList sets the target types that this widget can accept from
-// drag-and-drop. The widget must first be made into a drag destination with
-// gtk_drag_dest_set().
-//
-// The function takes the following parameters:
-//
-//    - targetList: list of droppable targets, or NULL for none.
-//
-func (widget *Widget) DragDestSetTargetList(targetList *TargetList) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 *C.GtkTargetList // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if targetList != nil {
-		_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
-	}
-
-	C.gtk_drag_dest_set_target_list(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(targetList)
-}
-
-// DragDestSetTrackMotion tells the widget to emit Widget::drag-motion and
-// Widget::drag-leave events regardless of the targets and the
-// GTK_DEST_DEFAULT_MOTION flag.
-//
-// This may be used when a widget wants to do generic actions regardless of the
-// targets that the source offers.
-//
-// The function takes the following parameters:
-//
-//    - trackMotion: whether to accept all targets.
-//
-func (widget *Widget) DragDestSetTrackMotion(trackMotion bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if trackMotion {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_drag_dest_set_track_motion(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(trackMotion)
-}
-
-// DragDestUnset clears information about a drop destination set with
-// gtk_drag_dest_set(). The widget will no longer receive notification of drags.
-func (widget *Widget) DragDestUnset() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_dest_unset(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragHighlight highlights a widget as a currently hovered drop target. To end
-// the highlight, call gtk_drag_unhighlight(). GTK+ calls this automatically if
-// GTK_DEST_DEFAULT_HIGHLIGHT is set.
-func (widget *Widget) DragHighlight() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_highlight(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragSourceAddImageTargets: add the writable image targets supported by
-// SelectionData to the target list of the drag source. The targets are added
-// with info = 0. If you need another value, use
-// gtk_target_list_add_image_targets() and gtk_drag_source_set_target_list().
-func (widget *Widget) DragSourceAddImageTargets() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_source_add_image_targets(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragSourceAddTextTargets: add the text targets supported by SelectionData to
-// the target list of the drag source. The targets are added with info = 0. If
-// you need another value, use gtk_target_list_add_text_targets() and
-// gtk_drag_source_set_target_list().
-func (widget *Widget) DragSourceAddTextTargets() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_source_add_text_targets(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragSourceAddURITargets: add the URI targets supported by SelectionData to
-// the target list of the drag source. The targets are added with info = 0. If
-// you need another value, use gtk_target_list_add_uri_targets() and
-// gtk_drag_source_set_target_list().
-func (widget *Widget) DragSourceAddURITargets() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_source_add_uri_targets(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragSourceGetTargetList gets the list of targets this widget can provide for
-// drag-and-drop.
-func (widget *Widget) DragSourceGetTargetList() *TargetList {
-	var _arg0 *C.GtkWidget     // out
-	var _cret *C.GtkTargetList // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_drag_source_get_target_list(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _targetList *TargetList // out
-
-	if _cret != nil {
-		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gtk_target_list_ref(_cret)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_targetList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
-			},
-		)
-	}
-
-	return _targetList
-}
-
-// DragSourceSet sets up a widget so that GTK+ will start a drag operation when
-// the user clicks and drags on the widget. The widget must have a window.
-//
-// The function takes the following parameters:
-//
-//    - startButtonMask: bitmask of buttons that can start the drag.
-//    - targets: table of targets that the drag will support, may be NULL.
-//    - actions: bitmask of possible actions for a drag from this widget.
-//
-func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 C.GdkModifierType // out
-	var _arg2 *C.GtkTargetEntry // out
-	var _arg3 C.gint
-	var _arg4 C.GdkDragAction // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GdkModifierType(startButtonMask)
-	_arg3 = (C.gint)(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.GtkTargetEntry)(_arg2), len(targets))
-		for i := range targets {
-			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
-		}
-	}
-	_arg4 = C.GdkDragAction(actions)
-
-	C.gtk_drag_source_set(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(startButtonMask)
-	runtime.KeepAlive(targets)
-	runtime.KeepAlive(actions)
-}
-
-// DragSourceSetIconGIcon sets the icon that will be used for drags from a
-// particular source to icon. See the docs for IconTheme for more details.
-//
-// The function takes the following parameters:
-//
-//    - icon: #GIcon.
-//
-func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GIcon     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	C.gtk_drag_source_set_icon_gicon(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(icon)
-}
-
-// DragSourceSetIconName sets the icon that will be used for drags from a
-// particular source to a themed icon. See the docs for IconTheme for more
-// details.
-//
-// The function takes the following parameters:
-//
-//    - iconName: name of icon to use.
-//
-func (widget *Widget) DragSourceSetIconName(iconName string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_drag_source_set_icon_name(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(iconName)
-}
-
-// DragSourceSetIconPixbuf sets the icon that will be used for drags from a
-// particular widget from a Pixbuf. GTK+ retains a reference for pixbuf and will
-// release it when it is no longer needed.
-//
-// The function takes the following parameters:
-//
-//    - pixbuf for the drag icon.
-//
-func (widget *Widget) DragSourceSetIconPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkPixbuf // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	C.gtk_drag_source_set_icon_pixbuf(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(pixbuf)
-}
-
-// DragSourceSetIconStock sets the icon that will be used for drags from a
-// particular source to a stock icon.
-//
-// Deprecated: Use gtk_drag_source_set_icon_name() instead.
-//
-// The function takes the following parameters:
-//
-//    - stockId: ID of the stock icon to use.
-//
-func (widget *Widget) DragSourceSetIconStock(stockId string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_drag_source_set_icon_stock(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(stockId)
-}
-
-// DragSourceSetTargetList changes the target types that this widget offers for
-// drag-and-drop. The widget must first be made into a drag source with
-// gtk_drag_source_set().
-//
-// The function takes the following parameters:
-//
-//    - targetList: list of draggable targets, or NULL for none.
-//
-func (widget *Widget) DragSourceSetTargetList(targetList *TargetList) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 *C.GtkTargetList // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if targetList != nil {
-		_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
-	}
-
-	C.gtk_drag_source_set_target_list(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(targetList)
-}
-
-// DragSourceUnset undoes the effects of gtk_drag_source_set().
-func (widget *Widget) DragSourceUnset() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_source_unset(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragUnhighlight removes a highlight set by gtk_drag_highlight() from a
-// widget.
-func (widget *Widget) DragUnhighlight() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_drag_unhighlight(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// Draw draws widget to cr. The top left corner of the widget will be drawn to
-// the currently set origin point of cr.
-//
-// You should pass a cairo context as cr argument that is in an original state.
-// Otherwise the resulting drawing is undefined. For example changing the
-// operator using cairo_set_operator() or the line width using
-// cairo_set_line_width() might have unwanted side effects. You may however
-// change the context’s transform matrix - like with cairo_scale(),
-// cairo_translate() or cairo_set_matrix() and clip region with cairo_clip()
-// prior to calling this function. Also, it is fine to modify the context with
-// cairo_save() and cairo_push_group() prior to calling this function.
-//
-// Note that special-purpose widgets may contain special code for rendering to
-// the screen and might appear differently on screen and when rendered using
-// gtk_widget_draw().
-//
-// The function takes the following parameters:
-//
-//    - cr: cairo context to draw to.
-//
-func (widget *Widget) Draw(cr *cairo.Context) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.cairo_t   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-
-	C.gtk_widget_draw(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(cr)
-}
-
-// EnsureStyle ensures that widget has a style (widget->style).
-//
-// Not a very useful function; most of the time, if you want the style, the
-// widget is realized, and realized widgets are guaranteed to have a style
-// already.
-//
-// Deprecated: Use StyleContext instead.
-func (widget *Widget) EnsureStyle() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_ensure_style(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// ErrorBell notifies the user about an input-related error on this widget. If
-// the Settings:gtk-error-bell setting is TRUE, it calls gdk_window_beep(),
-// otherwise it does nothing.
-//
-// Note that the effect of gdk_window_beep() can be configured in many ways,
-// depending on the windowing backend and the desktop environment or window
-// manager that is used.
-func (widget *Widget) ErrorBell() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_error_bell(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// Event: rarely-used function. This function is used to emit the event signals
-// on a widget (those signals should never be emitted without using this
-// function to do so). If you want to synthesize an event though, don’t use this
-// function; instead, use gtk_main_do_event() so the event will behave as if it
-// were in the event queue. Don’t synthesize expose events; instead, use
-// gdk_window_invalidate_rect() to invalidate a region of the window.
-//
-// The function takes the following parameters:
-//
-//    - event: Event.
-//
-func (widget *Widget) Event(event *gdk.Event) bool {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkEvent  // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
-
-	_cret = C.gtk_widget_event(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(event)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// FreezeChildNotify stops emission of Widget::child-notify signals on widget.
-// The signals are queued until gtk_widget_thaw_child_notify() is called on
-// widget.
-//
-// This is the analogue of g_object_freeze_notify() for child properties.
-func (widget *Widget) FreezeChildNotify() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_freeze_child_notify(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// Accessible returns the accessible object that describes the widget to an
-// assistive technology.
-//
-// If accessibility support is not available, this Object instance may be a
-// no-op. Likewise, if no class-specific Object implementation is available for
-// the widget instance in question, it will inherit an Object implementation
-// from the first ancestor class for which such an implementation is defined.
-//
-// The documentation of the ATK (http://developer.gnome.org/atk/stable/) library
-// contains more information about accessible objects and their uses.
-func (widget *Widget) Accessible() *atk.ObjectClass {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.AtkObject // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_accessible(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _object *atk.ObjectClass // out
-
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_object = &atk.ObjectClass{
-			Object: obj,
-		}
-	}
-
-	return _object
-}
-
-// ActionGroup retrieves the Group that was registered using prefix. The
-// resulting Group may have been registered to widget or any Widget in its
-// ancestry.
-//
-// If no action group was found matching prefix, then NULL is returned.
-//
-// The function takes the following parameters:
-//
-//    - prefix: “prefix” of the action group.
-//
-func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 *C.gchar        // out
-	var _cret *C.GActionGroup // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(prefix)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_widget_get_action_group(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(prefix)
-
-	var _actionGroup gio.ActionGrouper // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.Cast()
-			rv, ok := casted.(gio.ActionGrouper)
-			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ActionGrouper")
-			}
-			_actionGroup = rv
-		}
-	}
-
-	return _actionGroup
-}
-
-// AllocatedBaseline returns the baseline that has currently been allocated to
-// widget. This function is intended to be used when implementing handlers for
-// the Widget::draw function, and when allocating child widgets in
-// Widget::size_allocate.
-func (widget *Widget) AllocatedBaseline() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.int        // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_allocated_baseline(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// AllocatedHeight returns the height that has currently been allocated to
-// widget. This function is intended to be used when implementing handlers for
-// the Widget::draw function.
-func (widget *Widget) AllocatedHeight() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.int        // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_allocated_height(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// AllocatedSize retrieves the widget’s allocated size.
-//
-// This function returns the last values passed to
-// gtk_widget_size_allocate_with_baseline(). The value differs from the size
-// returned in gtk_widget_get_allocation() in that functions like
-// gtk_widget_set_halign() can adjust the allocation, but not the value returned
-// by this function.
-//
-// If a widget is not visible, its allocated size is 0.
-func (widget *Widget) AllocatedSize() (*Allocation, int) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkAllocation // in
-	var _arg2 C.int           // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_allocated_size(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(widget)
-
-	var _allocation *Allocation // out
-	var _baseline int           // out
-
-	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_baseline = int(_arg2)
-
-	return _allocation, _baseline
-}
-
-// AllocatedWidth returns the width that has currently been allocated to widget.
-// This function is intended to be used when implementing handlers for the
-// Widget::draw function.
-func (widget *Widget) AllocatedWidth() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.int        // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_allocated_width(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Allocation retrieves the widget’s allocation.
-//
-// Note, when implementing a Container: a widget’s allocation will be its
-// “adjusted” allocation, that is, the widget’s parent container typically calls
-// gtk_widget_size_allocate() with an allocation, and that allocation is then
-// adjusted (to handle margin and alignment for example) before assignment to
-// the widget. gtk_widget_get_allocation() returns the adjusted allocation that
-// was actually assigned to the widget. The adjusted allocation is guaranteed to
-// be completely contained within the gtk_widget_size_allocate() allocation,
-// however. So a Container is guaranteed that its children stay inside the
-// assigned bounds, but not that they have exactly the bounds the container
-// assigned. There is no way to get the original allocation assigned by
-// gtk_widget_size_allocate(), since it isn’t stored; if a container
-// implementation needs that information it will have to track it itself.
-func (widget *Widget) Allocation() *Allocation {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkAllocation // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_allocation(_arg0, &_arg1)
-	runtime.KeepAlive(widget)
-
-	var _allocation *Allocation // out
-
-	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _allocation
-}
-
-// Ancestor gets the first ancestor of widget with type widget_type. For
-// example, gtk_widget_get_ancestor (widget, GTK_TYPE_BOX) gets the first Box
-// that’s an ancestor of widget. No reference will be added to the returned
-// widget; it should not be unreferenced. See note about checking for a toplevel
-// Window in the docs for gtk_widget_get_toplevel().
-//
-// Note that unlike gtk_widget_is_ancestor(), gtk_widget_get_ancestor()
-// considers widget to be an ancestor of itself.
-//
-// The function takes the following parameters:
-//
-//    - widgetType: ancestor type.
-//
-func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.GType      // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GType(widgetType)
-
-	_cret = C.gtk_widget_get_ancestor(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(widgetType)
-
-	var _ret Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.Cast()
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
-			}
-			_ret = rv
-		}
-	}
-
-	return _ret
-}
-
-// AppPaintable determines whether the application intends to draw on the widget
-// in an Widget::draw handler.
-//
-// See gtk_widget_set_app_paintable().
-func (widget *Widget) AppPaintable() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_app_paintable(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// CanDefault determines whether widget can be a default widget. See
-// gtk_widget_set_can_default().
-func (widget *Widget) CanDefault() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_can_default(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// CanFocus determines whether widget can own the input focus. See
-// gtk_widget_set_can_focus().
-func (widget *Widget) CanFocus() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_can_focus(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ChildRequisition: this function is only for use in widget implementations.
-// Obtains widget->requisition, unless someone has forced a particular geometry
-// on the widget (e.g. with gtk_widget_set_size_request()), in which case it
-// returns that geometry instead of the widget's requisition.
-//
-// This function differs from gtk_widget_size_request() in that it retrieves the
-// last size request value from widget->requisition, while
-// gtk_widget_size_request() actually calls the "size_request" method on widget
-// to compute the size request and fill in widget->requisition, and only then
-// returns widget->requisition.
-//
-// Because this function does not call the “size_request” method, it can only be
-// used when you know that widget->requisition is up-to-date, that is,
-// gtk_widget_size_request() has been called since the last time a resize was
-// queued. In general, only container implementations have this information;
-// applications should use gtk_widget_size_request().
-//
-// Deprecated: Use gtk_widget_get_preferred_size() instead.
-func (widget *Widget) ChildRequisition() *Requisition {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkRequisition // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_child_requisition(_arg0, &_arg1)
-	runtime.KeepAlive(widget)
-
-	var _requisition *Requisition // out
-
-	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _requisition
-}
-
-// ChildVisible gets the value set with gtk_widget_set_child_visible(). If you
-// feel a need to use this function, your code probably needs reorganization.
-//
-// This function is only useful for container implementations and never should
-// be called by an application.
-func (widget *Widget) ChildVisible() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_child_visible(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Clip retrieves the widget’s clip area.
-//
-// The clip area is the area in which all of widget's drawing will happen. Other
-// toolkits call it the bounding box.
-//
-// Historically, in GTK+ the clip area has been equal to the allocation
-// retrieved via gtk_widget_get_allocation().
-func (widget *Widget) Clip() *Allocation {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkAllocation // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_clip(_arg0, &_arg1)
-	runtime.KeepAlive(widget)
-
-	var _clip *Allocation // out
-
-	_clip = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _clip
-}
-
-// CompositeName obtains the composite name of a widget.
-//
-// Deprecated: Use gtk_widget_class_set_template(), or don’t use this API at
-// all.
-func (widget *Widget) CompositeName() string {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_composite_name(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
-// DeviceEnabled returns whether device can interact with widget and its
-// children. See gtk_widget_set_device_enabled().
-//
-// The function takes the following parameters:
-//
-//    - device: Device.
-//
-func (widget *Widget) DeviceEnabled(device gdk.Devicer) bool {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkDevice // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	_cret = C.gtk_widget_get_device_enabled(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(device)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DeviceEvents returns the events mask for the widget corresponding to an
-// specific device. These are the events that the widget will receive when
-// device operates on it.
-//
-// The function takes the following parameters:
-//
-//    - device: Device.
-//
-func (widget *Widget) DeviceEvents(device gdk.Devicer) gdk.EventMask {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 *C.GdkDevice   // out
-	var _cret C.GdkEventMask // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	_cret = C.gtk_widget_get_device_events(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(device)
-
-	var _eventMask gdk.EventMask // out
-
-	_eventMask = gdk.EventMask(_cret)
-
-	return _eventMask
-}
-
-// Direction gets the reading direction for a particular widget. See
-// gtk_widget_set_direction().
-func (widget *Widget) Direction() TextDirection {
-	var _arg0 *C.GtkWidget       // out
-	var _cret C.GtkTextDirection // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_direction(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _textDirection TextDirection // out
-
-	_textDirection = TextDirection(_cret)
-
-	return _textDirection
-}
-
-// Display: get the Display for the toplevel window associated with this widget.
-// This function can only be called after the widget has been added to a widget
-// hierarchy with a Window at the top.
-//
-// In general, you should only create display specific resources when a widget
-// has been realized, and you should free those resources when the widget is
-// unrealized.
-func (widget *Widget) Display() *gdk.Display {
-	var _arg0 *C.GtkWidget  // out
-	var _cret *C.GdkDisplay // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_display(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _display *gdk.Display // out
-
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_display = &gdk.Display{
-			Object: obj,
-		}
-	}
-
-	return _display
-}
-
-// DoubleBuffered determines whether the widget is double buffered.
-//
-// See gtk_widget_set_double_buffered().
-func (widget *Widget) DoubleBuffered() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_double_buffered(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Events returns the event mask (see EventMask) for the widget. These are the
-// events that the widget will receive.
-//
-// Note: Internally, the widget event mask will be the logical OR of the event
-// mask set through gtk_widget_set_events() or gtk_widget_add_events(), and the
-// event mask necessary to cater for every EventController created for the
-// widget.
-func (widget *Widget) Events() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_events(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// FocusOnClick returns whether the widget should grab focus when it is clicked
-// with the mouse. See gtk_widget_set_focus_on_click().
-func (widget *Widget) FocusOnClick() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_focus_on_click(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// FontMap gets the font map that has been set with gtk_widget_set_font_map().
-func (widget *Widget) FontMap() pango.FontMapper {
-	var _arg0 *C.GtkWidget    // out
-	var _cret *C.PangoFontMap // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_font_map(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _fontMap pango.FontMapper // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.Cast()
-			rv, ok := casted.(pango.FontMapper)
-			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
-			}
-			_fontMap = rv
-		}
-	}
-
-	return _fontMap
-}
-
-// FontOptions returns the #cairo_font_options_t used for Pango rendering. When
-// not set, the defaults font options for the Screen will be used.
-func (widget *Widget) FontOptions() *cairo.FontOptions {
-	var _arg0 *C.GtkWidget            // out
-	var _cret *C.cairo_font_options_t // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_font_options(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _fontOptions *cairo.FontOptions // out
-
-	if _cret != nil {
-		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	}
-
-	return _fontOptions
-}
-
-// FrameClock obtains the frame clock for a widget. The frame clock is a global
-// “ticker” that can be used to drive animations and repaints. The most common
-// reason to get the frame clock is to call gdk_frame_clock_get_frame_time(), in
-// order to get a time to use for animating. For example you might record the
-// start of the animation with an initial value from
-// gdk_frame_clock_get_frame_time(), and then update the animation by calling
-// gdk_frame_clock_get_frame_time() again during each repaint.
-//
-// gdk_frame_clock_request_phase() will result in a new frame on the clock, but
-// won’t necessarily repaint any widgets. To repaint a widget, you have to use
-// gtk_widget_queue_draw() which invalidates the widget (thus scheduling it to
-// receive a draw on the next frame). gtk_widget_queue_draw() will also end up
-// requesting a frame on the appropriate frame clock.
-//
-// A widget’s frame clock will not change while the widget is mapped.
-// Reparenting a widget (which implies a temporary unmap) can change the
-// widget’s frame clock.
-//
-// Unrealized widgets do not have a frame clock.
-func (widget *Widget) FrameClock() gdk.FrameClocker {
-	var _arg0 *C.GtkWidget     // out
-	var _cret *C.GdkFrameClock // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_frame_clock(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _frameClock gdk.FrameClocker // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.Cast()
-			rv, ok := casted.(gdk.FrameClocker)
-			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.FrameClocker")
-			}
-			_frameClock = rv
-		}
-	}
-
-	return _frameClock
-}
-
-// HAlign gets the value of the Widget:halign property.
-//
-// For backwards compatibility reasons this method will never return
-// GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL.
-// Baselines are not supported for horizontal alignment.
-func (widget *Widget) HAlign() Align {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.GtkAlign   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_halign(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _align Align // out
-
-	_align = Align(_cret)
-
-	return _align
-}
-
-// HasTooltip returns the current value of the has-tooltip property. See
-// Widget:has-tooltip for more information.
-func (widget *Widget) HasTooltip() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_has_tooltip(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HasWindow determines whether widget has a Window of its own. See
-// gtk_widget_set_has_window().
-func (widget *Widget) HasWindow() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_has_window(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HExpand gets whether the widget would like any available extra horizontal
-// space. When a user resizes a Window, widgets with expand=TRUE generally
-// receive the extra space. For example, a list or scrollable area or document
-// in your window would often be set to expand.
-//
-// Containers should use gtk_widget_compute_expand() rather than this function,
-// to see whether a widget, or any of its children, has the expand flag set. If
-// any child of a widget wants to expand, the parent may ask to expand also.
-//
-// This function only looks at the widget’s own hexpand flag, rather than
-// computing whether the entire widget tree rooted at this widget wants to
-// expand.
-func (widget *Widget) HExpand() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_hexpand(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HExpandSet gets whether gtk_widget_set_hexpand() has been used to explicitly
-// set the expand flag on this widget.
-//
-// If hexpand is set, then it overrides any computed expand value based on child
-// widgets. If hexpand is not set, then the expand value depends on whether any
-// children of the widget would like to expand.
-//
-// There are few reasons to use this function, but it’s here for completeness
-// and consistency.
-func (widget *Widget) HExpandSet() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_hexpand_set(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Mapped: whether the widget is mapped.
-func (widget *Widget) Mapped() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_mapped(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// MarginBottom gets the value of the Widget:margin-bottom property.
-func (widget *Widget) MarginBottom() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_margin_bottom(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// MarginEnd gets the value of the Widget:margin-end property.
-func (widget *Widget) MarginEnd() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_margin_end(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// MarginLeft gets the value of the Widget:margin-left property.
-//
-// Deprecated: Use gtk_widget_get_margin_start() instead.
-func (widget *Widget) MarginLeft() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_margin_left(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// MarginRight gets the value of the Widget:margin-right property.
-//
-// Deprecated: Use gtk_widget_get_margin_end() instead.
-func (widget *Widget) MarginRight() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_margin_right(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// MarginStart gets the value of the Widget:margin-start property.
-func (widget *Widget) MarginStart() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_margin_start(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// MarginTop gets the value of the Widget:margin-top property.
-func (widget *Widget) MarginTop() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_margin_top(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// ModifierMask returns the modifier mask the widget’s windowing system backend
-// uses for a particular purpose.
-//
-// See gdk_keymap_get_modifier_mask().
-//
-// The function takes the following parameters:
-//
-//    - intent: use case for the modifier mask.
-//
-func (widget *Widget) ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType {
-	var _arg0 *C.GtkWidget        // out
-	var _arg1 C.GdkModifierIntent // out
-	var _cret C.GdkModifierType   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GdkModifierIntent(intent)
-
-	_cret = C.gtk_widget_get_modifier_mask(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(intent)
-
-	var _modifierType gdk.ModifierType // out
-
-	_modifierType = gdk.ModifierType(_cret)
-
-	return _modifierType
-}
-
-// ModifierStyle returns the current modifier style for the widget. (As set by
-// gtk_widget_modify_style().) If no style has previously set, a new RcStyle
-// will be created with all values unset, and set as the modifier style for the
-// widget. If you make changes to this rc style, you must call
-// gtk_widget_modify_style(), passing in the returned rc style, to make sure
-// that your changes take effect.
-//
-// Caution: passing the style back to gtk_widget_modify_style() will normally
-// end up destroying it, because gtk_widget_modify_style() copies the passed-in
-// style and sets the copy as the new modifier style, thus dropping any
-// reference to the old modifier style. Add a reference to the modifier style if
-// you want to keep it alive.
-//
-// Deprecated: Use StyleContext with a custom StyleProvider instead.
-func (widget *Widget) ModifierStyle() *RCStyle {
-	var _arg0 *C.GtkWidget  // out
-	var _cret *C.GtkRcStyle // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_modifier_style(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _rcStyle *RCStyle // out
-
-	_rcStyle = wrapRCStyle(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _rcStyle
-}
-
-// Name retrieves the name of a widget. See gtk_widget_set_name() for the
-// significance of widget names.
-func (widget *Widget) Name() string {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_name(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// NoShowAll returns the current value of the Widget:no-show-all property, which
-// determines whether calls to gtk_widget_show_all() will affect this widget.
-func (widget *Widget) NoShowAll() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_no_show_all(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Opacity fetches the requested opacity for this widget. See
-// gtk_widget_set_opacity().
-func (widget *Widget) Opacity() float64 {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.double     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_opacity(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// PangoContext gets a Context with the appropriate font map, font description,
-// and base direction for this widget. Unlike the context returned by
-// gtk_widget_create_pango_context(), this context is owned by the widget (it
-// can be used until the screen for the widget changes or the widget is removed
-// from its toplevel), and will be updated to match any changes to the widget’s
-// attributes. This can be tracked by using the Widget::screen-changed signal on
-// the widget.
-func (widget *Widget) PangoContext() *pango.Context {
-	var _arg0 *C.GtkWidget    // out
-	var _cret *C.PangoContext // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_pango_context(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _context *pango.Context // out
-
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_context = &pango.Context{
-			Object: obj,
-		}
-	}
-
-	return _context
-}
-
-// Parent returns the parent container of widget.
-func (widget *Widget) Parent() Widgetter {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_parent(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ret Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.Cast()
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
-			}
-			_ret = rv
-		}
-	}
-
-	return _ret
-}
-
-// ParentWindow gets widget’s parent window, or NULL if it does not have one.
-func (widget *Widget) ParentWindow() gdk.Windower {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GdkWindow // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_parent_window(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _window gdk.Windower // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.Cast()
-			rv, ok := casted.(gdk.Windower)
-			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
-			}
-			_window = rv
-		}
-	}
-
-	return _window
-}
-
-// GetPath returns the WidgetPath representing widget, if the widget is not
-// connected to a toplevel widget, a partial path will be created.
-func (widget *Widget) GetPath() *WidgetPath {
-	var _arg0 *C.GtkWidget     // out
-	var _cret *C.GtkWidgetPath // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_path(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _widgetPath *WidgetPath // out
-
-	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_widget_path_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
-		},
-	)
-
-	return _widgetPath
-}
-
-// Pointer obtains the location of the mouse pointer in widget coordinates.
-// Widget coordinates are a bit odd; for historical reasons, they are defined as
-// widget->window coordinates for widgets that return TRUE for
-// gtk_widget_get_has_window(); and are relative to widget->allocation.x,
-// widget->allocation.y otherwise.
-//
-// Deprecated: Use gdk_window_get_device_position() instead.
-func (widget *Widget) Pointer() (x int, y int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // in
-	var _arg2 C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_pointer(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(widget)
-
-	var _x int // out
-	var _y int // out
-
-	_x = int(_arg1)
-	_y = int(_arg2)
-
-	return _x, _y
-}
-
-// PreferredHeight retrieves a widget’s initial minimum and natural height.
-//
-// This call is specific to width-for-height requests.
-//
-// The returned request will be modified by the
-// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
-// have been applied. That is, the returned request is the one that should be
-// used for layout, not necessarily the one returned by the widget itself.
-func (widget *Widget) PreferredHeight() (minimumHeight int, naturalHeight int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // in
-	var _arg2 C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_preferred_height(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(widget)
-
-	var _minimumHeight int // out
-	var _naturalHeight int // out
-
-	_minimumHeight = int(_arg1)
-	_naturalHeight = int(_arg2)
-
-	return _minimumHeight, _naturalHeight
-}
-
-// PreferredHeightAndBaselineForWidth retrieves a widget’s minimum and natural
-// height and the corresponding baselines if it would be given the specified
-// width, or the default height if width is -1. The baselines may be -1 which
-// means that no baseline is requested for this widget.
-//
-// The returned request will be modified by the
-// GtkWidgetClass::adjust_size_request and
-// GtkWidgetClass::adjust_baseline_request virtual methods and by any SizeGroups
-// that have been applied. That is, the returned request is the one that should
-// be used for layout, not necessarily the one returned by the widget itself.
-//
-// The function takes the following parameters:
-//
-//    - width which is available for allocation, or -1 if none.
-//
-func (widget *Widget) PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-	var _arg2 C.gint       // in
-	var _arg3 C.gint       // in
-	var _arg4 C.gint       // in
-	var _arg5 C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(width)
-
-	C.gtk_widget_get_preferred_height_and_baseline_for_width(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(width)
-
-	var _minimumHeight int   // out
-	var _naturalHeight int   // out
-	var _minimumBaseline int // out
-	var _naturalBaseline int // out
-
-	_minimumHeight = int(_arg2)
-	_naturalHeight = int(_arg3)
-	_minimumBaseline = int(_arg4)
-	_naturalBaseline = int(_arg5)
-
-	return _minimumHeight, _naturalHeight, _minimumBaseline, _naturalBaseline
-}
-
-// PreferredHeightForWidth retrieves a widget’s minimum and natural height if it
-// would be given the specified width.
-//
-// The returned request will be modified by the
-// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
-// have been applied. That is, the returned request is the one that should be
-// used for layout, not necessarily the one returned by the widget itself.
-//
-// The function takes the following parameters:
-//
-//    - width which is available for allocation.
-//
-func (widget *Widget) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-	var _arg2 C.gint       // in
-	var _arg3 C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(width)
-
-	C.gtk_widget_get_preferred_height_for_width(_arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(width)
-
-	var _minimumHeight int // out
-	var _naturalHeight int // out
-
-	_minimumHeight = int(_arg2)
-	_naturalHeight = int(_arg3)
-
-	return _minimumHeight, _naturalHeight
-}
-
-// PreferredSize retrieves the minimum and natural size of a widget, taking into
-// account the widget’s preference for height-for-width management.
-//
-// This is used to retrieve a suitable size by container widgets which do not
-// impose any restrictions on the child placement. It can be used to deduce
-// toplevel window and menu sizes as well as child widgets in free-form
-// containers such as GtkLayout.
-//
-// Handle with care. Note that the natural height of a height-for-width widget
-// will generally be a smaller size than the minimum height, since the required
-// height for the natural width is generally smaller than the required height
-// for the minimum width.
-//
-// Use gtk_widget_get_preferred_height_and_baseline_for_width() if you want to
-// support baseline alignment.
-func (widget *Widget) PreferredSize() (minimumSize *Requisition, naturalSize *Requisition) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkRequisition // in
-	var _arg2 C.GtkRequisition // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_preferred_size(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(widget)
-
-	var _minimumSize *Requisition // out
-	var _naturalSize *Requisition // out
-
-	_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _minimumSize, _naturalSize
-}
-
-// PreferredWidth retrieves a widget’s initial minimum and natural width.
-//
-// This call is specific to height-for-width requests.
-//
-// The returned request will be modified by the
-// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
-// have been applied. That is, the returned request is the one that should be
-// used for layout, not necessarily the one returned by the widget itself.
-func (widget *Widget) PreferredWidth() (minimumWidth int, naturalWidth int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // in
-	var _arg2 C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_preferred_width(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(widget)
-
-	var _minimumWidth int // out
-	var _naturalWidth int // out
-
-	_minimumWidth = int(_arg1)
-	_naturalWidth = int(_arg2)
-
-	return _minimumWidth, _naturalWidth
-}
-
-// PreferredWidthForHeight retrieves a widget’s minimum and natural width if it
-// would be given the specified height.
-//
-// The returned request will be modified by the
-// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
-// have been applied. That is, the returned request is the one that should be
-// used for layout, not necessarily the one returned by the widget itself.
-//
-// The function takes the following parameters:
-//
-//    - height which is available for allocation.
-//
-func (widget *Widget) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-	var _arg2 C.gint       // in
-	var _arg3 C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(height)
-
-	C.gtk_widget_get_preferred_width_for_height(_arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(height)
-
-	var _minimumWidth int // out
-	var _naturalWidth int // out
-
-	_minimumWidth = int(_arg2)
-	_naturalWidth = int(_arg3)
-
-	return _minimumWidth, _naturalWidth
-}
-
-// Realized determines whether widget is realized.
-func (widget *Widget) Realized() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_realized(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ReceivesDefault determines whether widget is always treated as the default
-// widget within its toplevel when it has the focus, even if another widget is
-// the default.
-//
-// See gtk_widget_set_receives_default().
-func (widget *Widget) ReceivesDefault() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_receives_default(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// RequestMode gets whether the widget prefers a height-for-width layout or a
-// width-for-height layout.
-//
-// Bin widgets generally propagate the preference of their child, container
-// widgets need to request something either in context of their children or in
-// context of their allocation capabilities.
-func (widget *Widget) RequestMode() SizeRequestMode {
-	var _arg0 *C.GtkWidget         // out
-	var _cret C.GtkSizeRequestMode // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_request_mode(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _sizeRequestMode SizeRequestMode // out
-
-	_sizeRequestMode = SizeRequestMode(_cret)
-
-	return _sizeRequestMode
-}
-
-// Requisition retrieves the widget’s requisition.
-//
-// This function should only be used by widget implementations in order to
-// figure whether the widget’s requisition has actually changed after some
-// internal state change (so that they can call gtk_widget_queue_resize()
-// instead of gtk_widget_queue_draw()).
-//
-// Normally, gtk_widget_size_request() should be used.
-//
-// Deprecated: The Requisition cache on the widget was removed, If you need to
-// cache sizes across requests and allocations, add an explicit cache to the
-// widget in question instead.
-func (widget *Widget) Requisition() *Requisition {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkRequisition // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_requisition(_arg0, &_arg1)
-	runtime.KeepAlive(widget)
-
-	var _requisition *Requisition // out
-
-	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _requisition
-}
-
-// RootWindow: get the root window where this widget is located. This function
-// can only be called after the widget has been added to a widget hierarchy with
-// Window at the top.
-//
-// The root window is useful for such purposes as creating a popup Window
-// associated with the window. In general, you should only create display
-// specific resources when a widget has been realized, and you should free those
-// resources when the widget is unrealized.
-//
-// Deprecated: Use gdk_screen_get_root_window() instead.
-func (widget *Widget) RootWindow() gdk.Windower {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GdkWindow // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_root_window(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _window gdk.Windower // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Windower is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.Cast()
-		rv, ok := casted.(gdk.Windower)
-		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
-		}
-		_window = rv
-	}
-
-	return _window
-}
-
-// ScaleFactor retrieves the internal scale factor that maps from window
-// coordinates to the actual device pixels. On traditional systems this is 1, on
-// high density outputs, it can be a higher value (typically 2).
-//
-// See gdk_window_get_scale_factor().
-func (widget *Widget) ScaleFactor() int {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_scale_factor(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Screen: get the Screen from the toplevel window associated with this widget.
-// This function can only be called after the widget has been added to a widget
-// hierarchy with a Window at the top.
-//
-// In general, you should only create screen specific resources when a widget
-// has been realized, and you should free those resources when the widget is
-// unrealized.
-func (widget *Widget) Screen() *gdk.Screen {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GdkScreen // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_screen(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _screen *gdk.Screen // out
-
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_screen = &gdk.Screen{
-			Object: obj,
-		}
-	}
-
-	return _screen
-}
-
-// Sensitive returns the widget’s sensitivity (in the sense of returning the
-// value that has been set using gtk_widget_set_sensitive()).
-//
-// The effective sensitivity of a widget is however determined by both its own
-// and its parent widget’s sensitivity. See gtk_widget_is_sensitive().
-func (widget *Widget) Sensitive() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_sensitive(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Settings gets the settings object holding the settings used for this widget.
-//
-// Note that this function can only be called when the Widget is attached to a
-// toplevel, since the settings object is specific to a particular Screen.
-func (widget *Widget) Settings() *Settings {
-	var _arg0 *C.GtkWidget   // out
-	var _cret *C.GtkSettings // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_settings(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _settings *Settings // out
-
-	_settings = wrapSettings(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _settings
-}
-
-// GetSizeRequest gets the size request that was explicitly set for the widget
-// using gtk_widget_set_size_request(). A value of -1 stored in width or height
-// indicates that that dimension has not been set explicitly and the natural
-// requisition of the widget will be used instead. See
-// gtk_widget_set_size_request(). To get the size a widget will actually
-// request, call gtk_widget_get_preferred_size() instead of this function.
-func (widget *Widget) GetSizeRequest() (width int, height int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // in
-	var _arg2 C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_get_size_request(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(widget)
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(_arg1)
-	_height = int(_arg2)
-
-	return _width, _height
-}
-
-// State returns the widget’s state. See gtk_widget_set_state().
-//
-// Deprecated: Use gtk_widget_get_state_flags() instead.
-func (widget *Widget) State() StateType {
-	var _arg0 *C.GtkWidget   // out
-	var _cret C.GtkStateType // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_state(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _stateType StateType // out
-
-	_stateType = StateType(_cret)
-
-	return _stateType
-}
-
-// StateFlags returns the widget state as a flag set. It is worth mentioning
-// that the effective GTK_STATE_FLAG_INSENSITIVE state will be returned, that
-// is, also based on parent insensitivity, even if widget itself is sensitive.
-//
-// Also note that if you are looking for a way to obtain the StateFlags to pass
-// to a StyleContext method, you should look at gtk_style_context_get_state().
-func (widget *Widget) StateFlags() StateFlags {
-	var _arg0 *C.GtkWidget    // out
-	var _cret C.GtkStateFlags // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_state_flags(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _stateFlags StateFlags // out
-
-	_stateFlags = StateFlags(_cret)
-
-	return _stateFlags
-}
-
-// Style: simply an accessor function that returns widget->style.
-//
-// Deprecated: Use StyleContext instead.
-func (widget *Widget) Style() *Style {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GtkStyle  // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_style(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _style *Style // out
-
-	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _style
-}
-
-// StyleContext returns the style context associated to widget. The returned
-// object is guaranteed to be the same for the lifetime of widget.
-func (widget *Widget) StyleContext() *StyleContext {
-	var _arg0 *C.GtkWidget       // out
-	var _cret *C.GtkStyleContext // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_style_context(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _styleContext *StyleContext // out
-
-	_styleContext = wrapStyleContext(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _styleContext
-}
-
-// SupportMultidevice returns TRUE if widget is multiple pointer aware. See
-// gtk_widget_set_support_multidevice() for more information.
-func (widget *Widget) SupportMultidevice() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_support_multidevice(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// TemplateChild: fetch an object build from the template XML for widget_type in
-// this widget instance.
-//
-// This will only report children which were previously declared with
-// gtk_widget_class_bind_template_child_full() or one of its variants.
-//
-// This function is only meant to be called for code which is private to the
-// widget_type which declared the child and is meant for language bindings which
-// cannot easily make use of the GObject structure offsets.
-//
-// The function takes the following parameters:
-//
-//    - widgetType to get a template child for.
-//    - name: “id” of the child defined in the template XML.
-//
-func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *externglib.Object {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.GType      // out
-	var _arg2 *C.gchar     // out
-	var _cret *C.GObject   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GType(widgetType)
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(widgetType)
-	runtime.KeepAlive(name)
-
-	var _object *externglib.Object // out
-
-	_object = externglib.Take(unsafe.Pointer(_cret))
-
-	return _object
-}
-
-// TooltipMarkup gets the contents of the tooltip for widget.
-func (widget *Widget) TooltipMarkup() string {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_tooltip_markup(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
-	}
-
-	return _utf8
-}
-
-// TooltipText gets the contents of the tooltip for widget.
-func (widget *Widget) TooltipText() string {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_tooltip_text(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
-	}
-
-	return _utf8
-}
-
-// TooltipWindow returns the Window of the current tooltip. This can be the
-// GtkWindow created by default, or the custom tooltip window set using
-// gtk_widget_set_tooltip_window().
-func (widget *Widget) TooltipWindow() *Window {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GtkWindow // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_tooltip_window(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _window *Window // out
-
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _window
-}
-
-// Toplevel: this function returns the topmost widget in the container hierarchy
-// widget is a part of. If widget has no parent widgets, it will be returned as
-// the topmost widget. No reference will be added to the returned widget; it
-// should not be unreferenced.
-//
-// Note the difference in behavior vs. gtk_widget_get_ancestor();
-// gtk_widget_get_ancestor (widget, GTK_TYPE_WINDOW) would return NULL if widget
-// wasn’t inside a toplevel window, and if the window was inside a
-// Window-derived widget which was in turn inside the toplevel Window. While the
-// second case may seem unlikely, it actually happens when a Plug is embedded
-// inside a Socket within the same application.
-//
-// To reliably find the toplevel Window, use gtk_widget_get_toplevel() and call
-// GTK_IS_WINDOW() on the result. For instance, to get the title of a widget's
-// toplevel window, one might use:
-//
-//    static const char *
-//    get_widget_toplevel_title (GtkWidget *widget)
-//    {
-//      GtkWidget *toplevel = gtk_widget_get_toplevel (widget);
-//      if (GTK_IS_WINDOW (toplevel))
-//        {
-//          return gtk_window_get_title (GTK_WINDOW (toplevel));
-//        }
-//
-//      return NULL;
-//    }.
-func (widget *Widget) Toplevel() Widgetter {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_toplevel(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ret Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.Cast()
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
-		}
-		_ret = rv
-	}
-
-	return _ret
-}
-
-// VAlign gets the value of the Widget:valign property.
-//
-// For backwards compatibility reasons this method will never return
-// GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL. If your
-// widget want to support baseline aligned children it must use
-// gtk_widget_get_valign_with_baseline(), or g_object_get (widget, "valign",
-// &value, NULL), which will also report the true value.
-func (widget *Widget) VAlign() Align {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.GtkAlign   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_valign(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _align Align // out
-
-	_align = Align(_cret)
-
-	return _align
-}
-
-// VAlignWithBaseline gets the value of the Widget:valign property, including
-// GTK_ALIGN_BASELINE.
-func (widget *Widget) VAlignWithBaseline() Align {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.GtkAlign   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_valign_with_baseline(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _align Align // out
-
-	_align = Align(_cret)
-
-	return _align
-}
-
-// VExpand gets whether the widget would like any available extra vertical
-// space.
-//
-// See gtk_widget_get_hexpand() for more detail.
-func (widget *Widget) VExpand() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_vexpand(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// VExpandSet gets whether gtk_widget_set_vexpand() has been used to explicitly
-// set the expand flag on this widget.
-//
-// See gtk_widget_get_hexpand_set() for more detail.
-func (widget *Widget) VExpandSet() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_vexpand_set(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Visible determines whether the widget is visible. If you want to take into
-// account whether the widget’s parent is also marked as visible, use
-// gtk_widget_is_visible() instead.
-//
-// This function does not check if the widget is obscured in any way.
-//
-// See gtk_widget_set_visible().
-func (widget *Widget) Visible() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_visible(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Visual gets the visual that will be used to render widget.
-func (widget *Widget) Visual() *gdk.Visual {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GdkVisual // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_visual(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _visual *gdk.Visual // out
-
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_visual = &gdk.Visual{
-			Object: obj,
-		}
-	}
-
-	return _visual
-}
-
-// Window returns the widget’s window if it is realized, NULL otherwise.
-func (widget *Widget) Window() gdk.Windower {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GdkWindow // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_window(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _window gdk.Windower // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.Cast()
-			rv, ok := casted.(gdk.Windower)
-			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
-			}
-			_window = rv
-		}
-	}
-
-	return _window
-}
-
-// GrabAdd makes widget the current grabbed widget.
-//
-// This means that interaction with other widgets in the same application is
-// blocked and mouse as well as keyboard events are delivered to this widget.
-//
-// If widget is not sensitive, it is not set as the current grabbed widget and
-// this function does nothing.
-func (widget *Widget) GrabAdd() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_grab_add(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// GrabDefault causes widget to become the default widget. widget must be able
-// to be a default widget; typically you would ensure this yourself by calling
-// gtk_widget_set_can_default() with a TRUE value. The default widget is
-// activated when the user presses Enter in a window. Default widgets must be
-// activatable, that is, gtk_widget_activate() should affect them. Note that
-// Entry widgets require the “activates-default” property set to TRUE before
-// they activate the default widget when Enter is pressed and the Entry is
-// focused.
-func (widget *Widget) GrabDefault() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_grab_default(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// GrabFocus causes widget to have the keyboard focus for the Window it's
-// inside. widget must be a focusable widget, such as a Entry; something like
-// Frame won’t work.
-//
-// More precisely, it must have the GTK_CAN_FOCUS flag set. Use
-// gtk_widget_set_can_focus() to modify that flag.
-//
-// The widget also needs to be realized and mapped. This is indicated by the
-// related signals. Grabbing the focus immediately after creating the widget
-// will likely fail and cause critical warnings.
-func (widget *Widget) GrabFocus() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_grab_focus(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// GrabRemove removes the grab from the given widget.
-//
-// You have to pair calls to gtk_grab_add() and gtk_grab_remove().
-//
-// If widget does not have the grab, this function does nothing.
-func (widget *Widget) GrabRemove() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_grab_remove(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// HasDefault determines whether widget is the current default widget within its
-// toplevel. See gtk_widget_set_can_default().
-func (widget *Widget) HasDefault() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_has_default(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HasFocus determines if the widget has the global input focus. See
-// gtk_widget_is_focus() for the difference between having the global input
-// focus, and only having the focus within a toplevel.
-func (widget *Widget) HasFocus() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_has_focus(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HasGrab determines whether the widget is currently grabbing events, so it is
-// the only widget receiving input events (keyboard and mouse).
-//
-// See also gtk_grab_add().
-func (widget *Widget) HasGrab() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_has_grab(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HasRCStyle determines if the widget style has been looked up through the rc
-// mechanism.
-//
-// Deprecated: Use StyleContext instead.
-func (widget *Widget) HasRCStyle() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_has_rc_style(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HasScreen checks whether there is a Screen is associated with this widget.
-// All toplevel widgets have an associated screen, and all widgets added into a
-// hierarchy with a toplevel window at the top.
-func (widget *Widget) HasScreen() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_has_screen(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HasVisibleFocus determines if the widget should show a visible indication
-// that it has the global input focus. This is a convenience function for use in
-// ::draw handlers that takes into account whether focus indication should
-// currently be shown in the toplevel window of widget. See
-// gtk_window_get_focus_visible() for more information about focus indication.
-//
-// To find out if the widget has the global input focus, use
-// gtk_widget_has_focus().
-func (widget *Widget) HasVisibleFocus() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_has_visible_focus(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Hide reverses the effects of gtk_widget_show(), causing the widget to be
-// hidden (invisible to the user).
-func (widget *Widget) Hide() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_hide(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// HideOnDelete: utility function; intended to be connected to the
-// Widget::delete-event signal on a Window. The function calls gtk_widget_hide()
-// on its argument, then returns TRUE. If connected to ::delete-event, the
-// result is that clicking the close button for a window (on the window frame,
-// top right corner usually) will hide but not destroy the window. By default,
-// GTK+ destroys windows when ::delete-event is received.
-func (widget *Widget) HideOnDelete() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_hide_on_delete(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// InDestruction returns whether the widget is currently being destroyed. This
-// information can sometimes be used to avoid doing unnecessary work.
-func (widget *Widget) InDestruction() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_in_destruction(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// InitTemplate creates and initializes child widgets defined in templates. This
-// function must be called in the instance initializer for any class which
-// assigned itself a template using gtk_widget_class_set_template()
-//
-// It is important to call this function in the instance initializer of a Widget
-// subclass and not in #GObject.constructed() or #GObject.constructor() for two
-// reasons.
-//
-// One reason is that generally derived widgets will assume that parent class
-// composite widgets have been created in their instance initializers.
-//
-// Another reason is that when calling g_object_new() on a widget with composite
-// templates, it’s important to build the composite widgets before the construct
-// properties are set. Properties passed to g_object_new() should take
-// precedence over properties set in the private template XML.
-func (widget *Widget) InitTemplate() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_init_template(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// InputShapeCombineRegion sets an input shape for this widget’s GDK window.
-// This allows for windows which react to mouse click in a nonrectangular
-// region, see gdk_window_input_shape_combine_region() for more information.
-//
-// The function takes the following parameters:
-//
-//    - region: shape to be added, or NULL to remove an existing shape.
-//
-func (widget *Widget) InputShapeCombineRegion(region *cairo.Region) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.cairo_region_t // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if region != nil {
-		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
-	}
-
-	C.gtk_widget_input_shape_combine_region(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(region)
-}
-
-// InsertActionGroup inserts group into widget. Children of widget that
-// implement Actionable can then be associated with actions in group by setting
-// their “action-name” to prefix.action-name.
-//
-// If group is NULL, a previously inserted group for name is removed from
-// widget.
-//
-// The function takes the following parameters:
-//
-//    - name: prefix for actions in group.
-//    - group or NULL.
-//
-func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 *C.gchar        // out
-	var _arg2 *C.GActionGroup // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	if group != nil {
-		_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
-	}
-
-	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(name)
-	runtime.KeepAlive(group)
-}
-
-// Intersect computes the intersection of a widget’s area and area, storing the
-// intersection in intersection, and returns TRUE if there was an intersection.
-// intersection may be NULL if you’re only interested in whether there was an
-// intersection.
-//
-// The function takes the following parameters:
-//
-//    - area: rectangle.
-//
-func (widget *Widget) Intersect(area *gdk.Rectangle) (*gdk.Rectangle, bool) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(area)))
-
-	_cret = C.gtk_widget_intersect(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(area)
-
-	var _intersection *gdk.Rectangle // out
-	var _ok bool                     // out
-
-	_intersection = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _intersection, _ok
-}
-
-// IsAncestor determines whether widget is somewhere inside ancestor, possibly
-// with intermediate containers.
-//
-// The function takes the following parameters:
-//
-//    - ancestor: another Widget.
-//
-func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(ancestor.Native()))
-
-	_cret = C.gtk_widget_is_ancestor(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(ancestor)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IsComposited: whether widget can rely on having its alpha channel drawn
-// correctly. On X11 this function returns whether a compositing manager is
-// running for widget’s screen.
-//
-// Please note that the semantics of this call will change in the future if used
-// on a widget that has a composited window in its hierarchy (as set by
-// gdk_window_set_composited()).
-//
-// Deprecated: Use gdk_screen_is_composited() instead.
-func (widget *Widget) IsComposited() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_is_composited(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IsDrawable determines whether widget can be drawn to. A widget can be drawn
-// to if it is mapped and visible.
-func (widget *Widget) IsDrawable() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_is_drawable(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IsFocus determines if the widget is the focus widget within its toplevel.
-// (This does not mean that the Widget:has-focus property is necessarily set;
-// Widget:has-focus will only be set if the toplevel widget additionally has the
-// global input focus.).
-func (widget *Widget) IsFocus() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_is_focus(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IsSensitive returns the widget’s effective sensitivity, which means it is
-// sensitive itself and also its parent widget is sensitive.
-func (widget *Widget) IsSensitive() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_is_sensitive(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IsToplevel determines whether widget is a toplevel widget.
-//
-// Currently only Window and Invisible (and out-of-process Plugs) are toplevel
-// widgets. Toplevel widgets have no parent widget.
-func (widget *Widget) IsToplevel() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_is_toplevel(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IsVisible determines whether the widget and all its parents are marked as
-// visible.
-//
-// This function does not check if the widget is obscured in any way.
-//
-// See also gtk_widget_get_visible() and gtk_widget_set_visible().
-func (widget *Widget) IsVisible() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_is_visible(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// KeynavFailed: this function should be called whenever keyboard navigation
-// within a single widget hits a boundary. The function emits the
-// Widget::keynav-failed signal on the widget and its return value should be
-// interpreted in a way similar to the return value of gtk_widget_child_focus():
-//
-// When TRUE is returned, stay in the widget, the failed keyboard navigation is
-// OK and/or there is nowhere we can/should move the focus to.
-//
-// When FALSE is returned, the caller should continue with keyboard navigation
-// outside the widget, e.g. by calling gtk_widget_child_focus() on the widget’s
-// toplevel.
-//
-// The default ::keynav-failed handler returns FALSE for GTK_DIR_TAB_FORWARD and
-// GTK_DIR_TAB_BACKWARD. For the other values of DirectionType it returns TRUE.
-//
-// Whenever the default handler returns TRUE, it also calls
-// gtk_widget_error_bell() to notify the user of the failed keyboard navigation.
-//
-// A use case for providing an own implementation of ::keynav-failed (either by
-// connecting to it or by overriding it) would be a row of Entry widgets where
-// the user should be able to navigate the entire row with the cursor keys, as
-// e.g. known from user interfaces that require entering license keys.
-//
-// The function takes the following parameters:
-//
-//    - direction of focus movement.
-//
-func (widget *Widget) KeynavFailed(direction DirectionType) bool {
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkDirectionType // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkDirectionType(direction)
-
-	_cret = C.gtk_widget_keynav_failed(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(direction)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ListActionPrefixes retrieves a NULL-terminated array of strings containing
-// the prefixes of Group's available to widget.
-func (widget *Widget) ListActionPrefixes() []string {
-	var _arg0 *C.GtkWidget // out
-	var _cret **C.gchar    // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_list_action_prefixes(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _utf8s []string // out
-
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-		}
-	}
-
-	return _utf8s
-}
-
-// ListMnemonicLabels returns a newly allocated list of the widgets, normally
-// labels, for which this widget is the target of a mnemonic (see for example,
-// gtk_label_set_mnemonic_widget()).
-//
-// The widgets in the list are not individually referenced. If you want to
-// iterate through the list and perform actions involving callbacks that might
-// destroy the widgets, you must call g_list_foreach (result,
-// (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
-func (widget *Widget) ListMnemonicLabels() []Widgetter {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GList     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_list_mnemonic_labels(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _list []Widgetter // out
-
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
-
-			object := externglib.Take(objptr)
-			casted := object.Cast()
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
-
-	return _list
-}
-
-// Map: this function is only for use in widget implementations. Causes a widget
-// to be mapped if it isn’t already.
-func (widget *Widget) Map() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_map(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// MnemonicActivate emits the Widget::mnemonic-activate signal.
-//
-// The function takes the following parameters:
-//
-//    - groupCycling: TRUE if there are other widgets with the same mnemonic.
-//
-func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if groupCycling {
-		_arg1 = C.TRUE
-	}
-
-	_cret = C.gtk_widget_mnemonic_activate(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(groupCycling)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ModifyBase sets the base color for a widget in a particular state. All other
-// style values are left untouched. The base color is the background color used
-// along with the text color (see gtk_widget_modify_text()) for widgets such as
-// Entry and TextView. See also gtk_widget_modify_style().
-//
-// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-// draw on their parent container’s window and thus may > not draw any
-// background themselves. This is the case for e.g. > Label. > > To modify the
-// background of such widgets, you have to set the > base color on their parent;
-// if you want to set the background > of a rectangular area around a label, try
-// placing the label in > a EventBox widget and setting the base color on that.
-//
-// Deprecated: Use gtk_widget_override_background_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the base color.
-//    - color to assign (does not need to be allocated), or NULL to undo the
-//    effect of previous calls to of gtk_widget_modify_base().
-//
-func (widget *Widget) ModifyBase(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_base(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// ModifyBg sets the background color for a widget in a particular state.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-// draw on their parent container’s window and thus may > not draw any
-// background themselves. This is the case for e.g. > Label. > > To modify the
-// background of such widgets, you have to set the > background color on their
-// parent; if you want to set the background > of a rectangular area around a
-// label, try placing the label in > a EventBox widget and setting the
-// background color on that.
-//
-// Deprecated: Use gtk_widget_override_background_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the background color.
-//    - color to assign (does not need to be allocated), or NULL to undo the
-//    effect of previous calls to of gtk_widget_modify_bg().
-//
-func (widget *Widget) ModifyBg(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_bg(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// ModifyCursor sets the cursor color to use in a widget, overriding the Widget
-// cursor-color and secondary-cursor-color style properties.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// Deprecated: Use gtk_widget_override_cursor() instead.
-//
-// The function takes the following parameters:
-//
-//    - primary: color to use for primary cursor (does not need to be
-//    allocated), or NULL to undo the effect of previous calls to of
-//    gtk_widget_modify_cursor().
-//    - secondary: color to use for secondary cursor (does not need to be
-//    allocated), or NULL to undo the effect of previous calls to of
-//    gtk_widget_modify_cursor().
-//
-func (widget *Widget) ModifyCursor(primary, secondary *gdk.Color) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkColor  // out
-	var _arg2 *C.GdkColor  // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if primary != nil {
-		_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(primary)))
-	}
-	if secondary != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(secondary)))
-	}
-
-	C.gtk_widget_modify_cursor(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(primary)
-	runtime.KeepAlive(secondary)
-}
-
-// ModifyFg sets the foreground color for a widget in a particular state.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// Deprecated: Use gtk_widget_override_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the foreground color.
-//    - color to assign (does not need to be allocated), or NULL to undo the
-//    effect of previous calls to of gtk_widget_modify_fg().
-//
-func (widget *Widget) ModifyFg(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_fg(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// ModifyFont sets the font to use for a widget.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// Deprecated: Use gtk_widget_override_font() instead.
-//
-// The function takes the following parameters:
-//
-//    - fontDesc: font description to use, or NULL to undo the effect of
-//    previous calls to gtk_widget_modify_font().
-//
-func (widget *Widget) ModifyFont(fontDesc *pango.FontDescription) {
-	var _arg0 *C.GtkWidget            // out
-	var _arg1 *C.PangoFontDescription // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if fontDesc != nil {
-		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
-	}
-
-	C.gtk_widget_modify_font(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(fontDesc)
-}
-
-// ModifyStyle modifies style values on the widget.
-//
-// Modifications made using this technique take precedence over style values set
-// via an RC file, however, they will be overridden if a style is explicitly set
-// on the widget using gtk_widget_set_style(). The RcStyle-struct is designed so
-// each field can either be set or unset, so it is possible, using this
-// function, to modify some style values and leave the others unchanged.
-//
-// Note that modifications made with this function are not cumulative with
-// previous calls to gtk_widget_modify_style() or with such functions as
-// gtk_widget_modify_fg(). If you wish to retain previous values, you must first
-// call gtk_widget_get_modifier_style(), make your modifications to the returned
-// style, then call gtk_widget_modify_style() with that style. On the other
-// hand, if you first call gtk_widget_modify_style(), subsequent calls to such
-// functions gtk_widget_modify_fg() will have a cumulative effect with the
-// initial modifications.
-//
-// Deprecated: Use StyleContext with a custom StyleProvider instead.
-//
-// The function takes the following parameters:
-//
-//    - style holding the style modifications.
-//
-func (widget *Widget) ModifyStyle(style *RCStyle) {
-	var _arg0 *C.GtkWidget  // out
-	var _arg1 *C.GtkRcStyle // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
-
-	C.gtk_widget_modify_style(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(style)
-}
-
-// ModifyText sets the text color for a widget in a particular state.
-//
-// All other style values are left untouched. The text color is the foreground
-// color used along with the base color (see gtk_widget_modify_base()) for
-// widgets such as Entry and TextView. See also gtk_widget_modify_style().
-//
-// Deprecated: Use gtk_widget_override_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the text color.
-//    - color to assign (does not need to be allocated), or NULL to undo the
-//    effect of previous calls to of gtk_widget_modify_text().
-//
-func (widget *Widget) ModifyText(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_text(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// OverrideBackgroundColor sets the background color to use for a widget.
-//
-// All other style values are left untouched. See gtk_widget_override_color().
-//
-// Deprecated: This function is not useful in the context of CSS-based
-// rendering. If you wish to change the way a widget renders its background you
-// should use a custom CSS style, through an application-specific StyleProvider
-// and a CSS style class. You can also override the default drawing of a widget
-// through the Widget::draw signal, and use Cairo to draw a specific color,
-// regardless of the CSS style.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the background color.
-//    - color to assign, or NULL to undo the effect of previous calls to
-//    gtk_widget_override_background_color().
-//
-func (widget *Widget) OverrideBackgroundColor(state StateFlags, color *gdk.RGBA) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkStateFlags // out
-	var _arg2 *C.GdkRGBA      // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkStateFlags(state)
-	if color != nil {
-		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_override_background_color(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// OverrideColor sets the color to use for a widget.
-//
-// All other style values are left untouched.
-//
-// This function does not act recursively. Setting the color of a container does
-// not affect its children. Note that some widgets that you may not think of as
-// containers, for instance Buttons, are actually containers.
-//
-// This API is mostly meant as a quick way for applications to change a widget
-// appearance. If you are developing a widgets library and intend this change to
-// be themeable, it is better done by setting meaningful CSS classes in your
-// widget/container implementation through gtk_style_context_add_class().
-//
-// This way, your widget library can install a CssProvider with the
-// GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority in order to provide a default
-// styling for those widgets that need so, and this theming may fully overridden
-// by the user’s theme.
-//
-// Note that for complex widgets this may bring in undesired results (such as
-// uniform background color everywhere), in these cases it is better to fully
-// style such widgets through a CssProvider with the
-// GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority.
-//
-// Deprecated: Use a custom style provider and style classes instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the color.
-//    - color to assign, or NULL to undo the effect of previous calls to
-//    gtk_widget_override_color().
-//
-func (widget *Widget) OverrideColor(state StateFlags, color *gdk.RGBA) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkStateFlags // out
-	var _arg2 *C.GdkRGBA      // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkStateFlags(state)
-	if color != nil {
-		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_override_color(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// OverrideCursor sets the cursor color to use in a widget, overriding the
-// cursor-color and secondary-cursor-color style properties. All other style
-// values are left untouched. See also gtk_widget_modify_style().
-//
-// Note that the underlying properties have the Color type, so the alpha value
-// in primary and secondary will be ignored.
-//
-// Deprecated: This function is not useful in the context of CSS-based
-// rendering. If you wish to change the color used to render the primary and
-// secondary cursors you should use a custom CSS style, through an
-// application-specific StyleProvider and a CSS style class.
-//
-// The function takes the following parameters:
-//
-//    - cursor: color to use for primary cursor (does not need to be
-//    allocated), or NULL to undo the effect of previous calls to of
-//    gtk_widget_override_cursor().
-//    - secondaryCursor: color to use for secondary cursor (does not need to be
-//    allocated), or NULL to undo the effect of previous calls to of
-//    gtk_widget_override_cursor().
-//
-func (widget *Widget) OverrideCursor(cursor, secondaryCursor *gdk.RGBA) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkRGBA   // out
-	var _arg2 *C.GdkRGBA   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if cursor != nil {
-		_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(cursor)))
-	}
-	if secondaryCursor != nil {
-		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(secondaryCursor)))
-	}
-
-	C.gtk_widget_override_cursor(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(cursor)
-	runtime.KeepAlive(secondaryCursor)
-}
-
-// OverrideFont sets the font to use for a widget. All other style values are
-// left untouched. See gtk_widget_override_color().
-//
-// Deprecated: This function is not useful in the context of CSS-based
-// rendering. If you wish to change the font a widget uses to render its text
-// you should use a custom CSS style, through an application-specific
-// StyleProvider and a CSS style class.
-//
-// The function takes the following parameters:
-//
-//    - fontDesc: font description to use, or NULL to undo the effect of
-//    previous calls to gtk_widget_override_font().
-//
-func (widget *Widget) OverrideFont(fontDesc *pango.FontDescription) {
-	var _arg0 *C.GtkWidget            // out
-	var _arg1 *C.PangoFontDescription // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if fontDesc != nil {
-		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
-	}
-
-	C.gtk_widget_override_font(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(fontDesc)
-}
-
-// OverrideSymbolicColor sets a symbolic color for a widget.
-//
-// All other style values are left untouched. See gtk_widget_override_color()
-// for overriding the foreground or background color.
-//
-// Deprecated: This function is not useful in the context of CSS-based
-// rendering. If you wish to change the color used to render symbolic icons you
-// should use a custom CSS style, through an application-specific StyleProvider
-// and a CSS style class.
-//
-// The function takes the following parameters:
-//
-//    - name of the symbolic color to modify.
-//    - color to assign (does not need to be allocated), or NULL to undo the
-//    effect of previous calls to gtk_widget_override_symbolic_color().
-//
-func (widget *Widget) OverrideSymbolicColor(name string, color *gdk.RGBA) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GdkRGBA   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	if color != nil {
-		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_override_symbolic_color(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(name)
-	runtime.KeepAlive(color)
-}
-
-// Path obtains the full path to widget. The path is simply the name of a widget
-// and all its parents in the container hierarchy, separated by periods. The
-// name of a widget comes from gtk_widget_get_name(). Paths are used to apply
-// styles to a widget in gtkrc configuration files. Widget names are the type of
-// the widget by default (e.g. “GtkButton”) or can be set to an
-// application-specific value with gtk_widget_set_name(). By setting the name of
-// a widget, you allow users or theme authors to apply styles to that specific
-// widget in their gtkrc file. path_reversed_p fills in the path in reverse
-// order, i.e. starting with widget’s name instead of starting with the name of
-// widget’s outermost ancestor.
-//
-// Deprecated: Use gtk_widget_get_path() instead.
-func (widget *Widget) Path() (pathLength uint, path string, pathReversed string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.guint      // in
-	var _arg2 *C.gchar     // in
-	var _arg3 *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_path(_arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(widget)
-
-	var _pathLength uint     // out
-	var _path string         // out
-	var _pathReversed string // out
-
-	_pathLength = uint(_arg1)
-	if _arg2 != nil {
-		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	if _arg3 != nil {
-		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	return _pathLength, _path, _pathReversed
-}
-
-// QueueAllocate: this function is only for use in widget implementations.
-//
-// Flags the widget for a rerun of the GtkWidgetClass::size_allocate function.
-// Use this function instead of gtk_widget_queue_resize() when the widget's size
-// request didn't change but it wants to reposition its contents.
-//
-// An example user of this function is gtk_widget_set_halign().
-func (widget *Widget) QueueAllocate() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_queue_allocate(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// QueueComputeExpand: mark widget as needing to recompute its expand flags.
-// Call this function when setting legacy expand child properties on the child
-// of a container.
-//
-// See gtk_widget_compute_expand().
-func (widget *Widget) QueueComputeExpand() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_queue_compute_expand(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// QueueDraw: equivalent to calling gtk_widget_queue_draw_area() for the entire
-// area of a widget.
-func (widget *Widget) QueueDraw() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_queue_draw(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// QueueDrawArea: convenience function that calls gtk_widget_queue_draw_region()
-// on the region created from the given coordinates.
-//
-// The region here is specified in widget coordinates. Widget coordinates are a
-// bit odd; for historical reasons, they are defined as widget->window
-// coordinates for widgets that return TRUE for gtk_widget_get_has_window(), and
-// are relative to widget->allocation.x, widget->allocation.y otherwise.
-//
-// width or height may be 0, in this case this function does nothing. Negative
-// values for width and height are not allowed.
-//
-// The function takes the following parameters:
-//
-//    - x coordinate of upper-left corner of rectangle to redraw.
-//    - y coordinate of upper-left corner of rectangle to redraw.
-//    - width of region to draw.
-//    - height of region to draw.
-//
-func (widget *Widget) QueueDrawArea(x, y, width, height int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-	var _arg2 C.gint       // out
-	var _arg3 C.gint       // out
-	var _arg4 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-	_arg3 = C.gint(width)
-	_arg4 = C.gint(height)
-
-	C.gtk_widget_queue_draw_area(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// QueueDrawRegion invalidates the area of widget defined by region by calling
-// gdk_window_invalidate_region() on the widget’s window and all its child
-// windows. Once the main loop becomes idle (after the current batch of events
-// has been processed, roughly), the window will receive expose events for the
-// union of all regions that have been invalidated.
-//
-// Normally you would only use this function in widget implementations. You
-// might also use it to schedule a redraw of a DrawingArea or some portion
-// thereof.
-//
-// The function takes the following parameters:
-//
-//    - region to draw.
-//
-func (widget *Widget) QueueDrawRegion(region *cairo.Region) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.cairo_region_t // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
-
-	C.gtk_widget_queue_draw_region(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(region)
-}
-
-// QueueResize: this function is only for use in widget implementations. Flags a
-// widget to have its size renegotiated; should be called when a widget for some
-// reason has a new size request. For example, when you change the text in a
-// Label, Label queues a resize to ensure there’s enough space for the new text.
-//
-// Note that you cannot call gtk_widget_queue_resize() on a widget from inside
-// its implementation of the GtkWidgetClass::size_allocate virtual method. Calls
-// to gtk_widget_queue_resize() from inside GtkWidgetClass::size_allocate will
-// be silently ignored.
-func (widget *Widget) QueueResize() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_queue_resize(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// QueueResizeNoRedraw: this function works like gtk_widget_queue_resize(),
-// except that the widget is not invalidated.
-func (widget *Widget) QueueResizeNoRedraw() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_queue_resize_no_redraw(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// Realize creates the GDK (windowing system) resources associated with a
-// widget. For example, widget->window will be created when a widget is
-// realized. Normally realization happens implicitly; if you show a widget and
-// all its parent containers, then the widget will be realized and mapped
-// automatically.
-//
-// Realizing a widget requires all the widget’s parent widgets to be realized;
-// calling gtk_widget_realize() realizes the widget’s parents in addition to
-// widget itself. If a widget is not yet inside a toplevel window when you
-// realize it, bad things will happen.
-//
-// This function is primarily used in widget implementations, and isn’t very
-// useful otherwise. Many times when you think you might need it, a better
-// approach is to connect to a signal that will be called after the widget is
-// realized automatically, such as Widget::draw. Or simply g_signal_connect ()
-// to the Widget::realize signal.
-func (widget *Widget) Realize() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_realize(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// RegionIntersect computes the intersection of a widget’s area and region,
-// returning the intersection. The result may be empty, use
-// cairo_region_is_empty() to check.
-//
-// Deprecated: Use gtk_widget_get_allocation() and
-// cairo_region_intersect_rectangle() to get the same behavior.
-//
-// The function takes the following parameters:
-//
-//    - region in the same coordinate system as widget->allocation. That is,
-//    relative to widget->window for widgets which return FALSE from
-//    gtk_widget_get_has_window(); relative to the parent window of
-//    widget->window otherwise.
-//
-func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.cairo_region_t // out
-	var _cret *C.cairo_region_t // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
-
-	_cret = C.gtk_widget_region_intersect(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(region)
-
-	var _ret *cairo.Region // out
-
-	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_ret = (*cairo.Region)(unsafe.Pointer(_pp))
-	}
-	runtime.SetFinalizer(_ret, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
-
-	return _ret
-}
-
-// RegisterWindow registers a Window with the widget and sets it up so that the
-// widget receives events for it. Call gtk_widget_unregister_window() when
-// destroying the window.
-//
-// Before 3.8 you needed to call gdk_window_set_user_data() directly to set this
-// up. This is now deprecated and you should use gtk_widget_register_window()
-// instead. Old code will keep working as is, although some new features like
-// transparency might not work perfectly.
-//
-// The function takes the following parameters:
-//
-//    - window: Window.
-//
-func (widget *Widget) RegisterWindow(window gdk.Windower) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkWindow // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-
-	C.gtk_widget_register_window(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(window)
-}
-
-// RemoveAccelerator removes an accelerator from widget, previously installed
-// with gtk_widget_add_accelerator().
-//
-// The function takes the following parameters:
-//
-//    - accelGroup: accel group for this widget.
-//    - accelKey: GDK keyval of the accelerator.
-//    - accelMods: modifier key combination of the accelerator.
-//
-func (widget *Widget) RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkAccelGroup  // out
-	var _arg2 C.guint           // out
-	var _arg3 C.GdkModifierType // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
-	_arg2 = C.guint(accelKey)
-	_arg3 = C.GdkModifierType(accelMods)
-
-	_cret = C.gtk_widget_remove_accelerator(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(accelGroup)
-	runtime.KeepAlive(accelKey)
-	runtime.KeepAlive(accelMods)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
-// this widget. (See gtk_widget_list_mnemonic_labels()). The widget must have
-// previously been added to the list with gtk_widget_add_mnemonic_label().
-//
-// The function takes the following parameters:
-//
-//    - label that was previously set as a mnemonic label for widget with
-//    gtk_widget_add_mnemonic_label().
-//
-func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
-
-	C.gtk_widget_remove_mnemonic_label(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(label)
-}
-
-// RemoveTickCallback removes a tick callback previously registered with
-// gtk_widget_add_tick_callback().
-//
-// The function takes the following parameters:
-//
-//    - id returned by gtk_widget_add_tick_callback().
-//
-func (widget *Widget) RemoveTickCallback(id uint) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.guint      // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.guint(id)
-
-	C.gtk_widget_remove_tick_callback(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(id)
-}
-
-// RenderIcon: convenience function that uses the theme settings for widget to
-// look up stock_id and render it to a pixbuf. stock_id should be a stock icon
-// ID such as K_STOCK_OPEN or K_STOCK_OK. size should be a size such as
-// K_ICON_SIZE_MENU. detail should be a string that identifies the widget or
-// code doing the rendering, so that theme engines can special-case rendering
-// for that widget or code.
-//
-// The pixels in the returned Pixbuf are shared with the rest of the application
-// and should not be modified. The pixbuf should be freed after use with
-// g_object_unref().
-//
-// Deprecated: Use gtk_widget_render_icon_pixbuf() instead.
-//
-// The function takes the following parameters:
-//
-//    - stockId: stock ID.
-//    - size: stock size (IconSize). A size of (GtkIconSize)-1 means render at
-//    the size of the source and don’t scale (if there are multiple source
-//    sizes, GTK+ picks one of the available sizes).
-//    - detail: render detail to pass to theme engine.
-//
-func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkWidget  // out
-	var _arg1 *C.gchar      // out
-	var _arg2 C.GtkIconSize // out
-	var _arg3 *C.gchar      // out
-	var _cret *C.GdkPixbuf  // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkIconSize(size)
-	if detail != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	_cret = C.gtk_widget_render_icon(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(stockId)
-	runtime.KeepAlive(size)
-	runtime.KeepAlive(detail)
-
-	var _pixbuf *gdkpixbuf.Pixbuf // out
-
-	if _cret != nil {
-		{
-			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-			_pixbuf = &gdkpixbuf.Pixbuf{
-				Object: obj,
-				LoadableIcon: gio.LoadableIcon{
-					Icon: gio.Icon{
-						Object: obj,
-					},
-				},
-			}
-		}
-	}
-
-	return _pixbuf
-}
-
-// RenderIconPixbuf: convenience function that uses the theme engine and style
-// settings for widget to look up stock_id and render it to a pixbuf. stock_id
-// should be a stock icon ID such as K_STOCK_OPEN or K_STOCK_OK. size should be
-// a size such as K_ICON_SIZE_MENU.
-//
-// The pixels in the returned Pixbuf are shared with the rest of the application
-// and should not be modified. The pixbuf should be freed after use with
-// g_object_unref().
-//
-// Deprecated: Use gtk_icon_theme_load_icon() instead.
-//
-// The function takes the following parameters:
-//
-//    - stockId: stock ID.
-//    - size: stock size (IconSize). A size of (GtkIconSize)-1 means render at
-//    the size of the source and don’t scale (if there are multiple source
-//    sizes, GTK+ picks one of the available sizes).
-//
-func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkWidget  // out
-	var _arg1 *C.gchar      // out
-	var _arg2 C.GtkIconSize // out
-	var _cret *C.GdkPixbuf  // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkIconSize(size)
-
-	_cret = C.gtk_widget_render_icon_pixbuf(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(stockId)
-	runtime.KeepAlive(size)
-
-	var _pixbuf *gdkpixbuf.Pixbuf // out
-
-	if _cret != nil {
-		{
-			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-			_pixbuf = &gdkpixbuf.Pixbuf{
-				Object: obj,
-				LoadableIcon: gio.LoadableIcon{
-					Icon: gio.Icon{
-						Object: obj,
-					},
-				},
-			}
-		}
-	}
-
-	return _pixbuf
-}
-
-// Reparent moves a widget from one Container to another, handling reference
-// count issues to avoid destroying the widget.
-//
-// Deprecated: Use gtk_container_remove() and gtk_container_add().
-//
-// The function takes the following parameters:
-//
-//    - newParent to move the widget into.
-//
-func (widget *Widget) Reparent(newParent Widgetter) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(newParent.Native()))
-
-	C.gtk_widget_reparent(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(newParent)
-}
-
-// ResetRCStyles: reset the styles of widget and all descendents, so when they
-// are looked up again, they get the correct values for the currently loaded RC
-// file settings.
-//
-// This function is not useful for applications.
-//
-// Deprecated: Use StyleContext instead, and gtk_widget_reset_style().
-func (widget *Widget) ResetRCStyles() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_reset_rc_styles(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// ResetStyle updates the style context of widget and all descendants by
-// updating its widget path. Containers may want to use this on a child when
-// reordering it in a way that a different style might apply to it. See also
-// gtk_container_get_path_for_child().
-func (widget *Widget) ResetStyle() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_reset_style(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// SendExpose: very rarely-used function. This function is used to emit an
-// expose event on a widget. This function is not normally used directly. The
-// only time it is used is when propagating an expose event to a windowless
-// child widget (gtk_widget_get_has_window() is FALSE), and that is normally
-// done using gtk_container_propagate_draw().
-//
-// If you want to force an area of a window to be redrawn, use
-// gdk_window_invalidate_rect() or gdk_window_invalidate_region(). To cause the
-// redraw to be done immediately, follow that call with a call to
-// gdk_window_process_updates().
-//
-// Deprecated: Application and widget code should not handle expose events
-// directly; invalidation should use the Widget API, and drawing should only
-// happen inside Widget::draw implementations.
-//
-// The function takes the following parameters:
-//
-//    - event: expose Event.
-//
-func (widget *Widget) SendExpose(event *gdk.Event) int {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkEvent  // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
-
-	_cret = C.gtk_widget_send_expose(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(event)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// SendFocusChange sends the focus change event to widget
-//
-// This function is not meant to be used by applications. The only time it
-// should be used is when it is necessary for a Widget to assign focus to a
-// widget that is semantically owned by the first widget even though it’s not a
-// direct child - for instance, a search entry in a floating window similar to
-// the quick search in TreeView.
-//
-// An example of its usage is:
-//
-//      GdkEvent *fevent = gdk_event_new (GDK_FOCUS_CHANGE);
-//
-//      fevent->focus_change.type = GDK_FOCUS_CHANGE;
-//      fevent->focus_change.in = TRUE;
-//      fevent->focus_change.window = _gtk_widget_get_window (widget);
-//      if (fevent->focus_change.window != NULL)
-//        g_object_ref (fevent->focus_change.window);
-//
-//      gtk_widget_send_focus_change (widget, fevent);
-//
-//      gdk_event_free (event);.
-//
-// The function takes the following parameters:
-//
-//    - event of type GDK_FOCUS_CHANGE.
-//
-func (widget *Widget) SendFocusChange(event *gdk.Event) bool {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkEvent  // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
-
-	_cret = C.gtk_widget_send_focus_change(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(event)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetAccelPath: given an accelerator group, accel_group, and an accelerator
-// path, accel_path, sets up an accelerator in accel_group so whenever the key
-// binding that is defined for accel_path is pressed, widget will be activated.
-// This removes any accelerators (for any accelerator group) installed by
-// previous calls to gtk_widget_set_accel_path(). Associating accelerators with
-// paths allows them to be modified by the user and the modifications to be
-// saved for future use. (See gtk_accel_map_save().)
-//
-// This function is a low level function that would most likely be used by a
-// menu creation system like UIManager. If you use UIManager, setting up
-// accelerator paths will be done automatically.
-//
-// Even when you you aren’t using UIManager, if you only want to set up
-// accelerators on menu items gtk_menu_item_set_accel_path() provides a somewhat
-// more convenient interface.
-//
-// Note that accel_path string will be stored in a #GQuark. Therefore, if you
-// pass a static string, you can save some memory by interning it first with
-// g_intern_static_string().
-//
-// The function takes the following parameters:
-//
-//    - accelPath: path used to look up the accelerator.
-//    - accelGroup: AccelGroup.
-//
-func (widget *Widget) SetAccelPath(accelPath string, accelGroup *AccelGroup) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 *C.gchar         // out
-	var _arg2 *C.GtkAccelGroup // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if accelPath != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	if accelGroup != nil {
-		_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
-	}
-
-	C.gtk_widget_set_accel_path(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(accelPath)
-	runtime.KeepAlive(accelGroup)
-}
-
-// SetAllocation sets the widget’s allocation. This should not be used directly,
-// but from within a widget’s size_allocate method.
-//
-// The allocation set should be the “adjusted” or actual allocation. If you’re
-// implementing a Container, you want to use gtk_widget_size_allocate() instead
-// of gtk_widget_set_allocation(). The GtkWidgetClass::adjust_size_allocation
-// virtual method adjusts the allocation inside gtk_widget_size_allocate() to
-// create an adjusted allocation.
-//
-// The function takes the following parameters:
-//
-//    - allocation: pointer to a Allocation to copy from.
-//
-func (widget *Widget) SetAllocation(allocation *Allocation) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 *C.GtkAllocation // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
-
-	C.gtk_widget_set_allocation(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(allocation)
-}
-
-// SetAppPaintable sets whether the application intends to draw on the widget in
-// an Widget::draw handler.
-//
-// This is a hint to the widget and does not affect the behavior of the GTK+
-// core; many widgets ignore this flag entirely. For widgets that do pay
-// attention to the flag, such as EventBox and Window, the effect is to suppress
-// default themed drawing of the widget's background. (Children of the widget
-// will still be drawn.) The application is then entirely responsible for
-// drawing the widget background.
-//
-// Note that the background is still drawn when the widget is mapped.
-//
-// The function takes the following parameters:
-//
-//    - appPaintable: TRUE if the application will paint on the widget.
-//
-func (widget *Widget) SetAppPaintable(appPaintable bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if appPaintable {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_app_paintable(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(appPaintable)
-}
-
-// SetCanDefault specifies whether widget can be a default widget. See
-// gtk_widget_grab_default() for details about the meaning of “default”.
-//
-// The function takes the following parameters:
-//
-//    - canDefault: whether or not widget can be a default widget.
-//
-func (widget *Widget) SetCanDefault(canDefault bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if canDefault {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_can_default(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(canDefault)
-}
-
-// SetCanFocus specifies whether widget can own the input focus. See
-// gtk_widget_grab_focus() for actually setting the input focus on a widget.
-//
-// The function takes the following parameters:
-//
-//    - canFocus: whether or not widget can own the input focus.
-//
-func (widget *Widget) SetCanFocus(canFocus bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if canFocus {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_can_focus(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(canFocus)
-}
-
-// SetChildVisible sets whether widget should be mapped along with its when its
-// parent is mapped and widget has been shown with gtk_widget_show().
-//
-// The child visibility can be set for widget before it is added to a container
-// with gtk_widget_set_parent(), to avoid mapping children unnecessary before
-// immediately unmapping them. However it will be reset to its default state of
-// TRUE when the widget is removed from a container.
-//
-// Note that changing the child visibility of a widget does not queue a resize
-// on the widget. Most of the time, the size of a widget is computed from all
-// visible children, whether or not they are mapped. If this is not the case,
-// the container can queue a resize itself.
-//
-// This function is only useful for container implementations and never should
-// be called by an application.
-//
-// The function takes the following parameters:
-//
-//    - isVisible: if TRUE, widget should be mapped along with its parent.
-//
-func (widget *Widget) SetChildVisible(isVisible bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if isVisible {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_child_visible(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(isVisible)
-}
-
-// SetClip sets the widget’s clip. This must not be used directly, but from
-// within a widget’s size_allocate method. It must be called after
-// gtk_widget_set_allocation() (or after chaining up to the parent class),
-// because that function resets the clip.
-//
-// The clip set should be the area that widget draws on. If widget is a
-// Container, the area must contain all children's clips.
-//
-// If this function is not called by widget during a ::size-allocate handler,
-// the clip will be set to widget's allocation.
-//
-// The function takes the following parameters:
-//
-//    - clip: pointer to a Allocation to copy from.
-//
-func (widget *Widget) SetClip(clip *Allocation) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 *C.GtkAllocation // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(clip)))
-
-	C.gtk_widget_set_clip(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(clip)
-}
-
-// SetCompositeName sets a widgets composite name. The widget must be a
-// composite child of its parent; see gtk_widget_push_composite_child().
-//
-// Deprecated: Use gtk_widget_class_set_template(), or don’t use this API at
-// all.
-//
-// The function takes the following parameters:
-//
-//    - name to set.
-//
-func (widget *Widget) SetCompositeName(name string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_widget_set_composite_name(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(name)
-}
-
-// SetDeviceEnabled enables or disables a Device to interact with widget and all
-// its children.
-//
-// It does so by descending through the Window hierarchy and enabling the same
-// mask that is has for core events (i.e. the one that gdk_window_get_events()
-// returns).
-//
-// The function takes the following parameters:
-//
-//    - device: Device.
-//    - enabled: whether to enable the device.
-//
-func (widget *Widget) SetDeviceEnabled(device gdk.Devicer, enabled bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkDevice // out
-	var _arg2 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	if enabled {
-		_arg2 = C.TRUE
-	}
-
-	C.gtk_widget_set_device_enabled(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(device)
-	runtime.KeepAlive(enabled)
-}
-
-// SetDeviceEvents sets the device event mask (see EventMask) for a widget. The
-// event mask determines which events a widget will receive from device. Keep in
-// mind that different widgets have different default event masks, and by
-// changing the event mask you may disrupt a widget’s functionality, so be
-// careful. This function must be called while a widget is unrealized. Consider
-// gtk_widget_add_device_events() for widgets that are already realized, or if
-// you want to preserve the existing event mask. This function can’t be used
-// with windowless widgets (which return FALSE from
-// gtk_widget_get_has_window()); to get events on those widgets, place them
-// inside a EventBox and receive events on the event box.
-//
-// The function takes the following parameters:
-//
-//    - device: Device.
-//    - events: event mask.
-//
-func (widget *Widget) SetDeviceEvents(device gdk.Devicer, events gdk.EventMask) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 *C.GdkDevice   // out
-	var _arg2 C.GdkEventMask // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg2 = C.GdkEventMask(events)
-
-	C.gtk_widget_set_device_events(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(device)
-	runtime.KeepAlive(events)
-}
-
-// SetDirection sets the reading direction on a particular widget. This
-// direction controls the primary direction for widgets containing text, and
-// also the direction in which the children of a container are packed. The
-// ability to set the direction is present in order so that correct localization
-// into languages with right-to-left reading directions can be done. Generally,
-// applications will let the default reading direction present, except for
-// containers where the containers are arranged in an order that is explicitly
-// visual rather than logical (such as buttons for text justification).
-//
-// If the direction is set to GTK_TEXT_DIR_NONE, then the value set by
-// gtk_widget_set_default_direction() will be used.
-//
-// The function takes the following parameters:
-//
-//    - dir: new direction.
-//
-func (widget *Widget) SetDirection(dir TextDirection) {
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkTextDirection // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkTextDirection(dir)
-
-	C.gtk_widget_set_direction(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(dir)
-}
-
-// SetDoubleBuffered widgets are double buffered by default; you can use this
-// function to turn off the buffering. “Double buffered” simply means that
-// gdk_window_begin_draw_frame() and gdk_window_end_draw_frame() are called
-// automatically around expose events sent to the widget.
-// gdk_window_begin_draw_frame() diverts all drawing to a widget's window to an
-// offscreen buffer, and gdk_window_end_draw_frame() draws the buffer to the
-// screen. The result is that users see the window update in one smooth step,
-// and don’t see individual graphics primitives being rendered.
-//
-// In very simple terms, double buffered widgets don’t flicker, so you would
-// only use this function to turn off double buffering if you had special needs
-// and really knew what you were doing.
-//
-// Note: if you turn off double-buffering, you have to handle expose events,
-// since even the clearing to the background color or pixmap will not happen
-// automatically (as it is done in gdk_window_begin_draw_frame()).
-//
-// In 3.10 GTK and GDK have been restructured for translucent drawing. Since
-// then expose events for double-buffered widgets are culled into a single event
-// to the toplevel GDK window. If you now unset double buffering, you will cause
-// a separate rendering pass for every widget. This will likely cause rendering
-// problems - in particular related to stacking - and usually increases
-// rendering times significantly.
-//
-// Deprecated: This function does not work under non-X11 backends or with
-// non-native windows. It should not be used in newly written code.
-//
-// The function takes the following parameters:
-//
-//    - doubleBuffered: TRUE to double-buffer a widget.
-//
-func (widget *Widget) SetDoubleBuffered(doubleBuffered bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if doubleBuffered {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_double_buffered(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(doubleBuffered)
-}
-
-// SetEvents sets the event mask (see EventMask) for a widget. The event mask
-// determines which events a widget will receive. Keep in mind that different
-// widgets have different default event masks, and by changing the event mask
-// you may disrupt a widget’s functionality, so be careful. This function must
-// be called while a widget is unrealized. Consider gtk_widget_add_events() for
-// widgets that are already realized, or if you want to preserve the existing
-// event mask. This function can’t be used with widgets that have no window.
-// (See gtk_widget_get_has_window()). To get events on those widgets, place them
-// inside a EventBox and receive events on the event box.
-//
-// The function takes the following parameters:
-//
-//    - events: event mask.
-//
-func (widget *Widget) SetEvents(events int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(events)
-
-	C.gtk_widget_set_events(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(events)
-}
-
-// SetFocusOnClick sets whether the widget should grab focus when it is clicked
-// with the mouse. Making mouse clicks not grab focus is useful in places like
-// toolbars where you don’t want the keyboard focus removed from the main area
-// of the application.
-//
-// The function takes the following parameters:
-//
-//    - focusOnClick: whether the widget should grab focus when clicked with
-//    the mouse.
-//
-func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if focusOnClick {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_focus_on_click(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(focusOnClick)
-}
-
-// SetFontMap sets the font map to use for Pango rendering. When not set, the
-// widget will inherit the font map from its parent.
-//
-// The function takes the following parameters:
-//
-//    - fontMap or NULL to unset any previously set font map.
-//
-func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 *C.PangoFontMap // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if fontMap != nil {
-		_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
-	}
-
-	C.gtk_widget_set_font_map(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(fontMap)
-}
-
-// SetFontOptions sets the #cairo_font_options_t used for Pango rendering in
-// this widget. When not set, the default font options for the Screen will be
-// used.
-//
-// The function takes the following parameters:
-//
-//    - options or NULL to unset any previously set default font options.
-//
-func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
-	var _arg0 *C.GtkWidget            // out
-	var _arg1 *C.cairo_font_options_t // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if options != nil {
-		_arg1 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
-	}
-
-	C.gtk_widget_set_font_options(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(options)
-}
-
-// SetHAlign sets the horizontal alignment of widget. See the Widget:halign
-// property.
-//
-// The function takes the following parameters:
-//
-//    - align: horizontal alignment.
-//
-func (widget *Widget) SetHAlign(align Align) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.GtkAlign   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkAlign(align)
-
-	C.gtk_widget_set_halign(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(align)
-}
-
-// SetHasTooltip sets the has-tooltip property on widget to has_tooltip. See
-// Widget:has-tooltip for more information.
-//
-// The function takes the following parameters:
-//
-//    - hasTooltip: whether or not widget has a tooltip.
-//
-func (widget *Widget) SetHasTooltip(hasTooltip bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if hasTooltip {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_has_tooltip(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(hasTooltip)
-}
-
-// SetHasWindow specifies whether widget has a Window of its own. Note that all
-// realized widgets have a non-NULL “window” pointer (gtk_widget_get_window()
-// never returns a NULL window when a widget is realized), but for many of them
-// it’s actually the Window of one of its parent widgets. Widgets that do not
-// create a window for themselves in Widget::realize must announce this by
-// calling this function with has_window = FALSE.
-//
-// This function should only be called by widget implementations, and they
-// should call it in their init() function.
-//
-// The function takes the following parameters:
-//
-//    - hasWindow: whether or not widget has a window.
-//
-func (widget *Widget) SetHasWindow(hasWindow bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if hasWindow {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_has_window(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(hasWindow)
-}
-
-// SetHExpand sets whether the widget would like any available extra horizontal
-// space. When a user resizes a Window, widgets with expand=TRUE generally
-// receive the extra space. For example, a list or scrollable area or document
-// in your window would often be set to expand.
-//
-// Call this function to set the expand flag if you would like your widget to
-// become larger horizontally when the window has extra room.
-//
-// By default, widgets automatically expand if any of their children want to
-// expand. (To see if a widget will automatically expand given its current
-// children and state, call gtk_widget_compute_expand(). A container can decide
-// how the expandability of children affects the expansion of the container by
-// overriding the compute_expand virtual method on Widget.).
-//
-// Setting hexpand explicitly with this function will override the automatic
-// expand behavior.
-//
-// This function forces the widget to expand or not to expand, regardless of
-// children. The override occurs because gtk_widget_set_hexpand() sets the
-// hexpand-set property (see gtk_widget_set_hexpand_set()) which causes the
-// widget’s hexpand value to be used, rather than looking at children and widget
-// state.
-//
-// The function takes the following parameters:
-//
-//    - expand: whether to expand.
-//
-func (widget *Widget) SetHExpand(expand bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if expand {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_hexpand(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(expand)
-}
-
-// SetHExpandSet sets whether the hexpand flag (see gtk_widget_get_hexpand())
-// will be used.
-//
-// The hexpand-set property will be set automatically when you call
-// gtk_widget_set_hexpand() to set hexpand, so the most likely reason to use
-// this function would be to unset an explicit expand flag.
-//
-// If hexpand is set, then it overrides any computed expand value based on child
-// widgets. If hexpand is not set, then the expand value depends on whether any
-// children of the widget would like to expand.
-//
-// There are few reasons to use this function, but it’s here for completeness
-// and consistency.
-//
-// The function takes the following parameters:
-//
-//    - set: value for hexpand-set property.
-//
-func (widget *Widget) SetHExpandSet(set bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if set {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_hexpand_set(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(set)
-}
-
-// SetMapped marks the widget as being mapped.
-//
-// This function should only ever be called in a derived widget's “map” or
-// “unmap” implementation.
-//
-// The function takes the following parameters:
-//
-//    - mapped: TRUE to mark the widget as mapped.
-//
-func (widget *Widget) SetMapped(mapped bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if mapped {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_mapped(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(mapped)
-}
-
-// SetMarginBottom sets the bottom margin of widget. See the
-// Widget:margin-bottom property.
-//
-// The function takes the following parameters:
-//
-//    - margin: bottom margin.
-//
-func (widget *Widget) SetMarginBottom(margin int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(margin)
-
-	C.gtk_widget_set_margin_bottom(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(margin)
-}
-
-// SetMarginEnd sets the end margin of widget. See the Widget:margin-end
-// property.
-//
-// The function takes the following parameters:
-//
-//    - margin: end margin.
-//
-func (widget *Widget) SetMarginEnd(margin int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(margin)
-
-	C.gtk_widget_set_margin_end(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(margin)
-}
-
-// SetMarginLeft sets the left margin of widget. See the Widget:margin-left
-// property.
-//
-// Deprecated: Use gtk_widget_set_margin_start() instead.
-//
-// The function takes the following parameters:
-//
-//    - margin: left margin.
-//
-func (widget *Widget) SetMarginLeft(margin int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(margin)
-
-	C.gtk_widget_set_margin_left(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(margin)
-}
-
-// SetMarginRight sets the right margin of widget. See the Widget:margin-right
-// property.
-//
-// Deprecated: Use gtk_widget_set_margin_end() instead.
-//
-// The function takes the following parameters:
-//
-//    - margin: right margin.
-//
-func (widget *Widget) SetMarginRight(margin int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(margin)
-
-	C.gtk_widget_set_margin_right(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(margin)
-}
-
-// SetMarginStart sets the start margin of widget. See the Widget:margin-start
-// property.
-//
-// The function takes the following parameters:
-//
-//    - margin: start margin.
-//
-func (widget *Widget) SetMarginStart(margin int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(margin)
-
-	C.gtk_widget_set_margin_start(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(margin)
-}
-
-// SetMarginTop sets the top margin of widget. See the Widget:margin-top
-// property.
-//
-// The function takes the following parameters:
-//
-//    - margin: top margin.
-//
-func (widget *Widget) SetMarginTop(margin int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(margin)
-
-	C.gtk_widget_set_margin_top(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(margin)
-}
-
-// SetName widgets can be named, which allows you to refer to them from a CSS
-// file. You can apply a style to widgets with a particular name in the CSS
-// file. See the documentation for the CSS syntax (on the same page as the docs
-// for StyleContext).
-//
-// Note that the CSS syntax has certain special characters to delimit and
-// represent elements in a selector (period, #, >, *...), so using these will
-// make your widget impossible to match by name. Any combination of alphanumeric
-// symbols, dashes and underscores will suffice.
-//
-// The function takes the following parameters:
-//
-//    - name for the widget.
-//
-func (widget *Widget) SetName(name string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_widget_set_name(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(name)
-}
-
-// SetNoShowAll sets the Widget:no-show-all property, which determines whether
-// calls to gtk_widget_show_all() will affect this widget.
-//
-// This is mostly for use in constructing widget hierarchies with externally
-// controlled visibility, see UIManager.
-//
-// The function takes the following parameters:
-//
-//    - noShowAll: new value for the “no-show-all” property.
-//
-func (widget *Widget) SetNoShowAll(noShowAll bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if noShowAll {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_no_show_all(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(noShowAll)
-}
-
-// SetOpacity: request the widget to be rendered partially transparent, with
-// opacity 0 being fully transparent and 1 fully opaque. (Opacity values are
-// clamped to the [0,1] range.). This works on both toplevel widget, and child
-// widgets, although there are some limitations:
-//
-// For toplevel widgets this depends on the capabilities of the windowing
-// system. On X11 this has any effect only on X screens with a compositing
-// manager running. See gtk_widget_is_composited(). On Windows it should work
-// always, although setting a window’s opacity after the window has been shown
-// causes it to flicker once on Windows.
-//
-// For child widgets it doesn’t work if any affected widget has a native window,
-// or disables double buffering.
-//
-// The function takes the following parameters:
-//
-//    - opacity: desired opacity, between 0 and 1.
-//
-func (widget *Widget) SetOpacity(opacity float64) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.double     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.double(opacity)
-
-	C.gtk_widget_set_opacity(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(opacity)
-}
-
-// SetParent: this function is useful only when implementing subclasses of
-// Container. Sets the container as the parent of widget, and takes care of some
-// details such as updating the state and style of the child to reflect its new
-// location. The opposite function is gtk_widget_unparent().
-//
-// The function takes the following parameters:
-//
-//    - parent container.
-//
-func (widget *Widget) SetParent(parent Widgetter) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parent.Native()))
-
-	C.gtk_widget_set_parent(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(parent)
-}
-
-// SetParentWindow sets a non default parent window for widget.
-//
-// For Window classes, setting a parent_window effects whether the window is a
-// toplevel window or can be embedded into other widgets.
-//
-// For Window classes, this needs to be called before the window is realized.
-//
-// The function takes the following parameters:
-//
-//    - parentWindow: new parent window.
-//
-func (widget *Widget) SetParentWindow(parentWindow gdk.Windower) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkWindow // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(parentWindow.Native()))
-
-	C.gtk_widget_set_parent_window(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(parentWindow)
-}
-
-// SetRealized marks the widget as being realized. This function must only be
-// called after all Windows for the widget have been created and registered.
-//
-// This function should only ever be called in a derived widget's “realize” or
-// “unrealize” implementation.
-//
-// The function takes the following parameters:
-//
-//    - realized: TRUE to mark the widget as realized.
-//
-func (widget *Widget) SetRealized(realized bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if realized {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_realized(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(realized)
-}
-
-// SetReceivesDefault specifies whether widget will be treated as the default
-// widget within its toplevel when it has the focus, even if another widget is
-// the default.
-//
-// See gtk_widget_grab_default() for details about the meaning of “default”.
-//
-// The function takes the following parameters:
-//
-//    - receivesDefault: whether or not widget can be a default widget.
-//
-func (widget *Widget) SetReceivesDefault(receivesDefault bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if receivesDefault {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_receives_default(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(receivesDefault)
-}
-
-// SetRedrawOnAllocate sets whether the entire widget is queued for drawing when
-// its size allocation changes. By default, this setting is TRUE and the entire
-// widget is redrawn on every size change. If your widget leaves the upper left
-// unchanged when made bigger, turning this setting off will improve
-// performance.
-//
-// Note that for widgets where gtk_widget_get_has_window() is FALSE setting this
-// flag to FALSE turns off all allocation on resizing: the widget will not even
-// redraw if its position changes; this is to allow containers that don’t draw
-// anything to avoid excess invalidations. If you set this flag on a widget with
-// no window that does draw on widget->window, you are responsible for
-// invalidating both the old and new allocation of the widget when the widget is
-// moved and responsible for invalidating regions newly when the widget
-// increases size.
-//
-// The function takes the following parameters:
-//
-//    - redrawOnAllocate: if TRUE, the entire widget will be redrawn when it is
-//    allocated to a new size. Otherwise, only the new portion of the widget
-//    will be redrawn.
-//
-func (widget *Widget) SetRedrawOnAllocate(redrawOnAllocate bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if redrawOnAllocate {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_redraw_on_allocate(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(redrawOnAllocate)
-}
-
-// SetSensitive sets the sensitivity of a widget. A widget is sensitive if the
-// user can interact with it. Insensitive widgets are “grayed out” and the user
-// can’t interact with them. Insensitive widgets are known as “inactive”,
-// “disabled”, or “ghosted” in some other toolkits.
-//
-// The function takes the following parameters:
-//
-//    - sensitive: TRUE to make the widget sensitive.
-//
-func (widget *Widget) SetSensitive(sensitive bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if sensitive {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_sensitive(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(sensitive)
-}
-
-// SetSizeRequest sets the minimum size of a widget; that is, the widget’s size
-// request will be at least width by height. You can use this function to force
-// a widget to be larger than it normally would be.
-//
-// In most cases, gtk_window_set_default_size() is a better choice for toplevel
-// windows than this function; setting the default size will still allow users
-// to shrink the window. Setting the size request will force them to leave the
-// window at least as large as the size request. When dealing with window sizes,
-// gtk_window_set_geometry_hints() can be a useful function as well.
-//
-// Note the inherent danger of setting any fixed size - themes, translations
-// into other languages, different fonts, and user action can all change the
-// appropriate size for a given widget. So, it's basically impossible to
-// hardcode a size that will always be correct.
-//
-// The size request of a widget is the smallest size a widget can accept while
-// still functioning well and drawing itself correctly. However in some strange
-// cases a widget may be allocated less than its requested size, and in many
-// cases a widget may be allocated more space than it requested.
-//
-// If the size request in a given direction is -1 (unset), then the “natural”
-// size request of the widget will be used instead.
-//
-// The size request set here does not include any margin from the Widget
-// properties margin-left, margin-right, margin-top, and margin-bottom, but it
-// does include pretty much all other padding or border properties set by any
-// subclass of Widget.
-//
-// The function takes the following parameters:
-//
-//    - width widget should request, or -1 to unset.
-//    - height widget should request, or -1 to unset.
-//
-func (widget *Widget) SetSizeRequest(width, height int) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gint       // out
-	var _arg2 C.gint       // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.gint(width)
-	_arg2 = C.gint(height)
-
-	C.gtk_widget_set_size_request(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// SetState: this function is for use in widget implementations. Sets the state
-// of a widget (insensitive, prelighted, etc.) Usually you should set the state
-// using wrapper functions such as gtk_widget_set_sensitive().
-//
-// Deprecated: Use gtk_widget_set_state_flags() instead.
-//
-// The function takes the following parameters:
-//
-//    - state: new state for widget.
-//
-func (widget *Widget) SetState(state StateType) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkStateType(state)
-
-	C.gtk_widget_set_state(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-}
-
-// SetStateFlags: this function is for use in widget implementations. Turns on
-// flag values in the current widget state (insensitive, prelighted, etc.).
-//
-// This function accepts the values GTK_STATE_FLAG_DIR_LTR and
-// GTK_STATE_FLAG_DIR_RTL but ignores them. If you want to set the widget's
-// direction, use gtk_widget_set_direction().
-//
-// It is worth mentioning that any other state than GTK_STATE_FLAG_INSENSITIVE,
-// will be propagated down to all non-internal children if widget is a
-// Container, while GTK_STATE_FLAG_INSENSITIVE itself will be propagated down to
-// all Container children by different means than turning on the state flag down
-// the hierarchy, both gtk_widget_get_state_flags() and
-// gtk_widget_is_sensitive() will make use of these.
-//
-// The function takes the following parameters:
-//
-//    - flags: state flags to turn on.
-//    - clear: whether to clear state before turning on flags.
-//
-func (widget *Widget) SetStateFlags(flags StateFlags, clear bool) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkStateFlags // out
-	var _arg2 C.gboolean      // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkStateFlags(flags)
-	if clear {
-		_arg2 = C.TRUE
-	}
-
-	C.gtk_widget_set_state_flags(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(clear)
-}
-
-// SetStyle: used to set the Style for a widget (widget->style). Since GTK 3,
-// this function does nothing, the passed in style is ignored.
-//
-// Deprecated: Use StyleContext instead.
-//
-// The function takes the following parameters:
-//
-//    - style or NULL to remove the effect of a previous call to
-//    gtk_widget_set_style() and go back to the default style.
-//
-func (widget *Widget) SetStyle(style *Style) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkStyle  // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if style != nil {
-		_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
-	}
-
-	C.gtk_widget_set_style(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(style)
-}
-
-// SetSupportMultidevice enables or disables multiple pointer awareness. If this
-// setting is TRUE, widget will start receiving multiple, per device enter/leave
-// events. Note that if custom Windows are created in Widget::realize,
-// gdk_window_set_support_multidevice() will have to be called manually on them.
-//
-// The function takes the following parameters:
-//
-//    - supportMultidevice: TRUE to support input from multiple devices.
-//
-func (widget *Widget) SetSupportMultidevice(supportMultidevice bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if supportMultidevice {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_support_multidevice(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(supportMultidevice)
-}
-
-// SetTooltipMarkup sets markup as the contents of the tooltip, which is marked
-// up with the [Pango text markup language][PangoMarkupFormat].
-//
-// This function will take care of setting Widget:has-tooltip to TRUE and of the
-// default handler for the Widget::query-tooltip signal.
-//
-// See also the Widget:tooltip-markup property and gtk_tooltip_set_markup().
-//
-// The function takes the following parameters:
-//
-//    - markup contents of the tooltip for widget, or NULL.
-//
-func (widget *Widget) SetTooltipMarkup(markup string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if markup != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-
-	C.gtk_widget_set_tooltip_markup(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(markup)
-}
-
-// SetTooltipText sets text as the contents of the tooltip. This function will
-// take care of setting Widget:has-tooltip to TRUE and of the default handler
-// for the Widget::query-tooltip signal.
-//
-// See also the Widget:tooltip-text property and gtk_tooltip_set_text().
-//
-// The function takes the following parameters:
-//
-//    - text contents of the tooltip for widget.
-//
-func (widget *Widget) SetTooltipText(text string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if text != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-
-	C.gtk_widget_set_tooltip_text(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(text)
-}
-
-// SetTooltipWindow replaces the default window used for displaying tooltips
-// with custom_window. GTK+ will take care of showing and hiding custom_window
-// at the right moment, to behave likewise as the default tooltip window. If
-// custom_window is NULL, the default tooltip window will be used.
-//
-// The function takes the following parameters:
-//
-//    - customWindow or NULL.
-//
-func (widget *Widget) SetTooltipWindow(customWindow *Window) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWindow // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if customWindow != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(customWindow.Native()))
-	}
-
-	C.gtk_widget_set_tooltip_window(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(customWindow)
-}
-
-// SetVAlign sets the vertical alignment of widget. See the Widget:valign
-// property.
-//
-// The function takes the following parameters:
-//
-//    - align: vertical alignment.
-//
-func (widget *Widget) SetVAlign(align Align) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.GtkAlign   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkAlign(align)
-
-	C.gtk_widget_set_valign(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(align)
-}
-
-// SetVExpand sets whether the widget would like any available extra vertical
-// space.
-//
-// See gtk_widget_set_hexpand() for more detail.
-//
-// The function takes the following parameters:
-//
-//    - expand: whether to expand.
-//
-func (widget *Widget) SetVExpand(expand bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if expand {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_vexpand(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(expand)
-}
-
-// SetVExpandSet sets whether the vexpand flag (see gtk_widget_get_vexpand())
-// will be used.
-//
-// See gtk_widget_set_hexpand_set() for more detail.
-//
-// The function takes the following parameters:
-//
-//    - set: value for vexpand-set property.
-//
-func (widget *Widget) SetVExpandSet(set bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if set {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_vexpand_set(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(set)
-}
-
-// SetVisible sets the visibility state of widget. Note that setting this to
-// TRUE doesn’t mean the widget is actually viewable, see
-// gtk_widget_get_visible().
-//
-// This function simply calls gtk_widget_show() or gtk_widget_hide() but is
-// nicer to use when the visibility of the widget depends on some condition.
-//
-// The function takes the following parameters:
-//
-//    - visible: whether the widget should be shown or not.
-//
-func (widget *Widget) SetVisible(visible bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if visible {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_widget_set_visible(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(visible)
-}
-
-// SetVisual sets the visual that should be used for by widget and its children
-// for creating Windows. The visual must be on the same Screen as returned by
-// gtk_widget_get_screen(), so handling the Widget::screen-changed signal is
-// necessary.
-//
-// Setting a new visual will not cause widget to recreate its windows, so you
-// should call this function before widget is realized.
-//
-// The function takes the following parameters:
-//
-//    - visual to be used or NULL to unset a previous one.
-//
-func (widget *Widget) SetVisual(visual *gdk.Visual) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkVisual // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if visual != nil {
-		_arg1 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
-	}
-
-	C.gtk_widget_set_visual(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(visual)
-}
-
-// SetWindow sets a widget’s window. This function should only be used in a
-// widget’s Widget::realize implementation. The window passed is usually either
-// new window created with gdk_window_new(), or the window of its parent widget
-// as returned by gtk_widget_get_parent_window().
-//
-// Widgets must indicate whether they will create their own Window by calling
-// gtk_widget_set_has_window(). This is usually done in the widget’s init()
-// function.
-//
-// Note that this function does not add any reference to window.
-//
-// The function takes the following parameters:
-//
-//    - window: Window.
-//
-func (widget *Widget) SetWindow(window gdk.Windower) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkWindow // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	C.g_object_ref(C.gpointer(window.Native()))
-
-	C.gtk_widget_set_window(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(window)
-}
-
-// ShapeCombineRegion sets a shape for this widget’s GDK window. This allows for
-// transparent windows etc., see gdk_window_shape_combine_region() for more
-// information.
-//
-// The function takes the following parameters:
-//
-//    - region: shape to be added, or NULL to remove an existing shape.
-//
-func (widget *Widget) ShapeCombineRegion(region *cairo.Region) {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.cairo_region_t // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	if region != nil {
-		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
-	}
-
-	C.gtk_widget_shape_combine_region(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(region)
-}
-
-// Show flags a widget to be displayed. Any widget that isn’t shown will not
-// appear on the screen. If you want to show all the widgets in a container,
-// it’s easier to call gtk_widget_show_all() on the container, instead of
-// individually showing the widgets.
-//
-// Remember that you have to show the containers containing a widget, in
-// addition to the widget itself, before it will appear onscreen.
-//
-// When a toplevel container is shown, it is immediately realized and mapped;
-// other shown widgets are realized and mapped when their toplevel container is
-// realized and mapped.
-func (widget *Widget) Show() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_show(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// ShowAll: recursively shows a widget, and any child widgets (if the widget is
-// a container).
-func (widget *Widget) ShowAll() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_show_all(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// ShowNow shows a widget. If the widget is an unmapped toplevel widget (i.e. a
-// Window that has not yet been shown), enter the main loop and wait for the
-// window to actually be mapped. Be careful; because the main loop is running,
-// anything can happen during this function.
-func (widget *Widget) ShowNow() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_show_now(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// SizeAllocate: this function is only used by Container subclasses, to assign a
-// size and position to their child widgets.
-//
-// In this function, the allocation may be adjusted. It will be forced to a 1x1
-// minimum size, and the adjust_size_allocation virtual method on the child will
-// be used to adjust the allocation. Standard adjustments include removing the
-// widget’s margins, and applying the widget’s Widget:halign and Widget:valign
-// properties.
-//
-// For baseline support in containers you need to use
-// gtk_widget_size_allocate_with_baseline() instead.
-//
-// The function takes the following parameters:
-//
-//    - allocation: position and size to be allocated to widget.
-//
-func (widget *Widget) SizeAllocate(allocation *Allocation) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 *C.GtkAllocation // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
-
-	C.gtk_widget_size_allocate(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(allocation)
-}
-
-// SizeAllocateWithBaseline: this function is only used by Container subclasses,
-// to assign a size, position and (optionally) baseline to their child widgets.
-//
-// In this function, the allocation and baseline may be adjusted. It will be
-// forced to a 1x1 minimum size, and the adjust_size_allocation virtual and
-// adjust_baseline_allocation methods on the child will be used to adjust the
-// allocation and baseline. Standard adjustments include removing the widget's
-// margins, and applying the widget’s Widget:halign and Widget:valign
-// properties.
-//
-// If the child widget does not have a valign of GTK_ALIGN_BASELINE the baseline
-// argument is ignored and -1 is used instead.
-//
-// The function takes the following parameters:
-//
-//    - allocation: position and size to be allocated to widget.
-//    - baseline of the child, or -1.
-//
-func (widget *Widget) SizeAllocateWithBaseline(allocation *Allocation, baseline int) {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 *C.GtkAllocation // out
-	var _arg2 C.gint           // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
-	_arg2 = C.gint(baseline)
-
-	C.gtk_widget_size_allocate_with_baseline(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(allocation)
-	runtime.KeepAlive(baseline)
-}
-
-// SizeRequest: this function is typically used when implementing a Container
-// subclass. Obtains the preferred size of a widget. The container uses this
-// information to arrange its child widgets and decide what size allocations to
-// give them with gtk_widget_size_allocate().
-//
-// You can also call this function from an application, with some caveats. Most
-// notably, getting a size request requires the widget to be associated with a
-// screen, because font information may be needed. Multihead-aware applications
-// should keep this in mind.
-//
-// Also remember that the size request is not necessarily the size a widget will
-// actually be allocated.
-//
-// Deprecated: Use gtk_widget_get_preferred_size() instead.
-func (widget *Widget) SizeRequest() *Requisition {
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkRequisition // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_size_request(_arg0, &_arg1)
-	runtime.KeepAlive(widget)
-
-	var _requisition *Requisition // out
-
-	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _requisition
-}
-
-// StyleAttach: this function attaches the widget’s Style to the widget's
-// Window. It is a replacement for
-//
-//    widget->style = gtk_style_attach (widget->style, widget->window);
-//
-// and should only ever be called in a derived widget’s “realize” implementation
-// which does not chain up to its parent class' “realize” implementation,
-// because one of the parent classes (finally Widget) would attach the style
-// itself.
-//
-// Deprecated: This step is unnecessary with StyleContext.
-func (widget *Widget) StyleAttach() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_style_attach(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// StyleGetProperty gets the value of a style property of widget.
-//
-// The function takes the following parameters:
-//
-//    - propertyName: name of a style property.
-//    - value: location to return the property value.
-//
-func (widget *Widget) StyleGetProperty(propertyName string, value *externglib.Value) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GValue    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
-
-	C.gtk_widget_style_get_property(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(propertyName)
-	runtime.KeepAlive(value)
-}
-
-// ThawChildNotify reverts the effect of a previous call to
-// gtk_widget_freeze_child_notify(). This causes all queued Widget::child-notify
-// signals on widget to be emitted.
-func (widget *Widget) ThawChildNotify() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_thaw_child_notify(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// TranslateCoordinates: translate coordinates relative to src_widget’s
-// allocation to coordinates relative to dest_widget’s allocations. In order to
-// perform this operation, both widgets must be realized, and must share a
-// common toplevel.
-//
-// The function takes the following parameters:
-//
-//    - destWidget: Widget.
-//    - srcX: x position relative to src_widget.
-//    - srcY: y position relative to src_widget.
-//
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY int) (destX int, destY int, ok bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.gint       // out
-	var _arg3 C.gint       // out
-	var _arg4 C.gint       // in
-	var _arg5 C.gint       // in
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(srcWidget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(destWidget.Native()))
-	_arg2 = C.gint(srcX)
-	_arg3 = C.gint(srcY)
-
-	_cret = C.gtk_widget_translate_coordinates(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
-	runtime.KeepAlive(srcWidget)
-	runtime.KeepAlive(destWidget)
-	runtime.KeepAlive(srcX)
-	runtime.KeepAlive(srcY)
-
-	var _destX int // out
-	var _destY int // out
-	var _ok bool   // out
-
-	_destX = int(_arg4)
-	_destY = int(_arg5)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _destX, _destY, _ok
-}
-
-// TriggerTooltipQuery triggers a tooltip query on the display where the
-// toplevel of widget is located. See gtk_tooltip_trigger_tooltip_query() for
-// more information.
-func (widget *Widget) TriggerTooltipQuery() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_trigger_tooltip_query(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// Unmap: this function is only for use in widget implementations. Causes a
-// widget to be unmapped if it’s currently mapped.
-func (widget *Widget) Unmap() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_unmap(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// Unparent: this function is only for use in widget implementations. Should be
-// called by implementations of the remove method on Container, to dissociate a
-// child from the container.
-func (widget *Widget) Unparent() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_unparent(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// Unrealize: this function is only useful in widget implementations. Causes a
-// widget to be unrealized (frees all GDK resources associated with the widget,
-// such as widget->window).
-func (widget *Widget) Unrealize() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_unrealize(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// UnregisterWindow unregisters a Window from the widget that was previously set
-// up with gtk_widget_register_window(). You need to call this when the window
-// is no longer used by the widget, such as when you destroy it.
-//
-// The function takes the following parameters:
-//
-//    - window: Window.
-//
-func (widget *Widget) UnregisterWindow(window gdk.Windower) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkWindow // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-
-	C.gtk_widget_unregister_window(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(window)
-}
-
-// UnsetStateFlags: this function is for use in widget implementations. Turns
-// off flag values for the current widget state (insensitive, prelighted, etc.).
-// See gtk_widget_set_state_flags().
-//
-// The function takes the following parameters:
-//
-//    - flags: state flags to turn off.
-//
-func (widget *Widget) UnsetStateFlags(flags StateFlags) {
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkStateFlags // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = C.GtkStateFlags(flags)
-
-	C.gtk_widget_unset_state_flags(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(flags)
 }
 
 func (widget *Widget) baseWidget() *Widget {
@@ -7982,8 +1702,6021 @@ func (widget *Widget) ConnectWindowStateEvent(f func(event *gdk.EventWindowState
 	return widget.Connect("window-state-event", f)
 }
 
+// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
+// this function activates them. Activation is what happens when you press Enter
+// on a widget during key navigation. If widget isn't activatable, the function
+// returns FALSE.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget was activatable.
+//
+func (widget *Widget) Activate() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_activate(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// AddAccelerator installs an accelerator for this widget in accel_group that
+// causes accel_signal to be emitted if the accelerator is activated. The
+// accel_group needs to be added to the widget’s toplevel via
+// gtk_window_add_accel_group(), and the signal must be of type G_SIGNAL_ACTION.
+// Accelerators added through this function are not user changeable during
+// runtime. If you want to support accelerators that can be changed by the user,
+// use gtk_accel_map_add_entry() and gtk_widget_set_accel_path() or
+// gtk_menu_item_set_accel_path() instead.
+//
+// The function takes the following parameters:
+//
+//    - accelSignal: widget signal to emit on accelerator activation.
+//    - accelGroup: accel group for this widget, added to its toplevel.
+//    - accelKey: GDK keyval of the accelerator.
+//    - accelMods: modifier key combination of the accelerator.
+//    - accelFlags: flag accelerators, e.g. GTK_ACCEL_VISIBLE.
+//
+func (widget *Widget) AddAccelerator(accelSignal string, accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags) {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.GtkAccelGroup  // out
+	var _arg3 C.guint           // out
+	var _arg4 C.GdkModifierType // out
+	var _arg5 C.GtkAccelFlags   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelSignal)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg3 = C.guint(accelKey)
+	_arg4 = C.GdkModifierType(accelMods)
+	_arg5 = C.GtkAccelFlags(accelFlags)
+
+	C.gtk_widget_add_accelerator(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(accelSignal)
+	runtime.KeepAlive(accelGroup)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
+	runtime.KeepAlive(accelFlags)
+}
+
+// AddDeviceEvents adds the device events in the bitfield events to the event
+// mask for widget. See gtk_widget_set_device_events() for details.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//    - events: event mask, see EventMask.
+//
+func (widget *Widget) AddDeviceEvents(device gdk.Devicer, events gdk.EventMask) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 *C.GdkDevice   // out
+	var _arg2 C.GdkEventMask // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg2 = C.GdkEventMask(events)
+
+	C.gtk_widget_add_device_events(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(events)
+}
+
+// AddEvents adds the events in the bitfield events to the event mask for
+// widget. See gtk_widget_set_events() and the [input handling
+// overview][event-masks] for details.
+//
+// The function takes the following parameters:
+//
+//    - events: event mask, see EventMask.
+//
+func (widget *Widget) AddEvents(events int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(events)
+
+	C.gtk_widget_add_events(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(events)
+}
+
+// AddMnemonicLabel adds a widget to the list of mnemonic labels for this
+// widget. (See gtk_widget_list_mnemonic_labels()). Note the list of mnemonic
+// labels for the widget is cleared when the widget is destroyed, so the caller
+// must make sure to update its internal state at this point as well, by using a
+// connection to the Widget::destroy signal or a weak notifier.
+//
+// The function takes the following parameters:
+//
+//    - label that acts as a mnemonic label for widget.
+//
+func (widget *Widget) AddMnemonicLabel(label Widgetter) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
+
+	C.gtk_widget_add_mnemonic_label(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(label)
+}
+
+// AddTickCallback queues an animation frame update and adds a callback to be
+// called before each frame. Until the tick callback is removed, it will be
+// called frequently (usually at the frame rate of the output device or as
+// quickly as the application can be repainted, whichever is slower). For this
+// reason, is most suitable for handling graphics that change every frame or
+// every few frames. The tick callback does not automatically imply a relayout
+// or repaint. If you want a repaint or relayout, and aren’t changing widget
+// properties that would trigger that (for example, changing the text of a
+// Label), then you will have to call gtk_widget_queue_resize() or
+// gtk_widget_queue_draw_area() yourself.
+//
+// gdk_frame_clock_get_frame_time() should generally be used for timing
+// continuous animations and gdk_frame_timings_get_predicted_presentation_time()
+// if you are trying to display isolated frames at particular times.
+//
+// This is a more convenient alternative to connecting directly to the
+// FrameClock::update signal of FrameClock, since you don't have to worry about
+// when a FrameClock is assigned to a widget.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call for updating animations.
+//
+// The function returns the following values:
+//
+//    - guint: id for the connection of this callback. Remove the callback by
+//      passing it to gtk_widget_remove_tick_callback().
+//
+func (widget *Widget) AddTickCallback(callback TickCallback) uint {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 C.GtkTickCallback // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+	var _cret C.guint // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TickCallback)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.gtk_widget_add_tick_callback(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(callback)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// CanActivateAccel determines whether an accelerator that activates the signal
+// identified by signal_id can currently be activated. This is done by emitting
+// the Widget::can-activate-accel signal on widget; if the signal isn’t
+// overridden by a handler or in a derived widget, then the default check is
+// that the widget must be sensitive, and the widget and all its ancestors
+// mapped.
+//
+// The function takes the following parameters:
+//
+//    - signalId: ID of a signal installed on widget.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the accelerator can be activated.
+//
+func (widget *Widget) CanActivateAccel(signalId uint) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.guint      // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.guint(signalId)
+
+	_cret = C.gtk_widget_can_activate_accel(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(signalId)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ChildFocus: this function is used by custom widget implementations; if you're
+// writing an app, you’d use gtk_widget_grab_focus() to move the focus to a
+// particular widget, and gtk_container_set_focus_chain() to change the focus
+// tab order. So you may want to investigate those functions instead.
+//
+// gtk_widget_child_focus() is called by containers as the user moves around the
+// window using keyboard shortcuts. direction indicates what kind of motion is
+// taking place (up, down, left, right, tab forward, tab backward).
+// gtk_widget_child_focus() emits the Widget::focus signal; widgets override the
+// default handler for this signal in order to implement appropriate focus
+// behavior.
+//
+// The default ::focus handler for a widget should return TRUE if moving in
+// direction left the focus on a focusable location inside that widget, and
+// FALSE if moving in direction moved the focus outside the widget. If returning
+// TRUE, widgets normally call gtk_widget_grab_focus() to place the focus
+// accordingly; if returning FALSE, they don’t modify the current focus
+// location.
+//
+// The function takes the following parameters:
+//
+//    - direction of focus movement.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if focus ended up inside widget.
+//
+func (widget *Widget) ChildFocus(direction DirectionType) bool {
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkDirectionType // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkDirectionType(direction)
+
+	_cret = C.gtk_widget_child_focus(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(direction)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ChildNotify emits a Widget::child-notify signal for the [child
+// property][child-properties] child_property on widget.
+//
+// This is the analogue of g_object_notify() for child properties.
+//
+// Also see gtk_container_child_notify().
+//
+// The function takes the following parameters:
+//
+//    - childProperty: name of a child property installed on the class of
+//      widget’s parent.
+//
+func (widget *Widget) ChildNotify(childProperty string) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_widget_child_notify(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(childProperty)
+}
+
+// ComputeExpand computes whether a container should give this widget extra
+// space when possible. Containers should check this, rather than looking at
+// gtk_widget_get_hexpand() or gtk_widget_get_vexpand().
+//
+// This function already checks whether the widget is visible, so visibility
+// does not need to be checked separately. Non-visible widgets are not expanded.
+//
+// The computed expand value uses either the expand setting explicitly set on
+// the widget itself, or, if none has been explicitly set, the widget may expand
+// if some of its children do.
+//
+// The function takes the following parameters:
+//
+//    - orientation: expand direction.
+//
+// The function returns the following values:
+//
+//    - ok: whether widget tree rooted here should be expanded.
+//
+func (widget *Widget) ComputeExpand(orientation Orientation) bool {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkOrientation // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_widget_compute_expand(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(orientation)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// CreatePangoContext creates a new Context with the appropriate font map, font
+// options, font description, and base direction for drawing text for this
+// widget. See also gtk_widget_get_pango_context().
+//
+// The function returns the following values:
+//
+//    - context: new Context.
+//
+func (widget *Widget) CreatePangoContext() *pango.Context {
+	var _arg0 *C.GtkWidget    // out
+	var _cret *C.PangoContext // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_create_pango_context(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _context *pango.Context // out
+
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_context = &pango.Context{
+			Object: obj,
+		}
+	}
+
+	return _context
+}
+
+// CreatePangoLayout creates a new Layout with the appropriate font map, font
+// description, and base direction for drawing text for this widget.
+//
+// If you keep a Layout created in this way around, you need to re-create it
+// when the widget Context is replaced. This can be tracked by using the
+// Widget::screen-changed signal on the widget.
+//
+// The function takes the following parameters:
+//
+//    - text (optional) to set on the layout (can be NULL).
+//
+// The function returns the following values:
+//
+//    - layout: new Layout.
+//
+func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 *C.gchar       // out
+	var _cret *C.PangoLayout // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if text != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(text)
+
+	var _layout *pango.Layout // out
+
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_layout = &pango.Layout{
+			Object: obj,
+		}
+	}
+
+	return _layout
+}
+
+// Destroy destroys a widget.
+//
+// When a widget is destroyed all references it holds on other objects will be
+// released:
+//
+//    - if the widget is inside a container, it will be removed from its
+//    parent
+//    - if the widget is a container, all its children will be destroyed,
+//    recursively
+//    - if the widget is a top level, it will be removed from the list
+//    of top level widgets that GTK+ maintains internally
+//
+// It's expected that all references held on the widget will also be released;
+// you should connect to the Widget::destroy signal if you hold a reference to
+// widget and you wish to remove it when this function is called. It is not
+// necessary to do so if you are implementing a Container, as you'll be able to
+// use the ContainerClass.remove() virtual function for that.
+//
+// It's important to notice that gtk_widget_destroy() will only cause the widget
+// to be finalized if no additional references, acquired using g_object_ref(),
+// are held on it. In case additional references are in place, the widget will
+// be in an "inert" state after calling this function; widget will still point
+// to valid memory, allowing you to release the references you hold, but you may
+// not query the widget's own state.
+//
+// You should typically call this function on top level widgets, and rarely on
+// child widgets.
+//
+// See also: gtk_container_remove().
+func (widget *Widget) Destroy() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_destroy(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// DeviceIsShadowed returns TRUE if device has been shadowed by a GTK+ device
+// grab on another widget, so it would stop sending events to widget. This may
+// be used in the Widget::grab-notify signal to check for specific devices. See
+// gtk_device_grab_add().
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if there is an ongoing grab on device by another Widget than
+//      widget.
+//
+func (widget *Widget) DeviceIsShadowed(device gdk.Devicer) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkDevice // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+
+	_cret = C.gtk_widget_device_is_shadowed(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(device)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Draw draws widget to cr. The top left corner of the widget will be drawn to
+// the currently set origin point of cr.
+//
+// You should pass a cairo context as cr argument that is in an original state.
+// Otherwise the resulting drawing is undefined. For example changing the
+// operator using cairo_set_operator() or the line width using
+// cairo_set_line_width() might have unwanted side effects. You may however
+// change the context’s transform matrix - like with cairo_scale(),
+// cairo_translate() or cairo_set_matrix() and clip region with cairo_clip()
+// prior to calling this function. Also, it is fine to modify the context with
+// cairo_save() and cairo_push_group() prior to calling this function.
+//
+// Note that special-purpose widgets may contain special code for rendering to
+// the screen and might appear differently on screen and when rendered using
+// gtk_widget_draw().
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context to draw to.
+//
+func (widget *Widget) Draw(cr *cairo.Context) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.cairo_t   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+
+	C.gtk_widget_draw(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(cr)
+}
+
+// ErrorBell notifies the user about an input-related error on this widget. If
+// the Settings:gtk-error-bell setting is TRUE, it calls gdk_window_beep(),
+// otherwise it does nothing.
+//
+// Note that the effect of gdk_window_beep() can be configured in many ways,
+// depending on the windowing backend and the desktop environment or window
+// manager that is used.
+func (widget *Widget) ErrorBell() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_error_bell(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// Event: rarely-used function. This function is used to emit the event signals
+// on a widget (those signals should never be emitted without using this
+// function to do so). If you want to synthesize an event though, don’t use this
+// function; instead, use gtk_main_do_event() so the event will behave as if it
+// were in the event queue. Don’t synthesize expose events; instead, use
+// gdk_window_invalidate_rect() to invalidate a region of the window.
+//
+// The function takes the following parameters:
+//
+//    - event: Event.
+//
+// The function returns the following values:
+//
+//    - ok: return from the event signal emission (TRUE if the event was
+//      handled).
+//
+func (widget *Widget) Event(event *gdk.Event) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkEvent  // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_widget_event(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// FreezeChildNotify stops emission of Widget::child-notify signals on widget.
+// The signals are queued until gtk_widget_thaw_child_notify() is called on
+// widget.
+//
+// This is the analogue of g_object_freeze_notify() for child properties.
+func (widget *Widget) FreezeChildNotify() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_freeze_child_notify(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// Accessible returns the accessible object that describes the widget to an
+// assistive technology.
+//
+// If accessibility support is not available, this Object instance may be a
+// no-op. Likewise, if no class-specific Object implementation is available for
+// the widget instance in question, it will inherit an Object implementation
+// from the first ancestor class for which such an implementation is defined.
+//
+// The documentation of the ATK (http://developer.gnome.org/atk/stable/) library
+// contains more information about accessible objects and their uses.
+//
+// The function returns the following values:
+//
+//    - object associated with widget.
+//
+func (widget *Widget) Accessible() *atk.ObjectClass {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_accessible(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _object *atk.ObjectClass // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_object = &atk.ObjectClass{
+			Object: obj,
+		}
+	}
+
+	return _object
+}
+
+// ActionGroup retrieves the Group that was registered using prefix. The
+// resulting Group may have been registered to widget or any Widget in its
+// ancestry.
+//
+// If no action group was found matching prefix, then NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - prefix: “prefix” of the action group.
+//
+// The function returns the following values:
+//
+//    - actionGroup (optional) or NULL.
+//
+func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 *C.gchar        // out
+	var _cret *C.GActionGroup // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(prefix)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_widget_get_action_group(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(prefix)
+
+	var _actionGroup gio.ActionGrouper // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			casted := object.Cast()
+			rv, ok := casted.(gio.ActionGrouper)
+			if !ok {
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ActionGrouper")
+			}
+			_actionGroup = rv
+		}
+	}
+
+	return _actionGroup
+}
+
+// AllocatedBaseline returns the baseline that has currently been allocated to
+// widget. This function is intended to be used when implementing handlers for
+// the Widget::draw function, and when allocating child widgets in
+// Widget::size_allocate.
+//
+// The function returns the following values:
+//
+//    - gint: baseline of the widget, or -1 if none.
+//
+func (widget *Widget) AllocatedBaseline() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.int        // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_allocated_baseline(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// AllocatedHeight returns the height that has currently been allocated to
+// widget. This function is intended to be used when implementing handlers for
+// the Widget::draw function.
+//
+// The function returns the following values:
+//
+//    - gint: height of the widget.
+//
+func (widget *Widget) AllocatedHeight() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.int        // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_allocated_height(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// AllocatedSize retrieves the widget’s allocated size.
+//
+// This function returns the last values passed to
+// gtk_widget_size_allocate_with_baseline(). The value differs from the size
+// returned in gtk_widget_get_allocation() in that functions like
+// gtk_widget_set_halign() can adjust the allocation, but not the value returned
+// by this function.
+//
+// If a widget is not visible, its allocated size is 0.
+//
+// The function returns the following values:
+//
+//    - allocation: pointer to a Allocation to copy to.
+//    - baseline (optional): pointer to an integer to copy to.
+//
+func (widget *Widget) AllocatedSize() (*Allocation, int) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkAllocation // in
+	var _arg2 C.int           // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_allocated_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(widget)
+
+	var _allocation *Allocation // out
+	var _baseline int           // out
+
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_baseline = int(_arg2)
+
+	return _allocation, _baseline
+}
+
+// AllocatedWidth returns the width that has currently been allocated to widget.
+// This function is intended to be used when implementing handlers for the
+// Widget::draw function.
+//
+// The function returns the following values:
+//
+//    - gint: width of the widget.
+//
+func (widget *Widget) AllocatedWidth() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.int        // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_allocated_width(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Allocation retrieves the widget’s allocation.
+//
+// Note, when implementing a Container: a widget’s allocation will be its
+// “adjusted” allocation, that is, the widget’s parent container typically calls
+// gtk_widget_size_allocate() with an allocation, and that allocation is then
+// adjusted (to handle margin and alignment for example) before assignment to
+// the widget. gtk_widget_get_allocation() returns the adjusted allocation that
+// was actually assigned to the widget. The adjusted allocation is guaranteed to
+// be completely contained within the gtk_widget_size_allocate() allocation,
+// however. So a Container is guaranteed that its children stay inside the
+// assigned bounds, but not that they have exactly the bounds the container
+// assigned. There is no way to get the original allocation assigned by
+// gtk_widget_size_allocate(), since it isn’t stored; if a container
+// implementation needs that information it will have to track it itself.
+//
+// The function returns the following values:
+//
+//    - allocation: pointer to a Allocation to copy to.
+//
+func (widget *Widget) Allocation() *Allocation {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkAllocation // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_allocation(_arg0, &_arg1)
+	runtime.KeepAlive(widget)
+
+	var _allocation *Allocation // out
+
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+
+	return _allocation
+}
+
+// Ancestor gets the first ancestor of widget with type widget_type. For
+// example, gtk_widget_get_ancestor (widget, GTK_TYPE_BOX) gets the first Box
+// that’s an ancestor of widget. No reference will be added to the returned
+// widget; it should not be unreferenced. See note about checking for a toplevel
+// Window in the docs for gtk_widget_get_toplevel().
+//
+// Note that unlike gtk_widget_is_ancestor(), gtk_widget_get_ancestor()
+// considers widget to be an ancestor of itself.
+//
+// The function takes the following parameters:
+//
+//    - widgetType: ancestor type.
+//
+// The function returns the following values:
+//
+//    - ret (optional): ancestor widget, or NULL if not found.
+//
+func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.GType      // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GType(widgetType)
+
+	_cret = C.gtk_widget_get_ancestor(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(widgetType)
+
+	var _ret Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+			}
+			_ret = rv
+		}
+	}
+
+	return _ret
+}
+
+// AppPaintable determines whether the application intends to draw on the widget
+// in an Widget::draw handler.
+//
+// See gtk_widget_set_app_paintable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is app paintable.
+//
+func (widget *Widget) AppPaintable() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_app_paintable(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// CanDefault determines whether widget can be a default widget. See
+// gtk_widget_set_can_default().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget can be a default widget, FALSE otherwise.
+//
+func (widget *Widget) CanDefault() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_can_default(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// CanFocus determines whether widget can own the input focus. See
+// gtk_widget_set_can_focus().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget can own the input focus, FALSE otherwise.
+//
+func (widget *Widget) CanFocus() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_can_focus(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ChildRequisition: this function is only for use in widget implementations.
+// Obtains widget->requisition, unless someone has forced a particular geometry
+// on the widget (e.g. with gtk_widget_set_size_request()), in which case it
+// returns that geometry instead of the widget's requisition.
+//
+// This function differs from gtk_widget_size_request() in that it retrieves the
+// last size request value from widget->requisition, while
+// gtk_widget_size_request() actually calls the "size_request" method on widget
+// to compute the size request and fill in widget->requisition, and only then
+// returns widget->requisition.
+//
+// Because this function does not call the “size_request” method, it can only be
+// used when you know that widget->requisition is up-to-date, that is,
+// gtk_widget_size_request() has been called since the last time a resize was
+// queued. In general, only container implementations have this information;
+// applications should use gtk_widget_size_request().
+//
+// Deprecated: Use gtk_widget_get_preferred_size() instead.
+//
+// The function returns the following values:
+//
+//    - requisition to be filled in.
+//
+func (widget *Widget) ChildRequisition() *Requisition {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_child_requisition(_arg0, &_arg1)
+	runtime.KeepAlive(widget)
+
+	var _requisition *Requisition // out
+
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+
+	return _requisition
+}
+
+// ChildVisible gets the value set with gtk_widget_set_child_visible(). If you
+// feel a need to use this function, your code probably needs reorganization.
+//
+// This function is only useful for container implementations and never should
+// be called by an application.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is mapped with the parent.
+//
+func (widget *Widget) ChildVisible() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_child_visible(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Clip retrieves the widget’s clip area.
+//
+// The clip area is the area in which all of widget's drawing will happen. Other
+// toolkits call it the bounding box.
+//
+// Historically, in GTK+ the clip area has been equal to the allocation
+// retrieved via gtk_widget_get_allocation().
+//
+// The function returns the following values:
+//
+//    - clip: pointer to a Allocation to copy to.
+//
+func (widget *Widget) Clip() *Allocation {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkAllocation // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_clip(_arg0, &_arg1)
+	runtime.KeepAlive(widget)
+
+	var _clip *Allocation // out
+
+	_clip = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+
+	return _clip
+}
+
+// CompositeName obtains the composite name of a widget.
+//
+// Deprecated: Use gtk_widget_class_set_template(), or don’t use this API at
+// all.
+//
+// The function returns the following values:
+//
+//    - utf8: composite name of widget, or NULL if widget is not a composite
+//      child. The string should be freed when it is no longer needed.
+//
+func (widget *Widget) CompositeName() string {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_composite_name(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// DeviceEnabled returns whether device can interact with widget and its
+// children. See gtk_widget_set_device_enabled().
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE is device is enabled for widget.
+//
+func (widget *Widget) DeviceEnabled(device gdk.Devicer) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkDevice // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+
+	_cret = C.gtk_widget_get_device_enabled(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(device)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// DeviceEvents returns the events mask for the widget corresponding to an
+// specific device. These are the events that the widget will receive when
+// device operates on it.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
+// The function returns the following values:
+//
+//    - eventMask: device event mask for widget.
+//
+func (widget *Widget) DeviceEvents(device gdk.Devicer) gdk.EventMask {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 *C.GdkDevice   // out
+	var _cret C.GdkEventMask // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+
+	_cret = C.gtk_widget_get_device_events(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(device)
+
+	var _eventMask gdk.EventMask // out
+
+	_eventMask = gdk.EventMask(_cret)
+
+	return _eventMask
+}
+
+// Direction gets the reading direction for a particular widget. See
+// gtk_widget_set_direction().
+//
+// The function returns the following values:
+//
+//    - textDirection: reading direction for the widget.
+//
+func (widget *Widget) Direction() TextDirection {
+	var _arg0 *C.GtkWidget       // out
+	var _cret C.GtkTextDirection // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_direction(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _textDirection TextDirection // out
+
+	_textDirection = TextDirection(_cret)
+
+	return _textDirection
+}
+
+// Display: get the Display for the toplevel window associated with this widget.
+// This function can only be called after the widget has been added to a widget
+// hierarchy with a Window at the top.
+//
+// In general, you should only create display specific resources when a widget
+// has been realized, and you should free those resources when the widget is
+// unrealized.
+//
+// The function returns the following values:
+//
+//    - display for the toplevel for this widget.
+//
+func (widget *Widget) Display() *gdk.Display {
+	var _arg0 *C.GtkWidget  // out
+	var _cret *C.GdkDisplay // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_display(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _display *gdk.Display // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_display = &gdk.Display{
+			Object: obj,
+		}
+	}
+
+	return _display
+}
+
+// DoubleBuffered determines whether the widget is double buffered.
+//
+// See gtk_widget_set_double_buffered().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is double buffered.
+//
+func (widget *Widget) DoubleBuffered() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_double_buffered(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Events returns the event mask (see EventMask) for the widget. These are the
+// events that the widget will receive.
+//
+// Note: Internally, the widget event mask will be the logical OR of the event
+// mask set through gtk_widget_set_events() or gtk_widget_add_events(), and the
+// event mask necessary to cater for every EventController created for the
+// widget.
+//
+// The function returns the following values:
+//
+//    - gint: event mask for widget.
+//
+func (widget *Widget) Events() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_events(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// FocusOnClick returns whether the widget should grab focus when it is clicked
+// with the mouse. See gtk_widget_set_focus_on_click().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget should grab focus when it is clicked with the
+//      mouse.
+//
+func (widget *Widget) FocusOnClick() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_focus_on_click(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// FontMap gets the font map that has been set with gtk_widget_set_font_map().
+//
+// The function returns the following values:
+//
+//    - fontMap (optional) or NULL.
+//
+func (widget *Widget) FontMap() pango.FontMapper {
+	var _arg0 *C.GtkWidget    // out
+	var _cret *C.PangoFontMap // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_font_map(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _fontMap pango.FontMapper // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			casted := object.Cast()
+			rv, ok := casted.(pango.FontMapper)
+			if !ok {
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
+			}
+			_fontMap = rv
+		}
+	}
+
+	return _fontMap
+}
+
+// FontOptions returns the #cairo_font_options_t used for Pango rendering. When
+// not set, the defaults font options for the Screen will be used.
+//
+// The function returns the following values:
+//
+//    - fontOptions (optional) or NULL if not set.
+//
+func (widget *Widget) FontOptions() *cairo.FontOptions {
+	var _arg0 *C.GtkWidget            // out
+	var _cret *C.cairo_font_options_t // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_font_options(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _fontOptions *cairo.FontOptions // out
+
+	if _cret != nil {
+		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _fontOptions
+}
+
+// FrameClock obtains the frame clock for a widget. The frame clock is a global
+// “ticker” that can be used to drive animations and repaints. The most common
+// reason to get the frame clock is to call gdk_frame_clock_get_frame_time(), in
+// order to get a time to use for animating. For example you might record the
+// start of the animation with an initial value from
+// gdk_frame_clock_get_frame_time(), and then update the animation by calling
+// gdk_frame_clock_get_frame_time() again during each repaint.
+//
+// gdk_frame_clock_request_phase() will result in a new frame on the clock, but
+// won’t necessarily repaint any widgets. To repaint a widget, you have to use
+// gtk_widget_queue_draw() which invalidates the widget (thus scheduling it to
+// receive a draw on the next frame). gtk_widget_queue_draw() will also end up
+// requesting a frame on the appropriate frame clock.
+//
+// A widget’s frame clock will not change while the widget is mapped.
+// Reparenting a widget (which implies a temporary unmap) can change the
+// widget’s frame clock.
+//
+// Unrealized widgets do not have a frame clock.
+//
+// The function returns the following values:
+//
+//    - frameClock (optional) NULL if widget is unrealized.
+//
+func (widget *Widget) FrameClock() gdk.FrameClocker {
+	var _arg0 *C.GtkWidget     // out
+	var _cret *C.GdkFrameClock // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_frame_clock(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _frameClock gdk.FrameClocker // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.FrameClocker)
+			if !ok {
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.FrameClocker")
+			}
+			_frameClock = rv
+		}
+	}
+
+	return _frameClock
+}
+
+// HAlign gets the value of the Widget:halign property.
+//
+// For backwards compatibility reasons this method will never return
+// GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL.
+// Baselines are not supported for horizontal alignment.
+//
+// The function returns the following values:
+//
+//    - align: horizontal alignment of widget.
+//
+func (widget *Widget) HAlign() Align {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.GtkAlign   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_halign(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _align Align // out
+
+	_align = Align(_cret)
+
+	return _align
+}
+
+// HasTooltip returns the current value of the has-tooltip property. See
+// Widget:has-tooltip for more information.
+//
+// The function returns the following values:
+//
+//    - ok: current value of has-tooltip on widget.
+//
+func (widget *Widget) HasTooltip() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_has_tooltip(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// HasWindow determines whether widget has a Window of its own. See
+// gtk_widget_set_has_window().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget has a window, FALSE otherwise.
+//
+func (widget *Widget) HasWindow() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_has_window(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// HExpand gets whether the widget would like any available extra horizontal
+// space. When a user resizes a Window, widgets with expand=TRUE generally
+// receive the extra space. For example, a list or scrollable area or document
+// in your window would often be set to expand.
+//
+// Containers should use gtk_widget_compute_expand() rather than this function,
+// to see whether a widget, or any of its children, has the expand flag set. If
+// any child of a widget wants to expand, the parent may ask to expand also.
+//
+// This function only looks at the widget’s own hexpand flag, rather than
+// computing whether the entire widget tree rooted at this widget wants to
+// expand.
+//
+// The function returns the following values:
+//
+//    - ok: whether hexpand flag is set.
+//
+func (widget *Widget) HExpand() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_hexpand(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// HExpandSet gets whether gtk_widget_set_hexpand() has been used to explicitly
+// set the expand flag on this widget.
+//
+// If hexpand is set, then it overrides any computed expand value based on child
+// widgets. If hexpand is not set, then the expand value depends on whether any
+// children of the widget would like to expand.
+//
+// There are few reasons to use this function, but it’s here for completeness
+// and consistency.
+//
+// The function returns the following values:
+//
+//    - ok: whether hexpand has been explicitly set.
+//
+func (widget *Widget) HExpandSet() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_hexpand_set(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Mapped: whether the widget is mapped.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is mapped, FALSE otherwise.
+//
+func (widget *Widget) Mapped() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_mapped(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// MarginBottom gets the value of the Widget:margin-bottom property.
+//
+// The function returns the following values:
+//
+//    - gint: bottom margin of widget.
+//
+func (widget *Widget) MarginBottom() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_margin_bottom(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// MarginEnd gets the value of the Widget:margin-end property.
+//
+// The function returns the following values:
+//
+//    - gint: end margin of widget.
+//
+func (widget *Widget) MarginEnd() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_margin_end(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// MarginLeft gets the value of the Widget:margin-left property.
+//
+// Deprecated: Use gtk_widget_get_margin_start() instead.
+//
+// The function returns the following values:
+//
+//    - gint: left margin of widget.
+//
+func (widget *Widget) MarginLeft() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_margin_left(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// MarginRight gets the value of the Widget:margin-right property.
+//
+// Deprecated: Use gtk_widget_get_margin_end() instead.
+//
+// The function returns the following values:
+//
+//    - gint: right margin of widget.
+//
+func (widget *Widget) MarginRight() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_margin_right(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// MarginStart gets the value of the Widget:margin-start property.
+//
+// The function returns the following values:
+//
+//    - gint: start margin of widget.
+//
+func (widget *Widget) MarginStart() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_margin_start(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// MarginTop gets the value of the Widget:margin-top property.
+//
+// The function returns the following values:
+//
+//    - gint: top margin of widget.
+//
+func (widget *Widget) MarginTop() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_margin_top(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// ModifierMask returns the modifier mask the widget’s windowing system backend
+// uses for a particular purpose.
+//
+// See gdk_keymap_get_modifier_mask().
+//
+// The function takes the following parameters:
+//
+//    - intent: use case for the modifier mask.
+//
+// The function returns the following values:
+//
+//    - modifierType: modifier mask used for intent.
+//
+func (widget *Widget) ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType {
+	var _arg0 *C.GtkWidget        // out
+	var _arg1 C.GdkModifierIntent // out
+	var _cret C.GdkModifierType   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GdkModifierIntent(intent)
+
+	_cret = C.gtk_widget_get_modifier_mask(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(intent)
+
+	var _modifierType gdk.ModifierType // out
+
+	_modifierType = gdk.ModifierType(_cret)
+
+	return _modifierType
+}
+
+// Name retrieves the name of a widget. See gtk_widget_set_name() for the
+// significance of widget names.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the widget. This string is owned by GTK+ and should not be
+//      modified or freed.
+//
+func (widget *Widget) Name() string {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_name(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// NoShowAll returns the current value of the Widget:no-show-all property, which
+// determines whether calls to gtk_widget_show_all() will affect this widget.
+//
+// The function returns the following values:
+//
+//    - ok: current value of the “no-show-all” property.
+//
+func (widget *Widget) NoShowAll() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_no_show_all(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Opacity fetches the requested opacity for this widget. See
+// gtk_widget_set_opacity().
+//
+// The function returns the following values:
+//
+//    - gdouble: requested opacity for this widget.
+//
+func (widget *Widget) Opacity() float64 {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.double     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_opacity(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// PangoContext gets a Context with the appropriate font map, font description,
+// and base direction for this widget. Unlike the context returned by
+// gtk_widget_create_pango_context(), this context is owned by the widget (it
+// can be used until the screen for the widget changes or the widget is removed
+// from its toplevel), and will be updated to match any changes to the widget’s
+// attributes. This can be tracked by using the Widget::screen-changed signal on
+// the widget.
+//
+// The function returns the following values:
+//
+//    - context for the widget.
+//
+func (widget *Widget) PangoContext() *pango.Context {
+	var _arg0 *C.GtkWidget    // out
+	var _cret *C.PangoContext // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_pango_context(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _context *pango.Context // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_context = &pango.Context{
+			Object: obj,
+		}
+	}
+
+	return _context
+}
+
+// Parent returns the parent container of widget.
+//
+// The function returns the following values:
+//
+//    - ret (optional): parent container of widget, or NULL.
+//
+func (widget *Widget) Parent() Widgetter {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_parent(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ret Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+			}
+			_ret = rv
+		}
+	}
+
+	return _ret
+}
+
+// ParentWindow gets widget’s parent window, or NULL if it does not have one.
+//
+// The function returns the following values:
+//
+//    - window (optional): parent window of widget, or NULL if it does not have a
+//      parent window.
+//
+func (widget *Widget) ParentWindow() gdk.Windower {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GdkWindow // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_parent_window(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _window gdk.Windower // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Windower)
+			if !ok {
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+			}
+			_window = rv
+		}
+	}
+
+	return _window
+}
+
+// GetPath returns the WidgetPath representing widget, if the widget is not
+// connected to a toplevel widget, a partial path will be created.
+//
+// The function returns the following values:
+//
+//    - widgetPath representing widget.
+//
+func (widget *Widget) GetPath() *WidgetPath {
+	var _arg0 *C.GtkWidget     // out
+	var _cret *C.GtkWidgetPath // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_path(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _widgetPath *WidgetPath // out
+
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_widget_path_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+		},
+	)
+
+	return _widgetPath
+}
+
+// Pointer obtains the location of the mouse pointer in widget coordinates.
+// Widget coordinates are a bit odd; for historical reasons, they are defined as
+// widget->window coordinates for widgets that return TRUE for
+// gtk_widget_get_has_window(); and are relative to widget->allocation.x,
+// widget->allocation.y otherwise.
+//
+// Deprecated: Use gdk_window_get_device_position() instead.
+//
+// The function returns the following values:
+//
+//    - x (optional): return location for the X coordinate, or NULL.
+//    - y (optional): return location for the Y coordinate, or NULL.
+//
+func (widget *Widget) Pointer() (x int, y int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_pointer(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(widget)
+
+	var _x int // out
+	var _y int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+
+	return _x, _y
+}
+
+// PreferredHeight retrieves a widget’s initial minimum and natural height.
+//
+// This call is specific to width-for-height requests.
+//
+// The returned request will be modified by the
+// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
+// have been applied. That is, the returned request is the one that should be
+// used for layout, not necessarily the one returned by the widget itself.
+//
+// The function returns the following values:
+//
+//    - minimumHeight (optional): location to store the minimum height, or NULL.
+//    - naturalHeight (optional): location to store the natural height, or NULL.
+//
+func (widget *Widget) PreferredHeight() (minimumHeight int, naturalHeight int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_preferred_height(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(widget)
+
+	var _minimumHeight int // out
+	var _naturalHeight int // out
+
+	_minimumHeight = int(_arg1)
+	_naturalHeight = int(_arg2)
+
+	return _minimumHeight, _naturalHeight
+}
+
+// PreferredHeightAndBaselineForWidth retrieves a widget’s minimum and natural
+// height and the corresponding baselines if it would be given the specified
+// width, or the default height if width is -1. The baselines may be -1 which
+// means that no baseline is requested for this widget.
+//
+// The returned request will be modified by the
+// GtkWidgetClass::adjust_size_request and
+// GtkWidgetClass::adjust_baseline_request virtual methods and by any SizeGroups
+// that have been applied. That is, the returned request is the one that should
+// be used for layout, not necessarily the one returned by the widget itself.
+//
+// The function takes the following parameters:
+//
+//    - width which is available for allocation, or -1 if none.
+//
+// The function returns the following values:
+//
+//    - minimumHeight (optional): location for storing the minimum height, or
+//      NULL.
+//    - naturalHeight (optional): location for storing the natural height, or
+//      NULL.
+//    - minimumBaseline (optional): location for storing the baseline for the
+//      minimum height, or NULL.
+//    - naturalBaseline (optional): location for storing the baseline for the
+//      natural height, or NULL.
+//
+func (widget *Widget) PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
+	var _arg4 C.gint       // in
+	var _arg5 C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(width)
+
+	C.gtk_widget_get_preferred_height_and_baseline_for_width(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
+
+	var _minimumHeight int   // out
+	var _naturalHeight int   // out
+	var _minimumBaseline int // out
+	var _naturalBaseline int // out
+
+	_minimumHeight = int(_arg2)
+	_naturalHeight = int(_arg3)
+	_minimumBaseline = int(_arg4)
+	_naturalBaseline = int(_arg5)
+
+	return _minimumHeight, _naturalHeight, _minimumBaseline, _naturalBaseline
+}
+
+// PreferredHeightForWidth retrieves a widget’s minimum and natural height if it
+// would be given the specified width.
+//
+// The returned request will be modified by the
+// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
+// have been applied. That is, the returned request is the one that should be
+// used for layout, not necessarily the one returned by the widget itself.
+//
+// The function takes the following parameters:
+//
+//    - width which is available for allocation.
+//
+// The function returns the following values:
+//
+//    - minimumHeight (optional): location for storing the minimum height, or
+//      NULL.
+//    - naturalHeight (optional): location for storing the natural height, or
+//      NULL.
+//
+func (widget *Widget) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(width)
+
+	C.gtk_widget_get_preferred_height_for_width(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
+
+	var _minimumHeight int // out
+	var _naturalHeight int // out
+
+	_minimumHeight = int(_arg2)
+	_naturalHeight = int(_arg3)
+
+	return _minimumHeight, _naturalHeight
+}
+
+// PreferredSize retrieves the minimum and natural size of a widget, taking into
+// account the widget’s preference for height-for-width management.
+//
+// This is used to retrieve a suitable size by container widgets which do not
+// impose any restrictions on the child placement. It can be used to deduce
+// toplevel window and menu sizes as well as child widgets in free-form
+// containers such as GtkLayout.
+//
+// Handle with care. Note that the natural height of a height-for-width widget
+// will generally be a smaller size than the minimum height, since the required
+// height for the natural width is generally smaller than the required height
+// for the minimum width.
+//
+// Use gtk_widget_get_preferred_height_and_baseline_for_width() if you want to
+// support baseline alignment.
+//
+// The function returns the following values:
+//
+//    - minimumSize (optional): location for storing the minimum size, or NULL.
+//    - naturalSize (optional): location for storing the natural size, or NULL.
+//
+func (widget *Widget) PreferredSize() (minimumSize *Requisition, naturalSize *Requisition) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
+	var _arg2 C.GtkRequisition // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_preferred_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(widget)
+
+	var _minimumSize *Requisition // out
+	var _naturalSize *Requisition // out
+
+	_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+
+	return _minimumSize, _naturalSize
+}
+
+// PreferredWidth retrieves a widget’s initial minimum and natural width.
+//
+// This call is specific to height-for-width requests.
+//
+// The returned request will be modified by the
+// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
+// have been applied. That is, the returned request is the one that should be
+// used for layout, not necessarily the one returned by the widget itself.
+//
+// The function returns the following values:
+//
+//    - minimumWidth (optional): location to store the minimum width, or NULL.
+//    - naturalWidth (optional): location to store the natural width, or NULL.
+//
+func (widget *Widget) PreferredWidth() (minimumWidth int, naturalWidth int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_preferred_width(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(widget)
+
+	var _minimumWidth int // out
+	var _naturalWidth int // out
+
+	_minimumWidth = int(_arg1)
+	_naturalWidth = int(_arg2)
+
+	return _minimumWidth, _naturalWidth
+}
+
+// PreferredWidthForHeight retrieves a widget’s minimum and natural width if it
+// would be given the specified height.
+//
+// The returned request will be modified by the
+// GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
+// have been applied. That is, the returned request is the one that should be
+// used for layout, not necessarily the one returned by the widget itself.
+//
+// The function takes the following parameters:
+//
+//    - height which is available for allocation.
+//
+// The function returns the following values:
+//
+//    - minimumWidth (optional): location for storing the minimum width, or NULL.
+//    - naturalWidth (optional): location for storing the natural width, or NULL.
+//
+func (widget *Widget) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(height)
+
+	C.gtk_widget_get_preferred_width_for_height(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(height)
+
+	var _minimumWidth int // out
+	var _naturalWidth int // out
+
+	_minimumWidth = int(_arg2)
+	_naturalWidth = int(_arg3)
+
+	return _minimumWidth, _naturalWidth
+}
+
+// Realized determines whether widget is realized.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is realized, FALSE otherwise.
+//
+func (widget *Widget) Realized() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_realized(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ReceivesDefault determines whether widget is always treated as the default
+// widget within its toplevel when it has the focus, even if another widget is
+// the default.
+//
+// See gtk_widget_set_receives_default().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget acts as the default widget when focused, FALSE
+//      otherwise.
+//
+func (widget *Widget) ReceivesDefault() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_receives_default(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// RequestMode gets whether the widget prefers a height-for-width layout or a
+// width-for-height layout.
+//
+// Bin widgets generally propagate the preference of their child, container
+// widgets need to request something either in context of their children or in
+// context of their allocation capabilities.
+//
+// The function returns the following values:
+//
+//    - sizeRequestMode preferred by widget.
+//
+func (widget *Widget) RequestMode() SizeRequestMode {
+	var _arg0 *C.GtkWidget         // out
+	var _cret C.GtkSizeRequestMode // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_request_mode(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _sizeRequestMode SizeRequestMode // out
+
+	_sizeRequestMode = SizeRequestMode(_cret)
+
+	return _sizeRequestMode
+}
+
+// Requisition retrieves the widget’s requisition.
+//
+// This function should only be used by widget implementations in order to
+// figure whether the widget’s requisition has actually changed after some
+// internal state change (so that they can call gtk_widget_queue_resize()
+// instead of gtk_widget_queue_draw()).
+//
+// Normally, gtk_widget_size_request() should be used.
+//
+// Deprecated: The Requisition cache on the widget was removed, If you need to
+// cache sizes across requests and allocations, add an explicit cache to the
+// widget in question instead.
+//
+// The function returns the following values:
+//
+//    - requisition: pointer to a Requisition to copy to.
+//
+func (widget *Widget) Requisition() *Requisition {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_requisition(_arg0, &_arg1)
+	runtime.KeepAlive(widget)
+
+	var _requisition *Requisition // out
+
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+
+	return _requisition
+}
+
+// RootWindow: get the root window where this widget is located. This function
+// can only be called after the widget has been added to a widget hierarchy with
+// Window at the top.
+//
+// The root window is useful for such purposes as creating a popup Window
+// associated with the window. In general, you should only create display
+// specific resources when a widget has been realized, and you should free those
+// resources when the widget is unrealized.
+//
+// Deprecated: Use gdk_screen_get_root_window() instead.
+//
+// The function returns the following values:
+//
+//    - window root window for the toplevel for this widget.
+//
+func (widget *Widget) RootWindow() gdk.Windower {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GdkWindow // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_root_window(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _window gdk.Windower // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.Cast()
+		rv, ok := casted.(gdk.Windower)
+		if !ok {
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+		}
+		_window = rv
+	}
+
+	return _window
+}
+
+// ScaleFactor retrieves the internal scale factor that maps from window
+// coordinates to the actual device pixels. On traditional systems this is 1, on
+// high density outputs, it can be a higher value (typically 2).
+//
+// See gdk_window_get_scale_factor().
+//
+// The function returns the following values:
+//
+//    - gint: scale factor for widget.
+//
+func (widget *Widget) ScaleFactor() int {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_scale_factor(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Screen: get the Screen from the toplevel window associated with this widget.
+// This function can only be called after the widget has been added to a widget
+// hierarchy with a Window at the top.
+//
+// In general, you should only create screen specific resources when a widget
+// has been realized, and you should free those resources when the widget is
+// unrealized.
+//
+// The function returns the following values:
+//
+//    - screen for the toplevel for this widget.
+//
+func (widget *Widget) Screen() *gdk.Screen {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GdkScreen // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_screen(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _screen *gdk.Screen // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_screen = &gdk.Screen{
+			Object: obj,
+		}
+	}
+
+	return _screen
+}
+
+// Sensitive returns the widget’s sensitivity (in the sense of returning the
+// value that has been set using gtk_widget_set_sensitive()).
+//
+// The effective sensitivity of a widget is however determined by both its own
+// and its parent widget’s sensitivity. See gtk_widget_is_sensitive().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is sensitive.
+//
+func (widget *Widget) Sensitive() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_sensitive(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Settings gets the settings object holding the settings used for this widget.
+//
+// Note that this function can only be called when the Widget is attached to a
+// toplevel, since the settings object is specific to a particular Screen.
+//
+// The function returns the following values:
+//
+//    - settings: relevant Settings object.
+//
+func (widget *Widget) Settings() *Settings {
+	var _arg0 *C.GtkWidget   // out
+	var _cret *C.GtkSettings // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_settings(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _settings *Settings // out
+
+	_settings = wrapSettings(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _settings
+}
+
+// GetSizeRequest gets the size request that was explicitly set for the widget
+// using gtk_widget_set_size_request(). A value of -1 stored in width or height
+// indicates that that dimension has not been set explicitly and the natural
+// requisition of the widget will be used instead. See
+// gtk_widget_set_size_request(). To get the size a widget will actually
+// request, call gtk_widget_get_preferred_size() instead of this function.
+//
+// The function returns the following values:
+//
+//    - width (optional): return location for width, or NULL.
+//    - height (optional): return location for height, or NULL.
+//
+func (widget *Widget) GetSizeRequest() (width int, height int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_size_request(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(widget)
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(_arg1)
+	_height = int(_arg2)
+
+	return _width, _height
+}
+
+// State returns the widget’s state. See gtk_widget_set_state().
+//
+// Deprecated: Use gtk_widget_get_state_flags() instead.
+//
+// The function returns the following values:
+//
+//    - stateType: state of widget.
+//
+func (widget *Widget) State() StateType {
+	var _arg0 *C.GtkWidget   // out
+	var _cret C.GtkStateType // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_state(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _stateType StateType // out
+
+	_stateType = StateType(_cret)
+
+	return _stateType
+}
+
+// StateFlags returns the widget state as a flag set. It is worth mentioning
+// that the effective GTK_STATE_FLAG_INSENSITIVE state will be returned, that
+// is, also based on parent insensitivity, even if widget itself is sensitive.
+//
+// Also note that if you are looking for a way to obtain the StateFlags to pass
+// to a StyleContext method, you should look at gtk_style_context_get_state().
+//
+// The function returns the following values:
+//
+//    - stateFlags: state flags for widget.
+//
+func (widget *Widget) StateFlags() StateFlags {
+	var _arg0 *C.GtkWidget    // out
+	var _cret C.GtkStateFlags // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_state_flags(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _stateFlags StateFlags // out
+
+	_stateFlags = StateFlags(_cret)
+
+	return _stateFlags
+}
+
+// StyleContext returns the style context associated to widget. The returned
+// object is guaranteed to be the same for the lifetime of widget.
+//
+// The function returns the following values:
+//
+//    - styleContext This memory is owned by widget and must not be freed.
+//
+func (widget *Widget) StyleContext() *StyleContext {
+	var _arg0 *C.GtkWidget       // out
+	var _cret *C.GtkStyleContext // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_style_context(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _styleContext *StyleContext // out
+
+	_styleContext = wrapStyleContext(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _styleContext
+}
+
+// SupportMultidevice returns TRUE if widget is multiple pointer aware. See
+// gtk_widget_set_support_multidevice() for more information.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is multidevice aware.
+//
+func (widget *Widget) SupportMultidevice() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_support_multidevice(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TemplateChild: fetch an object build from the template XML for widget_type in
+// this widget instance.
+//
+// This will only report children which were previously declared with
+// gtk_widget_class_bind_template_child_full() or one of its variants.
+//
+// This function is only meant to be called for code which is private to the
+// widget_type which declared the child and is meant for language bindings which
+// cannot easily make use of the GObject structure offsets.
+//
+// The function takes the following parameters:
+//
+//    - widgetType to get a template child for.
+//    - name: “id” of the child defined in the template XML.
+//
+// The function returns the following values:
+//
+//    - object built in the template XML with the id name.
+//
+func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *externglib.Object {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.GType      // out
+	var _arg2 *C.gchar     // out
+	var _cret *C.GObject   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GType(widgetType)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(widgetType)
+	runtime.KeepAlive(name)
+
+	var _object *externglib.Object // out
+
+	_object = externglib.Take(unsafe.Pointer(_cret))
+
+	return _object
+}
+
+// TooltipMarkup gets the contents of the tooltip for widget.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. You should free the returned
+//      string with g_free() when done.
+//
+func (widget *Widget) TooltipMarkup() string {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_tooltip_markup(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// TooltipText gets the contents of the tooltip for widget.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. You should free the returned
+//      string with g_free() when done.
+//
+func (widget *Widget) TooltipText() string {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_tooltip_text(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// TooltipWindow returns the Window of the current tooltip. This can be the
+// GtkWindow created by default, or the custom tooltip window set using
+// gtk_widget_set_tooltip_window().
+//
+// The function returns the following values:
+//
+//    - window of the current tooltip.
+//
+func (widget *Widget) TooltipWindow() *Window {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GtkWindow // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_tooltip_window(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _window *Window // out
+
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _window
+}
+
+// Toplevel: this function returns the topmost widget in the container hierarchy
+// widget is a part of. If widget has no parent widgets, it will be returned as
+// the topmost widget. No reference will be added to the returned widget; it
+// should not be unreferenced.
+//
+// Note the difference in behavior vs. gtk_widget_get_ancestor();
+// gtk_widget_get_ancestor (widget, GTK_TYPE_WINDOW) would return NULL if widget
+// wasn’t inside a toplevel window, and if the window was inside a
+// Window-derived widget which was in turn inside the toplevel Window. While the
+// second case may seem unlikely, it actually happens when a Plug is embedded
+// inside a Socket within the same application.
+//
+// To reliably find the toplevel Window, use gtk_widget_get_toplevel() and call
+// GTK_IS_WINDOW() on the result. For instance, to get the title of a widget's
+// toplevel window, one might use:
+//
+//    static const char *
+//    get_widget_toplevel_title (GtkWidget *widget)
+//    {
+//      GtkWidget *toplevel = gtk_widget_get_toplevel (widget);
+//      if (GTK_IS_WINDOW (toplevel))
+//        {
+//          return gtk_window_get_title (GTK_WINDOW (toplevel));
+//        }
+//
+//      return NULL;
+//    }.
+//
+// The function returns the following values:
+//
+//    - ret: topmost ancestor of widget, or widget itself if there’s no ancestor.
+//
+func (widget *Widget) Toplevel() Widgetter {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_toplevel(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ret Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.Cast()
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+		}
+		_ret = rv
+	}
+
+	return _ret
+}
+
+// VAlign gets the value of the Widget:valign property.
+//
+// For backwards compatibility reasons this method will never return
+// GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL. If your
+// widget want to support baseline aligned children it must use
+// gtk_widget_get_valign_with_baseline(), or g_object_get (widget, "valign",
+// &value, NULL), which will also report the true value.
+//
+// The function returns the following values:
+//
+//    - align: vertical alignment of widget, ignoring baseline alignment.
+//
+func (widget *Widget) VAlign() Align {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.GtkAlign   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_valign(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _align Align // out
+
+	_align = Align(_cret)
+
+	return _align
+}
+
+// VAlignWithBaseline gets the value of the Widget:valign property, including
+// GTK_ALIGN_BASELINE.
+//
+// The function returns the following values:
+//
+//    - align: vertical alignment of widget.
+//
+func (widget *Widget) VAlignWithBaseline() Align {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.GtkAlign   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_valign_with_baseline(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _align Align // out
+
+	_align = Align(_cret)
+
+	return _align
+}
+
+// VExpand gets whether the widget would like any available extra vertical
+// space.
+//
+// See gtk_widget_get_hexpand() for more detail.
+//
+// The function returns the following values:
+//
+//    - ok: whether vexpand flag is set.
+//
+func (widget *Widget) VExpand() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_vexpand(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// VExpandSet gets whether gtk_widget_set_vexpand() has been used to explicitly
+// set the expand flag on this widget.
+//
+// See gtk_widget_get_hexpand_set() for more detail.
+//
+// The function returns the following values:
+//
+//    - ok: whether vexpand has been explicitly set.
+//
+func (widget *Widget) VExpandSet() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_vexpand_set(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Visible determines whether the widget is visible. If you want to take into
+// account whether the widget’s parent is also marked as visible, use
+// gtk_widget_is_visible() instead.
+//
+// This function does not check if the widget is obscured in any way.
+//
+// See gtk_widget_set_visible().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is visible.
+//
+func (widget *Widget) Visible() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_visible(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Visual gets the visual that will be used to render widget.
+//
+// The function returns the following values:
+//
+//    - visual for widget.
+//
+func (widget *Widget) Visual() *gdk.Visual {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GdkVisual // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_visual(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _visual *gdk.Visual // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_visual = &gdk.Visual{
+			Object: obj,
+		}
+	}
+
+	return _visual
+}
+
+// Window returns the widget’s window if it is realized, NULL otherwise.
+//
+// The function returns the following values:
+//
+//    - window (optional) widget’s window.
+//
+func (widget *Widget) Window() gdk.Windower {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GdkWindow // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_window(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _window gdk.Windower // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
+			casted := object.Cast()
+			rv, ok := casted.(gdk.Windower)
+			if !ok {
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+			}
+			_window = rv
+		}
+	}
+
+	return _window
+}
+
+// GrabDefault causes widget to become the default widget. widget must be able
+// to be a default widget; typically you would ensure this yourself by calling
+// gtk_widget_set_can_default() with a TRUE value. The default widget is
+// activated when the user presses Enter in a window. Default widgets must be
+// activatable, that is, gtk_widget_activate() should affect them. Note that
+// Entry widgets require the “activates-default” property set to TRUE before
+// they activate the default widget when Enter is pressed and the Entry is
+// focused.
+func (widget *Widget) GrabDefault() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_grab_default(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// GrabFocus causes widget to have the keyboard focus for the Window it's
+// inside. widget must be a focusable widget, such as a Entry; something like
+// Frame won’t work.
+//
+// More precisely, it must have the GTK_CAN_FOCUS flag set. Use
+// gtk_widget_set_can_focus() to modify that flag.
+//
+// The widget also needs to be realized and mapped. This is indicated by the
+// related signals. Grabbing the focus immediately after creating the widget
+// will likely fail and cause critical warnings.
+func (widget *Widget) GrabFocus() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_grab_focus(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// HasDefault determines whether widget is the current default widget within its
+// toplevel. See gtk_widget_set_can_default().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is the current default widget within its toplevel,
+//      FALSE otherwise.
+//
+func (widget *Widget) HasDefault() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_has_default(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// HasFocus determines if the widget has the global input focus. See
+// gtk_widget_is_focus() for the difference between having the global input
+// focus, and only having the focus within a toplevel.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget has the global input focus.
+//
+func (widget *Widget) HasFocus() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_has_focus(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// HasGrab determines whether the widget is currently grabbing events, so it is
+// the only widget receiving input events (keyboard and mouse).
+//
+// See also gtk_grab_add().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is in the grab_widgets stack.
+//
+func (widget *Widget) HasGrab() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_has_grab(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// HasScreen checks whether there is a Screen is associated with this widget.
+// All toplevel widgets have an associated screen, and all widgets added into a
+// hierarchy with a toplevel window at the top.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if there is a Screen associated with the widget.
+//
+func (widget *Widget) HasScreen() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_has_screen(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// HasVisibleFocus determines if the widget should show a visible indication
+// that it has the global input focus. This is a convenience function for use in
+// ::draw handlers that takes into account whether focus indication should
+// currently be shown in the toplevel window of widget. See
+// gtk_window_get_focus_visible() for more information about focus indication.
+//
+// To find out if the widget has the global input focus, use
+// gtk_widget_has_focus().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget should display a “focus rectangle”.
+//
+func (widget *Widget) HasVisibleFocus() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_has_visible_focus(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Hide reverses the effects of gtk_widget_show(), causing the widget to be
+// hidden (invisible to the user).
+func (widget *Widget) Hide() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_hide(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// HideOnDelete: utility function; intended to be connected to the
+// Widget::delete-event signal on a Window. The function calls gtk_widget_hide()
+// on its argument, then returns TRUE. If connected to ::delete-event, the
+// result is that clicking the close button for a window (on the window frame,
+// top right corner usually) will hide but not destroy the window. By default,
+// GTK+ destroys windows when ::delete-event is received.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE.
+//
+func (widget *Widget) HideOnDelete() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_hide_on_delete(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// InDestruction returns whether the widget is currently being destroyed. This
+// information can sometimes be used to avoid doing unnecessary work.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is being destroyed.
+//
+func (widget *Widget) InDestruction() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_in_destruction(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// InitTemplate creates and initializes child widgets defined in templates. This
+// function must be called in the instance initializer for any class which
+// assigned itself a template using gtk_widget_class_set_template()
+//
+// It is important to call this function in the instance initializer of a Widget
+// subclass and not in #GObject.constructed() or #GObject.constructor() for two
+// reasons.
+//
+// One reason is that generally derived widgets will assume that parent class
+// composite widgets have been created in their instance initializers.
+//
+// Another reason is that when calling g_object_new() on a widget with composite
+// templates, it’s important to build the composite widgets before the construct
+// properties are set. Properties passed to g_object_new() should take
+// precedence over properties set in the private template XML.
+func (widget *Widget) InitTemplate() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_init_template(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// InputShapeCombineRegion sets an input shape for this widget’s GDK window.
+// This allows for windows which react to mouse click in a nonrectangular
+// region, see gdk_window_input_shape_combine_region() for more information.
+//
+// The function takes the following parameters:
+//
+//    - region (optional): shape to be added, or NULL to remove an existing
+//      shape.
+//
+func (widget *Widget) InputShapeCombineRegion(region *cairo.Region) {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
+
+	C.gtk_widget_input_shape_combine_region(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(region)
+}
+
+// InsertActionGroup inserts group into widget. Children of widget that
+// implement Actionable can then be associated with actions in group by setting
+// their “action-name” to prefix.action-name.
+//
+// If group is NULL, a previously inserted group for name is removed from
+// widget.
+//
+// The function takes the following parameters:
+//
+//    - name: prefix for actions in group.
+//    - group (optional) or NULL.
+//
+func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GActionGroup // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if group != nil {
+		_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	}
+
+	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(group)
+}
+
+// Intersect computes the intersection of a widget’s area and area, storing the
+// intersection in intersection, and returns TRUE if there was an intersection.
+// intersection may be NULL if you’re only interested in whether there was an
+// intersection.
+//
+// The function takes the following parameters:
+//
+//    - area: rectangle.
+//
+// The function returns the following values:
+//
+//    - intersection (optional): rectangle to store intersection of widget and
+//      area.
+//    - ok: TRUE if there was an intersection.
+//
+func (widget *Widget) Intersect(area *gdk.Rectangle) (*gdk.Rectangle, bool) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 *C.GdkRectangle // out
+	var _arg2 C.GdkRectangle  // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(area)))
+
+	_cret = C.gtk_widget_intersect(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(area)
+
+	var _intersection *gdk.Rectangle // out
+	var _ok bool                     // out
+
+	_intersection = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _intersection, _ok
+}
+
+// IsAncestor determines whether widget is somewhere inside ancestor, possibly
+// with intermediate containers.
+//
+// The function takes the following parameters:
+//
+//    - ancestor: another Widget.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if ancestor contains widget as a child, grandchild, great
+//      grandchild, etc.
+//
+func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(ancestor.Native()))
+
+	_cret = C.gtk_widget_is_ancestor(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(ancestor)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsComposited: whether widget can rely on having its alpha channel drawn
+// correctly. On X11 this function returns whether a compositing manager is
+// running for widget’s screen.
+//
+// Please note that the semantics of this call will change in the future if used
+// on a widget that has a composited window in its hierarchy (as set by
+// gdk_window_set_composited()).
+//
+// Deprecated: Use gdk_screen_is_composited() instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget can rely on its alpha channel being drawn
+//      correctly.
+//
+func (widget *Widget) IsComposited() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_is_composited(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsDrawable determines whether widget can be drawn to. A widget can be drawn
+// to if it is mapped and visible.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is drawable, FALSE otherwise.
+//
+func (widget *Widget) IsDrawable() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_is_drawable(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsFocus determines if the widget is the focus widget within its toplevel.
+// (This does not mean that the Widget:has-focus property is necessarily set;
+// Widget:has-focus will only be set if the toplevel widget additionally has the
+// global input focus.).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is the focus widget.
+//
+func (widget *Widget) IsFocus() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_is_focus(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsSensitive returns the widget’s effective sensitivity, which means it is
+// sensitive itself and also its parent widget is sensitive.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget is effectively sensitive.
+//
+func (widget *Widget) IsSensitive() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_is_sensitive(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsToplevel determines whether widget is a toplevel widget.
+//
+// Currently only Window and Invisible (and out-of-process Plugs) are toplevel
+// widgets. Toplevel widgets have no parent widget.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget is a toplevel, FALSE otherwise.
+//
+func (widget *Widget) IsToplevel() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_is_toplevel(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsVisible determines whether the widget and all its parents are marked as
+// visible.
+//
+// This function does not check if the widget is obscured in any way.
+//
+// See also gtk_widget_get_visible() and gtk_widget_set_visible().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget and all its parents are visible.
+//
+func (widget *Widget) IsVisible() bool {
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_is_visible(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// KeynavFailed: this function should be called whenever keyboard navigation
+// within a single widget hits a boundary. The function emits the
+// Widget::keynav-failed signal on the widget and its return value should be
+// interpreted in a way similar to the return value of gtk_widget_child_focus():
+//
+// When TRUE is returned, stay in the widget, the failed keyboard navigation is
+// OK and/or there is nowhere we can/should move the focus to.
+//
+// When FALSE is returned, the caller should continue with keyboard navigation
+// outside the widget, e.g. by calling gtk_widget_child_focus() on the widget’s
+// toplevel.
+//
+// The default ::keynav-failed handler returns FALSE for GTK_DIR_TAB_FORWARD and
+// GTK_DIR_TAB_BACKWARD. For the other values of DirectionType it returns TRUE.
+//
+// Whenever the default handler returns TRUE, it also calls
+// gtk_widget_error_bell() to notify the user of the failed keyboard navigation.
+//
+// A use case for providing an own implementation of ::keynav-failed (either by
+// connecting to it or by overriding it) would be a row of Entry widgets where
+// the user should be able to navigate the entire row with the cursor keys, as
+// e.g. known from user interfaces that require entering license keys.
+//
+// The function takes the following parameters:
+//
+//    - direction of focus movement.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if stopping keyboard navigation is fine, FALSE if the emitting
+//      widget should try to handle the keyboard navigation attempt in its parent
+//      container(s).
+//
+func (widget *Widget) KeynavFailed(direction DirectionType) bool {
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkDirectionType // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkDirectionType(direction)
+
+	_cret = C.gtk_widget_keynav_failed(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(direction)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ListActionPrefixes retrieves a NULL-terminated array of strings containing
+// the prefixes of Group's available to widget.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of strings.
+//
+func (widget *Widget) ListActionPrefixes() []string {
+	var _arg0 *C.GtkWidget // out
+	var _cret **C.gchar    // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_list_action_prefixes(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
+}
+
+// ListMnemonicLabels returns a newly allocated list of the widgets, normally
+// labels, for which this widget is the target of a mnemonic (see for example,
+// gtk_label_set_mnemonic_widget()).
+//
+// The widgets in the list are not individually referenced. If you want to
+// iterate through the list and perform actions involving callbacks that might
+// destroy the widgets, you must call g_list_foreach (result,
+// (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
+//
+// The function returns the following values:
+//
+//    - list of mnemonic labels; free this list with g_list_free() when you are
+//      done with it.
+//
+func (widget *Widget) ListMnemonicLabels() []Widgetter {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_list_mnemonic_labels(_arg0)
+	runtime.KeepAlive(widget)
+
+	var _list []Widgetter // out
+
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
+		var dst Widgetter // out
+		{
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gtk.Widgetter is nil")
+			}
+
+			object := externglib.Take(objptr)
+			casted := object.Cast()
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+			}
+			dst = rv
+		}
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
+// Map: this function is only for use in widget implementations. Causes a widget
+// to be mapped if it isn’t already.
+func (widget *Widget) Map() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_map(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// MnemonicActivate emits the Widget::mnemonic-activate signal.
+//
+// The function takes the following parameters:
+//
+//    - groupCycling: TRUE if there are other widgets with the same mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the signal has been handled.
+//
+func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if groupCycling {
+		_arg1 = C.TRUE
+	}
+
+	_cret = C.gtk_widget_mnemonic_activate(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(groupCycling)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// OverrideBackgroundColor sets the background color to use for a widget.
+//
+// All other style values are left untouched. See gtk_widget_override_color().
+//
+// Deprecated: This function is not useful in the context of CSS-based
+// rendering. If you wish to change the way a widget renders its background you
+// should use a custom CSS style, through an application-specific StyleProvider
+// and a CSS style class. You can also override the default drawing of a widget
+// through the Widget::draw signal, and use Cairo to draw a specific color,
+// regardless of the CSS style.
+//
+// The function takes the following parameters:
+//
+//    - state for which to set the background color.
+//    - color (optional) to assign, or NULL to undo the effect of previous calls
+//      to gtk_widget_override_background_color().
+//
+func (widget *Widget) OverrideBackgroundColor(state StateFlags, color *gdk.RGBA) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkStateFlags // out
+	var _arg2 *C.GdkRGBA      // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateFlags(state)
+	if color != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	}
+
+	C.gtk_widget_override_background_color(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(color)
+}
+
+// OverrideColor sets the color to use for a widget.
+//
+// All other style values are left untouched.
+//
+// This function does not act recursively. Setting the color of a container does
+// not affect its children. Note that some widgets that you may not think of as
+// containers, for instance Buttons, are actually containers.
+//
+// This API is mostly meant as a quick way for applications to change a widget
+// appearance. If you are developing a widgets library and intend this change to
+// be themeable, it is better done by setting meaningful CSS classes in your
+// widget/container implementation through gtk_style_context_add_class().
+//
+// This way, your widget library can install a CssProvider with the
+// GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority in order to provide a default
+// styling for those widgets that need so, and this theming may fully overridden
+// by the user’s theme.
+//
+// Note that for complex widgets this may bring in undesired results (such as
+// uniform background color everywhere), in these cases it is better to fully
+// style such widgets through a CssProvider with the
+// GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority.
+//
+// Deprecated: Use a custom style provider and style classes instead.
+//
+// The function takes the following parameters:
+//
+//    - state for which to set the color.
+//    - color (optional) to assign, or NULL to undo the effect of previous calls
+//      to gtk_widget_override_color().
+//
+func (widget *Widget) OverrideColor(state StateFlags, color *gdk.RGBA) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkStateFlags // out
+	var _arg2 *C.GdkRGBA      // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateFlags(state)
+	if color != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	}
+
+	C.gtk_widget_override_color(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(color)
+}
+
+// OverrideCursor sets the cursor color to use in a widget, overriding the
+// cursor-color and secondary-cursor-color style properties. All other style
+// values are left untouched. See also gtk_widget_modify_style().
+//
+// Note that the underlying properties have the Color type, so the alpha value
+// in primary and secondary will be ignored.
+//
+// Deprecated: This function is not useful in the context of CSS-based
+// rendering. If you wish to change the color used to render the primary and
+// secondary cursors you should use a custom CSS style, through an
+// application-specific StyleProvider and a CSS style class.
+//
+// The function takes the following parameters:
+//
+//    - cursor (optional): color to use for primary cursor (does not need to be
+//      allocated), or NULL to undo the effect of previous calls to of
+//      gtk_widget_override_cursor().
+//    - secondaryCursor (optional): color to use for secondary cursor (does not
+//      need to be allocated), or NULL to undo the effect of previous calls to of
+//      gtk_widget_override_cursor().
+//
+func (widget *Widget) OverrideCursor(cursor, secondaryCursor *gdk.RGBA) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkRGBA   // out
+	var _arg2 *C.GdkRGBA   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if cursor != nil {
+		_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(cursor)))
+	}
+	if secondaryCursor != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(secondaryCursor)))
+	}
+
+	C.gtk_widget_override_cursor(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(cursor)
+	runtime.KeepAlive(secondaryCursor)
+}
+
+// OverrideFont sets the font to use for a widget. All other style values are
+// left untouched. See gtk_widget_override_color().
+//
+// Deprecated: This function is not useful in the context of CSS-based
+// rendering. If you wish to change the font a widget uses to render its text
+// you should use a custom CSS style, through an application-specific
+// StyleProvider and a CSS style class.
+//
+// The function takes the following parameters:
+//
+//    - fontDesc (optional): font description to use, or NULL to undo the effect
+//      of previous calls to gtk_widget_override_font().
+//
+func (widget *Widget) OverrideFont(fontDesc *pango.FontDescription) {
+	var _arg0 *C.GtkWidget            // out
+	var _arg1 *C.PangoFontDescription // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if fontDesc != nil {
+		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
+	}
+
+	C.gtk_widget_override_font(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(fontDesc)
+}
+
+// OverrideSymbolicColor sets a symbolic color for a widget.
+//
+// All other style values are left untouched. See gtk_widget_override_color()
+// for overriding the foreground or background color.
+//
+// Deprecated: This function is not useful in the context of CSS-based
+// rendering. If you wish to change the color used to render symbolic icons you
+// should use a custom CSS style, through an application-specific StyleProvider
+// and a CSS style class.
+//
+// The function takes the following parameters:
+//
+//    - name of the symbolic color to modify.
+//    - color (optional) to assign (does not need to be allocated), or NULL to
+//      undo the effect of previous calls to
+//      gtk_widget_override_symbolic_color().
+//
+func (widget *Widget) OverrideSymbolicColor(name string, color *gdk.RGBA) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GdkRGBA   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if color != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	}
+
+	C.gtk_widget_override_symbolic_color(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(color)
+}
+
+// QueueAllocate: this function is only for use in widget implementations.
+//
+// Flags the widget for a rerun of the GtkWidgetClass::size_allocate function.
+// Use this function instead of gtk_widget_queue_resize() when the widget's size
+// request didn't change but it wants to reposition its contents.
+//
+// An example user of this function is gtk_widget_set_halign().
+func (widget *Widget) QueueAllocate() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_queue_allocate(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// QueueComputeExpand: mark widget as needing to recompute its expand flags.
+// Call this function when setting legacy expand child properties on the child
+// of a container.
+//
+// See gtk_widget_compute_expand().
+func (widget *Widget) QueueComputeExpand() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_queue_compute_expand(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// QueueDraw: equivalent to calling gtk_widget_queue_draw_area() for the entire
+// area of a widget.
+func (widget *Widget) QueueDraw() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_queue_draw(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// QueueDrawArea: convenience function that calls gtk_widget_queue_draw_region()
+// on the region created from the given coordinates.
+//
+// The region here is specified in widget coordinates. Widget coordinates are a
+// bit odd; for historical reasons, they are defined as widget->window
+// coordinates for widgets that return TRUE for gtk_widget_get_has_window(), and
+// are relative to widget->allocation.x, widget->allocation.y otherwise.
+//
+// width or height may be 0, in this case this function does nothing. Negative
+// values for width and height are not allowed.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate of upper-left corner of rectangle to redraw.
+//    - y coordinate of upper-left corner of rectangle to redraw.
+//    - width of region to draw.
+//    - height of region to draw.
+//
+func (widget *Widget) QueueDrawArea(x, y, width, height int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.gint(width)
+	_arg4 = C.gint(height)
+
+	C.gtk_widget_queue_draw_area(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// QueueDrawRegion invalidates the area of widget defined by region by calling
+// gdk_window_invalidate_region() on the widget’s window and all its child
+// windows. Once the main loop becomes idle (after the current batch of events
+// has been processed, roughly), the window will receive expose events for the
+// union of all regions that have been invalidated.
+//
+// Normally you would only use this function in widget implementations. You
+// might also use it to schedule a redraw of a DrawingArea or some portion
+// thereof.
+//
+// The function takes the following parameters:
+//
+//    - region to draw.
+//
+func (widget *Widget) QueueDrawRegion(region *cairo.Region) {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+
+	C.gtk_widget_queue_draw_region(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(region)
+}
+
+// QueueResize: this function is only for use in widget implementations. Flags a
+// widget to have its size renegotiated; should be called when a widget for some
+// reason has a new size request. For example, when you change the text in a
+// Label, Label queues a resize to ensure there’s enough space for the new text.
+//
+// Note that you cannot call gtk_widget_queue_resize() on a widget from inside
+// its implementation of the GtkWidgetClass::size_allocate virtual method. Calls
+// to gtk_widget_queue_resize() from inside GtkWidgetClass::size_allocate will
+// be silently ignored.
+func (widget *Widget) QueueResize() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_queue_resize(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// QueueResizeNoRedraw: this function works like gtk_widget_queue_resize(),
+// except that the widget is not invalidated.
+func (widget *Widget) QueueResizeNoRedraw() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_queue_resize_no_redraw(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// Realize creates the GDK (windowing system) resources associated with a
+// widget. For example, widget->window will be created when a widget is
+// realized. Normally realization happens implicitly; if you show a widget and
+// all its parent containers, then the widget will be realized and mapped
+// automatically.
+//
+// Realizing a widget requires all the widget’s parent widgets to be realized;
+// calling gtk_widget_realize() realizes the widget’s parents in addition to
+// widget itself. If a widget is not yet inside a toplevel window when you
+// realize it, bad things will happen.
+//
+// This function is primarily used in widget implementations, and isn’t very
+// useful otherwise. Many times when you think you might need it, a better
+// approach is to connect to a signal that will be called after the widget is
+// realized automatically, such as Widget::draw. Or simply g_signal_connect ()
+// to the Widget::realize signal.
+func (widget *Widget) Realize() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_realize(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// RegionIntersect computes the intersection of a widget’s area and region,
+// returning the intersection. The result may be empty, use
+// cairo_region_is_empty() to check.
+//
+// Deprecated: Use gtk_widget_get_allocation() and
+// cairo_region_intersect_rectangle() to get the same behavior.
+//
+// The function takes the following parameters:
+//
+//    - region in the same coordinate system as widget->allocation. That is,
+//      relative to widget->window for widgets which return FALSE from
+//      gtk_widget_get_has_window(); relative to the parent window of
+//      widget->window otherwise.
+//
+// The function returns the following values:
+//
+//    - ret: newly allocated region holding the intersection of widget and
+//      region.
+//
+func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.cairo_region_t // out
+	var _cret *C.cairo_region_t // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+
+	_cret = C.gtk_widget_region_intersect(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(region)
+
+	var _ret *cairo.Region // out
+
+	{
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_ret = (*cairo.Region)(unsafe.Pointer(_pp))
+	}
+	runtime.SetFinalizer(_ret, func(v *cairo.Region) {
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+	})
+
+	return _ret
+}
+
+// RegisterWindow registers a Window with the widget and sets it up so that the
+// widget receives events for it. Call gtk_widget_unregister_window() when
+// destroying the window.
+//
+// Before 3.8 you needed to call gdk_window_set_user_data() directly to set this
+// up. This is now deprecated and you should use gtk_widget_register_window()
+// instead. Old code will keep working as is, although some new features like
+// transparency might not work perfectly.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
+func (widget *Widget) RegisterWindow(window gdk.Windower) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkWindow // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+
+	C.gtk_widget_register_window(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(window)
+}
+
+// RemoveAccelerator removes an accelerator from widget, previously installed
+// with gtk_widget_add_accelerator().
+//
+// The function takes the following parameters:
+//
+//    - accelGroup: accel group for this widget.
+//    - accelKey: GDK keyval of the accelerator.
+//    - accelMods: modifier key combination of the accelerator.
+//
+// The function returns the following values:
+//
+//    - ok: whether an accelerator was installed and could be removed.
+//
+func (widget *Widget) RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.GtkAccelGroup  // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg2 = C.guint(accelKey)
+	_arg3 = C.GdkModifierType(accelMods)
+
+	_cret = C.gtk_widget_remove_accelerator(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(accelGroup)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
+// this widget. (See gtk_widget_list_mnemonic_labels()). The widget must have
+// previously been added to the list with gtk_widget_add_mnemonic_label().
+//
+// The function takes the following parameters:
+//
+//    - label that was previously set as a mnemonic label for widget with
+//      gtk_widget_add_mnemonic_label().
+//
+func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
+
+	C.gtk_widget_remove_mnemonic_label(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(label)
+}
+
+// RemoveTickCallback removes a tick callback previously registered with
+// gtk_widget_add_tick_callback().
+//
+// The function takes the following parameters:
+//
+//    - id returned by gtk_widget_add_tick_callback().
+//
+func (widget *Widget) RemoveTickCallback(id uint) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.guint      // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.guint(id)
+
+	C.gtk_widget_remove_tick_callback(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(id)
+}
+
+// RenderIconPixbuf: convenience function that uses the theme engine and style
+// settings for widget to look up stock_id and render it to a pixbuf. stock_id
+// should be a stock icon ID such as K_STOCK_OPEN or K_STOCK_OK. size should be
+// a size such as K_ICON_SIZE_MENU.
+//
+// The pixels in the returned Pixbuf are shared with the rest of the application
+// and should not be modified. The pixbuf should be freed after use with
+// g_object_unref().
+//
+// Deprecated: Use gtk_icon_theme_load_icon() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock ID.
+//    - size: stock size (IconSize). A size of (GtkIconSize)-1 means render at
+//      the size of the source and don’t scale (if there are multiple source
+//      sizes, GTK+ picks one of the available sizes).
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): new pixbuf, or NULL if the stock ID wasn’t known.
+//
+func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkWidget  // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
+	var _cret *C.GdkPixbuf  // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkIconSize(size)
+
+	_cret = C.gtk_widget_render_icon_pixbuf(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(size)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
+				},
+			}
+		}
+	}
+
+	return _pixbuf
+}
+
+// Reparent moves a widget from one Container to another, handling reference
+// count issues to avoid destroying the widget.
+//
+// Deprecated: Use gtk_container_remove() and gtk_container_add().
+//
+// The function takes the following parameters:
+//
+//    - newParent to move the widget into.
+//
+func (widget *Widget) Reparent(newParent Widgetter) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(newParent.Native()))
+
+	C.gtk_widget_reparent(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(newParent)
+}
+
+// ResetStyle updates the style context of widget and all descendants by
+// updating its widget path. Containers may want to use this on a child when
+// reordering it in a way that a different style might apply to it. See also
+// gtk_container_get_path_for_child().
+func (widget *Widget) ResetStyle() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_reset_style(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// SendExpose: very rarely-used function. This function is used to emit an
+// expose event on a widget. This function is not normally used directly. The
+// only time it is used is when propagating an expose event to a windowless
+// child widget (gtk_widget_get_has_window() is FALSE), and that is normally
+// done using gtk_container_propagate_draw().
+//
+// If you want to force an area of a window to be redrawn, use
+// gdk_window_invalidate_rect() or gdk_window_invalidate_region(). To cause the
+// redraw to be done immediately, follow that call with a call to
+// gdk_window_process_updates().
+//
+// Deprecated: Application and widget code should not handle expose events
+// directly; invalidation should use the Widget API, and drawing should only
+// happen inside Widget::draw implementations.
+//
+// The function takes the following parameters:
+//
+//    - event: expose Event.
+//
+// The function returns the following values:
+//
+//    - gint: return from the event signal emission (TRUE if the event was
+//      handled).
+//
+func (widget *Widget) SendExpose(event *gdk.Event) int {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkEvent  // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_widget_send_expose(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(event)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// SendFocusChange sends the focus change event to widget
+//
+// This function is not meant to be used by applications. The only time it
+// should be used is when it is necessary for a Widget to assign focus to a
+// widget that is semantically owned by the first widget even though it’s not a
+// direct child - for instance, a search entry in a floating window similar to
+// the quick search in TreeView.
+//
+// An example of its usage is:
+//
+//      GdkEvent *fevent = gdk_event_new (GDK_FOCUS_CHANGE);
+//
+//      fevent->focus_change.type = GDK_FOCUS_CHANGE;
+//      fevent->focus_change.in = TRUE;
+//      fevent->focus_change.window = _gtk_widget_get_window (widget);
+//      if (fevent->focus_change.window != NULL)
+//        g_object_ref (fevent->focus_change.window);
+//
+//      gtk_widget_send_focus_change (widget, fevent);
+//
+//      gdk_event_free (event);.
+//
+// The function takes the following parameters:
+//
+//    - event of type GDK_FOCUS_CHANGE.
+//
+// The function returns the following values:
+//
+//    - ok: return value from the event signal emission: TRUE if the event was
+//      handled, and FALSE otherwise.
+//
+func (widget *Widget) SendFocusChange(event *gdk.Event) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkEvent  // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_widget_send_focus_change(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetAccelPath: given an accelerator group, accel_group, and an accelerator
+// path, accel_path, sets up an accelerator in accel_group so whenever the key
+// binding that is defined for accel_path is pressed, widget will be activated.
+// This removes any accelerators (for any accelerator group) installed by
+// previous calls to gtk_widget_set_accel_path(). Associating accelerators with
+// paths allows them to be modified by the user and the modifications to be
+// saved for future use. (See gtk_accel_map_save().)
+//
+// This function is a low level function that would most likely be used by a
+// menu creation system like UIManager. If you use UIManager, setting up
+// accelerator paths will be done automatically.
+//
+// Even when you you aren’t using UIManager, if you only want to set up
+// accelerators on menu items gtk_menu_item_set_accel_path() provides a somewhat
+// more convenient interface.
+//
+// Note that accel_path string will be stored in a #GQuark. Therefore, if you
+// pass a static string, you can save some memory by interning it first with
+// g_intern_static_string().
+//
+// The function takes the following parameters:
+//
+//    - accelPath (optional): path used to look up the accelerator.
+//    - accelGroup (optional): AccelGroup.
+//
+func (widget *Widget) SetAccelPath(accelPath string, accelGroup *AccelGroup) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GtkAccelGroup // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if accelPath != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if accelGroup != nil {
+		_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	}
+
+	C.gtk_widget_set_accel_path(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(accelPath)
+	runtime.KeepAlive(accelGroup)
+}
+
+// SetAllocation sets the widget’s allocation. This should not be used directly,
+// but from within a widget’s size_allocate method.
+//
+// The allocation set should be the “adjusted” or actual allocation. If you’re
+// implementing a Container, you want to use gtk_widget_size_allocate() instead
+// of gtk_widget_set_allocation(). The GtkWidgetClass::adjust_size_allocation
+// virtual method adjusts the allocation inside gtk_widget_size_allocate() to
+// create an adjusted allocation.
+//
+// The function takes the following parameters:
+//
+//    - allocation: pointer to a Allocation to copy from.
+//
+func (widget *Widget) SetAllocation(allocation *Allocation) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkAllocation // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
+
+	C.gtk_widget_set_allocation(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(allocation)
+}
+
+// SetAppPaintable sets whether the application intends to draw on the widget in
+// an Widget::draw handler.
+//
+// This is a hint to the widget and does not affect the behavior of the GTK+
+// core; many widgets ignore this flag entirely. For widgets that do pay
+// attention to the flag, such as EventBox and Window, the effect is to suppress
+// default themed drawing of the widget's background. (Children of the widget
+// will still be drawn.) The application is then entirely responsible for
+// drawing the widget background.
+//
+// Note that the background is still drawn when the widget is mapped.
+//
+// The function takes the following parameters:
+//
+//    - appPaintable: TRUE if the application will paint on the widget.
+//
+func (widget *Widget) SetAppPaintable(appPaintable bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if appPaintable {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_app_paintable(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(appPaintable)
+}
+
+// SetCanDefault specifies whether widget can be a default widget. See
+// gtk_widget_grab_default() for details about the meaning of “default”.
+//
+// The function takes the following parameters:
+//
+//    - canDefault: whether or not widget can be a default widget.
+//
+func (widget *Widget) SetCanDefault(canDefault bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if canDefault {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_can_default(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(canDefault)
+}
+
+// SetCanFocus specifies whether widget can own the input focus. See
+// gtk_widget_grab_focus() for actually setting the input focus on a widget.
+//
+// The function takes the following parameters:
+//
+//    - canFocus: whether or not widget can own the input focus.
+//
+func (widget *Widget) SetCanFocus(canFocus bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if canFocus {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_can_focus(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(canFocus)
+}
+
+// SetChildVisible sets whether widget should be mapped along with its when its
+// parent is mapped and widget has been shown with gtk_widget_show().
+//
+// The child visibility can be set for widget before it is added to a container
+// with gtk_widget_set_parent(), to avoid mapping children unnecessary before
+// immediately unmapping them. However it will be reset to its default state of
+// TRUE when the widget is removed from a container.
+//
+// Note that changing the child visibility of a widget does not queue a resize
+// on the widget. Most of the time, the size of a widget is computed from all
+// visible children, whether or not they are mapped. If this is not the case,
+// the container can queue a resize itself.
+//
+// This function is only useful for container implementations and never should
+// be called by an application.
+//
+// The function takes the following parameters:
+//
+//    - isVisible: if TRUE, widget should be mapped along with its parent.
+//
+func (widget *Widget) SetChildVisible(isVisible bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if isVisible {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_child_visible(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(isVisible)
+}
+
+// SetClip sets the widget’s clip. This must not be used directly, but from
+// within a widget’s size_allocate method. It must be called after
+// gtk_widget_set_allocation() (or after chaining up to the parent class),
+// because that function resets the clip.
+//
+// The clip set should be the area that widget draws on. If widget is a
+// Container, the area must contain all children's clips.
+//
+// If this function is not called by widget during a ::size-allocate handler,
+// the clip will be set to widget's allocation.
+//
+// The function takes the following parameters:
+//
+//    - clip: pointer to a Allocation to copy from.
+//
+func (widget *Widget) SetClip(clip *Allocation) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkAllocation // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(clip)))
+
+	C.gtk_widget_set_clip(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(clip)
+}
+
+// SetCompositeName sets a widgets composite name. The widget must be a
+// composite child of its parent; see gtk_widget_push_composite_child().
+//
+// Deprecated: Use gtk_widget_class_set_template(), or don’t use this API at
+// all.
+//
+// The function takes the following parameters:
+//
+//    - name to set.
+//
+func (widget *Widget) SetCompositeName(name string) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_widget_set_composite_name(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(name)
+}
+
+// SetDeviceEnabled enables or disables a Device to interact with widget and all
+// its children.
+//
+// It does so by descending through the Window hierarchy and enabling the same
+// mask that is has for core events (i.e. the one that gdk_window_get_events()
+// returns).
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//    - enabled: whether to enable the device.
+//
+func (widget *Widget) SetDeviceEnabled(device gdk.Devicer, enabled bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkDevice // out
+	var _arg2 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	if enabled {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_widget_set_device_enabled(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(enabled)
+}
+
+// SetDeviceEvents sets the device event mask (see EventMask) for a widget. The
+// event mask determines which events a widget will receive from device. Keep in
+// mind that different widgets have different default event masks, and by
+// changing the event mask you may disrupt a widget’s functionality, so be
+// careful. This function must be called while a widget is unrealized. Consider
+// gtk_widget_add_device_events() for widgets that are already realized, or if
+// you want to preserve the existing event mask. This function can’t be used
+// with windowless widgets (which return FALSE from
+// gtk_widget_get_has_window()); to get events on those widgets, place them
+// inside a EventBox and receive events on the event box.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//    - events: event mask.
+//
+func (widget *Widget) SetDeviceEvents(device gdk.Devicer, events gdk.EventMask) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 *C.GdkDevice   // out
+	var _arg2 C.GdkEventMask // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg2 = C.GdkEventMask(events)
+
+	C.gtk_widget_set_device_events(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(events)
+}
+
+// SetDirection sets the reading direction on a particular widget. This
+// direction controls the primary direction for widgets containing text, and
+// also the direction in which the children of a container are packed. The
+// ability to set the direction is present in order so that correct localization
+// into languages with right-to-left reading directions can be done. Generally,
+// applications will let the default reading direction present, except for
+// containers where the containers are arranged in an order that is explicitly
+// visual rather than logical (such as buttons for text justification).
+//
+// If the direction is set to GTK_TEXT_DIR_NONE, then the value set by
+// gtk_widget_set_default_direction() will be used.
+//
+// The function takes the following parameters:
+//
+//    - dir: new direction.
+//
+func (widget *Widget) SetDirection(dir TextDirection) {
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkTextDirection // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkTextDirection(dir)
+
+	C.gtk_widget_set_direction(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(dir)
+}
+
+// SetDoubleBuffered widgets are double buffered by default; you can use this
+// function to turn off the buffering. “Double buffered” simply means that
+// gdk_window_begin_draw_frame() and gdk_window_end_draw_frame() are called
+// automatically around expose events sent to the widget.
+// gdk_window_begin_draw_frame() diverts all drawing to a widget's window to an
+// offscreen buffer, and gdk_window_end_draw_frame() draws the buffer to the
+// screen. The result is that users see the window update in one smooth step,
+// and don’t see individual graphics primitives being rendered.
+//
+// In very simple terms, double buffered widgets don’t flicker, so you would
+// only use this function to turn off double buffering if you had special needs
+// and really knew what you were doing.
+//
+// Note: if you turn off double-buffering, you have to handle expose events,
+// since even the clearing to the background color or pixmap will not happen
+// automatically (as it is done in gdk_window_begin_draw_frame()).
+//
+// In 3.10 GTK and GDK have been restructured for translucent drawing. Since
+// then expose events for double-buffered widgets are culled into a single event
+// to the toplevel GDK window. If you now unset double buffering, you will cause
+// a separate rendering pass for every widget. This will likely cause rendering
+// problems - in particular related to stacking - and usually increases
+// rendering times significantly.
+//
+// Deprecated: This function does not work under non-X11 backends or with
+// non-native windows. It should not be used in newly written code.
+//
+// The function takes the following parameters:
+//
+//    - doubleBuffered: TRUE to double-buffer a widget.
+//
+func (widget *Widget) SetDoubleBuffered(doubleBuffered bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if doubleBuffered {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_double_buffered(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(doubleBuffered)
+}
+
+// SetEvents sets the event mask (see EventMask) for a widget. The event mask
+// determines which events a widget will receive. Keep in mind that different
+// widgets have different default event masks, and by changing the event mask
+// you may disrupt a widget’s functionality, so be careful. This function must
+// be called while a widget is unrealized. Consider gtk_widget_add_events() for
+// widgets that are already realized, or if you want to preserve the existing
+// event mask. This function can’t be used with widgets that have no window.
+// (See gtk_widget_get_has_window()). To get events on those widgets, place them
+// inside a EventBox and receive events on the event box.
+//
+// The function takes the following parameters:
+//
+//    - events: event mask.
+//
+func (widget *Widget) SetEvents(events int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(events)
+
+	C.gtk_widget_set_events(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(events)
+}
+
+// SetFocusOnClick sets whether the widget should grab focus when it is clicked
+// with the mouse. Making mouse clicks not grab focus is useful in places like
+// toolbars where you don’t want the keyboard focus removed from the main area
+// of the application.
+//
+// The function takes the following parameters:
+//
+//    - focusOnClick: whether the widget should grab focus when clicked with the
+//      mouse.
+//
+func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if focusOnClick {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_focus_on_click(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(focusOnClick)
+}
+
+// SetFontMap sets the font map to use for Pango rendering. When not set, the
+// widget will inherit the font map from its parent.
+//
+// The function takes the following parameters:
+//
+//    - fontMap (optional) or NULL to unset any previously set font map.
+//
+func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 *C.PangoFontMap // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if fontMap != nil {
+		_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
+	}
+
+	C.gtk_widget_set_font_map(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(fontMap)
+}
+
+// SetFontOptions sets the #cairo_font_options_t used for Pango rendering in
+// this widget. When not set, the default font options for the Screen will be
+// used.
+//
+// The function takes the following parameters:
+//
+//    - options (optional) or NULL to unset any previously set default font
+//      options.
+//
+func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
+	var _arg0 *C.GtkWidget            // out
+	var _arg1 *C.cairo_font_options_t // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if options != nil {
+		_arg1 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+	}
+
+	C.gtk_widget_set_font_options(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(options)
+}
+
+// SetHAlign sets the horizontal alignment of widget. See the Widget:halign
+// property.
+//
+// The function takes the following parameters:
+//
+//    - align: horizontal alignment.
+//
+func (widget *Widget) SetHAlign(align Align) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.GtkAlign   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkAlign(align)
+
+	C.gtk_widget_set_halign(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(align)
+}
+
+// SetHasTooltip sets the has-tooltip property on widget to has_tooltip. See
+// Widget:has-tooltip for more information.
+//
+// The function takes the following parameters:
+//
+//    - hasTooltip: whether or not widget has a tooltip.
+//
+func (widget *Widget) SetHasTooltip(hasTooltip bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if hasTooltip {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_has_tooltip(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(hasTooltip)
+}
+
+// SetHasWindow specifies whether widget has a Window of its own. Note that all
+// realized widgets have a non-NULL “window” pointer (gtk_widget_get_window()
+// never returns a NULL window when a widget is realized), but for many of them
+// it’s actually the Window of one of its parent widgets. Widgets that do not
+// create a window for themselves in Widget::realize must announce this by
+// calling this function with has_window = FALSE.
+//
+// This function should only be called by widget implementations, and they
+// should call it in their init() function.
+//
+// The function takes the following parameters:
+//
+//    - hasWindow: whether or not widget has a window.
+//
+func (widget *Widget) SetHasWindow(hasWindow bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if hasWindow {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_has_window(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(hasWindow)
+}
+
+// SetHExpand sets whether the widget would like any available extra horizontal
+// space. When a user resizes a Window, widgets with expand=TRUE generally
+// receive the extra space. For example, a list or scrollable area or document
+// in your window would often be set to expand.
+//
+// Call this function to set the expand flag if you would like your widget to
+// become larger horizontally when the window has extra room.
+//
+// By default, widgets automatically expand if any of their children want to
+// expand. (To see if a widget will automatically expand given its current
+// children and state, call gtk_widget_compute_expand(). A container can decide
+// how the expandability of children affects the expansion of the container by
+// overriding the compute_expand virtual method on Widget.).
+//
+// Setting hexpand explicitly with this function will override the automatic
+// expand behavior.
+//
+// This function forces the widget to expand or not to expand, regardless of
+// children. The override occurs because gtk_widget_set_hexpand() sets the
+// hexpand-set property (see gtk_widget_set_hexpand_set()) which causes the
+// widget’s hexpand value to be used, rather than looking at children and widget
+// state.
+//
+// The function takes the following parameters:
+//
+//    - expand: whether to expand.
+//
+func (widget *Widget) SetHExpand(expand bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if expand {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_hexpand(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(expand)
+}
+
+// SetHExpandSet sets whether the hexpand flag (see gtk_widget_get_hexpand())
+// will be used.
+//
+// The hexpand-set property will be set automatically when you call
+// gtk_widget_set_hexpand() to set hexpand, so the most likely reason to use
+// this function would be to unset an explicit expand flag.
+//
+// If hexpand is set, then it overrides any computed expand value based on child
+// widgets. If hexpand is not set, then the expand value depends on whether any
+// children of the widget would like to expand.
+//
+// There are few reasons to use this function, but it’s here for completeness
+// and consistency.
+//
+// The function takes the following parameters:
+//
+//    - set: value for hexpand-set property.
+//
+func (widget *Widget) SetHExpandSet(set bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if set {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_hexpand_set(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(set)
+}
+
+// SetMapped marks the widget as being mapped.
+//
+// This function should only ever be called in a derived widget's “map” or
+// “unmap” implementation.
+//
+// The function takes the following parameters:
+//
+//    - mapped: TRUE to mark the widget as mapped.
+//
+func (widget *Widget) SetMapped(mapped bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if mapped {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_mapped(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(mapped)
+}
+
+// SetMarginBottom sets the bottom margin of widget. See the
+// Widget:margin-bottom property.
+//
+// The function takes the following parameters:
+//
+//    - margin: bottom margin.
+//
+func (widget *Widget) SetMarginBottom(margin int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(margin)
+
+	C.gtk_widget_set_margin_bottom(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
+// SetMarginEnd sets the end margin of widget. See the Widget:margin-end
+// property.
+//
+// The function takes the following parameters:
+//
+//    - margin: end margin.
+//
+func (widget *Widget) SetMarginEnd(margin int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(margin)
+
+	C.gtk_widget_set_margin_end(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
+// SetMarginLeft sets the left margin of widget. See the Widget:margin-left
+// property.
+//
+// Deprecated: Use gtk_widget_set_margin_start() instead.
+//
+// The function takes the following parameters:
+//
+//    - margin: left margin.
+//
+func (widget *Widget) SetMarginLeft(margin int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(margin)
+
+	C.gtk_widget_set_margin_left(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
+// SetMarginRight sets the right margin of widget. See the Widget:margin-right
+// property.
+//
+// Deprecated: Use gtk_widget_set_margin_end() instead.
+//
+// The function takes the following parameters:
+//
+//    - margin: right margin.
+//
+func (widget *Widget) SetMarginRight(margin int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(margin)
+
+	C.gtk_widget_set_margin_right(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
+// SetMarginStart sets the start margin of widget. See the Widget:margin-start
+// property.
+//
+// The function takes the following parameters:
+//
+//    - margin: start margin.
+//
+func (widget *Widget) SetMarginStart(margin int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(margin)
+
+	C.gtk_widget_set_margin_start(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
+// SetMarginTop sets the top margin of widget. See the Widget:margin-top
+// property.
+//
+// The function takes the following parameters:
+//
+//    - margin: top margin.
+//
+func (widget *Widget) SetMarginTop(margin int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(margin)
+
+	C.gtk_widget_set_margin_top(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
+// SetName widgets can be named, which allows you to refer to them from a CSS
+// file. You can apply a style to widgets with a particular name in the CSS
+// file. See the documentation for the CSS syntax (on the same page as the docs
+// for StyleContext).
+//
+// Note that the CSS syntax has certain special characters to delimit and
+// represent elements in a selector (period, #, >, *...), so using these will
+// make your widget impossible to match by name. Any combination of alphanumeric
+// symbols, dashes and underscores will suffice.
+//
+// The function takes the following parameters:
+//
+//    - name for the widget.
+//
+func (widget *Widget) SetName(name string) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_widget_set_name(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(name)
+}
+
+// SetNoShowAll sets the Widget:no-show-all property, which determines whether
+// calls to gtk_widget_show_all() will affect this widget.
+//
+// This is mostly for use in constructing widget hierarchies with externally
+// controlled visibility, see UIManager.
+//
+// The function takes the following parameters:
+//
+//    - noShowAll: new value for the “no-show-all” property.
+//
+func (widget *Widget) SetNoShowAll(noShowAll bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if noShowAll {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_no_show_all(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(noShowAll)
+}
+
+// SetOpacity: request the widget to be rendered partially transparent, with
+// opacity 0 being fully transparent and 1 fully opaque. (Opacity values are
+// clamped to the [0,1] range.). This works on both toplevel widget, and child
+// widgets, although there are some limitations:
+//
+// For toplevel widgets this depends on the capabilities of the windowing
+// system. On X11 this has any effect only on X screens with a compositing
+// manager running. See gtk_widget_is_composited(). On Windows it should work
+// always, although setting a window’s opacity after the window has been shown
+// causes it to flicker once on Windows.
+//
+// For child widgets it doesn’t work if any affected widget has a native window,
+// or disables double buffering.
+//
+// The function takes the following parameters:
+//
+//    - opacity: desired opacity, between 0 and 1.
+//
+func (widget *Widget) SetOpacity(opacity float64) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.double     // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.double(opacity)
+
+	C.gtk_widget_set_opacity(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(opacity)
+}
+
+// SetParent: this function is useful only when implementing subclasses of
+// Container. Sets the container as the parent of widget, and takes care of some
+// details such as updating the state and style of the child to reflect its new
+// location. The opposite function is gtk_widget_unparent().
+//
+// The function takes the following parameters:
+//
+//    - parent container.
+//
+func (widget *Widget) SetParent(parent Widgetter) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parent.Native()))
+
+	C.gtk_widget_set_parent(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(parent)
+}
+
+// SetParentWindow sets a non default parent window for widget.
+//
+// For Window classes, setting a parent_window effects whether the window is a
+// toplevel window or can be embedded into other widgets.
+//
+// For Window classes, this needs to be called before the window is realized.
+//
+// The function takes the following parameters:
+//
+//    - parentWindow: new parent window.
+//
+func (widget *Widget) SetParentWindow(parentWindow gdk.Windower) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkWindow // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(parentWindow.Native()))
+
+	C.gtk_widget_set_parent_window(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(parentWindow)
+}
+
+// SetRealized marks the widget as being realized. This function must only be
+// called after all Windows for the widget have been created and registered.
+//
+// This function should only ever be called in a derived widget's “realize” or
+// “unrealize” implementation.
+//
+// The function takes the following parameters:
+//
+//    - realized: TRUE to mark the widget as realized.
+//
+func (widget *Widget) SetRealized(realized bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if realized {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_realized(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(realized)
+}
+
+// SetReceivesDefault specifies whether widget will be treated as the default
+// widget within its toplevel when it has the focus, even if another widget is
+// the default.
+//
+// See gtk_widget_grab_default() for details about the meaning of “default”.
+//
+// The function takes the following parameters:
+//
+//    - receivesDefault: whether or not widget can be a default widget.
+//
+func (widget *Widget) SetReceivesDefault(receivesDefault bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if receivesDefault {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_receives_default(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(receivesDefault)
+}
+
+// SetRedrawOnAllocate sets whether the entire widget is queued for drawing when
+// its size allocation changes. By default, this setting is TRUE and the entire
+// widget is redrawn on every size change. If your widget leaves the upper left
+// unchanged when made bigger, turning this setting off will improve
+// performance.
+//
+// Note that for widgets where gtk_widget_get_has_window() is FALSE setting this
+// flag to FALSE turns off all allocation on resizing: the widget will not even
+// redraw if its position changes; this is to allow containers that don’t draw
+// anything to avoid excess invalidations. If you set this flag on a widget with
+// no window that does draw on widget->window, you are responsible for
+// invalidating both the old and new allocation of the widget when the widget is
+// moved and responsible for invalidating regions newly when the widget
+// increases size.
+//
+// The function takes the following parameters:
+//
+//    - redrawOnAllocate: if TRUE, the entire widget will be redrawn when it is
+//      allocated to a new size. Otherwise, only the new portion of the widget
+//      will be redrawn.
+//
+func (widget *Widget) SetRedrawOnAllocate(redrawOnAllocate bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if redrawOnAllocate {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_redraw_on_allocate(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(redrawOnAllocate)
+}
+
+// SetSensitive sets the sensitivity of a widget. A widget is sensitive if the
+// user can interact with it. Insensitive widgets are “grayed out” and the user
+// can’t interact with them. Insensitive widgets are known as “inactive”,
+// “disabled”, or “ghosted” in some other toolkits.
+//
+// The function takes the following parameters:
+//
+//    - sensitive: TRUE to make the widget sensitive.
+//
+func (widget *Widget) SetSensitive(sensitive bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if sensitive {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_sensitive(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(sensitive)
+}
+
+// SetSizeRequest sets the minimum size of a widget; that is, the widget’s size
+// request will be at least width by height. You can use this function to force
+// a widget to be larger than it normally would be.
+//
+// In most cases, gtk_window_set_default_size() is a better choice for toplevel
+// windows than this function; setting the default size will still allow users
+// to shrink the window. Setting the size request will force them to leave the
+// window at least as large as the size request. When dealing with window sizes,
+// gtk_window_set_geometry_hints() can be a useful function as well.
+//
+// Note the inherent danger of setting any fixed size - themes, translations
+// into other languages, different fonts, and user action can all change the
+// appropriate size for a given widget. So, it's basically impossible to
+// hardcode a size that will always be correct.
+//
+// The size request of a widget is the smallest size a widget can accept while
+// still functioning well and drawing itself correctly. However in some strange
+// cases a widget may be allocated less than its requested size, and in many
+// cases a widget may be allocated more space than it requested.
+//
+// If the size request in a given direction is -1 (unset), then the “natural”
+// size request of the widget will be used instead.
+//
+// The size request set here does not include any margin from the Widget
+// properties margin-left, margin-right, margin-top, and margin-bottom, but it
+// does include pretty much all other padding or border properties set by any
+// subclass of Widget.
+//
+// The function takes the following parameters:
+//
+//    - width widget should request, or -1 to unset.
+//    - height widget should request, or -1 to unset.
+//
+func (widget *Widget) SetSizeRequest(width, height int) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.gint(width)
+	_arg2 = C.gint(height)
+
+	C.gtk_widget_set_size_request(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// SetState: this function is for use in widget implementations. Sets the state
+// of a widget (insensitive, prelighted, etc.) Usually you should set the state
+// using wrapper functions such as gtk_widget_set_sensitive().
+//
+// Deprecated: Use gtk_widget_set_state_flags() instead.
+//
+// The function takes the following parameters:
+//
+//    - state: new state for widget.
+//
+func (widget *Widget) SetState(state StateType) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+
+	C.gtk_widget_set_state(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(state)
+}
+
+// SetStateFlags: this function is for use in widget implementations. Turns on
+// flag values in the current widget state (insensitive, prelighted, etc.).
+//
+// This function accepts the values GTK_STATE_FLAG_DIR_LTR and
+// GTK_STATE_FLAG_DIR_RTL but ignores them. If you want to set the widget's
+// direction, use gtk_widget_set_direction().
+//
+// It is worth mentioning that any other state than GTK_STATE_FLAG_INSENSITIVE,
+// will be propagated down to all non-internal children if widget is a
+// Container, while GTK_STATE_FLAG_INSENSITIVE itself will be propagated down to
+// all Container children by different means than turning on the state flag down
+// the hierarchy, both gtk_widget_get_state_flags() and
+// gtk_widget_is_sensitive() will make use of these.
+//
+// The function takes the following parameters:
+//
+//    - flags: state flags to turn on.
+//    - clear: whether to clear state before turning on flags.
+//
+func (widget *Widget) SetStateFlags(flags StateFlags, clear bool) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkStateFlags // out
+	var _arg2 C.gboolean      // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateFlags(flags)
+	if clear {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_widget_set_state_flags(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(clear)
+}
+
+// SetSupportMultidevice enables or disables multiple pointer awareness. If this
+// setting is TRUE, widget will start receiving multiple, per device enter/leave
+// events. Note that if custom Windows are created in Widget::realize,
+// gdk_window_set_support_multidevice() will have to be called manually on them.
+//
+// The function takes the following parameters:
+//
+//    - supportMultidevice: TRUE to support input from multiple devices.
+//
+func (widget *Widget) SetSupportMultidevice(supportMultidevice bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if supportMultidevice {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_support_multidevice(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(supportMultidevice)
+}
+
+// SetTooltipMarkup sets markup as the contents of the tooltip, which is marked
+// up with the [Pango text markup language][PangoMarkupFormat].
+//
+// This function will take care of setting Widget:has-tooltip to TRUE and of the
+// default handler for the Widget::query-tooltip signal.
+//
+// See also the Widget:tooltip-markup property and gtk_tooltip_set_markup().
+//
+// The function takes the following parameters:
+//
+//    - markup (optional) contents of the tooltip for widget, or NULL.
+//
+func (widget *Widget) SetTooltipMarkup(markup string) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if markup != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_widget_set_tooltip_markup(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(markup)
+}
+
+// SetTooltipText sets text as the contents of the tooltip. This function will
+// take care of setting Widget:has-tooltip to TRUE and of the default handler
+// for the Widget::query-tooltip signal.
+//
+// See also the Widget:tooltip-text property and gtk_tooltip_set_text().
+//
+// The function takes the following parameters:
+//
+//    - text (optional) contents of the tooltip for widget.
+//
+func (widget *Widget) SetTooltipText(text string) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if text != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_widget_set_tooltip_text(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(text)
+}
+
+// SetTooltipWindow replaces the default window used for displaying tooltips
+// with custom_window. GTK+ will take care of showing and hiding custom_window
+// at the right moment, to behave likewise as the default tooltip window. If
+// custom_window is NULL, the default tooltip window will be used.
+//
+// The function takes the following parameters:
+//
+//    - customWindow (optional) or NULL.
+//
+func (widget *Widget) SetTooltipWindow(customWindow *Window) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if customWindow != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(customWindow.Native()))
+	}
+
+	C.gtk_widget_set_tooltip_window(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(customWindow)
+}
+
+// SetVAlign sets the vertical alignment of widget. See the Widget:valign
+// property.
+//
+// The function takes the following parameters:
+//
+//    - align: vertical alignment.
+//
+func (widget *Widget) SetVAlign(align Align) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.GtkAlign   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkAlign(align)
+
+	C.gtk_widget_set_valign(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(align)
+}
+
+// SetVExpand sets whether the widget would like any available extra vertical
+// space.
+//
+// See gtk_widget_set_hexpand() for more detail.
+//
+// The function takes the following parameters:
+//
+//    - expand: whether to expand.
+//
+func (widget *Widget) SetVExpand(expand bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if expand {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_vexpand(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(expand)
+}
+
+// SetVExpandSet sets whether the vexpand flag (see gtk_widget_get_vexpand())
+// will be used.
+//
+// See gtk_widget_set_hexpand_set() for more detail.
+//
+// The function takes the following parameters:
+//
+//    - set: value for vexpand-set property.
+//
+func (widget *Widget) SetVExpandSet(set bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if set {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_vexpand_set(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(set)
+}
+
+// SetVisible sets the visibility state of widget. Note that setting this to
+// TRUE doesn’t mean the widget is actually viewable, see
+// gtk_widget_get_visible().
+//
+// This function simply calls gtk_widget_show() or gtk_widget_hide() but is
+// nicer to use when the visibility of the widget depends on some condition.
+//
+// The function takes the following parameters:
+//
+//    - visible: whether the widget should be shown or not.
+//
+func (widget *Widget) SetVisible(visible bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if visible {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_widget_set_visible(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(visible)
+}
+
+// SetVisual sets the visual that should be used for by widget and its children
+// for creating Windows. The visual must be on the same Screen as returned by
+// gtk_widget_get_screen(), so handling the Widget::screen-changed signal is
+// necessary.
+//
+// Setting a new visual will not cause widget to recreate its windows, so you
+// should call this function before widget is realized.
+//
+// The function takes the following parameters:
+//
+//    - visual (optional) to be used or NULL to unset a previous one.
+//
+func (widget *Widget) SetVisual(visual *gdk.Visual) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkVisual // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if visual != nil {
+		_arg1 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	}
+
+	C.gtk_widget_set_visual(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(visual)
+}
+
+// SetWindow sets a widget’s window. This function should only be used in a
+// widget’s Widget::realize implementation. The window passed is usually either
+// new window created with gdk_window_new(), or the window of its parent widget
+// as returned by gtk_widget_get_parent_window().
+//
+// Widgets must indicate whether they will create their own Window by calling
+// gtk_widget_set_has_window(). This is usually done in the widget’s init()
+// function.
+//
+// Note that this function does not add any reference to window.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
+func (widget *Widget) SetWindow(window gdk.Windower) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkWindow // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	C.g_object_ref(C.gpointer(window.Native()))
+
+	C.gtk_widget_set_window(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(window)
+}
+
+// ShapeCombineRegion sets a shape for this widget’s GDK window. This allows for
+// transparent windows etc., see gdk_window_shape_combine_region() for more
+// information.
+//
+// The function takes the following parameters:
+//
+//    - region (optional): shape to be added, or NULL to remove an existing
+//      shape.
+//
+func (widget *Widget) ShapeCombineRegion(region *cairo.Region) {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
+
+	C.gtk_widget_shape_combine_region(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(region)
+}
+
+// Show flags a widget to be displayed. Any widget that isn’t shown will not
+// appear on the screen. If you want to show all the widgets in a container,
+// it’s easier to call gtk_widget_show_all() on the container, instead of
+// individually showing the widgets.
+//
+// Remember that you have to show the containers containing a widget, in
+// addition to the widget itself, before it will appear onscreen.
+//
+// When a toplevel container is shown, it is immediately realized and mapped;
+// other shown widgets are realized and mapped when their toplevel container is
+// realized and mapped.
+func (widget *Widget) Show() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_show(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// ShowAll: recursively shows a widget, and any child widgets (if the widget is
+// a container).
+func (widget *Widget) ShowAll() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_show_all(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// ShowNow shows a widget. If the widget is an unmapped toplevel widget (i.e. a
+// Window that has not yet been shown), enter the main loop and wait for the
+// window to actually be mapped. Be careful; because the main loop is running,
+// anything can happen during this function.
+func (widget *Widget) ShowNow() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_show_now(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// SizeAllocate: this function is only used by Container subclasses, to assign a
+// size and position to their child widgets.
+//
+// In this function, the allocation may be adjusted. It will be forced to a 1x1
+// minimum size, and the adjust_size_allocation virtual method on the child will
+// be used to adjust the allocation. Standard adjustments include removing the
+// widget’s margins, and applying the widget’s Widget:halign and Widget:valign
+// properties.
+//
+// For baseline support in containers you need to use
+// gtk_widget_size_allocate_with_baseline() instead.
+//
+// The function takes the following parameters:
+//
+//    - allocation: position and size to be allocated to widget.
+//
+func (widget *Widget) SizeAllocate(allocation *Allocation) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkAllocation // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
+
+	C.gtk_widget_size_allocate(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(allocation)
+}
+
+// SizeAllocateWithBaseline: this function is only used by Container subclasses,
+// to assign a size, position and (optionally) baseline to their child widgets.
+//
+// In this function, the allocation and baseline may be adjusted. It will be
+// forced to a 1x1 minimum size, and the adjust_size_allocation virtual and
+// adjust_baseline_allocation methods on the child will be used to adjust the
+// allocation and baseline. Standard adjustments include removing the widget's
+// margins, and applying the widget’s Widget:halign and Widget:valign
+// properties.
+//
+// If the child widget does not have a valign of GTK_ALIGN_BASELINE the baseline
+// argument is ignored and -1 is used instead.
+//
+// The function takes the following parameters:
+//
+//    - allocation: position and size to be allocated to widget.
+//    - baseline of the child, or -1.
+//
+func (widget *Widget) SizeAllocateWithBaseline(allocation *Allocation, baseline int) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkAllocation // out
+	var _arg2 C.gint           // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
+	_arg2 = C.gint(baseline)
+
+	C.gtk_widget_size_allocate_with_baseline(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(allocation)
+	runtime.KeepAlive(baseline)
+}
+
+// SizeRequest: this function is typically used when implementing a Container
+// subclass. Obtains the preferred size of a widget. The container uses this
+// information to arrange its child widgets and decide what size allocations to
+// give them with gtk_widget_size_allocate().
+//
+// You can also call this function from an application, with some caveats. Most
+// notably, getting a size request requires the widget to be associated with a
+// screen, because font information may be needed. Multihead-aware applications
+// should keep this in mind.
+//
+// Also remember that the size request is not necessarily the size a widget will
+// actually be allocated.
+//
+// Deprecated: Use gtk_widget_get_preferred_size() instead.
+//
+// The function returns the following values:
+//
+//    - requisition to be filled in.
+//
+func (widget *Widget) SizeRequest() *Requisition {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_size_request(_arg0, &_arg1)
+	runtime.KeepAlive(widget)
+
+	var _requisition *Requisition // out
+
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+
+	return _requisition
+}
+
+// StyleGetProperty gets the value of a style property of widget.
+//
+// The function takes the following parameters:
+//
+//    - propertyName: name of a style property.
+//    - value: location to return the property value.
+//
+func (widget *Widget) StyleGetProperty(propertyName string, value *externglib.Value) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GValue    // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	C.gtk_widget_style_get_property(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(propertyName)
+	runtime.KeepAlive(value)
+}
+
+// ThawChildNotify reverts the effect of a previous call to
+// gtk_widget_freeze_child_notify(). This causes all queued Widget::child-notify
+// signals on widget to be emitted.
+func (widget *Widget) ThawChildNotify() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_thaw_child_notify(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// TranslateCoordinates: translate coordinates relative to src_widget’s
+// allocation to coordinates relative to dest_widget’s allocations. In order to
+// perform this operation, both widgets must be realized, and must share a
+// common toplevel.
+//
+// The function takes the following parameters:
+//
+//    - destWidget: Widget.
+//    - srcX: x position relative to src_widget.
+//    - srcY: y position relative to src_widget.
+//
+// The function returns the following values:
+//
+//    - destX (optional): location to store X position relative to dest_widget.
+//    - destY (optional): location to store Y position relative to dest_widget.
+//    - ok: FALSE if either widget was not realized, or there was no common
+//      ancestor. In this case, nothing is stored in *dest_x and *dest_y.
+//      Otherwise TRUE.
+//
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY int) (destX int, destY int, ok bool) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // in
+	var _arg5 C.gint       // in
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(srcWidget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(destWidget.Native()))
+	_arg2 = C.gint(srcX)
+	_arg3 = C.gint(srcY)
+
+	_cret = C.gtk_widget_translate_coordinates(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
+	runtime.KeepAlive(srcWidget)
+	runtime.KeepAlive(destWidget)
+	runtime.KeepAlive(srcX)
+	runtime.KeepAlive(srcY)
+
+	var _destX int // out
+	var _destY int // out
+	var _ok bool   // out
+
+	_destX = int(_arg4)
+	_destY = int(_arg5)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _destX, _destY, _ok
+}
+
+// TriggerTooltipQuery triggers a tooltip query on the display where the
+// toplevel of widget is located. See gtk_tooltip_trigger_tooltip_query() for
+// more information.
+func (widget *Widget) TriggerTooltipQuery() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_trigger_tooltip_query(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// Unmap: this function is only for use in widget implementations. Causes a
+// widget to be unmapped if it’s currently mapped.
+func (widget *Widget) Unmap() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_unmap(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// Unparent: this function is only for use in widget implementations. Should be
+// called by implementations of the remove method on Container, to dissociate a
+// child from the container.
+func (widget *Widget) Unparent() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_unparent(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// Unrealize: this function is only useful in widget implementations. Causes a
+// widget to be unrealized (frees all GDK resources associated with the widget,
+// such as widget->window).
+func (widget *Widget) Unrealize() {
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_unrealize(_arg0)
+	runtime.KeepAlive(widget)
+}
+
+// UnregisterWindow unregisters a Window from the widget that was previously set
+// up with gtk_widget_register_window(). You need to call this when the window
+// is no longer used by the widget, such as when you destroy it.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
+func (widget *Widget) UnregisterWindow(window gdk.Windower) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkWindow // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+
+	C.gtk_widget_unregister_window(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(window)
+}
+
+// UnsetStateFlags: this function is for use in widget implementations. Turns
+// off flag values for the current widget state (insensitive, prelighted, etc.).
+// See gtk_widget_set_state_flags().
+//
+// The function takes the following parameters:
+//
+//    - flags: state flags to turn off.
+//
+func (widget *Widget) UnsetStateFlags(flags StateFlags) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkStateFlags // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateFlags(flags)
+
+	C.gtk_widget_unset_state_flags(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(flags)
+}
+
 // WidgetGetDefaultDirection obtains the current default reading direction. See
 // gtk_widget_set_default_direction().
+//
+// The function returns the following values:
+//
+//    - textDirection: current default direction.
+//
 func WidgetGetDefaultDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
 
@@ -8090,6 +7823,11 @@ func (r *Requisition) Height() int {
 }
 
 // Copy copies a Requisition.
+//
+// The function returns the following values:
+//
+//    - ret: copy of requisition.
+//
 func (requisition *Requisition) Copy() *Requisition {
 	var _arg0 *C.GtkRequisition // out
 	var _cret *C.GtkRequisition // in

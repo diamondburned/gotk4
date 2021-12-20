@@ -28,6 +28,12 @@ func init() {
 // yet, so the interface currently has no use.
 type InetAddressOverrider interface {
 	// String converts address to string form.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: representation of address as a string, which should be freed
+	//      after use.
+	//
 	String() string
 }
 
@@ -63,6 +69,11 @@ func marshalInetAddresser(p uintptr) (interface{}, error) {
 //
 //    - family address family.
 //
+// The function returns the following values:
+//
+//    - inetAddress: new Address corresponding to the "any" address for family.
+//      Free the returned object with g_object_unref().
+//
 func NewInetAddressAny(family SocketFamily) *InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
@@ -85,6 +96,12 @@ func NewInetAddressAny(family SocketFamily) *InetAddress {
 // The function takes the following parameters:
 //
 //    - str: string representation of an IP address.
+//
+// The function returns the following values:
+//
+//    - inetAddress (optional): new Address corresponding to string, or NULL if
+//      string could not be parsed. Free the returned object with
+//      g_object_unref().
 //
 func NewInetAddressFromString(str string) *InetAddress {
 	var _arg1 *C.gchar        // out
@@ -111,6 +128,11 @@ func NewInetAddressFromString(str string) *InetAddress {
 //
 //    - family address family.
 //
+// The function returns the following values:
+//
+//    - inetAddress: new Address corresponding to the loopback address for
+//      family. Free the returned object with g_object_unref().
+//
 func NewInetAddressLoopback(family SocketFamily) *InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
@@ -132,6 +154,10 @@ func NewInetAddressLoopback(family SocketFamily) *InetAddress {
 // The function takes the following parameters:
 //
 //    - otherAddress: another Address.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address and other_address are equal, FALSE otherwise.
 //
 func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 	var _arg0 *C.GInetAddress // out
@@ -155,6 +181,11 @@ func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 }
 
 // Family gets address's family.
+//
+// The function returns the following values:
+//
+//    - socketFamily address's family.
+//
 func (address *InetAddress) Family() SocketFamily {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.GSocketFamily // in
@@ -172,6 +203,11 @@ func (address *InetAddress) Family() SocketFamily {
 }
 
 // IsAny tests whether address is the "any" address for its family.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is the "any" address for its family.
+//
 func (address *InetAddress) IsAny() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -192,6 +228,11 @@ func (address *InetAddress) IsAny() bool {
 
 // IsLinkLocal tests whether address is a link-local address (that is, if it
 // identifies a host on a local network that is not connected to the Internet).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is a link-local address.
+//
 func (address *InetAddress) IsLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -211,6 +252,11 @@ func (address *InetAddress) IsLinkLocal() bool {
 }
 
 // IsLoopback tests whether address is the loopback address for its family.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is the loopback address for its family.
+//
 func (address *InetAddress) IsLoopback() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -230,6 +276,11 @@ func (address *InetAddress) IsLoopback() bool {
 }
 
 // IsMcGlobal tests whether address is a global multicast address.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is a global multicast address.
+//
 func (address *InetAddress) IsMcGlobal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -249,6 +300,11 @@ func (address *InetAddress) IsMcGlobal() bool {
 }
 
 // IsMcLinkLocal tests whether address is a link-local multicast address.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is a link-local multicast address.
+//
 func (address *InetAddress) IsMcLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -268,6 +324,11 @@ func (address *InetAddress) IsMcLinkLocal() bool {
 }
 
 // IsMcNodeLocal tests whether address is a node-local multicast address.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is a node-local multicast address.
+//
 func (address *InetAddress) IsMcNodeLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -288,6 +349,11 @@ func (address *InetAddress) IsMcNodeLocal() bool {
 
 // IsMcOrgLocal tests whether address is an organization-local multicast
 // address.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is an organization-local multicast address.
+//
 func (address *InetAddress) IsMcOrgLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -307,6 +373,11 @@ func (address *InetAddress) IsMcOrgLocal() bool {
 }
 
 // IsMcSiteLocal tests whether address is a site-local multicast address.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is a site-local multicast address.
+//
 func (address *InetAddress) IsMcSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -326,6 +397,11 @@ func (address *InetAddress) IsMcSiteLocal() bool {
 }
 
 // IsMulticast tests whether address is a multicast address.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is a multicast address.
+//
 func (address *InetAddress) IsMulticast() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -348,6 +424,11 @@ func (address *InetAddress) IsMulticast() bool {
 // (that is, the address identifies a host on a local network that can not be
 // reached directly from the Internet, but which may have outgoing Internet
 // connectivity via a NAT or firewall).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if address is a site-local address.
+//
 func (address *InetAddress) IsSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -368,6 +449,11 @@ func (address *InetAddress) IsSiteLocal() bool {
 
 // NativeSize gets the size of the native raw binary address for address. This
 // is the size of the data that you get from g_inet_address_to_bytes().
+//
+// The function returns the following values:
+//
+//    - gsize: number of bytes used for the native version of address.
+//
 func (address *InetAddress) NativeSize() uint {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gsize         // in
@@ -385,6 +471,12 @@ func (address *InetAddress) NativeSize() uint {
 }
 
 // String converts address to string form.
+//
+// The function returns the following values:
+//
+//    - utf8: representation of address as a string, which should be freed after
+//      use.
+//
 func (address *InetAddress) String() string {
 	var _arg0 *C.GInetAddress // out
 	var _cret *C.gchar        // in

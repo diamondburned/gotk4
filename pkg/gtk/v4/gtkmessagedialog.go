@@ -196,6 +196,11 @@ func marshalMessageDialogger(p uintptr) (interface{}, error) {
 // You can add your own extra content to that box and it will appear below those
 // labels. See gtk.Dialog.GetContentArea() for the corresponding function in the
 // parent gtk.Dialog.
+//
+// The function returns the following values:
+//
+//    - widget: GtkBox corresponding to the “message area” in the message_dialog.
+//
 func (messageDialog *MessageDialog) MessageArea() Widgetter {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in

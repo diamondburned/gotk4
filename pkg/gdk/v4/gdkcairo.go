@@ -128,6 +128,10 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //
 //    - surface: cairo surface.
 //
+// The function returns the following values:
+//
+//    - region: cairo_region_t; must be freed with cairo_region_destroy().
+//
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.cairo_region_t  // in

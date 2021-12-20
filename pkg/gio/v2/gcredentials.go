@@ -74,6 +74,11 @@ func marshalCredentialser(p uintptr) (interface{}, error) {
 
 // NewCredentials creates a new #GCredentials object with credentials matching
 // the the current process.
+//
+// The function returns the following values:
+//
+//    - credentials Free with g_object_unref().
+//
 func NewCredentials() *Credentials {
 	var _cret *C.GCredentials // in
 
@@ -145,6 +150,11 @@ func (credentials *Credentials) SetNative(nativeType CredentialsType, native cgo
 // String creates a human-readable textual representation of credentials that
 // can be used in logging and debug messages. The format of the returned string
 // may change in future GLib release.
+//
+// The function returns the following values:
+//
+//    - utf8: string that should be freed with g_free().
+//
 func (credentials *Credentials) String() string {
 	var _arg0 *C.GCredentials // out
 	var _cret *C.gchar        // in

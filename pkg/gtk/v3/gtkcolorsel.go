@@ -73,7 +73,18 @@ func marshalColorSelectioner(p uintptr) (interface{}, error) {
 	return wrapColorSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectColorChanged: this signal is emitted when the color changes in the
+// ColorSelection according to its update policy.
+func (colorsel *ColorSelection) ConnectColorChanged(f func()) externglib.SignalHandle {
+	return colorsel.Connect("color-changed", f)
+}
+
 // NewColorSelection creates a new GtkColorSelection.
+//
+// The function returns the following values:
+//
+//    - colorSelection: new ColorSelection.
+//
 func NewColorSelection() *ColorSelection {
 	var _cret *C.GtkWidget // in
 
@@ -87,6 +98,11 @@ func NewColorSelection() *ColorSelection {
 }
 
 // CurrentAlpha returns the current alpha value.
+//
+// The function returns the following values:
+//
+//    - guint16: integer between 0 and 65535.
+//
 func (colorsel *ColorSelection) CurrentAlpha() uint16 {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.guint16            // in
@@ -107,6 +123,11 @@ func (colorsel *ColorSelection) CurrentAlpha() uint16 {
 // widget.
 //
 // Deprecated: Use gtk_color_selection_get_current_rgba() instead.
+//
+// The function returns the following values:
+//
+//    - color to fill in with the current color.
+//
 func (colorsel *ColorSelection) CurrentColor() *gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.GdkColor           // in
@@ -125,6 +146,11 @@ func (colorsel *ColorSelection) CurrentColor() *gdk.Color {
 
 // CurrentRGBA sets rgba to be the current color in the GtkColorSelection
 // widget.
+//
+// The function returns the following values:
+//
+//    - rgba to fill in with the current color.
+//
 func (colorsel *ColorSelection) CurrentRGBA() *gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.GdkRGBA            // in
@@ -142,6 +168,11 @@ func (colorsel *ColorSelection) CurrentRGBA() *gdk.RGBA {
 }
 
 // HasOpacityControl determines whether the colorsel has an opacity control.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the colorsel has an opacity control, FALSE if it does't.
+//
 func (colorsel *ColorSelection) HasOpacityControl() bool {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.gboolean           // in
@@ -161,6 +192,11 @@ func (colorsel *ColorSelection) HasOpacityControl() bool {
 }
 
 // HasPalette determines whether the color selector has a color palette.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the selector has a palette, FALSE if it hasn't.
+//
 func (colorsel *ColorSelection) HasPalette() bool {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.gboolean           // in
@@ -180,6 +216,11 @@ func (colorsel *ColorSelection) HasPalette() bool {
 }
 
 // PreviousAlpha returns the previous alpha value.
+//
+// The function returns the following values:
+//
+//    - guint16: integer between 0 and 65535.
+//
 func (colorsel *ColorSelection) PreviousAlpha() uint16 {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.guint16            // in
@@ -199,6 +240,11 @@ func (colorsel *ColorSelection) PreviousAlpha() uint16 {
 // PreviousColor fills color in with the original color value.
 //
 // Deprecated: Use gtk_color_selection_get_previous_rgba() instead.
+//
+// The function returns the following values:
+//
+//    - color to fill in with the original color value.
+//
 func (colorsel *ColorSelection) PreviousColor() *gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.GdkColor           // in
@@ -216,6 +262,11 @@ func (colorsel *ColorSelection) PreviousColor() *gdk.Color {
 }
 
 // PreviousRGBA fills rgba in with the original color value.
+//
+// The function returns the following values:
+//
+//    - rgba to fill in with the original color value.
+//
 func (colorsel *ColorSelection) PreviousRGBA() *gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.GdkRGBA            // in
@@ -233,6 +284,12 @@ func (colorsel *ColorSelection) PreviousRGBA() *gdk.RGBA {
 }
 
 // IsAdjusting gets the current state of the colorsel.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the user is currently dragging a color around, and FALSE if
+//      the selection has stopped.
+//
 func (colorsel *ColorSelection) IsAdjusting() bool {
 	var _arg0 *C.GtkColorSelection // out
 	var _cret C.gboolean           // in
@@ -426,18 +483,17 @@ func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 	runtime.KeepAlive(rgba)
 }
 
-// ConnectColorChanged: this signal is emitted when the color changes in the
-// ColorSelection according to its update policy.
-func (colorsel *ColorSelection) ConnectColorChanged(f func()) externglib.SignalHandle {
-	return colorsel.Connect("color-changed", f)
-}
-
 // ColorSelectionPaletteFromString parses a color palette string; the string is
 // a colon-separated list of color names readable by gdk_color_parse().
 //
 // The function takes the following parameters:
 //
 //    - str: string encoding a color palette.
+//
+// The function returns the following values:
+//
+//    - colors: return location for allocated array of Color.
+//    - ok: TRUE if a palette was successfully parsed.
 //
 func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	var _arg1 *C.gchar    // out
@@ -481,6 +537,10 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 // The function takes the following parameters:
 //
 //    - colors: array of colors.
+//
+// The function returns the following values:
+//
+//    - utf8: allocated string encoding the palette.
 //
 func ColorSelectionPaletteToString(colors []gdk.Color) string {
 	var _arg1 *C.GdkColor // out

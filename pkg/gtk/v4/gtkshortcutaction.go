@@ -157,6 +157,11 @@ func marshalActivateActioner(p uintptr) (interface{}, error) {
 //
 // This is an action that calls gtk_widget_activate() on the given widget upon
 // activation.
+//
+// The function returns the following values:
+//
+//    - activateAction: activate action.
+//
 func ActivateActionGet() *ActivateAction {
 	var _cret *C.GtkShortcutAction // in
 
@@ -195,7 +200,11 @@ func marshalCallbackActioner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - callback to call.
+//    - callback (optional) to call.
+//
+// The function returns the following values:
+//
+//    - callbackAction: new shortcut action.
 //
 func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	var _arg1 C.GtkShortcutFunc // out
@@ -244,6 +253,11 @@ func marshalMnemonicActioner(p uintptr) (interface{}, error) {
 //
 // This is an action that calls gtk_widget_mnemonic_activate() on the given
 // widget upon activation.
+//
+// The function returns the following values:
+//
+//    - mnemonicAction: mnemonic action.
+//
 func MnemonicActionGet() *MnemonicAction {
 	var _cret *C.GtkShortcutAction // in
 
@@ -288,6 +302,10 @@ func marshalNamedActioner(p uintptr) (interface{}, error) {
 //
 //    - name: detailed name of the action.
 //
+// The function returns the following values:
+//
+//    - namedAction: new GtkShortcutAction.
+//
 func NewNamedAction(name string) *NamedAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -306,6 +324,11 @@ func NewNamedAction(name string) *NamedAction {
 }
 
 // ActionName returns the name of the action that will be activated.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the action to activate.
+//
 func (self *NamedAction) ActionName() string {
 	var _arg0 *C.GtkNamedAction // out
 	var _cret *C.char           // in
@@ -346,6 +369,11 @@ func marshalNothingActioner(p uintptr) (interface{}, error) {
 // NothingActionGet gets the nothing action.
 //
 // This is an action that does nothing and where activating it always fails.
+//
+// The function returns the following values:
+//
+//    - nothingAction: nothing action.
+//
 func NothingActionGet() *NothingAction {
 	var _cret *C.GtkShortcutAction // in
 
@@ -414,6 +442,15 @@ func marshalShortcutActioner(p uintptr) (interface{}, error) {
 	return wrapShortcutAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (self *ShortcutAction) baseShortcutAction() *ShortcutAction {
+	return self
+}
+
+// BaseShortcutAction returns the underlying base object.
+func BaseShortcutAction(obj ShortcutActioner) *ShortcutAction {
+	return obj.baseShortcutAction()
+}
+
 // NewShortcutActionParseString tries to parse the given string into an action.
 //
 // On success, the parsed action is returned. When parsing failed, NULL is
@@ -434,6 +471,10 @@ func marshalShortcutActioner(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - str: string to parse.
+//
+// The function returns the following values:
+//
+//    - shortcutAction (optional): new GtkShortcutAction or NULL on error.
 //
 func NewShortcutActionParseString(str string) *ShortcutAction {
 	var _arg1 *C.char              // out
@@ -466,7 +507,11 @@ func NewShortcutActionParseString(str string) *ShortcutAction {
 //
 //    - flags to activate with.
 //    - widget: target of the activation.
-//    - args arguments to pass.
+//    - args (optional) arguments to pass.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was activated successfully.
 //
 func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool {
 	var _arg0 *C.GtkShortcutAction     // out
@@ -501,6 +546,11 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter
 //
 // This is a small wrapper around gtk.ShortcutAction.Print() to help when
 // debugging.
+//
+// The function returns the following values:
+//
+//    - utf8: new string.
+//
 func (self *ShortcutAction) String() string {
 	var _arg0 *C.GtkShortcutAction // out
 	var _cret *C.char              // in
@@ -516,15 +566,6 @@ func (self *ShortcutAction) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-func (self *ShortcutAction) baseShortcutAction() *ShortcutAction {
-	return self
-}
-
-// BaseShortcutAction returns the underlying base object.
-func BaseShortcutAction(obj ShortcutActioner) *ShortcutAction {
-	return obj.baseShortcutAction()
 }
 
 // SignalAction: GtkShortcutAction that emits a signal.
@@ -560,6 +601,10 @@ func marshalSignalActioner(p uintptr) (interface{}, error) {
 //
 //    - signalName: name of the signal to emit.
 //
+// The function returns the following values:
+//
+//    - signalAction: new GtkShortcutAction.
+//
 func NewSignalAction(signalName string) *SignalAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -578,6 +623,11 @@ func NewSignalAction(signalName string) *SignalAction {
 }
 
 // SignalName returns the name of the signal that will be emitted.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the signal to emit.
+//
 func (self *SignalAction) SignalName() string {
 	var _arg0 *C.GtkSignalAction // out
 	var _cret *C.char            // in

@@ -57,7 +57,19 @@ func marshalGestureSwiper(p uintptr) (interface{}, error) {
 	return wrapGestureSwipe(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectSwipe: emitted when the recognized gesture is finished.
+//
+// Velocity and direction are a product of previously recorded events.
+func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) externglib.SignalHandle {
+	return gesture.Connect("swipe", f)
+}
+
 // NewGestureSwipe returns a newly created GtkGesture that recognizes swipes.
+//
+// The function returns the following values:
+//
+//    - gestureSwipe: newly created GtkGestureSwipe.
+//
 func NewGestureSwipe() *GestureSwipe {
 	var _cret *C.GtkGesture // in
 
@@ -75,6 +87,13 @@ func NewGestureSwipe() *GestureSwipe {
 // If the gesture is recognized, this function returns TRUE and fills in
 // velocity_x and velocity_y with the recorded velocity, as per the last events
 // processed.
+//
+// The function returns the following values:
+//
+//    - velocityX: return value for the velocity in the X axis, in pixels/sec.
+//    - velocityY: return value for the velocity in the Y axis, in pixels/sec.
+//    - ok: whether velocity could be calculated.
+//
 func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
 	var _arg0 *C.GtkGestureSwipe // out
 	var _arg1 C.double           // in
@@ -97,11 +116,4 @@ func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, o
 	}
 
 	return _velocityX, _velocityY, _ok
-}
-
-// ConnectSwipe: emitted when the recognized gesture is finished.
-//
-// Velocity and direction are a product of previously recorded events.
-func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) externglib.SignalHandle {
-	return gesture.Connect("swipe", f)
 }

@@ -55,7 +55,11 @@ func marshalCustomSorterer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - sortFunc: GCompareDataFunc to use for sorting.
+//    - sortFunc (optional): GCompareDataFunc to use for sorting.
+//
+// The function returns the following values:
+//
+//    - customSorter: new GtkCustomSorter.
 //
 func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 	var _arg1 C.GCompareDataFunc // out
@@ -90,7 +94,7 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 //
 // The function takes the following parameters:
 //
-//    - sortFunc: function to sort items.
+//    - sortFunc (optional): function to sort items.
 //
 func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
 	var _arg0 *C.GtkCustomSorter // out

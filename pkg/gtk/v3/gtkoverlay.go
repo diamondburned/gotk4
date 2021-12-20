@@ -30,6 +30,13 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type OverlayOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - widget
+	//    - allocation
+	//
+	// The function returns the following values:
+	//
 	ChildPosition(widget Widgetter, allocation *Allocation) bool
 }
 
@@ -95,6 +102,11 @@ func marshalOverlayer(p uintptr) (interface{}, error) {
 }
 
 // NewOverlay creates a new Overlay.
+//
+// The function returns the following values:
+//
+//    - overlay: new Overlay object.
+//
 func NewOverlay() *Overlay {
 	var _cret *C.GtkWidget // in
 
@@ -138,6 +150,10 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 //
 //    - widget: overlay child of Overlay.
 //
+// The function returns the following values:
+//
+//    - ok: whether the widget is a pass through child.
+//
 func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -171,7 +187,7 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 //
 //    - child: overlaid Widget to move.
 //    - index_: new index for child in the list of overlay children of overlay,
-//    starting from 0. If negative, indicates the end of the list.
+//      starting from 0. If negative, indicates the end of the list.
 //
 func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 	var _arg0 *C.GtkOverlay // out

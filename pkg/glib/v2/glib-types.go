@@ -13,6 +13,8 @@ import (
 // #include <glib.h>
 import "C"
 
+// The function returns the following values:
+//
 func StrvGetType() externglib.Type {
 	var _cret C.GType // in
 
@@ -25,6 +27,8 @@ func StrvGetType() externglib.Type {
 	return _gType
 }
 
+// The function returns the following values:
+//
 func VariantGetGType() externglib.Type {
 	var _cret C.GType // in
 

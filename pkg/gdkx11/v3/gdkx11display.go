@@ -66,8 +66,8 @@ func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 //
 // The function takes the following parameters:
 //
-//    - smClientId: client id assigned by the session manager when the
-//    connection was opened, or NULL to remove the property.
+//    - smClientId (optional): client id assigned by the session manager when the
+//      connection was opened, or NULL to remove the property.
 //
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.gchar // out
@@ -109,6 +109,11 @@ func marshalX11Displayer(p uintptr) (interface{}, error) {
 // gdk_x11_display_error_trap_pop_ignored() would be more efficient.
 //
 // See gdk_error_trap_pop() for the all-displays-at-once equivalent.
+//
+// The function returns the following values:
+//
+//    - gint: x error code or 0 on success.
+//
 func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
@@ -157,6 +162,11 @@ func (display *X11Display) ErrorTrapPush() {
 }
 
 // StartupNotificationID gets the startup notification ID for a display.
+//
+// The function returns the following values:
+//
+//    - utf8: startup notification ID for display.
+//
 func (display *X11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.gchar      // in
@@ -176,6 +186,11 @@ func (display *X11Display) StartupNotificationID() string {
 // UserTime returns the timestamp of the last user interaction on display. The
 // timestamp is taken from events caused by user interaction such as key presses
 // or pointer movements. See gdk_x11_window_set_user_time().
+//
+// The function returns the following values:
+//
+//    - guint32: timestamp of the last user interaction.
+//
 func (display *X11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint32     // in
@@ -217,8 +232,8 @@ func (display *X11Display) Grab() {
 //
 // The function takes the following parameters:
 //
-//    - theme: name of the cursor theme to use, or NULL to unset a previously
-//    set value.
+//    - theme (optional): name of the cursor theme to use, or NULL to unset a
+//      previously set value.
 //    - size: cursor size to use, or 0 to keep the previous size.
 //
 func (display *X11Display) SetCursorTheme(theme string, size int) {

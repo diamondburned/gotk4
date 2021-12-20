@@ -52,10 +52,12 @@ func marshalNotebookPageAccessibler(p uintptr) (interface{}, error) {
 	return wrapNotebookPageAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//
 // The function takes the following parameters:
 //
-
+//    - notebook
+//    - child
+//
+// The function returns the following values:
 //
 func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *NotebookPageAccessible {
 	var _arg1 *C.GtkNotebookAccessible // out

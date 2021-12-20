@@ -33,10 +33,26 @@ type PrintOperationPreviewOverrider interface {
 	//
 	// This function must be called to finish a custom print preview.
 	EndPreview()
+	// The function takes the following parameters:
+	//
+	//    - context
+	//    - pageSetup
+	//
 	GotPageSize(context *PrintContext, pageSetup *PageSetup)
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
+	//
+	// The function takes the following parameters:
+	//
+	//    - pageNr: page number.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the page has been selected for printing.
+	//
 	IsSelected(pageNr int) bool
+	// The function takes the following parameters:
+	//
 	Ready(context *PrintContext)
 	// RenderPage renders a page to the preview, using the print context that
 	// was passed to the PrintOperation::preview handler together with preview.
@@ -46,6 +62,11 @@ type PrintOperationPreviewOverrider interface {
 	//
 	// Note that this function requires a suitable cairo context to be
 	// associated with the print context.
+	//
+	// The function takes the following parameters:
+	//
+	//    - pageNr: page to render.
+	//
 	RenderPage(pageNr int)
 }
 
@@ -83,6 +104,24 @@ func marshalPrintOperationPreviewer(p uintptr) (interface{}, error) {
 	return wrapPrintOperationPreview(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectGotPageSize signal is emitted once for each page that gets rendered to
+// the preview.
+//
+// A handler for this signal should update the context according to page_setup
+// and set up a suitable cairo context, using
+// gtk_print_context_set_cairo_context().
+func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context PrintContext, pageSetup PageSetup)) externglib.SignalHandle {
+	return preview.Connect("got-page-size", f)
+}
+
+// ConnectReady signal gets emitted once per preview operation, before the first
+// page is rendered.
+//
+// A handler for this signal can be used for setup tasks.
+func (preview *PrintOperationPreview) ConnectReady(f func(context PrintContext)) externglib.SignalHandle {
+	return preview.Connect("ready", f)
+}
+
 // EndPreview ends a preview.
 //
 // This function must be called to finish a custom print preview.
@@ -101,6 +140,10 @@ func (preview *PrintOperationPreview) EndPreview() {
 // The function takes the following parameters:
 //
 //    - pageNr: page number.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the page has been selected for printing.
 //
 func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 	var _arg0 *C.GtkPrintOperationPreview // out
@@ -146,22 +189,4 @@ func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 	C.gtk_print_operation_preview_render_page(_arg0, _arg1)
 	runtime.KeepAlive(preview)
 	runtime.KeepAlive(pageNr)
-}
-
-// ConnectGotPageSize signal is emitted once for each page that gets rendered to
-// the preview.
-//
-// A handler for this signal should update the context according to page_setup
-// and set up a suitable cairo context, using
-// gtk_print_context_set_cairo_context().
-func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context PrintContext, pageSetup PageSetup)) externglib.SignalHandle {
-	return preview.Connect("got-page-size", f)
-}
-
-// ConnectReady signal gets emitted once per preview operation, before the first
-// page is rendered.
-//
-// A handler for this signal can be used for setup tasks.
-func (preview *PrintOperationPreview) ConnectReady(f func(context PrintContext)) externglib.SignalHandle {
-	return preview.Connect("ready", f)
 }

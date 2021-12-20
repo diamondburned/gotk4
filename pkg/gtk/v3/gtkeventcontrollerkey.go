@@ -50,10 +50,35 @@ func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
 	return wrapEventControllerKey(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//
+func (controller *EventControllerKey) ConnectFocusIn(f func()) externglib.SignalHandle {
+	return controller.Connect("focus-in", f)
+}
+
+func (controller *EventControllerKey) ConnectFocusOut(f func()) externglib.SignalHandle {
+	return controller.Connect("focus-out", f)
+}
+
+func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
+	return controller.Connect("im-update", f)
+}
+
+// ConnectKeyPressed: this signal is emitted whenever a key is pressed.
+func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) externglib.SignalHandle {
+	return controller.Connect("key-pressed", f)
+}
+
+// ConnectKeyReleased: this signal is emitted whenever a key is released.
+func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
+	return controller.Connect("key-released", f)
+}
+
+func (controller *EventControllerKey) ConnectModifiers(f func(object gdk.ModifierType) bool) externglib.SignalHandle {
+	return controller.Connect("modifiers", f)
+}
+
 // The function takes the following parameters:
 //
-
+// The function returns the following values:
 //
 func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	var _arg1 *C.GtkWidget          // out
@@ -71,10 +96,9 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	return _eventControllerKey
 }
 
-//
 // The function takes the following parameters:
 //
-
+// The function returns the following values:
 //
 func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
@@ -97,6 +121,8 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	return _ok
 }
 
+// The function returns the following values:
+//
 func (controller *EventControllerKey) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
@@ -114,6 +140,11 @@ func (controller *EventControllerKey) Group() uint {
 }
 
 // IMContext gets the IM context of a key controller.
+//
+// The function returns the following values:
+//
+//    - imContext: IM context.
+//
 func (controller *EventControllerKey) IMContext() IMContexter {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
@@ -143,10 +174,7 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 	return _imContext
 }
 
-//
 // The function takes the following parameters:
-//
-
 //
 func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	var _arg0 *C.GtkEventControllerKey // out
@@ -158,30 +186,4 @@ func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	C.gtk_event_controller_key_set_im_context(_arg0, _arg1)
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(imContext)
-}
-
-func (controller *EventControllerKey) ConnectFocusIn(f func()) externglib.SignalHandle {
-	return controller.Connect("focus-in", f)
-}
-
-func (controller *EventControllerKey) ConnectFocusOut(f func()) externglib.SignalHandle {
-	return controller.Connect("focus-out", f)
-}
-
-func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
-	return controller.Connect("im-update", f)
-}
-
-// ConnectKeyPressed: this signal is emitted whenever a key is pressed.
-func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("key-pressed", f)
-}
-
-// ConnectKeyReleased: this signal is emitted whenever a key is released.
-func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
-	return controller.Connect("key-released", f)
-}
-
-func (controller *EventControllerKey) ConnectModifiers(f func(object gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("modifiers", f)
 }

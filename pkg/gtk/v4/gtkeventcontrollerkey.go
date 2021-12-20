@@ -46,8 +46,37 @@ func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
 	return wrapEventControllerKey(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectIMUpdate: emitted whenever the input method context filters away a
+// keypress and prevents the controller receiving it.
+//
+// See gtk.EventControllerKey.SetIMContext() and gtk.IMContext.FilterKeypress().
+func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
+	return controller.Connect("im-update", f)
+}
+
+// ConnectKeyPressed: emitted whenever a key is pressed.
+func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) externglib.SignalHandle {
+	return controller.Connect("key-pressed", f)
+}
+
+// ConnectKeyReleased: emitted whenever a key is released.
+func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
+	return controller.Connect("key-released", f)
+}
+
+// ConnectModifiers: emitted whenever the state of modifier keys and pointer
+// buttons change.
+func (controller *EventControllerKey) ConnectModifiers(f func(keyval gdk.ModifierType) bool) externglib.SignalHandle {
+	return controller.Connect("modifiers", f)
+}
+
 // NewEventControllerKey creates a new event controller that will handle key
 // events.
+//
+// The function returns the following values:
+//
+//    - eventControllerKey: new GtkEventControllerKey.
+//
 func NewEventControllerKey() *EventControllerKey {
 	var _cret *C.GtkEventController // in
 
@@ -69,6 +98,10 @@ func NewEventControllerKey() *EventControllerKey {
 // The function takes the following parameters:
 //
 //    - widget: GtkWidget.
+//
+// The function returns the following values:
+//
+//    - ok: whether the widget handled the event.
 //
 func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
@@ -94,6 +127,11 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 // Group gets the key group of the current event of this controller.
 //
 // See gdk.KeyEvent.GetLayout().
+//
+// The function returns the following values:
+//
+//    - guint: key group.
+//
 func (controller *EventControllerKey) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
@@ -111,6 +149,11 @@ func (controller *EventControllerKey) Group() uint {
 }
 
 // IMContext gets the input method context of the key controller.
+//
+// The function returns the following values:
+//
+//    - imContext: GtkIMContext.
+//
 func (controller *EventControllerKey) IMContext() IMContexter {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
@@ -156,28 +199,4 @@ func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	C.gtk_event_controller_key_set_im_context(_arg0, _arg1)
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(imContext)
-}
-
-// ConnectIMUpdate: emitted whenever the input method context filters away a
-// keypress and prevents the controller receiving it.
-//
-// See gtk.EventControllerKey.SetIMContext() and gtk.IMContext.FilterKeypress().
-func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
-	return controller.Connect("im-update", f)
-}
-
-// ConnectKeyPressed: emitted whenever a key is pressed.
-func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("key-pressed", f)
-}
-
-// ConnectKeyReleased: emitted whenever a key is released.
-func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
-	return controller.Connect("key-released", f)
-}
-
-// ConnectModifiers: emitted whenever the state of modifier keys and pointer
-// buttons change.
-func (controller *EventControllerKey) ConnectModifiers(f func(keyval gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("modifiers", f)
 }

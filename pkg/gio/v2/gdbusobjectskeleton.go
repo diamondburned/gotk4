@@ -27,6 +27,13 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectSkeletonOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - interface_
+	//    - invocation
+	//
+	// The function returns the following values:
+	//
 	AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
 }
 
@@ -58,11 +65,27 @@ func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
 	return wrapDBusObjectSkeleton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAuthorizeMethod: emitted when a method is invoked by a remote caller
+// and used to determine if the method call is authorized.
+//
+// This signal is like BusInterfaceSkeleton's
+// BusInterfaceSkeleton::g-authorize-method signal, except that it is for the
+// enclosing object.
+//
+// The default class handler just returns TRUE.
+func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation DBusMethodInvocation) bool) externglib.SignalHandle {
+	return object.Connect("authorize-method", f)
+}
+
 // NewDBusObjectSkeleton creates a new BusObjectSkeleton.
 //
 // The function takes the following parameters:
 //
 //    - objectPath: object path.
+//
+// The function returns the following values:
+//
+//    - dBusObjectSkeleton Free with g_object_unref().
 //
 func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	var _arg1 *C.gchar               // out
@@ -174,16 +197,4 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	C.g_dbus_object_skeleton_set_object_path(_arg0, _arg1)
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(objectPath)
-}
-
-// ConnectAuthorizeMethod: emitted when a method is invoked by a remote caller
-// and used to determine if the method call is authorized.
-//
-// This signal is like BusInterfaceSkeleton's
-// BusInterfaceSkeleton::g-authorize-method signal, except that it is for the
-// enclosing object.
-//
-// The default class handler just returns TRUE.
-func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation DBusMethodInvocation) bool) externglib.SignalHandle {
-	return object.Connect("authorize-method", f)
 }

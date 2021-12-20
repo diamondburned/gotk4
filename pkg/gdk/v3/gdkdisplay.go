@@ -58,6 +58,40 @@ func marshalDisplayer(p uintptr) (interface{}, error) {
 	return wrapDisplay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectClosed signal is emitted when the connection to the windowing system
+// for display is closed.
+func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
+	return display.Connect("closed", f)
+}
+
+// ConnectMonitorAdded signal is emitted whenever a monitor is added.
+func (display *Display) ConnectMonitorAdded(f func(monitor Monitor)) externglib.SignalHandle {
+	return display.Connect("monitor-added", f)
+}
+
+// ConnectMonitorRemoved signal is emitted whenever a monitor is removed.
+func (display *Display) ConnectMonitorRemoved(f func(monitor Monitor)) externglib.SignalHandle {
+	return display.Connect("monitor-removed", f)
+}
+
+// ConnectOpened signal is emitted when the connection to the windowing system
+// for display is opened.
+func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
+	return display.Connect("opened", f)
+}
+
+// ConnectSeatAdded signal is emitted whenever a new seat is made known to the
+// windowing system.
+func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
+	return display.Connect("seat-added", f)
+}
+
+// ConnectSeatRemoved signal is emitted whenever a seat is removed by the
+// windowing system.
+func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
+	return display.Connect("seat-removed", f)
+}
+
 // Beep emits a short beep on display.
 func (display *Display) Beep() {
 	var _arg0 *C.GdkDisplay // out
@@ -85,6 +119,10 @@ func (display *Display) Close() {
 // The function takes the following parameters:
 //
 //    - device: Device.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if there is a grab in effect for device.
 //
 func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _arg0 *C.GdkDisplay // out
@@ -127,6 +165,12 @@ func (display *Display) Flush() {
 
 // AppLaunchContext returns a AppLaunchContext suitable for launching
 // applications on the given display.
+//
+// The function returns the following values:
+//
+//    - appLaunchContext: new AppLaunchContext for display. Free with
+//      g_object_unref() when done.
+//
 func (display *Display) AppLaunchContext() *AppLaunchContext {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
@@ -144,6 +188,11 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 }
 
 // DefaultCursorSize returns the default size to use for cursors on display.
+//
+// The function returns the following values:
+//
+//    - guint: default cursor size.
+//
 func (display *Display) DefaultCursorSize() uint {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint       // in
@@ -163,6 +212,11 @@ func (display *Display) DefaultCursorSize() uint {
 // DefaultGroup returns the default group leader window for all toplevel windows
 // on display. This window is implicitly created by GDK. See
 // gdk_window_set_group().
+//
+// The function returns the following values:
+//
+//    - window: default group leader window for display.
+//
 func (display *Display) DefaultGroup() Windower {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkWindow  // in
@@ -193,6 +247,11 @@ func (display *Display) DefaultGroup() Windower {
 }
 
 // DefaultScreen: get the default Screen for display.
+//
+// The function returns the following values:
+//
+//    - screen: default Screen object for display.
+//
 func (display *Display) DefaultScreen() *Screen {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkScreen  // in
@@ -210,6 +269,11 @@ func (display *Display) DefaultScreen() *Screen {
 }
 
 // DefaultSeat returns the default Seat for this display.
+//
+// The function returns the following values:
+//
+//    - seat: default seat.
+//
 func (display *Display) DefaultSeat() Seater {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
@@ -242,6 +306,12 @@ func (display *Display) DefaultSeat() Seater {
 // DeviceManager returns the DeviceManager associated to display.
 //
 // Deprecated: Use gdk_display_get_default_seat() and Seat operations.
+//
+// The function returns the following values:
+//
+//    - deviceManager (optional) or NULL. This memory is owned by GDK and must
+//      not be freed or unreferenced.
+//
 func (display *Display) DeviceManager() DeviceManagerer {
 	var _arg0 *C.GdkDisplay       // out
 	var _cret *C.GdkDeviceManager // in
@@ -271,6 +341,12 @@ func (display *Display) DeviceManager() DeviceManagerer {
 }
 
 // MaximalCursorSize gets the maximal size to use for cursors on display.
+//
+// The function returns the following values:
+//
+//    - width: return location for the maximal cursor width.
+//    - height: return location for the maximal cursor height.
+//
 func (display *Display) MaximalCursorSize() (width uint, height uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // in
@@ -295,6 +371,10 @@ func (display *Display) MaximalCursorSize() (width uint, height uint) {
 // The function takes the following parameters:
 //
 //    - monitorNum: number of the monitor.
+//
+// The function returns the following values:
+//
+//    - monitor (optional) or NULL if monitor_num is not a valid monitor number.
 //
 func (display *Display) Monitor(monitorNum int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
@@ -325,6 +405,10 @@ func (display *Display) Monitor(monitorNum int) *Monitor {
 //    - x coordinate of the point.
 //    - y coordinate of the point.
 //
+// The function returns the following values:
+//
+//    - monitor containing the point.
+//
 func (display *Display) MonitorAtPoint(x, y int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
@@ -354,6 +438,10 @@ func (display *Display) MonitorAtPoint(x, y int) *Monitor {
 //
 //    - window: Window.
 //
+// The function returns the following values:
+//
+//    - monitor with the largest overlap with window.
+//
 func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkWindow  // out
@@ -377,6 +465,11 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 //
 // The returned number is valid until the next emission of the
 // Display::monitor-added or Display::monitor-removed signal.
+//
+// The function returns the following values:
+//
+//    - gint: number of monitors.
+//
 func (display *Display) NMonitors() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.int         // in
@@ -396,6 +489,11 @@ func (display *Display) NMonitors() int {
 // NScreens gets the number of screen managed by the display.
 //
 // Deprecated: The number of screens is always 1.
+//
+// The function returns the following values:
+//
+//    - gint: number of screens.
+//
 func (display *Display) NScreens() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
@@ -413,6 +511,12 @@ func (display *Display) NScreens() int {
 }
 
 // Name gets the name of the display.
+//
+// The function returns the following values:
+//
+//    - utf8: string representing the display name. This string is owned by GDK
+//      and should not be modified or freed.
+//
 func (display *Display) Name() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.gchar      // in
@@ -433,6 +537,17 @@ func (display *Display) Name() string {
 // mask for a given display.
 //
 // Deprecated: Use gdk_device_get_position() instead.
+//
+// The function returns the following values:
+//
+//    - screen (optional): location to store the screen that the cursor is on, or
+//      NULL.
+//    - x (optional): location to store root window X coordinate of pointer, or
+//      NULL.
+//    - y (optional): location to store root window Y coordinate of pointer, or
+//      NULL.
+//    - mask (optional): location to store current modifier mask, or NULL.
+//
 func (display *Display) Pointer() (screen *Screen, x int, y int, mask ModifierType) {
 	var _arg0 *C.GdkDisplay     // out
 	var _arg1 *C.GdkScreen      // in
@@ -466,6 +581,12 @@ func (display *Display) Pointer() (screen *Screen, x int, y int, mask ModifierTy
 // While normal application windows typically allow the window manager to place
 // the windows, specialized desktop applications such as panels should place
 // themselves on the primary monitor.
+//
+// The function returns the following values:
+//
+//    - monitor (optional): primary monitor, or NULL if no primary monitor is
+//      configured by the user.
+//
 func (display *Display) PrimaryMonitor() *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkMonitor // in
@@ -493,6 +614,10 @@ func (display *Display) PrimaryMonitor() *Monitor {
 //
 //    - screenNum: screen number.
 //
+// The function returns the following values:
+//
+//    - screen: Screen object.
+//
 func (display *Display) Screen(screenNum int) *Screen {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
@@ -518,6 +643,15 @@ func (display *Display) Screen(screenNum int) *Screen {
 // example, belongs to another application).
 //
 // Deprecated: Use gdk_device_get_window_at_position() instead.
+//
+// The function returns the following values:
+//
+//    - winX (optional): return location for x coordinate of the pointer location
+//      relative to the window origin, or NULL.
+//    - winY (optional): return location for y coordinate of the pointer location
+//      relative & to the window origin, or NULL.
+//    - window (optional) under the mouse pointer, or NULL.
+//
 func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // in
@@ -554,6 +688,11 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) 
 
 // HasPending returns whether the display has events that are waiting to be
 // processed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if there are events ready to be processed.
+//
 func (display *Display) HasPending() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -573,6 +712,11 @@ func (display *Display) HasPending() bool {
 }
 
 // IsClosed finds out if the display has been closed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the display is closed.
+//
 func (display *Display) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -615,6 +759,11 @@ func (display *Display) KeyboardUngrab(time_ uint32) {
 // The list is statically allocated and should not be freed.
 //
 // Deprecated: Use gdk_device_manager_list_devices() instead.
+//
+// The function returns the following values:
+//
+//    - list: a list of Device.
+//
 func (display *Display) ListDevices() []Devicer {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GList      // in
@@ -651,6 +800,11 @@ func (display *Display) ListDevices() []Devicer {
 }
 
 // ListSeats returns the list of seats known to display.
+//
+// The function returns the following values:
+//
+//    - list: the list of seats known to the Display.
+//
 func (display *Display) ListSeats() []Seater {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GList      // in
@@ -696,7 +850,7 @@ func (display *Display) ListSeats() []Seater {
 // The function takes the following parameters:
 //
 //    - startupId: startup-notification identifier, for which notification
-//    process should be completed.
+//      process should be completed.
 //
 func (display *Display) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
@@ -714,6 +868,11 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 // PointerIsGrabbed: test if the pointer is grabbed.
 //
 // Deprecated: Use gdk_display_device_is_grabbed() instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if an active X pointer grab is in effect.
+//
 func (display *Display) PointerIsGrabbed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -816,6 +975,11 @@ func (display *Display) SetDoubleClickTime(msec uint) {
 // clipboard persistance; i.e. if it’s possible to store the clipboard data
 // after an application has quit. On X11 this checks if a clipboard daemon is
 // running.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the display supports clipboard persistance.
+//
 func (display *Display) SupportsClipboardPersistence() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -842,6 +1006,11 @@ func (display *Display) SupportsClipboardPersistence() bool {
 //
 // Deprecated: Compositing is an outdated technology that only ever worked on
 // X11.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if windows may be composited.
+//
 func (display *Display) SupportsComposite() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -862,6 +1031,11 @@ func (display *Display) SupportsComposite() bool {
 
 // SupportsCursorAlpha returns TRUE if cursors can use an 8bit alpha channel on
 // display. Otherwise, cursors are restricted to bilevel alpha (i.e. a mask).
+//
+// The function returns the following values:
+//
+//    - ok: whether cursors can have alpha channels.
+//
 func (display *Display) SupportsCursorAlpha() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -882,6 +1056,11 @@ func (display *Display) SupportsCursorAlpha() bool {
 
 // SupportsCursorColor returns TRUE if multicolored cursors are supported on
 // display. Otherwise, cursors have only a forground and a background color.
+//
+// The function returns the following values:
+//
+//    - ok: whether cursors can have multiple colors.
+//
 func (display *Display) SupportsCursorColor() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -902,6 +1081,11 @@ func (display *Display) SupportsCursorColor() bool {
 
 // SupportsInputShapes returns TRUE if gdk_window_input_shape_combine_mask() can
 // be used to modify the input shape of windows on display.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if windows with modified input shape are supported.
+//
 func (display *Display) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -922,6 +1106,11 @@ func (display *Display) SupportsInputShapes() bool {
 
 // SupportsSelectionNotification returns whether EventOwnerChange events will be
 // sent when the owner of a selection changes.
+//
+// The function returns the following values:
+//
+//    - ok: whether EventOwnerChange events will be sent.
+//
 func (display *Display) SupportsSelectionNotification() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -942,6 +1131,11 @@ func (display *Display) SupportsSelectionNotification() bool {
 
 // SupportsShapes returns TRUE if gdk_window_shape_combine_mask() can be used to
 // create shaped windows on display.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if shaped windows are supported.
+//
 func (display *Display) SupportsShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -1012,42 +1206,13 @@ func (display *Display) WarpPointer(screen *Screen, x, y int) {
 	runtime.KeepAlive(y)
 }
 
-// ConnectClosed signal is emitted when the connection to the windowing system
-// for display is closed.
-func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
-	return display.Connect("closed", f)
-}
-
-// ConnectMonitorAdded signal is emitted whenever a monitor is added.
-func (display *Display) ConnectMonitorAdded(f func(monitor Monitor)) externglib.SignalHandle {
-	return display.Connect("monitor-added", f)
-}
-
-// ConnectMonitorRemoved signal is emitted whenever a monitor is removed.
-func (display *Display) ConnectMonitorRemoved(f func(monitor Monitor)) externglib.SignalHandle {
-	return display.Connect("monitor-removed", f)
-}
-
-// ConnectOpened signal is emitted when the connection to the windowing system
-// for display is opened.
-func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
-	return display.Connect("opened", f)
-}
-
-// ConnectSeatAdded signal is emitted whenever a new seat is made known to the
-// windowing system.
-func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-added", f)
-}
-
-// ConnectSeatRemoved signal is emitted whenever a seat is removed by the
-// windowing system.
-func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-removed", f)
-}
-
 // DisplayGetDefault gets the default Display. This is a convenience function
 // for: gdk_display_manager_get_default_display (gdk_display_manager_get ()).
+//
+// The function returns the following values:
+//
+//    - display (optional) or NULL if there is no default display.
+//
 func DisplayGetDefault() *Display {
 	var _cret *C.GdkDisplay // in
 
@@ -1067,6 +1232,10 @@ func DisplayGetDefault() *Display {
 // The function takes the following parameters:
 //
 //    - displayName: name of the display to open.
+//
+// The function returns the following values:
+//
+//    - display (optional) or NULL if the display could not be opened.
 //
 func DisplayOpen(displayName string) *Display {
 	var _arg1 *C.gchar      // out
@@ -1094,6 +1263,12 @@ func DisplayOpen(displayName string) *Display {
 // that should not be used by applications.
 //
 // Deprecated: This symbol was never meant to be used outside of GTK+.
+//
+// The function returns the following values:
+//
+//    - display (optional): default display, if it could be opened, otherwise
+//      NULL.
+//
 func DisplayOpenDefaultLibgtkOnly() *Display {
 	var _cret *C.GdkDisplay // in
 

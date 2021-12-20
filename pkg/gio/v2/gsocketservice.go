@@ -27,6 +27,13 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SocketServiceOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - connection
+	//    - sourceObject
+	//
+	// The function returns the following values:
+	//
 	Incoming(connection *SocketConnection, sourceObject *externglib.Object) bool
 }
 
@@ -72,6 +79,16 @@ func marshalSocketServicer(p uintptr) (interface{}, error) {
 	return wrapSocketService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectIncoming signal is emitted when a new incoming connection to service
+// needs to be handled. The handler must initiate the handling of connection,
+// but may not block; in essence, asynchronous operations must be used.
+//
+// connection will be unreffed once the signal handler returns, so you need to
+// ref it yourself if you are planning to use it.
+func (service *SocketService) ConnectIncoming(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
+	return service.Connect("incoming", f)
+}
+
 // NewSocketService creates a new Service with no sockets to listen for. New
 // listeners can be added with e.g. g_socket_listener_add_address() or
 // g_socket_listener_add_inet_port().
@@ -79,6 +96,11 @@ func marshalSocketServicer(p uintptr) (interface{}, error) {
 // New services are created active, there is no need to call
 // g_socket_service_start(), unless g_socket_service_stop() has been called
 // before.
+//
+// The function returns the following values:
+//
+//    - socketService: new Service.
+//
 func NewSocketService() *SocketService {
 	var _cret *C.GSocketService // in
 
@@ -94,6 +116,11 @@ func NewSocketService() *SocketService {
 // IsActive: check whether the service is active or not. An active service will
 // accept new clients that connect, while a non-active service will let
 // connecting clients queue up until the service is started.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the service is active, FALSE otherwise.
+//
 func (service *SocketService) IsActive() bool {
 	var _arg0 *C.GSocketService // out
 	var _cret C.gboolean        // in
@@ -149,14 +176,4 @@ func (service *SocketService) Stop() {
 
 	C.g_socket_service_stop(_arg0)
 	runtime.KeepAlive(service)
-}
-
-// ConnectIncoming signal is emitted when a new incoming connection to service
-// needs to be handled. The handler must initiate the handling of connection,
-// but may not block; in essence, asynchronous operations must be used.
-//
-// connection will be unreffed once the signal handler returns, so you need to
-// ref it yourself if you are planning to use it.
-func (service *SocketService) ConnectIncoming(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
-	return service.Connect("incoming", f)
 }

@@ -63,6 +63,11 @@ func marshalMemoryInputStreamer(p uintptr) (interface{}, error) {
 }
 
 // NewMemoryInputStream creates a new empty InputStream.
+//
+// The function returns the following values:
+//
+//    - memoryInputStream: new Stream.
+//
 func NewMemoryInputStream() *MemoryInputStream {
 	var _cret *C.GInputStream // in
 
@@ -81,6 +86,10 @@ func NewMemoryInputStream() *MemoryInputStream {
 // The function takes the following parameters:
 //
 //    - bytes: #GBytes.
+//
+// The function returns the following values:
+//
+//    - memoryInputStream: new Stream read from bytes.
 //
 func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 	var _arg1 *C.GBytes       // out

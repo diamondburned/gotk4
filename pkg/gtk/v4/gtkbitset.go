@@ -36,6 +36,11 @@ type bitsetIter struct {
 //
 // If iter is not valid and gtk.BitsetIter.IsValid() returns FALSE, this
 // function returns 0.
+//
+// The function returns the following values:
+//
+//    - guint: current value pointer to by iter.
+//
 func (iter *BitsetIter) Value() uint {
 	var _arg0 *C.GtkBitsetIter // out
 	var _cret C.guint          // in
@@ -53,6 +58,11 @@ func (iter *BitsetIter) Value() uint {
 }
 
 // IsValid checks if iter points to a valid value.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter points to a valid value.
+//
 func (iter *BitsetIter) IsValid() bool {
 	var _arg0 *C.GtkBitsetIter // out
 	var _cret C.gboolean       // in
@@ -75,6 +85,12 @@ func (iter *BitsetIter) IsValid() bool {
 //
 // If it was already pointing to the last value in the set, FALSE is returned
 // and iter is invalidated.
+//
+// The function returns the following values:
+//
+//    - value (optional): set to the next value.
+//    - ok: TRUE if a next value existed.
+//
 func (iter *BitsetIter) Next() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
 	var _arg1 C.guint          // in
@@ -100,6 +116,12 @@ func (iter *BitsetIter) Next() (uint, bool) {
 //
 // If it was already pointing to the first value in the set, FALSE is returned
 // and iter is invalidated.
+//
+// The function returns the following values:
+//
+//    - value (optional): set to the previous value.
+//    - ok: TRUE if a previous value existed.
+//
 func (iter *BitsetIter) Previous() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
 	var _arg1 C.guint          // in
@@ -130,6 +152,12 @@ func (iter *BitsetIter) Previous() (uint, bool) {
 //
 //    - set: GtkBitset.
 //    - target value to start iterating at.
+//
+// The function returns the following values:
+//
+//    - iter: pointer to an uninitialized GtkBitsetIter.
+//    - value (optional): set to the found value in set.
+//    - ok: TRUE if a value was found.
 //
 func BitsetIterInitAt(set *Bitset, target uint) (*BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
@@ -167,6 +195,12 @@ func BitsetIterInitAt(set *Bitset, target uint) (*BitsetIter, uint, bool) {
 //
 //    - set: GtkBitset.
 //
+// The function returns the following values:
+//
+//    - iter: pointer to an uninitialized GtkBitsetIter.
+//    - value (optional): set to the first value in set.
+//    - ok: TRUE if set isn't empty.
+//
 func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out
@@ -199,6 +233,12 @@ func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint, bool) {
 // The function takes the following parameters:
 //
 //    - set: GtkBitset.
+//
+// The function returns the following values:
+//
+//    - iter: pointer to an uninitialized GtkBitsetIter.
+//    - value (optional): set to the last value in set.
+//    - ok: TRUE if set isn't empty.
 //
 func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in

@@ -130,6 +130,11 @@ func marshalDrawingAreaer(p uintptr) (interface{}, error) {
 }
 
 // NewDrawingArea creates a new drawing area.
+//
+// The function returns the following values:
+//
+//    - drawingArea: new DrawingArea.
+//
 func NewDrawingArea() *DrawingArea {
 	var _cret *C.GtkWidget // in
 

@@ -138,6 +138,11 @@ func FocusTrackerNotify(object *ObjectClass) {
 }
 
 // GetFocusObject gets the currently focused object.
+//
+// The function returns the following values:
+//
+//    - object: currently focused object for the current application.
+//
 func GetFocusObject() *ObjectClass {
 	var _cret *C.AtkObject // in
 
@@ -151,6 +156,11 @@ func GetFocusObject() *ObjectClass {
 }
 
 // GetRoot gets the root accessible container for the current application.
+//
+// The function returns the following values:
+//
+//    - object: root accessible container for the current application.
+//
 func GetRoot() *ObjectClass {
 	var _cret *C.AtkObject // in
 
@@ -165,6 +175,12 @@ func GetRoot() *ObjectClass {
 
 // GetToolkitName gets name string for the GUI toolkit implementing ATK for this
 // application.
+//
+// The function returns the following values:
+//
+//    - utf8: name string for the GUI toolkit implementing ATK for this
+//      application.
+//
 func GetToolkitName() string {
 	var _cret *C.gchar // in
 
@@ -179,6 +195,12 @@ func GetToolkitName() string {
 
 // GetToolkitVersion gets version string for the GUI toolkit implementing ATK
 // for this application.
+//
+// The function returns the following values:
+//
+//    - utf8: version string for the GUI toolkit implementing ATK for this
+//      application.
+//
 func GetToolkitVersion() string {
 	var _cret *C.gchar // in
 
@@ -192,6 +214,11 @@ func GetToolkitVersion() string {
 }
 
 // GetVersion gets the current version for ATK.
+//
+// The function returns the following values:
+//
+//    - utf8: version string for ATK.
+//
 func GetVersion() string {
 	var _cret *C.gchar // in
 

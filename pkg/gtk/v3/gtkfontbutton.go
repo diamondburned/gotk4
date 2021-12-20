@@ -102,7 +102,23 @@ func marshalFontButtonner(p uintptr) (interface{}, error) {
 	return wrapFontButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectFontSet signal is emitted when the user selects a font. When handling
+// this signal, use gtk_font_chooser_get_font() to find out which font was just
+// selected.
+//
+// Note that this signal is only emitted when the user changes the font. If you
+// need to react to programmatic font changes as well, use the notify::font
+// signal.
+func (fontButton *FontButton) ConnectFontSet(f func()) externglib.SignalHandle {
+	return fontButton.Connect("font-set", f)
+}
+
 // NewFontButton creates a new font picker widget.
+//
+// The function returns the following values:
+//
+//    - fontButton: new font picker widget.
+//
 func NewFontButton() *FontButton {
 	var _cret *C.GtkWidget // in
 
@@ -120,6 +136,10 @@ func NewFontButton() *FontButton {
 // The function takes the following parameters:
 //
 //    - fontname: name of font to display in font chooser dialog.
+//
+// The function returns the following values:
+//
+//    - fontButton: new font picker widget.
 //
 func NewFontButtonWithFont(fontname string) *FontButton {
 	var _arg1 *C.gchar     // out
@@ -145,6 +165,11 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 // weight) just query these properties from the FontDescription object.
 //
 // Deprecated: Use gtk_font_chooser_get_font() instead.
+//
+// The function returns the following values:
+//
+//    - utf8: internal copy of the font name which must not be freed.
+//
 func (fontButton *FontButton) FontName() string {
 	var _arg0 *C.GtkFontButton // out
 	var _cret *C.gchar         // in
@@ -162,6 +187,11 @@ func (fontButton *FontButton) FontName() string {
 }
 
 // ShowSize returns whether the font size will be shown in the label.
+//
+// The function returns the following values:
+//
+//    - ok: whether the font size will be shown in the label.
+//
 func (fontButton *FontButton) ShowSize() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
@@ -182,6 +212,11 @@ func (fontButton *FontButton) ShowSize() bool {
 
 // ShowStyle returns whether the name of the font style will be shown in the
 // label.
+//
+// The function returns the following values:
+//
+//    - ok: whether the font style will be shown in the label.
+//
 func (fontButton *FontButton) ShowStyle() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
@@ -201,6 +236,11 @@ func (fontButton *FontButton) ShowStyle() bool {
 }
 
 // Title retrieves the title of the font chooser dialog.
+//
+// The function returns the following values:
+//
+//    - utf8: internal copy of the title string which must not be freed.
+//
 func (fontButton *FontButton) Title() string {
 	var _arg0 *C.GtkFontButton // out
 	var _cret *C.gchar         // in
@@ -218,6 +258,11 @@ func (fontButton *FontButton) Title() string {
 }
 
 // UseFont returns whether the selected font is used in the label.
+//
+// The function returns the following values:
+//
+//    - ok: whether the selected font is used in the label.
+//
 func (fontButton *FontButton) UseFont() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
@@ -237,6 +282,11 @@ func (fontButton *FontButton) UseFont() bool {
 }
 
 // UseSize returns whether the selected size is used in the label.
+//
+// The function returns the following values:
+//
+//    - ok: whether the selected size is used in the label.
+//
 func (fontButton *FontButton) UseSize() bool {
 	var _arg0 *C.GtkFontButton // out
 	var _cret C.gboolean       // in
@@ -263,6 +313,10 @@ func (fontButton *FontButton) UseSize() bool {
 // The function takes the following parameters:
 //
 //    - fontname: name of font to display in font chooser dialog.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE.
 //
 func (fontButton *FontButton) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontButton // out
@@ -387,15 +441,4 @@ func (fontButton *FontButton) SetUseSize(useSize bool) {
 	C.gtk_font_button_set_use_size(_arg0, _arg1)
 	runtime.KeepAlive(fontButton)
 	runtime.KeepAlive(useSize)
-}
-
-// ConnectFontSet signal is emitted when the user selects a font. When handling
-// this signal, use gtk_font_chooser_get_font() to find out which font was just
-// selected.
-//
-// Note that this signal is only emitted when the user changes the font. If you
-// need to react to programmatic font changes as well, use the notify::font
-// signal.
-func (fontButton *FontButton) ConnectFontSet(f func()) externglib.SignalHandle {
-	return fontButton.Connect("font-set", f)
 }

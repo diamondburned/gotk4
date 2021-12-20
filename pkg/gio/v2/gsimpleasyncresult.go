@@ -36,8 +36,8 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - object or NULL.
-//    - callback: ReadyCallback.
+//    - object (optional) or NULL.
+//    - callback (optional): ReadyCallback.
 //    - err to report.
 //
 func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncReadyCallback, err error) {
@@ -256,9 +256,13 @@ func marshalSimpleAsyncResulter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - sourceObject or NULL.
-//    - callback: ReadyCallback.
-//    - sourceTag asynchronous function.
+//    - sourceObject (optional) or NULL.
+//    - callback (optional): ReadyCallback.
+//    - sourceTag (optional) asynchronous function.
+//
+// The function returns the following values:
+//
+//    - simpleAsyncResult: AsyncResult.
 //
 func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCallback, sourceTag cgo.Handle) *SimpleAsyncResult {
 	var _arg1 *C.GObject            // out
@@ -294,9 +298,13 @@ func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCa
 //
 // The function takes the following parameters:
 //
-//    - sourceObject or NULL.
-//    - callback: ReadyCallback.
+//    - sourceObject (optional) or NULL.
+//    - callback (optional): ReadyCallback.
 //    - err: #GError.
+//
+// The function returns the following values:
+//
+//    - simpleAsyncResult: AsyncResult.
 //
 func NewSimpleAsyncResultFromError(sourceObject *externglib.Object, callback AsyncReadyCallback, err error) *SimpleAsyncResult {
 	var _arg1 *C.GObject            // out
@@ -366,6 +374,12 @@ func (simple *SimpleAsyncResult) CompleteInIdle() {
 // result.
 //
 // Deprecated: Use #GTask and g_task_propagate_boolean() instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the operation's result was TRUE, FALSE if the operation's
+//      result was FALSE.
+//
 func (simple *SimpleAsyncResult) OpResGboolean() bool {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gboolean            // in
@@ -387,6 +401,11 @@ func (simple *SimpleAsyncResult) OpResGboolean() bool {
 // OpResGssize gets a gssize from the asynchronous result.
 //
 // Deprecated: Use #GTask and g_task_propagate_int() instead.
+//
+// The function returns the following values:
+//
+//    - gssize returned from the asynchronous function.
+//
 func (simple *SimpleAsyncResult) OpResGssize() int {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gssize              // in
@@ -449,7 +468,7 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 //
 // The function takes the following parameters:
 //
-//    - ctx to check, or NULL to unset.
+//    - ctx (optional) to check, or NULL to unset.
 //
 func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 	var _arg0 *C.GSimpleAsyncResult // out
@@ -574,8 +593,12 @@ func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 // The function takes the following parameters:
 //
 //    - result passed to the _finish function.
-//    - source passed to the _finish function.
-//    - sourceTag asynchronous function.
+//    - source (optional) passed to the _finish function.
+//    - sourceTag (optional) asynchronous function.
+//
+// The function returns the following values:
+//
+//    - ok if all checks passed or LSE if any failed.
 //
 func SimpleAsyncResultIsValid(result AsyncResulter, source *externglib.Object, sourceTag cgo.Handle) bool {
 	var _arg1 *C.GAsyncResult // out

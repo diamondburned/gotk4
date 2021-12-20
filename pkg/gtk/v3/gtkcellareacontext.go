@@ -41,6 +41,14 @@ type CellAreaContextOverrider interface {
 	// for TreeView when TreeView:fixed-height-mode is enabled.
 	//
 	// Since 3.0.
+	//
+	// The function takes the following parameters:
+	//
+	//    - width: allocated width for all TreeModel rows rendered with context,
+	//      or -1.
+	//    - height: allocated height for all TreeModel rows rendered with
+	//      context, or -1.
+	//
 	Allocate(width, height int)
 	// PreferredHeightForWidth gets the accumulative preferred height for width
 	// for all rows which have been requested for the same said width with this
@@ -48,6 +56,18 @@ type CellAreaContextOverrider interface {
 	//
 	// After gtk_cell_area_context_reset() is called and/or before ever
 	// requesting the size of a CellArea, the returned values are -1.
+	//
+	// The function takes the following parameters:
+	//
+	//    - width: proposed width for allocation.
+	//
+	// The function returns the following values:
+	//
+	//    - minimumHeight (optional): location to store the minimum height, or
+	//      NULL.
+	//    - naturalHeight (optional): location to store the natural height, or
+	//      NULL.
+	//
 	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidthForHeight gets the accumulative preferred width for height
 	// for all rows which have been requested for the same said height with this
@@ -55,6 +75,18 @@ type CellAreaContextOverrider interface {
 	//
 	// After gtk_cell_area_context_reset() is called and/or before ever
 	// requesting the size of a CellArea, the returned values are -1.
+	//
+	// The function takes the following parameters:
+	//
+	//    - height: proposed height for allocation.
+	//
+	// The function returns the following values:
+	//
+	//    - minimumWidth (optional): location to store the minimum width, or
+	//      NULL.
+	//    - naturalWidth (optional): location to store the natural width, or
+	//      NULL.
+	//
 	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
 	// Reset resets any previously cached request and allocation data.
 	//
@@ -121,9 +153,9 @@ func marshalCellAreaContexter(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - width: allocated width for all TreeModel rows rendered with context, or
-//    -1.
-//    - height: allocated height for all TreeModel rows rendered with context,
-//    or -1.
+//      -1.
+//    - height: allocated height for all TreeModel rows rendered with context, or
+//      -1.
 //
 func (context *CellAreaContext) Allocate(width, height int) {
 	var _arg0 *C.GtkCellAreaContext // out
@@ -145,6 +177,12 @@ func (context *CellAreaContext) Allocate(width, height int) {
 // If the context was not allocated in width or height, or if the context was
 // recently reset with gtk_cell_area_context_reset(), the returned value will be
 // -1.
+//
+// The function returns the following values:
+//
+//    - width (optional): location to store the allocated width, or NULL.
+//    - height (optional): location to store the allocated height, or NULL.
+//
 func (context *CellAreaContext) Allocation() (width int, height int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // in
@@ -173,6 +211,11 @@ func (context *CellAreaContext) Allocation() (width int, height int) {
 // For instance at CellAreaContextClass.allocate() time it’s important to know
 // details about any cell spacing that the CellArea is configured with in order
 // to compute a proper allocation.
+//
+// The function returns the following values:
+//
+//    - cellArea this context was created by.
+//
 func (context *CellAreaContext) Area() CellAreaer {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _cret *C.GtkCellArea        // in
@@ -207,6 +250,12 @@ func (context *CellAreaContext) Area() CellAreaer {
 //
 // After gtk_cell_area_context_reset() is called and/or before ever requesting
 // the size of a CellArea, the returned values are 0.
+//
+// The function returns the following values:
+//
+//    - minimumHeight (optional): location to store the minimum height, or NULL.
+//    - naturalHeight (optional): location to store the natural height, or NULL.
+//
 func (context *CellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // in
@@ -236,6 +285,11 @@ func (context *CellAreaContext) PreferredHeight() (minimumHeight int, naturalHei
 //
 //    - width: proposed width for allocation.
 //
+// The function returns the following values:
+//
+//    - minimumHeight (optional): location to store the minimum height, or NULL.
+//    - naturalHeight (optional): location to store the natural height, or NULL.
+//
 func (context *CellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
@@ -263,6 +317,12 @@ func (context *CellAreaContext) PreferredHeightForWidth(width int) (minimumHeigh
 //
 // After gtk_cell_area_context_reset() is called and/or before ever requesting
 // the size of a CellArea, the returned values are 0.
+//
+// The function returns the following values:
+//
+//    - minimumWidth (optional): location to store the minimum width, or NULL.
+//    - naturalWidth (optional): location to store the natural width, or NULL.
+//
 func (context *CellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // in
@@ -292,6 +352,11 @@ func (context *CellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth
 // The function takes the following parameters:
 //
 //    - height: proposed height for allocation.
+//
+// The function returns the following values:
+//
+//    - minimumWidth (optional): location to store the minimum width, or NULL.
+//    - naturalWidth (optional): location to store the natural width, or NULL.
 //
 func (context *CellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellAreaContext // out

@@ -25,7 +25,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - parent window.
+//    - parent (optional) window.
 //    - uri to show.
 //    - timestamp from the event that triggered this call, or GDK_CURRENT_TIME.
 //
@@ -58,11 +58,11 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 //
 // The function takes the following parameters:
 //
-//    - ctx to cancel the launch.
-//    - parent window.
+//    - ctx (optional) to cancel the launch.
+//    - parent (optional) window.
 //    - uri to show.
 //    - timestamp from the event that triggered this call, or GDK_CURRENT_TIME.
-//    - callback to call when the action is complete.
+//    - callback (optional) to call when the action is complete.
 //
 func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint32, callback gio.AsyncReadyCallback) {
 	var _arg4 *C.GCancellable       // out

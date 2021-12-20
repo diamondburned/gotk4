@@ -252,7 +252,11 @@ func marshalPopoverMenuer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model: GMenuModel, or NULL.
+//    - model (optional): GMenuModel, or NULL.
+//
+// The function returns the following values:
+//
+//    - popoverMenu: new GtkPopoverMenu.
 //
 func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 	var _arg1 *C.GMenuModel // out
@@ -290,6 +294,10 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 //    - model: GMenuModel.
 //    - flags that affect how the menu is created.
 //
+// The function returns the following values:
+//
+//    - popoverMenu: new GtkPopoverMenu.
+//
 func NewPopoverMenuFromModelFull(model gio.MenuModeller, flags PopoverMenuFlags) *PopoverMenu {
 	var _arg1 *C.GMenuModel         // out
 	var _arg2 C.GtkPopoverMenuFlags // out
@@ -319,6 +327,10 @@ func NewPopoverMenuFromModelFull(model gio.MenuModeller, flags PopoverMenuFlags)
 //    - child: GtkWidget to add.
 //    - id: ID to insert child at.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if id was found and the widget added.
+//
 func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GtkWidget      // out
@@ -345,6 +357,11 @@ func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 }
 
 // MenuModel returns the menu model used to populate the popover.
+//
+// The function returns the following values:
+//
+//    - menuModel: menu model of popover.
+//
 func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _cret *C.GMenuModel     // in
@@ -381,6 +398,10 @@ func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
 //
 //    - child: GtkWidget to remove.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget was removed.
+//
 func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GtkWidget      // out
@@ -409,7 +430,7 @@ func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
 //
 // The function takes the following parameters:
 //
-//    - model: GMenuModel, or NULL.
+//    - model (optional): GMenuModel, or NULL.
 //
 func (popover *PopoverMenu) SetMenuModel(model gio.MenuModeller) {
 	var _arg0 *C.GtkPopoverMenu // out

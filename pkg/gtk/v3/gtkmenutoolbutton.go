@@ -110,13 +110,29 @@ func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
 	return wrapMenuToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectShowMenu signal is emitted before the menu is shown.
+//
+// It can be used to populate the menu on demand, using
+// gtk_menu_tool_button_set_menu().
+//
+// Note that even if you populate the menu dynamically in this way, you must set
+// an empty menu on the MenuToolButton beforehand, since the arrow is made
+// insensitive if the menu is not set.
+func (button *MenuToolButton) ConnectShowMenu(f func()) externglib.SignalHandle {
+	return button.Connect("show-menu", f)
+}
+
 // NewMenuToolButton creates a new MenuToolButton using icon_widget as icon and
 // label as label.
 //
 // The function takes the following parameters:
 //
-//    - iconWidget: widget that will be used as icon widget, or NULL.
-//    - label: string that will be used as label, or NULL.
+//    - iconWidget (optional): widget that will be used as icon widget, or NULL.
+//    - label (optional): string that will be used as label, or NULL.
+//
+// The function returns the following values:
+//
+//    - menuToolButton: new MenuToolButton.
 //
 func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	var _arg1 *C.GtkWidget   // out
@@ -152,6 +168,10 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 //
 //    - stockId: name of a stock item.
 //
+// The function returns the following values:
+//
+//    - menuToolButton: new MenuToolButton.
+//
 func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -170,6 +190,11 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 }
 
 // Menu gets the Menu associated with MenuToolButton.
+//
+// The function returns the following values:
+//
+//    - widget associated with MenuToolButton.
+//
 func (button *MenuToolButton) Menu() Widgetter {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _cret *C.GtkWidget         // in
@@ -258,16 +283,4 @@ func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(menu)
-}
-
-// ConnectShowMenu signal is emitted before the menu is shown.
-//
-// It can be used to populate the menu on demand, using
-// gtk_menu_tool_button_set_menu().
-//
-// Note that even if you populate the menu dynamically in this way, you must set
-// an empty menu on the MenuToolButton beforehand, since the arrow is made
-// insensitive if the menu is not set.
-func (button *MenuToolButton) ConnectShowMenu(f func()) externglib.SignalHandle {
-	return button.Connect("show-menu", f)
 }

@@ -28,11 +28,35 @@ func init() {
 // yet, so the interface currently has no use.
 type MountOperationOverrider interface {
 	Aborted()
+	// The function takes the following parameters:
+	//
+	//    - message
+	//    - defaultUser
+	//    - defaultDomain
+	//    - flags
+	//
 	AskPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
 	// AskQuestion: virtual implementation of Operation::ask-question.
+	//
+	// The function takes the following parameters:
+	//
+	//    - message: string containing a message to display to the user.
+	//    - choices: array of strings for each possible choice.
+	//
 	AskQuestion(message string, choices []string)
 	// Reply emits the Operation::reply signal.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: OperationResult.
+	//
 	Reply(result MountOperationResult)
+	// The function takes the following parameters:
+	//
+	//    - message
+	//    - timeLeft
+	//    - bytesLeft
+	//
 	ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
 }
 
@@ -74,7 +98,63 @@ func marshalMountOperationer(p uintptr) (interface{}, error) {
 	return wrapMountOperation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAborted: emitted by the backend when e.g. a device becomes unavailable
+// while a mount operation is in progress.
+//
+// Implementations of GMountOperation should handle this signal by dismissing
+// open password dialogs.
+func (op *MountOperation) ConnectAborted(f func()) externglib.SignalHandle {
+	return op.Connect("aborted", f)
+}
+
+// ConnectAskPassword: emitted when a mount operation asks the user for a
+// password.
+//
+// If the message contains a line break, the first line should be presented as a
+// heading. For example, it may be used as the primary text in a MessageDialog.
+func (op *MountOperation) ConnectAskPassword(f func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)) externglib.SignalHandle {
+	return op.Connect("ask-password", f)
+}
+
+// ConnectAskQuestion: emitted when asking the user a question and gives a list
+// of choices for the user to choose from.
+//
+// If the message contains a line break, the first line should be presented as a
+// heading. For example, it may be used as the primary text in a MessageDialog.
+func (op *MountOperation) ConnectAskQuestion(f func(message string, choices []string)) externglib.SignalHandle {
+	return op.Connect("ask-question", f)
+}
+
+// ConnectReply: emitted when the user has replied to the mount operation.
+func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) externglib.SignalHandle {
+	return op.Connect("reply", f)
+}
+
+// ConnectShowUnmountProgress: emitted when an unmount operation has been busy
+// for more than some time (typically 1.5 seconds).
+//
+// When unmounting or ejecting a volume, the kernel might need to flush pending
+// data in its buffers to the volume stable storage, and this operation can take
+// a considerable amount of time. This signal may be emitted several times as
+// long as the unmount operation is outstanding, and then one last time when the
+// operation is completed, with bytes_left set to zero.
+//
+// Implementations of GMountOperation should handle this signal by showing an UI
+// notification, and then dismiss it, or show another notification of
+// completion, when bytes_left reaches zero.
+//
+// If the message contains a line break, the first line should be presented as a
+// heading. For example, it may be used as the primary text in a MessageDialog.
+func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, timeLeft, bytesLeft int64)) externglib.SignalHandle {
+	return op.Connect("show-unmount-progress", f)
+}
+
 // NewMountOperation creates a new mount operation.
+//
+// The function returns the following values:
+//
+//    - mountOperation: Operation.
+//
 func NewMountOperation() *MountOperation {
 	var _cret *C.GMountOperation // in
 
@@ -89,6 +169,11 @@ func NewMountOperation() *MountOperation {
 
 // Anonymous: check to see whether the mount operation is being used for an
 // anonymous user.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if mount operation is anonymous.
+//
 func (op *MountOperation) Anonymous() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
@@ -108,6 +193,12 @@ func (op *MountOperation) Anonymous() bool {
 }
 
 // Choice gets a choice from the mount operation.
+//
+// The function returns the following values:
+//
+//    - gint: integer containing an index of the user's choice from the choice's
+//      list, or 0.
+//
 func (op *MountOperation) Choice() int {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.int              // in
@@ -125,6 +216,11 @@ func (op *MountOperation) Choice() int {
 }
 
 // Domain gets the domain of the mount operation.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string set to the domain.
+//
 func (op *MountOperation) Domain() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
@@ -145,6 +241,11 @@ func (op *MountOperation) Domain() string {
 
 // IsTcryptHiddenVolume: check to see whether the mount operation is being used
 // for a TCRYPT hidden volume.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if mount operation is for hidden volume.
+//
 func (op *MountOperation) IsTcryptHiddenVolume() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
@@ -165,6 +266,11 @@ func (op *MountOperation) IsTcryptHiddenVolume() bool {
 
 // IsTcryptSystemVolume: check to see whether the mount operation is being used
 // for a TCRYPT system volume.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if mount operation is for system volume.
+//
 func (op *MountOperation) IsTcryptSystemVolume() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
@@ -184,6 +290,11 @@ func (op *MountOperation) IsTcryptSystemVolume() bool {
 }
 
 // Password gets a password from the mount operation.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string containing the password within op.
+//
 func (op *MountOperation) Password() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
@@ -203,6 +314,11 @@ func (op *MountOperation) Password() string {
 }
 
 // PasswordSave gets the state of saving passwords for the mount operation.
+//
+// The function returns the following values:
+//
+//    - passwordSave: Save flag.
+//
 func (op *MountOperation) PasswordSave() PasswordSave {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.GPasswordSave    // in
@@ -220,6 +336,11 @@ func (op *MountOperation) PasswordSave() PasswordSave {
 }
 
 // Pim gets a PIM from the mount operation.
+//
+// The function returns the following values:
+//
+//    - guint: veraCrypt PIM within op.
+//
 func (op *MountOperation) Pim() uint {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.guint            // in
@@ -237,6 +358,11 @@ func (op *MountOperation) Pim() uint {
 }
 
 // Username: get the user name from the mount operation.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string containing the user name.
+//
 func (op *MountOperation) Username() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
@@ -316,7 +442,7 @@ func (op *MountOperation) SetChoice(choice int) {
 //
 // The function takes the following parameters:
 //
-//    - domain to set.
+//    - domain (optional) to set.
 //
 func (op *MountOperation) SetDomain(domain string) {
 	var _arg0 *C.GMountOperation // out
@@ -379,7 +505,7 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 //
 // The function takes the following parameters:
 //
-//    - password to set.
+//    - password (optional) to set.
 //
 func (op *MountOperation) SetPassword(password string) {
 	var _arg0 *C.GMountOperation // out
@@ -436,7 +562,7 @@ func (op *MountOperation) SetPim(pim uint) {
 //
 // The function takes the following parameters:
 //
-//    - username: input username.
+//    - username (optional): input username.
 //
 func (op *MountOperation) SetUsername(username string) {
 	var _arg0 *C.GMountOperation // out
@@ -451,55 +577,4 @@ func (op *MountOperation) SetUsername(username string) {
 	C.g_mount_operation_set_username(_arg0, _arg1)
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(username)
-}
-
-// ConnectAborted: emitted by the backend when e.g. a device becomes unavailable
-// while a mount operation is in progress.
-//
-// Implementations of GMountOperation should handle this signal by dismissing
-// open password dialogs.
-func (op *MountOperation) ConnectAborted(f func()) externglib.SignalHandle {
-	return op.Connect("aborted", f)
-}
-
-// ConnectAskPassword: emitted when a mount operation asks the user for a
-// password.
-//
-// If the message contains a line break, the first line should be presented as a
-// heading. For example, it may be used as the primary text in a MessageDialog.
-func (op *MountOperation) ConnectAskPassword(f func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)) externglib.SignalHandle {
-	return op.Connect("ask-password", f)
-}
-
-// ConnectAskQuestion: emitted when asking the user a question and gives a list
-// of choices for the user to choose from.
-//
-// If the message contains a line break, the first line should be presented as a
-// heading. For example, it may be used as the primary text in a MessageDialog.
-func (op *MountOperation) ConnectAskQuestion(f func(message string, choices []string)) externglib.SignalHandle {
-	return op.Connect("ask-question", f)
-}
-
-// ConnectReply: emitted when the user has replied to the mount operation.
-func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) externglib.SignalHandle {
-	return op.Connect("reply", f)
-}
-
-// ConnectShowUnmountProgress: emitted when an unmount operation has been busy
-// for more than some time (typically 1.5 seconds).
-//
-// When unmounting or ejecting a volume, the kernel might need to flush pending
-// data in its buffers to the volume stable storage, and this operation can take
-// a considerable amount of time. This signal may be emitted several times as
-// long as the unmount operation is outstanding, and then one last time when the
-// operation is completed, with bytes_left set to zero.
-//
-// Implementations of GMountOperation should handle this signal by showing an UI
-// notification, and then dismiss it, or show another notification of
-// completion, when bytes_left reaches zero.
-//
-// If the message contains a line break, the first line should be presented as a
-// heading. For example, it may be used as the primary text in a MessageDialog.
-func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, timeLeft, bytesLeft int64)) externglib.SignalHandle {
-	return op.Connect("show-unmount-progress", f)
 }

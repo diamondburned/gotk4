@@ -360,6 +360,13 @@ func SpawnCommandLineAsync(commandLine string) error {
 //
 //    - commandLine: command line.
 //
+// The function returns the following values:
+//
+//    - standardOutput (optional): return location for child output.
+//    - standardError (optional): return location for child errors.
+//    - exitStatus (optional): return location for child exit status, as returned
+//      by waitpid().
+//
 func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
@@ -439,12 +446,20 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 //
 // The function takes the following parameters:
 //
-//    - workingDirectory child's current working directory, or NULL to inherit
-//    parent's.
+//    - workingDirectory (optional) child's current working directory, or NULL to
+//      inherit parent's.
 //    - argv: child's argument vector.
-//    - envp: child's environment, or NULL to inherit parent's.
+//    - envp (optional): child's environment, or NULL to inherit parent's.
 //    - flags from Flags.
-//    - childSetup: function to run in the child just before exec().
+//    - childSetup (optional): function to run in the child just before exec().
+//
+// The function returns the following values:
+//
+//    - standardOutput (optional): return location for child output, or NULL.
+//    - standardError (optional): return location for child error messages, or
+//      NULL.
+//    - exitStatus (optional): return location for child exit status, as returned
+//      by waitpid(), or NULL.
 //
 func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar               // out

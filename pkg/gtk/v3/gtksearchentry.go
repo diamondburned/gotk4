@@ -111,55 +111,6 @@ func marshalSearchEntrier(p uintptr) (interface{}, error) {
 	return wrapSearchEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewSearchEntry creates a SearchEntry, with a find icon when the search field
-// is empty, and a clear icon when it isn't.
-func NewSearchEntry() *SearchEntry {
-	var _cret *C.GtkWidget // in
-
-	_cret = C.gtk_search_entry_new()
-
-	var _searchEntry *SearchEntry // out
-
-	_searchEntry = wrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _searchEntry
-}
-
-// HandleEvent: this function should be called when the top-level window which
-// contains the search entry received a key event. If the entry is part of a
-// SearchBar, it is preferable to call gtk_search_bar_handle_event() instead,
-// which will reveal the entry in addition to passing the event to this
-// function.
-//
-// If the key event is handled by the search entry and starts or continues a
-// search, GDK_EVENT_STOP will be returned. The caller should ensure that the
-// entry is shown in this case, and not propagate the event further.
-//
-// The function takes the following parameters:
-//
-//    - event: key event.
-//
-func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
-	var _arg0 *C.GtkSearchEntry // out
-	var _arg1 *C.GdkEvent       // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
-
-	_cret = C.gtk_search_entry_handle_event(_arg0, _arg1)
-	runtime.KeepAlive(entry)
-	runtime.KeepAlive(event)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // ConnectNextMatch signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user initiates a move to the next match for the current
 // search string.
@@ -197,4 +148,63 @@ func (entry *SearchEntry) ConnectSearchChanged(f func()) externglib.SignalHandle
 // The default bindings for this signal is Escape.
 func (entry *SearchEntry) ConnectStopSearch(f func()) externglib.SignalHandle {
 	return entry.Connect("stop-search", f)
+}
+
+// NewSearchEntry creates a SearchEntry, with a find icon when the search field
+// is empty, and a clear icon when it isn't.
+//
+// The function returns the following values:
+//
+//    - searchEntry: new SearchEntry.
+//
+func NewSearchEntry() *SearchEntry {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_search_entry_new()
+
+	var _searchEntry *SearchEntry // out
+
+	_searchEntry = wrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _searchEntry
+}
+
+// HandleEvent: this function should be called when the top-level window which
+// contains the search entry received a key event. If the entry is part of a
+// SearchBar, it is preferable to call gtk_search_bar_handle_event() instead,
+// which will reveal the entry in addition to passing the event to this
+// function.
+//
+// If the key event is handled by the search entry and starts or continues a
+// search, GDK_EVENT_STOP will be returned. The caller should ensure that the
+// entry is shown in this case, and not propagate the event further.
+//
+// The function takes the following parameters:
+//
+//    - event: key event.
+//
+// The function returns the following values:
+//
+//    - ok: GDK_EVENT_STOP if the key press event resulted in a search beginning
+//      or continuing, GDK_EVENT_PROPAGATE otherwise.
+//
+func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
+	var _arg0 *C.GtkSearchEntry // out
+	var _arg1 *C.GdkEvent       // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_search_entry_handle_event(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

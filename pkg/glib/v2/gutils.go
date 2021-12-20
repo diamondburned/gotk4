@@ -140,6 +140,11 @@ func (f FormatSizeFlags) Has(other FormatSizeFlags) bool {
 //    - mask containing flags.
 //    - nthBit: index of the bit to start the search from.
 //
+// The function returns the following values:
+//
+//    - gint: index of the first bit set which is higher than nth_bit, or -1 if
+//      no higher bits are set.
+//
 func BitNthLSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
@@ -169,6 +174,11 @@ func BitNthLSF(mask uint32, nthBit int) int {
 //    - mask containing flags.
 //    - nthBit: index of the bit to start the search from.
 //
+// The function returns the following values:
+//
+//    - gint: index of the first bit set which is lower than nth_bit, or -1 if no
+//      lower bits are set.
+//
 func BitNthMSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
@@ -194,6 +204,10 @@ func BitNthMSF(mask uint32, nthBit int) int {
 // The function takes the following parameters:
 //
 //    - number: #guint.
+//
+// The function returns the following values:
+//
+//    - guint: number of bits used to hold number.
 //
 func BitStorage(number uint32) uint {
 	var _arg1 C.gulong // out
@@ -229,6 +243,11 @@ func BitStorage(number uint32) uint {
 // The function takes the following parameters:
 //
 //    - program name in the GLib file name encoding.
+//
+// The function returns the following values:
+//
+//    - filename (optional): newly-allocated string with the absolute path, or
+//      NULL.
 //
 func FindProgramInPath(program string) string {
 	var _arg1 *C.gchar // out
@@ -268,6 +287,11 @@ func FindProgramInPath(program string) string {
 //
 //    - size in bytes.
 //
+// The function returns the following values:
+//
+//    - utf8: newly-allocated formatted string containing a human readable file
+//      size.
+//
 func FormatSize(size uint64) string {
 	var _arg1 C.guint64 // out
 	var _cret *C.gchar  // in
@@ -301,6 +325,11 @@ func FormatSize(size uint64) string {
 //
 //    - size in bytes.
 //
+// The function returns the following values:
+//
+//    - utf8: newly-allocated formatted string containing a human readable file
+//      size.
+//
 func FormatSizeForDisplay(size int64) string {
 	var _arg1 C.goffset // out
 	var _cret *C.gchar  // in
@@ -328,6 +357,11 @@ func FormatSizeForDisplay(size int64) string {
 //    - size in bytes.
 //    - flags to modify the output.
 //
+// The function returns the following values:
+//
+//    - utf8: newly-allocated formatted string containing a human readable file
+//      size.
+//
 func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	var _arg1 C.guint64          // out
 	var _arg2 C.GFormatSizeFlags // out
@@ -354,6 +388,11 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 // non-localized name. If g_set_application_name() has not been called, returns
 // the result of g_get_prgname() (which may be NULL if g_set_prgname() has also
 // not been called).
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): human-readable application name. May return NULL.
+//
 func GetApplicationName() string {
 	var _cret *C.gchar // in
 
@@ -388,6 +427,11 @@ func GetApplicationName() string {
 // that the new behaviour is in effect) then you should either directly check
 // the HOME environment variable yourself or unset it before calling any
 // functions in GLib.
+//
+// The function returns the following values:
+//
+//    - filename: current user's home directory.
+//
 func GetHomeDir() string {
 	var _cret *C.gchar // in
 
@@ -412,6 +456,11 @@ func GetHomeDir() string {
 // be determined, a default fixed string "localhost" is returned.
 //
 // The encoding of the returned string is UTF-8.
+//
+// The function returns the following values:
+//
+//    - utf8: host name of the machine.
+//
 func GetHostName() string {
 	var _cret *C.gchar // in
 
@@ -436,7 +485,12 @@ func GetHostName() string {
 // The function takes the following parameters:
 //
 //    - keyName: key for the OS info being requested, for example
-//    G_OS_INFO_KEY_NAME.
+//      G_OS_INFO_KEY_NAME.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): associated value for the requested key or NULL if this
+//      information is not provided.
 //
 func GetOsInfo(keyName string) string {
 	var _arg1 *C.gchar // out
@@ -465,6 +519,12 @@ func GetOsInfo(keyName string) string {
 // g_application_run(). In case of GDK or GTK+ it is set in gdk_init(), which is
 // called by gtk_init() and the Application::startup handler. The program name
 // is found by taking the last component of argv[0].
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the program, or NULL if it has not been set yet.
+//      The returned string belongs to GLib and must not be modified or freed.
+//
 func GetPrgname() string {
 	var _cret *C.gchar // in
 
@@ -483,6 +543,11 @@ func GetPrgname() string {
 // user's entry in the passwd file. The encoding of the returned string is
 // system-defined. (On Windows, it is, however, always UTF-8.) If the real user
 // name cannot be determined, the string "Unknown" is returned.
+//
+// The function returns the following values:
+//
+//    - filename user's real name.
+//
 func GetRealName() string {
 	var _cret *C.gchar // in
 
@@ -514,6 +579,12 @@ func GetRealName() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
+//
+// The function returns the following values:
+//
+//    - filenames: a NULL-terminated array of strings owned by GLib that must not
+//      be modified or freed.
+//
 func GetSystemConfigDirs() []string {
 	var _cret **C.gchar // in
 
@@ -569,6 +640,12 @@ func GetSystemConfigDirs() []string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
+//
+// The function returns the following values:
+//
+//    - filenames: a NULL-terminated array of strings owned by GLib that must not
+//      be modified or freed.
+//
 func GetSystemDataDirs() []string {
 	var _cret **C.gchar // in
 
@@ -604,6 +681,11 @@ func GetSystemDataDirs() []string {
 //
 // The encoding of the returned string is system-defined. On Windows, it is
 // always UTF-8. The return value is never NULL or the empty string.
+//
+// The function returns the following values:
+//
+//    - filename: directory to use for temporary files.
+//
 func GetTmpDir() string {
 	var _cret *C.gchar // in
 
@@ -633,6 +715,11 @@ func GetTmpDir() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
+//
+// The function returns the following values:
+//
+//    - filename: string owned by GLib that must not be modified or freed.
+//
 func GetUserCacheDir() string {
 	var _cret *C.gchar // in
 
@@ -663,6 +750,11 @@ func GetUserCacheDir() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
+//
+// The function returns the following values:
+//
+//    - filename: string owned by GLib that must not be modified or freed.
+//
 func GetUserConfigDir() string {
 	var _cret *C.gchar // in
 
@@ -693,6 +785,11 @@ func GetUserConfigDir() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
+//
+// The function returns the following values:
+//
+//    - filename: string owned by GLib that must not be modified or freed.
+//
 func GetUserDataDir() string {
 	var _cret *C.gchar // in
 
@@ -709,6 +806,11 @@ func GetUserDataDir() string {
 // returned string is system-defined. On UNIX, it might be the preferred file
 // name encoding, or something else, and there is no guarantee that it is even
 // consistent on a machine. On Windows, it is always UTF-8.
+//
+// The function returns the following values:
+//
+//    - filename: user name of the current user.
+//
 func GetUserName() string {
 	var _cret *C.gchar // in
 
@@ -732,6 +834,11 @@ func GetUserName() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
+//
+// The function returns the following values:
+//
+//    - filename: string owned by GLib that must not be modified or freed.
+//
 func GetUserRuntimeDir() string {
 	var _cret *C.gchar // in
 
@@ -758,6 +865,12 @@ func GetUserRuntimeDir() string {
 // The function takes the following parameters:
 //
 //    - directory: logical id of special directory.
+//
+// The function returns the following values:
+//
+//    - filename: path to the specified special directory, or NULL if the logical
+//      id was not found. The returned string is owned by GLib and should not be
+//      modified or freed.
 //
 func GetUserSpecialDir(directory UserDirectory) string {
 	var _arg1 C.GUserDirectory // out
@@ -788,10 +901,13 @@ func GetUserSpecialDir(directory UserDirectory) string {
 //
 // The function takes the following parameters:
 //
-//    - str: list of debug options separated by colons, spaces, or commas, or
-//    NULL.
-//    - keys: pointer to an array of Key which associate strings with bit
-//    flags.
+//    - str (optional): list of debug options separated by colons, spaces, or
+//      commas, or NULL.
+//    - keys: pointer to an array of Key which associate strings with bit flags.
+//
+// The function returns the following values:
+//
+//    - guint: combined set of bit flags.
 //
 func ParseDebugString(str string, keys []DebugKey) uint {
 	var _arg1 *C.gchar     // out

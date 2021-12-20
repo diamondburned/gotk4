@@ -58,6 +58,12 @@ func marshalDrawingContexter(p uintptr) (interface{}, error) {
 // The returned context is guaranteed to be valid as long as the DrawingContext
 // is valid, that is between a call to gdk_window_begin_draw_frame() and
 // gdk_window_end_draw_frame().
+//
+// The function returns the following values:
+//
+//    - ret: cairo context to be used to draw the contents of the Window. The
+//      context is owned by the DrawingContext and should not be destroyed.
+//
 func (context *DrawingContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_t           // in
@@ -79,6 +85,11 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 }
 
 // Clip retrieves a copy of the clip region used when creating the context.
+//
+// The function returns the following values:
+//
+//    - region (optional): cairo region.
+//
 func (context *DrawingContext) Clip() *cairo.Region {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_region_t    // in
@@ -104,6 +115,11 @@ func (context *DrawingContext) Clip() *cairo.Region {
 }
 
 // Window retrieves the window that created the drawing context.
+//
+// The function returns the following values:
+//
+//    - window: Window.
+//
 func (context *DrawingContext) Window() Windower {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.GdkWindow         // in
@@ -134,6 +150,11 @@ func (context *DrawingContext) Window() Windower {
 }
 
 // IsValid checks whether the given DrawingContext is valid.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the context is valid.
+//
 func (context *DrawingContext) IsValid() bool {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret C.gboolean           // in

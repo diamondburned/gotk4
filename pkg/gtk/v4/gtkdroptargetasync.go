@@ -76,12 +76,74 @@ func marshalDropTargetAsyncer(p uintptr) (interface{}, error) {
 	return wrapDropTargetAsync(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAccept: emitted on the drop site when a drop operation is about to
+// begin.
+//
+// If the drop is not accepted, FALSE will be returned and the drop target will
+// ignore the drop. If TRUE is returned, the drop is accepted for now but may be
+// rejected later via a call to gtk.DropTargetAsync.RejectDrop() or ultimately
+// by returning FALSE from a gtk.DropTargetAsync::drop handler.
+//
+// The default handler for this signal decides whether to accept the drop based
+// on the formats provided by the drop.
+//
+// If the decision whether the drop will be accepted or rejected needs further
+// processing, such as inspecting the data, this function should return TRUE and
+// proceed as is drop was accepted and if it decides to reject the drop later,
+// it should call gtk.DropTargetAsync.RejectDrop().
+func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.SignalHandle {
+	return self.Connect("accept", f)
+}
+
+// ConnectDragEnter: emitted on the drop site when the pointer enters the
+// widget.
+//
+// It can be used to set up custom highlighting.
+func (self *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
+	return self.Connect("drag-enter", f)
+}
+
+// ConnectDragLeave: emitted on the drop site when the pointer leaves the
+// widget.
+//
+// Its main purpose it to undo things done in GtkDropTargetAsync::drag-enter.
+func (self *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) externglib.SignalHandle {
+	return self.Connect("drag-leave", f)
+}
+
+// ConnectDragMotion: emitted while the pointer is moving over the drop target.
+func (self *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
+	return self.Connect("drag-motion", f)
+}
+
+// ConnectDrop: emitted on the drop site when the user drops the data onto the
+// widget.
+//
+// The signal handler must determine whether the pointer position is in a drop
+// zone or not. If it is not in a drop zone, it returns FALSE and no further
+// processing is necessary.
+//
+// Otherwise, the handler returns TRUE. In this case, this handler will accept
+// the drop. The handler must ensure that gdk.Drop.Finish() is called to let the
+// source know that the drop is done. The call to gdk.Drop.Finish() must only be
+// done when all data has been received.
+//
+// To receive the data, use one of the read functions provided by gdk.Drop such
+// as gdk.Drop.ReadAsync() or gdk.Drop.ReadValueAsync().
+func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) bool) externglib.SignalHandle {
+	return self.Connect("drop", f)
+}
+
 // NewDropTargetAsync creates a new GtkDropTargetAsync object.
 //
 // The function takes the following parameters:
 //
-//    - formats: supported data formats.
+//    - formats (optional): supported data formats.
 //    - actions: supported actions.
+//
+// The function returns the following values:
+//
+//    - dropTargetAsync: new GtkDropTargetAsync.
 //
 func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *DropTargetAsync {
 	var _arg1 *C.GdkContentFormats  // out
@@ -105,6 +167,11 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *Dr
 }
 
 // Actions gets the actions that this drop target supports.
+//
+// The function returns the following values:
+//
+//    - dragAction actions that this drop target supports.
+//
 func (self *DropTargetAsync) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _cret C.GdkDragAction       // in
@@ -124,6 +191,11 @@ func (self *DropTargetAsync) Actions() gdk.DragAction {
 // Formats gets the data formats that this drop target accepts.
 //
 // If the result is NULL, all formats are expected to be supported.
+//
+// The function returns the following values:
+//
+//    - contentFormats (optional): supported data formats.
+//
 func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _cret *C.GdkContentFormats  // in
@@ -191,7 +263,7 @@ func (self *DropTargetAsync) SetActions(actions gdk.DragAction) {
 //
 // The function takes the following parameters:
 //
-//    - formats: supported data formats or NULL for any format.
+//    - formats (optional): supported data formats or NULL for any format.
 //
 func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	var _arg0 *C.GtkDropTargetAsync // out
@@ -205,62 +277,4 @@ func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	C.gtk_drop_target_async_set_formats(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(formats)
-}
-
-// ConnectAccept: emitted on the drop site when a drop operation is about to
-// begin.
-//
-// If the drop is not accepted, FALSE will be returned and the drop target will
-// ignore the drop. If TRUE is returned, the drop is accepted for now but may be
-// rejected later via a call to gtk.DropTargetAsync.RejectDrop() or ultimately
-// by returning FALSE from a gtk.DropTargetAsync::drop handler.
-//
-// The default handler for this signal decides whether to accept the drop based
-// on the formats provided by the drop.
-//
-// If the decision whether the drop will be accepted or rejected needs further
-// processing, such as inspecting the data, this function should return TRUE and
-// proceed as is drop was accepted and if it decides to reject the drop later,
-// it should call gtk.DropTargetAsync.RejectDrop().
-func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.SignalHandle {
-	return self.Connect("accept", f)
-}
-
-// ConnectDragEnter: emitted on the drop site when the pointer enters the
-// widget.
-//
-// It can be used to set up custom highlighting.
-func (self *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("drag-enter", f)
-}
-
-// ConnectDragLeave: emitted on the drop site when the pointer leaves the
-// widget.
-//
-// Its main purpose it to undo things done in GtkDropTargetAsync::drag-enter.
-func (self *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) externglib.SignalHandle {
-	return self.Connect("drag-leave", f)
-}
-
-// ConnectDragMotion: emitted while the pointer is moving over the drop target.
-func (self *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("drag-motion", f)
-}
-
-// ConnectDrop: emitted on the drop site when the user drops the data onto the
-// widget.
-//
-// The signal handler must determine whether the pointer position is in a drop
-// zone or not. If it is not in a drop zone, it returns FALSE and no further
-// processing is necessary.
-//
-// Otherwise, the handler returns TRUE. In this case, this handler will accept
-// the drop. The handler must ensure that gdk.Drop.Finish() is called to let the
-// source know that the drop is done. The call to gdk.Drop.Finish() must only be
-// done when all data has been received.
-//
-// To receive the data, use one of the read functions provided by gdk.Drop such
-// as gdk.Drop.ReadAsync() or gdk.Drop.ReadValueAsync().
-func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) bool) externglib.SignalHandle {
-	return self.Connect("drop", f)
 }

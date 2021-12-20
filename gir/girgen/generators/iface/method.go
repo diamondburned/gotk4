@@ -2,6 +2,8 @@ package iface
 
 import (
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/cmt"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
@@ -11,11 +13,13 @@ type Method struct {
 	InfoElements *gir.InfoElements
 	InfoAttrs    *gir.InfoAttrs
 
-	Recv      string
-	Name      string
-	Tail      string
-	Block     string
-	ParamDocs []callable.ParamDoc
+	Recv       string
+	Name       string
+	Tail       string
+	Block      string
+	Header     file.Header
+	ParamDocs  []cmt.ParamDoc
+	ReturnDocs []cmt.ParamDoc
 }
 
 type ParamDoc struct {
@@ -28,11 +32,13 @@ func newMethod(cgen *callable.Generator) Method {
 		InfoElements: &cgen.InfoElements,
 		InfoAttrs:    &cgen.InfoAttrs,
 
-		Recv:      cgen.Recv(),
-		Name:      cgen.Name,
-		Tail:      callable.CoalesceTail(cgen.Tail),
-		Block:     cgen.Block,
-		ParamDocs: cgen.ParamDocs,
+		Recv:       cgen.Recv(),
+		Name:       cgen.Name,
+		Tail:       callable.CoalesceTail(cgen.Tail),
+		Block:      cgen.Block,
+		Header:     file.CopyHeader(cgen.Header()),
+		ParamDocs:  cgen.ParamDocs,
+		ReturnDocs: cgen.ReturnDocs,
 	}
 }
 
@@ -69,7 +75,6 @@ func (m *Methods) setMethods(g *Generator, methods []gir.Method) {
 			continue
 		}
 
-		g.header.ApplyFrom(g.cgen.Header())
 		*m = append(*m, newMethod(&g.cgen))
 	}
 }

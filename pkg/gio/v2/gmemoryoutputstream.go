@@ -66,6 +66,9 @@ func marshalMemoryOutputStreamer(p uintptr) (interface{}, error) {
 
 // NewMemoryOutputStreamResizable creates a new OutputStream, using g_realloc()
 // and g_free() for memory allocation.
+//
+// The function returns the following values:
+//
 func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 	var _cret *C.GOutputStream // in
 
@@ -82,6 +85,12 @@ func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 //
 // Note that the returned pointer may become invalid on the next write or
 // truncate operation on the stream.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): pointer to the stream's data, or NULL if the data
+//      has been stolen.
+//
 func (ostream *MemoryOutputStream) Data() cgo.Handle {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
@@ -100,6 +109,11 @@ func (ostream *MemoryOutputStream) Data() cgo.Handle {
 
 // DataSize returns the number of bytes from the start up to including the last
 // byte written in the stream that has not been truncated away.
+//
+// The function returns the following values:
+//
+//    - gsize: number of bytes written to the stream.
+//
 func (ostream *MemoryOutputStream) DataSize() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
@@ -130,6 +144,11 @@ func (ostream *MemoryOutputStream) DataSize() uint {
 //
 // In any case, if you want the number of bytes currently written to the stream,
 // use g_memory_output_stream_get_data_size().
+//
+// The function returns the following values:
+//
+//    - gsize: number of bytes allocated for the data buffer.
+//
 func (ostream *MemoryOutputStream) Size() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
@@ -148,6 +167,11 @@ func (ostream *MemoryOutputStream) Size() uint {
 
 // StealAsBytes returns data from the ostream as a #GBytes. ostream must be
 // closed before calling this function.
+//
+// The function returns the following values:
+//
+//    - bytes stream's data.
+//
 func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret *C.GBytes              // in
@@ -175,6 +199,12 @@ func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 // free function set in ostream's OutputStream:destroy-function property.
 //
 // ostream must be closed before calling this function.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional) stream's data, or NULL if it has previously been
+//      stolen.
+//
 func (ostream *MemoryOutputStream) StealData() cgo.Handle {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in

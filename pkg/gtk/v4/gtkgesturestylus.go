@@ -51,7 +51,32 @@ func marshalGestureStylusser(p uintptr) (interface{}, error) {
 	return wrapGestureStylus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectDown: emitted when the stylus touches the device.
+func (gesture *GestureStylus) ConnectDown(f func(x, y float64)) externglib.SignalHandle {
+	return gesture.Connect("down", f)
+}
+
+// ConnectMotion: emitted when the stylus moves while touching the device.
+func (gesture *GestureStylus) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
+	return gesture.Connect("motion", f)
+}
+
+// ConnectProximity: emitted when the stylus is in proximity of the device.
+func (gesture *GestureStylus) ConnectProximity(f func(x, y float64)) externglib.SignalHandle {
+	return gesture.Connect("proximity", f)
+}
+
+// ConnectUp: emitted when the stylus no longer touches the device.
+func (gesture *GestureStylus) ConnectUp(f func(x, y float64)) externglib.SignalHandle {
+	return gesture.Connect("up", f)
+}
+
 // NewGestureStylus creates a new GtkGestureStylus.
+//
+// The function returns the following values:
+//
+//    - gestureStylus: newly created stylus gesture.
+//
 func NewGestureStylus() *GestureStylus {
 	var _cret *C.GtkGesture // in
 
@@ -73,6 +98,11 @@ func NewGestureStylus() *GestureStylus {
 // The function takes the following parameters:
 //
 //    - axis: requested device axis.
+//
+// The function returns the following values:
+//
+//    - value: return location for the axis value.
+//    - ok: TRUE if there is a current value for the axis.
 //
 func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg0 *C.GtkGestureStylus // out
@@ -111,6 +141,12 @@ func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 // motion history.
 //
 // The backlog is provided in chronological order.
+//
+// The function returns the following values:
+//
+//    - backlog coordinates and times for the backlog events.
+//    - ok: TRUE if there is a backlog to unfold in the current state.
+//
 func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 *C.GdkTimeCoord     // in
@@ -152,6 +188,11 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 // This function must be called from the handler of one of the
 // gtk.GestureStylus::down, gtk.GestureStylus::motion, gtk.GestureStylus::up or
 // gtk.GestureStylus::proximity signals.
+//
+// The function returns the following values:
+//
+//    - deviceTool (optional): current stylus tool.
+//
 func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	var _arg0 *C.GtkGestureStylus // out
 	var _cret *C.GdkDeviceTool    // in
@@ -173,24 +214,4 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	}
 
 	return _deviceTool
-}
-
-// ConnectDown: emitted when the stylus touches the device.
-func (gesture *GestureStylus) ConnectDown(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("down", f)
-}
-
-// ConnectMotion: emitted when the stylus moves while touching the device.
-func (gesture *GestureStylus) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("motion", f)
-}
-
-// ConnectProximity: emitted when the stylus is in proximity of the device.
-func (gesture *GestureStylus) ConnectProximity(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("proximity", f)
-}
-
-// ConnectUp: emitted when the stylus no longer touches the device.
-func (gesture *GestureStylus) ConnectUp(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("up", f)
 }

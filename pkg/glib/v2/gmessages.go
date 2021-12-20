@@ -233,10 +233,13 @@ func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C
 	return cret
 }
 
-//
 // The function takes the following parameters:
 //
-
+//    - logDomain
+//    - file
+//    - line
+//    - prettyFunction
+//    - expression
 //
 func AssertWarning(logDomain, file string, line int, prettyFunction, expression string) {
 	var _arg1 *C.char // out
@@ -290,11 +293,11 @@ func AssertWarning(logDomain, file string, line int, prettyFunction, expression 
 //
 // The function takes the following parameters:
 //
-//    - logDomain: log domain of the message, or NULL for the default ""
-//    application domain.
+//    - logDomain (optional): log domain of the message, or NULL for the default
+//      "" application domain.
 //    - logLevel: level of the message.
-//    - message: message.
-//    - unusedData: data passed from g_log() which is unused.
+//    - message (optional): message.
+//    - unusedData (optional): data passed from g_log() which is unused.
 //
 func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string, unusedData cgo.Handle) {
 	var _arg1 *C.gchar         // out
@@ -328,8 +331,7 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 // The function takes the following parameters:
 //
 //    - logDomain: log domain.
-//    - handlerId: id of the handler, which was returned in
-//    g_log_set_handler().
+//    - handlerId: id of the handler, which was returned in g_log_set_handler().
 //
 func LogRemoveHandler(logDomain string, handlerId uint) {
 	var _arg1 *C.gchar // out
@@ -363,7 +365,11 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 // The function takes the following parameters:
 //
 //    - fatalMask: mask containing bits set for each level of error which is to
-//    be fatal.
+//      be fatal.
+//
+// The function returns the following values:
+//
+//    - logLevelFlags: old fatal mask.
 //
 func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	var _arg1 C.GLogLevelFlags // out
@@ -399,6 +405,10 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 //
 //    - logDomain: log domain.
 //    - fatalMask: new fatal mask.
+//
+// The function returns the following values:
+//
+//    - logLevelFlags: old fatal mask for the log domain.
 //
 func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	var _arg1 *C.gchar         // out
@@ -476,10 +486,10 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 //
 // The function takes the following parameters:
 //
-//    - logDomain: log domain, usually G_LOG_DOMAIN.
+//    - logDomain (optional): log domain, usually G_LOG_DOMAIN.
 //    - logLevel: log level, either from LevelFlags, or a user-defined level.
 //    - fields: dictionary (#GVariant of the type G_VARIANT_TYPE_VARDICT)
-//    containing the key-value pairs of message data.
+//      containing the key-value pairs of message data.
 //
 func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	var _arg1 *C.gchar         // out
@@ -523,7 +533,12 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 //
 //    - logLevel: log level, either from LevelFlags, or a user-defined level.
 //    - fields: key–value pairs of structured data forming the log message.
-//    - userData: user data passed to g_log_set_writer_func().
+//    - userData (optional): user data passed to g_log_set_writer_func().
+//
+// The function returns the following values:
+//
+//    - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
+//      otherwise.
 //
 func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
@@ -572,8 +587,8 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Ha
 //
 // The function takes the following parameters:
 //
-//    - useStderr: if TRUE, use stderr for log messages that would normally
-//    have appeared on stdout.
+//    - useStderr: if TRUE, use stderr for log messages that would normally have
+//      appeared on stdout.
 //
 func LogWriterDefaultSetUseStderr(useStderr bool) {
 	var _arg1 C.gboolean // out
@@ -608,7 +623,12 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 // The function takes the following parameters:
 //
 //    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - logDomain: log domain.
+//    - logDomain (optional): log domain.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the log message would be dropped by GLib's default log
+//      handlers.
 //
 func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	var _arg1 C.GLogLevelFlags // out
@@ -649,7 +669,12 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 //    - logLevel: log level, either from LevelFlags, or a user-defined level.
 //    - fields: key–value pairs of structured data forming the log message.
 //    - useColor: TRUE to use ANSI color escape sequences when formatting the
-//    message, FALSE to not.
+//      message, FALSE to not.
+//
+// The function returns the following values:
+//
+//    - utf8: string containing the formatted log message, in the character set
+//      of the current locale.
 //
 func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
 	var _arg1 C.GLogLevelFlags // out
@@ -698,6 +723,10 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 //
 //    - outputFd: output file descriptor to check.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if output_fd points to the journal, FALSE otherwise.
+//
 func LogWriterIsJournald(outputFd int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
@@ -730,7 +759,12 @@ func LogWriterIsJournald(outputFd int) bool {
 //
 //    - logLevel: log level, either from LevelFlags, or a user-defined level.
 //    - fields: key–value pairs of structured data forming the log message.
-//    - userData: user data passed to g_log_set_writer_func().
+//    - userData (optional): user data passed to g_log_set_writer_func().
+//
+// The function returns the following values:
+//
+//    - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
+//      otherwise.
 //
 func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
@@ -781,7 +815,12 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.H
 //
 //    - logLevel: log level, either from LevelFlags, or a user-defined level.
 //    - fields: key–value pairs of structured data forming the log message.
-//    - userData: user data passed to g_log_set_writer_func().
+//    - userData (optional): user data passed to g_log_set_writer_func().
+//
+// The function returns the following values:
+//
+//    - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
+//      otherwise.
 //
 func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
@@ -821,6 +860,10 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 // The function takes the following parameters:
 //
 //    - outputFd: output file descriptor to check.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if ANSI color escapes are supported, FALSE otherwise.
 //
 func LogWriterSupportsColor(outputFd int) bool {
 	var _arg1 C.gint     // out

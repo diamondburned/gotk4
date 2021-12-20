@@ -59,9 +59,13 @@ func marshalSliceListModeller(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model to use, or NULL.
+//    - model (optional) to use, or NULL.
 //    - offset of the slice.
 //    - size: maximum size of the slice.
+//
+// The function returns the following values:
+//
+//    - sliceListModel: new GtkSliceListModel.
 //
 func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListModel {
 	var _arg1 *C.GListModel        // out
@@ -89,6 +93,11 @@ func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListMode
 }
 
 // Model gets the model that is currently being used or NULL if none.
+//
+// The function returns the following values:
+//
+//    - listModel (optional): model in use.
+//
 func (self *SliceListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret *C.GListModel        // in
@@ -118,6 +127,11 @@ func (self *SliceListModel) Model() gio.ListModeller {
 }
 
 // Offset gets the offset set via gtk_slice_list_model_set_offset().
+//
+// The function returns the following values:
+//
+//    - guint: offset.
+//
 func (self *SliceListModel) Offset() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
@@ -135,6 +149,11 @@ func (self *SliceListModel) Offset() uint {
 }
 
 // Size gets the size set via gtk_slice_list_model_set_size().
+//
+// The function returns the following values:
+//
+//    - guint: size.
+//
 func (self *SliceListModel) Size() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
@@ -157,7 +176,7 @@ func (self *SliceListModel) Size() uint {
 //
 // The function takes the following parameters:
 //
-//    - model to be sliced.
+//    - model (optional) to be sliced.
 //
 func (self *SliceListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSliceListModel // out

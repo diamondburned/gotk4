@@ -197,9 +197,9 @@ func (context *StyleContext) AddClass(className string) {
 //
 //    - provider: GtkStyleProvider.
 //    - priority of the style provider. The lower it is, the earlier it will be
-//    used in the style construction. Typically this will be in the range
-//    between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
-//    GTK_STYLE_PROVIDER_PRIORITY_USER.
+//      used in the style construction. Typically this will be in the range
+//      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
@@ -217,6 +217,11 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 }
 
 // Border gets the border for a given state as a GtkBorder.
+//
+// The function returns the following values:
+//
+//    - border: return value for the border settings.
+//
 func (context *StyleContext) Border() *Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkBorder        // in
@@ -234,6 +239,11 @@ func (context *StyleContext) Border() *Border {
 }
 
 // Color gets the foreground color for a given state.
+//
+// The function returns the following values:
+//
+//    - color: return value for the foreground color.
+//
 func (context *StyleContext) Color() *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GdkRGBA          // in
@@ -251,6 +261,11 @@ func (context *StyleContext) Color() *gdk.RGBA {
 }
 
 // Display returns the GdkDisplay to which context is attached.
+//
+// The function returns the following values:
+//
+//    - display: GdkDisplay.
+//
 func (context *StyleContext) Display() *gdk.Display {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GdkDisplay      // in
@@ -273,6 +288,11 @@ func (context *StyleContext) Display() *gdk.Display {
 }
 
 // Margin gets the margin for a given state as a GtkBorder.
+//
+// The function returns the following values:
+//
+//    - margin: return value for the margin settings.
+//
 func (context *StyleContext) Margin() *Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkBorder        // in
@@ -290,6 +310,11 @@ func (context *StyleContext) Margin() *Border {
 }
 
 // Padding gets the padding for a given state as a GtkBorder.
+//
+// The function returns the following values:
+//
+//    - padding: return value for the padding settings.
+//
 func (context *StyleContext) Padding() *Border {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkBorder        // in
@@ -307,6 +332,11 @@ func (context *StyleContext) Padding() *Border {
 }
 
 // Scale returns the scale used for assets.
+//
+// The function returns the following values:
+//
+//    - gint: scale.
+//
 func (context *StyleContext) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.int              // in
@@ -328,6 +358,11 @@ func (context *StyleContext) Scale() int {
 // This method should only be used to retrieve the GtkStateFlags to pass to
 // GtkStyleContext methods, like gtk.StyleContext.GetPadding(). If you need to
 // retrieve the current state of a GtkWidget, use gtk.Widget.GetStateFlags().
+//
+// The function returns the following values:
+//
+//    - stateFlags: state flags.
+//
 func (context *StyleContext) State() StateFlags {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.GtkStateFlags    // in
@@ -349,6 +384,10 @@ func (context *StyleContext) State() StateFlags {
 // The function takes the following parameters:
 //
 //    - className class name.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if context has class_name defined.
 //
 func (context *StyleContext) HasClass(className string) bool {
 	var _arg0 *C.GtkStyleContext // out
@@ -377,6 +416,11 @@ func (context *StyleContext) HasClass(className string) bool {
 // The function takes the following parameters:
 //
 //    - colorName: color name to lookup.
+//
+// The function returns the following values:
+//
+//    - color: return location for the looked up color.
+//    - ok: TRUE if color_name was found and resolved, FALSE otherwise.
 //
 func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
@@ -543,6 +587,10 @@ func (context *StyleContext) SetState(flags StateFlags) {
 //
 //    - flags flags that determine what to print.
 //
+// The function returns the following values:
+//
+//    - utf8: newly allocated string representing context.
+//
 func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	var _arg0 *C.GtkStyleContext          // out
 	var _arg1 C.GtkStyleContextPrintFlags // out
@@ -578,9 +626,9 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 //    - display: GdkDisplay.
 //    - provider: GtkStyleProvider.
 //    - priority of the style provider. The lower it is, the earlier it will be
-//    used in the style construction. Typically this will be in the range
-//    between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
-//    GTK_STYLE_PROVIDER_PRIORITY_USER.
+//      used in the style construction. Typically this will be in the range
+//      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint) {
 	var _arg1 *C.GdkDisplay       // out

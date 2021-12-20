@@ -22,6 +22,11 @@ const (
 	CommentsTabWidth    = 4
 )
 
+// calculateCol accounts for the indentation in the column limit.
+func calculateCol(indentLvl int) int {
+	return CommentsColumnLimit - (CommentsTabWidth * indentLvl)
+}
+
 var (
 	cmtListRegex      = regexp.MustCompile(`(?m)\n?\n^- `)
 	cmtCodeSpanRegex  = regexp.MustCompile("`.*?`")
@@ -37,13 +42,23 @@ var (
 	mdCodeblockRegex = regexp.MustCompile(`(?ms)\n*\x60\x60\x60\w*\n(.*?)\x60\x60\x60\n*`)
 )
 
+// ParamDoc is the documentation for one parameter. It is added by callable
+// generators for GoDoc to generate the rest.
+type ParamDoc struct {
+	Name         string
+	Optional     bool
+	InfoElements gir.InfoElements
+}
+
 // InfoFields contains common fields that a GIR schema type may contain. These
 // fields should rarely be used, because they're too magical. All fields inside
 // InfoFields are optional.
 type InfoFields struct {
-	Name     *string
-	Attrs    *gir.InfoAttrs
-	Elements *gir.InfoElements
+	Name       *string
+	Attrs      *gir.InfoAttrs
+	Elements   *gir.InfoElements
+	ParamDocs  []ParamDoc
+	ReturnDocs []ParamDoc
 }
 
 func getField(value reflect.Value, field string) interface{} {
@@ -51,12 +66,16 @@ func getField(value reflect.Value, field string) interface{} {
 	if v == (reflect.Value{}) {
 		return nil
 	}
-	if v.Type().Kind() == reflect.Ptr {
+
+	switch v.Type().Kind() {
+	case reflect.Ptr, reflect.Slice:
 		return v.Interface()
 	}
+
 	if v.CanAddr() {
 		return v.Addr().Interface()
 	}
+
 	cpy := reflect.New(v.Type())
 	cpy.Elem().Set(v)
 	return cpy.Interface()
@@ -74,6 +93,8 @@ func GetInfoFields(v interface{}) InfoFields {
 	inf.Name, _ = getField(value, "Name").(*string)
 	inf.Attrs, _ = getField(value, "InfoAttrs").(*gir.InfoAttrs)
 	inf.Elements, _ = getField(value, "InfoElements").(*gir.InfoElements)
+	inf.ParamDocs, _ = getField(value, "ParamDocs").([]ParamDoc)
+	inf.ReturnDocs, _ = getField(value, "ReturnDocs").([]ParamDoc)
 
 	return inf
 }
@@ -127,6 +148,7 @@ type (
 	additionalPrefix string
 	paragraphIndent  int
 	trailingNewLine  struct{}
+	trailingComment  struct{}
 	synopsize        struct{}
 )
 
@@ -136,11 +158,22 @@ func (additionalString) opts() {}
 func (additionalPrefix) opts() {}
 func (paragraphIndent) opts()  {}
 func (trailingNewLine) opts()  {}
+func (trailingComment) opts()  {}
 func (synopsize) opts()        {}
 
 func searchOpts(opts []Option, f func(opt Option) bool) bool {
 	for _, opt := range opts {
 		if f(opt) {
+			return true
+		}
+	}
+	return false
+}
+
+func searchOptsBool(opts []Option, b Option) bool {
+	t := reflect.TypeOf(b)
+	for _, opt := range opts {
+		if reflect.TypeOf(opt) == t {
 			return true
 		}
 	}
@@ -223,19 +256,82 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 	opts = append(opts, originalTypeName(orig))
 	cmt := format(self, docBuilder.String(), opts)
 
-	synopsize := searchOpts(opts, func(opt Option) bool {
-		_, ok := opt.(synopsize)
-		return ok
-	})
+	synopsize := searchOptsBool(opts, synopsize{})
 	if synopsize {
 		cmt = doc.Synopsis(cmt)
 	}
 
-	if cmt != "" && !strings.HasSuffix(cmt, ".") {
-		cmt += "."
+	cmt = addPeriod(cmt)
+
+	if !synopsize {
+		tail := strings.Builder{}
+		tail.Grow(256)
+
+		if len(inf.ParamDocs) > 0 {
+			tail.WriteString("\n\nThe function takes the following parameters:\n")
+			writeParamDocs(&tail, indentLvl+1, inf.ParamDocs)
+		}
+		if len(inf.ReturnDocs) > 0 {
+			tail.WriteString("\n\nThe function returns the following values:\n")
+			writeParamDocs(&tail, indentLvl+1, inf.ReturnDocs)
+		}
+
+		if tail.Len() > 0 {
+			opts = append(opts, trailingComment{})
+		}
+
+		cmt += tail.String()
 	}
 
 	return ReflowLinesIndent(indentLvl, cmt, opts...)
+}
+
+func addPeriod(cmt string) string {
+	if cmt != "" && !strings.HasSuffix(cmt, ".") {
+		cmt += "."
+	}
+	return cmt
+}
+
+func writeParamDocs(tail *strings.Builder, indent int, params []ParamDoc) {
+	col := calculateCol(indent)
+
+	line1Indent := strings.Repeat(" ", CommentsTabWidth) + "- "
+	lineNIndent := strings.Repeat(" ", CommentsTabWidth+2)
+
+	for _, param := range params {
+		name := param.Name
+		if param.Optional {
+			name += " (optional)"
+		}
+
+		var doc string
+		if param.InfoElements.Doc != nil {
+			doc = format(name, param.InfoElements.Doc.String, []Option{
+				originalTypeName(param.Name),
+			})
+			doc = addPeriod(doc)
+			doc = docText(doc, col)
+			doc = strings.TrimSpace(doc)
+			// Insert a dash space into the lines.
+			doc = transformLines(doc, func(i int, line string) string {
+				if i == 0 {
+					return line1Indent + line
+				} else {
+					return lineNIndent + line
+				}
+			})
+		} else {
+			// If we only have 1 param with no doc, then just give up.
+			if len(params) < 2 {
+				return
+			}
+			doc = line1Indent + name
+		}
+
+		tail.WriteString("\n")
+		tail.WriteString(doc)
+	}
 }
 
 // nthWord returns the nth word, or an empty string if none.
@@ -470,8 +566,7 @@ func ReflowLinesIndent(indentLvl int, cmt string, opts ...Option) string {
 		postIndent = strings.Repeat(strings.Repeat(" ", CommentsTabWidth), postIndentCount)
 	}
 
-	// Account for the indentation in the column limit.
-	col := CommentsColumnLimit - (CommentsTabWidth * (indentLvl + postIndentCount))
+	col := calculateCol(indentLvl + postIndentCount)
 
 	cmt = docText(cmt, col)
 	cmt = strings.TrimSpace(cmt)
@@ -480,23 +575,27 @@ func ReflowLinesIndent(indentLvl int, cmt string, opts ...Option) string {
 		return ""
 	}
 
-	if cmt != "" {
-		lines := strings.Split(cmt, "\n")
-		for i, line := range lines {
-			lines[i] = preIndent + "//" + postIndent + line
-		}
-
-		cmt = strings.Join(lines, "\n")
+	if searchOptsBool(opts, trailingComment{}) {
+		cmt += "\n"
 	}
 
-	for _, opt := range opts {
-		if _, ok := opt.(trailingNewLine); ok {
-			cmt += "\n"
-			break
-		}
+	cmt = transformLines(cmt, func(i int, line string) string {
+		return preIndent + "//" + postIndent + line
+	})
+
+	if searchOptsBool(opts, trailingNewLine{}) {
+		cmt += "\n"
 	}
 
 	return cmt
+}
+
+func transformLines(cmt string, f func(int, string) string) string {
+	lines := strings.Split(cmt, "\n")
+	for i, line := range lines {
+		lines[i] = f(i, line)
+	}
+	return strings.Join(lines, "\n")
 }
 
 // tidyParagraphs cleans up new lines without touching codeblocks.

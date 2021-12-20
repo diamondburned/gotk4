@@ -24,6 +24,10 @@ import "C"
 //
 //    - errNo: error number as defined in errno.h.
 //
+// The function returns the following values:
+//
+//    - ioErrorEnum value for the given errno.h error number.
+//
 func IOErrorFromErrno(errNo int) IOErrorEnum {
 	var _arg1 C.gint         // out
 	var _cret C.GIOErrorEnum // in

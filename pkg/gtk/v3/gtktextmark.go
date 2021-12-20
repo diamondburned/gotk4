@@ -81,8 +81,12 @@ func marshalTextMarker(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name: mark name or NULL.
+//    - name (optional): mark name or NULL.
 //    - leftGravity: whether the mark should have left gravity.
+//
+// The function returns the following values:
+//
+//    - textMark: new TextMark.
 //
 func NewTextMark(name string, leftGravity bool) *TextMark {
 	var _arg1 *C.gchar       // out
@@ -110,6 +114,11 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 
 // Buffer gets the buffer this mark is located inside, or NULL if the mark is
 // deleted.
+//
+// The function returns the following values:
+//
+//    - textBuffer mark’s TextBuffer.
+//
 func (mark *TextMark) Buffer() *TextBuffer {
 	var _arg0 *C.GtkTextMark   // out
 	var _cret *C.GtkTextBuffer // in
@@ -129,6 +138,11 @@ func (mark *TextMark) Buffer() *TextBuffer {
 // Deleted returns TRUE if the mark has been removed from its buffer with
 // gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way to
 // add it to a buffer again.
+//
+// The function returns the following values:
+//
+//    - ok: whether the mark is deleted.
+//
 func (mark *TextMark) Deleted() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
@@ -148,6 +162,11 @@ func (mark *TextMark) Deleted() bool {
 }
 
 // LeftGravity determines whether the mark has left gravity.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the mark has left gravity, FALSE otherwise.
+//
 func (mark *TextMark) LeftGravity() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
@@ -167,6 +186,11 @@ func (mark *TextMark) LeftGravity() bool {
 }
 
 // Name returns the mark name; returns NULL for anonymous marks.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): mark name.
+//
 func (mark *TextMark) Name() string {
 	var _arg0 *C.GtkTextMark // out
 	var _cret *C.gchar       // in
@@ -187,6 +211,11 @@ func (mark *TextMark) Name() string {
 
 // Visible returns TRUE if the mark is visible (i.e. a cursor is displayed for
 // it).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if visible.
+//
 func (mark *TextMark) Visible() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in

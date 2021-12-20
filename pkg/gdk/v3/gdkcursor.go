@@ -401,6 +401,15 @@ func marshalCursorrer(p uintptr) (interface{}, error) {
 	return wrapCursor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (cursor *Cursor) baseCursor() *Cursor {
+	return cursor
+}
+
+// BaseCursor returns the underlying base object.
+func BaseCursor(obj Cursorrer) *Cursor {
+	return obj.baseCursor()
+}
+
 // NewCursor creates a new cursor from the set of builtin cursors for the
 // default display. See gdk_cursor_new_for_display().
 //
@@ -411,6 +420,10 @@ func marshalCursorrer(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - cursorType: cursor to create.
+//
+// The function returns the following values:
+//
+//    - cursor: new Cursor.
 //
 func NewCursor(cursorType CursorType) *Cursor {
 	var _arg1 C.GdkCursorType // out
@@ -434,6 +447,10 @@ func NewCursor(cursorType CursorType) *Cursor {
 //
 //    - display for which the cursor will be created.
 //    - cursorType: cursor to create.
+//
+// The function returns the following values:
+//
+//    - cursor (optional): new Cursor, or NULL on failure.
 //
 func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 	var _arg1 *C.GdkDisplay   // out
@@ -537,6 +554,11 @@ func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 //    - display for which the cursor will be created.
 //    - name of the cursor.
 //
+// The function returns the following values:
+//
+//    - cursor (optional): new Cursor, or NULL if there is no cursor with the
+//      given name.
+//
 func NewCursorFromName(display *Display, name string) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.gchar      // out
@@ -582,6 +604,10 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 //    - x: horizontal offset of the “hotspot” of the cursor.
 //    - y: vertical offset of the “hotspot” of the cursor.
 //
+// The function returns the following values:
+//
+//    - cursor: new Cursor.
+//
 func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
@@ -626,6 +652,10 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *
 //    - x: horizontal offset of the “hotspot” of the cursor.
 //    - y: vertical offset of the “hotspot” of the cursor.
 //
+// The function returns the following values:
+//
+//    - cursor: new Cursor.
+//
 func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64) *Cursor {
 	var _arg1 *C.GdkDisplay      // out
 	var _arg2 *C.cairo_surface_t // out
@@ -652,6 +682,11 @@ func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64
 }
 
 // CursorType returns the cursor type for this cursor.
+//
+// The function returns the following values:
+//
+//    - cursorType: CursorType.
+//
 func (cursor *Cursor) CursorType() CursorType {
 	var _arg0 *C.GdkCursor    // out
 	var _cret C.GdkCursorType // in
@@ -669,6 +704,11 @@ func (cursor *Cursor) CursorType() CursorType {
 }
 
 // Display returns the display on which the Cursor is defined.
+//
+// The function returns the following values:
+//
+//    - display associated to cursor.
+//
 func (cursor *Cursor) Display() *Display {
 	var _arg0 *C.GdkCursor  // out
 	var _cret *C.GdkDisplay // in
@@ -690,6 +730,11 @@ func (cursor *Cursor) Display() *Display {
 // Note that depending on the capabilities of the windowing system and on the
 // cursor, GDK may not be able to obtain the image data. In this case, NULL is
 // returned.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional) representing cursor, or NULL.
+//
 func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkPixbuf // in
@@ -724,6 +769,13 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 // Note that depending on the capabilities of the windowing system and on the
 // cursor, GDK may not be able to obtain the image data. In this case, NULL is
 // returned.
+//
+// The function returns the following values:
+//
+//    - xHot (optional): location to store the hotspot x position, or NULL.
+//    - yHot (optional): location to store the hotspot y position, or NULL.
+//    - surface (optional): #cairo_surface_t representing cursor, or NULL.
+//
 func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
 	var _arg0 *C.GdkCursor       // out
 	var _arg1 C.gdouble          // in
@@ -749,13 +801,4 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	}
 
 	return _xHot, _yHot, _surface
-}
-
-func (cursor *Cursor) baseCursor() *Cursor {
-	return cursor
-}
-
-// BaseCursor returns the underlying base object.
-func BaseCursor(obj Cursorrer) *Cursor {
-	return obj.baseCursor()
 }

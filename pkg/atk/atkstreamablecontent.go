@@ -31,10 +31,34 @@ func init() {
 type StreamableContentOverrider interface {
 	// MIMEType gets the character string of the specified mime type. The first
 	// mime type is at position 0, the second at position 1, and so on.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i: gint representing the position of the mime type starting from 0.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: gchar* representing the specified mime type; the caller should
+	//      not free the character string.
+	//
 	MIMEType(i int) string
 	// NMIMETypes gets the number of mime types supported by this object.
+	//
+	// The function returns the following values:
+	//
+	//    - gint which is the number of mime types supported by the object.
+	//
 	NMIMETypes() int
 	// Stream gets the content in the specified mime type.
+	//
+	// The function takes the following parameters:
+	//
+	//    - mimeType: gchar* representing the mime type.
+	//
+	// The function returns the following values:
+	//
+	//    - ioChannel which contains the content in the specified mime type.
+	//
 	Stream(mimeType string) *glib.IOChannel
 	// URI: get a string representing a URI in IETF standard format (see
 	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
@@ -44,6 +68,17 @@ type StreamableContentOverrider interface {
 	//
 	// Note that it is possible for get_uri to return NULL but for get_stream to
 	// work nonetheless, since not all GIOChannels connect to URIs.
+	//
+	// The function takes the following parameters:
+	//
+	//    - mimeType: gchar* representing the mime type, or NULL to request a URI
+	//      for the default mime type.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional) returns a string representing a URI, or NULL if no
+	//      corresponding URI can be constructed.
+	//
 	URI(mimeType string) string
 }
 
@@ -105,6 +140,11 @@ func marshalStreamableContenter(p uintptr) (interface{}, error) {
 //
 //    - i: gint representing the position of the mime type starting from 0.
 //
+// The function returns the following values:
+//
+//    - utf8: gchar* representing the specified mime type; the caller should not
+//      free the character string.
+//
 func (streamable *StreamableContent) MIMEType(i int) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 C.gint                  // out
@@ -125,6 +165,11 @@ func (streamable *StreamableContent) MIMEType(i int) string {
 }
 
 // NMIMETypes gets the number of mime types supported by this object.
+//
+// The function returns the following values:
+//
+//    - gint which is the number of mime types supported by the object.
+//
 func (streamable *StreamableContent) NMIMETypes() int {
 	var _arg0 *C.AtkStreamableContent // out
 	var _cret C.gint                  // in
@@ -146,6 +191,10 @@ func (streamable *StreamableContent) NMIMETypes() int {
 // The function takes the following parameters:
 //
 //    - mimeType: gchar* representing the mime type.
+//
+// The function returns the following values:
+//
+//    - ioChannel which contains the content in the specified mime type.
 //
 func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _arg0 *C.AtkStreamableContent // out
@@ -183,8 +232,13 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: gchar* representing the mime type, or NULL to request a URI
-//    for the default mime type.
+//    - mimeType: gchar* representing the mime type, or NULL to request a URI for
+//      the default mime type.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) returns a string representing a URI, or NULL if no
+//      corresponding URI can be constructed.
 //
 func (streamable *StreamableContent) URI(mimeType string) string {
 	var _arg0 *C.AtkStreamableContent // out

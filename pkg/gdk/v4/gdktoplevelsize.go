@@ -13,6 +13,8 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// The function returns the following values:
+//
 func ToplevelSizeGetType() externglib.Type {
 	var _cret C.GType // in
 

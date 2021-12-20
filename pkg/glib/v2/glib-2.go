@@ -91,6 +91,9 @@ func (i IOCondition) Has(other IOCondition) bool {
 // VariantParserGetErrorQuark: same as g_variant_error_quark().
 //
 // Deprecated: Use g_variant_parse_error_quark() instead.
+//
+// The function returns the following values:
+//
 func VariantParserGetErrorQuark() Quark {
 	var _cret C.GQuark // in
 

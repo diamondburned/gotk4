@@ -152,6 +152,11 @@ func marshalMessageDialogger(p uintptr) (interface{}, error) {
 // Image gets the dialog’s image.
 //
 // Deprecated: Use Dialog for dialogs with images.
+//
+// The function returns the following values:
+//
+//    - widget dialog’s image.
+//
 func (dialog *MessageDialog) Image() Widgetter {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
@@ -186,6 +191,11 @@ func (dialog *MessageDialog) Image() Widgetter {
 // content to that box and it will appear below those labels. See
 // gtk_dialog_get_content_area() for the corresponding function in the parent
 // Dialog.
+//
+// The function returns the following values:
+//
+//    - widget corresponding to the “message area” in the message_dialog.
+//
 func (messageDialog *MessageDialog) MessageArea() Widgetter {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in

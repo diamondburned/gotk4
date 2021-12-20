@@ -69,6 +69,11 @@ func marshalStylePropertieser(p uintptr) (interface{}, error) {
 // NewStyleProperties returns a newly created StyleProperties
 //
 // Deprecated: StyleProperties are deprecated.
+//
+// The function returns the following values:
+//
+//    - styleProperties: new StyleProperties.
+//
 func NewStyleProperties() *StyleProperties {
 	var _cret *C.GtkStyleProperties // in
 
@@ -102,6 +107,11 @@ func (props *StyleProperties) Clear() {
 //
 //    - property: style property name.
 //    - state to retrieve the property value for.
+//
+// The function returns the following values:
+//
+//    - value: return location for the style property value.
+//    - ok: TRUE if the property exists in props, FALSE otherwise.
 //
 func (props *StyleProperties) Property(property string, state StateFlags) (externglib.Value, bool) {
 	var _arg0 *C.GtkStyleProperties // out
@@ -141,6 +151,10 @@ func (props *StyleProperties) Property(property string, state StateFlags) (exter
 // The function takes the following parameters:
 //
 //    - name: color name to lookup.
+//
+// The function returns the following values:
+//
+//    - symbolicColor: mapped color.
 //
 func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	var _arg0 *C.GtkStyleProperties // out
@@ -380,6 +394,12 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 // AddColorStop adds a stop color to gradient.
 //
 // Deprecated: Gradient is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - offset for the color stop.
+//    - color to use.
+//
 func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	var _arg0 *C.GtkGradient      // out
 	var _arg1 C.gdouble           // out
@@ -395,6 +415,10 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	runtime.KeepAlive(color)
 }
 
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
 func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Pattern {
 	var _arg0 *C.GtkGradient     // out
 	var _arg1 *C.GtkStyleContext // out
@@ -424,6 +448,11 @@ func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Patter
 // using in GTK CSS files.
 //
 // Deprecated: Gradient is deprecated.
+//
+// The function returns the following values:
+//
+//    - utf8: string representation for gradient.
+//
 func (gradient *Gradient) String() string {
 	var _arg0 *C.GtkGradient // out
 	var _cret *C.char        // in
@@ -633,6 +662,16 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 // or references such a color, this function will return FALSE.
 //
 // Deprecated: SymbolicColor is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - props (optional) to use when resolving named colors, or NULL.
+//
+// The function returns the following values:
+//
+//    - resolvedColor: return location for the resolved color.
+//    - ok: TRUE if the color has been resolved.
+//
 func (color *SymbolicColor) Resolve(props *StyleProperties) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkSymbolicColor   // out
 	var _arg1 *C.GtkStyleProperties // out
@@ -666,6 +705,11 @@ func (color *SymbolicColor) Resolve(props *StyleProperties) (*gdk.RGBA, bool) {
 // from it.
 //
 // Deprecated: SymbolicColor is deprecated.
+//
+// The function returns the following values:
+//
+//    - utf8: new string representing color.
+//
 func (color *SymbolicColor) String() string {
 	var _arg0 *C.GtkSymbolicColor // out
 	var _cret *C.char             // in

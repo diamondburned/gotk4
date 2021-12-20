@@ -28,6 +28,29 @@ func init() {
 	})
 }
 
+// ConnectionFactoryCreateConnection creates a Connection subclass of the right
+// type for socket.
+//
+// The function returns the following values:
+//
+//    - socketConnection: Connection.
+//
+func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
+	var _arg0 *C.GSocket           // out
+	var _cret *C.GSocketConnection // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+
+	_cret = C.g_socket_connection_factory_create_connection(_arg0)
+	runtime.KeepAlive(socket)
+
+	var _socketConnection *SocketConnection // out
+
+	_socketConnection = wrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _socketConnection
+}
+
 // SocketConnection is a OStream for a connected socket. They can be created
 // either by Client when connecting to a host, or by Listener when accepting a
 // new client.
@@ -67,7 +90,7 @@ func marshalSocketConnectioner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx: GCancellable or NULL.
+//    - ctx (optional): GCancellable or NULL.
 //    - address specifying the remote address.
 //
 func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context, address SocketAddresser) error {
@@ -108,9 +131,9 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 //
 // The function takes the following parameters:
 //
-//    - ctx: GCancellable or NULL.
+//    - ctx (optional): GCancellable or NULL.
 //    - address specifying the remote address.
-//    - callback: ReadyCallback.
+//    - callback (optional): ReadyCallback.
 //
 func (connection *SocketConnection) ConnectAsync(ctx context.Context, address SocketAddresser, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketConnection  // out
@@ -166,6 +189,12 @@ func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 }
 
 // LocalAddress: try to get the local address of a socket connection.
+//
+// The function returns the following values:
+//
+//    - socketAddress or NULL on error. Free the returned object with
+//      g_object_unref().
+//
 func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
@@ -207,6 +236,12 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 // G_SOCKET_CLIENT_CONNECTING, this function will return the remote address that
 // will be used for the connection. This allows applications to print e.g.
 // "Connecting to example.com (10.42.77.3)...".
+//
+// The function returns the following values:
+//
+//    - socketAddress or NULL on error. Free the returned object with
+//      g_object_unref().
+//
 func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
@@ -244,6 +279,11 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 // Socket gets the underlying #GSocket object of the connection. This can be
 // useful if you want to do something unusual on it not supported by the
 // Connection APIs.
+//
+// The function returns the following values:
+//
+//    - socket or NULL on error.
+//
 func (connection *SocketConnection) Socket() *Socket {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocket           // in
@@ -262,6 +302,11 @@ func (connection *SocketConnection) Socket() *Socket {
 
 // IsConnected checks if connection is connected. This is equivalent to calling
 // g_socket_is_connected() on connection's underlying #GSocket.
+//
+// The function returns the following values:
+//
+//    - ok: whether connection is connected.
+//
 func (connection *SocketConnection) IsConnected() bool {
 	var _arg0 *C.GSocketConnection // out
 	var _cret C.gboolean           // in
@@ -291,6 +336,10 @@ func (connection *SocketConnection) IsConnected() bool {
 //    - family: Family.
 //    - typ: Type.
 //    - protocolId: protocol id.
+//
+// The function returns the following values:
+//
+//    - gType: #GType.
 //
 func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, protocolId int) externglib.Type {
 	var _arg1 C.GSocketFamily // out

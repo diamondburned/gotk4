@@ -92,7 +92,18 @@ func marshalMonitorrer(p uintptr) (interface{}, error) {
 	return wrapMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectInvalidate: emitted when the output represented by monitor gets
+// disconnected.
+func (monitor *Monitor) ConnectInvalidate(f func()) externglib.SignalHandle {
+	return monitor.Connect("invalidate", f)
+}
+
 // Connector gets the name of the monitor's connector, if available.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the connector.
+//
 func (monitor *Monitor) Connector() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
@@ -112,6 +123,11 @@ func (monitor *Monitor) Connector() string {
 }
 
 // Display gets the display that this monitor belongs to.
+//
+// The function returns the following values:
+//
+//    - display: display.
+//
 func (monitor *Monitor) Display() *Display {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.GdkDisplay // in
@@ -133,6 +149,11 @@ func (monitor *Monitor) Display() *Display {
 //
 // The returned geometry is in ”application pixels”, not in ”device pixels” (see
 // gdk.Monitor.GetScaleFactor()).
+//
+// The function returns the following values:
+//
+//    - geometry: GdkRectangle to be filled with the monitor geometry.
+//
 func (monitor *Monitor) Geometry() *Rectangle {
 	var _arg0 *C.GdkMonitor  // out
 	var _arg1 C.GdkRectangle // in
@@ -150,6 +171,11 @@ func (monitor *Monitor) Geometry() *Rectangle {
 }
 
 // HeightMm gets the height in millimeters of the monitor.
+//
+// The function returns the following values:
+//
+//    - gint: physical height of the monitor.
+//
 func (monitor *Monitor) HeightMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
@@ -172,6 +198,11 @@ func (monitor *Monitor) HeightMm() int {
 //
 // The PNP ID registry is located at https://uefi.org/pnp_id_list
 // (https://uefi.org/pnp_id_list).
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name of the manufacturer, or NULL.
+//
 func (monitor *Monitor) Manufacturer() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
@@ -191,6 +222,11 @@ func (monitor *Monitor) Manufacturer() string {
 }
 
 // Model gets the string identifying the monitor model, if available.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): monitor model, or NULL.
+//
 func (monitor *Monitor) Model() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
@@ -212,6 +248,11 @@ func (monitor *Monitor) Model() string {
 // RefreshRate gets the refresh rate of the monitor, if available.
 //
 // The value is in milli-Hertz, so a refresh rate of 60Hz is returned as 60000.
+//
+// The function returns the following values:
+//
+//    - gint: refresh rate in milli-Hertz, or 0.
+//
 func (monitor *Monitor) RefreshRate() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
@@ -237,6 +278,11 @@ func (monitor *Monitor) RefreshRate() int {
 // This can be used if you want to create pixel based data for a particular
 // monitor, but most of the time you’re drawing to a surface where it is better
 // to use gdk.Surface.GetScaleFactor() instead.
+//
+// The function returns the following values:
+//
+//    - gint: scale factor.
+//
 func (monitor *Monitor) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
@@ -255,6 +301,11 @@ func (monitor *Monitor) ScaleFactor() int {
 
 // SubpixelLayout gets information about the layout of red, green and blue
 // primaries for pixels.
+//
+// The function returns the following values:
+//
+//    - subpixelLayout: subpixel layout.
+//
 func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 	var _arg0 *C.GdkMonitor       // out
 	var _cret C.GdkSubpixelLayout // in
@@ -272,6 +323,11 @@ func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 }
 
 // WidthMm gets the width in millimeters of the monitor.
+//
+// The function returns the following values:
+//
+//    - gint: physical width of the monitor.
+//
 func (monitor *Monitor) WidthMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
@@ -292,6 +348,11 @@ func (monitor *Monitor) WidthMm() int {
 //
 // The monitor becomes invalid when the physical monitor is unplugged or
 // removed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the object corresponds to a physical monitor.
+//
 func (monitor *Monitor) IsValid() bool {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.gboolean    // in
@@ -308,10 +369,4 @@ func (monitor *Monitor) IsValid() bool {
 	}
 
 	return _ok
-}
-
-// ConnectInvalidate: emitted when the output represented by monitor gets
-// disconnected.
-func (monitor *Monitor) ConnectInvalidate(f func()) externglib.SignalHandle {
-	return monitor.Connect("invalidate", f)
 }

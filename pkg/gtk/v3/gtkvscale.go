@@ -77,6 +77,10 @@ func marshalVScaler(p uintptr) (interface{}, error) {
 //
 //    - adjustment which sets the range of the scale.
 //
+// The function returns the following values:
+//
+//    - vScale: new VScale.
+//
 func NewVScale(adjustment *Adjustment) *VScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -110,6 +114,10 @@ func NewVScale(adjustment *Adjustment) *VScale {
 //    - min: minimum value.
 //    - max: maximum value.
 //    - step increment (tick size) used with keyboard shortcuts.
+//
+// The function returns the following values:
+//
+//    - vScale: new VScale.
 //
 func NewVScaleWithRange(min, max, step float64) *VScale {
 	var _arg1 C.gdouble    // out

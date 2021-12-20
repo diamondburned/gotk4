@@ -59,6 +59,11 @@ func DisableMultidevice() {
 //
 // Prior to GDK 3.0, this function would not automatically sync for you, so you
 // had to gdk_flush() if your last call to Xlib was not a blocking round trip.
+//
+// The function returns the following values:
+//
+//    - gint: x error code or 0 on success.
+//
 func ErrorTrapPop() int {
 	var _cret C.gint // in
 
@@ -118,6 +123,11 @@ func Flush() {
 // environment variable or the --display command line option.
 //
 // Deprecated: Call gdk_display_get_name (gdk_display_get_default ())) instead.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the display.
+//
 func GetDisplay() string {
 	var _cret *C.gchar // in
 
@@ -133,6 +143,12 @@ func GetDisplay() string {
 
 // GetDisplayArgName gets the display name specified in the command line
 // arguments passed to gdk_init() or gdk_parse_args(), if any.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): display name, if specified explicitly, otherwise NULL
+//      this string is owned by GTK+ and must not be modified or freed.
+//
 func GetDisplayArgName() string {
 	var _cret *C.gchar // in
 
@@ -151,6 +167,11 @@ func GetDisplayArgName() string {
 // explicitly been set with gdk_set_program_class() or with the --class
 // commandline option, the default value is the program name (determined with
 // g_get_prgname()) with the first character converted to uppercase.
+//
+// The function returns the following values:
+//
+//    - utf8: program class.
+//
 func GetProgramClass() string {
 	var _cret *C.gchar // in
 
@@ -176,14 +197,17 @@ func GetProgramClass() string {
 // The function takes the following parameters:
 //
 //    - window which will own the grab (the grab window).
-//    - ownerEvents: if FALSE then all keyboard events are reported with
-//    respect to window. If TRUE then keyboard events for this application are
-//    reported as normal, but keyboard events outside this application are
-//    reported with respect to window. Both key press and key release events
-//    are always reported, independant of the event mask set by the
-//    application.
+//    - ownerEvents: if FALSE then all keyboard events are reported with respect
+//      to window. If TRUE then keyboard events for this application are reported
+//      as normal, but keyboard events outside this application are reported with
+//      respect to window. Both key press and key release events are always
+//      reported, independant of the event mask set by the application.
 //    - time_: timestamp from a Event, or GDK_CURRENT_TIME if no timestamp is
-//    available.
+//      available.
+//
+// The function returns the following values:
+//
+//    - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
 //
 func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
@@ -217,7 +241,7 @@ func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 // The function takes the following parameters:
 //
 //    - time_: timestamp from a Event, or GDK_CURRENT_TIME if no timestamp is
-//    available.
+//      available.
 //
 func KeyboardUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
@@ -249,7 +273,7 @@ func NotifyStartupComplete() {
 // The function takes the following parameters:
 //
 //    - startupId: startup-notification identifier, for which notification
-//    process should be completed.
+//      process should be completed.
 //
 func NotifyStartupCompleteWithID(startupId string) {
 	var _arg1 *C.gchar // out
@@ -288,24 +312,28 @@ func NotifyStartupCompleteWithID(startupId string) {
 //
 //    - window which will own the grab (the grab window).
 //    - ownerEvents: if FALSE then all pointer events are reported with respect
-//    to window and are only reported if selected by event_mask. If TRUE then
-//    pointer events for this application are reported as normal, but pointer
-//    events outside this application are reported with respect to window and
-//    only if selected by event_mask. In either mode, unreported events are
-//    discarded.
+//      to window and are only reported if selected by event_mask. If TRUE then
+//      pointer events for this application are reported as normal, but pointer
+//      events outside this application are reported with respect to window and
+//      only if selected by event_mask. In either mode, unreported events are
+//      discarded.
 //    - eventMask specifies the event mask, which is used in accordance with
-//    owner_events. Note that only pointer events (i.e. button and motion
-//    events) may be selected.
-//    - confineTo: if non-NULL, the pointer will be confined to this window
-//    during the grab. If the pointer is outside confine_to, it will
-//    automatically be moved to the closest edge of confine_to and enter and
-//    leave events will be generated as necessary.
-//    - cursor to display while the grab is active. If this is NULL then the
-//    normal cursors are used for window and its descendants, and the cursor
-//    for window is used for all other windows.
+//      owner_events. Note that only pointer events (i.e. button and motion
+//      events) may be selected.
+//    - confineTo (optional): if non-NULL, the pointer will be confined to this
+//      window during the grab. If the pointer is outside confine_to, it will
+//      automatically be moved to the closest edge of confine_to and enter and
+//      leave events will be generated as necessary.
+//    - cursor (optional) to display while the grab is active. If this is NULL
+//      then the normal cursors are used for window and its descendants, and the
+//      cursor for window is used for all other windows.
 //    - time_: timestamp of the event which led to this pointer grab. This
-//    usually comes from a EventButton struct, though GDK_CURRENT_TIME can be
-//    used if the time isn’t known.
+//      usually comes from a EventButton struct, though GDK_CURRENT_TIME can be
+//      used if the time isn’t known.
+//
+// The function returns the following values:
+//
+//    - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
 //
 func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confineTo Windower, cursor Cursorrer, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
@@ -351,6 +379,11 @@ func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confine
 // into account.
 //
 // Deprecated: Use gdk_display_device_is_grabbed() instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the pointer is currently grabbed by this application.
+//
 func PointerIsGrabbed() bool {
 	var _cret C.gboolean // in
 
@@ -373,7 +406,7 @@ func PointerIsGrabbed() bool {
 // The function takes the following parameters:
 //
 //    - time_: timestamp from a Event, or GDK_CURRENT_TIME if no timestamp is
-//    available.
+//      available.
 //
 func PointerUngrab(time_ uint32) {
 	var _arg1 C.guint32 // out
@@ -474,6 +507,11 @@ func SetProgramClass(programClass string) {
 // gdk_screen_get_monitor_scale_factor()).
 //
 // Deprecated: Use per-monitor information.
+//
+// The function returns the following values:
+//
+//    - gint: height of the default screen in pixels.
+//
 func ScreenHeight() int {
 	var _cret C.gint // in
 
@@ -490,6 +528,12 @@ func ScreenHeight() int {
 // that on many X servers this value will not be correct.
 //
 // Deprecated: Use per-monitor information.
+//
+// The function returns the following values:
+//
+//    - gint: height of the default screen in millimeters, though it is not
+//      always correct.
+//
 func ScreenHeightMm() int {
 	var _cret C.gint // in
 
@@ -507,6 +551,11 @@ func ScreenHeightMm() int {
 // gdk_screen_get_monitor_scale_factor()).
 //
 // Deprecated: Use per-monitor information.
+//
+// The function returns the following values:
+//
+//    - gint: width of the default screen in pixels.
+//
 func ScreenWidth() int {
 	var _cret C.gint // in
 
@@ -523,6 +572,12 @@ func ScreenWidth() int {
 // that on many X servers this value will not be correct.
 //
 // Deprecated: Use per-monitor information.
+//
+// The function returns the following values:
+//
+//    - gint: width of the default screen in millimeters, though it is not always
+//      correct.
+//
 func ScreenWidthMm() int {
 	var _cret C.gint // in
 

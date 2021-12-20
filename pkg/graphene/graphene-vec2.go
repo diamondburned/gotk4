@@ -64,6 +64,15 @@ func NewVec2Alloc() *Vec2 {
 
 // Add adds each component of the two passed vectors and places each result into
 // the components of res.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result.
+//
 func (a *Vec2) Add(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -86,6 +95,15 @@ func (a *Vec2) Add(b *Vec2) *Vec2 {
 // Divide divides each component of the first operand a by the corresponding
 // component of the second operand b, and places the results into the vector
 // res.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result.
+//
 func (a *Vec2) Divide(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -106,6 +124,15 @@ func (a *Vec2) Divide(b *Vec2) *Vec2 {
 }
 
 // Dot computes the dot product of the two given vectors.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - gfloat: dot product of the vectors.
+//
 func (a *Vec2) Dot(b *Vec2) float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -126,6 +153,15 @@ func (a *Vec2) Dot(b *Vec2) float32 {
 }
 
 // Equal checks whether the two given #graphene_vec2_t are equal.
+//
+// The function takes the following parameters:
+//
+//    - v2: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - ok: true if the two vectors are equal, and false otherwise.
+//
 func (v1 *Vec2) Equal(v2 *Vec2) bool {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -148,6 +184,11 @@ func (v1 *Vec2) Equal(v2 *Vec2) bool {
 }
 
 // X retrieves the X component of the #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - gfloat: value of the X component.
+//
 func (v *Vec2) X() float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _cret C.float            // in
@@ -165,6 +206,11 @@ func (v *Vec2) X() float32 {
 }
 
 // Y retrieves the Y component of the #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - gfloat: value of the Y component.
+//
 func (v *Vec2) Y() float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _cret C.float            // in
@@ -184,6 +230,16 @@ func (v *Vec2) Y() float32 {
 // Init initializes a #graphene_vec2_t using the given values.
 //
 // This function can be called multiple times.
+//
+// The function takes the following parameters:
+//
+//    - x: x field of the vector.
+//    - y: y field of the vector.
+//
+// The function returns the following values:
+//
+//    - vec2: initialized vector.
+//
 func (v *Vec2) Init(x float32, y float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
@@ -207,6 +263,15 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 }
 
 // InitFromFloat initializes v with the contents of the given array.
+//
+// The function takes the following parameters:
+//
+//    - src: array of floating point values with at least two elements.
+//
+// The function returns the following values:
+//
+//    - vec2: initialized vector.
+//
 func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.float           // out
@@ -227,6 +292,15 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 }
 
 // InitFromVec2 copies the contents of src into v.
+//
+// The function takes the following parameters:
+//
+//    - src: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - vec2: initialized vector.
+//
 func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -247,6 +321,16 @@ func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 }
 
 // Interpolate: linearly interpolates v1 and v2 using the given factor.
+//
+// The function takes the following parameters:
+//
+//    - v2: #graphene_vec2_t.
+//    - factor: interpolation factor.
+//
+// The function returns the following values:
+//
+//    - res: interpolated vector.
+//
 func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -270,6 +354,11 @@ func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) *Vec2 {
 }
 
 // Length computes the length of the given vector.
+//
+// The function returns the following values:
+//
+//    - gfloat: length of the vector.
+//
 func (v *Vec2) Length() float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _cret C.float            // in
@@ -288,6 +377,15 @@ func (v *Vec2) Length() float32 {
 
 // Max compares the two given vectors and places the maximum values of each
 // component into res.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - res: resulting vector.
+//
 func (a *Vec2) Max(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -309,6 +407,15 @@ func (a *Vec2) Max(b *Vec2) *Vec2 {
 
 // Min compares the two given vectors and places the minimum values of each
 // component into res.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - res: resulting vector.
+//
 func (a *Vec2) Min(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -330,6 +437,15 @@ func (a *Vec2) Min(b *Vec2) *Vec2 {
 
 // Multiply multiplies each component of the two passed vectors and places each
 // result into the components of res.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result.
+//
 func (a *Vec2) Multiply(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -351,6 +467,16 @@ func (a *Vec2) Multiply(b *Vec2) *Vec2 {
 
 // Near compares the two given #graphene_vec2_t vectors and checks whether their
 // values are within the given epsilon.
+//
+// The function takes the following parameters:
+//
+//    - v2: #graphene_vec2_t.
+//    - epsilon: threshold between the two vectors.
+//
+// The function returns the following values:
+//
+//    - ok: true if the two vectors are near each other.
+//
 func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -376,6 +502,11 @@ func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 }
 
 // Negate negates the given #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result vector.
+//
 func (v *Vec2) Negate() *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.graphene_vec2_t  // in
@@ -393,6 +524,11 @@ func (v *Vec2) Negate() *Vec2 {
 }
 
 // Normalize computes the normalized vector for the given vector v.
+//
+// The function returns the following values:
+//
+//    - res: return location for the normalized vector.
+//
 func (v *Vec2) Normalize() *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.graphene_vec2_t  // in
@@ -411,6 +547,15 @@ func (v *Vec2) Normalize() *Vec2 {
 
 // Scale multiplies all components of the given vector with the given scalar
 // factor.
+//
+// The function takes the following parameters:
+//
+//    - factor: scalar factor.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result vector.
+//
 func (v *Vec2) Scale(factor float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
@@ -433,6 +578,15 @@ func (v *Vec2) Scale(factor float32) *Vec2 {
 // Subtract subtracts from each component of the first operand a the
 // corresponding component of the second operand b and places each result into
 // the components of res.
+//
+// The function takes the following parameters:
+//
+//    - b: #graphene_vec2_t.
+//
+// The function returns the following values:
+//
+//    - res: return location for the result.
+//
 func (a *Vec2) Subtract(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -453,6 +607,12 @@ func (a *Vec2) Subtract(b *Vec2) *Vec2 {
 }
 
 // ToFloat stores the components of v into an array.
+//
+// The function returns the following values:
+//
+//    - dest: return location for an array of floating point values with at least
+//      2 elements.
+//
 func (v *Vec2) ToFloat() [2]float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 [2]C.float         // in
@@ -470,6 +630,11 @@ func (v *Vec2) ToFloat() [2]float32 {
 }
 
 // Vec2One retrieves a constant vector with (1, 1) components.
+//
+// The function returns the following values:
+//
+//    - vec2: one vector.
+//
 func Vec2One() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
 
@@ -483,6 +648,11 @@ func Vec2One() *Vec2 {
 }
 
 // Vec2XAxis retrieves a constant vector with (1, 0) components.
+//
+// The function returns the following values:
+//
+//    - vec2: x axis vector.
+//
 func Vec2XAxis() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
 
@@ -496,6 +666,11 @@ func Vec2XAxis() *Vec2 {
 }
 
 // Vec2YAxis retrieves a constant vector with (0, 1) components.
+//
+// The function returns the following values:
+//
+//    - vec2: y axis vector.
+//
 func Vec2YAxis() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
 
@@ -509,6 +684,11 @@ func Vec2YAxis() *Vec2 {
 }
 
 // Vec2Zero retrieves a constant vector with (0, 0) components.
+//
+// The function returns the following values:
+//
+//    - vec2: zero vector.
+//
 func Vec2Zero() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
 

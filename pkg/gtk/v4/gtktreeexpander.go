@@ -95,6 +95,11 @@ func marshalTreeExpanderer(p uintptr) (interface{}, error) {
 }
 
 // NewTreeExpander creates a new GtkTreeExpander.
+//
+// The function returns the following values:
+//
+//    - treeExpander: new GtkTreeExpander.
+//
 func NewTreeExpander() *TreeExpander {
 	var _cret *C.GtkWidget // in
 
@@ -108,6 +113,11 @@ func NewTreeExpander() *TreeExpander {
 }
 
 // Child gets the child widget displayed by self.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child displayed by self.
+//
 func (self *TreeExpander) Child() Widgetter {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret *C.GtkWidget       // in
@@ -141,6 +151,11 @@ func (self *TreeExpander) Child() Widgetter {
 // This call is essentially equivalent to calling:
 //
 //    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (self));.
+//
+// The function returns the following values:
+//
+//    - object (optional): item of the row.
+//
 func (self *TreeExpander) Item() *externglib.Object {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret C.gpointer         // in
@@ -158,6 +173,11 @@ func (self *TreeExpander) Item() *externglib.Object {
 }
 
 // ListRow gets the list row managed by self.
+//
+// The function returns the following values:
+//
+//    - treeListRow (optional): list row displayed by self.
+//
 func (self *TreeExpander) ListRow() *TreeListRow {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret *C.GtkTreeListRow  // in
@@ -180,7 +200,7 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget, or NULL.
+//    - child (optional): GtkWidget, or NULL.
 //
 func (self *TreeExpander) SetChild(child Widgetter) {
 	var _arg0 *C.GtkTreeExpander // out
@@ -200,7 +220,7 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - listRow: GtkTreeListRow, or NULL.
+//    - listRow (optional): GtkTreeListRow, or NULL.
 //
 func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
 	var _arg0 *C.GtkTreeExpander // out

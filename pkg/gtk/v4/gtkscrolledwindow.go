@@ -223,7 +223,59 @@ func marshalScrolledWindower(p uintptr) (interface{}, error) {
 	return wrapScrolledWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEdgeOvershot: emitted whenever user initiated scrolling makes the
+// scrolled window firmly surpass the limits defined by the adjustment in that
+// orientation.
+//
+// A similar behavior without edge resistance is provided by the
+// gtk.ScrolledWindow::edge-reached signal.
+//
+// Note: The pos argument is LTR/RTL aware, so callers should be aware too if
+// intending to provide behavior on horizontal edges.
+func (scrolledWindow *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionType)) externglib.SignalHandle {
+	return scrolledWindow.Connect("edge-overshot", f)
+}
+
+// ConnectEdgeReached: emitted whenever user-initiated scrolling makes the
+// scrolled window exactly reach the lower or upper limits defined by the
+// adjustment in that orientation.
+//
+// A similar behavior with edge resistance is provided by the
+// gtk.ScrolledWindow::edge-overshot signal.
+//
+// Note: The pos argument is LTR/RTL aware, so callers should be aware too if
+// intending to provide behavior on horizontal edges.
+func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType)) externglib.SignalHandle {
+	return scrolledWindow.Connect("edge-reached", f)
+}
+
+// ConnectMoveFocusOut: emitted when focus is moved away from the scrolled
+// window by a keybinding.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default bindings for this signal are Ctrl + Tab to move forward and Ctrl
+// + Shift + Tab to move backward.
+func (scrolledWindow *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) externglib.SignalHandle {
+	return scrolledWindow.Connect("move-focus-out", f)
+}
+
+// ConnectScrollChild: emitted when a keybinding that scrolls is pressed.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The horizontal or vertical adjustment is updated which triggers a signal that
+// the scrolled window’s child may listen to and scroll itself.
+func (scrolledWindow *ScrolledWindow) ConnectScrollChild(f func(scroll ScrollType, horizontal bool) bool) externglib.SignalHandle {
+	return scrolledWindow.Connect("scroll-child", f)
+}
+
 // NewScrolledWindow creates a new scrolled window.
+//
+// The function returns the following values:
+//
+//    - scrolledWindow: new scrolled window.
+//
 func NewScrolledWindow() *ScrolledWindow {
 	var _cret *C.GtkWidget // in
 
@@ -237,6 +289,11 @@ func NewScrolledWindow() *ScrolledWindow {
 }
 
 // Child gets the child widget of scrolled_window.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of scrolled_window.
+//
 func (scrolledWindow *ScrolledWindow) Child() Widgetter {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkWidget         // in
@@ -269,6 +326,11 @@ func (scrolledWindow *ScrolledWindow) Child() Widgetter {
 //
 // This is the adjustment used to connect the horizontal scrollbar to the child
 // widget’s horizontal scroll functionality.
+//
+// The function returns the following values:
+//
+//    - adjustment: horizontal GtkAdjustment.
+//
 func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkAdjustment     // in
@@ -286,6 +348,11 @@ func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 }
 
 // HasFrame gets whether the scrolled window draws a frame.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the scrolled_window has a frame.
+//
 func (scrolledWindow *ScrolledWindow) HasFrame() bool {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.gboolean           // in
@@ -305,6 +372,11 @@ func (scrolledWindow *ScrolledWindow) HasFrame() bool {
 }
 
 // HScrollbar returns the horizontal scrollbar of scrolled_window.
+//
+// The function returns the following values:
+//
+//    - widget: horizontal scrollbar of the scrolled window.
+//
 func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkWidget         // in
@@ -335,6 +407,11 @@ func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
 }
 
 // KineticScrolling returns the specified kinetic scrolling behavior.
+//
+// The function returns the following values:
+//
+//    - ok: scrolling behavior flags.
+//
 func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.gboolean           // in
@@ -354,6 +431,11 @@ func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 }
 
 // MaxContentHeight returns the maximum content height set.
+//
+// The function returns the following values:
+//
+//    - gint: maximum content height, or -1.
+//
 func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.int                // in
@@ -371,6 +453,11 @@ func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
 }
 
 // MaxContentWidth returns the maximum content width set.
+//
+// The function returns the following values:
+//
+//    - gint: maximum content width, or -1.
+//
 func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.int                // in
@@ -388,6 +475,11 @@ func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
 }
 
 // MinContentHeight gets the minimal content height of scrolled_window.
+//
+// The function returns the following values:
+//
+//    - gint: minimal content height.
+//
 func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.int                // in
@@ -405,6 +497,11 @@ func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
 }
 
 // MinContentWidth gets the minimum content width of scrolled_window.
+//
+// The function returns the following values:
+//
+//    - gint: minimum content width.
+//
 func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.int                // in
@@ -423,6 +520,11 @@ func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
 
 // OverlayScrolling returns whether overlay scrolling is enabled for this
 // scrolled window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if overlay scrolling is enabled.
+//
 func (scrolledWindow *ScrolledWindow) OverlayScrolling() bool {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.gboolean           // in
@@ -442,6 +544,11 @@ func (scrolledWindow *ScrolledWindow) OverlayScrolling() bool {
 }
 
 // Placement gets the placement of the contents with respect to the scrollbars.
+//
+// The function returns the following values:
+//
+//    - cornerType: current placement value.
+//
 func (scrolledWindow *ScrolledWindow) Placement() CornerType {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.GtkCornerType      // in
@@ -462,6 +569,14 @@ func (scrolledWindow *ScrolledWindow) Placement() CornerType {
 // scrollbars.
 //
 // See gtk.ScrolledWindow.SetPolicy().
+//
+// The function returns the following values:
+//
+//    - hscrollbarPolicy (optional): location to store the policy for the
+//      horizontal scrollbar, or NULL.
+//    - vscrollbarPolicy (optional): location to store the policy for the
+//      vertical scrollbar, or NULL.
+//
 func (scrolledWindow *ScrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.GtkPolicyType      // in
@@ -484,6 +599,11 @@ func (scrolledWindow *ScrolledWindow) Policy() (hscrollbarPolicy PolicyType, vsc
 // PropagateNaturalHeight reports whether the natural height of the child will
 // be calculated and propagated through the scrolled window’s requested natural
 // height.
+//
+// The function returns the following values:
+//
+//    - ok: whether natural height propagation is enabled.
+//
 func (scrolledWindow *ScrolledWindow) PropagateNaturalHeight() bool {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.gboolean           // in
@@ -505,6 +625,11 @@ func (scrolledWindow *ScrolledWindow) PropagateNaturalHeight() bool {
 // PropagateNaturalWidth reports whether the natural width of the child will be
 // calculated and propagated through the scrolled window’s requested natural
 // width.
+//
+// The function returns the following values:
+//
+//    - ok: whether natural width propagation is enabled.
+//
 func (scrolledWindow *ScrolledWindow) PropagateNaturalWidth() bool {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.gboolean           // in
@@ -527,6 +652,11 @@ func (scrolledWindow *ScrolledWindow) PropagateNaturalWidth() bool {
 //
 // This is the adjustment used to connect the vertical scrollbar to the child
 // widget’s vertical scroll functionality.
+//
+// The function returns the following values:
+//
+//    - adjustment: vertical GtkAdjustment.
+//
 func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkAdjustment     // in
@@ -544,6 +674,11 @@ func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 }
 
 // VScrollbar returns the vertical scrollbar of scrolled_window.
+//
+// The function returns the following values:
+//
+//    - widget: vertical scrollbar of the scrolled window.
+//
 func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkWidget         // in
@@ -577,7 +712,7 @@ func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (scrolledWindow *ScrolledWindow) SetChild(child Widgetter) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -597,7 +732,8 @@ func (scrolledWindow *ScrolledWindow) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - hadjustment: GtkAdjustment to use, or NULL to create a new one.
+//    - hadjustment (optional): GtkAdjustment to use, or NULL to create a new
+//      one.
 //
 func (scrolledWindow *ScrolledWindow) SetHAdjustment(hadjustment *Adjustment) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -881,7 +1017,8 @@ func (scrolledWindow *ScrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 //
 // The function takes the following parameters:
 //
-//    - vadjustment: GtkAdjustment to use, or NULL to create a new one.
+//    - vadjustment (optional): GtkAdjustment to use, or NULL to create a new
+//      one.
 //
 func (scrolledWindow *ScrolledWindow) SetVAdjustment(vadjustment *Adjustment) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -909,51 +1046,4 @@ func (scrolledWindow *ScrolledWindow) UnsetPlacement() {
 
 	C.gtk_scrolled_window_unset_placement(_arg0)
 	runtime.KeepAlive(scrolledWindow)
-}
-
-// ConnectEdgeOvershot: emitted whenever user initiated scrolling makes the
-// scrolled window firmly surpass the limits defined by the adjustment in that
-// orientation.
-//
-// A similar behavior without edge resistance is provided by the
-// gtk.ScrolledWindow::edge-reached signal.
-//
-// Note: The pos argument is LTR/RTL aware, so callers should be aware too if
-// intending to provide behavior on horizontal edges.
-func (scrolledWindow *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionType)) externglib.SignalHandle {
-	return scrolledWindow.Connect("edge-overshot", f)
-}
-
-// ConnectEdgeReached: emitted whenever user-initiated scrolling makes the
-// scrolled window exactly reach the lower or upper limits defined by the
-// adjustment in that orientation.
-//
-// A similar behavior with edge resistance is provided by the
-// gtk.ScrolledWindow::edge-overshot signal.
-//
-// Note: The pos argument is LTR/RTL aware, so callers should be aware too if
-// intending to provide behavior on horizontal edges.
-func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType)) externglib.SignalHandle {
-	return scrolledWindow.Connect("edge-reached", f)
-}
-
-// ConnectMoveFocusOut: emitted when focus is moved away from the scrolled
-// window by a keybinding.
-//
-// This is a keybinding signal (class.SignalAction.html).
-//
-// The default bindings for this signal are Ctrl + Tab to move forward and Ctrl
-// + Shift + Tab to move backward.
-func (scrolledWindow *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) externglib.SignalHandle {
-	return scrolledWindow.Connect("move-focus-out", f)
-}
-
-// ConnectScrollChild: emitted when a keybinding that scrolls is pressed.
-//
-// This is a keybinding signal (class.SignalAction.html).
-//
-// The horizontal or vertical adjustment is updated which triggers a signal that
-// the scrolled window’s child may listen to and scroll itself.
-func (scrolledWindow *ScrolledWindow) ConnectScrollChild(f func(scroll ScrollType, horizontal bool) bool) externglib.SignalHandle {
-	return scrolledWindow.Connect("scroll-child", f)
 }

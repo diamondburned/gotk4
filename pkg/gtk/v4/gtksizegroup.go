@@ -116,6 +116,10 @@ func marshalSizeGrouper(p uintptr) (interface{}, error) {
 //
 //    - mode for the new size group.
 //
+// The function returns the following values:
+//
+//    - sizeGroup: newly created GtkSizeGroup.
+//
 func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
 	var _cret *C.GtkSizeGroup    // in
@@ -160,6 +164,11 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 }
 
 // Mode gets the current mode of the size group.
+//
+// The function returns the following values:
+//
+//    - sizeGroupMode: current mode of the size group.
+//
 func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _cret C.GtkSizeGroupMode // in
@@ -177,6 +186,12 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 }
 
 // Widgets returns the list of widgets associated with size_group.
+//
+// The function returns the following values:
+//
+//    - sList: GSList of widgets. The list is owned by GTK and should not be
+//      modified.
+//
 func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 	var _arg0 *C.GtkSizeGroup // out
 	var _cret *C.GSList       // in

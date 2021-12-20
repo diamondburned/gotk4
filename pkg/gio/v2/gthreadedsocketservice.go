@@ -27,6 +27,13 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ThreadedSocketServiceOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - connection
+	//    - sourceObject
+	//
+	// The function returns the following values:
+	//
 	Run(connection *SocketConnection, sourceObject *externglib.Object) bool
 }
 
@@ -65,13 +72,25 @@ func marshalThreadedSocketServicer(p uintptr) (interface{}, error) {
 	return wrapThreadedSocketService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectRun signal is emitted in a worker thread in response to an incoming
+// connection. This thread is dedicated to handling connection and may perform
+// blocking IO. The signal handler need not return until the connection is
+// closed.
+func (service *ThreadedSocketService) ConnectRun(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
+	return service.Connect("run", f)
+}
+
 // NewThreadedSocketService creates a new SocketService with no listeners.
 // Listeners must be added with one of the Listener "add" methods.
 //
 // The function takes the following parameters:
 //
 //    - maxThreads: maximal number of threads to execute concurrently handling
-//    incoming clients, -1 means no limit.
+//      incoming clients, -1 means no limit.
+//
+// The function returns the following values:
+//
+//    - threadedSocketService: new Service.
 //
 func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	var _arg1 C.int             // out
@@ -87,12 +106,4 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	_threadedSocketService = wrapThreadedSocketService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _threadedSocketService
-}
-
-// ConnectRun signal is emitted in a worker thread in response to an incoming
-// connection. This thread is dedicated to handling connection and may perform
-// blocking IO. The signal handler need not return until the connection is
-// closed.
-func (service *ThreadedSocketService) ConnectRun(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
-	return service.Connect("run", f)
 }

@@ -61,6 +61,11 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 }
 
 // NewCellRendererSpin creates a new CellRendererSpin.
+//
+// The function returns the following values:
+//
+//    - cellRendererSpin: new CellRendererSpin.
+//
 func NewCellRendererSpin() *CellRendererSpin {
 	var _cret *C.GtkCellRenderer // in
 

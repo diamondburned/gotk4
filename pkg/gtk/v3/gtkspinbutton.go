@@ -115,8 +115,16 @@ func (s SpinType) String() string {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SpinButtonOverrider interface {
+	// The function takes the following parameters:
+	//
 	ChangeValue(scroll ScrollType)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	Input(newValue *float64) int
+	// The function returns the following values:
+	//
 	Output() int
 	ValueChanged()
 	Wrapped()
@@ -222,14 +230,65 @@ func marshalSpinButtonner(p uintptr) (interface{}, error) {
 	return wrapSpinButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChangeValue signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a value change.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal are Up/Down and PageUp and/PageDown.
+func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) externglib.SignalHandle {
+	return spinButton.Connect("change-value", f)
+}
+
+// ConnectOutput signal can be used to change to formatting of the value that is
+// displayed in the spin buttons entry.
+//
+//    // show leading zeros
+//    static gboolean
+//    on_output (GtkSpinButton *spin,
+//               gpointer       data)
+//    {
+//       GtkAdjustment *adjustment;
+//       gchar *text;
+//       int value;
+//
+//       adjustment = gtk_spin_button_get_adjustment (spin);
+//       value = (int)gtk_adjustment_get_value (adjustment);
+//       text = g_strdup_printf ("02d", value);
+//       gtk_entry_set_text (GTK_ENTRY (spin), text);
+//       g_free (text);
+//
+//       return TRUE;
+//    }.
+func (spinButton *SpinButton) ConnectOutput(f func() bool) externglib.SignalHandle {
+	return spinButton.Connect("output", f)
+}
+
+// ConnectValueChanged signal is emitted when the value represented by
+// spinbutton changes. Also see the SpinButton::output signal.
+func (spinButton *SpinButton) ConnectValueChanged(f func()) externglib.SignalHandle {
+	return spinButton.Connect("value-changed", f)
+}
+
+// ConnectWrapped signal is emitted right after the spinbutton wraps from its
+// maximum to minimum value or vice-versa.
+func (spinButton *SpinButton) ConnectWrapped(f func()) externglib.SignalHandle {
+	return spinButton.Connect("wrapped", f)
+}
+
 // NewSpinButton creates a new SpinButton.
 //
 // The function takes the following parameters:
 //
-//    - adjustment object that this spin button should use, or NULL.
+//    - adjustment (optional) object that this spin button should use, or NULL.
 //    - climbRate specifies by how much the rate of change in the value will
-//    accelerate if you continue to hold down an up/down button or arrow key.
+//      accelerate if you continue to hold down an up/down button or arrow key.
 //    - digits: number of decimal places to display.
+//
+// The function returns the following values:
+//
+//    - spinButton: new spin button as a Widget.
 //
 func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *SpinButton {
 	var _arg1 *C.GtkAdjustment // out
@@ -271,6 +330,10 @@ func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *Spin
 //    - max: maximum allowable value.
 //    - step: increment added or subtracted by spinning the widget.
 //
+// The function returns the following values:
+//
+//    - spinButton: new spin button as a Widget.
+//
 func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
@@ -298,8 +361,8 @@ func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 //
 // The function takes the following parameters:
 //
-//    - adjustment to replace the spin button’s existing adjustment, or NULL to
-//    leave its current adjustment unchanged.
+//    - adjustment (optional) to replace the spin button’s existing adjustment,
+//      or NULL to leave its current adjustment unchanged.
 //    - climbRate: new climb rate.
 //    - digits: number of decimal places to display in the spin button.
 //
@@ -324,6 +387,11 @@ func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float6
 }
 
 // Adjustment: get the adjustment associated with a SpinButton.
+//
+// The function returns the following values:
+//
+//    - adjustment of spin_button.
+//
 func (spinButton *SpinButton) Adjustment() *Adjustment {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret *C.GtkAdjustment // in
@@ -342,6 +410,11 @@ func (spinButton *SpinButton) Adjustment() *Adjustment {
 
 // Digits fetches the precision of spin_button. See
 // gtk_spin_button_set_digits().
+//
+// The function returns the following values:
+//
+//    - guint: current precision.
+//
 func (spinButton *SpinButton) Digits() uint {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.guint          // in
@@ -360,6 +433,12 @@ func (spinButton *SpinButton) Digits() uint {
 
 // Increments gets the current step and page the increments used by spin_button.
 // See gtk_spin_button_set_increments().
+//
+// The function returns the following values:
+//
+//    - step (optional): location to store step increment, or NULL.
+//    - page (optional): location to store page increment, or NULL.
+//
 func (spinButton *SpinButton) Increments() (step float64, page float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gdouble        // in
@@ -381,6 +460,11 @@ func (spinButton *SpinButton) Increments() (step float64, page float64) {
 
 // Numeric returns whether non-numeric text can be typed into the spin button.
 // See gtk_spin_button_set_numeric().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if only numeric text can be entered.
+//
 func (spinButton *SpinButton) Numeric() bool {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gboolean       // in
@@ -401,6 +485,12 @@ func (spinButton *SpinButton) Numeric() bool {
 
 // Range gets the range allowed for spin_button. See
 // gtk_spin_button_set_range().
+//
+// The function returns the following values:
+//
+//    - min (optional): location to store minimum allowed value, or NULL.
+//    - max (optional): location to store maximum allowed value, or NULL.
+//
 func (spinButton *SpinButton) Range() (min float64, max float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gdouble        // in
@@ -422,6 +512,11 @@ func (spinButton *SpinButton) Range() (min float64, max float64) {
 
 // SnapToTicks returns whether the values are corrected to the nearest step. See
 // gtk_spin_button_set_snap_to_ticks().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if values are snapped to the nearest step.
+//
 func (spinButton *SpinButton) SnapToTicks() bool {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gboolean       // in
@@ -442,6 +537,11 @@ func (spinButton *SpinButton) SnapToTicks() bool {
 
 // UpdatePolicy gets the update behavior of a spin button. See
 // gtk_spin_button_set_update_policy().
+//
+// The function returns the following values:
+//
+//    - spinButtonUpdatePolicy: current update policy.
+//
 func (spinButton *SpinButton) UpdatePolicy() SpinButtonUpdatePolicy {
 	var _arg0 *C.GtkSpinButton            // out
 	var _cret C.GtkSpinButtonUpdatePolicy // in
@@ -459,6 +559,11 @@ func (spinButton *SpinButton) UpdatePolicy() SpinButtonUpdatePolicy {
 }
 
 // Value: get the value in the spin_button.
+//
+// The function returns the following values:
+//
+//    - gdouble: value of spin_button.
+//
 func (spinButton *SpinButton) Value() float64 {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gdouble        // in
@@ -476,6 +581,11 @@ func (spinButton *SpinButton) Value() float64 {
 }
 
 // ValueAsInt: get the value spin_button represented as an integer.
+//
+// The function returns the following values:
+//
+//    - gint: value of spin_button.
+//
 func (spinButton *SpinButton) ValueAsInt() int {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gint           // in
@@ -495,6 +605,11 @@ func (spinButton *SpinButton) ValueAsInt() int {
 // Wrap returns whether the spin button’s value wraps around to the opposite
 // limit when the upper or lower limit of the range is exceeded. See
 // gtk_spin_button_set_wrap().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the spin button wraps around.
+//
 func (spinButton *SpinButton) Wrap() bool {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gboolean       // in
@@ -536,8 +651,8 @@ func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - digits: number of digits after the decimal point to be displayed for
-//    the spin button’s value.
+//    - digits: number of digits after the decimal point to be displayed for the
+//      spin button’s value.
 //
 func (spinButton *SpinButton) SetDigits(digits uint) {
 	var _arg0 *C.GtkSpinButton // out
@@ -731,51 +846,4 @@ func (spinButton *SpinButton) Update() {
 
 	C.gtk_spin_button_update(_arg0)
 	runtime.KeepAlive(spinButton)
-}
-
-// ConnectChangeValue signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted when the user initiates a value change.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control the cursor programmatically.
-//
-// The default bindings for this signal are Up/Down and PageUp and/PageDown.
-func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) externglib.SignalHandle {
-	return spinButton.Connect("change-value", f)
-}
-
-// ConnectOutput signal can be used to change to formatting of the value that is
-// displayed in the spin buttons entry.
-//
-//    // show leading zeros
-//    static gboolean
-//    on_output (GtkSpinButton *spin,
-//               gpointer       data)
-//    {
-//       GtkAdjustment *adjustment;
-//       gchar *text;
-//       int value;
-//
-//       adjustment = gtk_spin_button_get_adjustment (spin);
-//       value = (int)gtk_adjustment_get_value (adjustment);
-//       text = g_strdup_printf ("02d", value);
-//       gtk_entry_set_text (GTK_ENTRY (spin), text);
-//       g_free (text);
-//
-//       return TRUE;
-//    }.
-func (spinButton *SpinButton) ConnectOutput(f func() bool) externglib.SignalHandle {
-	return spinButton.Connect("output", f)
-}
-
-// ConnectValueChanged signal is emitted when the value represented by
-// spinbutton changes. Also see the SpinButton::output signal.
-func (spinButton *SpinButton) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return spinButton.Connect("value-changed", f)
-}
-
-// ConnectWrapped signal is emitted right after the spinbutton wraps from its
-// maximum to minimum value or vice-versa.
-func (spinButton *SpinButton) ConnectWrapped(f func()) externglib.SignalHandle {
-	return spinButton.Connect("wrapped", f)
 }

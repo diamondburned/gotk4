@@ -107,7 +107,12 @@ func marshalScrollbarrer(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - orientation scrollbar’s orientation.
-//    - adjustment: gtk.Adjustment to use, or NULL to create a new adjustment.
+//    - adjustment (optional): gtk.Adjustment to use, or NULL to create a new
+//      adjustment.
+//
+// The function returns the following values:
+//
+//    - scrollbar: new GtkScrollbar.
 //
 func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	var _arg1 C.GtkOrientation // out
@@ -131,6 +136,11 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 }
 
 // Adjustment returns the scrollbar's adjustment.
+//
+// The function returns the following values:
+//
+//    - adjustment scrollbar's adjustment.
+//
 func (self *Scrollbar) Adjustment() *Adjustment {
 	var _arg0 *C.GtkScrollbar  // out
 	var _cret *C.GtkAdjustment // in
@@ -151,7 +161,7 @@ func (self *Scrollbar) Adjustment() *Adjustment {
 //
 // The function takes the following parameters:
 //
-//    - adjustment to set.
+//    - adjustment (optional) to set.
 //
 func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScrollbar  // out

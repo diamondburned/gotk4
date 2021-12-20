@@ -3,10 +3,12 @@ package callable
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
@@ -18,11 +20,6 @@ import (
 // FileGenerator describes the interface of a file generator.
 type FileGenerator interface {
 	types.FileGenerator
-}
-
-type ParamDoc struct {
-	Name         string
-	InfoElements gir.InfoElements
 }
 
 // Generator is a generator instance that generates a GIR callable.
@@ -40,7 +37,8 @@ type Generator struct {
 	GoArgs  pen.Joints
 	GoRets  pen.Joints
 
-	ParamDocs []ParamDoc
+	ParamDocs  []cmt.ParamDoc
+	ReturnDocs []cmt.ParamDoc
 
 	typ *gir.TypeFindResult
 	pen *pen.BlockSections
@@ -145,16 +143,36 @@ func (g *Generator) Use(typ *gir.TypeFindResult, call *gir.CallableAttrs) bool {
 	}
 
 	g.ParamDocs = g.ParamDocs[:0]
-	g.EachParamResult(func(value *typeconv.ValueConverted) {
-		g.ParamDocs = append(g.ParamDocs, ParamDoc{
-			Name: value.InName, // GoName
+	g.EachParamResult(gatherParamDoc(&g.ParamDocs))
+
+	g.ReturnDocs = g.ReturnDocs[:0]
+	g.EachReturnResult(gatherParamDoc(&g.ReturnDocs))
+
+	return true
+}
+
+func gatherParamDoc(docs *[]cmt.ParamDoc) func(*typeconv.ValueConverted) {
+	return func(value *typeconv.ValueConverted) {
+		var name string // GoName
+
+		switch value.Direction {
+		case typeconv.ConvertCToGo:
+			name = value.OutName
+		case typeconv.ConvertGoToC:
+			name = value.InName
+		}
+
+		// Returns have trailing underscores.
+		name = strings.TrimPrefix(name, "_")
+
+		*docs = append(*docs, cmt.ParamDoc{
+			Name:     name,
+			Optional: value.Optional || value.Nullable,
 			InfoElements: gir.InfoElements{
 				DocElements: gir.DocElements{Doc: value.Doc},
 			},
 		})
-	})
-
-	return true
+	}
 }
 
 // Recv returns the receiver variable name. This method should only be called
@@ -374,18 +392,47 @@ func (g *Generator) renderBlock() bool {
 	return true
 }
 
+// EachParamResult iterates over the list of Go function parameters.
 func (g *Generator) EachParamResult(f func(*typeconv.ValueConverted)) {
-	results := g.Results
+	direction := typeconv.ConvertGoToC
 	if g.Parameters != nil && g.Parameters.InstanceParameter != nil {
-		results = results[1:]
+		direction = g.Results[0].Direction
 	}
 
-	for i, res := range results {
-		if res.Direction != typeconv.ConvertGoToC {
+	for i, res := range g.Results {
+		if res.ParameterIndex == typeconv.ReceiverValueIndex {
 			continue
 		}
+		if res.Direction == direction {
+			f(&g.Results[i])
+		}
+	}
+}
 
-		f(&results[i])
+// EachReturnResult iterates over the list of Go function returns. Note that the
+// direction is flipped if this is for a callback.
+func (g *Generator) EachReturnResult(f func(*typeconv.ValueConverted)) {
+	direction := typeconv.ConvertCToGo
+
+	if g.Parameters != nil && g.Parameters.InstanceParameter != nil {
+		// Flip.
+		switch d := g.Results[0].Direction; d {
+		case typeconv.ConvertCToGo:
+			direction = typeconv.ConvertGoToC
+		case typeconv.ConvertGoToC:
+			direction = typeconv.ConvertCToGo
+		default:
+			log.Panicln("unknown instance parameter conv direction", d)
+		}
+	}
+
+	for i, res := range g.Results {
+		if res.Direction != direction {
+			continue
+		}
+		if res.ParameterIndex == typeconv.ReturnValueIndex || res.ParameterIndex >= 0 {
+			f(&g.Results[i])
+		}
 	}
 }
 

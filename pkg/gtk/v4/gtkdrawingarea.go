@@ -63,6 +63,11 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, ar
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DrawingAreaOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - width
+	//    - height
+	//
 	Resize(width, height int)
 }
 
@@ -175,7 +180,21 @@ func marshalDrawingAreaer(p uintptr) (interface{}, error) {
 	return wrapDrawingArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectResize: emitted once when the widget is realized, and then each time
+// the widget is changed while realized.
+//
+// This is useful in order to keep state up to date with the widget size, like
+// for instance a backing surface.
+func (self *DrawingArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
+	return self.Connect("resize", f)
+}
+
 // NewDrawingArea creates a new drawing area.
+//
+// The function returns the following values:
+//
+//    - drawingArea: new GtkDrawingArea.
+//
 func NewDrawingArea() *DrawingArea {
 	var _cret *C.GtkWidget // in
 
@@ -189,6 +208,11 @@ func NewDrawingArea() *DrawingArea {
 }
 
 // ContentHeight retrieves the content height of the GtkDrawingArea.
+//
+// The function returns the following values:
+//
+//    - gint: height requested for content of the drawing area.
+//
 func (self *DrawingArea) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
@@ -206,6 +230,11 @@ func (self *DrawingArea) ContentHeight() int {
 }
 
 // ContentWidth retrieves the content width of the GtkDrawingArea.
+//
+// The function returns the following values:
+//
+//    - gint: width requested for content of the drawing area.
+//
 func (self *DrawingArea) ContentWidth() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
@@ -286,7 +315,8 @@ func (self *DrawingArea) SetContentWidth(width int) {
 //
 // The function takes the following parameters:
 //
-//    - drawFunc: callback that lets you draw the drawing area's contents.
+//    - drawFunc (optional): callback that lets you draw the drawing area's
+//      contents.
 //
 func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	var _arg0 *C.GtkDrawingArea        // out
@@ -304,13 +334,4 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	C.gtk_drawing_area_set_draw_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(drawFunc)
-}
-
-// ConnectResize: emitted once when the widget is realized, and then each time
-// the widget is changed while realized.
-//
-// This is useful in order to keep state up to date with the widget size, like
-// for instance a backing surface.
-func (self *DrawingArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
-	return self.Connect("resize", f)
 }

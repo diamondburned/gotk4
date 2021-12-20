@@ -32,11 +32,29 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PanedOverrider interface {
+	// The function returns the following values:
+	//
 	AcceptPosition() bool
+	// The function returns the following values:
+	//
 	CancelPosition() bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	CycleChildFocus(reverse bool) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	CycleHandleFocus(reverse bool) bool
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	MoveHandle(scroll ScrollType) bool
+	// The function returns the following values:
+	//
 	ToggleHandleFocus() bool
 }
 
@@ -118,11 +136,66 @@ func marshalPanedder(p uintptr) (interface{}, error) {
 	return wrapPaned(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAcceptPosition signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to accept the current position of the handle when moving it
+// using key bindings.
+//
+// The default binding for this signal is Return or Space.
+func (paned *Paned) ConnectAcceptPosition(f func() bool) externglib.SignalHandle {
+	return paned.Connect("accept-position", f)
+}
+
+// ConnectCancelPosition signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to cancel moving the position of the handle using key bindings.
+// The position of the handle will be reset to the value prior to moving it.
+//
+// The default binding for this signal is Escape.
+func (paned *Paned) ConnectCancelPosition(f func() bool) externglib.SignalHandle {
+	return paned.Connect("cancel-position", f)
+}
+
+// ConnectCycleChildFocus signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted to cycle the focus between the children of the paned.
+//
+// The default binding is f6.
+func (paned *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) externglib.SignalHandle {
+	return paned.Connect("cycle-child-focus", f)
+}
+
+// ConnectCycleHandleFocus signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted to cycle whether the paned should grab focus to allow the
+// user to change position of the handle by using key bindings.
+//
+// The default binding for this signal is f8.
+func (paned *Paned) ConnectCycleHandleFocus(f func(reversed bool) bool) externglib.SignalHandle {
+	return paned.Connect("cycle-handle-focus", f)
+}
+
+// ConnectMoveHandle signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to move the handle when the user is using key bindings to move
+// it.
+func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) externglib.SignalHandle {
+	return paned.Connect("move-handle", f)
+}
+
+// ConnectToggleHandleFocus is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to accept the current position of the handle and then move focus
+// to the next widget in the focus chain.
+//
+// The default binding is Tab.
+func (paned *Paned) ConnectToggleHandleFocus(f func() bool) externglib.SignalHandle {
+	return paned.Connect("toggle-handle-focus", f)
+}
+
 // NewPaned creates a new Paned widget.
 //
 // The function takes the following parameters:
 //
 //    - orientation paned’s orientation.
+//
+// The function returns the following values:
+//
+//    - paned: new Paned.
 //
 func NewPaned(orientation Orientation) *Paned {
 	var _arg1 C.GtkOrientation // out
@@ -179,6 +252,11 @@ func (paned *Paned) Add2(child Widgetter) {
 }
 
 // Child1 obtains the first child of the paned widget.
+//
+// The function returns the following values:
+//
+//    - widget (optional): first child, or NULL if it is not set.
+//
 func (paned *Paned) Child1() Widgetter {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
@@ -208,6 +286,11 @@ func (paned *Paned) Child1() Widgetter {
 }
 
 // Child2 obtains the second child of the paned widget.
+//
+// The function returns the following values:
+//
+//    - widget (optional): second child, or NULL if it is not set.
+//
 func (paned *Paned) Child2() Widgetter {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
@@ -239,6 +322,11 @@ func (paned *Paned) Child2() Widgetter {
 // HandleWindow returns the Window of the handle. This function is useful when
 // handling button or motion events because it enables the callback to
 // distinguish between the window of the paned, a child and the handle.
+//
+// The function returns the following values:
+//
+//    - window paned’s handle window.
+//
 func (paned *Paned) HandleWindow() gdk.Windower {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GdkWindow // in
@@ -269,6 +357,11 @@ func (paned *Paned) HandleWindow() gdk.Windower {
 }
 
 // Position obtains the position of the divider between the two panes.
+//
+// The function returns the following values:
+//
+//    - gint: position of the divider.
+//
 func (paned *Paned) Position() int {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gint      // in
@@ -286,6 +379,11 @@ func (paned *Paned) Position() int {
 }
 
 // WideHandle gets the Paned:wide-handle property.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the paned should have a wide handle.
+//
 func (paned *Paned) WideHandle() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
@@ -369,7 +467,7 @@ func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 // The function takes the following parameters:
 //
 //    - position: pixel position of divider, a negative value means that the
-//    position is unset.
+//      position is unset.
 //
 func (paned *Paned) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
@@ -401,55 +499,4 @@ func (paned *Paned) SetWideHandle(wide bool) {
 	C.gtk_paned_set_wide_handle(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(wide)
-}
-
-// ConnectAcceptPosition signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to accept the current position of the handle when moving it
-// using key bindings.
-//
-// The default binding for this signal is Return or Space.
-func (paned *Paned) ConnectAcceptPosition(f func() bool) externglib.SignalHandle {
-	return paned.Connect("accept-position", f)
-}
-
-// ConnectCancelPosition signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to cancel moving the position of the handle using key bindings.
-// The position of the handle will be reset to the value prior to moving it.
-//
-// The default binding for this signal is Escape.
-func (paned *Paned) ConnectCancelPosition(f func() bool) externglib.SignalHandle {
-	return paned.Connect("cancel-position", f)
-}
-
-// ConnectCycleChildFocus signal is a [keybinding signal][GtkBindingSignal]
-// which gets emitted to cycle the focus between the children of the paned.
-//
-// The default binding is f6.
-func (paned *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) externglib.SignalHandle {
-	return paned.Connect("cycle-child-focus", f)
-}
-
-// ConnectCycleHandleFocus signal is a [keybinding signal][GtkBindingSignal]
-// which gets emitted to cycle whether the paned should grab focus to allow the
-// user to change position of the handle by using key bindings.
-//
-// The default binding for this signal is f8.
-func (paned *Paned) ConnectCycleHandleFocus(f func(reversed bool) bool) externglib.SignalHandle {
-	return paned.Connect("cycle-handle-focus", f)
-}
-
-// ConnectMoveHandle signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to move the handle when the user is using key bindings to move
-// it.
-func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) externglib.SignalHandle {
-	return paned.Connect("move-handle", f)
-}
-
-// ConnectToggleHandleFocus is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to accept the current position of the handle and then move focus
-// to the next widget in the focus chain.
-//
-// The default binding is Tab.
-func (paned *Paned) ConnectToggleHandleFocus(f func() bool) externglib.SignalHandle {
-	return paned.Connect("toggle-handle-focus", f)
 }

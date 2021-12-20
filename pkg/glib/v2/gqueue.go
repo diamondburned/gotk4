@@ -40,6 +40,11 @@ func (queue *Queue) Clear() {
 }
 
 // Length returns the number of items in queue.
+//
+// The function returns the following values:
+//
+//    - guint: number of items in queue.
+//
 func (queue *Queue) Length() uint {
 	var _arg0 *C.GQueue // out
 	var _cret C.guint   // in
@@ -57,6 +62,16 @@ func (queue *Queue) Length() uint {
 }
 
 // Index returns the position of the first element in queue which contains data.
+//
+// The function takes the following parameters:
+//
+//    - data (optional) to find.
+//
+// The function returns the following values:
+//
+//    - gint: position of the first element in queue which contains data, or -1
+//      if no element in queue contains data.
+//
 func (queue *Queue) Index(data cgo.Handle) int {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
@@ -89,6 +104,11 @@ func (queue *Queue) Init() {
 }
 
 // IsEmpty returns TRUE if the queue is empty.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the queue is empty.
+//
 func (queue *Queue) IsEmpty() bool {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gboolean // in
@@ -108,6 +128,12 @@ func (queue *Queue) IsEmpty() bool {
 }
 
 // PeekHead returns the first element of the queue.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): data of the first element in the queue, or NULL if
+//      the queue is empty.
+//
 func (queue *Queue) PeekHead() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
@@ -125,6 +151,16 @@ func (queue *Queue) PeekHead() cgo.Handle {
 }
 
 // PeekNth returns the n'th element of queue.
+//
+// The function takes the following parameters:
+//
+//    - n of the element.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): data for the n'th element of queue, or NULL if n is
+//      off the end of queue.
+//
 func (queue *Queue) PeekNth(n uint) cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
@@ -145,6 +181,12 @@ func (queue *Queue) PeekNth(n uint) cgo.Handle {
 }
 
 // PeekTail returns the last element of the queue.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): data of the last element in the queue, or NULL if
+//      the queue is empty.
+//
 func (queue *Queue) PeekTail() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
@@ -162,6 +204,12 @@ func (queue *Queue) PeekTail() cgo.Handle {
 }
 
 // PopHead removes the first element of the queue and returns its data.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): data of the first element in the queue, or NULL if
+//      the queue is empty.
+//
 func (queue *Queue) PopHead() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
@@ -179,6 +227,15 @@ func (queue *Queue) PopHead() cgo.Handle {
 }
 
 // PopNth removes the n'th element of queue and returns its data.
+//
+// The function takes the following parameters:
+//
+//    - n of the element.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional) element's data, or NULL if n is off the end of queue.
+//
 func (queue *Queue) PopNth(n uint) cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
@@ -199,6 +256,12 @@ func (queue *Queue) PopNth(n uint) cgo.Handle {
 }
 
 // PopTail removes the last element of the queue and returns its data.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): data of the last element in the queue, or NULL if
+//      the queue is empty.
+//
 func (queue *Queue) PopTail() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
@@ -216,6 +279,11 @@ func (queue *Queue) PopTail() cgo.Handle {
 }
 
 // PushHead adds a new element at the head of the queue.
+//
+// The function takes the following parameters:
+//
+//    - data (optional) for the new element.
+//
 func (queue *Queue) PushHead(data cgo.Handle) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
@@ -229,6 +297,13 @@ func (queue *Queue) PushHead(data cgo.Handle) {
 }
 
 // PushNth inserts a new element into queue at the given position.
+//
+// The function takes the following parameters:
+//
+//    - data (optional) for the new element.
+//    - n to insert the new element. If n is negative or larger than the number
+//      of elements in the queue, the element is added to the end of the queue.
+//
 func (queue *Queue) PushNth(data cgo.Handle, n int) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
@@ -245,6 +320,11 @@ func (queue *Queue) PushNth(data cgo.Handle, n int) {
 }
 
 // PushTail adds a new element at the tail of the queue.
+//
+// The function takes the following parameters:
+//
+//    - data (optional) for the new element.
+//
 func (queue *Queue) PushTail(data cgo.Handle) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
@@ -258,6 +338,15 @@ func (queue *Queue) PushTail(data cgo.Handle) {
 }
 
 // Remove removes the first element in queue that contains data.
+//
+// The function takes the following parameters:
+//
+//    - data (optional) to remove.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if data was found and removed from queue.
+//
 func (queue *Queue) Remove(data cgo.Handle) bool {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
@@ -280,6 +369,15 @@ func (queue *Queue) Remove(data cgo.Handle) bool {
 }
 
 // RemoveAll: remove all elements whose data equals data from queue.
+//
+// The function takes the following parameters:
+//
+//    - data (optional) to remove.
+//
+// The function returns the following values:
+//
+//    - guint: number of elements removed from queue.
+//
 func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out

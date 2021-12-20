@@ -34,6 +34,12 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusProxyOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - senderName
+	//    - signalName
+	//    - parameters
+	//
 	GSignal(senderName, signalName string, parameters *glib.Variant)
 }
 
@@ -104,12 +110,36 @@ func marshalDBusProxier(p uintptr) (interface{}, error) {
 	return wrapDBusProxy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectGPropertiesChanged: emitted when one or more D-Bus properties on proxy
+// changes. The local cache has already been updated when this signal fires.
+// Note that both changed_properties and invalidated_properties are guaranteed
+// to never be NULL (either may be empty though).
+//
+// If the proxy has the flag G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES set,
+// then invalidated_properties will always be empty.
+//
+// This signal corresponds to the PropertiesChanged D-Bus signal on the
+// org.freedesktop.DBus.Properties interface.
+func (proxy *DBusProxy) ConnectGPropertiesChanged(f func(changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
+	return proxy.Connect("g-properties-changed", f)
+}
+
+// ConnectGSignal: emitted when a signal from the remote object and interface
+// that proxy is for, has been received.
+func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
+	return proxy.Connect("g-signal", f)
+}
+
 // NewDBusProxyFinish finishes creating a BusProxy.
 //
 // The function takes the following parameters:
 //
 //    - res obtained from the ReadyCallback function passed to
-//    g_dbus_proxy_new().
+//      g_dbus_proxy_new().
+//
+// The function returns the following values:
+//
+//    - dBusProxy or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
@@ -137,7 +167,11 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 // The function takes the following parameters:
 //
 //    - res obtained from the ReadyCallback function passed to
-//    g_dbus_proxy_new_for_bus().
+//      g_dbus_proxy_new_for_bus().
+//
+// The function returns the following values:
+//
+//    - dBusProxy or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
@@ -167,13 +201,18 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - busType: Type.
 //    - flags flags used when constructing the proxy.
-//    - info specifying the minimal interface that proxy conforms to or NULL.
+//    - info (optional) specifying the minimal interface that proxy conforms to
+//      or NULL.
 //    - name bus name (well-known or unique).
 //    - objectPath: object path.
 //    - interfaceName d-Bus interface name.
+//
+// The function returns the following values:
+//
+//    - dBusProxy or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string) (*DBusProxy, error) {
 	var _arg7 *C.GCancellable       // out
@@ -248,14 +287,19 @@ func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProx
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - connection: BusConnection.
 //    - flags flags used when constructing the proxy.
-//    - info specifying the minimal interface that proxy conforms to or NULL.
-//    - name bus name (well-known or unique) or NULL if connection is not a
-//    message bus connection.
+//    - info (optional) specifying the minimal interface that proxy conforms to
+//      or NULL.
+//    - name (optional) bus name (well-known or unique) or NULL if connection is
+//      not a message bus connection.
 //    - objectPath: object path.
 //    - interfaceName d-Bus interface name.
+//
+// The function returns the following values:
+//
+//    - dBusProxy or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string) (*DBusProxy, error) {
 	var _arg7 *C.GCancellable       // out
@@ -349,15 +393,15 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - methodName: name of method to invoke.
-//    - parameters tuple with parameters for the signal or NULL if not passing
-//    parameters.
+//    - parameters (optional) tuple with parameters for the signal or NULL if not
+//      passing parameters.
 //    - flags flags from the BusCallFlags enumeration.
 //    - timeoutMsec: timeout in milliseconds (with G_MAXINT meaning "infinite")
-//    or -1 to use the proxy default timeout.
-//    - callback to call when the request is satisfied or NULL if you don't
-//    care about the result of the method invocation.
+//      or -1 to use the proxy default timeout.
+//    - callback (optional) to call when the request is satisfied or NULL if you
+//      don't care about the result of the method invocation.
 //
 func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusProxy         // out
@@ -402,6 +446,11 @@ func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters 
 // The function takes the following parameters:
 //
 //    - res obtained from the ReadyCallback passed to g_dbus_proxy_call().
+//
+// The function returns the following values:
+//
+//    - variant: NULL if error is set. Otherwise a #GVariant tuple with return
+//      values. Free with g_variant_unref().
 //
 func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
@@ -467,13 +516,18 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - methodName: name of method to invoke.
-//    - parameters tuple with parameters for the signal or NULL if not passing
-//    parameters.
+//    - parameters (optional) tuple with parameters for the signal or NULL if not
+//      passing parameters.
 //    - flags flags from the BusCallFlags enumeration.
 //    - timeoutMsec: timeout in milliseconds (with G_MAXINT meaning "infinite")
-//    or -1 to use the proxy default timeout.
+//      or -1 to use the proxy default timeout.
+//
+// The function returns the following values:
+//
+//    - variant: NULL if error is set. Otherwise a #GVariant tuple with return
+//      values. Free with g_variant_unref().
 //
 func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
@@ -535,6 +589,12 @@ func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, paramet
 //
 //    - propertyName: property name.
 //
+// The function returns the following values:
+//
+//    - variant (optional): reference to the #GVariant instance that holds the
+//      value for property_name or NULL if the value is not in the cache. The
+//      returned reference must be freed with g_variant_unref().
+//
 func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
@@ -564,6 +624,12 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 }
 
 // CachedPropertyNames gets the names of all cached properties on proxy.
+//
+// The function returns the following values:
+//
+//    - utf8s (optional): a NULL-terminated array of strings or NULL if proxy has
+//      no cached properties. Free the returned array with g_strfreev().
+//
 func (proxy *DBusProxy) CachedPropertyNames() []string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret **C.gchar     // in
@@ -597,6 +663,11 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 }
 
 // Connection gets the connection proxy is for.
+//
+// The function returns the following values:
+//
+//    - dBusConnection owned by proxy. Do not free.
+//
 func (proxy *DBusProxy) Connection() *DBusConnection {
 	var _arg0 *C.GDBusProxy      // out
 	var _cret *C.GDBusConnection // in
@@ -618,6 +689,11 @@ func (proxy *DBusProxy) Connection() *DBusConnection {
 // g_dbus_proxy_call_sync() functions.
 //
 // See the BusProxy:g-default-timeout property for more details.
+//
+// The function returns the following values:
+//
+//    - gint: timeout to use for proxy.
+//
 func (proxy *DBusProxy) DefaultTimeout() int {
 	var _arg0 *C.GDBusProxy // out
 	var _cret C.gint        // in
@@ -635,6 +711,11 @@ func (proxy *DBusProxy) DefaultTimeout() int {
 }
 
 // Flags gets the flags that proxy was constructed with.
+//
+// The function returns the following values:
+//
+//    - dBusProxyFlags flags from the BusProxyFlags enumeration.
+//
 func (proxy *DBusProxy) Flags() DBusProxyFlags {
 	var _arg0 *C.GDBusProxy     // out
 	var _cret C.GDBusProxyFlags // in
@@ -654,6 +735,12 @@ func (proxy *DBusProxy) Flags() DBusProxyFlags {
 // InterfaceInfo returns the BusInterfaceInfo, if any, specifying the interface
 // that proxy conforms to. See the BusProxy:g-interface-info property for more
 // details.
+//
+// The function returns the following values:
+//
+//    - dBusInterfaceInfo (optional) or NULL. Do not unref the returned object,
+//      it is owned by proxy.
+//
 func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusProxy         // out
 	var _cret *C.GDBusInterfaceInfo // in
@@ -680,6 +767,11 @@ func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 }
 
 // InterfaceName gets the D-Bus interface name proxy is for.
+//
+// The function returns the following values:
+//
+//    - utf8: string owned by proxy. Do not free.
+//
 func (proxy *DBusProxy) InterfaceName() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -697,6 +789,11 @@ func (proxy *DBusProxy) InterfaceName() string {
 }
 
 // Name gets the name that proxy was constructed for.
+//
+// The function returns the following values:
+//
+//    - utf8: string owned by proxy. Do not free.
+//
 func (proxy *DBusProxy) Name() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -716,6 +813,12 @@ func (proxy *DBusProxy) Name() string {
 // NameOwner: unique name that owns the name that proxy is for or NULL if no-one
 // currently owns that name. You may connect to the #GObject::notify signal to
 // track changes to the BusProxy:g-name-owner property.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name owner or NULL if no name owner exists. Free with
+//      g_free().
+//
 func (proxy *DBusProxy) NameOwner() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -736,6 +839,11 @@ func (proxy *DBusProxy) NameOwner() string {
 }
 
 // ObjectPath gets the object path proxy is for.
+//
+// The function returns the following values:
+//
+//    - utf8: string owned by proxy. Do not free.
+//
 func (proxy *DBusProxy) ObjectPath() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -786,7 +894,8 @@ func (proxy *DBusProxy) ObjectPath() string {
 // The function takes the following parameters:
 //
 //    - propertyName: property name.
-//    - value: value for the property or NULL to remove it from the cache.
+//    - value (optional): value for the property or NULL to remove it from the
+//      cache.
 //
 func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Variant) {
 	var _arg0 *C.GDBusProxy // out
@@ -833,7 +942,8 @@ func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int) {
 //
 // The function takes the following parameters:
 //
-//    - info: minimum interface this proxy conforms to or NULL to unset.
+//    - info (optional): minimum interface this proxy conforms to or NULL to
+//      unset.
 //
 func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	var _arg0 *C.GDBusProxy         // out
@@ -847,26 +957,6 @@ func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	C.g_dbus_proxy_set_interface_info(_arg0, _arg1)
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(info)
-}
-
-// ConnectGPropertiesChanged: emitted when one or more D-Bus properties on proxy
-// changes. The local cache has already been updated when this signal fires.
-// Note that both changed_properties and invalidated_properties are guaranteed
-// to never be NULL (either may be empty though).
-//
-// If the proxy has the flag G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES set,
-// then invalidated_properties will always be empty.
-//
-// This signal corresponds to the PropertiesChanged D-Bus signal on the
-// org.freedesktop.DBus.Properties interface.
-func (proxy *DBusProxy) ConnectGPropertiesChanged(f func(changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
-	return proxy.Connect("g-properties-changed", f)
-}
-
-// ConnectGSignal: emitted when a signal from the remote object and interface
-// that proxy is for, has been received.
-func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
-	return proxy.Connect("g-signal", f)
 }
 
 // NewDBusProxy creates a proxy for accessing interface_name on the remote
@@ -899,15 +989,16 @@ func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, par
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - connection: BusConnection.
 //    - flags flags used when constructing the proxy.
-//    - info specifying the minimal interface that proxy conforms to or NULL.
-//    - name bus name (well-known or unique) or NULL if connection is not a
-//    message bus connection.
+//    - info (optional) specifying the minimal interface that proxy conforms to
+//      or NULL.
+//    - name (optional) bus name (well-known or unique) or NULL if connection is
+//      not a message bus connection.
 //    - objectPath: object path.
 //    - interfaceName d-Bus interface name.
-//    - callback: callback function to invoke when the proxy is ready.
+//    - callback (optional): callback function to invoke when the proxy is ready.
 //
 func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
 	var _arg7 *C.GCancellable       // out
@@ -961,14 +1052,15 @@ func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusPro
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - busType: Type.
 //    - flags flags used when constructing the proxy.
-//    - info specifying the minimal interface that proxy conforms to or NULL.
+//    - info (optional) specifying the minimal interface that proxy conforms to
+//      or NULL.
 //    - name bus name (well-known or unique).
 //    - objectPath: object path.
 //    - interfaceName d-Bus interface name.
-//    - callback: callback function to invoke when the proxy is ready.
+//    - callback (optional): callback function to invoke when the proxy is ready.
 //
 func NewDBusProxyForBus(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
 	var _arg7 *C.GCancellable       // out

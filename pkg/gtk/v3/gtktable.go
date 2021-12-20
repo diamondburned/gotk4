@@ -149,7 +149,11 @@ func marshalTabler(p uintptr) (interface{}, error) {
 //    - rows: number of rows the new table should have.
 //    - columns: number of columns the new table should have.
 //    - homogeneous: if set to TRUE, all table cells are resized to the size of
-//    the cell containing the largest widget.
+//      the cell containing the largest widget.
+//
+// The function returns the following values:
+//
+//    - table: pointer to the newly created table widget.
 //
 func NewTable(rows, columns uint, homogeneous bool) *Table {
 	var _arg1 C.guint      // out
@@ -199,16 +203,15 @@ func NewTable(rows, columns uint, homogeneous bool) *Table {
 //
 //    - child: widget to add.
 //    - leftAttach: column number to attach the left side of a child widget to.
-//    - rightAttach: column number to attach the right side of a child widget
-//    to.
+//    - rightAttach: column number to attach the right side of a child widget to.
 //    - topAttach: row number to attach the top of a child widget to.
 //    - bottomAttach: row number to attach the bottom of a child widget to.
 //    - xoptions: used to specify the properties of the child widget when the
-//    table is resized.
+//      table is resized.
 //    - yoptions: same as xoptions, except this field determines behaviour of
-//    vertical resizing.
+//      vertical resizing.
 //    - xpadding: integer value specifying the padding on the left and right of
-//    the widget being added to the table.
+//      the widget being added to the table.
 //    - ypadding: amount of padding above and below the child widget.
 //
 func (table *Table) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint, xoptions, yoptions AttachOptions, xpadding, ypadding uint) {
@@ -259,10 +262,9 @@ func (table *Table) Attach(child Widgetter, leftAttach, rightAttach, topAttach, 
 // The function takes the following parameters:
 //
 //    - widget: child widget to add.
-//    - leftAttach: column number to attach the left side of the child widget
-//    to.
+//    - leftAttach: column number to attach the left side of the child widget to.
 //    - rightAttach: column number to attach the right side of the child widget
-//    to.
+//      to.
 //    - topAttach: row number to attach the top of the child widget to.
 //    - bottomAttach: row number to attach the bottom of the child widget to.
 //
@@ -299,6 +301,10 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, to
 //
 //    - column in the table, 0 indicates the first column.
 //
+// The function returns the following values:
+//
+//    - guint: column spacing.
+//
 func (table *Table) ColSpacing(column uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
@@ -323,6 +329,11 @@ func (table *Table) ColSpacing(column uint) uint {
 // gtk_table_set_col_spacings())
 //
 // Deprecated: Use gtk_grid_get_column_spacing() with Grid.
+//
+// The function returns the following values:
+//
+//    - guint: default column spacing.
+//
 func (table *Table) DefaultColSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
@@ -344,6 +355,11 @@ func (table *Table) DefaultColSpacing() uint {
 // gtk_table_set_row_spacings())
 //
 // Deprecated: Use gtk_grid_get_row_spacing() with Grid.
+//
+// The function returns the following values:
+//
+//    - guint: default row spacing.
+//
 func (table *Table) DefaultRowSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
@@ -365,6 +381,11 @@ func (table *Table) DefaultRowSpacing() uint {
 //
 // Deprecated: Use gtk_grid_get_row_homogeneous() and
 // gtk_grid_get_column_homogeneous() with Grid.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the cells are all constrained to the same size.
+//
 func (table *Table) Homogeneous() bool {
 	var _arg0 *C.GtkTable // out
 	var _cret C.gboolean  // in
@@ -392,6 +413,10 @@ func (table *Table) Homogeneous() bool {
 //
 //    - row in the table, 0 indicates the first row.
 //
+// The function returns the following values:
+//
+//    - guint: row spacing.
+//
 func (table *Table) RowSpacing(row uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
@@ -414,6 +439,12 @@ func (table *Table) RowSpacing(row uint) uint {
 // Size gets the number of rows and columns in the table.
 //
 // Deprecated: Grid does not expose the number of columns and rows.
+//
+// The function returns the following values:
+//
+//    - rows (optional): return location for the number of rows, or NULL.
+//    - columns (optional): return location for the number of columns, or NULL.
+//
 func (table *Table) Size() (rows uint, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // in
@@ -492,7 +523,7 @@ func (table *Table) SetColSpacing(column, spacing uint) {
 // The function takes the following parameters:
 //
 //    - spacing: number of pixels of space to place between every column in the
-//    table.
+//      table.
 //
 func (table *Table) SetColSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
@@ -514,8 +545,8 @@ func (table *Table) SetColSpacings(spacing uint) {
 //
 // The function takes the following parameters:
 //
-//    - homogeneous: set to TRUE to ensure all table cells are the same size.
-//    Set to FALSE if this is not your desired behaviour.
+//    - homogeneous: set to TRUE to ensure all table cells are the same size. Set
+//      to FALSE if this is not your desired behaviour.
 //
 func (table *Table) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkTable // out
@@ -565,7 +596,7 @@ func (table *Table) SetRowSpacing(row, spacing uint) {
 // The function takes the following parameters:
 //
 //    - spacing: number of pixels of space to place between every row in the
-//    table.
+//      table.
 //
 func (table *Table) SetRowSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out

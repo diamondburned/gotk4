@@ -59,6 +59,35 @@ func marshalDisplayer(p uintptr) (interface{}, error) {
 	return wrapDisplay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectClosed: emitted when the connection to the windowing system for
+// display is closed.
+func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
+	return display.Connect("closed", f)
+}
+
+// ConnectOpened: emitted when the connection to the windowing system for
+// display is opened.
+func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
+	return display.Connect("opened", f)
+}
+
+// ConnectSeatAdded: emitted whenever a new seat is made known to the windowing
+// system.
+func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
+	return display.Connect("seat-added", f)
+}
+
+// ConnectSeatRemoved: emitted whenever a seat is removed by the windowing
+// system.
+func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
+	return display.Connect("seat-removed", f)
+}
+
+// ConnectSettingChanged: emitted whenever a setting changes its value.
+func (display *Display) ConnectSettingChanged(f func(setting string)) externglib.SignalHandle {
+	return display.Connect("setting-changed", f)
+}
+
 // Beep emits a short beep on display.
 func (display *Display) Beep() {
 	var _arg0 *C.GdkDisplay // out
@@ -87,6 +116,10 @@ func (display *Display) Close() {
 // The function takes the following parameters:
 //
 //    - device: GdkDevice.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if there is a grab in effect for device.
 //
 func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _arg0 *C.GdkDisplay // out
@@ -130,6 +163,12 @@ func (display *Display) Flush() {
 
 // AppLaunchContext returns a GdkAppLaunchContext suitable for launching
 // applications on the given display.
+//
+// The function returns the following values:
+//
+//    - appLaunchContext: new GdkAppLaunchContext for display. Free with
+//      g_object_unref() when done.
+//
 func (display *Display) AppLaunchContext() *AppLaunchContext {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
@@ -147,6 +186,11 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 }
 
 // Clipboard gets the clipboard used for copy/paste operations.
+//
+// The function returns the following values:
+//
+//    - clipboard display's clipboard.
+//
 func (display *Display) Clipboard() *Clipboard {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
@@ -167,6 +211,11 @@ func (display *Display) Clipboard() *Clipboard {
 //
 // Note that a display may not have a seat. In this case, this function will
 // return NULL.
+//
+// The function returns the following values:
+//
+//    - seat (optional): default seat.
+//
 func (display *Display) DefaultSeat() Seater {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
@@ -204,6 +253,10 @@ func (display *Display) DefaultSeat() Seater {
 //
 //    - surface: GdkSurface.
 //
+// The function returns the following values:
+//
+//    - monitor with the largest overlap with surface.
+//
 func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkSurface // out
@@ -230,6 +283,11 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 //
 // You can listen to the GListModel::items-changed signal on this list to
 // monitor changes to the monitor of this display.
+//
+// The function returns the following values:
+//
+//    - listModel of GdkMonitor.
+//
 func (self *Display) Monitors() gio.ListModeller {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GListModel // in
@@ -260,6 +318,12 @@ func (self *Display) Monitors() gio.ListModeller {
 }
 
 // Name gets the name of the display.
+//
+// The function returns the following values:
+//
+//    - utf8: string representing the display name. This string is owned by GDK
+//      and should not be modified or freed.
+//
 func (display *Display) Name() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
@@ -280,6 +344,11 @@ func (display *Display) Name() string {
 //
 // On backends where the primary clipboard is not supported natively, GDK
 // emulates this clipboard locally.
+//
+// The function returns the following values:
+//
+//    - clipboard: primary clipboard.
+//
 func (display *Display) PrimaryClipboard() *Clipboard {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkClipboard // in
@@ -303,6 +372,11 @@ func (display *Display) PrimaryClipboard() *Clipboard {
 //
 //    - name of the setting.
 //    - value: location to store the value of the setting.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the setting existed and a value was stored in value, FALSE
+//      otherwise.
 //
 func (display *Display) Setting(name string, value *externglib.Value) bool {
 	var _arg0 *C.GdkDisplay // out
@@ -331,6 +405,11 @@ func (display *Display) Setting(name string, value *externglib.Value) bool {
 
 // StartupNotificationID gets the startup notification ID for a Wayland display,
 // or NULL if no ID has been defined.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): startup notification ID for display, or NULL.
+//
 func (display *Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
@@ -350,6 +429,11 @@ func (display *Display) StartupNotificationID() string {
 }
 
 // IsClosed finds out if the display has been closed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the display is closed.
+//
 func (display *Display) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -377,6 +461,12 @@ func (display *Display) IsClosed() bool {
 // display.
 //
 // On modern displays, this value is always TRUE.
+//
+// The function returns the following values:
+//
+//    - ok: whether surfaces with RGBA visuals can reasonably be expected to have
+//      their alpha channels drawn correctly on the screen.
+//
 func (display *Display) IsComposited() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -405,6 +495,12 @@ func (display *Display) IsComposited() bool {
 // check if that is the case.
 //
 // On modern displays, this value is always TRUE.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if surfaces are created with an alpha channel or FALSE if the
+//      display does not support this functionality.
+//
 func (display *Display) IsRGBA() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -424,6 +520,11 @@ func (display *Display) IsRGBA() bool {
 }
 
 // ListSeats returns the list of seats known to display.
+//
+// The function returns the following values:
+//
+//    - list: the list of seats known to the GdkDisplay.
+//
 func (display *Display) ListSeats() []Seater {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GList      // in
@@ -471,6 +572,12 @@ func (display *Display) ListSeats() []Seater {
 // The function takes the following parameters:
 //
 //    - keycode: keycode.
+//
+// The function returns the following values:
+//
+//    - keys (optional): return location for array of GdkKeymapKey, or NULL.
+//    - keyvals (optional): return location for array of keyvals, or NULL.
+//    - ok: TRUE if there were any entries.
 //
 func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkDisplay   // out
@@ -544,6 +651,11 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 //
 //    - keyval: keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
 //
+// The function returns the following values:
+//
+//    - keys: return location for an array of GdkKeymapKey.
+//    - ok: TRUE if keys were found and returned.
+//
 func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkDisplay   // out
 	var _arg1 C.guint         // out
@@ -592,7 +704,7 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 // The function takes the following parameters:
 //
 //    - startupId: startup-notification identifier, for which notification
-//    process should be completed.
+//      process should be completed.
 //
 func (display *Display) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
@@ -635,6 +747,11 @@ func (display *Display) PutEvent(event Eventer) {
 // shape of surfaces on display.
 //
 // On modern displays, this value is always TRUE.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if surfaces with modified input shape are supported.
+//
 func (display *Display) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -697,6 +814,15 @@ func (display *Display) Sync() {
 //    - state: modifier state.
 //    - group: active keyboard group.
 //
+// The function returns the following values:
+//
+//    - keyval (optional): return location for keyval, or NULL.
+//    - effectiveGroup (optional): return location for effective group, or NULL.
+//    - level (optional): return location for level, or NULL.
+//    - consumed (optional): return location for modifiers that were used to
+//      determine the group or level, or NULL.
+//    - ok: TRUE if there was a keyval bound to keycode/state/group.
+//
 func (display *Display) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool) {
 	var _arg0 *C.GdkDisplay     // out
 	var _arg1 C.guint           // out
@@ -736,39 +862,15 @@ func (display *Display) TranslateKey(keycode uint, state ModifierType, group int
 	return _keyval, _effectiveGroup, _level, _consumed, _ok
 }
 
-// ConnectClosed: emitted when the connection to the windowing system for
-// display is closed.
-func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
-	return display.Connect("closed", f)
-}
-
-// ConnectOpened: emitted when the connection to the windowing system for
-// display is opened.
-func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
-	return display.Connect("opened", f)
-}
-
-// ConnectSeatAdded: emitted whenever a new seat is made known to the windowing
-// system.
-func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-added", f)
-}
-
-// ConnectSeatRemoved: emitted whenever a seat is removed by the windowing
-// system.
-func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-removed", f)
-}
-
-// ConnectSettingChanged: emitted whenever a setting changes its value.
-func (display *Display) ConnectSettingChanged(f func(setting string)) externglib.SignalHandle {
-	return display.Connect("setting-changed", f)
-}
-
 // DisplayGetDefault gets the default GdkDisplay.
 //
 // This is a convenience function for: gdk_display_manager_get_default_display
 // (gdk_display_manager_get ()).
+//
+// The function returns the following values:
+//
+//    - display (optional): GdkDisplay, or NULL if there is no default display.
+//
 func DisplayGetDefault() *Display {
 	var _cret *C.GdkDisplay // in
 
@@ -788,6 +890,11 @@ func DisplayGetDefault() *Display {
 // The function takes the following parameters:
 //
 //    - displayName: name of the display to open.
+//
+// The function returns the following values:
+//
+//    - display (optional): GdkDisplay, or NULL if the display could not be
+//      opened.
 //
 func DisplayOpen(displayName string) *Display {
 	var _arg1 *C.char       // out

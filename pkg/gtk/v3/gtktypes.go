@@ -115,6 +115,11 @@ func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
 // source based on the given pixbuf.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - source: IconSource.
+//
 func (iconSet *IconSet) AddSource(source *IconSource) {
 	var _arg0 *C.GtkIconSet    // out
 	var _arg1 *C.GtkIconSource // out
@@ -130,6 +135,11 @@ func (iconSet *IconSet) AddSource(source *IconSource) {
 // Copy copies icon_set by value.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - iconSet: new IconSet identical to the first.
+//
 func (iconSet *IconSet) Copy() *IconSet {
 	var _arg0 *C.GtkIconSet // out
 	var _cret *C.GtkIconSet // in
@@ -156,6 +166,11 @@ func (iconSet *IconSet) Copy() *IconSet {
 // array must be freed with g_free().
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - sizes: return location for array of sizes (IconSize).
+//
 func (iconSet *IconSet) Sizes() []int {
 	var _arg0 *C.GtkIconSet  // out
 	var _arg1 *C.GtkIconSize // in
@@ -187,6 +202,23 @@ func (iconSet *IconSet) Sizes() []int {
 // load), a default "missing image" icon will be returned instead.
 //
 // Deprecated: Use gtk_icon_set_render_icon_pixbuf() instead.
+//
+// The function takes the following parameters:
+//
+//    - style (optional) associated with widget, or NULL.
+//    - direction: text direction.
+//    - state: widget state.
+//    - size: icon size (IconSize). A size of (GtkIconSize)-1 means render at the
+//      size of the source and don’t scale.
+//    - widget (optional) that will display the icon, or NULL. The only use that
+//      is typically made of this is to determine the appropriate Screen.
+//    - detail (optional) to pass to the theme engine, or NULL. Note that passing
+//      a detail of anything but NULL will disable caching.
+//
+// The function returns the following values:
+//
+//    - pixbuf to be displayed.
+//
 func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyle        // out
@@ -246,6 +278,17 @@ func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state 
 // instead.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - size: icon size (IconSize). A size of (GtkIconSize)-1 means render at the
+//      size of the source and don’t scale.
+//
+// The function returns the following values:
+//
+//    - pixbuf to be displayed.
+//
 func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyleContext // out
@@ -286,6 +329,19 @@ func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int) *gdkpi
 // returned instead.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - size: icon size (IconSize). A size of (GtkIconSize)-1 means render at the
+//      size of the source and don’t scale.
+//    - scale: window scale to render for.
+//    - forWindow (optional) to optimize drawing for, or NULL.
+//
+// The function returns the following values:
+//
+//    - surface to be displayed.
+//
 func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale int, forWindow gdk.Windower) *cairo.Surface {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyleContext // out
@@ -356,6 +412,11 @@ func NewIconSource() *IconSource {
 // Copy creates a copy of source; mostly useful for language bindings.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - iconSource: new IconSource.
+//
 func (source *IconSource) Copy() *IconSource {
 	var _arg0 *C.GtkIconSource // out
 	var _cret *C.GtkIconSource // in
@@ -382,6 +443,11 @@ func (source *IconSource) Copy() *IconSource {
 // value is only useful/meaningful if the text direction is not wildcarded.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - textDirection: text direction this source matches.
+//
 func (source *IconSource) Direction() TextDirection {
 	var _arg0 *C.GtkIconSource   // out
 	var _cret C.GtkTextDirection // in
@@ -402,6 +468,11 @@ func (source *IconSource) Direction() TextDirection {
 // gtk_icon_source_set_direction_wildcarded().
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this icon source is a base for any text direction variant.
+//
 func (source *IconSource) DirectionWildcarded() bool {
 	var _arg0 *C.GtkIconSource // out
 	var _cret C.gboolean       // in
@@ -425,6 +496,11 @@ func (source *IconSource) DirectionWildcarded() bool {
 // lifetime of the icon source.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - filename: image filename. This string must not be modified or freed.
+//
 func (source *IconSource) Filename() string {
 	var _arg0 *C.GtkIconSource // out
 	var _cret *C.gchar         // in
@@ -446,6 +522,11 @@ func (source *IconSource) Filename() string {
 // beyond the lifetime of the icon source.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - utf8: icon name. This string must not be modified or freed.
+//
 func (source *IconSource) IconName() string {
 	var _arg0 *C.GtkIconSource // out
 	var _cret *C.gchar         // in
@@ -469,6 +550,11 @@ func (source *IconSource) IconName() string {
 // reference count on the pixbuf is not incremented.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - pixbuf: source pixbuf.
+//
 func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkIconSource // out
 	var _cret *C.GdkPixbuf     // in
@@ -499,6 +585,11 @@ func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 // useful/meaningful if the icon size is not wildcarded.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - gint: icon size (IconSize) this source matches.
+//
 func (source *IconSource) Size() int {
 	var _arg0 *C.GtkIconSource // out
 	var _cret C.GtkIconSize    // in
@@ -518,6 +609,11 @@ func (source *IconSource) Size() int {
 // SizeWildcarded gets the value set by gtk_icon_source_set_size_wildcarded().
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this icon source is a base for any icon size variant.
+//
 func (source *IconSource) SizeWildcarded() bool {
 	var _arg0 *C.GtkIconSource // out
 	var _cret C.gboolean       // in
@@ -540,6 +636,11 @@ func (source *IconSource) SizeWildcarded() bool {
 // is only useful/meaningful if the widget state is not wildcarded.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - stateType: widget state this source matches.
+//
 func (source *IconSource) State() StateType {
 	var _arg0 *C.GtkIconSource // out
 	var _cret C.GtkStateType   // in
@@ -559,6 +660,11 @@ func (source *IconSource) State() StateType {
 // StateWildcarded gets the value set by gtk_icon_source_set_state_wildcarded().
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this icon source is a base for any widget state variant.
+//
 func (source *IconSource) StateWildcarded() bool {
 	var _arg0 *C.GtkIconSource // out
 	var _cret C.gboolean       // in
@@ -586,6 +692,11 @@ func (source *IconSource) StateWildcarded() bool {
 // calling this function.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - direction: text direction this source applies to.
+//
 func (source *IconSource) SetDirection(direction TextDirection) {
 	var _arg0 *C.GtkIconSource   // out
 	var _arg1 C.GtkTextDirection // out
@@ -608,6 +719,11 @@ func (source *IconSource) SetDirection(direction TextDirection) {
 // sources, and will use an exact match when possible.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to wildcard the text direction.
+//
 func (source *IconSource) SetDirectionWildcarded(setting bool) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 C.gboolean       // out
@@ -626,6 +742,11 @@ func (source *IconSource) SetDirectionWildcarded(setting bool) {
 // creating icon variants for IconSet. The filename must be absolute.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - filename: image file to use.
+//
 func (source *IconSource) SetFilename(filename string) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 *C.gchar         // out
@@ -643,6 +764,11 @@ func (source *IconSource) SetFilename(filename string) {
 // use as a base image when creating icon variants for IconSet.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - iconName (optional): name of icon to use.
+//
 func (source *IconSource) SetIconName(iconName string) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 *C.gchar         // out
@@ -662,6 +788,11 @@ func (source *IconSource) SetIconName(iconName string) {
 // for IconSet.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf to use as a source.
+//
 func (source *IconSource) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 *C.GdkPixbuf     // out
@@ -682,6 +813,11 @@ func (source *IconSource) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 // calling this function.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - size: icon size (IconSize) this source applies to.
+//
 func (source *IconSource) SetSize(size int) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 C.GtkIconSize    // out
@@ -707,6 +843,11 @@ func (source *IconSource) SetSize(size int) {
 // images that match exactly.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to wildcard the widget state.
+//
 func (source *IconSource) SetSizeWildcarded(setting bool) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 C.gboolean       // out
@@ -729,6 +870,11 @@ func (source *IconSource) SetSizeWildcarded(setting bool) {
 // calling this function.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - state: widget state this source applies to.
+//
 func (source *IconSource) SetState(state StateType) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 C.GtkStateType   // out
@@ -755,6 +901,11 @@ func (source *IconSource) SetState(state StateType) {
 // prelight, but will not modify source images that match exactly.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to wildcard the widget state.
+//
 func (source *IconSource) SetStateWildcarded(setting bool) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 C.gboolean       // out
@@ -785,6 +936,11 @@ func marshalSelectionData(p uintptr) (interface{}, error) {
 }
 
 // Copy makes a copy of a SelectionData-struct and its data.
+//
+// The function returns the following values:
+//
+//    - selectionData: pointer to a copy of data.
+//
 func (data *SelectionData) Copy() *SelectionData {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret *C.GtkSelectionData // in
@@ -808,6 +964,11 @@ func (data *SelectionData) Copy() *SelectionData {
 }
 
 // Data retrieves the raw data of the selection along with its length.
+//
+// The function returns the following values:
+//
+//    - guint8s: raw data of the selection.
+//
 func (selectionData *SelectionData) Data() []byte {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret *C.guchar           // in
@@ -827,6 +988,11 @@ func (selectionData *SelectionData) Data() []byte {
 }
 
 // Display retrieves the display of the selection.
+//
+// The function returns the following values:
+//
+//    - display of the selection.
+//
 func (selectionData *SelectionData) Display() *gdk.Display {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret *C.GdkDisplay       // in
@@ -849,6 +1015,11 @@ func (selectionData *SelectionData) Display() *gdk.Display {
 }
 
 // Format retrieves the format of the selection.
+//
+// The function returns the following values:
+//
+//    - gint: format of the selection.
+//
 func (selectionData *SelectionData) Format() int {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret C.gint              // in
@@ -866,6 +1037,11 @@ func (selectionData *SelectionData) Format() int {
 }
 
 // Length retrieves the length of the raw data of the selection.
+//
+// The function returns the following values:
+//
+//    - gint: length of the data of the selection.
+//
 func (selectionData *SelectionData) Length() int {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret C.gint              // in
@@ -883,6 +1059,14 @@ func (selectionData *SelectionData) Length() int {
 }
 
 // Pixbuf gets the contents of the selection data as a Pixbuf.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): if the selection data contained a recognized image
+//      type and it could be converted to a Pixbuf, a newly allocated pixbuf is
+//      returned, otherwise NULL. If the result is non-NULL it must be freed with
+//      g_object_unref().
+//
 func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret *C.GdkPixbuf        // in
@@ -912,6 +1096,14 @@ func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 }
 
 // Text gets the contents of the selection data as a UTF-8 string.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): if the selection data contained a recognized text type
+//      and it could be converted to UTF-8, a newly allocated string containing
+//      the converted text, otherwise NULL. If the result is non-NULL it must be
+//      freed with g_free().
+//
 func (selectionData *SelectionData) Text() string {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret *C.guchar           // in
@@ -932,6 +1124,13 @@ func (selectionData *SelectionData) Text() string {
 }
 
 // URIs gets the contents of the selection data as array of URIs.
+//
+// The function returns the following values:
+//
+//    - utf8s: if the selection data contains a list of URIs, a newly allocated
+//      NULL-terminated string array containing the URIs, otherwise NULL. If the
+//      result is non-NULL it must be freed with g_strfreev().
+//
 func (selectionData *SelectionData) URIs() []string {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret **C.gchar           // in
@@ -964,6 +1163,15 @@ func (selectionData *SelectionData) URIs() []string {
 
 // SetPixbuf sets the contents of the selection from a Pixbuf The pixbuf is
 // converted to the form determined by selection_data->target.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: Pixbuf.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the selection was successfully set, otherwise FALSE.
+//
 func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 *C.GdkPixbuf        // out
@@ -987,6 +1195,16 @@ func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
 
 // SetText sets the contents of the selection from a UTF-8 encoded string. The
 // string is converted to the form determined by selection_data->target.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 string.
+//    - len: length of str, or -1 if str is nul-terminated.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the selection was successfully set, otherwise FALSE.
+//
 func (selectionData *SelectionData) SetText(str string, len int) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 *C.gchar            // out
@@ -1014,6 +1232,15 @@ func (selectionData *SelectionData) SetText(str string, len int) bool {
 
 // SetURIs sets the contents of the selection from a list of URIs. The string is
 // converted to the form determined by selection_data->target.
+//
+// The function takes the following parameters:
+//
+//    - uris: NULL-terminated array of strings holding URIs.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the selection was successfully set, otherwise FALSE.
+//
 func (selectionData *SelectionData) SetURIs(uris []string) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 **C.gchar           // out
@@ -1049,6 +1276,17 @@ func (selectionData *SelectionData) SetURIs(uris []string) bool {
 
 // TargetsIncludeImage: given a SelectionData object holding a list of targets,
 // determines if any of the targets in targets can be used to provide a Pixbuf.
+//
+// The function takes the following parameters:
+//
+//    - writable: whether to accept only targets for which GTK+ knows how to
+//      convert a pixbuf into the format.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if selection_data holds a list of targets, and a suitable target
+//      for images is included, otherwise FALSE.
+//
 func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 C.gboolean          // out
@@ -1075,6 +1313,16 @@ func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
 // TargetsIncludeRichText: given a SelectionData object holding a list of
 // targets, determines if any of the targets in targets can be used to provide
 // rich text.
+//
+// The function takes the following parameters:
+//
+//    - buffer: TextBuffer.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if selection_data holds a list of targets, and a suitable target
+//      for rich text is included, otherwise FALSE.
+//
 func (selectionData *SelectionData) TargetsIncludeRichText(buffer *TextBuffer) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 *C.GtkTextBuffer    // out
@@ -1098,6 +1346,12 @@ func (selectionData *SelectionData) TargetsIncludeRichText(buffer *TextBuffer) b
 
 // TargetsIncludeText: given a SelectionData object holding a list of targets,
 // determines if any of the targets in targets can be used to provide text.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if selection_data holds a list of targets, and a suitable target
+//      for text is included, otherwise FALSE.
+//
 func (selectionData *SelectionData) TargetsIncludeText() bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret C.gboolean          // in
@@ -1119,6 +1373,12 @@ func (selectionData *SelectionData) TargetsIncludeText() bool {
 // TargetsIncludeURI: given a SelectionData object holding a list of targets,
 // determines if any of the targets in targets can be used to provide a list or
 // URIs.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if selection_data holds a list of targets, and a suitable target
+//      for URI lists is included, otherwise FALSE.
+//
 func (selectionData *SelectionData) TargetsIncludeURI() bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret C.gboolean          // in
@@ -1205,6 +1465,15 @@ func NewWidgetPath() *WidgetPath {
 // represented by path. This function is a shortcut for adding information from
 // widget to the given path. This includes setting the name or adding the style
 // classes from widget.
+//
+// The function takes the following parameters:
+//
+//    - widget to append to the widget path.
+//
+// The function returns the following values:
+//
+//    - gint: position where the data was inserted.
+//
 func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 *C.GtkWidget     // out
@@ -1225,6 +1494,15 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 }
 
 // AppendType appends a widget type to the widget hierarchy represented by path.
+//
+// The function takes the following parameters:
+//
+//    - typ: widget type to append.
+//
+// The function returns the following values:
+//
+//    - gint: position where the element was inserted.
+//
 func (path *WidgetPath) AppendType(typ externglib.Type) int {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.GType          // out
@@ -1251,6 +1529,18 @@ func (path *WidgetPath) AppendType(typ externglib.Type) int {
 // requires a lot more care in widget implementations as widgets need to make
 // sure to call gtk_widget_reset_style() on all involved widgets when the
 // siblings path changes.
+//
+// The function takes the following parameters:
+//
+//    - siblings: widget path describing a list of siblings. This path may not
+//      contain any siblings itself and it must not be modified afterwards.
+//    - siblingIndex: index into siblings for where the added element is
+//      positioned.
+//
+// The function returns the following values:
+//
+//    - gint: position where the element was inserted.
+//
 func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex uint) int {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 *C.GtkWidgetPath // out
@@ -1274,6 +1564,11 @@ func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex ui
 }
 
 // Copy returns a copy of path.
+//
+// The function returns the following values:
+//
+//    - widgetPath: copy of path.
+//
 func (path *WidgetPath) Copy() *WidgetPath {
 	var _arg0 *C.GtkWidgetPath // out
 	var _cret *C.GtkWidgetPath // in
@@ -1298,6 +1593,11 @@ func (path *WidgetPath) Copy() *WidgetPath {
 
 // ObjectType returns the topmost object type, that is, the object type this
 // path is representing.
+//
+// The function returns the following values:
+//
+//    - gType: object type.
+//
 func (path *WidgetPath) ObjectType() externglib.Type {
 	var _arg0 *C.GtkWidgetPath // out
 	var _cret C.GType          // in
@@ -1316,6 +1616,15 @@ func (path *WidgetPath) ObjectType() externglib.Type {
 
 // HasParent returns TRUE if any of the parents of the widget represented in
 // path is of type type, or any subtype of it.
+//
+// The function takes the following parameters:
+//
+//    - typ: widget type to check in parents.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if any parent is of type type.
+//
 func (path *WidgetPath) HasParent(typ externglib.Type) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.GType          // out
@@ -1339,6 +1648,15 @@ func (path *WidgetPath) HasParent(typ externglib.Type) bool {
 
 // IsType returns TRUE if the widget type represented by this path is type, or a
 // subtype of it.
+//
+// The function takes the following parameters:
+//
+//    - typ: widget type to match.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget represented by path is of type type.
+//
 func (path *WidgetPath) IsType(typ externglib.Type) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.GType          // out
@@ -1362,6 +1680,12 @@ func (path *WidgetPath) IsType(typ externglib.Type) bool {
 
 // IterAddClass adds the class name to the widget at position pos in the
 // hierarchy defined in path. See gtk_style_context_add_class().
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - name class name.
+//
 func (path *WidgetPath) IterAddClass(pos int, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1385,6 +1709,13 @@ func (path *WidgetPath) IterAddClass(pos int, name string) {
 // with a lowercase letter.
 //
 // Deprecated: The use of regions is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - name: region name.
+//    - flags affecting the region.
+//
 func (path *WidgetPath) IterAddRegion(pos int, name string, flags RegionFlags) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1406,6 +1737,11 @@ func (path *WidgetPath) IterAddRegion(pos int, name string, flags RegionFlags) {
 
 // IterClearClasses removes all classes from the widget at position pos in the
 // hierarchy defined in path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//
 func (path *WidgetPath) IterClearClasses(pos int) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1422,6 +1758,11 @@ func (path *WidgetPath) IterClearClasses(pos int) {
 // hierarchy defined in path.
 //
 // Deprecated: The use of regions is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//
 func (path *WidgetPath) IterClearRegions(pos int) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1436,6 +1777,15 @@ func (path *WidgetPath) IterClearRegions(pos int) {
 
 // IterGetName returns the name corresponding to the widget found at the
 // position pos in the widget hierarchy defined by path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to get the widget name for, -1 for the path head.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): widget name, or NULL if none was set.
+//
 func (path *WidgetPath) IterGetName(pos int) string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1459,6 +1809,15 @@ func (path *WidgetPath) IterGetName(pos int) string {
 
 // IterGetObjectName returns the object name that is at position pos in the
 // widget hierarchy defined in path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to get the object name for, -1 for the path head.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name or NULL.
+//
 func (path *WidgetPath) IterGetObjectName(pos int) string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1482,6 +1841,15 @@ func (path *WidgetPath) IterGetObjectName(pos int) string {
 
 // IterGetObjectType returns the object #GType that is at position pos in the
 // widget hierarchy defined in path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to get the object type for, -1 for the path head.
+//
+// The function returns the following values:
+//
+//    - gType: widget type.
+//
 func (path *WidgetPath) IterGetObjectType(pos int) externglib.Type {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1505,6 +1873,15 @@ func (path *WidgetPath) IterGetObjectType(pos int) externglib.Type {
 // element at pos as returned by gtk_widget_path_iter_get_siblings(). If that
 // function would return NULL because the element at pos has no siblings, this
 // function will return 0.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to get the sibling index for, -1 for the path head.
+//
+// The function returns the following values:
+//
+//    - guint: 0 or the index into the list of siblings for the element at pos.
+//
 func (path *WidgetPath) IterGetSiblingIndex(pos int) uint {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1526,6 +1903,15 @@ func (path *WidgetPath) IterGetSiblingIndex(pos int) uint {
 
 // IterGetSiblings returns the list of siblings for the element at pos. If the
 // element was not added with siblings, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to get the siblings for, -1 for the path head.
+//
+// The function returns the following values:
+//
+//    - widgetPath: NULL or the list of siblings for the element at pos.
+//
 func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1554,6 +1940,15 @@ func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 
 // IterGetState returns the state flags corresponding to the widget found at the
 // position pos in the widget hierarchy defined by path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to get the state for, -1 for the path head.
+//
+// The function returns the following values:
+//
+//    - stateFlags: state flags.
+//
 func (path *WidgetPath) IterGetState(pos int) StateFlags {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1575,6 +1970,16 @@ func (path *WidgetPath) IterGetState(pos int) StateFlags {
 
 // IterHasClass returns TRUE if the widget at position pos has the class name
 // defined, FALSE otherwise.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - name class name.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the class name is defined for the widget at pos.
+//
 func (path *WidgetPath) IterHasClass(pos int, name string) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1602,6 +2007,16 @@ func (path *WidgetPath) IterHasClass(pos int, name string) bool {
 
 // IterHasName returns TRUE if the widget at position pos has the name name,
 // FALSE otherwise.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - name: widget name.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget at pos has this name.
+//
 func (path *WidgetPath) IterHasName(pos int, name string) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1629,6 +2044,16 @@ func (path *WidgetPath) IterHasName(pos int, name string) bool {
 
 // IterHasQclass: see gtk_widget_path_iter_has_class(). This is a version that
 // operates with GQuarks.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - qname class name as a #GQuark.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget at pos has the class defined.
+//
 func (path *WidgetPath) IterHasQclass(pos int, qname glib.Quark) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1655,6 +2080,16 @@ func (path *WidgetPath) IterHasQclass(pos int, qname glib.Quark) bool {
 
 // IterHasQname: see gtk_widget_path_iter_has_name(). This is a version that
 // operates on #GQuarks.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - qname: widget name as a #GQuark.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget at pos has this name.
+//
 func (path *WidgetPath) IterHasQname(pos int, qname glib.Quark) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1683,6 +2118,17 @@ func (path *WidgetPath) IterHasQname(pos int, qname glib.Quark) bool {
 // operates with GQuarks.
 //
 // Deprecated: The use of regions is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - qname: region name as a #GQuark.
+//
+// The function returns the following values:
+//
+//    - flags: return location for the region flags.
+//    - ok: TRUE if the widget at pos has the region defined.
+//
 func (path *WidgetPath) IterHasQregion(pos int, qname glib.Quark) (RegionFlags, bool) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1714,6 +2160,17 @@ func (path *WidgetPath) IterHasQregion(pos int, qname glib.Quark) (RegionFlags, 
 // defined, FALSE otherwise.
 //
 // Deprecated: The use of regions is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - name: region name.
+//
+// The function returns the following values:
+//
+//    - flags: return location for the region flags.
+//    - ok: TRUE if the class name is defined for the widget at pos.
+//
 func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1744,6 +2201,16 @@ func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) 
 
 // IterListClasses returns a list with all the class names defined for the
 // widget at position pos in the hierarchy defined in path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//
+// The function returns the following values:
+//
+//    - sList: list of classes, This is a list of strings, the List contents are
+//      owned by GTK+, but you should use g_slist_free() to free the list itself.
+//
 func (path *WidgetPath) IterListClasses(pos int) []string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1773,6 +2240,16 @@ func (path *WidgetPath) IterListClasses(pos int) []string {
 // widget at position pos in the hierarchy defined in path.
 //
 // Deprecated: The use of regions is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//
+// The function returns the following values:
+//
+//    - sList: list of regions, This is a list of strings, the List contents are
+//      owned by GTK+, but you should use g_slist_free() to free the list itself.
+//
 func (path *WidgetPath) IterListRegions(pos int) []string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1800,6 +2277,12 @@ func (path *WidgetPath) IterListRegions(pos int) []string {
 
 // IterRemoveClass removes the class name from the widget at position pos in the
 // hierarchy defined in path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - name class name.
+//
 func (path *WidgetPath) IterRemoveClass(pos int, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1820,6 +2303,12 @@ func (path *WidgetPath) IterRemoveClass(pos int, name string) {
 // the hierarchy defined in path.
 //
 // Deprecated: The use of regions is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - name: region name.
+//
 func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1838,6 +2327,12 @@ func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
 
 // IterSetName sets the widget name for the widget found at position pos in the
 // widget hierarchy defined by path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - name: widget name.
+//
 func (path *WidgetPath) IterSetName(pos int, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1858,6 +2353,12 @@ func (path *WidgetPath) IterSetName(pos int, name string) {
 // hierarchy defined by path.
 //
 // When set, the object name overrides the object type when matching CSS.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - name (optional): object name to set or NULL to unset.
+//
 func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1878,6 +2379,12 @@ func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 
 // IterSetObjectType sets the object type for a given position in the widget
 // hierarchy defined by path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - typ: object type to set.
+//
 func (path *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1902,6 +2409,12 @@ func (path *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
 // Setting a flag
 //
 //    gtk_widget_path_iter_set_state (path, pos, gtk_widget_path_iter_get_state (path, pos) & ~flag);.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - state flags.
+//
 func (path *WidgetPath) IterSetState(pos int, state StateFlags) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1919,6 +2432,11 @@ func (path *WidgetPath) IterSetState(pos int, state StateFlags) {
 
 // Length returns the number of Widget #GTypes between the represented widget
 // and its topmost container.
+//
+// The function returns the following values:
+//
+//    - gint: number of elements in the path.
+//
 func (path *WidgetPath) Length() int {
 	var _arg0 *C.GtkWidgetPath // out
 	var _cret C.gint           // in
@@ -1937,6 +2455,11 @@ func (path *WidgetPath) Length() int {
 
 // PrependType prepends a widget type to the widget hierachy represented by
 // path.
+//
+// The function takes the following parameters:
+//
+//    - typ: widget type to prepend.
+//
 func (path *WidgetPath) PrependType(typ externglib.Type) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.GType          // out
@@ -1955,6 +2478,11 @@ func (path *WidgetPath) PrependType(typ externglib.Type) {
 //
 // The main use of this code is for debugging purposes, so that you can
 // g_print() the path or dump it in a gdb session.
+//
+// The function returns the following values:
+//
+//    - utf8: new string describing path.
+//
 func (path *WidgetPath) String() string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _cret *C.char          // in

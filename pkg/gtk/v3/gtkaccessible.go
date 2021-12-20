@@ -84,6 +84,12 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 
 // Widget gets the Widget corresponding to the Accessible. The returned widget
 // does not have a reference added, so you do not need to unref it.
+//
+// The function returns the following values:
+//
+//    - widget (optional): pointer to the Widget corresponding to the Accessible,
+//      or NULL.
+//
 func (accessible *Accessible) Widget() Widgetter {
 	var _arg0 *C.GtkAccessible // out
 	var _cret *C.GtkWidget     // in
@@ -120,7 +126,7 @@ func (accessible *Accessible) Widget() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - widget or NULL to unset.
+//    - widget (optional) or NULL to unset.
 //
 func (accessible *Accessible) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkAccessible // out

@@ -28,7 +28,11 @@ func init() {
 // The function takes the following parameters:
 //
 //    - window used for communication with the server. The window must have
-//    GDK_PROPERTY_CHANGE_MASK in its events mask or a hang will result.
+//      GDK_PROPERTY_CHANGE_MASK in its events mask or a hang will result.
+//
+// The function returns the following values:
+//
+//    - guint32: time stamp.
 //
 func X11GetServerTime(window *X11Window) uint32 {
 	var _arg1 *C.GdkWindow // out
@@ -67,6 +71,11 @@ func marshalX11Windower(p uintptr) (interface{}, error) {
 }
 
 // Desktop gets the number of the workspace window is on.
+//
+// The function returns the following values:
+//
+//    - guint32: current workspace of window.
+//
 func (window *X11Window) Desktop() uint32 {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.guint32    // in
@@ -261,7 +270,7 @@ func (window *X11Window) SetUserTime(timestamp uint32) {
 // The function takes the following parameters:
 //
 //    - name: property name, will be interned as an X atom.
-//    - value: property value, or NULL to delete.
+//    - value (optional): property value, or NULL to delete.
 //
 func (window *X11Window) SetUTF8Property(name, value string) {
 	var _arg0 *C.GdkWindow // out

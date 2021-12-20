@@ -170,6 +170,11 @@ func marshalToolPaletter(p uintptr) (interface{}, error) {
 }
 
 // NewToolPalette creates a new tool palette.
+//
+// The function returns the following values:
+//
+//    - toolPalette: new ToolPalette.
+//
 func NewToolPalette() *ToolPalette {
 	var _cret *C.GtkWidget // in
 
@@ -190,7 +195,7 @@ func NewToolPalette() *ToolPalette {
 //
 //    - widget which should be a drag destination for palette.
 //    - flags that specify what actions GTK+ should take for drops on that
-//    widget.
+//      widget.
 //    - targets which the widget should support.
 //    - actions which the widget should suppport.
 //
@@ -221,6 +226,10 @@ func (palette *ToolPalette) AddDragDest(widget Widgetter, flags DestDefaults, ta
 // The function takes the following parameters:
 //
 //    - selection: SelectionData.
+//
+// The function returns the following values:
+//
+//    - widget: dragged item in selection.
 //
 func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 	var _arg0 *C.GtkToolPalette   // out
@@ -261,6 +270,10 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 //    - x position.
 //    - y position.
 //
+// The function returns the following values:
+//
+//    - toolItemGroup (optional) at position or NULL if there is no such group.
+//
 func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 C.gint              // out
@@ -293,6 +306,10 @@ func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
 //    - x position.
 //    - y position.
 //
+// The function returns the following values:
+//
+//    - toolItem (optional) at position or NULL if there is no such item.
+//
 func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.gint            // out
@@ -324,6 +341,10 @@ func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
 //
 //    - group which is a child of palette.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if group is exclusive.
+//
 func (palette *ToolPalette) Exclusive(group *ToolItemGroup) bool {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
@@ -351,6 +372,10 @@ func (palette *ToolPalette) Exclusive(group *ToolItemGroup) bool {
 // The function takes the following parameters:
 //
 //    - group which is a child of palette.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if group should be given extra space, FALSE otherwise.
 //
 func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
 	var _arg0 *C.GtkToolPalette   // out
@@ -380,6 +405,10 @@ func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
 //
 //    - group: ToolItemGroup.
 //
+// The function returns the following values:
+//
+//    - gint: index of group or -1 if group is not a child of palette.
+//
 func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
@@ -402,6 +431,11 @@ func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
 // HAdjustment gets the horizontal adjustment of the tool palette.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment: horizontal adjustment of palette.
+//
 func (palette *ToolPalette) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkToolPalette // out
 	var _cret *C.GtkAdjustment  // in
@@ -420,6 +454,11 @@ func (palette *ToolPalette) HAdjustment() *Adjustment {
 
 // IconSize gets the size of icons in the tool palette. See
 // gtk_tool_palette_set_icon_size().
+//
+// The function returns the following values:
+//
+//    - gint of icons in the tool palette.
+//
 func (palette *ToolPalette) IconSize() int {
 	var _arg0 *C.GtkToolPalette // out
 	var _cret C.GtkIconSize     // in
@@ -437,6 +476,11 @@ func (palette *ToolPalette) IconSize() int {
 }
 
 // Style gets the style (icons, text or both) of items in the tool palette.
+//
+// The function returns the following values:
+//
+//    - toolbarStyle of items in the tool palette.
+//
 func (palette *ToolPalette) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolPalette // out
 	var _cret C.GtkToolbarStyle // in
@@ -456,6 +500,11 @@ func (palette *ToolPalette) Style() ToolbarStyle {
 // VAdjustment gets the vertical adjustment of the tool palette.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment: vertical adjustment of palette.
+//
 func (palette *ToolPalette) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkToolPalette // out
 	var _cret *C.GtkAdjustment  // in
@@ -626,6 +675,11 @@ func (palette *ToolPalette) UnsetStyle() {
 
 // ToolPaletteGetDragTargetGroup: get the target entry for a dragged
 // ToolItemGroup.
+//
+// The function returns the following values:
+//
+//    - targetEntry for a dragged group.
+//
 func ToolPaletteGetDragTargetGroup() *TargetEntry {
 	var _cret *C.GtkTargetEntry // in
 
@@ -639,6 +693,11 @@ func ToolPaletteGetDragTargetGroup() *TargetEntry {
 }
 
 // ToolPaletteGetDragTargetItem gets the target entry for a dragged ToolItem.
+//
+// The function returns the following values:
+//
+//    - targetEntry for a dragged item.
+//
 func ToolPaletteGetDragTargetItem() *TargetEntry {
 	var _cret *C.GtkTargetEntry // in
 

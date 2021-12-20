@@ -36,6 +36,11 @@ type ActionOverrider interface {
 	// NULL then parameter must also be NULL.
 	//
 	// If the parameter GVariant is floating, it is consumed.
+	//
+	// The function takes the following parameters:
+	//
+	//    - parameter (optional) to the activation.
+	//
 	Activate(parameter *glib.Variant)
 	// ChangeState: request for the state of action to be changed to value.
 	//
@@ -47,13 +52,28 @@ type ActionOverrider interface {
 	// g_action_get_state_hint().
 	//
 	// If the value GVariant is floating, it is consumed.
+	//
+	// The function takes the following parameters:
+	//
+	//    - value: new state.
+	//
 	ChangeState(value *glib.Variant)
 	// Enabled checks if action is currently enabled.
 	//
 	// An action must be enabled in order to be activated or in order to have
 	// its state changed from outside callers.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: whether the action is enabled.
+	//
 	Enabled() bool
 	// Name queries the name of action.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: name of the action.
+	//
 	Name() string
 	// ParameterType queries the type of the parameter that must be given when
 	// activating action.
@@ -63,6 +83,11 @@ type ActionOverrider interface {
 	//
 	// In the case that this function returns NULL, you must not give any
 	// #GVariant, but NULL instead.
+	//
+	// The function returns the following values:
+	//
+	//    - variantType (optional): parameter type.
+	//
 	ParameterType() *glib.VariantType
 	// State queries the current state of action.
 	//
@@ -72,6 +97,11 @@ type ActionOverrider interface {
 	//
 	// The return value (if non-NULL) should be freed with g_variant_unref()
 	// when it is no longer required.
+	//
+	// The function returns the following values:
+	//
+	//    - variant (optional): current state of the action.
+	//
 	State() *glib.Variant
 	// StateHint requests a hint about the valid range of values for the state
 	// of action.
@@ -91,6 +121,11 @@ type ActionOverrider interface {
 	//
 	// The return value (if non-NULL) should be freed with g_variant_unref()
 	// when it is no longer required.
+	//
+	// The function returns the following values:
+	//
+	//    - variant (optional): state range hint.
+	//
 	StateHint() *glib.Variant
 	// StateType queries the type of the state of action.
 	//
@@ -103,6 +138,11 @@ type ActionOverrider interface {
 	// If the action is not stateful (e.g. created with g_simple_action_new())
 	// then this function will return NULL. In that case, g_action_get_state()
 	// will return NULL and you must not call g_action_change_state().
+	//
+	// The function returns the following values:
+	//
+	//    - variantType (optional): state type, if the action is stateful.
+	//
 	StateType() *glib.VariantType
 }
 
@@ -186,7 +226,7 @@ func marshalActioner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - parameter to the activation.
+//    - parameter (optional) to the activation.
 //
 func (action *Action) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
@@ -233,6 +273,11 @@ func (action *Action) ChangeState(value *glib.Variant) {
 //
 // An action must be enabled in order to be activated or in order to have its
 // state changed from outside callers.
+//
+// The function returns the following values:
+//
+//    - ok: whether the action is enabled.
+//
 func (action *Action) Enabled() bool {
 	var _arg0 *C.GAction // out
 	var _cret C.gboolean // in
@@ -252,6 +297,11 @@ func (action *Action) Enabled() bool {
 }
 
 // Name queries the name of action.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the action.
+//
 func (action *Action) Name() string {
 	var _arg0 *C.GAction // out
 	var _cret *C.gchar   // in
@@ -276,6 +326,11 @@ func (action *Action) Name() string {
 //
 // In the case that this function returns NULL, you must not give any #GVariant,
 // but NULL instead.
+//
+// The function returns the following values:
+//
+//    - variantType (optional): parameter type.
+//
 func (action *Action) ParameterType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
@@ -302,6 +357,11 @@ func (action *Action) ParameterType() *glib.VariantType {
 //
 // The return value (if non-NULL) should be freed with g_variant_unref() when it
 // is no longer required.
+//
+// The function returns the following values:
+//
+//    - variant (optional): current state of the action.
+//
 func (action *Action) State() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
@@ -343,6 +403,11 @@ func (action *Action) State() *glib.Variant {
 //
 // The return value (if non-NULL) should be freed with g_variant_unref() when it
 // is no longer required.
+//
+// The function returns the following values:
+//
+//    - variant (optional): state range hint.
+//
 func (action *Action) StateHint() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
@@ -378,6 +443,11 @@ func (action *Action) StateHint() *glib.Variant {
 // If the action is not stateful (e.g. created with g_simple_action_new()) then
 // this function will return NULL. In that case, g_action_get_state() will
 // return NULL and you must not call g_action_change_state().
+//
+// The function returns the following values:
+//
+//    - variantType (optional): state type, if the action is stateful.
+//
 func (action *Action) StateType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
@@ -407,6 +477,10 @@ func (action *Action) StateType() *glib.VariantType {
 // The function takes the following parameters:
 //
 //    - actionName: potential action name.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if action_name is valid.
 //
 func ActionNameIsValid(actionName string) bool {
 	var _arg1 *C.gchar   // out
@@ -442,7 +516,11 @@ func ActionNameIsValid(actionName string) bool {
 // The function takes the following parameters:
 //
 //    - actionName: valid action name.
-//    - targetValue target value, or NULL.
+//    - targetValue (optional) target value, or NULL.
+//
+// The function returns the following values:
+//
+//    - utf8: detailed format string.
 //
 func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string {
 	var _arg1 *C.gchar    // out

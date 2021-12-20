@@ -72,11 +72,24 @@ func marshalTexturer(p uintptr) (interface{}, error) {
 	return wrapTexture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (texture *Texture) baseTexture() *Texture {
+	return texture
+}
+
+// BaseTexture returns the underlying base object.
+func BaseTexture(obj Texturer) *Texture {
+	return obj.baseTexture()
+}
+
 // NewTextureForPixbuf creates a new texture object representing the GdkPixbuf.
 //
 // The function takes the following parameters:
 //
 //    - pixbuf: GdkPixbuf.
+//
+// The function returns the following values:
+//
+//    - texture: new GdkTexture.
 //
 func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 	var _arg1 *C.GdkPixbuf  // out
@@ -104,6 +117,10 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 // The function takes the following parameters:
 //
 //    - file: GFile to load.
+//
+// The function returns the following values:
+//
+//    - texture: newly-created GdkTexture or NULL if an error occurred.
 //
 func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _arg1 *C.GFile      // out
@@ -140,6 +157,10 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 //
 //    - resourcePath: path of the resource file.
 //
+// The function returns the following values:
+//
+//    - texture: newly-created GdkTexture.
+//
 func NewTextureFromResource(resourcePath string) *Texture {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkTexture // in
@@ -158,6 +179,11 @@ func NewTextureFromResource(resourcePath string) *Texture {
 }
 
 // Height returns the height of the texture, in pixels.
+//
+// The function returns the following values:
+//
+//    - gint: height of the GdkTexture.
+//
 func (texture *Texture) Height() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
@@ -175,6 +201,11 @@ func (texture *Texture) Height() int {
 }
 
 // Width returns the width of texture, in pixels.
+//
+// The function returns the following values:
+//
+//    - gint: width of the GdkTexture.
+//
 func (texture *Texture) Width() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
@@ -201,6 +232,10 @@ func (texture *Texture) Width() int {
 //
 //    - filename to store to.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if saving succeeded, FALSE on failure.
+//
 func (texture *Texture) SaveToPng(filename string) bool {
 	var _arg0 *C.GdkTexture // out
 	var _arg1 *C.char       // out
@@ -221,13 +256,4 @@ func (texture *Texture) SaveToPng(filename string) bool {
 	}
 
 	return _ok
-}
-
-func (texture *Texture) baseTexture() *Texture {
-	return texture
-}
-
-// BaseTexture returns the underlying base object.
-func BaseTexture(obj Texturer) *Texture {
-	return obj.baseTexture()
 }

@@ -331,7 +331,7 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int, x, y float64, ti
 // The function takes the following parameters:
 //
 //    - edge or corner from which the drag is started.
-//    - device used for the operation.
+//    - device (optional) used for the operation.
 //    - button being used to drag, or 0 for a keyboard-initiated drag.
 //    - x: surface X coordinate of mouse click that began the drag.
 //    - y: surface Y coordinate of mouse click that began the drag.
@@ -389,6 +389,11 @@ func (toplevel *Toplevel) Focus(timestamp uint32) {
 
 // State gets the bitwise or of the currently active surface state flags, from
 // the GdkToplevelState enumeration.
+//
+// The function returns the following values:
+//
+//    - toplevelState: surface state bitfield.
+//
 func (toplevel *Toplevel) State() ToplevelState {
 	var _arg0 *C.GdkToplevel     // out
 	var _cret C.GdkToplevelState // in
@@ -428,8 +433,8 @@ func (toplevel *Toplevel) State() ToplevelState {
 //
 // The function takes the following parameters:
 //
-//    - event: GdkEvent that is triggering the inhibit request, or NULL if none
-//    is available.
+//    - event (optional): GdkEvent that is triggering the inhibit request, or
+//      NULL if none is available.
 //
 func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	var _arg0 *C.GdkToplevel // out
@@ -448,6 +453,11 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 // Lower asks to lower the toplevel below other windows.
 //
 // The windowing system may choose to ignore the request.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the surface was lowered.
+//
 func (toplevel *Toplevel) Lower() bool {
 	var _arg0 *C.GdkToplevel // out
 	var _cret C.gboolean     // in
@@ -469,6 +479,11 @@ func (toplevel *Toplevel) Lower() bool {
 // Minimize asks to minimize the toplevel.
 //
 // The windowing system may choose to ignore the request.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the surface was minimized.
+//
 func (toplevel *Toplevel) Minimize() bool {
 	var _arg0 *C.GdkToplevel // out
 	var _cret C.gboolean     // in
@@ -710,6 +725,10 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 //
 //    - event: GdkEvent to show the menu for.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the window menu was shown and FALSE otherwise.
+//
 func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkEvent    // out
@@ -733,6 +752,11 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 
 // SupportsEdgeConstraints returns whether the desktop environment supports
 // tiled window states.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the desktop environment supports tiled window states.
+//
 func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 	var _arg0 *C.GdkToplevel // out
 	var _cret C.gboolean     // in

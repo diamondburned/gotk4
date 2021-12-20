@@ -63,8 +63,8 @@ func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 //
 //    - context: StyleContext.
 //    - cr: #cairo_t.
-//    - angle: arrow angle from 0 to 2 * G_PI, being 0 the arrow pointing to
-//    the north.
+//    - angle: arrow angle from 0 to 2 * G_PI, being 0 the arrow pointing to the
+//      north.
 //    - x: x origin of the render area.
 //    - y: y origin of the render area.
 //    - size: square side for render area.

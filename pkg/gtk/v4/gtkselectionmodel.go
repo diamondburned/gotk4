@@ -35,14 +35,64 @@ type SelectionModelOverrider interface {
 	// when you are only interested in part of the model's selected state. A
 	// common use case is in response to the
 	// gtk.SelectionModel::selection-changed signal.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position: start of the queired range.
+	//    - nItems: number of items in the queried range.
+	//
+	// The function returns the following values:
+	//
+	//    - bitset: GtkBitset that matches the selection state for the given
+	//      range with all other values being undefined. The bitset must not be
+	//      modified.
+	//
 	SelectionInRange(position, nItems uint) *Bitset
 	// IsSelected checks if the given item is selected.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position of the item to query.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the item is selected.
+	//
 	IsSelected(position uint) bool
 	// SelectAll requests to select all items in the model.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if this action was supported and no fallback should be
+	//      tried. This does not mean that all items are now selected.
+	//
 	SelectAll() bool
 	// SelectItem requests to select an item in the model.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position of the item to select.
+	//    - unselectRest: whether previously selected items should be unselected.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if this action was supported and no fallback should be
+	//      tried. This does not mean the item was selected.
+	//
 	SelectItem(position uint, unselectRest bool) bool
 	// SelectRange requests to select a range of items in the model.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position: first item to select.
+	//    - nItems: number of items to select.
+	//    - unselectRest: whether previously selected items should be unselected.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if this action was supported and no fallback should be
+	//      tried. This does not mean the range was selected.
+	//
 	SelectRange(position, nItems uint, unselectRest bool) bool
 	// SetSelection: make selection changes.
 	//
@@ -75,12 +125,52 @@ type SelectionModelOverrider interface {
 	//
 	// mask and selected must not be modified. They may refer to the same
 	// bitset, which would mean that every item in the set should be selected.
+	//
+	// The function takes the following parameters:
+	//
+	//    - selected: bitmask specifying if items should be selected or
+	//      unselected.
+	//    - mask specifying which items should be updated.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if this action was supported and no fallback should be
+	//      tried. This does not mean that all items were updated according to
+	//      the inputs.
+	//
 	SetSelection(selected, mask *Bitset) bool
 	// UnselectAll requests to unselect all items in the model.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if this action was supported and no fallback should be
+	//      tried. This does not mean that all items are now unselected.
+	//
 	UnselectAll() bool
 	// UnselectItem requests to unselect an item in the model.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position of the item to unselect.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if this action was supported and no fallback should be
+	//      tried. This does not mean the item was unselected.
+	//
 	UnselectItem(position uint) bool
 	// UnselectRange requests to unselect a range of items in the model.
+	//
+	// The function takes the following parameters:
+	//
+	//    - position: first item to unselect.
+	//    - nItems: number of items to unselect.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if this action was supported and no fallback should be
+	//      tried. This does not mean the range was unselected.
+	//
 	UnselectRange(position, nItems uint) bool
 }
 
@@ -171,11 +261,29 @@ func marshalSelectionModeller(p uintptr) (interface{}, error) {
 	return wrapSelectionModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectSelectionChanged: emitted when the selection state of some of the
+// items in model changes.
+//
+// Note that this signal does not specify the new selection state of the items,
+// they need to be queried manually. It is also not necessary for a model to
+// change the selection state of any of the items in the selection model, though
+// it would be rather useless to emit such a signal.
+func (model *SelectionModel) ConnectSelectionChanged(f func(position, nItems uint)) externglib.SignalHandle {
+	return model.Connect("selection-changed", f)
+}
+
 // Selection gets the set containing all currently selected items in the model.
 //
 // This function may be slow, so if you are only interested in single item,
 // consider using gtk.SelectionModel.IsSelected() or if you are only interested
 // in a few, consider gtk.SelectionModel.GetSelectionInRange().
+//
+// The function returns the following values:
+//
+//    - bitset: GtkBitset containing all the values currently selected in model.
+//      If no items are selected, the bitset is empty. The bitset must not be
+//      modified.
+//
 func (model *SelectionModel) Selection() *Bitset {
 	var _arg0 *C.GtkSelectionModel // out
 	var _cret *C.GtkBitset         // in
@@ -208,6 +316,11 @@ func (model *SelectionModel) Selection() *Bitset {
 //
 //    - position: start of the queired range.
 //    - nItems: number of items in the queried range.
+//
+// The function returns the following values:
+//
+//    - bitset: GtkBitset that matches the selection state for the given range
+//      with all other values being undefined. The bitset must not be modified.
 //
 func (model *SelectionModel) SelectionInRange(position, nItems uint) *Bitset {
 	var _arg0 *C.GtkSelectionModel // out
@@ -243,6 +356,10 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint) *Bitset {
 //
 //    - position of the item to query.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the item is selected.
+//
 func (model *SelectionModel) IsSelected(position uint) bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -265,6 +382,12 @@ func (model *SelectionModel) IsSelected(position uint) bool {
 }
 
 // SelectAll requests to select all items in the model.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean that all items are now selected.
+//
 func (model *SelectionModel) SelectAll() bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _cret C.gboolean           // in
@@ -289,6 +412,11 @@ func (model *SelectionModel) SelectAll() bool {
 //
 //    - position of the item to select.
 //    - unselectRest: whether previously selected items should be unselected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean the item was selected.
 //
 func (model *SelectionModel) SelectItem(position uint, unselectRest bool) bool {
 	var _arg0 *C.GtkSelectionModel // out
@@ -323,6 +451,11 @@ func (model *SelectionModel) SelectItem(position uint, unselectRest bool) bool {
 //    - position: first item to select.
 //    - nItems: number of items to select.
 //    - unselectRest: whether previously selected items should be unselected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean the range was selected.
 //
 func (model *SelectionModel) SelectRange(position, nItems uint, unselectRest bool) bool {
 	var _arg0 *C.GtkSelectionModel // out
@@ -415,6 +548,11 @@ func (model *SelectionModel) SelectionChanged(position, nItems uint) {
 //    - selected: bitmask specifying if items should be selected or unselected.
 //    - mask specifying which items should be updated.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean that all items were updated according to the inputs.
+//
 func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 *C.GtkBitset         // out
@@ -440,6 +578,12 @@ func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 }
 
 // UnselectAll requests to unselect all items in the model.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean that all items are now unselected.
+//
 func (model *SelectionModel) UnselectAll() bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _cret C.gboolean           // in
@@ -463,6 +607,11 @@ func (model *SelectionModel) UnselectAll() bool {
 // The function takes the following parameters:
 //
 //    - position of the item to unselect.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean the item was unselected.
 //
 func (model *SelectionModel) UnselectItem(position uint) bool {
 	var _arg0 *C.GtkSelectionModel // out
@@ -492,6 +641,11 @@ func (model *SelectionModel) UnselectItem(position uint) bool {
 //    - position: first item to unselect.
 //    - nItems: number of items to unselect.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean the range was unselected.
+//
 func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -514,15 +668,4 @@ func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
 	}
 
 	return _ok
-}
-
-// ConnectSelectionChanged: emitted when the selection state of some of the
-// items in model changes.
-//
-// Note that this signal does not specify the new selection state of the items,
-// they need to be queried manually. It is also not necessary for a model to
-// change the selection state of any of the items in the selection model, though
-// it would be rather useless to emit such a signal.
-func (model *SelectionModel) ConnectSelectionChanged(f func(position, nItems uint)) externglib.SignalHandle {
-	return model.Connect("selection-changed", f)
 }

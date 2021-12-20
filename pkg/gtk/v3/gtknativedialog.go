@@ -35,6 +35,8 @@ type NativeDialogOverrider interface {
 	//
 	// If the dialog is not visible this does nothing.
 	Hide()
+	// The function takes the following parameters:
+	//
 	Response(responseId int)
 	// Show shows the dialog on the display, allowing the user to interact with
 	// it. When the user accepts the state of the dialog the dialog will be
@@ -88,6 +90,25 @@ func marshalNativeDialogger(p uintptr) (interface{}, error) {
 	return wrapNativeDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (self *NativeDialog) baseNativeDialog() *NativeDialog {
+	return self
+}
+
+// BaseNativeDialog returns the underlying base object.
+func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
+	return obj.baseNativeDialog()
+}
+
+// ConnectResponse: emitted when the user responds to the dialog.
+//
+// When this is called the dialog has been hidden.
+//
+// If you call gtk_native_dialog_hide() before the user responds to the dialog
+// this signal will not be emitted.
+func (self *NativeDialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
+	return self.Connect("response", f)
+}
+
 // Destroy destroys a dialog.
 //
 // When a dialog is destroyed, it will break any references it holds to other
@@ -107,6 +128,11 @@ func (self *NativeDialog) Destroy() {
 }
 
 // Modal returns whether the dialog is modal. See gtk_native_dialog_set_modal().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the dialog is set to be modal.
+//
 func (self *NativeDialog) Modal() bool {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gboolean         // in
@@ -126,6 +152,13 @@ func (self *NativeDialog) Modal() bool {
 }
 
 // Title gets the title of the NativeDialog.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): title of the dialog, or NULL if none has been set
+//      explicitly. The returned string is owned by the widget and must not be
+//      modified or freed.
+//
 func (self *NativeDialog) Title() string {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret *C.char            // in
@@ -146,6 +179,12 @@ func (self *NativeDialog) Title() string {
 
 // TransientFor fetches the transient parent for this window. See
 // gtk_native_dialog_set_transient_for().
+//
+// The function returns the following values:
+//
+//    - window (optional): transient parent for this window, or NULL if no
+//      transient parent has been set.
+//
 func (self *NativeDialog) TransientFor() *Window {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret *C.GtkWindow       // in
@@ -165,6 +204,11 @@ func (self *NativeDialog) TransientFor() *Window {
 }
 
 // Visible determines whether the dialog is visible.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the dialog is visible.
+//
 func (self *NativeDialog) Visible() bool {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gboolean         // in
@@ -225,6 +269,11 @@ func (self *NativeDialog) Hide() {
 // window group while the dialog is run), callbacks such as timeouts, IO channel
 // watches, DND drops, etc, will be triggered during a gtk_native_dialog_run()
 // call.
+//
+// The function returns the following values:
+//
+//    - gint: response ID.
+//
 func (self *NativeDialog) Run() int {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gint             // in
@@ -293,7 +342,7 @@ func (self *NativeDialog) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - parent window, or NULL.
+//    - parent (optional) window, or NULL.
 //
 func (self *NativeDialog) SetTransientFor(parent *Window) {
 	var _arg0 *C.GtkNativeDialog // out
@@ -321,23 +370,4 @@ func (self *NativeDialog) Show() {
 
 	C.gtk_native_dialog_show(_arg0)
 	runtime.KeepAlive(self)
-}
-
-func (self *NativeDialog) baseNativeDialog() *NativeDialog {
-	return self
-}
-
-// BaseNativeDialog returns the underlying base object.
-func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
-	return obj.baseNativeDialog()
-}
-
-// ConnectResponse: emitted when the user responds to the dialog.
-//
-// When this is called the dialog has been hidden.
-//
-// If you call gtk_native_dialog_hide() before the user responds to the dialog
-// this signal will not be emitted.
-func (self *NativeDialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return self.Connect("response", f)
 }

@@ -87,6 +87,11 @@ func marshalSeparatorMenuItemmer(p uintptr) (interface{}, error) {
 }
 
 // NewSeparatorMenuItem creates a new SeparatorMenuItem.
+//
+// The function returns the following values:
+//
+//    - separatorMenuItem: new SeparatorMenuItem.
+//
 func NewSeparatorMenuItem() *SeparatorMenuItem {
 	var _cret *C.GtkWidget // in
 

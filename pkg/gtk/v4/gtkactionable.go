@@ -30,8 +30,18 @@ func init() {
 // yet, so the interface currently has no use.
 type ActionableOverrider interface {
 	// ActionName gets the action name for actionable.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): action name, or NULL if none is set.
+	//
 	ActionName() string
 	// ActionTargetValue gets the current target value of actionable.
+	//
+	// The function returns the following values:
+	//
+	//    - variant (optional): current target value.
+	//
 	ActionTargetValue() *glib.Variant
 	// SetActionName specifies the name of the action with which this widget
 	// should be associated.
@@ -46,6 +56,11 @@ type ActionableOverrider interface {
 	// containing GtkApplicationWindow or its associated GtkApplication,
 	// respectively. This is the same form used for actions in the GMenu
 	// associated with the window.
+	//
+	// The function takes the following parameters:
+	//
+	//    - actionName (optional): action name, or NULL.
+	//
 	SetActionName(actionName string)
 	// SetActionTargetValue sets the target value of an actionable widget.
 	//
@@ -65,6 +80,11 @@ type ActionableOverrider interface {
 	// state to change to that value. Since the action’s state is now equal to
 	// the target value of the button, the button will now be rendered as active
 	// (and the other buttons, with different targets, rendered inactive).
+	//
+	// The function takes the following parameters:
+	//
+	//    - targetValue (optional) to set as the target value, or NULL.
+	//
 	SetActionTargetValue(targetValue *glib.Variant)
 }
 
@@ -133,6 +153,11 @@ func marshalActionabler(p uintptr) (interface{}, error) {
 }
 
 // ActionName gets the action name for actionable.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): action name, or NULL if none is set.
+//
 func (actionable *Actionable) ActionName() string {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.char          // in
@@ -152,6 +177,11 @@ func (actionable *Actionable) ActionName() string {
 }
 
 // ActionTargetValue gets the current target value of actionable.
+//
+// The function returns the following values:
+//
+//    - variant (optional): current target value.
+//
 func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.GVariant      // in
@@ -192,7 +222,7 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - actionName: action name, or NULL.
+//    - actionName (optional): action name, or NULL.
 //
 func (actionable *Actionable) SetActionName(actionName string) {
 	var _arg0 *C.GtkActionable // out
@@ -229,7 +259,7 @@ func (actionable *Actionable) SetActionName(actionName string) {
 //
 // The function takes the following parameters:
 //
-//    - targetValue to set as the target value, or NULL.
+//    - targetValue (optional) to set as the target value, or NULL.
 //
 func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	var _arg0 *C.GtkActionable // out

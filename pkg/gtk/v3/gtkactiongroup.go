@@ -36,6 +36,15 @@ type ActionGroupOverrider interface {
 	// Action looks up an action in the action group by name.
 	//
 	// Deprecated: since version 3.10.
+	//
+	// The function takes the following parameters:
+	//
+	//    - actionName: name of the action.
+	//
+	// The function returns the following values:
+	//
+	//    - action: action, or NULL if no action by that name exists.
+	//
 	Action(actionName string) *Action
 }
 
@@ -111,6 +120,46 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 	return wrapActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectConnectProxy signal is emitted after connecting a proxy to an action
+// in the group. Note that the proxy may have been connected to a different
+// action before.
+//
+// This is intended for simple customizations for which a custom action class
+// would be too clumsy, e.g. showing tooltips for menuitems in the statusbar.
+//
+// UIManager proxies the signal and provides global notification just before any
+// action is connected to a proxy, which is probably more convenient to use.
+func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
+	return actionGroup.Connect("connect-proxy", f)
+}
+
+// ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
+// action in the group.
+//
+// UIManager proxies the signal and provides global notification just before any
+// action is connected to a proxy, which is probably more convenient to use.
+func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
+	return actionGroup.Connect("disconnect-proxy", f)
+}
+
+// ConnectPostActivate signal is emitted just after the action in the
+// action_group is activated
+//
+// This is intended for UIManager to proxy the signal and provide global
+// notification just after any action is activated.
+func (actionGroup *ActionGroup) ConnectPostActivate(f func(action Action)) externglib.SignalHandle {
+	return actionGroup.Connect("post-activate", f)
+}
+
+// ConnectPreActivate signal is emitted just before the action in the
+// action_group is activated
+//
+// This is intended for UIManager to proxy the signal and provide global
+// notification just before any action is activated.
+func (actionGroup *ActionGroup) ConnectPreActivate(f func(action Action)) externglib.SignalHandle {
+	return actionGroup.Connect("pre-activate", f)
+}
+
 // NewActionGroup creates a new ActionGroup object. The name of the action group
 // is used when associating [keybindings][Action-Accel] with the actions.
 //
@@ -119,6 +168,10 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - name of the action group.
+//
+// The function returns the following values:
+//
+//    - actionGroup: new ActionGroup.
 //
 func NewActionGroup(name string) *ActionGroup {
 	var _arg1 *C.gchar          // out
@@ -175,9 +228,9 @@ func (actionGroup *ActionGroup) AddAction(action *Action) {
 // The function takes the following parameters:
 //
 //    - action to add.
-//    - accelerator for the action, in the format understood by
-//    gtk_accelerator_parse(), or "" for no accelerator, or NULL to use the
-//    stock accelerator.
+//    - accelerator (optional) for the action, in the format understood by
+//      gtk_accelerator_parse(), or "" for no accelerator, or NULL to use the
+//      stock accelerator.
 //
 func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator string) {
 	var _arg0 *C.GtkActionGroup // out
@@ -200,6 +253,12 @@ func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator s
 // AccelGroup gets the accelerator group.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - accelGroup: accelerator group associated with this action group or NULL
+//      if there is none.
+//
 func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GtkAccelGroup  // in
@@ -224,6 +283,10 @@ func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 //
 //    - actionName: name of the action.
 //
+// The function returns the following values:
+//
+//    - action: action, or NULL if no action by that name exists.
+//
 func (actionGroup *ActionGroup) Action(actionName string) *Action {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
@@ -247,6 +310,11 @@ func (actionGroup *ActionGroup) Action(actionName string) *Action {
 // Name gets the name of the action group.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the action group.
+//
 func (actionGroup *ActionGroup) Name() string {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.gchar          // in
@@ -268,6 +336,11 @@ func (actionGroup *ActionGroup) Name() string {
 // sensitive (see gtk_action_get_sensitive()) and their group is sensitive.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the group is sensitive.
+//
 func (actionGroup *ActionGroup) Sensitive() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
@@ -291,6 +364,11 @@ func (actionGroup *ActionGroup) Sensitive() bool {
 // (see gtk_action_get_visible()) and their group is visible.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the group is visible.
+//
 func (actionGroup *ActionGroup) Visible() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
@@ -312,6 +390,11 @@ func (actionGroup *ActionGroup) Visible() bool {
 // ListActions lists the actions in the action group.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - list: allocated list of the action objects in the action group.
+//
 func (actionGroup *ActionGroup) ListActions() []Action {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GList          // in
@@ -361,7 +444,7 @@ func (actionGroup *ActionGroup) RemoveAction(action *Action) {
 //
 // The function takes the following parameters:
 //
-//    - accelGroup to set or NULL.
+//    - accelGroup (optional) to set or NULL.
 //
 func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkActionGroup // out
@@ -438,8 +521,8 @@ func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
 //
 // The function takes the following parameters:
 //
-//    - domain: translation domain to use for g_dgettext() calls, or NULL to
-//    use the domain set with textdomain().
+//    - domain (optional): translation domain to use for g_dgettext() calls, or
+//      NULL to use the domain set with textdomain().
 //
 func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkActionGroup // out
@@ -488,6 +571,10 @@ func (actionGroup *ActionGroup) SetVisible(visible bool) {
 //
 //    - str: string.
 //
+// The function returns the following values:
+//
+//    - utf8: translation of string.
+//
 func (actionGroup *ActionGroup) TranslateString(str string) string {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
@@ -506,46 +593,6 @@ func (actionGroup *ActionGroup) TranslateString(str string) string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// ConnectConnectProxy signal is emitted after connecting a proxy to an action
-// in the group. Note that the proxy may have been connected to a different
-// action before.
-//
-// This is intended for simple customizations for which a custom action class
-// would be too clumsy, e.g. showing tooltips for menuitems in the statusbar.
-//
-// UIManager proxies the signal and provides global notification just before any
-// action is connected to a proxy, which is probably more convenient to use.
-func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return actionGroup.Connect("connect-proxy", f)
-}
-
-// ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
-// action in the group.
-//
-// UIManager proxies the signal and provides global notification just before any
-// action is connected to a proxy, which is probably more convenient to use.
-func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return actionGroup.Connect("disconnect-proxy", f)
-}
-
-// ConnectPostActivate signal is emitted just after the action in the
-// action_group is activated
-//
-// This is intended for UIManager to proxy the signal and provide global
-// notification just after any action is activated.
-func (actionGroup *ActionGroup) ConnectPostActivate(f func(action Action)) externglib.SignalHandle {
-	return actionGroup.Connect("post-activate", f)
-}
-
-// ConnectPreActivate signal is emitted just before the action in the
-// action_group is activated
-//
-// This is intended for UIManager to proxy the signal and provide global
-// notification just before any action is activated.
-func (actionGroup *ActionGroup) ConnectPreActivate(f func(action Action)) externglib.SignalHandle {
-	return actionGroup.Connect("pre-activate", f)
 }
 
 // ActionEntry structs are used with gtk_action_group_add_actions() to construct

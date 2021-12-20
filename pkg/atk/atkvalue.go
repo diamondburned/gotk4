@@ -100,6 +100,10 @@ func (v ValueType) String() string {
 //
 //    - valueType whose localized name is required.
 //
+// The function returns the following values:
+//
+//    - utf8: localized string describing the ValueType.
+//
 func ValueTypeGetLocalizedName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
 	var _cret *C.gchar       // in
@@ -122,6 +126,10 @@ func ValueTypeGetLocalizedName(valueType ValueType) string {
 // The function takes the following parameters:
 //
 //    - valueType whose name is required.
+//
+// The function returns the following values:
+//
+//    - utf8: string describing the ValueType.
 //
 func ValueTypeGetName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
@@ -147,15 +155,31 @@ type ValueOverrider interface {
 	// CurrentValue gets the value of this object.
 	//
 	// Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - value representing the current accessible value.
+	//
 	CurrentValue() externglib.Value
 	// Increment gets the minimum increment by which the value of this object
 	// may be changed. If zero, the minimum increment is undefined, which may
 	// mean that it is limited only by the floating point precision of the
 	// platform.
+	//
+	// The function returns the following values:
+	//
+	//    - gdouble: minimum increment by which the value of this object may be
+	//      changed. zero if undefined.
+	//
 	Increment() float64
 	// MaximumValue gets the maximum value of this object.
 	//
 	// Deprecated: Since 2.12. Use atk_value_get_range() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - value representing the maximum accessible value.
+	//
 	MaximumValue() externglib.Value
 	// MinimumIncrement gets the minimum increment by which the value of this
 	// object may be changed. If zero, the minimum increment is undefined, which
@@ -163,23 +187,63 @@ type ValueOverrider interface {
 	// platform.
 	//
 	// Deprecated: Since 2.12. Use atk_value_get_increment() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - value representing the minimum increment by which the accessible
+	//      value may be changed.
+	//
 	MinimumIncrement() externglib.Value
 	// MinimumValue gets the minimum value of this object.
 	//
 	// Deprecated: Since 2.12. Use atk_value_get_range() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - value representing the minimum accessible value.
+	//
 	MinimumValue() externglib.Value
 	// Range gets the range of this object.
+	//
+	// The function returns the following values:
+	//
+	//    - _range (optional): newly allocated Range that represents the minimum,
+	//      maximum and descriptor (if available) of obj. NULL if that range is
+	//      not defined.
+	//
 	Range() *Range
 	// SubRanges gets the list of subranges defined for this object. See Value
 	// introduction for examples of subranges and when to expose them.
+	//
+	// The function returns the following values:
+	//
+	//    - sList of Range which each of the subranges defined for this object.
+	//      Free the returns list with g_slist_free().
+	//
 	SubRanges() []*Range
 	// ValueAndText gets the current value and the human readable text
 	// alternative of obj. text is a newly created string, that must be freed by
 	// the caller. Can be NULL if no descriptor is available.
+	//
+	// The function returns the following values:
+	//
+	//    - value address of #gdouble to put the current value of obj.
+	//    - text (optional) address of #gchar to put the human readable text
+	//      alternative for value.
+	//
 	ValueAndText() (float64, string)
 	// SetCurrentValue sets the value of this object.
 	//
 	// Deprecated: Since 2.12. Use atk_value_set_value() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - value which is the desired new accessible value.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if new value is successfully set, FALSE otherwise.
+	//
 	SetCurrentValue(value *externglib.Value) bool
 	// SetValue sets the value of this object.
 	//
@@ -194,6 +258,11 @@ type ValueOverrider interface {
 	// In the practice several implementors were not able to decide it, and
 	// returned TRUE in any case. For that reason it is not required anymore to
 	// return if the value was properly assigned or not.
+	//
+	// The function takes the following parameters:
+	//
+	//    - newValue: double which is the desired new accessible value.
+	//
 	SetValue(newValue float64)
 }
 
@@ -337,9 +406,27 @@ func marshalValueer(p uintptr) (interface{}, error) {
 	return wrapValue(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectValueChanged: 'value-changed' signal is emitted when the current value
+// that represent the object changes. value is the numerical representation of
+// this new value. text is the human readable text alternative of value, and can
+// be NULL if it is not available. Note that if there is a textual description
+// associated with the new numeric value, that description should be included
+// regardless of whether or not it has also changed.
+//
+// Example: a password meter whose value changes as the user types their new
+// password. Appropiate value text would be "weak", "acceptable" and "strong".
+func (obj *Value) ConnectValueChanged(f func(value float64, text string)) externglib.SignalHandle {
+	return obj.Connect("value-changed", f)
+}
+
 // CurrentValue gets the value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
+//
+// The function returns the following values:
+//
+//    - value representing the current accessible value.
+//
 func (obj *Value) CurrentValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
@@ -359,6 +446,12 @@ func (obj *Value) CurrentValue() externglib.Value {
 // Increment gets the minimum increment by which the value of this object may be
 // changed. If zero, the minimum increment is undefined, which may mean that it
 // is limited only by the floating point precision of the platform.
+//
+// The function returns the following values:
+//
+//    - gdouble: minimum increment by which the value of this object may be
+//      changed. zero if undefined.
+//
 func (obj *Value) Increment() float64 {
 	var _arg0 *C.AtkValue // out
 	var _cret C.gdouble   // in
@@ -378,6 +471,11 @@ func (obj *Value) Increment() float64 {
 // MaximumValue gets the maximum value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_get_range() instead.
+//
+// The function returns the following values:
+//
+//    - value representing the maximum accessible value.
+//
 func (obj *Value) MaximumValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
@@ -399,6 +497,12 @@ func (obj *Value) MaximumValue() externglib.Value {
 // that it is limited only by the floating point precision of the platform.
 //
 // Deprecated: Since 2.12. Use atk_value_get_increment() instead.
+//
+// The function returns the following values:
+//
+//    - value representing the minimum increment by which the accessible value
+//      may be changed.
+//
 func (obj *Value) MinimumIncrement() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
@@ -418,6 +522,11 @@ func (obj *Value) MinimumIncrement() externglib.Value {
 // MinimumValue gets the minimum value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_get_range() instead.
+//
+// The function returns the following values:
+//
+//    - value representing the minimum accessible value.
+//
 func (obj *Value) MinimumValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
@@ -435,6 +544,13 @@ func (obj *Value) MinimumValue() externglib.Value {
 }
 
 // Range gets the range of this object.
+//
+// The function returns the following values:
+//
+//    - _range (optional): newly allocated Range that represents the minimum,
+//      maximum and descriptor (if available) of obj. NULL if that range is not
+//      defined.
+//
 func (obj *Value) Range() *Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.AtkRange // in
@@ -461,6 +577,12 @@ func (obj *Value) Range() *Range {
 
 // SubRanges gets the list of subranges defined for this object. See Value
 // introduction for examples of subranges and when to expose them.
+//
+// The function returns the following values:
+//
+//    - sList of Range which each of the subranges defined for this object. Free
+//      the returns list with g_slist_free().
+//
 func (obj *Value) SubRanges() []*Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.GSList   // in
@@ -492,6 +614,13 @@ func (obj *Value) SubRanges() []*Range {
 // ValueAndText gets the current value and the human readable text alternative
 // of obj. text is a newly created string, that must be freed by the caller. Can
 // be NULL if no descriptor is available.
+//
+// The function returns the following values:
+//
+//    - value address of #gdouble to put the current value of obj.
+//    - text (optional) address of #gchar to put the human readable text
+//      alternative for value.
+//
 func (obj *Value) ValueAndText() (float64, string) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // in
@@ -521,6 +650,10 @@ func (obj *Value) ValueAndText() (float64, string) {
 // The function takes the following parameters:
 //
 //    - value which is the desired new accessible value.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if new value is successfully set, FALSE otherwise.
 //
 func (obj *Value) SetCurrentValue(value *externglib.Value) bool {
 	var _arg0 *C.AtkValue // out
@@ -570,17 +703,4 @@ func (obj *Value) SetValue(newValue float64) {
 	C.atk_value_set_value(_arg0, _arg1)
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(newValue)
-}
-
-// ConnectValueChanged: 'value-changed' signal is emitted when the current value
-// that represent the object changes. value is the numerical representation of
-// this new value. text is the human readable text alternative of value, and can
-// be NULL if it is not available. Note that if there is a textual description
-// associated with the new numeric value, that description should be included
-// regardless of whether or not it has also changed.
-//
-// Example: a password meter whose value changes as the user types their new
-// password. Appropiate value text would be "weak", "acceptable" and "strong".
-func (obj *Value) ConnectValueChanged(f func(value float64, text string)) externglib.SignalHandle {
-	return obj.Connect("value-changed", f)
 }

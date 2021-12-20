@@ -89,12 +89,22 @@ type PaintableOverrider interface {
 	// for example to take a screenshot of a running animation.
 	//
 	// If the paintable is already immutable, it will return itself.
+	//
+	// The function returns the following values:
+	//
+	//    - ret: immutable paintable for the current contents of paintable.
+	//
 	CurrentImage() Paintabler
 	// Flags: get flags for the paintable.
 	//
 	// This is oftentimes useful for optimizations.
 	//
 	// See gdk.PaintableFlags for the flags and what they mean.
+	//
+	// The function returns the following values:
+	//
+	//    - paintableFlags: GdkPaintableFlags for this paintable.
+	//
 	Flags() PaintableFlags
 	// IntrinsicAspectRatio gets the preferred aspect ratio the paintable would
 	// like to be displayed at.
@@ -114,6 +124,11 @@ type PaintableOverrider interface {
 	//
 	// If the paintable does not have a preferred aspect ratio, it returns 0.
 	// Negative values are never returned.
+	//
+	// The function returns the following values:
+	//
+	//    - gdouble: intrinsic aspect ratio of paintable or 0 if none.
+	//
 	IntrinsicAspectRatio() float64
 	// IntrinsicHeight gets the preferred height the paintable would like to be
 	// displayed at.
@@ -126,6 +141,11 @@ type PaintableOverrider interface {
 	//
 	// If the paintable does not have a preferred height, it returns 0. Negative
 	// values are never returned.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: intrinsic height of paintable or 0 if none.
+	//
 	IntrinsicHeight() int
 	// IntrinsicWidth gets the preferred width the paintable would like to be
 	// displayed at.
@@ -138,11 +158,23 @@ type PaintableOverrider interface {
 	//
 	// If the paintable does not have a preferred width, it returns 0. Negative
 	// values are never returned.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: intrinsic width of paintable or 0 if none.
+	//
 	IntrinsicWidth() int
 	// Snapshot snapshots the given paintable with the given width and height.
 	//
 	// The paintable is drawn at the current (0,0) offset of the snapshot. If
 	// width and height are not larger than zero, this function will do nothing.
+	//
+	// The function takes the following parameters:
+	//
+	//    - snapshot: GdkSnapshot to snapshot to.
+	//    - width to snapshot in.
+	//    - height to snapshot in.
+	//
 	Snapshot(snapshot Snapshotter, width, height float64)
 }
 
@@ -240,6 +272,27 @@ func marshalPaintabler(p uintptr) (interface{}, error) {
 	return wrapPaintable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectInvalidateContents: emitted when the contents of the paintable change.
+//
+// Examples for such an event would be videos changing to the next frame or the
+// icon theme for an icon changing.
+func (paintable *Paintable) ConnectInvalidateContents(f func()) externglib.SignalHandle {
+	return paintable.Connect("invalidate-contents", f)
+}
+
+// ConnectInvalidateSize: emitted when the intrinsic size of the paintable
+// changes.
+//
+// This means the values reported by at least one of
+// gdk.Paintable.GetIntrinsicWidth(), gdk.Paintable.GetIntrinsicHeight() or
+// gdk.Paintable.GetIntrinsicAspectRatio() has changed.
+//
+// Examples for such an event would be a paintable displaying the contents of a
+// toplevel surface being resized.
+func (paintable *Paintable) ConnectInvalidateSize(f func()) externglib.SignalHandle {
+	return paintable.Connect("invalidate-size", f)
+}
+
 // ComputeConcreteSize: compute a concrete size for the GdkPaintable.
 //
 // Applies the sizing algorithm outlined in the CSS Image spec
@@ -254,12 +307,16 @@ func marshalPaintabler(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - specifiedWidth: width paintable could be drawn into or 0.0 if unknown.
-//    - specifiedHeight: height paintable could be drawn into or 0.0 if
-//    unknown.
-//    - defaultWidth: width paintable would be drawn into if no other
-//    constraints were given.
+//    - specifiedHeight: height paintable could be drawn into or 0.0 if unknown.
+//    - defaultWidth: width paintable would be drawn into if no other constraints
+//      were given.
 //    - defaultHeight: height paintable would be drawn into if no other
-//    constraints were given.
+//      constraints were given.
+//
+// The function returns the following values:
+//
+//    - concreteWidth will be set to the concrete width computed.
+//    - concreteHeight will be set to the concrete height computed.
 //
 func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
 	var _arg0 *C.GdkPaintable // out
@@ -299,6 +356,11 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight,
 // example to take a screenshot of a running animation.
 //
 // If the paintable is already immutable, it will return itself.
+//
+// The function returns the following values:
+//
+//    - ret: immutable paintable for the current contents of paintable.
+//
 func (paintable *Paintable) CurrentImage() Paintabler {
 	var _arg0 *C.GdkPaintable // out
 	var _cret *C.GdkPaintable // in
@@ -333,6 +395,11 @@ func (paintable *Paintable) CurrentImage() Paintabler {
 // This is oftentimes useful for optimizations.
 //
 // See gdk.PaintableFlags for the flags and what they mean.
+//
+// The function returns the following values:
+//
+//    - paintableFlags: GdkPaintableFlags for this paintable.
+//
 func (paintable *Paintable) Flags() PaintableFlags {
 	var _arg0 *C.GdkPaintable     // out
 	var _cret C.GdkPaintableFlags // in
@@ -366,6 +433,11 @@ func (paintable *Paintable) Flags() PaintableFlags {
 //
 // If the paintable does not have a preferred aspect ratio, it returns 0.
 // Negative values are never returned.
+//
+// The function returns the following values:
+//
+//    - gdouble: intrinsic aspect ratio of paintable or 0 if none.
+//
 func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 	var _arg0 *C.GdkPaintable // out
 	var _cret C.double        // in
@@ -393,6 +465,11 @@ func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 //
 // If the paintable does not have a preferred height, it returns 0. Negative
 // values are never returned.
+//
+// The function returns the following values:
+//
+//    - gint: intrinsic height of paintable or 0 if none.
+//
 func (paintable *Paintable) IntrinsicHeight() int {
 	var _arg0 *C.GdkPaintable // out
 	var _cret C.int           // in
@@ -420,6 +497,11 @@ func (paintable *Paintable) IntrinsicHeight() int {
 //
 // If the paintable does not have a preferred width, it returns 0. Negative
 // values are never returned.
+//
+// The function returns the following values:
+//
+//    - gint: intrinsic width of paintable or 0 if none.
+//
 func (paintable *Paintable) IntrinsicWidth() int {
 	var _arg0 *C.GdkPaintable // out
 	var _cret C.int           // in
@@ -503,27 +585,6 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64
 	runtime.KeepAlive(height)
 }
 
-// ConnectInvalidateContents: emitted when the contents of the paintable change.
-//
-// Examples for such an event would be videos changing to the next frame or the
-// icon theme for an icon changing.
-func (paintable *Paintable) ConnectInvalidateContents(f func()) externglib.SignalHandle {
-	return paintable.Connect("invalidate-contents", f)
-}
-
-// ConnectInvalidateSize: emitted when the intrinsic size of the paintable
-// changes.
-//
-// This means the values reported by at least one of
-// gdk.Paintable.GetIntrinsicWidth(), gdk.Paintable.GetIntrinsicHeight() or
-// gdk.Paintable.GetIntrinsicAspectRatio() has changed.
-//
-// Examples for such an event would be a paintable displaying the contents of a
-// toplevel surface being resized.
-func (paintable *Paintable) ConnectInvalidateSize(f func()) externglib.SignalHandle {
-	return paintable.Connect("invalidate-size", f)
-}
-
 // NewPaintableEmpty returns a paintable that has the given intrinsic size and
 // draws nothing.
 //
@@ -536,6 +597,10 @@ func (paintable *Paintable) ConnectInvalidateSize(f func()) externglib.SignalHan
 //
 //    - intrinsicWidth: intrinsic width to report. Can be 0 for no width.
 //    - intrinsicHeight: intrinsic height to report. Can be 0 for no height.
+//
+// The function returns the following values:
+//
+//    - paintable: GdkPaintable.
 //
 func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) Paintabler {
 	var _arg1 C.int           // out

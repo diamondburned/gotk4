@@ -98,6 +98,15 @@ func marshalGridViewer(p uintptr) (interface{}, error) {
 	return wrapGridView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate: emitted when a cell has been activated by the user, usually
+// via activating the GtkGridView|list.activate-item action.
+//
+// This allows for a convenient way to handle activation in a gridview. See
+// gtk.ListItem:activatable for details on how to use this signal.
+func (self *GridView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
+	return self.Connect("activate", f)
+}
+
 // NewGridView creates a new GtkGridView that uses the given factory for mapping
 // items to widgets.
 //
@@ -108,8 +117,12 @@ func marshalGridViewer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model to use, or NULL.
-//    - factory to populate items with, or NULL.
+//    - model (optional) to use, or NULL.
+//    - factory (optional) to populate items with, or NULL.
+//
+// The function returns the following values:
+//
+//    - gridView: new GtkGridView using the given model and factory.
 //
 func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 	var _arg1 *C.GtkSelectionModel  // out
@@ -138,6 +151,11 @@ func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 
 // EnableRubberband returns whether rows can be selected by dragging with the
 // mouse.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if rubberband selection is enabled.
+//
 func (self *GridView) EnableRubberband() bool {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.gboolean     // in
@@ -157,6 +175,11 @@ func (self *GridView) EnableRubberband() bool {
 }
 
 // Factory gets the factory that's currently used to populate list items.
+//
+// The function returns the following values:
+//
+//    - listItemFactory (optional): factory in use.
+//
 func (self *GridView) Factory() *ListItemFactory {
 	var _arg0 *C.GtkGridView        // out
 	var _cret *C.GtkListItemFactory // in
@@ -176,6 +199,11 @@ func (self *GridView) Factory() *ListItemFactory {
 }
 
 // MaxColumns gets the maximum number of columns that the grid will use.
+//
+// The function returns the following values:
+//
+//    - guint: maximum number of columns.
+//
 func (self *GridView) MaxColumns() uint {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.guint        // in
@@ -193,6 +221,11 @@ func (self *GridView) MaxColumns() uint {
 }
 
 // MinColumns gets the minimum number of columns that the grid will use.
+//
+// The function returns the following values:
+//
+//    - guint: minimum number of columns.
+//
 func (self *GridView) MinColumns() uint {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.guint        // in
@@ -210,6 +243,11 @@ func (self *GridView) MinColumns() uint {
 }
 
 // Model gets the model that's currently used to read the items displayed.
+//
+// The function returns the following values:
+//
+//    - selectionModel (optional): model in use.
+//
 func (self *GridView) Model() SelectionModeller {
 	var _arg0 *C.GtkGridView       // out
 	var _cret *C.GtkSelectionModel // in
@@ -240,6 +278,11 @@ func (self *GridView) Model() SelectionModeller {
 
 // SingleClickActivate returns whether items will be activated on single click
 // and selected on hover.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if items are activated on single click.
+//
 func (self *GridView) SingleClickActivate() bool {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.gboolean     // in
@@ -283,7 +326,7 @@ func (self *GridView) SetEnableRubberband(enableRubberband bool) {
 //
 // The function takes the following parameters:
 //
-//    - factory to use or NULL for none.
+//    - factory (optional) to use or NULL for none.
 //
 func (self *GridView) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkGridView        // out
@@ -351,7 +394,7 @@ func (self *GridView) SetMinColumns(minColumns uint) {
 //
 // The function takes the following parameters:
 //
-//    - model to use or NULL for none.
+//    - model (optional) to use or NULL for none.
 //
 func (self *GridView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkGridView       // out
@@ -386,13 +429,4 @@ func (self *GridView) SetSingleClickActivate(singleClickActivate bool) {
 	C.gtk_grid_view_set_single_click_activate(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(singleClickActivate)
-}
-
-// ConnectActivate: emitted when a cell has been activated by the user, usually
-// via activating the GtkGridView|list.activate-item action.
-//
-// This allows for a convenient way to handle activation in a gridview. See
-// gtk.ListItem:activatable for details on how to use this signal.
-func (self *GridView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return self.Connect("activate", f)
 }

@@ -73,6 +73,11 @@ func marshalPopupper(p uintptr) (interface{}, error) {
 }
 
 // Autohide returns whether this popup is set to hide on outside clicks.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if popup will autohide.
+//
 func (popup *Popup) Autohide() bool {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.gboolean  // in
@@ -92,6 +97,11 @@ func (popup *Popup) Autohide() bool {
 }
 
 // Parent returns the parent surface of a popup.
+//
+// The function returns the following values:
+//
+//    - surface: parent surface.
+//
 func (popup *Popup) Parent() Surfacer {
 	var _arg0 *C.GdkPopup   // out
 	var _cret *C.GdkSurface // in
@@ -122,6 +132,11 @@ func (popup *Popup) Parent() Surfacer {
 }
 
 // PositionX obtains the position of the popup relative to its parent.
+//
+// The function returns the following values:
+//
+//    - gint: x coordinate of popup position.
+//
 func (popup *Popup) PositionX() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
@@ -139,6 +154,11 @@ func (popup *Popup) PositionX() int {
 }
 
 // PositionY obtains the position of the popup relative to its parent.
+//
+// The function returns the following values:
+//
+//    - gint: y coordinate of popup position.
+//
 func (popup *Popup) PositionY() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
@@ -159,6 +179,11 @@ func (popup *Popup) PositionY() int {
 //
 // The value returned may change after calling gdk.Popup.Present(), or after the
 // gdk.Surface::layout signal is emitted.
+//
+// The function returns the following values:
+//
+//    - gravity: current rectangle anchor value of popup.
+//
 func (popup *Popup) RectAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
 	var _cret C.GdkGravity // in
@@ -179,6 +204,11 @@ func (popup *Popup) RectAnchor() Gravity {
 //
 // The value returned may change after calling gdk.Popup.Present(), or after the
 // gdk.Surface::layout signal is emitted.
+//
+// The function returns the following values:
+//
+//    - gravity: current surface anchor value of popup.
+//
 func (popup *Popup) SurfaceAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
 	var _cret C.GdkGravity // in
@@ -216,6 +246,10 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 //    - width: unconstrained popup width to layout.
 //    - height: unconstrained popup height to layout.
 //    - layout: GdkPopupLayout object used to layout.
+//
+// The function returns the following values:
+//
+//    - ok: FALSE if it failed to be presented, otherwise TRUE.
 //
 func (popup *Popup) Present(width, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup       // out

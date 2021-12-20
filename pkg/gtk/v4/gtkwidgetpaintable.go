@@ -70,7 +70,11 @@ func marshalWidgetPaintabler(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - widget: GtkWidget or NULL.
+//    - widget (optional): GtkWidget or NULL.
+//
+// The function returns the following values:
+//
+//    - widgetPaintable: new GtkWidgetPaintable.
 //
 func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
@@ -91,6 +95,11 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 }
 
 // Widget returns the widget that is observed or NULL if none.
+//
+// The function returns the following values:
+//
+//    - widget (optional): observed widget.
+//
 func (self *WidgetPaintable) Widget() Widgetter {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _cret *C.GtkWidget          // in
@@ -123,7 +132,7 @@ func (self *WidgetPaintable) Widget() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - widget to observe or NULL.
+//    - widget (optional) to observe or NULL.
 //
 func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkWidgetPaintable // out

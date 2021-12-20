@@ -943,6 +943,15 @@ func (r *Rectangle) Height() int {
 }
 
 // Equal checks if the two given rectangles are equal.
+//
+// The function takes the following parameters:
+//
+//    - rect2: Rectangle.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the rectangles are equal.
+//
 func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
@@ -969,6 +978,17 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 // intersect, dest’s width and height is set to 0 and its x and y values are
 // undefined. If you are only interested in whether the rectangles intersect,
 // but not in the intersecting area itself, pass NULL for dest.
+//
+// The function takes the following parameters:
+//
+//    - src2: Rectangle.
+//
+// The function returns the following values:
+//
+//    - dest (optional): return location for the intersection of src1 and src2,
+//      or NULL.
+//    - ok: TRUE if the rectangles intersect.
+//
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
@@ -999,6 +1019,15 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
+//
+// The function takes the following parameters:
+//
+//    - src2: Rectangle.
+//
+// The function returns the following values:
+//
+//    - dest: return location for the union of src1 and src2.
+//
 func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out

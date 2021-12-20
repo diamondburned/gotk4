@@ -147,6 +147,11 @@ func marshalGridder(p uintptr) (interface{}, error) {
 }
 
 // NewGrid creates a new grid widget.
+//
+// The function returns the following values:
+//
+//    - grid: new GtkGrid.
+//
 func NewGrid() *Grid {
 	var _cret *C.GtkWidget // in
 
@@ -208,8 +213,8 @@ func (grid *Grid) Attach(child Widgetter, column, row, width, height int) {
 // The function takes the following parameters:
 //
 //    - child: widget to add.
-//    - sibling: child of grid that child will be placed next to, or NULL to
-//    place child at the beginning or end.
+//    - sibling (optional): child of grid that child will be placed next to, or
+//      NULL to place child at the beginning or end.
 //    - side of sibling that child is positioned next to.
 //    - width: number of columns that child will span.
 //    - height: number of rows that child will span.
@@ -241,6 +246,11 @@ func (grid *Grid) AttachNextTo(child, sibling Widgetter, side PositionType, widt
 }
 
 // BaselineRow returns which row defines the global baseline of grid.
+//
+// The function returns the following values:
+//
+//    - gint: row index defining the global baseline.
+//
 func (grid *Grid) BaselineRow() int {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.int      // in
@@ -264,6 +274,10 @@ func (grid *Grid) BaselineRow() int {
 //
 //    - column: left edge of the cell.
 //    - row: top edge of the cell.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child at the given position, or NULL.
 //
 func (grid *Grid) ChildAt(column, row int) Widgetter {
 	var _arg0 *C.GtkGrid   // out
@@ -300,6 +314,11 @@ func (grid *Grid) ChildAt(column, row int) Widgetter {
 }
 
 // ColumnHomogeneous returns whether all columns of grid have the same width.
+//
+// The function returns the following values:
+//
+//    - ok: whether all columns of grid have the same width.
+//
 func (grid *Grid) ColumnHomogeneous() bool {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.gboolean // in
@@ -319,6 +338,11 @@ func (grid *Grid) ColumnHomogeneous() bool {
 }
 
 // ColumnSpacing returns the amount of space between the columns of grid.
+//
+// The function returns the following values:
+//
+//    - guint: column spacing of grid.
+//
 func (grid *Grid) ColumnSpacing() uint {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.guint    // in
@@ -343,6 +367,10 @@ func (grid *Grid) ColumnSpacing() uint {
 //
 //    - row index.
 //
+// The function returns the following values:
+//
+//    - baselinePosition: baseline position of row.
+//
 func (grid *Grid) RowBaselinePosition(row int) BaselinePosition {
 	var _arg0 *C.GtkGrid            // out
 	var _arg1 C.int                 // out
@@ -363,6 +391,11 @@ func (grid *Grid) RowBaselinePosition(row int) BaselinePosition {
 }
 
 // RowHomogeneous returns whether all rows of grid have the same height.
+//
+// The function returns the following values:
+//
+//    - ok: whether all rows of grid have the same height.
+//
 func (grid *Grid) RowHomogeneous() bool {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.gboolean // in
@@ -382,6 +415,11 @@ func (grid *Grid) RowHomogeneous() bool {
 }
 
 // RowSpacing returns the amount of space between the rows of grid.
+//
+// The function returns the following values:
+//
+//    - guint: row spacing of grid.
+//
 func (grid *Grid) RowSpacing() uint {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.guint    // in
@@ -428,8 +466,7 @@ func (grid *Grid) InsertColumn(position int) {
 //
 // The function takes the following parameters:
 //
-//    - sibling: child of grid that the new row or column will be placed next
-//    to.
+//    - sibling: child of grid that the new row or column will be placed next to.
 //    - side of sibling that child is positioned next to.
 //
 func (grid *Grid) InsertNextTo(sibling Widgetter, side PositionType) {
@@ -474,6 +511,13 @@ func (grid *Grid) InsertRow(position int) {
 // The function takes the following parameters:
 //
 //    - child: GtkWidget child of grid.
+//
+// The function returns the following values:
+//
+//    - column (optional) used to attach the left side of child.
+//    - row (optional) used to attach the top side of child.
+//    - width (optional): number of columns child spans.
+//    - height (optional): number of rows child spans.
 //
 func (grid *Grid) QueryChild(child Widgetter) (column int, row int, width int, height int) {
 	var _arg0 *C.GtkGrid   // out

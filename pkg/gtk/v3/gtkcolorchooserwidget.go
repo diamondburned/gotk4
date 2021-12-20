@@ -90,6 +90,11 @@ func marshalColorChooserWidgetter(p uintptr) (interface{}, error) {
 }
 
 // NewColorChooserWidget creates a new ColorChooserWidget.
+//
+// The function returns the following values:
+//
+//    - colorChooserWidget: new ColorChooserWidget.
+//
 func NewColorChooserWidget() *ColorChooserWidget {
 	var _cret *C.GtkWidget // in
 

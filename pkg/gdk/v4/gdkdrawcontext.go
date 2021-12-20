@@ -62,6 +62,15 @@ func marshalDrawContexter(p uintptr) (interface{}, error) {
 	return wrapDrawContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (context *DrawContext) baseDrawContext() *DrawContext {
+	return context
+}
+
+// BaseDrawContext returns the underlying base object.
+func BaseDrawContext(obj DrawContexter) *DrawContext {
+	return obj.baseDrawContext()
+}
+
 // BeginFrame indicates that you are beginning the process of redrawing region
 // on the context's surface.
 //
@@ -120,6 +129,11 @@ func (context *DrawContext) EndFrame() {
 }
 
 // Display retrieves the GdkDisplay the context is created for.
+//
+// The function returns the following values:
+//
+//    - display (optional): GdkDisplay or NULL.
+//
 func (context *DrawContext) Display() *Display {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkDisplay     // in
@@ -146,6 +160,11 @@ func (context *DrawContext) Display() *Display {
 //
 // If context is not in between calls to gdk.DrawContext.BeginFrame() and
 // gdk.DrawContext.EndFrame(), NULL will be returned.
+//
+// The function returns the following values:
+//
+//    - region (optional): cairo region or NULL if not drawing a frame.
+//
 func (context *DrawContext) FrameRegion() *cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.cairo_region_t // in
@@ -172,6 +191,11 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 }
 
 // Surface retrieves the surface that context is bound to.
+//
+// The function returns the following values:
+//
+//    - surface (optional) or NULL.
+//
 func (context *DrawContext) Surface() Surfacer {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkSurface     // in
@@ -206,6 +230,12 @@ func (context *DrawContext) Surface() Surfacer {
 // This is the case between calls to gdk.DrawContext.BeginFrame() and
 // gdk.DrawContext.EndFrame(). In this situation, drawing commands may be
 // effecting the contents of the context's surface.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the context is between gdk.DrawContext.BeginFrame() and
+//      gdk.DrawContext.EndFrame() calls.
+//
 func (context *DrawContext) IsInFrame() bool {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret C.gboolean        // in
@@ -222,13 +252,4 @@ func (context *DrawContext) IsInFrame() bool {
 	}
 
 	return _ok
-}
-
-func (context *DrawContext) baseDrawContext() *DrawContext {
-	return context
-}
-
-// BaseDrawContext returns the underlying base object.
-func BaseDrawContext(obj DrawContexter) *DrawContext {
-	return obj.baseDrawContext()
 }

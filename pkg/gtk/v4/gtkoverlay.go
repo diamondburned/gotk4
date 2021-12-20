@@ -88,6 +88,11 @@ func marshalOverlayer(p uintptr) (interface{}, error) {
 }
 
 // NewOverlay creates a new GtkOverlay.
+//
+// The function returns the following values:
+//
+//    - overlay: new GtkOverlay object.
+//
 func NewOverlay() *Overlay {
 	var _cret *C.GtkWidget // in
 
@@ -125,6 +130,11 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 }
 
 // Child gets the child widget of overlay.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of overlay.
+//
 func (overlay *Overlay) Child() Widgetter {
 	var _arg0 *C.GtkOverlay // out
 	var _cret *C.GtkWidget  // in
@@ -159,6 +169,10 @@ func (overlay *Overlay) Child() Widgetter {
 //
 //    - widget: overlay child of GtkOverlay.
 //
+// The function returns the following values:
+//
+//    - ok: whether the widget is clipped within the parent.
+//
 func (overlay *Overlay) ClipOverlay(widget Widgetter) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -186,6 +200,10 @@ func (overlay *Overlay) ClipOverlay(widget Widgetter) bool {
 // The function takes the following parameters:
 //
 //    - widget: overlay child of GtkOverlay.
+//
+// The function returns the following values:
+//
+//    - ok: whether the widget is measured.
 //
 func (overlay *Overlay) MeasureOverlay(widget Widgetter) bool {
 	var _arg0 *C.GtkOverlay // out
@@ -231,7 +249,7 @@ func (overlay *Overlay) RemoveOverlay(widget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (overlay *Overlay) SetChild(child Widgetter) {
 	var _arg0 *C.GtkOverlay // out

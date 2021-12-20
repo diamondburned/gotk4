@@ -159,6 +159,15 @@ func marshalListViewer(p uintptr) (interface{}, error) {
 	return wrapListView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate: emitted when a row has been activated by the user, usually
+// via activating the GtkListView|list.activate-item action.
+//
+// This allows for a convenient way to handle activation in a listview. See
+// gtk.ListItem.SetActivatable() for details on how to use this signal.
+func (self *ListView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
+	return self.Connect("activate", f)
+}
+
 // NewListView creates a new GtkListView that uses the given factory for mapping
 // items to widgets.
 //
@@ -169,8 +178,12 @@ func marshalListViewer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model to use, or NULL.
-//    - factory to populate items with, or NULL.
+//    - model (optional) to use, or NULL.
+//    - factory (optional) to populate items with, or NULL.
+//
+// The function returns the following values:
+//
+//    - listView: new GtkListView using the given model and factory.
 //
 func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 	var _arg1 *C.GtkSelectionModel  // out
@@ -199,6 +212,11 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 
 // EnableRubberband returns whether rows can be selected by dragging with the
 // mouse.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if rubberband selection is enabled.
+//
 func (self *ListView) EnableRubberband() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
@@ -218,6 +236,11 @@ func (self *ListView) EnableRubberband() bool {
 }
 
 // Factory gets the factory that's currently used to populate list items.
+//
+// The function returns the following values:
+//
+//    - listItemFactory (optional): factory in use.
+//
 func (self *ListView) Factory() *ListItemFactory {
 	var _arg0 *C.GtkListView        // out
 	var _cret *C.GtkListItemFactory // in
@@ -237,6 +260,11 @@ func (self *ListView) Factory() *ListItemFactory {
 }
 
 // Model gets the model that's currently used to read the items displayed.
+//
+// The function returns the following values:
+//
+//    - selectionModel (optional): model in use.
+//
 func (self *ListView) Model() SelectionModeller {
 	var _arg0 *C.GtkListView       // out
 	var _cret *C.GtkSelectionModel // in
@@ -267,6 +295,11 @@ func (self *ListView) Model() SelectionModeller {
 
 // ShowSeparators returns whether the list box should show separators between
 // rows.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the list box shows separators.
+//
 func (self *ListView) ShowSeparators() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
@@ -287,6 +320,11 @@ func (self *ListView) ShowSeparators() bool {
 
 // SingleClickActivate returns whether rows will be activated on single click
 // and selected on hover.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if rows are activated on single click.
+//
 func (self *ListView) SingleClickActivate() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
@@ -330,7 +368,7 @@ func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 //
 // The function takes the following parameters:
 //
-//    - factory to use or NULL for none.
+//    - factory (optional) to use or NULL for none.
 //
 func (self *ListView) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkListView        // out
@@ -352,7 +390,7 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - model to use or NULL for none.
+//    - model (optional) to use or NULL for none.
 //
 func (self *ListView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkListView       // out
@@ -408,13 +446,4 @@ func (self *ListView) SetSingleClickActivate(singleClickActivate bool) {
 	C.gtk_list_view_set_single_click_activate(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(singleClickActivate)
-}
-
-// ConnectActivate: emitted when a row has been activated by the user, usually
-// via activating the GtkListView|list.activate-item action.
-//
-// This allows for a convenient way to handle activation in a listview. See
-// gtk.ListItem.SetActivatable() for details on how to use this signal.
-func (self *ListView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return self.Connect("activate", f)
 }

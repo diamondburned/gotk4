@@ -12,6 +12,8 @@ import (
 // #include <gio/gio.h>
 import "C"
 
+// The function returns the following values:
+//
 func DBusErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 

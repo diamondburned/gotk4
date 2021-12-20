@@ -95,6 +95,11 @@ func marshalFixedder(p uintptr) (interface{}, error) {
 }
 
 // NewFixed creates a new Fixed.
+//
+// The function returns the following values:
+//
+//    - fixed: new Fixed.
+//
 func NewFixed() *Fixed {
 	var _cret *C.GtkWidget // in
 

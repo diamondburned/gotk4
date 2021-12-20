@@ -208,6 +208,13 @@ func marshalClipboarder(p uintptr) (interface{}, error) {
 	return wrapClipboard(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectOwnerChange signal is emitted when GTK+ receives an event that
+// indicates that the ownership of the selection associated with clipboard has
+// changed.
+func (clipboard *Clipboard) ConnectOwnerChange(f func(event *gdk.EventOwnerChange)) externglib.SignalHandle {
+	return clipboard.Connect("owner-change", f)
+}
+
 // Clear clears the contents of the clipboard. Generally this should only be
 // called between the time you call gtk_clipboard_set_with_owner() or
 // gtk_clipboard_set_with_data(), and when the clear_func you supplied is
@@ -222,6 +229,11 @@ func (clipboard *Clipboard) Clear() {
 }
 
 // Display gets the Display associated with clipboard.
+//
+// The function returns the following values:
+//
+//    - display associated with clipboard.
+//
 func (clipboard *Clipboard) Display() *gdk.Display {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.GdkDisplay   // in
@@ -247,6 +259,11 @@ func (clipboard *Clipboard) Display() *gdk.Display {
 // gtk_clipboard_set_with_owner(), and the gtk_clipboard_set_with_data() or
 // gtk_clipboard_clear() has not subsequently called, returns the owner set by
 // gtk_clipboard_set_with_owner().
+//
+// The function returns the following values:
+//
+//    - object (optional): owner of the clipboard, if any; otherwise NULL.
+//
 func (clipboard *Clipboard) Owner() *externglib.Object {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.GObject      // in
@@ -277,7 +294,7 @@ func (clipboard *Clipboard) Owner() *externglib.Object {
 // The function takes the following parameters:
 //
 //    - callback: function to call when the image is received, or the retrieval
-//    fails. (It will always be called one way or the other.).
+//      fails. (It will always be called one way or the other.).
 //
 func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 	var _arg0 *C.GtkClipboard                 // out
@@ -305,7 +322,7 @@ func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 // The function takes the following parameters:
 //
 //    - callback: function to call when the text is received, or the retrieval
-//    fails. (It will always be called one way or the other.).
+//      fails. (It will always be called one way or the other.).
 //
 func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 	var _arg0 *C.GtkClipboard                // out
@@ -332,7 +349,7 @@ func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 // The function takes the following parameters:
 //
 //    - callback: function to call when the URIs are received, or the retrieval
-//    fails. (It will always be called one way or the other.).
+//      fails. (It will always be called one way or the other.).
 //
 func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
 	var _arg0 *C.GtkClipboard               // out
@@ -357,8 +374,8 @@ func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
 //
 // The function takes the following parameters:
 //
-//    - targets: array containing information about which forms should be
-//    stored or NULL to indicate that all forms should be stored.
+//    - targets (optional): array containing information about which forms should
+//      be stored or NULL to indicate that all forms should be stored.
 //
 func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
 	var _arg0 *C.GtkClipboard   // out
@@ -409,7 +426,7 @@ func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
 //
 //    - text: UTF-8 string.
 //    - len: length of text, in bytes, or -1, in which case the length will be
-//    determined with strlen().
+//      determined with strlen().
 //
 func (clipboard *Clipboard) SetText(text string, len int) {
 	var _arg0 *C.GtkClipboard // out
@@ -441,6 +458,15 @@ func (clipboard *Clipboard) Store() {
 // WaitForImage requests the contents of the clipboard as image and converts the
 // result to a Pixbuf. This function waits for the data to be received using the
 // main loop, so events, timeouts, etc, may be dispatched during the wait.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): newly-allocated Pixbuf object which must be disposed
+//      with g_object_unref(), or NULL if retrieving the selection data failed.
+//      (This could happen for various reasons, in particular if the clipboard
+//      was empty or if the contents of the clipboard could not be converted into
+//      an image.).
+//
 func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.GdkPixbuf    // in
@@ -473,6 +499,14 @@ func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
 // result to UTF-8 if necessary. This function waits for the data to be received
 // using the main loop, so events, timeouts, etc, may be dispatched during the
 // wait.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): newly-allocated UTF-8 string which must be freed with
+//      g_free(), or NULL if retrieving the selection data failed. (This could
+//      happen for various reasons, in particular if the clipboard was empty or
+//      if the contents of the clipboard could not be converted into text form.).
+//
 func (clipboard *Clipboard) WaitForText() string {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.gchar        // in
@@ -495,6 +529,15 @@ func (clipboard *Clipboard) WaitForText() string {
 // WaitForURIs requests the contents of the clipboard as URIs. This function
 // waits for the data to be received using the main loop, so events, timeouts,
 // etc, may be dispatched during the wait.
+//
+// The function returns the following values:
+//
+//    - utf8s (optional): a newly-allocated NULL-terminated array of strings
+//      which must be freed with g_strfreev(), or NULL if retrieving the
+//      selection data failed. (This could happen for various reasons, in
+//      particular if the clipboard was empty or if the contents of the clipboard
+//      could not be converted into URI form.).
+//
 func (clipboard *Clipboard) WaitForURIs() []string {
 	var _arg0 *C.GtkClipboard // out
 	var _cret **C.gchar       // in
@@ -535,6 +578,11 @@ func (clipboard *Clipboard) WaitForURIs() []string {
 //
 // This function is a little faster than calling gtk_clipboard_wait_for_image()
 // since it doesn’t need to retrieve the actual image data.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE is there is an image available, FALSE otherwise.
+//
 func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
 	var _cret C.gboolean      // in
@@ -567,6 +615,10 @@ func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 //
 //    - buffer: TextBuffer.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE is there is rich text available, FALSE otherwise.
+//
 func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
 	var _arg0 *C.GtkClipboard  // out
 	var _arg1 *C.GtkTextBuffer // out
@@ -595,6 +647,11 @@ func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
 //
 // This function is a little faster than calling gtk_clipboard_wait_for_text()
 // since it doesn’t need to retrieve the actual text.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE is there is text available, FALSE otherwise.
+//
 func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
 	var _cret C.gboolean      // in
@@ -621,6 +678,11 @@ func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 //
 // This function is a little faster than calling gtk_clipboard_wait_for_uris()
 // since it doesn’t need to retrieve the actual URI data.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE is there is an URI list available, FALSE otherwise.
+//
 func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
 	var _cret C.gboolean      // in
@@ -639,19 +701,16 @@ func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
 	return _ok
 }
 
-// ConnectOwnerChange signal is emitted when GTK+ receives an event that
-// indicates that the ownership of the selection associated with clipboard has
-// changed.
-func (clipboard *Clipboard) ConnectOwnerChange(f func(event *gdk.EventOwnerChange)) externglib.SignalHandle {
-	return clipboard.Connect("owner-change", f)
-}
-
 // ClipboardGetDefault returns the default clipboard object for use with
 // cut/copy/paste menu items and keyboard shortcuts.
 //
 // The function takes the following parameters:
 //
 //    - display for which the clipboard is to be retrieved.
+//
+// The function returns the following values:
+//
+//    - clipboard: default clipboard object.
 //
 func ClipboardGetDefault(display *gdk.Display) *Clipboard {
 	var _arg1 *C.GdkDisplay   // out

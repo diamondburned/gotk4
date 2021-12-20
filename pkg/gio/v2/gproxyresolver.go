@@ -40,6 +40,11 @@ type ProxyResolverOverrider interface {
 	// IsSupported checks if resolver can be used on this system. (This is used
 	// internally; g_proxy_resolver_get_default() will only return a proxy
 	// resolver that returns TRUE for this method.).
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if resolver is supported.
+	//
 	IsSupported() bool
 	// Lookup looks into the system proxy configuration to determine what proxy,
 	// if any, to use to connect to uri. The returned proxy URIs are of the form
@@ -53,13 +58,41 @@ type ProxyResolverOverrider interface {
 	//
 	// direct:// is used when no proxy is needed. Direct connection should not
 	// be attempted unless it is part of the returned array of proxies.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - uri: URI representing the destination to connect to.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+	//      g_strfreev().
+	//
 	Lookup(ctx context.Context, uri string) ([]string, error)
 	// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 	// for more details.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - uri: URI representing the destination to connect to.
+	//    - callback (optional) to call after resolution completes.
+	//
 	LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback)
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete. See
 	// g_proxy_resolver_lookup() for more details.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result passed to your ReadyCallback.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+	//      g_strfreev().
+	//
 	LookupFinish(result AsyncResulter) ([]string, error)
 }
 
@@ -109,6 +142,11 @@ func marshalProxyResolverer(p uintptr) (interface{}, error) {
 // IsSupported checks if resolver can be used on this system. (This is used
 // internally; g_proxy_resolver_get_default() will only return a proxy resolver
 // that returns TRUE for this method.).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if resolver is supported.
+//
 func (resolver *ProxyResolver) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in
@@ -142,8 +180,13 @@ func (resolver *ProxyResolver) IsSupported() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - uri: URI representing the destination to connect to.
+//
+// The function returns the following values:
+//
+//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+//      g_strfreev().
 //
 func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
@@ -196,9 +239,9 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - uri: URI representing the destination to connect to.
-//    - callback to call after resolution completes.
+//    - callback (optional) to call after resolution completes.
 //
 func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxyResolver     // out
@@ -234,6 +277,11 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 // The function takes the following parameters:
 //
 //    - result passed to your ReadyCallback.
+//
+// The function returns the following values:
+//
+//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+//      g_strfreev().
 //
 func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
@@ -274,6 +322,12 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 }
 
 // ProxyResolverGetDefault gets the default Resolver for the system.
+//
+// The function returns the following values:
+//
+//    - proxyResolver: default Resolver, which will be a dummy object if no proxy
+//      resolver is available.
+//
 func ProxyResolverGetDefault() ProxyResolverer {
 	var _cret *C.GProxyResolver // in
 

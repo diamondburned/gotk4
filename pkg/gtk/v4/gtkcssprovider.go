@@ -74,6 +74,11 @@ func marshalCSSProviderer(p uintptr) (interface{}, error) {
 }
 
 // NewCSSProvider returns a newly created GtkCssProvider.
+//
+// The function returns the following values:
+//
+//    - cssProvider: new GtkCssProvider.
+//
 func NewCSSProvider() *CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
@@ -182,7 +187,7 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 // The function takes the following parameters:
 //
 //    - name: theme name.
-//    - variant to load, for example, "dark", or NULL for the default.
+//    - variant (optional) to load, for example, "dark", or NULL for the default.
 //
 func (provider *CSSProvider) LoadNamed(name, variant string) {
 	var _arg0 *C.GtkCssProvider // out
@@ -208,6 +213,11 @@ func (provider *CSSProvider) LoadNamed(name, variant string) {
 // Using gtk.CSSProvider.LoadFromData() with the return value from this function
 // on a new provider created with gtk.CSSProvider.New will basically create a
 // duplicate of this provider.
+//
+// The function returns the following values:
+//
+//    - utf8: new string representing the provider.
+//
 func (provider *CSSProvider) String() string {
 	var _arg0 *C.GtkCssProvider // out
 	var _cret *C.char           // in

@@ -70,6 +70,11 @@ func marshalVideoer(p uintptr) (interface{}, error) {
 }
 
 // NewVideo creates a new empty GtkVideo.
+//
+// The function returns the following values:
+//
+//    - video: new GtkVideo.
+//
 func NewVideo() *Video {
 	var _cret *C.GtkWidget // in
 
@@ -86,7 +91,11 @@ func NewVideo() *Video {
 //
 // The function takes the following parameters:
 //
-//    - file: GFile.
+//    - file (optional): GFile.
+//
+// The function returns the following values:
+//
+//    - video: new GtkVideo.
 //
 func NewVideoForFile(file gio.Filer) *Video {
 	var _arg1 *C.GFile     // out
@@ -113,7 +122,11 @@ func NewVideoForFile(file gio.Filer) *Video {
 //
 // The function takes the following parameters:
 //
-//    - filename to play back.
+//    - filename (optional) to play back.
+//
+// The function returns the following values:
+//
+//    - video: new GtkVideo.
 //
 func NewVideoForFilename(filename string) *Video {
 	var _arg1 *C.char      // out
@@ -138,7 +151,11 @@ func NewVideoForFilename(filename string) *Video {
 //
 // The function takes the following parameters:
 //
-//    - stream: GtkMediaStream.
+//    - stream (optional): GtkMediaStream.
+//
+// The function returns the following values:
+//
+//    - video: new GtkVideo.
 //
 func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	var _arg1 *C.GtkMediaStream // out
@@ -165,7 +182,11 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: resource path to play back.
+//    - resourcePath (optional): resource path to play back.
+//
+// The function returns the following values:
+//
+//    - video: new GtkVideo.
 //
 func NewVideoForResource(resourcePath string) *Video {
 	var _arg1 *C.char      // out
@@ -187,6 +208,11 @@ func NewVideoForResource(resourcePath string) *Video {
 }
 
 // Autoplay returns TRUE if videos have been set to loop.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if streams should autoplay.
+//
 func (self *Video) Autoplay() bool {
 	var _arg0 *C.GtkVideo // out
 	var _cret C.gboolean  // in
@@ -206,6 +232,11 @@ func (self *Video) Autoplay() bool {
 }
 
 // File gets the file played by self or NULL if not playing back a file.
+//
+// The function returns the following values:
+//
+//    - file (optional) played by self.
+//
 func (self *Video) File() gio.Filer {
 	var _arg0 *C.GtkVideo // out
 	var _cret *C.GFile    // in
@@ -235,6 +266,11 @@ func (self *Video) File() gio.Filer {
 }
 
 // Loop returns TRUE if videos have been set to loop.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if streams should loop.
+//
 func (self *Video) Loop() bool {
 	var _arg0 *C.GtkVideo // out
 	var _cret C.gboolean  // in
@@ -254,6 +290,11 @@ func (self *Video) Loop() bool {
 }
 
 // MediaStream gets the media stream managed by self or NULL if none.
+//
+// The function returns the following values:
+//
+//    - mediaStream (optional): media stream managed by self.
+//
 func (self *Video) MediaStream() MediaStreamer {
 	var _arg0 *C.GtkVideo       // out
 	var _cret *C.GtkMediaStream // in
@@ -307,7 +348,7 @@ func (self *Video) SetAutoplay(autoplay bool) {
 //
 // The function takes the following parameters:
 //
-//    - file to play.
+//    - file (optional) to play.
 //
 func (self *Video) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkVideo // out
@@ -329,7 +370,7 @@ func (self *Video) SetFile(file gio.Filer) {
 //
 // The function takes the following parameters:
 //
-//    - filename to play.
+//    - filename (optional) to play.
 //
 func (self *Video) SetFilename(filename string) {
 	var _arg0 *C.GtkVideo // out
@@ -375,7 +416,7 @@ func (self *Video) SetLoop(loop bool) {
 //
 // The function takes the following parameters:
 //
-//    - stream: media stream to play or NULL to unset.
+//    - stream (optional): media stream to play or NULL to unset.
 //
 func (self *Video) SetMediaStream(stream MediaStreamer) {
 	var _arg0 *C.GtkVideo       // out
@@ -397,7 +438,7 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: resource to set.
+//    - resourcePath (optional): resource to set.
 //
 func (self *Video) SetResource(resourcePath string) {
 	var _arg0 *C.GtkVideo // out

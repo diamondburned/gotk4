@@ -103,7 +103,11 @@ func marshalScrollbarrer(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - orientation scrollbar’s orientation.
-//    - adjustment to use, or NULL to create a new adjustment.
+//    - adjustment (optional) to use, or NULL to create a new adjustment.
+//
+// The function returns the following values:
+//
+//    - scrollbar: new Scrollbar.
 //
 func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	var _arg1 C.GtkOrientation // out

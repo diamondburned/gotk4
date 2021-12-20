@@ -30,11 +30,31 @@ func init() {
 // yet, so the interface currently has no use.
 type AsyncResultOverrider interface {
 	// SourceObject gets the source object from a Result.
+	//
+	// The function returns the following values:
+	//
+	//    - object (optional): new reference to the source object for the res, or
+	//      NULL if there is none.
+	//
 	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.
+	//
+	// The function returns the following values:
+	//
+	//    - gpointer (optional): user data for res.
+	//
 	UserData() cgo.Handle
 	// IsTagged checks if res has the given source_tag (generally a function
 	// pointer indicating the function res was created by).
+	//
+	// The function takes the following parameters:
+	//
+	//    - sourceTag (optional): application-defined tag.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if res has the indicated source_tag, FALSE if not.
+	//
 	IsTagged(sourceTag cgo.Handle) bool
 }
 
@@ -155,6 +175,12 @@ func marshalAsyncResulter(p uintptr) (interface{}, error) {
 }
 
 // SourceObject gets the source object from a Result.
+//
+// The function returns the following values:
+//
+//    - object (optional): new reference to the source object for the res, or
+//      NULL if there is none.
+//
 func (res *AsyncResult) SourceObject() *externglib.Object {
 	var _arg0 *C.GAsyncResult // out
 	var _cret *C.GObject      // in
@@ -174,6 +200,11 @@ func (res *AsyncResult) SourceObject() *externglib.Object {
 }
 
 // UserData gets the user data from a Result.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): user data for res.
+//
 func (res *AsyncResult) UserData() cgo.Handle {
 	var _arg0 *C.GAsyncResult // out
 	var _cret C.gpointer      // in
@@ -195,7 +226,11 @@ func (res *AsyncResult) UserData() cgo.Handle {
 //
 // The function takes the following parameters:
 //
-//    - sourceTag: application-defined tag.
+//    - sourceTag (optional): application-defined tag.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if res has the indicated source_tag, FALSE if not.
 //
 func (res *AsyncResult) IsTagged(sourceTag cgo.Handle) bool {
 	var _arg0 *C.GAsyncResult // out

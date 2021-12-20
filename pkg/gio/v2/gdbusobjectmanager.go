@@ -31,16 +31,61 @@ func init() {
 type DBusObjectManagerOverrider interface {
 	// Interface gets the interface proxy for interface_name at object_path, if
 	// any.
+	//
+	// The function takes the following parameters:
+	//
+	//    - objectPath: object path to look up.
+	//    - interfaceName d-Bus interface name to look up.
+	//
+	// The function returns the following values:
+	//
+	//    - dBusInterface instance or NULL. Free with g_object_unref().
+	//
 	Interface(objectPath, interfaceName string) DBusInterfacer
 	// GetObject gets the BusObjectProxy at object_path, if any.
+	//
+	// The function takes the following parameters:
+	//
+	//    - objectPath: object path to look up.
+	//
+	// The function returns the following values:
+	//
+	//    - dBusObject or NULL. Free with g_object_unref().
+	//
 	GetObject(objectPath string) DBusObjector
 	// ObjectPath gets the object path that manager is for.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: string owned by manager. Do not free.
+	//
 	ObjectPath() string
 	// Objects gets all BusObject objects known to manager.
+	//
+	// The function returns the following values:
+	//
+	//    - list of BusObject objects. The returned list should be freed with
+	//      g_list_free() after each element has been freed with
+	//      g_object_unref().
+	//
 	Objects() []DBusObjector
+	// The function takes the following parameters:
+	//
+	//    - object
+	//    - interface_
+	//
 	InterfaceAdded(object DBusObjector, interface_ DBusInterfacer)
+	// The function takes the following parameters:
+	//
+	//    - object
+	//    - interface_
+	//
 	InterfaceRemoved(object DBusObjector, interface_ DBusInterfacer)
+	// The function takes the following parameters:
+	//
 	ObjectAdded(object DBusObjector)
+	// The function takes the following parameters:
+	//
 	ObjectRemoved(object DBusObjector)
 }
 
@@ -86,12 +131,42 @@ func marshalDBusObjectManagerer(p uintptr) (interface{}, error) {
 	return wrapDBusObjectManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectInterfaceAdded: emitted when interface is added to object.
+//
+// This signal exists purely as a convenience to avoid having to connect signals
+// to all objects managed by manager.
+func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
+	return manager.Connect("interface-added", f)
+}
+
+// ConnectInterfaceRemoved: emitted when interface has been removed from object.
+//
+// This signal exists purely as a convenience to avoid having to connect signals
+// to all objects managed by manager.
+func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
+	return manager.Connect("interface-removed", f)
+}
+
+// ConnectObjectAdded: emitted when object is added to manager.
+func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) externglib.SignalHandle {
+	return manager.Connect("object-added", f)
+}
+
+// ConnectObjectRemoved: emitted when object is removed from manager.
+func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) externglib.SignalHandle {
+	return manager.Connect("object-removed", f)
+}
+
 // Interface gets the interface proxy for interface_name at object_path, if any.
 //
 // The function takes the following parameters:
 //
 //    - objectPath: object path to look up.
 //    - interfaceName d-Bus interface name to look up.
+//
+// The function returns the following values:
+//
+//    - dBusInterface instance or NULL. Free with g_object_unref().
 //
 func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DBusInterfacer {
 	var _arg0 *C.GDBusObjectManager // out
@@ -136,6 +211,10 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DB
 //
 //    - objectPath: object path to look up.
 //
+// The function returns the following values:
+//
+//    - dBusObject or NULL. Free with g_object_unref().
+//
 func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
@@ -170,6 +249,11 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 }
 
 // ObjectPath gets the object path that manager is for.
+//
+// The function returns the following values:
+//
+//    - utf8: string owned by manager. Do not free.
+//
 func (manager *DBusObjectManager) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.gchar              // in
@@ -187,6 +271,12 @@ func (manager *DBusObjectManager) ObjectPath() string {
 }
 
 // Objects gets all BusObject objects known to manager.
+//
+// The function returns the following values:
+//
+//    - list of BusObject objects. The returned list should be freed with
+//      g_list_free() after each element has been freed with g_object_unref().
+//
 func (manager *DBusObjectManager) Objects() []DBusObjector {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.GList              // in
@@ -220,30 +310,4 @@ func (manager *DBusObjectManager) Objects() []DBusObjector {
 	})
 
 	return _list
-}
-
-// ConnectInterfaceAdded: emitted when interface is added to object.
-//
-// This signal exists purely as a convenience to avoid having to connect signals
-// to all objects managed by manager.
-func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
-	return manager.Connect("interface-added", f)
-}
-
-// ConnectInterfaceRemoved: emitted when interface has been removed from object.
-//
-// This signal exists purely as a convenience to avoid having to connect signals
-// to all objects managed by manager.
-func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
-	return manager.Connect("interface-removed", f)
-}
-
-// ConnectObjectAdded: emitted when object is added to manager.
-func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) externglib.SignalHandle {
-	return manager.Connect("object-added", f)
-}
-
-// ConnectObjectRemoved: emitted when object is removed from manager.
-func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) externglib.SignalHandle {
-	return manager.Connect("object-removed", f)
 }

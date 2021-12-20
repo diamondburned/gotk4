@@ -60,6 +60,11 @@ func marshalWindowGrouper(p uintptr) (interface{}, error) {
 
 // NewWindowGroup creates a new WindowGroup object. Grabs added with
 // gtk_grab_add() only affect windows within the same WindowGroup.
+//
+// The function returns the following values:
+//
+//    - windowGroup: new WindowGroup.
+//
 func NewWindowGroup() *WindowGroup {
 	var _cret *C.GtkWindowGroup // in
 
@@ -97,6 +102,10 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 //
 //    - device: Device.
 //
+// The function returns the following values:
+//
+//    - widget (optional): grab widget, or NULL.
+//
 func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GdkDevice      // out
@@ -130,6 +139,11 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter 
 
 // CurrentGrab gets the current grab widget of the given group, see
 // gtk_grab_add().
+//
+// The function returns the following values:
+//
+//    - widget: current grab widget of the group.
+//
 func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 	var _arg0 *C.GtkWindowGroup // out
 	var _cret *C.GtkWidget      // in
@@ -160,6 +174,11 @@ func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 }
 
 // ListWindows returns a list of the Windows that belong to window_group.
+//
+// The function returns the following values:
+//
+//    - list: a newly-allocated list of windows inside the group.
+//
 func (windowGroup *WindowGroup) ListWindows() []Window {
 	var _arg0 *C.GtkWindowGroup // out
 	var _cret *C.GList          // in

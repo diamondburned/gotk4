@@ -96,6 +96,11 @@ func marshalTearoffMenuItemmer(p uintptr) (interface{}, error) {
 //
 // Deprecated: TearoffMenuItem is deprecated and should not be used in newly
 // written code.
+//
+// The function returns the following values:
+//
+//    - tearoffMenuItem: new TearoffMenuItem.
+//
 func NewTearoffMenuItem() *TearoffMenuItem {
 	var _cret *C.GtkWidget // in
 

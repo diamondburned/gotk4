@@ -52,8 +52,28 @@ func marshalDropControllerMotioner(p uintptr) (interface{}, error) {
 	return wrapDropControllerMotion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEnter signals that the pointer has entered the widget.
+func (self *DropControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
+	return self.Connect("enter", f)
+}
+
+// ConnectLeave signals that the pointer has left the widget.
+func (self *DropControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
+	return self.Connect("leave", f)
+}
+
+// ConnectMotion: emitted when the pointer moves inside the widget.
+func (self *DropControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
+	return self.Connect("motion", f)
+}
+
 // NewDropControllerMotion creates a new event controller that will handle
 // pointer motion events during drag and drop.
+//
+// The function returns the following values:
+//
+//    - dropControllerMotion: new GtkDropControllerMotion.
+//
 func NewDropControllerMotion() *DropControllerMotion {
 	var _cret *C.GtkEventController // in
 
@@ -68,6 +88,11 @@ func NewDropControllerMotion() *DropControllerMotion {
 
 // ContainsPointer returns if a Drag-and-Drop operation is within the widget
 // self or one of its children.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a dragging pointer is within self or one of its children.
+//
 func (self *DropControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
@@ -88,6 +113,11 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 
 // Drop returns the GdkDrop of a current Drag-and-Drop operation over the widget
 // of self.
+//
+// The function returns the following values:
+//
+//    - drop (optional): GdkDrop currently happening within self or NULL if none.
+//
 func (self *DropControllerMotion) Drop() gdk.Dropper {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret *C.GdkDrop                 // in
@@ -118,6 +148,12 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 
 // IsPointer returns if a Drag-and-Drop operation is within the widget self, not
 // one of its children.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a dragging pointer is within self but not one of its
+//      children.
+//
 func (self *DropControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
@@ -134,19 +170,4 @@ func (self *DropControllerMotion) IsPointer() bool {
 	}
 
 	return _ok
-}
-
-// ConnectEnter signals that the pointer has entered the widget.
-func (self *DropControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
-	return self.Connect("enter", f)
-}
-
-// ConnectLeave signals that the pointer has left the widget.
-func (self *DropControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
-	return self.Connect("leave", f)
-}
-
-// ConnectMotion: emitted when the pointer moves inside the widget.
-func (self *DropControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return self.Connect("motion", f)
 }

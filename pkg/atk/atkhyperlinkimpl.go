@@ -28,6 +28,12 @@ func init() {
 // yet, so the interface currently has no use.
 type HyperlinkImplOverrider interface {
 	// Hyperlink gets the hyperlink associated with this object.
+	//
+	// The function returns the following values:
+	//
+	//    - hyperlink: atkHyperlink object which points to this implementing
+	//      AtkObject.
+	//
 	Hyperlink() *Hyperlink
 }
 
@@ -84,6 +90,12 @@ func marshalHyperlinkImpler(p uintptr) (interface{}, error) {
 }
 
 // Hyperlink gets the hyperlink associated with this object.
+//
+// The function returns the following values:
+//
+//    - hyperlink: atkHyperlink object which points to this implementing
+//      AtkObject.
+//
 func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 	var _arg0 *C.AtkHyperlinkImpl // out
 	var _cret *C.AtkHyperlink     // in

@@ -69,8 +69,8 @@ func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 //
 //    - context: StyleContext.
 //    - cr: #cairo_t.
-//    - angle: arrow angle from 0 to 2 * G_PI, being 0 the arrow pointing to
-//    the north.
+//    - angle: arrow angle from 0 to 2 * G_PI, being 0 the arrow pointing to the
+//      north.
 //    - x: x origin of the render area.
 //    - y: y origin of the render area.
 //    - size: square side for render area.
@@ -149,6 +149,10 @@ func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, hei
 //    - y: y origin of the rectangle.
 //    - width: rectangle width.
 //    - height: rectangle height.
+//
+// The function returns the following values:
+//
+//    - outClip: return location for the clip.
 //
 func RenderBackgroundGetClip(context *StyleContext, x, y, width, height float64) *gdk.Rectangle {
 	var _arg1 *C.GtkStyleContext // out
@@ -533,7 +537,11 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, pixbuf *gdkpixbuf.Pixb
 //    - context: StyleContext.
 //    - source specifying the icon to render.
 //    - size (IconSize) to render the icon at. A size of (GtkIconSize) -1 means
-//    render at the size of the source and don’t scale.
+//      render at the size of the source and don’t scale.
+//
+// The function returns the following values:
+//
+//    - pixbuf: newly-created Pixbuf containing the rendered icon.
 //
 func RenderIconPixbuf(context *StyleContext, source *IconSource, size int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GtkStyleContext // out

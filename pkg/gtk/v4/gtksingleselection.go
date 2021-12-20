@@ -60,7 +60,11 @@ func marshalSingleSelectioner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model: GListModel to manage, or NULL.
+//    - model (optional): GListModel to manage, or NULL.
+//
+// The function returns the following values:
+//
+//    - singleSelection: new GtkSingleSelection.
 //
 func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 	var _arg1 *C.GListModel         // out
@@ -83,6 +87,11 @@ func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 
 // Autoselect checks if autoselect has been enabled or disabled via
 // gtk_single_selection_set_autoselect().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if autoselect is enabled.
+//
 func (self *SingleSelection) Autoselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gboolean            // in
@@ -103,6 +112,11 @@ func (self *SingleSelection) Autoselect() bool {
 
 // CanUnselect: if TRUE, gtk_selection_model_unselect_item() is supported and
 // allows unselecting the selected item.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE to support unselecting.
+//
 func (self *SingleSelection) CanUnselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gboolean            // in
@@ -122,6 +136,11 @@ func (self *SingleSelection) CanUnselect() bool {
 }
 
 // Model gets the model that self is wrapping.
+//
+// The function returns the following values:
+//
+//    - listModel: model being wrapped.
+//
 func (self *SingleSelection) Model() gio.ListModeller {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret *C.GListModel         // in
@@ -154,6 +173,11 @@ func (self *SingleSelection) Model() gio.ListModeller {
 // Selected gets the position of the selected item.
 //
 // If no item is selected, GTK_INVALID_LIST_POSITION is returned.
+//
+// The function returns the following values:
+//
+//    - guint: position of the selected item.
+//
 func (self *SingleSelection) Selected() uint {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.guint               // in
@@ -173,6 +197,11 @@ func (self *SingleSelection) Selected() uint {
 // SelectedItem gets the selected item.
 //
 // If no item is selected, NULL is returned.
+//
+// The function returns the following values:
+//
+//    - object (optional): selected item.
+//
 func (self *SingleSelection) SelectedItem() *externglib.Object {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gpointer            // in
@@ -244,7 +273,7 @@ func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 //
 // The function takes the following parameters:
 //
-//    - model: GListModel to wrap.
+//    - model (optional): GListModel to wrap.
 //
 func (self *SingleSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSingleSelection // out

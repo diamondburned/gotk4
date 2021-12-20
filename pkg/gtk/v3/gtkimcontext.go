@@ -31,6 +31,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type IMContextOverrider interface {
+	// The function takes the following parameters:
+	//
 	Commit(str string)
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// to delete characters around the cursor position by emitting the
@@ -48,10 +50,30 @@ type IMContextOverrider interface {
 	// This function is used by an input method that wants to make subsitutions
 	// in the existing text in response to new input. It is not useful for
 	// applications.
+	//
+	// The function takes the following parameters:
+	//
+	//    - offset from cursor position in chars; a negative value means start
+	//      before the cursor.
+	//    - nChars: number of characters to delete.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the signal was handled.
+	//
 	DeleteSurrounding(offset, nChars int) bool
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events. If this function returns TRUE, then no further processing
 	// should be done for this key event.
+	//
+	// The function takes the following parameters:
+	//
+	//    - event: key event.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the input method handled the key event.
+	//
 	FilterKeypress(event *gdk.EventKey) bool
 	// FocusIn: notify the input method that the widget to which this input
 	// context corresponds has gained focus. The input method may, for example,
@@ -74,6 +96,17 @@ type IMContextOverrider interface {
 	// gtk_im_context_set_surrounding(). Note that there is no obligation for a
 	// widget to respond to the ::retrieve_surrounding signal, so input methods
 	// must be prepared to function without context.
+	//
+	// The function returns the following values:
+	//
+	//    - text: location to store a UTF-8 encoded string of text holding
+	//      context around the insertion point. If the function returns TRUE,
+	//      then you must free the result stored in this location with g_free().
+	//    - cursorIndex: location to store byte index of the insertion cursor
+	//      within text.
+	//    - ok: TRUE if surrounding text was provided; in this case you must free
+	//      the result stored in *text.
+	//
 	Surrounding() (string, int, bool)
 	PreeditChanged()
 	PreeditEnd()
@@ -82,24 +115,50 @@ type IMContextOverrider interface {
 	// position has been made. This will typically cause the input method to
 	// clear the preedit state.
 	Reset()
+	// The function returns the following values:
+	//
 	RetrieveSurrounding() bool
 	// SetClientWindow: set the client window for the input context; this is the
 	// Window in which the input appears. This window is used in order to
 	// correctly position status windows, and may also be used for purposes
 	// internal to the input method.
+	//
+	// The function takes the following parameters:
+	//
+	//    - window (optional): client window. This may be NULL to indicate that
+	//      the previous client window no longer exists.
+	//
 	SetClientWindow(window gdk.Windower)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made. The location is relative to the client window.
+	//
+	// The function takes the following parameters:
+	//
+	//    - area: new location.
+	//
 	SetCursorLocation(area *gdk.Rectangle)
 	// SetSurrounding sets surrounding context around the insertion point and
 	// preedit string. This function is expected to be called in response to the
 	// GtkIMContext::retrieve_surrounding signal, and will likely have no effect
 	// if called at other times.
+	//
+	// The function takes the following parameters:
+	//
+	//    - text surrounding the insertion point, as UTF-8. the preedit string
+	//      should not be included within text.
+	//    - len: length of text, or -1 if text is nul-terminated.
+	//    - cursorIndex: byte index of the insertion cursor within text.
+	//
 	SetSurrounding(text string, len, cursorIndex int)
 	// SetUsePreedit sets whether the IM context should use the preedit string
 	// to display feedback. If use_preedit is FALSE (default is TRUE), then the
 	// IM context may use some other method to display feedback, such as
 	// displaying it in a child of the root window.
+	//
+	// The function takes the following parameters:
+	//
+	//    - usePreedit: whether the IM context should use the preedit string.
+	//
 	SetUsePreedit(usePreedit bool)
 }
 
@@ -171,6 +230,54 @@ func marshalIMContexter(p uintptr) (interface{}, error) {
 	return wrapIMContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (context *IMContext) baseIMContext() *IMContext {
+	return context
+}
+
+// BaseIMContext returns the underlying base object.
+func BaseIMContext(obj IMContexter) *IMContext {
+	return obj.baseIMContext()
+}
+
+// ConnectCommit signal is emitted when a complete input sequence has been
+// entered by the user. This can be a single character immediately after a key
+// press or the final result of preediting.
+func (context *IMContext) ConnectCommit(f func(str string)) externglib.SignalHandle {
+	return context.Connect("commit", f)
+}
+
+// ConnectDeleteSurrounding signal is emitted when the input method needs to
+// delete all or part of the context surrounding the cursor.
+func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) bool) externglib.SignalHandle {
+	return context.Connect("delete-surrounding", f)
+}
+
+// ConnectPreeditChanged signal is emitted whenever the preedit sequence
+// currently being entered has changed. It is also emitted at the end of a
+// preedit sequence, in which case gtk_im_context_get_preedit_string() returns
+// the empty string.
+func (context *IMContext) ConnectPreeditChanged(f func()) externglib.SignalHandle {
+	return context.Connect("preedit-changed", f)
+}
+
+// ConnectPreeditEnd signal is emitted when a preediting sequence has been
+// completed or canceled.
+func (context *IMContext) ConnectPreeditEnd(f func()) externglib.SignalHandle {
+	return context.Connect("preedit-end", f)
+}
+
+// ConnectPreeditStart signal is emitted when a new preediting sequence starts.
+func (context *IMContext) ConnectPreeditStart(f func()) externglib.SignalHandle {
+	return context.Connect("preedit-start", f)
+}
+
+// ConnectRetrieveSurrounding signal is emitted when the input method requires
+// the context surrounding the cursor. The callback should set the input method
+// surrounding context by calling the gtk_im_context_set_surrounding() method.
+func (context *IMContext) ConnectRetrieveSurrounding(f func() bool) externglib.SignalHandle {
+	return context.Connect("retrieve-surrounding", f)
+}
+
 // DeleteSurrounding asks the widget that the input context is attached to to
 // delete characters around the cursor position by emitting the
 // GtkIMContext::delete_surrounding signal. Note that offset and n_chars are in
@@ -190,9 +297,13 @@ func marshalIMContexter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - offset from cursor position in chars; a negative value means start
-//    before the cursor.
+//    - offset from cursor position in chars; a negative value means start before
+//      the cursor.
 //    - nChars: number of characters to delete.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the signal was handled.
 //
 func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
@@ -225,6 +336,10 @@ func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 // The function takes the following parameters:
 //
 //    - event: key event.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the input method handled the key event.
 //
 func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkIMContext // out
@@ -282,6 +397,17 @@ func (context *IMContext) FocusOut() {
 // an entire paragraph, by calling gtk_im_context_set_surrounding(). Note that
 // there is no obligation for a widget to respond to the ::retrieve_surrounding
 // signal, so input methods must be prepared to function without context.
+//
+// The function returns the following values:
+//
+//    - text: location to store a UTF-8 encoded string of text holding context
+//      around the insertion point. If the function returns TRUE, then you must
+//      free the result stored in this location with g_free().
+//    - cursorIndex: location to store byte index of the insertion cursor within
+//      text.
+//    - ok: TRUE if surrounding text was provided; in this case you must free the
+//      result stored in *text.
+//
 func (context *IMContext) Surrounding() (string, int, bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.gchar        // in
@@ -326,8 +452,8 @@ func (context *IMContext) Reset() {
 //
 // The function takes the following parameters:
 //
-//    - window: client window. This may be NULL to indicate that the previous
-//    client window no longer exists.
+//    - window (optional): client window. This may be NULL to indicate that the
+//      previous client window no longer exists.
 //
 func (context *IMContext) SetClientWindow(window gdk.Windower) {
 	var _arg0 *C.GtkIMContext // out
@@ -369,8 +495,8 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 //
 // The function takes the following parameters:
 //
-//    - text surrounding the insertion point, as UTF-8. the preedit string
-//    should not be included within text.
+//    - text surrounding the insertion point, as UTF-8. the preedit string should
+//      not be included within text.
 //    - len: length of text, or -1 if text is nul-terminated.
 //    - cursorIndex: byte index of the insertion cursor within text.
 //
@@ -414,52 +540,4 @@ func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	C.gtk_im_context_set_use_preedit(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(usePreedit)
-}
-
-func (context *IMContext) baseIMContext() *IMContext {
-	return context
-}
-
-// BaseIMContext returns the underlying base object.
-func BaseIMContext(obj IMContexter) *IMContext {
-	return obj.baseIMContext()
-}
-
-// ConnectCommit signal is emitted when a complete input sequence has been
-// entered by the user. This can be a single character immediately after a key
-// press or the final result of preediting.
-func (context *IMContext) ConnectCommit(f func(str string)) externglib.SignalHandle {
-	return context.Connect("commit", f)
-}
-
-// ConnectDeleteSurrounding signal is emitted when the input method needs to
-// delete all or part of the context surrounding the cursor.
-func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) bool) externglib.SignalHandle {
-	return context.Connect("delete-surrounding", f)
-}
-
-// ConnectPreeditChanged signal is emitted whenever the preedit sequence
-// currently being entered has changed. It is also emitted at the end of a
-// preedit sequence, in which case gtk_im_context_get_preedit_string() returns
-// the empty string.
-func (context *IMContext) ConnectPreeditChanged(f func()) externglib.SignalHandle {
-	return context.Connect("preedit-changed", f)
-}
-
-// ConnectPreeditEnd signal is emitted when a preediting sequence has been
-// completed or canceled.
-func (context *IMContext) ConnectPreeditEnd(f func()) externglib.SignalHandle {
-	return context.Connect("preedit-end", f)
-}
-
-// ConnectPreeditStart signal is emitted when a new preediting sequence starts.
-func (context *IMContext) ConnectPreeditStart(f func()) externglib.SignalHandle {
-	return context.Connect("preedit-start", f)
-}
-
-// ConnectRetrieveSurrounding signal is emitted when the input method requires
-// the context surrounding the cursor. The callback should set the input method
-// surrounding context by calling the gtk_im_context_set_surrounding() method.
-func (context *IMContext) ConnectRetrieveSurrounding(f func() bool) externglib.SignalHandle {
-	return context.Connect("retrieve-surrounding", f)
 }

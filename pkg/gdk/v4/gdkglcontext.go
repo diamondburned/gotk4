@@ -105,10 +105,24 @@ func marshalGLContexter(p uintptr) (interface{}, error) {
 	return wrapGLContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (context *GLContext) baseGLContext() *GLContext {
+	return context
+}
+
+// BaseGLContext returns the underlying base object.
+func BaseGLContext(obj GLContexter) *GLContext {
+	return obj.baseGLContext()
+}
+
 // DebugEnabled retrieves whether the context is doing extra validations and
 // runtime checking.
 //
 // See gdk.GLContext.SetDebugEnabled().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if debugging is enabled.
+//
 func (context *GLContext) DebugEnabled() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
@@ -128,6 +142,11 @@ func (context *GLContext) DebugEnabled() bool {
 }
 
 // Display retrieves the display the context is created for.
+//
+// The function returns the following values:
+//
+//    - display (optional): GdkDisplay or NULL.
+//
 func (context *GLContext) Display() *Display {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkDisplay   // in
@@ -149,6 +168,11 @@ func (context *GLContext) Display() *Display {
 // ForwardCompatible retrieves whether the context is forward-compatible.
 //
 // See gdk.GLContext.SetForwardCompatible().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the context should be forward-compatible.
+//
 func (context *GLContext) ForwardCompatible() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
@@ -170,6 +194,12 @@ func (context *GLContext) ForwardCompatible() bool {
 // RequiredVersion retrieves required OpenGL version.
 //
 // See gdk.GLContext.SetRequiredVersion().
+//
+// The function returns the following values:
+//
+//    - major (optional): return location for the major version to request.
+//    - minor (optional): return location for the minor version to request.
+//
 func (context *GLContext) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // in
@@ -190,6 +220,11 @@ func (context *GLContext) RequiredVersion() (major int, minor int) {
 }
 
 // SharedContext retrieves the GdkGLContext that this context share data with.
+//
+// The function returns the following values:
+//
+//    - glContext (optional): GdkGLContext or NULL.
+//
 func (context *GLContext) SharedContext() GLContexter {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkGLContext // in
@@ -219,6 +254,11 @@ func (context *GLContext) SharedContext() GLContexter {
 }
 
 // Surface retrieves the surface used by the context.
+//
+// The function returns the following values:
+//
+//    - surface (optional): GdkSurface or NULL.
+//
 func (context *GLContext) Surface() Surfacer {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkSurface   // in
@@ -248,6 +288,11 @@ func (context *GLContext) Surface() Surfacer {
 }
 
 // UseES checks whether the context is using an OpenGL or OpenGL ES profile.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the GdkGLContext is using an OpenGL ES profile.
+//
 func (context *GLContext) UseES() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
@@ -269,6 +314,12 @@ func (context *GLContext) UseES() bool {
 // Version retrieves the OpenGL version of the context.
 //
 // The context must be realized prior to calling this function.
+//
+// The function returns the following values:
+//
+//    - major: return location for the major version.
+//    - minor: return location for the minor version.
+//
 func (context *GLContext) Version() (major int, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // in
@@ -304,6 +355,11 @@ func (context *GLContext) Version() (major int, minor int) {
 // You can use the value returned by this function to decide which kind of
 // OpenGL API to use, or whether to do extension discovery, or what kind of
 // shader programs to load.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the GL context is in legacy mode.
+//
 func (context *GLContext) IsLegacy() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
@@ -451,8 +507,8 @@ func (context *GLContext) SetRequiredVersion(major, minor int) {
 //
 // The function takes the following parameters:
 //
-//    - useEs: whether the context should use OpenGL ES instead of OpenGL, or
-//    -1 to allow auto-detection.
+//    - useEs: whether the context should use OpenGL ES instead of OpenGL, or -1
+//      to allow auto-detection.
 //
 func (context *GLContext) SetUseES(useEs int) {
 	var _arg0 *C.GdkGLContext // out
@@ -466,15 +522,6 @@ func (context *GLContext) SetUseES(useEs int) {
 	runtime.KeepAlive(useEs)
 }
 
-func (context *GLContext) baseGLContext() *GLContext {
-	return context
-}
-
-// BaseGLContext returns the underlying base object.
-func BaseGLContext(obj GLContexter) *GLContext {
-	return obj.baseGLContext()
-}
-
 // GLContextClearCurrent clears the current GdkGLContext.
 //
 // Any OpenGL call after this function returns will be ignored until
@@ -484,6 +531,11 @@ func GLContextClearCurrent() {
 }
 
 // GLContextGetCurrent retrieves the current GdkGLContext.
+//
+// The function returns the following values:
+//
+//    - glContext (optional): current GdkGLContext, or NULL.
+//
 func GLContextGetCurrent() GLContexter {
 	var _cret *C.GdkGLContext // in
 

@@ -72,6 +72,11 @@ func marshalHeaderBarrer(p uintptr) (interface{}, error) {
 }
 
 // NewHeaderBar creates a new HeaderBar widget.
+//
+// The function returns the following values:
+//
+//    - headerBar: new HeaderBar.
+//
 func NewHeaderBar() *HeaderBar {
 	var _cret *C.GtkWidget // in
 
@@ -86,6 +91,12 @@ func NewHeaderBar() *HeaderBar {
 
 // CustomTitle retrieves the custom title widget of the header. See
 // gtk_header_bar_set_custom_title().
+//
+// The function returns the following values:
+//
+//    - widget (optional): custom title widget of the header, or NULL if none has
+//      been set explicitly.
+//
 func (bar *HeaderBar) CustomTitle() Widgetter {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.GtkWidget    // in
@@ -116,6 +127,11 @@ func (bar *HeaderBar) CustomTitle() Widgetter {
 
 // DecorationLayout gets the decoration layout set with
 // gtk_header_bar_set_decoration_layout().
+//
+// The function returns the following values:
+//
+//    - utf8: decoration layout.
+//
 func (bar *HeaderBar) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.gchar        // in
@@ -134,6 +150,11 @@ func (bar *HeaderBar) DecorationLayout() string {
 
 // HasSubtitle retrieves whether the header bar reserves space for a subtitle,
 // regardless if one is currently set or not.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the header bar reserves space for a subtitle.
+//
 func (bar *HeaderBar) HasSubtitle() bool {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret C.gboolean      // in
@@ -154,6 +175,11 @@ func (bar *HeaderBar) HasSubtitle() bool {
 
 // ShowCloseButton returns whether this header bar shows the standard window
 // decorations.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the decorations are shown.
+//
 func (bar *HeaderBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret C.gboolean      // in
@@ -174,6 +200,13 @@ func (bar *HeaderBar) ShowCloseButton() bool {
 
 // Subtitle retrieves the subtitle of the header. See
 // gtk_header_bar_set_subtitle().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): subtitle of the header, or NULL if none has been set
+//      explicitly. The returned string is owned by the widget and must not be
+//      modified or freed.
+//
 func (bar *HeaderBar) Subtitle() string {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.gchar        // in
@@ -193,6 +226,13 @@ func (bar *HeaderBar) Subtitle() string {
 }
 
 // Title retrieves the title of the header. See gtk_header_bar_set_title().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): title of the header, or NULL if none has been set
+//      explicitly. The returned string is owned by the widget and must not be
+//      modified or freed.
+//
 func (bar *HeaderBar) Title() string {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.gchar        // in
@@ -259,7 +299,7 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - titleWidget: custom widget to use for a title.
+//    - titleWidget (optional): custom widget to use for a title.
 //
 func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -293,7 +333,7 @@ func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - layout: decoration layout, or NULL to unset the layout.
+//    - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (bar *HeaderBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -361,7 +401,7 @@ func (bar *HeaderBar) SetShowCloseButton(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - subtitle: subtitle, or NULL.
+//    - subtitle (optional): subtitle, or NULL.
 //
 func (bar *HeaderBar) SetSubtitle(subtitle string) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -384,7 +424,7 @@ func (bar *HeaderBar) SetSubtitle(subtitle string) {
 //
 // The function takes the following parameters:
 //
-//    - title: title, or NULL.
+//    - title (optional): title, or NULL.
 //
 func (bar *HeaderBar) SetTitle(title string) {
 	var _arg0 *C.GtkHeaderBar // out

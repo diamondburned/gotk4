@@ -67,6 +67,11 @@ func marshalSpinnerer(p uintptr) (interface{}, error) {
 }
 
 // NewSpinner returns a new spinner widget. Not yet started.
+//
+// The function returns the following values:
+//
+//    - spinner: new Spinner.
+//
 func NewSpinner() *Spinner {
 	var _cret *C.GtkWidget // in
 

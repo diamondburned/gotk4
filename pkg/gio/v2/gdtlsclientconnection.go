@@ -67,6 +67,12 @@ func marshalDTLSClientConnectioner(p uintptr) (interface{}, error) {
 }
 
 // ServerIdentity gets conn's expected server identity.
+//
+// The function returns the following values:
+//
+//    - socketConnectable describing the expected server identity, or NULL if the
+//      expected identity is not known.
+//
 func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
@@ -97,6 +103,11 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 }
 
 // ValidationFlags gets conn's validation flags.
+//
+// The function returns the following values:
+//
+//    - tlsCertificateFlags: validation flags.
+//
 func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret C.GTlsCertificateFlags   // in
@@ -161,7 +172,11 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 // The function takes the following parameters:
 //
 //    - baseSocket to wrap.
-//    - serverIdentity: expected identity of the server.
+//    - serverIdentity (optional): expected identity of the server.
+//
+// The function returns the following values:
+//
+//    - dtlsClientConnection: new ClientConnection, or NULL on error.
 //
 func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (DTLSClientConnectioner, error) {
 	var _arg1 *C.GDatagramBased     // out

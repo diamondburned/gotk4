@@ -70,6 +70,11 @@ func marshalVPanedder(p uintptr) (interface{}, error) {
 // NewVPaned: create a new VPaned
 //
 // Deprecated: Use gtk_paned_new() with GTK_ORIENTATION_VERTICAL instead.
+//
+// The function returns the following values:
+//
+//    - vPaned: new VPaned.
+//
 func NewVPaned() *VPaned {
 	var _cret *C.GtkWidget // in
 

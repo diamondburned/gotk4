@@ -44,6 +44,16 @@ type SocketAddressEnumeratorOverrider interface {
 	// *error. However, if the first call to g_socket_address_enumerator_next()
 	// succeeds, then any further internal errors (other than cancellable being
 	// triggered) will be ignored.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//
+	// The function returns the following values:
+	//
+	//    - socketAddress (owned by the caller), or NULL on error (in which case
+	//      *error will be set) or if there are no more addresses.
+	//
 	Next(ctx context.Context) (SocketAddresser, error)
 	// NextAsync: asynchronously retrieves the next Address from enumerator and
 	// then calls callback, which must call
@@ -51,11 +61,27 @@ type SocketAddressEnumeratorOverrider interface {
 	//
 	// It is an error to call this multiple times before the previous callback
 	// has finished.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - callback (optional) to call when the request is satisfied.
+	//
 	NextAsync(ctx context.Context, callback AsyncReadyCallback)
 	// NextFinish retrieves the result of a completed call to
 	// g_socket_address_enumerator_next_async(). See
 	// g_socket_address_enumerator_next() for more information about error
 	// handling.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - socketAddress (owned by the caller), or NULL on error (in which case
+	//      *error will be set) or if there are no more addresses.
+	//
 	NextFinish(result AsyncResulter) (SocketAddresser, error)
 }
 
@@ -100,6 +126,15 @@ func marshalSocketAddressEnumeratorrer(p uintptr) (interface{}, error) {
 	return wrapSocketAddressEnumerator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (enumerator *SocketAddressEnumerator) baseSocketAddressEnumerator() *SocketAddressEnumerator {
+	return enumerator
+}
+
+// BaseSocketAddressEnumerator returns the underlying base object.
+func BaseSocketAddressEnumerator(obj SocketAddressEnumeratorrer) *SocketAddressEnumerator {
+	return obj.baseSocketAddressEnumerator()
+}
+
 // Next retrieves the next Address from enumerator. Note that this may block for
 // some amount of time. (Eg, a Address may need to do a DNS lookup before it can
 // return an address.) Use g_socket_address_enumerator_next_async() if you need
@@ -114,7 +149,12 @@ func marshalSocketAddressEnumeratorrer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//
+// The function returns the following values:
+//
+//    - socketAddress (owned by the caller), or NULL on error (in which case
+//      *error will be set) or if there are no more addresses.
 //
 func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddresser, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
@@ -166,8 +206,8 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - callback to call when the request is satisfied.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketAddressEnumerator // out
@@ -199,6 +239,11 @@ func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callba
 // The function takes the following parameters:
 //
 //    - result: Result.
+//
+// The function returns the following values:
+//
+//    - socketAddress (owned by the caller), or NULL on error (in which case
+//      *error will be set) or if there are no more addresses.
 //
 func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (SocketAddresser, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
@@ -235,13 +280,4 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 	}
 
 	return _socketAddress, _goerr
-}
-
-func (enumerator *SocketAddressEnumerator) baseSocketAddressEnumerator() *SocketAddressEnumerator {
-	return enumerator
-}
-
-// BaseSocketAddressEnumerator returns the underlying base object.
-func BaseSocketAddressEnumerator(obj SocketAddressEnumeratorrer) *SocketAddressEnumerator {
-	return obj.baseSocketAddressEnumerator()
 }

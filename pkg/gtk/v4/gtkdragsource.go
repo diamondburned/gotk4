@@ -118,7 +118,46 @@ func marshalDragSourcer(p uintptr) (interface{}, error) {
 	return wrapDragSource(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectDragBegin: emitted on the drag source when a drag is started.
+//
+// It can be used to e.g. set a custom drag icon with gtk.DragSource.SetIcon().
+func (source *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) externglib.SignalHandle {
+	return source.Connect("drag-begin", f)
+}
+
+// ConnectDragCancel: emitted on the drag source when a drag has failed.
+//
+// The signal handler may handle a failed drag operation based on the type of
+// error. It should return TRUE if the failure has been handled and the default
+// "drag operation failed" animation should not be shown.
+func (source *DragSource) ConnectDragCancel(f func(drag gdk.Dragger, reason gdk.DragCancelReason) bool) externglib.SignalHandle {
+	return source.Connect("drag-cancel", f)
+}
+
+// ConnectDragEnd: emitted on the drag source when a drag is finished.
+//
+// A typical reason to connect to this signal is to undo things done in
+// gtk.DragSource::prepare or gtk.DragSource::drag-begin handlers.
+func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData bool)) externglib.SignalHandle {
+	return source.Connect("drag-end", f)
+}
+
+// ConnectPrepare: emitted when a drag is about to be initiated.
+//
+// It returns the GdkContentProvider to use for the drag that is about to start.
+// The default handler for this signal returns the value of the
+// gtk.DragSource:content property, so if you set up that property ahead of
+// time, you don't need to connect to this signal.
+func (source *DragSource) ConnectPrepare(f func(x, y float64) gdk.ContentProvider) externglib.SignalHandle {
+	return source.Connect("prepare", f)
+}
+
 // NewDragSource creates a new GtkDragSource object.
+//
+// The function returns the following values:
+//
+//    - dragSource: new GtkDragSource.
+//
 func NewDragSource() *DragSource {
 	var _cret *C.GtkDragSource // in
 
@@ -142,6 +181,11 @@ func (source *DragSource) DragCancel() {
 }
 
 // Actions gets the actions that are currently set on the GtkDragSource.
+//
+// The function returns the following values:
+//
+//    - dragAction actions set on source.
+//
 func (source *DragSource) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDragSource // out
 	var _cret C.GdkDragAction  // in
@@ -159,6 +203,11 @@ func (source *DragSource) Actions() gdk.DragAction {
 }
 
 // Content gets the current content provider of a GtkDragSource.
+//
+// The function returns the following values:
+//
+//    - contentProvider (optional): GdkContentProvider of source.
+//
 func (source *DragSource) Content() *gdk.ContentProvider {
 	var _arg0 *C.GtkDragSource      // out
 	var _cret *C.GdkContentProvider // in
@@ -183,6 +232,11 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 }
 
 // Drag returns the underlying GdkDrag object for an ongoing drag.
+//
+// The function returns the following values:
+//
+//    - drag (optional): GdkDrag of the current drag operation, or NULL.
+//
 func (source *DragSource) Drag() gdk.Dragger {
 	var _arg0 *C.GtkDragSource // out
 	var _cret *C.GdkDrag       // in
@@ -249,7 +303,7 @@ func (source *DragSource) SetActions(actions gdk.DragAction) {
 //
 // The function takes the following parameters:
 //
-//    - content: GdkContentProvider, or NULL.
+//    - content (optional): GdkContentProvider, or NULL.
 //
 func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 	var _arg0 *C.GtkDragSource      // out
@@ -277,7 +331,7 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 //
 // The function takes the following parameters:
 //
-//    - paintable to use as icon, or NULL.
+//    - paintable (optional) to use as icon, or NULL.
 //    - hotX: hotspot X coordinate on the icon.
 //    - hotY: hotspot Y coordinate on the icon.
 //
@@ -301,36 +355,46 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int) {
 	runtime.KeepAlive(hotY)
 }
 
-// ConnectDragBegin: emitted on the drag source when a drag is started.
+// DragCheckThreshold checks to see if a drag movement has passed the GTK drag
+// threshold.
 //
-// It can be used to e.g. set a custom drag icon with gtk.DragSource.SetIcon().
-func (source *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) externglib.SignalHandle {
-	return source.Connect("drag-begin", f)
-}
+// The function takes the following parameters:
+//
+//    - startX: x coordinate of start of drag.
+//    - startY: y coordinate of start of drag.
+//    - currentX: current X coordinate.
+//    - currentY: current Y coordinate.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drag threshold has been passed.
+//
+func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
+	var _arg3 C.int        // out
+	var _arg4 C.int        // out
+	var _cret C.gboolean   // in
 
-// ConnectDragCancel: emitted on the drag source when a drag has failed.
-//
-// The signal handler may handle a failed drag operation based on the type of
-// error. It should return TRUE if the failure has been handled and the default
-// "drag operation failed" animation should not be shown.
-func (source *DragSource) ConnectDragCancel(f func(drag gdk.Dragger, reason gdk.DragCancelReason) bool) externglib.SignalHandle {
-	return source.Connect("drag-cancel", f)
-}
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.int(startX)
+	_arg2 = C.int(startY)
+	_arg3 = C.int(currentX)
+	_arg4 = C.int(currentY)
 
-// ConnectDragEnd: emitted on the drag source when a drag is finished.
-//
-// A typical reason to connect to this signal is to undo things done in
-// gtk.DragSource::prepare or gtk.DragSource::drag-begin handlers.
-func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData bool)) externglib.SignalHandle {
-	return source.Connect("drag-end", f)
-}
+	_cret = C.gtk_drag_check_threshold(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(startX)
+	runtime.KeepAlive(startY)
+	runtime.KeepAlive(currentX)
+	runtime.KeepAlive(currentY)
 
-// ConnectPrepare: emitted when a drag is about to be initiated.
-//
-// It returns the GdkContentProvider to use for the drag that is about to start.
-// The default handler for this signal returns the value of the
-// gtk.DragSource:content property, so if you set up that property ahead of
-// time, you don't need to connect to this signal.
-func (source *DragSource) ConnectPrepare(f func(x, y float64) gdk.ContentProvider) externglib.SignalHandle {
-	return source.Connect("prepare", f)
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

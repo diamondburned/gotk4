@@ -98,6 +98,11 @@ func marshalShortcutControllerer(p uintptr) (interface{}, error) {
 }
 
 // NewShortcutController creates a new shortcut controller.
+//
+// The function returns the following values:
+//
+//    - shortcutController: newly created shortcut controller.
+//
 func NewShortcutController() *ShortcutController {
 	var _cret *C.GtkEventController // in
 
@@ -120,6 +125,10 @@ func NewShortcutController() *ShortcutController {
 // The function takes the following parameters:
 //
 //    - model: GListModel containing shortcuts.
+//
+// The function returns the following values:
+//
+//    - shortcutController: newly created shortcut controller.
 //
 func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	var _arg1 *C.GListModel         // out
@@ -161,6 +170,11 @@ func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
 
 // MnemonicsModifiers gets the mnemonics modifiers for when this controller
 // activates its shortcuts.
+//
+// The function returns the following values:
+//
+//    - modifierType controller's mnemonics modifiers.
+//
 func (self *ShortcutController) MnemonicsModifiers() gdk.ModifierType {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GdkModifierType        // in
@@ -179,6 +193,11 @@ func (self *ShortcutController) MnemonicsModifiers() gdk.ModifierType {
 
 // Scope gets the scope for when this controller activates its shortcuts. See
 // gtk_shortcut_controller_set_scope() for details.
+//
+// The function returns the following values:
+//
+//    - shortcutScope controller's scope.
+//
 func (self *ShortcutController) Scope() ShortcutScope {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GtkShortcutScope       // in

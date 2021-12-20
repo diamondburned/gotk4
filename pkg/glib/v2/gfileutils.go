@@ -310,6 +310,10 @@ func (f FileTest) Has(other FileTest) bool {
 //
 //    - fileName: name of the file.
 //
+// The function returns the following values:
+//
+//    - filename: name of the file without any leading directory components.
+//
 func Basename(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -334,6 +338,10 @@ func Basename(fileName string) string {
 // The function takes the following parameters:
 //
 //    - args: NULL-terminated array of strings containing the path elements.
+//
+// The function returns the following values:
+//
+//    - filename: newly-allocated string that must be freed with g_free().
 //
 func BuildFilenamev(args []string) string {
 	var _arg1 **C.gchar // out
@@ -372,6 +380,10 @@ func BuildFilenamev(args []string) string {
 //
 //    - separator: string used to separator the elements of the path.
 //    - args: NULL-terminated array of strings containing the path elements.
+//
+// The function returns the following values:
+//
+//    - filename: newly-allocated string that must be freed with g_free().
 //
 func BuildPathv(separator string, args []string) string {
 	var _arg1 *C.gchar  // out
@@ -426,8 +438,12 @@ func BuildPathv(separator string, args []string) string {
 // The function takes the following parameters:
 //
 //    - filename: name of the file.
-//    - relativeTo: relative directory, or NULL to use the current working
-//    directory.
+//    - relativeTo (optional): relative directory, or NULL to use the current
+//      working directory.
+//
+// The function returns the following values:
+//
+//    - ret: newly allocated string with the canonical file path.
 //
 func CanonicalizeFilename(filename, relativeTo string) string {
 	var _arg1 *C.gchar // out
@@ -465,6 +481,10 @@ func CanonicalizeFilename(filename, relativeTo string) string {
 //
 //    - errNo: "errno" value.
 //
+// The function returns the following values:
+//
+//    - fileError corresponding to the given errno.
+//
 func FileErrorFromErrno(errNo int) FileError {
 	var _arg1 C.gint       // out
 	var _cret C.GFileError // in
@@ -495,7 +515,12 @@ func FileErrorFromErrno(errNo int) FileError {
 // The function takes the following parameters:
 //
 //    - filename: name of a file to read contents from, in the GLib file name
-//    encoding.
+//      encoding.
+//
+// The function returns the following values:
+//
+//    - contents: location to store an allocated string, use g_free() to free the
+//      returned string.
 //
 func FileGetContents(filename string) ([]byte, error) {
 	var _arg1 *C.gchar  // out
@@ -539,8 +564,16 @@ func FileGetContents(filename string) ([]byte, error) {
 //
 // The function takes the following parameters:
 //
-//    - tmpl: template for file name, as in g_mkstemp(), basename only, or NULL
-//    for a default template.
+//    - tmpl (optional): template for file name, as in g_mkstemp(), basename
+//      only, or NULL for a default template.
+//
+// The function returns the following values:
+//
+//    - nameUsed: location to store actual name used, or NULL.
+//    - gint: file handle (as from open()) to the file opened for reading and
+//      writing. The file is opened in binary mode on platforms where there is a
+//      difference. The file handle should be closed with close(). In case of
+//      errors, -1 is returned and error will be set.
 //
 func FileOpenTmp(tmpl string) (string, int, error) {
 	var _arg1 *C.gchar  // out
@@ -578,6 +611,11 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 //
 //    - filename: symbolic link.
 //
+// The function returns the following values:
+//
+//    - ret: newly-allocated string with the contents of the symbolic link, or
+//      NULL if an error occurred.
+//
 func FileReadLink(filename string) (string, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.gchar  // in
@@ -609,7 +647,7 @@ func FileReadLink(filename string) (string, error) {
 // The function takes the following parameters:
 //
 //    - filename: name of a file to write contents to, in the GLib file name
-//    encoding.
+//      encoding.
 //    - contents: string to write to the file.
 //
 func FileSetContents(filename, contents string) error {
@@ -697,7 +735,7 @@ func FileSetContents(filename, contents string) error {
 // The function takes the following parameters:
 //
 //    - filename: name of a file to write contents to, in the GLib file name
-//    encoding.
+//      encoding.
 //    - contents: string to write to the file.
 //    - flags controlling the safety vs speed of the operation.
 //    - mode: file mode, as passed to open(); typically this will be 0666.
@@ -780,6 +818,10 @@ func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, 
 //    - filename to test in the GLib file name encoding.
 //    - test: bitfield of Test flags.
 //
+// The function returns the following values:
+//
+//    - ok: whether a test was TRUE.
+//
 func TestFile(filename string, test FileTest) bool {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GFileTest // out
@@ -811,6 +853,11 @@ func TestFile(filename string, test FileTest) bool {
 // variable if it is set and it happens to be the same as the current directory.
 // This can make a difference in the case that the current directory is the
 // target of a symbolic link.
+//
+// The function returns the following values:
+//
+//    - filename: current directory.
+//
 func GetCurrentDir() string {
 	var _cret *C.gchar // in
 
@@ -831,6 +878,11 @@ func GetCurrentDir() string {
 //
 //    - pathname in the GLib file name encoding.
 //    - mode permissions to use for newly created directories.
+//
+// The function returns the following values:
+//
+//    - gint: 0 if the directory already exists, or was successfully created.
+//      Returns -1 if an error occurred, with errno set.
 //
 func MkdirWithParents(pathname string, mode int) int {
 	var _arg1 *C.gchar // out
@@ -863,6 +915,11 @@ func MkdirWithParents(pathname string, mode int) int {
 //
 //    - fileName: name of the file.
 //
+// The function returns the following values:
+//
+//    - filename: newly allocated string containing the last component of the
+//      filename.
+//
 func PathGetBasename(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -891,6 +948,10 @@ func PathGetBasename(fileName string) string {
 // The function takes the following parameters:
 //
 //    - fileName: name of the file.
+//
+// The function returns the following values:
+//
+//    - filename: directory components of the file.
 //
 func PathGetDirname(fileName string) string {
 	var _arg1 *C.gchar // out
@@ -937,6 +998,10 @@ func PathGetDirname(fileName string) string {
 //
 //    - fileName: file name.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if file_name is absolute.
+//
 func PathIsAbsolute(fileName string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -963,6 +1028,10 @@ func PathIsAbsolute(fileName string) bool {
 // The function takes the following parameters:
 //
 //    - fileName: file name.
+//
+// The function returns the following values:
+//
+//    - filename (optional): pointer into file_name after the root component.
 //
 func PathSkipRoot(fileName string) string {
 	var _arg1 *C.gchar // out

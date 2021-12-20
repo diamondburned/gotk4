@@ -70,13 +70,42 @@ type EntryOverrider interface {
 	Backspace()
 	CopyClipboard()
 	CutClipboard()
+	// The function takes the following parameters:
+	//
+	//    - typ
+	//    - count
+	//
 	DeleteFromCursor(typ DeleteType, count int)
+	// The function takes the following parameters:
+	//
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	FrameSize(x, y, width, height *int)
+	// The function takes the following parameters:
+	//
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	TextAreaSize(x, y, width, height *int)
+	// The function takes the following parameters:
+	//
 	InsertAtCursor(str string)
 	InsertEmoji()
+	// The function takes the following parameters:
+	//
+	//    - step
+	//    - count
+	//    - extendSelection
+	//
 	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
+	// The function takes the following parameters:
+	//
 	PopulatePopup(popup Widgetter)
 	ToggleOverwrite()
 }
@@ -200,7 +229,143 @@ func marshalEntrier(p uintptr) (interface{}, error) {
 	return wrapEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate signal is emitted when the user hits the Enter key.
+//
+// While this signal is used as a [keybinding signal][GtkBindingSignal], it is
+// also commonly used by applications to intercept activation of entries.
+//
+// The default bindings for this signal are all forms of the Enter key.
+func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
+	return entry.Connect("activate", f)
+}
+
+// ConnectBackspace signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user asks for it.
+//
+// The default bindings for this signal are Backspace and Shift-Backspace.
+func (entry *Entry) ConnectBackspace(f func()) externglib.SignalHandle {
+	return entry.Connect("backspace", f)
+}
+
+// ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to copy the selection to the clipboard.
+//
+// The default bindings for this signal are Ctrl-c and Ctrl-Insert.
+func (entry *Entry) ConnectCopyClipboard(f func()) externglib.SignalHandle {
+	return entry.Connect("copy-clipboard", f)
+}
+
+// ConnectCutClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to cut the selection to the clipboard.
+//
+// The default bindings for this signal are Ctrl-x and Shift-Delete.
+func (entry *Entry) ConnectCutClipboard(f func()) externglib.SignalHandle {
+	return entry.Connect("cut-clipboard", f)
+}
+
+// ConnectDeleteFromCursor signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted when the user initiates a text deletion.
+//
+// If the type is GTK_DELETE_CHARS, GTK+ deletes the selection if there is one,
+// otherwise it deletes the requested number of characters.
+//
+// The default bindings for this signal are Delete for deleting a character and
+// Ctrl-Delete for deleting a word.
+func (entry *Entry) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) externglib.SignalHandle {
+	return entry.Connect("delete-from-cursor", f)
+}
+
+// ConnectIconPress signal is emitted when an activatable icon is clicked.
+func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
+	return entry.Connect("icon-press", f)
+}
+
+// ConnectIconRelease signal is emitted on the button release from a mouse click
+// over an activatable icon.
+func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
+	return entry.Connect("icon-release", f)
+}
+
+// ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates the insertion of a fixed string at the
+// cursor.
+//
+// This signal has no default bindings.
+func (entry *Entry) ConnectInsertAtCursor(f func(str string)) externglib.SignalHandle {
+	return entry.Connect("insert-at-cursor", f)
+}
+
+// ConnectInsertEmoji signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to present the Emoji chooser for the entry.
+//
+// The default bindings for this signal are Ctrl-. and Ctrl-;.
+func (entry *Entry) ConnectInsertEmoji(f func()) externglib.SignalHandle {
+	return entry.Connect("insert-emoji", f)
+}
+
+// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a cursor movement. If the cursor is not
+// visible in entry, this signal causes the viewport to be moved instead.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the Shift modifier extends the selection, the variant without the Shift
+// modifer does not. There are too many key combinations to list them all here.
+//
+// - Arrow keys move by individual characters/lines
+//
+// - Ctrl-arrow key combinations move by words/paragraphs
+//
+// - Home/End keys move to the ends of the buffer.
+func (entry *Entry) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
+	return entry.Connect("move-cursor", f)
+}
+
+// ConnectPasteClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to paste the contents of the clipboard into the text view.
+//
+// The default bindings for this signal are Ctrl-v and Shift-Insert.
+func (entry *Entry) ConnectPasteClipboard(f func()) externglib.SignalHandle {
+	return entry.Connect("paste-clipboard", f)
+}
+
+// ConnectPopulatePopup signal gets emitted before showing the context menu of
+// the entry.
+//
+// If you need to add items to the context menu, connect to this signal and
+// append your items to the widget, which will be a Menu in this case.
+//
+// If Entry:populate-all is TRUE, this signal will also be emitted to populate
+// touch popups. In this case, widget will be a different container, e.g. a
+// Toolbar. The signal handler should not make assumptions about the type of
+// widget.
+func (entry *Entry) ConnectPopulatePopup(f func(widget Widgetter)) externglib.SignalHandle {
+	return entry.Connect("populate-popup", f)
+}
+
+// ConnectPreeditChanged: if an input method is used, the typed text will not
+// immediately be committed to the buffer. So if you are interested in the text,
+// connect to this signal.
+func (entry *Entry) ConnectPreeditChanged(f func(preedit string)) externglib.SignalHandle {
+	return entry.Connect("preedit-changed", f)
+}
+
+// ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted to toggle the overwrite mode of the entry.
+//
+// The default bindings for this signal is Insert.
+func (entry *Entry) ConnectToggleOverwrite(f func()) externglib.SignalHandle {
+	return entry.Connect("toggle-overwrite", f)
+}
+
 // NewEntry creates a new entry.
+//
+// The function returns the following values:
+//
+//    - entry: new Entry.
+//
 func NewEntry() *Entry {
 	var _cret *C.GtkWidget // in
 
@@ -218,6 +383,10 @@ func NewEntry() *Entry {
 // The function takes the following parameters:
 //
 //    - buffer to use for the new Entry.
+//
+// The function returns the following values:
+//
+//    - entry: new Entry.
 //
 func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 	var _arg1 *C.GtkEntryBuffer // out
@@ -237,6 +406,11 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 
 // ActivatesDefault retrieves the value set by
 // gtk_entry_set_activates_default().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the entry will activate the default widget.
+//
 func (entry *Entry) ActivatesDefault() bool {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gboolean  // in
@@ -256,6 +430,11 @@ func (entry *Entry) ActivatesDefault() bool {
 }
 
 // Alignment gets the value set by gtk_entry_set_alignment().
+//
+// The function returns the following values:
+//
+//    - gfloat: alignment.
+//
 func (entry *Entry) Alignment() float32 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gfloat    // in
@@ -274,6 +453,11 @@ func (entry *Entry) Alignment() float32 {
 
 // Attributes gets the attribute list that was set on the entry using
 // gtk_entry_set_attributes(), if any.
+//
+// The function returns the following values:
+//
+//    - attrList (optional): attribute list, or NULL if none was set.
+//
 func (entry *Entry) Attributes() *pango.AttrList {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.PangoAttrList // in
@@ -300,6 +484,11 @@ func (entry *Entry) Attributes() *pango.AttrList {
 }
 
 // Buffer: get the EntryBuffer object which holds the text for this widget.
+//
+// The function returns the following values:
+//
+//    - entryBuffer: EntryBuffer object.
+//
 func (entry *Entry) Buffer() *EntryBuffer {
 	var _arg0 *C.GtkEntry       // out
 	var _cret *C.GtkEntryBuffer // in
@@ -317,6 +506,11 @@ func (entry *Entry) Buffer() *EntryBuffer {
 }
 
 // Completion returns the auxiliary completion object currently in use by entry.
+//
+// The function returns the following values:
+//
+//    - entryCompletion: auxiliary completion object currently in use by entry.
+//
 func (entry *Entry) Completion() *EntryCompletion {
 	var _arg0 *C.GtkEntry           // out
 	var _cret *C.GtkEntryCompletion // in
@@ -337,6 +531,12 @@ func (entry *Entry) Completion() *EntryCompletion {
 // the current DND operation, or -1.
 //
 // This function is meant to be used in a Widget::drag-data-get callback.
+//
+// The function returns the following values:
+//
+//    - gint: index of the icon which is the source of the current DND operation,
+//      or -1.
+//
 func (entry *Entry) CurrentIconDragSource() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
@@ -355,6 +555,12 @@ func (entry *Entry) CurrentIconDragSource() int {
 
 // CursorHAdjustment retrieves the horizontal cursor adjustment for the entry.
 // See gtk_entry_set_cursor_hadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment (optional): horizontal cursor adjustment, or NULL if none has
+//      been set.
+//
 func (entry *Entry) CursorHAdjustment() *Adjustment {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.GtkAdjustment // in
@@ -374,6 +580,11 @@ func (entry *Entry) CursorHAdjustment() *Adjustment {
 }
 
 // HasFrame gets the value set by gtk_entry_set_has_frame().
+//
+// The function returns the following values:
+//
+//    - ok: whether the entry has a beveled frame.
+//
 func (entry *Entry) HasFrame() bool {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gboolean  // in
@@ -397,6 +608,10 @@ func (entry *Entry) HasFrame() bool {
 // The function takes the following parameters:
 //
 //    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the icon is activatable.
 //
 func (entry *Entry) IconActivatable(iconPos EntryIconPosition) bool {
 	var _arg0 *C.GtkEntry            // out
@@ -432,6 +647,10 @@ func (entry *Entry) IconActivatable(iconPos EntryIconPosition) bool {
 //
 //    - iconPos: icon position.
 //
+// The function returns the following values:
+//
+//    - iconArea: return location for the icon’s area.
+//
 func (entry *Entry) IconArea(iconPos EntryIconPosition) *gdk.Rectangle {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -460,6 +679,10 @@ func (entry *Entry) IconArea(iconPos EntryIconPosition) *gdk.Rectangle {
 //
 //    - x coordinate of the position to find.
 //    - y coordinate of the position to find.
+//
+// The function returns the following values:
+//
+//    - gint: index of the icon at the given position, or -1.
 //
 func (entry *Entry) IconAtPos(x, y int) int {
 	var _arg0 *C.GtkEntry // out
@@ -490,6 +713,10 @@ func (entry *Entry) IconAtPos(x, y int) int {
 // The function takes the following parameters:
 //
 //    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - icon (optional) or NULL if no icon is set or if the icon is not a #GIcon.
 //
 func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 	var _arg0 *C.GtkEntry            // out
@@ -530,6 +757,11 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 //
 //    - iconPos: icon position.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name, or NULL if no icon is set or if the icon
+//      wasn’t set from an icon name.
+//
 func (entry *Entry) IconName(iconPos EntryIconPosition) string {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -560,6 +792,10 @@ func (entry *Entry) IconName(iconPos EntryIconPosition) string {
 // The function takes the following parameters:
 //
 //    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional) or NULL if no icon is set for this position.
 //
 func (entry *Entry) IconPixbuf(iconPos EntryIconPosition) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkEntry            // out
@@ -598,6 +834,10 @@ func (entry *Entry) IconPixbuf(iconPos EntryIconPosition) *gdkpixbuf.Pixbuf {
 //
 //    - iconPos: icon position.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the icon is sensitive.
+//
 func (entry *Entry) IconSensitive(iconPos EntryIconPosition) bool {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -629,6 +869,11 @@ func (entry *Entry) IconSensitive(iconPos EntryIconPosition) bool {
 //
 //    - iconPos: icon position.
 //
+// The function returns the following values:
+//
+//    - utf8: stock id, or NULL if no icon is set or if the icon wasn’t set from
+//      a stock id.
+//
 func (entry *Entry) IconStock(iconPos EntryIconPosition) string {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -656,6 +901,10 @@ func (entry *Entry) IconStock(iconPos EntryIconPosition) string {
 //
 //    - iconPos: icon position.
 //
+// The function returns the following values:
+//
+//    - imageType: image representation being used.
+//
 func (entry *Entry) IconStorageType(iconPos EntryIconPosition) ImageType {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -681,6 +930,11 @@ func (entry *Entry) IconStorageType(iconPos EntryIconPosition) ImageType {
 // The function takes the following parameters:
 //
 //    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. Free the returned string with
+//      g_free() when done.
 //
 func (entry *Entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
 	var _arg0 *C.GtkEntry            // out
@@ -711,6 +965,11 @@ func (entry *Entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
 //
 //    - iconPos: icon position.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. Free the returned string with
+//      g_free() when done.
+//
 func (entry *Entry) IconTooltipText(iconPos EntryIconPosition) string {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -739,6 +998,11 @@ func (entry *Entry) IconTooltipText(iconPos EntryIconPosition) string {
 // Deprecated: Use the standard border and padding CSS properties (through
 // objects like StyleContext and CssProvider); the value returned by this
 // function is ignored by Entry.
+//
+// The function returns the following values:
+//
+//    - border (optional) entry’s Border, or NULL if none was set.
+//
 func (entry *Entry) InnerBorder() *Border {
 	var _arg0 *C.GtkEntry  // out
 	var _cret *C.GtkBorder // in
@@ -758,6 +1022,9 @@ func (entry *Entry) InnerBorder() *Border {
 }
 
 // InputHints gets the value of the Entry:input-hints property.
+//
+// The function returns the following values:
+//
 func (entry *Entry) InputHints() InputHints {
 	var _arg0 *C.GtkEntry     // out
 	var _cret C.GtkInputHints // in
@@ -775,6 +1042,9 @@ func (entry *Entry) InputHints() InputHints {
 }
 
 // InputPurpose gets the value of the Entry:input-purpose property.
+//
+// The function returns the following values:
+//
 func (entry *Entry) InputPurpose() InputPurpose {
 	var _arg0 *C.GtkEntry       // out
 	var _cret C.GtkInputPurpose // in
@@ -794,6 +1064,12 @@ func (entry *Entry) InputPurpose() InputPurpose {
 // InvisibleChar retrieves the character displayed in place of the real
 // characters for entries with visibility set to false. See
 // gtk_entry_set_invisible_char().
+//
+// The function returns the following values:
+//
+//    - gunichar: current invisible char, or 0, if the entry does not show
+//      invisible text at all.
+//
 func (entry *Entry) InvisibleChar() uint32 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gunichar  // in
@@ -819,6 +1095,11 @@ func (entry *Entry) InvisibleChar() uint32 {
 // gtk_entry_layout_index_to_text_index() and
 // gtk_entry_text_index_to_layout_index() are needed to convert byte indices in
 // the layout to byte indices in the entry contents.
+//
+// The function returns the following values:
+//
+//    - layout for this entry.
+//
 func (entry *Entry) Layout() *pango.Layout {
 	var _arg0 *C.GtkEntry    // out
 	var _cret *C.PangoLayout // in
@@ -857,6 +1138,12 @@ func (entry *Entry) Layout() *pango.Layout {
 // gtk_entry_layout_index_to_text_index() and
 // gtk_entry_text_index_to_layout_index() are needed to convert byte indices in
 // the layout to byte indices in the entry contents.
+//
+// The function returns the following values:
+//
+//    - x (optional): location to store X offset of layout, or NULL.
+//    - y (optional): location to store Y offset of layout, or NULL.
+//
 func (entry *Entry) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // in
@@ -881,6 +1168,12 @@ func (entry *Entry) LayoutOffsets() (x int, y int) {
 //
 // This is equivalent to getting entry's EntryBuffer and calling
 // gtk_entry_buffer_get_max_length() on it.
+//
+// The function returns the following values:
+//
+//    - gint: maximum allowed number of characters in Entry, or 0 if there is no
+//      maximum.
+//
 func (entry *Entry) MaxLength() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
@@ -899,6 +1192,11 @@ func (entry *Entry) MaxLength() int {
 
 // MaxWidthChars retrieves the desired maximum width of entry, in characters.
 // See gtk_entry_set_max_width_chars().
+//
+// The function returns the following values:
+//
+//    - gint: maximum width of the entry, in characters.
+//
 func (entry *Entry) MaxWidthChars() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
@@ -916,6 +1214,11 @@ func (entry *Entry) MaxWidthChars() int {
 }
 
 // OverwriteMode gets the value set by gtk_entry_set_overwrite_mode().
+//
+// The function returns the following values:
+//
+//    - ok: whether the text is overwritten when typing.
+//
 func (entry *Entry) OverwriteMode() bool {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gboolean  // in
@@ -936,6 +1239,13 @@ func (entry *Entry) OverwriteMode() bool {
 
 // PlaceholderText retrieves the text that will be displayed when entry is empty
 // and unfocused.
+//
+// The function returns the following values:
+//
+//    - utf8: pointer to the placeholder text as a string. This string points to
+//      internally allocated storage in the widget and must not be freed,
+//      modified or stored.
+//
 func (entry *Entry) PlaceholderText() string {
 	var _arg0 *C.GtkEntry // out
 	var _cret *C.gchar    // in
@@ -954,6 +1264,11 @@ func (entry *Entry) PlaceholderText() string {
 
 // ProgressFraction returns the current fraction of the task that’s been
 // completed. See gtk_entry_set_progress_fraction().
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
 func (entry *Entry) ProgressFraction() float64 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gdouble   // in
@@ -972,6 +1287,11 @@ func (entry *Entry) ProgressFraction() float64 {
 
 // ProgressPulseStep retrieves the pulse step set with
 // gtk_entry_set_progress_pulse_step().
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
 func (entry *Entry) ProgressPulseStep() float64 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gdouble   // in
@@ -990,6 +1310,11 @@ func (entry *Entry) ProgressPulseStep() float64 {
 
 // Tabs gets the tabstops that were set on the entry using gtk_entry_set_tabs(),
 // if any.
+//
+// The function returns the following values:
+//
+//    - tabArray (optional): tabstops, or NULL if none was set.
+//
 func (entry *Entry) Tabs() *pango.TabArray {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.PangoTabArray // in
@@ -1013,6 +1338,13 @@ func (entry *Entry) Tabs() *pango.TabArray {
 //
 // This is equivalent to getting entry's EntryBuffer and calling
 // gtk_entry_buffer_get_text() on it.
+//
+// The function returns the following values:
+//
+//    - utf8: pointer to the contents of the widget as a string. This string
+//      points to internally allocated storage in the widget and must not be
+//      freed, modified or stored.
+//
 func (entry *Entry) Text() string {
 	var _arg0 *C.GtkEntry // out
 	var _cret *C.gchar    // in
@@ -1035,6 +1367,11 @@ func (entry *Entry) Text() string {
 // If the entry is not realized, text_area is filled with zeros.
 //
 // See also gtk_entry_get_icon_area().
+//
+// The function returns the following values:
+//
+//    - textArea: return location for the text area.
+//
 func (entry *Entry) TextArea() *gdk.Rectangle {
 	var _arg0 *C.GtkEntry    // out
 	var _arg1 C.GdkRectangle // in
@@ -1055,6 +1392,11 @@ func (entry *Entry) TextArea() *gdk.Rectangle {
 //
 // This is equivalent to getting entry's EntryBuffer and calling
 // gtk_entry_buffer_get_length() on it.
+//
+// The function returns the following values:
+//
+//    - guint16: current number of characters in Entry, or 0 if there are none.
+//
 func (entry *Entry) TextLength() uint16 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.guint16   // in
@@ -1073,6 +1415,11 @@ func (entry *Entry) TextLength() uint16 {
 
 // Visibility retrieves whether the text in entry is visible. See
 // gtk_entry_set_visibility().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the text is currently visible.
+//
 func (entry *Entry) Visibility() bool {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gboolean  // in
@@ -1092,6 +1439,11 @@ func (entry *Entry) Visibility() bool {
 }
 
 // WidthChars gets the value set by gtk_entry_set_width_chars().
+//
+// The function returns the following values:
+//
+//    - gint: number of chars to request space for, or negative if unset.
+//
 func (entry *Entry) WidthChars() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
@@ -1138,6 +1490,10 @@ func (entry *Entry) GrabFocusWithoutSelecting() {
 //
 //    - event: key event.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if the input method handled the key event.
+//
 func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkEntry    // out
 	var _arg1 *C.GdkEventKey // out
@@ -1166,6 +1522,10 @@ func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
 // The function takes the following parameters:
 //
 //    - layoutIndex: byte index into the entry layout text.
+//
+// The function returns the following values:
+//
+//    - gint: byte index into the entry contents.
 //
 func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int) int {
 	var _arg0 *C.GtkEntry // out
@@ -1247,7 +1607,7 @@ func (entry *Entry) SetActivatesDefault(setting bool) {
 // The function takes the following parameters:
 //
 //    - xalign: horizontal alignment, from 0 (left) to 1 (right). Reversed for
-//    RTL layouts.
+//      RTL layouts.
 //
 func (entry *Entry) SetAlignment(xalign float32) {
 	var _arg0 *C.GtkEntry // out
@@ -1305,7 +1665,7 @@ func (entry *Entry) SetBuffer(buffer *EntryBuffer) {
 //
 // The function takes the following parameters:
 //
-//    - completion or NULL.
+//    - completion (optional) or NULL.
 //
 func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 	var _arg0 *C.GtkEntry           // out
@@ -1331,7 +1691,8 @@ func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment which should be adjusted when the cursor is moved, or NULL.
+//    - adjustment (optional) which should be adjusted when the cursor is moved,
+//      or NULL.
 //
 func (entry *Entry) SetCursorHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkEntry      // out
@@ -1437,7 +1798,7 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, targetList *Tar
 // The function takes the following parameters:
 //
 //    - iconPos: position at which to set the icon.
-//    - icon to set, or NULL.
+//    - icon (optional) to set, or NULL.
 //
 func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner) {
 	var _arg0 *C.GtkEntry            // out
@@ -1467,7 +1828,7 @@ func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner
 // The function takes the following parameters:
 //
 //    - iconPos: position at which to set the icon.
-//    - iconName: icon name, or NULL.
+//    - iconName (optional): icon name, or NULL.
 //
 func (entry *Entry) SetIconFromIconName(iconPos EntryIconPosition, iconName string) {
 	var _arg0 *C.GtkEntry            // out
@@ -1495,7 +1856,7 @@ func (entry *Entry) SetIconFromIconName(iconPos EntryIconPosition, iconName stri
 // The function takes the following parameters:
 //
 //    - iconPos: icon position.
-//    - pixbuf or NULL.
+//    - pixbuf (optional) or NULL.
 //
 func (entry *Entry) SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkEntry            // out
@@ -1524,7 +1885,7 @@ func (entry *Entry) SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf *gdkpixb
 // The function takes the following parameters:
 //
 //    - iconPos: icon position.
-//    - stockId: name of the stock item, or NULL.
+//    - stockId (optional): name of the stock item, or NULL.
 //
 func (entry *Entry) SetIconFromStock(iconPos EntryIconPosition, stockId string) {
 	var _arg0 *C.GtkEntry            // out
@@ -1550,7 +1911,7 @@ func (entry *Entry) SetIconFromStock(iconPos EntryIconPosition, stockId string) 
 //
 //    - iconPos: icon position.
 //    - sensitive specifies whether the icon should appear sensitive or
-//    insensitive.
+//      insensitive.
 //
 func (entry *Entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) {
 	var _arg0 *C.GtkEntry            // out
@@ -1581,7 +1942,7 @@ func (entry *Entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) 
 // The function takes the following parameters:
 //
 //    - iconPos: icon position.
-//    - tooltip contents of the tooltip for the icon, or NULL.
+//    - tooltip (optional) contents of the tooltip for the icon, or NULL.
 //
 func (entry *Entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string) {
 	var _arg0 *C.GtkEntry            // out
@@ -1618,7 +1979,7 @@ func (entry *Entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip stri
 // The function takes the following parameters:
 //
 //    - iconPos: icon position.
-//    - tooltip contents of the tooltip for the icon, or NULL.
+//    - tooltip (optional) contents of the tooltip for the icon, or NULL.
 //
 func (entry *Entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string) {
 	var _arg0 *C.GtkEntry            // out
@@ -1653,7 +2014,7 @@ func (entry *Entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string
 //
 // The function takes the following parameters:
 //
-//    - border or NULL.
+//    - border (optional) or NULL.
 //
 func (entry *Entry) SetInnerBorder(border *Border) {
 	var _arg0 *C.GtkEntry  // out
@@ -1741,8 +2102,8 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 // The function takes the following parameters:
 //
 //    - max: maximum length of the entry, or 0 for no maximum. (other than the
-//    maximum length of entries.) The value passed in will be clamped to the
-//    range 0-65536.
+//      maximum length of entries.) The value passed in will be clamped to the
+//      range 0-65536.
 //
 func (entry *Entry) SetMaxLength(max int) {
 	var _arg0 *C.GtkEntry // out
@@ -1806,8 +2167,8 @@ func (entry *Entry) SetOverwriteMode(overwrite bool) {
 //
 // The function takes the following parameters:
 //
-//    - text: string to be displayed when entry is empty and unfocused, or
-//    NULL.
+//    - text (optional): string to be displayed when entry is empty and
+//      unfocused, or NULL.
 //
 func (entry *Entry) SetPlaceholderText(text string) {
 	var _arg0 *C.GtkEntry // out
@@ -1964,6 +2325,10 @@ func (entry *Entry) SetWidthChars(nChars int) {
 //
 //    - textIndex: byte index into the entry contents.
 //
+// The function returns the following values:
+//
+//    - gint: byte index into the entry layout text.
+//
 func (entry *Entry) TextIndexToLayoutIndex(textIndex int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
@@ -1993,135 +2358,4 @@ func (entry *Entry) UnsetInvisibleChar() {
 
 	C.gtk_entry_unset_invisible_char(_arg0)
 	runtime.KeepAlive(entry)
-}
-
-// ConnectActivate signal is emitted when the user hits the Enter key.
-//
-// While this signal is used as a [keybinding signal][GtkBindingSignal], it is
-// also commonly used by applications to intercept activation of entries.
-//
-// The default bindings for this signal are all forms of the Enter key.
-func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
-	return entry.Connect("activate", f)
-}
-
-// ConnectBackspace signal is a [keybinding signal][GtkBindingSignal] which gets
-// emitted when the user asks for it.
-//
-// The default bindings for this signal are Backspace and Shift-Backspace.
-func (entry *Entry) ConnectBackspace(f func()) externglib.SignalHandle {
-	return entry.Connect("backspace", f)
-}
-
-// ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to copy the selection to the clipboard.
-//
-// The default bindings for this signal are Ctrl-c and Ctrl-Insert.
-func (entry *Entry) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return entry.Connect("copy-clipboard", f)
-}
-
-// ConnectCutClipboard signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to cut the selection to the clipboard.
-//
-// The default bindings for this signal are Ctrl-x and Shift-Delete.
-func (entry *Entry) ConnectCutClipboard(f func()) externglib.SignalHandle {
-	return entry.Connect("cut-clipboard", f)
-}
-
-// ConnectDeleteFromCursor signal is a [keybinding signal][GtkBindingSignal]
-// which gets emitted when the user initiates a text deletion.
-//
-// If the type is GTK_DELETE_CHARS, GTK+ deletes the selection if there is one,
-// otherwise it deletes the requested number of characters.
-//
-// The default bindings for this signal are Delete for deleting a character and
-// Ctrl-Delete for deleting a word.
-func (entry *Entry) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) externglib.SignalHandle {
-	return entry.Connect("delete-from-cursor", f)
-}
-
-// ConnectIconPress signal is emitted when an activatable icon is clicked.
-func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
-	return entry.Connect("icon-press", f)
-}
-
-// ConnectIconRelease signal is emitted on the button release from a mouse click
-// over an activatable icon.
-func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
-	return entry.Connect("icon-release", f)
-}
-
-// ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted when the user initiates the insertion of a fixed string at the
-// cursor.
-//
-// This signal has no default bindings.
-func (entry *Entry) ConnectInsertAtCursor(f func(str string)) externglib.SignalHandle {
-	return entry.Connect("insert-at-cursor", f)
-}
-
-// ConnectInsertEmoji signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to present the Emoji chooser for the entry.
-//
-// The default bindings for this signal are Ctrl-. and Ctrl-;.
-func (entry *Entry) ConnectInsertEmoji(f func()) externglib.SignalHandle {
-	return entry.Connect("insert-emoji", f)
-}
-
-// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted when the user initiates a cursor movement. If the cursor is not
-// visible in entry, this signal causes the viewport to be moved instead.
-//
-// Applications should not connect to it, but may emit it with
-// g_signal_emit_by_name() if they need to control the cursor programmatically.
-//
-// The default bindings for this signal come in two variants, the variant with
-// the Shift modifier extends the selection, the variant without the Shift
-// modifer does not. There are too many key combinations to list them all here.
-//
-// - Arrow keys move by individual characters/lines
-//
-// - Ctrl-arrow key combinations move by words/paragraphs
-//
-// - Home/End keys move to the ends of the buffer.
-func (entry *Entry) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return entry.Connect("move-cursor", f)
-}
-
-// ConnectPasteClipboard signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted to paste the contents of the clipboard into the text view.
-//
-// The default bindings for this signal are Ctrl-v and Shift-Insert.
-func (entry *Entry) ConnectPasteClipboard(f func()) externglib.SignalHandle {
-	return entry.Connect("paste-clipboard", f)
-}
-
-// ConnectPopulatePopup signal gets emitted before showing the context menu of
-// the entry.
-//
-// If you need to add items to the context menu, connect to this signal and
-// append your items to the widget, which will be a Menu in this case.
-//
-// If Entry:populate-all is TRUE, this signal will also be emitted to populate
-// touch popups. In this case, widget will be a different container, e.g. a
-// Toolbar. The signal handler should not make assumptions about the type of
-// widget.
-func (entry *Entry) ConnectPopulatePopup(f func(widget Widgetter)) externglib.SignalHandle {
-	return entry.Connect("populate-popup", f)
-}
-
-// ConnectPreeditChanged: if an input method is used, the typed text will not
-// immediately be committed to the buffer. So if you are interested in the text,
-// connect to this signal.
-func (entry *Entry) ConnectPreeditChanged(f func(preedit string)) externglib.SignalHandle {
-	return entry.Connect("preedit-changed", f)
-}
-
-// ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
-// which gets emitted to toggle the overwrite mode of the entry.
-//
-// The default bindings for this signal is Insert.
-func (entry *Entry) ConnectToggleOverwrite(f func()) externglib.SignalHandle {
-	return entry.Connect("toggle-overwrite", f)
 }

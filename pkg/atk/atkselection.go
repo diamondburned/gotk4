@@ -29,33 +29,89 @@ func init() {
 type SelectionOverrider interface {
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i specifying the child index.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if success, FALSE otherwise.
+	//
 	AddSelection(i int) bool
 	// ClearSelection clears the selection in the object so that no children in
 	// the object are selected.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if success, FALSE otherwise.
+	//
 	ClearSelection() bool
 	// SelectionCount gets the number of accessible children currently selected.
 	// Note: callers should not rely on NULL or on a zero value for indication
 	// of whether AtkSelectionIface is implemented, they should use type
 	// checking/interface checking macros or the atk_get_accessible_value()
 	// convenience method.
+	//
+	// The function returns the following values:
+	//
+	//    - gint representing the number of items selected, or 0 if selection
+	//      does not implement this interface.
+	//
 	SelectionCount() int
 	// IsChildSelected determines if the current child of this object is
 	// selected Note: callers should not rely on NULL or on a zero value for
 	// indication of whether AtkSelectionIface is implemented, they should use
 	// type checking/interface checking macros or the atk_get_accessible_value()
 	// convenience method.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i specifying the child index.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: gboolean representing the specified child is selected, or 0 if
+	//      selection does not implement this interface.
+	//
 	IsChildSelected(i int) bool
 	// RefSelection gets a reference to the accessible object representing the
 	// specified selected child of the object. Note: callers should not rely on
 	// NULL or on a zero value for indication of whether AtkSelectionIface is
 	// implemented, they should use type checking/interface checking macros or
 	// the atk_get_accessible_value() convenience method.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i specifying the index in the selection set. (e.g. the ith selection
+	//      as opposed to the ith child).
+	//
+	// The function returns the following values:
+	//
+	//    - object (optional) representing the selected accessible, or NULL if
+	//      selection does not implement this interface.
+	//
 	RefSelection(i int) *ObjectClass
 	// RemoveSelection removes the specified child of the object from the
 	// object's selection.
+	//
+	// The function takes the following parameters:
+	//
+	//    - i specifying the index in the selection set. (e.g. the ith selection
+	//      as opposed to the ith child).
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if success, FALSE otherwise.
+	//
 	RemoveSelection(i int) bool
 	// SelectAllSelection causes every child of the object to be selected if the
 	// object supports multiple selections.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if success, FALSE otherwise.
+	//
 	SelectAllSelection() bool
 	SelectionChanged()
 }
@@ -118,12 +174,22 @@ func marshalSelectioner(p uintptr) (interface{}, error) {
 	return wrapSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectSelectionChanged: "selection-changed" signal is emitted by an object
+// which implements AtkSelection interface when the selection changes.
+func (selection *Selection) ConnectSelectionChanged(f func()) externglib.SignalHandle {
+	return selection.Connect("selection-changed", f)
+}
+
 // AddSelection adds the specified accessible child of the object to the
 // object's selection.
 //
 // The function takes the following parameters:
 //
 //    - i specifying the child index.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
 //
 func (selection *Selection) AddSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
@@ -148,6 +214,11 @@ func (selection *Selection) AddSelection(i int) bool {
 
 // ClearSelection clears the selection in the object so that no children in the
 // object are selected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
+//
 func (selection *Selection) ClearSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
@@ -171,6 +242,12 @@ func (selection *Selection) ClearSelection() bool {
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
+//
+// The function returns the following values:
+//
+//    - gint representing the number of items selected, or 0 if selection does
+//      not implement this interface.
+//
 func (selection *Selection) SelectionCount() int {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gint          // in
@@ -196,6 +273,11 @@ func (selection *Selection) SelectionCount() int {
 // The function takes the following parameters:
 //
 //    - i specifying the child index.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing the specified child is selected, or 0 if
+//      selection does not implement this interface.
 //
 func (selection *Selection) IsChildSelected(i int) bool {
 	var _arg0 *C.AtkSelection // out
@@ -227,7 +309,12 @@ func (selection *Selection) IsChildSelected(i int) bool {
 // The function takes the following parameters:
 //
 //    - i specifying the index in the selection set. (e.g. the ith selection as
-//    opposed to the ith child).
+//      opposed to the ith child).
+//
+// The function returns the following values:
+//
+//    - object (optional) representing the selected accessible, or NULL if
+//      selection does not implement this interface.
 //
 func (selection *Selection) RefSelection(i int) *ObjectClass {
 	var _arg0 *C.AtkSelection // out
@@ -256,7 +343,11 @@ func (selection *Selection) RefSelection(i int) *ObjectClass {
 // The function takes the following parameters:
 //
 //    - i specifying the index in the selection set. (e.g. the ith selection as
-//    opposed to the ith child).
+//      opposed to the ith child).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
 //
 func (selection *Selection) RemoveSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
@@ -281,6 +372,11 @@ func (selection *Selection) RemoveSelection(i int) bool {
 
 // SelectAllSelection causes every child of the object to be selected if the
 // object supports multiple selections.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
+//
 func (selection *Selection) SelectAllSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
@@ -297,10 +393,4 @@ func (selection *Selection) SelectAllSelection() bool {
 	}
 
 	return _ok
-}
-
-// ConnectSelectionChanged: "selection-changed" signal is emitted by an object
-// which implements AtkSelection interface when the selection changes.
-func (selection *Selection) ConnectSelectionChanged(f func()) externglib.SignalHandle {
-	return selection.Connect("selection-changed", f)
 }

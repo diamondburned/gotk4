@@ -107,6 +107,10 @@ func marshalEditableLabeller(p uintptr) (interface{}, error) {
 //
 //    - str: text for the label.
 //
+// The function returns the following values:
+//
+//    - editableLabel: new GtkEditableLabel.
+//
 func NewEditableLabel(str string) *EditableLabel {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -125,6 +129,11 @@ func NewEditableLabel(str string) *EditableLabel {
 }
 
 // Editing returns whether the label is currently in “editing mode”.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if self is currently in editing mode.
+//
 func (self *EditableLabel) Editing() bool {
 	var _arg0 *C.GtkEditableLabel // out
 	var _cret C.gboolean          // in

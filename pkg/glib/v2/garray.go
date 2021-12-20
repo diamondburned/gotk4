@@ -143,6 +143,16 @@ func NewBytes(data []byte) *Bytes {
 // one. Otherwise the first byte where both differ is used for comparison. If
 // bytes1 has a smaller value at that position it is considered less, otherwise
 // greater than bytes2.
+//
+// The function takes the following parameters:
+//
+//    - bytes2: pointer to a #GBytes to compare with bytes1.
+//
+// The function returns the following values:
+//
+//    - gint: negative value if bytes1 is less than bytes2, a positive value if
+//      bytes1 is greater than bytes2, and zero if bytes1 is equal to bytes2.
+//
 func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -167,6 +177,15 @@ func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
 //
 // This function can be passed to g_hash_table_new() as the key_equal_func
 // parameter, when using non-NULL #GBytes pointers as keys in a Table.
+//
+// The function takes the following parameters:
+//
+//    - bytes2: pointer to a #GBytes to compare with bytes1.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two keys match.
+//
 func (bytes1 *Bytes) Equal(bytes2 *Bytes) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -195,6 +214,11 @@ func (bytes1 *Bytes) Equal(bytes2 *Bytes) bool {
 // NULL may be returned if size is 0. This is not guaranteed, as the #GBytes may
 // represent an empty string with data non-NULL and size as 0. NULL will not be
 // returned if size is non-zero.
+//
+// The function returns the following values:
+//
+//    - guint8s (optional): a pointer to the byte data, or NULL.
+//
 func (bytes *Bytes) Data() []byte {
 	var _arg0 *C.GBytes       // out
 	var _cret C.gconstpointer // in
@@ -216,6 +240,11 @@ func (bytes *Bytes) Data() []byte {
 // Size: get the size of the byte data in the #GBytes.
 //
 // This function will always return the same value for a given #GBytes.
+//
+// The function returns the following values:
+//
+//    - gsize: size.
+//
 func (bytes *Bytes) Size() uint {
 	var _arg0 *C.GBytes // out
 	var _cret C.gsize   // in
@@ -236,6 +265,11 @@ func (bytes *Bytes) Size() uint {
 //
 // This function can be passed to g_hash_table_new() as the key_hash_func
 // parameter, when using non-NULL #GBytes pointers as keys in a Table.
+//
+// The function returns the following values:
+//
+//    - guint: hash value corresponding to the key.
+//
 func (bytes *Bytes) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -263,6 +297,16 @@ func (bytes *Bytes) Hash() uint {
 // slice of another #GBytes, then the resulting #GBytes will reference the same
 // #GBytes instead of bytes. This allows consumers to simplify the usage of
 // #GBytes when asynchronously writing to streams.
+//
+// The function takes the following parameters:
+//
+//    - offset which subsection starts at.
+//    - length of subsection.
+//
+// The function returns the following values:
+//
+//    - ret: new #GBytes.
+//
 func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
 	var _arg0 *C.GBytes // out
 	var _arg1 C.gsize   // out

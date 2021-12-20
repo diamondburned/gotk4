@@ -19,7 +19,7 @@ import "C"
 // The function takes the following parameters:
 //
 //    - ctext: pointer stored in ctext from a call to
-//    gdk_x11_display_string_to_compound_text().
+//      gdk_x11_display_string_to_compound_text().
 //
 func X11FreeCompoundText(ctext *byte) {
 	var _arg1 *C.guchar // out

@@ -31,8 +31,20 @@ func init() {
 // yet, so the interface currently has no use.
 type PixbufLoaderOverrider interface {
 	AreaPrepared()
+	// The function takes the following parameters:
+	//
+	//    - x
+	//    - y
+	//    - width
+	//    - height
+	//
 	AreaUpdated(x, y, width, height int)
 	Closed()
+	// The function takes the following parameters:
+	//
+	//    - width
+	//    - height
+	//
 	SizePrepared(width, height int)
 }
 
@@ -99,7 +111,52 @@ func marshalPixbufLoaderer(p uintptr) (interface{}, error) {
 	return wrapPixbufLoader(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectAreaPrepared: this signal is emitted when the pixbuf loader has
+// allocated the pixbuf in the desired size.
+//
+// After this signal is emitted, applications can call
+// gdk_pixbuf_loader_get_pixbuf() to fetch the partially-loaded pixbuf.
+func (loader *PixbufLoader) ConnectAreaPrepared(f func()) externglib.SignalHandle {
+	return loader.Connect("area-prepared", f)
+}
+
+// ConnectAreaUpdated: this signal is emitted when a significant area of the
+// image being loaded has been updated.
+//
+// Normally it means that a complete scanline has been read in, but it could be
+// a different area as well.
+//
+// Applications can use this signal to know when to repaint areas of an image
+// that is being loaded.
+func (loader *PixbufLoader) ConnectAreaUpdated(f func(x, y, width, height int)) externglib.SignalHandle {
+	return loader.Connect("area-updated", f)
+}
+
+// ConnectClosed: this signal is emitted when gdk_pixbuf_loader_close() is
+// called.
+//
+// It can be used by different parts of an application to receive notification
+// when an image loader is closed by the code that drives it.
+func (loader *PixbufLoader) ConnectClosed(f func()) externglib.SignalHandle {
+	return loader.Connect("closed", f)
+}
+
+// ConnectSizePrepared: this signal is emitted when the pixbuf loader has been
+// fed the initial amount of data that is required to figure out the size of the
+// image that it will create.
+//
+// Applications can call gdk_pixbuf_loader_set_size() in response to this signal
+// to set the desired size to which the image should be scaled.
+func (loader *PixbufLoader) ConnectSizePrepared(f func(width, height int)) externglib.SignalHandle {
+	return loader.Connect("size-prepared", f)
+}
+
 // NewPixbufLoader creates a new pixbuf loader object.
+//
+// The function returns the following values:
+//
+//    - pixbufLoader: newly-created pixbuf loader.
+//
 func NewPixbufLoader() *PixbufLoader {
 	var _cret *C.GdkPixbufLoader // in
 
@@ -129,6 +186,10 @@ func NewPixbufLoader() *PixbufLoader {
 // The function takes the following parameters:
 //
 //    - mimeType: mime type to be loaded.
+//
+// The function returns the following values:
+//
+//    - pixbufLoader: newly-created pixbuf loader.
 //
 func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
@@ -169,6 +230,10 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 // The function takes the following parameters:
 //
 //    - imageType: name of the image format to be loaded with the image.
+//
+// The function returns the following values:
+//
+//    - pixbufLoader: newly-created pixbuf loader.
 //
 func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
@@ -233,6 +298,12 @@ func (loader *PixbufLoader) Close() error {
 //
 // If the loader doesn't have enough bytes yet, and hasn't emitted the
 // area-prepared signal, this function will return NULL.
+//
+// The function returns the following values:
+//
+//    - pixbufAnimation (optional): animation that the loader is currently
+//      loading.
+//
 func (loader *PixbufLoader) Animation() *PixbufAnimation {
 	var _arg0 *C.GdkPixbufLoader    // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -253,6 +324,11 @@ func (loader *PixbufLoader) Animation() *PixbufAnimation {
 
 // Format obtains the available information about the format of the currently
 // loading image file.
+//
+// The function returns the following values:
+//
+//    - pixbufFormat (optional): PixbufFormat.
+//
 func (loader *PixbufLoader) Format() *PixbufFormat {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbufFormat // in
@@ -286,6 +362,11 @@ func (loader *PixbufLoader) Format() *PixbufFormat {
 //
 // Additionally, if the loader is an animation, it will return the "static
 // image" of the animation (see gdk_pixbuf_animation_get_static_image()).
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional) that the loader is creating.
+//
 func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbuf       // in
@@ -389,44 +470,4 @@ func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	}
 
 	return _goerr
-}
-
-// ConnectAreaPrepared: this signal is emitted when the pixbuf loader has
-// allocated the pixbuf in the desired size.
-//
-// After this signal is emitted, applications can call
-// gdk_pixbuf_loader_get_pixbuf() to fetch the partially-loaded pixbuf.
-func (loader *PixbufLoader) ConnectAreaPrepared(f func()) externglib.SignalHandle {
-	return loader.Connect("area-prepared", f)
-}
-
-// ConnectAreaUpdated: this signal is emitted when a significant area of the
-// image being loaded has been updated.
-//
-// Normally it means that a complete scanline has been read in, but it could be
-// a different area as well.
-//
-// Applications can use this signal to know when to repaint areas of an image
-// that is being loaded.
-func (loader *PixbufLoader) ConnectAreaUpdated(f func(x, y, width, height int)) externglib.SignalHandle {
-	return loader.Connect("area-updated", f)
-}
-
-// ConnectClosed: this signal is emitted when gdk_pixbuf_loader_close() is
-// called.
-//
-// It can be used by different parts of an application to receive notification
-// when an image loader is closed by the code that drives it.
-func (loader *PixbufLoader) ConnectClosed(f func()) externglib.SignalHandle {
-	return loader.Connect("closed", f)
-}
-
-// ConnectSizePrepared: this signal is emitted when the pixbuf loader has been
-// fed the initial amount of data that is required to figure out the size of the
-// image that it will create.
-//
-// Applications can call gdk_pixbuf_loader_set_size() in response to this signal
-// to set the desired size to which the image should be scaled.
-func (loader *PixbufLoader) ConnectSizePrepared(f func(width, height int)) externglib.SignalHandle {
-	return loader.Connect("size-prepared", f)
 }

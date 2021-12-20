@@ -198,8 +198,12 @@ func (p PixdataType) Has(other PixdataType) bool {
 // The function takes the following parameters:
 //
 //    - pixdata to convert into a GdkPixbuf.
-//    - copyPixels: whether to copy raw pixel data; run-length encoded pixel
-//    data is always copied.
+//    - copyPixels: whether to copy raw pixel data; run-length encoded pixel data
+//      is always copied.
+//
+// The function returns the following values:
+//
+//    - pixbuf: new pixbuf.
 //
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, error) {
 	var _arg1 *C.GdkPixdata // out
@@ -274,6 +278,11 @@ type pixdata struct {
 // GDK_PIXBUF_ERROR_UNKNOWN_TYPE.
 //
 // Deprecated: Use GResource instead.
+//
+// The function takes the following parameters:
+//
+//    - stream of bytes containing a serialized Pixdata structure.
+//
 func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _arg0 *C.GdkPixdata // out
 	var _arg2 *C.guint8     // out
@@ -304,6 +313,12 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 // order, plus the pixel_data bytes the structure points to.
 //
 // Deprecated: Use #GResource instead.
+//
+// The function returns the following values:
+//
+//    - guint8s: a newly-allocated string containing the serialized Pixdata
+//      structure.
+//
 func (pixdata *Pixdata) Serialize() []byte {
 	var _arg0 *C.GdkPixdata // out
 	var _cret *C.guint8     // in

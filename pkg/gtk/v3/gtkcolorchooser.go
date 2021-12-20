@@ -47,11 +47,31 @@ type ColorChooserOverrider interface {
 	// the default color and gray palettes from the color chooser.
 	//
 	// If colors is NULL, removes all previously added palettes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - orientation: GTK_ORIENTATION_HORIZONTAL if the palette should be
+	//      displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
+	//    - colorsPerLine: number of colors to show in each row/column.
+	//    - colors (optional) of the palette, or NULL.
+	//
 	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
+	// The function takes the following parameters:
+	//
 	ColorActivated(color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
+	//
+	// The function returns the following values:
+	//
+	//    - color to fill in with the current color.
+	//
 	RGBA() *gdk.RGBA
 	// SetRGBA sets the color.
+	//
+	// The function takes the following parameters:
+	//
+	//    - color: new color.
+	//
 	SetRGBA(color *gdk.RGBA)
 }
 
@@ -98,6 +118,14 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 	return wrapColorChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectColorActivated: emitted when a color is activated from the color
+// chooser. This usually happens when the user clicks a color swatch, or a color
+// is selected and the user presses one of the keys Space, Shift+Space, Return
+// or Enter.
+func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) externglib.SignalHandle {
+	return chooser.Connect("color-activated", f)
+}
+
 // AddPalette adds a palette to the color chooser. If orientation is horizontal,
 // the colors are grouped in rows, with colors_per_line colors in each row. If
 // horizontal is FALSE, the colors are grouped in columns instead.
@@ -116,9 +144,9 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - orientation: GTK_ORIENTATION_HORIZONTAL if the palette should be
-//    displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
+//      displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
 //    - colorsPerLine: number of colors to show in each row/column.
-//    - colors of the palette, or NULL.
+//    - colors (optional) of the palette, or NULL.
 //
 func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
@@ -148,6 +176,11 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 }
 
 // RGBA gets the currently-selected color.
+//
+// The function returns the following values:
+//
+//    - color to fill in with the current color.
+//
 func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GdkRGBA          // in
@@ -165,6 +198,11 @@ func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 }
 
 // UseAlpha returns whether the color chooser shows the alpha channel.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the color chooser uses the alpha channel, FALSE if not.
+//
 func (chooser *ColorChooser) UseAlpha() bool {
 	var _arg0 *C.GtkColorChooser // out
 	var _cret C.gboolean         // in
@@ -220,12 +258,4 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	C.gtk_color_chooser_set_use_alpha(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(useAlpha)
-}
-
-// ConnectColorActivated: emitted when a color is activated from the color
-// chooser. This usually happens when the user clicks a color swatch, or a color
-// is selected and the user presses one of the keys Space, Shift+Space, Return
-// or Enter.
-func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) externglib.SignalHandle {
-	return chooser.Connect("color-activated", f)
 }

@@ -167,6 +167,11 @@ func marshalMenuButtonner(p uintptr) (interface{}, error) {
 // NewMenuButton creates a new MenuButton widget with downwards-pointing arrow
 // as the only child. You can replace the child widget with another Widget
 // should you wish to.
+//
+// The function returns the following values:
+//
+//    - menuButton: newly created MenuButton widget.
+//
 func NewMenuButton() *MenuButton {
 	var _cret *C.GtkWidget // in
 
@@ -180,6 +185,11 @@ func NewMenuButton() *MenuButton {
 }
 
 // AlignWidget returns the parent Widget to use to line up with menu.
+//
+// The function returns the following values:
+//
+//    - widget (optional) value or NULL.
+//
 func (menuButton *MenuButton) AlignWidget() Widgetter {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkWidget     // in
@@ -209,6 +219,11 @@ func (menuButton *MenuButton) AlignWidget() Widgetter {
 }
 
 // Direction returns the direction the popup will be pointing at when popped up.
+//
+// The function returns the following values:
+//
+//    - arrowType: ArrowType value.
+//
 func (menuButton *MenuButton) Direction() ArrowType {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret C.GtkArrowType   // in
@@ -226,6 +241,11 @@ func (menuButton *MenuButton) Direction() ArrowType {
 }
 
 // MenuModel returns the Model used to generate the popup.
+//
+// The function returns the following values:
+//
+//    - menuModel (optional) or NULL.
+//
 func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GMenuModel    // in
@@ -256,6 +276,11 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 
 // Popover returns the Popover that pops out of the button. If the button is not
 // using a Popover, this function returns NULL.
+//
+// The function returns the following values:
+//
+//    - popover (optional) or NULL.
+//
 func (menuButton *MenuButton) Popover() *Popover {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkPopover    // in
@@ -276,6 +301,11 @@ func (menuButton *MenuButton) Popover() *Popover {
 
 // Popup returns the Menu that pops out of the button. If the button does not
 // use a Menu, this function returns NULL.
+//
+// The function returns the following values:
+//
+//    - menu (optional) or NULL.
+//
 func (menuButton *MenuButton) Popup() *Menu {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkMenu       // in
@@ -296,6 +326,11 @@ func (menuButton *MenuButton) Popup() *Menu {
 
 // UsePopover returns whether a Popover or a Menu will be constructed from the
 // menu model.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if using a Popover.
+//
 func (menuButton *MenuButton) UsePopover() bool {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret C.gboolean       // in
@@ -325,7 +360,7 @@ func (menuButton *MenuButton) UsePopover() bool {
 //
 // The function takes the following parameters:
 //
-//    - alignWidget: Widget.
+//    - alignWidget (optional): Widget.
 //
 func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 	var _arg0 *C.GtkMenuButton // out
@@ -380,7 +415,7 @@ func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 //
 // The function takes the following parameters:
 //
-//    - menuModel or NULL to unset and disable the button.
+//    - menuModel (optional) or NULL to unset and disable the button.
 //
 func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.GtkMenuButton // out
@@ -404,7 +439,7 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - popover or NULL to unset and disable the button.
+//    - popover (optional) or NULL to unset and disable the button.
 //
 func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg0 *C.GtkMenuButton // out
@@ -428,7 +463,7 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - menu or NULL to unset and disable the button.
+//    - menu (optional) or NULL to unset and disable the button.
 //
 func (menuButton *MenuButton) SetPopup(menu Widgetter) {
 	var _arg0 *C.GtkMenuButton // out

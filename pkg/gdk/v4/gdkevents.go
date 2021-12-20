@@ -456,6 +456,11 @@ func (t TouchpadGesturePhase) String() string {
 //    - event1: first GdkEvent.
 //    - event2: second GdkEvent.
 //
+// The function returns the following values:
+//
+//    - angle: return location for the relative angle between both events.
+//    - ok: TRUE if the angle could be calculated.
+//
 func EventsGetAngle(event1, event2 Eventer) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
@@ -489,6 +494,12 @@ func EventsGetAngle(event1, event2 Eventer) (float64, bool) {
 //
 //    - event1: first GdkEvent.
 //    - event2: second GdkEvent.
+//
+// The function returns the following values:
+//
+//    - x: return location for the X coordinate of the center.
+//    - y: return location for the Y coordinate of the center.
+//    - ok: TRUE if the center could be calculated.
 //
 func EventsGetCenter(event1, event2 Eventer) (x float64, y float64, ok bool) {
 	var _arg1 *C.GdkEvent // out
@@ -526,6 +537,11 @@ func EventsGetCenter(event1, event2 Eventer) (x float64, y float64, ok bool) {
 //
 //    - event1: first GdkEvent.
 //    - event2: second GdkEvent.
+//
+// The function returns the following values:
+//
+//    - distance: return location for the distance.
+//    - ok: TRUE if the distance could be calculated.
 //
 func EventsGetDistance(event1, event2 Eventer) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
@@ -573,6 +589,11 @@ func marshalButtonEventer(p uintptr) (interface{}, error) {
 }
 
 // Button: extract the button number from a button event.
+//
+// The function returns the following values:
+//
+//    - guint: button of event.
+//
 func (event *ButtonEvent) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
@@ -611,6 +632,11 @@ func marshalCrossingEventer(p uintptr) (interface{}, error) {
 }
 
 // Detail extracts the notify detail from a crossing event.
+//
+// The function returns the following values:
+//
+//    - notifyType: notify detail of event.
+//
 func (event *CrossingEvent) Detail() NotifyType {
 	var _arg0 *C.GdkEvent     // out
 	var _cret C.GdkNotifyType // in
@@ -628,6 +654,11 @@ func (event *CrossingEvent) Detail() NotifyType {
 }
 
 // Focus checks if the event surface is the focus surface.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the surface is the focus surface.
+//
 func (event *CrossingEvent) Focus() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
@@ -647,6 +678,11 @@ func (event *CrossingEvent) Focus() bool {
 }
 
 // Mode extracts the crossing mode from a crossing event.
+//
+// The function returns the following values:
+//
+//    - crossingMode: mode of event.
+//
 func (event *CrossingEvent) Mode() CrossingMode {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkCrossingMode // in
@@ -685,6 +721,11 @@ func marshalDNDEventer(p uintptr) (interface{}, error) {
 }
 
 // Drop gets the GdkDrop object from a DND event.
+//
+// The function returns the following values:
+//
+//    - drop (optional): drop.
+//
 func (event *DNDEvent) Drop() Dropper {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkDrop  // in
@@ -769,7 +810,22 @@ func marshalEventer(p uintptr) (interface{}, error) {
 	return wrapEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (event *Event) baseEvent() *Event {
+	return event
+}
+
+// BaseEvent returns the underlying base object.
+func BaseEvent(obj Eventer) *Event {
+	return obj.baseEvent()
+}
+
 // Axes extracts all axis values from an event.
+//
+// The function returns the following values:
+//
+//    - axes: array of values for all axes.
+//    - ok: TRUE on success, otherwise FALSE.
+//
 func (event *Event) Axes() ([]float64, bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 *C.double   // in
@@ -800,6 +856,11 @@ func (event *Event) Axes() ([]float64, bool) {
 //
 //    - axisUse axis use to look for.
 //
+// The function returns the following values:
+//
+//    - value: location to store the value found.
+//    - ok: TRUE if the specified axis was found, otherwise FALSE.
+//
 func (event *Event) Axis(axisUse AxisUse) (float64, bool) {
 	var _arg0 *C.GdkEvent  // out
 	var _arg1 C.GdkAxisUse // out
@@ -825,6 +886,11 @@ func (event *Event) Axis(axisUse AxisUse) (float64, bool) {
 }
 
 // Device returns the device of an event.
+//
+// The function returns the following values:
+//
+//    - device (optional): Device.
+//
 func (event *Event) Device() Devicer {
 	var _arg0 *C.GdkEvent  // out
 	var _cret *C.GdkDevice // in
@@ -862,6 +928,11 @@ func (event *Event) Device() Devicer {
 // Note: the GdkDeviceTool will be constant during the application lifetime, if
 // settings must be stored persistently across runs, see
 // gdk.DeviceTool.GetSerial().
+//
+// The function returns the following values:
+//
+//    - deviceTool (optional): current device tool, or NULL.
+//
 func (event *Event) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkEvent      // out
 	var _cret *C.GdkDeviceTool // in
@@ -881,6 +952,11 @@ func (event *Event) DeviceTool() *DeviceTool {
 }
 
 // Display retrieves the display associated to the event.
+//
+// The function returns the following values:
+//
+//    - display (optional): Display.
+//
 func (event *Event) Display() *Display {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkDisplay // in
@@ -903,6 +979,11 @@ func (event *Event) Display() *Display {
 //
 // Related touch events are connected in a sequence. Other events typically
 // don't have event sequence information.
+//
+// The function returns the following values:
+//
+//    - eventSequence: event sequence that the event belongs to.
+//
 func (event *Event) EventSequence() *EventSequence {
 	var _arg0 *C.GdkEvent         // out
 	var _cret *C.GdkEventSequence // in
@@ -920,6 +1001,11 @@ func (event *Event) EventSequence() *EventSequence {
 }
 
 // EventType retrieves the type of the event.
+//
+// The function returns the following values:
+//
+//    - eventType: GdkEventType.
+//
 func (event *Event) EventType() EventType {
 	var _arg0 *C.GdkEvent    // out
 	var _cret C.GdkEventType // in
@@ -944,6 +1030,11 @@ func (event *Event) EventType() EventType {
 //
 // Note that only motion and scroll events record history, and motion events do
 // it only if one of the mouse buttons is down.
+//
+// The function returns the following values:
+//
+//    - timeCoords (optional): an array of time and coordinates.
+//
 func (event *Event) History() []TimeCoord {
 	var _arg0 *C.GdkEvent     // out
 	var _cret *C.GdkTimeCoord // in
@@ -971,6 +1062,11 @@ func (event *Event) History() []TimeCoord {
 }
 
 // ModifierState returns the modifier state field of an event.
+//
+// The function returns the following values:
+//
+//    - modifierType: modifier state of event.
+//
 func (event *Event) ModifierState() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
@@ -990,6 +1086,11 @@ func (event *Event) ModifierState() ModifierType {
 // PointerEmulated returns whether this event is an 'emulated' pointer event.
 //
 // Emulated pointer events typically originate from a touch events.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this event is emulated.
+//
 func (event *Event) PointerEmulated() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
@@ -1009,6 +1110,13 @@ func (event *Event) PointerEmulated() bool {
 }
 
 // Position: extract the event surface relative x/y coordinates from an event.
+//
+// The function returns the following values:
+//
+//    - x: location to put event surface x coordinate.
+//    - y: location to put event surface y coordinate.
+//    - ok
+//
 func (event *Event) Position() (x float64, y float64, ok bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
@@ -1034,6 +1142,11 @@ func (event *Event) Position() (x float64, y float64, ok bool) {
 }
 
 // Seat returns the seat that originated the event.
+//
+// The function returns the following values:
+//
+//    - seat (optional): Seat.
+//
 func (event *Event) Seat() Seater {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkSeat  // in
@@ -1063,6 +1176,11 @@ func (event *Event) Seat() Seater {
 }
 
 // Surface extracts the surface associated with an event.
+//
+// The function returns the following values:
+//
+//    - surface associated with the event.
+//
 func (event *Event) Surface() Surfacer {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
@@ -1096,6 +1214,11 @@ func (event *Event) Surface() Surfacer {
 //
 // Not all events have timestamps. In that case, this function returns
 // GDK_CURRENT_TIME.
+//
+// The function returns the following values:
+//
+//    - guint32: timestamp field from event.
+//
 func (event *Event) Time() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint32   // in
@@ -1119,6 +1242,11 @@ func (event *Event) Time() uint32 {
 //
 // This function should always be used instead of simply checking for
 // event->button == GDK_BUTTON_SECONDARY.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the event should trigger a context menu.
+//
 func (event *Event) TriggersContextMenu() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
@@ -1135,15 +1263,6 @@ func (event *Event) TriggersContextMenu() bool {
 	}
 
 	return _ok
-}
-
-func (event *Event) baseEvent() *Event {
-	return event
-}
-
-// BaseEvent returns the underlying base object.
-func BaseEvent(obj Eventer) *Event {
-	return obj.baseEvent()
 }
 
 // FocusEvent: event related to a keyboard focus change.
@@ -1169,6 +1288,11 @@ func marshalFocusEventer(p uintptr) (interface{}, error) {
 
 // In extracts whether this event is about focus entering or leaving the
 // surface.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE of the focus is entering.
+//
 func (event *FocusEvent) In() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
@@ -1209,6 +1333,11 @@ func marshalGrabBrokenEventer(p uintptr) (interface{}, error) {
 }
 
 // GrabSurface extracts the grab surface from a grab broken event.
+//
+// The function returns the following values:
+//
+//    - surface: grab surface of event.
+//
 func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
@@ -1239,6 +1368,11 @@ func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 }
 
 // Implicit checks whether the grab broken event is for an implicit grab.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the an implicit grab was broken.
+//
 func (event *GrabBrokenEvent) Implicit() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
@@ -1279,6 +1413,11 @@ func marshalKeyEventer(p uintptr) (interface{}, error) {
 }
 
 // ConsumedModifiers extracts the consumed modifiers from a key event.
+//
+// The function returns the following values:
+//
+//    - modifierType: consumed modifiers or event.
+//
 func (event *KeyEvent) ConsumedModifiers() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
@@ -1296,6 +1435,11 @@ func (event *KeyEvent) ConsumedModifiers() ModifierType {
 }
 
 // Keycode extracts the keycode from a key event.
+//
+// The function returns the following values:
+//
+//    - guint: keycode of event.
+//
 func (event *KeyEvent) Keycode() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
@@ -1313,6 +1457,11 @@ func (event *KeyEvent) Keycode() uint {
 }
 
 // Keyval extracts the keyval from a key event.
+//
+// The function returns the following values:
+//
+//    - guint: keyval of event.
+//
 func (event *KeyEvent) Keyval() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
@@ -1330,6 +1479,11 @@ func (event *KeyEvent) Keyval() uint {
 }
 
 // Layout extracts the layout from a key event.
+//
+// The function returns the following values:
+//
+//    - guint: layout of event.
+//
 func (event *KeyEvent) Layout() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
@@ -1347,6 +1501,11 @@ func (event *KeyEvent) Layout() uint {
 }
 
 // Level extracts the shift level from a key event.
+//
+// The function returns the following values:
+//
+//    - guint: shift level of event.
+//
 func (event *KeyEvent) Level() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
@@ -1366,6 +1525,13 @@ func (event *KeyEvent) Level() uint {
 // Match gets a keyval and modifier combination that will match the event.
 //
 // See gdk.KeyEvent.Matches().
+//
+// The function returns the following values:
+//
+//    - keyval: return location for a keyval.
+//    - modifiers: return location for modifiers.
+//    - ok: TRUE on success.
+//
 func (event *KeyEvent) Match() (uint, ModifierType, bool) {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // in
@@ -1391,6 +1557,11 @@ func (event *KeyEvent) Match() (uint, ModifierType, bool) {
 }
 
 // IsModifier extracts whether the key event is for a modifier key.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the event is for a modifier key.
+//
 func (event *KeyEvent) IsModifier() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
@@ -1422,6 +1593,10 @@ func (event *KeyEvent) IsModifier() bool {
 //
 //    - keyval to match.
 //    - modifiers to match.
+//
+// The function returns the following values:
+//
+//    - keyMatch: GdkKeyMatch value describing whether event matches.
 //
 func (event *KeyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 	var _arg0 *C.GdkEvent       // out
@@ -1488,6 +1663,12 @@ func marshalPadEventer(p uintptr) (interface{}, error) {
 }
 
 // AxisValue extracts the information from a pad strip or ring event.
+//
+// The function returns the following values:
+//
+//    - index: return location for the axis index.
+//    - value: return location for the axis value.
+//
 func (event *PadEvent) AxisValue() (uint, float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
@@ -1508,6 +1689,11 @@ func (event *PadEvent) AxisValue() (uint, float64) {
 }
 
 // Button extracts information about the pressed button from a pad event.
+//
+// The function returns the following values:
+//
+//    - guint: button of event.
+//
 func (event *PadEvent) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
@@ -1525,6 +1711,12 @@ func (event *PadEvent) Button() uint {
 }
 
 // GroupMode extracts group and mode information from a pad event.
+//
+// The function returns the following values:
+//
+//    - group: return location for the group.
+//    - mode: return location for the mode.
+//
 func (event *PadEvent) GroupMode() (group uint, mode uint) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
@@ -1589,6 +1781,12 @@ func marshalScrollEventer(p uintptr) (interface{}, error) {
 // Deltas extracts the scroll deltas of a scroll event.
 //
 // The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
+//
+// The function returns the following values:
+//
+//    - deltaX: return location for x scroll delta.
+//    - deltaY: return location for y scroll delta.
+//
 func (event *ScrollEvent) Deltas() (deltaX float64, deltaY float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
@@ -1609,6 +1807,11 @@ func (event *ScrollEvent) Deltas() (deltaX float64, deltaY float64) {
 }
 
 // Direction extracts the direction of a scroll event.
+//
+// The function returns the following values:
+//
+//    - scrollDirection: scroll direction of event.
+//
 func (event *ScrollEvent) Direction() ScrollDirection {
 	var _arg0 *C.GdkEvent          // out
 	var _cret C.GdkScrollDirection // in
@@ -1633,6 +1836,11 @@ func (event *ScrollEvent) Direction() ScrollDirection {
 // kinetic scrolling based on the current velocity.
 //
 // Stop scroll events always have a delta of 0/0.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the event is a scroll stop event.
+//
 func (event *ScrollEvent) IsStop() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
@@ -1673,6 +1881,11 @@ func marshalTouchEventer(p uintptr) (interface{}, error) {
 }
 
 // EmulatingPointer extracts whether a touch event is emulating a pointer event.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if event is emulating.
+//
 func (event *TouchEvent) EmulatingPointer() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
@@ -1718,6 +1931,12 @@ func marshalTouchpadEventer(p uintptr) (interface{}, error) {
 }
 
 // Deltas extracts delta information from a touchpad event.
+//
+// The function returns the following values:
+//
+//    - dx: return location for x.
+//    - dy: return location for y.
+//
 func (event *TouchpadEvent) Deltas() (dx float64, dy float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
@@ -1738,6 +1957,11 @@ func (event *TouchpadEvent) Deltas() (dx float64, dy float64) {
 }
 
 // GesturePhase extracts the touchpad gesture phase from a touchpad event.
+//
+// The function returns the following values:
+//
+//    - touchpadGesturePhase: gesture phase of event.
+//
 func (event *TouchpadEvent) GesturePhase() TouchpadGesturePhase {
 	var _arg0 *C.GdkEvent               // out
 	var _cret C.GdkTouchpadGesturePhase // in
@@ -1755,6 +1979,11 @@ func (event *TouchpadEvent) GesturePhase() TouchpadGesturePhase {
 }
 
 // NFingers extracts the number of fingers from a touchpad event.
+//
+// The function returns the following values:
+//
+//    - guint: number of fingers for event.
+//
 func (event *TouchpadEvent) NFingers() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
@@ -1772,6 +2001,11 @@ func (event *TouchpadEvent) NFingers() uint {
 }
 
 // PinchAngleDelta extracts the angle delta from a touchpad pinch event.
+//
+// The function returns the following values:
+//
+//    - gdouble: angle delta of event.
+//
 func (event *TouchpadEvent) PinchAngleDelta() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in
@@ -1789,6 +2023,11 @@ func (event *TouchpadEvent) PinchAngleDelta() float64 {
 }
 
 // PinchScale extracts the scale from a touchpad pinch event.
+//
+// The function returns the following values:
+//
+//    - gdouble: scale of event.
+//
 func (event *TouchpadEvent) PinchScale() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in

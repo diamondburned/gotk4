@@ -123,13 +123,35 @@ func (u UIManagerItemType) Has(other UIManagerItemType) bool {
 // yet, so the interface currently has no use.
 type UIManagerOverrider interface {
 	ActionsChanged()
+	// The function takes the following parameters:
+	//
 	AddWidget(widget Widgetter)
+	// The function takes the following parameters:
+	//
+	//    - action
+	//    - proxy
+	//
 	ConnectProxy(action *Action, proxy Widgetter)
+	// The function takes the following parameters:
+	//
+	//    - action
+	//    - proxy
+	//
 	DisconnectProxy(action *Action, proxy Widgetter)
 	// Action looks up an action by following a path. See
 	// gtk_ui_manager_get_widget() for more information about paths.
 	//
 	// Deprecated: since version 3.10.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path: path.
+	//
+	// The function returns the following values:
+	//
+	//    - action whose proxy widget is found by following the path, or NULL if
+	//      no widget was found.
+	//
 	Action(path string) *Action
 	// Widget looks up a widget by following a path. The path consists of the
 	// names specified in the XML description of the UI. separated by “/”.
@@ -147,8 +169,21 @@ type UIManagerOverrider interface {
 	// destruction of the ui manager.
 	//
 	// Deprecated: since version 3.10.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path: path.
+	//
+	// The function returns the following values:
+	//
+	//    - widget found by following the path, or NULL if no widget was found.
+	//
 	Widget(path string) Widgetter
+	// The function takes the following parameters:
+	//
 	PostActivate(action *Action)
+	// The function takes the following parameters:
+	//
 	PreActivate(action *Action)
 }
 
@@ -394,9 +429,57 @@ func marshalUIManagerer(p uintptr) (interface{}, error) {
 	return wrapUIManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActionsChanged signal is emitted whenever the set of actions changes.
+func (manager *UIManager) ConnectActionsChanged(f func()) externglib.SignalHandle {
+	return manager.Connect("actions-changed", f)
+}
+
+// ConnectAddWidget signal is emitted for each generated menubar and toolbar. It
+// is not emitted for generated popup menus, which can be obtained by
+// gtk_ui_manager_get_widget().
+func (manager *UIManager) ConnectAddWidget(f func(widget Widgetter)) externglib.SignalHandle {
+	return manager.Connect("add-widget", f)
+}
+
+// ConnectConnectProxy signal is emitted after connecting a proxy to an action
+// in the group.
+//
+// This is intended for simple customizations for which a custom action class
+// would be too clumsy, e.g. showing tooltips for menuitems in the statusbar.
+func (manager *UIManager) ConnectConnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
+	return manager.Connect("connect-proxy", f)
+}
+
+// ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
+// action in the group.
+func (manager *UIManager) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
+	return manager.Connect("disconnect-proxy", f)
+}
+
+// ConnectPostActivate signal is emitted just after the action is activated.
+//
+// This is intended for applications to get notification just after any action
+// is activated.
+func (manager *UIManager) ConnectPostActivate(f func(action Action)) externglib.SignalHandle {
+	return manager.Connect("post-activate", f)
+}
+
+// ConnectPreActivate signal is emitted just before the action is activated.
+//
+// This is intended for applications to get notification just before any action
+// is activated.
+func (manager *UIManager) ConnectPreActivate(f func(action Action)) externglib.SignalHandle {
+	return manager.Connect("pre-activate", f)
+}
+
 // NewUIManager creates a new ui manager object.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - uiManager: new ui manager object.
+//
 func NewUIManager() *UIManager {
 	var _cret *C.GtkUIManager // in
 
@@ -426,10 +509,11 @@ func NewUIManager() *UIManager {
 //    - mergeId: merge id for the merged UI, see gtk_ui_manager_new_merge_id().
 //    - path: path.
 //    - name for the added UI element.
-//    - action: name of the action to be proxied, or NULL to add a separator.
+//    - action (optional): name of the action to be proxied, or NULL to add a
+//      separator.
 //    - typ: type of UI element to add.
 //    - top: if TRUE, the UI element is added before its siblings, otherwise it
-//    is added after its siblings.
+//      is added after its siblings.
 //
 func (manager *UIManager) AddUi(mergeId uint, path, name, action string, typ UIManagerItemType, top bool) {
 	var _arg0 *C.GtkUIManager        // out
@@ -474,6 +558,12 @@ func (manager *UIManager) AddUi(mergeId uint, path, name, action string, typ UIM
 //
 //    - filename: name of the file to parse.
 //
+// The function returns the following values:
+//
+//    - guint: merge id for the merged UI. The merge id can be used to unmerge
+//      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
+//      value is 0.
+//
 func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
@@ -507,6 +597,12 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 // The function takes the following parameters:
 //
 //    - resourcePath: resource path of the file to parse.
+//
+// The function returns the following values:
+//
+//    - guint: merge id for the merged UI. The merge id can be used to unmerge
+//      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
+//      value is 0.
 //
 func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
@@ -543,6 +639,12 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 //
 //    - buffer: string to parse.
 //    - length of buffer (may be -1 if buffer is nul-terminated).
+//
+// The function returns the following values:
+//
+//    - guint: merge id for the merged UI. The merge id can be used to unmerge
+//      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
+//      value is 0.
 //
 func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
@@ -600,6 +702,11 @@ func (manager *UIManager) EnsureUpdate() {
 // AccelGroup returns the AccelGroup associated with manager.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - accelGroup: AccelGroup.
+//
 func (manager *UIManager) AccelGroup() *AccelGroup {
 	var _arg0 *C.GtkUIManager  // out
 	var _cret *C.GtkAccelGroup // in
@@ -625,6 +732,11 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 //
 //    - path: path.
 //
+// The function returns the following values:
+//
+//    - action whose proxy widget is found by following the path, or NULL if no
+//      widget was found.
+//
 func (manager *UIManager) Action(path string) *Action {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
@@ -648,6 +760,12 @@ func (manager *UIManager) Action(path string) *Action {
 // ActionGroups returns the list of action groups associated with manager.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - list of action groups. The list is owned by GTK+ and should not be
+//      modified.
+//
 func (manager *UIManager) ActionGroups() []ActionGroup {
 	var _arg0 *C.GtkUIManager // out
 	var _cret *C.GList        // in
@@ -675,6 +793,11 @@ func (manager *UIManager) ActionGroups() []ActionGroup {
 //
 // Deprecated: Tearoff menus are deprecated and should not be used in newly
 // written code.
+//
+// The function returns the following values:
+//
+//    - ok: whether tearoff menu items are added.
+//
 func (manager *UIManager) AddTearoffs() bool {
 	var _arg0 *C.GtkUIManager // out
 	var _cret C.gboolean      // in
@@ -700,7 +823,12 @@ func (manager *UIManager) AddTearoffs() bool {
 // The function takes the following parameters:
 //
 //    - types specifies the types of toplevel widgets to include. Allowed types
-//    are K_UI_MANAGER_MENUBAR, K_UI_MANAGER_TOOLBAR and K_UI_MANAGER_POPUP.
+//      are K_UI_MANAGER_MENUBAR, K_UI_MANAGER_TOOLBAR and K_UI_MANAGER_POPUP.
+//
+// The function returns the following values:
+//
+//    - sList: newly-allocated List of all toplevel widgets of the requested
+//      types. Free the returned list with g_slist_free().
 //
 func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
 	var _arg0 *C.GtkUIManager        // out
@@ -743,6 +871,12 @@ func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
 // Ui creates a [UI definition][XML-UI] of the merged UI.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated string containing an XML representation of the
+//      merged UI.
+//
 func (manager *UIManager) Ui() string {
 	var _arg0 *C.GtkUIManager // out
 	var _cret *C.gchar        // in
@@ -779,6 +913,10 @@ func (manager *UIManager) Ui() string {
 // The function takes the following parameters:
 //
 //    - path: path.
+//
+// The function returns the following values:
+//
+//    - widget found by following the path, or NULL if no widget was found.
 //
 func (manager *UIManager) Widget(path string) Widgetter {
 	var _arg0 *C.GtkUIManager // out
@@ -846,6 +984,11 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
 // gtk_ui_manager_add_ui().
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - guint: unused merge id.
+//
 func (manager *UIManager) NewMergeID() uint {
 	var _arg0 *C.GtkUIManager // out
 	var _cret C.guint         // in
@@ -928,47 +1071,4 @@ func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
 	C.gtk_ui_manager_set_add_tearoffs(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(addTearoffs)
-}
-
-// ConnectActionsChanged signal is emitted whenever the set of actions changes.
-func (manager *UIManager) ConnectActionsChanged(f func()) externglib.SignalHandle {
-	return manager.Connect("actions-changed", f)
-}
-
-// ConnectAddWidget signal is emitted for each generated menubar and toolbar. It
-// is not emitted for generated popup menus, which can be obtained by
-// gtk_ui_manager_get_widget().
-func (manager *UIManager) ConnectAddWidget(f func(widget Widgetter)) externglib.SignalHandle {
-	return manager.Connect("add-widget", f)
-}
-
-// ConnectConnectProxy signal is emitted after connecting a proxy to an action
-// in the group.
-//
-// This is intended for simple customizations for which a custom action class
-// would be too clumsy, e.g. showing tooltips for menuitems in the statusbar.
-func (manager *UIManager) ConnectConnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return manager.Connect("connect-proxy", f)
-}
-
-// ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
-// action in the group.
-func (manager *UIManager) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return manager.Connect("disconnect-proxy", f)
-}
-
-// ConnectPostActivate signal is emitted just after the action is activated.
-//
-// This is intended for applications to get notification just after any action
-// is activated.
-func (manager *UIManager) ConnectPostActivate(f func(action Action)) externglib.SignalHandle {
-	return manager.Connect("post-activate", f)
-}
-
-// ConnectPreActivate signal is emitted just before the action is activated.
-//
-// This is intended for applications to get notification just before any action
-// is activated.
-func (manager *UIManager) ConnectPreActivate(f func(action Action)) externglib.SignalHandle {
-	return manager.Connect("pre-activate", f)
 }

@@ -44,12 +44,35 @@ type InputStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional cancellable object.
+	//    - ioPriority: [I/O priority][io-priority] of the request.
+	//    - callback (optional) to call when the request is satisfied.
+	//
 	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	CloseFinish(result AsyncResulter) error
+	// The function takes the following parameters:
+	//
 	CloseFn(ctx context.Context) error
 	// ReadFinish finishes an asynchronous stream read operation.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - gssize: number of bytes read in, or -1 on error, or 0 on end of file.
+	//
 	ReadFinish(result AsyncResulter) (int, error)
 	// Skip tries to skip count bytes from the stream. Will block during the
 	// operation.
@@ -66,6 +89,16 @@ type InputStreamOverrider interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - count: number of bytes that will be skipped from the stream.
+	//
+	// The function returns the following values:
+	//
+	//    - gssize: number of bytes skipped, or -1 on error.
+	//
 	Skip(ctx context.Context, count uint) (int, error)
 	// SkipAsync: request an asynchronous skip of count bytes from the stream.
 	// When the operation is finished callback will be called. You can then call
@@ -90,8 +123,25 @@ type InputStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one, you must override all.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - count: number of bytes that will be skipped from the stream.
+	//    - ioPriority: [I/O priority][io-priority] of the request.
+	//    - callback (optional) to call when the request is satisfied.
+	//
 	SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
 	// SkipFinish finishes a stream skip operation.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - gssize: size of the bytes skipped, or -1 on error.
+	//
 	SkipFinish(result AsyncResulter) (int, error)
 }
 
@@ -135,6 +185,15 @@ func marshalInputStreamer(p uintptr) (interface{}, error) {
 	return wrapInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (stream *InputStream) baseInputStream() *InputStream {
+	return stream
+}
+
+// BaseInputStream returns the underlying base object.
+func BaseInputStream(obj InputStreamer) *InputStream {
+	return obj.baseInputStream()
+}
+
 // ClearPending clears the pending flag on stream.
 func (stream *InputStream) ClearPending() {
 	var _arg0 *C.GInputStream // out
@@ -171,7 +230,7 @@ func (stream *InputStream) ClearPending() {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (stream *InputStream) Close(ctx context.Context) error {
 	var _arg0 *C.GInputStream // out
@@ -211,9 +270,9 @@ func (stream *InputStream) Close(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional cancellable object.
+//    - ctx (optional): optional cancellable object.
 //    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
@@ -270,6 +329,11 @@ func (stream *InputStream) CloseFinish(result AsyncResulter) error {
 }
 
 // HasPending checks if an input stream has pending actions.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if stream has pending actions.
+//
 func (stream *InputStream) HasPending() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
@@ -289,6 +353,11 @@ func (stream *InputStream) HasPending() bool {
 }
 
 // IsClosed checks if an input stream is closed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the stream is closed.
+//
 func (stream *InputStream) IsClosed() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
@@ -331,9 +400,13 @@ func (stream *InputStream) IsClosed() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - buffer: a buffer to read data into (which should be at least count
-//    bytes long).
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer: a buffer to read data into (which should be at least count bytes
+//      long).
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read, or -1 on error, or 0 on end of file.
 //
 func (stream *InputStream) Read(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GInputStream // out
@@ -392,9 +465,14 @@ func (stream *InputStream) Read(ctx context.Context, buffer []byte) (int, error)
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - buffer: a buffer to read data into (which should be at least count
-//    bytes long).
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer: a buffer to read data into (which should be at least count bytes
+//      long).
+//
+// The function returns the following values:
+//
+//    - bytesRead: location to store the number of bytes that was read from the
+//      stream.
 //
 func (stream *InputStream) ReadAll(ctx context.Context, buffer []byte) (uint, error) {
 	var _arg0 *C.GInputStream // out
@@ -444,11 +522,11 @@ func (stream *InputStream) ReadAll(ctx context.Context, buffer []byte) (uint, er
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - buffer: a buffer to read data into (which should be at least count
-//    bytes long).
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer: a buffer to read data into (which should be at least count bytes
+//      long).
 //    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream // out
@@ -496,6 +574,11 @@ func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPr
 // The function takes the following parameters:
 //
 //    - result: Result.
+//
+// The function returns the following values:
+//
+//    - bytesRead: location to store the number of bytes that was read from the
+//      stream.
 //
 func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 	var _arg0 *C.GInputStream // out
@@ -548,11 +631,11 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - buffer: a buffer to read data into (which should be at least count
-//    bytes long).
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer: a buffer to read data into (which should be at least count bytes
+//      long).
 //    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream // out
@@ -610,9 +693,13 @@ func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPrior
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - count: maximum number of bytes that will be read from the stream.
-//    Common values include 4096 and 8192.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - count: maximum number of bytes that will be read from the stream. Common
+//      values include 4096 and 8192.
+//
+// The function returns the following values:
+//
+//    - bytes: new #GBytes, or NULL on error.
 //
 func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Bytes, error) {
 	var _arg0 *C.GInputStream // out
@@ -673,10 +760,10 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - count: number of bytes that will be read from the stream.
 //    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
@@ -713,6 +800,10 @@ func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPri
 //
 //    - result: Result.
 //
+// The function returns the following values:
+//
+//    - bytes: newly-allocated #GBytes, or NULL on error.
+//
 func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -748,6 +839,10 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, e
 // The function takes the following parameters:
 //
 //    - result: Result.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read in, or -1 on error, or 0 on end of file.
 //
 func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GInputStream // out
@@ -811,8 +906,12 @@ func (stream *InputStream) SetPending() error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - count: number of bytes that will be skipped from the stream.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes skipped, or -1 on error.
 //
 func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 	var _arg0 *C.GInputStream // out
@@ -871,10 +970,10 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - count: number of bytes that will be skipped from the stream.
 //    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
@@ -911,6 +1010,10 @@ func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority
 //
 //    - result: Result.
 //
+// The function returns the following values:
+//
+//    - gssize: size of the bytes skipped, or -1 on error.
+//
 func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -933,13 +1036,4 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	}
 
 	return _gssize, _goerr
-}
-
-func (stream *InputStream) baseInputStream() *InputStream {
-	return stream
-}
-
-// BaseInputStream returns the underlying base object.
-func BaseInputStream(obj InputStreamer) *InputStream {
-	return obj.baseInputStream()
 }

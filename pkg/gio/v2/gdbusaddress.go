@@ -30,8 +30,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str: unescaped string to be included in a D-Bus address as the value in
-//    a key-value pair.
+//    - str: unescaped string to be included in a D-Bus address as the value in a
+//      key-value pair.
+//
+// The function returns the following values:
+//
+//    - utf8: copy of string with all non-optionally-escaped bytes escaped.
 //
 func DBusAddressEscapeValue(str string) string {
 	var _arg1 *C.gchar // out
@@ -60,8 +64,12 @@ func DBusAddressEscapeValue(str string) string {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - busType: Type.
+//
+// The function returns the following values:
+//
+//    - utf8: valid D-Bus address string for bus_type or NULL if error is set.
 //
 func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, error) {
 	var _arg2 *C.GCancellable // out
@@ -106,9 +114,9 @@ func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, err
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - address: valid D-Bus address.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func DBusAddressGetStream(ctx context.Context, address string, callback AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
@@ -143,7 +151,13 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 // The function takes the following parameters:
 //
 //    - res obtained from the GAsyncReadyCallback passed to
-//    g_dbus_address_get_stream().
+//      g_dbus_address_get_stream().
+//
+// The function returns the following values:
+//
+//    - outGuid (optional): NULL or return location to store the GUID extracted
+//      from address, if any.
+//    - ioStream or NULL if error is set.
 //
 func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _arg1 *C.GAsyncResult // out
@@ -199,8 +213,14 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //    - address: valid D-Bus address.
+//
+// The function returns the following values:
+//
+//    - outGuid (optional): NULL or return location to store the GUID extracted
+//      from address, if any.
+//    - ioStream or NULL if error is set.
 //
 func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOStreamer, error) {
 	var _arg3 *C.GCancellable // out
@@ -259,6 +279,10 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 // The function takes the following parameters:
 //
 //    - str: string.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if string is a valid D-Bus address, FALSE otherwise.
 //
 func DBusIsAddress(str string) bool {
 	var _arg1 *C.gchar   // out

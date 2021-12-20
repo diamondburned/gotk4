@@ -62,8 +62,12 @@ func marshalProxyAddresser(p uintptr) (interface{}, error) {
 //    - protocol: proxy protocol to support, in lower case (e.g. socks, http).
 //    - destHostname: destination hostname the proxy should tunnel to.
 //    - destPort: destination port to tunnel to.
-//    - username to authenticate to the proxy server (or NULL).
-//    - password to authenticate to the proxy server (or NULL).
+//    - username (optional) to authenticate to the proxy server (or NULL).
+//    - password (optional) to authenticate to the proxy server (or NULL).
+//
+// The function returns the following values:
+//
+//    - proxyAddress: new Address.
 //
 func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname string, destPort uint16, username, password string) *ProxyAddress {
 	var _arg1 *C.GInetAddress   // out
@@ -110,6 +114,11 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname 
 // DestinationHostname gets proxy's destination hostname; that is, the name of
 // the host that will be connected to via the proxy, not the name of the proxy
 // itself.
+//
+// The function returns the following values:
+//
+//    - utf8 proxy's destination hostname.
+//
 func (proxy *ProxyAddress) DestinationHostname() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -129,6 +138,11 @@ func (proxy *ProxyAddress) DestinationHostname() string {
 // DestinationPort gets proxy's destination port; that is, the port on the
 // destination host that will be connected to via the proxy, not the port number
 // of the proxy itself.
+//
+// The function returns the following values:
+//
+//    - guint16 proxy's destination port.
+//
 func (proxy *ProxyAddress) DestinationPort() uint16 {
 	var _arg0 *C.GProxyAddress // out
 	var _cret C.guint16        // in
@@ -147,6 +161,11 @@ func (proxy *ProxyAddress) DestinationPort() uint16 {
 
 // DestinationProtocol gets the protocol that is being spoken to the destination
 // server; eg, "http" or "ftp".
+//
+// The function returns the following values:
+//
+//    - utf8 proxy's destination protocol.
+//
 func (proxy *ProxyAddress) DestinationProtocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -164,6 +183,11 @@ func (proxy *ProxyAddress) DestinationProtocol() string {
 }
 
 // Password gets proxy's password.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) proxy's password.
+//
 func (proxy *ProxyAddress) Password() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -183,6 +207,11 @@ func (proxy *ProxyAddress) Password() string {
 }
 
 // Protocol gets proxy's protocol. eg, "socks" or "http".
+//
+// The function returns the following values:
+//
+//    - utf8 proxy's protocol.
+//
 func (proxy *ProxyAddress) Protocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -200,6 +229,11 @@ func (proxy *ProxyAddress) Protocol() string {
 }
 
 // URI gets the proxy URI that proxy was constructed from.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) proxy's URI, or NULL if unknown.
+//
 func (proxy *ProxyAddress) URI() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -219,6 +253,11 @@ func (proxy *ProxyAddress) URI() string {
 }
 
 // Username gets proxy's username.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) proxy's username.
+//
 func (proxy *ProxyAddress) Username() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in

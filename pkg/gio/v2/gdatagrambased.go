@@ -69,6 +69,15 @@ type DatagramBasedOverrider interface {
 	// these flags, the output is guaranteed to be masked by condition.
 	//
 	// This call never blocks.
+	//
+	// The function takes the following parameters:
+	//
+	//    - condition mask to check.
+	//
+	// The function returns the following values:
+	//
+	//    - ioCondition mask of the current state.
+	//
 	ConditionCheck(condition glib.IOCondition) glib.IOCondition
 	// ConditionWait waits for up to timeout microseconds for condition to
 	// become true on datagram_based. If the condition is met, TRUE is returned.
@@ -76,6 +85,14 @@ type DatagramBasedOverrider interface {
 	// If cancellable is cancelled before the condition is met, or if timeout is
 	// reached before the condition is met, then FALSE is returned and error is
 	// set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): #GCancellable.
+	//    - condition mask to wait for.
+	//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or
+	//      -1 to block indefinitely.
+	//
 	ConditionWait(ctx context.Context, condition glib.IOCondition, timeout int64) error
 	// CreateSource creates a #GSource that can be attached to a Context to
 	// monitor for the availability of the specified condition on the Based. The
@@ -91,6 +108,16 @@ type DatagramBasedOverrider interface {
 	// likely 0 unless cancellation happened at the same time as a condition
 	// change). You can check for this in the callback using
 	// g_cancellable_is_cancelled().
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): #GCancellable.
+	//    - condition mask to monitor.
+	//
+	// The function returns the following values:
+	//
+	//    - source: newly allocated #GSource.
+	//
 	CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source
 	// ReceiveMessages: receive one or more data messages from datagram_based in
 	// one go.
@@ -142,6 +169,23 @@ type DatagramBasedOverrider interface {
 	// messages successfully received before the error will be returned. If
 	// cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
 	// other error.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): GCancellable.
+	//    - messages: array of Message structs.
+	//    - flags: int containing MsgFlags flags for the overall operation.
+	//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or
+	//      -1 to block indefinitely.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of messages received, or -1 on error. Note that the
+	//      number of messages received may be smaller than num_messages if
+	//      timeout is zero or positive, if the peer closed the connection, or if
+	//      num_messages was larger than UIO_MAXIOV (1024), in which case the
+	//      caller may re-try to receive the remaining messages.
+	//
 	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error)
 	// SendMessages: send one or more data messages from datagram_based in one
 	// go.
@@ -186,6 +230,22 @@ type DatagramBasedOverrider interface {
 	// messages successfully sent before the error will be returned. If
 	// cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
 	// other error.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): GCancellable.
+	//    - messages: array of Message structs.
+	//    - flags: int containing MsgFlags flags.
+	//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or
+	//      -1 to block indefinitely.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of messages sent, or -1 on error. Note that the number
+	//      of messages sent may be smaller than num_messages if timeout is zero
+	//      or positive, or if num_messages was larger than UIO_MAXIOV (1024), in
+	//      which case the caller may re-try to send the remaining messages.
+	//
 	SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error)
 }
 
@@ -317,6 +377,10 @@ func marshalDatagramBasedder(p uintptr) (interface{}, error) {
 //
 //    - condition mask to check.
 //
+// The function returns the following values:
+//
+//    - ioCondition mask of the current state.
+//
 func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 C.GIOCondition    // out
@@ -345,10 +409,10 @@ func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) g
 //
 // The function takes the following parameters:
 //
-//    - ctx: #GCancellable.
+//    - ctx (optional): #GCancellable.
 //    - condition mask to wait for.
-//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1
-//    to block indefinitely.
+//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1 to
+//      block indefinitely.
 //
 func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition glib.IOCondition, timeout int64) error {
 	var _arg0 *C.GDatagramBased // out
@@ -397,8 +461,12 @@ func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition
 //
 // The function takes the following parameters:
 //
-//    - ctx: #GCancellable.
+//    - ctx (optional): #GCancellable.
 //    - condition mask to monitor.
+//
+// The function returns the following values:
+//
+//    - source: newly allocated #GSource.
 //
 func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source {
 	var _arg0 *C.GDatagramBased // out
@@ -482,11 +550,19 @@ func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition 
 //
 // The function takes the following parameters:
 //
-//    - ctx: GCancellable.
+//    - ctx (optional): GCancellable.
 //    - messages: array of Message structs.
 //    - flags: int containing MsgFlags flags for the overall operation.
-//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1
-//    to block indefinitely.
+//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1 to
+//      block indefinitely.
+//
+// The function returns the following values:
+//
+//    - gint: number of messages received, or -1 on error. Note that the number
+//      of messages received may be smaller than num_messages if timeout is zero
+//      or positive, if the peer closed the connection, or if num_messages was
+//      larger than UIO_MAXIOV (1024), in which case the caller may re-try to
+//      receive the remaining messages.
 //
 func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
@@ -576,11 +652,18 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 //
 // The function takes the following parameters:
 //
-//    - ctx: GCancellable.
+//    - ctx (optional): GCancellable.
 //    - messages: array of Message structs.
 //    - flags: int containing MsgFlags flags.
-//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1
-//    to block indefinitely.
+//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1 to
+//      block indefinitely.
+//
+// The function returns the following values:
+//
+//    - gint: number of messages sent, or -1 on error. Note that the number of
+//      messages sent may be smaller than num_messages if timeout is zero or
+//      positive, or if num_messages was larger than UIO_MAXIOV (1024), in which
+//      case the caller may re-try to send the remaining messages.
 //
 func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out

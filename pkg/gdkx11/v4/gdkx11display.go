@@ -34,8 +34,8 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - smClientId: client id assigned by the session manager when the
-//    connection was opened, or NULL to remove the property.
+//    - smClientId (optional): client id assigned by the session manager when the
+//      connection was opened, or NULL to remove the property.
 //
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.char // out
@@ -69,12 +69,36 @@ func marshalX11Displayer(p uintptr) (interface{}, error) {
 	return wrapX11Display(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectXevent signal is a low level signal that is emitted whenever an XEvent
+// has been received.
+//
+// When handlers to this signal return TRUE, no other handlers will be invoked.
+// In particular, the default handler for this function is GDK's own event
+// handling mechanism, so by returning TRUE for an event that GDK expects to
+// translate, you may break GDK and/or GTK+ in interesting ways. You have been
+// warned.
+//
+// If you want this signal handler to queue a Event, you can use
+// gdk_display_put_event().
+//
+// If you are interested in X GenericEvents, bear in mind that XGetEventData()
+// has been already called on the event, and XFreeEventData() will be called
+// afterwards.
+func (display *X11Display) ConnectXevent(f func(xevent cgo.Handle) bool) externglib.SignalHandle {
+	return display.Connect("xevent", f)
+}
+
 // ErrorTrapPop pops the error trap pushed by gdk_x11_display_error_trap_push().
 // Will XSync() if necessary and will always block until the error is known to
 // have occurred or not occurred, so the error code can be returned.
 //
 // If you don’t need to use the return value,
 // gdk_x11_display_error_trap_pop_ignored() would be more efficient.
+//
+// The function returns the following values:
+//
+//    - gint: x error code or 0 on success.
+//
 func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.int         // in
@@ -121,6 +145,11 @@ func (display *X11Display) ErrorTrapPush() {
 // DefaultGroup returns the default group leader surface for all toplevel
 // surfaces on display. This surface is implicitly created by GDK. See
 // gdk_x11_surface_set_group().
+//
+// The function returns the following values:
+//
+//    - surface: default group leader surface for display.
+//
 func (display *X11Display) DefaultGroup() gdk.Surfacer {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSurface // in
@@ -150,31 +179,6 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 	return _surface
 }
 
-// GLXVersion retrieves the version of the GLX implementation.
-func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 C.int         // in
-	var _arg2 C.int         // in
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-
-	_cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(display)
-
-	var _major int // out
-	var _minor int // out
-	var _ok bool   // out
-
-	_major = int(_arg1)
-	_minor = int(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _major, _minor, _ok
-}
-
 // PrimaryMonitor gets the primary monitor for the display.
 //
 // The primary monitor is considered the monitor where the “main desktop” lives.
@@ -184,6 +188,12 @@ func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
 //
 // If no monitor is the designated primary monitor, any monitor (usually the
 // first) may be returned.
+//
+// The function returns the following values:
+//
+//    - monitor: primary monitor, or any monitor if no primary monitor is
+//      configured by the user.
+//
 func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkMonitor // in
@@ -206,6 +216,11 @@ func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 }
 
 // Screen retrieves the X11Screen of the display.
+//
+// The function returns the following values:
+//
+//    - x11Screen: X11Screen.
+//
 func (display *X11Display) Screen() *X11Screen {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkX11Screen // in
@@ -223,6 +238,11 @@ func (display *X11Display) Screen() *X11Screen {
 }
 
 // StartupNotificationID gets the startup notification ID for a display.
+//
+// The function returns the following values:
+//
+//    - utf8: startup notification ID for display.
+//
 func (display *X11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
@@ -242,6 +262,11 @@ func (display *X11Display) StartupNotificationID() string {
 // UserTime returns the timestamp of the last user interaction on display. The
 // timestamp is taken from events caused by user interaction such as key presses
 // or pointer movements. See gdk_x11_surface_set_user_time().
+//
+// The function returns the following values:
+//
+//    - guint32: timestamp of the last user interaction.
+//
 func (display *X11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint32     // in
@@ -282,8 +307,8 @@ func (display *X11Display) Grab() {
 //
 // The function takes the following parameters:
 //
-//    - theme: name of the cursor theme to use, or NULL to unset a previously
-//    set value.
+//    - theme (optional): name of the cursor theme to use, or NULL to unset a
+//      previously set value.
 //    - size: cursor size to use, or 0 to keep the previous size.
 //
 func (display *X11Display) SetCursorTheme(theme string, size int) {
@@ -359,45 +384,6 @@ func (display *X11Display) SetSurfaceScale(scale int) {
 	runtime.KeepAlive(scale)
 }
 
-// StringToCompoundText: convert a string from the encoding of the current
-// locale into a form suitable for storing in a window property.
-//
-// The function takes the following parameters:
-//
-//    - str: nul-terminated string.
-//
-func (display *X11Display) StringToCompoundText(str string) (encoding string, format int, ctext []byte, gint int) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.char       // out
-	var _arg2 *C.char       // in
-	var _arg3 C.int         // in
-	var _arg4 *C.guchar     // in
-	var _arg5 C.int         // in
-	var _cret C.int         // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-	runtime.KeepAlive(display)
-	runtime.KeepAlive(str)
-
-	var _encoding string // out
-	var _format int      // out
-	var _ctext []byte    // out
-	var _gint int        // out
-
-	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_format = int(_arg3)
-	defer C.free(unsafe.Pointer(_arg4))
-	_ctext = make([]byte, _arg5)
-	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))
-	_gint = int(_cret)
-
-	return _encoding, _format, _ctext, _gint
-}
-
 // Ungrab display after it has been grabbed with gdk_x11_display_grab().
 func (display *X11Display) Ungrab() {
 	var _arg0 *C.GdkDisplay // out
@@ -408,71 +394,17 @@ func (display *X11Display) Ungrab() {
 	runtime.KeepAlive(display)
 }
 
-// UTF8ToCompoundText converts from UTF-8 to compound text.
-//
-// The function takes the following parameters:
-//
-//    - str: UTF-8 string.
-//
-func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, bool) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.char       // out
-	var _arg2 *C.char       // in
-	var _arg3 C.int         // in
-	var _arg4 *C.guchar     // in
-	var _arg5 C.int         // in
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-	runtime.KeepAlive(display)
-	runtime.KeepAlive(str)
-
-	var _encoding string // out
-	var _format int      // out
-	var _ctext []byte    // out
-	var _ok bool         // out
-
-	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_format = int(_arg3)
-	defer C.free(unsafe.Pointer(_arg4))
-	_ctext = make([]byte, _arg5)
-	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _encoding, _format, _ctext, _ok
-}
-
-// ConnectXevent signal is a low level signal that is emitted whenever an XEvent
-// has been received.
-//
-// When handlers to this signal return TRUE, no other handlers will be invoked.
-// In particular, the default handler for this function is GDK's own event
-// handling mechanism, so by returning TRUE for an event that GDK expects to
-// translate, you may break GDK and/or GTK+ in interesting ways. You have been
-// warned.
-//
-// If you want this signal handler to queue a Event, you can use
-// gdk_display_put_event().
-//
-// If you are interested in X GenericEvents, bear in mind that XGetEventData()
-// has been already called on the event, and XFreeEventData() will be called
-// afterwards.
-func (display *X11Display) ConnectXevent(f func(xevent cgo.Handle) bool) externglib.SignalHandle {
-	return display.Connect("xevent", f)
-}
-
 // X11DisplayOpen tries to open a new display to the X server given by
 // display_name. If opening the display fails, NULL is returned.
 //
 // The function takes the following parameters:
 //
-//    - displayName: name of the X display. See the XOpenDisplay() for details.
+//    - displayName (optional): name of the X display. See the XOpenDisplay() for
+//      details.
+//
+// The function returns the following values:
+//
+//    - display (optional): new display or NULL on error.
 //
 func X11DisplayOpen(displayName string) *gdk.Display {
 	var _arg1 *C.char       // out

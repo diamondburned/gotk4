@@ -39,13 +39,39 @@ type ApplicationOverrider interface {
 	//
 	// The application must be registered before calling this function.
 	Activate()
+	// The function takes the following parameters:
+	//
 	AddPlatformData(builder *glib.VariantBuilder)
+	// The function takes the following parameters:
+	//
 	AfterEmit(platformData *glib.Variant)
+	// The function takes the following parameters:
+	//
 	BeforeEmit(platformData *glib.Variant)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	CommandLine(commandLine *ApplicationCommandLine) int
+	// The function takes the following parameters:
+	//
+	//    - connection
+	//    - objectPath
+	//
 	DBusRegister(connection *DBusConnection, objectPath string) error
+	// The function takes the following parameters:
+	//
+	//    - connection
+	//    - objectPath
+	//
 	DBusUnregister(connection *DBusConnection, objectPath string)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
 	HandleLocalOptions(options *glib.VariantDict) int
+	// The function returns the following values:
+	//
 	NameLost() bool
 	// Open opens the given files.
 	//
@@ -61,6 +87,12 @@ type ApplicationOverrider interface {
 	//
 	// The application must be registered before calling this function and it
 	// must have the G_APPLICATION_HANDLES_OPEN flag set.
+	//
+	// The function takes the following parameters:
+	//
+	//    - files: array of #GFiles to open.
+	//    - hint (or ""), but never NULL.
+	//
 	Open(files []Filer, hint string)
 	QuitMainloop()
 	RunMainloop()
@@ -203,6 +235,87 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 	return wrapApplication(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate signal is emitted on the primary instance when an activation
+// occurs. See g_application_activate().
+func (application *Application) ConnectActivate(f func()) externglib.SignalHandle {
+	return application.Connect("activate", f)
+}
+
+// ConnectCommandLine signal is emitted on the primary instance when a
+// commandline is not handled locally. See g_application_run() and the
+// CommandLine documentation for more information.
+func (application *Application) ConnectCommandLine(f func(commandLine ApplicationCommandLine) int) externglib.SignalHandle {
+	return application.Connect("command-line", f)
+}
+
+// ConnectHandleLocalOptions signal is emitted on the local instance after the
+// parsing of the commandline options has occurred.
+//
+// You can add options to be recognised during commandline option parsing using
+// g_application_add_main_option_entries() and g_application_add_option_group().
+//
+// Signal handlers can inspect options (along with values pointed to from the
+// arg_data of an installed Entrys) in order to decide to perform certain
+// actions, including direct local handling (which may be useful for options
+// like --version).
+//
+// In the event that the application is marked
+// G_APPLICATION_HANDLES_COMMAND_LINE the "normal processing" will send the
+// options dictionary to the primary instance where it can be read with
+// g_application_command_line_get_options_dict(). The signal handler can modify
+// the dictionary before returning, and the modified dictionary will be sent.
+//
+// In the event that G_APPLICATION_HANDLES_COMMAND_LINE is not set, "normal
+// processing" will treat the remaining uncollected command line arguments as
+// filenames or URIs. If there are no arguments, the application is activated by
+// g_application_activate(). One or more arguments results in a call to
+// g_application_open().
+//
+// If you want to handle the local commandline arguments for yourself by
+// converting them to calls to g_application_open() or
+// g_action_group_activate_action() then you must be sure to register the
+// application first. You should probably not call g_application_activate() for
+// yourself, however: just return -1 and allow the default handler to do it for
+// you. This will ensure that the --gapplication-service switch works properly
+// (i.e. no activation in that case).
+//
+// Note that this signal is emitted from the default implementation of
+// local_command_line(). If you override that function and don't chain up then
+// this signal will never be emitted.
+//
+// You can override local_command_line() if you need more powerful capabilities
+// than what is provided here, but this should not normally be required.
+func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) int) externglib.SignalHandle {
+	return application.Connect("handle-local-options", f)
+}
+
+// ConnectNameLost signal is emitted only on the registered primary instance
+// when a new instance has taken over. This can only happen if the application
+// is using the G_APPLICATION_ALLOW_REPLACEMENT flag.
+//
+// The default handler for this signal calls g_application_quit().
+func (application *Application) ConnectNameLost(f func() bool) externglib.SignalHandle {
+	return application.Connect("name-lost", f)
+}
+
+// ConnectOpen signal is emitted on the primary instance when there are files to
+// open. See g_application_open() for more information.
+func (application *Application) ConnectOpen(f func(files []Filer, hint string)) externglib.SignalHandle {
+	return application.Connect("open", f)
+}
+
+// ConnectShutdown signal is emitted only on the registered primary instance
+// immediately after the main loop terminates.
+func (application *Application) ConnectShutdown(f func()) externglib.SignalHandle {
+	return application.Connect("shutdown", f)
+}
+
+// ConnectStartup signal is emitted on the primary instance immediately after
+// registration. See g_application_register().
+func (application *Application) ConnectStartup(f func()) externglib.SignalHandle {
+	return application.Connect("startup", f)
+}
+
 // NewApplication creates a new #GApplication instance.
 //
 // If non-NULL, the application id must be valid. See
@@ -213,8 +326,12 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - applicationId: application id.
+//    - applicationId (optional): application id.
 //    - flags: application flags.
+//
+// The function returns the following values:
+//
+//    - application: new #GApplication instance.
 //
 func NewApplication(applicationId string, flags ApplicationFlags) *Application {
 	var _arg1 *C.gchar            // out
@@ -273,8 +390,8 @@ func (application *Application) Activate() {
 //    - flags from Flags.
 //    - arg: type of the option, as a Arg.
 //    - description for the option in --help output.
-//    - argDescription: placeholder to use for the extra argument parsed by the
-//    option in --help output.
+//    - argDescription (optional): placeholder to use for the extra argument
+//      parsed by the option in --help output.
 //
 func (application *Application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description, argDescription string) {
 	var _arg0 *C.GApplication // out
@@ -464,6 +581,11 @@ func (application *Application) BindBusyProperty(object *externglib.Object, prop
 }
 
 // ApplicationID gets the unique identifier for application.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): identifier for application, owned by application.
+//
 func (application *Application) ApplicationID() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -494,6 +616,11 @@ func (application *Application) ApplicationID() string {
 //
 // This function must not be called before the application has been registered.
 // See g_application_get_is_registered().
+//
+// The function returns the following values:
+//
+//    - dBusConnection (optional) or NULL.
+//
 func (application *Application) DBusConnection() *DBusConnection {
 	var _arg0 *C.GApplication    // out
 	var _cret *C.GDBusConnection // in
@@ -527,6 +654,11 @@ func (application *Application) DBusConnection() *DBusConnection {
 //
 // This function must not be called before the application has been registered.
 // See g_application_get_is_registered().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): object path, or NULL.
+//
 func (application *Application) DBusObjectPath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -548,6 +680,11 @@ func (application *Application) DBusObjectPath() string {
 // Flags gets the flags for application.
 //
 // See Flags.
+//
+// The function returns the following values:
+//
+//    - applicationFlags flags for application.
+//
 func (application *Application) Flags() ApplicationFlags {
 	var _arg0 *C.GApplication     // out
 	var _cret C.GApplicationFlags // in
@@ -568,6 +705,11 @@ func (application *Application) Flags() ApplicationFlags {
 //
 // This is the amount of time (in milliseconds) after the last call to
 // g_application_release() before the application stops running.
+//
+// The function returns the following values:
+//
+//    - guint: timeout, in milliseconds.
+//
 func (application *Application) InactivityTimeout() uint {
 	var _arg0 *C.GApplication // out
 	var _cret C.guint         // in
@@ -586,6 +728,11 @@ func (application *Application) InactivityTimeout() uint {
 
 // IsBusy gets the application's current busy state, as set through
 // g_application_mark_busy() or g_application_bind_busy_property().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if application is currently marked as busy.
+//
 func (application *Application) IsBusy() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
@@ -608,6 +755,11 @@ func (application *Application) IsBusy() bool {
 //
 // An application is registered if g_application_register() has been
 // successfully called.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if application is registered.
+//
 func (application *Application) IsRegistered() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
@@ -635,6 +787,11 @@ func (application *Application) IsRegistered() bool {
 //
 // The value of this property cannot be accessed before g_application_register()
 // has been called. See g_application_get_is_registered().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if application is remote.
+//
 func (application *Application) IsRemote() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
@@ -656,6 +813,11 @@ func (application *Application) IsRemote() bool {
 // ResourceBasePath gets the resource base path of application.
 //
 // See g_application_set_resource_base_path() for more information.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): base resource path, if one is set.
+//
 func (application *Application) ResourceBasePath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -805,7 +967,7 @@ func (application *Application) Quit() {
 //
 // The function takes the following parameters:
 //
-//    - ctx or NULL.
+//    - ctx (optional) or NULL.
 //
 func (application *Application) Register(ctx context.Context) error {
 	var _arg0 *C.GApplication // out
@@ -920,7 +1082,11 @@ func (application *Application) Release() {
 //
 // The function takes the following parameters:
 //
-//    - argv: the argv from main(), or NULL.
+//    - argv (optional): the argv from main(), or NULL.
+//
+// The function returns the following values:
+//
+//    - gint: exit status.
 //
 func (application *Application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
@@ -978,7 +1144,7 @@ func (application *Application) Run(argv []string) int {
 //
 // The function takes the following parameters:
 //
-//    - id of the notification, or NULL.
+//    - id (optional) of the notification, or NULL.
 //    - notification to send.
 //
 func (application *Application) SendNotification(id string, notification *Notification) {
@@ -1009,7 +1175,7 @@ func (application *Application) SendNotification(id string, notification *Notifi
 //
 // The function takes the following parameters:
 //
-//    - actionGroup or NULL.
+//    - actionGroup (optional) or NULL.
 //
 func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	var _arg0 *C.GApplication // out
@@ -1035,7 +1201,7 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 //
 // The function takes the following parameters:
 //
-//    - applicationId: identifier for application.
+//    - applicationId (optional): identifier for application.
 //
 func (application *Application) SetApplicationID(applicationId string) {
 	var _arg0 *C.GApplication // out
@@ -1122,8 +1288,8 @@ func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 //
 // The function takes the following parameters:
 //
-//    - description: string to be shown in --help output after the list of
-//    options, or NULL.
+//    - description (optional): string to be shown in --help output after the
+//      list of options, or NULL.
 //
 func (application *Application) SetOptionContextDescription(description string) {
 	var _arg0 *C.GApplication // out
@@ -1150,8 +1316,8 @@ func (application *Application) SetOptionContextDescription(description string) 
 //
 // The function takes the following parameters:
 //
-//    - parameterString: string which is displayed in the first line of --help
-//    output, after the usage summary programname [OPTION...].
+//    - parameterString (optional): string which is displayed in the first line
+//      of --help output, after the usage summary programname [OPTION...].
 //
 func (application *Application) SetOptionContextParameterString(parameterString string) {
 	var _arg0 *C.GApplication // out
@@ -1174,8 +1340,8 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 //
 // The function takes the following parameters:
 //
-//    - summary: string to be shown in --help output before the list of
-//    options, or NULL.
+//    - summary (optional): string to be shown in --help output before the list
+//      of options, or NULL.
 //
 func (application *Application) SetOptionContextSummary(summary string) {
 	var _arg0 *C.GApplication // out
@@ -1226,7 +1392,7 @@ func (application *Application) SetOptionContextSummary(summary string) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: resource path to use.
+//    - resourcePath (optional): resource path to use.
 //
 func (application *Application) SetResourceBasePath(resourcePath string) {
 	var _arg0 *C.GApplication // out
@@ -1314,87 +1480,6 @@ func (application *Application) WithdrawNotification(id string) {
 	runtime.KeepAlive(id)
 }
 
-// ConnectActivate signal is emitted on the primary instance when an activation
-// occurs. See g_application_activate().
-func (application *Application) ConnectActivate(f func()) externglib.SignalHandle {
-	return application.Connect("activate", f)
-}
-
-// ConnectCommandLine signal is emitted on the primary instance when a
-// commandline is not handled locally. See g_application_run() and the
-// CommandLine documentation for more information.
-func (application *Application) ConnectCommandLine(f func(commandLine ApplicationCommandLine) int) externglib.SignalHandle {
-	return application.Connect("command-line", f)
-}
-
-// ConnectHandleLocalOptions signal is emitted on the local instance after the
-// parsing of the commandline options has occurred.
-//
-// You can add options to be recognised during commandline option parsing using
-// g_application_add_main_option_entries() and g_application_add_option_group().
-//
-// Signal handlers can inspect options (along with values pointed to from the
-// arg_data of an installed Entrys) in order to decide to perform certain
-// actions, including direct local handling (which may be useful for options
-// like --version).
-//
-// In the event that the application is marked
-// G_APPLICATION_HANDLES_COMMAND_LINE the "normal processing" will send the
-// options dictionary to the primary instance where it can be read with
-// g_application_command_line_get_options_dict(). The signal handler can modify
-// the dictionary before returning, and the modified dictionary will be sent.
-//
-// In the event that G_APPLICATION_HANDLES_COMMAND_LINE is not set, "normal
-// processing" will treat the remaining uncollected command line arguments as
-// filenames or URIs. If there are no arguments, the application is activated by
-// g_application_activate(). One or more arguments results in a call to
-// g_application_open().
-//
-// If you want to handle the local commandline arguments for yourself by
-// converting them to calls to g_application_open() or
-// g_action_group_activate_action() then you must be sure to register the
-// application first. You should probably not call g_application_activate() for
-// yourself, however: just return -1 and allow the default handler to do it for
-// you. This will ensure that the --gapplication-service switch works properly
-// (i.e. no activation in that case).
-//
-// Note that this signal is emitted from the default implementation of
-// local_command_line(). If you override that function and don't chain up then
-// this signal will never be emitted.
-//
-// You can override local_command_line() if you need more powerful capabilities
-// than what is provided here, but this should not normally be required.
-func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) int) externglib.SignalHandle {
-	return application.Connect("handle-local-options", f)
-}
-
-// ConnectNameLost signal is emitted only on the registered primary instance
-// when a new instance has taken over. This can only happen if the application
-// is using the G_APPLICATION_ALLOW_REPLACEMENT flag.
-//
-// The default handler for this signal calls g_application_quit().
-func (application *Application) ConnectNameLost(f func() bool) externglib.SignalHandle {
-	return application.Connect("name-lost", f)
-}
-
-// ConnectOpen signal is emitted on the primary instance when there are files to
-// open. See g_application_open() for more information.
-func (application *Application) ConnectOpen(f func(files []Filer, hint string)) externglib.SignalHandle {
-	return application.Connect("open", f)
-}
-
-// ConnectShutdown signal is emitted only on the registered primary instance
-// immediately after the main loop terminates.
-func (application *Application) ConnectShutdown(f func()) externglib.SignalHandle {
-	return application.Connect("shutdown", f)
-}
-
-// ConnectStartup signal is emitted on the primary instance immediately after
-// registration. See g_application_register().
-func (application *Application) ConnectStartup(f func()) externglib.SignalHandle {
-	return application.Connect("startup", f)
-}
-
 // ApplicationGetDefault returns the default #GApplication instance for this
 // process.
 //
@@ -1403,6 +1488,11 @@ func (application *Application) ConnectStartup(f func()) externglib.SignalHandle
 // g_application_set_default().
 //
 // If there is no default application then NULL is returned.
+//
+// The function returns the following values:
+//
+//    - application (optional): default application for this process, or NULL.
+//
 func ApplicationGetDefault() *Application {
 	var _cret *C.GApplication // in
 
@@ -1467,6 +1557,10 @@ func ApplicationGetDefault() *Application {
 // The function takes the following parameters:
 //
 //    - applicationId: potential application identifier.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if application_id is valid.
 //
 func ApplicationIDIsValid(applicationId string) bool {
 	var _arg1 *C.gchar   // out

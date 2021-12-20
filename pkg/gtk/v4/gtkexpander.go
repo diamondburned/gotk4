@@ -145,11 +145,20 @@ func marshalExpanderer(p uintptr) (interface{}, error) {
 	return wrapExpander(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivate activates the GtkExpander.
+func (expander *Expander) ConnectActivate(f func()) externglib.SignalHandle {
+	return expander.Connect("activate", f)
+}
+
 // NewExpander creates a new expander using label as the text of the label.
 //
 // The function takes the following parameters:
 //
-//    - label: text of the label.
+//    - label (optional): text of the label.
+//
+// The function returns the following values:
+//
+//    - expander: new GtkExpander widget.
 //
 func NewExpander(label string) *Expander {
 	var _arg1 *C.char      // out
@@ -182,8 +191,12 @@ func NewExpander(label string) *Expander {
 //
 // The function takes the following parameters:
 //
-//    - label: text of the label with an underscore in front of the mnemonic
-//    character.
+//    - label (optional): text of the label with an underscore in front of the
+//      mnemonic character.
+//
+// The function returns the following values:
+//
+//    - expander: new GtkExpander widget.
 //
 func NewExpanderWithMnemonic(label string) *Expander {
 	var _arg1 *C.char      // out
@@ -205,6 +218,11 @@ func NewExpanderWithMnemonic(label string) *Expander {
 }
 
 // Child gets the child widget of expander.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget of expander.
+//
 func (expander *Expander) Child() Widgetter {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
@@ -236,6 +254,11 @@ func (expander *Expander) Child() Widgetter {
 // Expanded queries a Expander and returns its current state.
 //
 // Returns TRUE if the child widget is revealed.
+//
+// The function returns the following values:
+//
+//    - ok: current state of the expander.
+//
 func (expander *Expander) Expanded() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
@@ -260,6 +283,12 @@ func (expander *Expander) Expanded() bool {
 // markup, as set by gtk.Expander.SetLabel(). If the label text has not been set
 // the return value will be NULL. This will be the case if you create an empty
 // button with gtk_button_new() to use as a container.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): text of the label widget. This string is owned by the
+//      widget and must not be modified or freed.
+//
 func (expander *Expander) Label() string {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.char        // in
@@ -279,6 +308,11 @@ func (expander *Expander) Label() string {
 }
 
 // LabelWidget retrieves the label widget for the frame.
+//
+// The function returns the following values:
+//
+//    - widget (optional): label widget, or NULL if there is none.
+//
 func (expander *Expander) LabelWidget() Widgetter {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
@@ -309,6 +343,11 @@ func (expander *Expander) LabelWidget() Widgetter {
 
 // ResizeToplevel returns whether the expander will resize the toplevel widget
 // containing the expander upon resizing and collpasing.
+//
+// The function returns the following values:
+//
+//    - ok: “resize toplevel” setting.
+//
 func (expander *Expander) ResizeToplevel() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
@@ -328,6 +367,11 @@ func (expander *Expander) ResizeToplevel() bool {
 }
 
 // UseMarkup returns whether the label’s text is interpreted as Pango markup.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the label’s text will be parsed for markup.
+//
 func (expander *Expander) UseMarkup() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
@@ -347,6 +391,12 @@ func (expander *Expander) UseMarkup() bool {
 }
 
 // UseUnderline returns whether an underline in the text indicates a mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if an embedded underline in the expander label indicates the
+//      mnemonic accelerator keys.
+//
 func (expander *Expander) UseUnderline() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
@@ -369,7 +419,7 @@ func (expander *Expander) UseUnderline() bool {
 //
 // The function takes the following parameters:
 //
-//    - child widget.
+//    - child (optional) widget.
 //
 func (expander *Expander) SetChild(child Widgetter) {
 	var _arg0 *C.GtkExpander // out
@@ -414,7 +464,7 @@ func (expander *Expander) SetExpanded(expanded bool) {
 //
 // The function takes the following parameters:
 //
-//    - label: string.
+//    - label (optional): string.
 //
 func (expander *Expander) SetLabel(label string) {
 	var _arg0 *C.GtkExpander // out
@@ -437,7 +487,7 @@ func (expander *Expander) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - labelWidget: new label widget.
+//    - labelWidget (optional): new label widget.
 //
 func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkExpander // out
@@ -512,9 +562,4 @@ func (expander *Expander) SetUseUnderline(useUnderline bool) {
 	C.gtk_expander_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(useUnderline)
-}
-
-// ConnectActivate activates the GtkExpander.
-func (expander *Expander) ConnectActivate(f func()) externglib.SignalHandle {
-	return expander.Connect("activate", f)
 }

@@ -22,10 +22,10 @@ func init() {
 	})
 }
 
-//
 // The function takes the following parameters:
 //
-
+//    - property
+//    - value
 //
 func AccessiblePropertyInitValue(property AccessibleProperty, value *externglib.Value) {
 	var _arg1 C.GtkAccessibleProperty // out
@@ -39,10 +39,10 @@ func AccessiblePropertyInitValue(property AccessibleProperty, value *externglib.
 	runtime.KeepAlive(value)
 }
 
-//
 // The function takes the following parameters:
 //
-
+//    - relation
+//    - value
 //
 func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.Value) {
 	var _arg1 C.GtkAccessibleRelation // out
@@ -56,10 +56,10 @@ func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.
 	runtime.KeepAlive(value)
 }
 
-//
 // The function takes the following parameters:
 //
-
+//    - state
+//    - value
 //
 func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 	var _arg1 C.GtkAccessibleState // out
@@ -132,6 +132,11 @@ func marshalAccessibler(p uintptr) (interface{}, error) {
 }
 
 // AccessibleRole retrieves the GtkAccessibleRole for the given GtkAccessible.
+//
+// The function returns the following values:
+//
+//    - accessibleRole: GtkAccessibleRole.
+//
 func (self *Accessible) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkAccessible    // out
 	var _cret C.GtkAccessibleRole // in

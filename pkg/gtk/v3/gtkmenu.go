@@ -122,7 +122,41 @@ func marshalMenuer(p uintptr) (interface{}, error) {
 	return wrapMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (menu *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) externglib.SignalHandle {
+	return menu.Connect("move-scroll", f)
+}
+
+// ConnectPoppedUp: emitted when the position of menu is finalized after being
+// popped up using gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (), or
+// gtk_menu_popup_at_pointer ().
+//
+// menu might be flipped over the anchor rectangle in order to keep it
+// on-screen, in which case flipped_x and flipped_y will be set to TRUE
+// accordingly.
+//
+// flipped_rect is the ideal position of menu after any possible flipping, but
+// before any possible sliding. final_rect is flipped_rect, but possibly
+// translated in the case that flipping is still ineffective in keeping menu
+// on-screen.
+//
+// ! (popup-slide.png)
+//
+// The blue menu is menu's ideal position, the green menu is flipped_rect, and
+// the red menu is final_rect.
+//
+// See gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (),
+// gtk_menu_popup_at_pointer (), Menu:anchor-hints, Menu:rect-anchor-dx,
+// Menu:rect-anchor-dy, and Menu:menu-type-hint.
+func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
+	return menu.Connect("popped-up", f)
+}
+
 // NewMenu creates a new Menu.
+//
+// The function returns the following values:
+//
+//    - menu: new Menu.
+//
 func NewMenu() *Menu {
 	var _cret *C.GtkWidget // in
 
@@ -149,6 +183,10 @@ func NewMenu() *Menu {
 // The function takes the following parameters:
 //
 //    - model: Model.
+//
+// The function returns the following values:
+//
+//    - menu: new Menu.
 //
 func NewMenuFromModel(model gio.MenuModeller) *Menu {
 	var _arg1 *C.GMenuModel // out
@@ -220,6 +258,11 @@ func (menu *Menu) Detach() {
 
 // AccelGroup gets the AccelGroup which holds global accelerators for the menu.
 // See gtk_menu_set_accel_group().
+//
+// The function returns the following values:
+//
+//    - accelGroup associated with the menu.
+//
 func (menu *Menu) AccelGroup() *AccelGroup {
 	var _arg0 *C.GtkMenu       // out
 	var _cret *C.GtkAccelGroup // in
@@ -237,6 +280,11 @@ func (menu *Menu) AccelGroup() *AccelGroup {
 }
 
 // AccelPath retrieves the accelerator path set on the menu.
+//
+// The function returns the following values:
+//
+//    - utf8: accelerator path set on the menu.
+//
 func (menu *Menu) AccelPath() string {
 	var _arg0 *C.GtkMenu // out
 	var _cret *C.gchar   // in
@@ -255,6 +303,12 @@ func (menu *Menu) AccelPath() string {
 
 // Active returns the selected menu item from the menu. This is used by the
 // ComboBox.
+//
+// The function returns the following values:
+//
+//    - widget that was last selected in the menu. If a selection has not yet
+//      been made, the first menu item is selected.
+//
 func (menu *Menu) Active() Widgetter {
 	var _arg0 *C.GtkMenu   // out
 	var _cret *C.GtkWidget // in
@@ -285,6 +339,11 @@ func (menu *Menu) Active() Widgetter {
 }
 
 // AttachWidget returns the Widget that the menu is attached to.
+//
+// The function returns the following values:
+//
+//    - widget that the menu is attached to.
+//
 func (menu *Menu) AttachWidget() Widgetter {
 	var _arg0 *C.GtkMenu   // out
 	var _cret *C.GtkWidget // in
@@ -315,6 +374,12 @@ func (menu *Menu) AttachWidget() Widgetter {
 }
 
 // Monitor retrieves the number of the monitor on which to show the menu.
+//
+// The function returns the following values:
+//
+//    - gint: number of the monitor on which the menu should be popped up or -1,
+//      if no monitor has been set.
+//
 func (menu *Menu) Monitor() int {
 	var _arg0 *C.GtkMenu // out
 	var _cret C.gint     // in
@@ -333,6 +398,11 @@ func (menu *Menu) Monitor() int {
 
 // ReserveToggleSize returns whether the menu reserves space for toggles and
 // icons, regardless of their actual presence.
+//
+// The function returns the following values:
+//
+//    - ok: whether the menu reserves toggle space.
+//
 func (menu *Menu) ReserveToggleSize() bool {
 	var _arg0 *C.GtkMenu // out
 	var _cret C.gboolean // in
@@ -355,6 +425,11 @@ func (menu *Menu) ReserveToggleSize() bool {
 // gtk_menu_set_tearoff_state().
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the menu is currently torn off.
+//
 func (menu *Menu) TearoffState() bool {
 	var _arg0 *C.GtkMenu // out
 	var _cret C.gboolean // in
@@ -376,6 +451,12 @@ func (menu *Menu) TearoffState() bool {
 // Title returns the title of the menu. See gtk_menu_set_title().
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - utf8: title of the menu, or NULL if the menu has no title set on it. This
+//      string is owned by GTK+ and should not be modified or freed.
+//
 func (menu *Menu) Title() string {
 	var _arg0 *C.GtkMenu // out
 	var _cret *C.gchar   // in
@@ -435,8 +516,8 @@ func (menu *Menu) Popdown() {
 //
 // The function takes the following parameters:
 //
-//    - triggerEvent that initiated this request or NULL if it's the current
-//    event.
+//    - triggerEvent (optional) that initiated this request or NULL if it's the
+//      current event.
 //
 func (menu *Menu) PopupAtPointer(triggerEvent *gdk.Event) {
 	var _arg0 *C.GtkMenu  // out
@@ -476,8 +557,8 @@ func (menu *Menu) PopupAtPointer(triggerEvent *gdk.Event) {
 //    - rect to align menu with.
 //    - rectAnchor: point on rect to align with menu's anchor point.
 //    - menuAnchor: point on menu to align with rect's anchor point.
-//    - triggerEvent that initiated this request or NULL if it's the current
-//    event.
+//    - triggerEvent (optional) that initiated this request or NULL if it's the
+//      current event.
 //
 func (menu *Menu) PopupAtRect(rectWindow gdk.Windower, rect *gdk.Rectangle, rectAnchor, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
 	var _arg0 *C.GtkMenu      // out
@@ -531,8 +612,8 @@ func (menu *Menu) PopupAtRect(rectWindow gdk.Windower, rect *gdk.Rectangle, rect
 //    - widget to align menu with.
 //    - widgetAnchor: point on widget to align with menu's anchor point.
 //    - menuAnchor: point on menu to align with widget's anchor point.
-//    - triggerEvent that initiated this request or NULL if it's the current
-//    event.
+//    - triggerEvent (optional) that initiated this request or NULL if it's the
+//      current event.
 //
 func (menu *Menu) PopupAtWidget(widget Widgetter, widgetAnchor, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
 	var _arg0 *C.GtkMenu   // out
@@ -562,8 +643,8 @@ func (menu *Menu) PopupAtWidget(widget Widgetter, widgetAnchor, menuAnchor gdk.G
 // The function takes the following parameters:
 //
 //    - child to move.
-//    - position: new position to place child. Positions are numbered from 0 to
-//    n - 1.
+//    - position: new position to place child. Positions are numbered from 0 to n
+//      - 1.
 //
 func (menu *Menu) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkMenu   // out
@@ -597,7 +678,7 @@ func (menu *Menu) Reposition() {
 //
 // The function takes the following parameters:
 //
-//    - accelGroup to be associated with the menu.
+//    - accelGroup (optional) to be associated with the menu.
 //
 func (menu *Menu) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkMenu       // out
@@ -637,7 +718,7 @@ func (menu *Menu) SetAccelGroup(accelGroup *AccelGroup) {
 //
 // The function takes the following parameters:
 //
-//    - accelPath: valid accelerator path, or NULL to unset the path.
+//    - accelPath (optional): valid accelerator path, or NULL to unset the path.
 //
 func (menu *Menu) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkMenu // out
@@ -684,8 +765,7 @@ func (menu *Menu) SetActive(index uint) {
 //
 // The function takes the following parameters:
 //
-//    - monitorNum: number of the monitor on which the menu should be popped
-//    up.
+//    - monitorNum: number of the monitor on which the menu should be popped up.
 //
 func (menu *Menu) SetMonitor(monitorNum int) {
 	var _arg0 *C.GtkMenu // out
@@ -724,8 +804,8 @@ func (menu *Menu) SetReserveToggleSize(reserveToggleSize bool) {
 //
 // The function takes the following parameters:
 //
-//    - screen or NULL if the screen should be determined by the widget the
-//    menu is attached to.
+//    - screen (optional) or NULL if the screen should be determined by the
+//      widget the menu is attached to.
 //
 func (menu *Menu) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkMenu   // out
@@ -776,8 +856,8 @@ func (menu *Menu) SetTearoffState(tornOff bool) {
 //
 // The function takes the following parameters:
 //
-//    - title: string containing the title for the menu, or NULL to inherit the
-//    title of the parent menu item, if any.
+//    - title (optional): string containing the title for the menu, or NULL to
+//      inherit the title of the parent menu item, if any.
 //
 func (menu *Menu) SetTitle(title string) {
 	var _arg0 *C.GtkMenu // out
@@ -794,41 +874,16 @@ func (menu *Menu) SetTitle(title string) {
 	runtime.KeepAlive(title)
 }
 
-func (menu *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) externglib.SignalHandle {
-	return menu.Connect("move-scroll", f)
-}
-
-// ConnectPoppedUp: emitted when the position of menu is finalized after being
-// popped up using gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (), or
-// gtk_menu_popup_at_pointer ().
-//
-// menu might be flipped over the anchor rectangle in order to keep it
-// on-screen, in which case flipped_x and flipped_y will be set to TRUE
-// accordingly.
-//
-// flipped_rect is the ideal position of menu after any possible flipping, but
-// before any possible sliding. final_rect is flipped_rect, but possibly
-// translated in the case that flipping is still ineffective in keeping menu
-// on-screen.
-//
-// ! (popup-slide.png)
-//
-// The blue menu is menu's ideal position, the green menu is flipped_rect, and
-// the red menu is final_rect.
-//
-// See gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (),
-// gtk_menu_popup_at_pointer (), Menu:anchor-hints, Menu:rect-anchor-dx,
-// Menu:rect-anchor-dy, and Menu:menu-type-hint.
-func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
-	return menu.Connect("popped-up", f)
-}
-
 // MenuGetForAttachWidget returns a list of the menus which are attached to this
 // widget. This list is owned by GTK+ and must not be modified.
 //
 // The function takes the following parameters:
 //
 //    - widget: Widget.
+//
+// The function returns the following values:
+//
+//    - list: list of menus attached to his widget.
 //
 func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 	var _arg1 *C.GtkWidget // out

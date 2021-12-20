@@ -74,14 +74,18 @@ func marshalAspectFramer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - label: label text.
+//    - label (optional): label text.
 //    - xalign: horizontal alignment of the child within the allocation of the
-//    AspectFrame. This ranges from 0.0 (left aligned) to 1.0 (right aligned).
+//      AspectFrame. This ranges from 0.0 (left aligned) to 1.0 (right aligned).
 //    - yalign: vertical alignment of the child within the allocation of the
-//    AspectFrame. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned).
+//      AspectFrame. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned).
 //    - ratio: desired aspect ratio.
-//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken
-//    from the requistion of the child.
+//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken from
+//      the requistion of the child.
+//
+// The function returns the following values:
+//
+//    - aspectFrame: new AspectFrame.
 //
 func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool) *AspectFrame {
 	var _arg1 *C.gchar     // out
@@ -121,12 +125,12 @@ func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool)
 // The function takes the following parameters:
 //
 //    - xalign: horizontal alignment of the child within the allocation of the
-//    AspectFrame. This ranges from 0.0 (left aligned) to 1.0 (right aligned).
+//      AspectFrame. This ranges from 0.0 (left aligned) to 1.0 (right aligned).
 //    - yalign: vertical alignment of the child within the allocation of the
-//    AspectFrame. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned).
+//      AspectFrame. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned).
 //    - ratio: desired aspect ratio.
-//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken
-//    from the requistion of the child.
+//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken from
+//      the requistion of the child.
 //
 func (aspectFrame *AspectFrame) Set(xalign, yalign, ratio float32, obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out

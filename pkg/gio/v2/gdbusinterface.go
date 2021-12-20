@@ -30,13 +30,29 @@ func init() {
 // yet, so the interface currently has no use.
 type DBusInterfaceOverrider interface {
 	// DupObject gets the BusObject that interface_ belongs to, if any.
+	//
+	// The function returns the following values:
+	//
+	//    - dBusObject (optional) or NULL. The returned reference should be freed
+	//      with g_object_unref().
+	//
 	DupObject() DBusObjector
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by interface_.
+	//
+	// The function returns the following values:
+	//
+	//    - dBusInterfaceInfo Do not free.
+	//
 	Info() *DBusInterfaceInfo
 	// SetObject sets the BusObject for interface_ to object.
 	//
 	// Note that interface_ will hold a weak reference to object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - object (optional) or NULL.
+	//
 	SetObject(object DBusObjector)
 }
 
@@ -76,6 +92,12 @@ func marshalDBusInterfacer(p uintptr) (interface{}, error) {
 }
 
 // GetObject gets the BusObject that interface_ belongs to, if any.
+//
+// The function returns the following values:
+//
+//    - dBusObject (optional) or NULL. The returned reference should be freed
+//      with g_object_unref().
+//
 func (interface_ *DBusInterface) GetObject() DBusObjector {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
@@ -106,6 +128,11 @@ func (interface_ *DBusInterface) GetObject() DBusObjector {
 
 // Info gets D-Bus introspection information for the D-Bus interface implemented
 // by interface_.
+//
+// The function returns the following values:
+//
+//    - dBusInterfaceInfo Do not free.
+//
 func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
@@ -135,7 +162,7 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 //
 // The function takes the following parameters:
 //
-//    - object or NULL.
+//    - object (optional) or NULL.
 //
 func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _arg0 *C.GDBusInterface // out

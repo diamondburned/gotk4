@@ -39,8 +39,17 @@ type ApplicationCommandLineOverrider interface {
 	// future, support may be expanded to other platforms.
 	//
 	// You must only call this function once per commandline invocation.
+	//
+	// The function returns the following values:
+	//
+	//    - inputStream (optional) for stdin.
+	//
 	Stdin() InputStreamer
+	// The function takes the following parameters:
+	//
 	PrintLiteral(message string)
+	// The function takes the following parameters:
+	//
 	PrinterrLiteral(message string)
 }
 
@@ -144,6 +153,10 @@ func marshalApplicationCommandLiner(p uintptr) (interface{}, error) {
 //
 //    - arg: argument from cmdline.
 //
+// The function returns the following values:
+//
+//    - file: new #GFile.
+//
 func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
@@ -187,6 +200,11 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 // g_option_context_parse_strv().
 //
 // The return value is NULL-terminated and should be freed using g_strfreev().
+//
+// The function returns the following values:
+//
+//    - filenames: the string array containing the arguments (the argv).
+//
 func (cmdline *ApplicationCommandLine) Arguments() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret **C.gchar                  // in
@@ -220,6 +238,11 @@ func (cmdline *ApplicationCommandLine) Arguments() []string {
 //
 // The return value should not be modified or freed and is valid for as long as
 // cmdline exists.
+//
+// The function returns the following values:
+//
+//    - filename (optional): current directory, or NULL.
+//
 func (cmdline *ApplicationCommandLine) Cwd() string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.gchar                   // in
@@ -253,6 +276,11 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 //
 // See g_application_command_line_getenv() if you are only interested in the
 // value of a single environment variable.
+//
+// The function returns the following values:
+//
+//    - filenames: the environment strings, or NULL if they were not sent.
+//
 func (cmdline *ApplicationCommandLine) Environ() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret **C.gchar                  // in
@@ -283,6 +311,11 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 
 // ExitStatus gets the exit status of cmdline. See
 // g_application_command_line_set_exit_status() for more information.
+//
+// The function returns the following values:
+//
+//    - gint: exit status.
+//
 func (cmdline *ApplicationCommandLine) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.int                      // in
@@ -300,6 +333,11 @@ func (cmdline *ApplicationCommandLine) ExitStatus() int {
 }
 
 // IsRemote determines if cmdline represents a remote invocation.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the invocation was remote.
+//
 func (cmdline *ApplicationCommandLine) IsRemote() bool {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.gboolean                 // in
@@ -328,6 +366,11 @@ func (cmdline *ApplicationCommandLine) IsRemote() bool {
 //
 // If no options were sent then an empty dictionary is returned so that you
 // don't need to check for NULL.
+//
+// The function returns the following values:
+//
+//    - variantDict with the options.
+//
 func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariantDict            // in
@@ -359,6 +402,11 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 // current working directory and the startup notification ID.
 //
 // For local invocation, it will be NULL.
+//
+// The function returns the following values:
+//
+//    - variant (optional): platform data, or NULL.
+//
 func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariant                // in
@@ -392,6 +440,11 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 // future, support may be expanded to other platforms.
 //
 // You must only call this function once per commandline invocation.
+//
+// The function returns the following values:
+//
+//    - inputStream (optional) for stdin.
+//
 func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GInputStream            // in
@@ -435,6 +488,10 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 // The function takes the following parameters:
 //
 //    - name: environment variable to get.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): value of the variable, or NULL if unset or unsent.
 //
 func (cmdline *ApplicationCommandLine) env(name string) string {
 	var _arg0 *C.GApplicationCommandLine // out

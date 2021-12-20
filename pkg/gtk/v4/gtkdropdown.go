@@ -92,8 +92,12 @@ func marshalDropDowner(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model to use or NULL for none.
-//    - expression to use or NULL for none.
+//    - model (optional) to use or NULL for none.
+//    - expression (optional) to use or NULL for none.
+//
+// The function returns the following values:
+//
+//    - dropDown: new GtkDropDown.
 //
 func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 	var _arg1 *C.GListModel    // out
@@ -127,6 +131,10 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 //
 //    - strings to put in the dropdown.
 //
+// The function returns the following values:
+//
+//    - dropDown: new GtkDropDown.
+//
 func NewDropDownFromStrings(strings []string) *DropDown {
 	var _arg1 **C.char     // out
 	var _cret *C.GtkWidget // in
@@ -156,6 +164,11 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 }
 
 // EnableSearch returns whether search is enabled.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the popup includes a search entry.
+//
 func (self *DropDown) EnableSearch() bool {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gboolean     // in
@@ -177,6 +190,11 @@ func (self *DropDown) EnableSearch() bool {
 // Expression gets the expression set that is used to obtain strings from items.
 //
 // See gtk.DropDown.SetExpression().
+//
+// The function returns the following values:
+//
+//    - expression (optional): GtkExpression or NULL.
+//
 func (self *DropDown) Expression() Expressioner {
 	var _arg0 *C.GtkDropDown   // out
 	var _cret *C.GtkExpression // in
@@ -210,6 +228,11 @@ func (self *DropDown) Expression() Expressioner {
 // The factory returned by this function is always used for the item in the
 // button. It is also used for items in the popup if gtk.DropDown:list-factory
 // is not set.
+//
+// The function returns the following values:
+//
+//    - listItemFactory (optional): factory in use.
+//
 func (self *DropDown) Factory() *ListItemFactory {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
@@ -230,6 +253,11 @@ func (self *DropDown) Factory() *ListItemFactory {
 
 // ListFactory gets the factory that's currently used to populate list items in
 // the popup.
+//
+// The function returns the following values:
+//
+//    - listItemFactory (optional): factory in use.
+//
 func (self *DropDown) ListFactory() *ListItemFactory {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
@@ -249,6 +277,11 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 }
 
 // Model gets the model that provides the displayed items.
+//
+// The function returns the following values:
+//
+//    - listModel (optional): model in use.
+//
 func (self *DropDown) Model() gio.ListModeller {
 	var _arg0 *C.GtkDropDown // out
 	var _cret *C.GListModel  // in
@@ -278,6 +311,12 @@ func (self *DropDown) Model() gio.ListModeller {
 }
 
 // Selected gets the position of the selected item.
+//
+// The function returns the following values:
+//
+//    - guint: position of the selected item, or GTK_INVALID_LIST_POSITION if not
+//      item is selected.
+//
 func (self *DropDown) Selected() uint {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.guint        // in
@@ -296,6 +335,11 @@ func (self *DropDown) Selected() uint {
 
 // SelectedItem gets the selected item. If no item is selected, NULL is
 // returned.
+//
+// The function returns the following values:
+//
+//    - object (optional): selected item.
+//
 func (self *DropDown) SelectedItem() *externglib.Object {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gpointer     // in
@@ -343,7 +387,7 @@ func (self *DropDown) SetEnableSearch(enableSearch bool) {
 //
 // The function takes the following parameters:
 //
-//    - expression: GtkExpression, or NULL.
+//    - expression (optional): GtkExpression, or NULL.
 //
 func (self *DropDown) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkDropDown   // out
@@ -363,7 +407,7 @@ func (self *DropDown) SetExpression(expression Expressioner) {
 //
 // The function takes the following parameters:
 //
-//    - factory to use or NULL for none.
+//    - factory (optional) to use or NULL for none.
 //
 func (self *DropDown) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
@@ -384,7 +428,7 @@ func (self *DropDown) SetFactory(factory *ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - factory to use or NULL for none.
+//    - factory (optional) to use or NULL for none.
 //
 func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
@@ -404,7 +448,7 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - model to use or NULL for none.
+//    - model (optional) to use or NULL for none.
 //
 func (self *DropDown) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkDropDown // out

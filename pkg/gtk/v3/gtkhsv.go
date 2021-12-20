@@ -31,6 +31,8 @@ func init() {
 // yet, so the interface currently has no use.
 type HSVOverrider interface {
 	Changed()
+	// The function takes the following parameters:
+	//
 	Move(typ DirectionType)
 }
 
@@ -69,7 +71,20 @@ func marshalHSVer(p uintptr) (interface{}, error) {
 	return wrapHSV(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (hsv *HSV) ConnectChanged(f func()) externglib.SignalHandle {
+	return hsv.Connect("changed", f)
+}
+
+func (hsv *HSV) ConnectMove(f func(object DirectionType)) externglib.SignalHandle {
+	return hsv.Connect("move", f)
+}
+
 // NewHSV creates a new HSV color selector.
+//
+// The function returns the following values:
+//
+//    - hsV: newly-created HSV color selector.
+//
 func NewHSV() *HSV {
 	var _cret *C.GtkWidget // in
 
@@ -84,6 +99,13 @@ func NewHSV() *HSV {
 
 // Color queries the current color in an HSV color selector. Returned values
 // will be in the [0.0, 1.0] range.
+//
+// The function returns the following values:
+//
+//    - h: return value for the hue.
+//    - s: return value for the saturation.
+//    - v: return value for the value.
+//
 func (hsv *HSV) Color() (h float64, s float64, v float64) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.gdouble // in
@@ -107,6 +129,12 @@ func (hsv *HSV) Color() (h float64, s float64, v float64) {
 }
 
 // Metrics queries the size and ring width of an HSV color selector.
+//
+// The function returns the following values:
+//
+//    - size: return value for the diameter of the hue ring.
+//    - ringWidth: return value for the width of the hue ring.
+//
 func (hsv *HSV) Metrics() (size int, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.gint    // in
@@ -130,6 +158,13 @@ func (hsv *HSV) Metrics() (size int, ringWidth int) {
 // changes are being made to its value, for example, when the user is adjusting
 // the value with the mouse. This function queries whether the HSV color
 // selector is being adjusted or not.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if clients can ignore changes to the color value, since they may
+//      be transitory, or FALSE if they should consider the color value status to
+//      be final.
+//
 func (hsv *HSV) IsAdjusting() bool {
 	var _arg0 *C.GtkHSV  // out
 	var _cret C.gboolean // in
@@ -195,12 +230,4 @@ func (hsv *HSV) SetMetrics(size, ringWidth int) {
 	runtime.KeepAlive(hsv)
 	runtime.KeepAlive(size)
 	runtime.KeepAlive(ringWidth)
-}
-
-func (hsv *HSV) ConnectChanged(f func()) externglib.SignalHandle {
-	return hsv.Connect("changed", f)
-}
-
-func (hsv *HSV) ConnectMove(f func(object DirectionType)) externglib.SignalHandle {
-	return hsv.Connect("move", f)
 }

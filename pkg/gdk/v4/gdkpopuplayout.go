@@ -193,6 +193,11 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 }
 
 // Copy makes a copy of layout.
+//
+// The function returns the following values:
+//
+//    - popupLayout: copy of layout.
+//
 func (layout *PopupLayout) Copy() *PopupLayout {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkPopupLayout // in
@@ -216,6 +221,16 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 }
 
 // Equal: check whether layout and other has identical layout properties.
+//
+// The function takes the following parameters:
+//
+//    - other GdkPopupLayout.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if layout and other have identical layout properties, otherwise
+//      FALSE.
+//
 func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 *C.GdkPopupLayout // out
@@ -238,6 +253,11 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 }
 
 // AnchorHints: get the GdkAnchorHints.
+//
+// The function returns the following values:
+//
+//    - anchorHints: GdkAnchorHints.
+//
 func (layout *PopupLayout) AnchorHints() AnchorHints {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkAnchorHints  // in
@@ -255,6 +275,11 @@ func (layout *PopupLayout) AnchorHints() AnchorHints {
 }
 
 // AnchorRect: get the anchor rectangle.
+//
+// The function returns the following values:
+//
+//    - rectangle: anchor rectangle.
+//
 func (layout *PopupLayout) AnchorRect() *Rectangle {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkRectangle   // in
@@ -272,6 +297,12 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 }
 
 // Offset retrieves the offset for the anchor rectangle.
+//
+// The function returns the following values:
+//
+//    - dx: return location for the delta X coordinate.
+//    - dy: return location for the delta Y coordinate.
+//
 func (layout *PopupLayout) Offset() (dx int, dy int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // in
@@ -292,6 +323,11 @@ func (layout *PopupLayout) Offset() (dx int, dy int) {
 }
 
 // RectAnchor returns the anchor position on the anchor rectangle.
+//
+// The function returns the following values:
+//
+//    - gravity: anchor on the anchor rectangle.
+//
 func (layout *PopupLayout) RectAnchor() Gravity {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkGravity      // in
@@ -309,6 +345,14 @@ func (layout *PopupLayout) RectAnchor() Gravity {
 }
 
 // ShadowWidth obtains the shadow widths of this layout.
+//
+// The function returns the following values:
+//
+//    - left: return location for the left shadow width.
+//    - right: return location for the right shadow width.
+//    - top: return location for the top shadow width.
+//    - bottom: return location for the bottom shadow width.
+//
 func (layout *PopupLayout) ShadowWidth() (left int, right int, top int, bottom int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // in
@@ -335,6 +379,11 @@ func (layout *PopupLayout) ShadowWidth() (left int, right int, top int, bottom i
 }
 
 // SurfaceAnchor returns the anchor position on the popup surface.
+//
+// The function returns the following values:
+//
+//    - gravity: anchor on the popup surface.
+//
 func (layout *PopupLayout) SurfaceAnchor() Gravity {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkGravity      // in
@@ -357,6 +406,11 @@ func (layout *PopupLayout) SurfaceAnchor() Gravity {
 // points cause it to move off-screen. For example, GDK_ANCHOR_FLIP_X will
 // replace GDK_GRAVITY_NORTH_WEST with GDK_GRAVITY_NORTH_EAST and vice versa if
 // surface extends beyond the left or right edges of the monitor.
+//
+// The function takes the following parameters:
+//
+//    - anchorHints: new GdkAnchorHints.
+//
 func (layout *PopupLayout) SetAnchorHints(anchorHints AnchorHints) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.GdkAnchorHints  // out
@@ -370,6 +424,11 @@ func (layout *PopupLayout) SetAnchorHints(anchorHints AnchorHints) {
 }
 
 // SetAnchorRect: set the anchor rectangle.
+//
+// The function takes the following parameters:
+//
+//    - anchorRect: new anchor rectangle.
+//
 func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 *C.GdkRectangle   // out
@@ -383,6 +442,12 @@ func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 }
 
 // SetOffset: offset the position of the anchor rectangle with the given delta.
+//
+// The function takes the following parameters:
+//
+//    - dx: x delta to offset the anchor rectangle with.
+//    - dy: y delta to offset the anchor rectangle with.
+//
 func (layout *PopupLayout) SetOffset(dx int, dy int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // out
@@ -399,6 +464,11 @@ func (layout *PopupLayout) SetOffset(dx int, dy int) {
 }
 
 // SetRectAnchor: set the anchor on the anchor rectangle.
+//
+// The function takes the following parameters:
+//
+//    - anchor: new rect anchor.
+//
 func (layout *PopupLayout) SetRectAnchor(anchor Gravity) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.GdkGravity      // out
@@ -416,6 +486,14 @@ func (layout *PopupLayout) SetRectAnchor(anchor Gravity) {
 // The shadow width corresponds to the part of the computed surface size that
 // would consist of the shadow margin surrounding the window, would there be
 // any.
+//
+// The function takes the following parameters:
+//
+//    - left: width of the left part of the shadow.
+//    - right: width of the right part of the shadow.
+//    - top: height of the top part of the shadow.
+//    - bottom: height of the bottom part of the shadow.
+//
 func (layout *PopupLayout) SetShadowWidth(left int, right int, top int, bottom int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // out
@@ -438,6 +516,11 @@ func (layout *PopupLayout) SetShadowWidth(left int, right int, top int, bottom i
 }
 
 // SetSurfaceAnchor: set the anchor on the popup surface.
+//
+// The function takes the following parameters:
+//
+//    - anchor: new popup surface anchor.
+//
 func (layout *PopupLayout) SetSurfaceAnchor(anchor Gravity) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.GdkGravity      // out

@@ -58,7 +58,21 @@ func marshalFilterInputStreamer(p uintptr) (interface{}, error) {
 	return wrapFilterInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (stream *FilterInputStream) baseFilterInputStream() *FilterInputStream {
+	return stream
+}
+
+// BaseFilterInputStream returns the underlying base object.
+func BaseFilterInputStream(obj FilterInputStreamer) *FilterInputStream {
+	return obj.baseFilterInputStream()
+}
+
 // BaseStream gets the base stream for the filter stream.
+//
+// The function returns the following values:
+//
+//    - inputStream: Stream.
+//
 func (stream *FilterInputStream) BaseStream() InputStreamer {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret *C.GInputStream       // in
@@ -90,6 +104,11 @@ func (stream *FilterInputStream) BaseStream() InputStreamer {
 
 // CloseBaseStream returns whether the base stream will be closed when stream is
 // closed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the base stream will be closed.
+//
 func (stream *FilterInputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret C.gboolean            // in
@@ -127,13 +146,4 @@ func (stream *FilterInputStream) SetCloseBaseStream(closeBase bool) {
 	C.g_filter_input_stream_set_close_base_stream(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(closeBase)
-}
-
-func (stream *FilterInputStream) baseFilterInputStream() *FilterInputStream {
-	return stream
-}
-
-// BaseFilterInputStream returns the underlying base object.
-func BaseFilterInputStream(obj FilterInputStreamer) *FilterInputStream {
-	return obj.baseFilterInputStream()
 }

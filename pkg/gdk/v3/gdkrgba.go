@@ -95,6 +95,11 @@ func (r *RGBA) Alpha() float64 {
 // Copy makes a copy of a RGBA.
 //
 // The result must be freed through gdk_rgba_free().
+//
+// The function returns the following values:
+//
+//    - rgbA: newly allocated RGBA, with the same contents as rgba.
+//
 func (rgba *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
@@ -118,6 +123,15 @@ func (rgba *RGBA) Copy() *RGBA {
 }
 
 // Equal compares two RGBA colors.
+//
+// The function takes the following parameters:
+//
+//    - p2: another RGBA pointer.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two colors compare equal.
+//
 func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -140,6 +154,11 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 }
 
 // Hash: hash function suitable for using for a hash table that stores RGBAs.
+//
+// The function returns the following values:
+//
+//    - guint: hash value for p.
+//
 func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -175,6 +194,15 @@ func (p *RGBA) Hash() uint {
 // color values. In the last two cases, “r”, “g”, and “b” are either integers in
 // the range 0 to 255 or percentage values in the range 0% to 100%, and a is a
 // floating point value in the range 0 to 1.
+//
+// The function takes the following parameters:
+//
+//    - spec: string specifying the color.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the parsing succeeded.
+//
 func (rgba *RGBA) Parse(spec string) bool {
 	var _arg0 *C.GdkRGBA // out
 	var _arg1 *C.gchar   // out
@@ -209,6 +237,11 @@ func (rgba *RGBA) Parse(spec string) bool {
 // Note that this string representation may lose some precision, since “r”, “g”
 // and “b” are represented as 8-bit integers. If this is a concern, you should
 // use a different representation.
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated text string.
+//
 func (rgba *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.gchar   // in

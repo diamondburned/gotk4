@@ -68,7 +68,21 @@ type PixbufAnimationOverrider interface {
 	// should be reinstalled after any area_updated signal.
 	//
 	// A delay time of -1 is possible, indicating "infinite".
+	//
+	// The function takes the following parameters:
+	//
+	//    - startTime (optional): time when the animation starts playing.
+	//
+	// The function returns the following values:
+	//
+	//    - pixbufAnimationIter: iterator to move over the animation.
+	//
 	Iter(startTime *glib.TimeVal) *PixbufAnimationIter
+	// The function takes the following parameters:
+	//
+	//    - width
+	//    - height
+	//
 	Size(width, height *int)
 	// StaticImage retrieves a static image for the animation.
 	//
@@ -81,12 +95,22 @@ type PixbufAnimationOverrider interface {
 	//
 	// If an animation hasn't loaded any frames yet, this function will return
 	// NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - pixbuf: unanimated image representing the animation.
+	//
 	StaticImage() *Pixbuf
 	// IsStaticImage checks whether the animation is a static image.
 	//
 	// If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
 	// out to be a plain, unanimated image, then this function will return TRUE.
 	// Use gdk_pixbuf_animation_get_static_image() to retrieve the image.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the "animation" was really just an image.
+	//
 	IsStaticImage() bool
 }
 
@@ -134,6 +158,10 @@ func marshalPixbufAnimationer(p uintptr) (interface{}, error) {
 //
 //    - filename: name of file to load, in the GLib file name encoding.
 //
+// The function returns the following values:
+//
+//    - pixbufAnimation (optional): newly-created animation.
+//
 func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 	var _arg1 *C.char               // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -167,6 +195,10 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 // The function takes the following parameters:
 //
 //    - resourcePath: path of the resource file.
+//
+// The function returns the following values:
+//
+//    - pixbufAnimation (optional): newly-created animation.
 //
 func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, error) {
 	var _arg1 *C.char               // out
@@ -207,8 +239,12 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional GCancellable object.
+//    - ctx (optional): optional GCancellable object.
 //    - stream: GInputStream to load the pixbuf from.
+//
+// The function returns the following values:
+//
+//    - pixbufAnimation (optional): newly-created animation.
 //
 func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer) (*PixbufAnimation, error) {
 	var _arg2 *C.GCancellable       // out
@@ -248,6 +284,10 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 //
 //    - asyncResult: Result.
 //
+// The function returns the following values:
+//
+//    - pixbufAnimation (optional): newly created animation.
+//
 func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufAnimation, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -272,6 +312,11 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 }
 
 // Height queries the height of the bounding box of a pixbuf animation.
+//
+// The function returns the following values:
+//
+//    - gint: height of the bounding box of the animation.
+//
 func (animation *PixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
@@ -321,7 +366,11 @@ func (animation *PixbufAnimation) Height() int {
 //
 // The function takes the following parameters:
 //
-//    - startTime: time when the animation starts playing.
+//    - startTime (optional): time when the animation starts playing.
+//
+// The function returns the following values:
+//
+//    - pixbufAnimationIter: iterator to move over the animation.
 //
 func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimationIter {
 	var _arg0 *C.GdkPixbufAnimation     // out
@@ -354,6 +403,11 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 // something more sophisticated depending on the file format.
 //
 // If an animation hasn't loaded any frames yet, this function will return NULL.
+//
+// The function returns the following values:
+//
+//    - pixbuf: unanimated image representing the animation.
+//
 func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret *C.GdkPixbuf          // in
@@ -371,6 +425,11 @@ func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 }
 
 // Width queries the width of the bounding box of a pixbuf animation.
+//
+// The function returns the following values:
+//
+//    - gint: width of the bounding box of the animation.
+//
 func (animation *PixbufAnimation) Width() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
@@ -392,6 +451,11 @@ func (animation *PixbufAnimation) Width() int {
 // If you load a file with gdk_pixbuf_animation_new_from_file() and it turns out
 // to be a plain, unanimated image, then this function will return TRUE. Use
 // gdk_pixbuf_animation_get_static_image() to retrieve the image.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the "animation" was really just an image.
+//
 func (animation *PixbufAnimation) IsStaticImage() bool {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.gboolean            // in
@@ -422,9 +486,10 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object.
+//    - ctx (optional): optional #GCancellable object.
 //    - stream from which to load the animation.
-//    - callback: GAsyncReadyCallback to call when the pixbuf is loaded.
+//    - callback (optional): GAsyncReadyCallback to call when the pixbuf is
+//      loaded.
 //
 func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
@@ -474,6 +539,15 @@ type PixbufAnimationIterOverrider interface {
 	// display, assuming the display had been rendered prior to advancing; if
 	// TRUE, you need to call gdk_pixbuf_animation_iter_get_pixbuf() and update
 	// the display with the new pixbuf.
+	//
+	// The function takes the following parameters:
+	//
+	//    - currentTime (optional): current time.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the image may need updating.
+	//
 	Advance(currentTime *glib.TimeVal) bool
 	// DelayTime gets the number of milliseconds the current pixbuf should be
 	// displayed, or -1 if the current pixbuf should be displayed forever.
@@ -484,6 +558,11 @@ type PixbufAnimationIterOverrider interface {
 	// Note that some formats, like GIF, might clamp the timeout values in the
 	// image file to avoid updates that are just too quick. The minimum timeout
 	// for GIF images is currently 20 milliseconds.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: delay time in milliseconds (thousandths of a second).
+	//
 	DelayTime() int
 	// Pixbuf gets the current pixbuf which should be displayed.
 	//
@@ -500,6 +579,11 @@ type PixbufAnimationIterOverrider interface {
 	//
 	// Copy the pixbuf to keep it (don't just add a reference), as it may get
 	// recycled as you advance the iterator.
+	//
+	// The function returns the following values:
+	//
+	//    - pixbuf to be displayed.
+	//
 	Pixbuf() *Pixbuf
 	// OnCurrentlyLoadingFrame: used to determine how to respond to the
 	// area_updated signal on PixbufLoader when loading an animation.
@@ -507,6 +591,12 @@ type PixbufAnimationIterOverrider interface {
 	// The ::area_updated signal is emitted for an area of the frame currently
 	// streaming in to the loader. So if you're on the currently loading frame,
 	// you will need to redraw the screen for the updated area.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the frame we're on is partially loaded, or the last
+	//      frame.
+	//
 	OnCurrentlyLoadingFrame() bool
 }
 
@@ -552,7 +642,11 @@ func marshalPixbufAnimationIterer(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - currentTime: current time.
+//    - currentTime (optional): current time.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the image may need updating.
 //
 func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
@@ -586,6 +680,11 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 // Note that some formats, like GIF, might clamp the timeout values in the image
 // file to avoid updates that are just too quick. The minimum timeout for GIF
 // images is currently 20 milliseconds.
+//
+// The function returns the following values:
+//
+//    - gint: delay time in milliseconds (thousandths of a second).
+//
 func (iter *PixbufAnimationIter) DelayTime() int {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.int                     // in
@@ -617,6 +716,11 @@ func (iter *PixbufAnimationIter) DelayTime() int {
 //
 // Copy the pixbuf to keep it (don't just add a reference), as it may get
 // recycled as you advance the iterator.
+//
+// The function returns the following values:
+//
+//    - pixbuf to be displayed.
+//
 func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret *C.GdkPixbuf              // in
@@ -639,6 +743,11 @@ func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 // The ::area_updated signal is emitted for an area of the frame currently
 // streaming in to the loader. So if you're on the currently loading frame, you
 // will need to redraw the screen for the updated area.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the frame we're on is partially loaded, or the last frame.
+//
 func (iter *PixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.gboolean                // in

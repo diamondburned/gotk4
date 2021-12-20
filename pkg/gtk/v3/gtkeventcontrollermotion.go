@@ -48,12 +48,31 @@ func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 	return wrapEventControllerMotion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectEnter signals that the pointer has entered the widget.
+func (v *EventControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
+	return v.Connect("enter", f)
+}
+
+// ConnectLeave signals that pointer has left the widget.
+func (v *EventControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
+	return v.Connect("leave", f)
+}
+
+// ConnectMotion: emitted when the pointer moves inside the widget.
+func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
+	return v.Connect("motion", f)
+}
+
 // NewEventControllerMotion creates a new event controller that will handle
 // motion events for the given widget.
 //
 // The function takes the following parameters:
 //
 //    - widget: Widget.
+//
+// The function returns the following values:
+//
+//    - eventControllerMotion: new EventControllerMotion.
 //
 func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
@@ -69,19 +88,4 @@ func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	_eventControllerMotion = wrapEventControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerMotion
-}
-
-// ConnectEnter signals that the pointer has entered the widget.
-func (v *EventControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
-	return v.Connect("enter", f)
-}
-
-// ConnectLeave signals that pointer has left the widget.
-func (v *EventControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
-	return v.Connect("leave", f)
-}
-
-// ConnectMotion: emitted when the pointer moves inside the widget.
-func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return v.Connect("motion", f)
 }

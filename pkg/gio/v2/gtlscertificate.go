@@ -47,6 +47,16 @@ type TLSCertificateOverrider interface {
 	//
 	// (All other CertificateFlags values will always be set or unset as
 	// appropriate.).
+	//
+	// The function takes the following parameters:
+	//
+	//    - identity (optional): expected peer identity.
+	//    - trustedCa (optional): certificate of a trusted authority.
+	//
+	// The function returns the following values:
+	//
+	//    - tlsCertificateFlags: appropriate CertificateFlags.
+	//
 	Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 }
 
@@ -83,6 +93,15 @@ func marshalTLSCertificater(p uintptr) (interface{}, error) {
 	return wrapTLSCertificate(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (cert *TLSCertificate) baseTLSCertificate() *TLSCertificate {
+	return cert
+}
+
+// BaseTLSCertificate returns the underlying base object.
+func BaseTLSCertificate(obj TLSCertificater) *TLSCertificate {
+	return obj.baseTLSCertificate()
+}
+
 // NewTLSCertificateFromFile creates a Certificate from the PEM-encoded data in
 // file. The returned certificate will be the first certificate found in file.
 // As of GLib 2.44, if file contains more certificates it will try to load a
@@ -98,6 +117,10 @@ func marshalTLSCertificater(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //    - file containing a PEM-encoded certificate to import.
+//
+// The function returns the following values:
+//
+//    - tlsCertificate: new certificate, or NULL on error.
 //
 func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
@@ -135,9 +158,12 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 //
 // The function takes the following parameters:
 //
-//    - certFile: file containing one or more PEM-encoded certificates to
-//    import.
+//    - certFile: file containing one or more PEM-encoded certificates to import.
 //    - keyFile: file containing a PEM-encoded private key to import.
+//
+// The function returns the following values:
+//
+//    - tlsCertificate: new certificate, or NULL on error.
 //
 func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
@@ -183,6 +209,10 @@ func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, erro
 //
 //    - data: PEM-encoded certificate data.
 //    - length of data, or -1 if it's 0-terminated.
+//
+// The function returns the following values:
+//
+//    - tlsCertificate: new certificate, or NULL if data is invalid.
 //
 func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
@@ -238,7 +268,11 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 // The function takes the following parameters:
 //
 //    - pkcs11Uri: PKCS \#11 URI.
-//    - privateKeyPkcs11Uri: PKCS \#11 URI.
+//    - privateKeyPkcs11Uri (optional): PKCS \#11 URI.
+//
+// The function returns the following values:
+//
+//    - tlsCertificate: new certificate, or NULL on error.
 //
 func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
@@ -269,6 +303,12 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TL
 }
 
 // Issuer gets the Certificate representing cert's issuer, if known.
+//
+// The function returns the following values:
+//
+//    - tlsCertificate (optional): certificate of cert's issuer, or NULL if cert
+//      is self-signed or signed with an unknown certificate.
+//
 func (cert *TLSCertificate) Issuer() TLSCertificater {
 	var _arg0 *C.GTlsCertificate // out
 	var _cret *C.GTlsCertificate // in
@@ -306,6 +346,10 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 // The function takes the following parameters:
 //
 //    - certTwo: second certificate to compare.
+//
+// The function returns the following values:
+//
+//    - ok: whether the same or not.
 //
 func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 	var _arg0 *C.GTlsCertificate // out
@@ -347,8 +391,12 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 //
 // The function takes the following parameters:
 //
-//    - identity: expected peer identity.
-//    - trustedCa: certificate of a trusted authority.
+//    - identity (optional): expected peer identity.
+//    - trustedCa (optional): certificate of a trusted authority.
+//
+// The function returns the following values:
+//
+//    - tlsCertificateFlags: appropriate CertificateFlags.
 //
 func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
@@ -376,15 +424,6 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 	return _tlsCertificateFlags
 }
 
-func (cert *TLSCertificate) baseTLSCertificate() *TLSCertificate {
-	return cert
-}
-
-// BaseTLSCertificate returns the underlying base object.
-func BaseTLSCertificate(obj TLSCertificater) *TLSCertificate {
-	return obj.baseTLSCertificate()
-}
-
 // TLSCertificateListNewFromFile creates one or more Certificates from the
 // PEM-encoded data in file. If file cannot be read or parsed, the function will
 // return NULL and set error. If file does not contain any PEM-encoded
@@ -393,6 +432,11 @@ func BaseTLSCertificate(obj TLSCertificater) *TLSCertificate {
 // The function takes the following parameters:
 //
 //    - file containing PEM-encoded certificates to import.
+//
+// The function returns the following values:
+//
+//    - list: a #GList containing Certificate objects. You must free the list and
+//      its contents when you are done with it.
 //
 func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	var _arg1 *C.gchar  // out

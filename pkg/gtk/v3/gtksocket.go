@@ -33,6 +33,8 @@ func init() {
 // yet, so the interface currently has no use.
 type SocketOverrider interface {
 	PlugAdded()
+	// The function returns the following values:
+	//
 	PlugRemoved() bool
 }
 
@@ -113,7 +115,25 @@ func marshalSocketter(p uintptr) (interface{}, error) {
 	return wrapSocket(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectPlugAdded: this signal is emitted when a client is successfully added
+// to the socket.
+func (socket_ *Socket) ConnectPlugAdded(f func()) externglib.SignalHandle {
+	return socket_.Connect("plug-added", f)
+}
+
+// ConnectPlugRemoved: this signal is emitted when a client is removed from the
+// socket. The default action is to destroy the Socket widget, so if you want to
+// reuse it you must add a signal handler that returns TRUE.
+func (socket_ *Socket) ConnectPlugRemoved(f func() bool) externglib.SignalHandle {
+	return socket_.Connect("plug-removed", f)
+}
+
 // NewSocket: create a new empty Socket.
+//
+// The function returns the following values:
+//
+//    - socket: new Socket.
+//
 func NewSocket() *Socket {
 	var _cret *C.GtkWidget // in
 
@@ -128,6 +148,11 @@ func NewSocket() *Socket {
 
 // PlugWindow retrieves the window of the plug. Use this to check if the plug
 // has been created inside of the socket.
+//
+// The function returns the following values:
+//
+//    - window (optional) of the plug if available, or NULL.
+//
 func (socket_ *Socket) PlugWindow() gdk.Windower {
 	var _arg0 *C.GtkSocket // out
 	var _cret *C.GdkWindow // in
@@ -154,17 +179,4 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 	}
 
 	return _window
-}
-
-// ConnectPlugAdded: this signal is emitted when a client is successfully added
-// to the socket.
-func (socket_ *Socket) ConnectPlugAdded(f func()) externglib.SignalHandle {
-	return socket_.Connect("plug-added", f)
-}
-
-// ConnectPlugRemoved: this signal is emitted when a client is removed from the
-// socket. The default action is to destroy the Socket widget, so if you want to
-// reuse it you must add a signal handler that returns TRUE.
-func (socket_ *Socket) ConnectPlugRemoved(f func() bool) externglib.SignalHandle {
-	return socket_.Connect("plug-removed", f)
 }

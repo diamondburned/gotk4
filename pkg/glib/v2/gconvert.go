@@ -86,6 +86,18 @@ func (c ConvertError) String() string {
 //    - toCodeset: name of character set into which to convert str.
 //    - fromCodeset: character set of str.
 //
+// The function returns the following values:
+//
+//    - bytesRead (optional): location to store the number of bytes in the input
+//      string that were successfully converted, or NULL. Even if the conversion
+//      was successful, this may be less than len if there were partial
+//      characters at the end of the input. If the error
+//      CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value stored will be the byte
+//      offset after the last valid input sequence.
+//    - guint8s: If the conversion was successful, a newly allocated buffer
+//      containing the converted string, which must be freed with g_free().
+//      Otherwise NULL and error will be set.
+//
 func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
@@ -147,9 +159,19 @@ func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 //    - toCodeset: name of character set into which to convert str.
 //    - fromCodeset: character set of str.
 //    - fallback: UTF-8 string to use in place of characters not present in the
-//    target encoding. (The string must be representable in the target
-//    encoding). If NULL, characters not in the target encoding will be
-//    represented as Unicode escapes \uxxxx or \Uxxxxyyyy.
+//      target encoding. (The string must be representable in the target
+//      encoding). If NULL, characters not in the target encoding will be
+//      represented as Unicode escapes \uxxxx or \Uxxxxyyyy.
+//
+// The function returns the following values:
+//
+//    - bytesRead (optional): location to store the number of bytes in the input
+//      string that were successfully converted, or NULL. Even if the conversion
+//      was successful, this may be less than len if there were partial
+//      characters at the end of the input.
+//    - guint8s: If the conversion was successful, a newly allocated buffer
+//      containing the converted string, which must be freed with g_free().
+//      Otherwise NULL and error will be set.
 //
 func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
@@ -215,6 +237,11 @@ func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []
 //
 //    - filename: absolute pathname in the GLib file name encoding.
 //
+// The function returns the following values:
+//
+//    - utf8: newly allocated string containing a rendition of the basename of
+//      the filename in valid UTF-8.
+//
 func FilenameDisplayBasename(filename string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -253,6 +280,11 @@ func FilenameDisplayBasename(filename string) string {
 //
 //    - filename: pathname hopefully in the GLib file name encoding.
 //
+// The function returns the following values:
+//
+//    - utf8: newly allocated string containing a rendition of the filename in
+//      valid UTF-8.
+//
 func FilenameDisplayName(filename string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -277,6 +309,13 @@ func FilenameDisplayName(filename string) string {
 // The function takes the following parameters:
 //
 //    - uri describing a filename (escaped, encoded in ASCII).
+//
+// The function returns the following values:
+//
+//    - hostname (optional): location to store hostname for the URI. If there is
+//      no hostname in the URI, NULL will be stored in this location.
+//    - filename: newly-allocated string holding the resulting filename, or NULL
+//      on an error.
 //
 func FilenameFromURI(uri string) (hostname string, filename string, goerr error) {
 	var _arg1 *C.gchar  // out
@@ -323,6 +362,18 @@ func FilenameFromURI(uri string) (hostname string, filename string, goerr error)
 //    - utf8String: UTF-8 encoded string.
 //    - len: length of the string, or -1 if the string is nul-terminated.
 //
+// The function returns the following values:
+//
+//    - bytesRead (optional): location to store the number of bytes in the input
+//      string that were successfully converted, or NULL. Even if the conversion
+//      was successful, this may be less than len if there were partial
+//      characters at the end of the input. If the error
+//      G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value stored will be the
+//      byte offset after the last valid input sequence.
+//    - bytesWritten (optional): number of bytes stored in the output buffer (not
+//      including the terminating nul).
+//    - filename: The converted string, or NULL on an error.
+//
 func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, filename string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 C.gssize  // out
@@ -361,8 +412,13 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 // The function takes the following parameters:
 //
 //    - filename: absolute filename specified in the GLib file name encoding,
-//    which is the on-disk file name bytes on Unix, and UTF-8 on Windows.
-//    - hostname: UTF-8 encoded hostname, or NULL for none.
+//      which is the on-disk file name bytes on Unix, and UTF-8 on Windows.
+//    - hostname (optional): UTF-8 encoded hostname, or NULL for none.
+//
+// The function returns the following values:
+//
+//    - utf8: newly-allocated string holding the resulting URI, or NULL on an
+//      error.
 //
 func FilenameToURI(filename, hostname string) (string, error) {
 	var _arg1 *C.gchar  // out
@@ -409,8 +465,20 @@ func FilenameToURI(filename, hostname string) (string, error) {
 //
 //    - opsysstring: string in the encoding for filenames.
 //    - len: length of the string, or -1 if the string is nul-terminated (Note
-//    that some encodings may allow nul bytes to occur inside strings. In that
-//    case, using -1 for the len parameter is unsafe).
+//      that some encodings may allow nul bytes to occur inside strings. In that
+//      case, using -1 for the len parameter is unsafe).
+//
+// The function returns the following values:
+//
+//    - bytesRead (optional): location to store the number of bytes in the input
+//      string that were successfully converted, or NULL. Even if the conversion
+//      was successful, this may be less than len if there were partial
+//      characters at the end of the input. If the error
+//      G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value stored will be the
+//      byte offset after the last valid input sequence.
+//    - bytesWritten (optional): number of bytes stored in the output buffer (not
+//      including the terminating nul).
+//    - utf8: converted string, or NULL on an error.
 //
 func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar  // out
@@ -467,6 +535,13 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 // Note that on Unix, regardless of the locale character set or
 // G_FILENAME_ENCODING value, the actual file names present on a system might be
 // in any random encoding or just gibberish.
+//
+// The function returns the following values:
+//
+//    - filenameCharsets: return location for the NULL-terminated list of
+//      encoding names.
+//    - ok: TRUE if the filename encoding is UTF-8.
+//
 func GetFilenameCharsets() ([]string, bool) {
 	var _arg1 **C.gchar  // in
 	var _cret C.gboolean // in
@@ -509,6 +584,17 @@ func GetFilenameCharsets() ([]string, bool) {
 //
 //    - utf8String: UTF-8 encoded string.
 //    - len: length of the string, or -1 if the string is nul-terminated.
+//
+// The function returns the following values:
+//
+//    - bytesRead (optional): location to store the number of bytes in the input
+//      string that were successfully converted, or NULL. Even if the conversion
+//      was successful, this may be less than len if there were partial
+//      characters at the end of the input. If the error
+//      G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value stored will be the
+//      byte offset after the last valid input sequence.
+//    - guint8s: A newly-allocated buffer containing the converted string, or
+//      NULL on an error, and error will be set.
 //
 func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
 	var _arg1 *C.gchar  // out
@@ -555,7 +641,19 @@ func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
 // The function takes the following parameters:
 //
 //    - opsysstring: string in the encoding of the current locale. On Windows
-//    this means the system codepage.
+//      this means the system codepage.
+//
+// The function returns the following values:
+//
+//    - bytesRead (optional): location to store the number of bytes in the input
+//      string that were successfully converted, or NULL. Even if the conversion
+//      was successful, this may be less than len if there were partial
+//      characters at the end of the input. If the error
+//      G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value stored will be the
+//      byte offset after the last valid input sequence.
+//    - bytesWritten (optional): number of bytes stored in the output buffer (not
+//      including the terminating nul).
+//    - utf8: converted string, or NULL on an error.
 //
 func LocaleToUTF8(opsysstring string) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar // out
@@ -596,6 +694,11 @@ func LocaleToUTF8(opsysstring string) (bytesRead uint, bytesWritten uint, utf8 s
 // The function takes the following parameters:
 //
 //    - uriList: URI list.
+//
+// The function returns the following values:
+//
+//    - utf8s: newly allocated NULL-terminated list of strings holding the
+//      individual URIs. The array should be freed with g_strfreev().
 //
 func URIListExtractURIs(uriList string) []string {
 	var _arg1 *C.gchar  // out

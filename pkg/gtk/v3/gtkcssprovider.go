@@ -75,6 +75,11 @@ func (c CSSProviderError) String() string {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CSSProviderOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - section
+	//    - err
+	//
 	ParsingError(section *CSSSection, err error)
 }
 
@@ -125,6 +130,11 @@ func marshalCSSProviderer(p uintptr) (interface{}, error) {
 }
 
 // NewCSSProvider returns a newly created CssProvider.
+//
+// The function returns the following values:
+//
+//    - cssProvider: new CssProvider.
+//
 func NewCSSProvider() *CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
@@ -254,6 +264,11 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 // Using gtk_css_provider_load_from_data() with the return value from this
 // function on a new provider created with gtk_css_provider_new() will basically
 // create a duplicate of this provider.
+//
+// The function returns the following values:
+//
+//    - utf8: new string representing the provider.
+//
 func (provider *CSSProvider) String() string {
 	var _arg0 *C.GtkCssProvider // out
 	var _cret *C.char           // in
@@ -275,6 +290,12 @@ func (provider *CSSProvider) String() string {
 // as a fallback for all widgets.
 //
 // Deprecated: Use gtk_css_provider_new() instead.
+//
+// The function returns the following values:
+//
+//    - cssProvider: provider used for fallback styling. This memory is owned by
+//      GTK+, and you must not free it.
+//
 func CSSProviderGetDefault() *CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
@@ -292,7 +313,12 @@ func CSSProviderGetDefault() *CSSProvider {
 // The function takes the following parameters:
 //
 //    - name: theme name.
-//    - variant to load, for example, "dark", or NULL for the default.
+//    - variant (optional) to load, for example, "dark", or NULL for the default.
+//
+// The function returns the following values:
+//
+//    - cssProvider with the theme loaded. This memory is owned by GTK+, and you
+//      must not free it.
 //
 func CSSProviderGetNamed(name, variant string) *CSSProvider {
 	var _arg1 *C.gchar          // out

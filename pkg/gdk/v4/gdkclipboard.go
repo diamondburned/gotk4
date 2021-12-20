@@ -62,10 +62,21 @@ func marshalClipboarder(p uintptr) (interface{}, error) {
 	return wrapClipboard(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged: emitted when the clipboard changes ownership.
+func (clipboard *Clipboard) ConnectChanged(f func()) externglib.SignalHandle {
+	return clipboard.Connect("changed", f)
+}
+
 // Content returns the GdkContentProvider currently set on clipboard.
 //
 // If the clipboard is empty or its contents are not owned by the current
 // process, NULL will be returned.
+//
+// The function returns the following values:
+//
+//    - contentProvider (optional): content of a clipboard or NULL if the
+//      clipboard does not maintain any content.
+//
 func (clipboard *Clipboard) Content() *ContentProvider {
 	var _arg0 *C.GdkClipboard       // out
 	var _cret *C.GdkContentProvider // in
@@ -85,6 +96,11 @@ func (clipboard *Clipboard) Content() *ContentProvider {
 }
 
 // Display gets the GdkDisplay that the clipboard was created for.
+//
+// The function returns the following values:
+//
+//    - display: GdkDisplay.
+//
 func (clipboard *Clipboard) Display() *Display {
 	var _arg0 *C.GdkClipboard // out
 	var _cret *C.GdkDisplay   // in
@@ -103,6 +119,11 @@ func (clipboard *Clipboard) Display() *Display {
 
 // Formats gets the formats that the clipboard can provide its current contents
 // in.
+//
+// The function returns the following values:
+//
+//    - contentFormats formats of the clipboard.
+//
 func (clipboard *Clipboard) Formats() *ContentFormats {
 	var _arg0 *C.GdkClipboard      // out
 	var _cret *C.GdkContentFormats // in
@@ -133,6 +154,11 @@ func (clipboard *Clipboard) Formats() *ContentFormats {
 //
 // Note that gdk.Clipboard.GetContent() may return NULL even on a local
 // clipboard. In this case the clipboard is empty.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the clipboard is local.
+//
 func (clipboard *Clipboard) IsLocal() bool {
 	var _arg0 *C.GdkClipboard // out
 	var _cret C.gboolean      // in
@@ -162,10 +188,10 @@ func (clipboard *Clipboard) IsLocal() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional GCancellable object, NULL to ignore.
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
 //    - mimeTypes: NULL-terminated array of mime types to choose from.
 //    - ioPriority: i/O priority of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
@@ -215,6 +241,11 @@ func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, i
 // The function takes the following parameters:
 //
 //    - result: GAsyncResult.
+//
+// The function returns the following values:
+//
+//    - outMimeType (optional): pointer to store the chosen mime type in or NULL.
+//    - inputStream (optional): GInputStream or NULL on error.
 //
 func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkClipboard // out
@@ -269,8 +300,8 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional GCancellable object, NULL to ignore.
-//    - callback to call when the request is satisfied.
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
@@ -302,6 +333,10 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 // The function takes the following parameters:
 //
 //    - result: GAsyncResult.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): new string or NULL on error.
 //
 func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, error) {
 	var _arg0 *C.GdkClipboard // out
@@ -342,8 +377,8 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional GCancellable object, NULL to ignore.
-//    - callback to call when the request is satisfied.
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
@@ -375,6 +410,10 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 // The function takes the following parameters:
 //
 //    - result: GAsyncResult.
+//
+// The function returns the following values:
+//
+//    - texture (optional): new GdkTexture or NULL on error.
 //
 func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texturer, error) {
 	var _arg0 *C.GdkClipboard // out
@@ -424,10 +463,10 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - typ: GType to read.
 //    - ioPriority: i/O priority of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
@@ -465,6 +504,10 @@ func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.T
 // The function takes the following parameters:
 //
 //    - result: GAsyncResult.
+//
+// The function returns the following values:
+//
+//    - value: GValue containing the result.
 //
 func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error) {
 	var _arg0 *C.GdkClipboard // out
@@ -504,7 +547,12 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externgl
 //
 // The function takes the following parameters:
 //
-//    - provider: new contents of clipboard or NULL to clear the clipboard.
+//    - provider (optional): new contents of clipboard or NULL to clear the
+//      clipboard.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if setting the clipboard succeeded.
 //
 func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 	var _arg0 *C.GdkClipboard       // out
@@ -564,9 +612,9 @@ func (clipboard *Clipboard) Set(value *externglib.Value) {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional GCancellable object, NULL to ignore.
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
 //    - ioPriority: i/O priority of the request.
-//    - callback to call when the request is satisfied.
+//    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
@@ -621,9 +669,4 @@ func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 	}
 
 	return _goerr
-}
-
-// ConnectChanged: emitted when the clipboard changes ownership.
-func (clipboard *Clipboard) ConnectChanged(f func()) externglib.SignalHandle {
-	return clipboard.Connect("changed", f)
 }

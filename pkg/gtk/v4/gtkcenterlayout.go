@@ -52,6 +52,11 @@ func marshalCenterLayouter(p uintptr) (interface{}, error) {
 }
 
 // NewCenterLayout creates a new GtkCenterLayout.
+//
+// The function returns the following values:
+//
+//    - centerLayout: newly created GtkCenterLayout.
+//
 func NewCenterLayout() *CenterLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -65,6 +70,11 @@ func NewCenterLayout() *CenterLayout {
 }
 
 // BaselinePosition returns the baseline position of the layout.
+//
+// The function returns the following values:
+//
+//    - baselinePosition: current baseline position of self.
+//
 func (self *CenterLayout) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkCenterLayout    // out
 	var _cret C.GtkBaselinePosition // in
@@ -82,6 +92,11 @@ func (self *CenterLayout) BaselinePosition() BaselinePosition {
 }
 
 // CenterWidget returns the center widget of the layout.
+//
+// The function returns the following values:
+//
+//    - widget (optional): current center widget of self.
+//
 func (self *CenterLayout) CenterWidget() Widgetter {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret *C.GtkWidget       // in
@@ -111,6 +126,11 @@ func (self *CenterLayout) CenterWidget() Widgetter {
 }
 
 // EndWidget returns the end widget of the layout.
+//
+// The function returns the following values:
+//
+//    - widget (optional): current end widget of self.
+//
 func (self *CenterLayout) EndWidget() Widgetter {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret *C.GtkWidget       // in
@@ -140,6 +160,11 @@ func (self *CenterLayout) EndWidget() Widgetter {
 }
 
 // Orientation gets the current orienration of the layout manager.
+//
+// The function returns the following values:
+//
+//    - orientation: current orientation of self.
+//
 func (self *CenterLayout) Orientation() Orientation {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret C.GtkOrientation   // in
@@ -157,6 +182,11 @@ func (self *CenterLayout) Orientation() Orientation {
 }
 
 // StartWidget returns the start widget fo the layout.
+//
+// The function returns the following values:
+//
+//    - widget (optional): current start widget of self.
+//
 func (self *CenterLayout) StartWidget() Widgetter {
 	var _arg0 *C.GtkCenterLayout // out
 	var _cret *C.GtkWidget       // in
@@ -209,7 +239,7 @@ func (self *CenterLayout) SetBaselinePosition(baselinePosition BaselinePosition)
 //
 // The function takes the following parameters:
 //
-//    - widget: new center widget.
+//    - widget (optional): new center widget.
 //
 func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
 	var _arg0 *C.GtkCenterLayout // out
@@ -231,7 +261,7 @@ func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - widget: new end widget.
+//    - widget (optional): new end widget.
 //
 func (self *CenterLayout) SetEndWidget(widget Widgetter) {
 	var _arg0 *C.GtkCenterLayout // out
@@ -271,7 +301,7 @@ func (self *CenterLayout) SetOrientation(orientation Orientation) {
 //
 // The function takes the following parameters:
 //
-//    - widget: new start widget.
+//    - widget (optional): new start widget.
 //
 func (self *CenterLayout) SetStartWidget(widget Widgetter) {
 	var _arg0 *C.GtkCenterLayout // out

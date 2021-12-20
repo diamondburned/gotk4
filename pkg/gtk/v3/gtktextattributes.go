@@ -203,6 +203,11 @@ func (t *TextAttributes) LetterSpacing() int {
 }
 
 // Copy copies src and returns a new TextAttributes.
+//
+// The function returns the following values:
+//
+//    - textAttributes: copy of src, free with gtk_text_attributes_unref().
+//
 func (src *TextAttributes) Copy() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
@@ -227,6 +232,11 @@ func (src *TextAttributes) Copy() *TextAttributes {
 
 // CopyValues copies the values from src to dest so that dest has the same
 // values as src. Frees existing values in dest.
+//
+// The function takes the following parameters:
+//
+//    - dest: another TextAttributes.
+//
 func (src *TextAttributes) CopyValues(dest *TextAttributes) {
 	var _arg0 *C.GtkTextAttributes // out
 	var _arg1 *C.GtkTextAttributes // out

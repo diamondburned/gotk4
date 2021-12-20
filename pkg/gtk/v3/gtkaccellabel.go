@@ -98,6 +98,10 @@ func marshalAccelLabeller(p uintptr) (interface{}, error) {
 //
 //    - str: label string. Must be non-NULL.
 //
+// The function returns the following values:
+//
+//    - accelLabel: new AccelLabel.
+//
 func NewAccelLabel(str string) *AccelLabel {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -116,6 +120,12 @@ func NewAccelLabel(str string) *AccelLabel {
 }
 
 // Accel gets the keyval and modifier mask set with gtk_accel_label_set_accel().
+//
+// The function returns the following values:
+//
+//    - acceleratorKey: return location for the keyval.
+//    - acceleratorMods: return location for the modifier mask.
+//
 func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
 	var _arg0 *C.GtkAccelLabel  // out
 	var _arg1 C.guint           // in
@@ -137,6 +147,11 @@ func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
 
 // AccelWidget fetches the widget monitored by this accelerator label. See
 // gtk_accel_label_set_accel_widget().
+//
+// The function returns the following values:
+//
+//    - widget (optional): object monitored by the accelerator label, or NULL.
+//
 func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret *C.GtkWidget     // in
@@ -168,6 +183,11 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 // AccelWidth returns the width needed to display the accelerator key(s). This
 // is used by menus to align all of the MenuItem widgets, and shouldn't be
 // needed by applications.
+//
+// The function returns the following values:
+//
+//    - guint: width needed to display the accelerator key(s).
+//
 func (accelLabel *AccelLabel) AccelWidth() uint {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.guint          // in
@@ -187,6 +207,11 @@ func (accelLabel *AccelLabel) AccelWidth() uint {
 // Refetch recreates the string representing the accelerator keys. This should
 // not be needed since the string is automatically updated whenever accelerators
 // are added or removed from the associated widget.
+//
+// The function returns the following values:
+//
+//    - ok always returns FALSE.
+//
 func (accelLabel *AccelLabel) Refetch() bool {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.gboolean       // in
@@ -240,7 +265,8 @@ func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.
 //
 // The function takes the following parameters:
 //
-//    - accelClosure: closure to monitor for accelerator changes, or NULL.
+//    - accelClosure (optional): closure to monitor for accelerator changes, or
+//      NULL.
 //
 func (accelLabel *AccelLabel) SetAccelClosure(accelClosure externglib.AnyClosure) {
 	var _arg0 *C.GtkAccelLabel // out
@@ -260,7 +286,7 @@ func (accelLabel *AccelLabel) SetAccelClosure(accelClosure externglib.AnyClosure
 //
 // The function takes the following parameters:
 //
-//    - accelWidget: widget to be monitored, or NULL.
+//    - accelWidget (optional): widget to be monitored, or NULL.
 //
 func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	var _arg0 *C.GtkAccelLabel // out

@@ -61,7 +61,21 @@ func marshalLayoutChilder(p uintptr) (interface{}, error) {
 	return wrapLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (layoutChild *LayoutChild) baseLayoutChild() *LayoutChild {
+	return layoutChild
+}
+
+// BaseLayoutChild returns the underlying base object.
+func BaseLayoutChild(obj LayoutChilder) *LayoutChild {
+	return obj.baseLayoutChild()
+}
+
 // ChildWidget retrieves the GtkWidget associated to the given layout_child.
+//
+// The function returns the following values:
+//
+//    - widget: Widget.
+//
 func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 	var _arg0 *C.GtkLayoutChild // out
 	var _cret *C.GtkWidget      // in
@@ -93,6 +107,11 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 
 // LayoutManager retrieves the GtkLayoutManager instance that created the given
 // layout_child.
+//
+// The function returns the following values:
+//
+//    - layoutManager: GtkLayoutManager.
+//
 func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	var _arg0 *C.GtkLayoutChild   // out
 	var _cret *C.GtkLayoutManager // in
@@ -120,13 +139,4 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	}
 
 	return _layoutManager
-}
-
-func (layoutChild *LayoutChild) baseLayoutChild() *LayoutChild {
-	return layoutChild
-}
-
-// BaseLayoutChild returns the underlying base object.
-func BaseLayoutChild(obj LayoutChilder) *LayoutChild {
-	return obj.baseLayoutChild()
 }

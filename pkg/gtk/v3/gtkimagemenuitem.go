@@ -107,6 +107,11 @@ func marshalImageMenuItemmer(p uintptr) (interface{}, error) {
 // NewImageMenuItem creates a new ImageMenuItem with an empty label.
 //
 // Deprecated: Use gtk_menu_item_new() instead.
+//
+// The function returns the following values:
+//
+//    - imageMenuItem: new ImageMenuItem.
+//
 func NewImageMenuItem() *ImageMenuItem {
 	var _cret *C.GtkWidget // in
 
@@ -134,7 +139,11 @@ func NewImageMenuItem() *ImageMenuItem {
 // The function takes the following parameters:
 //
 //    - stockId: name of the stock item.
-//    - accelGroup to add the menu items accelerator to, or NULL.
+//    - accelGroup (optional) to add the menu items accelerator to, or NULL.
+//
+// The function returns the following values:
+//
+//    - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMenuItem {
 	var _arg1 *C.gchar         // out
@@ -166,6 +175,10 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 //
 //    - label: text of the menu item.
 //
+// The function returns the following values:
+//
+//    - imageMenuItem: new ImageMenuItem.
+//
 func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -191,8 +204,12 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 //
 // The function takes the following parameters:
 //
-//    - label: text of the menu item, with an underscore in front of the
-//    mnemonic character.
+//    - label: text of the menu item, with an underscore in front of the mnemonic
+//      character.
+//
+// The function returns the following values:
+//
+//    - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 	var _arg1 *C.gchar     // out
@@ -215,6 +232,11 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 // Settings:gtk-menu-images setting and always show the image, if available.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the menu item will always show the image.
+//
 func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret C.gboolean          // in
@@ -237,6 +259,11 @@ func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 // See gtk_image_menu_item_set_image().
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - widget set as image of image_menu_item.
+//
 func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret *C.GtkWidget        // in
@@ -270,6 +297,12 @@ func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 // to select the stock item for the item.
 //
 // Deprecated: since version 3.10.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the label set in the menuitem is used as a stock id to select
+//      the stock item for the item.
+//
 func (imageMenuItem *ImageMenuItem) UseStock() bool {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret C.gboolean          // in
@@ -348,7 +381,7 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 //
 // The function takes the following parameters:
 //
-//    - image: widget to set as the image for the menu item.
+//    - image (optional): widget to set as the image for the menu item.
 //
 func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 	var _arg0 *C.GtkImageMenuItem // out

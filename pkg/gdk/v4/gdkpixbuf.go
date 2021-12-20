@@ -34,6 +34,11 @@ import "C"
 //    - width: width in pixels of region to get.
 //    - height: height in pixels of region to get.
 //
+// The function returns the following values:
+//
+//    - pixbuf (optional): newly-created pixbuf with a reference count of 1, or
+//      NULL on error.
+//
 func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.cairo_surface_t // out
 	var _arg2 C.int              // out
@@ -82,6 +87,10 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int)
 // The function takes the following parameters:
 //
 //    - texture: GdkTexture.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): new Pixbuf or NULL in case of an error.
 //
 func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkTexture // out

@@ -31,16 +31,33 @@ func init() {
 type SocketControlMessageOverrider interface {
 	// Level returns the "level" (i.e. the originating protocol) of the control
 	// message. This is often SOL_SOCKET.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: integer describing the level.
+	//
 	Level() int
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
+	//
+	// The function returns the following values:
+	//
+	//    - gsize: number of bytes required.
+	//
 	Size() uint
+	// The function returns the following values:
+	//
 	Type() int
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
 	//
 	// data is guaranteed to have enough space to fit the size returned by
 	// g_socket_control_message_get_size() on this object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - data: buffer to write data to.
+	//
 	Serialize(data cgo.Handle)
 }
 
@@ -91,8 +108,22 @@ func marshalSocketControlMessager(p uintptr) (interface{}, error) {
 	return wrapSocketControlMessage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+func (message *SocketControlMessage) baseSocketControlMessage() *SocketControlMessage {
+	return message
+}
+
+// BaseSocketControlMessage returns the underlying base object.
+func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
+	return obj.baseSocketControlMessage()
+}
+
 // Level returns the "level" (i.e. the originating protocol) of the control
 // message. This is often SOL_SOCKET.
+//
+// The function returns the following values:
+//
+//    - gint: integer describing the level.
+//
 func (message *SocketControlMessage) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
@@ -111,6 +142,11 @@ func (message *SocketControlMessage) Level() int {
 
 // MsgType returns the protocol specific type of the control message. For
 // instance, for UNIX fd passing this would be SCM_RIGHTS.
+//
+// The function returns the following values:
+//
+//    - gint: integer describing the type of control message.
+//
 func (message *SocketControlMessage) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
@@ -129,6 +165,11 @@ func (message *SocketControlMessage) MsgType() int {
 
 // Size returns the space required for the control message, not including
 // headers or alignment.
+//
+// The function returns the following values:
+//
+//    - gsize: number of bytes required.
+//
 func (message *SocketControlMessage) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.gsize                  // in
@@ -166,15 +207,6 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 	runtime.KeepAlive(data)
 }
 
-func (message *SocketControlMessage) baseSocketControlMessage() *SocketControlMessage {
-	return message
-}
-
-// BaseSocketControlMessage returns the underlying base object.
-func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
-	return obj.baseSocketControlMessage()
-}
-
 // SocketControlMessageDeserialize tries to deserialize a socket control message
 // of a given level and type. This will ask all known (to GType) subclasses of
 // ControlMessage if they can understand this kind of message and if so
@@ -188,6 +220,10 @@ func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
 //    - level: socket level.
 //    - typ: socket control message type for the given level.
 //    - data: pointer to the message data.
+//
+// The function returns the following values:
+//
+//    - socketControlMessage: deserialized message or NULL.
 //
 func SocketControlMessageDeserialize(level, typ int, data []byte) SocketControlMessager {
 	var _arg1 C.int      // out

@@ -60,8 +60,20 @@ func (t ToolbarSpaceStyle) String() string {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ToolbarOverrider interface {
+	// The function takes the following parameters:
+	//
 	OrientationChanged(orientation Orientation)
+	// The function takes the following parameters:
+	//
+	//    - x
+	//    - y
+	//    - buttonNumber
+	//
+	// The function returns the following values:
+	//
 	PopupContextMenu(x, y, buttonNumber int) bool
+	// The function takes the following parameters:
+	//
 	StyleChanged(style ToolbarStyle)
 }
 
@@ -169,7 +181,40 @@ func marshalToolbarrer(p uintptr) (interface{}, error) {
 	return wrapToolbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectFocusHomeOrEnd: keybinding signal used internally by GTK+. This signal
+// can't be used in application code.
+func (toolbar *Toolbar) ConnectFocusHomeOrEnd(f func(focusHome bool) bool) externglib.SignalHandle {
+	return toolbar.Connect("focus-home-or-end", f)
+}
+
+// ConnectOrientationChanged: emitted when the orientation of the toolbar
+// changes.
+func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation)) externglib.SignalHandle {
+	return toolbar.Connect("orientation-changed", f)
+}
+
+// ConnectPopupContextMenu: emitted when the user right-clicks the toolbar or
+// uses the keybinding to display a popup menu.
+//
+// Application developers should handle this signal if they want to display a
+// context menu on the toolbar. The context-menu should appear at the
+// coordinates given by x and y. The mouse button number is given by the button
+// parameter. If the menu was popped up using the keybaord, button is -1.
+func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int) bool) externglib.SignalHandle {
+	return toolbar.Connect("popup-context-menu", f)
+}
+
+// ConnectStyleChanged: emitted when the style of the toolbar changes.
+func (toolbar *Toolbar) ConnectStyleChanged(f func(style ToolbarStyle)) externglib.SignalHandle {
+	return toolbar.Connect("style-changed", f)
+}
+
 // NewToolbar creates a new toolbar.
+//
+// The function returns the following values:
+//
+//    - toolbar: newly-created toolbar.
+//
 func NewToolbar() *Toolbar {
 	var _cret *C.GtkWidget // in
 
@@ -192,6 +237,10 @@ func NewToolbar() *Toolbar {
 //
 //    - x coordinate of a point on the toolbar.
 //    - y coordinate of a point on the toolbar.
+//
+// The function returns the following values:
+//
+//    - gint: position corresponding to the point (x, y) on the toolbar.
 //
 func (toolbar *Toolbar) DropIndex(x, y int) int {
 	var _arg0 *C.GtkToolbar // out
@@ -217,6 +266,11 @@ func (toolbar *Toolbar) DropIndex(x, y int) int {
 
 // IconSize retrieves the icon size for the toolbar. See
 // gtk_toolbar_set_icon_size().
+//
+// The function returns the following values:
+//
+//    - iconSize: current icon size for the icons on the toolbar.
+//
 func (toolbar *Toolbar) IconSize() IconSize {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.GtkIconSize // in
@@ -240,6 +294,10 @@ func (toolbar *Toolbar) IconSize() IconSize {
 //
 //    - item that is a child of toolbar.
 //
+// The function returns the following values:
+//
+//    - gint: position of item on the toolbar.
+//
 func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
@@ -260,6 +318,11 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 }
 
 // NItems returns the number of items on the toolbar.
+//
+// The function returns the following values:
+//
+//    - gint: number of items on the toolbar.
+//
 func (toolbar *Toolbar) NItems() int {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.gint        // in
@@ -282,6 +345,11 @@ func (toolbar *Toolbar) NItems() int {
 // The function takes the following parameters:
 //
 //    - n on the toolbar.
+//
+// The function returns the following values:
+//
+//    - toolItem (optional): n'th ToolItem on toolbar, or NULL if there isn’t an
+//      n'th item.
 //
 func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 	var _arg0 *C.GtkToolbar  // out
@@ -306,6 +374,11 @@ func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 
 // ReliefStyle returns the relief style of buttons on toolbar. See
 // gtk_button_set_relief().
+//
+// The function returns the following values:
+//
+//    - reliefStyle: relief style of buttons on toolbar.
+//
 func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolbar    // out
 	var _cret C.GtkReliefStyle // in
@@ -324,6 +397,11 @@ func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
 
 // ShowArrow returns whether the toolbar has an overflow menu. See
 // gtk_toolbar_set_show_arrow().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the toolbar has an overflow menu.
+//
 func (toolbar *Toolbar) ShowArrow() bool {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.gboolean    // in
@@ -344,6 +422,11 @@ func (toolbar *Toolbar) ShowArrow() bool {
 
 // Style retrieves whether the toolbar has text, icons, or both . See
 // gtk_toolbar_set_style().
+//
+// The function returns the following values:
+//
+//    - toolbarStyle: current style of toolbar.
+//
 func (toolbar *Toolbar) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolbar     // out
 	var _cret C.GtkToolbarStyle // in
@@ -394,7 +477,7 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 //
 // The function takes the following parameters:
 //
-//    - toolItem or NULL to turn of highlighting.
+//    - toolItem (optional) or NULL to turn of highlighting.
 //    - index_: position on toolbar.
 //
 func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
@@ -502,32 +585,4 @@ func (toolbar *Toolbar) UnsetStyle() {
 
 	C.gtk_toolbar_unset_style(_arg0)
 	runtime.KeepAlive(toolbar)
-}
-
-// ConnectFocusHomeOrEnd: keybinding signal used internally by GTK+. This signal
-// can't be used in application code.
-func (toolbar *Toolbar) ConnectFocusHomeOrEnd(f func(focusHome bool) bool) externglib.SignalHandle {
-	return toolbar.Connect("focus-home-or-end", f)
-}
-
-// ConnectOrientationChanged: emitted when the orientation of the toolbar
-// changes.
-func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation)) externglib.SignalHandle {
-	return toolbar.Connect("orientation-changed", f)
-}
-
-// ConnectPopupContextMenu: emitted when the user right-clicks the toolbar or
-// uses the keybinding to display a popup menu.
-//
-// Application developers should handle this signal if they want to display a
-// context menu on the toolbar. The context-menu should appear at the
-// coordinates given by x and y. The mouse button number is given by the button
-// parameter. If the menu was popped up using the keybaord, button is -1.
-func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int) bool) externglib.SignalHandle {
-	return toolbar.Connect("popup-context-menu", f)
-}
-
-// ConnectStyleChanged: emitted when the style of the toolbar changes.
-func (toolbar *Toolbar) ConnectStyleChanged(f func(style ToolbarStyle)) externglib.SignalHandle {
-	return toolbar.Connect("style-changed", f)
 }

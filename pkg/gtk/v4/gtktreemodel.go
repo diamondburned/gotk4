@@ -132,25 +132,73 @@ func _gotk4_gtk4_TreeModelForEachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 // yet, so the interface currently has no use.
 type TreeModelOverrider interface {
 	// ColumnType returns the type of the column.
+	//
+	// The function takes the following parameters:
+	//
+	//    - index_: column index.
+	//
+	// The function returns the following values:
+	//
+	//    - gType: type of the column.
+	//
 	ColumnType(index_ int) externglib.Type
 	// Flags returns a set of flags supported by this interface.
 	//
 	// The flags are a bitwise combination of TreeModelFlags. The flags
 	// supported should not change during the lifetime of the tree_model.
+	//
+	// The function returns the following values:
+	//
+	//    - treeModelFlags flags supported by this interface.
+	//
 	Flags() TreeModelFlags
 	// Iter sets iter to a valid iterator pointing to path. If path does not
 	// exist, iter is set to an invalid iterator and FALSE is returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path: TreePath-struct.
+	//
+	// The function returns the following values:
+	//
+	//    - iter: uninitialized TreeIter-struct.
+	//    - ok: TRUE, if iter was set.
+	//
 	Iter(path *TreePath) (*TreeIter, bool)
 	// NColumns returns the number of columns supported by tree_model.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of columns.
+	//
 	NColumns() int
 	// Path returns a newly-created TreePath-struct referenced by iter.
 	//
 	// This path should be freed with gtk_tree_path_free().
+	//
+	// The function takes the following parameters:
+	//
+	//    - iter: TreeIter-struct.
+	//
+	// The function returns the following values:
+	//
+	//    - treePath: newly-created TreePath-struct.
+	//
 	Path(iter *TreeIter) *TreePath
 	// Value initializes and sets value to that at column.
 	//
 	// When done with value, g_value_unset() needs to be called to free any
 	// allocated memory.
+	//
+	// The function takes the following parameters:
+	//
+	//    - iter: TreeIter-struct.
+	//    - column to lookup the value at.
+	//
+	// The function returns the following values:
+	//
+	//    - value: empty #GValue to set.
+	//
 	Value(iter *TreeIter, column int) externglib.Value
 	// IterChildren sets iter to point to the first child of parent.
 	//
@@ -160,19 +208,56 @@ type TreeModelOverrider interface {
 	//
 	// If parent is NULL returns the first node, equivalent to
 	// gtk_tree_model_get_iter_first (tree_model, iter);.
+	//
+	// The function takes the following parameters:
+	//
+	//    - parent (optional) or NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - iter: new TreeIter-struct to be set to the child.
+	//    - ok: TRUE, if iter has been set to the first child.
+	//
 	IterChildren(parent *TreeIter) (*TreeIter, bool)
 	// IterHasChild returns TRUE if iter has children, FALSE otherwise.
+	//
+	// The function takes the following parameters:
+	//
+	//    - iter to test for children.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if iter has children.
+	//
 	IterHasChild(iter *TreeIter) bool
 	// IterNChildren returns the number of children that iter has.
 	//
 	// As a special case, if iter is NULL, then the number of toplevel nodes is
 	// returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - iter (optional) or NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of children of iter.
+	//
 	IterNChildren(iter *TreeIter) int
 	// IterNext sets iter to point to the node following it at the current
 	// level.
 	//
 	// If there is no next iter, FALSE is returned and iter is set to be
 	// invalid.
+	//
+	// The function takes the following parameters:
+	//
+	//    - iter: TreeIter-struct.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if iter has been changed to the next node.
+	//
 	IterNext(iter *TreeIter) bool
 	// IterNthChild sets iter to be the child of parent, using the given index.
 	//
@@ -180,6 +265,17 @@ type TreeModelOverrider interface {
 	// set to an invalid iterator and FALSE is returned. parent will remain a
 	// valid node after this function has been called. As a special case, if
 	// parent is NULL, then the n-th root node is set.
+	//
+	// The function takes the following parameters:
+	//
+	//    - parent (optional) to get the child from, or NULL.
+	//    - n: index of the desired child.
+	//
+	// The function returns the following values:
+	//
+	//    - iter to set to the nth child.
+	//    - ok: TRUE, if parent has an n-th child.
+	//
 	IterNthChild(parent *TreeIter, n int) (*TreeIter, bool)
 	// IterParent sets iter to be the parent of child.
 	//
@@ -189,12 +285,31 @@ type TreeModelOverrider interface {
 	//
 	// iter will be initialized before the lookup is performed, so child and
 	// iter cannot point to the same memory location.
+	//
+	// The function takes the following parameters:
+	//
+	//    - child: TreeIter-struct.
+	//
+	// The function returns the following values:
+	//
+	//    - iter: new TreeIter-struct to set to the parent.
+	//    - ok: TRUE, if iter is set to the parent of child.
+	//
 	IterParent(child *TreeIter) (*TreeIter, bool)
 	// IterPrevious sets iter to point to the previous node at the current
 	// level.
 	//
 	// If there is no previous iter, FALSE is returned and iter is set to be
 	// invalid.
+	//
+	// The function takes the following parameters:
+	//
+	//    - iter: TreeIter-struct.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if iter has been changed to the previous node.
+	//
 	IterPrevious(iter *TreeIter) bool
 	// RefNode lets the tree ref the node.
 	//
@@ -212,8 +327,19 @@ type TreeModelOverrider interface {
 	//
 	// A model should be expected to be able to get an iter independent of its
 	// reffed state.
+	//
+	// The function takes the following parameters:
+	//
+	//    - iter: TreeIter-struct.
+	//
 	RefNode(iter *TreeIter)
 	// RowChanged emits the TreeModel::row-changed signal on tree_model.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path pointing to the changed row.
+	//    - iter: valid TreeIter-struct pointing to the changed row.
+	//
 	RowChanged(path *TreePath, iter *TreeIter)
 	// RowDeleted emits the TreeModel::row-deleted signal on tree_model.
 	//
@@ -223,12 +349,29 @@ type TreeModelOverrider interface {
 	//
 	// Nodes that are deleted are not unreffed, this means that any outstanding
 	// references on the deleted node should not be released.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path pointing to the previous location of the deleted row.
+	//
 	RowDeleted(path *TreePath)
 	// RowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
 	// tree_model. This should be called by models after the child state of a
 	// node changes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path pointing to the changed row.
+	//    - iter: valid TreeIter-struct pointing to the changed row.
+	//
 	RowHasChildToggled(path *TreePath, iter *TreeIter)
 	// RowInserted emits the TreeModel::row-inserted signal on tree_model.
+	//
+	// The function takes the following parameters:
+	//
+	//    - path pointing to the inserted row.
+	//    - iter: valid TreeIter-struct pointing to the inserted row.
+	//
 	RowInserted(path *TreePath, iter *TreeIter)
 	// UnrefNode lets the tree unref the node.
 	//
@@ -238,6 +381,11 @@ type TreeModelOverrider interface {
 	// gtk_tree_model_ref_node().
 	//
 	// Please note that nodes that are deleted are not unreffed.
+	//
+	// The function takes the following parameters:
+	//
+	//    - iter: TreeIter-struct.
+	//
 	UnrefNode(iter *TreeIter)
 }
 
@@ -436,9 +584,6 @@ var (
 type TreeModeller interface {
 	externglib.Objector
 
-	// NewFilter creates a new TreeModel, with child_model as the child_model
-	// and root as the virtual root.
-	NewFilter(root *TreePath) TreeModeller
 	// ForEach calls func on each node in model in a depth-first fashion.
 	ForEach(fn TreeModelForEachFunc)
 	// ColumnType returns the type of the column.
@@ -506,45 +651,47 @@ func marshalTreeModeller(p uintptr) (interface{}, error) {
 	return wrapTreeModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewFilter creates a new TreeModel, with child_model as the child_model and
-// root as the virtual root.
+// ConnectRowChanged: this signal is emitted when a row in the model has
+// changed.
+func (childModel *TreeModel) ConnectRowChanged(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
+	return childModel.Connect("row-changed", f)
+}
+
+// ConnectRowDeleted: this signal is emitted when a row has been deleted.
 //
-// The function takes the following parameters:
+// Note that no iterator is passed to the signal handler, since the row is
+// already deleted.
 //
-//    - root or NULL.
+// This should be called by models after a row has been removed. The location
+// pointed to by path should be the location that the row previously was at. It
+// may not be a valid location anymore.
+func (childModel *TreeModel) ConnectRowDeleted(f func(path *TreePath)) externglib.SignalHandle {
+	return childModel.Connect("row-deleted", f)
+}
+
+// ConnectRowHasChildToggled: this signal is emitted when a row has gotten the
+// first child row or lost its last child row.
+func (childModel *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
+	return childModel.Connect("row-has-child-toggled", f)
+}
+
+// ConnectRowInserted: this signal is emitted when a new row has been inserted
+// in the model.
 //
-func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreePath  // out
-	var _cret *C.GtkTreeModel // in
+// Note that the row may still be empty at this point, since it is a common
+// pattern to first insert an empty row, and then fill it with the desired
+// values.
+func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
+	return childModel.Connect("row-inserted", f)
+}
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(childModel.Native()))
-	if root != nil {
-		_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(root)))
-	}
-
-	_cret = C.gtk_tree_model_filter_new(_arg0, _arg1)
-	runtime.KeepAlive(childModel)
-	runtime.KeepAlive(root)
-
-	var _treeModel TreeModeller // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.TreeModeller is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
-		rv, ok := casted.(TreeModeller)
-		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
-		}
-		_treeModel = rv
-	}
-
-	return _treeModel
+// ConnectRowsReordered: this signal is emitted when the children of a node in
+// the TreeModel have been reordered.
+//
+// Note that this signal is not emitted when rows are reordered by DND, since
+// this is implemented by removing and then reinserting the row.
+func (childModel *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter *TreeIter, newOrder cgo.Handle)) externglib.SignalHandle {
+	return childModel.Connect("rows-reordered", f)
 }
 
 // ForEach calls func on each node in model in a depth-first fashion.
@@ -577,6 +724,10 @@ func (model *TreeModel) ForEach(fn TreeModelForEachFunc) {
 //
 //    - index_: column index.
 //
+// The function returns the following values:
+//
+//    - gType: type of the column.
+//
 func (treeModel *TreeModel) ColumnType(index_ int) externglib.Type {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.int           // out
@@ -600,6 +751,11 @@ func (treeModel *TreeModel) ColumnType(index_ int) externglib.Type {
 //
 // The flags are a bitwise combination of TreeModelFlags. The flags supported
 // should not change during the lifetime of the tree_model.
+//
+// The function returns the following values:
+//
+//    - treeModelFlags flags supported by this interface.
+//
 func (treeModel *TreeModel) Flags() TreeModelFlags {
 	var _arg0 *C.GtkTreeModel     // out
 	var _cret C.GtkTreeModelFlags // in
@@ -622,6 +778,11 @@ func (treeModel *TreeModel) Flags() TreeModelFlags {
 // The function takes the following parameters:
 //
 //    - path: TreePath-struct.
+//
+// The function returns the following values:
+//
+//    - iter: uninitialized TreeIter-struct.
+//    - ok: TRUE, if iter was set.
 //
 func (treeModel *TreeModel) Iter(path *TreePath) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
@@ -649,6 +810,12 @@ func (treeModel *TreeModel) Iter(path *TreePath) (*TreeIter, bool) {
 
 // IterFirst initializes iter with the first iterator in the tree (the one at
 // the path "0") and returns TRUE. Returns FALSE if the tree is empty.
+//
+// The function returns the following values:
+//
+//    - iter: uninitialized TreeIter-struct.
+//    - ok: TRUE, if iter was set.
+//
 func (treeModel *TreeModel) IterFirst() (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
@@ -677,6 +844,11 @@ func (treeModel *TreeModel) IterFirst() (*TreeIter, bool) {
 //
 //    - pathString: string representation of a TreePath-struct.
 //
+// The function returns the following values:
+//
+//    - iter: uninitialized TreeIter-struct.
+//    - ok: TRUE, if iter was set.
+//
 func (treeModel *TreeModel) IterFromString(pathString string) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
@@ -703,6 +875,11 @@ func (treeModel *TreeModel) IterFromString(pathString string) (*TreeIter, bool) 
 }
 
 // NColumns returns the number of columns supported by tree_model.
+//
+// The function returns the following values:
+//
+//    - gint: number of columns.
+//
 func (treeModel *TreeModel) NColumns() int {
 	var _arg0 *C.GtkTreeModel // out
 	var _cret C.int           // in
@@ -726,6 +903,10 @@ func (treeModel *TreeModel) NColumns() int {
 // The function takes the following parameters:
 //
 //    - iter: TreeIter-struct.
+//
+// The function returns the following values:
+//
+//    - treePath: newly-created TreePath-struct.
 //
 func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 	var _arg0 *C.GtkTreeModel // out
@@ -761,6 +942,10 @@ func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 //
 //    - iter: TreeIter-struct.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): newly-allocated string. Must be freed with g_free().
+//
 func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -792,6 +977,10 @@ func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 //
 //    - iter: TreeIter-struct.
 //    - column to lookup the value at.
+//
+// The function returns the following values:
+//
+//    - value: empty #GValue to set.
 //
 func (treeModel *TreeModel) Value(iter *TreeIter, column int) externglib.Value {
 	var _arg0 *C.GtkTreeModel // out
@@ -825,7 +1014,12 @@ func (treeModel *TreeModel) Value(iter *TreeIter, column int) externglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - parent or NULL.
+//    - parent (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - iter: new TreeIter-struct to be set to the child.
+//    - ok: TRUE, if iter has been set to the first child.
 //
 func (treeModel *TreeModel) IterChildren(parent *TreeIter) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
@@ -859,6 +1053,10 @@ func (treeModel *TreeModel) IterChildren(parent *TreeIter) (*TreeIter, bool) {
 //
 //    - iter to test for children.
 //
+// The function returns the following values:
+//
+//    - ok: TRUE if iter has children.
+//
 func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -887,7 +1085,11 @@ func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 //
 // The function takes the following parameters:
 //
-//    - iter or NULL.
+//    - iter (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - gint: number of children of iter.
 //
 func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int {
 	var _arg0 *C.GtkTreeModel // out
@@ -917,6 +1119,10 @@ func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int {
 // The function takes the following parameters:
 //
 //    - iter: TreeIter-struct.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter has been changed to the next node.
 //
 func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeModel // out
@@ -948,8 +1154,13 @@ func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 //
 // The function takes the following parameters:
 //
-//    - parent to get the child from, or NULL.
+//    - parent (optional) to get the child from, or NULL.
 //    - n: index of the desired child.
+//
+// The function returns the following values:
+//
+//    - iter to set to the nth child.
+//    - ok: TRUE, if parent has an n-th child.
 //
 func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
@@ -993,6 +1204,11 @@ func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int) (*TreeIter, bo
 //
 //    - child: TreeIter-struct.
 //
+// The function returns the following values:
+//
+//    - iter: new TreeIter-struct to set to the parent.
+//    - ok: TRUE, if iter is set to the parent of child.
+//
 func (treeModel *TreeModel) IterParent(child *TreeIter) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
@@ -1025,6 +1241,10 @@ func (treeModel *TreeModel) IterParent(child *TreeIter) (*TreeIter, bool) {
 // The function takes the following parameters:
 //
 //    - iter: TreeIter-struct.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter has been changed to the previous node.
 //
 func (treeModel *TreeModel) IterPrevious(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeModel // out
@@ -1179,11 +1399,10 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 // The function takes the following parameters:
 //
 //    - path pointing to the tree node whose children have been reordered.
-//    - iter: valid TreeIter-struct pointing to the node whose children have
-//    been reordered, or NULL if the depth of path is 0.
-//    - newOrder: array of integers mapping the current position of each child
-//    to its old position before the re-ordering, i.e. new_order[newpos] =
-//    oldpos.
+//    - iter (optional): valid TreeIter-struct pointing to the node whose
+//      children have been reordered, or NULL if the depth of path is 0.
+//    - newOrder: array of integers mapping the current position of each child to
+//      its old position before the re-ordering, i.e. new_order[newpos] = oldpos.
 //
 func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int) {
 	var _arg0 *C.GtkTreeModel // out
@@ -1238,49 +1457,6 @@ func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 	runtime.KeepAlive(iter)
 }
 
-// ConnectRowChanged: this signal is emitted when a row in the model has
-// changed.
-func (childModel *TreeModel) ConnectRowChanged(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
-	return childModel.Connect("row-changed", f)
-}
-
-// ConnectRowDeleted: this signal is emitted when a row has been deleted.
-//
-// Note that no iterator is passed to the signal handler, since the row is
-// already deleted.
-//
-// This should be called by models after a row has been removed. The location
-// pointed to by path should be the location that the row previously was at. It
-// may not be a valid location anymore.
-func (childModel *TreeModel) ConnectRowDeleted(f func(path *TreePath)) externglib.SignalHandle {
-	return childModel.Connect("row-deleted", f)
-}
-
-// ConnectRowHasChildToggled: this signal is emitted when a row has gotten the
-// first child row or lost its last child row.
-func (childModel *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
-	return childModel.Connect("row-has-child-toggled", f)
-}
-
-// ConnectRowInserted: this signal is emitted when a new row has been inserted
-// in the model.
-//
-// Note that the row may still be empty at this point, since it is a common
-// pattern to first insert an empty row, and then fill it with the desired
-// values.
-func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
-	return childModel.Connect("row-inserted", f)
-}
-
-// ConnectRowsReordered: this signal is emitted when the children of a node in
-// the TreeModel have been reordered.
-//
-// Note that this signal is not emitted when rows are reordered by DND, since
-// this is implemented by removing and then reinserting the row.
-func (childModel *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter *TreeIter, newOrder cgo.Handle)) externglib.SignalHandle {
-	return childModel.Connect("rows-reordered", f)
-}
-
 // TreeIter is the primary structure for accessing a TreeModel. Models are
 // expected to put a unique integer in the stamp member, and put model-specific
 // data in the three user_data members.
@@ -1333,6 +1509,11 @@ func (t *TreeIter) UserData3() cgo.Handle {
 // This function is not intended for use in applications, because you can just
 // copy the structs by value (GtkTreeIter new_iter = iter;). You must free this
 // iter with gtk_tree_iter_free().
+//
+// The function returns the following values:
+//
+//    - treeIter: newly-allocated copy of iter.
+//
 func (iter *TreeIter) Copy() *TreeIter {
 	var _arg0 *C.GtkTreeIter // out
 	var _cret *C.GtkTreeIter // in
@@ -1471,6 +1652,11 @@ func NewTreePathFromString(path string) *TreePath {
 // AppendIndex appends a new index to a path.
 //
 // As a result, the depth of the path is increased.
+//
+// The function takes the following parameters:
+//
+//    - index_: index.
+//
 func (path *TreePath) AppendIndex(index_ int) {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 C.int          // out
@@ -1487,6 +1673,15 @@ func (path *TreePath) AppendIndex(index_ int) {
 //
 // If a appears before b in a tree, then -1 is returned. If b appears before a,
 // then 1 is returned. If the two nodes are equal, then 0 is returned.
+//
+// The function takes the following parameters:
+//
+//    - b to compare with.
+//
+// The function returns the following values:
+//
+//    - gint: relative positions of a and b.
+//
 func (a *TreePath) Compare(b *TreePath) int {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 *C.GtkTreePath // out
@@ -1507,6 +1702,11 @@ func (a *TreePath) Compare(b *TreePath) int {
 }
 
 // Copy creates a new TreePath-struct as a copy of path.
+//
+// The function returns the following values:
+//
+//    - treePath: new TreePath-struct.
+//
 func (path *TreePath) Copy() *TreePath {
 	var _arg0 *C.GtkTreePath // out
 	var _cret *C.GtkTreePath // in
@@ -1540,6 +1740,11 @@ func (path *TreePath) Down() {
 }
 
 // Depth returns the current depth of path.
+//
+// The function returns the following values:
+//
+//    - gint: depth of path.
+//
 func (path *TreePath) Depth() int {
 	var _arg0 *C.GtkTreePath // out
 	var _cret C.int          // in
@@ -1560,6 +1765,11 @@ func (path *TreePath) Depth() int {
 //
 // This is an array of integers, each representing a node in a tree. It also
 // returns the number of elements in the array. The array should not be freed.
+//
+// The function returns the following values:
+//
+//    - gints: current indices, or NULL.
+//
 func (path *TreePath) Indices() []int {
 	var _arg0 *C.GtkTreePath // out
 	var _cret *C.int         // in
@@ -1584,6 +1794,15 @@ func (path *TreePath) Indices() []int {
 }
 
 // IsAncestor returns TRUE if descendant is a descendant of path.
+//
+// The function takes the following parameters:
+//
+//    - descendant: another TreePath-struct.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if descendant is contained inside path.
+//
 func (path *TreePath) IsAncestor(descendant *TreePath) bool {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 *C.GtkTreePath // out
@@ -1606,6 +1825,15 @@ func (path *TreePath) IsAncestor(descendant *TreePath) bool {
 }
 
 // IsDescendant returns TRUE if path is a descendant of ancestor.
+//
+// The function takes the following parameters:
+//
+//    - ancestor: another TreePath-struct.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if ancestor contains path somewhere below it.
+//
 func (path *TreePath) IsDescendant(ancestor *TreePath) bool {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 *C.GtkTreePath // out
@@ -1640,6 +1868,11 @@ func (path *TreePath) Next() {
 // PrependIndex prepends a new index to a path.
 //
 // As a result, the depth of the path is increased.
+//
+// The function takes the following parameters:
+//
+//    - index_: index.
+//
 func (path *TreePath) PrependIndex(index_ int) {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 C.int          // out
@@ -1654,6 +1887,11 @@ func (path *TreePath) PrependIndex(index_ int) {
 
 // Prev moves the path to point to the previous node at the current depth, if it
 // exists.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if path has a previous node, and the move was made.
+//
 func (path *TreePath) Prev() bool {
 	var _arg0 *C.GtkTreePath // out
 	var _cret C.gboolean     // in
@@ -1677,6 +1915,11 @@ func (path *TreePath) Prev() bool {
 // This string is a “:” separated list of numbers. For example, “4:10:0:3” would
 // be an acceptable return value for this string. If the path has depth 0, NULL
 // is returned.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): newly-allocated string. Must be freed with g_free().
+//
 func (path *TreePath) String() string {
 	var _arg0 *C.GtkTreePath // out
 	var _cret *C.char        // in
@@ -1697,6 +1940,11 @@ func (path *TreePath) String() string {
 }
 
 // Up moves the path to point to its parent node, if it has a parent.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if path has a parent, and the move was made.
+//
 func (path *TreePath) Up() bool {
 	var _arg0 *C.GtkTreePath // out
 	var _cret C.gboolean     // in
@@ -1794,6 +2042,11 @@ func NewTreeRowReferenceProxy(proxy *externglib.Object, model TreeModeller, path
 }
 
 // Copy copies a TreeRowReference.
+//
+// The function returns the following values:
+//
+//    - treeRowReference: copy of reference.
+//
 func (reference *TreeRowReference) Copy() *TreeRowReference {
 	var _arg0 *C.GtkTreeRowReference // out
 	var _cret *C.GtkTreeRowReference // in
@@ -1817,6 +2070,11 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 }
 
 // Model returns the model that the row reference is monitoring.
+//
+// The function returns the following values:
+//
+//    - treeModel: model.
+//
 func (reference *TreeRowReference) Model() TreeModeller {
 	var _arg0 *C.GtkTreeRowReference // out
 	var _cret *C.GtkTreeModel        // in
@@ -1848,6 +2106,11 @@ func (reference *TreeRowReference) Model() TreeModeller {
 
 // Path returns a path that the row reference currently points to, or NULL if
 // the path pointed to is no longer valid.
+//
+// The function returns the following values:
+//
+//    - treePath (optional): current path, or NULL.
+//
 func (reference *TreeRowReference) Path() *TreePath {
 	var _arg0 *C.GtkTreeRowReference // out
 	var _cret *C.GtkTreePath         // in
@@ -1874,6 +2137,11 @@ func (reference *TreeRowReference) Path() *TreePath {
 
 // Valid returns TRUE if the reference is non-NULL and refers to a current valid
 // path.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if reference points to a valid path.
+//
 func (reference *TreeRowReference) Valid() bool {
 	var _arg0 *C.GtkTreeRowReference // out
 	var _cret C.gboolean             // in

@@ -30,7 +30,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type HandleBoxOverrider interface {
+	// The function takes the following parameters:
+	//
 	ChildAttached(child Widgetter)
+	// The function takes the following parameters:
+	//
 	ChildDetached(child Widgetter)
 }
 
@@ -89,9 +93,26 @@ func marshalHandleBoxer(p uintptr) (interface{}, error) {
 	return wrapHandleBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChildAttached: this signal is emitted when the contents of the
+// handlebox are reattached to the main window.
+func (handleBox *HandleBox) ConnectChildAttached(f func(widget Widgetter)) externglib.SignalHandle {
+	return handleBox.Connect("child-attached", f)
+}
+
+// ConnectChildDetached: this signal is emitted when the contents of the
+// handlebox are detached from the main window.
+func (handleBox *HandleBox) ConnectChildDetached(f func(widget Widgetter)) externglib.SignalHandle {
+	return handleBox.Connect("child-detached", f)
+}
+
 // NewHandleBox: create a new handle box.
 //
 // Deprecated: HandleBox has been deprecated.
+//
+// The function returns the following values:
+//
+//    - handleBox: new HandleBox.
+//
 func NewHandleBox() *HandleBox {
 	var _cret *C.GtkWidget // in
 
@@ -107,6 +128,11 @@ func NewHandleBox() *HandleBox {
 // ChildDetached: whether the handlebox’s child is currently detached.
 //
 // Deprecated: HandleBox has been deprecated.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the child is currently detached, otherwise FALSE.
+//
 func (handleBox *HandleBox) ChildDetached() bool {
 	var _arg0 *C.GtkHandleBox // out
 	var _cret C.gboolean      // in
@@ -129,6 +155,11 @@ func (handleBox *HandleBox) ChildDetached() bool {
 // gtk_handle_box_set_handle_position().
 //
 // Deprecated: HandleBox has been deprecated.
+//
+// The function returns the following values:
+//
+//    - positionType: current handle position.
+//
 func (handleBox *HandleBox) HandlePosition() PositionType {
 	var _arg0 *C.GtkHandleBox   // out
 	var _cret C.GtkPositionType // in
@@ -149,6 +180,11 @@ func (handleBox *HandleBox) HandlePosition() PositionType {
 // gtk_handle_box_set_shadow_type().
 //
 // Deprecated: HandleBox has been deprecated.
+//
+// The function returns the following values:
+//
+//    - shadowType: type of shadow currently drawn around the handle box.
+//
 func (handleBox *HandleBox) ShadowType() ShadowType {
 	var _arg0 *C.GtkHandleBox // out
 	var _cret C.GtkShadowType // in
@@ -169,6 +205,13 @@ func (handleBox *HandleBox) ShadowType() ShadowType {
 // See gtk_handle_box_set_snap_edge().
 //
 // Deprecated: HandleBox has been deprecated.
+//
+// The function returns the following values:
+//
+//    - positionType: edge used for determining reattachment, or
+//      (GtkPositionType)-1 if this is determined (as per default) from the
+//      handle position.
+//
 func (handleBox *HandleBox) SnapEdge() PositionType {
 	var _arg0 *C.GtkHandleBox   // out
 	var _cret C.GtkPositionType // in
@@ -240,8 +283,8 @@ func (handleBox *HandleBox) SetShadowType(typ ShadowType) {
 //
 // The function takes the following parameters:
 //
-//    - edge: snap edge, or -1 to unset the value; in which case GTK+ will try
-//    to guess an appropriate value in the future.
+//    - edge: snap edge, or -1 to unset the value; in which case GTK+ will try to
+//      guess an appropriate value in the future.
 //
 func (handleBox *HandleBox) SetSnapEdge(edge PositionType) {
 	var _arg0 *C.GtkHandleBox   // out
@@ -253,16 +296,4 @@ func (handleBox *HandleBox) SetSnapEdge(edge PositionType) {
 	C.gtk_handle_box_set_snap_edge(_arg0, _arg1)
 	runtime.KeepAlive(handleBox)
 	runtime.KeepAlive(edge)
-}
-
-// ConnectChildAttached: this signal is emitted when the contents of the
-// handlebox are reattached to the main window.
-func (handleBox *HandleBox) ConnectChildAttached(f func(widget Widgetter)) externglib.SignalHandle {
-	return handleBox.Connect("child-attached", f)
-}
-
-// ConnectChildDetached: this signal is emitted when the contents of the
-// handlebox are detached from the main window.
-func (handleBox *HandleBox) ConnectChildDetached(f func(widget Widgetter)) externglib.SignalHandle {
-	return handleBox.Connect("child-detached", f)
 }

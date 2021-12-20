@@ -65,6 +65,8 @@ func marshalContainerCellAccessibler(p uintptr) (interface{}, error) {
 	return wrapContainerCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// The function returns the following values:
+//
 func NewContainerCellAccessible() *ContainerCellAccessible {
 	var _cret *C.GtkContainerCellAccessible // in
 
@@ -77,10 +79,7 @@ func NewContainerCellAccessible() *ContainerCellAccessible {
 	return _containerCellAccessible
 }
 
-//
 // The function takes the following parameters:
-//
-
 //
 func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
@@ -95,6 +94,9 @@ func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 }
 
 // Children: get a list of children.
+//
+// The function returns the following values:
+//
 func (container *ContainerCellAccessible) Children() []CellAccessible {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _cret *C.GList                      // in
@@ -117,10 +119,7 @@ func (container *ContainerCellAccessible) Children() []CellAccessible {
 	return _list
 }
 
-//
 // The function takes the following parameters:
-//
-
 //
 func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out

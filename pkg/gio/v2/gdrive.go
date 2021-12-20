@@ -39,14 +39,40 @@ const DRIVE_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
 // yet, so the interface currently has no use.
 type DriveOverrider interface {
 	// CanEject checks if a drive can be ejected.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be ejected, FALSE otherwise.
+	//
 	CanEject() bool
 	// CanPollForMedia checks if a drive can be polled for media changes.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be polled for media changes, FALSE
+	//      otherwise.
+	//
 	CanPollForMedia() bool
 	// CanStart checks if a drive can be started.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be started, FALSE otherwise.
+	//
 	CanStart() bool
 	// CanStartDegraded checks if a drive can be started degraded.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be started degraded, FALSE otherwise.
+	//
 	CanStartDegraded() bool
 	// CanStop checks if a drive can be stopped.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be stopped, FALSE otherwise.
+	//
 	CanStop() bool
 	Changed()
 	Disconnected()
@@ -56,54 +82,156 @@ type DriveOverrider interface {
 	// call g_drive_eject_finish() to obtain the result of the operation.
 	//
 	// Deprecated: Use g_drive_eject_with_operation() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the unmount if required for eject.
+	//    - callback (optional) or NULL.
+	//
 	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	EjectButton()
 	// EjectFinish finishes ejecting a drive.
 	//
 	// Deprecated: Use g_drive_eject_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	EjectFinish(result AsyncResulter) error
 	// EjectWithOperation ejects a drive. This is an asynchronous operation, and
 	// is finished by calling g_drive_eject_with_operation_finish() with the
 	// drive and Result data returned in the callback.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the unmount if required for eject.
+	//    - mountOperation (optional) or NULL to avoid user interaction.
+	//    - callback (optional) or NULL.
+	//
 	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a drive. If any errors
 	// occurred during the operation, error will be set to contain the errors
 	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	EjectWithOperationFinish(result AsyncResulter) error
 	// EnumerateIdentifiers gets the kinds of identifiers that drive has. Use
 	// g_drive_get_identifier() to obtain the identifiers themselves.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: NULL-terminated array of strings containing kinds of
+	//      identifiers. Use g_strfreev() to free.
+	//
 	EnumerateIdentifiers() []string
 	// Icon gets the icon for drive.
+	//
+	// The function returns the following values:
+	//
+	//    - icon for the drive. Free the returned object with g_object_unref().
+	//
 	Icon() Iconner
 	// Identifier gets the identifier of the given kind for drive. The only
 	// identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
+	//
+	// The function takes the following parameters:
+	//
+	//    - kind of identifier to return.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): newly allocated string containing the requested
+	//      identifier, or NULL if the #GDrive doesn't have this kind of
+	//      identifier.
+	//
 	Identifier(kind string) string
 	// Name gets the name of drive.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: string containing drive's name. The returned string should be
+	//      freed when no longer needed.
+	//
 	Name() string
 	// SortKey gets the sort key for drive, if any.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): sorting key for drive or NULL if no such key is
+	//      available.
+	//
 	SortKey() string
 	// StartStopType gets a hint about how a drive can be started/stopped.
+	//
+	// The function returns the following values:
+	//
+	//    - driveStartStopType: value from the StartStopType enumeration.
+	//
 	StartStopType() DriveStartStopType
 	// SymbolicIcon gets the icon for drive.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: symbolic #GIcon for the drive. Free the returned object with
+	//      g_object_unref().
+	//
 	SymbolicIcon() Iconner
 	// Volumes: get a list of mountable volumes for drive.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
+	//
+	// The function returns the following values:
+	//
+	//    - list containing any #GVolume objects on the given drive.
+	//
 	Volumes() []Volumer
 	// HasMedia checks if the drive has media. Note that the OS may not be
 	// polling the drive for media changes; see
 	// g_drive_is_media_check_automatic() for more details.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if drive has media, FALSE otherwise.
+	//
 	HasMedia() bool
 	// HasVolumes: check if drive has any mountable volumes.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive contains volumes, FALSE otherwise.
+	//
 	HasVolumes() bool
 	// IsMediaCheckAutomatic checks if drive is capable of automatically
 	// detecting media changes.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive is capable of automatically detecting media
+	//      changes, FALSE otherwise.
+	//
 	IsMediaCheckAutomatic() bool
 	// IsMediaRemovable checks if the drive supports removable media.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if drive supports removable media, FALSE otherwise.
+	//
 	IsMediaRemovable() bool
 	// IsRemovable checks if the #GDrive and/or its media is considered
 	// removable by the user. See g_drive_is_media_removable().
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if drive and/or its media is considered removable, FALSE
+	//      otherwise.
+	//
 	IsRemovable() bool
 	// PollForMedia: asynchronously polls drive to see if media has been
 	// inserted or removed.
@@ -111,24 +239,61 @@ type DriveOverrider interface {
 	// When the operation is finished, callback will be called. You can then
 	// call g_drive_poll_for_media_finish() to obtain the result of the
 	// operation.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - callback (optional) or NULL.
+	//
 	PollForMedia(ctx context.Context, callback AsyncReadyCallback)
 	// PollForMediaFinish finishes an operation started with
 	// g_drive_poll_for_media() on a drive.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	PollForMediaFinish(result AsyncResulter) error
 	// Start: asynchronously starts a drive.
 	//
 	// When the operation is finished, callback will be called. You can then
 	// call g_drive_start_finish() to obtain the result of the operation.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the start operation.
+	//    - mountOperation (optional) or NULL to avoid user interaction.
+	//    - callback (optional) or NULL.
+	//
 	Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StartFinish finishes starting a drive.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	StartFinish(result AsyncResulter) error
 	// Stop: asynchronously stops a drive.
 	//
 	// When the operation is finished, callback will be called. You can then
 	// call g_drive_stop_finish() to obtain the result of the operation.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - flags affecting the unmount if required for stopping.
+	//    - mountOperation (optional) or NULL to avoid user interaction.
+	//    - callback (optional) or NULL.
+	//
 	Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	StopButton()
 	// StopFinish finishes stopping a drive.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
 	StopFinish(result AsyncResulter) error
 }
 
@@ -242,7 +407,36 @@ func marshalDriver(p uintptr) (interface{}, error) {
 	return wrapDrive(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectChanged: emitted when the drive's state has changed.
+func (drive *Drive) ConnectChanged(f func()) externglib.SignalHandle {
+	return drive.Connect("changed", f)
+}
+
+// ConnectDisconnected: this signal is emitted when the #GDrive have been
+// disconnected. If the recipient is holding references to the object they
+// should release them so the object can be finalized.
+func (drive *Drive) ConnectDisconnected(f func()) externglib.SignalHandle {
+	return drive.Connect("disconnected", f)
+}
+
+// ConnectEjectButton: emitted when the physical eject button (if any) of a
+// drive has been pressed.
+func (drive *Drive) ConnectEjectButton(f func()) externglib.SignalHandle {
+	return drive.Connect("eject-button", f)
+}
+
+// ConnectStopButton: emitted when the physical stop button (if any) of a drive
+// has been pressed.
+func (drive *Drive) ConnectStopButton(f func()) externglib.SignalHandle {
+	return drive.Connect("stop-button", f)
+}
+
 // CanEject checks if a drive can be ejected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be ejected, FALSE otherwise.
+//
 func (drive *Drive) CanEject() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -262,6 +456,11 @@ func (drive *Drive) CanEject() bool {
 }
 
 // CanPollForMedia checks if a drive can be polled for media changes.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be polled for media changes, FALSE otherwise.
+//
 func (drive *Drive) CanPollForMedia() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -281,6 +480,11 @@ func (drive *Drive) CanPollForMedia() bool {
 }
 
 // CanStart checks if a drive can be started.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be started, FALSE otherwise.
+//
 func (drive *Drive) CanStart() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -300,6 +504,11 @@ func (drive *Drive) CanStart() bool {
 }
 
 // CanStartDegraded checks if a drive can be started degraded.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be started degraded, FALSE otherwise.
+//
 func (drive *Drive) CanStartDegraded() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -319,6 +528,11 @@ func (drive *Drive) CanStartDegraded() bool {
 }
 
 // CanStop checks if a drive can be stopped.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be stopped, FALSE otherwise.
+//
 func (drive *Drive) CanStop() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -346,9 +560,9 @@ func (drive *Drive) CanStop() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the unmount if required for eject.
-//    - callback or NULL.
+//    - callback (optional) or NULL.
 //
 func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -411,10 +625,10 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the unmount if required for eject.
-//    - mountOperation or NULL to avoid user interaction.
-//    - callback or NULL.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
 //
 func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -478,6 +692,12 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 
 // EnumerateIdentifiers gets the kinds of identifiers that drive has. Use
 // g_drive_get_identifier() to obtain the identifiers themselves.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of strings containing kinds of identifiers.
+//      Use g_strfreev() to free.
+//
 func (drive *Drive) EnumerateIdentifiers() []string {
 	var _arg0 *C.GDrive // out
 	var _cret **C.char  // in
@@ -509,6 +729,11 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 }
 
 // Icon gets the icon for drive.
+//
+// The function returns the following values:
+//
+//    - icon for the drive. Free the returned object with g_object_unref().
+//
 func (drive *Drive) Icon() Iconner {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
@@ -545,6 +770,11 @@ func (drive *Drive) Icon() Iconner {
 //
 //    - kind of identifier to return.
 //
+// The function returns the following values:
+//
+//    - utf8 (optional): newly allocated string containing the requested
+//      identifier, or NULL if the #GDrive doesn't have this kind of identifier.
+//
 func (drive *Drive) Identifier(kind string) string {
 	var _arg0 *C.GDrive // out
 	var _arg1 *C.char   // out
@@ -569,6 +799,12 @@ func (drive *Drive) Identifier(kind string) string {
 }
 
 // Name gets the name of drive.
+//
+// The function returns the following values:
+//
+//    - utf8: string containing drive's name. The returned string should be freed
+//      when no longer needed.
+//
 func (drive *Drive) Name() string {
 	var _arg0 *C.GDrive // out
 	var _cret *C.char   // in
@@ -587,6 +823,12 @@ func (drive *Drive) Name() string {
 }
 
 // SortKey gets the sort key for drive, if any.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): sorting key for drive or NULL if no such key is
+//      available.
+//
 func (drive *Drive) SortKey() string {
 	var _arg0 *C.GDrive // out
 	var _cret *C.gchar  // in
@@ -606,6 +848,11 @@ func (drive *Drive) SortKey() string {
 }
 
 // StartStopType gets a hint about how a drive can be started/stopped.
+//
+// The function returns the following values:
+//
+//    - driveStartStopType: value from the StartStopType enumeration.
+//
 func (drive *Drive) StartStopType() DriveStartStopType {
 	var _arg0 *C.GDrive             // out
 	var _cret C.GDriveStartStopType // in
@@ -623,6 +870,12 @@ func (drive *Drive) StartStopType() DriveStartStopType {
 }
 
 // SymbolicIcon gets the icon for drive.
+//
+// The function returns the following values:
+//
+//    - icon: symbolic #GIcon for the drive. Free the returned object with
+//      g_object_unref().
+//
 func (drive *Drive) SymbolicIcon() Iconner {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
@@ -656,6 +909,11 @@ func (drive *Drive) SymbolicIcon() Iconner {
 //
 // The returned list should be freed with g_list_free(), after its elements have
 // been unreffed with g_object_unref().
+//
+// The function returns the following values:
+//
+//    - list containing any #GVolume objects on the given drive.
+//
 func (drive *Drive) Volumes() []Volumer {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GList  // in
@@ -694,6 +952,11 @@ func (drive *Drive) Volumes() []Volumer {
 // HasMedia checks if the drive has media. Note that the OS may not be polling
 // the drive for media changes; see g_drive_is_media_check_automatic() for more
 // details.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if drive has media, FALSE otherwise.
+//
 func (drive *Drive) HasMedia() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -713,6 +976,11 @@ func (drive *Drive) HasMedia() bool {
 }
 
 // HasVolumes: check if drive has any mountable volumes.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive contains volumes, FALSE otherwise.
+//
 func (drive *Drive) HasVolumes() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -733,6 +1001,12 @@ func (drive *Drive) HasVolumes() bool {
 
 // IsMediaCheckAutomatic checks if drive is capable of automatically detecting
 // media changes.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive is capable of automatically detecting media
+//      changes, FALSE otherwise.
+//
 func (drive *Drive) IsMediaCheckAutomatic() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -752,6 +1026,11 @@ func (drive *Drive) IsMediaCheckAutomatic() bool {
 }
 
 // IsMediaRemovable checks if the drive supports removable media.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if drive supports removable media, FALSE otherwise.
+//
 func (drive *Drive) IsMediaRemovable() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -772,6 +1051,12 @@ func (drive *Drive) IsMediaRemovable() bool {
 
 // IsRemovable checks if the #GDrive and/or its media is considered removable by
 // the user. See g_drive_is_media_removable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if drive and/or its media is considered removable, FALSE
+//      otherwise.
+//
 func (drive *Drive) IsRemovable() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -798,8 +1083,8 @@ func (drive *Drive) IsRemovable() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
-//    - callback or NULL.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - callback (optional) or NULL.
 //
 func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -859,10 +1144,10 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the start operation.
-//    - mountOperation or NULL to avoid user interaction.
-//    - callback or NULL.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
 //
 func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -929,10 +1214,10 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //    - flags affecting the unmount if required for stopping.
-//    - mountOperation or NULL to avoid user interaction.
-//    - callback or NULL.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
 //
 func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -990,28 +1275,4 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
-}
-
-// ConnectChanged: emitted when the drive's state has changed.
-func (drive *Drive) ConnectChanged(f func()) externglib.SignalHandle {
-	return drive.Connect("changed", f)
-}
-
-// ConnectDisconnected: this signal is emitted when the #GDrive have been
-// disconnected. If the recipient is holding references to the object they
-// should release them so the object can be finalized.
-func (drive *Drive) ConnectDisconnected(f func()) externglib.SignalHandle {
-	return drive.Connect("disconnected", f)
-}
-
-// ConnectEjectButton: emitted when the physical eject button (if any) of a
-// drive has been pressed.
-func (drive *Drive) ConnectEjectButton(f func()) externglib.SignalHandle {
-	return drive.Connect("eject-button", f)
-}
-
-// ConnectStopButton: emitted when the physical stop button (if any) of a drive
-// has been pressed.
-func (drive *Drive) ConnectStopButton(f func()) externglib.SignalHandle {
-	return drive.Connect("stop-button", f)
 }

@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -233,10 +232,13 @@ func (display *Display) DefaultSeat() Seater {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Seater)
+				return ok
+			})
 			rv, ok := casted.(Seater)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
 			}
 			_seat = rv
 		}
@@ -307,10 +309,13 @@ func (self *Display) Monitors() gio.ListModeller {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.ListModeller)
+			return ok
+		})
 		rv, ok := casted.(gio.ListModeller)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ListModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
 		_listModel = rv
 	}
@@ -548,10 +553,13 @@ func (display *Display) ListSeats() []Seater {
 			}
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Seater)
+				return ok
+			})
 			rv, ok := casted.(Seater)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
 			}
 			dst = rv
 		}

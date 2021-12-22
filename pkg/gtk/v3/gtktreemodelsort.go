@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -326,10 +325,13 @@ func (treeModel *TreeModelSort) Model() TreeModeller {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
 		rv, ok := casted.(TreeModeller)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.TreeModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
 		_treeModel = rv
 	}

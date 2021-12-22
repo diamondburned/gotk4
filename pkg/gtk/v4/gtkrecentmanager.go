@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -655,10 +654,13 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.AppInfor)
+				return ok
+			})
 			rv, ok := casted.(gio.AppInfor)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
 			_appInfo = rv
 		}
@@ -853,10 +855,13 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Iconner)
+				return ok
+			})
 			rv, ok := casted.(gio.Iconner)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
 			_icon = rv
 		}

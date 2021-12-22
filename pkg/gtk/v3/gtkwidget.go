@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -90,10 +89,13 @@ func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
 		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		widget = rv
 	}
@@ -123,10 +125,13 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
 		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		widget = rv
 	}
@@ -137,10 +142,13 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.FrameClocker)
+			return ok
+		})
 		rv, ok := casted.(gdk.FrameClocker)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.FrameClocker")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.FrameClocker")
 		}
 		frameClock = rv
 	}
@@ -2350,10 +2358,13 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.ActionGrouper)
+				return ok
+			})
 			rv, ok := casted.(gio.ActionGrouper)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ActionGrouper")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ActionGrouper")
 			}
 			_actionGroup = rv
 		}
@@ -2540,10 +2551,13 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
 			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_ret = rv
 		}
@@ -2972,10 +2986,13 @@ func (widget *Widget) FontMap() pango.FontMapper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(pango.FontMapper)
+				return ok
+			})
 			rv, ok := casted.(pango.FontMapper)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
 			}
 			_fontMap = rv
 		}
@@ -3049,10 +3066,13 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.FrameClocker)
+				return ok
+			})
 			rv, ok := casted.(gdk.FrameClocker)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.FrameClocker")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.FrameClocker")
 			}
 			_frameClock = rv
 		}
@@ -3523,10 +3543,13 @@ func (widget *Widget) Parent() Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
 			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_ret = rv
 		}
@@ -3558,10 +3581,13 @@ func (widget *Widget) ParentWindow() gdk.Windower {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.Windower)
+				return ok
+			})
 			rv, ok := casted.(gdk.Windower)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 			}
 			_window = rv
 		}
@@ -4018,10 +4044,13 @@ func (widget *Widget) RootWindow() gdk.Windower {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Windower)
+			return ok
+		})
 		rv, ok := casted.(gdk.Windower)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
 		_window = rv
 	}
@@ -4439,10 +4468,13 @@ func (widget *Widget) Toplevel() Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
 		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_ret = rv
 	}
@@ -4634,10 +4666,13 @@ func (widget *Widget) Window() gdk.Windower {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.Windower)
+				return ok
+			})
 			rv, ok := casted.(gdk.Windower)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 			}
 			_window = rv
 		}
@@ -5324,10 +5359,13 @@ func (widget *Widget) ListMnemonicLabels() []Widgetter {
 			}
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
 			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			dst = rv
 		}

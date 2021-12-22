@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -295,10 +294,13 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(ConstraintTargetter)
+				return ok
+			})
 			rv, ok := casted.(ConstraintTargetter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.ConstraintTargetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.ConstraintTargetter")
 			}
 			_constraintTarget = rv
 		}
@@ -378,10 +380,13 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(ConstraintTargetter)
+				return ok
+			})
 			rv, ok := casted.(ConstraintTargetter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.ConstraintTargetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.ConstraintTargetter")
 			}
 			_constraintTarget = rv
 		}

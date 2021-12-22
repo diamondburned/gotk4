@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -162,10 +161,13 @@ func (self *Drop) Device() Devicer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Devicer)
+			return ok
+		})
 		rv, ok := casted.(Devicer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 		}
 		_device = rv
 	}
@@ -220,10 +222,13 @@ func (self *Drop) Drag() Dragger {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Dragger)
+				return ok
+			})
 			rv, ok := casted.(Dragger)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Dragger")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dragger")
 			}
 			_drag = rv
 		}
@@ -286,10 +291,13 @@ func (self *Drop) Surface() Surfacer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Surfacer)
+			return ok
+		})
 		rv, ok := casted.(Surfacer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
 		}
 		_surface = rv
 	}
@@ -392,10 +400,13 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.InputStreamer)
+				return ok
+			})
 			rv, ok := casted.(gio.InputStreamer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.InputStreamer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.InputStreamer")
 			}
 			_inputStream = rv
 		}

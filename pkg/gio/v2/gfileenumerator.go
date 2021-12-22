@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -326,10 +325,13 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -361,10 +363,13 @@ func (enumerator *FileEnumerator) Container() Filer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -493,10 +498,13 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, e
 			objptr := unsafe.Pointer(_arg2)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Filer)
+				return ok
+			})
 			rv, ok := casted.(Filer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
 			_outChild = rv
 		}

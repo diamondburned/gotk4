@@ -484,15 +484,13 @@ func newObject(ptr unsafe.Pointer, take bool) *Object {
 //go:nosplit
 //go:nocheckptr
 func (v *Object) Cast() Objector {
-	if v == nil {
+	if v.native() == nil {
 		// nil-typed interface != non-nil-typed nil-value interface
 		return nil
 	}
 
 	var gvalue C.GValue
-
 	C.g_value_init_from_instance(&gvalue, C.gpointer(v.Native()))
-	runtime.KeepAlive(v)
 
 	value := ValueFromNative(unsafe.Pointer(&gvalue))
 	defer value.unset()
@@ -503,7 +501,40 @@ func (v *Object) Cast() Objector {
 		return gv.(Objector)
 	}
 
+	runtime.KeepAlive(v)
 	return v
+}
+
+// WalkCast is like Cast, except the user is walked through the object's entire
+// inheritance tree as well as all its interfaces. This is used in the code
+// generator for type assertions.
+func (v *Object) WalkCast(f func(Objector) bool) (object Objector) {
+	if v.native() == nil {
+		return nil
+	}
+
+	var gvalue C.GValue
+	C.g_value_init_from_instance(&gvalue, C.gpointer(v.Native()))
+
+	value := ValueFromNative(unsafe.Pointer(&gvalue))
+	defer value.unset()
+
+	value.WalkGoValue(func(v interface{}) bool {
+		ob, ok := v.(Objector)
+		if !ok {
+			return false
+		}
+
+		if f(ob) {
+			object = ob
+			return true
+		}
+
+		return false
+	})
+
+	runtime.KeepAlive(v)
+	return
 }
 
 func (v *Object) baseObject() *Object {
@@ -964,22 +995,8 @@ func init() {
 	RegisterGValueMarshaler(Type(C.g_value_get_type()), marshalValue)
 }
 
-func (m *marshalMap) lookupIfaces(t Type) GValueMarshaler {
-	ifaces := t.interfaces()
-	if len(ifaces) > 0 {
-		defer C.free(unsafe.Pointer(&ifaces[0]))
-	}
-
-	for _, t := range ifaces {
-		f, ok := m.lookupType(t)
-		if ok {
-			return f
-		}
-	}
-
-	return nil
-}
-
+// lookup returns the closest available GValueMarshaler for the given value's
+// type.
 func (m *marshalMap) lookup(v *Value) GValueMarshaler {
 	typ := v.Type()
 
@@ -1004,6 +1021,57 @@ func (m *marshalMap) lookup(v *Value) GValueMarshaler {
 	}
 
 	log.Printf("gotk4: missing marshaler for type %q (i.e. %q)", v.Type(), fundamental)
+	return nil
+}
+
+// lookupWalk is like lookup, except the function walks the user through every
+// single possible marshaler until it returns true.
+func (m *marshalMap) lookupWalk(v *Value, testFn func(GValueMarshaler) bool) bool {
+	typ := v.Type()
+
+	// Check the inheritance tree for concrete classes.
+	for t := typ; t != 0; t = t.Parent() {
+		f, ok := m.lookupType(t)
+		if ok {
+			if testFn(f) {
+				return true
+			}
+		}
+	}
+
+	// Check the tree again for interfaces.
+	for t := typ; t != 0; t = t.Parent() {
+		if f := m.lookupIfaces(t); f != nil {
+			if testFn(f) {
+				return true
+			}
+		}
+	}
+
+	fundamental := FundamentalType(typ)
+	if f, ok := m.lookupType(fundamental); ok {
+		if testFn(f) {
+			return true
+		}
+	}
+
+	log.Printf("gotk4: missing marshaler for type %q (i.e. %q)", v.Type(), fundamental)
+	return false
+}
+
+func (m *marshalMap) lookupIfaces(t Type) GValueMarshaler {
+	ifaces := t.interfaces()
+	if len(ifaces) > 0 {
+		defer C.free(unsafe.Pointer(&ifaces[0]))
+	}
+
+	for _, t := range ifaces {
+		f, ok := m.lookupType(t)
+		if ok {
+			return f
+		}
+	}
+
 	return nil
 }
 
@@ -1140,6 +1208,29 @@ func (v *Value) GoValue() interface{} {
 	}
 
 	return g
+}
+
+// WalkGoValue is like GoValue, except the user is walked through every single
+// possible type of the value until it's no longer possible or until the
+// callback returns true.
+func (v *Value) WalkGoValue(f func(interface{}) bool) (value interface{}) {
+	marshalers.lookupWalk(v, func(marshaler GValueMarshaler) bool {
+		g, err := marshaler(uintptr(unsafe.Pointer(v.native())))
+		if err != nil {
+			log.Printf("gotk4: marshaler error for %s: %v", v.Type(), err)
+			return false
+		}
+
+		if f(g) {
+			value = g
+			return true
+		}
+
+		return false
+	})
+
+	runtime.KeepAlive(v)
+	return
 }
 
 // SetBool is a wrapper around g_value_set_boolean().

@@ -5,7 +5,6 @@ package gio
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -1200,10 +1199,13 @@ func ResolverGetDefault() Resolverer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Resolverer)
+			return ok
+		})
 		rv, ok := casted.(Resolverer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Resolverer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Resolverer")
 		}
 		_resolver = rv
 	}

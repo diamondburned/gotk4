@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -161,10 +160,13 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(InputStreamer)
+			return ok
+		})
 		rv, ok := casted.(InputStreamer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.InputStreamer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.InputStreamer")
 		}
 		_inputStream = rv
 	}
@@ -253,10 +255,13 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(InputStreamer)
+			return ok
+		})
 		rv, ok := casted.(InputStreamer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.InputStreamer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.InputStreamer")
 		}
 		_inputStream = rv
 	}

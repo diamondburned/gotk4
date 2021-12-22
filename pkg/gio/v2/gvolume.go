@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -643,10 +642,13 @@ func (volume *Volume) ActivationRoot() Filer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Filer)
+				return ok
+			})
 			rv, ok := casted.(Filer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
 			_file = rv
 		}
@@ -679,10 +681,13 @@ func (volume *Volume) Drive() Driver {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Driver)
+				return ok
+			})
 			rv, ok := casted.(Driver)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Driver")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 			}
 			_drive = rv
 		}
@@ -716,10 +721,13 @@ func (volume *Volume) Icon() Iconner {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Iconner)
+			return ok
+		})
 		rv, ok := casted.(Iconner)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
 		_icon = rv
 	}
@@ -786,10 +794,13 @@ func (volume *Volume) GetMount() Mounter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Mounter)
+				return ok
+			})
 			rv, ok := casted.(Mounter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Mounter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 			}
 			_mount = rv
 		}
@@ -872,10 +883,13 @@ func (volume *Volume) SymbolicIcon() Iconner {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Iconner)
+			return ok
+		})
 		rv, ok := casted.(Iconner)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
 		_icon = rv
 	}

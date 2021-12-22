@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -243,10 +242,13 @@ func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(LayoutChilder)
+			return ok
+		})
 		rv, ok := casted.(LayoutChilder)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.LayoutChilder")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.LayoutChilder")
 		}
 		_layoutChild = rv
 	}
@@ -298,10 +300,13 @@ func (manager *LayoutManager) Widget() Widgetter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
 			rv, ok := casted.(Widgetter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 			}
 			_widget = rv
 		}

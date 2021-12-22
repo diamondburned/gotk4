@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -48,10 +47,13 @@ func _gotk4_pango1_FontsetForEachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Fontsetter)
+			return ok
+		})
 		rv, ok := casted.(Fontsetter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fontsetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fontsetter")
 		}
 		fontset = rv
 	}
@@ -62,10 +64,13 @@ func _gotk4_pango1_FontsetForEachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Fonter)
+			return ok
+		})
 		rv, ok := casted.(Fonter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fonter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fonter")
 		}
 		font = rv
 	}
@@ -224,10 +229,13 @@ func (fontset *Fontset) Font(wc uint) Fonter {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Fonter)
+			return ok
+		})
 		rv, ok := casted.(Fonter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fonter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fonter")
 		}
 		_font = rv
 	}

@@ -3,7 +3,6 @@
 package gdkx11
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -118,10 +117,13 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Surfacer)
+			return ok
+		})
 		rv, ok := casted.(gdk.Surfacer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
 		}
 		_ret = rv
 	}

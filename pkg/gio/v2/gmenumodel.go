@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -332,10 +331,13 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 			objptr := unsafe.Pointer(_arg2)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(MenuModeller)
+				return ok
+			})
 			rv, ok := casted.(MenuModeller)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.MenuModeller")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MenuModeller")
 			}
 			_value = rv
 		}
@@ -373,10 +375,13 @@ func (iter *MenuLinkIter) Value() MenuModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(MenuModeller)
+			return ok
+		})
 		rv, ok := casted.(MenuModeller)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.MenuModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MenuModeller")
 		}
 		_menuModel = rv
 	}
@@ -808,10 +813,13 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(MenuModeller)
+				return ok
+			})
 			rv, ok := casted.(MenuModeller)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.MenuModeller")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MenuModeller")
 			}
 			_menuModel = rv
 		}
@@ -943,10 +951,13 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(MenuAttributeIterer)
+			return ok
+		})
 		rv, ok := casted.(MenuAttributeIterer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.MenuAttributeIterer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MenuAttributeIterer")
 		}
 		_menuAttributeIter = rv
 	}
@@ -988,10 +999,13 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(MenuLinkIterer)
+			return ok
+		})
 		rv, ok := casted.(MenuLinkIterer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.MenuLinkIterer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MenuLinkIterer")
 		}
 		_menuLinkIter = rv
 	}

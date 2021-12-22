@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -115,10 +114,13 @@ func (interface_ *DBusInterface) GetObject() DBusObjector {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(DBusObjector)
+				return ok
+			})
 			rv, ok := casted.(DBusObjector)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.DBusObjector")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 			}
 			_dBusObject = rv
 		}

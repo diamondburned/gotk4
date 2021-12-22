@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -296,10 +295,13 @@ func (area *GLArea) Context() gdk.GLContexter {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.GLContexter)
+			return ok
+		})
 		rv, ok := casted.(gdk.GLContexter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.GLContexter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.GLContexter")
 		}
 		_glContext = rv
 	}

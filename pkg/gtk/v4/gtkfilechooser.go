@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -465,10 +464,13 @@ func (chooser *FileChooser) CurrentFolder() gio.Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.Filer)
+			return ok
+		})
 		rv, ok := casted.(gio.Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -536,10 +538,13 @@ func (chooser *FileChooser) File() gio.Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.Filer)
+			return ok
+		})
 		rv, ok := casted.(gio.Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -574,10 +579,13 @@ func (chooser *FileChooser) Files() gio.ListModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.ListModeller)
+			return ok
+		})
 		rv, ok := casted.(gio.ListModeller)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ListModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
 		_listModel = rv
 	}
@@ -640,10 +648,13 @@ func (chooser *FileChooser) Filters() gio.ListModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.ListModeller)
+			return ok
+		})
 		rv, ok := casted.(gio.ListModeller)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ListModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
 		_listModel = rv
 	}
@@ -703,10 +714,13 @@ func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.ListModeller)
+			return ok
+		})
 		rv, ok := casted.(gio.ListModeller)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ListModeller")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
 		_listModel = rv
 	}

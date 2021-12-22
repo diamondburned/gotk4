@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -1179,10 +1178,13 @@ func (cell *CellRenderer) StartEditing(event *gdk.Event, widget Widgetter, path 
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(CellEditabler)
+				return ok
+			})
 			rv, ok := casted.(CellEditabler)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellEditabler")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
 			}
 			_cellEditable = rv
 		}

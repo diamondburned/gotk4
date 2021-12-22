@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -235,10 +234,13 @@ func (context *CellAreaContext) Area() CellAreaer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellAreaer)
+			return ok
+		})
 		rv, ok := casted.(CellAreaer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellAreaer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellAreaer")
 		}
 		_cellArea = rv
 	}

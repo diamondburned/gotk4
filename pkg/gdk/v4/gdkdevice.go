@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -435,10 +434,13 @@ func (device *Device) Seat() Seater {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Seater)
+			return ok
+		})
 		rv, ok := casted.(Seater)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
 		}
 		_seat = rv
 	}
@@ -504,10 +506,13 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface S
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Surfacer)
+				return ok
+			})
 			rv, ok := casted.(Surfacer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
 			}
 			_surface = rv
 		}

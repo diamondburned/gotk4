@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -98,10 +97,13 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.Eventer)
+				return ok
+			})
 			rv, ok := casted.(gdk.Eventer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Eventer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Eventer")
 			}
 			_event = rv
 		}
@@ -133,10 +135,13 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.Devicer)
+				return ok
+			})
 			rv, ok := casted.(gdk.Devicer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 			}
 			_device = rv
 		}
@@ -281,10 +286,13 @@ func (controller *EventController) Widget() Widgetter {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
 		rv, ok := casted.(Widgetter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Widgetter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
 		_widget = rv
 	}

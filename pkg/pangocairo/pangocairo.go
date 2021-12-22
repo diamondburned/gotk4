@@ -3,7 +3,6 @@
 package pangocairo
 
 import (
-	"reflect"
 	"runtime"
 	_ "runtime/cgo"
 	"unsafe"
@@ -757,10 +756,13 @@ func FontMapGetDefault() pango.FontMapper {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(pango.FontMapper)
+			return ok
+		})
 		rv, ok := casted.(pango.FontMapper)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
 		}
 		_fontMap = rv
 	}
@@ -803,10 +805,13 @@ func NewFontMap() pango.FontMapper {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(pango.FontMapper)
+			return ok
+		})
 		rv, ok := casted.(pango.FontMapper)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
 		}
 		_fontMap = rv
 	}

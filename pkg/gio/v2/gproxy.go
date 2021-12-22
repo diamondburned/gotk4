@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -183,10 +182,13 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(IOStreamer)
+			return ok
+		})
 		rv, ok := casted.(IOStreamer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.IOStreamer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.IOStreamer")
 		}
 		_ioStream = rv
 	}
@@ -268,10 +270,13 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(IOStreamer)
+			return ok
+		})
 		rv, ok := casted.(IOStreamer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.IOStreamer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.IOStreamer")
 		}
 		_ioStream = rv
 	}
@@ -339,10 +344,13 @@ func ProxyGetDefaultForProtocol(protocol string) Proxier {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Proxier)
+				return ok
+			})
 			rv, ok := casted.(Proxier)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Proxier")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Proxier")
 			}
 			_proxy = rv
 		}

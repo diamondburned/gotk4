@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -83,10 +82,13 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Iconner)
+				return ok
+			})
 			rv, ok := casted.(gio.Iconner)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
 			_icon = rv
 		}
@@ -372,10 +374,13 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.Iconner)
+			return ok
+		})
 		rv, ok := casted.(gio.Iconner)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
 		_icon = rv
 	}
@@ -419,10 +424,13 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.Iconner)
+			return ok
+		})
 		rv, ok := casted.(gio.Iconner)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
 		_icon = rv
 	}

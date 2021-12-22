@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -410,10 +409,13 @@ func (image *Image) GIcon() gio.Iconner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Iconner)
+				return ok
+			})
 			rv, ok := casted.(gio.Iconner)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Iconner")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
 			_icon = rv
 		}
@@ -498,10 +500,13 @@ func (image *Image) Paintable() gdk.Paintabler {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.Paintabler)
+				return ok
+			})
 			rv, ok := casted.(gdk.Paintabler)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Paintabler")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 			}
 			_paintable = rv
 		}

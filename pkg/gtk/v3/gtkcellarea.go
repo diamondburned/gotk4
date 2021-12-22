@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -54,10 +53,13 @@ func _gotk4_gtk3_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
 		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
 		renderer = rv
 	}
@@ -94,10 +96,13 @@ func _gotk4_gtk3_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
 		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
 		renderer = rv
 	}
@@ -1202,10 +1207,13 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
 		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
 		_cellRenderer = rv
 	}
@@ -1263,10 +1271,13 @@ func (area *CellArea) EditWidget() CellEditabler {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellEditabler)
+			return ok
+		})
 		rv, ok := casted.(CellEditabler)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellEditabler")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
 		}
 		_cellEditable = rv
 	}
@@ -1298,10 +1309,13 @@ func (area *CellArea) EditedCell() CellRendererer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
 		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
 		_cellRenderer = rv
 	}
@@ -1333,10 +1347,13 @@ func (area *CellArea) FocusCell() CellRendererer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
 		rv, ok := casted.(CellRendererer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 		}
 		_cellRenderer = rv
 	}
@@ -1378,10 +1395,13 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(CellRendererer)
+				return ok
+			})
 			rv, ok := casted.(CellRendererer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 			}
 			_cellRenderer = rv
 		}
@@ -1426,10 +1446,13 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 			}
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(CellRendererer)
+				return ok
+			})
 			rv, ok := casted.(CellRendererer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.CellRendererer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
 			}
 			dst = rv
 		}

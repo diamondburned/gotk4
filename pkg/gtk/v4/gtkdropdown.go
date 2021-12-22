@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -212,10 +211,13 @@ func (self *DropDown) Expression() Expressioner {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Expressioner)
+				return ok
+			})
 			rv, ok := casted.(Expressioner)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Expressioner")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Expressioner")
 			}
 			_expression = rv
 		}
@@ -299,10 +301,13 @@ func (self *DropDown) Model() gio.ListModeller {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.ListModeller)
+				return ok
+			})
 			rv, ok := casted.(gio.ListModeller)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ListModeller")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}
 			_listModel = rv
 		}

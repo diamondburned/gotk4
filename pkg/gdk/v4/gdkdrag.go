@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -252,10 +251,13 @@ func (drag *Drag) Device() Devicer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Devicer)
+			return ok
+		})
 		rv, ok := casted.(Devicer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 		}
 		_device = rv
 	}
@@ -313,10 +315,13 @@ func (drag *Drag) DragSurface() Surfacer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Surfacer)
+				return ok
+			})
 			rv, ok := casted.(Surfacer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
 			}
 			_surface = rv
 		}
@@ -400,10 +405,13 @@ func (drag *Drag) Surface() Surfacer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Surfacer)
+			return ok
+		})
 		rv, ok := casted.(Surfacer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Surfacer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
 		}
 		_surface = rv
 	}
@@ -493,10 +501,13 @@ func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actio
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Dragger)
+				return ok
+			})
 			rv, ok := casted.(Dragger)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Dragger")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dragger")
 			}
 			_drag = rv
 		}

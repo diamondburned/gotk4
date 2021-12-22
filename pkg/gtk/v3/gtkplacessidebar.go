@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -393,10 +392,13 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Filer)
+				return ok
+			})
 			rv, ok := casted.(gio.Filer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
 			_file = rv
 		}
@@ -439,10 +441,13 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Filer)
+				return ok
+			})
 			rv, ok := casted.(gio.Filer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
 			_file = rv
 		}
@@ -684,10 +689,13 @@ func (sidebar *PlacesSidebar) ListShortcuts() []gio.Filer {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Filer)
+				return ok
+			})
 			rv, ok := casted.(gio.Filer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
 			dst = rv
 		}

@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -139,10 +138,13 @@ func (self *ATContext) Accessible() Accessibler {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Accessibler)
+			return ok
+		})
 		rv, ok := casted.(Accessibler)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gtk.Accessibler")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Accessibler")
 		}
 		_accessible = rv
 	}

@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -195,10 +194,13 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DB
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusInterfacer)
+			return ok
+		})
 		rv, ok := casted.(DBusInterfacer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.DBusInterfacer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
 		_dBusInterface = rv
 	}
@@ -238,10 +240,13 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusObjector)
+			return ok
+		})
 		rv, ok := casted.(DBusObjector)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.DBusObjector")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
 		_dBusObject = rv
 	}
@@ -300,10 +305,13 @@ func (manager *DBusObjectManager) Objects() []DBusObjector {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(DBusObjector)
+				return ok
+			})
 			rv, ok := casted.(DBusObjector)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.DBusObjector")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 			}
 			dst = rv
 		}

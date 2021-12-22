@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -313,10 +312,13 @@ func (cursor *Cursor) Texture() Texturer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Texturer)
+				return ok
+			})
 			rv, ok := casted.(Texturer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Texturer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
 			}
 			_texture = rv
 		}

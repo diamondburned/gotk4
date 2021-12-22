@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -201,10 +200,13 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CairoContexter)
+			return ok
+		})
 		rv, ok := casted.(CairoContexter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.CairoContexter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.CairoContexter")
 		}
 		_cairoContext = rv
 	}
@@ -243,10 +245,13 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(GLContexter)
+			return ok
+		})
 		rv, ok := casted.(GLContexter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.GLContexter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.GLContexter")
 		}
 		_glContext = rv
 	}
@@ -339,10 +344,13 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(VulkanContexter)
+			return ok
+		})
 		rv, ok := casted.(VulkanContexter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.VulkanContexter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.VulkanContexter")
 		}
 		_vulkanContext = rv
 	}
@@ -532,10 +540,13 @@ func (surface *Surface) FrameClock() FrameClocker {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(FrameClocker)
+			return ok
+		})
 		rv, ok := casted.(FrameClocker)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.FrameClocker")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.FrameClocker")
 		}
 		_frameClock = rv
 	}

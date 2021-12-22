@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -236,10 +235,13 @@ func (display *Display) DefaultGroup() Windower {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
 		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
 		_window = rv
 	}
@@ -293,10 +295,13 @@ func (display *Display) DefaultSeat() Seater {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Seater)
+			return ok
+		})
 		rv, ok := casted.(Seater)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
 		}
 		_seat = rv
 	}
@@ -329,10 +334,13 @@ func (display *Display) DeviceManager() DeviceManagerer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(DeviceManagerer)
+				return ok
+			})
 			rv, ok := casted.(DeviceManagerer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.DeviceManagerer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.DeviceManagerer")
 			}
 			_deviceManager = rv
 		}
@@ -675,10 +683,13 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) 
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
 			rv, ok := casted.(Windower)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 			}
 			_window = rv
 		}
@@ -787,10 +798,13 @@ func (display *Display) ListDevices() []Devicer {
 			}
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Devicer)
+				return ok
+			})
 			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 			}
 			dst = rv
 		}
@@ -828,10 +842,13 @@ func (display *Display) ListSeats() []Seater {
 			}
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Seater)
+				return ok
+			})
 			rv, ok := casted.(Seater)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
 			}
 			dst = rv
 		}

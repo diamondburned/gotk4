@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -175,10 +174,13 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(SocketAddressEnumeratorrer)
+			return ok
+		})
 		rv, ok := casted.(SocketAddressEnumeratorrer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketAddressEnumeratorrer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketAddressEnumeratorrer")
 		}
 		_socketAddressEnumerator = rv
 	}
@@ -214,10 +216,13 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(SocketAddressEnumeratorrer)
+			return ok
+		})
 		rv, ok := casted.(SocketAddressEnumeratorrer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketAddressEnumeratorrer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketAddressEnumeratorrer")
 		}
 		_socketAddressEnumerator = rv
 	}

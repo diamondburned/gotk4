@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -251,10 +250,13 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Driver)
+				return ok
+			})
 			rv, ok := casted.(Driver)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Driver")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 			}
 			dst = rv
 		}
@@ -295,10 +297,13 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Mounter)
+				return ok
+			})
 			rv, ok := casted.(Mounter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Mounter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 			}
 			_mount = rv
 		}
@@ -338,10 +343,13 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Mounter)
+				return ok
+			})
 			rv, ok := casted.(Mounter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Mounter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 			}
 			dst = rv
 		}
@@ -382,10 +390,13 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Volumer)
+				return ok
+			})
 			rv, ok := casted.(Volumer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Volumer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 			}
 			_volume = rv
 		}
@@ -425,10 +436,13 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Volumer)
+				return ok
+			})
 			rv, ok := casted.(Volumer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Volumer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 			}
 			dst = rv
 		}
@@ -499,10 +513,13 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Volumer)
+			return ok
+		})
 		rv, ok := casted.(Volumer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Volumer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 		}
 		_volume = rv
 	}

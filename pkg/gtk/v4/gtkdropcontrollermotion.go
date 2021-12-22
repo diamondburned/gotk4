@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -135,10 +134,13 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gdk.Dropper)
+				return ok
+			})
 			rv, ok := casted.(gdk.Dropper)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Dropper")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
 			}
 			_drop = rv
 		}

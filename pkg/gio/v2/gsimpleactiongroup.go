@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -168,10 +167,13 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Actioner)
+			return ok
+		})
 		rv, ok := casted.(Actioner)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Actioner")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Actioner")
 		}
 		_action = rv
 	}

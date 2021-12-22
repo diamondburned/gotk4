@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -485,10 +484,13 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(TLSCertificater)
+				return ok
+			})
 			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSCertificater")
 			}
 			_tlsCertificate = rv
 		}
@@ -567,10 +569,13 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(TLSDatabaser)
+				return ok
+			})
 			rv, ok := casted.(TLSDatabaser)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSDatabaser")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSDatabaser")
 			}
 			_tlsDatabase = rv
 		}
@@ -659,10 +664,13 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(TLSCertificater)
+				return ok
+			})
 			rv, ok := casted.(TLSCertificater)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.TLSCertificater")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSCertificater")
 			}
 			_tlsCertificate = rv
 		}

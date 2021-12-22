@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -343,10 +342,13 @@ func ProxyResolverGetDefault() ProxyResolverer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(ProxyResolverer)
+			return ok
+		})
 		rv, ok := casted.(ProxyResolverer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.ProxyResolverer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ProxyResolverer")
 		}
 		_proxyResolver = rv
 	}

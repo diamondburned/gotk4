@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -196,10 +195,13 @@ func (vfs *VFS) FileForPath(path string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -242,10 +244,13 @@ func (vfs *VFS) FileForURI(uri string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -347,10 +352,13 @@ func (vfs *VFS) ParseName(parseName string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}

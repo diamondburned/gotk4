@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -118,10 +117,13 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Seater)
+			return ok
+		})
 		rv, ok := casted.(Seater)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Seater")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
 		}
 		seat = rv
 	}
@@ -132,10 +134,13 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
 		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
 		window = rv
 	}
@@ -278,10 +283,13 @@ func (seat *Seat) Keyboard() Devicer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Devicer)
+				return ok
+			})
 			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 			}
 			_device = rv
 		}
@@ -313,10 +321,13 @@ func (seat *Seat) Pointer() Devicer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Devicer)
+				return ok
+			})
 			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 			}
 			_device = rv
 		}
@@ -361,10 +372,13 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 			}
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Devicer)
+				return ok
+			})
 			rv, ok := casted.(Devicer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 			}
 			dst = rv
 		}

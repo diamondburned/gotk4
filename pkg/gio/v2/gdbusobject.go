@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -145,10 +144,13 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(DBusInterfacer)
+				return ok
+			})
 			rv, ok := casted.(DBusInterfacer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.DBusInterfacer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 			}
 			_dBusInterface = rv
 		}
@@ -186,10 +188,13 @@ func (object *DBusObject) Interfaces() []DBusInterfacer {
 			}
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(DBusInterfacer)
+				return ok
+			})
 			rv, ok := casted.(DBusInterfacer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.DBusInterfacer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 			}
 			dst = rv
 		}

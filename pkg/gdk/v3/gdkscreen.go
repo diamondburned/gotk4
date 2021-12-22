@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -111,10 +110,13 @@ func (screen *Screen) ActiveWindow() Windower {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
 			rv, ok := casted.(Windower)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 			}
 			_window = rv
 		}
@@ -683,10 +685,13 @@ func (screen *Screen) RootWindow() Windower {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
 		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
 		_window = rv
 	}
@@ -790,10 +795,13 @@ func (screen *Screen) ToplevelWindows() []Windower {
 			}
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
 			rv, ok := casted.(Windower)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 			}
 			dst = rv
 		}
@@ -899,10 +907,13 @@ func (screen *Screen) WindowStack() []Windower {
 				}
 
 				object := externglib.AssumeOwnership(objptr)
-				casted := object.Cast()
+				casted := object.WalkCast(func(obj externglib.Objector) bool {
+					_, ok := obj.(Windower)
+					return ok
+				})
 				rv, ok := casted.(Windower)
 				if !ok {
-					panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+					panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 				}
 				dst = rv
 			}

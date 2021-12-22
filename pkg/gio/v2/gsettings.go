@@ -4,7 +4,6 @@ package gio
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"strings"
@@ -820,10 +819,13 @@ func (settings *Settings) CreateAction(key string) Actioner {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Actioner)
+			return ok
+		})
 		rv, ok := casted.(Actioner)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Actioner")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Actioner")
 		}
 		_action = rv
 	}

@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -2883,10 +2882,13 @@ func (file *File) Dup() Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_ret = rv
 	}
@@ -3277,10 +3279,13 @@ func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Mounter)
+			return ok
+		})
 		rv, ok := casted.(Mounter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Mounter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
 		_mount = rv
 	}
@@ -3366,10 +3371,13 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Mounter)
+			return ok
+		})
 		rv, ok := casted.(Mounter)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Mounter")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
 		_mount = rv
 	}
@@ -3459,10 +3467,13 @@ func (file *File) Child(name string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_ret = rv
 	}
@@ -3511,10 +3522,13 @@ func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_ret = rv
 	}
@@ -3551,10 +3565,13 @@ func (file *File) Parent() Filer {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Filer)
+				return ok
+			})
 			rv, ok := casted.(Filer)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
 			_ret = rv
 		}
@@ -4536,10 +4553,13 @@ func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMoni
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(FileMonitorrer)
+			return ok
+		})
 		rv, ok := casted.(FileMonitorrer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.FileMonitorrer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.FileMonitorrer")
 		}
 		_fileMonitor = rv
 	}
@@ -4603,10 +4623,13 @@ func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) 
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(FileMonitorrer)
+			return ok
+		})
 		rv, ok := casted.(FileMonitorrer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.FileMonitorrer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.FileMonitorrer")
 		}
 		_fileMonitor = rv
 	}
@@ -4671,10 +4694,13 @@ func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (File
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(FileMonitorrer)
+			return ok
+		})
 		rv, ok := casted.(FileMonitorrer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.FileMonitorrer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.FileMonitorrer")
 		}
 		_fileMonitor = rv
 	}
@@ -4848,10 +4874,13 @@ func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_ret = rv
 	}
@@ -5210,10 +5239,13 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AppInfor)
+			return ok
+		})
 		rv, ok := casted.(AppInfor)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
 		_appInfo = rv
 	}
@@ -5293,10 +5325,13 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, err
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AppInfor)
+			return ok
+		})
 		rv, ok := casted.(AppInfor)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.AppInfor")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
 		_appInfo = rv
 	}
@@ -6582,10 +6617,13 @@ func (file *File) ResolveRelativePath(relativePath string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_ret = rv
 	}
@@ -7136,10 +7174,13 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_ret = rv
 	}
@@ -7229,10 +7270,13 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_ret = rv
 	}
@@ -7725,10 +7769,13 @@ func NewFileForCommandlineArg(arg string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -7780,10 +7827,13 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -7824,10 +7874,13 @@ func NewFileForPath(path string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -7867,10 +7920,13 @@ func NewFileForURI(uri string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -7925,10 +7981,13 @@ func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}
@@ -7971,10 +8030,13 @@ func FileParseName(parseName string) Filer {
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
 		rv, ok := casted.(Filer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.Filer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
 		_file = rv
 	}

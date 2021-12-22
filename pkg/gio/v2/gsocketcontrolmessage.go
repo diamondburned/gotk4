@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -254,10 +253,13 @@ func SocketControlMessageDeserialize(level, typ int, data []byte) SocketControlM
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(SocketControlMessager)
+			return ok
+		})
 		rv, ok := casted.(SocketControlMessager)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gio.SocketControlMessager")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketControlMessager")
 		}
 		_socketControlMessage = rv
 	}

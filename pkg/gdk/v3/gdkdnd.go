@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -336,10 +335,13 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 		}
 
 		object := externglib.AssumeOwnership(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
 		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
 		_destWindow = rv
 	}
@@ -537,10 +539,13 @@ func (context *DragContext) DestWindow() Windower {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
 		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
 		_window = rv
 	}
@@ -572,10 +577,13 @@ func (context *DragContext) Device() Devicer {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Devicer)
+			return ok
+		})
 		rv, ok := casted.(Devicer)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Devicer")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 		}
 		_device = rv
 	}
@@ -609,10 +617,13 @@ func (context *DragContext) DragWindow() Windower {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.Take(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
 			rv, ok := casted.(Windower)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 			}
 			_window = rv
 		}
@@ -689,10 +700,13 @@ func (context *DragContext) SourceWindow() Windower {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
 		rv, ok := casted.(Windower)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not gdk.Windower")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
 		_window = rv
 	}

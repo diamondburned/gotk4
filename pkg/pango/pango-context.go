@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -337,10 +336,13 @@ func (context *Context) FontMap() FontMapper {
 		}
 
 		object := externglib.Take(objptr)
-		casted := object.Cast()
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(FontMapper)
+			return ok
+		})
 		rv, ok := casted.(FontMapper)
 		if !ok {
-			panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontMapper")
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
 		}
 		_fontMap = rv
 	}
@@ -599,10 +601,13 @@ func (context *Context) ListFamilies() []FontFamilier {
 				}
 
 				object := externglib.Take(objptr)
-				casted := object.Cast()
+				casted := object.WalkCast(func(obj externglib.Objector) bool {
+					_, ok := obj.(FontFamilier)
+					return ok
+				})
 				rv, ok := casted.(FontFamilier)
 				if !ok {
-					panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.FontFamilier")
+					panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFamilier")
 				}
 				_families[i] = rv
 			}
@@ -643,10 +648,13 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Fonter)
+				return ok
+			})
 			rv, ok := casted.(Fonter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fonter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fonter")
 			}
 			_font = rv
 		}
@@ -690,10 +698,13 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 			objptr := unsafe.Pointer(_cret)
 
 			object := externglib.AssumeOwnership(objptr)
-			casted := object.Cast()
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Fontsetter)
+				return ok
+			})
 			rv, ok := casted.(Fontsetter)
 			if !ok {
-				panic("object of type " + reflect.TypeOf(casted).String() + " (" + object.TypeFromInstance().String() + ") is not pango.Fontsetter")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fontsetter")
 			}
 			_fontset = rv
 		}

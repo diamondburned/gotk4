@@ -157,6 +157,11 @@ var Preprocessors = []Preprocessor{
 		}
 	}),
 
+	// These are not introspectable for some reason, even though their
+	// signatures look correct.
+	MustIntrospect("Gdk-4.Clipboard.set_text"),
+	MustIntrospect("Gdk-4.Clipboard.set_texture"),
+
 	ModifyCallable("GLib-2.Variant.get_string", func(c *gir.CallableAttrs) {
 		c.ReturnValue.Array = &gir.Array{
 			CType:          "const gchar*",

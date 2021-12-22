@@ -583,6 +583,43 @@ func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 	return _ok
 }
 
+// SetText puts the given text into the clipboard.
+//
+// The function takes the following parameters:
+//
+//    - text: text to put into the clipboard.
+//
+func (clipboard *Clipboard) SetText(text string) {
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.char         // out
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gdk_clipboard_set_text(_arg0, _arg1)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(text)
+}
+
+// SetTexture puts the given texture into the clipboard.
+//
+// The function takes the following parameters:
+//
+//    - texture: GdkTexture to put into the clipboard.
+//
+func (clipboard *Clipboard) SetTexture(texture Texturer) {
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GdkTexture   // out
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
+
+	C.gdk_clipboard_set_texture(_arg0, _arg1)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(texture)
+}
+
 // Set sets the clipboard to contain the given value.
 //
 // The function takes the following parameters:

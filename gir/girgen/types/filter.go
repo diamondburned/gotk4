@@ -236,6 +236,15 @@ type modifyCallable struct {
 	modFunc func(*gir.CallableAttrs)
 }
 
+// MustIntrospect forces the given type to be introspectable.
+func MustIntrospect(girType string) Preprocessor {
+	return ModifyCallable(girType, func(c *gir.CallableAttrs) {
+		t := new(bool)
+		*t = true
+		c.Introspectable = t
+	})
+}
+
 // ModifyCallable is a preprocessor that modifies an existing callable. It only
 // does Function or Callback.
 func ModifyCallable(girType string, f func(c *gir.CallableAttrs)) Preprocessor {

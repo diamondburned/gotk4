@@ -140,6 +140,16 @@ func (c closer) Close() error {
 	return c.c(c.ctx)
 }
 
+type readCloser struct {
+	io.Reader
+	io.Closer
+}
+
+// ReadCloser combines the reader and closer together.
+func ReadCloser(r io.Reader, c io.Closer) io.ReadCloser {
+	return readCloser{r, c}
+}
+
 type seeker struct {
 	s   gio.Seekabler
 	ctx context.Context

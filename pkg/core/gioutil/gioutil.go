@@ -115,6 +115,31 @@ func (w *StreamWriter) Flush() error {
 	return w.s.Flush(w.ctx)
 }
 
+type closer struct {
+	c   func(context.Context) error
+	ctx context.Context
+}
+
+// InputCloser wraps an InputStreamer and returns an io.Closer.
+func InputCloser(ctx context.Context, input gio.InputStreamer) io.Closer {
+	return closer{
+		c:   gio.BaseInputStream(input).Close,
+		ctx: ctx,
+	}
+}
+
+// OutputCloser wraps an OutputStreamer and returns an io.Closer.
+func OutputCloser(ctx context.Context, output gio.OutputStreamer) io.Closer {
+	return closer{
+		c:   gio.BaseOutputStream(output).Close,
+		ctx: ctx,
+	}
+}
+
+func (c closer) Close() error {
+	return c.c(c.ctx)
+}
+
 type seeker struct {
 	s   gio.Seekabler
 	ctx context.Context

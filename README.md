@@ -11,6 +11,11 @@ A GTK4 bindings generator for Go.
 
 All generated packages are in `pkg/`. The generation code is in `gir/girgen/`.
 
+Examples are put in another repository,
+[diamondburned/gotk4-examples](https://github.com/diamondburned/gotk4-examples),
+along with instructions on getting started with using these packages. Refer to
+its README for more information.
+
 As of the time this README was written, most of `pkg/gtk4` and `pkg/gtk3` are
 ready to be used for most purposes. However, memory leaks and sometimes crashes
 may occur in certain parts of the API, while other parts might be completely

@@ -11,7 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/generators/iface"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
-	"github.com/pkg/errors"
 )
 
 // Postprocessor describes a processor function that modifies a namespace. It is
@@ -314,7 +313,7 @@ importedCgo:
 		files[name] = b
 
 		if err != nil && firstErr == nil {
-			firstErr = errors.Wrapf(err, "%s/v%s/%s", n.PkgName, n.PkgVersion, name)
+			firstErr = fmt.Errorf("%s/v%s/%s: %w", n.PkgName, n.PkgVersion, name, err)
 		}
 	}
 

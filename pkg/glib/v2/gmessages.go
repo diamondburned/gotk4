@@ -908,6 +908,10 @@ func (l *LogField) Key() string {
 	return v
 }
 
+func init() {
+	LogUseDefaultLogger() // see gotk4's gendata.go
+}
+
 // LogSetHandler sets the handler used for GLib logging and returns the
 // new handler ID. It is a wrapper around g_log_set_handler and
 // g_log_set_handler_full.
@@ -1027,25 +1031,13 @@ func LoggerHandler(l *log.Logger) LogWriterFunc {
 			f = l.Fatalf
 		}
 
+		// Minor issue: this works badly if consts are OR'd together.
+		// Probably never.
+		level := strings.TrimPrefix(lvl.String(), "Level")
+
 		if !Lfile || (codeFile == "" && codeLine == "") {
-			f("%s: %s: %s", lvl, domain, message)
+			f("%s: %s: %s", level, domain, message)
 			return LogWriterHandled
-		}
-
-		var level string
-
-		switch lvl {
-		case
-			LogLevelError,
-			LogLevelCritical,
-			LogLevelWarning,
-			LogLevelMessage,
-			LogLevelInfo,
-			LogLevelDebug:
-
-			level = strings.TrimPrefix(lvl.String(), "Level")
-		default:
-			level = lvl.String()
 		}
 
 		if codeFunc == "" {

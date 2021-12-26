@@ -613,6 +613,20 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 	h.AddCallback(n, r.FindFullType("GLib-2.LogWriterFunc").Type.(*gir.Callback))
 
 	p := fg.Pen()
+	// This one might be subjective, but I think most can agree that having a
+	// library dumping stuff into the console isn't the best idea. Not only
+	// would this make logging more consistently-looking, it would also allow
+	// the user to blot out all logging using Go's stdlib log.
+	//
+	// Somewhere down the line, a user might complain that a gotk4 application
+	// isn't obeying environment variables that GLib made up on its own. And
+	// that's understandable. Pull requests can be made to improve the piece of
+	// code written below, but consistency is still more ideal, I think.
+	p.Line(`
+		func init() {
+			LogUseDefaultLogger() // see gotk4's gendata.go
+		}
+	`)
 	p.Line(`
 		// LogSetHandler sets the handler used for GLib logging and returns the
 		// new handler ID. It is a wrapper around g_log_set_handler and
@@ -726,26 +740,14 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 					f = l.Fatalf
 				}
 
+				// Minor issue: this works badly if consts are OR'd together.
+				// Probably never.
+				level := strings.TrimPrefix(lvl.String(), "Level")
+
 				if !Lfile || (codeFile == "" && codeLine == "") {
-					f("%s: %s: %s", lvl, domain, message)
+					f("%s: %s: %s", level, domain, message)
 					return LogWriterHandled
 				}
-
-				var level string
-
-                switch lvl {
-				case
-					LogLevelError,
-					LogLevelCritical,
-					LogLevelWarning,
-					LogLevelMessage,
-					LogLevelInfo,
-					LogLevelDebug:
-
-					level = strings.TrimPrefix(lvl.String(), "Level")
-				default:
-					level = lvl.String()
-                }
 
 				if codeFunc == "" {
 					f("%s: %s: %s:%s: %s", level, domain, codeFile, codeLine, message)

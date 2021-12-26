@@ -15,8 +15,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: pango
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>

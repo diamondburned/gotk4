@@ -12,8 +12,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gtk4
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>

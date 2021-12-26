@@ -9,8 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // extern void callbackDelete(gpointer);

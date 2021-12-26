@@ -197,7 +197,8 @@ func (n *NamespaceGenerator) MakeFile(filename string) *FileGenerator {
 		filename = ""
 	}
 
-	var isRoot bool
+	isRoot := filename == n.PkgName+".go"
+
 	if filename == "" {
 		filename = n.PkgName + ".go"
 		isRoot = true
@@ -285,16 +286,13 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	// Ensure that all files explicitly import runtime/cgo to not trigger an
 	// error in a compiler complaining about implicitly importing runtime/cgo.
 	// https://sourcegraph.com/github.com/golang/go/-/blob/src/cmd/link/internal/ld/lib.go?L563:3.
-	for _, file := range n.Files {
-		if file.header.HasImport("runtime/cgo") {
-			goto importedCgo
-		}
-	}
 
-	// Put the dash import into the root package.
-	n.MakeFile("").header.DashImport("runtime/cgo")
+	// We also ensure that a root file must exist so the pkg-config headers can
+	// be written properly for that package.
 
-importedCgo:
+	root := n.MakeFile("")
+	root.Header().DashImport("runtime/cgo")
+
 	for _, postproc := range n.postprocs {
 		if err := postproc(n); err != nil {
 			return nil, err

@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
-// #cgo pkg-config: gtk4
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <gsk/gsk.h>
 import "C"

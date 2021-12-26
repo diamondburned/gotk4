@@ -8,8 +8,6 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gobject-introspection-1.0
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>

@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: gtk4
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>

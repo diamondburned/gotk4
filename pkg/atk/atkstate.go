@@ -10,8 +10,6 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: atk
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>

@@ -10,8 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <gdk/gdkx.h>
 // #include <glib-object.h>

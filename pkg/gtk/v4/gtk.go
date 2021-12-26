@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	_ "runtime/cgo"
 	"strings"
 	"unsafe"
 

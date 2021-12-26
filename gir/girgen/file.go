@@ -63,7 +63,7 @@ func (f *FileGenerator) Logln(lvl logger.Level, v ...interface{}) {
 
 // IsEmpty returns true if the file is empty.
 func (f *FileGenerator) IsEmpty() bool {
-	return f.pen.Len() == 0
+	return !f.isRoot && f.pen.Len() == 0
 }
 
 // Generate generates the final file content, completed with gofmt.
@@ -126,10 +126,12 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 		fpen.EmptyLine()
 	}
 
-	fpen.Words("// #cgo pkg-config:", f.Pkgconfig())
-	fpen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
-	fpen.Words("// #include <stdlib.h>")
+	if f.isRoot {
+		fpen.Words("// #cgo pkg-config:", f.Pkgconfig())
+		fpen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
+	}
 
+	fpen.Words("// #include <stdlib.h>")
 	if incls := f.CIncludes(); len(incls) > 0 {
 		for _, incl := range incls {
 			fpen.Linef("// #include <%s>", incl)

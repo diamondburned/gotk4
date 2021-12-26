@@ -9,8 +9,6 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: pango
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>

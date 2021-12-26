@@ -9,8 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 )
 
-// #cgo pkg-config: gio-2.0 gobject-introspection-1.0
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <gio/gio.h>
 import "C"

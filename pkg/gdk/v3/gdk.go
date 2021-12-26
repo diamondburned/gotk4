@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	_ "runtime/cgo"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"

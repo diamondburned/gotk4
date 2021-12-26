@@ -9,8 +9,6 @@ import (
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <gdk/gdkx.h>
 import "C"

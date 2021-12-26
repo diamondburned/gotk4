@@ -9,8 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
-// #cgo pkg-config: pango
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <pango/pango.h>
 import "C"

@@ -7,8 +7,6 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gtk4-x11 gtk4
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <gdk/x11/gdkx.h>
 import "C"

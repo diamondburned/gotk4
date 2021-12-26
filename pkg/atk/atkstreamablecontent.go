@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: atk
-// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>

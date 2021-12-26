@@ -3,6 +3,8 @@
 package gio
 
 import (
+	_ "runtime/cgo"
+
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 

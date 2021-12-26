@@ -15,6 +15,9 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// GtkWidget* _gotk4_gtk_message_dialog_new2(GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type, GtkButtonsType buttons) {
+// 	return gtk_message_dialog_new_with_markup(parent, flags, type, buttons, NULL);
+// }
 import "C"
 
 func init() {
@@ -250,4 +253,20 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 	runtime.KeepAlive(messageDialog)
 	runtime.KeepAlive(str)
+}
+
+// NewMessageDialog creates a new message dialog. This is a simple
+// dialog with some text taht the user may want to see. When the user
+// clicks a button, a "response" signal is emitted with response IDs
+// from ResponseType.
+func NewMessageDialog(parent *Window, flags DialogFlags, typ MessageType, buttons ButtonsType) *MessageDialog {
+	w := C._gotk4_gtk_message_dialog_new2(
+		(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
+		(C.GtkDialogFlags)(flags),
+		(C.GtkMessageType)(typ),
+		(C.GtkButtonsType)(buttons),
+	)
+	runtime.KeepAlive(parent)
+
+	return wrapMessageDialog(externglib.Take(unsafe.Pointer(w)))
 }

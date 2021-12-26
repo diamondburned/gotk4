@@ -803,13 +803,52 @@ func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
 	return nil
 }
 
+const cGTKMessageDialogNew2 = `
+	GtkWidget* _gotk4_gtk_message_dialog_new2(GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type, GtkButtonsType buttons) {
+		return gtk_message_dialog_new_with_markup(parent, flags, type, buttons, NULL);
+	}
+`
+
+func GtkNewMessageDialog(nsgen *girgen.NamespaceGenerator) error {
+	fg, ok := nsgen.File("gtkmessagedialog.go")
+	if !ok {
+		return errors.New("missing file gtkmessagedialog.go")
+	}
+
+	h := fg.Header()
+	h.Import("unsafe")
+	h.Import("runtime")
+	h.AddCBlock(cGTKMessageDialogNew2)
+
+	p := fg.Pen()
+	p.Line(`
+		// NewMessageDialog creates a new message dialog. This is a simple
+		// dialog with some text taht the user may want to see. When the user
+		// clicks a button, a "response" signal is emitted with response IDs
+		// from ResponseType.
+		func NewMessageDialog(parent *Window, flags DialogFlags, typ MessageType, buttons ButtonsType) *MessageDialog {
+			w := C._gotk4_gtk_message_dialog_new2(
+				(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
+				(C.GtkDialogFlags)(flags),
+				(C.GtkMessageType)(typ),
+				(C.GtkButtonsType)(buttons),
+			)
+			runtime.KeepAlive(parent)
+
+			return wrapMessageDialog(externglib.Take(unsafe.Pointer(w)))
+		}
+	`)
+
+	return nil
+}
+
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
 	"GLib-2": {ImportGError, GioArrayUseBytes, GLibVariantIter, GLibAliases, GLibLogs, GLibDateTime},
 	"Gio-2":  {ImportGError},
-	"Gtk-3":  {ImportGError, GtkNewDialog},
-	"Gtk-4":  {ImportGError, GtkNewDialog},
+	"Gtk-3":  {ImportGError, GtkNewDialog, GtkNewMessageDialog},
+	"Gtk-4":  {ImportGError, GtkNewDialog, GtkNewMessageDialog},
 }
 
 // Appends contains the contents of files that are appended into generated

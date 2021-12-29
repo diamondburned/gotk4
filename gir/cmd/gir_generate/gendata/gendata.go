@@ -268,6 +268,13 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GLib.unichar_to_utf8"),
 	// This is useless.
 	AbsoluteFilter("GLib.nullify_pointer"),
+	// We already alias this from coreglib.
+	AbsoluteFilter("GLib.idle_add_full"),
+	AbsoluteFilter("GLib.timeout_add_full"),
+	AbsoluteFilter("GLib.timeout_add_seconds_full"),
+	// We manually wrote these before the code was able to generate them.
+	AbsoluteFilter("GLib.log_set_writer_func"),
+	AbsoluteFilter("GLib.log_set_handler_full"),
 	// Requires special header, is optional function.
 	AbsoluteFilter("GLib.unix_error_quark"),
 	AbsoluteFilter("Gio.networking_init"),

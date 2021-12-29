@@ -718,7 +718,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 				value.Logln(logger.Debug, "cannot find destroy param, allowing anyway...")
 				return true
 			}
-			if destroy.Type == nil || destroy.Type.Name != "GLib.DestroyNotify" {
+			if destroy.Type == nil || destroy.Type.CType != "GDestroyNotify" {
 				value.Logln(logger.Debug, "unknown destroyer type, allowing anyway...")
 				return true
 			}

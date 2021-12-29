@@ -15,6 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <glib.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_glib2_SourceFunc(gpointer);
 import "C"
 
 func init() {
@@ -605,6 +607,42 @@ func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 	)
 
 	return _source
+}
+
+// InvokeFull invokes a function in such a way that context is owned during the
+// invocation of function.
+//
+// This function is the same as g_main_context_invoke() except that it lets you
+// specify the priority in case function ends up being scheduled as an idle and
+// also lets you give a Notify for data.
+//
+// notify should not assume that it is called from any particular thread or with
+// any particular context acquired.
+//
+// The function takes the following parameters:
+//
+//    - priority at which to run function.
+//    - function to call.
+//
+func (context *MainContext) InvokeFull(priority int, function SourceFunc) {
+	var _arg0 *C.GMainContext // out
+	var _arg1 C.gint          // out
+	var _arg2 C.GSourceFunc   // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	if context != nil {
+		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
+	_arg1 = C.gint(priority)
+	_arg2 = (*[0]byte)(C._gotk4_glib2_SourceFunc)
+	_arg3 = C.gpointer(gbox.Assign(function))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.g_main_context_invoke_full(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(priority)
+	runtime.KeepAlive(function)
 }
 
 // IsOwner determines whether this thread holds the (recursive) ownership of
@@ -1465,6 +1503,43 @@ func (source *Source) RemoveChildSource(childSource *Source) {
 	C.g_source_remove_child_source(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(childSource)
+}
+
+// SetCallback sets the callback function for a source. The callback for a
+// source is called from the source's dispatch function.
+//
+// The exact type of func depends on the type of source; ie. you should not
+// count on func being called with data as its first parameter. Cast func with
+// G_SOURCE_FUNC() to avoid warnings about incompatible function types.
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle memory management of data.
+//
+// Typically, you won't use this function. Instead use functions specific to the
+// type of source you are using, such as g_idle_add() or g_timeout_add().
+//
+// It is safe to call this function multiple times on a source which has already
+// been attached to a context. The changes will take effect for the next time
+// the source is dispatched after this call returns.
+//
+// The function takes the following parameters:
+//
+//    - fn: callback function.
+//
+func (source *Source) SetCallback(fn SourceFunc) {
+	var _arg0 *C.GSource    // out
+	var _arg1 C.GSourceFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*[0]byte)(C._gotk4_glib2_SourceFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.g_source_set_callback(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(fn)
 }
 
 // SetCallbackIndirect sets the callback function storing the data as a

@@ -4,7 +4,6 @@ package gendata
 
 import (
 	"errors"
-	"log"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -240,7 +239,6 @@ func findTextLenParam(params []gir.Parameter) int {
 		if param.Doc != nil && strings.Contains(param.Doc.String, doc) {
 			return i
 		}
-		log.Printf("doc %#v\n", param)
 	}
 
 	return -1

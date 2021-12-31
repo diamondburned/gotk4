@@ -714,7 +714,9 @@ type value struct {
 }
 
 func (v *value) unset() {
-	C.g_value_unset(v.gvalue)
+	if v.isValue() {
+		C.g_value_unset(v.gvalue)
+	}
 	runtime.KeepAlive(v)
 }
 
@@ -758,11 +760,7 @@ func AllocateValue() *Value {
 	//An allocated GValue is not guaranteed to hold a value that can be unset
 	//We need to double check before unsetting, to prevent:
 	//`g_value_unset: assertion 'G_IS_VALUE (value)' failed`
-	runtime.SetFinalizer(v, func(v *value) {
-		if v.isValue() {
-			v.unset()
-		}
-	})
+	runtime.SetFinalizer(v, (*value).unset)
 
 	return &Value{v}
 }

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	_ "runtime/cgo"
 	"strings"
 	"unsafe"
@@ -387,6 +388,10 @@ func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 
 func marshalEntryIconAccessibler(p uintptr) (interface{}, error) {
 	return wrapEntryIconAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+func init() {
+	runtime.LockOSThread()
 }
 
 // Init binds to the gtk_init() function. Argument parsing is not

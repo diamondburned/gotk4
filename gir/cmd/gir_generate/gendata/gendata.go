@@ -849,13 +849,27 @@ func GtkNewMessageDialog(nsgen *girgen.NamespaceGenerator) error {
 	return nil
 }
 
+func GtkLockOSThread(nsgen *girgen.NamespaceGenerator) error {
+	fg := nsgen.MakeFile("gtk.go")
+	fg.Header().Import("runtime")
+
+	p := fg.Pen()
+	p.Line(`
+		func init() {
+			runtime.LockOSThread()
+		}
+	`)
+
+	return nil
+}
+
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
 	"GLib-2": {ImportGError, GioArrayUseBytes, GLibVariantIter, GLibAliases, GLibLogs, GLibDateTime},
 	"Gio-2":  {ImportGError},
-	"Gtk-3":  {ImportGError, GtkNewDialog, GtkNewMessageDialog},
-	"Gtk-4":  {ImportGError, GtkNewDialog, GtkNewMessageDialog},
+	"Gtk-3":  {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
+	"Gtk-4":  {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
 }
 
 // Appends contains the contents of files that are appended into generated

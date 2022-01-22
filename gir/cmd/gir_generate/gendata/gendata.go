@@ -850,7 +850,9 @@ func GtkNewMessageDialog(nsgen *girgen.NamespaceGenerator) error {
 }
 
 func GtkLockOSThread(nsgen *girgen.NamespaceGenerator) error {
-	fg := nsgen.MakeFile("gtk.go")
+	// LockOSThread potentially induces additional overhead, so we're limiting
+	// it to only the platforms that need it.
+	fg := nsgen.MakeFile("gtk_darwin.go")
 	fg.Header().Import("runtime")
 
 	p := fg.Pen()

@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"runtime"
 	_ "runtime/cgo"
 	"strings"
 	"unsafe"
@@ -234,8 +233,4 @@ func CSSParserErrorQuark() glib.Quark {
 	_quark = uint32(_cret)
 
 	return _quark
-}
-
-func init() {
-	runtime.LockOSThread()
 }

@@ -706,6 +706,8 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			value.p.Linef("defer gbox.Delete(uintptr(%s))", closure.Out.Set)
 		case "async":
 			// Handled in AssignOnce.
+		case "forever":
+			// Retain forever.
 		case "notified":
 			if value.Destroy == nil {
 				value.Logln(logger.Debug, "scope=notified missing destroy param")

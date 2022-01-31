@@ -989,7 +989,7 @@ func init() {
 	RegisterGValueMarshaler(TypePointer, marshalPointer)
 	RegisterGValueMarshaler(TypeBoxed, marshalBoxed)
 	RegisterGValueMarshaler(TypeObject, marshalObject)
-	RegisterGValueMarshaler(TypeVariant, marshalVariant)
+	// RegisterGValueMarshaler(TypeVariant, marshalVariant)
 	RegisterGValueMarshaler(Type(C.g_value_get_type()), marshalValue)
 }
 

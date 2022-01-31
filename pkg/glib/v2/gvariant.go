@@ -22,6 +22,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_variant_builder_get_type()), F: marshalVariantBuilder},
 		{T: externglib.Type(C.g_variant_dict_get_type()), F: marshalVariantDict},
+		{T: externglib.TypeVariant, F: marshalVariant},
 	})
 }
 
@@ -3224,6 +3225,22 @@ func (dict *VariantDict) Remove(key string) bool {
 	}
 
 	return _ok
+}
+
+func marshalVariant(p uintptr) (interface{}, error) {
+	_cret := C.g_value_dup_variant((*C.GValue)(unsafe.Pointer(p)))
+	if _cret == nil {
+		return (*Variant)(nil), nil
+	}
+
+	_variant := (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+	return _variant, nil
 }
 
 // ForEach iterates over items in value. The iteration breaks out once f

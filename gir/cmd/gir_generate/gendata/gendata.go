@@ -390,10 +390,29 @@ func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
 	h := fg.Header()
 	h.Import("unsafe")
 	h.Import("runtime")
+	h.NeedsExternGLib()
 	h.ImportCore("gextras")
+
+	h.Marshalers = append(h.Marshalers, `{T: externglib.TypeVariant, F: marshalVariant},`)
 
 	p := fg.Pen()
 	p.Line(`
+		func marshalVariant(p uintptr) (interface{}, error) {
+			_cret := C.g_value_dup_variant((*C.GValue)(unsafe.Pointer(p)))
+			if _cret == nil {
+				return (*Variant)(nil), nil
+			}
+
+			_variant := (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(_variant)),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.g_variant_unref((*C.GVariant)(intern.C))
+				},
+			)
+			return _variant, nil
+		}
+
 		// ForEach iterates over items in value. The iteration breaks out once f
 		// returns true. This method wraps around g_variant_iter_new.
 		func (value *Variant) ForEach(f func(*Variant) (stop bool)) {

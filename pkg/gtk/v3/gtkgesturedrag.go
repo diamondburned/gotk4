@@ -54,17 +54,17 @@ func marshalGestureDragger(p uintptr) (interface{}, error) {
 
 // ConnectDragBegin: this signal is emitted whenever dragging starts.
 func (gesture *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) externglib.SignalHandle {
-	return gesture.Connect("drag-begin", f)
+	return gesture.Connect("drag-begin", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragEnd: this signal is emitted whenever the dragging is finished.
 func (gesture *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) externglib.SignalHandle {
-	return gesture.Connect("drag-end", f)
+	return gesture.Connect("drag-end", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragUpdate: this signal is emitted whenever the dragging point moves.
 func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) externglib.SignalHandle {
-	return gesture.Connect("drag-update", f)
+	return gesture.Connect("drag-update", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureDrag returns a newly created Gesture that recognizes drags.

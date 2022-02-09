@@ -73,7 +73,7 @@ func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
 //
 // The default class handler just returns TRUE.
 func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation DBusMethodInvocation) bool) externglib.SignalHandle {
-	return object.Connect("authorize-method", f)
+	return object.Connect("authorize-method", externglib.GeneratedClosure{Func: f})
 }
 
 // NewDBusObjectSkeleton creates a new BusObjectSkeleton.

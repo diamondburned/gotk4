@@ -170,7 +170,7 @@ func marshalDocumenter(p uintptr) (interface{}, error) {
 // are fully loaded into the container. (Dynamic document contents should be
 // exposed via other signals.).
 func (document *Document) ConnectLoadComplete(f func()) externglib.SignalHandle {
-	return document.Connect("load-complete", f)
+	return document.Connect("load-complete", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLoadStopped: 'load-stopped' signal is emitted when a pending load of
@@ -179,13 +179,13 @@ func (document *Document) ConnectLoadComplete(f func()) externglib.SignalHandle 
 // resource (for instance while blocking on a file or network read) unless a
 // user-significant timeout has occurred.
 func (document *Document) ConnectLoadStopped(f func()) externglib.SignalHandle {
-	return document.Connect("load-stopped", f)
+	return document.Connect("load-stopped", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPageChanged: 'page-changed' signal is emitted when the current page of
 // a document changes, e.g. pressing page up/down in a document viewer.
 func (document *Document) ConnectPageChanged(f func(pageNumber int)) externglib.SignalHandle {
-	return document.Connect("page-changed", f)
+	return document.Connect("page-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectReload: 'reload' signal is emitted when the contents of a document is
@@ -193,7 +193,7 @@ func (document *Document) ConnectPageChanged(f func(pageNumber int)) externglib.
 // 'load-complete' or 'load-stopped' signal should follow, which clients may
 // await before interrogating ATK for the latest document content.
 func (document *Document) ConnectReload(f func()) externglib.SignalHandle {
-	return document.Connect("reload", f)
+	return document.Connect("reload", externglib.GeneratedClosure{Func: f})
 }
 
 // AttributeValue retrieves the value of the given attribute_name inside

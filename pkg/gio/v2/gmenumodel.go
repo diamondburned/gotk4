@@ -712,7 +712,7 @@ func BaseMenuModel(obj MenuModeller) *MenuModel {
 // to see the results of the modification that is being reported. The signal is
 // emitted after the modification.
 func (model *MenuModel) ConnectItemsChanged(f func(position, removed, added int)) externglib.SignalHandle {
-	return model.Connect("items-changed", f)
+	return model.Connect("items-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ItemAttributeValue queries the item at position item_index in model for the

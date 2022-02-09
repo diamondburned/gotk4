@@ -239,7 +239,7 @@ func marshalLabeller(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal are all forms of the Enter key.
 func (self *Label) ConnectActivateCurrentLink(f func()) externglib.SignalHandle {
-	return self.Connect("activate-current-link", f)
+	return self.Connect("activate-current-link", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectActivateLink gets emitted to activate a URI.
@@ -247,7 +247,7 @@ func (self *Label) ConnectActivateCurrentLink(f func()) externglib.SignalHandle 
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk_show_uri().
 func (self *Label) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
-	return self.Connect("activate-link", f)
+	return self.Connect("activate-link", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCopyClipboard gets emitted to copy the slection to the clipboard.
@@ -256,7 +256,7 @@ func (self *Label) ConnectActivateLink(f func(uri string) bool) externglib.Signa
 //
 // The default binding for this signal is Ctrl-c.
 func (self *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return self.Connect("copy-clipboard", f)
+	return self.Connect("copy-clipboard", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveCursor gets emitted when the user initiates a cursor movement.
@@ -278,7 +278,7 @@ func (self *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
 //
 // - Home/End keys move to the ends of the buffer.
 func (self *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return self.Connect("move-cursor", f)
+	return self.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // NewLabel creates a new label with the given text inside it.

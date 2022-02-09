@@ -200,23 +200,23 @@ func marshalAssistanter(p uintptr) (interface{}, error) {
 // confirmation page and handle this operation within the Assistant::prepare
 // signal of the progress page.
 func (assistant *Assistant) ConnectApply(f func()) externglib.SignalHandle {
-	return assistant.Connect("apply", f)
+	return assistant.Connect("apply", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCancel signal is emitted when then the cancel button is clicked.
 func (assistant *Assistant) ConnectCancel(f func()) externglib.SignalHandle {
-	return assistant.Connect("cancel", f)
+	return assistant.Connect("cancel", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectClose signal is emitted either when the close button of a summary page
 // is clicked, or when the apply button in the last page in the flow (of type
 // GTK_ASSISTANT_PAGE_CONFIRM) is clicked.
 func (assistant *Assistant) ConnectClose(f func()) externglib.SignalHandle {
-	return assistant.Connect("close", f)
+	return assistant.Connect("close", externglib.GeneratedClosure{Func: f})
 }
 
 func (assistant *Assistant) ConnectEscape(f func()) externglib.SignalHandle {
-	return assistant.Connect("escape", f)
+	return assistant.Connect("escape", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPrepare signal is emitted when a new page is set as the assistant's
@@ -225,7 +225,7 @@ func (assistant *Assistant) ConnectEscape(f func()) externglib.SignalHandle {
 // A handler for this signal can do any preparations which are necessary before
 // showing page.
 func (assistant *Assistant) ConnectPrepare(f func(page Widgetter)) externglib.SignalHandle {
-	return assistant.Connect("prepare", f)
+	return assistant.Connect("prepare", externglib.GeneratedClosure{Func: f})
 }
 
 // NewAssistant creates a new Assistant.

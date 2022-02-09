@@ -1176,19 +1176,19 @@ func marshalObjectClasser(p uintptr) (interface{}, error) {
 // object in the object changes. For instance, a table will emit the signal when
 // the cell in the table which has focus changes.
 func (object *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) externglib.SignalHandle {
-	return object.Connect("active-descendant-changed", f)
+	return object.Connect("active-descendant-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectChildrenChanged: signal "children-changed" is emitted when a child is
 // added or removed form an object. It supports two details: "add" and "remove".
 func (object *ObjectClass) ConnectChildrenChanged(f func(arg1 uint, arg2 *ObjectClass)) externglib.SignalHandle {
-	return object.Connect("children-changed", f)
+	return object.Connect("children-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectFocusEvent: signal "focus-event" is emitted when an object gained or
 // lost focus.
 func (object *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) externglib.SignalHandle {
-	return object.Connect("focus-event", f)
+	return object.Connect("focus-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPropertyChange: signal "property-change" is emitted when an object's
@@ -1203,19 +1203,19 @@ func (object *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) externglib.Signa
 // the implementation of atk_add_global_event_listener() because GObject notify
 // doesn't support emission hooks.
 func (object *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) externglib.SignalHandle {
-	return object.Connect("property-change", f)
+	return object.Connect("property-change", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStateChange: "state-change" signal is emitted when an object's state
 // changes. The detail value identifies the state type which has changed.
 func (object *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) externglib.SignalHandle {
-	return object.Connect("state-change", f)
+	return object.Connect("state-change", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectVisibleDataChanged: "visible-data-changed" signal is emitted when the
 // visual appearance of the object changed.
 func (object *ObjectClass) ConnectVisibleDataChanged(f func()) externglib.SignalHandle {
-	return object.Connect("visible-data-changed", f)
+	return object.Connect("visible-data-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // AddRelationship adds a relationship of the specified type with the specified

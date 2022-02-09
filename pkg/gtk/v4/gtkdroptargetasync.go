@@ -91,7 +91,7 @@ func marshalDropTargetAsyncer(p uintptr) (interface{}, error) {
 // proceed as is drop was accepted and if it decides to reject the drop later,
 // it should call gtk.DropTargetAsync.RejectDrop().
 func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.SignalHandle {
-	return self.Connect("accept", f)
+	return self.Connect("accept", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragEnter: emitted on the drop site when the pointer enters the
@@ -99,7 +99,7 @@ func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) bool) extern
 //
 // It can be used to set up custom highlighting.
 func (self *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("drag-enter", f)
+	return self.Connect("drag-enter", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragLeave: emitted on the drop site when the pointer leaves the
@@ -107,12 +107,12 @@ func (self *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y floa
 //
 // Its main purpose it to undo things done in GtkDropTargetAsync::drag-enter.
 func (self *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) externglib.SignalHandle {
-	return self.Connect("drag-leave", f)
+	return self.Connect("drag-leave", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragMotion: emitted while the pointer is moving over the drop target.
 func (self *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("drag-motion", f)
+	return self.Connect("drag-motion", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDrop: emitted on the drop site when the user drops the data onto the
@@ -130,7 +130,7 @@ func (self *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y flo
 // To receive the data, use one of the read functions provided by gdk.Drop such
 // as gdk.Drop.ReadAsync() or gdk.Drop.ReadValueAsync().
 func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) bool) externglib.SignalHandle {
-	return self.Connect("drop", f)
+	return self.Connect("drop", externglib.GeneratedClosure{Func: f})
 }
 
 // NewDropTargetAsync creates a new GtkDropTargetAsync object.

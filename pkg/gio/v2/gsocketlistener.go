@@ -73,7 +73,7 @@ func marshalSocketListenerer(p uintptr) (interface{}, error) {
 // that when listener is used to listen on both IPv4 and IPv6, a separate set of
 // signals will be emitted for each, and the order they happen in is undefined.
 func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, socket Socket)) externglib.SignalHandle {
-	return listener.Connect("event", f)
+	return listener.Connect("event", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSocketListener creates a new Listener with no sockets to listen for. New

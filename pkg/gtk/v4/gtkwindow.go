@@ -155,7 +155,7 @@ func marshalWindower(p uintptr) (interface{}, error) {
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (window *Window) ConnectActivateDefault(f func()) externglib.SignalHandle {
-	return window.Connect("activate-default", f)
+	return window.Connect("activate-default", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectActivateFocus: emitted when the user activates the currently focused
@@ -163,13 +163,13 @@ func (window *Window) ConnectActivateDefault(f func()) externglib.SignalHandle {
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (window *Window) ConnectActivateFocus(f func()) externglib.SignalHandle {
-	return window.Connect("activate-focus", f)
+	return window.Connect("activate-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCloseRequest: emitted when the user clicks on the close button of the
 // window.
 func (window *Window) ConnectCloseRequest(f func() bool) externglib.SignalHandle {
-	return window.Connect("close-request", f)
+	return window.Connect("close-request", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEnableDebugging: emitted when the user enables or disables interactive
@@ -182,13 +182,13 @@ func (window *Window) ConnectCloseRequest(f func() bool) externglib.SignalHandle
 //
 // The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
 func (window *Window) ConnectEnableDebugging(f func(toggle bool) bool) externglib.SignalHandle {
-	return window.Connect("enable-debugging", f)
+	return window.Connect("enable-debugging", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeysChanged: emitted when the set of accelerators or mnemonics that
 // are associated with window changes.
 func (window *Window) ConnectKeysChanged(f func()) externglib.SignalHandle {
-	return window.Connect("keys-changed", f)
+	return window.Connect("keys-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewWindow creates a new GtkWindow.

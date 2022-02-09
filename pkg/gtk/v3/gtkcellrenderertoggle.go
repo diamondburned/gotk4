@@ -64,7 +64,7 @@ func marshalCellRendererToggler(p uintptr) (interface{}, error) {
 // correct value to store at path. Often this is simply the opposite of the
 // value currently stored at path.
 func (toggle *CellRendererToggle) ConnectToggled(f func(path string)) externglib.SignalHandle {
-	return toggle.Connect("toggled", f)
+	return toggle.Connect("toggled", externglib.GeneratedClosure{Func: f})
 }
 
 // NewCellRendererToggle creates a new CellRendererToggle. Adjust rendering

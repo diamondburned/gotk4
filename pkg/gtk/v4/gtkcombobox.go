@@ -160,7 +160,7 @@ func marshalComboBoxer(p uintptr) (interface{}, error) {
 // to a call to gtk.ComboBox.SetActiveIter(). It will also be emitted while
 // typing into the entry of a combo box with an entry.
 func (comboBox *ComboBox) ConnectChanged(f func()) externglib.SignalHandle {
-	return comboBox.Connect("changed", f)
+	return comboBox.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectFormatEntryText: emitted to allow changing how the text in a combo
@@ -195,14 +195,14 @@ func (comboBox *ComboBox) ConnectChanged(f func()) externglib.SignalHandle {
 //      return g_strdup_printf ("g", value);
 //    }.
 func (comboBox *ComboBox) ConnectFormatEntryText(f func(path string) string) externglib.SignalHandle {
-	return comboBox.Connect("format-entry-text", f)
+	return comboBox.Connect("format-entry-text", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveActive: emitted to move the active selection.
 //
 // This is an keybinding signal (class.SignalAction.html).
 func (comboBox *ComboBox) ConnectMoveActive(f func(scrollType ScrollType)) externglib.SignalHandle {
-	return comboBox.Connect("move-active", f)
+	return comboBox.Connect("move-active", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPopdown: emitted to popdown the combo box list.
@@ -211,7 +211,7 @@ func (comboBox *ComboBox) ConnectMoveActive(f func(scrollType ScrollType)) exter
 //
 // The default bindings for this signal are Alt+Up and Escape.
 func (comboBox *ComboBox) ConnectPopdown(f func() bool) externglib.SignalHandle {
-	return comboBox.Connect("popdown", f)
+	return comboBox.Connect("popdown", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPopup: emitted to popup the combo box list.
@@ -220,7 +220,7 @@ func (comboBox *ComboBox) ConnectPopdown(f func() bool) externglib.SignalHandle 
 //
 // The default binding for this signal is Alt+Down.
 func (comboBox *ComboBox) ConnectPopup(f func()) externglib.SignalHandle {
-	return comboBox.Connect("popup", f)
+	return comboBox.Connect("popup", externglib.GeneratedClosure{Func: f})
 }
 
 // NewComboBox creates a new empty GtkComboBox.

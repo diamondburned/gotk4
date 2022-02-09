@@ -112,7 +112,7 @@ func marshalColorButtonner(p uintptr) (interface{}, error) {
 // need to react to programmatic color changes as well, use the notify::color
 // signal.
 func (button *ColorButton) ConnectColorSet(f func()) externglib.SignalHandle {
-	return button.Connect("color-set", f)
+	return button.Connect("color-set", externglib.GeneratedClosure{Func: f})
 }
 
 // NewColorButton creates a new color button.

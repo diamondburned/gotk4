@@ -153,7 +153,7 @@ func marshalToggleButtonner(p uintptr) (interface{}, error) {
 
 // ConnectToggled: emitted whenever the GtkToggleButton's state is changed.
 func (toggleButton *ToggleButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return toggleButton.Connect("toggled", f)
+	return toggleButton.Connect("toggled", externglib.GeneratedClosure{Func: f})
 }
 
 // NewToggleButton creates a new toggle button.

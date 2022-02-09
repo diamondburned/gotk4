@@ -92,13 +92,13 @@ func marshalStatusbarrer(p uintptr) (interface{}, error) {
 // ConnectTextPopped: emitted whenever a new message is popped off a statusbar's
 // stack.
 func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) externglib.SignalHandle {
-	return statusbar.Connect("text-popped", f)
+	return statusbar.Connect("text-popped", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTextPushed: emitted whenever a new message gets pushed onto a
 // statusbar's stack.
 func (statusbar *Statusbar) ConnectTextPushed(f func(contextId uint, text string)) externglib.SignalHandle {
-	return statusbar.Connect("text-pushed", f)
+	return statusbar.Connect("text-pushed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewStatusbar creates a new GtkStatusbar ready for messages.

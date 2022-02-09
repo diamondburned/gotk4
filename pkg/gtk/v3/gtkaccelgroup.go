@@ -547,7 +547,7 @@ func marshalAccelGrouper(p uintptr) (interface{}, error) {
 // ConnectAccelActivate signal is an implementation detail of AccelGroup and not
 // meant to be used by applications.
 func (accelGroup *AccelGroup) ConnectAccelActivate(f func(acceleratable *externglib.Object, keyval uint, modifier gdk.ModifierType) bool) externglib.SignalHandle {
-	return accelGroup.Connect("accel-activate", f)
+	return accelGroup.Connect("accel-activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewAccelGroup creates a new AccelGroup.

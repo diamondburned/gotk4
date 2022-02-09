@@ -620,7 +620,7 @@ func marshalTreeModeller(p uintptr) (interface{}, error) {
 // ConnectRowChanged: this signal is emitted when a row in the model has
 // changed.
 func (childModel *TreeModel) ConnectRowChanged(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
-	return childModel.Connect("row-changed", f)
+	return childModel.Connect("row-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRowDeleted: this signal is emitted when a row has been deleted.
@@ -632,13 +632,13 @@ func (childModel *TreeModel) ConnectRowChanged(f func(path *TreePath, iter *Tree
 // pointed to by path should be the location that the row previously was at. It
 // may not be a valid location anymore.
 func (childModel *TreeModel) ConnectRowDeleted(f func(path *TreePath)) externglib.SignalHandle {
-	return childModel.Connect("row-deleted", f)
+	return childModel.Connect("row-deleted", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRowHasChildToggled: this signal is emitted when a row has gotten the
 // first child row or lost its last child row.
 func (childModel *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
-	return childModel.Connect("row-has-child-toggled", f)
+	return childModel.Connect("row-has-child-toggled", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRowInserted: this signal is emitted when a new row has been inserted
@@ -648,7 +648,7 @@ func (childModel *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, it
 // pattern to first insert an empty row, and then fill it with the desired
 // values.
 func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
-	return childModel.Connect("row-inserted", f)
+	return childModel.Connect("row-inserted", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRowsReordered: this signal is emitted when the children of a node in
@@ -657,7 +657,7 @@ func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter *Tre
 // Note that this signal is not emitted when rows are reordered by DND, since
 // this is implemented by removing and then reinserting the row.
 func (childModel *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter *TreeIter, newOrder cgo.Handle)) externglib.SignalHandle {
-	return childModel.Connect("rows-reordered", f)
+	return childModel.Connect("rows-reordered", externglib.GeneratedClosure{Func: f})
 }
 
 // ForEach calls func on each node in model in a depth-first fashion.

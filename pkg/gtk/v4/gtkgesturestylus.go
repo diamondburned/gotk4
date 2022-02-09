@@ -52,22 +52,22 @@ func marshalGestureStylusser(p uintptr) (interface{}, error) {
 
 // ConnectDown: emitted when the stylus touches the device.
 func (gesture *GestureStylus) ConnectDown(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("down", f)
+	return gesture.Connect("down", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMotion: emitted when the stylus moves while touching the device.
 func (gesture *GestureStylus) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("motion", f)
+	return gesture.Connect("motion", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectProximity: emitted when the stylus is in proximity of the device.
 func (gesture *GestureStylus) ConnectProximity(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("proximity", f)
+	return gesture.Connect("proximity", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUp: emitted when the stylus no longer touches the device.
 func (gesture *GestureStylus) ConnectUp(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("up", f)
+	return gesture.Connect("up", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureStylus creates a new GtkGestureStylus.

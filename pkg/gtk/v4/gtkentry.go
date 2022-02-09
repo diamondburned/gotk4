@@ -238,18 +238,18 @@ func marshalEntrier(p uintptr) (interface{}, error) {
 //
 // The keybindings for this signal are all forms of the Enter key.
 func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
-	return entry.Connect("activate", f)
+	return entry.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectIconPress: emitted when an activatable icon is clicked.
 func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition)) externglib.SignalHandle {
-	return entry.Connect("icon-press", f)
+	return entry.Connect("icon-press", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectIconRelease: emitted on the button release from a mouse click over an
 // activatable icon.
 func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition)) externglib.SignalHandle {
-	return entry.Connect("icon-release", f)
+	return entry.Connect("icon-release", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEntry creates a new entry.

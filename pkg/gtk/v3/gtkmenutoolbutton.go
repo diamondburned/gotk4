@@ -117,7 +117,7 @@ func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
 // an empty menu on the MenuToolButton beforehand, since the arrow is made
 // insensitive if the menu is not set.
 func (button *MenuToolButton) ConnectShowMenu(f func()) externglib.SignalHandle {
-	return button.Connect("show-menu", f)
+	return button.Connect("show-menu", externglib.GeneratedClosure{Func: f})
 }
 
 // NewMenuToolButton creates a new MenuToolButton using icon_widget as icon and

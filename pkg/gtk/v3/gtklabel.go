@@ -103,14 +103,14 @@ func marshalLabeller(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal are all forms of the Enter key.
 func (label *Label) ConnectActivateCurrentLink(f func()) externglib.SignalHandle {
-	return label.Connect("activate-current-link", f)
+	return label.Connect("activate-current-link", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectActivateLink: signal which gets emitted to activate a URI.
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk_show_uri_on_window().
 func (label *Label) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
-	return label.Connect("activate-link", f)
+	return label.Connect("activate-link", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -118,7 +118,7 @@ func (label *Label) ConnectActivateLink(f func(uri string) bool) externglib.Sign
 //
 // The default binding for this signal is Ctrl-c.
 func (label *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return label.Connect("copy-clipboard", f)
+	return label.Connect("copy-clipboard", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -138,7 +138,7 @@ func (label *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
 //
 // - Home/End keys move to the ends of the buffer.
 func (label *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return label.Connect("move-cursor", f)
+	return label.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPopulatePopup signal gets emitted before showing the context menu of
@@ -147,7 +147,7 @@ func (label *Label) ConnectMoveCursor(f func(step MovementStep, count int, exten
 // If you need to add items to the context menu, connect to this signal and
 // append your menuitems to the menu.
 func (label *Label) ConnectPopulatePopup(f func(menu Menu)) externglib.SignalHandle {
-	return label.Connect("populate-popup", f)
+	return label.Connect("populate-popup", externglib.GeneratedClosure{Func: f})
 }
 
 // NewLabel creates a new label with the given text inside it. You can pass NULL

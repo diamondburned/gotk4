@@ -128,7 +128,7 @@ func marshalShortcutsWindower(p uintptr) (interface{}, error) {
 //
 // The default binding for this signal is the Escape key.
 func (v *ShortcutsWindow) ConnectClose(f func()) externglib.SignalHandle {
-	return v.Connect("close", f)
+	return v.Connect("close", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSearch: emitted when the user uses a keybinding to start a search.
@@ -137,5 +137,5 @@ func (v *ShortcutsWindow) ConnectClose(f func()) externglib.SignalHandle {
 //
 // The default binding for this signal is Control-F.
 func (v *ShortcutsWindow) ConnectSearch(f func()) externglib.SignalHandle {
-	return v.Connect("search", f)
+	return v.Connect("search", externglib.GeneratedClosure{Func: f})
 }

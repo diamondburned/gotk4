@@ -222,7 +222,7 @@ func marshalEditabler(p uintptr) (interface{}, error) {
 // deleting the selection, then inserting the new content, and may cause
 // multiple ::notify::text signals to be emitted).
 func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
-	return editable.Connect("changed", f)
+	return editable.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeleteText: this signal is emitted when text is deleted from the
@@ -233,7 +233,7 @@ func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
 // start_pos and end_pos parameters are interpreted as for
 // gtk_editable_delete_text().
 func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) externglib.SignalHandle {
-	return editable.Connect("delete-text", f)
+	return editable.Connect("delete-text", externglib.GeneratedClosure{Func: f})
 }
 
 // CopyClipboard copies the contents of the currently selected content in the

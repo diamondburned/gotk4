@@ -72,5 +72,5 @@ func marshalShortcutsSectioner(p uintptr) (interface{}, error) {
 }
 
 func (v *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) bool) externglib.SignalHandle {
-	return v.Connect("change-current-page", f)
+	return v.Connect("change-current-page", externglib.GeneratedClosure{Func: f})
 }

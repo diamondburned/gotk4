@@ -58,7 +58,7 @@ func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
 // in these cases, you can monitor the gtk.EventControllerFocus:is-focus
 // property for changes.
 func (self *EventControllerFocus) ConnectEnter(f func()) externglib.SignalHandle {
-	return self.Connect("enter", f)
+	return self.Connect("enter", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLeave: emitted whenever the focus leaves the widget hierarchy that is
@@ -69,7 +69,7 @@ func (self *EventControllerFocus) ConnectEnter(f func()) externglib.SignalHandle
 // from the widget to a descendent). If you are interested in these cases, you
 // can monitor the gtk.EventControllerFocus:is-focus property for changes.
 func (self *EventControllerFocus) ConnectLeave(f func()) externglib.SignalHandle {
-	return self.Connect("leave", f)
+	return self.Connect("leave", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEventControllerFocus creates a new event controller that will handle focus

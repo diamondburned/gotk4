@@ -556,13 +556,13 @@ func BaseCellArea(obj CellAreaer) *CellArea {
 // ConnectAddEditable indicates that editing has started on renderer and that
 // editable should be added to the owning cell-layouting widget at cell_area.
 func (area *CellArea) ConnectAddEditable(f func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string)) externglib.SignalHandle {
-	return area.Connect("add-editable", f)
+	return area.Connect("add-editable", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectApplyAttributes: this signal is emitted whenever applying attributes
 // to area from model.
 func (area *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter *TreeIter, isExpander, isExpanded bool)) externglib.SignalHandle {
-	return area.Connect("apply-attributes", f)
+	return area.Connect("apply-attributes", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectFocusChanged indicates that focus changed on this area. This signal is
@@ -572,13 +572,13 @@ func (area *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter *Tr
 // renderer did not change, this is because focus may change to the same
 // renderer in the same cell area for a different row of data.
 func (area *CellArea) ConnectFocusChanged(f func(renderer CellRendererer, path string)) externglib.SignalHandle {
-	return area.Connect("focus-changed", f)
+	return area.Connect("focus-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRemoveEditable indicates that editing finished on renderer and that
 // editable should be removed from the owning cell-layouting widget.
 func (area *CellArea) ConnectRemoveEditable(f func(renderer CellRendererer, editable CellEditabler)) externglib.SignalHandle {
-	return area.Connect("remove-editable", f)
+	return area.Connect("remove-editable", externglib.GeneratedClosure{Func: f})
 }
 
 // Activate activates area, usually by activating the currently focused cell,

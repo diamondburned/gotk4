@@ -195,13 +195,13 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 // with GTK_APPLICATION_INHIBIT_LOGOUT to delay the end of the session until
 // state has been saved.
 func (application *Application) ConnectQueryEnd(f func()) externglib.SignalHandle {
-	return application.Connect("query-end", f)
+	return application.Connect("query-end", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectWindowAdded: emitted when a gtk.Window is added to application through
 // gtk.Application.AddWindow().
 func (application *Application) ConnectWindowAdded(f func(window Window)) externglib.SignalHandle {
-	return application.Connect("window-added", f)
+	return application.Connect("window-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectWindowRemoved: emitted when a gtk.Window is removed from application.
@@ -209,7 +209,7 @@ func (application *Application) ConnectWindowAdded(f func(window Window)) extern
 // This can happen as a side-effect of the window being destroyed or explicitly
 // through gtk.Application.RemoveWindow().
 func (application *Application) ConnectWindowRemoved(f func(window Window)) externglib.SignalHandle {
-	return application.Connect("window-removed", f)
+	return application.Connect("window-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewApplication creates a new GtkApplication instance.

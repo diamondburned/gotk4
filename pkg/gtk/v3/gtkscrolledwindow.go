@@ -243,7 +243,7 @@ func marshalScrolledWindower(p uintptr) (interface{}, error) {
 // Note: The pos argument is LTR/RTL aware, so callers should be aware too if
 // intending to provide behavior on horizontal edges.
 func (scrolledWindow *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionType)) externglib.SignalHandle {
-	return scrolledWindow.Connect("edge-overshot", f)
+	return scrolledWindow.Connect("edge-overshot", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEdgeReached signal is emitted whenever user-initiated scrolling makes
@@ -256,7 +256,7 @@ func (scrolledWindow *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionTyp
 // Note: The pos argument is LTR/RTL aware, so callers should be aware too if
 // intending to provide behavior on horizontal edges.
 func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType)) externglib.SignalHandle {
-	return scrolledWindow.Connect("edge-reached", f)
+	return scrolledWindow.Connect("edge-reached", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveFocusOut signal is a [keybinding signal][GtkBindingSignal] which
@@ -266,7 +266,7 @@ func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType
 // default bindings for this signal are Ctrl + Tab to move forward and Ctrl +
 // Shift + Tab to move backward.
 func (scrolledWindow *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) externglib.SignalHandle {
-	return scrolledWindow.Connect("move-focus-out", f)
+	return scrolledWindow.Connect("move-focus-out", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectScrollChild signal is a [keybinding signal][GtkBindingSignal] which
@@ -274,7 +274,7 @@ func (scrolledWindow *ScrolledWindow) ConnectMoveFocusOut(f func(directionType D
 // vertical adjustment is updated which triggers a signal that the scrolled
 // window’s child may listen to and scroll itself.
 func (scrolledWindow *ScrolledWindow) ConnectScrollChild(f func(scroll ScrollType, horizontal bool) bool) externglib.SignalHandle {
-	return scrolledWindow.Connect("scroll-child", f)
+	return scrolledWindow.Connect("scroll-child", externglib.GeneratedClosure{Func: f})
 }
 
 // NewScrolledWindow creates a new scrolled window.

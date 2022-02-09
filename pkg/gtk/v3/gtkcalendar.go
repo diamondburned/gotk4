@@ -192,38 +192,38 @@ func marshalCalendarrer(p uintptr) (interface{}, error) {
 
 // ConnectDaySelected: emitted when the user selects a day.
 func (calendar *Calendar) ConnectDaySelected(f func()) externglib.SignalHandle {
-	return calendar.Connect("day-selected", f)
+	return calendar.Connect("day-selected", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDaySelectedDoubleClick: emitted when the user double-clicks a day.
 func (calendar *Calendar) ConnectDaySelectedDoubleClick(f func()) externglib.SignalHandle {
-	return calendar.Connect("day-selected-double-click", f)
+	return calendar.Connect("day-selected-double-click", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMonthChanged: emitted when the user clicks a button to change the
 // selected month on a calendar.
 func (calendar *Calendar) ConnectMonthChanged(f func()) externglib.SignalHandle {
-	return calendar.Connect("month-changed", f)
+	return calendar.Connect("month-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectNextMonth: emitted when the user switched to the next month.
 func (calendar *Calendar) ConnectNextMonth(f func()) externglib.SignalHandle {
-	return calendar.Connect("next-month", f)
+	return calendar.Connect("next-month", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectNextYear: emitted when user switched to the next year.
 func (calendar *Calendar) ConnectNextYear(f func()) externglib.SignalHandle {
-	return calendar.Connect("next-year", f)
+	return calendar.Connect("next-year", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPrevMonth: emitted when the user switched to the previous month.
 func (calendar *Calendar) ConnectPrevMonth(f func()) externglib.SignalHandle {
-	return calendar.Connect("prev-month", f)
+	return calendar.Connect("prev-month", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPrevYear: emitted when user switched to the previous year.
 func (calendar *Calendar) ConnectPrevYear(f func()) externglib.SignalHandle {
-	return calendar.Connect("prev-year", f)
+	return calendar.Connect("prev-year", externglib.GeneratedClosure{Func: f})
 }
 
 // NewCalendar creates a new calendar, with the current date being selected.

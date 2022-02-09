@@ -111,7 +111,7 @@ func marshalCheckMenuItemmer(p uintptr) (interface{}, error) {
 // A signal handler can use gtk_check_menu_item_get_active() to discover the new
 // state.
 func (checkMenuItem *CheckMenuItem) ConnectToggled(f func()) externglib.SignalHandle {
-	return checkMenuItem.Connect("toggled", f)
+	return checkMenuItem.Connect("toggled", externglib.GeneratedClosure{Func: f})
 }
 
 // NewCheckMenuItem creates a new CheckMenuItem.

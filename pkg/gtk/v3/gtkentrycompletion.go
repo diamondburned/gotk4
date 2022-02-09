@@ -159,7 +159,7 @@ func marshalEntryCompletioner(p uintptr) (interface{}, error) {
 
 // ConnectActionActivated gets emitted when an action is activated.
 func (completion *EntryCompletion) ConnectActionActivated(f func(index int)) externglib.SignalHandle {
-	return completion.Connect("action-activated", f)
+	return completion.Connect("action-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCursorOnMatch gets emitted when a match from the cursor is on a match
@@ -169,7 +169,7 @@ func (completion *EntryCompletion) ConnectActionActivated(f func(index int)) ext
 // Note that model is the model that was passed to
 // gtk_entry_completion_set_model().
 func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter *TreeIter) bool) externglib.SignalHandle {
-	return completion.Connect("cursor-on-match", f)
+	return completion.Connect("cursor-on-match", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsertPrefix gets emitted when the inline autocompletion is triggered.
@@ -180,7 +180,7 @@ func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModelle
 // part of the prefix into the entry - e.g. the entry used in the FileChooser
 // inserts only the part of the prefix up to the next '/'.
 func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) bool) externglib.SignalHandle {
-	return completion.Connect("insert-prefix", f)
+	return completion.Connect("insert-prefix", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMatchSelected gets emitted when a match from the list is selected. The
@@ -190,14 +190,14 @@ func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) boo
 // Note that model is the model that was passed to
 // gtk_entry_completion_set_model().
 func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter *TreeIter) bool) externglib.SignalHandle {
-	return completion.Connect("match-selected", f)
+	return completion.Connect("match-selected", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectNoMatches gets emitted when the filter model has zero number of rows
 // in completion_complete method. (In other words when GtkEntryCompletion is out
 // of suggestions).
 func (completion *EntryCompletion) ConnectNoMatches(f func()) externglib.SignalHandle {
-	return completion.Connect("no-matches", f)
+	return completion.Connect("no-matches", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEntryCompletion creates a new EntryCompletion object.

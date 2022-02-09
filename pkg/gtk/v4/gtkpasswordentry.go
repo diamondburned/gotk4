@@ -113,7 +113,7 @@ func marshalPasswordEntrier(p uintptr) (interface{}, error) {
 //
 // The keybindings for this signal are all forms of the Enter key.
 func (entry *PasswordEntry) ConnectActivate(f func()) externglib.SignalHandle {
-	return entry.Connect("activate", f)
+	return entry.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewPasswordEntry creates a GtkPasswordEntry.

@@ -237,14 +237,14 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 // ConnectActivate signal is emitted on the primary instance when an activation
 // occurs. See g_application_activate().
 func (application *Application) ConnectActivate(f func()) externglib.SignalHandle {
-	return application.Connect("activate", f)
+	return application.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCommandLine signal is emitted on the primary instance when a
 // commandline is not handled locally. See g_application_run() and the
 // CommandLine documentation for more information.
 func (application *Application) ConnectCommandLine(f func(commandLine ApplicationCommandLine) int) externglib.SignalHandle {
-	return application.Connect("command-line", f)
+	return application.Connect("command-line", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectHandleLocalOptions signal is emitted on the local instance after the
@@ -285,7 +285,7 @@ func (application *Application) ConnectCommandLine(f func(commandLine Applicatio
 // You can override local_command_line() if you need more powerful capabilities
 // than what is provided here, but this should not normally be required.
 func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) int) externglib.SignalHandle {
-	return application.Connect("handle-local-options", f)
+	return application.Connect("handle-local-options", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectNameLost signal is emitted only on the registered primary instance
@@ -294,25 +294,25 @@ func (application *Application) ConnectHandleLocalOptions(f func(options *glib.V
 //
 // The default handler for this signal calls g_application_quit().
 func (application *Application) ConnectNameLost(f func() bool) externglib.SignalHandle {
-	return application.Connect("name-lost", f)
+	return application.Connect("name-lost", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectOpen signal is emitted on the primary instance when there are files to
 // open. See g_application_open() for more information.
 func (application *Application) ConnectOpen(f func(files []Filer, hint string)) externglib.SignalHandle {
-	return application.Connect("open", f)
+	return application.Connect("open", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectShutdown signal is emitted only on the registered primary instance
 // immediately after the main loop terminates.
 func (application *Application) ConnectShutdown(f func()) externglib.SignalHandle {
-	return application.Connect("shutdown", f)
+	return application.Connect("shutdown", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStartup signal is emitted on the primary instance immediately after
 // registration. See g_application_register().
 func (application *Application) ConnectStartup(f func()) externglib.SignalHandle {
-	return application.Connect("startup", f)
+	return application.Connect("startup", externglib.GeneratedClosure{Func: f})
 }
 
 // NewApplication creates a new #GApplication instance.

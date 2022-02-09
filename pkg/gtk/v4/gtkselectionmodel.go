@@ -268,7 +268,7 @@ func marshalSelectionModeller(p uintptr) (interface{}, error) {
 // change the selection state of any of the items in the selection model, though
 // it would be rather useless to emit such a signal.
 func (model *SelectionModel) ConnectSelectionChanged(f func(position, nItems uint)) externglib.SignalHandle {
-	return model.Connect("selection-changed", f)
+	return model.Connect("selection-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // Selection gets the set containing all currently selected items in the model.

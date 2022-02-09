@@ -86,7 +86,7 @@ func marshalFontButtonner(p uintptr) (interface{}, error) {
 // need to react to programmatic font changes as well, use the notify::font
 // signal.
 func (fontButton *FontButton) ConnectFontSet(f func()) externglib.SignalHandle {
-	return fontButton.Connect("font-set", f)
+	return fontButton.Connect("font-set", externglib.GeneratedClosure{Func: f})
 }
 
 // NewFontButton creates a new font picker widget.

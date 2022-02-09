@@ -100,7 +100,7 @@ func marshalCancellabler(p uintptr) (interface{}, error) {
 // cancelled from, which may be the main thread. So, the cancellable signal
 // should not do something that can block.
 func (cancellable *Cancellable) ConnectCancelled(f func()) externglib.SignalHandle {
-	return cancellable.Connect("cancelled", f)
+	return cancellable.Connect("cancelled", externglib.GeneratedClosure{Func: f})
 }
 
 // NewCancellable creates a new #GCancellable object.

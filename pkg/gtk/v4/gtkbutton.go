@@ -120,13 +120,13 @@ func marshalButtonner(p uintptr) (interface{}, error) {
 // This is an action signal. Applications should never connect to this signal,
 // but use the gtk.Button::clicked signal.
 func (button *Button) ConnectActivate(f func()) externglib.SignalHandle {
-	return button.Connect("activate", f)
+	return button.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectClicked: emitted when the button has been activated (pressed and
 // released).
 func (button *Button) ConnectClicked(f func()) externglib.SignalHandle {
-	return button.Connect("clicked", f)
+	return button.Connect("clicked", externglib.GeneratedClosure{Func: f})
 }
 
 // NewButton creates a new GtkButton widget.

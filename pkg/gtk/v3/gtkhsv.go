@@ -71,11 +71,11 @@ func marshalHSVer(p uintptr) (interface{}, error) {
 }
 
 func (hsv *HSV) ConnectChanged(f func()) externglib.SignalHandle {
-	return hsv.Connect("changed", f)
+	return hsv.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 func (hsv *HSV) ConnectMove(f func(object DirectionType)) externglib.SignalHandle {
-	return hsv.Connect("move", f)
+	return hsv.Connect("move", externglib.GeneratedClosure{Func: f})
 }
 
 // NewHSV creates a new HSV color selector.

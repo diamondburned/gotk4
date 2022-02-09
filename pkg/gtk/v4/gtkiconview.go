@@ -165,7 +165,7 @@ func marshalIconViewer(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal are Space, Return and Enter.
 func (iconView *IconView) ConnectActivateCursorItem(f func() bool) externglib.SignalHandle {
-	return iconView.Connect("activate-cursor-item", f)
+	return iconView.Connect("activate-cursor-item", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectItemActivated signal is emitted when the method
@@ -175,7 +175,7 @@ func (iconView *IconView) ConnectActivateCursorItem(f func() bool) externglib.Si
 // TRUE. It is also emitted when a non-editable item is selected and one of the
 // keys: Space, Return or Enter is pressed.
 func (iconView *IconView) ConnectItemActivated(f func(path *TreePath)) externglib.SignalHandle {
-	return iconView.Connect("item-activated", f)
+	return iconView.Connect("item-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkSignalAction] which gets
@@ -194,7 +194,7 @@ func (iconView *IconView) ConnectItemActivated(f func(path *TreePath)) externgli
 // - PageUp/PageDown which move by "pages" All of these will extend the
 // selection when combined with the Shift modifier.
 func (iconView *IconView) ConnectMoveCursor(f func(step MovementStep, count int, extend, modify bool) bool) externglib.SignalHandle {
-	return iconView.Connect("move-cursor", f)
+	return iconView.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectAll: [keybinding signal][GtkSignalAction] which gets emitted
@@ -205,7 +205,7 @@ func (iconView *IconView) ConnectMoveCursor(f func(step MovementStep, count int,
 //
 // The default binding for this signal is Ctrl-a.
 func (iconView *IconView) ConnectSelectAll(f func()) externglib.SignalHandle {
-	return iconView.Connect("select-all", f)
+	return iconView.Connect("select-all", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectCursorItem: [keybinding signal][GtkSignalAction] which gets
@@ -216,13 +216,13 @@ func (iconView *IconView) ConnectSelectAll(f func()) externglib.SignalHandle {
 //
 // There is no default binding for this signal.
 func (iconView *IconView) ConnectSelectCursorItem(f func()) externglib.SignalHandle {
-	return iconView.Connect("select-cursor-item", f)
+	return iconView.Connect("select-cursor-item", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectionChanged signal is emitted when the selection (i.e. the set of
 // selected items) changes.
 func (iconView *IconView) ConnectSelectionChanged(f func()) externglib.SignalHandle {
-	return iconView.Connect("selection-changed", f)
+	return iconView.Connect("selection-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToggleCursorItem: [keybinding signal][GtkSignalAction] which gets
@@ -234,7 +234,7 @@ func (iconView *IconView) ConnectSelectionChanged(f func()) externglib.SignalHan
 //
 // There is no default binding for this signal is Ctrl-Space.
 func (iconView *IconView) ConnectToggleCursorItem(f func()) externglib.SignalHandle {
-	return iconView.Connect("toggle-cursor-item", f)
+	return iconView.Connect("toggle-cursor-item", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnselectAll: [keybinding signal][GtkSignalAction] which gets emitted
@@ -245,7 +245,7 @@ func (iconView *IconView) ConnectToggleCursorItem(f func()) externglib.SignalHan
 //
 // The default binding for this signal is Ctrl-Shift-a.
 func (iconView *IconView) ConnectUnselectAll(f func()) externglib.SignalHandle {
-	return iconView.Connect("unselect-all", f)
+	return iconView.Connect("unselect-all", externglib.GeneratedClosure{Func: f})
 }
 
 // NewIconView creates a new IconView widget.

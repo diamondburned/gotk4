@@ -84,5 +84,5 @@ func BaseVulkanContext(obj VulkanContexter) *VulkanContext {
 // Usually this means that the swapchain had to be recreated, for example in
 // response to a change of the surface size.
 func (v *VulkanContext) ConnectImagesUpdated(f func()) externglib.SignalHandle {
-	return v.Connect("images-updated", f)
+	return v.Connect("images-updated", externglib.GeneratedClosure{Func: f})
 }

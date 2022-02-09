@@ -148,7 +148,7 @@ func marshalListModeller(p uintptr) (interface{}, error) {
 // Note: If removed != added, the positions of all later items in the model
 // change.
 func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) externglib.SignalHandle {
-	return list.Connect("items-changed", f)
+	return list.Connect("items-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ItemType gets the type of the items in list. All items returned from

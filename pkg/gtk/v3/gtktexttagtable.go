@@ -102,15 +102,15 @@ func marshalTextTagTabler(p uintptr) (interface{}, error) {
 }
 
 func (table *TextTagTable) ConnectTagAdded(f func(tag TextTag)) externglib.SignalHandle {
-	return table.Connect("tag-added", f)
+	return table.Connect("tag-added", externglib.GeneratedClosure{Func: f})
 }
 
 func (table *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged bool)) externglib.SignalHandle {
-	return table.Connect("tag-changed", f)
+	return table.Connect("tag-changed", externglib.GeneratedClosure{Func: f})
 }
 
 func (table *TextTagTable) ConnectTagRemoved(f func(tag TextTag)) externglib.SignalHandle {
-	return table.Connect("tag-removed", f)
+	return table.Connect("tag-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewTextTagTable creates a new TextTagTable. The table contains no tags by

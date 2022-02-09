@@ -378,7 +378,7 @@ func BaseResolver(obj Resolverer) *Resolver {
 // ConnectReload: emitted when the resolver notices that the system resolver
 // configuration has changed.
 func (resolver *Resolver) ConnectReload(f func()) externglib.SignalHandle {
-	return resolver.Connect("reload", f)
+	return resolver.Connect("reload", externglib.GeneratedClosure{Func: f})
 }
 
 // LookupByAddress: synchronously reverse-resolves address to determine its

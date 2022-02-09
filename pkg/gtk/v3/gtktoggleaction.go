@@ -62,7 +62,7 @@ func marshalToggleActioner(p uintptr) (interface{}, error) {
 // ConnectToggled: should be connected if you wish to perform an action whenever
 // the ToggleAction state is changed.
 func (action *ToggleAction) ConnectToggled(f func()) externglib.SignalHandle {
-	return action.Connect("toggled", f)
+	return action.Connect("toggled", externglib.GeneratedClosure{Func: f})
 }
 
 // NewToggleAction creates a new ToggleAction object. To add the action to a

@@ -48,7 +48,7 @@ func marshalEventControllerLegacier(p uintptr) (interface{}, error) {
 
 // ConnectEvent: emitted for each GDK event delivered to controller.
 func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) bool) externglib.SignalHandle {
-	return v.Connect("event", f)
+	return v.Connect("event", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEventControllerLegacy creates a new legacy event controller.

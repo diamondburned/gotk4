@@ -105,7 +105,7 @@ func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
 // If you call gtk.NativeDialog.Hide() before the user responds to the dialog
 // this signal will not be emitted.
 func (self *NativeDialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return self.Connect("response", f)
+	return self.Connect("response", externglib.GeneratedClosure{Func: f})
 }
 
 // Destroy destroys a dialog.

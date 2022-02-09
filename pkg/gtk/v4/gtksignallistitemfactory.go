@@ -89,7 +89,7 @@ func marshalSignalListItemFactorier(p uintptr) (interface{}, error) {
 // The gtk.SignalListItemFactory::unbind signal is the opposite of this signal
 // and can be used to undo everything done in this signal.
 func (v *SignalListItemFactory) ConnectBind(f func(listitem ListItem)) externglib.SignalHandle {
-	return v.Connect("bind", f)
+	return v.Connect("bind", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSetup: emitted when a new listitem has been created and needs to be
@@ -100,7 +100,7 @@ func (v *SignalListItemFactory) ConnectBind(f func(listitem ListItem)) externgli
 // The gtk.SignalListItemFactory::teardown signal is the opposite of this signal
 // and can be used to undo everything done in this signal.
 func (v *SignalListItemFactory) ConnectSetup(f func(listitem ListItem)) externglib.SignalHandle {
-	return v.Connect("setup", f)
+	return v.Connect("setup", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTeardown: emitted when a listitem is about to be destroyed.
@@ -110,7 +110,7 @@ func (v *SignalListItemFactory) ConnectSetup(f func(listitem ListItem)) externgl
 // This signal is the opposite of the gtk.SignalListItemFactory::setup signal
 // and should be used to undo everything done in that signal.
 func (v *SignalListItemFactory) ConnectTeardown(f func(listitem ListItem)) externglib.SignalHandle {
-	return v.Connect("teardown", f)
+	return v.Connect("teardown", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnbind: emitted when a listitem has been removed from use in a list
@@ -119,7 +119,7 @@ func (v *SignalListItemFactory) ConnectTeardown(f func(listitem ListItem)) exter
 // This signal is the opposite of the gtk.SignalListItemFactory::bind signal and
 // should be used to undo everything done in that signal.
 func (v *SignalListItemFactory) ConnectUnbind(f func(listitem ListItem)) externglib.SignalHandle {
-	return v.Connect("unbind", f)
+	return v.Connect("unbind", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSignalListItemFactory creates a new GtkSignalListItemFactory.

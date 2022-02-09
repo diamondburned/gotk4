@@ -373,7 +373,7 @@ func marshalComponenter(p uintptr) (interface{}, error) {
 // ConnectBoundsChanged: 'bounds-changed" signal is emitted when the bposition
 // or size of the component changes.
 func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) externglib.SignalHandle {
-	return component.Connect("bounds-changed", f)
+	return component.Connect("bounds-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // Contains checks whether the specified point is within the extent of the

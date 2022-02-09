@@ -162,7 +162,7 @@ func BaseGesture(obj Gesturer) *Gesture {
 // on a 2-touches gesture) is lifted, in that situation sequence won't pertain
 // to the current set of active touches, so don't rely on this being true.
 func (gesture *Gesture) ConnectBegin(f func(sequence *gdk.EventSequence)) externglib.SignalHandle {
-	return gesture.Connect("begin", f)
+	return gesture.Connect("begin", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCancel: emitted whenever a sequence is cancelled.
@@ -173,7 +173,7 @@ func (gesture *Gesture) ConnectBegin(f func(sequence *gdk.EventSequence)) extern
 //
 // gesture must forget everything about sequence as in response to this signal.
 func (gesture *Gesture) ConnectCancel(f func(sequence *gdk.EventSequence)) externglib.SignalHandle {
-	return gesture.Connect("cancel", f)
+	return gesture.Connect("cancel", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEnd: emitted when gesture either stopped recognizing the event
@@ -185,7 +185,7 @@ func (gesture *Gesture) ConnectCancel(f func(sequence *gdk.EventSequence)) exter
 // sequence that exceeds gtk.Gesture:n-points). This situation may be detected
 // by checking through gtk.Gesture.HandlesSequence().
 func (gesture *Gesture) ConnectEnd(f func(sequence *gdk.EventSequence)) externglib.SignalHandle {
-	return gesture.Connect("end", f)
+	return gesture.Connect("end", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSequenceStateChanged: emitted whenever a sequence state changes.
@@ -193,7 +193,7 @@ func (gesture *Gesture) ConnectEnd(f func(sequence *gdk.EventSequence)) externgl
 // See gtk.Gesture.SetSequenceState() to know more about the expectable sequence
 // lifetimes.
 func (gesture *Gesture) ConnectSequenceStateChanged(f func(sequence *gdk.EventSequence, state EventSequenceState)) externglib.SignalHandle {
-	return gesture.Connect("sequence-state-changed", f)
+	return gesture.Connect("sequence-state-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUpdate: emitted whenever an event is handled while the gesture is
@@ -201,7 +201,7 @@ func (gesture *Gesture) ConnectSequenceStateChanged(f func(sequence *gdk.EventSe
 //
 // sequence is guaranteed to pertain to the set of active touches.
 func (gesture *Gesture) ConnectUpdate(f func(sequence *gdk.EventSequence)) externglib.SignalHandle {
-	return gesture.Connect("update", f)
+	return gesture.Connect("update", externglib.GeneratedClosure{Func: f})
 }
 
 // BoundingBox: if there are touch sequences being currently handled by gesture,

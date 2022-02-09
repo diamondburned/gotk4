@@ -118,7 +118,7 @@ func marshalSocketClienter(p uintptr) (interface{}, error) {
 // Note that there may be additional ClientEvent values in the future;
 // unrecognized event values should be ignored.
 func (client *SocketClient) ConnectEvent(f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)) externglib.SignalHandle {
-	return client.Connect("event", f)
+	return client.Connect("event", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSocketClient creates a new Client with the default options.

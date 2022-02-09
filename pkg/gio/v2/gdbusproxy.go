@@ -120,13 +120,13 @@ func marshalDBusProxier(p uintptr) (interface{}, error) {
 // This signal corresponds to the PropertiesChanged D-Bus signal on the
 // org.freedesktop.DBus.Properties interface.
 func (proxy *DBusProxy) ConnectGPropertiesChanged(f func(changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
-	return proxy.Connect("g-properties-changed", f)
+	return proxy.Connect("g-properties-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectGSignal: emitted when a signal from the remote object and interface
 // that proxy is for, has been received.
 func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
-	return proxy.Connect("g-signal", f)
+	return proxy.Connect("g-signal", externglib.GeneratedClosure{Func: f})
 }
 
 // NewDBusProxyFinish finishes creating a BusProxy.

@@ -80,7 +80,7 @@ func marshalTextTagger(p uintptr) (interface{}, error) {
 // ConnectEvent signal is emitted when an event occurs on a region of the buffer
 // marked with this tag.
 func (tag *TextTag) ConnectEvent(f func(object *externglib.Object, event *gdk.Event, iter *TextIter) bool) externglib.SignalHandle {
-	return tag.Connect("event", f)
+	return tag.Connect("event", externglib.GeneratedClosure{Func: f})
 }
 
 // NewTextTag creates a TextTag. Configure the tag using object arguments, i.e.

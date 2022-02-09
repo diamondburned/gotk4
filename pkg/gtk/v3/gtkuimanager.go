@@ -429,14 +429,14 @@ func marshalUIManagerer(p uintptr) (interface{}, error) {
 
 // ConnectActionsChanged signal is emitted whenever the set of actions changes.
 func (manager *UIManager) ConnectActionsChanged(f func()) externglib.SignalHandle {
-	return manager.Connect("actions-changed", f)
+	return manager.Connect("actions-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectAddWidget signal is emitted for each generated menubar and toolbar. It
 // is not emitted for generated popup menus, which can be obtained by
 // gtk_ui_manager_get_widget().
 func (manager *UIManager) ConnectAddWidget(f func(widget Widgetter)) externglib.SignalHandle {
-	return manager.Connect("add-widget", f)
+	return manager.Connect("add-widget", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectConnectProxy signal is emitted after connecting a proxy to an action
@@ -445,13 +445,13 @@ func (manager *UIManager) ConnectAddWidget(f func(widget Widgetter)) externglib.
 // This is intended for simple customizations for which a custom action class
 // would be too clumsy, e.g. showing tooltips for menuitems in the statusbar.
 func (manager *UIManager) ConnectConnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return manager.Connect("connect-proxy", f)
+	return manager.Connect("connect-proxy", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
 // action in the group.
 func (manager *UIManager) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return manager.Connect("disconnect-proxy", f)
+	return manager.Connect("disconnect-proxy", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPostActivate signal is emitted just after the action is activated.
@@ -459,7 +459,7 @@ func (manager *UIManager) ConnectDisconnectProxy(f func(action Action, proxy Wid
 // This is intended for applications to get notification just after any action
 // is activated.
 func (manager *UIManager) ConnectPostActivate(f func(action Action)) externglib.SignalHandle {
-	return manager.Connect("post-activate", f)
+	return manager.Connect("post-activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreActivate signal is emitted just before the action is activated.
@@ -467,7 +467,7 @@ func (manager *UIManager) ConnectPostActivate(f func(action Action)) externglib.
 // This is intended for applications to get notification just before any action
 // is activated.
 func (manager *UIManager) ConnectPreActivate(f func(action Action)) externglib.SignalHandle {
-	return manager.Connect("pre-activate", f)
+	return manager.Connect("pre-activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewUIManager creates a new ui manager object.

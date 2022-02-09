@@ -124,7 +124,7 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 // selected and the user presses one of the keys Space, Shift+Space, Return or
 // Enter.
 func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) externglib.SignalHandle {
-	return chooser.Connect("color-activated", f)
+	return chooser.Connect("color-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // AddPalette adds a palette to the color chooser.

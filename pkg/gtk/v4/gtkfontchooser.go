@@ -321,7 +321,7 @@ func marshalFontChooserer(p uintptr) (interface{}, error) {
 // selected and the user presses one of the keys Space, Shift+Space, Return or
 // Enter.
 func (fontchooser *FontChooser) ConnectFontActivated(f func(fontname string)) externglib.SignalHandle {
-	return fontchooser.Connect("font-activated", f)
+	return fontchooser.Connect("font-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // Font gets the currently-selected font name.

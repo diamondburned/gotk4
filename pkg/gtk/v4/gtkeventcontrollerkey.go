@@ -49,23 +49,23 @@ func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
 //
 // See gtk.EventControllerKey.SetIMContext() and gtk.IMContext.FilterKeypress().
 func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
-	return controller.Connect("im-update", f)
+	return controller.Connect("im-update", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeyPressed: emitted whenever a key is pressed.
 func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("key-pressed", f)
+	return controller.Connect("key-pressed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeyReleased: emitted whenever a key is released.
 func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
-	return controller.Connect("key-released", f)
+	return controller.Connect("key-released", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectModifiers: emitted whenever the state of modifier keys and pointer
 // buttons change.
 func (controller *EventControllerKey) ConnectModifiers(f func(keyval gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("modifiers", f)
+	return controller.Connect("modifiers", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEventControllerKey creates a new event controller that will handle key

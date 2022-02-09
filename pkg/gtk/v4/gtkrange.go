@@ -99,7 +99,7 @@ func marshalRanger(p uintptr) (interface{}, error) {
 // ConnectAdjustBounds: emitted before clamping a value, to give the application
 // a chance to adjust the bounds.
 func (_range *Range) ConnectAdjustBounds(f func(value float64)) externglib.SignalHandle {
-	return _range.Connect("adjust-bounds", f)
+	return _range.Connect("adjust-bounds", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectChangeValue: emitted when a scroll action is performed on a range.
@@ -114,19 +114,19 @@ func (_range *Range) ConnectAdjustBounds(f func(value float64)) externglib.Signa
 // number of decimal digits; the default GTK handler clamps the value based on
 // gtk.Range:round-digits.
 func (_range *Range) ConnectChangeValue(f func(scroll ScrollType, value float64) bool) externglib.SignalHandle {
-	return _range.Connect("change-value", f)
+	return _range.Connect("change-value", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveSlider: virtual function that moves the slider.
 //
 // Used for keybindings.
 func (_range *Range) ConnectMoveSlider(f func(step ScrollType)) externglib.SignalHandle {
-	return _range.Connect("move-slider", f)
+	return _range.Connect("move-slider", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectValueChanged: emitted when the range value changes.
 func (_range *Range) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return _range.Connect("value-changed", f)
+	return _range.Connect("value-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // Adjustment: get the adjustment which is the “model” object for GtkRange.

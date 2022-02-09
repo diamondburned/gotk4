@@ -171,7 +171,7 @@ func marshalTreeSelectioner(p uintptr) (interface{}, error) {
 // range of rows are selected, and it may occasionally be emitted when nothing
 // has happened.
 func (selection *TreeSelection) ConnectChanged(f func()) externglib.SignalHandle {
-	return selection.Connect("changed", f)
+	return selection.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // CountSelectedRows returns the number of rows that have been selected in tree.

@@ -728,24 +728,24 @@ func BaseWidget(obj Widgetter) *Widget {
 //
 // This signal is not suitable for saving widget state.
 func (widget *Widget) ConnectDestroy(f func()) externglib.SignalHandle {
-	return widget.Connect("destroy", f)
+	return widget.Connect("destroy", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDirectionChanged: emitted when the text direction of a widget changes.
 func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) externglib.SignalHandle {
-	return widget.Connect("direction-changed", f)
+	return widget.Connect("direction-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectHide: emitted when widget is hidden.
 func (widget *Widget) ConnectHide(f func()) externglib.SignalHandle {
-	return widget.Connect("hide", f)
+	return widget.Connect("hide", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeynavFailed: emitted if keyboard navigation fails.
 //
 // See gtk.Widget.KeynavFailed() for details.
 func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) externglib.SignalHandle {
-	return widget.Connect("keynav-failed", f)
+	return widget.Connect("keynav-failed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMap: emitted when widget is going to be mapped.
@@ -758,7 +758,7 @@ func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) 
 // instance it can resume an animation that was stopped during the emission of
 // gtk.Widget::unmap.
 func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
-	return widget.Connect("map", f)
+	return widget.Connect("map", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMnemonicActivate: emitted when a widget is activated via a mnemonic.
@@ -766,12 +766,12 @@ func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
 // The default handler for this signal activates widget if group_cycling is
 // FALSE, or just makes widget grab focus if group_cycling is TRUE.
 func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) externglib.SignalHandle {
-	return widget.Connect("mnemonic-activate", f)
+	return widget.Connect("mnemonic-activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveFocus: emitted when the focus is moved.
 func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) externglib.SignalHandle {
-	return widget.Connect("move-focus", f)
+	return widget.Connect("move-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectQueryTooltip: emitted when the widgets tooltip is about to be shown.
@@ -788,7 +788,7 @@ func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) externgl
 // The signal handler is free to manipulate tooltip with the therefore destined
 // function calls.
 func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
-	return widget.Connect("query-tooltip", f)
+	return widget.Connect("query-tooltip", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRealize: emitted when widget is associated with a GdkSurface.
@@ -796,19 +796,19 @@ func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, to
 // This means that gtk.Widget.Realize() has been called or the widget has been
 // mapped (that is, it is going to be drawn).
 func (widget *Widget) ConnectRealize(f func()) externglib.SignalHandle {
-	return widget.Connect("realize", f)
+	return widget.Connect("realize", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectShow: emitted when widget is shown.
 func (widget *Widget) ConnectShow(f func()) externglib.SignalHandle {
-	return widget.Connect("show", f)
+	return widget.Connect("show", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStateFlagsChanged: emitted when the widget state changes.
 //
 // See gtk.Widget.GetStateFlags().
 func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externglib.SignalHandle {
-	return widget.Connect("state-flags-changed", f)
+	return widget.Connect("state-flags-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnmap: emitted when widget is going to be unmapped.
@@ -819,7 +819,7 @@ func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externg
 // As ::unmap indicates that a widget will not be shown any longer, it can be
 // used to, for example, stop an animation on the widget.
 func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
-	return widget.Connect("unmap", f)
+	return widget.Connect("unmap", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnrealize: emitted when the GdkSurface associated with widget is
@@ -828,7 +828,7 @@ func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
 // This means that gtk.Widget.Unrealize() has been called or the widget has been
 // unmapped (that is, it is going to be hidden).
 func (widget *Widget) ConnectUnrealize(f func()) externglib.SignalHandle {
-	return widget.Connect("unrealize", f)
+	return widget.Connect("unrealize", externglib.GeneratedClosure{Func: f})
 }
 
 // ActionSetEnabled: enable or disable an action installed with

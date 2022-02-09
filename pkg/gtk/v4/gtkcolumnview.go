@@ -132,7 +132,7 @@ func marshalColumnViewer(p uintptr) (interface{}, error) {
 // This allows for a convenient way to handle activation in a columnview. See
 // gtk.ListItem.SetActivatable() for details on how to use this signal.
 func (self *ColumnView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return self.Connect("activate", f)
+	return self.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewColumnView creates a new GtkColumnView.

@@ -389,7 +389,7 @@ func BaseCellRenderer(obj CellRendererer) *CellRenderer {
 //
 // See also: gtk_cell_renderer_stop_editing().
 func (cell *CellRenderer) ConnectEditingCanceled(f func()) externglib.SignalHandle {
-	return cell.Connect("editing-canceled", f)
+	return cell.Connect("editing-canceled", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEditingStarted: this signal gets emitted when a cell starts to be
@@ -420,7 +420,7 @@ func (cell *CellRenderer) ConnectEditingCanceled(f func()) externglib.SignalHand
 //        }
 //    }.
 func (cell *CellRenderer) ConnectEditingStarted(f func(editable CellEditabler, path string)) externglib.SignalHandle {
-	return cell.Connect("editing-started", f)
+	return cell.Connect("editing-started", externglib.GeneratedClosure{Func: f})
 }
 
 // Activate passes an activate event to the cell renderer for possible

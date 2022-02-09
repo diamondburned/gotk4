@@ -135,7 +135,7 @@ func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkele
 // set, no dedicated thread is ever used and the call will be handled in the
 // same thread as the object that interface belongs to was exported in.
 func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocation DBusMethodInvocation) bool) externglib.SignalHandle {
-	return interface_.Connect("g-authorize-method", f)
+	return interface_.Connect("g-authorize-method", externglib.GeneratedClosure{Func: f})
 }
 
 // Export exports interface_ at object_path on connection.

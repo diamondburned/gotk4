@@ -72,13 +72,13 @@ func marshalAdjustmenter(p uintptr) (interface{}, error) {
 // ConnectChanged: emitted when one or more of the Adjustment properties have
 // been changed, other than the Adjustment:value property.
 func (adjustment *Adjustment) ConnectChanged(f func()) externglib.SignalHandle {
-	return adjustment.Connect("changed", f)
+	return adjustment.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectValueChanged: emitted when the Adjustment:value property has been
 // changed.
 func (adjustment *Adjustment) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return adjustment.Connect("value-changed", f)
+	return adjustment.Connect("value-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewAdjustment creates a new Adjustment.

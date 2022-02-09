@@ -125,7 +125,7 @@ func BaseMemoryMonitor(obj MemoryMonitorrer) *MemoryMonitor {
 // memory. The signal handler should then take the appropriate action depending
 // on the warning level. See the MonitorWarningLevel documentation for details.
 func (monitor *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitorWarningLevel)) externglib.SignalHandle {
-	return monitor.Connect("low-memory-warning", f)
+	return monitor.Connect("low-memory-warning", externglib.GeneratedClosure{Func: f})
 }
 
 // MemoryMonitorDupDefault gets a reference to the default Monitor for the

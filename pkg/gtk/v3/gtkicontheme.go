@@ -1176,7 +1176,7 @@ func marshalIconThemer(p uintptr) (interface{}, error) {
 // ConnectChanged: emitted when the current icon theme is switched or GTK+
 // detects that a change has occurred in the contents of the current icon theme.
 func (iconTheme *IconTheme) ConnectChanged(f func()) externglib.SignalHandle {
-	return iconTheme.Connect("changed", f)
+	return iconTheme.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewIconTheme creates a new icon theme object. Icon theme objects are used to

@@ -102,12 +102,12 @@ func marshalDBusObjector(p uintptr) (interface{}, error) {
 
 // ConnectInterfaceAdded: emitted when interface is added to object.
 func (object *DBusObject) ConnectInterfaceAdded(f func(iface DBusInterfacer)) externglib.SignalHandle {
-	return object.Connect("interface-added", f)
+	return object.Connect("interface-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInterfaceRemoved: emitted when interface is removed from object.
 func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) externglib.SignalHandle {
-	return object.Connect("interface-removed", f)
+	return object.Connect("interface-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // Interface gets the D-Bus interface with name interface_name associated with

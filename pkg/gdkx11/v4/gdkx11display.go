@@ -83,7 +83,7 @@ func marshalX11Displayer(p uintptr) (interface{}, error) {
 // has been already called on the event, and XFreeEventData() will be called
 // afterwards.
 func (display *X11Display) ConnectXevent(f func(xevent cgo.Handle) bool) externglib.SignalHandle {
-	return display.Connect("xevent", f)
+	return display.Connect("xevent", externglib.GeneratedClosure{Func: f})
 }
 
 // ErrorTrapPop pops the error trap pushed by gdk_x11_display_error_trap_push().

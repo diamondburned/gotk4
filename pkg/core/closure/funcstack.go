@@ -18,13 +18,12 @@ type FuncStack struct {
 	Frames [FrameSize]uintptr
 }
 
-// NewFuncStack creates a new FuncStack. It panics if fn is not a function. The
-// given frameSkip is added 2, meaning the first frame from 0 will start from
-// the caller of NewFuncStack.
+// NewFuncStack creates a new FuncStack. The given frameSkip is added 2, meaning
+// the first frame from 0 will start from the caller of NewFuncStack.
 func NewFuncStack(fn interface{}, frameSkip int) *FuncStack {
-	if reflect.TypeOf(fn).Kind() != reflect.Func {
-		panic("closure value is not a func")
-	}
+	// if reflect.TypeOf(fn).Kind() != reflect.Func {
+	// 	panic("closure value is not a func")
+	// }
 
 	return newFuncStack(fn, frameSkip)
 }

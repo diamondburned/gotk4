@@ -103,7 +103,7 @@ func marshalAccelMapper(p uintptr) (interface{}, error) {
 // is also used as the detail for the signal, so it is possible to connect to
 // changed::accel_path.
 func (v *AccelMap) ConnectChanged(f func(accelPath string, accelKey uint, accelMods gdk.ModifierType)) externglib.SignalHandle {
-	return v.Connect("changed", f)
+	return v.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // AccelMapAddEntry registers a new accelerator with the global accelerator map.

@@ -259,7 +259,7 @@ func marshalTextViewer(p uintptr) (interface{}, error) {
 // The default bindings for this signal are <kbd>Backspace</kbd> and
 // <kbd>Shift</kbd>-<kbd>Backspace</kbd>.
 func (textView *TextView) ConnectBackspace(f func()) externglib.SignalHandle {
-	return textView.Connect("backspace", f)
+	return textView.Connect("backspace", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCopyClipboard gets emitted to copy the selection to the clipboard.
@@ -269,7 +269,7 @@ func (textView *TextView) ConnectBackspace(f func()) externglib.SignalHandle {
 // The default bindings for this signal are <kbd>Ctrl</kbd>-<kbd>c</kbd> and
 // <kbd>Ctrl</kbd>-<kbd>Insert</kbd>.
 func (textView *TextView) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return textView.Connect("copy-clipboard", f)
+	return textView.Connect("copy-clipboard", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCutClipboard gets emitted to cut the selection to the clipboard.
@@ -279,7 +279,7 @@ func (textView *TextView) ConnectCopyClipboard(f func()) externglib.SignalHandle
 // The default bindings for this signal are <kbd>Ctrl</kbd>-<kbd>x</kbd> and
 // <kbd>Shift</kbd>-<kbd>Delete</kbd>.
 func (textView *TextView) ConnectCutClipboard(f func()) externglib.SignalHandle {
-	return textView.Connect("cut-clipboard", f)
+	return textView.Connect("cut-clipboard", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeleteFromCursor gets emitted when the user initiates a text deletion.
@@ -294,13 +294,13 @@ func (textView *TextView) ConnectCutClipboard(f func()) externglib.SignalHandle 
 // character, <kbd>Ctrl</kbd>-<kbd>Delete</kbd> for deleting a word and
 // <kbd>Ctrl</kbd>-<kbd>Backspace</kbd> for deleting a word backwards.
 func (textView *TextView) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) externglib.SignalHandle {
-	return textView.Connect("delete-from-cursor", f)
+	return textView.Connect("delete-from-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectExtendSelection: emitted when the selection needs to be extended at
 // location.
 func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end *TextIter) bool) externglib.SignalHandle {
-	return textView.Connect("extend-selection", f)
+	return textView.Connect("extend-selection", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsertAtCursor gets emitted when the user initiates the insertion of a
@@ -311,7 +311,7 @@ func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSe
 //
 // This signal has no default bindings.
 func (textView *TextView) ConnectInsertAtCursor(f func(str string)) externglib.SignalHandle {
-	return textView.Connect("insert-at-cursor", f)
+	return textView.Connect("insert-at-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsertEmoji gets emitted to present the Emoji chooser for the
@@ -322,7 +322,7 @@ func (textView *TextView) ConnectInsertAtCursor(f func(str string)) externglib.S
 // The default bindings for this signal are <kbd>Ctrl</kbd>-<kbd>.</kbd> and
 // <kbd>Ctrl</kbd>-<kbd>;</kbd>.
 func (textView *TextView) ConnectInsertEmoji(f func()) externglib.SignalHandle {
-	return textView.Connect("insert-emoji", f)
+	return textView.Connect("insert-emoji", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveCursor gets emitted when the user initiates a cursor movement.
@@ -348,7 +348,7 @@ func (textView *TextView) ConnectInsertEmoji(f func()) externglib.SignalHandle {
 // - <kbd>Ctrl</kbd>-<kbd>PgUp</kbd>, <kbd>Ctrl</kbd>-<kbd>PgDn</kbd> move
 // horizontally by pages.
 func (textView *TextView) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return textView.Connect("move-cursor", f)
+	return textView.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveViewport gets emitted to move the viewport.
@@ -360,7 +360,7 @@ func (textView *TextView) ConnectMoveCursor(f func(step MovementStep, count int,
 //
 // There are no default bindings for this signal.
 func (textView *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)) externglib.SignalHandle {
-	return textView.Connect("move-viewport", f)
+	return textView.Connect("move-viewport", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPasteClipboard gets emitted to paste the contents of the clipboard
@@ -372,7 +372,7 @@ func (textView *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)
 // The default bindings for this signal are <kbd>Ctrl</kbd>-<kbd>v</kbd> and
 // <kbd>Shift</kbd>-<kbd>Insert</kbd>.
 func (textView *TextView) ConnectPasteClipboard(f func()) externglib.SignalHandle {
-	return textView.Connect("paste-clipboard", f)
+	return textView.Connect("paste-clipboard", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreeditChanged: emitted when preedit text of the active IM changes.
@@ -383,7 +383,7 @@ func (textView *TextView) ConnectPasteClipboard(f func()) externglib.SignalHandl
 // This signal is only emitted if the text at the given position is actually
 // editable.
 func (textView *TextView) ConnectPreeditChanged(f func(preedit string)) externglib.SignalHandle {
-	return textView.Connect("preedit-changed", f)
+	return textView.Connect("preedit-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectAll gets emitted to select or unselect the complete contents of
@@ -396,7 +396,7 @@ func (textView *TextView) ConnectPreeditChanged(f func(preedit string)) externgl
 // <kbd>Shift</kbd>-<kbd>Ctrl</kbd>-<kbd>a</kbd> and
 // <kbd>Ctrl</kbd>-<kbd>\</kbd> for unselecting.
 func (textView *TextView) ConnectSelectAll(f func(sel bool)) externglib.SignalHandle {
-	return textView.Connect("select-all", f)
+	return textView.Connect("select-all", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSetAnchor gets emitted when the user initiates settings the "anchor"
@@ -408,7 +408,7 @@ func (textView *TextView) ConnectSelectAll(f func(sel bool)) externglib.SignalHa
 //
 // This signal has no default bindings.
 func (textView *TextView) ConnectSetAnchor(f func()) externglib.SignalHandle {
-	return textView.Connect("set-anchor", f)
+	return textView.Connect("set-anchor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToggleCursorVisible gets emitted to toggle the cursor-visible
@@ -419,7 +419,7 @@ func (textView *TextView) ConnectSetAnchor(f func()) externglib.SignalHandle {
 //
 // The default binding for this signal is <kbd>F7</kbd>.
 func (textView *TextView) ConnectToggleCursorVisible(f func()) externglib.SignalHandle {
-	return textView.Connect("toggle-cursor-visible", f)
+	return textView.Connect("toggle-cursor-visible", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToggleOverwrite gets emitted to toggle the overwrite mode of the text
@@ -430,7 +430,7 @@ func (textView *TextView) ConnectToggleCursorVisible(f func()) externglib.Signal
 //
 // The default binding for this signal is <kbd>Insert</kbd>.
 func (textView *TextView) ConnectToggleOverwrite(f func()) externglib.SignalHandle {
-	return textView.Connect("toggle-overwrite", f)
+	return textView.Connect("toggle-overwrite", externglib.GeneratedClosure{Func: f})
 }
 
 // NewTextView creates a new GtkTextView.

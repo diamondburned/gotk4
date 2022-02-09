@@ -434,16 +434,16 @@ func marshalTreeViewer(p uintptr) (interface{}, error) {
 
 // ConnectColumnsChanged: number of columns of the treeview has changed.
 func (treeView *TreeView) ConnectColumnsChanged(f func()) externglib.SignalHandle {
-	return treeView.Connect("columns-changed", f)
+	return treeView.Connect("columns-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCursorChanged: position of the cursor (focused cell) has changed.
 func (treeView *TreeView) ConnectCursorChanged(f func()) externglib.SignalHandle {
-	return treeView.Connect("cursor-changed", f)
+	return treeView.Connect("cursor-changed", externglib.GeneratedClosure{Func: f})
 }
 
 func (treeView *TreeView) ConnectExpandCollapseCursorRow(f func(object, p0, p1 bool) bool) externglib.SignalHandle {
-	return treeView.Connect("expand-collapse-cursor-row", f)
+	return treeView.Connect("expand-collapse-cursor-row", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkSignalAction] which gets
@@ -455,7 +455,7 @@ func (treeView *TreeView) ConnectExpandCollapseCursorRow(f func(object, p0, p1 b
 // gtk_tree_view_set_cursor_on_cell() when moving horizontally
 // TreeView::move-cursor does not reset the current selection.
 func (treeView *TreeView) ConnectMoveCursor(f func(step MovementStep, direction int, extend, modify bool) bool) externglib.SignalHandle {
-	return treeView.Connect("move-cursor", f)
+	return treeView.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRowActivated: "row-activated" signal is emitted when the method
@@ -468,55 +468,55 @@ func (treeView *TreeView) ConnectMoveCursor(f func(step MovementStep, direction 
 // For selection handling refer to the [tree widget conceptual
 // overview][TreeWidget] as well as TreeSelection.
 func (treeView *TreeView) ConnectRowActivated(f func(path *TreePath, column TreeViewColumn)) externglib.SignalHandle {
-	return treeView.Connect("row-activated", f)
+	return treeView.Connect("row-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRowCollapsed: given row has been collapsed (child nodes are hidden).
 func (treeView *TreeView) ConnectRowCollapsed(f func(iter *TreeIter, path *TreePath)) externglib.SignalHandle {
-	return treeView.Connect("row-collapsed", f)
+	return treeView.Connect("row-collapsed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRowExpanded: given row has been expanded (child nodes are shown).
 func (treeView *TreeView) ConnectRowExpanded(f func(iter *TreeIter, path *TreePath)) externglib.SignalHandle {
-	return treeView.Connect("row-expanded", f)
+	return treeView.Connect("row-expanded", externglib.GeneratedClosure{Func: f})
 }
 
 func (treeView *TreeView) ConnectSelectAll(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("select-all", f)
+	return treeView.Connect("select-all", externglib.GeneratedClosure{Func: f})
 }
 
 func (treeView *TreeView) ConnectSelectCursorParent(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("select-cursor-parent", f)
+	return treeView.Connect("select-cursor-parent", externglib.GeneratedClosure{Func: f})
 }
 
 func (treeView *TreeView) ConnectSelectCursorRow(f func(object bool) bool) externglib.SignalHandle {
-	return treeView.Connect("select-cursor-row", f)
+	return treeView.Connect("select-cursor-row", externglib.GeneratedClosure{Func: f})
 }
 
 func (treeView *TreeView) ConnectStartInteractiveSearch(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("start-interactive-search", f)
+	return treeView.Connect("start-interactive-search", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTestCollapseRow: given row is about to be collapsed (hide its children
 // nodes). Use this signal if you need to control the collapsibility of
 // individual rows.
 func (treeView *TreeView) ConnectTestCollapseRow(f func(iter *TreeIter, path *TreePath) bool) externglib.SignalHandle {
-	return treeView.Connect("test-collapse-row", f)
+	return treeView.Connect("test-collapse-row", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTestExpandRow: given row is about to be expanded (show its children
 // nodes). Use this signal if you need to control the expandability of
 // individual rows.
 func (treeView *TreeView) ConnectTestExpandRow(f func(iter *TreeIter, path *TreePath) bool) externglib.SignalHandle {
-	return treeView.Connect("test-expand-row", f)
+	return treeView.Connect("test-expand-row", externglib.GeneratedClosure{Func: f})
 }
 
 func (treeView *TreeView) ConnectToggleCursorRow(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("toggle-cursor-row", f)
+	return treeView.Connect("toggle-cursor-row", externglib.GeneratedClosure{Func: f})
 }
 
 func (treeView *TreeView) ConnectUnselectAll(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("unselect-all", f)
+	return treeView.Connect("unselect-all", externglib.GeneratedClosure{Func: f})
 }
 
 // NewTreeView creates a new TreeView widget.

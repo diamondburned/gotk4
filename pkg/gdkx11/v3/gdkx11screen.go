@@ -63,7 +63,7 @@ func marshalX11Screener(p uintptr) (interface{}, error) {
 }
 
 func (screen *X11Screen) ConnectWindowManagerChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("window-manager-changed", f)
+	return screen.Connect("window-manager-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // CurrentDesktop returns the current workspace for screen when running under a

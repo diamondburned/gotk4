@@ -63,7 +63,7 @@ func marshalGesturePanner(p uintptr) (interface{}, error) {
 // ConnectPan: emitted once a panning gesture along the expected axis is
 // detected.
 func (gesture *GesturePan) ConnectPan(f func(direction PanDirection, offset float64)) externglib.SignalHandle {
-	return gesture.Connect("pan", f)
+	return gesture.Connect("pan", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGesturePan returns a newly created GtkGesture that recognizes pan

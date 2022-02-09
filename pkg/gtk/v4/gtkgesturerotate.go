@@ -50,7 +50,7 @@ func marshalGestureRotater(p uintptr) (interface{}, error) {
 // ConnectAngleChanged: emitted when the angle between both tracked points
 // changes.
 func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) externglib.SignalHandle {
-	return gesture.Connect("angle-changed", f)
+	return gesture.Connect("angle-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureRotate returns a newly created GtkGesture that recognizes 2-touch

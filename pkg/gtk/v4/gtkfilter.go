@@ -177,7 +177,7 @@ func marshalFilterer(p uintptr) (interface{}, error) {
 // Depending on the change parameter, not all items need to be checked, but only
 // some. Refer to the gtk.FilterChange documentation for details.
 func (self *Filter) ConnectChanged(f func(change FilterChange)) externglib.SignalHandle {
-	return self.Connect("changed", f)
+	return self.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // Changed emits the Filter::changed signal to notify all users of the filter

@@ -150,7 +150,7 @@ func marshalToggleButtonner(p uintptr) (interface{}, error) {
 // ConnectToggled: should be connected if you wish to perform an action whenever
 // the ToggleButton's state is changed.
 func (toggleButton *ToggleButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return toggleButton.Connect("toggled", f)
+	return toggleButton.Connect("toggled", externglib.GeneratedClosure{Func: f})
 }
 
 // NewToggleButton creates a new toggle button. A widget should be packed into

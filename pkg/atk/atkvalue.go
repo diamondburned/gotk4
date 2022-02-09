@@ -415,7 +415,7 @@ func marshalValueer(p uintptr) (interface{}, error) {
 // Example: a password meter whose value changes as the user types their new
 // password. Appropiate value text would be "weak", "acceptable" and "strong".
 func (obj *Value) ConnectValueChanged(f func(value float64, text string)) externglib.SignalHandle {
-	return obj.Connect("value-changed", f)
+	return obj.Connect("value-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // CurrentValue gets the value of this object.

@@ -345,7 +345,7 @@ func marshalDialogger(p uintptr) (interface{}, error) {
 //
 // The default binding for this signal is the Escape key.
 func (dialog *Dialog) ConnectClose(f func()) externglib.SignalHandle {
-	return dialog.Connect("close", f)
+	return dialog.Connect("close", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectResponse: emitted when an action widget is clicked.
@@ -355,7 +355,7 @@ func (dialog *Dialog) ConnectClose(f func()) externglib.SignalHandle {
 // GTK_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was
 // clicked.
 func (dialog *Dialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return dialog.Connect("response", f)
+	return dialog.Connect("response", externglib.GeneratedClosure{Func: f})
 }
 
 // NewDialog creates a new dialog box.

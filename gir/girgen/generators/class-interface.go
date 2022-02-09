@@ -102,7 +102,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ $name := printf "Connect%s" (KebabToGo true .Name) }}
 	{{ GoDoc . 0 (OverrideSelfName $name) }}
 	func ({{ $.Recv }} *{{ $.StructName }}) {{ $name }}(f func{{ .Tail }}) externglib.SignalHandle {
-		return {{ $.Recv }}.Connect({{ Quote .Name }}, f)
+		return {{ $.Recv }}.Connect({{ Quote .Name }}, externglib.GeneratedClosure{Func: f})
 	}
 	{{ end }}
 	{{ end }}

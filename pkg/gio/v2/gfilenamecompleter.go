@@ -53,7 +53,7 @@ func marshalFilenameCompleterer(p uintptr) (interface{}, error) {
 // ConnectGotCompletionData: emitted when the file name completion information
 // comes available.
 func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) externglib.SignalHandle {
-	return completer.Connect("got-completion-data", f)
+	return completer.Connect("got-completion-data", externglib.GeneratedClosure{Func: f})
 }
 
 // NewFilenameCompleter creates a new filename completer.

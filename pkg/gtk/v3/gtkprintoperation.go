@@ -465,7 +465,7 @@ func marshalPrintOperationer(p uintptr) (interface{}, error) {
 // PrintContext and paginate the document accordingly, and then set the number
 // of pages with gtk_print_operation_set_n_pages().
 func (op *PrintOperation) ConnectBeginPrint(f func(context PrintContext)) externglib.SignalHandle {
-	return op.Connect("begin-print", f)
+	return op.Connect("begin-print", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCreateCustomWidget: emitted when displaying the print dialog. If you
@@ -478,7 +478,7 @@ func (op *PrintOperation) ConnectBeginPrint(f func(context PrintContext)) extern
 // the PrintOperation::custom-widget-apply signal is emitted on the operation.
 // Then you can read out any information you need from the widgets.
 func (op *PrintOperation) ConnectCreateCustomWidget(f func() *externglib.Object) externglib.SignalHandle {
-	return op.Connect("create-custom-widget", f)
+	return op.Connect("create-custom-widget", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCustomWidgetApply: emitted right before PrintOperation::begin-print if
@@ -487,7 +487,7 @@ func (op *PrintOperation) ConnectCreateCustomWidget(f func() *externglib.Object)
 // custom widgets, as the widgets are not guaraneed to be around at a later
 // time.
 func (op *PrintOperation) ConnectCustomWidgetApply(f func(widget Widgetter)) externglib.SignalHandle {
-	return op.Connect("custom-widget-apply", f)
+	return op.Connect("custom-widget-apply", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDone: emitted when the print operation run has finished doing
@@ -500,7 +500,7 @@ func (op *PrintOperation) ConnectCustomWidgetApply(f func(widget Widgetter)) ext
 // If you enabled print status tracking then gtk_print_operation_is_finished()
 // may still return FALSE after PrintOperation::done was emitted.
 func (op *PrintOperation) ConnectDone(f func(result PrintOperationResult)) externglib.SignalHandle {
-	return op.Connect("done", f)
+	return op.Connect("done", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDrawPage: emitted for every page that is printed. The signal handler
@@ -550,14 +550,14 @@ func (op *PrintOperation) ConnectDone(f func(result PrintOperationResult)) exter
 // gtk_print_operation_set_unit() before starting the print operation to set up
 // the transformation of the cairo context according to your needs.
 func (op *PrintOperation) ConnectDrawPage(f func(context PrintContext, pageNr int)) externglib.SignalHandle {
-	return op.Connect("draw-page", f)
+	return op.Connect("draw-page", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEndPrint: emitted after all pages have been rendered. A handler for
 // this signal can clean up any resources that have been allocated in the
 // PrintOperation::begin-print handler.
 func (op *PrintOperation) ConnectEndPrint(f func(context PrintContext)) externglib.SignalHandle {
-	return op.Connect("end-print", f)
+	return op.Connect("end-print", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPaginate: emitted after the PrintOperation::begin-print signal, but
@@ -573,7 +573,7 @@ func (op *PrintOperation) ConnectEndPrint(f func(context PrintContext)) externgl
 // If you don't need to do pagination in chunks, you can simply do it all in the
 // ::begin-print handler, and set the number of pages from there.
 func (op *PrintOperation) ConnectPaginate(f func(context PrintContext) bool) externglib.SignalHandle {
-	return op.Connect("paginate", f)
+	return op.Connect("paginate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreview gets emitted when a preview is requested from the native
@@ -594,28 +594,28 @@ func (op *PrintOperation) ConnectPaginate(f func(context PrintContext) bool) ext
 // gtk_print_operation_preview_end_preview() (typically in response to the user
 // clicking a close button).
 func (op *PrintOperation) ConnectPreview(f func(preview PrintOperationPreviewer, context PrintContext, parent Window) bool) externglib.SignalHandle {
-	return op.Connect("preview", f)
+	return op.Connect("preview", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRequestPageSetup: emitted once for every page that is printed, to give
 // the application a chance to modify the page setup. Any changes done to setup
 // will be in force only for printing this page.
 func (op *PrintOperation) ConnectRequestPageSetup(f func(context PrintContext, pageNr int, setup PageSetup)) externglib.SignalHandle {
-	return op.Connect("request-page-setup", f)
+	return op.Connect("request-page-setup", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStatusChanged: emitted at between the various phases of the print
 // operation. See PrintStatus for the phases that are being discriminated. Use
 // gtk_print_operation_get_status() to find out the current status.
 func (op *PrintOperation) ConnectStatusChanged(f func()) externglib.SignalHandle {
-	return op.Connect("status-changed", f)
+	return op.Connect("status-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUpdateCustomWidget: emitted after change of selected printer. The
 // actual page setup and print settings are passed to the custom widget, which
 // can actualize itself according to this change.
 func (op *PrintOperation) ConnectUpdateCustomWidget(f func(widget Widgetter, setup PageSetup, settings PrintSettings)) externglib.SignalHandle {
-	return op.Connect("update-custom-widget", f)
+	return op.Connect("update-custom-widget", externglib.GeneratedClosure{Func: f})
 }
 
 // NewPrintOperation creates a new PrintOperation.

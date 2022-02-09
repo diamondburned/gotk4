@@ -129,7 +129,7 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 // ConnectClosed: this signal is emitted when the popover is dismissed either
 // through API or user interaction.
 func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
-	return popover.Connect("closed", f)
+	return popover.Connect("closed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewPopover creates a new popover to point to relative_to.

@@ -87,12 +87,12 @@ func marshalTextTagTabler(p uintptr) (interface{}, error) {
 // ConnectTagAdded: emitted every time a new tag is added in the
 // GtkTextTagTable.
 func (table *TextTagTable) ConnectTagAdded(f func(tag TextTag)) externglib.SignalHandle {
-	return table.Connect("tag-added", f)
+	return table.Connect("tag-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTagChanged: emitted every time a tag in the GtkTextTagTable changes.
 func (table *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged bool)) externglib.SignalHandle {
-	return table.Connect("tag-changed", f)
+	return table.Connect("tag-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTagRemoved: emitted every time a tag is removed from the
@@ -101,7 +101,7 @@ func (table *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged boo
 // The tag is still valid by the time the signal is emitted, but it is not
 // associated with a tag table any more.
 func (table *TextTagTable) ConnectTagRemoved(f func(tag TextTag)) externglib.SignalHandle {
-	return table.Connect("tag-removed", f)
+	return table.Connect("tag-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewTextTagTable creates a new GtkTextTagTable.

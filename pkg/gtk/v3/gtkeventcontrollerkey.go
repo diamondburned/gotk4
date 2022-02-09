@@ -49,29 +49,29 @@ func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
 }
 
 func (controller *EventControllerKey) ConnectFocusIn(f func()) externglib.SignalHandle {
-	return controller.Connect("focus-in", f)
+	return controller.Connect("focus-in", externglib.GeneratedClosure{Func: f})
 }
 
 func (controller *EventControllerKey) ConnectFocusOut(f func()) externglib.SignalHandle {
-	return controller.Connect("focus-out", f)
+	return controller.Connect("focus-out", externglib.GeneratedClosure{Func: f})
 }
 
 func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
-	return controller.Connect("im-update", f)
+	return controller.Connect("im-update", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeyPressed: this signal is emitted whenever a key is pressed.
 func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("key-pressed", f)
+	return controller.Connect("key-pressed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeyReleased: this signal is emitted whenever a key is released.
 func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
-	return controller.Connect("key-released", f)
+	return controller.Connect("key-released", externglib.GeneratedClosure{Func: f})
 }
 
 func (controller *EventControllerKey) ConnectModifiers(f func(object gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("modifiers", f)
+	return controller.Connect("modifiers", externglib.GeneratedClosure{Func: f})
 }
 
 // The function takes the following parameters:

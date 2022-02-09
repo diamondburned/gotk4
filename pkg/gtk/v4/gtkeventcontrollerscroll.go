@@ -150,27 +150,27 @@ func marshalEventControllerScroller(p uintptr) (interface{}, error) {
 // vel_x and vel_y express the initial velocity that was imprinted by the scroll
 // events. vel_x and vel_y are expressed in pixels/ms.
 func (scroll *EventControllerScroll) ConnectDecelerate(f func(velX, velY float64)) externglib.SignalHandle {
-	return scroll.Connect("decelerate", f)
+	return scroll.Connect("decelerate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectScroll signals that the widget should scroll by the amount specified
 // by dx and dy.
 func (scroll *EventControllerScroll) ConnectScroll(f func(dx, dy float64) bool) externglib.SignalHandle {
-	return scroll.Connect("scroll", f)
+	return scroll.Connect("scroll", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectScrollBegin signals that a new scrolling operation has begun.
 //
 // It will only be emitted on devices capable of it.
 func (scroll *EventControllerScroll) ConnectScrollBegin(f func()) externglib.SignalHandle {
-	return scroll.Connect("scroll-begin", f)
+	return scroll.Connect("scroll-begin", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectScrollEnd signals that a scrolling operation has finished.
 //
 // It will only be emitted on devices capable of it.
 func (scroll *EventControllerScroll) ConnectScrollEnd(f func()) externglib.SignalHandle {
-	return scroll.Connect("scroll-end", f)
+	return scroll.Connect("scroll-end", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEventControllerScroll creates a new event controller that will handle

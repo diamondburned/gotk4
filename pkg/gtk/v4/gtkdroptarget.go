@@ -128,7 +128,7 @@ func marshalDropTargetter(p uintptr) (interface{}, error) {
 // should be set and the value should be inspected via the ::notify:value
 // signal, calling gtk.DropTarget.Reject() if required.
 func (self *DropTarget) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.SignalHandle {
-	return self.Connect("accept", f)
+	return self.Connect("accept", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDrop: emitted on the drop site when the user drops the data onto the
@@ -142,26 +142,26 @@ func (self *DropTarget) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.
 // the drop. The handler is responsible for rading the given value and
 // performing the drop operation.
 func (self *DropTarget) ConnectDrop(f func(value externglib.Value, x, y float64) bool) externglib.SignalHandle {
-	return self.Connect("drop", f)
+	return self.Connect("drop", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEnter: emitted on the drop site when the pointer enters the widget.
 //
 // It can be used to set up custom highlighting.
 func (self *DropTarget) ConnectEnter(f func(x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("enter", f)
+	return self.Connect("enter", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLeave: emitted on the drop site when the pointer leaves the widget.
 //
 // Its main purpose it to undo things done in gtk.DropTarget::enter.
 func (self *DropTarget) ConnectLeave(f func()) externglib.SignalHandle {
-	return self.Connect("leave", f)
+	return self.Connect("leave", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMotion: emitted while the pointer is moving over the drop target.
 func (self *DropTarget) ConnectMotion(f func(x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("motion", f)
+	return self.Connect("motion", externglib.GeneratedClosure{Func: f})
 }
 
 // NewDropTarget creates a new GtkDropTarget object.

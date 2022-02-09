@@ -174,7 +174,7 @@ func marshalNotebooker(p uintptr) (interface{}, error) {
 }
 
 func (notebook *Notebook) ConnectChangeCurrentPage(f func(object int) bool) externglib.SignalHandle {
-	return notebook.Connect("change-current-page", f)
+	return notebook.Connect("change-current-page", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCreateWindow signal is emitted when a detachable tab is dropped on the
@@ -185,47 +185,47 @@ func (notebook *Notebook) ConnectChangeCurrentPage(f func(object int) bool) exte
 // and adding the necessary properties to the notebook (e.g. the
 // GtkNotebook:group-name ).
 func (notebook *Notebook) ConnectCreateWindow(f func(page Widgetter) Notebook) externglib.SignalHandle {
-	return notebook.Connect("create-window", f)
+	return notebook.Connect("create-window", externglib.GeneratedClosure{Func: f})
 }
 
 func (notebook *Notebook) ConnectFocusTab(f func(object NotebookTab) bool) externglib.SignalHandle {
-	return notebook.Connect("focus-tab", f)
+	return notebook.Connect("focus-tab", externglib.GeneratedClosure{Func: f})
 }
 
 func (notebook *Notebook) ConnectMoveFocusOut(f func(object DirectionType)) externglib.SignalHandle {
-	return notebook.Connect("move-focus-out", f)
+	return notebook.Connect("move-focus-out", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPageAdded signal is emitted in the notebook right after a page is
 // added to the notebook.
 func (notebook *Notebook) ConnectPageAdded(f func(child Widgetter, pageNum uint)) externglib.SignalHandle {
-	return notebook.Connect("page-added", f)
+	return notebook.Connect("page-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPageRemoved signal is emitted in the notebook right after a page is
 // removed from the notebook.
 func (notebook *Notebook) ConnectPageRemoved(f func(child Widgetter, pageNum uint)) externglib.SignalHandle {
-	return notebook.Connect("page-removed", f)
+	return notebook.Connect("page-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPageReordered signal is emitted in the notebook right after a page has
 // been reordered.
 func (notebook *Notebook) ConnectPageReordered(f func(child Widgetter, pageNum uint)) externglib.SignalHandle {
-	return notebook.Connect("page-reordered", f)
+	return notebook.Connect("page-reordered", externglib.GeneratedClosure{Func: f})
 }
 
 func (notebook *Notebook) ConnectReorderTab(f func(object DirectionType, p0 bool) bool) externglib.SignalHandle {
-	return notebook.Connect("reorder-tab", f)
+	return notebook.Connect("reorder-tab", externglib.GeneratedClosure{Func: f})
 }
 
 func (notebook *Notebook) ConnectSelectPage(f func(object bool) bool) externglib.SignalHandle {
-	return notebook.Connect("select-page", f)
+	return notebook.Connect("select-page", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSwitchPage: emitted when the user or a function changes the current
 // page.
 func (notebook *Notebook) ConnectSwitchPage(f func(page Widgetter, pageNum uint)) externglib.SignalHandle {
-	return notebook.Connect("switch-page", f)
+	return notebook.Connect("switch-page", externglib.GeneratedClosure{Func: f})
 }
 
 // NewNotebook creates a new GtkNotebook widget with no pages.

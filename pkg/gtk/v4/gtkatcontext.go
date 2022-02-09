@@ -69,7 +69,7 @@ func BaseATContext(obj ATContexter) *ATContext {
 // ConnectStateChange: emitted when the attributes of the accessible for the
 // GtkATContext instance change.
 func (self *ATContext) ConnectStateChange(f func()) externglib.SignalHandle {
-	return self.Connect("state-change", f)
+	return self.Connect("state-change", externglib.GeneratedClosure{Func: f})
 }
 
 // NewATContextCreate creates a new GtkATContext instance for the given

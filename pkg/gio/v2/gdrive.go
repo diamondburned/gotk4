@@ -407,26 +407,26 @@ func marshalDriver(p uintptr) (interface{}, error) {
 
 // ConnectChanged: emitted when the drive's state has changed.
 func (drive *Drive) ConnectChanged(f func()) externglib.SignalHandle {
-	return drive.Connect("changed", f)
+	return drive.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDisconnected: this signal is emitted when the #GDrive have been
 // disconnected. If the recipient is holding references to the object they
 // should release them so the object can be finalized.
 func (drive *Drive) ConnectDisconnected(f func()) externglib.SignalHandle {
-	return drive.Connect("disconnected", f)
+	return drive.Connect("disconnected", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEjectButton: emitted when the physical eject button (if any) of a
 // drive has been pressed.
 func (drive *Drive) ConnectEjectButton(f func()) externglib.SignalHandle {
-	return drive.Connect("eject-button", f)
+	return drive.Connect("eject-button", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStopButton: emitted when the physical stop button (if any) of a drive
 // has been pressed.
 func (drive *Drive) ConnectStopButton(f func()) externglib.SignalHandle {
-	return drive.Connect("stop-button", f)
+	return drive.Connect("stop-button", externglib.GeneratedClosure{Func: f})
 }
 
 // CanEject checks if a drive can be ejected.

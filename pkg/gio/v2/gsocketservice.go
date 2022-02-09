@@ -85,7 +85,7 @@ func marshalSocketServicer(p uintptr) (interface{}, error) {
 // connection will be unreffed once the signal handler returns, so you need to
 // ref it yourself if you are planning to use it.
 func (service *SocketService) ConnectIncoming(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
-	return service.Connect("incoming", f)
+	return service.Connect("incoming", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSocketService creates a new Service with no sockets to listen for. New

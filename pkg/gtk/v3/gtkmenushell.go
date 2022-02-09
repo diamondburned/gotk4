@@ -148,24 +148,24 @@ func BaseMenuShell(obj MenuSheller) *MenuShell {
 // ConnectActivateCurrent: action signal that activates the current menu item
 // within the menu shell.
 func (menuShell *MenuShell) ConnectActivateCurrent(f func(forceHide bool)) externglib.SignalHandle {
-	return menuShell.Connect("activate-current", f)
+	return menuShell.Connect("activate-current", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCancel: action signal which cancels the selection within the menu
 // shell. Causes the MenuShell::selection-done signal to be emitted.
 func (menuShell *MenuShell) ConnectCancel(f func()) externglib.SignalHandle {
-	return menuShell.Connect("cancel", f)
+	return menuShell.Connect("cancel", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCycleFocus: keybinding signal which moves the focus in the given
 // direction.
 func (menuShell *MenuShell) ConnectCycleFocus(f func(direction DirectionType)) externglib.SignalHandle {
-	return menuShell.Connect("cycle-focus", f)
+	return menuShell.Connect("cycle-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeactivate: this signal is emitted when a menu shell is deactivated.
 func (menuShell *MenuShell) ConnectDeactivate(f func()) externglib.SignalHandle {
-	return menuShell.Connect("deactivate", f)
+	return menuShell.Connect("deactivate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsert signal is emitted when a new MenuItem is added to a MenuShell.
@@ -174,24 +174,24 @@ func (menuShell *MenuShell) ConnectDeactivate(f func()) externglib.SignalHandle 
 //
 // The inverse of this signal is the GtkContainer::removed signal.
 func (menuShell *MenuShell) ConnectInsert(f func(child Widgetter, position int)) externglib.SignalHandle {
-	return menuShell.Connect("insert", f)
+	return menuShell.Connect("insert", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveCurrent: keybinding signal which moves the current menu item in
 // the direction specified by direction.
 func (menuShell *MenuShell) ConnectMoveCurrent(f func(direction MenuDirectionType)) externglib.SignalHandle {
-	return menuShell.Connect("move-current", f)
+	return menuShell.Connect("move-current", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveSelected signal is emitted to move the selection to another item.
 func (menuShell *MenuShell) ConnectMoveSelected(f func(distance int) bool) externglib.SignalHandle {
-	return menuShell.Connect("move-selected", f)
+	return menuShell.Connect("move-selected", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectionDone: this signal is emitted when a selection has been
 // completed within a menu shell.
 func (menuShell *MenuShell) ConnectSelectionDone(f func()) externglib.SignalHandle {
-	return menuShell.Connect("selection-done", f)
+	return menuShell.Connect("selection-done", externglib.GeneratedClosure{Func: f})
 }
 
 // ActivateItem activates the menu item within the menu shell.

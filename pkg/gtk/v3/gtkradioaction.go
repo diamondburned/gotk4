@@ -65,7 +65,7 @@ func marshalRadioActioner(p uintptr) (interface{}, error) {
 // active member is changed. The signal gets emitted after the ::activate
 // signals for the previous and current active members.
 func (action *RadioAction) ConnectChanged(f func(current RadioAction)) externglib.SignalHandle {
-	return action.Connect("changed", f)
+	return action.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewRadioAction creates a new RadioAction object. To add the action to a

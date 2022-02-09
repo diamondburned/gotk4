@@ -51,19 +51,19 @@ func marshalGestureStylusser(p uintptr) (interface{}, error) {
 }
 
 func (gesture *GestureStylus) ConnectDown(f func(object, p0 float64)) externglib.SignalHandle {
-	return gesture.Connect("down", f)
+	return gesture.Connect("down", externglib.GeneratedClosure{Func: f})
 }
 
 func (gesture *GestureStylus) ConnectMotion(f func(object, p0 float64)) externglib.SignalHandle {
-	return gesture.Connect("motion", f)
+	return gesture.Connect("motion", externglib.GeneratedClosure{Func: f})
 }
 
 func (gesture *GestureStylus) ConnectProximity(f func(object, p0 float64)) externglib.SignalHandle {
-	return gesture.Connect("proximity", f)
+	return gesture.Connect("proximity", externglib.GeneratedClosure{Func: f})
 }
 
 func (gesture *GestureStylus) ConnectUp(f func(object, p0 float64)) externglib.SignalHandle {
-	return gesture.Connect("up", f)
+	return gesture.Connect("up", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureStylus creates a new GestureStylus.

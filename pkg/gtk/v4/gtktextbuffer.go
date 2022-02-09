@@ -177,7 +177,7 @@ func marshalTextBufferer(p uintptr) (interface{}, error) {
 // See also: gtk.TextBuffer.ApplyTag(), gtk.TextBuffer.InsertWithTags(),
 // gtk.TextBuffer.InsertRange().
 func (buffer *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end *TextIter)) externglib.SignalHandle {
-	return buffer.Connect("apply-tag", f)
+	return buffer.Connect("apply-tag", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectBeginUserAction: emitted at the beginning of a single user-visible
@@ -188,12 +188,12 @@ func (buffer *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end *TextIt
 // gtk.TextBuffer.DeleteInteractive(), gtk.TextBuffer.Backspace(),
 // gtk.TextBuffer.DeleteSelection().
 func (buffer *TextBuffer) ConnectBeginUserAction(f func()) externglib.SignalHandle {
-	return buffer.Connect("begin-user-action", f)
+	return buffer.Connect("begin-user-action", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectChanged: emitted when the content of a GtkTextBuffer has changed.
 func (buffer *TextBuffer) ConnectChanged(f func()) externglib.SignalHandle {
-	return buffer.Connect("changed", f)
+	return buffer.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeleteRange: emitted to delete a range from a GtkTextBuffer.
@@ -206,7 +206,7 @@ func (buffer *TextBuffer) ConnectChanged(f func()) externglib.SignalHandle {
 //
 // See also: gtk.TextBuffer.Delete().
 func (buffer *TextBuffer) ConnectDeleteRange(f func(start, end *TextIter)) externglib.SignalHandle {
-	return buffer.Connect("delete-range", f)
+	return buffer.Connect("delete-range", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEndUserAction: emitted at the end of a single user-visible operation
@@ -217,7 +217,7 @@ func (buffer *TextBuffer) ConnectDeleteRange(f func(start, end *TextIter)) exter
 // gtk.TextBuffer.Backspace(), gtk.TextBuffer.DeleteSelection(),
 // gtk.TextBuffer.Backspace().
 func (buffer *TextBuffer) ConnectEndUserAction(f func()) externglib.SignalHandle {
-	return buffer.Connect("end-user-action", f)
+	return buffer.Connect("end-user-action", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsertChildAnchor: emitted to insert a GtkTextChildAnchor in a
@@ -231,7 +231,7 @@ func (buffer *TextBuffer) ConnectEndUserAction(f func()) externglib.SignalHandle
 //
 // See also: gtk.TextBuffer.InsertChildAnchor().
 func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location *TextIter, anchor TextChildAnchor)) externglib.SignalHandle {
-	return buffer.Connect("insert-child-anchor", f)
+	return buffer.Connect("insert-child-anchor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsertPaintable: emitted to insert a GdkPaintable in a GtkTextBuffer.
@@ -244,7 +244,7 @@ func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location *TextIter, an
 //
 // See also: gtk.TextBuffer.InsertPaintable().
 func (buffer *TextBuffer) ConnectInsertPaintable(f func(location *TextIter, paintable gdk.Paintabler)) externglib.SignalHandle {
-	return buffer.Connect("insert-paintable", f)
+	return buffer.Connect("insert-paintable", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsertText: emitted to insert text in a GtkTextBuffer.
@@ -257,21 +257,21 @@ func (buffer *TextBuffer) ConnectInsertPaintable(f func(location *TextIter, pain
 //
 // See also: gtk,textbuffer.Insert, gtk.TextBuffer.InsertRange().
 func (buffer *TextBuffer) ConnectInsertText(f func(location *TextIter, text string, len int)) externglib.SignalHandle {
-	return buffer.Connect("insert-text", f)
+	return buffer.Connect("insert-text", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMarkDeleted: emitted as notification after a GtkTextMark is deleted.
 //
 // See also: gtk.TextBuffer.DeleteMark().
 func (buffer *TextBuffer) ConnectMarkDeleted(f func(mark TextMark)) externglib.SignalHandle {
-	return buffer.Connect("mark-deleted", f)
+	return buffer.Connect("mark-deleted", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMarkSet: emitted as notification after a GtkTextMark is set.
 //
 // See also: gtk.TextBuffer.CreateMark(), gtk.TextBuffer.MoveMark().
 func (buffer *TextBuffer) ConnectMarkSet(f func(location *TextIter, mark TextMark)) externglib.SignalHandle {
-	return buffer.Connect("mark-set", f)
+	return buffer.Connect("mark-set", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectModifiedChanged: emitted when the modified bit of a GtkTextBuffer
@@ -279,7 +279,7 @@ func (buffer *TextBuffer) ConnectMarkSet(f func(location *TextIter, mark TextMar
 //
 // See also: gtk.TextBuffer.SetModified().
 func (buffer *TextBuffer) ConnectModifiedChanged(f func()) externglib.SignalHandle {
-	return buffer.Connect("modified-changed", f)
+	return buffer.Connect("modified-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPasteDone: emitted after paste operation has been completed.
@@ -287,13 +287,13 @@ func (buffer *TextBuffer) ConnectModifiedChanged(f func()) externglib.SignalHand
 // This is useful to properly scroll the view to the end of the pasted text. See
 // gtk.TextBuffer.PasteClipboard() for more details.
 func (buffer *TextBuffer) ConnectPasteDone(f func(clipboard gdk.Clipboard)) externglib.SignalHandle {
-	return buffer.Connect("paste-done", f)
+	return buffer.Connect("paste-done", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRedo: emitted when a request has been made to redo the previously
 // undone operation.
 func (buffer *TextBuffer) ConnectRedo(f func()) externglib.SignalHandle {
-	return buffer.Connect("redo", f)
+	return buffer.Connect("redo", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRemoveTag: emitted to remove all occurrences of tag from a range of
@@ -306,13 +306,13 @@ func (buffer *TextBuffer) ConnectRedo(f func()) externglib.SignalHandle {
 //
 // See also: gtk.TextBuffer.RemoveTag().
 func (buffer *TextBuffer) ConnectRemoveTag(f func(tag TextTag, start, end *TextIter)) externglib.SignalHandle {
-	return buffer.Connect("remove-tag", f)
+	return buffer.Connect("remove-tag", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUndo: emitted when a request has been made to undo the previous
 // operation or set of operations that have been grouped together.
 func (buffer *TextBuffer) ConnectUndo(f func()) externglib.SignalHandle {
-	return buffer.Connect("undo", f)
+	return buffer.Connect("undo", externglib.GeneratedClosure{Func: f})
 }
 
 // NewTextBuffer creates a new text buffer.

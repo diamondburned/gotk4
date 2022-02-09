@@ -161,7 +161,7 @@ func marshalRecentManagerer(p uintptr) (interface{}, error) {
 // This can happen either by calling gtk.RecentManager.AddItem() or by another
 // application.
 func (manager *RecentManager) ConnectChanged(f func()) externglib.SignalHandle {
-	return manager.Connect("changed", f)
+	return manager.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewRecentManager creates a new recent manager object.

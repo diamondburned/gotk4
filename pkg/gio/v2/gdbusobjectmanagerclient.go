@@ -151,7 +151,7 @@ func marshalDBusObjectManagerClienter(p uintptr) (interface{}, error) {
 // This signal is emitted in the [thread-default main
 // context][g-main-context-push-thread-default] that manager was constructed in.
 func (manager *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
-	return manager.Connect("interface-proxy-properties-changed", f)
+	return manager.Connect("interface-proxy-properties-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInterfaceProxySignal: emitted when a D-Bus signal is received on
@@ -163,7 +163,7 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f
 // This signal is emitted in the [thread-default main
 // context][g-main-context-push-thread-default] that manager was constructed in.
 func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
-	return manager.Connect("interface-proxy-signal", f)
+	return manager.Connect("interface-proxy-signal", externglib.GeneratedClosure{Func: f})
 }
 
 // NewDBusObjectManagerClientFinish finishes an operation started with

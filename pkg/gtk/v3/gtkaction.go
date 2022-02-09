@@ -148,7 +148,7 @@ func marshalActioner(p uintptr) (interface{}, error) {
 
 // ConnectActivate: "activate" signal is emitted when the action is activated.
 func (action *Action) ConnectActivate(f func()) externglib.SignalHandle {
-	return action.Connect("activate", f)
+	return action.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewAction creates a new Action object. To add the action to a ActionGroup and

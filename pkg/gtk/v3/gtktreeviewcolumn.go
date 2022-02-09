@@ -175,7 +175,7 @@ func marshalTreeViewColumner(p uintptr) (interface{}, error) {
 }
 
 func (treeColumn *TreeViewColumn) ConnectClicked(f func()) externglib.SignalHandle {
-	return treeColumn.Connect("clicked", f)
+	return treeColumn.Connect("clicked", externglib.GeneratedClosure{Func: f})
 }
 
 // NewTreeViewColumn creates a new TreeViewColumn.

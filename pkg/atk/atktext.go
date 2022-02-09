@@ -931,13 +931,13 @@ func marshalTexter(p uintptr) (interface{}, error) {
 // when the text attributes of the text of an object which implements AtkText
 // changes.
 func (text *Text) ConnectTextAttributesChanged(f func()) externglib.SignalHandle {
-	return text.Connect("text-attributes-changed", f)
+	return text.Connect("text-attributes-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTextCaretMoved: "text-caret-moved" signal is emitted when the caret
 // position of the text of an object which implements AtkText changes.
 func (text *Text) ConnectTextCaretMoved(f func(arg1 int)) externglib.SignalHandle {
-	return text.Connect("text-caret-moved", f)
+	return text.Connect("text-caret-moved", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTextChanged: "text-changed" signal is emitted when the text of the
@@ -945,27 +945,27 @@ func (text *Text) ConnectTextCaretMoved(f func(arg1 int)) externglib.SignalHandl
 // a detail which is either "insert" or "delete" which identifies whether the
 // text change was an insertion or a deletion.
 func (text *Text) ConnectTextChanged(f func(arg1, arg2 int)) externglib.SignalHandle {
-	return text.Connect("text-changed", f)
+	return text.Connect("text-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTextInsert: "text-insert" signal is emitted when a new text is
 // inserted. If the signal was not triggered by the user (e.g. typing or pasting
 // text), the "system" detail should be included.
 func (text *Text) ConnectTextInsert(f func(arg1, arg2 int, arg3 string)) externglib.SignalHandle {
-	return text.Connect("text-insert", f)
+	return text.Connect("text-insert", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTextRemove: "text-remove" signal is emitted when a new text is
 // removed. If the signal was not triggered by the user (e.g. typing or pasting
 // text), the "system" detail should be included.
 func (text *Text) ConnectTextRemove(f func(arg1, arg2 int, arg3 string)) externglib.SignalHandle {
-	return text.Connect("text-remove", f)
+	return text.Connect("text-remove", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectTextSelectionChanged: "text-selection-changed" signal is emitted when
 // the selected text of an object which implements AtkText changes.
 func (text *Text) ConnectTextSelectionChanged(f func()) externglib.SignalHandle {
-	return text.Connect("text-selection-changed", f)
+	return text.Connect("text-selection-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // AddSelection adds a selection bounded by the specified offsets.

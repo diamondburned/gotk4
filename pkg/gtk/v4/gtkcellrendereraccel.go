@@ -83,12 +83,12 @@ func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
 
 // ConnectAccelCleared gets emitted when the user has removed the accelerator.
 func (v *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) externglib.SignalHandle {
-	return v.Connect("accel-cleared", f)
+	return v.Connect("accel-cleared", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectAccelEdited gets emitted when the user has selected a new accelerator.
 func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) externglib.SignalHandle {
-	return v.Connect("accel-edited", f)
+	return v.Connect("accel-edited", externglib.GeneratedClosure{Func: f})
 }
 
 // NewCellRendererAccel creates a new CellRendererAccel.

@@ -368,14 +368,14 @@ func marshalVolumer(p uintptr) (interface{}, error) {
 
 // ConnectChanged: emitted when the volume has been changed.
 func (volume *Volume) ConnectChanged(f func()) externglib.SignalHandle {
-	return volume.Connect("changed", f)
+	return volume.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRemoved: this signal is emitted when the #GVolume have been removed.
 // If the recipient is holding references to the object they should release them
 // so the object can be finalized.
 func (volume *Volume) ConnectRemoved(f func()) externglib.SignalHandle {
-	return volume.Connect("removed", f)
+	return volume.Connect("removed", externglib.GeneratedClosure{Func: f})
 }
 
 // CanEject checks if a volume can be ejected.

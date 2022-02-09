@@ -163,7 +163,7 @@ func marshalListViewer(p uintptr) (interface{}, error) {
 // This allows for a convenient way to handle activation in a listview. See
 // gtk.ListItem.SetActivatable() for details on how to use this signal.
 func (self *ListView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return self.Connect("activate", f)
+	return self.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewListView creates a new GtkListView that uses the given factory for mapping

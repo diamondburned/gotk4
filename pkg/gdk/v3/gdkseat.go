@@ -190,13 +190,13 @@ func BaseSeat(obj Seater) *Seat {
 // ConnectDeviceAdded signal is emitted when a new input device is related to
 // this seat.
 func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
-	return seat.Connect("device-added", f)
+	return seat.Connect("device-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeviceRemoved signal is emitted when an input device is removed (e.g.
 // unplugged).
 func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
-	return seat.Connect("device-removed", f)
+	return seat.Connect("device-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToolAdded signal is emitted whenever a new tool is made known to the
@@ -205,13 +205,13 @@ func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) externglib.Signal
 //
 // A same tool may be used by several devices.
 func (seat *Seat) ConnectToolAdded(f func(tool DeviceTool)) externglib.SignalHandle {
-	return seat.Connect("tool-added", f)
+	return seat.Connect("tool-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToolRemoved: this signal is emitted whenever a tool is no longer known
 // to this seat.
 func (seat *Seat) ConnectToolRemoved(f func(tool DeviceTool)) externglib.SignalHandle {
-	return seat.Connect("tool-removed", f)
+	return seat.Connect("tool-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // Capabilities returns the capabilities this Seat currently has.

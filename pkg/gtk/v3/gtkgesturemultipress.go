@@ -61,7 +61,7 @@ func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
 // ConnectPressed: this signal is emitted whenever a button or touch press
 // happens.
 func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("pressed", f)
+	return gesture.Connect("pressed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectReleased: this signal is emitted when a button or touch is released.
@@ -69,13 +69,13 @@ func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64
 // that GestureMultiPress::stopped may have been emitted between the press and
 // its release, n_press will only start over at the next press.
 func (gesture *GestureMultiPress) ConnectReleased(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("released", f)
+	return gesture.Connect("released", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStopped: this signal is emitted whenever any time/distance threshold
 // has been exceeded.
 func (gesture *GestureMultiPress) ConnectStopped(f func()) externglib.SignalHandle {
-	return gesture.Connect("stopped", f)
+	return gesture.Connect("stopped", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureMultiPress returns a newly created Gesture that recognizes single

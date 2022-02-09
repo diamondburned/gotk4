@@ -86,7 +86,7 @@ func marshalPlugger(p uintptr) (interface{}, error) {
 
 // ConnectEmbedded gets emitted when the plug becomes embedded in a socket.
 func (plug *Plug) ConnectEmbedded(f func()) externglib.SignalHandle {
-	return plug.Connect("embedded", f)
+	return plug.Connect("embedded", externglib.GeneratedClosure{Func: f})
 }
 
 // Embedded determines whether the plug is embedded in a socket.

@@ -99,7 +99,7 @@ func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
 
 // ConnectToggled: emitted whenever the toggle tool button changes state.
 func (button *ToggleToolButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return button.Connect("toggled", f)
+	return button.Connect("toggled", externglib.GeneratedClosure{Func: f})
 }
 
 // NewToggleToolButton returns a new ToggleToolButton.

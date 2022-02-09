@@ -85,7 +85,7 @@ func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
 //
 // The default binding for this signal is Alt + D.
 func (v *FileChooserWidget) ConnectDesktopFolder(f func()) externglib.SignalHandle {
-	return v.Connect("desktop-folder", f)
+	return v.Connect("desktop-folder", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDownFolder signal is a [keybinding signal][GtkBindingSignal] which
@@ -99,7 +99,7 @@ func (v *FileChooserWidget) ConnectDesktopFolder(f func()) externglib.SignalHand
 //
 // The default binding for this signal is Alt + Down.
 func (v *FileChooserWidget) ConnectDownFolder(f func()) externglib.SignalHandle {
-	return v.Connect("down-folder", f)
+	return v.Connect("down-folder", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectHomeFolder signal is a [keybinding signal][GtkBindingSignal] which
@@ -110,7 +110,7 @@ func (v *FileChooserWidget) ConnectDownFolder(f func()) externglib.SignalHandle 
 //
 // The default binding for this signal is Alt + Home.
 func (v *FileChooserWidget) ConnectHomeFolder(f func()) externglib.SignalHandle {
-	return v.Connect("home-folder", f)
+	return v.Connect("home-folder", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLocationPopup signal is a [keybinding signal][GtkBindingSignal] which
@@ -125,7 +125,7 @@ func (v *FileChooserWidget) ConnectHomeFolder(f func()) externglib.SignalHandle 
 // systems, this is bound to ~ (tilde) with a path string of "~" itself for
 // access to home directories.
 func (v *FileChooserWidget) ConnectLocationPopup(f func(path string)) externglib.SignalHandle {
-	return v.Connect("location-popup", f)
+	return v.Connect("location-popup", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLocationPopupOnPaste signal is a [keybinding signal][GtkBindingSignal]
@@ -136,7 +136,7 @@ func (v *FileChooserWidget) ConnectLocationPopup(f func(path string)) externglib
 //
 // The default binding for this signal is Control + V.
 func (v *FileChooserWidget) ConnectLocationPopupOnPaste(f func()) externglib.SignalHandle {
-	return v.Connect("location-popup-on-paste", f)
+	return v.Connect("location-popup-on-paste", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLocationTogglePopup signal is a [keybinding signal][GtkBindingSignal]
@@ -147,7 +147,7 @@ func (v *FileChooserWidget) ConnectLocationPopupOnPaste(f func()) externglib.Sig
 //
 // The default binding for this signal is Control + L.
 func (v *FileChooserWidget) ConnectLocationTogglePopup(f func()) externglib.SignalHandle {
-	return v.Connect("location-toggle-popup", f)
+	return v.Connect("location-toggle-popup", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPlacesShortcut signal is a [keybinding signal][GtkBindingSignal] which
@@ -157,7 +157,7 @@ func (v *FileChooserWidget) ConnectLocationTogglePopup(f func()) externglib.Sign
 //
 // The default binding for this signal is Alt + P.
 func (v *FileChooserWidget) ConnectPlacesShortcut(f func()) externglib.SignalHandle {
-	return v.Connect("places-shortcut", f)
+	return v.Connect("places-shortcut", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectQuickBookmark signal is a [keybinding signal][GtkBindingSignal] which
@@ -172,7 +172,7 @@ func (v *FileChooserWidget) ConnectPlacesShortcut(f func()) externglib.SignalHan
 // to the bookmark at index 0, and so on successively; Alt + 0 is defined to
 // switch to the bookmark at index 10.
 func (v *FileChooserWidget) ConnectQuickBookmark(f func(bookmarkIndex int)) externglib.SignalHandle {
-	return v.Connect("quick-bookmark", f)
+	return v.Connect("quick-bookmark", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRecentShortcut signal is a [keybinding signal][GtkBindingSignal] which
@@ -182,7 +182,7 @@ func (v *FileChooserWidget) ConnectQuickBookmark(f func(bookmarkIndex int)) exte
 //
 // The default binding for this signal is Alt + R.
 func (v *FileChooserWidget) ConnectRecentShortcut(f func()) externglib.SignalHandle {
-	return v.Connect("recent-shortcut", f)
+	return v.Connect("recent-shortcut", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSearchShortcut signal is a [keybinding signal][GtkBindingSignal] which
@@ -192,7 +192,7 @@ func (v *FileChooserWidget) ConnectRecentShortcut(f func()) externglib.SignalHan
 //
 // The default binding for this signal is Alt + S.
 func (v *FileChooserWidget) ConnectSearchShortcut(f func()) externglib.SignalHandle {
-	return v.Connect("search-shortcut", f)
+	return v.Connect("search-shortcut", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectShowHidden signal is a [keybinding signal][GtkBindingSignal] which
@@ -202,7 +202,7 @@ func (v *FileChooserWidget) ConnectSearchShortcut(f func()) externglib.SignalHan
 //
 // The default binding for this signal is Control + H.
 func (v *FileChooserWidget) ConnectShowHidden(f func()) externglib.SignalHandle {
-	return v.Connect("show-hidden", f)
+	return v.Connect("show-hidden", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUpFolder signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -213,7 +213,7 @@ func (v *FileChooserWidget) ConnectShowHidden(f func()) externglib.SignalHandle 
 //
 // The default binding for this signal is Alt + Up.
 func (v *FileChooserWidget) ConnectUpFolder(f func()) externglib.SignalHandle {
-	return v.Connect("up-folder", f)
+	return v.Connect("up-folder", externglib.GeneratedClosure{Func: f})
 }
 
 // NewFileChooserWidget creates a new FileChooserWidget. This is a file chooser

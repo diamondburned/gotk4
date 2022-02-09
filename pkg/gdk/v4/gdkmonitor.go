@@ -94,7 +94,7 @@ func marshalMonitorrer(p uintptr) (interface{}, error) {
 // ConnectInvalidate: emitted when the output represented by monitor gets
 // disconnected.
 func (monitor *Monitor) ConnectInvalidate(f func()) externglib.SignalHandle {
-	return monitor.Connect("invalidate", f)
+	return monitor.Connect("invalidate", externglib.GeneratedClosure{Func: f})
 }
 
 // Connector gets the name of the monitor's connector, if available.

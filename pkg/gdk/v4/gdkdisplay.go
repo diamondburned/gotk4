@@ -60,30 +60,30 @@ func marshalDisplayer(p uintptr) (interface{}, error) {
 // ConnectClosed: emitted when the connection to the windowing system for
 // display is closed.
 func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
-	return display.Connect("closed", f)
+	return display.Connect("closed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectOpened: emitted when the connection to the windowing system for
 // display is opened.
 func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
-	return display.Connect("opened", f)
+	return display.Connect("opened", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSeatAdded: emitted whenever a new seat is made known to the windowing
 // system.
 func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-added", f)
+	return display.Connect("seat-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSeatRemoved: emitted whenever a seat is removed by the windowing
 // system.
 func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-removed", f)
+	return display.Connect("seat-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSettingChanged: emitted whenever a setting changes its value.
 func (display *Display) ConnectSettingChanged(f func(setting string)) externglib.SignalHandle {
-	return display.Connect("setting-changed", f)
+	return display.Connect("setting-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // Beep emits a short beep on display.

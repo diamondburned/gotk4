@@ -75,7 +75,7 @@ func marshalColorSelectioner(p uintptr) (interface{}, error) {
 // ConnectColorChanged: this signal is emitted when the color changes in the
 // ColorSelection according to its update policy.
 func (colorsel *ColorSelection) ConnectColorChanged(f func()) externglib.SignalHandle {
-	return colorsel.Connect("color-changed", f)
+	return colorsel.Connect("color-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewColorSelection creates a new GtkColorSelection.

@@ -60,7 +60,7 @@ func marshalGestureSwiper(p uintptr) (interface{}, error) {
 // ConnectSwipe: this signal is emitted when the recognized gesture is finished,
 // velocity and direction are a product of previously recorded events.
 func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) externglib.SignalHandle {
-	return gesture.Connect("swipe", f)
+	return gesture.Connect("swipe", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureSwipe returns a newly created Gesture that recognizes swipes.

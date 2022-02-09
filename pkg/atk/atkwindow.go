@@ -63,48 +63,48 @@ func BaseWindow(obj Windower) *Window {
 // ConnectActivate: signal Window::activate is emitted when a window becomes the
 // active window of the application or session.
 func (v *Window) ConnectActivate(f func()) externglib.SignalHandle {
-	return v.Connect("activate", f)
+	return v.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCreate: signal Window::create is emitted when a new window is created.
 func (v *Window) ConnectCreate(f func()) externglib.SignalHandle {
-	return v.Connect("create", f)
+	return v.Connect("create", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeactivate: signal Window::deactivate is emitted when a window is no
 // longer the active window of the application or session.
 func (v *Window) ConnectDeactivate(f func()) externglib.SignalHandle {
-	return v.Connect("deactivate", f)
+	return v.Connect("deactivate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDestroy: signal Window::destroy is emitted when a window is destroyed.
 func (v *Window) ConnectDestroy(f func()) externglib.SignalHandle {
-	return v.Connect("destroy", f)
+	return v.Connect("destroy", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMaximize: signal Window::maximize is emitted when a window is
 // maximized.
 func (v *Window) ConnectMaximize(f func()) externglib.SignalHandle {
-	return v.Connect("maximize", f)
+	return v.Connect("maximize", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMinimize: signal Window::minimize is emitted when a window is
 // minimized.
 func (v *Window) ConnectMinimize(f func()) externglib.SignalHandle {
-	return v.Connect("minimize", f)
+	return v.Connect("minimize", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMove: signal Window::move is emitted when a window is moved.
 func (v *Window) ConnectMove(f func()) externglib.SignalHandle {
-	return v.Connect("move", f)
+	return v.Connect("move", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectResize: signal Window::resize is emitted when a window is resized.
 func (v *Window) ConnectResize(f func()) externglib.SignalHandle {
-	return v.Connect("resize", f)
+	return v.Connect("resize", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRestore: signal Window::restore is emitted when a window is restored.
 func (v *Window) ConnectRestore(f func()) externglib.SignalHandle {
-	return v.Connect("restore", f)
+	return v.Connect("restore", externglib.GeneratedClosure{Func: f})
 }

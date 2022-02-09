@@ -791,7 +791,7 @@ func marshalStyleContexter(p uintptr) (interface{}, error) {
 //
 // This signal is useful when using the theming layer standalone.
 func (context *StyleContext) ConnectChanged(f func()) externglib.SignalHandle {
-	return context.Connect("changed", f)
+	return context.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewStyleContext creates a standalone StyleContext, this style context won’t

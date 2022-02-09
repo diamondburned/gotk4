@@ -405,7 +405,7 @@ func marshalMounter(p uintptr) (interface{}, error) {
 
 // ConnectChanged: emitted when the mount has been changed.
 func (mount *Mount) ConnectChanged(f func()) externglib.SignalHandle {
-	return mount.Connect("changed", f)
+	return mount.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreUnmount: this signal may be emitted when the #GMount is about to be
@@ -414,14 +414,14 @@ func (mount *Mount) ConnectChanged(f func()) externglib.SignalHandle {
 // This signal depends on the backend and is only emitted if GIO was used to
 // unmount.
 func (mount *Mount) ConnectPreUnmount(f func()) externglib.SignalHandle {
-	return mount.Connect("pre-unmount", f)
+	return mount.Connect("pre-unmount", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnmounted: this signal is emitted when the #GMount have been
 // unmounted. If the recipient is holding references to the object they should
 // release them so the object can be finalized.
 func (mount *Mount) ConnectUnmounted(f func()) externglib.SignalHandle {
-	return mount.Connect("unmounted", f)
+	return mount.Connect("unmounted", externglib.GeneratedClosure{Func: f})
 }
 
 // CanEject checks if mount can be ejected.

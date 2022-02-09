@@ -73,12 +73,12 @@ func BaseSurface(obj Surfacer) *Surface {
 // ConnectEnterMonitor: emitted when surface starts being present on the
 // monitor.
 func (surface *Surface) ConnectEnterMonitor(f func(monitor Monitor)) externglib.SignalHandle {
-	return surface.Connect("enter-monitor", f)
+	return surface.Connect("enter-monitor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEvent: emitted when GDK receives an input event for surface.
 func (surface *Surface) ConnectEvent(f func(event Eventer) bool) externglib.SignalHandle {
-	return surface.Connect("event", f)
+	return surface.Connect("event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLayout: emitted when the size of surface is changed, or when relayout
@@ -87,17 +87,17 @@ func (surface *Surface) ConnectEvent(f func(event Eventer) bool) externglib.Sign
 // Surface size is reported in ”application pixels”, not ”device pixels” (see
 // gdk_surface_get_scale_factor()).
 func (surface *Surface) ConnectLayout(f func(width, height int)) externglib.SignalHandle {
-	return surface.Connect("layout", f)
+	return surface.Connect("layout", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLeaveMonitor: emitted when surface stops being present on the monitor.
 func (surface *Surface) ConnectLeaveMonitor(f func(monitor Monitor)) externglib.SignalHandle {
-	return surface.Connect("leave-monitor", f)
+	return surface.Connect("leave-monitor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRender: emitted when part of the surface needs to be redrawn.
 func (surface *Surface) ConnectRender(f func(region *cairo.Region) bool) externglib.SignalHandle {
-	return surface.Connect("render", f)
+	return surface.Connect("render", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSurfacePopup: create a new popup surface.

@@ -50,7 +50,7 @@ func marshalGestureZoomer(p uintptr) (interface{}, error) {
 // ConnectScaleChanged: emitted whenever the distance between both tracked
 // sequences changes.
 func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) externglib.SignalHandle {
-	return gesture.Connect("scale-changed", f)
+	return gesture.Connect("scale-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureZoom returns a newly created GtkGesture that recognizes pinch/zoom

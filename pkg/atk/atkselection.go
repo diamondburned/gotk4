@@ -176,7 +176,7 @@ func marshalSelectioner(p uintptr) (interface{}, error) {
 // ConnectSelectionChanged: "selection-changed" signal is emitted by an object
 // which implements AtkSelection interface when the selection changes.
 func (selection *Selection) ConnectSelectionChanged(f func()) externglib.SignalHandle {
-	return selection.Connect("selection-changed", f)
+	return selection.Connect("selection-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // AddSelection adds the specified accessible child of the object to the

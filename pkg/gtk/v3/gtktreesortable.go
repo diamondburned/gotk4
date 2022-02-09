@@ -212,7 +212,7 @@ func marshalTreeSortabler(p uintptr) (interface{}, error) {
 // of sortable is changed. The signal is emitted before the contents of sortable
 // are resorted.
 func (sortable *TreeSortable) ConnectSortColumnChanged(f func()) externglib.SignalHandle {
-	return sortable.Connect("sort-column-changed", f)
+	return sortable.Connect("sort-column-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // SortColumnID fills in sort_column_id and order with the current sort column

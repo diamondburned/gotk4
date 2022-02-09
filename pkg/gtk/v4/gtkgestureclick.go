@@ -53,7 +53,7 @@ func marshalGestureClicker(p uintptr) (interface{}, error) {
 
 // ConnectPressed: emitted whenever a button or touch press happens.
 func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return v.Connect("pressed", f)
+	return v.Connect("pressed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectReleased: emitted when a button or touch is released.
@@ -62,13 +62,13 @@ func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) externgl
 // that gtk.GestureClick::stopped may have been emitted between the press and
 // its release, n_press will only start over at the next press.
 func (v *GestureClick) ConnectReleased(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return v.Connect("released", f)
+	return v.Connect("released", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStopped: emitted whenever any time/distance threshold has been
 // exceeded.
 func (v *GestureClick) ConnectStopped(f func()) externglib.SignalHandle {
-	return v.Connect("stopped", f)
+	return v.Connect("stopped", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnpairedRelease: emitted whenever the gesture receives a release event
@@ -78,7 +78,7 @@ func (v *GestureClick) ConnectStopped(f func()) externglib.SignalHandle {
 // grabbed elsewhere mid-press or the pressed widget voluntarily relinquishes
 // its implicit grab.
 func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint, sequence *gdk.EventSequence)) externglib.SignalHandle {
-	return v.Connect("unpaired-release", f)
+	return v.Connect("unpaired-release", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureClick returns a newly created GtkGesture that recognizes single and

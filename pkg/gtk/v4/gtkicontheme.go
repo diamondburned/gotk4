@@ -329,7 +329,7 @@ func marshalIconThemer(p uintptr) (interface{}, error) {
 // This can happen becuase current icon theme is switched or because GTK detects
 // that a change has occurred in the contents of the current icon theme.
 func (self *IconTheme) ConnectChanged(f func()) externglib.SignalHandle {
-	return self.Connect("changed", f)
+	return self.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewIconTheme creates a new icon theme object.

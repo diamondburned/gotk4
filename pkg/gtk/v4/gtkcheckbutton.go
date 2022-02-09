@@ -144,13 +144,13 @@ func marshalCheckButtonner(p uintptr) (interface{}, error) {
 // Applications should never connect to this signal, but use the
 // gtk.CheckButton::toggled signal.
 func (self *CheckButton) ConnectActivate(f func()) externglib.SignalHandle {
-	return self.Connect("activate", f)
+	return self.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToggled: emitted when the buttons's gtk.CheckButton:active property
 // changes.
 func (self *CheckButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return self.Connect("toggled", f)
+	return self.Connect("toggled", externglib.GeneratedClosure{Func: f})
 }
 
 // NewCheckButton creates a new GtkCheckButton.

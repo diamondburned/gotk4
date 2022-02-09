@@ -225,13 +225,13 @@ func marshalWindower(p uintptr) (interface{}, error) {
 // ConnectActivateDefault signal is a [keybinding signal][GtkBindingSignal]
 // which gets emitted when the user activates the default widget of window.
 func (window *Window) ConnectActivateDefault(f func()) externglib.SignalHandle {
-	return window.Connect("activate-default", f)
+	return window.Connect("activate-default", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectActivateFocus signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted when the user activates the currently focused widget of window.
 func (window *Window) ConnectActivateFocus(f func()) externglib.SignalHandle {
-	return window.Connect("activate-focus", f)
+	return window.Connect("activate-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEnableDebugging signal is a [keybinding signal][GtkBindingSignal]
@@ -241,19 +241,19 @@ func (window *Window) ConnectActivateFocus(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
 func (window *Window) ConnectEnableDebugging(f func(toggle bool) bool) externglib.SignalHandle {
-	return window.Connect("enable-debugging", f)
+	return window.Connect("enable-debugging", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeysChanged signal gets emitted when the set of accelerators or
 // mnemonics that are associated with window changes.
 func (window *Window) ConnectKeysChanged(f func()) externglib.SignalHandle {
-	return window.Connect("keys-changed", f)
+	return window.Connect("keys-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSetFocus: this signal is emitted whenever the currently focused widget
 // in this window changes.
 func (window *Window) ConnectSetFocus(f func(widget Widgetter)) externglib.SignalHandle {
-	return window.Connect("set-focus", f)
+	return window.Connect("set-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // NewWindow creates a new Window, which is a toplevel window that can contain

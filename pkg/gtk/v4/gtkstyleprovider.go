@@ -94,5 +94,5 @@ func BaseStyleProvider(obj StyleProviderer) *StyleProvider {
 }
 
 func (v *StyleProvider) ConnectGTKPrivateChanged(f func()) externglib.SignalHandle {
-	return v.Connect("gtk-private-changed", f)
+	return v.Connect("gtk-private-changed", externglib.GeneratedClosure{Func: f})
 }

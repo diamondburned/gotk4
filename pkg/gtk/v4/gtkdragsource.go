@@ -120,7 +120,7 @@ func marshalDragSourcer(p uintptr) (interface{}, error) {
 //
 // It can be used to e.g. set a custom drag icon with gtk.DragSource.SetIcon().
 func (source *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) externglib.SignalHandle {
-	return source.Connect("drag-begin", f)
+	return source.Connect("drag-begin", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragCancel: emitted on the drag source when a drag has failed.
@@ -129,7 +129,7 @@ func (source *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) externglib.
 // error. It should return TRUE if the failure has been handled and the default
 // "drag operation failed" animation should not be shown.
 func (source *DragSource) ConnectDragCancel(f func(drag gdk.Dragger, reason gdk.DragCancelReason) bool) externglib.SignalHandle {
-	return source.Connect("drag-cancel", f)
+	return source.Connect("drag-cancel", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragEnd: emitted on the drag source when a drag is finished.
@@ -137,7 +137,7 @@ func (source *DragSource) ConnectDragCancel(f func(drag gdk.Dragger, reason gdk.
 // A typical reason to connect to this signal is to undo things done in
 // gtk.DragSource::prepare or gtk.DragSource::drag-begin handlers.
 func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData bool)) externglib.SignalHandle {
-	return source.Connect("drag-end", f)
+	return source.Connect("drag-end", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPrepare: emitted when a drag is about to be initiated.
@@ -147,7 +147,7 @@ func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData boo
 // gtk.DragSource:content property, so if you set up that property ahead of
 // time, you don't need to connect to this signal.
 func (source *DragSource) ConnectPrepare(f func(x, y float64) gdk.ContentProvider) externglib.SignalHandle {
-	return source.Connect("prepare", f)
+	return source.Connect("prepare", externglib.GeneratedClosure{Func: f})
 }
 
 // NewDragSource creates a new GtkDragSource object.

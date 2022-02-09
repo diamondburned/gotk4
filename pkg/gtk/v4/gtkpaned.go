@@ -130,7 +130,7 @@ func marshalPanedder(p uintptr) (interface{}, error) {
 //
 // The default binding for this signal is Return or Space.
 func (paned *Paned) ConnectAcceptPosition(f func() bool) externglib.SignalHandle {
-	return paned.Connect("accept-position", f)
+	return paned.Connect("accept-position", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCancelPosition: emitted to cancel moving the position of the handle
@@ -142,7 +142,7 @@ func (paned *Paned) ConnectAcceptPosition(f func() bool) externglib.SignalHandle
 //
 // The default binding for this signal is Escape.
 func (paned *Paned) ConnectCancelPosition(f func() bool) externglib.SignalHandle {
-	return paned.Connect("cancel-position", f)
+	return paned.Connect("cancel-position", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCycleChildFocus: emitted to cycle the focus between the children of
@@ -152,7 +152,7 @@ func (paned *Paned) ConnectCancelPosition(f func() bool) externglib.SignalHandle
 //
 // The default binding is F6.
 func (paned *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) externglib.SignalHandle {
-	return paned.Connect("cycle-child-focus", f)
+	return paned.Connect("cycle-child-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCycleHandleFocus: emitted to cycle whether the paned should grab focus
@@ -162,14 +162,14 @@ func (paned *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) externgli
 //
 // The default binding for this signal is F8.
 func (paned *Paned) ConnectCycleHandleFocus(f func(reversed bool) bool) externglib.SignalHandle {
-	return paned.Connect("cycle-handle-focus", f)
+	return paned.Connect("cycle-handle-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveHandle: emitted to move the handle with key bindings.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) externglib.SignalHandle {
-	return paned.Connect("move-handle", f)
+	return paned.Connect("move-handle", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToggleHandleFocus: emitted to accept the current position of the
@@ -179,7 +179,7 @@ func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) extern
 //
 // The default binding is Tab.
 func (paned *Paned) ConnectToggleHandleFocus(f func() bool) externglib.SignalHandle {
-	return paned.Connect("toggle-handle-focus", f)
+	return paned.Connect("toggle-handle-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // NewPaned creates a new GtkPaned widget.

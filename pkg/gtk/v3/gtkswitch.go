@@ -106,7 +106,7 @@ func marshalSwitcher(p uintptr) (interface{}, error) {
 // causes the switch to animate. Applications should never connect to this
 // signal, but use the notify::active signal.
 func (sw *Switch) ConnectActivate(f func()) externglib.SignalHandle {
-	return sw.Connect("activate", f)
+	return sw.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStateSet signal on GtkSwitch is emitted to change the underlying
@@ -122,7 +122,7 @@ func (sw *Switch) ConnectActivate(f func()) externglib.SignalHandle {
 // switch, while the Switch:active property is represented by the position of
 // the switch.
 func (sw *Switch) ConnectStateSet(f func(state bool) bool) externglib.SignalHandle {
-	return sw.Connect("state-set", f)
+	return sw.Connect("state-set", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSwitch creates a new Switch widget.

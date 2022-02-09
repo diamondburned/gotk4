@@ -234,13 +234,13 @@ func marshalFlowBoxer(p uintptr) (interface{}, error) {
 // ConnectActivateCursorChild signal is a [keybinding signal][GtkBindingSignal]
 // which gets emitted when the user activates the box.
 func (box *FlowBox) ConnectActivateCursorChild(f func()) externglib.SignalHandle {
-	return box.Connect("activate-cursor-child", f)
+	return box.Connect("activate-cursor-child", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectChildActivated signal is emitted when a child has been activated by
 // the user.
 func (box *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) externglib.SignalHandle {
-	return box.Connect("child-activated", f)
+	return box.Connect("child-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -259,7 +259,7 @@ func (box *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) externglib
 //
 // - PageUp/PageDown keys move vertically by pages.
 func (box *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int) bool) externglib.SignalHandle {
-	return box.Connect("move-cursor", f)
+	return box.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -267,7 +267,7 @@ func (box *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int) bool)
 //
 // The default bindings for this signal is Ctrl-a.
 func (box *FlowBox) ConnectSelectAll(f func()) externglib.SignalHandle {
-	return box.Connect("select-all", f)
+	return box.Connect("select-all", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectedChildrenChanged signal is emitted when the set of selected
@@ -276,7 +276,7 @@ func (box *FlowBox) ConnectSelectAll(f func()) externglib.SignalHandle {
 // Use gtk_flow_box_selected_foreach() or gtk_flow_box_get_selected_children()
 // to obtain the selected children.
 func (box *FlowBox) ConnectSelectedChildrenChanged(f func()) externglib.SignalHandle {
-	return box.Connect("selected-children-changed", f)
+	return box.Connect("selected-children-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToggleCursorChild signal is a [keybinding signal][GtkBindingSignal]
@@ -284,7 +284,7 @@ func (box *FlowBox) ConnectSelectedChildrenChanged(f func()) externglib.SignalHa
 //
 // The default binding for this signal is Ctrl-Space.
 func (box *FlowBox) ConnectToggleCursorChild(f func()) externglib.SignalHandle {
-	return box.Connect("toggle-cursor-child", f)
+	return box.Connect("toggle-cursor-child", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnselectAll signal is a [keybinding signal][GtkBindingSignal] which
@@ -293,7 +293,7 @@ func (box *FlowBox) ConnectToggleCursorChild(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal is Ctrl-Shift-a.
 func (box *FlowBox) ConnectUnselectAll(f func()) externglib.SignalHandle {
-	return box.Connect("unselect-all", f)
+	return box.Connect("unselect-all", externglib.GeneratedClosure{Func: f})
 }
 
 // NewFlowBox creates a GtkFlowBox.
@@ -1059,7 +1059,7 @@ func marshalFlowBoxChilder(p uintptr) (interface{}, error) {
 // While this signal is used as a [keybinding signal][GtkBindingSignal], it can
 // be used by applications for their own purposes.
 func (child *FlowBoxChild) ConnectActivate(f func()) externglib.SignalHandle {
-	return child.Connect("activate", f)
+	return child.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewFlowBoxChild creates a new FlowBoxChild, to be used as a child of a

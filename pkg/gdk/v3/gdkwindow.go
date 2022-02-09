@@ -899,7 +899,7 @@ func BaseWindow(obj Windower) *Window {
 // within any callback of this signal. Calling
 // gdk_offscreen_window_get_surface() will lead to a crash.
 func (window *Window) ConnectCreateSurface(f func(width, height int) *cairo.Surface) externglib.SignalHandle {
-	return window.Connect("create-surface", f)
+	return window.Connect("create-surface", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMovedToRect: emitted when the position of window is finalized after
@@ -914,13 +914,13 @@ func (window *Window) ConnectCreateSurface(f func(width, height int) *cairo.Surf
 // translated in the case that flipping is still ineffective in keeping window
 // on-screen.
 func (window *Window) ConnectMovedToRect(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
-	return window.Connect("moved-to-rect", f)
+	return window.Connect("moved-to-rect", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPickEmbeddedChild signal is emitted to find an embedded child at the
 // given position.
 func (window *Window) ConnectPickEmbeddedChild(f func(x, y float64) Windower) externglib.SignalHandle {
-	return window.Connect("pick-embedded-child", f)
+	return window.Connect("pick-embedded-child", externglib.GeneratedClosure{Func: f})
 }
 
 // NewWindow creates a new Window using the attributes from attributes. See

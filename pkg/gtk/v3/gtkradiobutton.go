@@ -158,7 +158,7 @@ func marshalRadioButtonner(p uintptr) (interface{}, error) {
 // one, but not when the composition of the group that a button belongs to
 // changes.
 func (radioButton *RadioButton) ConnectGroupChanged(f func()) externglib.SignalHandle {
-	return radioButton.Connect("group-changed", f)
+	return radioButton.Connect("group-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewRadioButton creates a new RadioButton. To be of any practical value, a

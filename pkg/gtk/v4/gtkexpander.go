@@ -145,7 +145,7 @@ func marshalExpanderer(p uintptr) (interface{}, error) {
 
 // ConnectActivate activates the GtkExpander.
 func (expander *Expander) ConnectActivate(f func()) externglib.SignalHandle {
-	return expander.Connect("activate", f)
+	return expander.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewExpander creates a new expander using label as the text of the label.

@@ -69,7 +69,7 @@ func marshalCellRendererTexter(p uintptr) (interface{}, error) {
 // It is the responsibility of the application to update the model and store
 // new_text at the position indicated by path.
 func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) externglib.SignalHandle {
-	return renderer.Connect("edited", f)
+	return renderer.Connect("edited", externglib.GeneratedClosure{Func: f})
 }
 
 // NewCellRendererText creates a new CellRendererText. Adjust how text is drawn

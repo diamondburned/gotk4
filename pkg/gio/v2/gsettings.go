@@ -536,7 +536,7 @@ func marshalSettingser(p uintptr) (interface{}, error) {
 // affected key. If any other connected handler returns TRUE then this default
 // functionality will be suppressed.
 func (settings *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) externglib.SignalHandle {
-	return settings.Connect("change-event", f)
+	return settings.Connect("change-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectChanged: "changed" signal is emitted when a key has potentially
@@ -549,7 +549,7 @@ func (settings *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) ex
 // Note that settings only emits this signal if you have read key at least once
 // while a signal handler was already connected for key.
 func (settings *Settings) ConnectChanged(f func(key string)) externglib.SignalHandle {
-	return settings.Connect("changed", f)
+	return settings.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectWritableChangeEvent: "writable-change-event" signal is emitted once
@@ -569,7 +569,7 @@ func (settings *Settings) ConnectChanged(f func(key string)) externglib.SignalHa
 // mandatory setting is introduced). If any other connected handler returns TRUE
 // then this default functionality will be suppressed.
 func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) bool) externglib.SignalHandle {
-	return settings.Connect("writable-change-event", f)
+	return settings.Connect("writable-change-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectWritableChanged: "writable-changed" signal is emitted when the
@@ -580,7 +580,7 @@ func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) bool) exte
 // signal "writable-changed::x" in order to only receive callbacks when the
 // writability of "x" changes.
 func (settings *Settings) ConnectWritableChanged(f func(key string)) externglib.SignalHandle {
-	return settings.Connect("writable-changed", f)
+	return settings.Connect("writable-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSettings creates a new #GSettings object with the schema specified by

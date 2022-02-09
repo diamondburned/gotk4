@@ -140,30 +140,30 @@ func marshalMenuItemmer(p uintptr) (interface{}, error) {
 
 // ConnectActivate: emitted when the item is activated.
 func (menuItem *MenuItem) ConnectActivate(f func()) externglib.SignalHandle {
-	return menuItem.Connect("activate", f)
+	return menuItem.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectActivateItem: emitted when the item is activated, but also if the menu
 // item has a submenu. For normal applications, the relevant signal is
 // MenuItem::activate.
 func (menuItem *MenuItem) ConnectActivateItem(f func()) externglib.SignalHandle {
-	return menuItem.Connect("activate-item", f)
+	return menuItem.Connect("activate-item", externglib.GeneratedClosure{Func: f})
 }
 
 func (menuItem *MenuItem) ConnectDeselect(f func()) externglib.SignalHandle {
-	return menuItem.Connect("deselect", f)
+	return menuItem.Connect("deselect", externglib.GeneratedClosure{Func: f})
 }
 
 func (menuItem *MenuItem) ConnectSelect(f func()) externglib.SignalHandle {
-	return menuItem.Connect("select", f)
+	return menuItem.Connect("select", externglib.GeneratedClosure{Func: f})
 }
 
 func (menuItem *MenuItem) ConnectToggleSizeAllocate(f func(object int)) externglib.SignalHandle {
-	return menuItem.Connect("toggle-size-allocate", f)
+	return menuItem.Connect("toggle-size-allocate", externglib.GeneratedClosure{Func: f})
 }
 
 func (menuItem *MenuItem) ConnectToggleSizeRequest(f func(object cgo.Handle)) externglib.SignalHandle {
-	return menuItem.Connect("toggle-size-request", f)
+	return menuItem.Connect("toggle-size-request", externglib.GeneratedClosure{Func: f})
 }
 
 // NewMenuItem creates a new MenuItem.

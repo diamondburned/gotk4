@@ -105,7 +105,7 @@ func marshalHypertexter(p uintptr) (interface{}, error) {
 // ConnectLinkSelected: "link-selected" signal is emitted by an AtkHyperText
 // object when one of the hyperlinks associated with the object is selected.
 func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) externglib.SignalHandle {
-	return hypertext.Connect("link-selected", f)
+	return hypertext.Connect("link-selected", externglib.GeneratedClosure{Func: f})
 }
 
 // Link gets the link in this hypertext document at index link_index.

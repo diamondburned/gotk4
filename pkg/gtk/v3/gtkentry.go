@@ -234,7 +234,7 @@ func marshalEntrier(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal are all forms of the Enter key.
 func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
-	return entry.Connect("activate", f)
+	return entry.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectBackspace signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -242,7 +242,7 @@ func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal are Backspace and Shift-Backspace.
 func (entry *Entry) ConnectBackspace(f func()) externglib.SignalHandle {
-	return entry.Connect("backspace", f)
+	return entry.Connect("backspace", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -250,7 +250,7 @@ func (entry *Entry) ConnectBackspace(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal are Ctrl-c and Ctrl-Insert.
 func (entry *Entry) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return entry.Connect("copy-clipboard", f)
+	return entry.Connect("copy-clipboard", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCutClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -258,7 +258,7 @@ func (entry *Entry) ConnectCopyClipboard(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal are Ctrl-x and Shift-Delete.
 func (entry *Entry) ConnectCutClipboard(f func()) externglib.SignalHandle {
-	return entry.Connect("cut-clipboard", f)
+	return entry.Connect("cut-clipboard", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeleteFromCursor signal is a [keybinding signal][GtkBindingSignal]
@@ -270,18 +270,18 @@ func (entry *Entry) ConnectCutClipboard(f func()) externglib.SignalHandle {
 // The default bindings for this signal are Delete for deleting a character and
 // Ctrl-Delete for deleting a word.
 func (entry *Entry) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) externglib.SignalHandle {
-	return entry.Connect("delete-from-cursor", f)
+	return entry.Connect("delete-from-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectIconPress signal is emitted when an activatable icon is clicked.
 func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
-	return entry.Connect("icon-press", f)
+	return entry.Connect("icon-press", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectIconRelease signal is emitted on the button release from a mouse click
 // over an activatable icon.
 func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
-	return entry.Connect("icon-release", f)
+	return entry.Connect("icon-release", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -290,7 +290,7 @@ func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition, event *
 //
 // This signal has no default bindings.
 func (entry *Entry) ConnectInsertAtCursor(f func(str string)) externglib.SignalHandle {
-	return entry.Connect("insert-at-cursor", f)
+	return entry.Connect("insert-at-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsertEmoji signal is a [keybinding signal][GtkBindingSignal] which
@@ -298,7 +298,7 @@ func (entry *Entry) ConnectInsertAtCursor(f func(str string)) externglib.SignalH
 //
 // The default bindings for this signal are Ctrl-. and Ctrl-;.
 func (entry *Entry) ConnectInsertEmoji(f func()) externglib.SignalHandle {
-	return entry.Connect("insert-emoji", f)
+	return entry.Connect("insert-emoji", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -318,7 +318,7 @@ func (entry *Entry) ConnectInsertEmoji(f func()) externglib.SignalHandle {
 //
 // - Home/End keys move to the ends of the buffer.
 func (entry *Entry) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return entry.Connect("move-cursor", f)
+	return entry.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPasteClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -326,7 +326,7 @@ func (entry *Entry) ConnectMoveCursor(f func(step MovementStep, count int, exten
 //
 // The default bindings for this signal are Ctrl-v and Shift-Insert.
 func (entry *Entry) ConnectPasteClipboard(f func()) externglib.SignalHandle {
-	return entry.Connect("paste-clipboard", f)
+	return entry.Connect("paste-clipboard", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPopulatePopup signal gets emitted before showing the context menu of
@@ -340,14 +340,14 @@ func (entry *Entry) ConnectPasteClipboard(f func()) externglib.SignalHandle {
 // Toolbar. The signal handler should not make assumptions about the type of
 // widget.
 func (entry *Entry) ConnectPopulatePopup(f func(widget Widgetter)) externglib.SignalHandle {
-	return entry.Connect("populate-popup", f)
+	return entry.Connect("populate-popup", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreeditChanged: if an input method is used, the typed text will not
 // immediately be committed to the buffer. So if you are interested in the text,
 // connect to this signal.
 func (entry *Entry) ConnectPreeditChanged(f func(preedit string)) externglib.SignalHandle {
-	return entry.Connect("preedit-changed", f)
+	return entry.Connect("preedit-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
@@ -355,7 +355,7 @@ func (entry *Entry) ConnectPreeditChanged(f func(preedit string)) externglib.Sig
 //
 // The default bindings for this signal is Insert.
 func (entry *Entry) ConnectToggleOverwrite(f func()) externglib.SignalHandle {
-	return entry.Connect("toggle-overwrite", f)
+	return entry.Connect("toggle-overwrite", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEntry creates a new entry.

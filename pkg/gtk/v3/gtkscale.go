@@ -175,7 +175,7 @@ func marshalScaler(p uintptr) (interface{}, error) {
 //                              gtk_scale_get_digits (scale), value);
 //     }.
 func (scale *Scale) ConnectFormatValue(f func(value float64) string) externglib.SignalHandle {
-	return scale.Connect("format-value", f)
+	return scale.Connect("format-value", externglib.GeneratedClosure{Func: f})
 }
 
 // NewScale creates a new Scale.

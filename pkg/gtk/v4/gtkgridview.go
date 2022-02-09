@@ -102,7 +102,7 @@ func marshalGridViewer(p uintptr) (interface{}, error) {
 // This allows for a convenient way to handle activation in a gridview. See
 // gtk.ListItem:activatable for details on how to use this signal.
 func (self *GridView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return self.Connect("activate", f)
+	return self.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGridView creates a new GtkGridView that uses the given factory for mapping

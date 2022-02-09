@@ -346,19 +346,19 @@ func BaseContainer(obj Containerer) *Container {
 }
 
 func (container *Container) ConnectAdd(f func(object Widgetter)) externglib.SignalHandle {
-	return container.Connect("add", f)
+	return container.Connect("add", externglib.GeneratedClosure{Func: f})
 }
 
 func (container *Container) ConnectCheckResize(f func()) externglib.SignalHandle {
-	return container.Connect("check-resize", f)
+	return container.Connect("check-resize", externglib.GeneratedClosure{Func: f})
 }
 
 func (container *Container) ConnectRemove(f func(object Widgetter)) externglib.SignalHandle {
-	return container.Connect("remove", f)
+	return container.Connect("remove", externglib.GeneratedClosure{Func: f})
 }
 
 func (container *Container) ConnectSetFocusChild(f func(object Widgetter)) externglib.SignalHandle {
-	return container.Connect("set-focus-child", f)
+	return container.Connect("set-focus-child", externglib.GeneratedClosure{Func: f})
 }
 
 // Add adds widget to container. Typically used for simple containers such as

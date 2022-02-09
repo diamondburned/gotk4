@@ -178,14 +178,14 @@ func BaseFrameClock(obj FrameClocker) *FrameClock {
 //
 // Applications should generally not handle this signal.
 func (frameClock *FrameClock) ConnectAfterPaint(f func()) externglib.SignalHandle {
-	return frameClock.Connect("after-paint", f)
+	return frameClock.Connect("after-paint", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectBeforePaint begins processing of the frame.
 //
 // Applications should generally not handle this signal.
 func (frameClock *FrameClock) ConnectBeforePaint(f func()) externglib.SignalHandle {
-	return frameClock.Connect("before-paint", f)
+	return frameClock.Connect("before-paint", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectFlushEvents: used to flush pending motion events that are being
@@ -193,7 +193,7 @@ func (frameClock *FrameClock) ConnectBeforePaint(f func()) externglib.SignalHand
 //
 // Applications should not handle this signal.
 func (frameClock *FrameClock) ConnectFlushEvents(f func()) externglib.SignalHandle {
-	return frameClock.Connect("flush-events", f)
+	return frameClock.Connect("flush-events", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLayout: emitted as the second step of toolkit and application
@@ -202,7 +202,7 @@ func (frameClock *FrameClock) ConnectFlushEvents(f func()) externglib.SignalHand
 // Any work to update sizes and positions of application elements should be
 // performed. GTK normally handles this internally.
 func (frameClock *FrameClock) ConnectLayout(f func()) externglib.SignalHandle {
-	return frameClock.Connect("layout", f)
+	return frameClock.Connect("layout", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPaint: emitted as the third step of toolkit and application processing
@@ -212,7 +212,7 @@ func (frameClock *FrameClock) ConnectLayout(f func()) externglib.SignalHandle {
 // gdk.Surface::render signals which are turned into gtk.Widget::snapshot
 // signals by GTK.
 func (frameClock *FrameClock) ConnectPaint(f func()) externglib.SignalHandle {
-	return frameClock.Connect("paint", f)
+	return frameClock.Connect("paint", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectResumeEvents: emitted after processing of the frame is finished.
@@ -220,7 +220,7 @@ func (frameClock *FrameClock) ConnectPaint(f func()) externglib.SignalHandle {
 // This signal is handled internally by GTK to resume normal event processing.
 // Applications should not handle this signal.
 func (frameClock *FrameClock) ConnectResumeEvents(f func()) externglib.SignalHandle {
-	return frameClock.Connect("resume-events", f)
+	return frameClock.Connect("resume-events", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUpdate: emitted as the first step of toolkit and application
@@ -230,7 +230,7 @@ func (frameClock *FrameClock) ConnectResumeEvents(f func()) externglib.SignalHan
 // Applications can connect directly to this signal, or use
 // gtk.Widget.AddTickCallback() as a more convenient interface.
 func (frameClock *FrameClock) ConnectUpdate(f func()) externglib.SignalHandle {
-	return frameClock.Connect("update", f)
+	return frameClock.Connect("update", externglib.GeneratedClosure{Func: f})
 }
 
 // BeginUpdating starts updates for an animation.

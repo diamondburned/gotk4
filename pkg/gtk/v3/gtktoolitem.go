@@ -108,7 +108,7 @@ func marshalToolItemmer(p uintptr) (interface{}, error) {
 // to invalidate the cache and ensure that the toolbar rebuilds its overflow
 // menu.
 func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() bool) externglib.SignalHandle {
-	return toolItem.Connect("create-menu-proxy", f)
+	return toolItem.Connect("create-menu-proxy", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToolbarReconfigured: this signal is emitted when some property of the
@@ -124,7 +124,7 @@ func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() bool) externglib.Signa
 // - gtk_tool_shell_get_relief_style() to find out what the toolbar should look
 // like and change themselves accordingly.
 func (toolItem *ToolItem) ConnectToolbarReconfigured(f func()) externglib.SignalHandle {
-	return toolItem.Connect("toolbar-reconfigured", f)
+	return toolItem.Connect("toolbar-reconfigured", externglib.GeneratedClosure{Func: f})
 }
 
 // NewToolItem creates a new ToolItem.

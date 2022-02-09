@@ -206,13 +206,13 @@ func BaseDevice(obj Devicer) *Device {
 // example, user switches from the USB mouse to a tablet), in that case the
 // master device will change to reflect the new slave device axes and keys.
 func (device *Device) ConnectChanged(f func()) externglib.SignalHandle {
-	return device.Connect("changed", f)
+	return device.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToolChanged signal is emitted on pen/eraser Devices whenever tools
 // enter or leave proximity.
 func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.SignalHandle {
-	return device.Connect("tool-changed", f)
+	return device.Connect("tool-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // AssociatedDevice returns the associated device to device, if device is of

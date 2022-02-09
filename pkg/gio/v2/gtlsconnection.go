@@ -175,7 +175,7 @@ func BaseTLSConnection(obj TLSConnectioner) *TLSConnection {
 // and can simply block in the signal handler until the UI thread returns an
 // answer.
 func (conn *TLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) externglib.SignalHandle {
-	return conn.Connect("accept-certificate", f)
+	return conn.Connect("accept-certificate", externglib.GeneratedClosure{Func: f})
 }
 
 // EmitAcceptCertificate: used by Connection implementations to emit the

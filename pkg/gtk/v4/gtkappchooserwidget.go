@@ -104,13 +104,13 @@ func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
 // selected and the user presses one of the keys Space, Shift+Space, Return or
 // Enter.
 func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) externglib.SignalHandle {
-	return self.Connect("application-activated", f)
+	return self.Connect("application-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectApplicationSelected: emitted when an application item is selected from
 // the widget's list.
 func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) externglib.SignalHandle {
-	return self.Connect("application-selected", f)
+	return self.Connect("application-selected", externglib.GeneratedClosure{Func: f})
 }
 
 // NewAppChooserWidget creates a new GtkAppChooserWidget for applications that

@@ -308,7 +308,7 @@ func marshalDTLSConnectioner(p uintptr) (interface{}, error) {
 // and can simply block in the signal handler until the UI thread returns an
 // answer.
 func (conn *DTLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) externglib.SignalHandle {
-	return conn.Connect("accept-certificate", f)
+	return conn.Connect("accept-certificate", externglib.GeneratedClosure{Func: f})
 }
 
 // Close the DTLS connection. This is equivalent to calling

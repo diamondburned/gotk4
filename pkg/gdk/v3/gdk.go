@@ -116,7 +116,7 @@ func marshalDragContexter(p uintptr) (interface{}, error) {
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
 func (context *DragContext) ConnectActionChanged(f func(action DragAction)) externglib.SignalHandle {
-	return context.Connect("action-changed", f)
+	return context.Connect("action-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCancel: drag and drop operation was cancelled.
@@ -124,7 +124,7 @@ func (context *DragContext) ConnectActionChanged(f func(action DragAction)) exte
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
 func (context *DragContext) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
-	return context.Connect("cancel", f)
+	return context.Connect("cancel", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDNDFinished: drag and drop operation was finished, the drag
@@ -134,7 +134,7 @@ func (context *DragContext) ConnectCancel(f func(reason DragCancelReason)) exter
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
 func (context *DragContext) ConnectDNDFinished(f func()) externglib.SignalHandle {
-	return context.Connect("dnd-finished", f)
+	return context.Connect("dnd-finished", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDropPerformed: drag and drop operation was performed on an accepting
@@ -143,5 +143,5 @@ func (context *DragContext) ConnectDNDFinished(f func()) externglib.SignalHandle
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
 func (context *DragContext) ConnectDropPerformed(f func(time int)) externglib.SignalHandle {
-	return context.Connect("drop-performed", f)
+	return context.Connect("drop-performed", externglib.GeneratedClosure{Func: f})
 }

@@ -62,7 +62,7 @@ func marshalClipboarder(p uintptr) (interface{}, error) {
 
 // ConnectChanged: emitted when the clipboard changes ownership.
 func (clipboard *Clipboard) ConnectChanged(f func()) externglib.SignalHandle {
-	return clipboard.Connect("changed", f)
+	return clipboard.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // Content returns the GdkContentProvider currently set on clipboard.

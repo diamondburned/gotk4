@@ -60,7 +60,7 @@ func marshalGestureSwiper(p uintptr) (interface{}, error) {
 //
 // Velocity and direction are a product of previously recorded events.
 func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) externglib.SignalHandle {
-	return gesture.Connect("swipe", f)
+	return gesture.Connect("swipe", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureSwipe returns a newly created GtkGesture that recognizes swipes.

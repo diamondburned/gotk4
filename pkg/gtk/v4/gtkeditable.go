@@ -329,7 +329,7 @@ func marshalEditabler(p uintptr) (interface{}, error) {
 // deleting the selection, then inserting the new content, and may cause
 // multiple ::notify::text signals to be emitted).
 func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
-	return editable.Connect("changed", f)
+	return editable.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeleteText: emitted when text is deleted from the widget by the user.
@@ -342,7 +342,7 @@ func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
 // The start_pos and end_pos parameters are interpreted as for
 // gtk.Editable.DeleteText().
 func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) externglib.SignalHandle {
-	return editable.Connect("delete-text", f)
+	return editable.Connect("delete-text", externglib.GeneratedClosure{Func: f})
 }
 
 // DeleteSelection deletes the currently selected text of the editable.

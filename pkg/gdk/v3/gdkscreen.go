@@ -54,7 +54,7 @@ func marshalScreener(p uintptr) (interface{}, error) {
 // ConnectCompositedChanged signal is emitted when the composited status of the
 // screen changes.
 func (screen *Screen) ConnectCompositedChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("composited-changed", f)
+	return screen.Connect("composited-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMonitorsChanged signal is emitted when the number, size or position of
@@ -63,13 +63,13 @@ func (screen *Screen) ConnectCompositedChanged(f func()) externglib.SignalHandle
 // Only for X11 and OS X for now. A future implementation for Win32 may be a
 // possibility.
 func (screen *Screen) ConnectMonitorsChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("monitors-changed", f)
+	return screen.Connect("monitors-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSizeChanged signal is emitted when the pixel width or height of a
 // screen changes.
 func (screen *Screen) ConnectSizeChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("size-changed", f)
+	return screen.Connect("size-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ActiveWindow returns the screen’s currently active window.

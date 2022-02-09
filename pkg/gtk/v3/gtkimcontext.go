@@ -242,13 +242,13 @@ func BaseIMContext(obj IMContexter) *IMContext {
 // entered by the user. This can be a single character immediately after a key
 // press or the final result of preediting.
 func (context *IMContext) ConnectCommit(f func(str string)) externglib.SignalHandle {
-	return context.Connect("commit", f)
+	return context.Connect("commit", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeleteSurrounding signal is emitted when the input method needs to
 // delete all or part of the context surrounding the cursor.
 func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) bool) externglib.SignalHandle {
-	return context.Connect("delete-surrounding", f)
+	return context.Connect("delete-surrounding", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreeditChanged signal is emitted whenever the preedit sequence
@@ -256,25 +256,25 @@ func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) bo
 // preedit sequence, in which case gtk_im_context_get_preedit_string() returns
 // the empty string.
 func (context *IMContext) ConnectPreeditChanged(f func()) externglib.SignalHandle {
-	return context.Connect("preedit-changed", f)
+	return context.Connect("preedit-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreeditEnd signal is emitted when a preediting sequence has been
 // completed or canceled.
 func (context *IMContext) ConnectPreeditEnd(f func()) externglib.SignalHandle {
-	return context.Connect("preedit-end", f)
+	return context.Connect("preedit-end", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreeditStart signal is emitted when a new preediting sequence starts.
 func (context *IMContext) ConnectPreeditStart(f func()) externglib.SignalHandle {
-	return context.Connect("preedit-start", f)
+	return context.Connect("preedit-start", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRetrieveSurrounding signal is emitted when the input method requires
 // the context surrounding the cursor. The callback should set the input method
 // surrounding context by calling the gtk_im_context_set_surrounding() method.
 func (context *IMContext) ConnectRetrieveSurrounding(f func() bool) externglib.SignalHandle {
-	return context.Connect("retrieve-surrounding", f)
+	return context.Connect("retrieve-surrounding", externglib.GeneratedClosure{Func: f})
 }
 
 // DeleteSurrounding asks the widget that the input context is attached to to

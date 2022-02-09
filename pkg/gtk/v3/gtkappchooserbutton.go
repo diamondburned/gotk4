@@ -132,7 +132,7 @@ func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
 // gtk_app_chooser_button_append_custom_item(), is activated from the dropdown
 // menu.
 func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) externglib.SignalHandle {
-	return self.Connect("custom-item-activated", f)
+	return self.Connect("custom-item-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // NewAppChooserButton creates a new AppChooserButton for applications that can

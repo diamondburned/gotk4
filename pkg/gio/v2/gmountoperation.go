@@ -103,7 +103,7 @@ func marshalMountOperationer(p uintptr) (interface{}, error) {
 // Implementations of GMountOperation should handle this signal by dismissing
 // open password dialogs.
 func (op *MountOperation) ConnectAborted(f func()) externglib.SignalHandle {
-	return op.Connect("aborted", f)
+	return op.Connect("aborted", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectAskPassword: emitted when a mount operation asks the user for a
@@ -112,7 +112,7 @@ func (op *MountOperation) ConnectAborted(f func()) externglib.SignalHandle {
 // If the message contains a line break, the first line should be presented as a
 // heading. For example, it may be used as the primary text in a MessageDialog.
 func (op *MountOperation) ConnectAskPassword(f func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)) externglib.SignalHandle {
-	return op.Connect("ask-password", f)
+	return op.Connect("ask-password", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectAskQuestion: emitted when asking the user a question and gives a list
@@ -121,12 +121,12 @@ func (op *MountOperation) ConnectAskPassword(f func(message, defaultUser, defaul
 // If the message contains a line break, the first line should be presented as a
 // heading. For example, it may be used as the primary text in a MessageDialog.
 func (op *MountOperation) ConnectAskQuestion(f func(message string, choices []string)) externglib.SignalHandle {
-	return op.Connect("ask-question", f)
+	return op.Connect("ask-question", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectReply: emitted when the user has replied to the mount operation.
 func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) externglib.SignalHandle {
-	return op.Connect("reply", f)
+	return op.Connect("reply", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectShowUnmountProgress: emitted when an unmount operation has been busy
@@ -145,7 +145,7 @@ func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) exte
 // If the message contains a line break, the first line should be presented as a
 // heading. For example, it may be used as the primary text in a MessageDialog.
 func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, timeLeft, bytesLeft int64)) externglib.SignalHandle {
-	return op.Connect("show-unmount-progress", f)
+	return op.Connect("show-unmount-progress", externglib.GeneratedClosure{Func: f})
 }
 
 // NewMountOperation creates a new mount operation.

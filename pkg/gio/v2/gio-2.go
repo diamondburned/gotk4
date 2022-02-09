@@ -163,7 +163,7 @@ func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
 // ConnectChanged: signal emitted when the app info database for changes (ie:
 // newly installed or removed applications).
 func (v *AppInfoMonitor) ConnectChanged(f func()) externglib.SignalHandle {
-	return v.Connect("changed", f)
+	return v.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // BytesIcon specifies an image held in memory in a common format (usually png)
@@ -278,13 +278,13 @@ func marshalDBusAuthObserverer(p uintptr) (interface{}, error) {
 
 // ConnectAllowMechanism: emitted to check if mechanism is allowed to be used.
 func (observer *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string) bool) externglib.SignalHandle {
-	return observer.Connect("allow-mechanism", f)
+	return observer.Connect("allow-mechanism", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectAuthorizeAuthenticatedPeer: emitted to check if a peer that is
 // successfully authenticated is authorized.
 func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(stream IOStreamer, credentials Credentials) bool) externglib.SignalHandle {
-	return observer.Connect("authorize-authenticated-peer", f)
+	return observer.Connect("authorize-authenticated-peer", externglib.GeneratedClosure{Func: f})
 }
 
 // DBusConnection type is used for D-Bus connections to remote peers such as a
@@ -500,7 +500,7 @@ func marshalDBusServerer(p uintptr) (interface{}, error) {
 // messages on connection are processed. This means that it's suitable to call
 // g_dbus_connection_register_object() or similar from the signal handler.
 func (server *DBusServer) ConnectNewConnection(f func(connection DBusConnection) bool) externglib.SignalHandle {
-	return server.Connect("new-connection", f)
+	return server.Connect("new-connection", externglib.GeneratedClosure{Func: f})
 }
 
 // Menu is a simple implementation of Model. You populate a #GMenu by adding
@@ -705,7 +705,7 @@ func marshalSimpleActioner(p uintptr) (interface{}, error) {
 // directly to Action::change-state. This should allow almost all users of
 // Action to connect only one handler or the other.
 func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) externglib.SignalHandle {
-	return simple.Connect("activate", f)
+	return simple.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectChangeState indicates that the action just received a request to
@@ -740,7 +740,7 @@ func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) ext
 // The handler need not set the state to the requested value. It could set it to
 // any value at all, or take some other action.
 func (simple *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) externglib.SignalHandle {
-	return simple.Connect("change-state", f)
+	return simple.Connect("change-state", externglib.GeneratedClosure{Func: f})
 }
 
 // SimpleIOStream creates a OStream from an arbitrary Stream and Stream. This

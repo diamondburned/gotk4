@@ -126,13 +126,13 @@ func marshalEntryBufferer(p uintptr) (interface{}, error) {
 // ConnectDeletedText: this signal is emitted after text is deleted from the
 // buffer.
 func (buffer *EntryBuffer) ConnectDeletedText(f func(position, nChars uint)) externglib.SignalHandle {
-	return buffer.Connect("deleted-text", f)
+	return buffer.Connect("deleted-text", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInsertedText: this signal is emitted after text is inserted into the
 // buffer.
 func (buffer *EntryBuffer) ConnectInsertedText(f func(position uint, chars string, nChars uint)) externglib.SignalHandle {
-	return buffer.Connect("inserted-text", f)
+	return buffer.Connect("inserted-text", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEntryBuffer: create a new GtkEntryBuffer object.

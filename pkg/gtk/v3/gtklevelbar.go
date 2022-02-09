@@ -123,7 +123,7 @@ func marshalLevelBarrer(p uintptr) (interface{}, error) {
 // signal "changed::x" in order to only receive callbacks when the value of
 // offset "x" changes.
 func (self *LevelBar) ConnectOffsetChanged(f func(name string)) externglib.SignalHandle {
-	return self.Connect("offset-changed", f)
+	return self.Connect("offset-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewLevelBar creates a new LevelBar.

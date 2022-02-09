@@ -114,7 +114,7 @@ func marshalToolButtonner(p uintptr) (interface{}, error) {
 // ConnectClicked: this signal is emitted when the tool button is clicked with
 // the mouse or activated with the keyboard.
 func (button *ToolButton) ConnectClicked(f func()) externglib.SignalHandle {
-	return button.Connect("clicked", f)
+	return button.Connect("clicked", externglib.GeneratedClosure{Func: f})
 }
 
 // NewToolButton creates a new ToolButton using icon_widget as contents and

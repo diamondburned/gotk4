@@ -134,7 +134,7 @@ func marshalDBusObjectManagerer(p uintptr) (interface{}, error) {
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
 func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
-	return manager.Connect("interface-added", f)
+	return manager.Connect("interface-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInterfaceRemoved: emitted when interface has been removed from object.
@@ -142,17 +142,17 @@ func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObject
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
 func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
-	return manager.Connect("interface-removed", f)
+	return manager.Connect("interface-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectObjectAdded: emitted when object is added to manager.
 func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) externglib.SignalHandle {
-	return manager.Connect("object-added", f)
+	return manager.Connect("object-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectObjectRemoved: emitted when object is removed from manager.
 func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) externglib.SignalHandle {
-	return manager.Connect("object-removed", f)
+	return manager.Connect("object-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // Interface gets the interface proxy for interface_name at object_path, if any.

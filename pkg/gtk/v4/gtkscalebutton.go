@@ -88,7 +88,7 @@ func marshalScaleButtonner(p uintptr) (interface{}, error) {
 //
 // The default binding for this signal is <kbd>Escape</kbd>.
 func (button *ScaleButton) ConnectPopdown(f func()) externglib.SignalHandle {
-	return button.Connect("popdown", f)
+	return button.Connect("popdown", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPopup: emitted to popup the scale widget.
@@ -98,12 +98,12 @@ func (button *ScaleButton) ConnectPopdown(f func()) externglib.SignalHandle {
 // The default bindings for this signal are <kbd>Space</kbd>, <kbd>Enter</kbd>
 // and <kbd>Return</kbd>.
 func (button *ScaleButton) ConnectPopup(f func()) externglib.SignalHandle {
-	return button.Connect("popup", f)
+	return button.Connect("popup", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectValueChanged: emitted when the value field has changed.
 func (button *ScaleButton) ConnectValueChanged(f func(value float64)) externglib.SignalHandle {
-	return button.Connect("value-changed", f)
+	return button.Connect("value-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewScaleButton creates a GtkScaleButton.

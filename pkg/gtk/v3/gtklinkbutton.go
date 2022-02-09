@@ -118,7 +118,7 @@ func marshalLinkButtonner(p uintptr) (interface{}, error) {
 // signal and stop the propagation of the signal by returning TRUE from your
 // handler.
 func (linkButton *LinkButton) ConnectActivateLink(f func() bool) externglib.SignalHandle {
-	return linkButton.Connect("activate-link", f)
+	return linkButton.Connect("activate-link", externglib.GeneratedClosure{Func: f})
 }
 
 // NewLinkButton creates a new LinkButton with the URI as its text.

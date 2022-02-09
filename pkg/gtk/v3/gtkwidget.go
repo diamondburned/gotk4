@@ -1013,7 +1013,7 @@ func BaseWidget(obj Widgetter) *Widget {
 }
 
 func (widget *Widget) ConnectAccelClosuresChanged(f func()) externglib.SignalHandle {
-	return widget.Connect("accel-closures-changed", f)
+	return widget.Connect("accel-closures-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectButtonPressEvent signal will be emitted when a button (typically from
@@ -1024,7 +1024,7 @@ func (widget *Widget) ConnectAccelClosuresChanged(f func()) externglib.SignalHan
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectButtonPressEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return widget.Connect("button-press-event", f)
+	return widget.Connect("button-press-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectButtonReleaseEvent signal will be emitted when a button (typically
@@ -1035,7 +1035,7 @@ func (widget *Widget) ConnectButtonPressEvent(f func(event *gdk.EventButton) boo
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return widget.Connect("button-release-event", f)
+	return widget.Connect("button-release-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCanActivateAccel determines whether an accelerator that activates the
@@ -1043,13 +1043,13 @@ func (widget *Widget) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) b
 // present to allow applications and derived widgets to override the default
 // Widget handling for determining whether an accelerator can be activated.
 func (widget *Widget) ConnectCanActivateAccel(f func(signalId uint) bool) externglib.SignalHandle {
-	return widget.Connect("can-activate-accel", f)
+	return widget.Connect("can-activate-accel", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectCompositedChanged signal is emitted when the composited status of
 // widgets screen changes. See gdk_screen_is_composited().
 func (widget *Widget) ConnectCompositedChanged(f func()) externglib.SignalHandle {
-	return widget.Connect("composited-changed", f)
+	return widget.Connect("composited-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectConfigureEvent signal will be emitted when the size, position or
@@ -1059,14 +1059,14 @@ func (widget *Widget) ConnectCompositedChanged(f func()) externglib.SignalHandle
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
 func (widget *Widget) ConnectConfigureEvent(f func(event *gdk.EventConfigure) bool) externglib.SignalHandle {
-	return widget.Connect("configure-event", f)
+	return widget.Connect("configure-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDamageEvent: emitted when a redirected window belonging to widget gets
 // drawn into. The region/area members of the event shows what area of the
 // redirected drawable was drawn into.
 func (widget *Widget) ConnectDamageEvent(f func(event *gdk.EventExpose) bool) externglib.SignalHandle {
-	return widget.Connect("damage-event", f)
+	return widget.Connect("damage-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeleteEvent signal is emitted if a user requests that a toplevel
@@ -1075,7 +1075,7 @@ func (widget *Widget) ConnectDamageEvent(f func(event *gdk.EventExpose) bool) ex
 // to be hidden instead, so that it can later be shown again without
 // reconstructing it.
 func (widget *Widget) ConnectDeleteEvent(f func(event *gdk.Event) bool) externglib.SignalHandle {
-	return widget.Connect("delete-event", f)
+	return widget.Connect("delete-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDestroy signals that all holders of a reference to the widget should
@@ -1084,7 +1084,7 @@ func (widget *Widget) ConnectDeleteEvent(f func(event *gdk.Event) bool) externgl
 //
 // This signal is not suitable for saving widget state.
 func (widget *Widget) ConnectDestroy(f func()) externglib.SignalHandle {
-	return widget.Connect("destroy", f)
+	return widget.Connect("destroy", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDestroyEvent signal is emitted when a Window is destroyed. You rarely
@@ -1095,13 +1095,13 @@ func (widget *Widget) ConnectDestroy(f func()) externglib.SignalHandle {
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
 func (widget *Widget) ConnectDestroyEvent(f func(event *gdk.Event) bool) externglib.SignalHandle {
-	return widget.Connect("destroy-event", f)
+	return widget.Connect("destroy-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDirectionChanged signal is emitted when the text direction of a widget
 // changes.
 func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) externglib.SignalHandle {
-	return widget.Connect("direction-changed", f)
+	return widget.Connect("direction-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragBegin signal is emitted on the drag source when a drag is started.
@@ -1112,7 +1112,7 @@ func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirec
 // signal, so you may have to use g_signal_connect_after() to override what the
 // default handler did.
 func (widget *Widget) ConnectDragBegin(f func(context gdk.DragContext)) externglib.SignalHandle {
-	return widget.Connect("drag-begin", f)
+	return widget.Connect("drag-begin", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragDataDelete signal is emitted on the drag source when a drag with
@@ -1120,7 +1120,7 @@ func (widget *Widget) ConnectDragBegin(f func(context gdk.DragContext)) externgl
 // responsible for deleting the data that has been dropped. What "delete" means
 // depends on the context of the drag operation.
 func (widget *Widget) ConnectDragDataDelete(f func(context gdk.DragContext)) externglib.SignalHandle {
-	return widget.Connect("drag-data-delete", f)
+	return widget.Connect("drag-data-delete", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragDataGet signal is emitted on the drag source when the drop site
@@ -1128,7 +1128,7 @@ func (widget *Widget) ConnectDragDataDelete(f func(context gdk.DragContext)) ext
 // handler to fill data with the data in the format which is indicated by info.
 // See gtk_selection_data_set() and gtk_selection_data_set_text().
 func (widget *Widget) ConnectDragDataGet(f func(context gdk.DragContext, data *SelectionData, info, time uint)) externglib.SignalHandle {
-	return widget.Connect("drag-data-get", f)
+	return widget.Connect("drag-data-get", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragDataReceived signal is emitted on the drop site when the dragged
@@ -1189,7 +1189,7 @@ func (widget *Widget) ConnectDragDataGet(f func(context gdk.DragContext, data *S
 //        gtk_drag_finish (context, FALSE, FALSE, time);
 //     }.
 func (widget *Widget) ConnectDragDataReceived(f func(context gdk.DragContext, x, y int, data *SelectionData, info, time uint)) externglib.SignalHandle {
-	return widget.Connect("drag-data-received", f)
+	return widget.Connect("drag-data-received", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragDrop signal is emitted on the drop site when the user drops the
@@ -1202,14 +1202,14 @@ func (widget *Widget) ConnectDragDataReceived(f func(context gdk.DragContext, x,
 // gets triggered by calling gtk_drag_get_data() to receive the data for one or
 // more of the supported targets.
 func (widget *Widget) ConnectDragDrop(f func(context gdk.DragContext, x, y int, time uint) bool) externglib.SignalHandle {
-	return widget.Connect("drag-drop", f)
+	return widget.Connect("drag-drop", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragEnd signal is emitted on the drag source when a drag is finished.
 // A typical reason to connect to this signal is to undo things done in
 // Widget::drag-begin.
 func (widget *Widget) ConnectDragEnd(f func(context gdk.DragContext)) externglib.SignalHandle {
-	return widget.Connect("drag-end", f)
+	return widget.Connect("drag-end", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragFailed signal is emitted on the drag source when a drag has
@@ -1218,7 +1218,7 @@ func (widget *Widget) ConnectDragEnd(f func(context gdk.DragContext)) externglib
 // already handled (not showing the default "drag operation failed" animation),
 // otherwise it returns FALSE.
 func (widget *Widget) ConnectDragFailed(f func(context gdk.DragContext, result DragResult) bool) externglib.SignalHandle {
-	return widget.Connect("drag-failed", f)
+	return widget.Connect("drag-failed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragLeave signal is emitted on the drop site when the cursor leaves
@@ -1227,7 +1227,7 @@ func (widget *Widget) ConnectDragFailed(f func(context gdk.DragContext, result D
 //
 //    Likewise, the Widget::drag-leave signal is also emitted before the ::drag-drop signal, for instance to allow cleaning up of a preview item created in the Widget::drag-motion signal handler.
 func (widget *Widget) ConnectDragLeave(f func(context gdk.DragContext, time uint)) externglib.SignalHandle {
-	return widget.Connect("drag-leave", f)
+	return widget.Connect("drag-leave", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDragMotion signal is emitted on the drop site when the user moves the
@@ -1316,7 +1316,7 @@ func (widget *Widget) ConnectDragLeave(f func(context gdk.DragContext, time uint
 //       }
 //    }.
 func (widget *Widget) ConnectDragMotion(f func(context gdk.DragContext, x, y int, time uint) bool) externglib.SignalHandle {
-	return widget.Connect("drag-motion", f)
+	return widget.Connect("drag-motion", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDraw: this signal is emitted when a widget is supposed to render
@@ -1336,7 +1336,7 @@ func (widget *Widget) ConnectDragMotion(f func(context gdk.DragContext, x, y int
 // get a finer-grained representation of the dirty region with
 // cairo_copy_clip_rectangle_list().
 func (widget *Widget) ConnectDraw(f func(cr *cairo.Context) bool) externglib.SignalHandle {
-	return widget.Connect("draw", f)
+	return widget.Connect("draw", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEnterNotifyEvent will be emitted when the pointer enters the widget's
@@ -1347,7 +1347,7 @@ func (widget *Widget) ConnectDraw(f func(cr *cairo.Context) bool) externglib.Sig
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectEnterNotifyEvent(f func(event *gdk.EventCrossing) bool) externglib.SignalHandle {
-	return widget.Connect("enter-notify-event", f)
+	return widget.Connect("enter-notify-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEvent: GTK+ main loop will emit three signals for each GDK event
@@ -1355,18 +1355,18 @@ func (widget *Widget) ConnectEnterNotifyEvent(f func(event *gdk.EventCrossing) b
 // signal that matches the type of event delivered (e.g.
 // Widget::key-press-event) and finally a generic Widget::event-after signal.
 func (widget *Widget) ConnectEvent(f func(event *gdk.Event) bool) externglib.SignalHandle {
-	return widget.Connect("event", f)
+	return widget.Connect("event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEventAfter: after the emission of the Widget::event signal and
 // (optionally) the second more specific signal, ::event-after will be emitted
 // regardless of the previous two signals handlers return values.
 func (widget *Widget) ConnectEventAfter(f func(event *gdk.Event)) externglib.SignalHandle {
-	return widget.Connect("event-after", f)
+	return widget.Connect("event-after", externglib.GeneratedClosure{Func: f})
 }
 
 func (widget *Widget) ConnectFocus(f func(direction DirectionType) bool) externglib.SignalHandle {
-	return widget.Connect("focus", f)
+	return widget.Connect("focus", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectFocusInEvent signal will be emitted when the keyboard focus enters the
@@ -1375,7 +1375,7 @@ func (widget *Widget) ConnectFocus(f func(direction DirectionType) bool) externg
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_FOCUS_CHANGE_MASK mask.
 func (widget *Widget) ConnectFocusInEvent(f func(event *gdk.EventFocus) bool) externglib.SignalHandle {
-	return widget.Connect("focus-in-event", f)
+	return widget.Connect("focus-in-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectFocusOutEvent signal will be emitted when the keyboard focus leaves
@@ -1384,7 +1384,7 @@ func (widget *Widget) ConnectFocusInEvent(f func(event *gdk.EventFocus) bool) ex
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_FOCUS_CHANGE_MASK mask.
 func (widget *Widget) ConnectFocusOutEvent(f func(event *gdk.EventFocus) bool) externglib.SignalHandle {
-	return widget.Connect("focus-out-event", f)
+	return widget.Connect("focus-out-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectGrabBrokenEvent: emitted when a pointer or keyboard grab on a window
@@ -1394,11 +1394,11 @@ func (widget *Widget) ConnectFocusOutEvent(f func(event *gdk.EventFocus) bool) e
 // of its ancestors is unmapped), or if the same application grabs the pointer
 // or keyboard again.
 func (widget *Widget) ConnectGrabBrokenEvent(f func(event *gdk.EventGrabBroken) bool) externglib.SignalHandle {
-	return widget.Connect("grab-broken-event", f)
+	return widget.Connect("grab-broken-event", externglib.GeneratedClosure{Func: f})
 }
 
 func (widget *Widget) ConnectGrabFocus(f func()) externglib.SignalHandle {
-	return widget.Connect("grab-focus", f)
+	return widget.Connect("grab-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectGrabNotify signal is emitted when a widget becomes shadowed by a GTK+
@@ -1408,13 +1408,13 @@ func (widget *Widget) ConnectGrabFocus(f func()) externglib.SignalHandle {
 // A widget is shadowed by a gtk_grab_add() when the topmost grab widget in the
 // grab stack of its window group is not its ancestor.
 func (widget *Widget) ConnectGrabNotify(f func(wasGrabbed bool)) externglib.SignalHandle {
-	return widget.Connect("grab-notify", f)
+	return widget.Connect("grab-notify", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectHide signal is emitted when widget is hidden, for example with
 // gtk_widget_hide().
 func (widget *Widget) ConnectHide(f func()) externglib.SignalHandle {
-	return widget.Connect("hide", f)
+	return widget.Connect("hide", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectHierarchyChanged signal is emitted when the anchored state of a widget
@@ -1422,7 +1422,7 @@ func (widget *Widget) ConnectHide(f func()) externglib.SignalHandle {
 // signal is emitted when a widget changes from un-anchored to anchored or
 // vice-versa.
 func (widget *Widget) ConnectHierarchyChanged(f func(previousToplevel Widgetter)) externglib.SignalHandle {
-	return widget.Connect("hierarchy-changed", f)
+	return widget.Connect("hierarchy-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeyPressEvent signal is emitted when a key is pressed. The signal
@@ -1433,7 +1433,7 @@ func (widget *Widget) ConnectHierarchyChanged(f func(previousToplevel Widgetter)
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectKeyPressEvent(f func(event *gdk.EventKey) bool) externglib.SignalHandle {
-	return widget.Connect("key-press-event", f)
+	return widget.Connect("key-press-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeyReleaseEvent signal is emitted when a key is released.
@@ -1443,13 +1443,13 @@ func (widget *Widget) ConnectKeyPressEvent(f func(event *gdk.EventKey) bool) ext
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectKeyReleaseEvent(f func(event *gdk.EventKey) bool) externglib.SignalHandle {
-	return widget.Connect("key-release-event", f)
+	return widget.Connect("key-release-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectKeynavFailed gets emitted if keyboard navigation fails. See
 // gtk_widget_keynav_failed() for details.
 func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) externglib.SignalHandle {
-	return widget.Connect("keynav-failed", f)
+	return widget.Connect("keynav-failed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLeaveNotifyEvent will be emitted when the pointer leaves the widget's
@@ -1460,7 +1460,7 @@ func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) 
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectLeaveNotifyEvent(f func(event *gdk.EventCrossing) bool) externglib.SignalHandle {
-	return widget.Connect("leave-notify-event", f)
+	return widget.Connect("leave-notify-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMap signal is emitted when widget is going to be mapped, that is when
@@ -1472,7 +1472,7 @@ func (widget *Widget) ConnectLeaveNotifyEvent(f func(event *gdk.EventCrossing) b
 // instance it can resume an animation that was stopped during the emission of
 // Widget::unmap.
 func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
-	return widget.Connect("map", f)
+	return widget.Connect("map", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMapEvent signal will be emitted when the widget's window is mapped. A
@@ -1482,14 +1482,14 @@ func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
 func (widget *Widget) ConnectMapEvent(f func(event *gdk.EventAny) bool) externglib.SignalHandle {
-	return widget.Connect("map-event", f)
+	return widget.Connect("map-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMnemonicActivate: default handler for this signal activates widget if
 // group_cycling is FALSE, or just makes widget grab focus if group_cycling is
 // TRUE.
 func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) externglib.SignalHandle {
-	return widget.Connect("mnemonic-activate", f)
+	return widget.Connect("mnemonic-activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMotionNotifyEvent signal is emitted when the pointer moves over the
@@ -1500,17 +1500,17 @@ func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) ex
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectMotionNotifyEvent(f func(event *gdk.EventMotion) bool) externglib.SignalHandle {
-	return widget.Connect("motion-notify-event", f)
+	return widget.Connect("motion-notify-event", externglib.GeneratedClosure{Func: f})
 }
 
 func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) externglib.SignalHandle {
-	return widget.Connect("move-focus", f)
+	return widget.Connect("move-focus", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectParentSet signal is emitted when a new parent has been set on a
 // widget.
 func (widget *Widget) ConnectParentSet(f func(oldParent Widgetter)) externglib.SignalHandle {
-	return widget.Connect("parent-set", f)
+	return widget.Connect("parent-set", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPopupMenu: this signal gets emitted whenever a widget should pop up a
@@ -1520,7 +1520,7 @@ func (widget *Widget) ConnectParentSet(f func(oldParent Widgetter)) externglib.S
 // menu with clipboard commands. See the [Popup Menu Migration
 // Checklist][checklist-popup-menu] for an example of how to use this signal.
 func (widget *Widget) ConnectPopupMenu(f func() bool) externglib.SignalHandle {
-	return widget.Connect("popup-menu", f)
+	return widget.Connect("popup-menu", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPropertyNotifyEvent signal will be emitted when a property on the
@@ -1529,7 +1529,7 @@ func (widget *Widget) ConnectPopupMenu(f func() bool) externglib.SignalHandle {
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_PROPERTY_CHANGE_MASK mask.
 func (widget *Widget) ConnectPropertyNotifyEvent(f func(event *gdk.EventProperty) bool) externglib.SignalHandle {
-	return widget.Connect("property-notify-event", f)
+	return widget.Connect("property-notify-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectProximityInEvent: to receive this signal the Window associated to the
@@ -1537,7 +1537,7 @@ func (widget *Widget) ConnectPropertyNotifyEvent(f func(event *gdk.EventProperty
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectProximityInEvent(f func(event *gdk.EventProximity) bool) externglib.SignalHandle {
-	return widget.Connect("proximity-in-event", f)
+	return widget.Connect("proximity-in-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectProximityOutEvent: to receive this signal the Window associated to the
@@ -1545,7 +1545,7 @@ func (widget *Widget) ConnectProximityInEvent(f func(event *gdk.EventProximity) 
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectProximityOutEvent(f func(event *gdk.EventProximity) bool) externglib.SignalHandle {
-	return widget.Connect("proximity-out-event", f)
+	return widget.Connect("proximity-out-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectQueryTooltip: emitted when Widget:has-tooltip is TRUE and the hover
@@ -1560,20 +1560,20 @@ func (widget *Widget) ConnectProximityOutEvent(f func(event *gdk.EventProximity)
 // The signal handler is free to manipulate tooltip with the therefore destined
 // function calls.
 func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
-	return widget.Connect("query-tooltip", f)
+	return widget.Connect("query-tooltip", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRealize signal is emitted when widget is associated with a Window,
 // which means that gtk_widget_realize() has been called or the widget has been
 // mapped (that is, it is going to be drawn).
 func (widget *Widget) ConnectRealize(f func()) externglib.SignalHandle {
-	return widget.Connect("realize", f)
+	return widget.Connect("realize", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectScreenChanged signal gets emitted when the screen of a widget has
 // changed.
 func (widget *Widget) ConnectScreenChanged(f func(previousScreen gdk.Screen)) externglib.SignalHandle {
-	return widget.Connect("screen-changed", f)
+	return widget.Connect("screen-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectScrollEvent signal is emitted when a button in the 4 to 7 range is
@@ -1585,57 +1585,57 @@ func (widget *Widget) ConnectScreenChanged(f func(previousScreen gdk.Screen)) ex
 //
 // This signal will be sent to the grab widget if there is one.
 func (widget *Widget) ConnectScrollEvent(f func(event *gdk.EventScroll) bool) externglib.SignalHandle {
-	return widget.Connect("scroll-event", f)
+	return widget.Connect("scroll-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectionClearEvent signal will be emitted when the the widget's
 // window has lost ownership of a selection.
 func (widget *Widget) ConnectSelectionClearEvent(f func(event *gdk.EventSelection) bool) externglib.SignalHandle {
-	return widget.Connect("selection-clear-event", f)
+	return widget.Connect("selection-clear-event", externglib.GeneratedClosure{Func: f})
 }
 
 func (widget *Widget) ConnectSelectionGet(f func(data *SelectionData, info, time uint)) externglib.SignalHandle {
-	return widget.Connect("selection-get", f)
+	return widget.Connect("selection-get", externglib.GeneratedClosure{Func: f})
 }
 
 func (widget *Widget) ConnectSelectionNotifyEvent(f func(event *gdk.EventSelection) bool) externglib.SignalHandle {
-	return widget.Connect("selection-notify-event", f)
+	return widget.Connect("selection-notify-event", externglib.GeneratedClosure{Func: f})
 }
 
 func (widget *Widget) ConnectSelectionReceived(f func(data *SelectionData, time uint)) externglib.SignalHandle {
-	return widget.Connect("selection-received", f)
+	return widget.Connect("selection-received", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectionRequestEvent signal will be emitted when another client
 // requests ownership of the selection owned by the widget's window.
 func (widget *Widget) ConnectSelectionRequestEvent(f func(event *gdk.EventSelection) bool) externglib.SignalHandle {
-	return widget.Connect("selection-request-event", f)
+	return widget.Connect("selection-request-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectShow signal is emitted when widget is shown, for example with
 // gtk_widget_show().
 func (widget *Widget) ConnectShow(f func()) externglib.SignalHandle {
-	return widget.Connect("show", f)
+	return widget.Connect("show", externglib.GeneratedClosure{Func: f})
 }
 
 func (widget *Widget) ConnectShowHelp(f func(helpType WidgetHelpType) bool) externglib.SignalHandle {
-	return widget.Connect("show-help", f)
+	return widget.Connect("show-help", externglib.GeneratedClosure{Func: f})
 }
 
 func (widget *Widget) ConnectSizeAllocate(f func(allocation *Allocation)) externglib.SignalHandle {
-	return widget.Connect("size-allocate", f)
+	return widget.Connect("size-allocate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStateChanged signal is emitted when the widget state changes. See
 // gtk_widget_get_state().
 func (widget *Widget) ConnectStateChanged(f func(state StateType)) externglib.SignalHandle {
-	return widget.Connect("state-changed", f)
+	return widget.Connect("state-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStateFlagsChanged signal is emitted when the widget state changes, see
 // gtk_widget_get_state_flags().
 func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externglib.SignalHandle {
-	return widget.Connect("state-flags-changed", f)
+	return widget.Connect("state-flags-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStyleSet signal is emitted when a new style has been set on a widget.
@@ -1646,7 +1646,7 @@ func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externg
 // track changes to the StyleContext associated with a widget, use the
 // Widget::style-updated signal.
 func (widget *Widget) ConnectStyleSet(f func(previousStyle Style)) externglib.SignalHandle {
-	return widget.Connect("style-set", f)
+	return widget.Connect("style-set", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStyleUpdated signal is a convenience signal that is emitted when the
@@ -1656,11 +1656,11 @@ func (widget *Widget) ConnectStyleSet(f func(previousStyle Style)) externglib.Si
 // Note that style-modifying functions like gtk_widget_override_color() also
 // cause this signal to be emitted.
 func (widget *Widget) ConnectStyleUpdated(f func()) externglib.SignalHandle {
-	return widget.Connect("style-updated", f)
+	return widget.Connect("style-updated", externglib.GeneratedClosure{Func: f})
 }
 
 func (widget *Widget) ConnectTouchEvent(f func(object *gdk.Event) bool) externglib.SignalHandle {
-	return widget.Connect("touch-event", f)
+	return widget.Connect("touch-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnmap signal is emitted when widget is going to be unmapped, which
@@ -1670,7 +1670,7 @@ func (widget *Widget) ConnectTouchEvent(f func(object *gdk.Event) bool) externgl
 // As ::unmap indicates that a widget will not be shown any longer, it can be
 // used to, for example, stop an animation on the widget.
 func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
-	return widget.Connect("unmap", f)
+	return widget.Connect("unmap", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnmapEvent signal will be emitted when the widget's window is
@@ -1680,14 +1680,14 @@ func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
 func (widget *Widget) ConnectUnmapEvent(f func(event *gdk.EventAny) bool) externglib.SignalHandle {
-	return widget.Connect("unmap-event", f)
+	return widget.Connect("unmap-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnrealize signal is emitted when the Window associated with widget is
 // destroyed, which means that gtk_widget_unrealize() has been called or the
 // widget has been unmapped (that is, it is going to be hidden).
 func (widget *Widget) ConnectUnrealize(f func()) externglib.SignalHandle {
-	return widget.Connect("unrealize", f)
+	return widget.Connect("unrealize", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectVisibilityNotifyEvent will be emitted when the widget's window is
@@ -1696,7 +1696,7 @@ func (widget *Widget) ConnectUnrealize(f func()) externglib.SignalHandle {
 // To receive this signal the Window associated to the widget needs to enable
 // the K_VISIBILITY_NOTIFY_MASK mask.
 func (widget *Widget) ConnectVisibilityNotifyEvent(f func(event *gdk.EventVisibility) bool) externglib.SignalHandle {
-	return widget.Connect("visibility-notify-event", f)
+	return widget.Connect("visibility-notify-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectWindowStateEvent will be emitted when the state of the toplevel window
@@ -1706,7 +1706,7 @@ func (widget *Widget) ConnectVisibilityNotifyEvent(f func(event *gdk.EventVisibi
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
 func (widget *Widget) ConnectWindowStateEvent(f func(event *gdk.EventWindowState) bool) externglib.SignalHandle {
-	return widget.Connect("window-state-event", f)
+	return widget.Connect("window-state-event", externglib.GeneratedClosure{Func: f})
 }
 
 // Activate: for widgets that can be “activated” (buttons, menu items, etc.)

@@ -136,7 +136,7 @@ func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 
 // ConnectNetworkChanged: emitted when the network configuration changes.
 func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable bool)) externglib.SignalHandle {
-	return monitor.Connect("network-changed", f)
+	return monitor.Connect("network-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // CanReach attempts to determine whether or not the host pointed to by

@@ -115,7 +115,7 @@ func marshalCellEditabler(p uintptr) (interface{}, error) {
 // gtk_cell_editable_editing_done() is a convenience method for emitting
 // CellEditable::editing-done.
 func (cellEditable *CellEditable) ConnectEditingDone(f func()) externglib.SignalHandle {
-	return cellEditable.Connect("editing-done", f)
+	return cellEditable.Connect("editing-done", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRemoveWidget: this signal is meant to indicate that the cell is
@@ -130,7 +130,7 @@ func (cellEditable *CellEditable) ConnectEditingDone(f func()) externglib.Signal
 // gtk_cell_editable_remove_widget() is a convenience method for emitting
 // CellEditable::remove-widget.
 func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) externglib.SignalHandle {
-	return cellEditable.Connect("remove-widget", f)
+	return cellEditable.Connect("remove-widget", externglib.GeneratedClosure{Func: f})
 }
 
 // EditingDone emits the CellEditable::editing-done signal.

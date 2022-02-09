@@ -121,7 +121,7 @@ func marshalMenuer(p uintptr) (interface{}, error) {
 }
 
 func (menu *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) externglib.SignalHandle {
-	return menu.Connect("move-scroll", f)
+	return menu.Connect("move-scroll", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPoppedUp: emitted when the position of menu is finalized after being
@@ -146,7 +146,7 @@ func (menu *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) externglib.Si
 // gtk_menu_popup_at_pointer (), Menu:anchor-hints, Menu:rect-anchor-dx,
 // Menu:rect-anchor-dy, and Menu:menu-type-hint.
 func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
-	return menu.Connect("popped-up", f)
+	return menu.Connect("popped-up", externglib.GeneratedClosure{Func: f})
 }
 
 // NewMenu creates a new Menu.

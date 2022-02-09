@@ -154,38 +154,38 @@ func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
 
 // ConnectDriveChanged: emitted when a drive changes.
 func (volumeMonitor *VolumeMonitor) ConnectDriveChanged(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-changed", f)
+	return volumeMonitor.Connect("drive-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDriveConnected: emitted when a drive is connected to the system.
 func (volumeMonitor *VolumeMonitor) ConnectDriveConnected(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-connected", f)
+	return volumeMonitor.Connect("drive-connected", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDriveDisconnected: emitted when a drive is disconnected from the
 // system.
 func (volumeMonitor *VolumeMonitor) ConnectDriveDisconnected(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-disconnected", f)
+	return volumeMonitor.Connect("drive-disconnected", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDriveEjectButton: emitted when the eject button is pressed on drive.
 func (volumeMonitor *VolumeMonitor) ConnectDriveEjectButton(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-eject-button", f)
+	return volumeMonitor.Connect("drive-eject-button", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDriveStopButton: emitted when the stop button is pressed on drive.
 func (volumeMonitor *VolumeMonitor) ConnectDriveStopButton(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-stop-button", f)
+	return volumeMonitor.Connect("drive-stop-button", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMountAdded: emitted when a mount is added.
 func (volumeMonitor *VolumeMonitor) ConnectMountAdded(f func(mount Mounter)) externglib.SignalHandle {
-	return volumeMonitor.Connect("mount-added", f)
+	return volumeMonitor.Connect("mount-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMountChanged: emitted when a mount changes.
 func (volumeMonitor *VolumeMonitor) ConnectMountChanged(f func(mount Mounter)) externglib.SignalHandle {
-	return volumeMonitor.Connect("mount-changed", f)
+	return volumeMonitor.Connect("mount-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMountPreUnmount: may be emitted when a mount is about to be removed.
@@ -193,28 +193,28 @@ func (volumeMonitor *VolumeMonitor) ConnectMountChanged(f func(mount Mounter)) e
 // This signal depends on the backend and is only emitted if GIO was used to
 // unmount.
 func (volumeMonitor *VolumeMonitor) ConnectMountPreUnmount(f func(mount Mounter)) externglib.SignalHandle {
-	return volumeMonitor.Connect("mount-pre-unmount", f)
+	return volumeMonitor.Connect("mount-pre-unmount", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMountRemoved: emitted when a mount is removed.
 func (volumeMonitor *VolumeMonitor) ConnectMountRemoved(f func(mount Mounter)) externglib.SignalHandle {
-	return volumeMonitor.Connect("mount-removed", f)
+	return volumeMonitor.Connect("mount-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectVolumeAdded: emitted when a mountable volume is added to the system.
 func (volumeMonitor *VolumeMonitor) ConnectVolumeAdded(f func(volume Volumer)) externglib.SignalHandle {
-	return volumeMonitor.Connect("volume-added", f)
+	return volumeMonitor.Connect("volume-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectVolumeChanged: emitted when mountable volume is changed.
 func (volumeMonitor *VolumeMonitor) ConnectVolumeChanged(f func(volume Volumer)) externglib.SignalHandle {
-	return volumeMonitor.Connect("volume-changed", f)
+	return volumeMonitor.Connect("volume-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectVolumeRemoved: emitted when a mountable volume is removed from the
 // system.
 func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer)) externglib.SignalHandle {
-	return volumeMonitor.Connect("volume-removed", f)
+	return volumeMonitor.Connect("volume-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectedDrives gets a list of drives connected to the system.

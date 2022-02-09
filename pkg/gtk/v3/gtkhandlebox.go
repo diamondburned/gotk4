@@ -95,13 +95,13 @@ func marshalHandleBoxer(p uintptr) (interface{}, error) {
 // ConnectChildAttached: this signal is emitted when the contents of the
 // handlebox are reattached to the main window.
 func (handleBox *HandleBox) ConnectChildAttached(f func(widget Widgetter)) externglib.SignalHandle {
-	return handleBox.Connect("child-attached", f)
+	return handleBox.Connect("child-attached", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectChildDetached: this signal is emitted when the contents of the
 // handlebox are detached from the main window.
 func (handleBox *HandleBox) ConnectChildDetached(f func(widget Widgetter)) externglib.SignalHandle {
-	return handleBox.Connect("child-detached", f)
+	return handleBox.Connect("child-detached", externglib.GeneratedClosure{Func: f})
 }
 
 // NewHandleBox: create a new handle box.

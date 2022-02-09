@@ -49,17 +49,17 @@ func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 
 // ConnectEnter signals that the pointer has entered the widget.
 func (v *EventControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
-	return v.Connect("enter", f)
+	return v.Connect("enter", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLeave signals that pointer has left the widget.
 func (v *EventControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
-	return v.Connect("leave", f)
+	return v.Connect("leave", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMotion: emitted when the pointer moves inside the widget.
 func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return v.Connect("motion", f)
+	return v.Connect("motion", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEventControllerMotion creates a new event controller that will handle

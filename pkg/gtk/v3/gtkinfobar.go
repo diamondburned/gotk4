@@ -152,14 +152,14 @@ func marshalInfoBarrer(p uintptr) (interface{}, error) {
 //
 // The default binding for this signal is the Escape key.
 func (infoBar *InfoBar) ConnectClose(f func()) externglib.SignalHandle {
-	return infoBar.Connect("close", f)
+	return infoBar.Connect("close", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectResponse: emitted when an action widget is clicked or the application
 // programmer calls gtk_dialog_response(). The response_id depends on which
 // action widget was clicked.
 func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return infoBar.Connect("response", f)
+	return infoBar.Connect("response", externglib.GeneratedClosure{Func: f})
 }
 
 // NewInfoBar creates a new InfoBar object.

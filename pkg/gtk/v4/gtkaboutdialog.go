@@ -226,7 +226,7 @@ func marshalAboutDialogger(p uintptr) (interface{}, error) {
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk.ShowURI().
 func (about *AboutDialog) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
-	return about.Connect("activate-link", f)
+	return about.Connect("activate-link", externglib.GeneratedClosure{Func: f})
 }
 
 // NewAboutDialog creates a new GtkAboutDialog.

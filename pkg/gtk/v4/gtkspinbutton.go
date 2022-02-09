@@ -320,7 +320,7 @@ func marshalSpinButtonner(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal are Up/Down and PageUp/PageDown.
 func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) externglib.SignalHandle {
-	return spinButton.Connect("change-value", f)
+	return spinButton.Connect("change-value", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectOutput: emitted to tweak the formatting of the value for display.
@@ -343,20 +343,20 @@ func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) exte
 //       return TRUE;
 //    }.
 func (spinButton *SpinButton) ConnectOutput(f func() bool) externglib.SignalHandle {
-	return spinButton.Connect("output", f)
+	return spinButton.Connect("output", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectValueChanged: emitted when the value is changed.
 //
 // Also see the gtk.SpinButton::output signal.
 func (spinButton *SpinButton) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return spinButton.Connect("value-changed", f)
+	return spinButton.Connect("value-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectWrapped: emitted right after the spinbutton wraps from its maximum to
 // its minimum value or vice-versa.
 func (spinButton *SpinButton) ConnectWrapped(f func()) externglib.SignalHandle {
-	return spinButton.Connect("wrapped", f)
+	return spinButton.Connect("wrapped", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSpinButton creates a new GtkSpinButton.

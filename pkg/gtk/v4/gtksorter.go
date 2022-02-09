@@ -187,7 +187,7 @@ func marshalSorterer(p uintptr) (interface{}, error) {
 // order without a full resorting. Refer to the gtk.SorterChange documentation
 // for details.
 func (self *Sorter) ConnectChanged(f func(change SorterChange)) externglib.SignalHandle {
-	return self.Connect("changed", f)
+	return self.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // Changed emits the gtk.Sorter::changed signal to notify all users of the

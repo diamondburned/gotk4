@@ -129,7 +129,7 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 // UIManager proxies the signal and provides global notification just before any
 // action is connected to a proxy, which is probably more convenient to use.
 func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return actionGroup.Connect("connect-proxy", f)
+	return actionGroup.Connect("connect-proxy", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
@@ -138,7 +138,7 @@ func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action Action, proxy 
 // UIManager proxies the signal and provides global notification just before any
 // action is connected to a proxy, which is probably more convenient to use.
 func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return actionGroup.Connect("disconnect-proxy", f)
+	return actionGroup.Connect("disconnect-proxy", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPostActivate signal is emitted just after the action in the
@@ -147,7 +147,7 @@ func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action Action, pro
 // This is intended for UIManager to proxy the signal and provide global
 // notification just after any action is activated.
 func (actionGroup *ActionGroup) ConnectPostActivate(f func(action Action)) externglib.SignalHandle {
-	return actionGroup.Connect("post-activate", f)
+	return actionGroup.Connect("post-activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreActivate signal is emitted just before the action in the
@@ -156,7 +156,7 @@ func (actionGroup *ActionGroup) ConnectPostActivate(f func(action Action)) exter
 // This is intended for UIManager to proxy the signal and provide global
 // notification just before any action is activated.
 func (actionGroup *ActionGroup) ConnectPreActivate(f func(action Action)) externglib.SignalHandle {
-	return actionGroup.Connect("pre-activate", f)
+	return actionGroup.Connect("pre-activate", externglib.GeneratedClosure{Func: f})
 }
 
 // NewActionGroup creates a new ActionGroup object. The name of the action group

@@ -129,7 +129,7 @@ func marshalStatusIconner(p uintptr) (interface{}, error) {
 // Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
 // applications and should be wrapped by language bindings.
 func (statusIcon *StatusIcon) ConnectActivate(f func()) externglib.SignalHandle {
-	return statusIcon.Connect("activate", f)
+	return statusIcon.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectButtonPressEvent signal will be emitted when a button (typically from
@@ -138,7 +138,7 @@ func (statusIcon *StatusIcon) ConnectActivate(f func()) externglib.SignalHandle 
 // Whether this event is emitted is platform-dependent. Use the ::activate and
 // ::popup-menu signals in preference.
 func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return statusIcon.Connect("button-press-event", f)
+	return statusIcon.Connect("button-press-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectButtonReleaseEvent signal will be emitted when a button (typically
@@ -147,7 +147,7 @@ func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event *gdk.EventBut
 // Whether this event is emitted is platform-dependent. Use the ::activate and
 // ::popup-menu signals in preference.
 func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return statusIcon.Connect("button-release-event", f)
+	return statusIcon.Connect("button-release-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPopupMenu gets emitted when the user brings up the context menu of the
@@ -160,7 +160,7 @@ func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event *gdk.EventB
 // Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
 // applications and should be wrapped by language bindings.
 func (statusIcon *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)) externglib.SignalHandle {
-	return statusIcon.Connect("popup-menu", f)
+	return statusIcon.Connect("popup-menu", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectQueryTooltip: emitted when the hover timeout has expired with the
@@ -178,7 +178,7 @@ func (statusIcon *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)
 // Whether this signal is emitted is platform-dependent. For plain text
 // tooltips, use StatusIcon:tooltip-text in preference.
 func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
-	return statusIcon.Connect("query-tooltip", f)
+	return statusIcon.Connect("query-tooltip", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectScrollEvent signal is emitted when a button in the 4 to 7 range is
@@ -187,13 +187,13 @@ func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode 
 //
 // Whether this event is emitted is platform-dependent.
 func (statusIcon *StatusIcon) ConnectScrollEvent(f func(event *gdk.EventScroll) bool) externglib.SignalHandle {
-	return statusIcon.Connect("scroll-event", f)
+	return statusIcon.Connect("scroll-event", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSizeChanged gets emitted when the size available for the image
 // changes, e.g. because the notification area got resized.
 func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int) bool) externglib.SignalHandle {
-	return statusIcon.Connect("size-changed", f)
+	return statusIcon.Connect("size-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewStatusIcon creates an empty status icon object.

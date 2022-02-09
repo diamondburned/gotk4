@@ -76,7 +76,7 @@ func marshalThreadedSocketServicer(p uintptr) (interface{}, error) {
 // blocking IO. The signal handler need not return until the connection is
 // closed.
 func (service *ThreadedSocketService) ConnectRun(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
-	return service.Connect("run", f)
+	return service.Connect("run", externglib.GeneratedClosure{Func: f})
 }
 
 // NewThreadedSocketService creates a new SocketService with no listeners.

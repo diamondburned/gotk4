@@ -167,7 +167,7 @@ func BaseDeviceManager(obj DeviceManagerer) *DeviceManager {
 // ConnectDeviceAdded signal is emitted either when a new master pointer is
 // created, or when a slave (Hardware) input device is plugged in.
 func (deviceManager *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
-	return deviceManager.Connect("device-added", f)
+	return deviceManager.Connect("device-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeviceChanged signal is emitted whenever a device has changed in the
@@ -180,13 +180,13 @@ func (deviceManager *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) e
 // to GDK_DEVICE_TYPE_FLOATING, if it's attached, it will change to
 // GDK_DEVICE_TYPE_SLAVE.
 func (deviceManager *DeviceManager) ConnectDeviceChanged(f func(device Devicer)) externglib.SignalHandle {
-	return deviceManager.Connect("device-changed", f)
+	return deviceManager.Connect("device-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDeviceRemoved signal is emitted either when a master pointer is
 // removed, or when a slave (Hardware) input device is unplugged.
 func (deviceManager *DeviceManager) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
-	return deviceManager.Connect("device-removed", f)
+	return deviceManager.Connect("device-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // ClientPointer returns the client pointer, that is, the master pointer that

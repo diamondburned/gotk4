@@ -70,7 +70,7 @@ func marshalCellRendererCombor(p uintptr) (interface{}, error) {
 // most probably want to refrain from changing the model until the combo cell
 // renderer emits the edited or editing_canceled signal.
 func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *TreeIter)) externglib.SignalHandle {
-	return v.Connect("changed", f)
+	return v.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is

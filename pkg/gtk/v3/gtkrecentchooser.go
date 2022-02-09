@@ -348,7 +348,7 @@ func marshalRecentChooserer(p uintptr) (interface{}, error) {
 // recent item in the recent chooser. This can happen by double-clicking on an
 // item in the recently used resources list, or by pressing Enter.
 func (chooser *RecentChooser) ConnectItemActivated(f func()) externglib.SignalHandle {
-	return chooser.Connect("item-activated", f)
+	return chooser.Connect("item-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSelectionChanged: this signal is emitted when there is a change in the
@@ -356,7 +356,7 @@ func (chooser *RecentChooser) ConnectItemActivated(f func()) externglib.SignalHa
 // the selection with the mouse or the keyboard, or when explicitly calling
 // functions to change the selection.
 func (chooser *RecentChooser) ConnectSelectionChanged(f func()) externglib.SignalHandle {
-	return chooser.Connect("selection-changed", f)
+	return chooser.Connect("selection-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // AddFilter adds filter to the list of RecentFilter objects held by chooser.

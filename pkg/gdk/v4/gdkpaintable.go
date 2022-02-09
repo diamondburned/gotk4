@@ -275,7 +275,7 @@ func marshalPaintabler(p uintptr) (interface{}, error) {
 // Examples for such an event would be videos changing to the next frame or the
 // icon theme for an icon changing.
 func (paintable *Paintable) ConnectInvalidateContents(f func()) externglib.SignalHandle {
-	return paintable.Connect("invalidate-contents", f)
+	return paintable.Connect("invalidate-contents", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectInvalidateSize: emitted when the intrinsic size of the paintable
@@ -288,7 +288,7 @@ func (paintable *Paintable) ConnectInvalidateContents(f func()) externglib.Signa
 // Examples for such an event would be a paintable displaying the contents of a
 // toplevel surface being resized.
 func (paintable *Paintable) ConnectInvalidateSize(f func()) externglib.SignalHandle {
-	return paintable.Connect("invalidate-size", f)
+	return paintable.Connect("invalidate-size", externglib.GeneratedClosure{Func: f})
 }
 
 // ComputeConcreteSize: compute a concrete size for the GdkPaintable.

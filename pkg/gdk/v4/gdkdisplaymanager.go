@@ -128,7 +128,7 @@ func marshalDisplayManagerer(p uintptr) (interface{}, error) {
 
 // ConnectDisplayOpened: emitted when a display is opened.
 func (manager *DisplayManager) ConnectDisplayOpened(f func(display Display)) externglib.SignalHandle {
-	return manager.Connect("display-opened", f)
+	return manager.Connect("display-opened", externglib.GeneratedClosure{Func: f})
 }
 
 // DefaultDisplay gets the default GdkDisplay.

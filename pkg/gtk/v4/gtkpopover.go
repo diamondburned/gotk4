@@ -167,12 +167,12 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (popover *Popover) ConnectActivateDefault(f func()) externglib.SignalHandle {
-	return popover.Connect("activate-default", f)
+	return popover.Connect("activate-default", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectClosed: emitted when the popover is closed.
 func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
-	return popover.Connect("closed", f)
+	return popover.Connect("closed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewPopover creates a new GtkPopover.

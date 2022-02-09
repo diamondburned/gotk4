@@ -125,13 +125,13 @@ func BaseDevice(obj Devicer) *Device {
 // mouse to a tablet); in that case the logical device will change to reflect
 // the axes and keys on the new physical device.
 func (device *Device) ConnectChanged(f func()) externglib.SignalHandle {
-	return device.Connect("changed", f)
+	return device.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectToolChanged: emitted on pen/eraser devices whenever tools enter or
 // leave proximity.
 func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.SignalHandle {
-	return device.Connect("tool-changed", f)
+	return device.Connect("tool-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // CapsLockState retrieves whether the Caps Lock modifier of the keyboard is

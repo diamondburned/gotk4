@@ -237,7 +237,7 @@ func marshalSpinButtonner(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal are Up/Down and PageUp and/PageDown.
 func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) externglib.SignalHandle {
-	return spinButton.Connect("change-value", f)
+	return spinButton.Connect("change-value", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectOutput signal can be used to change to formatting of the value that is
@@ -261,19 +261,19 @@ func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) exte
 //       return TRUE;
 //    }.
 func (spinButton *SpinButton) ConnectOutput(f func() bool) externglib.SignalHandle {
-	return spinButton.Connect("output", f)
+	return spinButton.Connect("output", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectValueChanged signal is emitted when the value represented by
 // spinbutton changes. Also see the SpinButton::output signal.
 func (spinButton *SpinButton) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return spinButton.Connect("value-changed", f)
+	return spinButton.Connect("value-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectWrapped signal is emitted right after the spinbutton wraps from its
 // maximum to minimum value or vice-versa.
 func (spinButton *SpinButton) ConnectWrapped(f func()) externglib.SignalHandle {
-	return spinButton.Connect("wrapped", f)
+	return spinButton.Connect("wrapped", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSpinButton creates a new SpinButton.

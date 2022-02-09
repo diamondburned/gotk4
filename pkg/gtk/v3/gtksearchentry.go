@@ -118,7 +118,7 @@ func marshalSearchEntrier(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal is Ctrl-g.
 func (entry *SearchEntry) ConnectNextMatch(f func()) externglib.SignalHandle {
-	return entry.Connect("next-match", f)
+	return entry.Connect("next-match", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPreviousMatch signal is a [keybinding signal][GtkBindingSignal] which
@@ -129,13 +129,13 @@ func (entry *SearchEntry) ConnectNextMatch(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal is Ctrl-Shift-g.
 func (entry *SearchEntry) ConnectPreviousMatch(f func()) externglib.SignalHandle {
-	return entry.Connect("previous-match", f)
+	return entry.Connect("previous-match", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSearchChanged signal is emitted with a short delay of 150 milliseconds
 // after the last change to the entry text.
 func (entry *SearchEntry) ConnectSearchChanged(f func()) externglib.SignalHandle {
-	return entry.Connect("search-changed", f)
+	return entry.Connect("search-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStopSearch signal is a [keybinding signal][GtkBindingSignal] which
@@ -146,7 +146,7 @@ func (entry *SearchEntry) ConnectSearchChanged(f func()) externglib.SignalHandle
 //
 // The default bindings for this signal is Escape.
 func (entry *SearchEntry) ConnectStopSearch(f func()) externglib.SignalHandle {
-	return entry.Connect("stop-search", f)
+	return entry.Connect("stop-search", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSearchEntry creates a SearchEntry, with a find icon when the search field

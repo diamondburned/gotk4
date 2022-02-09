@@ -361,26 +361,26 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 // ConnectActionAdded signals that a new action was just added to the group.
 // This signal is emitted after the action has been added and is now visible.
 func (actionGroup *ActionGroup) ConnectActionAdded(f func(actionName string)) externglib.SignalHandle {
-	return actionGroup.Connect("action-added", f)
+	return actionGroup.Connect("action-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectActionEnabledChanged signals that the enabled status of the named
 // action has changed.
 func (actionGroup *ActionGroup) ConnectActionEnabledChanged(f func(actionName string, enabled bool)) externglib.SignalHandle {
-	return actionGroup.Connect("action-enabled-changed", f)
+	return actionGroup.Connect("action-enabled-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectActionRemoved signals that an action is just about to be removed from
 // the group. This signal is emitted before the action is removed, so the action
 // is still visible and can be queried from the signal handler.
 func (actionGroup *ActionGroup) ConnectActionRemoved(f func(actionName string)) externglib.SignalHandle {
-	return actionGroup.Connect("action-removed", f)
+	return actionGroup.Connect("action-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectActionStateChanged signals that the state of the named action has
 // changed.
 func (actionGroup *ActionGroup) ConnectActionStateChanged(f func(actionName string, value *glib.Variant)) externglib.SignalHandle {
-	return actionGroup.Connect("action-state-changed", f)
+	return actionGroup.Connect("action-state-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ActionAdded emits the Group::action-added signal on action_group.

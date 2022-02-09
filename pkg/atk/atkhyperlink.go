@@ -179,7 +179,7 @@ func marshalHyperlinker(p uintptr) (interface{}, error) {
 // ConnectLinkActivated: signal link-activated is emitted when a link is
 // activated.
 func (link_ *Hyperlink) ConnectLinkActivated(f func()) externglib.SignalHandle {
-	return link_.Connect("link-activated", f)
+	return link_.Connect("link-activated", externglib.GeneratedClosure{Func: f})
 }
 
 // EndIndex gets the index with the hypertext document at which this link ends.

@@ -1610,7 +1610,7 @@ func marshalStyler(p uintptr) (interface{}, error) {
 // time applications and widgets only deal with styles that have been already
 // realized.
 func (style *Style) ConnectRealize(f func()) externglib.SignalHandle {
-	return style.Connect("realize", f)
+	return style.Connect("realize", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectUnrealize: emitted when the aspects of the style specific to a
@@ -1618,7 +1618,7 @@ func (style *Style) ConnectRealize(f func()) externglib.SignalHandle {
 // useful if a widget wants to cache objects as object data on Style. This
 // signal provides a convenient place to free such cached objects.
 func (style *Style) ConnectUnrealize(f func()) externglib.SignalHandle {
-	return style.Connect("unrealize", f)
+	return style.Connect("unrealize", externglib.GeneratedClosure{Func: f})
 }
 
 // NewStyle creates a new Style.

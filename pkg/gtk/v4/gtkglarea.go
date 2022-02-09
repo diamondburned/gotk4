@@ -183,7 +183,7 @@ func marshalGLAreaer(p uintptr) (interface{}, error) {
 // gtk.GLArea.SetError() to register a more detailed error of how the
 // construction failed.
 func (area *GLArea) ConnectCreateContext(f func() gdk.GLContexter) externglib.SignalHandle {
-	return area.Connect("create-context", f)
+	return area.Connect("create-context", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectRender: emitted every time the contents of the GtkGLArea should be
@@ -192,7 +192,7 @@ func (area *GLArea) ConnectCreateContext(f func() gdk.GLContexter) externglib.Si
 // The context is bound to the area prior to emitting this function, and the
 // buffers are painted to the window once the emission terminates.
 func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) externglib.SignalHandle {
-	return area.Connect("render", f)
+	return area.Connect("render", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectResize: emitted once when the widget is realized, and then each time
@@ -207,7 +207,7 @@ func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) externgl
 //
 // The default handler sets up the GL viewport.
 func (area *GLArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
-	return area.Connect("resize", f)
+	return area.Connect("resize", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGLArea creates a new GtkGLArea widget.

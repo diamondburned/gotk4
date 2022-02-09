@@ -106,7 +106,7 @@ func marshalSwitcher(p uintptr) (interface{}, error) {
 // Applications should never connect to this signal, but use the
 // gtk.Switch:active property.
 func (self *Switch) ConnectActivate(f func()) externglib.SignalHandle {
-	return self.Connect("activate", f)
+	return self.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStateSet: emitted to change the underlying state.
@@ -124,7 +124,7 @@ func (self *Switch) ConnectActivate(f func()) externglib.SignalHandle {
 // switch, while the gtk.Switch`:active property is represented by the position
 // of the switch.
 func (self *Switch) ConnectStateSet(f func(state bool) bool) externglib.SignalHandle {
-	return self.Connect("state-set", f)
+	return self.Connect("state-set", externglib.GeneratedClosure{Func: f})
 }
 
 // NewSwitch creates a new GtkSwitch widget.

@@ -118,7 +118,7 @@ func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 //
 // In all the other cases, other_file will be set to LL.
 func (monitor *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventType FileMonitorEvent)) externglib.SignalHandle {
-	return monitor.Connect("changed", f)
+	return monitor.Connect("changed", externglib.GeneratedClosure{Func: f})
 }
 
 // Cancel cancels a file monitor.

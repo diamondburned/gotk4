@@ -183,13 +183,13 @@ func marshalToolbarrer(p uintptr) (interface{}, error) {
 // ConnectFocusHomeOrEnd: keybinding signal used internally by GTK+. This signal
 // can't be used in application code.
 func (toolbar *Toolbar) ConnectFocusHomeOrEnd(f func(focusHome bool) bool) externglib.SignalHandle {
-	return toolbar.Connect("focus-home-or-end", f)
+	return toolbar.Connect("focus-home-or-end", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectOrientationChanged: emitted when the orientation of the toolbar
 // changes.
 func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation)) externglib.SignalHandle {
-	return toolbar.Connect("orientation-changed", f)
+	return toolbar.Connect("orientation-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPopupContextMenu: emitted when the user right-clicks the toolbar or
@@ -200,12 +200,12 @@ func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation
 // coordinates given by x and y. The mouse button number is given by the button
 // parameter. If the menu was popped up using the keybaord, button is -1.
 func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int) bool) externglib.SignalHandle {
-	return toolbar.Connect("popup-context-menu", f)
+	return toolbar.Connect("popup-context-menu", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectStyleChanged: emitted when the style of the toolbar changes.
 func (toolbar *Toolbar) ConnectStyleChanged(f func(style ToolbarStyle)) externglib.SignalHandle {
-	return toolbar.Connect("style-changed", f)
+	return toolbar.Connect("style-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewToolbar creates a new toolbar.

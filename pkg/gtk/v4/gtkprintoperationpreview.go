@@ -114,7 +114,7 @@ func marshalPrintOperationPreviewer(p uintptr) (interface{}, error) {
 // and set up a suitable cairo context, using
 // gtk.PrintContext.SetCairoContext().
 func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context PrintContext, pageSetup PageSetup)) externglib.SignalHandle {
-	return preview.Connect("got-page-size", f)
+	return preview.Connect("got-page-size", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectReady signal gets emitted once per preview operation, before the first
@@ -122,7 +122,7 @@ func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context PrintCon
 //
 // A handler for this signal can be used for setup tasks.
 func (preview *PrintOperationPreview) ConnectReady(f func(context PrintContext)) externglib.SignalHandle {
-	return preview.Connect("ready", f)
+	return preview.Connect("ready", externglib.GeneratedClosure{Func: f})
 }
 
 // EndPreview ends a preview.

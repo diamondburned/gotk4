@@ -112,7 +112,7 @@ func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
 //
 // Note that this signal is only emitted when the user changes the file.
 func (button *FileChooserButton) ConnectFileSet(f func()) externglib.SignalHandle {
-	return button.Connect("file-set", f)
+	return button.Connect("file-set", externglib.GeneratedClosure{Func: f})
 }
 
 // NewFileChooserButton creates a new file-selecting button widget.

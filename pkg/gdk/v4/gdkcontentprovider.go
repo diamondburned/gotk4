@@ -137,7 +137,7 @@ func marshalContentProviderer(p uintptr) (interface{}, error) {
 // ConnectContentChanged: emitted whenever the content provided by this provider
 // has changed.
 func (provider *ContentProvider) ConnectContentChanged(f func()) externglib.SignalHandle {
-	return provider.Connect("content-changed", f)
+	return provider.Connect("content-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // ContentChanged emits the ::content-changed signal.

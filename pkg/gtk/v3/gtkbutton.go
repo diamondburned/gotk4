@@ -133,33 +133,33 @@ func marshalButtonner(p uintptr) (interface{}, error) {
 // causes the button to animate press then release. Applications should never
 // connect to this signal, but use the Button::clicked signal.
 func (button *Button) ConnectActivate(f func()) externglib.SignalHandle {
-	return button.Connect("activate", f)
+	return button.Connect("activate", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectClicked: emitted when the button has been activated (pressed and
 // released).
 func (button *Button) ConnectClicked(f func()) externglib.SignalHandle {
-	return button.Connect("clicked", f)
+	return button.Connect("clicked", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectEnter: emitted when the pointer enters the button.
 func (button *Button) ConnectEnter(f func()) externglib.SignalHandle {
-	return button.Connect("enter", f)
+	return button.Connect("enter", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLeave: emitted when the pointer leaves the button.
 func (button *Button) ConnectLeave(f func()) externglib.SignalHandle {
-	return button.Connect("leave", f)
+	return button.Connect("leave", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPressed: emitted when the button is pressed.
 func (button *Button) ConnectPressed(f func()) externglib.SignalHandle {
-	return button.Connect("pressed", f)
+	return button.Connect("pressed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectReleased: emitted when the button is released.
 func (button *Button) ConnectReleased(f func()) externglib.SignalHandle {
-	return button.Connect("released", f)
+	return button.Connect("released", externglib.GeneratedClosure{Func: f})
 }
 
 // NewButton creates a new Button widget. To add a child widget to the button,

@@ -59,35 +59,35 @@ func marshalDisplayer(p uintptr) (interface{}, error) {
 // ConnectClosed signal is emitted when the connection to the windowing system
 // for display is closed.
 func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
-	return display.Connect("closed", f)
+	return display.Connect("closed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMonitorAdded signal is emitted whenever a monitor is added.
 func (display *Display) ConnectMonitorAdded(f func(monitor Monitor)) externglib.SignalHandle {
-	return display.Connect("monitor-added", f)
+	return display.Connect("monitor-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMonitorRemoved signal is emitted whenever a monitor is removed.
 func (display *Display) ConnectMonitorRemoved(f func(monitor Monitor)) externglib.SignalHandle {
-	return display.Connect("monitor-removed", f)
+	return display.Connect("monitor-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectOpened signal is emitted when the connection to the windowing system
 // for display is opened.
 func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
-	return display.Connect("opened", f)
+	return display.Connect("opened", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSeatAdded signal is emitted whenever a new seat is made known to the
 // windowing system.
 func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-added", f)
+	return display.Connect("seat-added", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectSeatRemoved signal is emitted whenever a seat is removed by the
 // windowing system.
 func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-removed", f)
+	return display.Connect("seat-removed", externglib.GeneratedClosure{Func: f})
 }
 
 // Beep emits a short beep on display.

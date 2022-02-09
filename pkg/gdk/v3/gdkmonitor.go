@@ -94,7 +94,7 @@ func marshalMonitorrer(p uintptr) (interface{}, error) {
 }
 
 func (monitor *Monitor) ConnectInvalidate(f func()) externglib.SignalHandle {
-	return monitor.Connect("invalidate", f)
+	return monitor.Connect("invalidate", externglib.GeneratedClosure{Func: f})
 }
 
 // Display gets the display that this monitor belongs to.

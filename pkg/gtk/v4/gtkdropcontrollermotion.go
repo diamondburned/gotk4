@@ -52,17 +52,17 @@ func marshalDropControllerMotioner(p uintptr) (interface{}, error) {
 
 // ConnectEnter signals that the pointer has entered the widget.
 func (self *DropControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
-	return self.Connect("enter", f)
+	return self.Connect("enter", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectLeave signals that the pointer has left the widget.
 func (self *DropControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
-	return self.Connect("leave", f)
+	return self.Connect("leave", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectMotion: emitted when the pointer moves inside the widget.
 func (self *DropControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return self.Connect("motion", f)
+	return self.Connect("motion", externglib.GeneratedClosure{Func: f})
 }
 
 // NewDropControllerMotion creates a new event controller that will handle

@@ -107,7 +107,7 @@ func marshalRadioMenuItemmer(p uintptr) (interface{}, error) {
 }
 
 func (radioMenuItem *RadioMenuItem) ConnectGroupChanged(f func()) externglib.SignalHandle {
-	return radioMenuItem.Connect("group-changed", f)
+	return radioMenuItem.Connect("group-changed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewRadioMenuItem creates a new RadioMenuItem.

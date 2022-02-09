@@ -56,13 +56,13 @@ func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 // ConnectCancelled: this signal is emitted whenever a press moved too far, or
 // was released before GestureLongPress::pressed happened.
 func (v *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
-	return v.Connect("cancelled", f)
+	return v.Connect("cancelled", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectPressed: this signal is emitted whenever a press goes
 // unmoved/unreleased longer than what the GTK+ defaults tell.
 func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
-	return v.Connect("pressed", f)
+	return v.Connect("pressed", externglib.GeneratedClosure{Func: f})
 }
 
 // NewGestureLongPress returns a newly created Gesture that recognizes long

@@ -103,7 +103,7 @@ func marshalEmojiChooserer(p uintptr) (interface{}, error) {
 
 // ConnectEmojiPicked: emitted when the user selects an Emoji.
 func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) externglib.SignalHandle {
-	return v.Connect("emoji-picked", f)
+	return v.Connect("emoji-picked", externglib.GeneratedClosure{Func: f})
 }
 
 // NewEmojiChooser creates a new GtkEmojiChooser.

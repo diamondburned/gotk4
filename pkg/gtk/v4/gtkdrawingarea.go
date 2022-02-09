@@ -185,7 +185,7 @@ func marshalDrawingAreaer(p uintptr) (interface{}, error) {
 // This is useful in order to keep state up to date with the widget size, like
 // for instance a backing surface.
 func (self *DrawingArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
-	return self.Connect("resize", f)
+	return self.Connect("resize", externglib.GeneratedClosure{Func: f})
 }
 
 // NewDrawingArea creates a new drawing area.

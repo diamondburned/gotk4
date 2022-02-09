@@ -211,7 +211,7 @@ func marshalClipboarder(p uintptr) (interface{}, error) {
 // indicates that the ownership of the selection associated with clipboard has
 // changed.
 func (clipboard *Clipboard) ConnectOwnerChange(f func(event *gdk.EventOwnerChange)) externglib.SignalHandle {
-	return clipboard.Connect("owner-change", f)
+	return clipboard.Connect("owner-change", externglib.GeneratedClosure{Func: f})
 }
 
 // Clear clears the contents of the clipboard. Generally this should only be

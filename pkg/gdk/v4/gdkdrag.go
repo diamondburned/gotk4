@@ -135,7 +135,7 @@ func BaseDrag(obj Dragger) *Drag {
 
 // ConnectCancel: emitted when the drag operation is cancelled.
 func (drag *Drag) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
-	return drag.Connect("cancel", f)
+	return drag.Connect("cancel", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDNDFinished: emitted when the destination side has finished reading
@@ -143,13 +143,13 @@ func (drag *Drag) ConnectCancel(f func(reason DragCancelReason)) externglib.Sign
 //
 // The drag object can now free all miscellaneous data.
 func (drag *Drag) ConnectDNDFinished(f func()) externglib.SignalHandle {
-	return drag.Connect("dnd-finished", f)
+	return drag.Connect("dnd-finished", externglib.GeneratedClosure{Func: f})
 }
 
 // ConnectDropPerformed: emitted when the drop operation is performed on an
 // accepting client.
 func (drag *Drag) ConnectDropPerformed(f func()) externglib.SignalHandle {
-	return drag.Connect("drop-performed", f)
+	return drag.Connect("drop-performed", externglib.GeneratedClosure{Func: f})
 }
 
 // DropDone informs GDK that the drop ended.

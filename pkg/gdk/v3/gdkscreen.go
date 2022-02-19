@@ -14,6 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_Screen_ConnectCompositedChanged(gpointer, guintptr);
+// extern void _gotk4_gdk3_Screen_ConnectMonitorsChanged(gpointer, guintptr);
+// extern void _gotk4_gdk3_Screen_ConnectSizeChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -51,10 +54,42 @@ func marshalScreener(p uintptr) (interface{}, error) {
 	return wrapScreen(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdk3_Screen_ConnectCompositedChanged
+func _gotk4_gdk3_Screen_ConnectCompositedChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectCompositedChanged signal is emitted when the composited status of the
 // screen changes.
 func (screen *Screen) ConnectCompositedChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("composited-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(screen, "composited-changed", false, unsafe.Pointer(C._gotk4_gdk3_Screen_ConnectCompositedChanged), f)
+}
+
+//export _gotk4_gdk3_Screen_ConnectMonitorsChanged
+func _gotk4_gdk3_Screen_ConnectMonitorsChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectMonitorsChanged signal is emitted when the number, size or position of
@@ -63,13 +98,29 @@ func (screen *Screen) ConnectCompositedChanged(f func()) externglib.SignalHandle
 // Only for X11 and OS X for now. A future implementation for Win32 may be a
 // possibility.
 func (screen *Screen) ConnectMonitorsChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("monitors-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(screen, "monitors-changed", false, unsafe.Pointer(C._gotk4_gdk3_Screen_ConnectMonitorsChanged), f)
+}
+
+//export _gotk4_gdk3_Screen_ConnectSizeChanged
+func _gotk4_gdk3_Screen_ConnectSizeChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSizeChanged signal is emitted when the pixel width or height of a
 // screen changes.
 func (screen *Screen) ConnectSizeChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("size-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(screen, "size-changed", false, unsafe.Pointer(C._gotk4_gdk3_Screen_ConnectSizeChanged), f)
 }
 
 // ActiveWindow returns the screen’s currently active window.

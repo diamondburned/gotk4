@@ -12,6 +12,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_EventControllerLegacy_ConnectEvent(gpointer, GdkEvent*, guintptr);
 import "C"
 
 func init() {
@@ -58,9 +59,51 @@ func marshalEventControllerLegacier(p uintptr) (interface{}, error) {
 	return wrapEventControllerLegacy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_EventControllerLegacy_ConnectEvent
+func _gotk4_gtk4_EventControllerLegacy_ConnectEvent(arg0 C.gpointer, arg1 *C.GdkEvent, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event gdk.Eventer) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event gdk.Eventer) (ok bool))
+	}
+
+	var _event gdk.Eventer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Eventer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Eventer)
+			return ok
+		})
+		rv, ok := casted.(gdk.Eventer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Eventer")
+		}
+		_event = rv
+	}
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectEvent: emitted for each GDK event delivered to controller.
-func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) bool) externglib.SignalHandle {
-	return v.Connect("event", externglib.GeneratedClosure{Func: f})
+func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(v, "event", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerLegacy_ConnectEvent), f)
 }
 
 // NewEventControllerLegacy creates a new legacy event controller.

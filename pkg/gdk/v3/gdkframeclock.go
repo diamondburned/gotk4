@@ -15,6 +15,13 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_FrameClock_ConnectAfterPaint(gpointer, guintptr);
+// extern void _gotk4_gdk3_FrameClock_ConnectBeforePaint(gpointer, guintptr);
+// extern void _gotk4_gdk3_FrameClock_ConnectFlushEvents(gpointer, guintptr);
+// extern void _gotk4_gdk3_FrameClock_ConnectLayout(gpointer, guintptr);
+// extern void _gotk4_gdk3_FrameClock_ConnectPaint(gpointer, guintptr);
+// extern void _gotk4_gdk3_FrameClock_ConnectResumeEvents(gpointer, guintptr);
+// extern void _gotk4_gdk3_FrameClock_ConnectUpdate(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -181,23 +188,87 @@ func BaseFrameClock(obj FrameClocker) *FrameClock {
 	return obj.baseFrameClock()
 }
 
+//export _gotk4_gdk3_FrameClock_ConnectAfterPaint
+func _gotk4_gdk3_FrameClock_ConnectAfterPaint(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectAfterPaint: this signal ends processing of the frame. Applications
 // should generally not handle this signal.
 func (frameClock *FrameClock) ConnectAfterPaint(f func()) externglib.SignalHandle {
-	return frameClock.Connect("after-paint", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(frameClock, "after-paint", false, unsafe.Pointer(C._gotk4_gdk3_FrameClock_ConnectAfterPaint), f)
+}
+
+//export _gotk4_gdk3_FrameClock_ConnectBeforePaint
+func _gotk4_gdk3_FrameClock_ConnectBeforePaint(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectBeforePaint: this signal begins processing of the frame. Applications
 // should generally not handle this signal.
 func (frameClock *FrameClock) ConnectBeforePaint(f func()) externglib.SignalHandle {
-	return frameClock.Connect("before-paint", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(frameClock, "before-paint", false, unsafe.Pointer(C._gotk4_gdk3_FrameClock_ConnectBeforePaint), f)
+}
+
+//export _gotk4_gdk3_FrameClock_ConnectFlushEvents
+func _gotk4_gdk3_FrameClock_ConnectFlushEvents(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectFlushEvents: this signal is used to flush pending motion events that
 // are being batched up and compressed together. Applications should not handle
 // this signal.
 func (frameClock *FrameClock) ConnectFlushEvents(f func()) externglib.SignalHandle {
-	return frameClock.Connect("flush-events", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(frameClock, "flush-events", false, unsafe.Pointer(C._gotk4_gdk3_FrameClock_ConnectFlushEvents), f)
+}
+
+//export _gotk4_gdk3_FrameClock_ConnectLayout
+func _gotk4_gdk3_FrameClock_ConnectLayout(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectLayout: this signal is emitted as the second step of toolkit and
@@ -205,7 +276,23 @@ func (frameClock *FrameClock) ConnectFlushEvents(f func()) externglib.SignalHand
 // of application elements should be performed. GTK+ normally handles this
 // internally.
 func (frameClock *FrameClock) ConnectLayout(f func()) externglib.SignalHandle {
-	return frameClock.Connect("layout", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(frameClock, "layout", false, unsafe.Pointer(C._gotk4_gdk3_FrameClock_ConnectLayout), f)
+}
+
+//export _gotk4_gdk3_FrameClock_ConnectPaint
+func _gotk4_gdk3_FrameClock_ConnectPaint(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPaint: this signal is emitted as the third step of toolkit and
@@ -213,14 +300,46 @@ func (frameClock *FrameClock) ConnectLayout(f func()) externglib.SignalHandle {
 // handles this internally and produces expose events, which are turned into
 // GTK+ Widget::draw signals.
 func (frameClock *FrameClock) ConnectPaint(f func()) externglib.SignalHandle {
-	return frameClock.Connect("paint", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(frameClock, "paint", false, unsafe.Pointer(C._gotk4_gdk3_FrameClock_ConnectPaint), f)
+}
+
+//export _gotk4_gdk3_FrameClock_ConnectResumeEvents
+func _gotk4_gdk3_FrameClock_ConnectResumeEvents(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectResumeEvents: this signal is emitted after processing of the frame is
 // finished, and is handled internally by GTK+ to resume normal event
 // processing. Applications should not handle this signal.
 func (frameClock *FrameClock) ConnectResumeEvents(f func()) externglib.SignalHandle {
-	return frameClock.Connect("resume-events", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(frameClock, "resume-events", false, unsafe.Pointer(C._gotk4_gdk3_FrameClock_ConnectResumeEvents), f)
+}
+
+//export _gotk4_gdk3_FrameClock_ConnectUpdate
+func _gotk4_gdk3_FrameClock_ConnectUpdate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUpdate: this signal is emitted as the first step of toolkit and
@@ -228,7 +347,7 @@ func (frameClock *FrameClock) ConnectResumeEvents(f func()) externglib.SignalHan
 // gdk_frame_clock_get_frame_time(). Applications can connect directly to this
 // signal, or use gtk_widget_add_tick_callback() as a more convenient interface.
 func (frameClock *FrameClock) ConnectUpdate(f func()) externglib.SignalHandle {
-	return frameClock.Connect("update", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(frameClock, "update", false, unsafe.Pointer(C._gotk4_gdk3_FrameClock_ConnectUpdate), f)
 }
 
 // BeginUpdating starts updates for an animation. Until a matching call to

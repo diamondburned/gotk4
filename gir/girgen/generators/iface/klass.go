@@ -101,6 +101,8 @@ func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *M
 	method.Header.Import("unsafe")
 
 	// TODO: verify first parameter.
+	// TODO: method.Go.Tail can be obtained inside the callback generator
+	// instead of passing it through a callable generator first.
 
 	// A few side notes:
 	//   - Using the callback generator's

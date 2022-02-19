@@ -3,10 +3,14 @@
 package glib
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
+// #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
@@ -80,3 +84,15 @@ type SourceHandle = externglib.SourceHandle
 
 // SignalHandle is an alias for pkg/core/glib.SignalHandle.
 type SignalHandle = externglib.SignalHandle
+
+// NewVariantValue creates a new GValue from a GVariant. This function
+// only exists as a workaround for externglib's cyclical imports. It
+// be removed in the future once externglib is merged in.
+func NewVariantValue(variant *Variant) *externglib.Value {
+	value := externglib.InitValue(externglib.TypeVariant)
+	C.g_value_set_variant(
+		(*C.GValue)(unsafe.Pointer(value.Native())),
+		(*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant))),
+	)
+	return value
+}

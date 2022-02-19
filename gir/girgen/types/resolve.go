@@ -149,6 +149,7 @@ func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult)
 		// some cases, but it should work in cases where CType isn't there.
 		typ.CType = result.CType()
 	}
+
 	if typ.CType == "" {
 		gen.Logln(logger.Error, "type", typ.Name, "missing CType")
 		return nil
@@ -810,4 +811,65 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	}
 
 	return resolved
+}
+
+// ResolveParameters puts each parameter through the type resolver and fill up
+// any missing CType using ResolveAnyType. The returned slice is a copy.
+func ResolveParameters(gen FileGenerator, params []gir.Parameter) []gir.Parameter {
+	cpy := append([]gir.Parameter(nil), params...)
+	for i, param := range cpy {
+		cpy[i].AnyType = ResolveAnyType(gen, param.AnyType)
+	}
+	return cpy
+}
+
+// ResolveAnyType returns a copy of gir.AnyType containg the C type fields
+// filled.
+func ResolveAnyType(gen FileGenerator, any gir.AnyType) gir.AnyType {
+	switch {
+	case any.Array != nil && any.Array.Type != nil:
+		array := *any.Array
+		array.Type = resolveCopyType(gen, array.Type, any.Array)
+		any.Array = &array
+
+	case any.Type != nil:
+		any.Type = resolveCopyType(gen, any.Type, nil)
+	}
+
+	return any
+}
+
+func resolveCopyType(gen FileGenerator, typ *gir.Type, array *gir.Array) *gir.Type {
+	if typ.CType != "" {
+		return typ
+	}
+
+	var ctyp string
+
+	// Guess the CType from the array if the type is from one. We must know
+	// beforehand that the CType has a pointer though, otherwise it'll hit
+	// gpointer.
+	if array != nil && array.CType != "" && strings.Contains(array.CType, "*") {
+		ctyp = CleanCType(array.CType, false)
+		ctyp = strings.Replace(ctyp, "*", "", 1) // deref once
+	}
+
+	if ctyp == "" {
+		ctyp = CTypeFallback(typ.CType, typ.Name)
+	}
+
+	if ctyp == "" {
+		if resolved := Resolve(gen, *typ); resolved != nil {
+			ctyp = resolved.CType
+		}
+	}
+
+	if ctyp == "" {
+		return typ
+	}
+
+	cpy := *typ
+	cpy.CType = ctyp
+
+	return &cpy
 }

@@ -14,6 +14,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_GestureDrag_ConnectDragBegin(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureDrag_ConnectDragEnd(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureDrag_ConnectDragUpdate(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 func init() {
@@ -64,19 +67,85 @@ func marshalGestureDragger(p uintptr) (interface{}, error) {
 	return wrapGestureDrag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_GestureDrag_ConnectDragBegin
+func _gotk4_gtk3_GestureDrag_ConnectDragBegin(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(startX, startY float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(startX, startY float64))
+	}
+
+	var _startX float64 // out
+	var _startY float64 // out
+
+	_startX = float64(arg1)
+	_startY = float64(arg2)
+
+	f(_startX, _startY)
+}
+
 // ConnectDragBegin: this signal is emitted whenever dragging starts.
 func (gesture *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) externglib.SignalHandle {
-	return gesture.Connect("drag-begin", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "drag-begin", false, unsafe.Pointer(C._gotk4_gtk3_GestureDrag_ConnectDragBegin), f)
+}
+
+//export _gotk4_gtk3_GestureDrag_ConnectDragEnd
+func _gotk4_gtk3_GestureDrag_ConnectDragEnd(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(offsetX, offsetY float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(offsetX, offsetY float64))
+	}
+
+	var _offsetX float64 // out
+	var _offsetY float64 // out
+
+	_offsetX = float64(arg1)
+	_offsetY = float64(arg2)
+
+	f(_offsetX, _offsetY)
 }
 
 // ConnectDragEnd: this signal is emitted whenever the dragging is finished.
 func (gesture *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) externglib.SignalHandle {
-	return gesture.Connect("drag-end", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "drag-end", false, unsafe.Pointer(C._gotk4_gtk3_GestureDrag_ConnectDragEnd), f)
+}
+
+//export _gotk4_gtk3_GestureDrag_ConnectDragUpdate
+func _gotk4_gtk3_GestureDrag_ConnectDragUpdate(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(offsetX, offsetY float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(offsetX, offsetY float64))
+	}
+
+	var _offsetX float64 // out
+	var _offsetY float64 // out
+
+	_offsetX = float64(arg1)
+	_offsetY = float64(arg2)
+
+	f(_offsetX, _offsetY)
 }
 
 // ConnectDragUpdate: this signal is emitted whenever the dragging point moves.
 func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) externglib.SignalHandle {
-	return gesture.Connect("drag-update", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "drag-update", false, unsafe.Pointer(C._gotk4_gtk3_GestureDrag_ConnectDragUpdate), f)
 }
 
 // NewGestureDrag returns a newly created Gesture that recognizes drags.

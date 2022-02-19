@@ -14,6 +14,7 @@ import (
 // #include <gio/gio.h>
 // #include <glib-object.h>
 // extern void _gotk4_gio2_FilenameCompleterClass_got_completion_data(GFilenameCompleter*);
+// extern void _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -73,10 +74,26 @@ func marshalFilenameCompleterer(p uintptr) (interface{}, error) {
 	return wrapFilenameCompleter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData
+func _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectGotCompletionData: emitted when the file name completion information
 // comes available.
 func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) externglib.SignalHandle {
-	return completer.Connect("got-completion-data", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(completer, "got-completion-data", false, unsafe.Pointer(C._gotk4_gio2_FilenameCompleter_ConnectGotCompletionData), f)
 }
 
 // NewFilenameCompleter creates a new filename completer.

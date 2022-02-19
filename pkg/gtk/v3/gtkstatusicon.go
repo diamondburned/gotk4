@@ -24,8 +24,15 @@ import (
 // extern gboolean _gotk4_gtk3_StatusIconClass_query_tooltip(GtkStatusIcon*, gint, gint, gboolean, GtkTooltip*);
 // extern gboolean _gotk4_gtk3_StatusIconClass_scroll_event(GtkStatusIcon*, GdkEventScroll*);
 // extern gboolean _gotk4_gtk3_StatusIconClass_size_changed(GtkStatusIcon*, gint);
+// extern gboolean _gotk4_gtk3_StatusIcon_ConnectButtonPressEvent(gpointer, GdkEventButton*, guintptr);
+// extern gboolean _gotk4_gtk3_StatusIcon_ConnectButtonReleaseEvent(gpointer, GdkEventButton*, guintptr);
+// extern gboolean _gotk4_gtk3_StatusIcon_ConnectQueryTooltip(gpointer, gint, gint, gboolean, GtkTooltip*, guintptr);
+// extern gboolean _gotk4_gtk3_StatusIcon_ConnectScrollEvent(gpointer, GdkEventScroll*, guintptr);
+// extern gboolean _gotk4_gtk3_StatusIcon_ConnectSizeChanged(gpointer, gint, guintptr);
 // extern void _gotk4_gtk3_StatusIconClass_activate(GtkStatusIcon*);
 // extern void _gotk4_gtk3_StatusIconClass_popup_menu(GtkStatusIcon*, guint, guint32);
+// extern void _gotk4_gtk3_StatusIcon_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk3_StatusIcon_ConnectPopupMenu(gpointer, guint, guint, guintptr);
 import "C"
 
 func init() {
@@ -308,13 +315,55 @@ func marshalStatusIconner(p uintptr) (interface{}, error) {
 	return wrapStatusIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_StatusIcon_ConnectActivate
+func _gotk4_gtk3_StatusIcon_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate gets emitted when the user activates the status icon. If and
 // how status icons can activated is platform-dependent.
 //
 // Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
 // applications and should be wrapped by language bindings.
 func (statusIcon *StatusIcon) ConnectActivate(f func()) externglib.SignalHandle {
-	return statusIcon.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(statusIcon, "activate", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectActivate), f)
+}
+
+//export _gotk4_gtk3_StatusIcon_ConnectButtonPressEvent
+func _gotk4_gtk3_StatusIcon_ConnectButtonPressEvent(arg0 C.gpointer, arg1 *C.GdkEventButton, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventButton) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventButton) (ok bool))
+	}
+
+	var _event *gdk.EventButton // out
+
+	_event = (*gdk.EventButton)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectButtonPressEvent signal will be emitted when a button (typically from
@@ -322,8 +371,34 @@ func (statusIcon *StatusIcon) ConnectActivate(f func()) externglib.SignalHandle 
 //
 // Whether this event is emitted is platform-dependent. Use the ::activate and
 // ::popup-menu signals in preference.
-func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return statusIcon.Connect("button-press-event", externglib.GeneratedClosure{Func: f})
+func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event *gdk.EventButton) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(statusIcon, "button-press-event", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectButtonPressEvent), f)
+}
+
+//export _gotk4_gtk3_StatusIcon_ConnectButtonReleaseEvent
+func _gotk4_gtk3_StatusIcon_ConnectButtonReleaseEvent(arg0 C.gpointer, arg1 *C.GdkEventButton, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventButton) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventButton) (ok bool))
+	}
+
+	var _event *gdk.EventButton // out
+
+	_event = (*gdk.EventButton)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectButtonReleaseEvent signal will be emitted when a button (typically
@@ -331,8 +406,30 @@ func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event *gdk.EventBut
 //
 // Whether this event is emitted is platform-dependent. Use the ::activate and
 // ::popup-menu signals in preference.
-func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return statusIcon.Connect("button-release-event", externglib.GeneratedClosure{Func: f})
+func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(statusIcon, "button-release-event", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectButtonReleaseEvent), f)
+}
+
+//export _gotk4_gtk3_StatusIcon_ConnectPopupMenu
+func _gotk4_gtk3_StatusIcon_ConnectPopupMenu(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guintptr) {
+	var f func(button, activateTime uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(button, activateTime uint))
+	}
+
+	var _button uint       // out
+	var _activateTime uint // out
+
+	_button = uint(arg1)
+	_activateTime = uint(arg2)
+
+	f(_button, _activateTime)
 }
 
 // ConnectPopupMenu gets emitted when the user brings up the context menu of the
@@ -345,7 +442,41 @@ func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event *gdk.EventB
 // Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
 // applications and should be wrapped by language bindings.
 func (statusIcon *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)) externglib.SignalHandle {
-	return statusIcon.Connect("popup-menu", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(statusIcon, "popup-menu", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectPopupMenu), f)
+}
+
+//export _gotk4_gtk3_StatusIcon_ConnectQueryTooltip
+func _gotk4_gtk3_StatusIcon_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip, arg5 C.guintptr) (cret C.gboolean) {
+	var f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool))
+	}
+
+	var _x int             // out
+	var _y int             // out
+	var _keyboardMode bool // out
+	var _tooltip *Tooltip  // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	if arg3 != 0 {
+		_keyboardMode = true
+	}
+	_tooltip = wrapTooltip(externglib.Take(unsafe.Pointer(arg4)))
+
+	ok := f(_x, _y, _keyboardMode, _tooltip)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectQueryTooltip: emitted when the hover timeout has expired with the
@@ -362,8 +493,34 @@ func (statusIcon *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)
 //
 // Whether this signal is emitted is platform-dependent. For plain text
 // tooltips, use StatusIcon:tooltip-text in preference.
-func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
-	return statusIcon.Connect("query-tooltip", externglib.GeneratedClosure{Func: f})
+func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(statusIcon, "query-tooltip", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectQueryTooltip), f)
+}
+
+//export _gotk4_gtk3_StatusIcon_ConnectScrollEvent
+func _gotk4_gtk3_StatusIcon_ConnectScrollEvent(arg0 C.gpointer, arg1 *C.GdkEventScroll, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventScroll) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventScroll) (ok bool))
+	}
+
+	var _event *gdk.EventScroll // out
+
+	_event = (*gdk.EventScroll)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectScrollEvent signal is emitted when a button in the 4 to 7 range is
@@ -371,14 +528,40 @@ func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode 
 // for buttons 4 and 5 when the wheel is turned.
 //
 // Whether this event is emitted is platform-dependent.
-func (statusIcon *StatusIcon) ConnectScrollEvent(f func(event *gdk.EventScroll) bool) externglib.SignalHandle {
-	return statusIcon.Connect("scroll-event", externglib.GeneratedClosure{Func: f})
+func (statusIcon *StatusIcon) ConnectScrollEvent(f func(event *gdk.EventScroll) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(statusIcon, "scroll-event", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectScrollEvent), f)
+}
+
+//export _gotk4_gtk3_StatusIcon_ConnectSizeChanged
+func _gotk4_gtk3_StatusIcon_ConnectSizeChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(size int) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(size int) (ok bool))
+	}
+
+	var _size int // out
+
+	_size = int(arg1)
+
+	ok := f(_size)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectSizeChanged gets emitted when the size available for the image
 // changes, e.g. because the notification area got resized.
-func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int) bool) externglib.SignalHandle {
-	return statusIcon.Connect("size-changed", externglib.GeneratedClosure{Func: f})
+func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(statusIcon, "size-changed", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectSizeChanged), f)
 }
 
 // NewStatusIcon creates an empty status icon object.

@@ -18,9 +18,14 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_ComboBox_ConnectPopdown(gpointer, guintptr);
 // extern gboolean _gotk4_gtk3_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern gchar* _gotk4_gtk3_ComboBoxClass_format_entry_text(GtkComboBox*, gchar*);
+// extern gchar* _gotk4_gtk3_ComboBox_ConnectFormatEntryText(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk3_ComboBoxClass_changed(GtkComboBox*);
+// extern void _gotk4_gtk3_ComboBox_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_ComboBox_ConnectMoveActive(gpointer, GtkScrollType, guintptr);
+// extern void _gotk4_gtk3_ComboBox_ConnectPopup(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -178,12 +183,52 @@ func marshalComboBoxer(p uintptr) (interface{}, error) {
 	return wrapComboBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ComboBox_ConnectChanged
+func _gotk4_gtk3_ComboBox_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged signal is emitted when the active item is changed. The can be
 // due to the user selecting a different item from the list, or due to a call to
 // gtk_combo_box_set_active_iter(). It will also be emitted while typing into
 // the entry of a combo box with an entry.
 func (comboBox *ComboBox) ConnectChanged(f func()) externglib.SignalHandle {
-	return comboBox.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(comboBox, "changed", false, unsafe.Pointer(C._gotk4_gtk3_ComboBox_ConnectChanged), f)
+}
+
+//export _gotk4_gtk3_ComboBox_ConnectFormatEntryText
+func _gotk4_gtk3_ComboBox_ConnectFormatEntryText(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret *C.gchar) {
+	var f func(path string) (utf8 string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path string) (utf8 string))
+	}
+
+	var _path string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	utf8 := f(_path)
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
 }
 
 // ConnectFormatEntryText: for combo boxes that are created with an entry (See
@@ -218,22 +263,80 @@ func (comboBox *ComboBox) ConnectChanged(f func()) externglib.SignalHandle {
 //
 //      return g_strdup_printf ("g", value);
 //    }.
-func (comboBox *ComboBox) ConnectFormatEntryText(f func(path string) string) externglib.SignalHandle {
-	return comboBox.Connect("format-entry-text", externglib.GeneratedClosure{Func: f})
+func (comboBox *ComboBox) ConnectFormatEntryText(f func(path string) (utf8 string)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(comboBox, "format-entry-text", false, unsafe.Pointer(C._gotk4_gtk3_ComboBox_ConnectFormatEntryText), f)
+}
+
+//export _gotk4_gtk3_ComboBox_ConnectMoveActive
+func _gotk4_gtk3_ComboBox_ConnectMoveActive(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
+	var f func(scrollType ScrollType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(scrollType ScrollType))
+	}
+
+	var _scrollType ScrollType // out
+
+	_scrollType = ScrollType(arg1)
+
+	f(_scrollType)
 }
 
 // ConnectMoveActive signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted to move the active selection.
 func (comboBox *ComboBox) ConnectMoveActive(f func(scrollType ScrollType)) externglib.SignalHandle {
-	return comboBox.Connect("move-active", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(comboBox, "move-active", false, unsafe.Pointer(C._gotk4_gtk3_ComboBox_ConnectMoveActive), f)
+}
+
+//export _gotk4_gtk3_ComboBox_ConnectPopdown
+func _gotk4_gtk3_ComboBox_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectPopdown signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted to popdown the combo box list.
 //
 // The default bindings for this signal are Alt+Up and Escape.
-func (comboBox *ComboBox) ConnectPopdown(f func() bool) externglib.SignalHandle {
-	return comboBox.Connect("popdown", externglib.GeneratedClosure{Func: f})
+func (comboBox *ComboBox) ConnectPopdown(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(comboBox, "popdown", false, unsafe.Pointer(C._gotk4_gtk3_ComboBox_ConnectPopdown), f)
+}
+
+//export _gotk4_gtk3_ComboBox_ConnectPopup
+func _gotk4_gtk3_ComboBox_ConnectPopup(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPopup signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -241,7 +344,7 @@ func (comboBox *ComboBox) ConnectPopdown(f func() bool) externglib.SignalHandle 
 //
 // The default binding for this signal is Alt+Down.
 func (comboBox *ComboBox) ConnectPopup(f func()) externglib.SignalHandle {
-	return comboBox.Connect("popup", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(comboBox, "popup", false, unsafe.Pointer(C._gotk4_gtk3_ComboBox_ConnectPopup), f)
 }
 
 // NewComboBox creates a new empty ComboBox.

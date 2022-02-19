@@ -16,6 +16,7 @@ import (
 // #include <gtk/gtk.h>
 // extern GtkFilterMatch _gotk4_gtk4_FilterClass_get_strictness(GtkFilter*);
 // extern gboolean _gotk4_gtk4_FilterClass_match(GtkFilter*, gpointer);
+// extern void _gotk4_gtk4_Filter_ConnectChanged(gpointer, GtkFilterChange, guintptr);
 import "C"
 
 func init() {
@@ -222,6 +223,26 @@ func marshalFilterer(p uintptr) (interface{}, error) {
 	return wrapFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Filter_ConnectChanged
+func _gotk4_gtk4_Filter_ConnectChanged(arg0 C.gpointer, arg1 C.GtkFilterChange, arg2 C.guintptr) {
+	var f func(change FilterChange)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(change FilterChange))
+	}
+
+	var _change FilterChange // out
+
+	_change = FilterChange(arg1)
+
+	f(_change)
+}
+
 // ConnectChanged: emitted whenever the filter changed.
 //
 // Users of the filter should then check items again via gtk.Filter.Match().
@@ -231,7 +252,7 @@ func marshalFilterer(p uintptr) (interface{}, error) {
 // Depending on the change parameter, not all items need to be checked, but only
 // some. Refer to the gtk.FilterChange documentation for details.
 func (self *Filter) ConnectChanged(f func(change FilterChange)) externglib.SignalHandle {
-	return self.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "changed", false, unsafe.Pointer(C._gotk4_gtk4_Filter_ConnectChanged), f)
 }
 
 // Changed emits the Filter::changed signal to notify all users of the filter

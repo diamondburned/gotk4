@@ -19,6 +19,7 @@ import (
 // extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(GDBusInterfaceSkeleton*);
 // extern GVariant* _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(GDBusInterfaceSkeleton*);
 // extern gboolean _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(GDBusInterfaceSkeleton*, GDBusMethodInvocation*);
+// extern gboolean _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod(gpointer, GDBusMethodInvocation*, guintptr);
 // extern void _gotk4_gio2_DBusInterfaceSkeletonClass_flush(GDBusInterfaceSkeleton*);
 import "C"
 
@@ -189,6 +190,32 @@ func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkele
 	return obj.baseDBusInterfaceSkeleton()
 }
 
+//export _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod
+func _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod(arg0 C.gpointer, arg1 *C.GDBusMethodInvocation, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(invocation *DBusMethodInvocation) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(invocation *DBusMethodInvocation) (ok bool))
+	}
+
+	var _invocation *DBusMethodInvocation // out
+
+	_invocation = wrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg1)))
+
+	ok := f(_invocation)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectGAuthorizeMethod: emitted when a method is invoked by a remote caller
 // and used to determine if the method call is authorized.
 //
@@ -218,8 +245,8 @@ func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkele
 // G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD flags
 // set, no dedicated thread is ever used and the call will be handled in the
 // same thread as the object that interface belongs to was exported in.
-func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocation DBusMethodInvocation) bool) externglib.SignalHandle {
-	return interface_.Connect("g-authorize-method", externglib.GeneratedClosure{Func: f})
+func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocation *DBusMethodInvocation) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(interface_, "g-authorize-method", false, unsafe.Pointer(C._gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod), f)
 }
 
 // Export exports interface_ at object_path on connection.

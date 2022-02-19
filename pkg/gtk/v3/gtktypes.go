@@ -183,7 +183,7 @@ func (iconSet *IconSet) Sizes() []int {
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		src := unsafe.Slice(_arg1, _arg2)
+		src := unsafe.Slice((*C.GtkIconSize)(_arg1), _arg2)
 		_sizes = make([]int, _arg2)
 		for i := 0; i < int(_arg2); i++ {
 			_sizes[i] = int(src[i])

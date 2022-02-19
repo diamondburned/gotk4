@@ -24,6 +24,12 @@ import (
 // extern void _gotk4_gtk3_MenuItemClass_select(GtkMenuItem*);
 // extern void _gotk4_gtk3_MenuItemClass_set_label(GtkMenuItem*, gchar*);
 // extern void _gotk4_gtk3_MenuItemClass_toggle_size_allocate(GtkMenuItem*, gint);
+// extern void _gotk4_gtk3_MenuItem_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectActivateItem(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectDeselect(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectSelect(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(gpointer, gint, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(gpointer, gpointer, guintptr);
 import "C"
 
 func init() {
@@ -252,32 +258,136 @@ func marshalMenuItemmer(p uintptr) (interface{}, error) {
 	return wrapMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_MenuItem_ConnectActivate
+func _gotk4_gtk3_MenuItem_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate: emitted when the item is activated.
 func (menuItem *MenuItem) ConnectActivate(f func()) externglib.SignalHandle {
-	return menuItem.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuItem, "activate", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectActivate), f)
+}
+
+//export _gotk4_gtk3_MenuItem_ConnectActivateItem
+func _gotk4_gtk3_MenuItem_ConnectActivateItem(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectActivateItem: emitted when the item is activated, but also if the menu
 // item has a submenu. For normal applications, the relevant signal is
 // MenuItem::activate.
 func (menuItem *MenuItem) ConnectActivateItem(f func()) externglib.SignalHandle {
-	return menuItem.Connect("activate-item", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuItem, "activate-item", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectActivateItem), f)
+}
+
+//export _gotk4_gtk3_MenuItem_ConnectDeselect
+func _gotk4_gtk3_MenuItem_ConnectDeselect(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 func (menuItem *MenuItem) ConnectDeselect(f func()) externglib.SignalHandle {
-	return menuItem.Connect("deselect", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuItem, "deselect", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectDeselect), f)
+}
+
+//export _gotk4_gtk3_MenuItem_ConnectSelect
+func _gotk4_gtk3_MenuItem_ConnectSelect(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 func (menuItem *MenuItem) ConnectSelect(f func()) externglib.SignalHandle {
-	return menuItem.Connect("select", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuItem, "select", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectSelect), f)
+}
+
+//export _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate
+func _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(object int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object int))
+	}
+
+	var _object int // out
+
+	_object = int(arg1)
+
+	f(_object)
 }
 
 func (menuItem *MenuItem) ConnectToggleSizeAllocate(f func(object int)) externglib.SignalHandle {
-	return menuItem.Connect("toggle-size-allocate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuItem, "toggle-size-allocate", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate), f)
+}
+
+//export _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest
+func _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(arg0 C.gpointer, arg1 C.gpointer, arg2 C.guintptr) {
+	var f func(object cgo.Handle)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object cgo.Handle))
+	}
+
+	var _object cgo.Handle // out
+
+	_object = (cgo.Handle)(unsafe.Pointer(arg1))
+
+	f(_object)
 }
 
 func (menuItem *MenuItem) ConnectToggleSizeRequest(f func(object cgo.Handle)) externglib.SignalHandle {
-	return menuItem.Connect("toggle-size-request", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuItem, "toggle-size-request", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectToggleSizeRequest), f)
 }
 
 // NewMenuItem creates a new MenuItem.

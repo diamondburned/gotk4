@@ -16,6 +16,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk4_TreeViewColumn_ConnectClicked(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -169,9 +170,25 @@ func marshalTreeViewColumner(p uintptr) (interface{}, error) {
 	return wrapTreeViewColumn(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_TreeViewColumn_ConnectClicked
+func _gotk4_gtk4_TreeViewColumn_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectClicked: emitted when the column's header has been clicked.
 func (treeColumn *TreeViewColumn) ConnectClicked(f func()) externglib.SignalHandle {
-	return treeColumn.Connect("clicked", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(treeColumn, "clicked", false, unsafe.Pointer(C._gotk4_gtk4_TreeViewColumn_ConnectClicked), f)
 }
 
 // NewTreeViewColumn creates a new TreeViewColumn.

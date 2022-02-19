@@ -26,6 +26,13 @@ import (
 // extern void _gotk4_gtk3_CalendarClass_next_year(GtkCalendar*);
 // extern void _gotk4_gtk3_CalendarClass_prev_month(GtkCalendar*);
 // extern void _gotk4_gtk3_CalendarClass_prev_year(GtkCalendar*);
+// extern void _gotk4_gtk3_Calendar_ConnectDaySelected(gpointer, guintptr);
+// extern void _gotk4_gtk3_Calendar_ConnectDaySelectedDoubleClick(gpointer, guintptr);
+// extern void _gotk4_gtk3_Calendar_ConnectMonthChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_Calendar_ConnectNextMonth(gpointer, guintptr);
+// extern void _gotk4_gtk3_Calendar_ConnectNextYear(gpointer, guintptr);
+// extern void _gotk4_gtk3_Calendar_ConnectPrevMonth(gpointer, guintptr);
+// extern void _gotk4_gtk3_Calendar_ConnectPrevYear(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -293,40 +300,152 @@ func marshalCalendarrer(p uintptr) (interface{}, error) {
 	return wrapCalendar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Calendar_ConnectDaySelected
+func _gotk4_gtk3_Calendar_ConnectDaySelected(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectDaySelected: emitted when the user selects a day.
 func (calendar *Calendar) ConnectDaySelected(f func()) externglib.SignalHandle {
-	return calendar.Connect("day-selected", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(calendar, "day-selected", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectDaySelected), f)
+}
+
+//export _gotk4_gtk3_Calendar_ConnectDaySelectedDoubleClick
+func _gotk4_gtk3_Calendar_ConnectDaySelectedDoubleClick(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectDaySelectedDoubleClick: emitted when the user double-clicks a day.
 func (calendar *Calendar) ConnectDaySelectedDoubleClick(f func()) externglib.SignalHandle {
-	return calendar.Connect("day-selected-double-click", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(calendar, "day-selected-double-click", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectDaySelectedDoubleClick), f)
+}
+
+//export _gotk4_gtk3_Calendar_ConnectMonthChanged
+func _gotk4_gtk3_Calendar_ConnectMonthChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectMonthChanged: emitted when the user clicks a button to change the
 // selected month on a calendar.
 func (calendar *Calendar) ConnectMonthChanged(f func()) externglib.SignalHandle {
-	return calendar.Connect("month-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(calendar, "month-changed", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectMonthChanged), f)
+}
+
+//export _gotk4_gtk3_Calendar_ConnectNextMonth
+func _gotk4_gtk3_Calendar_ConnectNextMonth(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectNextMonth: emitted when the user switched to the next month.
 func (calendar *Calendar) ConnectNextMonth(f func()) externglib.SignalHandle {
-	return calendar.Connect("next-month", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(calendar, "next-month", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectNextMonth), f)
+}
+
+//export _gotk4_gtk3_Calendar_ConnectNextYear
+func _gotk4_gtk3_Calendar_ConnectNextYear(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectNextYear: emitted when user switched to the next year.
 func (calendar *Calendar) ConnectNextYear(f func()) externglib.SignalHandle {
-	return calendar.Connect("next-year", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(calendar, "next-year", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectNextYear), f)
+}
+
+//export _gotk4_gtk3_Calendar_ConnectPrevMonth
+func _gotk4_gtk3_Calendar_ConnectPrevMonth(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPrevMonth: emitted when the user switched to the previous month.
 func (calendar *Calendar) ConnectPrevMonth(f func()) externglib.SignalHandle {
-	return calendar.Connect("prev-month", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(calendar, "prev-month", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectPrevMonth), f)
+}
+
+//export _gotk4_gtk3_Calendar_ConnectPrevYear
+func _gotk4_gtk3_Calendar_ConnectPrevYear(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPrevYear: emitted when user switched to the previous year.
 func (calendar *Calendar) ConnectPrevYear(f func()) externglib.SignalHandle {
-	return calendar.Connect("prev-year", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(calendar, "prev-year", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectPrevYear), f)
 }
 
 // NewCalendar creates a new calendar, with the current date being selected.

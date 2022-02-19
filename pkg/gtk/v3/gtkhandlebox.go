@@ -18,6 +18,8 @@ import (
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_HandleBoxClass_child_attached(GtkHandleBox*, GtkWidget*);
 // extern void _gotk4_gtk3_HandleBoxClass_child_detached(GtkHandleBox*, GtkWidget*);
+// extern void _gotk4_gtk3_HandleBox_ConnectChildAttached(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_HandleBox_ConnectChildDetached(gpointer, GtkWidget*, guintptr);
 import "C"
 
 func init() {
@@ -168,16 +170,88 @@ func marshalHandleBoxer(p uintptr) (interface{}, error) {
 	return wrapHandleBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_HandleBox_ConnectChildAttached
+func _gotk4_gtk3_HandleBox_ConnectChildAttached(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(widget Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(widget Widgetter))
+	}
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	f(_widget)
+}
+
 // ConnectChildAttached: this signal is emitted when the contents of the
 // handlebox are reattached to the main window.
 func (handleBox *HandleBox) ConnectChildAttached(f func(widget Widgetter)) externglib.SignalHandle {
-	return handleBox.Connect("child-attached", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(handleBox, "child-attached", false, unsafe.Pointer(C._gotk4_gtk3_HandleBox_ConnectChildAttached), f)
+}
+
+//export _gotk4_gtk3_HandleBox_ConnectChildDetached
+func _gotk4_gtk3_HandleBox_ConnectChildDetached(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(widget Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(widget Widgetter))
+	}
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	f(_widget)
 }
 
 // ConnectChildDetached: this signal is emitted when the contents of the
 // handlebox are detached from the main window.
 func (handleBox *HandleBox) ConnectChildDetached(f func(widget Widgetter)) externglib.SignalHandle {
-	return handleBox.Connect("child-detached", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(handleBox, "child-detached", false, unsafe.Pointer(C._gotk4_gtk3_HandleBox_ConnectChildDetached), f)
 }
 
 // NewHandleBox: create a new handle box.

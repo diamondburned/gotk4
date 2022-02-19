@@ -14,6 +14,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_GestureStylus_ConnectDown(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_GestureStylus_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_GestureStylus_ConnectProximity(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_GestureStylus_ConnectUp(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 func init() {
@@ -62,24 +66,112 @@ func marshalGestureStylusser(p uintptr) (interface{}, error) {
 	return wrapGestureStylus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_GestureStylus_ConnectDown
+func _gotk4_gtk4_GestureStylus_ConnectDown(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(x, y float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	f(_x, _y)
+}
+
 // ConnectDown: emitted when the stylus touches the device.
 func (gesture *GestureStylus) ConnectDown(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("down", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "down", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectDown), f)
+}
+
+//export _gotk4_gtk4_GestureStylus_ConnectMotion
+func _gotk4_gtk4_GestureStylus_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(x, y float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	f(_x, _y)
 }
 
 // ConnectMotion: emitted when the stylus moves while touching the device.
 func (gesture *GestureStylus) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("motion", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "motion", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectMotion), f)
+}
+
+//export _gotk4_gtk4_GestureStylus_ConnectProximity
+func _gotk4_gtk4_GestureStylus_ConnectProximity(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(x, y float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	f(_x, _y)
 }
 
 // ConnectProximity: emitted when the stylus is in proximity of the device.
 func (gesture *GestureStylus) ConnectProximity(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("proximity", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "proximity", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectProximity), f)
+}
+
+//export _gotk4_gtk4_GestureStylus_ConnectUp
+func _gotk4_gtk4_GestureStylus_ConnectUp(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(x, y float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	f(_x, _y)
 }
 
 // ConnectUp: emitted when the stylus no longer touches the device.
 func (gesture *GestureStylus) ConnectUp(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("up", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "up", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectUp), f)
 }
 
 // NewGestureStylus creates a new GtkGestureStylus.
@@ -174,7 +266,7 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		src := unsafe.Slice(_arg1, _arg2)
+		src := unsafe.Slice((*C.GdkTimeCoord)(_arg1), _arg2)
 		_backlog = make([]gdk.TimeCoord, _arg2)
 		for i := 0; i < int(_arg2); i++ {
 			_backlog[i] = *(*gdk.TimeCoord)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

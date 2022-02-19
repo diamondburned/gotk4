@@ -15,6 +15,8 @@ import (
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_CheckButtonClass_activate(GtkCheckButton*);
 // extern void _gotk4_gtk4_CheckButtonClass_toggled(GtkCheckButton*);
+// extern void _gotk4_gtk4_CheckButton_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk4_CheckButton_ConnectToggled(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -172,6 +174,22 @@ func marshalCheckButtonner(p uintptr) (interface{}, error) {
 	return wrapCheckButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_CheckButton_ConnectActivate
+func _gotk4_gtk4_CheckButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate: emitted to when the check button is activated.
 //
 // The ::activate signal on GtkCheckButton is an action signal and emitting it
@@ -180,13 +198,29 @@ func marshalCheckButtonner(p uintptr) (interface{}, error) {
 // Applications should never connect to this signal, but use the
 // gtk.CheckButton::toggled signal.
 func (self *CheckButton) ConnectActivate(f func()) externglib.SignalHandle {
-	return self.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_CheckButton_ConnectActivate), f)
+}
+
+//export _gotk4_gtk4_CheckButton_ConnectToggled
+func _gotk4_gtk4_CheckButton_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectToggled: emitted when the buttons's gtk.CheckButton:active property
 // changes.
 func (self *CheckButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return self.Connect("toggled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "toggled", false, unsafe.Pointer(C._gotk4_gtk4_CheckButton_ConnectToggled), f)
 }
 
 // NewCheckButton creates a new GtkCheckButton.

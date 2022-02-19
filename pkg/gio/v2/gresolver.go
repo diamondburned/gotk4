@@ -31,6 +31,7 @@ import (
 // extern gchar* _gotk4_gio2_ResolverClass_lookup_by_address_finish(GResolver*, GAsyncResult*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_ResolverClass_reload(GResolver*);
+// extern void _gotk4_gio2_Resolver_ConnectReload(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -733,10 +734,26 @@ func BaseResolver(obj Resolverer) *Resolver {
 	return obj.baseResolver()
 }
 
+//export _gotk4_gio2_Resolver_ConnectReload
+func _gotk4_gio2_Resolver_ConnectReload(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectReload: emitted when the resolver notices that the system resolver
 // configuration has changed.
 func (resolver *Resolver) ConnectReload(f func()) externglib.SignalHandle {
-	return resolver.Connect("reload", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(resolver, "reload", false, unsafe.Pointer(C._gotk4_gio2_Resolver_ConnectReload), f)
 }
 
 // LookupByAddress: synchronously reverse-resolves address to determine its

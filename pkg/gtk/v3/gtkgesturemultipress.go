@@ -16,6 +16,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_GestureMultiPress_ConnectPressed(gpointer, gint, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureMultiPress_ConnectReleased(gpointer, gint, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureMultiPress_ConnectStopped(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -70,10 +73,58 @@ func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
 	return wrapGestureMultiPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_GestureMultiPress_ConnectPressed
+func _gotk4_gtk3_GestureMultiPress_ConnectPressed(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
+	var f func(nPress int, x, y float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(nPress int, x, y float64))
+	}
+
+	var _nPress int // out
+	var _x float64  // out
+	var _y float64  // out
+
+	_nPress = int(arg1)
+	_x = float64(arg2)
+	_y = float64(arg3)
+
+	f(_nPress, _x, _y)
+}
+
 // ConnectPressed: this signal is emitted whenever a button or touch press
 // happens.
 func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("pressed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "pressed", false, unsafe.Pointer(C._gotk4_gtk3_GestureMultiPress_ConnectPressed), f)
+}
+
+//export _gotk4_gtk3_GestureMultiPress_ConnectReleased
+func _gotk4_gtk3_GestureMultiPress_ConnectReleased(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
+	var f func(nPress int, x, y float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(nPress int, x, y float64))
+	}
+
+	var _nPress int // out
+	var _x float64  // out
+	var _y float64  // out
+
+	_nPress = int(arg1)
+	_x = float64(arg2)
+	_y = float64(arg3)
+
+	f(_nPress, _x, _y)
 }
 
 // ConnectReleased: this signal is emitted when a button or touch is released.
@@ -81,13 +132,29 @@ func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64
 // that GestureMultiPress::stopped may have been emitted between the press and
 // its release, n_press will only start over at the next press.
 func (gesture *GestureMultiPress) ConnectReleased(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("released", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "released", false, unsafe.Pointer(C._gotk4_gtk3_GestureMultiPress_ConnectReleased), f)
+}
+
+//export _gotk4_gtk3_GestureMultiPress_ConnectStopped
+func _gotk4_gtk3_GestureMultiPress_ConnectStopped(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectStopped: this signal is emitted whenever any time/distance threshold
 // has been exceeded.
 func (gesture *GestureMultiPress) ConnectStopped(f func()) externglib.SignalHandle {
-	return gesture.Connect("stopped", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "stopped", false, unsafe.Pointer(C._gotk4_gtk3_GestureMultiPress_ConnectStopped), f)
 }
 
 // NewGestureMultiPress returns a newly created Gesture that recognizes single

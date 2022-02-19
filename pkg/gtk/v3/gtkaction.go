@@ -23,6 +23,7 @@ import (
 // extern void _gotk4_gtk3_ActionClass_activate(GtkAction*);
 // extern void _gotk4_gtk3_ActionClass_connect_proxy(GtkAction*, GtkWidget*);
 // extern void _gotk4_gtk3_ActionClass_disconnect_proxy(GtkAction*, GtkWidget*);
+// extern void _gotk4_gtk3_Action_ConnectActivate(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -286,9 +287,25 @@ func marshalActioner(p uintptr) (interface{}, error) {
 	return wrapAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Action_ConnectActivate
+func _gotk4_gtk3_Action_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate: "activate" signal is emitted when the action is activated.
 func (action *Action) ConnectActivate(f func()) externglib.SignalHandle {
-	return action.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(action, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Action_ConnectActivate), f)
 }
 
 // NewAction creates a new Action object. To add the action to a ActionGroup and

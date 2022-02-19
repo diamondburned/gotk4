@@ -17,6 +17,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_ExpanderClass_activate(GtkExpander*);
+// extern void _gotk4_gtk3_Expander_ConnectActivate(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -115,8 +116,24 @@ func marshalExpanderer(p uintptr) (interface{}, error) {
 	return wrapExpander(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Expander_ConnectActivate
+func _gotk4_gtk3_Expander_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 func (expander *Expander) ConnectActivate(f func()) externglib.SignalHandle {
-	return expander.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(expander, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Expander_ConnectActivate), f)
 }
 
 // NewExpander creates a new expander using label as the text of the label.

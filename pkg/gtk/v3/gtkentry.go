@@ -35,6 +35,20 @@ import (
 // extern void _gotk4_gtk3_EntryClass_paste_clipboard(GtkEntry*);
 // extern void _gotk4_gtk3_EntryClass_populate_popup(GtkEntry*, GtkWidget*);
 // extern void _gotk4_gtk3_EntryClass_toggle_overwrite(GtkEntry*);
+// extern void _gotk4_gtk3_Entry_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectBackspace(gpointer, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectCopyClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectCutClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectDeleteFromCursor(gpointer, GtkDeleteType, gint, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectIconPress(gpointer, GtkEntryIconPosition, GdkEvent, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectIconRelease(gpointer, GtkEntryIconPosition, GdkEvent, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectInsertEmoji(gpointer, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectPasteClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectPopulatePopup(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectPreeditChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -482,6 +496,22 @@ func marshalEntrier(p uintptr) (interface{}, error) {
 	return wrapEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Entry_ConnectActivate
+func _gotk4_gtk3_Entry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate signal is emitted when the user hits the Enter key.
 //
 // While this signal is used as a [keybinding signal][GtkBindingSignal], it is
@@ -489,7 +519,23 @@ func marshalEntrier(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal are all forms of the Enter key.
 func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
-	return entry.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectActivate), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectBackspace
+func _gotk4_gtk3_Entry_ConnectBackspace(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectBackspace signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -497,7 +543,23 @@ func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal are Backspace and Shift-Backspace.
 func (entry *Entry) ConnectBackspace(f func()) externglib.SignalHandle {
-	return entry.Connect("backspace", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "backspace", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectBackspace), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectCopyClipboard
+func _gotk4_gtk3_Entry_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -505,7 +567,23 @@ func (entry *Entry) ConnectBackspace(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal are Ctrl-c and Ctrl-Insert.
 func (entry *Entry) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return entry.Connect("copy-clipboard", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "copy-clipboard", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectCopyClipboard), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectCutClipboard
+func _gotk4_gtk3_Entry_ConnectCutClipboard(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCutClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -513,7 +591,29 @@ func (entry *Entry) ConnectCopyClipboard(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal are Ctrl-x and Shift-Delete.
 func (entry *Entry) ConnectCutClipboard(f func()) externglib.SignalHandle {
-	return entry.Connect("cut-clipboard", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "cut-clipboard", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectCutClipboard), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectDeleteFromCursor
+func _gotk4_gtk3_Entry_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteType, arg2 C.gint, arg3 C.guintptr) {
+	var f func(typ DeleteType, count int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(typ DeleteType, count int))
+	}
+
+	var _typ DeleteType // out
+	var _count int      // out
+
+	_typ = DeleteType(arg1)
+	_count = int(arg2)
+
+	f(_typ, _count)
 }
 
 // ConnectDeleteFromCursor signal is a [keybinding signal][GtkBindingSignal]
@@ -525,18 +625,90 @@ func (entry *Entry) ConnectCutClipboard(f func()) externglib.SignalHandle {
 // The default bindings for this signal are Delete for deleting a character and
 // Ctrl-Delete for deleting a word.
 func (entry *Entry) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) externglib.SignalHandle {
-	return entry.Connect("delete-from-cursor", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "delete-from-cursor", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectDeleteFromCursor), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectIconPress
+func _gotk4_gtk3_Entry_ConnectIconPress(arg0 C.gpointer, arg1 C.GtkEntryIconPosition, arg2 C.GdkEvent, arg3 C.guintptr) {
+	var f func(iconPos EntryIconPosition, event *gdk.Event)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iconPos EntryIconPosition, event *gdk.Event))
+	}
+
+	var _iconPos EntryIconPosition // out
+	var _event *gdk.Event          // out
+
+	_iconPos = EntryIconPosition(arg1)
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg2))))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+
+	f(_iconPos, _event)
 }
 
 // ConnectIconPress signal is emitted when an activatable icon is clicked.
 func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
-	return entry.Connect("icon-press", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "icon-press", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectIconPress), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectIconRelease
+func _gotk4_gtk3_Entry_ConnectIconRelease(arg0 C.gpointer, arg1 C.GtkEntryIconPosition, arg2 C.GdkEvent, arg3 C.guintptr) {
+	var f func(iconPos EntryIconPosition, event *gdk.Event)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iconPos EntryIconPosition, event *gdk.Event))
+	}
+
+	var _iconPos EntryIconPosition // out
+	var _event *gdk.Event          // out
+
+	_iconPos = EntryIconPosition(arg1)
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg2))))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+
+	f(_iconPos, _event)
 }
 
 // ConnectIconRelease signal is emitted on the button release from a mouse click
 // over an activatable icon.
 func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition, event *gdk.Event)) externglib.SignalHandle {
-	return entry.Connect("icon-release", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "icon-release", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectIconRelease), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectInsertAtCursor
+func _gotk4_gtk3_Entry_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(str string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(str string))
+	}
+
+	var _str string // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_str)
 }
 
 // ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -545,7 +717,23 @@ func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition, event *
 //
 // This signal has no default bindings.
 func (entry *Entry) ConnectInsertAtCursor(f func(str string)) externglib.SignalHandle {
-	return entry.Connect("insert-at-cursor", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "insert-at-cursor", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectInsertAtCursor), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectInsertEmoji
+func _gotk4_gtk3_Entry_ConnectInsertEmoji(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectInsertEmoji signal is a [keybinding signal][GtkBindingSignal] which
@@ -553,7 +741,33 @@ func (entry *Entry) ConnectInsertAtCursor(f func(str string)) externglib.SignalH
 //
 // The default bindings for this signal are Ctrl-. and Ctrl-;.
 func (entry *Entry) ConnectInsertEmoji(f func()) externglib.SignalHandle {
-	return entry.Connect("insert-emoji", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "insert-emoji", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectInsertEmoji), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectMoveCursor
+func _gotk4_gtk3_Entry_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
+	var f func(step MovementStep, count int, extendSelection bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(step MovementStep, count int, extendSelection bool))
+	}
+
+	var _step MovementStep    // out
+	var _count int            // out
+	var _extendSelection bool // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+	if arg3 != 0 {
+		_extendSelection = true
+	}
+
+	f(_step, _count, _extendSelection)
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -573,7 +787,23 @@ func (entry *Entry) ConnectInsertEmoji(f func()) externglib.SignalHandle {
 //
 // - Home/End keys move to the ends of the buffer.
 func (entry *Entry) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return entry.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectMoveCursor), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectPasteClipboard
+func _gotk4_gtk3_Entry_ConnectPasteClipboard(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPasteClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -581,7 +811,43 @@ func (entry *Entry) ConnectMoveCursor(f func(step MovementStep, count int, exten
 //
 // The default bindings for this signal are Ctrl-v and Shift-Insert.
 func (entry *Entry) ConnectPasteClipboard(f func()) externglib.SignalHandle {
-	return entry.Connect("paste-clipboard", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "paste-clipboard", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectPasteClipboard), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectPopulatePopup
+func _gotk4_gtk3_Entry_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(widget Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(widget Widgetter))
+	}
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	f(_widget)
 }
 
 // ConnectPopulatePopup signal gets emitted before showing the context menu of
@@ -595,14 +861,50 @@ func (entry *Entry) ConnectPasteClipboard(f func()) externglib.SignalHandle {
 // Toolbar. The signal handler should not make assumptions about the type of
 // widget.
 func (entry *Entry) ConnectPopulatePopup(f func(widget Widgetter)) externglib.SignalHandle {
-	return entry.Connect("populate-popup", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "populate-popup", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectPopulatePopup), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectPreeditChanged
+func _gotk4_gtk3_Entry_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(preedit string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(preedit string))
+	}
+
+	var _preedit string // out
+
+	_preedit = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_preedit)
 }
 
 // ConnectPreeditChanged: if an input method is used, the typed text will not
 // immediately be committed to the buffer. So if you are interested in the text,
 // connect to this signal.
 func (entry *Entry) ConnectPreeditChanged(f func(preedit string)) externglib.SignalHandle {
-	return entry.Connect("preedit-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "preedit-changed", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectPreeditChanged), f)
+}
+
+//export _gotk4_gtk3_Entry_ConnectToggleOverwrite
+func _gotk4_gtk3_Entry_ConnectToggleOverwrite(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
@@ -610,7 +912,7 @@ func (entry *Entry) ConnectPreeditChanged(f func(preedit string)) externglib.Sig
 //
 // The default bindings for this signal is Insert.
 func (entry *Entry) ConnectToggleOverwrite(f func()) externglib.SignalHandle {
-	return entry.Connect("toggle-overwrite", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "toggle-overwrite", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectToggleOverwrite), f)
 }
 
 // NewEntry creates a new entry.

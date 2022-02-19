@@ -13,6 +13,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ColumnView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
 func init() {
@@ -138,13 +139,33 @@ func marshalColumnViewer(p uintptr) (interface{}, error) {
 	return wrapColumnView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_ColumnView_ConnectActivate
+func _gotk4_gtk4_ColumnView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
+	var f func(position uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(position uint))
+	}
+
+	var _position uint // out
+
+	_position = uint(arg1)
+
+	f(_position)
+}
+
 // ConnectActivate: emitted when a row has been activated by the user, usually
 // via activating the GtkListBase|list.activate-item action.
 //
 // This allows for a convenient way to handle activation in a columnview. See
 // gtk.ListItem.SetActivatable() for details on how to use this signal.
 func (self *ColumnView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return self.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_ColumnView_ConnectActivate), f)
 }
 
 // NewColumnView creates a new GtkColumnView.

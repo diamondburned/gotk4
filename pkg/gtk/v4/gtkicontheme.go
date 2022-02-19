@@ -16,6 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_IconTheme_ConnectChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -324,12 +325,28 @@ func marshalIconThemer(p uintptr) (interface{}, error) {
 	return wrapIconTheme(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_IconTheme_ConnectChanged
+func _gotk4_gtk4_IconTheme_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted when the icon theme changes.
 //
 // This can happen becuase current icon theme is switched or because GTK detects
 // that a change has occurred in the contents of the current icon theme.
 func (self *IconTheme) ConnectChanged(f func()) externglib.SignalHandle {
-	return self.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "changed", false, unsafe.Pointer(C._gotk4_gtk4_IconTheme_ConnectChanged), f)
 }
 
 // NewIconTheme creates a new icon theme object.

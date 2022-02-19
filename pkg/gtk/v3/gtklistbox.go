@@ -31,7 +31,16 @@ import (
 // extern void _gotk4_gtk3_ListBoxClass_unselect_all(GtkListBox*);
 // extern void _gotk4_gtk3_ListBoxForEachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
 // extern void _gotk4_gtk3_ListBoxRowClass_activate(GtkListBoxRow*);
+// extern void _gotk4_gtk3_ListBoxRow_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk3_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
+// extern void _gotk4_gtk3_ListBox_ConnectActivateCursorRow(gpointer, guintptr);
+// extern void _gotk4_gtk3_ListBox_ConnectMoveCursor(gpointer, GtkMovementStep, gint, guintptr);
+// extern void _gotk4_gtk3_ListBox_ConnectRowActivated(gpointer, GtkListBoxRow*, guintptr);
+// extern void _gotk4_gtk3_ListBox_ConnectRowSelected(gpointer, GtkListBoxRow*, guintptr);
+// extern void _gotk4_gtk3_ListBox_ConnectSelectAll(gpointer, guintptr);
+// extern void _gotk4_gtk3_ListBox_ConnectSelectedRowsChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_ListBox_ConnectToggleCursorRow(gpointer, guintptr);
+// extern void _gotk4_gtk3_ListBox_ConnectUnselectAll(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -398,18 +407,98 @@ func marshalListBoxer(p uintptr) (interface{}, error) {
 	return wrapListBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ListBox_ConnectActivateCursorRow
+func _gotk4_gtk3_ListBox_ConnectActivateCursorRow(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 func (box *ListBox) ConnectActivateCursorRow(f func()) externglib.SignalHandle {
-	return box.Connect("activate-cursor-row", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "activate-cursor-row", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectActivateCursorRow), f)
+}
+
+//export _gotk4_gtk3_ListBox_ConnectMoveCursor
+func _gotk4_gtk3_ListBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.guintptr) {
+	var f func(object MovementStep, p0 int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object MovementStep, p0 int))
+	}
+
+	var _object MovementStep // out
+	var _p0 int              // out
+
+	_object = MovementStep(arg1)
+	_p0 = int(arg2)
+
+	f(_object, _p0)
 }
 
 func (box *ListBox) ConnectMoveCursor(f func(object MovementStep, p0 int)) externglib.SignalHandle {
-	return box.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectMoveCursor), f)
+}
+
+//export _gotk4_gtk3_ListBox_ConnectRowActivated
+func _gotk4_gtk3_ListBox_ConnectRowActivated(arg0 C.gpointer, arg1 *C.GtkListBoxRow, arg2 C.guintptr) {
+	var f func(row *ListBoxRow)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(row *ListBoxRow))
+	}
+
+	var _row *ListBoxRow // out
+
+	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_row)
 }
 
 // ConnectRowActivated signal is emitted when a row has been activated by the
 // user.
-func (box *ListBox) ConnectRowActivated(f func(row ListBoxRow)) externglib.SignalHandle {
-	return box.Connect("row-activated", externglib.GeneratedClosure{Func: f})
+func (box *ListBox) ConnectRowActivated(f func(row *ListBoxRow)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(box, "row-activated", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectRowActivated), f)
+}
+
+//export _gotk4_gtk3_ListBox_ConnectRowSelected
+func _gotk4_gtk3_ListBox_ConnectRowSelected(arg0 C.gpointer, arg1 *C.GtkListBoxRow, arg2 C.guintptr) {
+	var f func(row *ListBoxRow)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(row *ListBoxRow))
+	}
+
+	var _row *ListBoxRow // out
+
+	if arg1 != nil {
+		_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	}
+
+	f(_row)
 }
 
 // ConnectRowSelected signal is emitted when a new row is selected, or (with a
@@ -418,8 +507,24 @@ func (box *ListBox) ConnectRowActivated(f func(row ListBoxRow)) externglib.Signa
 // When the box is using K_SELECTION_MULTIPLE, this signal will not give you the
 // full picture of selection changes, and you should use the
 // ListBox::selected-rows-changed signal instead.
-func (box *ListBox) ConnectRowSelected(f func(row ListBoxRow)) externglib.SignalHandle {
-	return box.Connect("row-selected", externglib.GeneratedClosure{Func: f})
+func (box *ListBox) ConnectRowSelected(f func(row *ListBoxRow)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(box, "row-selected", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectRowSelected), f)
+}
+
+//export _gotk4_gtk3_ListBox_ConnectSelectAll
+func _gotk4_gtk3_ListBox_ConnectSelectAll(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -427,17 +532,65 @@ func (box *ListBox) ConnectRowSelected(f func(row ListBoxRow)) externglib.Signal
 //
 // The default bindings for this signal is Ctrl-a.
 func (box *ListBox) ConnectSelectAll(f func()) externglib.SignalHandle {
-	return box.Connect("select-all", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "select-all", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectSelectAll), f)
+}
+
+//export _gotk4_gtk3_ListBox_ConnectSelectedRowsChanged
+func _gotk4_gtk3_ListBox_ConnectSelectedRowsChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSelectedRowsChanged signal is emitted when the set of selected rows
 // changes.
 func (box *ListBox) ConnectSelectedRowsChanged(f func()) externglib.SignalHandle {
-	return box.Connect("selected-rows-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "selected-rows-changed", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectSelectedRowsChanged), f)
+}
+
+//export _gotk4_gtk3_ListBox_ConnectToggleCursorRow
+func _gotk4_gtk3_ListBox_ConnectToggleCursorRow(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 func (box *ListBox) ConnectToggleCursorRow(f func()) externglib.SignalHandle {
-	return box.Connect("toggle-cursor-row", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "toggle-cursor-row", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectToggleCursorRow), f)
+}
+
+//export _gotk4_gtk3_ListBox_ConnectUnselectAll
+func _gotk4_gtk3_ListBox_ConnectUnselectAll(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUnselectAll signal is a [keybinding signal][GtkBindingSignal] which
@@ -446,7 +599,7 @@ func (box *ListBox) ConnectToggleCursorRow(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal is Ctrl-Shift-a.
 func (box *ListBox) ConnectUnselectAll(f func()) externglib.SignalHandle {
-	return box.Connect("unselect-all", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "unselect-all", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectUnselectAll), f)
 }
 
 // NewListBox creates a new ListBox container.
@@ -1174,13 +1327,29 @@ func marshalListBoxRower(p uintptr) (interface{}, error) {
 	return wrapListBoxRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ListBoxRow_ConnectActivate
+func _gotk4_gtk3_ListBoxRow_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate: this is a keybinding signal, which will cause this row to be
 // activated.
 //
 // If you want to be notified when the user activates a row (by key or not), use
 // the ListBox::row-activated signal on the row’s parent ListBox.
 func (row *ListBoxRow) ConnectActivate(f func()) externglib.SignalHandle {
-	return row.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(row, "activate", false, unsafe.Pointer(C._gotk4_gtk3_ListBoxRow_ConnectActivate), f)
 }
 
 // NewListBoxRow creates a new ListBoxRow, to be used as a child of a ListBox.

@@ -19,6 +19,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_AccelGroup_ConnectAccelActivate(gpointer, GObject, guint, GdkModifierType, guintptr);
 import "C"
 
 func init() {
@@ -542,10 +543,40 @@ func marshalAccelGrouper(p uintptr) (interface{}, error) {
 	return wrapAccelGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_AccelGroup_ConnectAccelActivate
+func _gotk4_gtk3_AccelGroup_ConnectAccelActivate(arg0 C.gpointer, arg1 C.GObject, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(acceleratable *externglib.Object, keyval uint, modifier gdk.ModifierType) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(acceleratable *externglib.Object, keyval uint, modifier gdk.ModifierType) (ok bool))
+	}
+
+	var _acceleratable *externglib.Object // out
+	var _keyval uint                      // out
+	var _modifier gdk.ModifierType        // out
+
+	_acceleratable = externglib.Take(unsafe.Pointer(&arg1))
+	_keyval = uint(arg2)
+	_modifier = gdk.ModifierType(arg3)
+
+	ok := f(_acceleratable, _keyval, _modifier)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectAccelActivate signal is an implementation detail of AccelGroup and not
 // meant to be used by applications.
-func (accelGroup *AccelGroup) ConnectAccelActivate(f func(acceleratable *externglib.Object, keyval uint, modifier gdk.ModifierType) bool) externglib.SignalHandle {
-	return accelGroup.Connect("accel-activate", externglib.GeneratedClosure{Func: f})
+func (accelGroup *AccelGroup) ConnectAccelActivate(f func(acceleratable *externglib.Object, keyval uint, modifier gdk.ModifierType) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(accelGroup, "accel-activate", false, unsafe.Pointer(C._gotk4_gtk3_AccelGroup_ConnectAccelActivate), f)
 }
 
 // NewAccelGroup creates a new AccelGroup.
@@ -853,7 +884,7 @@ func (accelGroup *AccelGroup) Query(accelKey uint, accelMods gdk.ModifierType) [
 
 	if _cret != nil {
 		{
-			src := unsafe.Slice(_cret, _arg3)
+			src := unsafe.Slice((*C.GtkAccelGroupEntry)(_cret), _arg3)
 			_accelGroupEntrys = make([]AccelGroupEntry, _arg3)
 			for i := 0; i < int(_arg3); i++ {
 				_accelGroupEntrys[i] = *(*AccelGroupEntry)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

@@ -21,6 +21,8 @@ import (
 // extern guint _gotk4_gtk3_EntryBufferClass_insert_text(GtkEntryBuffer*, guint, gchar*, guint);
 // extern void _gotk4_gtk3_EntryBufferClass_deleted_text(GtkEntryBuffer*, guint, guint);
 // extern void _gotk4_gtk3_EntryBufferClass_inserted_text(GtkEntryBuffer*, guint, gchar*, guint);
+// extern void _gotk4_gtk3_EntryBuffer_ConnectDeletedText(gpointer, guint, guint, guintptr);
+// extern void _gotk4_gtk3_EntryBuffer_ConnectInsertedText(gpointer, guint, gchar*, guint, guintptr);
 import "C"
 
 func init() {
@@ -272,16 +274,62 @@ func marshalEntryBufferer(p uintptr) (interface{}, error) {
 	return wrapEntryBuffer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_EntryBuffer_ConnectDeletedText
+func _gotk4_gtk3_EntryBuffer_ConnectDeletedText(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guintptr) {
+	var f func(position, nChars uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(position, nChars uint))
+	}
+
+	var _position uint // out
+	var _nChars uint   // out
+
+	_position = uint(arg1)
+	_nChars = uint(arg2)
+
+	f(_position, _nChars)
+}
+
 // ConnectDeletedText: this signal is emitted after text is deleted from the
 // buffer.
 func (buffer *EntryBuffer) ConnectDeletedText(f func(position, nChars uint)) externglib.SignalHandle {
-	return buffer.Connect("deleted-text", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "deleted-text", false, unsafe.Pointer(C._gotk4_gtk3_EntryBuffer_ConnectDeletedText), f)
+}
+
+//export _gotk4_gtk3_EntryBuffer_ConnectInsertedText
+func _gotk4_gtk3_EntryBuffer_ConnectInsertedText(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guint, arg4 C.guintptr) {
+	var f func(position uint, chars string, nChars uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(position uint, chars string, nChars uint))
+	}
+
+	var _position uint // out
+	var _chars string  // out
+	var _nChars uint   // out
+
+	_position = uint(arg1)
+	_chars = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_nChars = uint(arg3)
+
+	f(_position, _chars, _nChars)
 }
 
 // ConnectInsertedText: this signal is emitted after text is inserted into the
 // buffer.
 func (buffer *EntryBuffer) ConnectInsertedText(f func(position uint, chars string, nChars uint)) externglib.SignalHandle {
-	return buffer.Connect("inserted-text", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "inserted-text", false, unsafe.Pointer(C._gotk4_gtk3_EntryBuffer_ConnectInsertedText), f)
 }
 
 // NewEntryBuffer: create a new GtkEntryBuffer object.

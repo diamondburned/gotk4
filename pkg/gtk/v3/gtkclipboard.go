@@ -22,6 +22,7 @@ import (
 // extern void _gotk4_gtk3_ClipboardImageReceivedFunc(GtkClipboard*, GdkPixbuf*, gpointer);
 // extern void _gotk4_gtk3_ClipboardTextReceivedFunc(GtkClipboard*, gchar*, gpointer);
 // extern void _gotk4_gtk3_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
+// extern void _gotk4_gtk3_Clipboard_ConnectOwnerChange(gpointer, GdkEventOwnerChange*, guintptr);
 import "C"
 
 func init() {
@@ -219,11 +220,31 @@ func marshalClipboarder(p uintptr) (interface{}, error) {
 	return wrapClipboard(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Clipboard_ConnectOwnerChange
+func _gotk4_gtk3_Clipboard_ConnectOwnerChange(arg0 C.gpointer, arg1 *C.GdkEventOwnerChange, arg2 C.guintptr) {
+	var f func(event *gdk.EventOwnerChange)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventOwnerChange))
+	}
+
+	var _event *gdk.EventOwnerChange // out
+
+	_event = (*gdk.EventOwnerChange)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	f(_event)
+}
+
 // ConnectOwnerChange signal is emitted when GTK+ receives an event that
 // indicates that the ownership of the selection associated with clipboard has
 // changed.
 func (clipboard *Clipboard) ConnectOwnerChange(f func(event *gdk.EventOwnerChange)) externglib.SignalHandle {
-	return clipboard.Connect("owner-change", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(clipboard, "owner-change", false, unsafe.Pointer(C._gotk4_gtk3_Clipboard_ConnectOwnerChange), f)
 }
 
 // Clear clears the contents of the clipboard. Generally this should only be

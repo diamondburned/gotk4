@@ -684,7 +684,7 @@ func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error)
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg3)
+		src := unsafe.Slice((*C.gint)(_cret), _arg3)
 		_gints = make([]int, _arg3)
 		for i := 0; i < int(_arg3); i++ {
 			_gints[i] = int(src[i])
@@ -923,7 +923,7 @@ func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale st
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg4)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg4)
 		_utf8s = make([]string, _arg4)
 		for i := 0; i < int(_arg4); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -1049,7 +1049,7 @@ func (keyFile *KeyFile) StringList(groupName string, key string) ([]string, erro
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg3)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg3)
 		_utf8s = make([]string, _arg3)
 		for i := 0; i < int(_arg3); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))

@@ -130,7 +130,7 @@ func TargetTableNewFromList(list *TargetList) []TargetEntry {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg2)
+		src := unsafe.Slice((*C.GtkTargetEntry)(_cret), _arg2)
 		_targetEntrys = make([]TargetEntry, _arg2)
 		for i := 0; i < int(_arg2); i++ {
 			_targetEntrys[i] = *(*TargetEntry)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

@@ -18,9 +18,14 @@ import (
 // #include <gtk/gtk.h>
 // extern gboolean _gotk4_gtk4_WindowClass_close_request(GtkWindow*);
 // extern gboolean _gotk4_gtk4_WindowClass_enable_debugging(GtkWindow*, gboolean);
+// extern gboolean _gotk4_gtk4_Window_ConnectCloseRequest(gpointer, guintptr);
+// extern gboolean _gotk4_gtk4_Window_ConnectEnableDebugging(gpointer, gboolean, guintptr);
 // extern void _gotk4_gtk4_WindowClass_activate_default(GtkWindow*);
 // extern void _gotk4_gtk4_WindowClass_activate_focus(GtkWindow*);
 // extern void _gotk4_gtk4_WindowClass_keys_changed(GtkWindow*);
+// extern void _gotk4_gtk4_Window_ConnectActivateDefault(gpointer, guintptr);
+// extern void _gotk4_gtk4_Window_ConnectActivateFocus(gpointer, guintptr);
+// extern void _gotk4_gtk4_Window_ConnectKeysChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -243,12 +248,44 @@ func marshalWindower(p uintptr) (interface{}, error) {
 	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Window_ConnectActivateDefault
+func _gotk4_gtk4_Window_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivateDefault: emitted when the user activates the default widget of
 // window.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (window *Window) ConnectActivateDefault(f func()) externglib.SignalHandle {
-	return window.Connect("activate-default", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(window, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateDefault), f)
+}
+
+//export _gotk4_gtk4_Window_ConnectActivateFocus
+func _gotk4_gtk4_Window_ConnectActivateFocus(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectActivateFocus: emitted when the user activates the currently focused
@@ -256,13 +293,63 @@ func (window *Window) ConnectActivateDefault(f func()) externglib.SignalHandle {
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (window *Window) ConnectActivateFocus(f func()) externglib.SignalHandle {
-	return window.Connect("activate-focus", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(window, "activate-focus", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateFocus), f)
+}
+
+//export _gotk4_gtk4_Window_ConnectCloseRequest
+func _gotk4_gtk4_Window_ConnectCloseRequest(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectCloseRequest: emitted when the user clicks on the close button of the
 // window.
-func (window *Window) ConnectCloseRequest(f func() bool) externglib.SignalHandle {
-	return window.Connect("close-request", externglib.GeneratedClosure{Func: f})
+func (window *Window) ConnectCloseRequest(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(window, "close-request", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectCloseRequest), f)
+}
+
+//export _gotk4_gtk4_Window_ConnectEnableDebugging
+func _gotk4_gtk4_Window_ConnectEnableDebugging(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(toggle bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(toggle bool) (ok bool))
+	}
+
+	var _toggle bool // out
+
+	if arg1 != 0 {
+		_toggle = true
+	}
+
+	ok := f(_toggle)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectEnableDebugging: emitted when the user enables or disables interactive
@@ -274,14 +361,30 @@ func (window *Window) ConnectCloseRequest(f func() bool) externglib.SignalHandle
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
-func (window *Window) ConnectEnableDebugging(f func(toggle bool) bool) externglib.SignalHandle {
-	return window.Connect("enable-debugging", externglib.GeneratedClosure{Func: f})
+func (window *Window) ConnectEnableDebugging(f func(toggle bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(window, "enable-debugging", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectEnableDebugging), f)
+}
+
+//export _gotk4_gtk4_Window_ConnectKeysChanged
+func _gotk4_gtk4_Window_ConnectKeysChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectKeysChanged: emitted when the set of accelerators or mnemonics that
 // are associated with window changes.
 func (window *Window) ConnectKeysChanged(f func()) externglib.SignalHandle {
-	return window.Connect("keys-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(window, "keys-changed", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectKeysChanged), f)
 }
 
 // NewWindow creates a new GtkWindow.

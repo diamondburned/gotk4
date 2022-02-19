@@ -246,7 +246,7 @@ func TestListAllTypes() []externglib.Type {
 	var _gTypes []externglib.Type // out
 
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((*C.GType)(_cret), _arg1)
 		_gTypes = make([]externglib.Type, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_gTypes[i] = externglib.Type(src[i])

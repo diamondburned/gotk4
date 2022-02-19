@@ -17,6 +17,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_AccelMap_ConnectChanged(gpointer, gchar*, guint, GdkModifierType, guintptr);
 import "C"
 
 func init() {
@@ -111,11 +112,35 @@ func marshalAccelMapper(p uintptr) (interface{}, error) {
 	return wrapAccelMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_AccelMap_ConnectChanged
+func _gotk4_gtk3_AccelMap_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) {
+	var f func(accelPath string, accelKey uint, accelMods gdk.ModifierType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(accelPath string, accelKey uint, accelMods gdk.ModifierType))
+	}
+
+	var _accelPath string           // out
+	var _accelKey uint              // out
+	var _accelMods gdk.ModifierType // out
+
+	_accelPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_accelKey = uint(arg2)
+	_accelMods = gdk.ModifierType(arg3)
+
+	f(_accelPath, _accelKey, _accelMods)
+}
+
 // ConnectChanged notifies of a change in the global accelerator map. The path
 // is also used as the detail for the signal, so it is possible to connect to
 // changed::accel_path.
 func (v *AccelMap) ConnectChanged(f func(accelPath string, accelKey uint, accelMods gdk.ModifierType)) externglib.SignalHandle {
-	return v.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gtk3_AccelMap_ConnectChanged), f)
 }
 
 // AccelMapAddEntry registers a new accelerator with the global accelerator map.

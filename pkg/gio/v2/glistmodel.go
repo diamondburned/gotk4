@@ -15,6 +15,7 @@ import (
 // extern GType _gotk4_gio2_ListModelInterface_get_item_type(GListModel*);
 // extern gpointer _gotk4_gio2_ListModelInterface_get_item(GListModel*, guint);
 // extern guint _gotk4_gio2_ListModelInterface_get_n_items(GListModel*);
+// extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);
 import "C"
 
 func init() {
@@ -189,6 +190,30 @@ func marshalListModeller(p uintptr) (interface{}, error) {
 	return wrapListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_ListModel_ConnectItemsChanged
+func _gotk4_gio2_ListModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.guintptr) {
+	var f func(position, removed, added uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(position, removed, added uint))
+	}
+
+	var _position uint // out
+	var _removed uint  // out
+	var _added uint    // out
+
+	_position = uint(arg1)
+	_removed = uint(arg2)
+	_added = uint(arg3)
+
+	f(_position, _removed, _added)
+}
+
 // ConnectItemsChanged: this signal is emitted whenever items were added to or
 // removed from list. At position, removed items were removed and added items
 // were added in their place.
@@ -196,7 +221,7 @@ func marshalListModeller(p uintptr) (interface{}, error) {
 // Note: If removed != added, the positions of all later items in the model
 // change.
 func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) externglib.SignalHandle {
-	return list.Connect("items-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(list, "items-changed", false, unsafe.Pointer(C._gotk4_gio2_ListModel_ConnectItemsChanged), f)
 }
 
 // ItemType gets the type of the items in list. All items returned from

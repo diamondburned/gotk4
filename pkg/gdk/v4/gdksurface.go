@@ -14,6 +14,11 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_gdk4_Surface_ConnectEvent(gpointer, gpointer*, guintptr);
+// extern gboolean _gotk4_gdk4_Surface_ConnectRender(gpointer, cairo_region_t*, guintptr);
+// extern void _gotk4_gdk4_Surface_ConnectEnterMonitor(gpointer, GdkMonitor*, guintptr);
+// extern void _gotk4_gdk4_Surface_ConnectLayout(gpointer, gint, gint, guintptr);
+// extern void _gotk4_gdk4_Surface_ConnectLeaveMonitor(gpointer, GdkMonitor*, guintptr);
 import "C"
 
 func init() {
@@ -82,15 +87,99 @@ func BaseSurface(obj Surfacer) *Surface {
 	return obj.baseSurface()
 }
 
+//export _gotk4_gdk4_Surface_ConnectEnterMonitor
+func _gotk4_gdk4_Surface_ConnectEnterMonitor(arg0 C.gpointer, arg1 *C.GdkMonitor, arg2 C.guintptr) {
+	var f func(monitor *Monitor)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(monitor *Monitor))
+	}
+
+	var _monitor *Monitor // out
+
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_monitor)
+}
+
 // ConnectEnterMonitor: emitted when surface starts being present on the
 // monitor.
-func (surface *Surface) ConnectEnterMonitor(f func(monitor Monitor)) externglib.SignalHandle {
-	return surface.Connect("enter-monitor", externglib.GeneratedClosure{Func: f})
+func (surface *Surface) ConnectEnterMonitor(f func(monitor *Monitor)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(surface, "enter-monitor", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectEnterMonitor), f)
+}
+
+//export _gotk4_gdk4_Surface_ConnectEvent
+func _gotk4_gdk4_Surface_ConnectEvent(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event Eventer) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event Eventer) (ok bool))
+	}
+
+	var _event Eventer // out
+
+	{
+		objptr := unsafe.Pointer(*arg1)
+		if objptr == nil {
+			panic("object of type gdk.Eventer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Eventer)
+			return ok
+		})
+		rv, ok := casted.(Eventer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Eventer")
+		}
+		_event = rv
+	}
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectEvent: emitted when GDK receives an input event for surface.
-func (surface *Surface) ConnectEvent(f func(event Eventer) bool) externglib.SignalHandle {
-	return surface.Connect("event", externglib.GeneratedClosure{Func: f})
+func (surface *Surface) ConnectEvent(f func(event Eventer) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(surface, "event", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectEvent), f)
+}
+
+//export _gotk4_gdk4_Surface_ConnectLayout
+func _gotk4_gdk4_Surface_ConnectLayout(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(width, height int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(width, height int))
+	}
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	f(_width, _height)
 }
 
 // ConnectLayout: emitted when the size of surface is changed, or when relayout
@@ -99,17 +188,70 @@ func (surface *Surface) ConnectEvent(f func(event Eventer) bool) externglib.Sign
 // Surface size is reported in ”application pixels”, not ”device pixels” (see
 // gdk_surface_get_scale_factor()).
 func (surface *Surface) ConnectLayout(f func(width, height int)) externglib.SignalHandle {
-	return surface.Connect("layout", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(surface, "layout", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectLayout), f)
+}
+
+//export _gotk4_gdk4_Surface_ConnectLeaveMonitor
+func _gotk4_gdk4_Surface_ConnectLeaveMonitor(arg0 C.gpointer, arg1 *C.GdkMonitor, arg2 C.guintptr) {
+	var f func(monitor *Monitor)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(monitor *Monitor))
+	}
+
+	var _monitor *Monitor // out
+
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_monitor)
 }
 
 // ConnectLeaveMonitor: emitted when surface stops being present on the monitor.
-func (surface *Surface) ConnectLeaveMonitor(f func(monitor Monitor)) externglib.SignalHandle {
-	return surface.Connect("leave-monitor", externglib.GeneratedClosure{Func: f})
+func (surface *Surface) ConnectLeaveMonitor(f func(monitor *Monitor)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(surface, "leave-monitor", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectLeaveMonitor), f)
+}
+
+//export _gotk4_gdk4_Surface_ConnectRender
+func _gotk4_gdk4_Surface_ConnectRender(arg0 C.gpointer, arg1 *C.cairo_region_t, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(region *cairo.Region) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(region *cairo.Region) (ok bool))
+	}
+
+	var _region *cairo.Region // out
+
+	{
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(arg1)}
+		_region = (*cairo.Region)(unsafe.Pointer(_pp))
+	}
+	C.cairo_region_reference(arg1)
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+	})
+
+	ok := f(_region)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectRender: emitted when part of the surface needs to be redrawn.
-func (surface *Surface) ConnectRender(f func(region *cairo.Region) bool) externglib.SignalHandle {
-	return surface.Connect("render", externglib.GeneratedClosure{Func: f})
+func (surface *Surface) ConnectRender(f func(region *cairo.Region) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(surface, "render", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectRender), f)
 }
 
 // NewSurfacePopup: create a new popup surface.

@@ -3,6 +3,7 @@ package types
 import (
 	"fmt"
 	"strings"
+	"unicode"
 
 	"github.com/diamondburned/gotk4/gir"
 )
@@ -327,7 +328,14 @@ func CTypeFallback(c, gir string) string {
 		return ctyp
 	}
 
-	return cTypePrefixEraser.Replace(gir)
+	ctyp = cTypePrefixEraser.Replace(gir)
+	if strings.IndexFunc(ctyp, unicode.IsUpper) != -1 {
+		// CType contains an upper character, which implies that it's a GIR type
+		// name that isn't a C type, so we can't convert it to C.
+		return ""
+	}
+
+	return ctyp
 }
 
 // ReturnIsVoid returns true if the return type is void.
@@ -371,6 +379,7 @@ var girToBuiltin = map[string]string{
 	"gulong":   "uint32",
 	"gunichar": "uint32",
 	"guint64":  "uint64",
+	"guintptr": "uintptr",
 	"utf8":     "string",
 	"filename": "string",
 }
@@ -403,9 +412,14 @@ func FindParameter(c *gir.CallableAttrs, paramName string) *gir.ParameterAttrs {
 		}
 	}
 
-	for i, param := range c.Parameters.Parameters {
+	return FindParameterFromSlice(c.Parameters.Parameters, paramName)
+}
+
+// FindParameter finds a parameter from a slice of gir.Parameters.
+func FindParameterFromSlice(params []gir.Parameter, paramName string) *gir.ParameterAttrs {
+	for i, param := range params {
 		if param.Name == paramName {
-			return &c.Parameters.Parameters[i].ParameterAttrs
+			return &params[i].ParameterAttrs
 		}
 	}
 

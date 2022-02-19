@@ -19,11 +19,15 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_RangeClass_change_value(GtkRange*, GtkScrollType, gdouble);
+// extern gboolean _gotk4_gtk3_Range_ConnectChangeValue(gpointer, GtkScrollType, gdouble, guintptr);
 // extern void _gotk4_gtk3_RangeClass_adjust_bounds(GtkRange*, gdouble);
 // extern void _gotk4_gtk3_RangeClass_get_range_border(GtkRange*, GtkBorder*);
 // extern void _gotk4_gtk3_RangeClass_get_range_size_request(GtkRange*, GtkOrientation, gint*, gint*);
 // extern void _gotk4_gtk3_RangeClass_move_slider(GtkRange*, GtkScrollType);
 // extern void _gotk4_gtk3_RangeClass_value_changed(GtkRange*);
+// extern void _gotk4_gtk3_Range_ConnectAdjustBounds(gpointer, gdouble, guintptr);
+// extern void _gotk4_gtk3_Range_ConnectMoveSlider(gpointer, GtkScrollType, guintptr);
+// extern void _gotk4_gtk3_Range_ConnectValueChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -250,10 +254,58 @@ func BaseRange(obj Ranger) *Range {
 	return obj.baseRange()
 }
 
+//export _gotk4_gtk3_Range_ConnectAdjustBounds
+func _gotk4_gtk3_Range_ConnectAdjustBounds(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) {
+	var f func(value float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(value float64))
+	}
+
+	var _value float64 // out
+
+	_value = float64(arg1)
+
+	f(_value)
+}
+
 // ConnectAdjustBounds: emitted before clamping a value, to give the application
 // a chance to adjust the bounds.
 func (_range *Range) ConnectAdjustBounds(f func(value float64)) externglib.SignalHandle {
-	return _range.Connect("adjust-bounds", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(_range, "adjust-bounds", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectAdjustBounds), f)
+}
+
+//export _gotk4_gtk3_Range_ConnectChangeValue
+func _gotk4_gtk3_Range_ConnectChangeValue(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.gdouble, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(scroll ScrollType, value float64) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(scroll ScrollType, value float64) (ok bool))
+	}
+
+	var _scroll ScrollType // out
+	var _value float64     // out
+
+	_scroll = ScrollType(arg1)
+	_value = float64(arg2)
+
+	ok := f(_scroll, _value)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectChangeValue signal is emitted when a scroll action is performed on a
@@ -267,19 +319,55 @@ func (_range *Range) ConnectAdjustBounds(f func(value float64)) externglib.Signa
 // GtkRange::change-value signal is responsible for clamping the value to the
 // desired number of decimal digits; the default GTK+ handler clamps the value
 // based on Range:round-digits.
-func (_range *Range) ConnectChangeValue(f func(scroll ScrollType, value float64) bool) externglib.SignalHandle {
-	return _range.Connect("change-value", externglib.GeneratedClosure{Func: f})
+func (_range *Range) ConnectChangeValue(f func(scroll ScrollType, value float64) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(_range, "change-value", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectChangeValue), f)
+}
+
+//export _gotk4_gtk3_Range_ConnectMoveSlider
+func _gotk4_gtk3_Range_ConnectMoveSlider(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
+	var f func(step ScrollType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(step ScrollType))
+	}
+
+	var _step ScrollType // out
+
+	_step = ScrollType(arg1)
+
+	f(_step)
 }
 
 // ConnectMoveSlider: virtual function that moves the slider. Used for
 // keybindings.
 func (_range *Range) ConnectMoveSlider(f func(step ScrollType)) externglib.SignalHandle {
-	return _range.Connect("move-slider", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(_range, "move-slider", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectMoveSlider), f)
+}
+
+//export _gotk4_gtk3_Range_ConnectValueChanged
+func _gotk4_gtk3_Range_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectValueChanged: emitted when the range value changes.
 func (_range *Range) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return _range.Connect("value-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(_range, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectValueChanged), f)
 }
 
 // Adjustment: get the Adjustment which is the “model” object for Range. See

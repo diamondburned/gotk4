@@ -14,6 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_gdkx114_X11Display_ConnectXevent(gpointer, gpointer, guintptr);
 import "C"
 
 func init() {
@@ -79,6 +80,32 @@ func marshalX11Displayer(p uintptr) (interface{}, error) {
 	return wrapX11Display(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdkx114_X11Display_ConnectXevent
+func _gotk4_gdkx114_X11Display_ConnectXevent(arg0 C.gpointer, arg1 C.gpointer, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(xevent cgo.Handle) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(xevent cgo.Handle) (ok bool))
+	}
+
+	var _xevent cgo.Handle // out
+
+	_xevent = (cgo.Handle)(unsafe.Pointer(arg1))
+
+	ok := f(_xevent)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectXevent signal is a low level signal that is emitted whenever an XEvent
 // has been received.
 //
@@ -94,8 +121,8 @@ func marshalX11Displayer(p uintptr) (interface{}, error) {
 // If you are interested in X GenericEvents, bear in mind that XGetEventData()
 // has been already called on the event, and XFreeEventData() will be called
 // afterwards.
-func (display *X11Display) ConnectXevent(f func(xevent cgo.Handle) bool) externglib.SignalHandle {
-	return display.Connect("xevent", externglib.GeneratedClosure{Func: f})
+func (display *X11Display) ConnectXevent(f func(xevent cgo.Handle) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(display, "xevent", false, unsafe.Pointer(C._gotk4_gdkx114_X11Display_ConnectXevent), f)
 }
 
 // ErrorTrapPop pops the error trap pushed by gdk_x11_display_error_trap_push().

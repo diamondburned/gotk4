@@ -31,6 +31,18 @@ import (
 // extern void _gotk4_gio2_VolumeMonitorClass_volume_added(GVolumeMonitor*, GVolume*);
 // extern void _gotk4_gio2_VolumeMonitorClass_volume_changed(GVolumeMonitor*, GVolume*);
 // extern void _gotk4_gio2_VolumeMonitorClass_volume_removed(GVolumeMonitor*, GVolume*);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectDriveChanged(gpointer, GDrive*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectDriveConnected(gpointer, GDrive*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected(gpointer, GDrive*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton(gpointer, GDrive*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectDriveStopButton(gpointer, GDrive*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectMountAdded(gpointer, GMount*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectMountChanged(gpointer, GMount*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount(gpointer, GMount*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectMountRemoved(gpointer, GMount*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded(gpointer, GVolume*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(gpointer, GVolume*, guintptr);
+// extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(gpointer, GVolume*, guintptr);
 import "C"
 
 func init() {
@@ -675,40 +687,328 @@ func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
 	return wrapVolumeMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_VolumeMonitor_ConnectDriveChanged
+func _gotk4_gio2_VolumeMonitor_ConnectDriveChanged(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
+	var f func(drive Driver)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drive Driver))
+	}
+
+	var _drive Driver // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Driver is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Driver)
+			return ok
+		})
+		rv, ok := casted.(Driver)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
+		}
+		_drive = rv
+	}
+
+	f(_drive)
+}
+
 // ConnectDriveChanged: emitted when a drive changes.
 func (volumeMonitor *VolumeMonitor) ConnectDriveChanged(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-changed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveChanged), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectDriveConnected
+func _gotk4_gio2_VolumeMonitor_ConnectDriveConnected(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
+	var f func(drive Driver)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drive Driver))
+	}
+
+	var _drive Driver // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Driver is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Driver)
+			return ok
+		})
+		rv, ok := casted.(Driver)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
+		}
+		_drive = rv
+	}
+
+	f(_drive)
 }
 
 // ConnectDriveConnected: emitted when a drive is connected to the system.
 func (volumeMonitor *VolumeMonitor) ConnectDriveConnected(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-connected", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-connected", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveConnected), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected
+func _gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
+	var f func(drive Driver)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drive Driver))
+	}
+
+	var _drive Driver // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Driver is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Driver)
+			return ok
+		})
+		rv, ok := casted.(Driver)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
+		}
+		_drive = rv
+	}
+
+	f(_drive)
 }
 
 // ConnectDriveDisconnected: emitted when a drive is disconnected from the
 // system.
 func (volumeMonitor *VolumeMonitor) ConnectDriveDisconnected(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-disconnected", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-disconnected", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton
+func _gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
+	var f func(drive Driver)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drive Driver))
+	}
+
+	var _drive Driver // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Driver is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Driver)
+			return ok
+		})
+		rv, ok := casted.(Driver)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
+		}
+		_drive = rv
+	}
+
+	f(_drive)
 }
 
 // ConnectDriveEjectButton: emitted when the eject button is pressed on drive.
 func (volumeMonitor *VolumeMonitor) ConnectDriveEjectButton(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-eject-button", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-eject-button", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectDriveStopButton
+func _gotk4_gio2_VolumeMonitor_ConnectDriveStopButton(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
+	var f func(drive Driver)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drive Driver))
+	}
+
+	var _drive Driver // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Driver is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Driver)
+			return ok
+		})
+		rv, ok := casted.(Driver)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
+		}
+		_drive = rv
+	}
+
+	f(_drive)
 }
 
 // ConnectDriveStopButton: emitted when the stop button is pressed on drive.
 func (volumeMonitor *VolumeMonitor) ConnectDriveStopButton(f func(drive Driver)) externglib.SignalHandle {
-	return volumeMonitor.Connect("drive-stop-button", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-stop-button", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveStopButton), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectMountAdded
+func _gotk4_gio2_VolumeMonitor_ConnectMountAdded(arg0 C.gpointer, arg1 *C.GMount, arg2 C.guintptr) {
+	var f func(mount Mounter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(mount Mounter))
+	}
+
+	var _mount Mounter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Mounter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Mounter)
+			return ok
+		})
+		rv, ok := casted.(Mounter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
+		}
+		_mount = rv
+	}
+
+	f(_mount)
 }
 
 // ConnectMountAdded: emitted when a mount is added.
 func (volumeMonitor *VolumeMonitor) ConnectMountAdded(f func(mount Mounter)) externglib.SignalHandle {
-	return volumeMonitor.Connect("mount-added", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-added", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountAdded), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectMountChanged
+func _gotk4_gio2_VolumeMonitor_ConnectMountChanged(arg0 C.gpointer, arg1 *C.GMount, arg2 C.guintptr) {
+	var f func(mount Mounter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(mount Mounter))
+	}
+
+	var _mount Mounter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Mounter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Mounter)
+			return ok
+		})
+		rv, ok := casted.(Mounter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
+		}
+		_mount = rv
+	}
+
+	f(_mount)
 }
 
 // ConnectMountChanged: emitted when a mount changes.
 func (volumeMonitor *VolumeMonitor) ConnectMountChanged(f func(mount Mounter)) externglib.SignalHandle {
-	return volumeMonitor.Connect("mount-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-changed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountChanged), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount
+func _gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount(arg0 C.gpointer, arg1 *C.GMount, arg2 C.guintptr) {
+	var f func(mount Mounter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(mount Mounter))
+	}
+
+	var _mount Mounter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Mounter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Mounter)
+			return ok
+		})
+		rv, ok := casted.(Mounter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
+		}
+		_mount = rv
+	}
+
+	f(_mount)
 }
 
 // ConnectMountPreUnmount: may be emitted when a mount is about to be removed.
@@ -716,28 +1016,172 @@ func (volumeMonitor *VolumeMonitor) ConnectMountChanged(f func(mount Mounter)) e
 // This signal depends on the backend and is only emitted if GIO was used to
 // unmount.
 func (volumeMonitor *VolumeMonitor) ConnectMountPreUnmount(f func(mount Mounter)) externglib.SignalHandle {
-	return volumeMonitor.Connect("mount-pre-unmount", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-pre-unmount", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectMountRemoved
+func _gotk4_gio2_VolumeMonitor_ConnectMountRemoved(arg0 C.gpointer, arg1 *C.GMount, arg2 C.guintptr) {
+	var f func(mount Mounter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(mount Mounter))
+	}
+
+	var _mount Mounter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Mounter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Mounter)
+			return ok
+		})
+		rv, ok := casted.(Mounter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
+		}
+		_mount = rv
+	}
+
+	f(_mount)
 }
 
 // ConnectMountRemoved: emitted when a mount is removed.
 func (volumeMonitor *VolumeMonitor) ConnectMountRemoved(f func(mount Mounter)) externglib.SignalHandle {
-	return volumeMonitor.Connect("mount-removed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-removed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountRemoved), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded
+func _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded(arg0 C.gpointer, arg1 *C.GVolume, arg2 C.guintptr) {
+	var f func(volume Volumer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(volume Volumer))
+	}
+
+	var _volume Volumer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Volumer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Volumer)
+			return ok
+		})
+		rv, ok := casted.(Volumer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
+		}
+		_volume = rv
+	}
+
+	f(_volume)
 }
 
 // ConnectVolumeAdded: emitted when a mountable volume is added to the system.
 func (volumeMonitor *VolumeMonitor) ConnectVolumeAdded(f func(volume Volumer)) externglib.SignalHandle {
-	return volumeMonitor.Connect("volume-added", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "volume-added", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectVolumeAdded), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged
+func _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(arg0 C.gpointer, arg1 *C.GVolume, arg2 C.guintptr) {
+	var f func(volume Volumer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(volume Volumer))
+	}
+
+	var _volume Volumer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Volumer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Volumer)
+			return ok
+		})
+		rv, ok := casted.(Volumer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
+		}
+		_volume = rv
+	}
+
+	f(_volume)
 }
 
 // ConnectVolumeChanged: emitted when mountable volume is changed.
 func (volumeMonitor *VolumeMonitor) ConnectVolumeChanged(f func(volume Volumer)) externglib.SignalHandle {
-	return volumeMonitor.Connect("volume-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "volume-changed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectVolumeChanged), f)
+}
+
+//export _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved
+func _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(arg0 C.gpointer, arg1 *C.GVolume, arg2 C.guintptr) {
+	var f func(volume Volumer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(volume Volumer))
+	}
+
+	var _volume Volumer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Volumer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Volumer)
+			return ok
+		})
+		rv, ok := casted.(Volumer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
+		}
+		_volume = rv
+	}
+
+	f(_volume)
 }
 
 // ConnectVolumeRemoved: emitted when a mountable volume is removed from the
 // system.
 func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer)) externglib.SignalHandle {
-	return volumeMonitor.Connect("volume-removed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volumeMonitor, "volume-removed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved), f)
 }
 
 // ConnectedDrives gets a list of drives connected to the system.

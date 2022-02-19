@@ -16,6 +16,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_ToggleActionClass_toggled(GtkToggleAction*);
+// extern void _gotk4_gtk3_ToggleAction_ConnectToggled(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -82,10 +83,26 @@ func marshalToggleActioner(p uintptr) (interface{}, error) {
 	return wrapToggleAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ToggleAction_ConnectToggled
+func _gotk4_gtk3_ToggleAction_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectToggled: should be connected if you wish to perform an action whenever
 // the ToggleAction state is changed.
 func (action *ToggleAction) ConnectToggled(f func()) externglib.SignalHandle {
-	return action.Connect("toggled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(action, "toggled", false, unsafe.Pointer(C._gotk4_gtk3_ToggleAction_ConnectToggled), f)
 }
 
 // NewToggleAction creates a new ToggleAction object. To add the action to a

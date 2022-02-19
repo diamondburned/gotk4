@@ -39,6 +39,11 @@ import (
 // extern void _gotk4_gtk3_TreeModelIface_row_has_child_toggled(GtkTreeModel*, GtkTreePath*, GtkTreeIter*);
 // extern void _gotk4_gtk3_TreeModelIface_row_inserted(GtkTreeModel*, GtkTreePath*, GtkTreeIter*);
 // extern void _gotk4_gtk3_TreeModelIface_unref_node(GtkTreeModel*, GtkTreeIter*);
+// extern void _gotk4_gtk3_TreeModel_ConnectRowChanged(gpointer, GtkTreePath*, GtkTreeIter*, guintptr);
+// extern void _gotk4_gtk3_TreeModel_ConnectRowDeleted(gpointer, GtkTreePath*, guintptr);
+// extern void _gotk4_gtk3_TreeModel_ConnectRowHasChildToggled(gpointer, GtkTreePath*, GtkTreeIter*, guintptr);
+// extern void _gotk4_gtk3_TreeModel_ConnectRowInserted(gpointer, GtkTreePath*, GtkTreeIter*, guintptr);
+// extern void _gotk4_gtk3_TreeModel_ConnectRowsReordered(gpointer, GtkTreePath*, GtkTreeIter*, gpointer, guintptr);
 import "C"
 
 func init() {
@@ -964,10 +969,52 @@ func marshalTreeModeller(p uintptr) (interface{}, error) {
 	return wrapTreeModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_TreeModel_ConnectRowChanged
+func _gotk4_gtk3_TreeModel_ConnectRowChanged(arg0 C.gpointer, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.guintptr) {
+	var f func(path *TreePath, iter *TreeIter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path *TreePath, iter *TreeIter))
+	}
+
+	var _path *TreePath // out
+	var _iter *TreeIter // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	f(_path, _iter)
+}
+
 // ConnectRowChanged: this signal is emitted when a row in the model has
 // changed.
 func (childModel *TreeModel) ConnectRowChanged(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
-	return childModel.Connect("row-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(childModel, "row-changed", false, unsafe.Pointer(C._gotk4_gtk3_TreeModel_ConnectRowChanged), f)
+}
+
+//export _gotk4_gtk3_TreeModel_ConnectRowDeleted
+func _gotk4_gtk3_TreeModel_ConnectRowDeleted(arg0 C.gpointer, arg1 *C.GtkTreePath, arg2 C.guintptr) {
+	var f func(path *TreePath)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path *TreePath))
+	}
+
+	var _path *TreePath // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	f(_path)
 }
 
 // ConnectRowDeleted: this signal is emitted when a row has been deleted.
@@ -979,13 +1026,57 @@ func (childModel *TreeModel) ConnectRowChanged(f func(path *TreePath, iter *Tree
 // pointed to by path should be the location that the row previously was at. It
 // may not be a valid location anymore.
 func (childModel *TreeModel) ConnectRowDeleted(f func(path *TreePath)) externglib.SignalHandle {
-	return childModel.Connect("row-deleted", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(childModel, "row-deleted", false, unsafe.Pointer(C._gotk4_gtk3_TreeModel_ConnectRowDeleted), f)
+}
+
+//export _gotk4_gtk3_TreeModel_ConnectRowHasChildToggled
+func _gotk4_gtk3_TreeModel_ConnectRowHasChildToggled(arg0 C.gpointer, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.guintptr) {
+	var f func(path *TreePath, iter *TreeIter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path *TreePath, iter *TreeIter))
+	}
+
+	var _path *TreePath // out
+	var _iter *TreeIter // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	f(_path, _iter)
 }
 
 // ConnectRowHasChildToggled: this signal is emitted when a row has gotten the
 // first child row or lost its last child row.
 func (childModel *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
-	return childModel.Connect("row-has-child-toggled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(childModel, "row-has-child-toggled", false, unsafe.Pointer(C._gotk4_gtk3_TreeModel_ConnectRowHasChildToggled), f)
+}
+
+//export _gotk4_gtk3_TreeModel_ConnectRowInserted
+func _gotk4_gtk3_TreeModel_ConnectRowInserted(arg0 C.gpointer, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.guintptr) {
+	var f func(path *TreePath, iter *TreeIter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path *TreePath, iter *TreeIter))
+	}
+
+	var _path *TreePath // out
+	var _iter *TreeIter // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	f(_path, _iter)
 }
 
 // ConnectRowInserted: this signal is emitted when a new row has been inserted
@@ -995,7 +1086,31 @@ func (childModel *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, it
 // pattern to first insert an empty row, and then fill it with the desired
 // values.
 func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter *TreeIter)) externglib.SignalHandle {
-	return childModel.Connect("row-inserted", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(childModel, "row-inserted", false, unsafe.Pointer(C._gotk4_gtk3_TreeModel_ConnectRowInserted), f)
+}
+
+//export _gotk4_gtk3_TreeModel_ConnectRowsReordered
+func _gotk4_gtk3_TreeModel_ConnectRowsReordered(arg0 C.gpointer, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer, arg4 C.guintptr) {
+	var f func(path *TreePath, iter *TreeIter, newOrder cgo.Handle)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path *TreePath, iter *TreeIter, newOrder cgo.Handle))
+	}
+
+	var _path *TreePath      // out
+	var _iter *TreeIter      // out
+	var _newOrder cgo.Handle // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_newOrder = (cgo.Handle)(unsafe.Pointer(arg3))
+
+	f(_path, _iter, _newOrder)
 }
 
 // ConnectRowsReordered: this signal is emitted when the children of a node in
@@ -1004,7 +1119,7 @@ func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter *Tre
 // Note that this signal is not emitted when rows are reordered by DND, since
 // this is implemented by removing and then reinserting the row.
 func (childModel *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter *TreeIter, newOrder cgo.Handle)) externglib.SignalHandle {
-	return childModel.Connect("rows-reordered", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(childModel, "rows-reordered", false, unsafe.Pointer(C._gotk4_gtk3_TreeModel_ConnectRowsReordered), f)
 }
 
 // ForEach calls func on each node in model in a depth-first fashion.
@@ -2090,7 +2205,7 @@ func (path *TreePath) Indices() []int {
 	var _gints []int // out
 
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((*C.gint)(_cret), _arg1)
 		_gints = make([]int, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_gints[i] = int(src[i])

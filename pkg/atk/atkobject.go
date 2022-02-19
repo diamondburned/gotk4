@@ -39,6 +39,12 @@ import (
 // extern void _gotk4_atk1_ObjectClass_set_role(AtkObject*, AtkRole);
 // extern void _gotk4_atk1_ObjectClass_state_change(AtkObject*, gchar*, gboolean);
 // extern void _gotk4_atk1_ObjectClass_visible_data_changed(AtkObject*);
+// extern void _gotk4_atk1_Object_ConnectActiveDescendantChanged(gpointer, gpointer*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectChildrenChanged(gpointer, guint, gpointer*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectFocusEvent(gpointer, gboolean, guintptr);
+// extern void _gotk4_atk1_Object_ConnectPropertyChange(gpointer, gpointer*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectStateChange(gpointer, gchar*, gboolean, guintptr);
+// extern void _gotk4_atk1_Object_ConnectVisibleDataChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -1594,24 +1600,108 @@ func marshalObjectClasser(p uintptr) (interface{}, error) {
 	return wrapObject(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_atk1_Object_ConnectActiveDescendantChanged
+func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.guintptr) {
+	var f func(arg1 *ObjectClass)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 *ObjectClass))
+	}
+
+	var _arg1 *ObjectClass // out
+
+	_arg1 = wrapObject(externglib.Take(unsafe.Pointer(*arg1)))
+
+	f(_arg1)
+}
+
 // ConnectActiveDescendantChanged: "active-descendant-changed" signal is emitted
 // by an object which has the state ATK_STATE_MANAGES_DESCENDANTS when the focus
 // object in the object changes. For instance, a table will emit the signal when
 // the cell in the table which has focus changes.
 func (object *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) externglib.SignalHandle {
-	return object.Connect("active-descendant-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(object, "active-descendant-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectActiveDescendantChanged), f)
+}
+
+//export _gotk4_atk1_Object_ConnectChildrenChanged
+func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, arg2 *C.gpointer, arg3 C.guintptr) {
+	var f func(arg1 uint, arg2 *ObjectClass)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 uint, arg2 *ObjectClass))
+	}
+
+	var _arg1 uint         // out
+	var _arg2 *ObjectClass // out
+
+	_arg1 = uint(arg1)
+	_arg2 = wrapObject(externglib.Take(unsafe.Pointer(*arg2)))
+
+	f(_arg1, _arg2)
 }
 
 // ConnectChildrenChanged: signal "children-changed" is emitted when a child is
 // added or removed form an object. It supports two details: "add" and "remove".
 func (object *ObjectClass) ConnectChildrenChanged(f func(arg1 uint, arg2 *ObjectClass)) externglib.SignalHandle {
-	return object.Connect("children-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(object, "children-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectChildrenChanged), f)
+}
+
+//export _gotk4_atk1_Object_ConnectFocusEvent
+func _gotk4_atk1_Object_ConnectFocusEvent(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) {
+	var f func(arg1 bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 bool))
+	}
+
+	var _arg1 bool // out
+
+	if arg1 != 0 {
+		_arg1 = true
+	}
+
+	f(_arg1)
 }
 
 // ConnectFocusEvent: signal "focus-event" is emitted when an object gained or
 // lost focus.
 func (object *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) externglib.SignalHandle {
-	return object.Connect("focus-event", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(object, "focus-event", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectFocusEvent), f)
+}
+
+//export _gotk4_atk1_Object_ConnectPropertyChange
+func _gotk4_atk1_Object_ConnectPropertyChange(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.guintptr) {
+	var f func(arg1 *PropertyValues)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 *PropertyValues))
+	}
+
+	var _arg1 *PropertyValues // out
+
+	_arg1 = (*PropertyValues)(gextras.NewStructNative(unsafe.Pointer((*arg1))))
+
+	f(_arg1)
 }
 
 // ConnectPropertyChange: signal "property-change" is emitted when an object's
@@ -1626,19 +1716,59 @@ func (object *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) externglib.Signa
 // the implementation of atk_add_global_event_listener() because GObject notify
 // doesn't support emission hooks.
 func (object *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) externglib.SignalHandle {
-	return object.Connect("property-change", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(object, "property-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectPropertyChange), f)
+}
+
+//export _gotk4_atk1_Object_ConnectStateChange
+func _gotk4_atk1_Object_ConnectStateChange(arg0 C.gpointer, arg1 *C.gchar, arg2 C.gboolean, arg3 C.guintptr) {
+	var f func(arg1 string, arg2 bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 string, arg2 bool))
+	}
+
+	var _arg1 string // out
+	var _arg2 bool   // out
+
+	_arg1 = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	if arg2 != 0 {
+		_arg2 = true
+	}
+
+	f(_arg1, _arg2)
 }
 
 // ConnectStateChange: "state-change" signal is emitted when an object's state
 // changes. The detail value identifies the state type which has changed.
 func (object *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) externglib.SignalHandle {
-	return object.Connect("state-change", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(object, "state-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectStateChange), f)
+}
+
+//export _gotk4_atk1_Object_ConnectVisibleDataChanged
+func _gotk4_atk1_Object_ConnectVisibleDataChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectVisibleDataChanged: "visible-data-changed" signal is emitted when the
 // visual appearance of the object changed.
 func (object *ObjectClass) ConnectVisibleDataChanged(f func()) externglib.SignalHandle {
-	return object.Connect("visible-data-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(object, "visible-data-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectVisibleDataChanged), f)
 }
 
 // AddRelationship adds a relationship of the specified type with the specified

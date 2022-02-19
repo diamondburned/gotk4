@@ -23,6 +23,12 @@ import (
 // extern gboolean _gotk4_gtk3_PanedClass_cycle_handle_focus(GtkPaned*, gboolean);
 // extern gboolean _gotk4_gtk3_PanedClass_move_handle(GtkPaned*, GtkScrollType);
 // extern gboolean _gotk4_gtk3_PanedClass_toggle_handle_focus(GtkPaned*);
+// extern gboolean _gotk4_gtk3_Paned_ConnectAcceptPosition(gpointer, guintptr);
+// extern gboolean _gotk4_gtk3_Paned_ConnectCancelPosition(gpointer, guintptr);
+// extern gboolean _gotk4_gtk3_Paned_ConnectCycleChildFocus(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk3_Paned_ConnectCycleHandleFocus(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk3_Paned_ConnectMoveHandle(gpointer, GtkScrollType, guintptr);
+// extern gboolean _gotk4_gtk3_Paned_ConnectToggleHandleFocus(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -274,13 +280,57 @@ func marshalPanedder(p uintptr) (interface{}, error) {
 	return wrapPaned(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Paned_ConnectAcceptPosition
+func _gotk4_gtk3_Paned_ConnectAcceptPosition(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectAcceptPosition signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted to accept the current position of the handle when moving it
 // using key bindings.
 //
 // The default binding for this signal is Return or Space.
-func (paned *Paned) ConnectAcceptPosition(f func() bool) externglib.SignalHandle {
-	return paned.Connect("accept-position", externglib.GeneratedClosure{Func: f})
+func (paned *Paned) ConnectAcceptPosition(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(paned, "accept-position", false, unsafe.Pointer(C._gotk4_gtk3_Paned_ConnectAcceptPosition), f)
+}
+
+//export _gotk4_gtk3_Paned_ConnectCancelPosition
+func _gotk4_gtk3_Paned_ConnectCancelPosition(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectCancelPosition signal is a [keybinding signal][GtkBindingSignal] which
@@ -288,16 +338,72 @@ func (paned *Paned) ConnectAcceptPosition(f func() bool) externglib.SignalHandle
 // The position of the handle will be reset to the value prior to moving it.
 //
 // The default binding for this signal is Escape.
-func (paned *Paned) ConnectCancelPosition(f func() bool) externglib.SignalHandle {
-	return paned.Connect("cancel-position", externglib.GeneratedClosure{Func: f})
+func (paned *Paned) ConnectCancelPosition(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(paned, "cancel-position", false, unsafe.Pointer(C._gotk4_gtk3_Paned_ConnectCancelPosition), f)
+}
+
+//export _gotk4_gtk3_Paned_ConnectCycleChildFocus
+func _gotk4_gtk3_Paned_ConnectCycleChildFocus(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(reversed bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(reversed bool) (ok bool))
+	}
+
+	var _reversed bool // out
+
+	if arg1 != 0 {
+		_reversed = true
+	}
+
+	ok := f(_reversed)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectCycleChildFocus signal is a [keybinding signal][GtkBindingSignal]
 // which gets emitted to cycle the focus between the children of the paned.
 //
 // The default binding is f6.
-func (paned *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) externglib.SignalHandle {
-	return paned.Connect("cycle-child-focus", externglib.GeneratedClosure{Func: f})
+func (paned *Paned) ConnectCycleChildFocus(f func(reversed bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(paned, "cycle-child-focus", false, unsafe.Pointer(C._gotk4_gtk3_Paned_ConnectCycleChildFocus), f)
+}
+
+//export _gotk4_gtk3_Paned_ConnectCycleHandleFocus
+func _gotk4_gtk3_Paned_ConnectCycleHandleFocus(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(reversed bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(reversed bool) (ok bool))
+	}
+
+	var _reversed bool // out
+
+	if arg1 != 0 {
+		_reversed = true
+	}
+
+	ok := f(_reversed)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectCycleHandleFocus signal is a [keybinding signal][GtkBindingSignal]
@@ -305,15 +411,63 @@ func (paned *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) externgli
 // user to change position of the handle by using key bindings.
 //
 // The default binding for this signal is f8.
-func (paned *Paned) ConnectCycleHandleFocus(f func(reversed bool) bool) externglib.SignalHandle {
-	return paned.Connect("cycle-handle-focus", externglib.GeneratedClosure{Func: f})
+func (paned *Paned) ConnectCycleHandleFocus(f func(reversed bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(paned, "cycle-handle-focus", false, unsafe.Pointer(C._gotk4_gtk3_Paned_ConnectCycleHandleFocus), f)
+}
+
+//export _gotk4_gtk3_Paned_ConnectMoveHandle
+func _gotk4_gtk3_Paned_ConnectMoveHandle(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(scrollType ScrollType) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(scrollType ScrollType) (ok bool))
+	}
+
+	var _scrollType ScrollType // out
+
+	_scrollType = ScrollType(arg1)
+
+	ok := f(_scrollType)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectMoveHandle signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted to move the handle when the user is using key bindings to move
 // it.
-func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) externglib.SignalHandle {
-	return paned.Connect("move-handle", externglib.GeneratedClosure{Func: f})
+func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(paned, "move-handle", false, unsafe.Pointer(C._gotk4_gtk3_Paned_ConnectMoveHandle), f)
+}
+
+//export _gotk4_gtk3_Paned_ConnectToggleHandleFocus
+func _gotk4_gtk3_Paned_ConnectToggleHandleFocus(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectToggleHandleFocus is a [keybinding signal][GtkBindingSignal] which
@@ -321,8 +475,8 @@ func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) extern
 // to the next widget in the focus chain.
 //
 // The default binding is Tab.
-func (paned *Paned) ConnectToggleHandleFocus(f func() bool) externglib.SignalHandle {
-	return paned.Connect("toggle-handle-focus", externglib.GeneratedClosure{Func: f})
+func (paned *Paned) ConnectToggleHandleFocus(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(paned, "toggle-handle-focus", false, unsafe.Pointer(C._gotk4_gtk3_Paned_ConnectToggleHandleFocus), f)
 }
 
 // NewPaned creates a new Paned widget.

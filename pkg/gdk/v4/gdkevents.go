@@ -1058,7 +1058,7 @@ func (event *Event) History() []TimeCoord {
 	if _cret != nil {
 		defer C.free(unsafe.Pointer(_cret))
 		{
-			src := unsafe.Slice(_cret, _arg1)
+			src := unsafe.Slice((*C.GdkTimeCoord)(_cret), _arg1)
 			_timeCoords = make([]TimeCoord, _arg1)
 			for i := 0; i < int(_arg1); i++ {
 				_timeCoords[i] = *(*TimeCoord)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

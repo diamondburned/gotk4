@@ -38,6 +38,9 @@ import (
 // extern void _gotk4_gio2_MountIface_changed(GMount*);
 // extern void _gotk4_gio2_MountIface_pre_unmount(GMount*);
 // extern void _gotk4_gio2_MountIface_unmounted(GMount*);
+// extern void _gotk4_gio2_Mount_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_Mount_ConnectPreUnmount(gpointer, guintptr);
+// extern void _gotk4_gio2_Mount_ConnectUnmounted(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -145,9 +148,41 @@ func marshalMounter(p uintptr) (interface{}, error) {
 	return wrapMount(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_Mount_ConnectChanged
+func _gotk4_gio2_Mount_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted when the mount has been changed.
 func (mount *Mount) ConnectChanged(f func()) externglib.SignalHandle {
-	return mount.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(mount, "changed", false, unsafe.Pointer(C._gotk4_gio2_Mount_ConnectChanged), f)
+}
+
+//export _gotk4_gio2_Mount_ConnectPreUnmount
+func _gotk4_gio2_Mount_ConnectPreUnmount(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPreUnmount: this signal may be emitted when the #GMount is about to be
@@ -156,14 +191,30 @@ func (mount *Mount) ConnectChanged(f func()) externglib.SignalHandle {
 // This signal depends on the backend and is only emitted if GIO was used to
 // unmount.
 func (mount *Mount) ConnectPreUnmount(f func()) externglib.SignalHandle {
-	return mount.Connect("pre-unmount", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(mount, "pre-unmount", false, unsafe.Pointer(C._gotk4_gio2_Mount_ConnectPreUnmount), f)
+}
+
+//export _gotk4_gio2_Mount_ConnectUnmounted
+func _gotk4_gio2_Mount_ConnectUnmounted(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUnmounted: this signal is emitted when the #GMount have been
 // unmounted. If the recipient is holding references to the object they should
 // release them so the object can be finalized.
 func (mount *Mount) ConnectUnmounted(f func()) externglib.SignalHandle {
-	return mount.Connect("unmounted", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(mount, "unmounted", false, unsafe.Pointer(C._gotk4_gio2_Mount_ConnectUnmounted), f)
 }
 
 // CanEject checks if mount can be ejected.

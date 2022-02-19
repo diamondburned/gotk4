@@ -75,7 +75,7 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 	if _arg3 != nil {
 		defer C.free(unsafe.Pointer(_arg3))
 		{
-			src := unsafe.Slice(_arg3, _arg2)
+			src := unsafe.Slice((**C.gchar)(_arg3), _arg2)
 			_argvp = make([]string, _arg2)
 			for i := 0; i < int(_arg2); i++ {
 				_argvp[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))

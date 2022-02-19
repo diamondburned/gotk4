@@ -671,7 +671,7 @@ func (formats *ContentFormats) GTypes() []externglib.Type {
 
 	if _cret != nil {
 		{
-			src := unsafe.Slice(_cret, _arg1)
+			src := unsafe.Slice((*C.GType)(_cret), _arg1)
 			_gTypes = make([]externglib.Type, _arg1)
 			for i := 0; i < int(_arg1); i++ {
 				_gTypes[i] = externglib.Type(src[i])
@@ -706,7 +706,7 @@ func (formats *ContentFormats) MIMETypes() []string {
 
 	if _cret != nil {
 		{
-			src := unsafe.Slice(_cret, _arg1)
+			src := unsafe.Slice((**C.char)(_cret), _arg1)
 			_utf8s = make([]string, _arg1)
 			for i := 0; i < int(_arg1); i++ {
 				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))

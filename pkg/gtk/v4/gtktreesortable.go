@@ -19,6 +19,7 @@ import (
 // extern int _gotk4_gtk4_TreeIterCompareFunc(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, gpointer);
 // extern void _gotk4_gtk4_TreeSortableIface_set_sort_column_id(GtkTreeSortable*, int, GtkSortType);
 // extern void _gotk4_gtk4_TreeSortableIface_sort_column_changed(GtkTreeSortable*);
+// extern void _gotk4_gtk4_TreeSortable_ConnectSortColumnChanged(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -141,11 +142,27 @@ func marshalTreeSortabler(p uintptr) (interface{}, error) {
 	return wrapTreeSortable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_TreeSortable_ConnectSortColumnChanged
+func _gotk4_gtk4_TreeSortable_ConnectSortColumnChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectSortColumnChanged signal is emitted when the sort column or sort order
 // of sortable is changed. The signal is emitted before the contents of sortable
 // are resorted.
 func (sortable *TreeSortable) ConnectSortColumnChanged(f func()) externglib.SignalHandle {
-	return sortable.Connect("sort-column-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sortable, "sort-column-changed", false, unsafe.Pointer(C._gotk4_gtk4_TreeSortable_ConnectSortColumnChanged), f)
 }
 
 // SortColumnID fills in sort_column_id and order with the current sort column

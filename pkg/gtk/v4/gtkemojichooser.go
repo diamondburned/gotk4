@@ -11,6 +11,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -113,9 +114,29 @@ func marshalEmojiChooserer(p uintptr) (interface{}, error) {
 	return wrapEmojiChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked
+func _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(text string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(text string))
+	}
+
+	var _text string // out
+
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_text)
+}
+
 // ConnectEmojiPicked: emitted when the user selects an Emoji.
 func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) externglib.SignalHandle {
-	return v.Connect("emoji-picked", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "emoji-picked", false, unsafe.Pointer(C._gotk4_gtk4_EmojiChooser_ConnectEmojiPicked), f)
 }
 
 // NewEmojiChooser creates a new GtkEmojiChooser.

@@ -19,6 +19,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_ColorSelectionClass_color_changed(GtkColorSelection*);
+// extern void _gotk4_gtk3_ColorSelection_ConnectColorChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -95,10 +96,26 @@ func marshalColorSelectioner(p uintptr) (interface{}, error) {
 	return wrapColorSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ColorSelection_ConnectColorChanged
+func _gotk4_gtk3_ColorSelection_ConnectColorChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectColorChanged: this signal is emitted when the color changes in the
 // ColorSelection according to its update policy.
 func (colorsel *ColorSelection) ConnectColorChanged(f func()) externglib.SignalHandle {
-	return colorsel.Connect("color-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(colorsel, "color-changed", false, unsafe.Pointer(C._gotk4_gtk3_ColorSelection_ConnectColorChanged), f)
 }
 
 // NewColorSelection creates a new GtkColorSelection.
@@ -534,7 +551,7 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 
 	defer C.free(unsafe.Pointer(_arg2))
 	{
-		src := unsafe.Slice(_arg2, _arg3)
+		src := unsafe.Slice((*C.GdkColor)(_arg2), _arg3)
 		_colors = make([]gdk.Color, _arg3)
 		for i := 0; i < int(_arg3); i++ {
 			_colors[i] = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

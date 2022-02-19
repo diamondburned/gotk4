@@ -18,6 +18,8 @@ import (
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_CellRendererAccelClass_accel_cleared(GtkCellRendererAccel*, gchar*);
 // extern void _gotk4_gtk3_CellRendererAccelClass_accel_edited(GtkCellRendererAccel*, gchar*, guint, GdkModifierType, guint);
+// extern void _gotk4_gtk3_CellRendererAccel_ConnectAccelCleared(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_CellRendererAccel_ConnectAccelEdited(gpointer, gchar*, guint, GdkModifierType, guint, guintptr);
 import "C"
 
 func init() {
@@ -155,14 +157,60 @@ func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
 	return wrapCellRendererAccel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_CellRendererAccel_ConnectAccelCleared
+func _gotk4_gtk3_CellRendererAccel_ConnectAccelCleared(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(pathString string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(pathString string))
+	}
+
+	var _pathString string // out
+
+	_pathString = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_pathString)
+}
+
 // ConnectAccelCleared gets emitted when the user has removed the accelerator.
 func (accel *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) externglib.SignalHandle {
-	return accel.Connect("accel-cleared", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(accel, "accel-cleared", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererAccel_ConnectAccelCleared), f)
+}
+
+//export _gotk4_gtk3_CellRendererAccel_ConnectAccelEdited
+func _gotk4_gtk3_CellRendererAccel_ConnectAccelEdited(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guint, arg5 C.guintptr) {
+	var f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint))
+	}
+
+	var _pathString string          // out
+	var _accelKey uint              // out
+	var _accelMods gdk.ModifierType // out
+	var _hardwareKeycode uint       // out
+
+	_pathString = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_accelKey = uint(arg2)
+	_accelMods = gdk.ModifierType(arg3)
+	_hardwareKeycode = uint(arg4)
+
+	f(_pathString, _accelKey, _accelMods, _hardwareKeycode)
 }
 
 // ConnectAccelEdited gets emitted when the user has selected a new accelerator.
 func (accel *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) externglib.SignalHandle {
-	return accel.Connect("accel-edited", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(accel, "accel-edited", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererAccel_ConnectAccelEdited), f)
 }
 
 // NewCellRendererAccel creates a new CellRendererAccel.

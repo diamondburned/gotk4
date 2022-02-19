@@ -21,6 +21,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_RecentManagerClass_changed(GtkRecentManager*);
+// extern void _gotk4_gtk3_RecentManager_ConnectChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -171,11 +172,27 @@ func marshalRecentManagerer(p uintptr) (interface{}, error) {
 	return wrapRecentManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_RecentManager_ConnectChanged
+func _gotk4_gtk3_RecentManager_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted when the current recently used resources manager
 // changes its contents, either by calling gtk_recent_manager_add_item() or by
 // another application.
 func (manager *RecentManager) ConnectChanged(f func()) externglib.SignalHandle {
-	return manager.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(manager, "changed", false, unsafe.Pointer(C._gotk4_gtk3_RecentManager_ConnectChanged), f)
 }
 
 // NewRecentManager creates a new recent manager object. Recent manager objects
@@ -831,7 +848,7 @@ func (info *RecentInfo) Applications() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -950,7 +967,7 @@ func (info *RecentInfo) Groups() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))

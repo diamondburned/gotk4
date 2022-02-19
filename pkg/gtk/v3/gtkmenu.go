@@ -20,6 +20,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_Menu_ConnectMoveScroll(gpointer, GtkScrollType, guintptr);
+// extern void _gotk4_gtk3_Menu_ConnectPoppedUp(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
 import "C"
 
 func init() {
@@ -132,8 +134,58 @@ func marshalMenuer(p uintptr) (interface{}, error) {
 	return wrapMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Menu_ConnectMoveScroll
+func _gotk4_gtk3_Menu_ConnectMoveScroll(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
+	var f func(scrollType ScrollType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(scrollType ScrollType))
+	}
+
+	var _scrollType ScrollType // out
+
+	_scrollType = ScrollType(arg1)
+
+	f(_scrollType)
+}
+
 func (menu *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) externglib.SignalHandle {
-	return menu.Connect("move-scroll", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menu, "move-scroll", false, unsafe.Pointer(C._gotk4_gtk3_Menu_ConnectMoveScroll), f)
+}
+
+//export _gotk4_gtk3_Menu_ConnectPoppedUp
+func _gotk4_gtk3_Menu_ConnectPoppedUp(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
+	var f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool))
+	}
+
+	var _flippedRect cgo.Handle // out
+	var _finalRect cgo.Handle   // out
+	var _flippedX bool          // out
+	var _flippedY bool          // out
+
+	_flippedRect = (cgo.Handle)(unsafe.Pointer(arg1))
+	_finalRect = (cgo.Handle)(unsafe.Pointer(arg2))
+	if arg3 != 0 {
+		_flippedX = true
+	}
+	if arg4 != 0 {
+		_flippedY = true
+	}
+
+	f(_flippedRect, _finalRect, _flippedX, _flippedY)
 }
 
 // ConnectPoppedUp: emitted when the position of menu is finalized after being
@@ -158,7 +210,7 @@ func (menu *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) externglib.Si
 // gtk_menu_popup_at_pointer (), Menu:anchor-hints, Menu:rect-anchor-dx,
 // Menu:rect-anchor-dy, and Menu:menu-type-hint.
 func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
-	return menu.Connect("popped-up", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menu, "popped-up", false, unsafe.Pointer(C._gotk4_gtk3_Menu_ConnectPoppedUp), f)
 }
 
 // NewMenu creates a new Menu.

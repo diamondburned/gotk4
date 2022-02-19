@@ -409,7 +409,7 @@ func _gotk4_gio2_DatagramBasedInterface_receive_messages(arg0 *C.GDatagramBased,
 		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg5))
 	}
 	{
-		src := unsafe.Slice(arg1, arg2)
+		src := unsafe.Slice((*C.GInputMessage)(arg1), arg2)
 		_messages = make([]InputMessage, arg2)
 		for i := 0; i < int(arg2); i++ {
 			_messages[i] = *(*InputMessage)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
@@ -442,7 +442,7 @@ func _gotk4_gio2_DatagramBasedInterface_send_messages(arg0 *C.GDatagramBased, ar
 		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg5))
 	}
 	{
-		src := unsafe.Slice(arg1, arg2)
+		src := unsafe.Slice((*C.GOutputMessage)(arg1), arg2)
 		_messages = make([]OutputMessage, arg2)
 		for i := 0; i < int(arg2); i++ {
 			_messages[i] = *(*OutputMessage)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

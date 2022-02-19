@@ -14,6 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk4_Monitor_ConnectInvalidate(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -103,10 +104,26 @@ func marshalMonitorrer(p uintptr) (interface{}, error) {
 	return wrapMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdk4_Monitor_ConnectInvalidate
+func _gotk4_gdk4_Monitor_ConnectInvalidate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectInvalidate: emitted when the output represented by monitor gets
 // disconnected.
 func (monitor *Monitor) ConnectInvalidate(f func()) externglib.SignalHandle {
-	return monitor.Connect("invalidate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(monitor, "invalidate", false, unsafe.Pointer(C._gotk4_gdk4_Monitor_ConnectInvalidate), f)
 }
 
 // Connector gets the name of the monitor's connector, if available.

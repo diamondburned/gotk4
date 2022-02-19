@@ -30,6 +30,7 @@ import (
 // extern void _gotk4_atk1_ComponentIface_get_position(AtkComponent*, gint*, gint*, AtkCoordType);
 // extern void _gotk4_atk1_ComponentIface_get_size(AtkComponent*, gint*, gint*);
 // extern void _gotk4_atk1_ComponentIface_remove_focus_handler(AtkComponent*, guint);
+// extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, AtkRectangle*, guintptr);
 import "C"
 
 func init() {
@@ -673,10 +674,30 @@ func marshalComponenter(p uintptr) (interface{}, error) {
 	return wrapComponent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_atk1_Component_ConnectBoundsChanged
+func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.AtkRectangle, arg2 C.guintptr) {
+	var f func(arg1 *Rectangle)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 *Rectangle))
+	}
+
+	var _arg1 *Rectangle // out
+
+	_arg1 = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	f(_arg1)
+}
+
 // ConnectBoundsChanged: 'bounds-changed" signal is emitted when the bposition
 // or size of the component changes.
 func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) externglib.SignalHandle {
-	return component.Connect("bounds-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(component, "bounds-changed", false, unsafe.Pointer(C._gotk4_atk1_Component_ConnectBoundsChanged), f)
 }
 
 // Contains checks whether the specified point is within the extent of the

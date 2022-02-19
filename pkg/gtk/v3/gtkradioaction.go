@@ -17,6 +17,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_RadioActionClass_changed(GtkRadioAction*, GtkRadioAction*);
+// extern void _gotk4_gtk3_RadioAction_ConnectChanged(gpointer, GtkRadioAction*, guintptr);
 import "C"
 
 func init() {
@@ -88,11 +89,31 @@ func marshalRadioActioner(p uintptr) (interface{}, error) {
 	return wrapRadioAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_RadioAction_ConnectChanged
+func _gotk4_gtk3_RadioAction_ConnectChanged(arg0 C.gpointer, arg1 *C.GtkRadioAction, arg2 C.guintptr) {
+	var f func(current *RadioAction)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(current *RadioAction))
+	}
+
+	var _current *RadioAction // out
+
+	_current = wrapRadioAction(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_current)
+}
+
 // ConnectChanged signal is emitted on every member of a radio group when the
 // active member is changed. The signal gets emitted after the ::activate
 // signals for the previous and current active members.
-func (action *RadioAction) ConnectChanged(f func(current RadioAction)) externglib.SignalHandle {
-	return action.Connect("changed", externglib.GeneratedClosure{Func: f})
+func (action *RadioAction) ConnectChanged(f func(current *RadioAction)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(action, "changed", false, unsafe.Pointer(C._gotk4_gtk3_RadioAction_ConnectChanged), f)
 }
 
 // NewRadioAction creates a new RadioAction object. To add the action to a

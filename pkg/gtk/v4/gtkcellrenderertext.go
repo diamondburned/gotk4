@@ -14,6 +14,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_CellRendererTextClass_edited(GtkCellRendererText*, char*, char*);
+// extern void _gotk4_gtk4_CellRendererText_ConnectEdited(gpointer, gchar*, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -93,12 +94,34 @@ func marshalCellRendererTexter(p uintptr) (interface{}, error) {
 	return wrapCellRendererText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_CellRendererText_ConnectEdited
+func _gotk4_gtk4_CellRendererText_ConnectEdited(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
+	var f func(path, newText string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path, newText string))
+	}
+
+	var _path string    // out
+	var _newText string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_newText = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	f(_path, _newText)
+}
+
 // ConnectEdited: this signal is emitted after renderer has been edited.
 //
 // It is the responsibility of the application to update the model and store
 // new_text at the position indicated by path.
 func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) externglib.SignalHandle {
-	return renderer.Connect("edited", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(renderer, "edited", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererText_ConnectEdited), f)
 }
 
 // NewCellRendererText creates a new CellRendererText. Adjust how text is drawn

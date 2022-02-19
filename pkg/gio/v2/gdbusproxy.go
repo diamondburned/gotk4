@@ -20,6 +20,7 @@ import (
 // #include <glib-object.h>
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_DBusProxyClass_g_signal(GDBusProxy*, gchar*, gchar*, GVariant*);
+// extern void _gotk4_gio2_DBusProxy_ConnectGSignal(gpointer, gchar*, gchar*, GVariant*, guintptr);
 import "C"
 
 func init() {
@@ -150,24 +151,43 @@ func marshalDBusProxier(p uintptr) (interface{}, error) {
 	return wrapDBusProxy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectGPropertiesChanged: emitted when one or more D-Bus properties on proxy
-// changes. The local cache has already been updated when this signal fires.
-// Note that both changed_properties and invalidated_properties are guaranteed
-// to never be NULL (either may be empty though).
-//
-// If the proxy has the flag G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES set,
-// then invalidated_properties will always be empty.
-//
-// This signal corresponds to the PropertiesChanged D-Bus signal on the
-// org.freedesktop.DBus.Properties interface.
-func (proxy *DBusProxy) ConnectGPropertiesChanged(f func(changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
-	return proxy.Connect("g-properties-changed", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gio2_DBusProxy_ConnectGSignal
+func _gotk4_gio2_DBusProxy_ConnectGSignal(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.GVariant, arg4 C.guintptr) {
+	var f func(senderName, signalName string, parameters *glib.Variant)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(senderName, signalName string, parameters *glib.Variant))
+	}
+
+	var _senderName string        // out
+	var _signalName string        // out
+	var _parameters *glib.Variant // out
+
+	if arg1 != nil {
+		_senderName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	}
+	_signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	C.g_variant_ref(arg3)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_parameters)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	f(_senderName, _signalName, _parameters)
 }
 
 // ConnectGSignal: emitted when a signal from the remote object and interface
 // that proxy is for, has been received.
 func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
-	return proxy.Connect("g-signal", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(proxy, "g-signal", false, unsafe.Pointer(C._gotk4_gio2_DBusProxy_ConnectGSignal), f)
 }
 
 // NewDBusProxyFinish finishes creating a BusProxy.

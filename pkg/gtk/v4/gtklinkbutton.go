@@ -12,6 +12,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_LinkButton_ConnectActivateLink(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -102,6 +103,28 @@ func marshalLinkButtonner(p uintptr) (interface{}, error) {
 	return wrapLinkButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_LinkButton_ConnectActivateLink
+func _gotk4_gtk4_LinkButton_ConnectActivateLink(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectActivateLink: emitted each time the GtkLinkButton is clicked.
 //
 // The default handler will call gtk.ShowURI() with the URI stored inside the
@@ -110,8 +133,8 @@ func marshalLinkButtonner(p uintptr) (interface{}, error) {
 // To override the default behavior, you can connect to the ::activate-link
 // signal and stop the propagation of the signal by returning TRUE from your
 // handler.
-func (linkButton *LinkButton) ConnectActivateLink(f func() bool) externglib.SignalHandle {
-	return linkButton.Connect("activate-link", externglib.GeneratedClosure{Func: f})
+func (linkButton *LinkButton) ConnectActivateLink(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(linkButton, "activate-link", false, unsafe.Pointer(C._gotk4_gtk4_LinkButton_ConnectActivateLink), f)
 }
 
 // NewLinkButton creates a new GtkLinkButton with the URI as its text.

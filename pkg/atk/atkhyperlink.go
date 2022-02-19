@@ -24,6 +24,7 @@ import (
 // extern gint _gotk4_atk1_HyperlinkClass_get_start_index(AtkHyperlink*);
 // extern guint _gotk4_atk1_HyperlinkClass_link_state(AtkHyperlink*);
 // extern void _gotk4_atk1_HyperlinkClass_link_activated(AtkHyperlink*);
+// extern void _gotk4_atk1_Hyperlink_ConnectLinkActivated(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -347,10 +348,26 @@ func marshalHyperlinker(p uintptr) (interface{}, error) {
 	return wrapHyperlink(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_atk1_Hyperlink_ConnectLinkActivated
+func _gotk4_atk1_Hyperlink_ConnectLinkActivated(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectLinkActivated: signal link-activated is emitted when a link is
 // activated.
 func (link_ *Hyperlink) ConnectLinkActivated(f func()) externglib.SignalHandle {
-	return link_.Connect("link-activated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(link_, "link-activated", false, unsafe.Pointer(C._gotk4_atk1_Hyperlink_ConnectLinkActivated), f)
 }
 
 // EndIndex gets the index with the hypertext document at which this link ends.

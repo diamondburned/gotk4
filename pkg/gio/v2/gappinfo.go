@@ -45,6 +45,8 @@ import (
 // extern gboolean _gotk4_gio2_AppInfoIface_supports_uris(GAppInfo*);
 // extern void _gotk4_gio2_AppLaunchContextClass_launch_failed(GAppLaunchContext*, char*);
 // extern void _gotk4_gio2_AppLaunchContextClass_launched(GAppLaunchContext*, GAppInfo*, GVariant*);
+// extern void _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(gpointer, gchar*, guintptr);
+// extern void _gotk4_gio2_AppLaunchContext_ConnectLaunched(gpointer, GAppInfo*, GVariant*, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -1770,6 +1772,87 @@ func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 
 func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
 	return wrapAppLaunchContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed
+func _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(startupNotifyId string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(startupNotifyId string))
+	}
+
+	var _startupNotifyId string // out
+
+	_startupNotifyId = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_startupNotifyId)
+}
+
+// ConnectLaunchFailed signal is emitted when a Info launch fails. The startup
+// notification id is provided, so that the launcher can cancel the startup
+// notification.
+func (context *AppLaunchContext) ConnectLaunchFailed(f func(startupNotifyId string)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(context, "launch-failed", false, unsafe.Pointer(C._gotk4_gio2_AppLaunchContext_ConnectLaunchFailed), f)
+}
+
+//export _gotk4_gio2_AppLaunchContext_ConnectLaunched
+func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 *C.GVariant, arg3 C.guintptr) {
+	var f func(info AppInfor, platformData *glib.Variant)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(info AppInfor, platformData *glib.Variant))
+	}
+
+	var _info AppInfor              // out
+	var _platformData *glib.Variant // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AppInfor)
+			return ok
+		})
+		rv, ok := casted.(AppInfor)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_info = rv
+	}
+	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	C.g_variant_ref(arg2)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_platformData)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	f(_info, _platformData)
+}
+
+// ConnectLaunched signal is emitted when a Info is successfully launched. The
+// platform_data is an GVariant dictionary mapping strings to variants (ie
+// a{sv}), which contains additional, platform-specific data about this launch.
+// On UNIX, at least the "pid" and "startup-notification-id" keys will be
+// present.
+func (context *AppLaunchContext) ConnectLaunched(f func(info AppInfor, platformData *glib.Variant)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(context, "launched", false, unsafe.Pointer(C._gotk4_gio2_AppLaunchContext_ConnectLaunched), f)
 }
 
 // NewAppLaunchContext creates a new application launch context. This is not

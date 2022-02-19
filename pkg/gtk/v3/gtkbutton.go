@@ -23,6 +23,12 @@ import (
 // extern void _gotk4_gtk3_ButtonClass_leave(GtkButton*);
 // extern void _gotk4_gtk3_ButtonClass_pressed(GtkButton*);
 // extern void _gotk4_gtk3_ButtonClass_released(GtkButton*);
+// extern void _gotk4_gtk3_Button_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectClicked(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectEnter(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectLeave(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectPressed(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectReleased(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -217,37 +223,133 @@ func marshalButtonner(p uintptr) (interface{}, error) {
 	return wrapButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Button_ConnectActivate
+func _gotk4_gtk3_Button_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate signal on GtkButton is an action signal and emitting it
 // causes the button to animate press then release. Applications should never
 // connect to this signal, but use the Button::clicked signal.
 func (button *Button) ConnectActivate(f func()) externglib.SignalHandle {
-	return button.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectActivate), f)
+}
+
+//export _gotk4_gtk3_Button_ConnectClicked
+func _gotk4_gtk3_Button_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectClicked: emitted when the button has been activated (pressed and
 // released).
 func (button *Button) ConnectClicked(f func()) externglib.SignalHandle {
-	return button.Connect("clicked", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "clicked", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectClicked), f)
+}
+
+//export _gotk4_gtk3_Button_ConnectEnter
+func _gotk4_gtk3_Button_ConnectEnter(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectEnter: emitted when the pointer enters the button.
 func (button *Button) ConnectEnter(f func()) externglib.SignalHandle {
-	return button.Connect("enter", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "enter", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectEnter), f)
+}
+
+//export _gotk4_gtk3_Button_ConnectLeave
+func _gotk4_gtk3_Button_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectLeave: emitted when the pointer leaves the button.
 func (button *Button) ConnectLeave(f func()) externglib.SignalHandle {
-	return button.Connect("leave", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "leave", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectLeave), f)
+}
+
+//export _gotk4_gtk3_Button_ConnectPressed
+func _gotk4_gtk3_Button_ConnectPressed(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPressed: emitted when the button is pressed.
 func (button *Button) ConnectPressed(f func()) externglib.SignalHandle {
-	return button.Connect("pressed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "pressed", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectPressed), f)
+}
+
+//export _gotk4_gtk3_Button_ConnectReleased
+func _gotk4_gtk3_Button_ConnectReleased(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectReleased: emitted when the button is released.
 func (button *Button) ConnectReleased(f func()) externglib.SignalHandle {
-	return button.Connect("released", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "released", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectReleased), f)
 }
 
 // NewButton creates a new Button widget. To add a child widget to the button,

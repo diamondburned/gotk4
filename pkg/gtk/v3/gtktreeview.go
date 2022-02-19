@@ -33,6 +33,16 @@ import (
 // extern gboolean _gotk4_gtk3_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer);
 // extern gboolean _gotk4_gtk3_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern gboolean _gotk4_gtk3_TreeViewSearchEqualFunc(GtkTreeModel*, gint, gchar*, GtkTreeIter*, gpointer);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectExpandCollapseCursorRow(gpointer, gboolean, gboolean, gboolean, guintptr);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectMoveCursor(gpointer, GtkMovementStep, gint, guintptr);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectSelectAll(gpointer, guintptr);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectSelectCursorParent(gpointer, guintptr);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectSelectCursorRow(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectStartInteractiveSearch(gpointer, guintptr);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectTestCollapseRow(gpointer, GtkTreeIter*, GtkTreePath*, guintptr);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectTestExpandRow(gpointer, GtkTreeIter*, GtkTreePath*, guintptr);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectToggleCursorRow(gpointer, guintptr);
+// extern gboolean _gotk4_gtk3_TreeView_ConnectUnselectAll(gpointer, guintptr);
 // extern void _gotk4_gtk3_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern void _gotk4_gtk3_TreeDestroyCountFunc(GtkTreeView*, GtkTreePath*, gint, gpointer);
 // extern void _gotk4_gtk3_TreeViewClass_columns_changed(GtkTreeView*);
@@ -42,6 +52,11 @@ import (
 // extern void _gotk4_gtk3_TreeViewClass_row_expanded(GtkTreeView*, GtkTreeIter*, GtkTreePath*);
 // extern void _gotk4_gtk3_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
 // extern void _gotk4_gtk3_TreeViewSearchPositionFunc(GtkTreeView*, GtkWidget*, gpointer);
+// extern void _gotk4_gtk3_TreeView_ConnectColumnsChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_TreeView_ConnectCursorChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_TreeView_ConnectRowActivated(gpointer, GtkTreePath*, GtkTreeViewColumn*, guintptr);
+// extern void _gotk4_gtk3_TreeView_ConnectRowCollapsed(gpointer, GtkTreeIter*, GtkTreePath*, guintptr);
+// extern void _gotk4_gtk3_TreeView_ConnectRowExpanded(gpointer, GtkTreeIter*, GtkTreePath*, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -841,18 +856,114 @@ func marshalTreeViewer(p uintptr) (interface{}, error) {
 	return wrapTreeView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_TreeView_ConnectColumnsChanged
+func _gotk4_gtk3_TreeView_ConnectColumnsChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectColumnsChanged: number of columns of the treeview has changed.
 func (treeView *TreeView) ConnectColumnsChanged(f func()) externglib.SignalHandle {
-	return treeView.Connect("columns-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(treeView, "columns-changed", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectColumnsChanged), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectCursorChanged
+func _gotk4_gtk3_TreeView_ConnectCursorChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCursorChanged: position of the cursor (focused cell) has changed.
 func (treeView *TreeView) ConnectCursorChanged(f func()) externglib.SignalHandle {
-	return treeView.Connect("cursor-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(treeView, "cursor-changed", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectCursorChanged), f)
 }
 
-func (treeView *TreeView) ConnectExpandCollapseCursorRow(f func(object, p0, p1 bool) bool) externglib.SignalHandle {
-	return treeView.Connect("expand-collapse-cursor-row", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_TreeView_ConnectExpandCollapseCursorRow
+func _gotk4_gtk3_TreeView_ConnectExpandCollapseCursorRow(arg0 C.gpointer, arg1 C.gboolean, arg2 C.gboolean, arg3 C.gboolean, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(object, p0, p1 bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object, p0, p1 bool) (ok bool))
+	}
+
+	var _object bool // out
+	var _p0 bool     // out
+	var _p1 bool     // out
+
+	if arg1 != 0 {
+		_object = true
+	}
+	if arg2 != 0 {
+		_p0 = true
+	}
+	if arg3 != 0 {
+		_p1 = true
+	}
+
+	ok := f(_object, _p0, _p1)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func (treeView *TreeView) ConnectExpandCollapseCursorRow(f func(object, p0, p1 bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "expand-collapse-cursor-row", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectExpandCollapseCursorRow), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectMoveCursor
+func _gotk4_gtk3_TreeView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(step MovementStep, direction int) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(step MovementStep, direction int) (ok bool))
+	}
+
+	var _step MovementStep // out
+	var _direction int     // out
+
+	_step = MovementStep(arg1)
+	_direction = int(arg2)
+
+	ok := f(_step, _direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -863,8 +974,30 @@ func (treeView *TreeView) ConnectExpandCollapseCursorRow(f func(object, p0, p1 b
 // In contrast to gtk_tree_view_set_cursor() and
 // gtk_tree_view_set_cursor_on_cell() when moving horizontally
 // TreeView::move-cursor does not reset the current selection.
-func (treeView *TreeView) ConnectMoveCursor(f func(step MovementStep, direction int) bool) externglib.SignalHandle {
-	return treeView.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
+func (treeView *TreeView) ConnectMoveCursor(f func(step MovementStep, direction int) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectMoveCursor), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectRowActivated
+func _gotk4_gtk3_TreeView_ConnectRowActivated(arg0 C.gpointer, arg1 *C.GtkTreePath, arg2 *C.GtkTreeViewColumn, arg3 C.guintptr) {
+	var f func(path *TreePath, column *TreeViewColumn)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path *TreePath, column *TreeViewColumn))
+	}
+
+	var _path *TreePath         // out
+	var _column *TreeViewColumn // out
+
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg2)))
+
+	f(_path, _column)
 }
 
 // ConnectRowActivated: "row-activated" signal is emitted when the method
@@ -876,56 +1009,294 @@ func (treeView *TreeView) ConnectMoveCursor(f func(step MovementStep, direction 
 //
 // For selection handling refer to the [tree widget conceptual
 // overview][TreeWidget] as well as TreeSelection.
-func (treeView *TreeView) ConnectRowActivated(f func(path *TreePath, column TreeViewColumn)) externglib.SignalHandle {
-	return treeView.Connect("row-activated", externglib.GeneratedClosure{Func: f})
+func (treeView *TreeView) ConnectRowActivated(f func(path *TreePath, column *TreeViewColumn)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "row-activated", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectRowActivated), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectRowCollapsed
+func _gotk4_gtk3_TreeView_ConnectRowCollapsed(arg0 C.gpointer, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath, arg3 C.guintptr) {
+	var f func(iter *TreeIter, path *TreePath)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iter *TreeIter, path *TreePath))
+	}
+
+	var _iter *TreeIter // out
+	var _path *TreePath // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	f(_iter, _path)
 }
 
 // ConnectRowCollapsed: given row has been collapsed (child nodes are hidden).
 func (treeView *TreeView) ConnectRowCollapsed(f func(iter *TreeIter, path *TreePath)) externglib.SignalHandle {
-	return treeView.Connect("row-collapsed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(treeView, "row-collapsed", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectRowCollapsed), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectRowExpanded
+func _gotk4_gtk3_TreeView_ConnectRowExpanded(arg0 C.gpointer, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath, arg3 C.guintptr) {
+	var f func(iter *TreeIter, path *TreePath)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iter *TreeIter, path *TreePath))
+	}
+
+	var _iter *TreeIter // out
+	var _path *TreePath // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	f(_iter, _path)
 }
 
 // ConnectRowExpanded: given row has been expanded (child nodes are shown).
 func (treeView *TreeView) ConnectRowExpanded(f func(iter *TreeIter, path *TreePath)) externglib.SignalHandle {
-	return treeView.Connect("row-expanded", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(treeView, "row-expanded", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectRowExpanded), f)
 }
 
-func (treeView *TreeView) ConnectSelectAll(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("select-all", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_TreeView_ConnectSelectAll
+func _gotk4_gtk3_TreeView_ConnectSelectAll(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
-func (treeView *TreeView) ConnectSelectCursorParent(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("select-cursor-parent", externglib.GeneratedClosure{Func: f})
+func (treeView *TreeView) ConnectSelectAll(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "select-all", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectSelectAll), f)
 }
 
-func (treeView *TreeView) ConnectSelectCursorRow(f func(object bool) bool) externglib.SignalHandle {
-	return treeView.Connect("select-cursor-row", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_TreeView_ConnectSelectCursorParent
+func _gotk4_gtk3_TreeView_ConnectSelectCursorParent(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
-func (treeView *TreeView) ConnectStartInteractiveSearch(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("start-interactive-search", externglib.GeneratedClosure{Func: f})
+func (treeView *TreeView) ConnectSelectCursorParent(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "select-cursor-parent", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectSelectCursorParent), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectSelectCursorRow
+func _gotk4_gtk3_TreeView_ConnectSelectCursorRow(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(object bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object bool) (ok bool))
+	}
+
+	var _object bool // out
+
+	if arg1 != 0 {
+		_object = true
+	}
+
+	ok := f(_object)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func (treeView *TreeView) ConnectSelectCursorRow(f func(object bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "select-cursor-row", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectSelectCursorRow), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectStartInteractiveSearch
+func _gotk4_gtk3_TreeView_ConnectStartInteractiveSearch(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func (treeView *TreeView) ConnectStartInteractiveSearch(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "start-interactive-search", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectStartInteractiveSearch), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectTestCollapseRow
+func _gotk4_gtk3_TreeView_ConnectTestCollapseRow(arg0 C.gpointer, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(iter *TreeIter, path *TreePath) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iter *TreeIter, path *TreePath) (ok bool))
+	}
+
+	var _iter *TreeIter // out
+	var _path *TreePath // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	ok := f(_iter, _path)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectTestCollapseRow: given row is about to be collapsed (hide its children
 // nodes). Use this signal if you need to control the collapsibility of
 // individual rows.
-func (treeView *TreeView) ConnectTestCollapseRow(f func(iter *TreeIter, path *TreePath) bool) externglib.SignalHandle {
-	return treeView.Connect("test-collapse-row", externglib.GeneratedClosure{Func: f})
+func (treeView *TreeView) ConnectTestCollapseRow(f func(iter *TreeIter, path *TreePath) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "test-collapse-row", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectTestCollapseRow), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectTestExpandRow
+func _gotk4_gtk3_TreeView_ConnectTestExpandRow(arg0 C.gpointer, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(iter *TreeIter, path *TreePath) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iter *TreeIter, path *TreePath) (ok bool))
+	}
+
+	var _iter *TreeIter // out
+	var _path *TreePath // out
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	ok := f(_iter, _path)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectTestExpandRow: given row is about to be expanded (show its children
 // nodes). Use this signal if you need to control the expandability of
 // individual rows.
-func (treeView *TreeView) ConnectTestExpandRow(f func(iter *TreeIter, path *TreePath) bool) externglib.SignalHandle {
-	return treeView.Connect("test-expand-row", externglib.GeneratedClosure{Func: f})
+func (treeView *TreeView) ConnectTestExpandRow(f func(iter *TreeIter, path *TreePath) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "test-expand-row", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectTestExpandRow), f)
 }
 
-func (treeView *TreeView) ConnectToggleCursorRow(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("toggle-cursor-row", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_TreeView_ConnectToggleCursorRow
+func _gotk4_gtk3_TreeView_ConnectToggleCursorRow(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
-func (treeView *TreeView) ConnectUnselectAll(f func() bool) externglib.SignalHandle {
-	return treeView.Connect("unselect-all", externglib.GeneratedClosure{Func: f})
+func (treeView *TreeView) ConnectToggleCursorRow(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "toggle-cursor-row", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectToggleCursorRow), f)
+}
+
+//export _gotk4_gtk3_TreeView_ConnectUnselectAll
+func _gotk4_gtk3_TreeView_ConnectUnselectAll(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func (treeView *TreeView) ConnectUnselectAll(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(treeView, "unselect-all", false, unsafe.Pointer(C._gotk4_gtk3_TreeView_ConnectUnselectAll), f)
 }
 
 // NewTreeView creates a new TreeView widget.

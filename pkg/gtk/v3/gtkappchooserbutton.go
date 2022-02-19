@@ -18,6 +18,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_AppChooserButtonClass_custom_item_activated(GtkAppChooserButton*, gchar*);
+// extern void _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated(gpointer, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -155,11 +156,31 @@ func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
 	return wrapAppChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated
+func _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(itemName string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(itemName string))
+	}
+
+	var _itemName string // out
+
+	_itemName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_itemName)
+}
+
 // ConnectCustomItemActivated: emitted when a custom item, previously added with
 // gtk_app_chooser_button_append_custom_item(), is activated from the dropdown
 // menu.
 func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) externglib.SignalHandle {
-	return self.Connect("custom-item-activated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "custom-item-activated", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated), f)
 }
 
 // NewAppChooserButton creates a new AppChooserButton for applications that can

@@ -16,6 +16,11 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 // extern int _gotk4_gtk4_AssistantPageFunc(int, gpointer);
+// extern void _gotk4_gtk4_Assistant_ConnectApply(gpointer, guintptr);
+// extern void _gotk4_gtk4_Assistant_ConnectCancel(gpointer, guintptr);
+// extern void _gotk4_gtk4_Assistant_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk4_Assistant_ConnectEscape(gpointer, guintptr);
+// extern void _gotk4_gtk4_Assistant_ConnectPrepare(gpointer, GtkWidget*, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -213,6 +218,22 @@ func marshalAssistanter(p uintptr) (interface{}, error) {
 	return wrapAssistant(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Assistant_ConnectApply
+func _gotk4_gtk4_Assistant_ConnectApply(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectApply: emitted when the apply button is clicked.
 //
 // The default behavior of the GtkAssistant is to switch to the page after the
@@ -224,24 +245,108 @@ func marshalAssistanter(p uintptr) (interface{}, error) {
 // confirmation page and handle this operation within the gtk.Assistant::prepare
 // signal of the progress page.
 func (assistant *Assistant) ConnectApply(f func()) externglib.SignalHandle {
-	return assistant.Connect("apply", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(assistant, "apply", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectApply), f)
+}
+
+//export _gotk4_gtk4_Assistant_ConnectCancel
+func _gotk4_gtk4_Assistant_ConnectCancel(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCancel: emitted when then the cancel button is clicked.
 func (assistant *Assistant) ConnectCancel(f func()) externglib.SignalHandle {
-	return assistant.Connect("cancel", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(assistant, "cancel", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectCancel), f)
+}
+
+//export _gotk4_gtk4_Assistant_ConnectClose
+func _gotk4_gtk4_Assistant_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectClose: emitted either when the close button of a summary page is
 // clicked, or when the apply button in the last page in the flow (of type
 // GTK_ASSISTANT_PAGE_CONFIRM) is clicked.
 func (assistant *Assistant) ConnectClose(f func()) externglib.SignalHandle {
-	return assistant.Connect("close", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(assistant, "close", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectClose), f)
+}
+
+//export _gotk4_gtk4_Assistant_ConnectEscape
+func _gotk4_gtk4_Assistant_ConnectEscape(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectEscape: action signal for the Escape binding.
 func (assistant *Assistant) ConnectEscape(f func()) externglib.SignalHandle {
-	return assistant.Connect("escape", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(assistant, "escape", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectEscape), f)
+}
+
+//export _gotk4_gtk4_Assistant_ConnectPrepare
+func _gotk4_gtk4_Assistant_ConnectPrepare(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(page Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(page Widgetter))
+	}
+
+	var _page Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_page = rv
+	}
+
+	f(_page)
 }
 
 // ConnectPrepare: emitted when a new page is set as the assistant's current
@@ -250,7 +355,7 @@ func (assistant *Assistant) ConnectEscape(f func()) externglib.SignalHandle {
 // A handler for this signal can do any preparations which are necessary before
 // showing page.
 func (assistant *Assistant) ConnectPrepare(f func(page Widgetter)) externglib.SignalHandle {
-	return assistant.Connect("prepare", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(assistant, "prepare", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectPrepare), f)
 }
 
 // NewAssistant creates a new GtkAssistant.

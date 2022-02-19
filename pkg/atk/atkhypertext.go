@@ -16,6 +16,7 @@ import (
 // extern gint _gotk4_atk1_HypertextIface_get_link_index(AtkHypertext*, gint);
 // extern gint _gotk4_atk1_HypertextIface_get_n_links(AtkHypertext*);
 // extern void _gotk4_atk1_HypertextIface_link_selected(AtkHypertext*, gint);
+// extern void _gotk4_atk1_Hypertext_ConnectLinkSelected(gpointer, gint, guintptr);
 import "C"
 
 func init() {
@@ -167,10 +168,30 @@ func marshalHypertexter(p uintptr) (interface{}, error) {
 	return wrapHypertext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_atk1_Hypertext_ConnectLinkSelected
+func _gotk4_atk1_Hypertext_ConnectLinkSelected(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(arg1 int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 int))
+	}
+
+	var _arg1 int // out
+
+	_arg1 = int(arg1)
+
+	f(_arg1)
+}
+
 // ConnectLinkSelected: "link-selected" signal is emitted by an AtkHyperText
 // object when one of the hyperlinks associated with the object is selected.
 func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) externglib.SignalHandle {
-	return hypertext.Connect("link-selected", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(hypertext, "link-selected", false, unsafe.Pointer(C._gotk4_atk1_Hypertext_ConnectLinkSelected), f)
 }
 
 // Link gets the link in this hypertext document at index link_index.

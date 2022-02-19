@@ -21,6 +21,7 @@ import (
 // extern GType _gotk4_gio2_DBusProxyTypeFunc(GDBusObjectManagerClient*, gchar*, gchar*, gpointer);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(GDBusObjectManagerClient*, GDBusObjectProxy*, GDBusProxy*, gchar*, gchar*, GVariant*);
+// extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(gpointer, GDBusObjectProxy*, GDBusProxy*, gchar*, gchar*, GVariant*, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -185,19 +186,39 @@ func marshalDBusObjectManagerClienter(p uintptr) (interface{}, error) {
 	return wrapDBusObjectManagerClient(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectInterfaceProxyPropertiesChanged: emitted when one or more D-Bus
-// properties on proxy changes. The local cache has already been updated when
-// this signal fires. Note that both changed_properties and
-// invalidated_properties are guaranteed to never be NULL (either may be empty
-// though).
-//
-// This signal exists purely as a convenience to avoid having to connect signals
-// to all interface proxies managed by manager.
-//
-// This signal is emitted in the [thread-default main
-// context][g-main-context-push-thread-default] that manager was constructed in.
-func (manager *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
-	return manager.Connect("interface-proxy-properties-changed", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal
+func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(arg0 C.gpointer, arg1 *C.GDBusObjectProxy, arg2 *C.GDBusProxy, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.guintptr) {
+	var f func(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg6))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant))
+	}
+
+	var _objectProxy *DBusObjectProxy // out
+	var _interfaceProxy *DBusProxy    // out
+	var _senderName string            // out
+	var _signalName string            // out
+	var _parameters *glib.Variant     // out
+
+	_objectProxy = wrapDBusObjectProxy(externglib.Take(unsafe.Pointer(arg1)))
+	_interfaceProxy = wrapDBusProxy(externglib.Take(unsafe.Pointer(arg2)))
+	_senderName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	_signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
+	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
+	C.g_variant_ref(arg5)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_parameters)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	f(_objectProxy, _interfaceProxy, _senderName, _signalName, _parameters)
 }
 
 // ConnectInterfaceProxySignal: emitted when a D-Bus signal is received on
@@ -208,8 +229,8 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f
 //
 // This signal is emitted in the [thread-default main
 // context][g-main-context-push-thread-default] that manager was constructed in.
-func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
-	return manager.Connect("interface-proxy-signal", externglib.GeneratedClosure{Func: f})
+func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(manager, "interface-proxy-signal", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal), f)
 }
 
 // NewDBusObjectManagerClientFinish finishes an operation started with

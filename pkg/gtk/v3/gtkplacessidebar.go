@@ -20,6 +20,17 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gint _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk(gpointer, gint, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectMount(gpointer, GMountOperation*, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectOpenLocation(gpointer, GFile*, GtkPlacesOpenFlags, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(gpointer, GtkWidget*, GFile*, GVolume*, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowConnectToServer(gpointer, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowEnterLocation(gpointer, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(gpointer, gchar*, gchar*, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocations(gpointer, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocationsWithFlags(gpointer, GtkPlacesOpenFlags, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowStarredLocation(gpointer, GtkPlacesOpenFlags, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectUnmount(gpointer, GMountOperation*, guintptr);
 import "C"
 
 func init() {
@@ -189,19 +200,106 @@ func marshalPlacesSidebarrer(p uintptr) (interface{}, error) {
 	return wrapPlacesSidebar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk
+func _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gint) {
+	var f func(actions int) (gint int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(actions int) (gint int))
+	}
+
+	var _actions int // out
+
+	_actions = int(arg1)
+
+	gint := f(_actions)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
 // ConnectDragActionAsk places sidebar emits this signal when it needs to ask
 // the application to pop up a menu to ask the user for which drag action to
 // perform.
-func (sidebar *PlacesSidebar) ConnectDragActionAsk(f func(actions int) int) externglib.SignalHandle {
-	return sidebar.Connect("drag-action-ask", externglib.GeneratedClosure{Func: f})
+func (sidebar *PlacesSidebar) ConnectDragActionAsk(f func(actions int) (gint int)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(sidebar, "drag-action-ask", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectMount
+func _gotk4_gtk3_PlacesSidebar_ConnectMount(arg0 C.gpointer, arg1 *C.GMountOperation, arg2 C.guintptr) {
+	var f func(mountOperation *gio.MountOperation)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(mountOperation *gio.MountOperation))
+	}
+
+	var _mountOperation *gio.MountOperation // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_mountOperation = &gio.MountOperation{
+			Object: obj,
+		}
+	}
+
+	f(_mountOperation)
 }
 
 // ConnectMount places sidebar emits this signal when it starts a new operation
 // because the user clicked on some location that needs mounting. In this way
 // the application using the PlacesSidebar can track the progress of the
 // operation and, for example, show a notification.
-func (sidebar *PlacesSidebar) ConnectMount(f func(mountOperation gio.MountOperation)) externglib.SignalHandle {
-	return sidebar.Connect("mount", externglib.GeneratedClosure{Func: f})
+func (sidebar *PlacesSidebar) ConnectMount(f func(mountOperation *gio.MountOperation)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(sidebar, "mount", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectMount), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectOpenLocation
+func _gotk4_gtk3_PlacesSidebar_ConnectOpenLocation(arg0 C.gpointer, arg1 *C.GFile, arg2 C.GtkPlacesOpenFlags, arg3 C.guintptr) {
+	var f func(location gio.Filer, openFlags PlacesOpenFlags)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(location gio.Filer, openFlags PlacesOpenFlags))
+	}
+
+	var _location gio.Filer        // out
+	var _openFlags PlacesOpenFlags // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Filer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.Filer)
+			return ok
+		})
+		rv, ok := casted.(gio.Filer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+		}
+		_location = rv
+	}
+	_openFlags = PlacesOpenFlags(arg2)
+
+	f(_location, _openFlags)
 }
 
 // ConnectOpenLocation places sidebar emits this signal when the user selects a
@@ -209,7 +307,77 @@ func (sidebar *PlacesSidebar) ConnectMount(f func(mountOperation gio.MountOperat
 // location; for example, a file manager should show a list of files in the
 // specified location.
 func (sidebar *PlacesSidebar) ConnectOpenLocation(f func(location gio.Filer, openFlags PlacesOpenFlags)) externglib.SignalHandle {
-	return sidebar.Connect("open-location", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sidebar, "open-location", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectOpenLocation), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup
+func _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 *C.GFile, arg3 *C.GVolume, arg4 C.guintptr) {
+	var f func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer))
+	}
+
+	var _container Widgetter        // out
+	var _selectedItem gio.Filer     // out
+	var _selectedVolume gio.Volumer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_container = rv
+	}
+	if arg2 != nil {
+		{
+			objptr := unsafe.Pointer(arg2)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Filer)
+				return ok
+			})
+			rv, ok := casted.(gio.Filer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+			}
+			_selectedItem = rv
+		}
+	}
+	if arg3 != nil {
+		{
+			objptr := unsafe.Pointer(arg3)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(gio.Volumer)
+				return ok
+			})
+			rv, ok := casted.(gio.Volumer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
+			}
+			_selectedVolume = rv
+		}
+	}
+
+	f(_container, _selectedItem, _selectedVolume)
 }
 
 // ConnectPopulatePopup places sidebar emits this signal when the user invokes a
@@ -238,7 +406,23 @@ func (sidebar *PlacesSidebar) ConnectOpenLocation(f func(location gio.Filer, ope
 // PlacesSidebar::populate-all to TRUE to request that this signal is emitted
 // for populating popovers as well.
 func (sidebar *PlacesSidebar) ConnectPopulatePopup(f func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer)) externglib.SignalHandle {
-	return sidebar.Connect("populate-popup", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sidebar, "populate-popup", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectShowConnectToServer
+func _gotk4_gtk3_PlacesSidebar_ConnectShowConnectToServer(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectShowConnectToServer places sidebar emits this signal when it needs the
@@ -247,7 +431,23 @@ func (sidebar *PlacesSidebar) ConnectPopulatePopup(f func(container Widgetter, s
 // URL like "sftp://ftp.example.com". It is up to the application to create the
 // corresponding mount by using, for example, g_file_mount_enclosing_volume().
 func (sidebar *PlacesSidebar) ConnectShowConnectToServer(f func()) externglib.SignalHandle {
-	return sidebar.Connect("show-connect-to-server", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sidebar, "show-connect-to-server", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectShowConnectToServer), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectShowEnterLocation
+func _gotk4_gtk3_PlacesSidebar_ConnectShowEnterLocation(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectShowEnterLocation places sidebar emits this signal when it needs the
@@ -255,7 +455,29 @@ func (sidebar *PlacesSidebar) ConnectShowConnectToServer(f func()) externglib.Si
 // example, the application may bring up a dialog box asking for a URL like
 // "http://http.example.com".
 func (sidebar *PlacesSidebar) ConnectShowEnterLocation(f func()) externglib.SignalHandle {
-	return sidebar.Connect("show-enter-location", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sidebar, "show-enter-location", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectShowEnterLocation), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage
+func _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
+	var f func(primary, secondary string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(primary, secondary string))
+	}
+
+	var _primary string   // out
+	var _secondary string // out
+
+	_primary = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_secondary = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	f(_primary, _secondary)
 }
 
 // ConnectShowErrorMessage places sidebar emits this signal when it needs the
@@ -263,7 +485,23 @@ func (sidebar *PlacesSidebar) ConnectShowEnterLocation(f func()) externglib.Sign
 // to mounting or unmounting media, for example, when a drive cannot be started
 // for some reason.
 func (sidebar *PlacesSidebar) ConnectShowErrorMessage(f func(primary, secondary string)) externglib.SignalHandle {
-	return sidebar.Connect("show-error-message", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sidebar, "show-error-message", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocations
+func _gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocations(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectShowOtherLocations places sidebar emits this signal when it needs the
@@ -271,7 +509,27 @@ func (sidebar *PlacesSidebar) ConnectShowErrorMessage(f func(primary, secondary 
 // network access points. For example, the application may bring up a page
 // showing persistent volumes and discovered network addresses.
 func (sidebar *PlacesSidebar) ConnectShowOtherLocations(f func()) externglib.SignalHandle {
-	return sidebar.Connect("show-other-locations", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sidebar, "show-other-locations", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocations), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocationsWithFlags
+func _gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocationsWithFlags(arg0 C.gpointer, arg1 C.GtkPlacesOpenFlags, arg2 C.guintptr) {
+	var f func(openFlags PlacesOpenFlags)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(openFlags PlacesOpenFlags))
+	}
+
+	var _openFlags PlacesOpenFlags // out
+
+	_openFlags = PlacesOpenFlags(arg1)
+
+	f(_openFlags)
 }
 
 // ConnectShowOtherLocationsWithFlags places sidebar emits this signal when it
@@ -279,7 +537,27 @@ func (sidebar *PlacesSidebar) ConnectShowOtherLocations(f func()) externglib.Sig
 // drives and network access points. For example, the application may bring up a
 // page showing persistent volumes and discovered network addresses.
 func (sidebar *PlacesSidebar) ConnectShowOtherLocationsWithFlags(f func(openFlags PlacesOpenFlags)) externglib.SignalHandle {
-	return sidebar.Connect("show-other-locations-with-flags", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sidebar, "show-other-locations-with-flags", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocationsWithFlags), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectShowStarredLocation
+func _gotk4_gtk3_PlacesSidebar_ConnectShowStarredLocation(arg0 C.gpointer, arg1 C.GtkPlacesOpenFlags, arg2 C.guintptr) {
+	var f func(openFlags PlacesOpenFlags)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(openFlags PlacesOpenFlags))
+	}
+
+	var _openFlags PlacesOpenFlags // out
+
+	_openFlags = PlacesOpenFlags(arg1)
+
+	f(_openFlags)
 }
 
 // ConnectShowStarredLocation places sidebar emits this signal when it needs the
@@ -287,15 +565,40 @@ func (sidebar *PlacesSidebar) ConnectShowOtherLocationsWithFlags(f func(openFlag
 // starred files are implemented by setting the nao:predefined-tag-favorite tag
 // in the tracker database.
 func (sidebar *PlacesSidebar) ConnectShowStarredLocation(f func(openFlags PlacesOpenFlags)) externglib.SignalHandle {
-	return sidebar.Connect("show-starred-location", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sidebar, "show-starred-location", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectShowStarredLocation), f)
+}
+
+//export _gotk4_gtk3_PlacesSidebar_ConnectUnmount
+func _gotk4_gtk3_PlacesSidebar_ConnectUnmount(arg0 C.gpointer, arg1 *C.GMountOperation, arg2 C.guintptr) {
+	var f func(mountOperation *gio.MountOperation)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(mountOperation *gio.MountOperation))
+	}
+
+	var _mountOperation *gio.MountOperation // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_mountOperation = &gio.MountOperation{
+			Object: obj,
+		}
+	}
+
+	f(_mountOperation)
 }
 
 // ConnectUnmount places sidebar emits this signal when it starts a new
 // operation because the user for example ejected some drive or unmounted a
 // mount. In this way the application using the PlacesSidebar can track the
 // progress of the operation and, for example, show a notification.
-func (sidebar *PlacesSidebar) ConnectUnmount(f func(mountOperation gio.MountOperation)) externglib.SignalHandle {
-	return sidebar.Connect("unmount", externglib.GeneratedClosure{Func: f})
+func (sidebar *PlacesSidebar) ConnectUnmount(f func(mountOperation *gio.MountOperation)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(sidebar, "unmount", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectUnmount), f)
 }
 
 // NewPlacesSidebar creates a new PlacesSidebar widget.

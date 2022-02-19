@@ -19,6 +19,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_OverlayClass_get_child_position(GtkOverlay*, GtkWidget*, GtkAllocation*);
+// extern gboolean _gotk4_gtk3_Overlay_ConnectGetChildPosition(gpointer, GtkWidget*, GdkRectangle*, guintptr);
 import "C"
 
 func init() {
@@ -155,6 +156,63 @@ func wrapOverlay(obj *externglib.Object) *Overlay {
 
 func marshalOverlayer(p uintptr) (interface{}, error) {
 	return wrapOverlay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_gtk3_Overlay_ConnectGetChildPosition
+func _gotk4_gtk3_Overlay_ConnectGetChildPosition(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 *C.GdkRectangle, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(widget Widgetter) (allocation *gdk.Rectangle, ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(widget Widgetter) (allocation *gdk.Rectangle, ok bool))
+	}
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	allocation, ok := f(_widget)
+
+	*arg2 = *(*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ConnectGetChildPosition signal is emitted to determine the position and size
+// of any overlay child widgets. A handler for this signal should fill
+// allocation with the desired position and size for widget, relative to the
+// 'main' child of overlay.
+//
+// The default handler for this signal uses the widget's halign and valign
+// properties to determine the position and gives the widget its natural size
+// (except that an alignment of GTK_ALIGN_FILL will cause the overlay to be
+// full-width/height). If the main child is a ScrolledWindow, the overlays are
+// placed relative to its contents.
+func (overlay *Overlay) ConnectGetChildPosition(f func(widget Widgetter) (allocation *gdk.Rectangle, ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(overlay, "get-child-position", false, unsafe.Pointer(C._gotk4_gtk3_Overlay_ConnectGetChildPosition), f)
 }
 
 // NewOverlay creates a new Overlay.

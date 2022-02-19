@@ -14,6 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_Device_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gdk3_Device_ConnectToolChanged(gpointer, GdkDeviceTool*, guintptr);
 import "C"
 
 func init() {
@@ -200,19 +202,55 @@ func BaseDevice(obj Devicer) *Device {
 	return obj.baseDevice()
 }
 
+//export _gotk4_gdk3_Device_ConnectChanged
+func _gotk4_gdk3_Device_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged signal is emitted either when the Device has changed the
 // number of either axes or keys. For example In X this will normally happen
 // when the slave device routing events through the master device changes (for
 // example, user switches from the USB mouse to a tablet), in that case the
 // master device will change to reflect the new slave device axes and keys.
 func (device *Device) ConnectChanged(f func()) externglib.SignalHandle {
-	return device.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(device, "changed", false, unsafe.Pointer(C._gotk4_gdk3_Device_ConnectChanged), f)
+}
+
+//export _gotk4_gdk3_Device_ConnectToolChanged
+func _gotk4_gdk3_Device_ConnectToolChanged(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
+	var f func(tool *DeviceTool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(tool *DeviceTool))
+	}
+
+	var _tool *DeviceTool // out
+
+	_tool = wrapDeviceTool(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_tool)
 }
 
 // ConnectToolChanged signal is emitted on pen/eraser Devices whenever tools
 // enter or leave proximity.
-func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.SignalHandle {
-	return device.Connect("tool-changed", externglib.GeneratedClosure{Func: f})
+func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(device, "tool-changed", false, unsafe.Pointer(C._gotk4_gdk3_Device_ConnectToolChanged), f)
 }
 
 // AssociatedDevice returns the associated device to device, if device is of

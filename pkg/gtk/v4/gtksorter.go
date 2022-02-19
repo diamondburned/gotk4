@@ -16,6 +16,7 @@ import (
 // #include <gtk/gtk.h>
 // extern GtkOrdering _gotk4_gtk4_SorterClass_compare(GtkSorter*, gpointer, gpointer);
 // extern GtkSorterOrder _gotk4_gtk4_SorterClass_get_order(GtkSorter*);
+// extern void _gotk4_gtk4_Sorter_ConnectChanged(gpointer, GtkSorterChange, guintptr);
 import "C"
 
 func init() {
@@ -230,6 +231,26 @@ func marshalSorterer(p uintptr) (interface{}, error) {
 	return wrapSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Sorter_ConnectChanged
+func _gotk4_gtk4_Sorter_ConnectChanged(arg0 C.gpointer, arg1 C.GtkSorterChange, arg2 C.guintptr) {
+	var f func(change SorterChange)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(change SorterChange))
+	}
+
+	var _change SorterChange // out
+
+	_change = SorterChange(arg1)
+
+	f(_change)
+}
+
 // ConnectChanged: emitted whenever the sorter changed.
 //
 // Users of the sorter should then update the sort order again via
@@ -241,7 +262,7 @@ func marshalSorterer(p uintptr) (interface{}, error) {
 // order without a full resorting. Refer to the gtk.SorterChange documentation
 // for details.
 func (self *Sorter) ConnectChanged(f func(change SorterChange)) externglib.SignalHandle {
-	return self.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "changed", false, unsafe.Pointer(C._gotk4_gtk4_Sorter_ConnectChanged), f)
 }
 
 // Changed emits the gtk.Sorter::changed signal to notify all users of the

@@ -11,6 +11,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectBind(gpointer, GtkListItem*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectSetup(gpointer, GtkListItem*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(gpointer, GtkListItem*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(gpointer, GtkListItem*, guintptr);
 import "C"
 
 func init() {
@@ -92,6 +96,26 @@ func marshalSignalListItemFactorier(p uintptr) (interface{}, error) {
 	return wrapSignalListItemFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_SignalListItemFactory_ConnectBind
+func _gotk4_gtk4_SignalListItemFactory_ConnectBind(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
+	var f func(listitem *ListItem)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(listitem *ListItem))
+	}
+
+	var _listitem *ListItem // out
+
+	_listitem = wrapListItem(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_listitem)
+}
+
 // ConnectBind: emitted when a new gtk.ListItem:item has been set on the
 // listitem and should be bound for use.
 //
@@ -100,8 +124,28 @@ func marshalSignalListItemFactorier(p uintptr) (interface{}, error) {
 //
 // The gtk.SignalListItemFactory::unbind signal is the opposite of this signal
 // and can be used to undo everything done in this signal.
-func (v *SignalListItemFactory) ConnectBind(f func(listitem ListItem)) externglib.SignalHandle {
-	return v.Connect("bind", externglib.GeneratedClosure{Func: f})
+func (v *SignalListItemFactory) ConnectBind(f func(listitem *ListItem)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(v, "bind", false, unsafe.Pointer(C._gotk4_gtk4_SignalListItemFactory_ConnectBind), f)
+}
+
+//export _gotk4_gtk4_SignalListItemFactory_ConnectSetup
+func _gotk4_gtk4_SignalListItemFactory_ConnectSetup(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
+	var f func(listitem *ListItem)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(listitem *ListItem))
+	}
+
+	var _listitem *ListItem // out
+
+	_listitem = wrapListItem(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_listitem)
 }
 
 // ConnectSetup: emitted when a new listitem has been created and needs to be
@@ -111,8 +155,28 @@ func (v *SignalListItemFactory) ConnectBind(f func(listitem ListItem)) externgli
 //
 // The gtk.SignalListItemFactory::teardown signal is the opposite of this signal
 // and can be used to undo everything done in this signal.
-func (v *SignalListItemFactory) ConnectSetup(f func(listitem ListItem)) externglib.SignalHandle {
-	return v.Connect("setup", externglib.GeneratedClosure{Func: f})
+func (v *SignalListItemFactory) ConnectSetup(f func(listitem *ListItem)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(v, "setup", false, unsafe.Pointer(C._gotk4_gtk4_SignalListItemFactory_ConnectSetup), f)
+}
+
+//export _gotk4_gtk4_SignalListItemFactory_ConnectTeardown
+func _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
+	var f func(listitem *ListItem)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(listitem *ListItem))
+	}
+
+	var _listitem *ListItem // out
+
+	_listitem = wrapListItem(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_listitem)
 }
 
 // ConnectTeardown: emitted when a listitem is about to be destroyed.
@@ -121,8 +185,28 @@ func (v *SignalListItemFactory) ConnectSetup(f func(listitem ListItem)) externgl
 //
 // This signal is the opposite of the gtk.SignalListItemFactory::setup signal
 // and should be used to undo everything done in that signal.
-func (v *SignalListItemFactory) ConnectTeardown(f func(listitem ListItem)) externglib.SignalHandle {
-	return v.Connect("teardown", externglib.GeneratedClosure{Func: f})
+func (v *SignalListItemFactory) ConnectTeardown(f func(listitem *ListItem)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(v, "teardown", false, unsafe.Pointer(C._gotk4_gtk4_SignalListItemFactory_ConnectTeardown), f)
+}
+
+//export _gotk4_gtk4_SignalListItemFactory_ConnectUnbind
+func _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
+	var f func(listitem *ListItem)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(listitem *ListItem))
+	}
+
+	var _listitem *ListItem // out
+
+	_listitem = wrapListItem(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_listitem)
 }
 
 // ConnectUnbind: emitted when a listitem has been removed from use in a list
@@ -130,8 +214,8 @@ func (v *SignalListItemFactory) ConnectTeardown(f func(listitem ListItem)) exter
 //
 // This signal is the opposite of the gtk.SignalListItemFactory::bind signal and
 // should be used to undo everything done in that signal.
-func (v *SignalListItemFactory) ConnectUnbind(f func(listitem ListItem)) externglib.SignalHandle {
-	return v.Connect("unbind", externglib.GeneratedClosure{Func: f})
+func (v *SignalListItemFactory) ConnectUnbind(f func(listitem *ListItem)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(v, "unbind", false, unsafe.Pointer(C._gotk4_gtk4_SignalListItemFactory_ConnectUnbind), f)
 }
 
 // NewSignalListItemFactory creates a new GtkSignalListItemFactory.

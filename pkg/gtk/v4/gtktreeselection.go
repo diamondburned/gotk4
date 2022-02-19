@@ -16,6 +16,7 @@ import (
 // #include <gtk/gtk.h>
 // extern gboolean _gotk4_gtk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
 // extern void _gotk4_gtk4_TreeSelectionForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk4_TreeSelection_ConnectChanged(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -166,12 +167,28 @@ func marshalTreeSelectioner(p uintptr) (interface{}, error) {
 	return wrapTreeSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_TreeSelection_ConnectChanged
+func _gotk4_gtk4_TreeSelection_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted whenever the selection has (possibly) changed. Please
 // note that this signal is mostly a hint. It may only be emitted once when a
 // range of rows are selected, and it may occasionally be emitted when nothing
 // has happened.
 func (selection *TreeSelection) ConnectChanged(f func()) externglib.SignalHandle {
-	return selection.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(selection, "changed", false, unsafe.Pointer(C._gotk4_gtk4_TreeSelection_ConnectChanged), f)
 }
 
 // CountSelectedRows returns the number of rows that have been selected in tree.

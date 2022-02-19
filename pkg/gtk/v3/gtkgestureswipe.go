@@ -14,6 +14,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_GestureSwipe_ConnectSwipe(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 func init() {
@@ -69,10 +70,32 @@ func marshalGestureSwiper(p uintptr) (interface{}, error) {
 	return wrapGestureSwipe(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_GestureSwipe_ConnectSwipe
+func _gotk4_gtk3_GestureSwipe_ConnectSwipe(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(velocityX, velocityY float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(velocityX, velocityY float64))
+	}
+
+	var _velocityX float64 // out
+	var _velocityY float64 // out
+
+	_velocityX = float64(arg1)
+	_velocityY = float64(arg2)
+
+	f(_velocityX, _velocityY)
+}
+
 // ConnectSwipe: this signal is emitted when the recognized gesture is finished,
 // velocity and direction are a product of previously recorded events.
 func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) externglib.SignalHandle {
-	return gesture.Connect("swipe", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "swipe", false, unsafe.Pointer(C._gotk4_gtk3_GestureSwipe_ConnectSwipe), f)
 }
 
 // NewGestureSwipe returns a newly created Gesture that recognizes swipes.

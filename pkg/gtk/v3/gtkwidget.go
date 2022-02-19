@@ -38,6 +38,7 @@ import (
 // extern gboolean _gotk4_gtk3_WidgetClass_drag_motion(GtkWidget*, GdkDragContext*, gint, gint, guint);
 // extern gboolean _gotk4_gtk3_WidgetClass_draw(GtkWidget*, cairo_t*);
 // extern gboolean _gotk4_gtk3_WidgetClass_enter_notify_event(GtkWidget*, GdkEventCrossing*);
+// extern gboolean _gotk4_gtk3_WidgetClass_event(GtkWidget*, GdkEvent*);
 // extern gboolean _gotk4_gtk3_WidgetClass_focus(GtkWidget*, GtkDirectionType);
 // extern gboolean _gotk4_gtk3_WidgetClass_focus_in_event(GtkWidget*, GdkEventFocus*);
 // extern gboolean _gotk4_gtk3_WidgetClass_focus_out_event(GtkWidget*, GdkEventFocus*);
@@ -63,6 +64,44 @@ import (
 // extern gboolean _gotk4_gtk3_WidgetClass_unmap_event(GtkWidget*, GdkEventAny*);
 // extern gboolean _gotk4_gtk3_WidgetClass_visibility_notify_event(GtkWidget*, GdkEventVisibility*);
 // extern gboolean _gotk4_gtk3_WidgetClass_window_state_event(GtkWidget*, GdkEventWindowState*);
+// extern gboolean _gotk4_gtk3_Widget_ConnectButtonPressEvent(gpointer, GdkEventButton*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectButtonReleaseEvent(gpointer, GdkEventButton*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectCanActivateAccel(gpointer, guint, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectConfigureEvent(gpointer, GdkEventConfigure*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectDamageEvent(gpointer, GdkEventExpose*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectDeleteEvent(gpointer, GdkEvent, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectDestroyEvent(gpointer, GdkEvent, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectDragDrop(gpointer, GdkDragContext*, gint, gint, guint, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectDragFailed(gpointer, GdkDragContext*, GtkDragResult, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectDragMotion(gpointer, GdkDragContext*, gint, gint, guint, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectDraw(gpointer, cairo_t*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectEnterNotifyEvent(gpointer, GdkEventCrossing*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectEvent(gpointer, GdkEvent, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectFocus(gpointer, GtkDirectionType, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectFocusInEvent(gpointer, GdkEventFocus*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectFocusOutEvent(gpointer, GdkEventFocus*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectGrabBrokenEvent(gpointer, GdkEventGrabBroken*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectKeyPressEvent(gpointer, GdkEventKey*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectKeyReleaseEvent(gpointer, GdkEventKey*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectKeynavFailed(gpointer, GtkDirectionType, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectLeaveNotifyEvent(gpointer, GdkEventCrossing*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectMapEvent(gpointer, GdkEventAny*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectMnemonicActivate(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectMotionNotifyEvent(gpointer, GdkEventMotion*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectPopupMenu(gpointer, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectPropertyNotifyEvent(gpointer, GdkEventProperty*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectProximityInEvent(gpointer, GdkEventProximity*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectProximityOutEvent(gpointer, GdkEventProximity*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectQueryTooltip(gpointer, gint, gint, gboolean, GtkTooltip*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectScrollEvent(gpointer, GdkEventScroll*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectSelectionClearEvent(gpointer, GdkEventSelection*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectSelectionNotifyEvent(gpointer, GdkEventSelection*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectSelectionRequestEvent(gpointer, GdkEventSelection*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectShowHelp(gpointer, GtkWidgetHelpType, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectTouchEvent(gpointer, GdkEvent, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectUnmapEvent(gpointer, GdkEventAny*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectVisibilityNotifyEvent(gpointer, GdkEventVisibility*, guintptr);
+// extern gboolean _gotk4_gtk3_Widget_ConnectWindowStateEvent(gpointer, GdkEventWindowState*, guintptr);
 // extern void _gotk4_gtk3_WidgetClass_adjust_baseline_allocation(GtkWidget*, gint*);
 // extern void _gotk4_gtk3_WidgetClass_adjust_baseline_request(GtkWidget*, gint*, gint*);
 // extern void _gotk4_gtk3_WidgetClass_adjust_size_allocation(GtkWidget*, GtkOrientation, gint*, gint*, gint*, gint*);
@@ -102,6 +141,36 @@ import (
 // extern void _gotk4_gtk3_WidgetClass_style_updated(GtkWidget*);
 // extern void _gotk4_gtk3_WidgetClass_unmap(GtkWidget*);
 // extern void _gotk4_gtk3_WidgetClass_unrealize(GtkWidget*);
+// extern void _gotk4_gtk3_Widget_ConnectAccelClosuresChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectCompositedChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectDestroy(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectDirectionChanged(gpointer, GtkTextDirection, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectDragBegin(gpointer, GdkDragContext*, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectDragDataDelete(gpointer, GdkDragContext*, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectDragDataGet(gpointer, GdkDragContext*, GtkSelectionData*, guint, guint, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectDragDataReceived(gpointer, GdkDragContext*, gint, gint, GtkSelectionData*, guint, guint, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectDragEnd(gpointer, GdkDragContext*, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectDragLeave(gpointer, GdkDragContext*, guint, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectEventAfter(gpointer, GdkEvent, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectGrabFocus(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectGrabNotify(gpointer, gboolean, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectHide(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectHierarchyChanged(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectMap(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectMoveFocus(gpointer, GtkDirectionType, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectParentSet(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectRealize(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectScreenChanged(gpointer, GdkScreen*, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectSelectionGet(gpointer, GtkSelectionData*, guint, guint, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectSelectionReceived(gpointer, GtkSelectionData*, guint, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectShow(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectSizeAllocate(gpointer, GtkAllocation*, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectStateChanged(gpointer, GtkStateType, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectStateFlagsChanged(gpointer, GtkStateFlags, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectStyleSet(gpointer, GtkStyle*, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectStyleUpdated(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectUnmap(gpointer, guintptr);
+// extern void _gotk4_gtk3_Widget_ConnectUnrealize(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -494,6 +563,24 @@ type WidgetOverrider interface {
 	// The function returns the following values:
 	//
 	EnterNotifyEvent(event *gdk.EventCrossing) bool
+	// Event: rarely-used function. This function is used to emit the event
+	// signals on a widget (those signals should never be emitted without using
+	// this function to do so). If you want to synthesize an event though, don’t
+	// use this function; instead, use gtk_main_do_event() so the event will
+	// behave as if it were in the event queue. Don’t synthesize expose events;
+	// instead, use gdk_window_invalidate_rect() to invalidate a region of the
+	// window.
+	//
+	// The function takes the following parameters:
+	//
+	//    - event: Event.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: return from the event signal emission (TRUE if the event was
+	//      handled).
+	//
+	Event(event *gdk.Event) bool
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -1196,6 +1283,10 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 		EnterNotifyEvent(event *gdk.EventCrossing) bool
 	}); ok {
 		pclass.enter_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_enter_notify_event)
+	}
+
+	if _, ok := goval.(interface{ Event(event *gdk.Event) bool }); ok {
+		pclass.event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_event)
 	}
 
 	if _, ok := goval.(interface {
@@ -1970,6 +2061,28 @@ func _gotk4_gtk3_WidgetClass_enter_notify_event(arg0 *C.GtkWidget, arg1 *C.GdkEv
 	_event = (*gdk.EventCrossing)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := iface.EnterNotifyEvent(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_WidgetClass_event
+func _gotk4_gtk3_WidgetClass_event(arg0 *C.GtkWidget, arg1 *C.GdkEvent) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Event(event *gdk.Event) bool })
+
+	var _event *gdk.Event // out
+
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+
+	ok := iface.Event(_event)
 
 	if ok {
 		cret = C.TRUE
@@ -2891,8 +3004,50 @@ func BaseWidget(obj Widgetter) *Widget {
 	return obj.baseWidget()
 }
 
+//export _gotk4_gtk3_Widget_ConnectAccelClosuresChanged
+func _gotk4_gtk3_Widget_ConnectAccelClosuresChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 func (widget *Widget) ConnectAccelClosuresChanged(f func()) externglib.SignalHandle {
-	return widget.Connect("accel-closures-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "accel-closures-changed", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectAccelClosuresChanged), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectButtonPressEvent
+func _gotk4_gtk3_Widget_ConnectButtonPressEvent(arg0 C.gpointer, arg1 *C.GdkEventButton, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventButton) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventButton) (ok bool))
+	}
+
+	var _event *gdk.EventButton // out
+
+	_event = (*gdk.EventButton)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectButtonPressEvent signal will be emitted when a button (typically from
@@ -2902,8 +3057,34 @@ func (widget *Widget) ConnectAccelClosuresChanged(f func()) externglib.SignalHan
 // the K_BUTTON_PRESS_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectButtonPressEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return widget.Connect("button-press-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectButtonPressEvent(f func(event *gdk.EventButton) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "button-press-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectButtonPressEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectButtonReleaseEvent
+func _gotk4_gtk3_Widget_ConnectButtonReleaseEvent(arg0 C.gpointer, arg1 *C.GdkEventButton, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventButton) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventButton) (ok bool))
+	}
+
+	var _event *gdk.EventButton // out
+
+	_event = (*gdk.EventButton)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectButtonReleaseEvent signal will be emitted when a button (typically
@@ -2913,22 +3094,90 @@ func (widget *Widget) ConnectButtonPressEvent(f func(event *gdk.EventButton) boo
 // the K_BUTTON_RELEASE_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) bool) externglib.SignalHandle {
-	return widget.Connect("button-release-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "button-release-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectButtonReleaseEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectCanActivateAccel
+func _gotk4_gtk3_Widget_ConnectCanActivateAccel(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(signalId uint) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(signalId uint) (ok bool))
+	}
+
+	var _signalId uint // out
+
+	_signalId = uint(arg1)
+
+	ok := f(_signalId)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectCanActivateAccel determines whether an accelerator that activates the
 // signal identified by signal_id can currently be activated. This signal is
 // present to allow applications and derived widgets to override the default
 // Widget handling for determining whether an accelerator can be activated.
-func (widget *Widget) ConnectCanActivateAccel(f func(signalId uint) bool) externglib.SignalHandle {
-	return widget.Connect("can-activate-accel", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectCanActivateAccel(f func(signalId uint) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "can-activate-accel", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectCanActivateAccel), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectCompositedChanged
+func _gotk4_gtk3_Widget_ConnectCompositedChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCompositedChanged signal is emitted when the composited status of
 // widgets screen changes. See gdk_screen_is_composited().
 func (widget *Widget) ConnectCompositedChanged(f func()) externglib.SignalHandle {
-	return widget.Connect("composited-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "composited-changed", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectCompositedChanged), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectConfigureEvent
+func _gotk4_gtk3_Widget_ConnectConfigureEvent(arg0 C.gpointer, arg1 *C.GdkEventConfigure, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventConfigure) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventConfigure) (ok bool))
+	}
+
+	var _event *gdk.EventConfigure // out
+
+	_event = (*gdk.EventConfigure)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectConfigureEvent signal will be emitted when the size, position or
@@ -2937,15 +3186,71 @@ func (widget *Widget) ConnectCompositedChanged(f func()) externglib.SignalHandle
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
-func (widget *Widget) ConnectConfigureEvent(f func(event *gdk.EventConfigure) bool) externglib.SignalHandle {
-	return widget.Connect("configure-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectConfigureEvent(f func(event *gdk.EventConfigure) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "configure-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectConfigureEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDamageEvent
+func _gotk4_gtk3_Widget_ConnectDamageEvent(arg0 C.gpointer, arg1 *C.GdkEventExpose, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventExpose) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventExpose) (ok bool))
+	}
+
+	var _event *gdk.EventExpose // out
+
+	_event = (*gdk.EventExpose)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDamageEvent: emitted when a redirected window belonging to widget gets
 // drawn into. The region/area members of the event shows what area of the
 // redirected drawable was drawn into.
-func (widget *Widget) ConnectDamageEvent(f func(event *gdk.EventExpose) bool) externglib.SignalHandle {
-	return widget.Connect("damage-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDamageEvent(f func(event *gdk.EventExpose) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "damage-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDamageEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDeleteEvent
+func _gotk4_gtk3_Widget_ConnectDeleteEvent(arg0 C.gpointer, arg1 C.GdkEvent, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.Event) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.Event) (ok bool))
+	}
+
+	var _event *gdk.Event // out
+
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg1))))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDeleteEvent signal is emitted if a user requests that a toplevel
@@ -2953,8 +3258,24 @@ func (widget *Widget) ConnectDamageEvent(f func(event *gdk.EventExpose) bool) ex
 // Connecting gtk_widget_hide_on_delete() to this signal will cause the window
 // to be hidden instead, so that it can later be shown again without
 // reconstructing it.
-func (widget *Widget) ConnectDeleteEvent(f func(event *gdk.Event) bool) externglib.SignalHandle {
-	return widget.Connect("delete-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDeleteEvent(f func(event *gdk.Event) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "delete-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDeleteEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDestroy
+func _gotk4_gtk3_Widget_ConnectDestroy(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectDestroy signals that all holders of a reference to the widget should
@@ -2963,7 +3284,37 @@ func (widget *Widget) ConnectDeleteEvent(f func(event *gdk.Event) bool) externgl
 //
 // This signal is not suitable for saving widget state.
 func (widget *Widget) ConnectDestroy(f func()) externglib.SignalHandle {
-	return widget.Connect("destroy", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "destroy", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDestroy), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDestroyEvent
+func _gotk4_gtk3_Widget_ConnectDestroyEvent(arg0 C.gpointer, arg1 C.GdkEvent, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.Event) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.Event) (ok bool))
+	}
+
+	var _event *gdk.Event // out
+
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg1))))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDestroyEvent signal is emitted when a Window is destroyed. You rarely
@@ -2973,14 +3324,59 @@ func (widget *Widget) ConnectDestroy(f func()) externglib.SignalHandle {
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
-func (widget *Widget) ConnectDestroyEvent(f func(event *gdk.Event) bool) externglib.SignalHandle {
-	return widget.Connect("destroy-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDestroyEvent(f func(event *gdk.Event) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "destroy-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDestroyEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDirectionChanged
+func _gotk4_gtk3_Widget_ConnectDirectionChanged(arg0 C.gpointer, arg1 C.GtkTextDirection, arg2 C.guintptr) {
+	var f func(previousDirection TextDirection)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(previousDirection TextDirection))
+	}
+
+	var _previousDirection TextDirection // out
+
+	_previousDirection = TextDirection(arg1)
+
+	f(_previousDirection)
 }
 
 // ConnectDirectionChanged signal is emitted when the text direction of a widget
 // changes.
 func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) externglib.SignalHandle {
-	return widget.Connect("direction-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "direction-changed", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDirectionChanged), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDragBegin
+func _gotk4_gtk3_Widget_ConnectDragBegin(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.guintptr) {
+	var f func(context *gdk.DragContext)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *gdk.DragContext))
+	}
+
+	var _context *gdk.DragContext // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+
+	f(_context)
 }
 
 // ConnectDragBegin signal is emitted on the drag source when a drag is started.
@@ -2990,24 +3386,115 @@ func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirec
 // Note that some widgets set up a drag icon in the default handler of this
 // signal, so you may have to use g_signal_connect_after() to override what the
 // default handler did.
-func (widget *Widget) ConnectDragBegin(f func(context gdk.DragContext)) externglib.SignalHandle {
-	return widget.Connect("drag-begin", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDragBegin(f func(context *gdk.DragContext)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "drag-begin", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragBegin), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDragDataDelete
+func _gotk4_gtk3_Widget_ConnectDragDataDelete(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.guintptr) {
+	var f func(context *gdk.DragContext)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *gdk.DragContext))
+	}
+
+	var _context *gdk.DragContext // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+
+	f(_context)
 }
 
 // ConnectDragDataDelete signal is emitted on the drag source when a drag with
 // the action GDK_ACTION_MOVE is successfully completed. The signal handler is
 // responsible for deleting the data that has been dropped. What "delete" means
 // depends on the context of the drag operation.
-func (widget *Widget) ConnectDragDataDelete(f func(context gdk.DragContext)) externglib.SignalHandle {
-	return widget.Connect("drag-data-delete", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDragDataDelete(f func(context *gdk.DragContext)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "drag-data-delete", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragDataDelete), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDragDataGet
+func _gotk4_gtk3_Widget_ConnectDragDataGet(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 *C.GtkSelectionData, arg3 C.guint, arg4 C.guint, arg5 C.guintptr) {
+	var f func(context *gdk.DragContext, data *SelectionData, info, time uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *gdk.DragContext, data *SelectionData, info, time uint))
+	}
+
+	var _context *gdk.DragContext // out
+	var _data *SelectionData      // out
+	var _info uint                // out
+	var _time uint                // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_data = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_info = uint(arg3)
+	_time = uint(arg4)
+
+	f(_context, _data, _info, _time)
 }
 
 // ConnectDragDataGet signal is emitted on the drag source when the drop site
 // requests the data which is dragged. It is the responsibility of the signal
 // handler to fill data with the data in the format which is indicated by info.
 // See gtk_selection_data_set() and gtk_selection_data_set_text().
-func (widget *Widget) ConnectDragDataGet(f func(context gdk.DragContext, data *SelectionData, info, time uint)) externglib.SignalHandle {
-	return widget.Connect("drag-data-get", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDragDataGet(f func(context *gdk.DragContext, data *SelectionData, info, time uint)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "drag-data-get", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragDataGet), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDragDataReceived
+func _gotk4_gtk3_Widget_ConnectDragDataReceived(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 *C.GtkSelectionData, arg5 C.guint, arg6 C.guint, arg7 C.guintptr) {
+	var f func(context *gdk.DragContext, x, y int, data *SelectionData, info, time uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg7))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *gdk.DragContext, x, y int, data *SelectionData, info, time uint))
+	}
+
+	var _context *gdk.DragContext // out
+	var _x int                    // out
+	var _y int                    // out
+	var _data *SelectionData      // out
+	var _info uint                // out
+	var _time uint                // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_x = int(arg2)
+	_y = int(arg3)
+	_data = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	_info = uint(arg5)
+	_time = uint(arg6)
+
+	f(_context, _x, _y, _data, _info, _time)
 }
 
 // ConnectDragDataReceived signal is emitted on the drop site when the dragged
@@ -3067,8 +3554,45 @@ func (widget *Widget) ConnectDragDataGet(f func(context gdk.DragContext, data *S
 //      else
 //        gtk_drag_finish (context, FALSE, FALSE, time);
 //     }.
-func (widget *Widget) ConnectDragDataReceived(f func(context gdk.DragContext, x, y int, data *SelectionData, info, time uint)) externglib.SignalHandle {
-	return widget.Connect("drag-data-received", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDragDataReceived(f func(context *gdk.DragContext, x, y int, data *SelectionData, info, time uint)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "drag-data-received", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragDataReceived), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDragDrop
+func _gotk4_gtk3_Widget_ConnectDragDrop(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 C.guint, arg5 C.guintptr) (cret C.gboolean) {
+	var f func(context *gdk.DragContext, x, y int, time uint) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *gdk.DragContext, x, y int, time uint) (ok bool))
+	}
+
+	var _context *gdk.DragContext // out
+	var _x int                    // out
+	var _y int                    // out
+	var _time uint                // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_x = int(arg2)
+	_y = int(arg3)
+	_time = uint(arg4)
+
+	ok := f(_context, _x, _y, _time)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDragDrop signal is emitted on the drop site when the user drops the
@@ -3080,15 +3604,73 @@ func (widget *Widget) ConnectDragDataReceived(f func(context gdk.DragContext, x,
 // can be done either directly or in a Widget::drag-data-received handler which
 // gets triggered by calling gtk_drag_get_data() to receive the data for one or
 // more of the supported targets.
-func (widget *Widget) ConnectDragDrop(f func(context gdk.DragContext, x, y int, time uint) bool) externglib.SignalHandle {
-	return widget.Connect("drag-drop", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDragDrop(f func(context *gdk.DragContext, x, y int, time uint) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "drag-drop", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragDrop), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDragEnd
+func _gotk4_gtk3_Widget_ConnectDragEnd(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.guintptr) {
+	var f func(context *gdk.DragContext)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *gdk.DragContext))
+	}
+
+	var _context *gdk.DragContext // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+
+	f(_context)
 }
 
 // ConnectDragEnd signal is emitted on the drag source when a drag is finished.
 // A typical reason to connect to this signal is to undo things done in
 // Widget::drag-begin.
-func (widget *Widget) ConnectDragEnd(f func(context gdk.DragContext)) externglib.SignalHandle {
-	return widget.Connect("drag-end", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDragEnd(f func(context *gdk.DragContext)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "drag-end", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragEnd), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDragFailed
+func _gotk4_gtk3_Widget_ConnectDragFailed(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.GtkDragResult, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(context *gdk.DragContext, result DragResult) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *gdk.DragContext, result DragResult) (ok bool))
+	}
+
+	var _context *gdk.DragContext // out
+	var _result DragResult        // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_result = DragResult(arg2)
+
+	ok := f(_context, _result)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDragFailed signal is emitted on the drag source when a drag has
@@ -3096,8 +3678,35 @@ func (widget *Widget) ConnectDragEnd(f func(context gdk.DragContext)) externglib
 // operation based on the type of error, it returns TRUE is the failure has been
 // already handled (not showing the default "drag operation failed" animation),
 // otherwise it returns FALSE.
-func (widget *Widget) ConnectDragFailed(f func(context gdk.DragContext, result DragResult) bool) externglib.SignalHandle {
-	return widget.Connect("drag-failed", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDragFailed(f func(context *gdk.DragContext, result DragResult) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "drag-failed", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragFailed), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDragLeave
+func _gotk4_gtk3_Widget_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.guint, arg3 C.guintptr) {
+	var f func(context *gdk.DragContext, time uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *gdk.DragContext, time uint))
+	}
+
+	var _context *gdk.DragContext // out
+	var _time uint                // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_time = uint(arg2)
+
+	f(_context, _time)
 }
 
 // ConnectDragLeave signal is emitted on the drop site when the cursor leaves
@@ -3105,8 +3714,45 @@ func (widget *Widget) ConnectDragFailed(f func(context gdk.DragContext, result D
 // in Widget::drag-motion, e.g. undo highlighting with gtk_drag_unhighlight().
 //
 //    Likewise, the Widget::drag-leave signal is also emitted before the ::drag-drop signal, for instance to allow cleaning up of a preview item created in the Widget::drag-motion signal handler.
-func (widget *Widget) ConnectDragLeave(f func(context gdk.DragContext, time uint)) externglib.SignalHandle {
-	return widget.Connect("drag-leave", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDragLeave(f func(context *gdk.DragContext, time uint)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "drag-leave", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragLeave), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDragMotion
+func _gotk4_gtk3_Widget_ConnectDragMotion(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 C.guint, arg5 C.guintptr) (cret C.gboolean) {
+	var f func(context *gdk.DragContext, x, y int, time uint) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *gdk.DragContext, x, y int, time uint) (ok bool))
+	}
+
+	var _context *gdk.DragContext // out
+	var _x int                    // out
+	var _y int                    // out
+	var _time uint                // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_context = &gdk.DragContext{
+			Object: obj,
+		}
+	}
+	_x = int(arg2)
+	_y = int(arg3)
+	_time = uint(arg4)
+
+	ok := f(_context, _x, _y, _time)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDragMotion signal is emitted on the drop site when the user moves the
@@ -3194,8 +3840,38 @@ func (widget *Widget) ConnectDragLeave(f func(context gdk.DragContext, time uint
 //         // accept the drop
 //       }
 //    }.
-func (widget *Widget) ConnectDragMotion(f func(context gdk.DragContext, x, y int, time uint) bool) externglib.SignalHandle {
-	return widget.Connect("drag-motion", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDragMotion(f func(context *gdk.DragContext, x, y int, time uint) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "drag-motion", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragMotion), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectDraw
+func _gotk4_gtk3_Widget_ConnectDraw(arg0 C.gpointer, arg1 *C.cairo_t, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(cr *cairo.Context) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(cr *cairo.Context) (ok bool))
+	}
+
+	var _cr *cairo.Context // out
+
+	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
+	C.cairo_reference(arg1)
+	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+	})
+
+	ok := f(_cr)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDraw: this signal is emitted when a widget is supposed to render
@@ -3214,8 +3890,34 @@ func (widget *Widget) ConnectDragMotion(f func(context gdk.DragContext, x, y int
 // extents of the clip region with gdk_cairo_get_clip_rectangle(), or they can
 // get a finer-grained representation of the dirty region with
 // cairo_copy_clip_rectangle_list().
-func (widget *Widget) ConnectDraw(f func(cr *cairo.Context) bool) externglib.SignalHandle {
-	return widget.Connect("draw", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectDraw(f func(cr *cairo.Context) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "draw", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDraw), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectEnterNotifyEvent
+func _gotk4_gtk3_Widget_ConnectEnterNotifyEvent(arg0 C.gpointer, arg1 *C.GdkEventCrossing, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventCrossing) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventCrossing) (ok bool))
+	}
+
+	var _event *gdk.EventCrossing // out
+
+	_event = (*gdk.EventCrossing)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectEnterNotifyEvent will be emitted when the pointer enters the widget's
@@ -3225,27 +3927,133 @@ func (widget *Widget) ConnectDraw(f func(cr *cairo.Context) bool) externglib.Sig
 // the K_ENTER_NOTIFY_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectEnterNotifyEvent(f func(event *gdk.EventCrossing) bool) externglib.SignalHandle {
-	return widget.Connect("enter-notify-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectEnterNotifyEvent(f func(event *gdk.EventCrossing) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "enter-notify-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectEnterNotifyEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectEvent
+func _gotk4_gtk3_Widget_ConnectEvent(arg0 C.gpointer, arg1 C.GdkEvent, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.Event) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.Event) (ok bool))
+	}
+
+	var _event *gdk.Event // out
+
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg1))))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectEvent: GTK+ main loop will emit three signals for each GDK event
 // delivered to a widget: one generic ::event signal, another, more specific,
 // signal that matches the type of event delivered (e.g.
 // Widget::key-press-event) and finally a generic Widget::event-after signal.
-func (widget *Widget) ConnectEvent(f func(event *gdk.Event) bool) externglib.SignalHandle {
-	return widget.Connect("event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectEvent(f func(event *gdk.Event) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectEventAfter
+func _gotk4_gtk3_Widget_ConnectEventAfter(arg0 C.gpointer, arg1 C.GdkEvent, arg2 C.guintptr) {
+	var f func(event *gdk.Event)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.Event))
+	}
+
+	var _event *gdk.Event // out
+
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg1))))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+
+	f(_event)
 }
 
 // ConnectEventAfter: after the emission of the Widget::event signal and
 // (optionally) the second more specific signal, ::event-after will be emitted
 // regardless of the previous two signals handlers return values.
 func (widget *Widget) ConnectEventAfter(f func(event *gdk.Event)) externglib.SignalHandle {
-	return widget.Connect("event-after", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "event-after", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectEventAfter), f)
 }
 
-func (widget *Widget) ConnectFocus(f func(direction DirectionType) bool) externglib.SignalHandle {
-	return widget.Connect("focus", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_Widget_ConnectFocus
+func _gotk4_gtk3_Widget_ConnectFocus(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(direction DirectionType) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction DirectionType) (ok bool))
+	}
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	ok := f(_direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func (widget *Widget) ConnectFocus(f func(direction DirectionType) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "focus", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectFocus), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectFocusInEvent
+func _gotk4_gtk3_Widget_ConnectFocusInEvent(arg0 C.gpointer, arg1 *C.GdkEventFocus, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventFocus) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventFocus) (ok bool))
+	}
+
+	var _event *gdk.EventFocus // out
+
+	_event = (*gdk.EventFocus)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectFocusInEvent signal will be emitted when the keyboard focus enters the
@@ -3253,8 +4061,34 @@ func (widget *Widget) ConnectFocus(f func(direction DirectionType) bool) externg
 //
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_FOCUS_CHANGE_MASK mask.
-func (widget *Widget) ConnectFocusInEvent(f func(event *gdk.EventFocus) bool) externglib.SignalHandle {
-	return widget.Connect("focus-in-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectFocusInEvent(f func(event *gdk.EventFocus) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "focus-in-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectFocusInEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectFocusOutEvent
+func _gotk4_gtk3_Widget_ConnectFocusOutEvent(arg0 C.gpointer, arg1 *C.GdkEventFocus, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventFocus) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventFocus) (ok bool))
+	}
+
+	var _event *gdk.EventFocus // out
+
+	_event = (*gdk.EventFocus)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectFocusOutEvent signal will be emitted when the keyboard focus leaves
@@ -3262,8 +4096,34 @@ func (widget *Widget) ConnectFocusInEvent(f func(event *gdk.EventFocus) bool) ex
 //
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_FOCUS_CHANGE_MASK mask.
-func (widget *Widget) ConnectFocusOutEvent(f func(event *gdk.EventFocus) bool) externglib.SignalHandle {
-	return widget.Connect("focus-out-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectFocusOutEvent(f func(event *gdk.EventFocus) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "focus-out-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectFocusOutEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectGrabBrokenEvent
+func _gotk4_gtk3_Widget_ConnectGrabBrokenEvent(arg0 C.gpointer, arg1 *C.GdkEventGrabBroken, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventGrabBroken) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventGrabBroken) (ok bool))
+	}
+
+	var _event *gdk.EventGrabBroken // out
+
+	_event = (*gdk.EventGrabBroken)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectGrabBrokenEvent: emitted when a pointer or keyboard grab on a window
@@ -3272,12 +4132,50 @@ func (widget *Widget) ConnectFocusOutEvent(f func(event *gdk.EventFocus) bool) e
 // On X11, this happens when the grab window becomes unviewable (i.e. it or one
 // of its ancestors is unmapped), or if the same application grabs the pointer
 // or keyboard again.
-func (widget *Widget) ConnectGrabBrokenEvent(f func(event *gdk.EventGrabBroken) bool) externglib.SignalHandle {
-	return widget.Connect("grab-broken-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectGrabBrokenEvent(f func(event *gdk.EventGrabBroken) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "grab-broken-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectGrabBrokenEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectGrabFocus
+func _gotk4_gtk3_Widget_ConnectGrabFocus(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 func (widget *Widget) ConnectGrabFocus(f func()) externglib.SignalHandle {
-	return widget.Connect("grab-focus", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "grab-focus", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectGrabFocus), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectGrabNotify
+func _gotk4_gtk3_Widget_ConnectGrabNotify(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) {
+	var f func(wasGrabbed bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(wasGrabbed bool))
+	}
+
+	var _wasGrabbed bool // out
+
+	if arg1 != 0 {
+		_wasGrabbed = true
+	}
+
+	f(_wasGrabbed)
 }
 
 // ConnectGrabNotify signal is emitted when a widget becomes shadowed by a GTK+
@@ -3287,13 +4185,64 @@ func (widget *Widget) ConnectGrabFocus(f func()) externglib.SignalHandle {
 // A widget is shadowed by a gtk_grab_add() when the topmost grab widget in the
 // grab stack of its window group is not its ancestor.
 func (widget *Widget) ConnectGrabNotify(f func(wasGrabbed bool)) externglib.SignalHandle {
-	return widget.Connect("grab-notify", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "grab-notify", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectGrabNotify), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectHide
+func _gotk4_gtk3_Widget_ConnectHide(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectHide signal is emitted when widget is hidden, for example with
 // gtk_widget_hide().
 func (widget *Widget) ConnectHide(f func()) externglib.SignalHandle {
-	return widget.Connect("hide", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "hide", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectHide), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectHierarchyChanged
+func _gotk4_gtk3_Widget_ConnectHierarchyChanged(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(previousToplevel Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(previousToplevel Widgetter))
+	}
+
+	var _previousToplevel Widgetter // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_previousToplevel = rv
+		}
+	}
+
+	f(_previousToplevel)
 }
 
 // ConnectHierarchyChanged signal is emitted when the anchored state of a widget
@@ -3301,7 +4250,33 @@ func (widget *Widget) ConnectHide(f func()) externglib.SignalHandle {
 // signal is emitted when a widget changes from un-anchored to anchored or
 // vice-versa.
 func (widget *Widget) ConnectHierarchyChanged(f func(previousToplevel Widgetter)) externglib.SignalHandle {
-	return widget.Connect("hierarchy-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "hierarchy-changed", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectHierarchyChanged), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectKeyPressEvent
+func _gotk4_gtk3_Widget_ConnectKeyPressEvent(arg0 C.gpointer, arg1 *C.GdkEventKey, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventKey) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventKey) (ok bool))
+	}
+
+	var _event *gdk.EventKey // out
+
+	_event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectKeyPressEvent signal is emitted when a key is pressed. The signal
@@ -3311,8 +4286,34 @@ func (widget *Widget) ConnectHierarchyChanged(f func(previousToplevel Widgetter)
 // the K_KEY_PRESS_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectKeyPressEvent(f func(event *gdk.EventKey) bool) externglib.SignalHandle {
-	return widget.Connect("key-press-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectKeyPressEvent(f func(event *gdk.EventKey) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "key-press-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectKeyPressEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectKeyReleaseEvent
+func _gotk4_gtk3_Widget_ConnectKeyReleaseEvent(arg0 C.gpointer, arg1 *C.GdkEventKey, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventKey) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventKey) (ok bool))
+	}
+
+	var _event *gdk.EventKey // out
+
+	_event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectKeyReleaseEvent signal is emitted when a key is released.
@@ -3321,14 +4322,66 @@ func (widget *Widget) ConnectKeyPressEvent(f func(event *gdk.EventKey) bool) ext
 // the K_KEY_RELEASE_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectKeyReleaseEvent(f func(event *gdk.EventKey) bool) externglib.SignalHandle {
-	return widget.Connect("key-release-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectKeyReleaseEvent(f func(event *gdk.EventKey) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "key-release-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectKeyReleaseEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectKeynavFailed
+func _gotk4_gtk3_Widget_ConnectKeynavFailed(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(direction DirectionType) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction DirectionType) (ok bool))
+	}
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	ok := f(_direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectKeynavFailed gets emitted if keyboard navigation fails. See
 // gtk_widget_keynav_failed() for details.
-func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) externglib.SignalHandle {
-	return widget.Connect("keynav-failed", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "keynav-failed", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectKeynavFailed), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectLeaveNotifyEvent
+func _gotk4_gtk3_Widget_ConnectLeaveNotifyEvent(arg0 C.gpointer, arg1 *C.GdkEventCrossing, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventCrossing) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventCrossing) (ok bool))
+	}
+
+	var _event *gdk.EventCrossing // out
+
+	_event = (*gdk.EventCrossing)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectLeaveNotifyEvent will be emitted when the pointer leaves the widget's
@@ -3338,8 +4391,24 @@ func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) 
 // the K_LEAVE_NOTIFY_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectLeaveNotifyEvent(f func(event *gdk.EventCrossing) bool) externglib.SignalHandle {
-	return widget.Connect("leave-notify-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectLeaveNotifyEvent(f func(event *gdk.EventCrossing) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "leave-notify-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectLeaveNotifyEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectMap
+func _gotk4_gtk3_Widget_ConnectMap(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectMap signal is emitted when widget is going to be mapped, that is when
@@ -3351,7 +4420,33 @@ func (widget *Widget) ConnectLeaveNotifyEvent(f func(event *gdk.EventCrossing) b
 // instance it can resume an animation that was stopped during the emission of
 // Widget::unmap.
 func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
-	return widget.Connect("map", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "map", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectMap), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectMapEvent
+func _gotk4_gtk3_Widget_ConnectMapEvent(arg0 C.gpointer, arg1 *C.GdkEventAny, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventAny) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventAny) (ok bool))
+	}
+
+	var _event *gdk.EventAny // out
+
+	_event = (*gdk.EventAny)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectMapEvent signal will be emitted when the widget's window is mapped. A
@@ -3360,15 +4455,69 @@ func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
-func (widget *Widget) ConnectMapEvent(f func(event *gdk.EventAny) bool) externglib.SignalHandle {
-	return widget.Connect("map-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectMapEvent(f func(event *gdk.EventAny) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "map-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectMapEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectMnemonicActivate
+func _gotk4_gtk3_Widget_ConnectMnemonicActivate(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(groupCycling bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(groupCycling bool) (ok bool))
+	}
+
+	var _groupCycling bool // out
+
+	if arg1 != 0 {
+		_groupCycling = true
+	}
+
+	ok := f(_groupCycling)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectMnemonicActivate: default handler for this signal activates widget if
 // group_cycling is FALSE, or just makes widget grab focus if group_cycling is
 // TRUE.
-func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) externglib.SignalHandle {
-	return widget.Connect("mnemonic-activate", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "mnemonic-activate", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectMnemonicActivate), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectMotionNotifyEvent
+func _gotk4_gtk3_Widget_ConnectMotionNotifyEvent(arg0 C.gpointer, arg1 *C.GdkEventMotion, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventMotion) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventMotion) (ok bool))
+	}
+
+	var _event *gdk.EventMotion // out
+
+	_event = (*gdk.EventMotion)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectMotionNotifyEvent signal is emitted when the pointer moves over the
@@ -3378,18 +4527,95 @@ func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) ex
 // the K_POINTER_MOTION_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectMotionNotifyEvent(f func(event *gdk.EventMotion) bool) externglib.SignalHandle {
-	return widget.Connect("motion-notify-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectMotionNotifyEvent(f func(event *gdk.EventMotion) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "motion-notify-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectMotionNotifyEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectMoveFocus
+func _gotk4_gtk3_Widget_ConnectMoveFocus(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
+	var f func(direction DirectionType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction DirectionType))
+	}
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	f(_direction)
 }
 
 func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) externglib.SignalHandle {
-	return widget.Connect("move-focus", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "move-focus", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectMoveFocus), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectParentSet
+func _gotk4_gtk3_Widget_ConnectParentSet(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(oldParent Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(oldParent Widgetter))
+	}
+
+	var _oldParent Widgetter // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_oldParent = rv
+		}
+	}
+
+	f(_oldParent)
 }
 
 // ConnectParentSet signal is emitted when a new parent has been set on a
 // widget.
 func (widget *Widget) ConnectParentSet(f func(oldParent Widgetter)) externglib.SignalHandle {
-	return widget.Connect("parent-set", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "parent-set", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectParentSet), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectPopupMenu
+func _gotk4_gtk3_Widget_ConnectPopupMenu(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectPopupMenu: this signal gets emitted whenever a widget should pop up a
@@ -3398,8 +4624,34 @@ func (widget *Widget) ConnectParentSet(f func(oldParent Widgetter)) externglib.S
 // cause the widget to pop up a menu. For example, the Entry widget creates a
 // menu with clipboard commands. See the [Popup Menu Migration
 // Checklist][checklist-popup-menu] for an example of how to use this signal.
-func (widget *Widget) ConnectPopupMenu(f func() bool) externglib.SignalHandle {
-	return widget.Connect("popup-menu", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectPopupMenu(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "popup-menu", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectPopupMenu), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectPropertyNotifyEvent
+func _gotk4_gtk3_Widget_ConnectPropertyNotifyEvent(arg0 C.gpointer, arg1 *C.GdkEventProperty, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventProperty) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventProperty) (ok bool))
+	}
+
+	var _event *gdk.EventProperty // out
+
+	_event = (*gdk.EventProperty)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectPropertyNotifyEvent signal will be emitted when a property on the
@@ -3407,24 +4659,110 @@ func (widget *Widget) ConnectPopupMenu(f func() bool) externglib.SignalHandle {
 //
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_PROPERTY_CHANGE_MASK mask.
-func (widget *Widget) ConnectPropertyNotifyEvent(f func(event *gdk.EventProperty) bool) externglib.SignalHandle {
-	return widget.Connect("property-notify-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectPropertyNotifyEvent(f func(event *gdk.EventProperty) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "property-notify-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectPropertyNotifyEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectProximityInEvent
+func _gotk4_gtk3_Widget_ConnectProximityInEvent(arg0 C.gpointer, arg1 *C.GdkEventProximity, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventProximity) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventProximity) (ok bool))
+	}
+
+	var _event *gdk.EventProximity // out
+
+	_event = (*gdk.EventProximity)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectProximityInEvent: to receive this signal the Window associated to the
 // widget needs to enable the K_PROXIMITY_IN_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectProximityInEvent(f func(event *gdk.EventProximity) bool) externglib.SignalHandle {
-	return widget.Connect("proximity-in-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectProximityInEvent(f func(event *gdk.EventProximity) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "proximity-in-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectProximityInEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectProximityOutEvent
+func _gotk4_gtk3_Widget_ConnectProximityOutEvent(arg0 C.gpointer, arg1 *C.GdkEventProximity, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventProximity) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventProximity) (ok bool))
+	}
+
+	var _event *gdk.EventProximity // out
+
+	_event = (*gdk.EventProximity)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectProximityOutEvent: to receive this signal the Window associated to the
 // widget needs to enable the K_PROXIMITY_OUT_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectProximityOutEvent(f func(event *gdk.EventProximity) bool) externglib.SignalHandle {
-	return widget.Connect("proximity-out-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectProximityOutEvent(f func(event *gdk.EventProximity) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "proximity-out-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectProximityOutEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectQueryTooltip
+func _gotk4_gtk3_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip, arg5 C.guintptr) (cret C.gboolean) {
+	var f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool))
+	}
+
+	var _x int             // out
+	var _y int             // out
+	var _keyboardMode bool // out
+	var _tooltip *Tooltip  // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	if arg3 != 0 {
+		_keyboardMode = true
+	}
+	_tooltip = wrapTooltip(externglib.Take(unsafe.Pointer(arg4)))
+
+	ok := f(_x, _y, _keyboardMode, _tooltip)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectQueryTooltip: emitted when Widget:has-tooltip is TRUE and the hover
@@ -3438,21 +4776,90 @@ func (widget *Widget) ConnectProximityOutEvent(f func(event *gdk.EventProximity)
 //
 // The signal handler is free to manipulate tooltip with the therefore destined
 // function calls.
-func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
-	return widget.Connect("query-tooltip", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "query-tooltip", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectQueryTooltip), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectRealize
+func _gotk4_gtk3_Widget_ConnectRealize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectRealize signal is emitted when widget is associated with a Window,
 // which means that gtk_widget_realize() has been called or the widget has been
 // mapped (that is, it is going to be drawn).
 func (widget *Widget) ConnectRealize(f func()) externglib.SignalHandle {
-	return widget.Connect("realize", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "realize", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectRealize), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectScreenChanged
+func _gotk4_gtk3_Widget_ConnectScreenChanged(arg0 C.gpointer, arg1 *C.GdkScreen, arg2 C.guintptr) {
+	var f func(previousScreen *gdk.Screen)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(previousScreen *gdk.Screen))
+	}
+
+	var _previousScreen *gdk.Screen // out
+
+	if arg1 != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(arg1))
+			_previousScreen = &gdk.Screen{
+				Object: obj,
+			}
+		}
+	}
+
+	f(_previousScreen)
 }
 
 // ConnectScreenChanged signal gets emitted when the screen of a widget has
 // changed.
-func (widget *Widget) ConnectScreenChanged(f func(previousScreen gdk.Screen)) externglib.SignalHandle {
-	return widget.Connect("screen-changed", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectScreenChanged(f func(previousScreen *gdk.Screen)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "screen-changed", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectScreenChanged), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectScrollEvent
+func _gotk4_gtk3_Widget_ConnectScrollEvent(arg0 C.gpointer, arg1 *C.GdkEventScroll, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventScroll) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventScroll) (ok bool))
+	}
+
+	var _event *gdk.EventScroll // out
+
+	_event = (*gdk.EventScroll)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectScrollEvent signal is emitted when a button in the 4 to 7 range is
@@ -3463,58 +4870,306 @@ func (widget *Widget) ConnectScreenChanged(f func(previousScreen gdk.Screen)) ex
 // the K_SCROLL_MASK mask.
 //
 // This signal will be sent to the grab widget if there is one.
-func (widget *Widget) ConnectScrollEvent(f func(event *gdk.EventScroll) bool) externglib.SignalHandle {
-	return widget.Connect("scroll-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectScrollEvent(f func(event *gdk.EventScroll) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "scroll-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectScrollEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectSelectionClearEvent
+func _gotk4_gtk3_Widget_ConnectSelectionClearEvent(arg0 C.gpointer, arg1 *C.GdkEventSelection, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventSelection) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventSelection) (ok bool))
+	}
+
+	var _event *gdk.EventSelection // out
+
+	_event = (*gdk.EventSelection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectSelectionClearEvent signal will be emitted when the the widget's
 // window has lost ownership of a selection.
-func (widget *Widget) ConnectSelectionClearEvent(f func(event *gdk.EventSelection) bool) externglib.SignalHandle {
-	return widget.Connect("selection-clear-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectSelectionClearEvent(f func(event *gdk.EventSelection) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "selection-clear-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectSelectionClearEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectSelectionGet
+func _gotk4_gtk3_Widget_ConnectSelectionGet(arg0 C.gpointer, arg1 *C.GtkSelectionData, arg2 C.guint, arg3 C.guint, arg4 C.guintptr) {
+	var f func(data *SelectionData, info, time uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(data *SelectionData, info, time uint))
+	}
+
+	var _data *SelectionData // out
+	var _info uint           // out
+	var _time uint           // out
+
+	_data = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_info = uint(arg2)
+	_time = uint(arg3)
+
+	f(_data, _info, _time)
 }
 
 func (widget *Widget) ConnectSelectionGet(f func(data *SelectionData, info, time uint)) externglib.SignalHandle {
-	return widget.Connect("selection-get", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "selection-get", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectSelectionGet), f)
 }
 
-func (widget *Widget) ConnectSelectionNotifyEvent(f func(event *gdk.EventSelection) bool) externglib.SignalHandle {
-	return widget.Connect("selection-notify-event", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_Widget_ConnectSelectionNotifyEvent
+func _gotk4_gtk3_Widget_ConnectSelectionNotifyEvent(arg0 C.gpointer, arg1 *C.GdkEventSelection, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventSelection) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventSelection) (ok bool))
+	}
+
+	var _event *gdk.EventSelection // out
+
+	_event = (*gdk.EventSelection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func (widget *Widget) ConnectSelectionNotifyEvent(f func(event *gdk.EventSelection) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "selection-notify-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectSelectionNotifyEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectSelectionReceived
+func _gotk4_gtk3_Widget_ConnectSelectionReceived(arg0 C.gpointer, arg1 *C.GtkSelectionData, arg2 C.guint, arg3 C.guintptr) {
+	var f func(data *SelectionData, time uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(data *SelectionData, time uint))
+	}
+
+	var _data *SelectionData // out
+	var _time uint           // out
+
+	_data = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_time = uint(arg2)
+
+	f(_data, _time)
 }
 
 func (widget *Widget) ConnectSelectionReceived(f func(data *SelectionData, time uint)) externglib.SignalHandle {
-	return widget.Connect("selection-received", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "selection-received", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectSelectionReceived), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectSelectionRequestEvent
+func _gotk4_gtk3_Widget_ConnectSelectionRequestEvent(arg0 C.gpointer, arg1 *C.GdkEventSelection, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventSelection) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventSelection) (ok bool))
+	}
+
+	var _event *gdk.EventSelection // out
+
+	_event = (*gdk.EventSelection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectSelectionRequestEvent signal will be emitted when another client
 // requests ownership of the selection owned by the widget's window.
-func (widget *Widget) ConnectSelectionRequestEvent(f func(event *gdk.EventSelection) bool) externglib.SignalHandle {
-	return widget.Connect("selection-request-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectSelectionRequestEvent(f func(event *gdk.EventSelection) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "selection-request-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectSelectionRequestEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectShow
+func _gotk4_gtk3_Widget_ConnectShow(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectShow signal is emitted when widget is shown, for example with
 // gtk_widget_show().
 func (widget *Widget) ConnectShow(f func()) externglib.SignalHandle {
-	return widget.Connect("show", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "show", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectShow), f)
 }
 
-func (widget *Widget) ConnectShowHelp(f func(helpType WidgetHelpType) bool) externglib.SignalHandle {
-	return widget.Connect("show-help", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_Widget_ConnectShowHelp
+func _gotk4_gtk3_Widget_ConnectShowHelp(arg0 C.gpointer, arg1 C.GtkWidgetHelpType, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(helpType WidgetHelpType) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(helpType WidgetHelpType) (ok bool))
+	}
+
+	var _helpType WidgetHelpType // out
+
+	_helpType = WidgetHelpType(arg1)
+
+	ok := f(_helpType)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func (widget *Widget) ConnectShowHelp(f func(helpType WidgetHelpType) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "show-help", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectShowHelp), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectSizeAllocate
+func _gotk4_gtk3_Widget_ConnectSizeAllocate(arg0 C.gpointer, arg1 *C.GtkAllocation, arg2 C.guintptr) {
+	var f func(allocation *Allocation)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(allocation *Allocation))
+	}
+
+	var _allocation *Allocation // out
+
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	f(_allocation)
 }
 
 func (widget *Widget) ConnectSizeAllocate(f func(allocation *Allocation)) externglib.SignalHandle {
-	return widget.Connect("size-allocate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "size-allocate", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectSizeAllocate), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectStateChanged
+func _gotk4_gtk3_Widget_ConnectStateChanged(arg0 C.gpointer, arg1 C.GtkStateType, arg2 C.guintptr) {
+	var f func(state StateType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(state StateType))
+	}
+
+	var _state StateType // out
+
+	_state = StateType(arg1)
+
+	f(_state)
 }
 
 // ConnectStateChanged signal is emitted when the widget state changes. See
 // gtk_widget_get_state().
 func (widget *Widget) ConnectStateChanged(f func(state StateType)) externglib.SignalHandle {
-	return widget.Connect("state-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "state-changed", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectStateChanged), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectStateFlagsChanged
+func _gotk4_gtk3_Widget_ConnectStateFlagsChanged(arg0 C.gpointer, arg1 C.GtkStateFlags, arg2 C.guintptr) {
+	var f func(flags StateFlags)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(flags StateFlags))
+	}
+
+	var _flags StateFlags // out
+
+	_flags = StateFlags(arg1)
+
+	f(_flags)
 }
 
 // ConnectStateFlagsChanged signal is emitted when the widget state changes, see
 // gtk_widget_get_state_flags().
 func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externglib.SignalHandle {
-	return widget.Connect("state-flags-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "state-flags-changed", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectStateFlagsChanged), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectStyleSet
+func _gotk4_gtk3_Widget_ConnectStyleSet(arg0 C.gpointer, arg1 *C.GtkStyle, arg2 C.guintptr) {
+	var f func(previousStyle *Style)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(previousStyle *Style))
+	}
+
+	var _previousStyle *Style // out
+
+	if arg1 != nil {
+		_previousStyle = wrapStyle(externglib.Take(unsafe.Pointer(arg1)))
+	}
+
+	f(_previousStyle)
 }
 
 // ConnectStyleSet signal is emitted when a new style has been set on a widget.
@@ -3524,8 +5179,24 @@ func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externg
 // Note that this signal is emitted for changes to the deprecated Style. To
 // track changes to the StyleContext associated with a widget, use the
 // Widget::style-updated signal.
-func (widget *Widget) ConnectStyleSet(f func(previousStyle Style)) externglib.SignalHandle {
-	return widget.Connect("style-set", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectStyleSet(f func(previousStyle *Style)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "style-set", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectStyleSet), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectStyleUpdated
+func _gotk4_gtk3_Widget_ConnectStyleUpdated(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectStyleUpdated signal is a convenience signal that is emitted when the
@@ -3535,11 +5206,57 @@ func (widget *Widget) ConnectStyleSet(f func(previousStyle Style)) externglib.Si
 // Note that style-modifying functions like gtk_widget_override_color() also
 // cause this signal to be emitted.
 func (widget *Widget) ConnectStyleUpdated(f func()) externglib.SignalHandle {
-	return widget.Connect("style-updated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "style-updated", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectStyleUpdated), f)
 }
 
-func (widget *Widget) ConnectTouchEvent(f func(object *gdk.Event) bool) externglib.SignalHandle {
-	return widget.Connect("touch-event", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_Widget_ConnectTouchEvent
+func _gotk4_gtk3_Widget_ConnectTouchEvent(arg0 C.gpointer, arg1 C.GdkEvent, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(object *gdk.Event) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object *gdk.Event) (ok bool))
+	}
+
+	var _object *gdk.Event // out
+
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg1))))
+		v = gdk.CopyEventer(v)
+		_object = v
+	}
+
+	ok := f(_object)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func (widget *Widget) ConnectTouchEvent(f func(object *gdk.Event) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "touch-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectTouchEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectUnmap
+func _gotk4_gtk3_Widget_ConnectUnmap(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUnmap signal is emitted when widget is going to be unmapped, which
@@ -3549,7 +5266,33 @@ func (widget *Widget) ConnectTouchEvent(f func(object *gdk.Event) bool) externgl
 // As ::unmap indicates that a widget will not be shown any longer, it can be
 // used to, for example, stop an animation on the widget.
 func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
-	return widget.Connect("unmap", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "unmap", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectUnmap), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectUnmapEvent
+func _gotk4_gtk3_Widget_ConnectUnmapEvent(arg0 C.gpointer, arg1 *C.GdkEventAny, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventAny) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventAny) (ok bool))
+	}
+
+	var _event *gdk.EventAny // out
+
+	_event = (*gdk.EventAny)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectUnmapEvent signal will be emitted when the widget's window is
@@ -3558,15 +5301,57 @@ func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
 // To receive this signal, the Window associated to the widget needs to enable
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
-func (widget *Widget) ConnectUnmapEvent(f func(event *gdk.EventAny) bool) externglib.SignalHandle {
-	return widget.Connect("unmap-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectUnmapEvent(f func(event *gdk.EventAny) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "unmap-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectUnmapEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectUnrealize
+func _gotk4_gtk3_Widget_ConnectUnrealize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUnrealize signal is emitted when the Window associated with widget is
 // destroyed, which means that gtk_widget_unrealize() has been called or the
 // widget has been unmapped (that is, it is going to be hidden).
 func (widget *Widget) ConnectUnrealize(f func()) externglib.SignalHandle {
-	return widget.Connect("unrealize", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "unrealize", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectUnrealize), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectVisibilityNotifyEvent
+func _gotk4_gtk3_Widget_ConnectVisibilityNotifyEvent(arg0 C.gpointer, arg1 *C.GdkEventVisibility, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventVisibility) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventVisibility) (ok bool))
+	}
+
+	var _event *gdk.EventVisibility // out
+
+	_event = (*gdk.EventVisibility)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectVisibilityNotifyEvent will be emitted when the widget's window is
@@ -3574,8 +5359,34 @@ func (widget *Widget) ConnectUnrealize(f func()) externglib.SignalHandle {
 //
 // To receive this signal the Window associated to the widget needs to enable
 // the K_VISIBILITY_NOTIFY_MASK mask.
-func (widget *Widget) ConnectVisibilityNotifyEvent(f func(event *gdk.EventVisibility) bool) externglib.SignalHandle {
-	return widget.Connect("visibility-notify-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectVisibilityNotifyEvent(f func(event *gdk.EventVisibility) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "visibility-notify-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectVisibilityNotifyEvent), f)
+}
+
+//export _gotk4_gtk3_Widget_ConnectWindowStateEvent
+func _gotk4_gtk3_Widget_ConnectWindowStateEvent(arg0 C.gpointer, arg1 *C.GdkEventWindowState, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(event *gdk.EventWindowState) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event *gdk.EventWindowState) (ok bool))
+	}
+
+	var _event *gdk.EventWindowState // out
+
+	_event = (*gdk.EventWindowState)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	ok := f(_event)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectWindowStateEvent will be emitted when the state of the toplevel window
@@ -3584,8 +5395,8 @@ func (widget *Widget) ConnectVisibilityNotifyEvent(f func(event *gdk.EventVisibi
 // To receive this signal the Window associated to the widget needs to enable
 // the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
 // new windows.
-func (widget *Widget) ConnectWindowStateEvent(f func(event *gdk.EventWindowState) bool) externglib.SignalHandle {
-	return widget.Connect("window-state-event", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectWindowStateEvent(f func(event *gdk.EventWindowState) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "window-state-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectWindowStateEvent), f)
 }
 
 // Activate: for widgets that can be “activated” (buttons, menu items, etc.)

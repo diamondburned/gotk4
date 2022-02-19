@@ -17,6 +17,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_MenuToolButtonClass_show_menu(GtkMenuToolButton*);
+// extern void _gotk4_gtk3_MenuToolButton_ConnectShowMenu(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -131,6 +132,22 @@ func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
 	return wrapMenuToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_MenuToolButton_ConnectShowMenu
+func _gotk4_gtk3_MenuToolButton_ConnectShowMenu(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectShowMenu signal is emitted before the menu is shown.
 //
 // It can be used to populate the menu on demand, using
@@ -140,7 +157,7 @@ func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
 // an empty menu on the MenuToolButton beforehand, since the arrow is made
 // insensitive if the menu is not set.
 func (button *MenuToolButton) ConnectShowMenu(f func()) externglib.SignalHandle {
-	return button.Connect("show-menu", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "show-menu", false, unsafe.Pointer(C._gotk4_gtk3_MenuToolButton_ConnectShowMenu), f)
 }
 
 // NewMenuToolButton creates a new MenuToolButton using icon_widget as icon and

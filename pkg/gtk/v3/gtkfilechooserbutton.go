@@ -17,6 +17,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_FileChooserButtonClass_file_set(GtkFileChooserButton*);
+// extern void _gotk4_gtk3_FileChooserButton_ConnectFileSet(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -131,11 +132,27 @@ func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
 	return wrapFileChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_FileChooserButton_ConnectFileSet
+func _gotk4_gtk3_FileChooserButton_ConnectFileSet(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectFileSet signal is emitted when the user selects a file.
 //
 // Note that this signal is only emitted when the user changes the file.
 func (button *FileChooserButton) ConnectFileSet(f func()) externglib.SignalHandle {
-	return button.Connect("file-set", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "file-set", false, unsafe.Pointer(C._gotk4_gtk3_FileChooserButton_ConnectFileSet), f)
 }
 
 // NewFileChooserButton creates a new file-selecting button widget.

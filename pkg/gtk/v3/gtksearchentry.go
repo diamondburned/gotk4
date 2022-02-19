@@ -22,6 +22,10 @@ import (
 // extern void _gotk4_gtk3_SearchEntryClass_previous_match(GtkSearchEntry*);
 // extern void _gotk4_gtk3_SearchEntryClass_search_changed(GtkSearchEntry*);
 // extern void _gotk4_gtk3_SearchEntryClass_stop_search(GtkSearchEntry*);
+// extern void _gotk4_gtk3_SearchEntry_ConnectNextMatch(gpointer, guintptr);
+// extern void _gotk4_gtk3_SearchEntry_ConnectPreviousMatch(gpointer, guintptr);
+// extern void _gotk4_gtk3_SearchEntry_ConnectSearchChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_SearchEntry_ConnectStopSearch(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -172,6 +176,22 @@ func marshalSearchEntrier(p uintptr) (interface{}, error) {
 	return wrapSearchEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_SearchEntry_ConnectNextMatch
+func _gotk4_gtk3_SearchEntry_ConnectNextMatch(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectNextMatch signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user initiates a move to the next match for the current
 // search string.
@@ -180,7 +200,23 @@ func marshalSearchEntrier(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal is Ctrl-g.
 func (entry *SearchEntry) ConnectNextMatch(f func()) externglib.SignalHandle {
-	return entry.Connect("next-match", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "next-match", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectNextMatch), f)
+}
+
+//export _gotk4_gtk3_SearchEntry_ConnectPreviousMatch
+func _gotk4_gtk3_SearchEntry_ConnectPreviousMatch(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPreviousMatch signal is a [keybinding signal][GtkBindingSignal] which
@@ -191,13 +227,45 @@ func (entry *SearchEntry) ConnectNextMatch(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal is Ctrl-Shift-g.
 func (entry *SearchEntry) ConnectPreviousMatch(f func()) externglib.SignalHandle {
-	return entry.Connect("previous-match", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "previous-match", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectPreviousMatch), f)
+}
+
+//export _gotk4_gtk3_SearchEntry_ConnectSearchChanged
+func _gotk4_gtk3_SearchEntry_ConnectSearchChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSearchChanged signal is emitted with a short delay of 150 milliseconds
 // after the last change to the entry text.
 func (entry *SearchEntry) ConnectSearchChanged(f func()) externglib.SignalHandle {
-	return entry.Connect("search-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "search-changed", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectSearchChanged), f)
+}
+
+//export _gotk4_gtk3_SearchEntry_ConnectStopSearch
+func _gotk4_gtk3_SearchEntry_ConnectStopSearch(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectStopSearch signal is a [keybinding signal][GtkBindingSignal] which
@@ -208,7 +276,7 @@ func (entry *SearchEntry) ConnectSearchChanged(f func()) externglib.SignalHandle
 //
 // The default bindings for this signal is Escape.
 func (entry *SearchEntry) ConnectStopSearch(f func()) externglib.SignalHandle {
-	return entry.Connect("stop-search", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "stop-search", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectStopSearch), f)
 }
 
 // NewSearchEntry creates a SearchEntry, with a find icon when the search field

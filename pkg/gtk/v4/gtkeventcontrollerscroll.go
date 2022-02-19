@@ -14,6 +14,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_EventControllerScroll_ConnectScroll(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_EventControllerScroll_ConnectDecelerate(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_EventControllerScroll_ConnectScrollBegin(gpointer, guintptr);
+// extern void _gotk4_gtk4_EventControllerScroll_ConnectScrollEnd(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -156,33 +160,115 @@ func marshalEventControllerScroller(p uintptr) (interface{}, error) {
 	return wrapEventControllerScroll(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_EventControllerScroll_ConnectDecelerate
+func _gotk4_gtk4_EventControllerScroll_ConnectDecelerate(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(velX, velY float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(velX, velY float64))
+	}
+
+	var _velX float64 // out
+	var _velY float64 // out
+
+	_velX = float64(arg1)
+	_velY = float64(arg2)
+
+	f(_velX, _velY)
+}
+
 // ConnectDecelerate: emitted after scroll is finished if the
 // GTK_EVENT_CONTROLLER_SCROLL_KINETIC flag is set.
 //
 // vel_x and vel_y express the initial velocity that was imprinted by the scroll
 // events. vel_x and vel_y are expressed in pixels/ms.
 func (scroll *EventControllerScroll) ConnectDecelerate(f func(velX, velY float64)) externglib.SignalHandle {
-	return scroll.Connect("decelerate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(scroll, "decelerate", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerScroll_ConnectDecelerate), f)
+}
+
+//export _gotk4_gtk4_EventControllerScroll_ConnectScroll
+func _gotk4_gtk4_EventControllerScroll_ConnectScroll(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(dx, dy float64) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(dx, dy float64) (ok bool))
+	}
+
+	var _dx float64 // out
+	var _dy float64 // out
+
+	_dx = float64(arg1)
+	_dy = float64(arg2)
+
+	ok := f(_dx, _dy)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectScroll signals that the widget should scroll by the amount specified
 // by dx and dy.
-func (scroll *EventControllerScroll) ConnectScroll(f func(dx, dy float64) bool) externglib.SignalHandle {
-	return scroll.Connect("scroll", externglib.GeneratedClosure{Func: f})
+func (scroll *EventControllerScroll) ConnectScroll(f func(dx, dy float64) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(scroll, "scroll", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerScroll_ConnectScroll), f)
+}
+
+//export _gotk4_gtk4_EventControllerScroll_ConnectScrollBegin
+func _gotk4_gtk4_EventControllerScroll_ConnectScrollBegin(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectScrollBegin signals that a new scrolling operation has begun.
 //
 // It will only be emitted on devices capable of it.
 func (scroll *EventControllerScroll) ConnectScrollBegin(f func()) externglib.SignalHandle {
-	return scroll.Connect("scroll-begin", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(scroll, "scroll-begin", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerScroll_ConnectScrollBegin), f)
+}
+
+//export _gotk4_gtk4_EventControllerScroll_ConnectScrollEnd
+func _gotk4_gtk4_EventControllerScroll_ConnectScrollEnd(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectScrollEnd signals that a scrolling operation has finished.
 //
 // It will only be emitted on devices capable of it.
 func (scroll *EventControllerScroll) ConnectScrollEnd(f func()) externglib.SignalHandle {
-	return scroll.Connect("scroll-end", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(scroll, "scroll-end", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerScroll_ConnectScrollEnd), f)
 }
 
 // NewEventControllerScroll creates a new event controller that will handle

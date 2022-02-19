@@ -129,7 +129,7 @@ func QueryDepths() []int {
 	var _depths []int // out
 
 	{
-		src := unsafe.Slice(_arg1, _arg2)
+		src := unsafe.Slice((*C.gint)(_arg1), _arg2)
 		_depths = make([]int, _arg2)
 		for i := 0; i < int(_arg2); i++ {
 			_depths[i] = int(src[i])

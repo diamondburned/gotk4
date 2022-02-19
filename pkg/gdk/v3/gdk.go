@@ -16,6 +16,10 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_DragContext_ConnectActionChanged(gpointer, GdkDragAction, guintptr);
+// extern void _gotk4_gdk3_DragContext_ConnectCancel(gpointer, GdkDragCancelReason, guintptr);
+// extern void _gotk4_gdk3_DragContext_ConnectDNDFinished(gpointer, guintptr);
+// extern void _gotk4_gdk3_DragContext_ConnectDropPerformed(gpointer, gint, guintptr);
 import "C"
 
 func init() {
@@ -110,13 +114,53 @@ func marshalDragContexter(p uintptr) (interface{}, error) {
 	return wrapDragContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdk3_DragContext_ConnectActionChanged
+func _gotk4_gdk3_DragContext_ConnectActionChanged(arg0 C.gpointer, arg1 C.GdkDragAction, arg2 C.guintptr) {
+	var f func(action DragAction)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(action DragAction))
+	}
+
+	var _action DragAction // out
+
+	_action = DragAction(arg1)
+
+	f(_action)
+}
+
 // ConnectActionChanged: new action is being chosen for the drag and drop
 // operation.
 //
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
 func (context *DragContext) ConnectActionChanged(f func(action DragAction)) externglib.SignalHandle {
-	return context.Connect("action-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(context, "action-changed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectActionChanged), f)
+}
+
+//export _gotk4_gdk3_DragContext_ConnectCancel
+func _gotk4_gdk3_DragContext_ConnectCancel(arg0 C.gpointer, arg1 C.GdkDragCancelReason, arg2 C.guintptr) {
+	var f func(reason DragCancelReason)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(reason DragCancelReason))
+	}
+
+	var _reason DragCancelReason // out
+
+	_reason = DragCancelReason(arg1)
+
+	f(_reason)
 }
 
 // ConnectCancel: drag and drop operation was cancelled.
@@ -124,7 +168,23 @@ func (context *DragContext) ConnectActionChanged(f func(action DragAction)) exte
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
 func (context *DragContext) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
-	return context.Connect("cancel", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(context, "cancel", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectCancel), f)
+}
+
+//export _gotk4_gdk3_DragContext_ConnectDNDFinished
+func _gotk4_gdk3_DragContext_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectDNDFinished: drag and drop operation was finished, the drag
@@ -134,7 +194,27 @@ func (context *DragContext) ConnectCancel(f func(reason DragCancelReason)) exter
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
 func (context *DragContext) ConnectDNDFinished(f func()) externglib.SignalHandle {
-	return context.Connect("dnd-finished", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(context, "dnd-finished", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDNDFinished), f)
+}
+
+//export _gotk4_gdk3_DragContext_ConnectDropPerformed
+func _gotk4_gdk3_DragContext_ConnectDropPerformed(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(time int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(time int))
+	}
+
+	var _time int // out
+
+	_time = int(arg1)
+
+	f(_time)
 }
 
 // ConnectDropPerformed: drag and drop operation was performed on an accepting
@@ -143,5 +223,5 @@ func (context *DragContext) ConnectDNDFinished(f func()) externglib.SignalHandle
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
 func (context *DragContext) ConnectDropPerformed(f func(time int)) externglib.SignalHandle {
-	return context.Connect("drop-performed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(context, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDropPerformed), f)
 }

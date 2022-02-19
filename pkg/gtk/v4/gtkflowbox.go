@@ -17,9 +17,17 @@ import (
 // #include <gtk/gtk.h>
 // extern GtkWidget* _gotk4_gtk4_FlowBoxCreateWidgetFunc(gpointer, gpointer);
 // extern gboolean _gotk4_gtk4_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
+// extern gboolean _gotk4_gtk4_FlowBox_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, gboolean, guintptr);
 // extern int _gotk4_gtk4_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
 // extern void _gotk4_gtk4_FlowBoxChildClass_activate(GtkFlowBoxChild*);
+// extern void _gotk4_gtk4_FlowBoxChild_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_FlowBoxForEachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
+// extern void _gotk4_gtk4_FlowBox_ConnectActivateCursorChild(gpointer, guintptr);
+// extern void _gotk4_gtk4_FlowBox_ConnectChildActivated(gpointer, GtkFlowBoxChild*, guintptr);
+// extern void _gotk4_gtk4_FlowBox_ConnectSelectAll(gpointer, guintptr);
+// extern void _gotk4_gtk4_FlowBox_ConnectSelectedChildrenChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_FlowBox_ConnectToggleCursorChild(gpointer, guintptr);
+// extern void _gotk4_gtk4_FlowBox_ConnectUnselectAll(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -226,16 +234,88 @@ func marshalFlowBoxer(p uintptr) (interface{}, error) {
 	return wrapFlowBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_FlowBox_ConnectActivateCursorChild
+func _gotk4_gtk4_FlowBox_ConnectActivateCursorChild(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivateCursorChild: emitted when the user activates the box.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (box *FlowBox) ConnectActivateCursorChild(f func()) externglib.SignalHandle {
-	return box.Connect("activate-cursor-child", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "activate-cursor-child", false, unsafe.Pointer(C._gotk4_gtk4_FlowBox_ConnectActivateCursorChild), f)
+}
+
+//export _gotk4_gtk4_FlowBox_ConnectChildActivated
+func _gotk4_gtk4_FlowBox_ConnectChildActivated(arg0 C.gpointer, arg1 *C.GtkFlowBoxChild, arg2 C.guintptr) {
+	var f func(child *FlowBoxChild)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(child *FlowBoxChild))
+	}
+
+	var _child *FlowBoxChild // out
+
+	_child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_child)
 }
 
 // ConnectChildActivated: emitted when a child has been activated by the user.
-func (box *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) externglib.SignalHandle {
-	return box.Connect("child-activated", externglib.GeneratedClosure{Func: f})
+func (box *FlowBox) ConnectChildActivated(f func(child *FlowBoxChild)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(box, "child-activated", false, unsafe.Pointer(C._gotk4_gtk4_FlowBox_ConnectChildActivated), f)
+}
+
+//export _gotk4_gtk4_FlowBox_ConnectMoveCursor
+func _gotk4_gtk4_FlowBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) (cret C.gboolean) {
+	var f func(step MovementStep, count int, extend, modify bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(step MovementStep, count int, extend, modify bool) (ok bool))
+	}
+
+	var _step MovementStep // out
+	var _count int         // out
+	var _extend bool       // out
+	var _modify bool       // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+	if arg3 != 0 {
+		_extend = true
+	}
+	if arg4 != 0 {
+		_modify = true
+	}
+
+	ok := f(_step, _count, _extend, _modify)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectMoveCursor: emitted when the user initiates a cursor movement.
@@ -254,8 +334,24 @@ func (box *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) externglib
 // - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the box
 //
 // - <kbd>PgUp</kbd>, <kbd>PgDn</kbd> move vertically by pages.
-func (box *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int, extend, modify bool) bool) externglib.SignalHandle {
-	return box.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
+func (box *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int, extend, modify bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(box, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk4_FlowBox_ConnectMoveCursor), f)
+}
+
+//export _gotk4_gtk4_FlowBox_ConnectSelectAll
+func _gotk4_gtk4_FlowBox_ConnectSelectAll(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSelectAll: emitted to select all children of the box, if the selection
@@ -265,7 +361,23 @@ func (box *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int, exten
 //
 // The default bindings for this signal is <kbd>Ctrl</kbd>-<kbd>a</kbd>.
 func (box *FlowBox) ConnectSelectAll(f func()) externglib.SignalHandle {
-	return box.Connect("select-all", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "select-all", false, unsafe.Pointer(C._gotk4_gtk4_FlowBox_ConnectSelectAll), f)
+}
+
+//export _gotk4_gtk4_FlowBox_ConnectSelectedChildrenChanged
+func _gotk4_gtk4_FlowBox_ConnectSelectedChildrenChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSelectedChildrenChanged: emitted when the set of selected children
@@ -274,7 +386,23 @@ func (box *FlowBox) ConnectSelectAll(f func()) externglib.SignalHandle {
 // Use gtk.FlowBox.SelectedForEach() or gtk.FlowBox.GetSelectedChildren() to
 // obtain the selected children.
 func (box *FlowBox) ConnectSelectedChildrenChanged(f func()) externglib.SignalHandle {
-	return box.Connect("selected-children-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "selected-children-changed", false, unsafe.Pointer(C._gotk4_gtk4_FlowBox_ConnectSelectedChildrenChanged), f)
+}
+
+//export _gotk4_gtk4_FlowBox_ConnectToggleCursorChild
+func _gotk4_gtk4_FlowBox_ConnectToggleCursorChild(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectToggleCursorChild: emitted to toggle the selection of the child that
@@ -284,7 +412,23 @@ func (box *FlowBox) ConnectSelectedChildrenChanged(f func()) externglib.SignalHa
 //
 // The default binding for this signal is <kbd>Ctrl</kbd>-<kbd>Space</kbd>.
 func (box *FlowBox) ConnectToggleCursorChild(f func()) externglib.SignalHandle {
-	return box.Connect("toggle-cursor-child", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "toggle-cursor-child", false, unsafe.Pointer(C._gotk4_gtk4_FlowBox_ConnectToggleCursorChild), f)
+}
+
+//export _gotk4_gtk4_FlowBox_ConnectUnselectAll
+func _gotk4_gtk4_FlowBox_ConnectUnselectAll(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUnselectAll: emitted to unselect all children of the box, if the
@@ -295,7 +439,7 @@ func (box *FlowBox) ConnectToggleCursorChild(f func()) externglib.SignalHandle {
 // The default bindings for this signal is
 // <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>.
 func (box *FlowBox) ConnectUnselectAll(f func()) externglib.SignalHandle {
-	return box.Connect("unselect-all", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(box, "unselect-all", false, unsafe.Pointer(C._gotk4_gtk4_FlowBox_ConnectUnselectAll), f)
 }
 
 // NewFlowBox creates a GtkFlowBox.
@@ -1095,6 +1239,22 @@ func marshalFlowBoxChilder(p uintptr) (interface{}, error) {
 	return wrapFlowBoxChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_FlowBoxChild_ConnectActivate
+func _gotk4_gtk4_FlowBoxChild_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate: emitted when the user activates a child widget in a
 // GtkFlowBox.
 //
@@ -1106,7 +1266,7 @@ func marshalFlowBoxChilder(p uintptr) (interface{}, error) {
 //
 // The default bindings are <kbd>Space</kbd> and <kbd>Enter</kbd>.
 func (child *FlowBoxChild) ConnectActivate(f func()) externglib.SignalHandle {
-	return child.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(child, "activate", false, unsafe.Pointer(C._gotk4_gtk4_FlowBoxChild_ConnectActivate), f)
 }
 
 // NewFlowBoxChild creates a new GtkFlowBoxChild.

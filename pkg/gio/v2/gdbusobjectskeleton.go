@@ -14,6 +14,7 @@ import (
 // #include <gio/gio.h>
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(GDBusObjectSkeleton*, GDBusInterfaceSkeleton*, GDBusMethodInvocation*);
+// extern gboolean _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(gpointer, GDBusInterfaceSkeleton*, GDBusMethodInvocation*, guintptr);
 import "C"
 
 func init() {
@@ -119,6 +120,50 @@ func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
 	return wrapDBusObjectSkeleton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod
+func _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(arg0 C.gpointer, arg1 *C.GDBusInterfaceSkeleton, arg2 *C.GDBusMethodInvocation, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(iface DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iface DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) (ok bool))
+	}
+
+	var _iface DBusInterfaceSkeletonner   // out
+	var _invocation *DBusMethodInvocation // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusInterfaceSkeletonner is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusInterfaceSkeletonner)
+			return ok
+		})
+		rv, ok := casted.(DBusInterfaceSkeletonner)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfaceSkeletonner")
+		}
+		_iface = rv
+	}
+	_invocation = wrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg2)))
+
+	ok := f(_iface, _invocation)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectAuthorizeMethod: emitted when a method is invoked by a remote caller
 // and used to determine if the method call is authorized.
 //
@@ -127,8 +172,8 @@ func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
 // enclosing object.
 //
 // The default class handler just returns TRUE.
-func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation DBusMethodInvocation) bool) externglib.SignalHandle {
-	return object.Connect("authorize-method", externglib.GeneratedClosure{Func: f})
+func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(object, "authorize-method", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod), f)
 }
 
 // NewDBusObjectSkeleton creates a new BusObjectSkeleton.

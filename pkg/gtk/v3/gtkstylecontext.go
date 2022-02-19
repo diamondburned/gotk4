@@ -23,6 +23,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_StyleContextClass_changed(GtkStyleContext*);
+// extern void _gotk4_gtk3_StyleContext_ConnectChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -807,6 +808,22 @@ func marshalStyleContexter(p uintptr) (interface{}, error) {
 	return wrapStyleContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_StyleContext_ConnectChanged
+func _gotk4_gtk3_StyleContext_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged signal is emitted when there is a change in the StyleContext.
 //
 // For a StyleContext returned by gtk_widget_get_style_context(), the
@@ -814,7 +831,7 @@ func marshalStyleContexter(p uintptr) (interface{}, error) {
 //
 // This signal is useful when using the theming layer standalone.
 func (context *StyleContext) ConnectChanged(f func()) externglib.SignalHandle {
-	return context.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(context, "changed", false, unsafe.Pointer(C._gotk4_gtk3_StyleContext_ConnectChanged), f)
 }
 
 // NewStyleContext creates a standalone StyleContext, this style context won’t

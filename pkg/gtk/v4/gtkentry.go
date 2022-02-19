@@ -19,6 +19,9 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_EntryClass_activate(GtkEntry*);
+// extern void _gotk4_gtk4_Entry_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk4_Entry_ConnectIconPress(gpointer, GtkEntryIconPosition, guintptr);
+// extern void _gotk4_gtk4_Entry_ConnectIconRelease(gpointer, GtkEntryIconPosition, guintptr);
 import "C"
 
 func init() {
@@ -257,22 +260,78 @@ func marshalEntrier(p uintptr) (interface{}, error) {
 	return wrapEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Entry_ConnectActivate
+func _gotk4_gtk4_Entry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate: emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
 func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
-	return entry.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectActivate), f)
+}
+
+//export _gotk4_gtk4_Entry_ConnectIconPress
+func _gotk4_gtk4_Entry_ConnectIconPress(arg0 C.gpointer, arg1 C.GtkEntryIconPosition, arg2 C.guintptr) {
+	var f func(iconPos EntryIconPosition)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iconPos EntryIconPosition))
+	}
+
+	var _iconPos EntryIconPosition // out
+
+	_iconPos = EntryIconPosition(arg1)
+
+	f(_iconPos)
 }
 
 // ConnectIconPress: emitted when an activatable icon is clicked.
 func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition)) externglib.SignalHandle {
-	return entry.Connect("icon-press", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "icon-press", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectIconPress), f)
+}
+
+//export _gotk4_gtk4_Entry_ConnectIconRelease
+func _gotk4_gtk4_Entry_ConnectIconRelease(arg0 C.gpointer, arg1 C.GtkEntryIconPosition, arg2 C.guintptr) {
+	var f func(iconPos EntryIconPosition)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iconPos EntryIconPosition))
+	}
+
+	var _iconPos EntryIconPosition // out
+
+	_iconPos = EntryIconPosition(arg1)
+
+	f(_iconPos)
 }
 
 // ConnectIconRelease: emitted on the button release from a mouse click over an
 // activatable icon.
 func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition)) externglib.SignalHandle {
-	return entry.Connect("icon-release", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "icon-release", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectIconRelease), f)
 }
 
 // NewEntry creates a new entry.

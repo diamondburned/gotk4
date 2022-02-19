@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -16,6 +17,8 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_EventFunc(GdkEvent*, gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -778,6 +781,32 @@ func (w WindowState) String() string {
 // Has returns true if w contains other.
 func (w WindowState) Has(other WindowState) bool {
 	return (w & other) == other
+}
+
+// EventFunc specifies the type of function passed to gdk_event_handler_set() to
+// handle all GDK events.
+type EventFunc func(event *Event)
+
+//export _gotk4_gdk3_EventFunc
+func _gotk4_gdk3_EventFunc(arg1 *C.GdkEvent, arg2 C.gpointer) {
+	var fn EventFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(EventFunc)
+	}
+
+	var _event *Event // out
+
+	{
+		v := (*Event)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		v = CopyEventer(v)
+		_event = v
+	}
+
+	fn(_event)
 }
 
 // EventsGetAngle: if both events contain X/Y information, this function will
@@ -3728,6 +3757,81 @@ func (e *Event) AsPadGroupMode() *EventPadGroupMode {
 	)
 	runtime.KeepAlive(e.event)
 	return dst
+}
+
+// EventGet checks all open displays for a Event to process,to be processed on,
+// fetching events from the windowing system if necessary. See
+// gdk_display_get_event().
+//
+// The function returns the following values:
+//
+//    - event (optional): next Event to be processed, or NULL if no events are
+//      pending. The returned Event should be freed with gdk_event_free().
+//
+func EventGet() *Event {
+	var _cret *C.GdkEvent // in
+
+	_cret = C.gdk_event_get()
+
+	var _event *Event // out
+
+	if _cret != nil {
+		{
+			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+			_event = v
+		}
+	}
+
+	return _event
+}
+
+// EventHandlerSet sets the function to call to handle all events from GDK.
+//
+// Note that GTK+ uses this to install its own event handler, so it is usually
+// not useful for GTK+ applications. (Although an application can call this
+// function then call gtk_main_do_event() to pass events to GTK+.).
+//
+// The function takes the following parameters:
+//
+//    - fn: function to call to handle events from GDK.
+//
+func EventHandlerSet(fn EventFunc) {
+	var _arg1 C.GdkEventFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg1 = (*[0]byte)(C._gotk4_gdk3_EventFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gdk_event_handler_set(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(fn)
+}
+
+// EventPeek: if there is an event waiting in the event queue of some open
+// display, returns a copy of it. See gdk_display_peek_event().
+//
+// The function returns the following values:
+//
+//    - event (optional): copy of the first Event on some event queue, or NULL if
+//      no events are in any queues. The returned Event should be freed with
+//      gdk_event_free().
+//
+func EventPeek() *Event {
+	var _cret *C.GdkEvent // in
+
+	_cret = C.gdk_event_peek()
+
+	var _event *Event // out
+
+	if _cret != nil {
+		{
+			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+			_event = v
+		}
+	}
+
+	return _event
 }
 
 // EventRequestMotions: request more motion notifies if event is a motion notify

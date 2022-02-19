@@ -17,6 +17,8 @@ import (
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_PopoverClass_activate_default(GtkPopover*);
 // extern void _gotk4_gtk4_PopoverClass_closed(GtkPopover*);
+// extern void _gotk4_gtk4_Popover_ConnectActivateDefault(gpointer, guintptr);
+// extern void _gotk4_gtk4_Popover_ConnectClosed(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -199,16 +201,48 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 	return wrapPopover(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Popover_ConnectActivateDefault
+func _gotk4_gtk4_Popover_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivateDefault: emitted whend the user activates the default widget.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (popover *Popover) ConnectActivateDefault(f func()) externglib.SignalHandle {
-	return popover.Connect("activate-default", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(popover, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Popover_ConnectActivateDefault), f)
+}
+
+//export _gotk4_gtk4_Popover_ConnectClosed
+func _gotk4_gtk4_Popover_ConnectClosed(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectClosed: emitted when the popover is closed.
 func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
-	return popover.Connect("closed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(popover, "closed", false, unsafe.Pointer(C._gotk4_gtk4_Popover_ConnectClosed), f)
 }
 
 // NewPopover creates a new GtkPopover.

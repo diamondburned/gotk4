@@ -18,6 +18,10 @@ import (
 // #include <gtk/gtkx.h>
 // extern GtkAction* _gotk4_gtk3_ActionGroupClass_get_action(GtkActionGroup*, gchar*);
 // extern gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
+// extern void _gotk4_gtk3_ActionGroup_ConnectConnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_ActionGroup_ConnectPostActivate(gpointer, GtkAction*, guintptr);
+// extern void _gotk4_gtk3_ActionGroup_ConnectPreActivate(gpointer, GtkAction*, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -153,6 +157,44 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 	return wrapActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ActionGroup_ConnectConnectProxy
+func _gotk4_gtk3_ActionGroup_ConnectConnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
+	var f func(action *Action, proxy Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(action *Action, proxy Widgetter))
+	}
+
+	var _action *Action  // out
+	var _proxy Widgetter // out
+
+	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_proxy = rv
+	}
+
+	f(_action, _proxy)
+}
+
 // ConnectConnectProxy signal is emitted after connecting a proxy to an action
 // in the group. Note that the proxy may have been connected to a different
 // action before.
@@ -162,8 +204,46 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 //
 // UIManager proxies the signal and provides global notification just before any
 // action is connected to a proxy, which is probably more convenient to use.
-func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return actionGroup.Connect("connect-proxy", externglib.GeneratedClosure{Func: f})
+func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action *Action, proxy Widgetter)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(actionGroup, "connect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectConnectProxy), f)
+}
+
+//export _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy
+func _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
+	var f func(action *Action, proxy Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(action *Action, proxy Widgetter))
+	}
+
+	var _action *Action  // out
+	var _proxy Widgetter // out
+
+	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_proxy = rv
+	}
+
+	f(_action, _proxy)
 }
 
 // ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
@@ -171,8 +251,28 @@ func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action Action, proxy 
 //
 // UIManager proxies the signal and provides global notification just before any
 // action is connected to a proxy, which is probably more convenient to use.
-func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
-	return actionGroup.Connect("disconnect-proxy", externglib.GeneratedClosure{Func: f})
+func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action *Action, proxy Widgetter)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(actionGroup, "disconnect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectDisconnectProxy), f)
+}
+
+//export _gotk4_gtk3_ActionGroup_ConnectPostActivate
+func _gotk4_gtk3_ActionGroup_ConnectPostActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
+	var f func(action *Action)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(action *Action))
+	}
+
+	var _action *Action // out
+
+	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_action)
 }
 
 // ConnectPostActivate signal is emitted just after the action in the
@@ -180,8 +280,28 @@ func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action Action, pro
 //
 // This is intended for UIManager to proxy the signal and provide global
 // notification just after any action is activated.
-func (actionGroup *ActionGroup) ConnectPostActivate(f func(action Action)) externglib.SignalHandle {
-	return actionGroup.Connect("post-activate", externglib.GeneratedClosure{Func: f})
+func (actionGroup *ActionGroup) ConnectPostActivate(f func(action *Action)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(actionGroup, "post-activate", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectPostActivate), f)
+}
+
+//export _gotk4_gtk3_ActionGroup_ConnectPreActivate
+func _gotk4_gtk3_ActionGroup_ConnectPreActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
+	var f func(action *Action)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(action *Action))
+	}
+
+	var _action *Action // out
+
+	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_action)
 }
 
 // ConnectPreActivate signal is emitted just before the action in the
@@ -189,8 +309,8 @@ func (actionGroup *ActionGroup) ConnectPostActivate(f func(action Action)) exter
 //
 // This is intended for UIManager to proxy the signal and provide global
 // notification just before any action is activated.
-func (actionGroup *ActionGroup) ConnectPreActivate(f func(action Action)) externglib.SignalHandle {
-	return actionGroup.Connect("pre-activate", externglib.GeneratedClosure{Func: f})
+func (actionGroup *ActionGroup) ConnectPreActivate(f func(action *Action)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(actionGroup, "pre-activate", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectPreActivate), f)
 }
 
 // NewActionGroup creates a new ActionGroup object. The name of the action group

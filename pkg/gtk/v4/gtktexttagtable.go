@@ -14,6 +14,9 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_TextTagTableForEach(GtkTextTag*, gpointer);
+// extern void _gotk4_gtk4_TextTagTable_ConnectTagAdded(gpointer, GtkTextTag*, guintptr);
+// extern void _gotk4_gtk4_TextTagTable_ConnectTagChanged(gpointer, GtkTextTag*, gboolean, guintptr);
+// extern void _gotk4_gtk4_TextTagTable_ConnectTagRemoved(gpointer, GtkTextTag*, guintptr);
 import "C"
 
 func init() {
@@ -87,15 +90,79 @@ func marshalTextTagTabler(p uintptr) (interface{}, error) {
 	return wrapTextTagTable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_TextTagTable_ConnectTagAdded
+func _gotk4_gtk4_TextTagTable_ConnectTagAdded(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 C.guintptr) {
+	var f func(tag *TextTag)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(tag *TextTag))
+	}
+
+	var _tag *TextTag // out
+
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_tag)
+}
+
 // ConnectTagAdded: emitted every time a new tag is added in the
 // GtkTextTagTable.
-func (table *TextTagTable) ConnectTagAdded(f func(tag TextTag)) externglib.SignalHandle {
-	return table.Connect("tag-added", externglib.GeneratedClosure{Func: f})
+func (table *TextTagTable) ConnectTagAdded(f func(tag *TextTag)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(table, "tag-added", false, unsafe.Pointer(C._gotk4_gtk4_TextTagTable_ConnectTagAdded), f)
+}
+
+//export _gotk4_gtk4_TextTagTable_ConnectTagChanged
+func _gotk4_gtk4_TextTagTable_ConnectTagChanged(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 C.gboolean, arg3 C.guintptr) {
+	var f func(tag *TextTag, sizeChanged bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(tag *TextTag, sizeChanged bool))
+	}
+
+	var _tag *TextTag     // out
+	var _sizeChanged bool // out
+
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
+	if arg2 != 0 {
+		_sizeChanged = true
+	}
+
+	f(_tag, _sizeChanged)
 }
 
 // ConnectTagChanged: emitted every time a tag in the GtkTextTagTable changes.
-func (table *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged bool)) externglib.SignalHandle {
-	return table.Connect("tag-changed", externglib.GeneratedClosure{Func: f})
+func (table *TextTagTable) ConnectTagChanged(f func(tag *TextTag, sizeChanged bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(table, "tag-changed", false, unsafe.Pointer(C._gotk4_gtk4_TextTagTable_ConnectTagChanged), f)
+}
+
+//export _gotk4_gtk4_TextTagTable_ConnectTagRemoved
+func _gotk4_gtk4_TextTagTable_ConnectTagRemoved(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 C.guintptr) {
+	var f func(tag *TextTag)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(tag *TextTag))
+	}
+
+	var _tag *TextTag // out
+
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_tag)
 }
 
 // ConnectTagRemoved: emitted every time a tag is removed from the
@@ -103,8 +170,8 @@ func (table *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged boo
 //
 // The tag is still valid by the time the signal is emitted, but it is not
 // associated with a tag table any more.
-func (table *TextTagTable) ConnectTagRemoved(f func(tag TextTag)) externglib.SignalHandle {
-	return table.Connect("tag-removed", externglib.GeneratedClosure{Func: f})
+func (table *TextTagTable) ConnectTagRemoved(f func(tag *TextTag)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(table, "tag-removed", false, unsafe.Pointer(C._gotk4_gtk4_TextTagTable_ConnectTagRemoved), f)
 }
 
 // NewTextTagTable creates a new GtkTextTagTable.

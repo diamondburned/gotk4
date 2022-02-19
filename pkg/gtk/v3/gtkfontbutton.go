@@ -17,6 +17,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_FontButtonClass_font_set(GtkFontButton*);
+// extern void _gotk4_gtk3_FontButton_ConnectFontSet(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -124,6 +125,22 @@ func marshalFontButtonner(p uintptr) (interface{}, error) {
 	return wrapFontButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_FontButton_ConnectFontSet
+func _gotk4_gtk3_FontButton_ConnectFontSet(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectFontSet signal is emitted when the user selects a font. When handling
 // this signal, use gtk_font_chooser_get_font() to find out which font was just
 // selected.
@@ -132,7 +149,7 @@ func marshalFontButtonner(p uintptr) (interface{}, error) {
 // need to react to programmatic font changes as well, use the notify::font
 // signal.
 func (fontButton *FontButton) ConnectFontSet(f func()) externglib.SignalHandle {
-	return fontButton.Connect("font-set", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(fontButton, "font-set", false, unsafe.Pointer(C._gotk4_gtk3_FontButton_ConnectFontSet), f)
 }
 
 // NewFontButton creates a new font picker widget.

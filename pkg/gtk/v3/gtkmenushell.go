@@ -18,6 +18,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_MenuShellClass_move_selected(GtkMenuShell*, gint);
+// extern gboolean _gotk4_gtk3_MenuShell_ConnectMoveSelected(gpointer, gint, guintptr);
 // extern gint _gotk4_gtk3_MenuShellClass_get_popup_delay(GtkMenuShell*);
 // extern void _gotk4_gtk3_MenuShellClass_activate_current(GtkMenuShell*, gboolean);
 // extern void _gotk4_gtk3_MenuShellClass_cancel(GtkMenuShell*);
@@ -26,6 +27,13 @@ import (
 // extern void _gotk4_gtk3_MenuShellClass_move_current(GtkMenuShell*, GtkMenuDirectionType);
 // extern void _gotk4_gtk3_MenuShellClass_select_item(GtkMenuShell*, GtkWidget*);
 // extern void _gotk4_gtk3_MenuShellClass_selection_done(GtkMenuShell*);
+// extern void _gotk4_gtk3_MenuShell_ConnectActivateCurrent(gpointer, gboolean, guintptr);
+// extern void _gotk4_gtk3_MenuShell_ConnectCancel(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuShell_ConnectCycleFocus(gpointer, GtkDirectionType, guintptr);
+// extern void _gotk4_gtk3_MenuShell_ConnectDeactivate(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuShell_ConnectInsert(gpointer, GtkWidget*, gint, guintptr);
+// extern void _gotk4_gtk3_MenuShell_ConnectMoveCurrent(gpointer, GtkMenuDirectionType, guintptr);
+// extern void _gotk4_gtk3_MenuShell_ConnectSelectionDone(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -346,27 +354,139 @@ func BaseMenuShell(obj MenuSheller) *MenuShell {
 	return obj.baseMenuShell()
 }
 
+//export _gotk4_gtk3_MenuShell_ConnectActivateCurrent
+func _gotk4_gtk3_MenuShell_ConnectActivateCurrent(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) {
+	var f func(forceHide bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(forceHide bool))
+	}
+
+	var _forceHide bool // out
+
+	if arg1 != 0 {
+		_forceHide = true
+	}
+
+	f(_forceHide)
+}
+
 // ConnectActivateCurrent: action signal that activates the current menu item
 // within the menu shell.
 func (menuShell *MenuShell) ConnectActivateCurrent(f func(forceHide bool)) externglib.SignalHandle {
-	return menuShell.Connect("activate-current", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuShell, "activate-current", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectActivateCurrent), f)
+}
+
+//export _gotk4_gtk3_MenuShell_ConnectCancel
+func _gotk4_gtk3_MenuShell_ConnectCancel(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCancel: action signal which cancels the selection within the menu
 // shell. Causes the MenuShell::selection-done signal to be emitted.
 func (menuShell *MenuShell) ConnectCancel(f func()) externglib.SignalHandle {
-	return menuShell.Connect("cancel", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuShell, "cancel", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectCancel), f)
+}
+
+//export _gotk4_gtk3_MenuShell_ConnectCycleFocus
+func _gotk4_gtk3_MenuShell_ConnectCycleFocus(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
+	var f func(direction DirectionType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction DirectionType))
+	}
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	f(_direction)
 }
 
 // ConnectCycleFocus: keybinding signal which moves the focus in the given
 // direction.
 func (menuShell *MenuShell) ConnectCycleFocus(f func(direction DirectionType)) externglib.SignalHandle {
-	return menuShell.Connect("cycle-focus", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuShell, "cycle-focus", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectCycleFocus), f)
+}
+
+//export _gotk4_gtk3_MenuShell_ConnectDeactivate
+func _gotk4_gtk3_MenuShell_ConnectDeactivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectDeactivate: this signal is emitted when a menu shell is deactivated.
 func (menuShell *MenuShell) ConnectDeactivate(f func()) externglib.SignalHandle {
-	return menuShell.Connect("deactivate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuShell, "deactivate", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectDeactivate), f)
+}
+
+//export _gotk4_gtk3_MenuShell_ConnectInsert
+func _gotk4_gtk3_MenuShell_ConnectInsert(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.gint, arg3 C.guintptr) {
+	var f func(child Widgetter, position int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(child Widgetter, position int))
+	}
+
+	var _child Widgetter // out
+	var _position int    // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_child = rv
+	}
+	_position = int(arg2)
+
+	f(_child, _position)
 }
 
 // ConnectInsert signal is emitted when a new MenuItem is added to a MenuShell.
@@ -375,24 +495,86 @@ func (menuShell *MenuShell) ConnectDeactivate(f func()) externglib.SignalHandle 
 //
 // The inverse of this signal is the GtkContainer::removed signal.
 func (menuShell *MenuShell) ConnectInsert(f func(child Widgetter, position int)) externglib.SignalHandle {
-	return menuShell.Connect("insert", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuShell, "insert", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectInsert), f)
+}
+
+//export _gotk4_gtk3_MenuShell_ConnectMoveCurrent
+func _gotk4_gtk3_MenuShell_ConnectMoveCurrent(arg0 C.gpointer, arg1 C.GtkMenuDirectionType, arg2 C.guintptr) {
+	var f func(direction MenuDirectionType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction MenuDirectionType))
+	}
+
+	var _direction MenuDirectionType // out
+
+	_direction = MenuDirectionType(arg1)
+
+	f(_direction)
 }
 
 // ConnectMoveCurrent: keybinding signal which moves the current menu item in
 // the direction specified by direction.
 func (menuShell *MenuShell) ConnectMoveCurrent(f func(direction MenuDirectionType)) externglib.SignalHandle {
-	return menuShell.Connect("move-current", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuShell, "move-current", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectMoveCurrent), f)
+}
+
+//export _gotk4_gtk3_MenuShell_ConnectMoveSelected
+func _gotk4_gtk3_MenuShell_ConnectMoveSelected(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(distance int) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(distance int) (ok bool))
+	}
+
+	var _distance int // out
+
+	_distance = int(arg1)
+
+	ok := f(_distance)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectMoveSelected signal is emitted to move the selection to another item.
-func (menuShell *MenuShell) ConnectMoveSelected(f func(distance int) bool) externglib.SignalHandle {
-	return menuShell.Connect("move-selected", externglib.GeneratedClosure{Func: f})
+func (menuShell *MenuShell) ConnectMoveSelected(f func(distance int) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(menuShell, "move-selected", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectMoveSelected), f)
+}
+
+//export _gotk4_gtk3_MenuShell_ConnectSelectionDone
+func _gotk4_gtk3_MenuShell_ConnectSelectionDone(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSelectionDone: this signal is emitted when a selection has been
 // completed within a menu shell.
 func (menuShell *MenuShell) ConnectSelectionDone(f func()) externglib.SignalHandle {
-	return menuShell.Connect("selection-done", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(menuShell, "selection-done", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectSelectionDone), f)
 }
 
 // ActivateItem activates the menu item within the menu shell.

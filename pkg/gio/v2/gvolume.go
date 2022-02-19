@@ -35,6 +35,8 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_VolumeIface_changed(GVolume*);
 // extern void _gotk4_gio2_VolumeIface_removed(GVolume*);
+// extern void _gotk4_gio2_Volume_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_Volume_ConnectRemoved(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -177,16 +179,48 @@ func marshalVolumer(p uintptr) (interface{}, error) {
 	return wrapVolume(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_Volume_ConnectChanged
+func _gotk4_gio2_Volume_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted when the volume has been changed.
 func (volume *Volume) ConnectChanged(f func()) externglib.SignalHandle {
-	return volume.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volume, "changed", false, unsafe.Pointer(C._gotk4_gio2_Volume_ConnectChanged), f)
+}
+
+//export _gotk4_gio2_Volume_ConnectRemoved
+func _gotk4_gio2_Volume_ConnectRemoved(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectRemoved: this signal is emitted when the #GVolume have been removed.
 // If the recipient is holding references to the object they should release them
 // so the object can be finalized.
 func (volume *Volume) ConnectRemoved(f func()) externglib.SignalHandle {
-	return volume.Connect("removed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(volume, "removed", false, unsafe.Pointer(C._gotk4_gio2_Volume_ConnectRemoved), f)
 }
 
 // CanEject checks if a volume can be ejected.

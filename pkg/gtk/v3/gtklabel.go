@@ -19,9 +19,14 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_LabelClass_activate_link(GtkLabel*, gchar*);
+// extern gboolean _gotk4_gtk3_Label_ConnectActivateLink(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk3_LabelClass_copy_clipboard(GtkLabel*);
 // extern void _gotk4_gtk3_LabelClass_move_cursor(GtkLabel*, GtkMovementStep, gint, gboolean);
 // extern void _gotk4_gtk3_LabelClass_populate_popup(GtkLabel*, GtkMenu*);
+// extern void _gotk4_gtk3_Label_ConnectActivateCurrentLink(gpointer, guintptr);
+// extern void _gotk4_gtk3_Label_ConnectCopyClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk3_Label_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
+// extern void _gotk4_gtk3_Label_ConnectPopulatePopup(gpointer, GtkMenu*, guintptr);
 import "C"
 
 func init() {
@@ -185,6 +190,22 @@ func marshalLabeller(p uintptr) (interface{}, error) {
 	return wrapLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Label_ConnectActivateCurrentLink
+func _gotk4_gtk3_Label_ConnectActivateCurrentLink(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivateCurrentLink: [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user activates a link in the label.
 //
@@ -193,14 +214,56 @@ func marshalLabeller(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal are all forms of the Enter key.
 func (label *Label) ConnectActivateCurrentLink(f func()) externglib.SignalHandle {
-	return label.Connect("activate-current-link", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(label, "activate-current-link", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectActivateCurrentLink), f)
+}
+
+//export _gotk4_gtk3_Label_ConnectActivateLink
+func _gotk4_gtk3_Label_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(uri string) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(uri string) (ok bool))
+	}
+
+	var _uri string // out
+
+	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := f(_uri)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectActivateLink: signal which gets emitted to activate a URI.
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk_show_uri_on_window().
-func (label *Label) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
-	return label.Connect("activate-link", externglib.GeneratedClosure{Func: f})
+func (label *Label) ConnectActivateLink(f func(uri string) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(label, "activate-link", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectActivateLink), f)
+}
+
+//export _gotk4_gtk3_Label_ConnectCopyClipboard
+func _gotk4_gtk3_Label_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -208,7 +271,33 @@ func (label *Label) ConnectActivateLink(f func(uri string) bool) externglib.Sign
 //
 // The default binding for this signal is Ctrl-c.
 func (label *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return label.Connect("copy-clipboard", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(label, "copy-clipboard", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectCopyClipboard), f)
+}
+
+//export _gotk4_gtk3_Label_ConnectMoveCursor
+func _gotk4_gtk3_Label_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
+	var f func(step MovementStep, count int, extendSelection bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(step MovementStep, count int, extendSelection bool))
+	}
+
+	var _step MovementStep    // out
+	var _count int            // out
+	var _extendSelection bool // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+	if arg3 != 0 {
+		_extendSelection = true
+	}
+
+	f(_step, _count, _extendSelection)
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -228,7 +317,27 @@ func (label *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
 //
 // - Home/End keys move to the ends of the buffer.
 func (label *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return label.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(label, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectMoveCursor), f)
+}
+
+//export _gotk4_gtk3_Label_ConnectPopulatePopup
+func _gotk4_gtk3_Label_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkMenu, arg2 C.guintptr) {
+	var f func(menu *Menu)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(menu *Menu))
+	}
+
+	var _menu *Menu // out
+
+	_menu = wrapMenu(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_menu)
 }
 
 // ConnectPopulatePopup signal gets emitted before showing the context menu of
@@ -236,8 +345,8 @@ func (label *Label) ConnectMoveCursor(f func(step MovementStep, count int, exten
 //
 // If you need to add items to the context menu, connect to this signal and
 // append your menuitems to the menu.
-func (label *Label) ConnectPopulatePopup(f func(menu Menu)) externglib.SignalHandle {
-	return label.Connect("populate-popup", externglib.GeneratedClosure{Func: f})
+func (label *Label) ConnectPopulatePopup(f func(menu *Menu)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(label, "populate-popup", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectPopulatePopup), f)
 }
 
 // NewLabel creates a new label with the given text inside it. You can pass NULL

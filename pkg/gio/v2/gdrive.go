@@ -45,6 +45,10 @@ import (
 // extern void _gotk4_gio2_DriveIface_disconnected(GDrive*);
 // extern void _gotk4_gio2_DriveIface_eject_button(GDrive*);
 // extern void _gotk4_gio2_DriveIface_stop_button(GDrive*);
+// extern void _gotk4_gio2_Drive_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_Drive_ConnectDisconnected(gpointer, guintptr);
+// extern void _gotk4_gio2_Drive_ConnectEjectButton(gpointer, guintptr);
+// extern void _gotk4_gio2_Drive_ConnectStopButton(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -168,28 +172,92 @@ func marshalDriver(p uintptr) (interface{}, error) {
 	return wrapDrive(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_Drive_ConnectChanged
+func _gotk4_gio2_Drive_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted when the drive's state has changed.
 func (drive *Drive) ConnectChanged(f func()) externglib.SignalHandle {
-	return drive.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(drive, "changed", false, unsafe.Pointer(C._gotk4_gio2_Drive_ConnectChanged), f)
+}
+
+//export _gotk4_gio2_Drive_ConnectDisconnected
+func _gotk4_gio2_Drive_ConnectDisconnected(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectDisconnected: this signal is emitted when the #GDrive have been
 // disconnected. If the recipient is holding references to the object they
 // should release them so the object can be finalized.
 func (drive *Drive) ConnectDisconnected(f func()) externglib.SignalHandle {
-	return drive.Connect("disconnected", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(drive, "disconnected", false, unsafe.Pointer(C._gotk4_gio2_Drive_ConnectDisconnected), f)
+}
+
+//export _gotk4_gio2_Drive_ConnectEjectButton
+func _gotk4_gio2_Drive_ConnectEjectButton(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectEjectButton: emitted when the physical eject button (if any) of a
 // drive has been pressed.
 func (drive *Drive) ConnectEjectButton(f func()) externglib.SignalHandle {
-	return drive.Connect("eject-button", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(drive, "eject-button", false, unsafe.Pointer(C._gotk4_gio2_Drive_ConnectEjectButton), f)
+}
+
+//export _gotk4_gio2_Drive_ConnectStopButton
+func _gotk4_gio2_Drive_ConnectStopButton(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectStopButton: emitted when the physical stop button (if any) of a drive
 // has been pressed.
 func (drive *Drive) ConnectStopButton(f func()) externglib.SignalHandle {
-	return drive.Connect("stop-button", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(drive, "stop-button", false, unsafe.Pointer(C._gotk4_gio2_Drive_ConnectStopButton), f)
 }
 
 // CanEject checks if a drive can be ejected.

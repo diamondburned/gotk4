@@ -30,6 +30,21 @@ import (
 // extern void _gotk4_gtk4_TextBufferClass_redo(GtkTextBuffer*);
 // extern void _gotk4_gtk4_TextBufferClass_remove_tag(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*);
 // extern void _gotk4_gtk4_TextBufferClass_undo(GtkTextBuffer*);
+// extern void _gotk4_gtk4_TextBuffer_ConnectApplyTag(gpointer, GtkTextTag*, GtkTextIter*, GtkTextIter*, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectBeginUserAction(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectDeleteRange(gpointer, GtkTextIter*, GtkTextIter*, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectEndUserAction(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectInsertChildAnchor(gpointer, GtkTextIter*, GtkTextChildAnchor*, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectInsertPaintable(gpointer, GtkTextIter*, GdkPaintable*, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectInsertText(gpointer, GtkTextIter*, gchar*, gint, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectMarkDeleted(gpointer, GtkTextMark*, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectMarkSet(gpointer, GtkTextIter*, GtkTextMark*, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectModifiedChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectPasteDone(gpointer, GdkClipboard*, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectRedo(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectRemoveTag(gpointer, GtkTextTag*, GtkTextIter*, GtkTextIter*, guintptr);
+// extern void _gotk4_gtk4_TextBuffer_ConnectUndo(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -476,6 +491,30 @@ func marshalTextBufferer(p uintptr) (interface{}, error) {
 	return wrapTextBuffer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_TextBuffer_ConnectApplyTag
+func _gotk4_gtk4_TextBuffer_ConnectApplyTag(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 C.guintptr) {
+	var f func(tag *TextTag, start, end *TextIter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(tag *TextTag, start, end *TextIter))
+	}
+
+	var _tag *TextTag    // out
+	var _start *TextIter // out
+	var _end *TextIter   // out
+
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+
+	f(_tag, _start, _end)
+}
+
 // ConnectApplyTag: emitted to apply a tag to a range of text in a
 // GtkTextBuffer.
 //
@@ -486,8 +525,24 @@ func marshalTextBufferer(p uintptr) (interface{}, error) {
 //
 // See also: gtk.TextBuffer.ApplyTag(), gtk.TextBuffer.InsertWithTags(),
 // gtk.TextBuffer.InsertRange().
-func (buffer *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end *TextIter)) externglib.SignalHandle {
-	return buffer.Connect("apply-tag", externglib.GeneratedClosure{Func: f})
+func (buffer *TextBuffer) ConnectApplyTag(f func(tag *TextTag, start, end *TextIter)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(buffer, "apply-tag", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectApplyTag), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectBeginUserAction
+func _gotk4_gtk4_TextBuffer_ConnectBeginUserAction(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectBeginUserAction: emitted at the beginning of a single user-visible
@@ -498,12 +553,50 @@ func (buffer *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end *TextIt
 // gtk.TextBuffer.DeleteInteractive(), gtk.TextBuffer.Backspace(),
 // gtk.TextBuffer.DeleteSelection().
 func (buffer *TextBuffer) ConnectBeginUserAction(f func()) externglib.SignalHandle {
-	return buffer.Connect("begin-user-action", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "begin-user-action", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectBeginUserAction), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectChanged
+func _gotk4_gtk4_TextBuffer_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectChanged: emitted when the content of a GtkTextBuffer has changed.
 func (buffer *TextBuffer) ConnectChanged(f func()) externglib.SignalHandle {
-	return buffer.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "changed", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectChanged), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectDeleteRange
+func _gotk4_gtk4_TextBuffer_ConnectDeleteRange(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.GtkTextIter, arg3 C.guintptr) {
+	var f func(start, end *TextIter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(start, end *TextIter))
+	}
+
+	var _start *TextIter // out
+	var _end *TextIter   // out
+
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	f(_start, _end)
 }
 
 // ConnectDeleteRange: emitted to delete a range from a GtkTextBuffer.
@@ -516,7 +609,23 @@ func (buffer *TextBuffer) ConnectChanged(f func()) externglib.SignalHandle {
 //
 // See also: gtk.TextBuffer.Delete().
 func (buffer *TextBuffer) ConnectDeleteRange(f func(start, end *TextIter)) externglib.SignalHandle {
-	return buffer.Connect("delete-range", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "delete-range", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectDeleteRange), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectEndUserAction
+func _gotk4_gtk4_TextBuffer_ConnectEndUserAction(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectEndUserAction: emitted at the end of a single user-visible operation
@@ -527,7 +636,29 @@ func (buffer *TextBuffer) ConnectDeleteRange(f func(start, end *TextIter)) exter
 // gtk.TextBuffer.Backspace(), gtk.TextBuffer.DeleteSelection(),
 // gtk.TextBuffer.Backspace().
 func (buffer *TextBuffer) ConnectEndUserAction(f func()) externglib.SignalHandle {
-	return buffer.Connect("end-user-action", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "end-user-action", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectEndUserAction), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectInsertChildAnchor
+func _gotk4_gtk4_TextBuffer_ConnectInsertChildAnchor(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.GtkTextChildAnchor, arg3 C.guintptr) {
+	var f func(location *TextIter, anchor *TextChildAnchor)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(location *TextIter, anchor *TextChildAnchor))
+	}
+
+	var _location *TextIter      // out
+	var _anchor *TextChildAnchor // out
+
+	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_anchor = wrapTextChildAnchor(externglib.Take(unsafe.Pointer(arg2)))
+
+	f(_location, _anchor)
 }
 
 // ConnectInsertChildAnchor: emitted to insert a GtkTextChildAnchor in a
@@ -540,8 +671,46 @@ func (buffer *TextBuffer) ConnectEndUserAction(f func()) externglib.SignalHandle
 // handler revalidates it to be placed after the inserted anchor.
 //
 // See also: gtk.TextBuffer.InsertChildAnchor().
-func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location *TextIter, anchor TextChildAnchor)) externglib.SignalHandle {
-	return buffer.Connect("insert-child-anchor", externglib.GeneratedClosure{Func: f})
+func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location *TextIter, anchor *TextChildAnchor)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(buffer, "insert-child-anchor", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectInsertChildAnchor), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectInsertPaintable
+func _gotk4_gtk4_TextBuffer_ConnectInsertPaintable(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.GdkPaintable, arg3 C.guintptr) {
+	var f func(location *TextIter, paintable gdk.Paintabler)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(location *TextIter, paintable gdk.Paintabler))
+	}
+
+	var _location *TextIter       // out
+	var _paintable gdk.Paintabler // out
+
+	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gdk.Paintabler is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Paintabler)
+			return ok
+		})
+		rv, ok := casted.(gdk.Paintabler)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
+		}
+		_paintable = rv
+	}
+
+	f(_location, _paintable)
 }
 
 // ConnectInsertPaintable: emitted to insert a GdkPaintable in a GtkTextBuffer.
@@ -554,7 +723,31 @@ func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location *TextIter, an
 //
 // See also: gtk.TextBuffer.InsertPaintable().
 func (buffer *TextBuffer) ConnectInsertPaintable(f func(location *TextIter, paintable gdk.Paintabler)) externglib.SignalHandle {
-	return buffer.Connect("insert-paintable", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "insert-paintable", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectInsertPaintable), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectInsertText
+func _gotk4_gtk4_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.gchar, arg3 C.gint, arg4 C.guintptr) {
+	var f func(location *TextIter, text string, len int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(location *TextIter, text string, len int))
+	}
+
+	var _location *TextIter // out
+	var _text string        // out
+	var _len int            // out
+
+	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_len = int(arg3)
+
+	f(_location, _text, _len)
 }
 
 // ConnectInsertText: emitted to insert text in a GtkTextBuffer.
@@ -567,21 +760,79 @@ func (buffer *TextBuffer) ConnectInsertPaintable(f func(location *TextIter, pain
 //
 // See also: gtk,textbuffer.Insert, gtk.TextBuffer.InsertRange().
 func (buffer *TextBuffer) ConnectInsertText(f func(location *TextIter, text string, len int)) externglib.SignalHandle {
-	return buffer.Connect("insert-text", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "insert-text", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectInsertText), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectMarkDeleted
+func _gotk4_gtk4_TextBuffer_ConnectMarkDeleted(arg0 C.gpointer, arg1 *C.GtkTextMark, arg2 C.guintptr) {
+	var f func(mark *TextMark)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(mark *TextMark))
+	}
+
+	var _mark *TextMark // out
+
+	_mark = wrapTextMark(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_mark)
 }
 
 // ConnectMarkDeleted: emitted as notification after a GtkTextMark is deleted.
 //
 // See also: gtk.TextBuffer.DeleteMark().
-func (buffer *TextBuffer) ConnectMarkDeleted(f func(mark TextMark)) externglib.SignalHandle {
-	return buffer.Connect("mark-deleted", externglib.GeneratedClosure{Func: f})
+func (buffer *TextBuffer) ConnectMarkDeleted(f func(mark *TextMark)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(buffer, "mark-deleted", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectMarkDeleted), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectMarkSet
+func _gotk4_gtk4_TextBuffer_ConnectMarkSet(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.GtkTextMark, arg3 C.guintptr) {
+	var f func(location *TextIter, mark *TextMark)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(location *TextIter, mark *TextMark))
+	}
+
+	var _location *TextIter // out
+	var _mark *TextMark     // out
+
+	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_mark = wrapTextMark(externglib.Take(unsafe.Pointer(arg2)))
+
+	f(_location, _mark)
 }
 
 // ConnectMarkSet: emitted as notification after a GtkTextMark is set.
 //
 // See also: gtk.TextBuffer.CreateMark(), gtk.TextBuffer.MoveMark().
-func (buffer *TextBuffer) ConnectMarkSet(f func(location *TextIter, mark TextMark)) externglib.SignalHandle {
-	return buffer.Connect("mark-set", externglib.GeneratedClosure{Func: f})
+func (buffer *TextBuffer) ConnectMarkSet(f func(location *TextIter, mark *TextMark)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(buffer, "mark-set", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectMarkSet), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectModifiedChanged
+func _gotk4_gtk4_TextBuffer_ConnectModifiedChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectModifiedChanged: emitted when the modified bit of a GtkTextBuffer
@@ -589,21 +840,86 @@ func (buffer *TextBuffer) ConnectMarkSet(f func(location *TextIter, mark TextMar
 //
 // See also: gtk.TextBuffer.SetModified().
 func (buffer *TextBuffer) ConnectModifiedChanged(f func()) externglib.SignalHandle {
-	return buffer.Connect("modified-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "modified-changed", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectModifiedChanged), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectPasteDone
+func _gotk4_gtk4_TextBuffer_ConnectPasteDone(arg0 C.gpointer, arg1 *C.GdkClipboard, arg2 C.guintptr) {
+	var f func(clipboard *gdk.Clipboard)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(clipboard *gdk.Clipboard))
+	}
+
+	var _clipboard *gdk.Clipboard // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		_clipboard = &gdk.Clipboard{
+			Object: obj,
+		}
+	}
+
+	f(_clipboard)
 }
 
 // ConnectPasteDone: emitted after paste operation has been completed.
 //
 // This is useful to properly scroll the view to the end of the pasted text. See
 // gtk.TextBuffer.PasteClipboard() for more details.
-func (buffer *TextBuffer) ConnectPasteDone(f func(clipboard gdk.Clipboard)) externglib.SignalHandle {
-	return buffer.Connect("paste-done", externglib.GeneratedClosure{Func: f})
+func (buffer *TextBuffer) ConnectPasteDone(f func(clipboard *gdk.Clipboard)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(buffer, "paste-done", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectPasteDone), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectRedo
+func _gotk4_gtk4_TextBuffer_ConnectRedo(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectRedo: emitted when a request has been made to redo the previously
 // undone operation.
 func (buffer *TextBuffer) ConnectRedo(f func()) externglib.SignalHandle {
-	return buffer.Connect("redo", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "redo", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectRedo), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectRemoveTag
+func _gotk4_gtk4_TextBuffer_ConnectRemoveTag(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 C.guintptr) {
+	var f func(tag *TextTag, start, end *TextIter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(tag *TextTag, start, end *TextIter))
+	}
+
+	var _tag *TextTag    // out
+	var _start *TextIter // out
+	var _end *TextIter   // out
+
+	_tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg1)))
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+
+	f(_tag, _start, _end)
 }
 
 // ConnectRemoveTag: emitted to remove all occurrences of tag from a range of
@@ -615,14 +931,30 @@ func (buffer *TextBuffer) ConnectRedo(f func()) externglib.SignalHandle {
 // invalidate the start and end iters (or has to revalidate them).
 //
 // See also: gtk.TextBuffer.RemoveTag().
-func (buffer *TextBuffer) ConnectRemoveTag(f func(tag TextTag, start, end *TextIter)) externglib.SignalHandle {
-	return buffer.Connect("remove-tag", externglib.GeneratedClosure{Func: f})
+func (buffer *TextBuffer) ConnectRemoveTag(f func(tag *TextTag, start, end *TextIter)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(buffer, "remove-tag", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectRemoveTag), f)
+}
+
+//export _gotk4_gtk4_TextBuffer_ConnectUndo
+func _gotk4_gtk4_TextBuffer_ConnectUndo(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUndo: emitted when a request has been made to undo the previous
 // operation or set of operations that have been grouped together.
 func (buffer *TextBuffer) ConnectUndo(f func()) externglib.SignalHandle {
-	return buffer.Connect("undo", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(buffer, "undo", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectUndo), f)
 }
 
 // NewTextBuffer creates a new text buffer.

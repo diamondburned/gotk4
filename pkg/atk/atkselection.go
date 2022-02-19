@@ -20,6 +20,7 @@ import (
 // extern gboolean _gotk4_atk1_SelectionIface_select_all_selection(AtkSelection*);
 // extern gint _gotk4_atk1_SelectionIface_get_selection_count(AtkSelection*);
 // extern void _gotk4_atk1_SelectionIface_selection_changed(AtkSelection*);
+// extern void _gotk4_atk1_Selection_ConnectSelectionChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -311,10 +312,26 @@ func marshalSelectioner(p uintptr) (interface{}, error) {
 	return wrapSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_atk1_Selection_ConnectSelectionChanged
+func _gotk4_atk1_Selection_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectSelectionChanged: "selection-changed" signal is emitted by an object
 // which implements AtkSelection interface when the selection changes.
 func (selection *Selection) ConnectSelectionChanged(f func()) externglib.SignalHandle {
-	return selection.Connect("selection-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(selection, "selection-changed", false, unsafe.Pointer(C._gotk4_atk1_Selection_ConnectSelectionChanged), f)
 }
 
 // AddSelection adds the specified accessible child of the object to the

@@ -19,6 +19,10 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_FileChooser_ConnectCurrentFolderChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_FileChooser_ConnectFileActivated(gpointer, guintptr);
+// extern void _gotk4_gtk3_FileChooser_ConnectSelectionChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_FileChooser_ConnectUpdatePreview(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -436,61 +440,20 @@ func marshalFileChooserer(p uintptr) (interface{}, error) {
 	return wrapFileChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectConfirmOverwrite: this signal gets emitted whenever it is appropriate
-// to present a confirmation dialog when the user has selected a file name that
-// already exists. The signal only gets emitted when the file chooser is in
-// GTK_FILE_CHOOSER_ACTION_SAVE mode.
-//
-// Most applications just need to turn on the
-// FileChooser:do-overwrite-confirmation property (or call the
-// gtk_file_chooser_set_do_overwrite_confirmation() function), and they will
-// automatically get a stock confirmation dialog. Applications which need to
-// customize this behavior should do that, and also connect to the
-// FileChooser::confirm-overwrite signal.
-//
-// A signal handler for this signal must return a FileChooserConfirmation value,
-// which indicates the action to take. If the handler determines that the user
-// wants to select a different filename, it should return
-// GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN. If it determines that the user is
-// satisfied with his choice of file name, it should return
-// GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME. On the other hand, if it
-// determines that the stock confirmation dialog should be used, it should
-// return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM. The following example
-// illustrates this.
-//
-// Custom confirmation
-//
-//    static GtkFileChooserConfirmation
-//    confirm_overwrite_callback (GtkFileChooser *chooser, gpointer data)
-//    {
-//      char *uri;
-//
-//      uri = gtk_file_chooser_get_uri (chooser);
-//
-//      if (is_uri_read_only (uri))
-//        {
-//          if (user_wants_to_replace_read_only_file (uri))
-//            return GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME;
-//          else
-//            return GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN;
-//        } else
-//          return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM; // fall back to the default dialog
-//    }
-//
-//    ...
-//
-//    chooser = gtk_file_chooser_dialog_new (...);
-//
-//    gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
-//    g_signal_connect (chooser, "confirm-overwrite",
-//                      G_CALLBACK (confirm_overwrite_callback), NULL);
-//
-//    if (gtk_dialog_run (chooser) == GTK_RESPONSE_ACCEPT)
-//            save_to_file (gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (chooser));
-//
-//    gtk_widget_destroy (chooser);.
-func (chooser *FileChooser) ConnectConfirmOverwrite(f func() FileChooserConfirmation) externglib.SignalHandle {
-	return chooser.Connect("confirm-overwrite", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_FileChooser_ConnectCurrentFolderChanged
+func _gotk4_gtk3_FileChooser_ConnectCurrentFolderChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCurrentFolderChanged: this signal is emitted when the current folder
@@ -507,7 +470,23 @@ func (chooser *FileChooser) ConnectConfirmOverwrite(f func() FileChooserConfirma
 // gtk_file_chooser_set_current_folder_uri(),
 // gtk_file_chooser_get_current_folder_uri().
 func (chooser *FileChooser) ConnectCurrentFolderChanged(f func()) externglib.SignalHandle {
-	return chooser.Connect("current-folder-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(chooser, "current-folder-changed", false, unsafe.Pointer(C._gotk4_gtk3_FileChooser_ConnectCurrentFolderChanged), f)
+}
+
+//export _gotk4_gtk3_FileChooser_ConnectFileActivated
+func _gotk4_gtk3_FileChooser_ConnectFileActivated(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectFileActivated: this signal is emitted when the user "activates" a file
@@ -520,7 +499,23 @@ func (chooser *FileChooser) ConnectCurrentFolderChanged(f func()) externglib.Sig
 // See also: gtk_file_chooser_get_filename(), gtk_file_chooser_get_filenames(),
 // gtk_file_chooser_get_uri(), gtk_file_chooser_get_uris().
 func (chooser *FileChooser) ConnectFileActivated(f func()) externglib.SignalHandle {
-	return chooser.Connect("file-activated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(chooser, "file-activated", false, unsafe.Pointer(C._gotk4_gtk3_FileChooser_ConnectFileActivated), f)
+}
+
+//export _gotk4_gtk3_FileChooser_ConnectSelectionChanged
+func _gotk4_gtk3_FileChooser_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSelectionChanged: this signal is emitted when there is a change in the
@@ -538,7 +533,23 @@ func (chooser *FileChooser) ConnectFileActivated(f func()) externglib.SignalHand
 // gtk_file_chooser_unselect_uri(), gtk_file_chooser_get_uri(),
 // gtk_file_chooser_get_uris().
 func (chooser *FileChooser) ConnectSelectionChanged(f func()) externglib.SignalHandle {
-	return chooser.Connect("selection-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(chooser, "selection-changed", false, unsafe.Pointer(C._gotk4_gtk3_FileChooser_ConnectSelectionChanged), f)
+}
+
+//export _gotk4_gtk3_FileChooser_ConnectUpdatePreview
+func _gotk4_gtk3_FileChooser_ConnectUpdatePreview(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUpdatePreview: this signal is emitted when the preview in a file
@@ -562,7 +573,7 @@ func (chooser *FileChooser) ConnectSelectionChanged(f func()) externglib.SignalH
 // gtk_file_chooser_set_use_preview_label(),
 // gtk_file_chooser_get_preview_filename(), gtk_file_chooser_get_preview_uri().
 func (chooser *FileChooser) ConnectUpdatePreview(f func()) externglib.SignalHandle {
-	return chooser.Connect("update-preview", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(chooser, "update-preview", false, unsafe.Pointer(C._gotk4_gtk3_FileChooser_ConnectUpdatePreview), f)
 }
 
 // AddChoice adds a 'choice' to the file chooser. This is typically implemented

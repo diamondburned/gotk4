@@ -18,6 +18,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_PlugClass_embedded(GtkPlug*);
+// extern void _gotk4_gtk3_Plug_ConnectEmbedded(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -107,9 +108,25 @@ func marshalPlugger(p uintptr) (interface{}, error) {
 	return wrapPlug(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Plug_ConnectEmbedded
+func _gotk4_gtk3_Plug_ConnectEmbedded(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectEmbedded gets emitted when the plug becomes embedded in a socket.
 func (plug *Plug) ConnectEmbedded(f func()) externglib.SignalHandle {
-	return plug.Connect("embedded", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(plug, "embedded", false, unsafe.Pointer(C._gotk4_gtk3_Plug_ConnectEmbedded), f)
 }
 
 // Embedded determines whether the plug is embedded in a socket.

@@ -20,6 +20,7 @@ import (
 // extern gboolean _gotk4_gio2_TlsConnectionClass_get_binding_data(GTlsConnection*, GTlsChannelBindingType, GByteArray*, GError**);
 // extern gboolean _gotk4_gio2_TlsConnectionClass_handshake(GTlsConnection*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_TlsConnectionClass_handshake_finish(GTlsConnection*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_TlsConnection_ConnectAcceptCertificate(gpointer, GTlsCertificate*, GTlsCertificateFlags, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -291,6 +292,50 @@ func BaseTLSConnection(obj TLSConnectioner) *TLSConnection {
 	return obj.baseTLSConnection()
 }
 
+//export _gotk4_gio2_TlsConnection_ConnectAcceptCertificate
+func _gotk4_gio2_TlsConnection_ConnectAcceptCertificate(arg0 C.gpointer, arg1 *C.GTlsCertificate, arg2 C.GTlsCertificateFlags, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(peerCert TLSCertificater, errors TLSCertificateFlags) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(peerCert TLSCertificater, errors TLSCertificateFlags) (ok bool))
+	}
+
+	var _peerCert TLSCertificater   // out
+	var _errors TLSCertificateFlags // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.TLSCertificater is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TLSCertificater)
+			return ok
+		})
+		rv, ok := casted.(TLSCertificater)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSCertificater")
+		}
+		_peerCert = rv
+	}
+	_errors = TLSCertificateFlags(arg2)
+
+	ok := f(_peerCert, _errors)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectAcceptCertificate: emitted during the TLS handshake after the peer
 // certificate has been received. You can examine peer_cert's certification path
 // by calling g_tls_certificate_get_issuer() on it.
@@ -320,8 +365,8 @@ func BaseTLSConnection(obj TLSConnectioner) *TLSConnection {
 // If you are doing I/O in another thread, you do not need to worry about this,
 // and can simply block in the signal handler until the UI thread returns an
 // answer.
-func (conn *TLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) externglib.SignalHandle {
-	return conn.Connect("accept-certificate", externglib.GeneratedClosure{Func: f})
+func (conn *TLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(conn, "accept-certificate", false, unsafe.Pointer(C._gotk4_gio2_TlsConnection_ConnectAcceptCertificate), f)
 }
 
 // EmitAcceptCertificate: used by Connection implementations to emit the

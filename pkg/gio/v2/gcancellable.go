@@ -17,6 +17,7 @@ import (
 // #include <gio/gio.h>
 // #include <glib-object.h>
 // extern void _gotk4_gio2_CancellableClass_cancelled(GCancellable*);
+// extern void _gotk4_gio2_Cancellable_ConnectCancelled(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -75,6 +76,22 @@ func marshalCancellabler(p uintptr) (interface{}, error) {
 	return wrapCancellable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_Cancellable_ConnectCancelled
+func _gotk4_gio2_Cancellable_ConnectCancelled(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectCancelled: emitted when the operation has been cancelled.
 //
 // Can be used by implementations of cancellable operations. If the operation is
@@ -123,7 +140,7 @@ func marshalCancellabler(p uintptr) (interface{}, error) {
 // cancelled from, which may be the main thread. So, the cancellable signal
 // should not do something that can block.
 func (cancellable *Cancellable) ConnectCancelled(f func()) externglib.SignalHandle {
-	return cancellable.Connect("cancelled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(cancellable, "cancelled", false, unsafe.Pointer(C._gotk4_gio2_Cancellable_ConnectCancelled), f)
 }
 
 // NewCancellable creates a new #GCancellable object.

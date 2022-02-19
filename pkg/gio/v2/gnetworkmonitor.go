@@ -20,6 +20,7 @@ import (
 // extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach_finish(GNetworkMonitor*, GAsyncResult*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_NetworkMonitorInterface_network_changed(GNetworkMonitor*, gboolean);
+// extern void _gotk4_gio2_NetworkMonitor_ConnectNetworkChanged(gpointer, gboolean, guintptr);
 import "C"
 
 func init() {
@@ -80,9 +81,31 @@ func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 	return wrapNetworkMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_NetworkMonitor_ConnectNetworkChanged
+func _gotk4_gio2_NetworkMonitor_ConnectNetworkChanged(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) {
+	var f func(networkAvailable bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(networkAvailable bool))
+	}
+
+	var _networkAvailable bool // out
+
+	if arg1 != 0 {
+		_networkAvailable = true
+	}
+
+	f(_networkAvailable)
+}
+
 // ConnectNetworkChanged: emitted when the network configuration changes.
 func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable bool)) externglib.SignalHandle {
-	return monitor.Connect("network-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(monitor, "network-changed", false, unsafe.Pointer(C._gotk4_gio2_NetworkMonitor_ConnectNetworkChanged), f)
 }
 
 // CanReach attempts to determine whether or not the host pointed to by

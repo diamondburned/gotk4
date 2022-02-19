@@ -17,6 +17,8 @@ import (
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_ShortcutsWindowClass_close(GtkShortcutsWindow*);
 // extern void _gotk4_gtk3_ShortcutsWindowClass_search(GtkShortcutsWindow*);
+// extern void _gotk4_gtk3_ShortcutsWindow_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk3_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -146,12 +148,44 @@ func marshalShortcutsWindower(p uintptr) (interface{}, error) {
 	return wrapShortcutsWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ShortcutsWindow_ConnectClose
+func _gotk4_gtk3_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectClose signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user uses a keybinding to close the window.
 //
 // The default binding for this signal is the Escape key.
 func (self *ShortcutsWindow) ConnectClose(f func()) externglib.SignalHandle {
-	return self.Connect("close", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "close", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectClose), f)
+}
+
+//export _gotk4_gtk3_ShortcutsWindow_ConnectSearch
+func _gotk4_gtk3_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSearch signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -159,5 +193,5 @@ func (self *ShortcutsWindow) ConnectClose(f func()) externglib.SignalHandle {
 //
 // The default binding for this signal is Control-F.
 func (self *ShortcutsWindow) ConnectSearch(f func()) externglib.SignalHandle {
-	return self.Connect("search", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "search", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectSearch), f)
 }

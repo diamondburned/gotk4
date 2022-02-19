@@ -13,6 +13,12 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_Display_ConnectClosed(gpointer, gboolean, guintptr);
+// extern void _gotk4_gdk3_Display_ConnectMonitorAdded(gpointer, GdkMonitor*, guintptr);
+// extern void _gotk4_gdk3_Display_ConnectMonitorRemoved(gpointer, GdkMonitor*, guintptr);
+// extern void _gotk4_gdk3_Display_ConnectOpened(gpointer, guintptr);
+// extern void _gotk4_gdk3_Display_ConnectSeatAdded(gpointer, GdkSeat*, guintptr);
+// extern void _gotk4_gdk3_Display_ConnectSeatRemoved(gpointer, GdkSeat*, guintptr);
 import "C"
 
 func init() {
@@ -56,38 +62,188 @@ func marshalDisplayer(p uintptr) (interface{}, error) {
 	return wrapDisplay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdk3_Display_ConnectClosed
+func _gotk4_gdk3_Display_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) {
+	var f func(isError bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(isError bool))
+	}
+
+	var _isError bool // out
+
+	if arg1 != 0 {
+		_isError = true
+	}
+
+	f(_isError)
+}
+
 // ConnectClosed signal is emitted when the connection to the windowing system
 // for display is closed.
 func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
-	return display.Connect("closed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(display, "closed", false, unsafe.Pointer(C._gotk4_gdk3_Display_ConnectClosed), f)
+}
+
+//export _gotk4_gdk3_Display_ConnectMonitorAdded
+func _gotk4_gdk3_Display_ConnectMonitorAdded(arg0 C.gpointer, arg1 *C.GdkMonitor, arg2 C.guintptr) {
+	var f func(monitor *Monitor)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(monitor *Monitor))
+	}
+
+	var _monitor *Monitor // out
+
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_monitor)
 }
 
 // ConnectMonitorAdded signal is emitted whenever a monitor is added.
-func (display *Display) ConnectMonitorAdded(f func(monitor Monitor)) externglib.SignalHandle {
-	return display.Connect("monitor-added", externglib.GeneratedClosure{Func: f})
+func (display *Display) ConnectMonitorAdded(f func(monitor *Monitor)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(display, "monitor-added", false, unsafe.Pointer(C._gotk4_gdk3_Display_ConnectMonitorAdded), f)
+}
+
+//export _gotk4_gdk3_Display_ConnectMonitorRemoved
+func _gotk4_gdk3_Display_ConnectMonitorRemoved(arg0 C.gpointer, arg1 *C.GdkMonitor, arg2 C.guintptr) {
+	var f func(monitor *Monitor)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(monitor *Monitor))
+	}
+
+	var _monitor *Monitor // out
+
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_monitor)
 }
 
 // ConnectMonitorRemoved signal is emitted whenever a monitor is removed.
-func (display *Display) ConnectMonitorRemoved(f func(monitor Monitor)) externglib.SignalHandle {
-	return display.Connect("monitor-removed", externglib.GeneratedClosure{Func: f})
+func (display *Display) ConnectMonitorRemoved(f func(monitor *Monitor)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(display, "monitor-removed", false, unsafe.Pointer(C._gotk4_gdk3_Display_ConnectMonitorRemoved), f)
+}
+
+//export _gotk4_gdk3_Display_ConnectOpened
+func _gotk4_gdk3_Display_ConnectOpened(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectOpened signal is emitted when the connection to the windowing system
 // for display is opened.
 func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
-	return display.Connect("opened", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(display, "opened", false, unsafe.Pointer(C._gotk4_gdk3_Display_ConnectOpened), f)
+}
+
+//export _gotk4_gdk3_Display_ConnectSeatAdded
+func _gotk4_gdk3_Display_ConnectSeatAdded(arg0 C.gpointer, arg1 *C.GdkSeat, arg2 C.guintptr) {
+	var f func(seat Seater)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(seat Seater))
+	}
+
+	var _seat Seater // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Seater is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Seater)
+			return ok
+		})
+		rv, ok := casted.(Seater)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
+		}
+		_seat = rv
+	}
+
+	f(_seat)
 }
 
 // ConnectSeatAdded signal is emitted whenever a new seat is made known to the
 // windowing system.
 func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-added", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(display, "seat-added", false, unsafe.Pointer(C._gotk4_gdk3_Display_ConnectSeatAdded), f)
+}
+
+//export _gotk4_gdk3_Display_ConnectSeatRemoved
+func _gotk4_gdk3_Display_ConnectSeatRemoved(arg0 C.gpointer, arg1 *C.GdkSeat, arg2 C.guintptr) {
+	var f func(seat Seater)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(seat Seater))
+	}
+
+	var _seat Seater // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Seater is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Seater)
+			return ok
+		})
+		rv, ok := casted.(Seater)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
+		}
+		_seat = rv
+	}
+
+	f(_seat)
 }
 
 // ConnectSeatRemoved signal is emitted whenever a seat is removed by the
 // windowing system.
 func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
-	return display.Connect("seat-removed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(display, "seat-removed", false, unsafe.Pointer(C._gotk4_gdk3_Display_ConnectSeatRemoved), f)
 }
 
 // Beep emits a short beep on display.
@@ -345,6 +501,35 @@ func (display *Display) DeviceManager() DeviceManagerer {
 	}
 
 	return _deviceManager
+}
+
+// Event gets the next Event to be processed for display, fetching events from
+// the windowing system if necessary.
+//
+// The function returns the following values:
+//
+//    - event (optional): next Event to be processed, or NULL if no events are
+//      pending. The returned Event should be freed with gdk_event_free().
+//
+func (display *Display) Event() *Event {
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GdkEvent   // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+
+	_cret = C.gdk_display_get_event(_arg0)
+	runtime.KeepAlive(display)
+
+	var _event *Event // out
+
+	if _cret != nil {
+		{
+			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+			_event = v
+		}
+	}
+
+	return _event
 }
 
 // MaximalCursorSize gets the maximal size to use for cursors on display.
@@ -879,6 +1064,38 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 	C.gdk_display_notify_startup_complete(_arg0, _arg1)
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(startupId)
+}
+
+// PeekEvent gets a copy of the first Event in the display’s event queue,
+// without removing the event from the queue. (Note that this function will not
+// get more events from the windowing system. It only checks the events that
+// have already been moved to the GDK event queue.).
+//
+// The function returns the following values:
+//
+//    - event (optional): copy of the first Event on the event queue, or NULL if
+//      no events are in the queue. The returned Event should be freed with
+//      gdk_event_free().
+//
+func (display *Display) PeekEvent() *Event {
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GdkEvent   // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+
+	_cret = C.gdk_display_peek_event(_arg0)
+	runtime.KeepAlive(display)
+
+	var _event *Event // out
+
+	if _cret != nil {
+		{
+			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+			_event = v
+		}
+	}
+
+	return _event
 }
 
 // PointerIsGrabbed: test if the pointer is grabbed.

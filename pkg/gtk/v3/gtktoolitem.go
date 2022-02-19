@@ -18,7 +18,9 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_ToolItemClass_create_menu_proxy(GtkToolItem*);
+// extern gboolean _gotk4_gtk3_ToolItem_ConnectCreateMenuProxy(gpointer, guintptr);
 // extern void _gotk4_gtk3_ToolItemClass_toolbar_reconfigured(GtkToolItem*);
+// extern void _gotk4_gtk3_ToolItem_ConnectToolbarReconfigured(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -131,6 +133,28 @@ func marshalToolItemmer(p uintptr) (interface{}, error) {
 	return wrapToolItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ToolItem_ConnectCreateMenuProxy
+func _gotk4_gtk3_ToolItem_ConnectCreateMenuProxy(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectCreateMenuProxy: this signal is emitted when the toolbar needs
 // information from tool_item about whether the item should appear in the
 // toolbar overflow menu. In response the tool item should either
@@ -149,8 +173,24 @@ func marshalToolItemmer(p uintptr) (interface{}, error) {
 // how it will respond to this signal it must call gtk_tool_item_rebuild_menu()
 // to invalidate the cache and ensure that the toolbar rebuilds its overflow
 // menu.
-func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() bool) externglib.SignalHandle {
-	return toolItem.Connect("create-menu-proxy", externglib.GeneratedClosure{Func: f})
+func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(toolItem, "create-menu-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ToolItem_ConnectCreateMenuProxy), f)
+}
+
+//export _gotk4_gtk3_ToolItem_ConnectToolbarReconfigured
+func _gotk4_gtk3_ToolItem_ConnectToolbarReconfigured(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectToolbarReconfigured: this signal is emitted when some property of the
@@ -166,7 +206,7 @@ func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() bool) externglib.Signa
 // - gtk_tool_shell_get_relief_style() to find out what the toolbar should look
 // like and change themselves accordingly.
 func (toolItem *ToolItem) ConnectToolbarReconfigured(f func()) externglib.SignalHandle {
-	return toolItem.Connect("toolbar-reconfigured", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(toolItem, "toolbar-reconfigured", false, unsafe.Pointer(C._gotk4_gtk3_ToolItem_ConnectToolbarReconfigured), f)
 }
 
 // NewToolItem creates a new ToolItem.

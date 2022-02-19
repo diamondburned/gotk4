@@ -13,6 +13,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_EventControllerKey_ConnectKeyPressed(gpointer, guint, guint, GdkModifierType, guintptr);
+// extern gboolean _gotk4_gtk4_EventControllerKey_ConnectModifiers(gpointer, GdkModifierType, guintptr);
+// extern void _gotk4_gtk4_EventControllerKey_ConnectIMUpdate(gpointer, guintptr);
+// extern void _gotk4_gtk4_EventControllerKey_ConnectKeyReleased(gpointer, guint, guint, GdkModifierType, guintptr);
 import "C"
 
 func init() {
@@ -56,28 +60,124 @@ func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
 	return wrapEventControllerKey(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_EventControllerKey_ConnectIMUpdate
+func _gotk4_gtk4_EventControllerKey_ConnectIMUpdate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectIMUpdate: emitted whenever the input method context filters away a
 // keypress and prevents the controller receiving it.
 //
 // See gtk.EventControllerKey.SetIMContext() and gtk.IMContext.FilterKeypress().
 func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
-	return controller.Connect("im-update", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(controller, "im-update", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerKey_ConnectIMUpdate), f)
+}
+
+//export _gotk4_gtk4_EventControllerKey_ConnectKeyPressed
+func _gotk4_gtk4_EventControllerKey_ConnectKeyPressed(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(keyval, keycode uint, state gdk.ModifierType) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(keyval, keycode uint, state gdk.ModifierType) (ok bool))
+	}
+
+	var _keyval uint            // out
+	var _keycode uint           // out
+	var _state gdk.ModifierType // out
+
+	_keyval = uint(arg1)
+	_keycode = uint(arg2)
+	_state = gdk.ModifierType(arg3)
+
+	ok := f(_keyval, _keycode, _state)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectKeyPressed: emitted whenever a key is pressed.
-func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("key-pressed", externglib.GeneratedClosure{Func: f})
+func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(controller, "key-pressed", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerKey_ConnectKeyPressed), f)
+}
+
+//export _gotk4_gtk4_EventControllerKey_ConnectKeyReleased
+func _gotk4_gtk4_EventControllerKey_ConnectKeyReleased(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) {
+	var f func(keyval, keycode uint, state gdk.ModifierType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(keyval, keycode uint, state gdk.ModifierType))
+	}
+
+	var _keyval uint            // out
+	var _keycode uint           // out
+	var _state gdk.ModifierType // out
+
+	_keyval = uint(arg1)
+	_keycode = uint(arg2)
+	_state = gdk.ModifierType(arg3)
+
+	f(_keyval, _keycode, _state)
 }
 
 // ConnectKeyReleased: emitted whenever a key is released.
 func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
-	return controller.Connect("key-released", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(controller, "key-released", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerKey_ConnectKeyReleased), f)
+}
+
+//export _gotk4_gtk4_EventControllerKey_ConnectModifiers
+func _gotk4_gtk4_EventControllerKey_ConnectModifiers(arg0 C.gpointer, arg1 C.GdkModifierType, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(keyval gdk.ModifierType) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(keyval gdk.ModifierType) (ok bool))
+	}
+
+	var _keyval gdk.ModifierType // out
+
+	_keyval = gdk.ModifierType(arg1)
+
+	ok := f(_keyval)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectModifiers: emitted whenever the state of modifier keys and pointer
 // buttons change.
-func (controller *EventControllerKey) ConnectModifiers(f func(keyval gdk.ModifierType) bool) externglib.SignalHandle {
-	return controller.Connect("modifiers", externglib.GeneratedClosure{Func: f})
+func (controller *EventControllerKey) ConnectModifiers(f func(keyval gdk.ModifierType) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(controller, "modifiers", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerKey_ConnectModifiers), f)
 }
 
 // NewEventControllerKey creates a new event controller that will handle key

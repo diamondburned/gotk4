@@ -17,6 +17,8 @@ import (
 // extern gboolean _gotk4_gtk4_EditableInterface_get_selection_bounds(GtkEditable*, int*, int*);
 // extern void _gotk4_gtk4_EditableInterface_changed(GtkEditable*);
 // extern void _gotk4_gtk4_EditableInterface_delete_text(GtkEditable*, int, int);
+// extern void _gotk4_gtk4_Editable_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_Editable_ConnectDeleteText(gpointer, gint, gint, guintptr);
 import "C"
 
 func init() {
@@ -240,6 +242,22 @@ func marshalEditabler(p uintptr) (interface{}, error) {
 	return wrapEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Editable_ConnectChanged
+func _gotk4_gtk4_Editable_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted at the end of a single user-visible operation on the
 // contents.
 //
@@ -248,7 +266,29 @@ func marshalEditabler(p uintptr) (interface{}, error) {
 // deleting the selection, then inserting the new content, and may cause
 // multiple ::notify::text signals to be emitted).
 func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
-	return editable.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(editable, "changed", false, unsafe.Pointer(C._gotk4_gtk4_Editable_ConnectChanged), f)
+}
+
+//export _gotk4_gtk4_Editable_ConnectDeleteText
+func _gotk4_gtk4_Editable_ConnectDeleteText(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(startPos, endPos int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(startPos, endPos int))
+	}
+
+	var _startPos int // out
+	var _endPos int   // out
+
+	_startPos = int(arg1)
+	_endPos = int(arg2)
+
+	f(_startPos, _endPos)
 }
 
 // ConnectDeleteText: emitted when text is deleted from the widget by the user.
@@ -261,7 +301,7 @@ func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
 // The start_pos and end_pos parameters are interpreted as for
 // gtk.Editable.DeleteText().
 func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) externglib.SignalHandle {
-	return editable.Connect("delete-text", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(editable, "delete-text", false, unsafe.Pointer(C._gotk4_gtk4_Editable_ConnectDeleteText), f)
 }
 
 // DeleteSelection deletes the currently selected text of the editable.

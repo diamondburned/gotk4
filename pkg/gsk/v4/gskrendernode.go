@@ -865,7 +865,7 @@ func (node *ConicGradientNode) ColorStops() []ColorStop {
 	var _colorStops []ColorStop // out
 
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((*C.GskColorStop)(_cret), _arg1)
 		_colorStops = make([]ColorStop, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_colorStops[i] = *(*ColorStop)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
@@ -1683,7 +1683,7 @@ func (node *LinearGradientNode) ColorStops() []ColorStop {
 	var _colorStops []ColorStop // out
 
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((*C.GskColorStop)(_cret), _arg1)
 		_colorStops = make([]ColorStop, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_colorStops[i] = *(*ColorStop)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
@@ -2136,7 +2136,7 @@ func (node *RadialGradientNode) ColorStops() []ColorStop {
 	var _colorStops []ColorStop // out
 
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((*C.GskColorStop)(_cret), _arg1)
 		_colorStops = make([]ColorStop, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_colorStops[i] = *(*ColorStop)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
@@ -3059,7 +3059,7 @@ func (node *TextNode) Glyphs() []pango.GlyphInfo {
 	var _glyphInfos []pango.GlyphInfo // out
 
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((*C.PangoGlyphInfo)(_cret), _arg1)
 		_glyphInfos = make([]pango.GlyphInfo, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_glyphInfos[i] = *(*pango.GlyphInfo)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

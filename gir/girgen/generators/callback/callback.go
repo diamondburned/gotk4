@@ -147,7 +147,7 @@ func CallbackArg(i int) string {
 }
 
 // CGoTail generates the CGo function tail for the given callable.
-func CGoTail(g *gir.CallableAttrs) (string, error) {
+func CGoTail(gen types.FileGenerator, g *gir.CallableAttrs) (string, error) {
 	callTail := "()"
 
 	if g.Parameters != nil {
@@ -197,7 +197,7 @@ func CGoTail(g *gir.CallableAttrs) (string, error) {
 }
 
 func (g *Generator) cgoTail() string {
-	v, err := CGoTail(g.CallableAttrs)
+	v, err := CGoTail(g.gen, g.CallableAttrs)
 	if err != nil {
 		g.Logln(logger.Debug, err.Error())
 	}
@@ -217,44 +217,41 @@ func (g *Generator) renderBlock() bool {
 		secReturn
 	)
 
-	fn, ok := g.Preamble(g, g.pen.Section(secPrefix))
-	if !ok {
-		return false
-	}
+	var callbackValues []typeconv.ConversionValue
 
-	g.pen.EmptyLine(secPrefix)
+	if g.Parameters != nil && len(g.Parameters.Parameters) > 0 {
+		callbackValues = make([]typeconv.ConversionValue, 0, len(g.Parameters.Parameters)+2)
 
-	callbackValues := make([]typeconv.ConversionValue, 0, len(g.Parameters.Parameters)+2)
+		for i, param := range g.Parameters.Parameters {
+			// Skip generating the closure parameter.
+			if param.Skip || (g.Closure != nil && i == *g.Closure) {
+				continue
+			}
 
-	for i, param := range g.Parameters.Parameters {
-		// Skip generating the closure parameter.
-		if param.Skip || (g.Closure != nil && i == *g.Closure) {
-			continue
+			// Reguess the parameter.
+			param.Direction = types.GuessParameterOutput(&param)
+
+			var in string
+			var out string
+			var dir typeconv.ConversionDirection
+
+			switch param.Direction {
+			case "in":
+				in = CallbackArg(i)
+				out = "_" + strcases.SnakeToGo(false, param.Name)
+				dir = typeconv.ConvertCToGo
+			case "out":
+				in = strcases.SnakeToGo(false, param.Name)
+				out = CallbackArg(i)
+				dir = typeconv.ConvertGoToC
+			default:
+				// TODO: inout
+				return false
+			}
+
+			value := typeconv.NewValue(in, out, i, dir, param)
+			callbackValues = append(callbackValues, value)
 		}
-
-		// Reguess the parameter.
-		param.Direction = types.GuessParameterOutput(&param)
-
-		var in string
-		var out string
-		var dir typeconv.ConversionDirection
-
-		switch param.Direction {
-		case "in":
-			in = CallbackArg(i)
-			out = "_" + strcases.SnakeToGo(false, param.Name)
-			dir = typeconv.ConvertCToGo
-		case "out":
-			in = strcases.SnakeToGo(false, param.Name)
-			out = CallbackArg(i)
-			dir = typeconv.ConvertGoToC
-		default:
-			// TODO: inout
-			return false
-		}
-
-		value := typeconv.NewValue(in, out, i, dir, param)
-		callbackValues = append(callbackValues, value)
 	}
 
 	var hasReturn bool
@@ -286,6 +283,10 @@ func (g *Generator) renderBlock() bool {
 	}
 
 	convert := typeconv.NewConverter(g.gen, typ, callbackValues)
+	if convert == nil {
+		return false
+	}
+
 	convert.Callback = true
 	convert.UseLogger(g)
 
@@ -335,6 +336,21 @@ func (g *Generator) renderBlock() bool {
 		}
 	}
 
+	g.GoTail = "(" + goTypeArgs.Join() + ")"
+	if goTypeRets.Len() > 0 {
+		g.GoTail += " (" + goTypeRets.Join() + ")"
+	}
+
+	g.GoTail = callable.CoalesceTail(g.GoTail)
+
+	// Call this after the type conversion so Preamble can use the above
+	// outputs.
+	fn, ok := g.Preamble(g, g.pen.Section(secPrefix))
+	if !ok {
+		return false
+	}
+	g.pen.EmptyLine(secPrefix)
+
 	if goCallRets.Len() == 0 {
 		g.pen.Linef(secFnCall, "%s(%s)", fn, goCallArgs.Join())
 	} else {
@@ -346,13 +362,6 @@ func (g *Generator) renderBlock() bool {
 	}
 
 	g.Block = g.pen.String()
-
-	g.GoTail = "(" + goTypeArgs.Join() + ")"
-	if goTypeRets.Len() > 0 {
-		g.GoTail += " (" + goTypeRets.Join() + ")"
-	}
-
-	g.GoTail = callable.CoalesceTail(g.GoTail)
 
 	return true
 }

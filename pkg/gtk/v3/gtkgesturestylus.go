@@ -15,6 +15,10 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_GestureStylus_ConnectDown(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureStylus_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureStylus_ConnectProximity(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureStylus_ConnectUp(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 func init() {
@@ -62,20 +66,108 @@ func marshalGestureStylusser(p uintptr) (interface{}, error) {
 	return wrapGestureStylus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_GestureStylus_ConnectDown
+func _gotk4_gtk3_GestureStylus_ConnectDown(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(object, p0 float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object, p0 float64))
+	}
+
+	var _object float64 // out
+	var _p0 float64     // out
+
+	_object = float64(arg1)
+	_p0 = float64(arg2)
+
+	f(_object, _p0)
+}
+
 func (gesture *GestureStylus) ConnectDown(f func(object, p0 float64)) externglib.SignalHandle {
-	return gesture.Connect("down", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "down", false, unsafe.Pointer(C._gotk4_gtk3_GestureStylus_ConnectDown), f)
+}
+
+//export _gotk4_gtk3_GestureStylus_ConnectMotion
+func _gotk4_gtk3_GestureStylus_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(object, p0 float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object, p0 float64))
+	}
+
+	var _object float64 // out
+	var _p0 float64     // out
+
+	_object = float64(arg1)
+	_p0 = float64(arg2)
+
+	f(_object, _p0)
 }
 
 func (gesture *GestureStylus) ConnectMotion(f func(object, p0 float64)) externglib.SignalHandle {
-	return gesture.Connect("motion", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "motion", false, unsafe.Pointer(C._gotk4_gtk3_GestureStylus_ConnectMotion), f)
+}
+
+//export _gotk4_gtk3_GestureStylus_ConnectProximity
+func _gotk4_gtk3_GestureStylus_ConnectProximity(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(object, p0 float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object, p0 float64))
+	}
+
+	var _object float64 // out
+	var _p0 float64     // out
+
+	_object = float64(arg1)
+	_p0 = float64(arg2)
+
+	f(_object, _p0)
 }
 
 func (gesture *GestureStylus) ConnectProximity(f func(object, p0 float64)) externglib.SignalHandle {
-	return gesture.Connect("proximity", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "proximity", false, unsafe.Pointer(C._gotk4_gtk3_GestureStylus_ConnectProximity), f)
+}
+
+//export _gotk4_gtk3_GestureStylus_ConnectUp
+func _gotk4_gtk3_GestureStylus_ConnectUp(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(object, p0 float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object, p0 float64))
+	}
+
+	var _object float64 // out
+	var _p0 float64     // out
+
+	_object = float64(arg1)
+	_p0 = float64(arg2)
+
+	f(_object, _p0)
 }
 
 func (gesture *GestureStylus) ConnectUp(f func(object, p0 float64)) externglib.SignalHandle {
-	return gesture.Connect("up", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "up", false, unsafe.Pointer(C._gotk4_gtk3_GestureStylus_ConnectUp), f)
 }
 
 // NewGestureStylus creates a new GestureStylus.

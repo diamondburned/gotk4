@@ -18,8 +18,12 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_ToolbarClass_popup_context_menu(GtkToolbar*, gint, gint, gint);
+// extern gboolean _gotk4_gtk3_Toolbar_ConnectFocusHomeOrEnd(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(gpointer, gint, gint, gint, guintptr);
 // extern void _gotk4_gtk3_ToolbarClass_orientation_changed(GtkToolbar*, GtkOrientation);
 // extern void _gotk4_gtk3_ToolbarClass_style_changed(GtkToolbar*, GtkToolbarStyle);
+// extern void _gotk4_gtk3_Toolbar_ConnectOrientationChanged(gpointer, GtkOrientation, guintptr);
+// extern void _gotk4_gtk3_Toolbar_ConnectStyleChanged(gpointer, GtkToolbarStyle, guintptr);
 import "C"
 
 func init() {
@@ -255,16 +259,94 @@ func marshalToolbarrer(p uintptr) (interface{}, error) {
 	return wrapToolbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Toolbar_ConnectFocusHomeOrEnd
+func _gotk4_gtk3_Toolbar_ConnectFocusHomeOrEnd(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(focusHome bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(focusHome bool) (ok bool))
+	}
+
+	var _focusHome bool // out
+
+	if arg1 != 0 {
+		_focusHome = true
+	}
+
+	ok := f(_focusHome)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectFocusHomeOrEnd: keybinding signal used internally by GTK+. This signal
 // can't be used in application code.
-func (toolbar *Toolbar) ConnectFocusHomeOrEnd(f func(focusHome bool) bool) externglib.SignalHandle {
-	return toolbar.Connect("focus-home-or-end", externglib.GeneratedClosure{Func: f})
+func (toolbar *Toolbar) ConnectFocusHomeOrEnd(f func(focusHome bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(toolbar, "focus-home-or-end", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectFocusHomeOrEnd), f)
+}
+
+//export _gotk4_gtk3_Toolbar_ConnectOrientationChanged
+func _gotk4_gtk3_Toolbar_ConnectOrientationChanged(arg0 C.gpointer, arg1 C.GtkOrientation, arg2 C.guintptr) {
+	var f func(orientation Orientation)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(orientation Orientation))
+	}
+
+	var _orientation Orientation // out
+
+	_orientation = Orientation(arg1)
+
+	f(_orientation)
 }
 
 // ConnectOrientationChanged: emitted when the orientation of the toolbar
 // changes.
 func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation)) externglib.SignalHandle {
-	return toolbar.Connect("orientation-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(toolbar, "orientation-changed", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectOrientationChanged), f)
+}
+
+//export _gotk4_gtk3_Toolbar_ConnectPopupContextMenu
+func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(x, y, button int) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y, button int) (ok bool))
+	}
+
+	var _x int      // out
+	var _y int      // out
+	var _button int // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_button = int(arg3)
+
+	ok := f(_x, _y, _button)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectPopupContextMenu: emitted when the user right-clicks the toolbar or
@@ -274,13 +356,33 @@ func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation
 // context menu on the toolbar. The context-menu should appear at the
 // coordinates given by x and y. The mouse button number is given by the button
 // parameter. If the menu was popped up using the keybaord, button is -1.
-func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int) bool) externglib.SignalHandle {
-	return toolbar.Connect("popup-context-menu", externglib.GeneratedClosure{Func: f})
+func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(toolbar, "popup-context-menu", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectPopupContextMenu), f)
+}
+
+//export _gotk4_gtk3_Toolbar_ConnectStyleChanged
+func _gotk4_gtk3_Toolbar_ConnectStyleChanged(arg0 C.gpointer, arg1 C.GtkToolbarStyle, arg2 C.guintptr) {
+	var f func(style ToolbarStyle)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(style ToolbarStyle))
+	}
+
+	var _style ToolbarStyle // out
+
+	_style = ToolbarStyle(arg1)
+
+	f(_style)
 }
 
 // ConnectStyleChanged: emitted when the style of the toolbar changes.
 func (toolbar *Toolbar) ConnectStyleChanged(f func(style ToolbarStyle)) externglib.SignalHandle {
-	return toolbar.Connect("style-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(toolbar, "style-changed", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectStyleChanged), f)
 }
 
 // NewToolbar creates a new toolbar.

@@ -18,6 +18,8 @@ import (
 // #include <gtk/gtk.h>
 // extern gboolean _gotk4_gtk4_PrintOperationClass_paginate(GtkPrintOperation*, GtkPrintContext*);
 // extern gboolean _gotk4_gtk4_PrintOperationClass_preview(GtkPrintOperation*, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*);
+// extern gboolean _gotk4_gtk4_PrintOperation_ConnectPaginate(gpointer, GtkPrintContext*, guintptr);
+// extern gboolean _gotk4_gtk4_PrintOperation_ConnectPreview(gpointer, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*, guintptr);
 // extern void _gotk4_gtk4_PageSetupDoneFunc(GtkPageSetup*, gpointer);
 // extern void _gotk4_gtk4_PrintOperationClass_begin_print(GtkPrintOperation*, GtkPrintContext*);
 // extern void _gotk4_gtk4_PrintOperationClass_custom_widget_apply(GtkPrintOperation*, GtkWidget*);
@@ -27,6 +29,14 @@ import (
 // extern void _gotk4_gtk4_PrintOperationClass_request_page_setup(GtkPrintOperation*, GtkPrintContext*, int, GtkPageSetup*);
 // extern void _gotk4_gtk4_PrintOperationClass_status_changed(GtkPrintOperation*);
 // extern void _gotk4_gtk4_PrintOperationClass_update_custom_widget(GtkPrintOperation*, GtkWidget*, GtkPageSetup*, GtkPrintSettings*);
+// extern void _gotk4_gtk4_PrintOperation_ConnectBeginPrint(gpointer, GtkPrintContext*, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectDone(gpointer, GtkPrintOperationResult, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectDrawPage(gpointer, GtkPrintContext*, gint, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectEndPrint(gpointer, GtkPrintContext*, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup(gpointer, GtkPrintContext*, gint, GtkPageSetup*, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectStatusChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectUpdateCustomWidget(gpointer, GtkWidget*, GtkPageSetup*, GtkPrintSettings*, guintptr);
 import "C"
 
 func init() {
@@ -737,28 +747,70 @@ func marshalPrintOperationer(p uintptr) (interface{}, error) {
 	return wrapPrintOperation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_PrintOperation_ConnectBeginPrint
+func _gotk4_gtk4_PrintOperation_ConnectBeginPrint(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.guintptr) {
+	var f func(context *PrintContext)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *PrintContext))
+	}
+
+	var _context *PrintContext // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_context)
+}
+
 // ConnectBeginPrint: emitted after the user has finished changing print
 // settings in the dialog, before the actual rendering starts.
 //
 // A typical use for ::begin-print is to use the parameters from the
 // gtk.PrintContext and paginate the document accordingly, and then set the
 // number of pages with gtk.PrintOperation.SetNPages().
-func (op *PrintOperation) ConnectBeginPrint(f func(context PrintContext)) externglib.SignalHandle {
-	return op.Connect("begin-print", externglib.GeneratedClosure{Func: f})
+func (op *PrintOperation) ConnectBeginPrint(f func(context *PrintContext)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(op, "begin-print", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectBeginPrint), f)
 }
 
-// ConnectCreateCustomWidget: emitted when displaying the print dialog.
-//
-// If you return a widget in a handler for this signal it will be added to a
-// custom tab in the print dialog. You typically return a container widget with
-// multiple widgets in it.
-//
-// The print dialog owns the returned widget, and its lifetime is not controlled
-// by the application. However, the widget is guaranteed to stay around until
-// the gtk.PrintOperation::custom-widget-apply signal is emitted on the
-// operation. Then you can read out any information you need from the widgets.
-func (op *PrintOperation) ConnectCreateCustomWidget(f func() *externglib.Object) externglib.SignalHandle {
-	return op.Connect("create-custom-widget", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply
+func _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(widget Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(widget Widgetter))
+	}
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	f(_widget)
 }
 
 // ConnectCustomWidgetApply: emitted right before ::begin-print if you added a
@@ -767,7 +819,27 @@ func (op *PrintOperation) ConnectCreateCustomWidget(f func() *externglib.Object)
 // When you get this signal you should read the information from the custom
 // widgets, as the widgets are not guaranteed to be around at a later time.
 func (op *PrintOperation) ConnectCustomWidgetApply(f func(widget Widgetter)) externglib.SignalHandle {
-	return op.Connect("custom-widget-apply", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(op, "custom-widget-apply", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply), f)
+}
+
+//export _gotk4_gtk4_PrintOperation_ConnectDone
+func _gotk4_gtk4_PrintOperation_ConnectDone(arg0 C.gpointer, arg1 C.GtkPrintOperationResult, arg2 C.guintptr) {
+	var f func(result PrintOperationResult)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(result PrintOperationResult))
+	}
+
+	var _result PrintOperationResult // out
+
+	_result = PrintOperationResult(arg1)
+
+	f(_result)
 }
 
 // ConnectDone: emitted when the print operation run has finished doing
@@ -780,7 +852,29 @@ func (op *PrintOperation) ConnectCustomWidgetApply(f func(widget Widgetter)) ext
 // If you enabled print status tracking then gtk.PrintOperation.IsFinished() may
 // still return FALSE after the ::done signal was emitted.
 func (op *PrintOperation) ConnectDone(f func(result PrintOperationResult)) externglib.SignalHandle {
-	return op.Connect("done", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(op, "done", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectDone), f)
+}
+
+//export _gotk4_gtk4_PrintOperation_ConnectDrawPage
+func _gotk4_gtk4_PrintOperation_ConnectDrawPage(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.gint, arg3 C.guintptr) {
+	var f func(context *PrintContext, pageNr int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *PrintContext, pageNr int))
+	}
+
+	var _context *PrintContext // out
+	var _pageNr int            // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+	_pageNr = int(arg2)
+
+	f(_context, _pageNr)
 }
 
 // ConnectDrawPage: emitted for every page that is printed.
@@ -831,16 +925,62 @@ func (op *PrintOperation) ConnectDone(f func(result PrintOperationResult)) exter
 // Use gtk.PrintOperation.SetUseFullPage() and gtk.PrintOperation.SetUnit()
 // before starting the print operation to set up the transformation of the cairo
 // context according to your needs.
-func (op *PrintOperation) ConnectDrawPage(f func(context PrintContext, pageNr int)) externglib.SignalHandle {
-	return op.Connect("draw-page", externglib.GeneratedClosure{Func: f})
+func (op *PrintOperation) ConnectDrawPage(f func(context *PrintContext, pageNr int)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(op, "draw-page", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectDrawPage), f)
+}
+
+//export _gotk4_gtk4_PrintOperation_ConnectEndPrint
+func _gotk4_gtk4_PrintOperation_ConnectEndPrint(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.guintptr) {
+	var f func(context *PrintContext)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *PrintContext))
+	}
+
+	var _context *PrintContext // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_context)
 }
 
 // ConnectEndPrint: emitted after all pages have been rendered.
 //
 // A handler for this signal can clean up any resources that have been allocated
 // in the gtk.PrintOperation::begin-print handler.
-func (op *PrintOperation) ConnectEndPrint(f func(context PrintContext)) externglib.SignalHandle {
-	return op.Connect("end-print", externglib.GeneratedClosure{Func: f})
+func (op *PrintOperation) ConnectEndPrint(f func(context *PrintContext)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(op, "end-print", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectEndPrint), f)
+}
+
+//export _gotk4_gtk4_PrintOperation_ConnectPaginate
+func _gotk4_gtk4_PrintOperation_ConnectPaginate(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(context *PrintContext) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *PrintContext) (ok bool))
+	}
+
+	var _context *PrintContext // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+
+	ok := f(_context)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectPaginate: emitted after the ::begin-print signal, but before the
@@ -856,8 +996,56 @@ func (op *PrintOperation) ConnectEndPrint(f func(context PrintContext)) externgl
 //
 // If you don't need to do pagination in chunks, you can simply do it all in the
 // ::begin-print handler, and set the number of pages from there.
-func (op *PrintOperation) ConnectPaginate(f func(context PrintContext) bool) externglib.SignalHandle {
-	return op.Connect("paginate", externglib.GeneratedClosure{Func: f})
+func (op *PrintOperation) ConnectPaginate(f func(context *PrintContext) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(op, "paginate", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectPaginate), f)
+}
+
+//export _gotk4_gtk4_PrintOperation_ConnectPreview
+func _gotk4_gtk4_PrintOperation_ConnectPreview(arg0 C.gpointer, arg1 *C.GtkPrintOperationPreview, arg2 *C.GtkPrintContext, arg3 *C.GtkWindow, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) (ok bool))
+	}
+
+	var _preview PrintOperationPreviewer // out
+	var _context *PrintContext           // out
+	var _parent *Window                  // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.PrintOperationPreviewer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(PrintOperationPreviewer)
+			return ok
+		})
+		rv, ok := casted.(PrintOperationPreviewer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.PrintOperationPreviewer")
+		}
+		_preview = rv
+	}
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg2)))
+	if arg3 != nil {
+		_parent = wrapWindow(externglib.Take(unsafe.Pointer(arg3)))
+	}
+
+	ok := f(_preview, _context, _parent)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectPreview gets emitted when a preview is requested from the native
@@ -877,16 +1065,56 @@ func (op *PrintOperation) ConnectPaginate(f func(context PrintContext) bool) ext
 // print and render them. The preview must be finished by calling
 // gtk.PrintOperationPreview.EndPreview() (typically in response to the user
 // clicking a close button).
-func (op *PrintOperation) ConnectPreview(f func(preview PrintOperationPreviewer, context PrintContext, parent Window) bool) externglib.SignalHandle {
-	return op.Connect("preview", externglib.GeneratedClosure{Func: f})
+func (op *PrintOperation) ConnectPreview(f func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(op, "preview", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectPreview), f)
+}
+
+//export _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup
+func _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.gint, arg3 *C.GtkPageSetup, arg4 C.guintptr) {
+	var f func(context *PrintContext, pageNr int, setup *PageSetup)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *PrintContext, pageNr int, setup *PageSetup))
+	}
+
+	var _context *PrintContext // out
+	var _pageNr int            // out
+	var _setup *PageSetup      // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+	_pageNr = int(arg2)
+	_setup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg3)))
+
+	f(_context, _pageNr, _setup)
 }
 
 // ConnectRequestPageSetup: emitted once for every page that is printed.
 //
 // This gives the application a chance to modify the page setup. Any changes
 // done to setup will be in force only for printing this page.
-func (op *PrintOperation) ConnectRequestPageSetup(f func(context PrintContext, pageNr int, setup PageSetup)) externglib.SignalHandle {
-	return op.Connect("request-page-setup", externglib.GeneratedClosure{Func: f})
+func (op *PrintOperation) ConnectRequestPageSetup(f func(context *PrintContext, pageNr int, setup *PageSetup)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(op, "request-page-setup", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectRequestPageSetup), f)
+}
+
+//export _gotk4_gtk4_PrintOperation_ConnectStatusChanged
+func _gotk4_gtk4_PrintOperation_ConnectStatusChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectStatusChanged: emitted at between the various phases of the print
@@ -895,15 +1123,55 @@ func (op *PrintOperation) ConnectRequestPageSetup(f func(context PrintContext, p
 // See gtk.PrintStatus for the phases that are being discriminated. Use
 // gtk.PrintOperation.GetStatus() to find out the current status.
 func (op *PrintOperation) ConnectStatusChanged(f func()) externglib.SignalHandle {
-	return op.Connect("status-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(op, "status-changed", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectStatusChanged), f)
+}
+
+//export _gotk4_gtk4_PrintOperation_ConnectUpdateCustomWidget
+func _gotk4_gtk4_PrintOperation_ConnectUpdateCustomWidget(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 *C.GtkPageSetup, arg3 *C.GtkPrintSettings, arg4 C.guintptr) {
+	var f func(widget Widgetter, setup *PageSetup, settings *PrintSettings)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(widget Widgetter, setup *PageSetup, settings *PrintSettings))
+	}
+
+	var _widget Widgetter        // out
+	var _setup *PageSetup        // out
+	var _settings *PrintSettings // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_setup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg2)))
+	_settings = wrapPrintSettings(externglib.Take(unsafe.Pointer(arg3)))
+
+	f(_widget, _setup, _settings)
 }
 
 // ConnectUpdateCustomWidget: emitted after change of selected printer.
 //
 // The actual page setup and print settings are passed to the custom widget,
 // which can actualize itself according to this change.
-func (op *PrintOperation) ConnectUpdateCustomWidget(f func(widget Widgetter, setup PageSetup, settings PrintSettings)) externglib.SignalHandle {
-	return op.Connect("update-custom-widget", externglib.GeneratedClosure{Func: f})
+func (op *PrintOperation) ConnectUpdateCustomWidget(f func(widget Widgetter, setup *PageSetup, settings *PrintSettings)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(op, "update-custom-widget", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectUpdateCustomWidget), f)
 }
 
 // NewPrintOperation creates a new GtkPrintOperation.

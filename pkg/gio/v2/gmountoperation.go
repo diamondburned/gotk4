@@ -18,6 +18,10 @@ import (
 // extern void _gotk4_gio2_MountOperationClass_ask_question(GMountOperation*, char*, char**);
 // extern void _gotk4_gio2_MountOperationClass_reply(GMountOperation*, GMountOperationResult);
 // extern void _gotk4_gio2_MountOperationClass_show_unmount_progress(GMountOperation*, gchar*, gint64, gint64);
+// extern void _gotk4_gio2_MountOperation_ConnectAborted(gpointer, guintptr);
+// extern void _gotk4_gio2_MountOperation_ConnectAskPassword(gpointer, gchar*, gchar*, gchar*, GAskPasswordFlags, guintptr);
+// extern void _gotk4_gio2_MountOperation_ConnectReply(gpointer, GMountOperationResult, guintptr);
+// extern void _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(gpointer, gchar*, gint64, gint64, guintptr);
 import "C"
 
 func init() {
@@ -228,13 +232,55 @@ func marshalMountOperationer(p uintptr) (interface{}, error) {
 	return wrapMountOperation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_MountOperation_ConnectAborted
+func _gotk4_gio2_MountOperation_ConnectAborted(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectAborted: emitted by the backend when e.g. a device becomes unavailable
 // while a mount operation is in progress.
 //
 // Implementations of GMountOperation should handle this signal by dismissing
 // open password dialogs.
 func (op *MountOperation) ConnectAborted(f func()) externglib.SignalHandle {
-	return op.Connect("aborted", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(op, "aborted", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectAborted), f)
+}
+
+//export _gotk4_gio2_MountOperation_ConnectAskPassword
+func _gotk4_gio2_MountOperation_ConnectAskPassword(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.GAskPasswordFlags, arg5 C.guintptr) {
+	var f func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(message, defaultUser, defaultDomain string, flags AskPasswordFlags))
+	}
+
+	var _message string         // out
+	var _defaultUser string     // out
+	var _defaultDomain string   // out
+	var _flags AskPasswordFlags // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_defaultUser = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_defaultDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	_flags = AskPasswordFlags(arg4)
+
+	f(_message, _defaultUser, _defaultDomain, _flags)
 }
 
 // ConnectAskPassword: emitted when a mount operation asks the user for a
@@ -243,21 +289,56 @@ func (op *MountOperation) ConnectAborted(f func()) externglib.SignalHandle {
 // If the message contains a line break, the first line should be presented as a
 // heading. For example, it may be used as the primary text in a MessageDialog.
 func (op *MountOperation) ConnectAskPassword(f func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)) externglib.SignalHandle {
-	return op.Connect("ask-password", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(op, "ask-password", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectAskPassword), f)
 }
 
-// ConnectAskQuestion: emitted when asking the user a question and gives a list
-// of choices for the user to choose from.
-//
-// If the message contains a line break, the first line should be presented as a
-// heading. For example, it may be used as the primary text in a MessageDialog.
-func (op *MountOperation) ConnectAskQuestion(f func(message string, choices []string)) externglib.SignalHandle {
-	return op.Connect("ask-question", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gio2_MountOperation_ConnectReply
+func _gotk4_gio2_MountOperation_ConnectReply(arg0 C.gpointer, arg1 C.GMountOperationResult, arg2 C.guintptr) {
+	var f func(result MountOperationResult)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(result MountOperationResult))
+	}
+
+	var _result MountOperationResult // out
+
+	_result = MountOperationResult(arg1)
+
+	f(_result)
 }
 
 // ConnectReply: emitted when the user has replied to the mount operation.
 func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) externglib.SignalHandle {
-	return op.Connect("reply", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(op, "reply", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectReply), f)
+}
+
+//export _gotk4_gio2_MountOperation_ConnectShowUnmountProgress
+func _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(arg0 C.gpointer, arg1 *C.gchar, arg2 C.gint64, arg3 C.gint64, arg4 C.guintptr) {
+	var f func(message string, timeLeft, bytesLeft int64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(message string, timeLeft, bytesLeft int64))
+	}
+
+	var _message string  // out
+	var _timeLeft int64  // out
+	var _bytesLeft int64 // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_timeLeft = int64(arg2)
+	_bytesLeft = int64(arg3)
+
+	f(_message, _timeLeft, _bytesLeft)
 }
 
 // ConnectShowUnmountProgress: emitted when an unmount operation has been busy
@@ -276,7 +357,7 @@ func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) exte
 // If the message contains a line break, the first line should be presented as a
 // heading. For example, it may be used as the primary text in a MessageDialog.
 func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, timeLeft, bytesLeft int64)) externglib.SignalHandle {
-	return op.Connect("show-unmount-progress", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(op, "show-unmount-progress", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectShowUnmountProgress), f)
 }
 
 // NewMountOperation creates a new mount operation.

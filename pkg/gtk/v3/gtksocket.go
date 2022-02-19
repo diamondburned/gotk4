@@ -18,7 +18,9 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_SocketClass_plug_removed(GtkSocket*);
+// extern gboolean _gotk4_gtk3_Socket_ConnectPlugRemoved(gpointer, guintptr);
 // extern void _gotk4_gtk3_SocketClass_plug_added(GtkSocket*);
+// extern void _gotk4_gtk3_Socket_ConnectPlugAdded(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -155,17 +157,55 @@ func marshalSocketter(p uintptr) (interface{}, error) {
 	return wrapSocket(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Socket_ConnectPlugAdded
+func _gotk4_gtk3_Socket_ConnectPlugAdded(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectPlugAdded: this signal is emitted when a client is successfully added
 // to the socket.
 func (socket_ *Socket) ConnectPlugAdded(f func()) externglib.SignalHandle {
-	return socket_.Connect("plug-added", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(socket_, "plug-added", false, unsafe.Pointer(C._gotk4_gtk3_Socket_ConnectPlugAdded), f)
+}
+
+//export _gotk4_gtk3_Socket_ConnectPlugRemoved
+func _gotk4_gtk3_Socket_ConnectPlugRemoved(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectPlugRemoved: this signal is emitted when a client is removed from the
 // socket. The default action is to destroy the Socket widget, so if you want to
 // reuse it you must add a signal handler that returns TRUE.
-func (socket_ *Socket) ConnectPlugRemoved(f func() bool) externglib.SignalHandle {
-	return socket_.Connect("plug-removed", externglib.GeneratedClosure{Func: f})
+func (socket_ *Socket) ConnectPlugRemoved(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(socket_, "plug-removed", false, unsafe.Pointer(C._gotk4_gtk3_Socket_ConnectPlugRemoved), f)
 }
 
 // NewSocket: create a new empty Socket.

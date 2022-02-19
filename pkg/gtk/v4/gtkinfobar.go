@@ -12,6 +12,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_InfoBar_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk4_InfoBar_ConnectResponse(gpointer, gint, guintptr);
 import "C"
 
 func init() {
@@ -126,6 +128,22 @@ func marshalInfoBarrer(p uintptr) (interface{}, error) {
 	return wrapInfoBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_InfoBar_ConnectClose
+func _gotk4_gtk4_InfoBar_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectClose gets emitted when the user uses a keybinding to dismiss the info
 // bar.
 //
@@ -133,7 +151,27 @@ func marshalInfoBarrer(p uintptr) (interface{}, error) {
 //
 // The default binding for this signal is the Escape key.
 func (infoBar *InfoBar) ConnectClose(f func()) externglib.SignalHandle {
-	return infoBar.Connect("close", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(infoBar, "close", false, unsafe.Pointer(C._gotk4_gtk4_InfoBar_ConnectClose), f)
+}
+
+//export _gotk4_gtk4_InfoBar_ConnectResponse
+func _gotk4_gtk4_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(responseId int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(responseId int))
+	}
+
+	var _responseId int // out
+
+	_responseId = int(arg1)
+
+	f(_responseId)
 }
 
 // ConnectResponse: emitted when an action widget is clicked.
@@ -142,7 +180,7 @@ func (infoBar *InfoBar) ConnectClose(f func()) externglib.SignalHandle {
 // gtk.InfoBar.Response(). The response_id depends on which action widget was
 // clicked.
 func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return infoBar.Connect("response", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(infoBar, "response", false, unsafe.Pointer(C._gotk4_gtk4_InfoBar_ConnectResponse), f)
 }
 
 // NewInfoBar creates a new GtkInfoBar object.

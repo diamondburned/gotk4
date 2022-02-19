@@ -17,6 +17,8 @@ import (
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_DialogClass_close(GtkDialog*);
 // extern void _gotk4_gtk4_DialogClass_response(GtkDialog*, int);
+// extern void _gotk4_gtk4_Dialog_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk4_Dialog_ConnectResponse(gpointer, gint, guintptr);
 import "C"
 
 func init() {
@@ -376,13 +378,49 @@ func marshalDialogger(p uintptr) (interface{}, error) {
 	return wrapDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Dialog_ConnectClose
+func _gotk4_gtk4_Dialog_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectClose: emitted when the user uses a keybinding to close the dialog.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is the Escape key.
 func (dialog *Dialog) ConnectClose(f func()) externglib.SignalHandle {
-	return dialog.Connect("close", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(dialog, "close", false, unsafe.Pointer(C._gotk4_gtk4_Dialog_ConnectClose), f)
+}
+
+//export _gotk4_gtk4_Dialog_ConnectResponse
+func _gotk4_gtk4_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(responseId int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(responseId int))
+	}
+
+	var _responseId int // out
+
+	_responseId = int(arg1)
+
+	f(_responseId)
 }
 
 // ConnectResponse: emitted when an action widget is clicked.
@@ -392,7 +430,7 @@ func (dialog *Dialog) ConnectClose(f func()) externglib.SignalHandle {
 // GTK_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was
 // clicked.
 func (dialog *Dialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return dialog.Connect("response", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(dialog, "response", false, unsafe.Pointer(C._gotk4_gtk4_Dialog_ConnectResponse), f)
 }
 
 // NewDialog creates a new dialog box.

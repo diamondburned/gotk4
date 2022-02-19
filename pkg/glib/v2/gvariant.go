@@ -1327,7 +1327,7 @@ func (value *Variant) DupBytestringArray() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -1365,7 +1365,7 @@ func (value *Variant) DupObjv() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -1435,7 +1435,7 @@ func (value *Variant) DupStrv() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -1611,7 +1611,7 @@ func (value *Variant) BytestringArray() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -1992,7 +1992,7 @@ func (value *Variant) Objv() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -2100,7 +2100,7 @@ func (value *Variant) Strv() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))

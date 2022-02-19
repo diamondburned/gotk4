@@ -12,6 +12,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_GestureLongPress_ConnectCancelled(gpointer, guintptr);
+// extern void _gotk4_gtk4_GestureLongPress_ConnectPressed(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 func init() {
@@ -71,16 +73,54 @@ func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 	return wrapGestureLongPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_GestureLongPress_ConnectCancelled
+func _gotk4_gtk4_GestureLongPress_ConnectCancelled(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectCancelled: emitted whenever a press moved too far, or was released
 // before gtk.GestureLongPress::pressed happened.
 func (gesture *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
-	return gesture.Connect("cancelled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "cancelled", false, unsafe.Pointer(C._gotk4_gtk4_GestureLongPress_ConnectCancelled), f)
+}
+
+//export _gotk4_gtk4_GestureLongPress_ConnectPressed
+func _gotk4_gtk4_GestureLongPress_ConnectPressed(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(x, y float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	f(_x, _y)
 }
 
 // ConnectPressed: emitted whenever a press goes unmoved/unreleased longer than
 // what the GTK defaults tell.
 func (gesture *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
-	return gesture.Connect("pressed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "pressed", false, unsafe.Pointer(C._gotk4_gtk4_GestureLongPress_ConnectPressed), f)
 }
 
 // NewGestureLongPress returns a newly created GtkGesture that recognizes long

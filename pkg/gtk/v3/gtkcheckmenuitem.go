@@ -19,6 +19,7 @@ import (
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_CheckMenuItemClass_draw_indicator(GtkCheckMenuItem*, cairo_t*);
 // extern void _gotk4_gtk3_CheckMenuItemClass_toggled(GtkCheckMenuItem*);
+// extern void _gotk4_gtk3_CheckMenuItem_ConnectToggled(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -149,13 +150,29 @@ func marshalCheckMenuItemmer(p uintptr) (interface{}, error) {
 	return wrapCheckMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_CheckMenuItem_ConnectToggled
+func _gotk4_gtk3_CheckMenuItem_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectToggled: this signal is emitted when the state of the check box is
 // changed.
 //
 // A signal handler can use gtk_check_menu_item_get_active() to discover the new
 // state.
 func (checkMenuItem *CheckMenuItem) ConnectToggled(f func()) externglib.SignalHandle {
-	return checkMenuItem.Connect("toggled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(checkMenuItem, "toggled", false, unsafe.Pointer(C._gotk4_gtk3_CheckMenuItem_ConnectToggled), f)
 }
 
 // NewCheckMenuItem creates a new CheckMenuItem.

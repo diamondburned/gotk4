@@ -12,6 +12,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_EventControllerFocus_ConnectEnter(gpointer, guintptr);
+// extern void _gotk4_gtk4_EventControllerFocus_ConnectLeave(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -61,6 +63,22 @@ func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
 	return wrapEventControllerFocus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_EventControllerFocus_ConnectEnter
+func _gotk4_gtk4_EventControllerFocus_ConnectEnter(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectEnter: emitted whenever the focus enters into the widget or one of its
 // descendents.
 //
@@ -70,7 +88,23 @@ func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
 // in these cases, you can monitor the gtk.EventControllerFocus:is-focus
 // property for changes.
 func (self *EventControllerFocus) ConnectEnter(f func()) externglib.SignalHandle {
-	return self.Connect("enter", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "enter", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerFocus_ConnectEnter), f)
+}
+
+//export _gotk4_gtk4_EventControllerFocus_ConnectLeave
+func _gotk4_gtk4_EventControllerFocus_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectLeave: emitted whenever the focus leaves the widget hierarchy that is
@@ -81,7 +115,7 @@ func (self *EventControllerFocus) ConnectEnter(f func()) externglib.SignalHandle
 // from the widget to a descendent). If you are interested in these cases, you
 // can monitor the gtk.EventControllerFocus:is-focus property for changes.
 func (self *EventControllerFocus) ConnectLeave(f func()) externglib.SignalHandle {
-	return self.Connect("leave", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "leave", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerFocus_ConnectLeave), f)
 }
 
 // NewEventControllerFocus creates a new event controller that will handle focus

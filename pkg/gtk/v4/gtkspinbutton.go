@@ -13,6 +13,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_SpinButton_ConnectOutput(gpointer, guintptr);
+// extern void _gotk4_gtk4_SpinButton_ConnectChangeValue(gpointer, GtkScrollType, guintptr);
+// extern void _gotk4_gtk4_SpinButton_ConnectValueChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_SpinButton_ConnectWrapped(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -311,6 +315,26 @@ func marshalSpinButtonner(p uintptr) (interface{}, error) {
 	return wrapSpinButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_SpinButton_ConnectChangeValue
+func _gotk4_gtk4_SpinButton_ConnectChangeValue(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
+	var f func(scroll ScrollType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(scroll ScrollType))
+	}
+
+	var _scroll ScrollType // out
+
+	_scroll = ScrollType(arg1)
+
+	f(_scroll)
+}
+
 // ConnectChangeValue: emitted when the user initiates a value change.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -320,7 +344,29 @@ func marshalSpinButtonner(p uintptr) (interface{}, error) {
 //
 // The default bindings for this signal are Up/Down and PageUp/PageDown.
 func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) externglib.SignalHandle {
-	return spinButton.Connect("change-value", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(spinButton, "change-value", false, unsafe.Pointer(C._gotk4_gtk4_SpinButton_ConnectChangeValue), f)
+}
+
+//export _gotk4_gtk4_SpinButton_ConnectOutput
+func _gotk4_gtk4_SpinButton_ConnectOutput(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectOutput: emitted to tweak the formatting of the value for display.
@@ -342,21 +388,53 @@ func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) exte
 //
 //       return TRUE;
 //    }.
-func (spinButton *SpinButton) ConnectOutput(f func() bool) externglib.SignalHandle {
-	return spinButton.Connect("output", externglib.GeneratedClosure{Func: f})
+func (spinButton *SpinButton) ConnectOutput(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(spinButton, "output", false, unsafe.Pointer(C._gotk4_gtk4_SpinButton_ConnectOutput), f)
+}
+
+//export _gotk4_gtk4_SpinButton_ConnectValueChanged
+func _gotk4_gtk4_SpinButton_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectValueChanged: emitted when the value is changed.
 //
 // Also see the gtk.SpinButton::output signal.
 func (spinButton *SpinButton) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return spinButton.Connect("value-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(spinButton, "value-changed", false, unsafe.Pointer(C._gotk4_gtk4_SpinButton_ConnectValueChanged), f)
+}
+
+//export _gotk4_gtk4_SpinButton_ConnectWrapped
+func _gotk4_gtk4_SpinButton_ConnectWrapped(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectWrapped: emitted right after the spinbutton wraps from its maximum to
 // its minimum value or vice-versa.
 func (spinButton *SpinButton) ConnectWrapped(f func()) externglib.SignalHandle {
-	return spinButton.Connect("wrapped", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(spinButton, "wrapped", false, unsafe.Pointer(C._gotk4_gtk4_SpinButton_ConnectWrapped), f)
 }
 
 // NewSpinButton creates a new GtkSpinButton.

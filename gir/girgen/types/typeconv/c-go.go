@@ -6,6 +6,7 @@ import (
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -186,7 +187,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		value.header.ApplyFrom(inner.Header())
 
 		value.p.Descend()
-		value.p.Linef("src := unsafe.Slice(%s, %s)", value.InName, length.InName)
+		value.p.Linef("src := unsafe.Slice((*%s)(%s), %s)", inner.In.Type, value.InName, length.InName)
 		value.p.Linef("%s = make(%s, %s)", value.Out.Set, value.Out.Type, length.InName)
 		value.p.Linef("for i := 0; i < int(%s); i++ {", length.InName)
 		value.p.Linef(inner.Conversion)
@@ -256,6 +257,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		value.p.Linef("}")
 		value.p.EmptyLine()
 
+		// value.p.Linef("src := unsafe.Slice((*%s)(%s), i)", inner.In.Type, value.InName)
 		value.p.Linef("src := unsafe.Slice(%s, i)", value.InName)
 		value.p.Linef("%s = make(%s, i)", value.Out.Set, value.Out.Type)
 		value.p.Linef("for i := range src {")
@@ -649,6 +651,40 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			value.p.Linef(")")
 		}
 
+		return true
+
+	case *gir.Union:
+		value.header.Import("unsafe")
+		value.header.ImportCore("gextras")
+
+		// I'm so glad I already made a thing for this...
+		value.p.Descend()
+		defer value.p.Ascend()
+
+		// Require 1 pointer to avoid weird copies.
+		value.vtmpl(`v := <.OutCast 1>(gextras.NewStructNative(unsafe.Pointer(<.InNamePtr 1>)))`)
+		if value.fail {
+			value.Logln(logger.Debug, "union set fail")
+			return false
+		}
+
+		if !value.ShouldFree() {
+			copyMethod := types.FindMethodName(v.Methods, "copy")
+			if copyMethod == nil {
+				value.Logln(logger.Debug, "no copy method when value might be freed")
+				return false
+			}
+
+			// See generators/union.go.
+			name := "Copy" + strcases.Interfacify(strcases.PascalToGo(v.Name))
+			if value.NeedsNamespace {
+				name = value.Resolved.ImplImport.Package + "." + name
+			}
+			// Ensure we copy so the closure can safely store it for itself.
+			value.p.Linef(`v = %s(v)`, name)
+		}
+
+		value.p.Linef("%s = v", value.Out.Set)
 		return true
 
 	case *gir.Alias:

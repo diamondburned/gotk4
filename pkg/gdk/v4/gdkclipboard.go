@@ -18,6 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk4_Clipboard_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -60,9 +61,25 @@ func marshalClipboarder(p uintptr) (interface{}, error) {
 	return wrapClipboard(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdk4_Clipboard_ConnectChanged
+func _gotk4_gdk4_Clipboard_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted when the clipboard changes ownership.
 func (clipboard *Clipboard) ConnectChanged(f func()) externglib.SignalHandle {
-	return clipboard.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(clipboard, "changed", false, unsafe.Pointer(C._gotk4_gdk4_Clipboard_ConnectChanged), f)
 }
 
 // Content returns the GdkContentProvider currently set on clipboard.

@@ -24,6 +24,7 @@ import (
 // extern void _gotk4_atk1_ValueIface_get_minimum_value(AtkValue*, GValue*);
 // extern void _gotk4_atk1_ValueIface_get_value_and_text(AtkValue*, gdouble*, gchar**);
 // extern void _gotk4_atk1_ValueIface_set_value(AtkValue*, gdouble);
+// extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -554,6 +555,28 @@ func marshalValueer(p uintptr) (interface{}, error) {
 	return wrapValue(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_atk1_Value_ConnectValueChanged
+func _gotk4_atk1_Value_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 *C.gchar, arg3 C.guintptr) {
+	var f func(value float64, text string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(value float64, text string))
+	}
+
+	var _value float64 // out
+	var _text string   // out
+
+	_value = float64(arg1)
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	f(_value, _text)
+}
+
 // ConnectValueChanged: 'value-changed' signal is emitted when the current value
 // that represent the object changes. value is the numerical representation of
 // this new value. text is the human readable text alternative of value, and can
@@ -564,7 +587,7 @@ func marshalValueer(p uintptr) (interface{}, error) {
 // Example: a password meter whose value changes as the user types their new
 // password. Appropiate value text would be "weak", "acceptable" and "strong".
 func (obj *Value) ConnectValueChanged(f func(value float64, text string)) externglib.SignalHandle {
-	return obj.Connect("value-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(obj, "value-changed", false, unsafe.Pointer(C._gotk4_atk1_Value_ConnectValueChanged), f)
 }
 
 // CurrentValue gets the value of this object.

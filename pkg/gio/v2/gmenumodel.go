@@ -24,6 +24,7 @@ import (
 // extern gint _gotk4_gio2_MenuModelClass_get_n_items(GMenuModel*);
 // extern void _gotk4_gio2_MenuModelClass_get_item_attributes(GMenuModel*, gint, GHashTable**);
 // extern void _gotk4_gio2_MenuModelClass_get_item_links(GMenuModel*, gint, GHashTable**);
+// extern void _gotk4_gio2_MenuModel_ConnectItemsChanged(gpointer, gint, gint, gint, guintptr);
 import "C"
 
 func init() {
@@ -970,6 +971,30 @@ func BaseMenuModel(obj MenuModeller) *MenuModel {
 	return obj.baseMenuModel()
 }
 
+//export _gotk4_gio2_MenuModel_ConnectItemsChanged
+func _gotk4_gio2_MenuModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.guintptr) {
+	var f func(position, removed, added int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(position, removed, added int))
+	}
+
+	var _position int // out
+	var _removed int  // out
+	var _added int    // out
+
+	_position = int(arg1)
+	_removed = int(arg2)
+	_added = int(arg3)
+
+	f(_position, _removed, _added)
+}
+
 // ConnectItemsChanged: emitted when a change has occurred to the menu.
 //
 // The only changes that can occur to a menu is that items are removed or added.
@@ -989,7 +1014,7 @@ func BaseMenuModel(obj MenuModeller) *MenuModel {
 // to see the results of the modification that is being reported. The signal is
 // emitted after the modification.
 func (model *MenuModel) ConnectItemsChanged(f func(position, removed, added int)) externglib.SignalHandle {
-	return model.Connect("items-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(model, "items-changed", false, unsafe.Pointer(C._gotk4_gio2_MenuModel_ConnectItemsChanged), f)
 }
 
 // ItemAttributeValue queries the item at position item_index in model for the

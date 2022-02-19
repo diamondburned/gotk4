@@ -17,6 +17,10 @@ import (
 // extern gint _gotk4_atk1_DocumentIface_get_current_page_number(AtkDocument*);
 // extern gint _gotk4_atk1_DocumentIface_get_page_count(AtkDocument*);
 // extern gpointer _gotk4_atk1_DocumentIface_get_document(AtkDocument*);
+// extern void _gotk4_atk1_Document_ConnectLoadComplete(gpointer, guintptr);
+// extern void _gotk4_atk1_Document_ConnectLoadStopped(gpointer, guintptr);
+// extern void _gotk4_atk1_Document_ConnectPageChanged(gpointer, gint, guintptr);
+// extern void _gotk4_atk1_Document_ConnectReload(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -75,6 +79,22 @@ func marshalDocumenter(p uintptr) (interface{}, error) {
 	return wrapDocument(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_atk1_Document_ConnectLoadComplete
+func _gotk4_atk1_Document_ConnectLoadComplete(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectLoadComplete: 'load-complete' signal is emitted when a pending load of
 // a static document has completed. This signal is to be expected by ATK clients
 // if and when AtkDocument implementors expose ATK_STATE_BUSY. If the state of
@@ -83,7 +103,23 @@ func marshalDocumenter(p uintptr) (interface{}, error) {
 // are fully loaded into the container. (Dynamic document contents should be
 // exposed via other signals.).
 func (document *Document) ConnectLoadComplete(f func()) externglib.SignalHandle {
-	return document.Connect("load-complete", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(document, "load-complete", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectLoadComplete), f)
+}
+
+//export _gotk4_atk1_Document_ConnectLoadStopped
+func _gotk4_atk1_Document_ConnectLoadStopped(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectLoadStopped: 'load-stopped' signal is emitted when a pending load of
@@ -92,13 +128,49 @@ func (document *Document) ConnectLoadComplete(f func()) externglib.SignalHandle 
 // resource (for instance while blocking on a file or network read) unless a
 // user-significant timeout has occurred.
 func (document *Document) ConnectLoadStopped(f func()) externglib.SignalHandle {
-	return document.Connect("load-stopped", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(document, "load-stopped", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectLoadStopped), f)
+}
+
+//export _gotk4_atk1_Document_ConnectPageChanged
+func _gotk4_atk1_Document_ConnectPageChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(pageNumber int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(pageNumber int))
+	}
+
+	var _pageNumber int // out
+
+	_pageNumber = int(arg1)
+
+	f(_pageNumber)
 }
 
 // ConnectPageChanged: 'page-changed' signal is emitted when the current page of
 // a document changes, e.g. pressing page up/down in a document viewer.
 func (document *Document) ConnectPageChanged(f func(pageNumber int)) externglib.SignalHandle {
-	return document.Connect("page-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(document, "page-changed", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectPageChanged), f)
+}
+
+//export _gotk4_atk1_Document_ConnectReload
+func _gotk4_atk1_Document_ConnectReload(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectReload: 'reload' signal is emitted when the contents of a document is
@@ -106,7 +178,7 @@ func (document *Document) ConnectPageChanged(f func(pageNumber int)) externglib.
 // 'load-complete' or 'load-stopped' signal should follow, which clients may
 // await before interrogating ATK for the latest document content.
 func (document *Document) ConnectReload(f func()) externglib.SignalHandle {
-	return document.Connect("reload", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(document, "reload", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectReload), f)
 }
 
 // AttributeValue retrieves the value of the given attribute_name inside

@@ -260,6 +260,34 @@ func GetBinaryAge() uint {
 	return _guint
 }
 
+// GetCurrentEvent obtains a copy of the event currently being processed by
+// GTK+.
+//
+// For example, if you are handling a Button::clicked signal, the current event
+// will be the EventButton that triggered the ::clicked signal.
+//
+// The function returns the following values:
+//
+//    - event (optional): copy of the current event, or NULL if there is no
+//      current event. The returned event must be freed with gdk_event_free().
+//
+func GetCurrentEvent() *gdk.Event {
+	var _cret *C.GdkEvent // in
+
+	_cret = C.gtk_get_current_event()
+
+	var _event *gdk.Event // out
+
+	if _cret != nil {
+		{
+			v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+			_event = v
+		}
+	}
+
+	return _event
+}
+
 // GetCurrentEventDevice: if there is a current event and it has a device,
 // return that device, otherwise return NULL.
 //

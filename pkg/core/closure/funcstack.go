@@ -21,9 +21,9 @@ type FuncStack struct {
 // NewFuncStack creates a new FuncStack. The given frameSkip is added 2, meaning
 // the first frame from 0 will start from the caller of NewFuncStack.
 func NewFuncStack(fn interface{}, frameSkip int) *FuncStack {
-	// if reflect.TypeOf(fn).Kind() != reflect.Func {
-	// 	panic("closure value is not a func")
-	// }
+	if reflect.TypeOf(fn).Kind() != reflect.Func {
+		panic("closure value is not a func")
+	}
 
 	return newFuncStack(fn, frameSkip)
 }
@@ -62,6 +62,10 @@ func (fs *FuncStack) IsValid() bool {
 
 // ValidFrames returns non-zero frames.
 func (fs *FuncStack) ValidFrames() []uintptr {
+	if fs == nil {
+		return nil
+	}
+
 	var i int
 	for i < FrameSize && fs.Frames[i] != 0 {
 		i++
@@ -77,9 +81,12 @@ func (fs *FuncStack) Panicf(msgf string, v ...interface{}) {
 	msg.WriteString(headerSignature)
 	fmt.Fprintf(&msg, msgf, v...)
 
-	msg.WriteString("\n\nClosure added at:")
-
 	frames := runtime.CallersFrames(fs.ValidFrames())
+	if frames == nil {
+		panic(msg.String())
+	}
+
+	msg.WriteString("\n\nClosure added at:")
 	for {
 		frame, more := frames.Next()
 		msg.WriteString("\n\t")

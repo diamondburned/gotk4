@@ -909,7 +909,7 @@ func (layout *Layout) LogAttrs() []LogAttr {
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		src := unsafe.Slice(_arg1, _arg2)
+		src := unsafe.Slice((*C.PangoLogAttr)(_arg1), _arg2)
 		_attrs = make([]LogAttr, _arg2)
 		for i := 0; i < int(_arg2); i++ {
 			_attrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
@@ -948,7 +948,7 @@ func (layout *Layout) LogAttrsReadonly() []LogAttr {
 	var _logAttrs []LogAttr // out
 
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((*C.PangoLogAttr)(_cret), _arg1)
 		_logAttrs = make([]LogAttr, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_logAttrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
@@ -2725,7 +2725,7 @@ func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
 
 	defer C.free(unsafe.Pointer(_arg3))
 	{
-		src := unsafe.Slice(_arg3, _arg4)
+		src := unsafe.Slice((*C.int)(_arg3), _arg4)
 		_ranges = make([]int, _arg4)
 		for i := 0; i < int(_arg4); i++ {
 			_ranges[i] = int(src[i])

@@ -16,6 +16,7 @@ import (
 // extern void _gotk4_gtk4_NativeDialogClass_hide(GtkNativeDialog*);
 // extern void _gotk4_gtk4_NativeDialogClass_response(GtkNativeDialog*, int);
 // extern void _gotk4_gtk4_NativeDialogClass_show(GtkNativeDialog*);
+// extern void _gotk4_gtk4_NativeDialog_ConnectResponse(gpointer, gint, guintptr);
 import "C"
 
 func init() {
@@ -151,6 +152,26 @@ func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
 	return obj.baseNativeDialog()
 }
 
+//export _gotk4_gtk4_NativeDialog_ConnectResponse
+func _gotk4_gtk4_NativeDialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(responseId int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(responseId int))
+	}
+
+	var _responseId int // out
+
+	_responseId = int(arg1)
+
+	f(_responseId)
+}
+
 // ConnectResponse: emitted when the user responds to the dialog.
 //
 // When this is called the dialog has been hidden.
@@ -158,7 +179,7 @@ func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
 // If you call gtk.NativeDialog.Hide() before the user responds to the dialog
 // this signal will not be emitted.
 func (self *NativeDialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return self.Connect("response", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "response", false, unsafe.Pointer(C._gotk4_gtk4_NativeDialog_ConnectResponse), f)
 }
 
 // Destroy destroys a dialog.

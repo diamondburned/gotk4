@@ -12,6 +12,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_LevelBar_ConnectOffsetChanged(gpointer, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -169,6 +170,26 @@ func marshalLevelBarrer(p uintptr) (interface{}, error) {
 	return wrapLevelBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_LevelBar_ConnectOffsetChanged
+func _gotk4_gtk4_LevelBar_ConnectOffsetChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(name string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(name string))
+	}
+
+	var _name string // out
+
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_name)
+}
+
 // ConnectOffsetChanged: emitted when an offset specified on the bar changes
 // value.
 //
@@ -178,7 +199,7 @@ func marshalLevelBarrer(p uintptr) (interface{}, error) {
 // signal "changed::x" in order to only receive callbacks when the value of
 // offset "x" changes.
 func (self *LevelBar) ConnectOffsetChanged(f func(name string)) externglib.SignalHandle {
-	return self.Connect("offset-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "offset-changed", false, unsafe.Pointer(C._gotk4_gtk4_LevelBar_ConnectOffsetChanged), f)
 }
 
 // NewLevelBar creates a new GtkLevelBar.

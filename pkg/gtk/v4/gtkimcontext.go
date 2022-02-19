@@ -20,6 +20,8 @@ import (
 // extern gboolean _gotk4_gtk4_IMContextClass_get_surrounding(GtkIMContext*, char**, int*);
 // extern gboolean _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(GtkIMContext*, char**, int*, int*);
 // extern gboolean _gotk4_gtk4_IMContextClass_retrieve_surrounding(GtkIMContext*);
+// extern gboolean _gotk4_gtk4_IMContext_ConnectDeleteSurrounding(gpointer, gint, gint, guintptr);
+// extern gboolean _gotk4_gtk4_IMContext_ConnectRetrieveSurrounding(gpointer, guintptr);
 // extern void _gotk4_gtk4_IMContextClass_commit(GtkIMContext*, char*);
 // extern void _gotk4_gtk4_IMContextClass_focus_in(GtkIMContext*);
 // extern void _gotk4_gtk4_IMContextClass_focus_out(GtkIMContext*);
@@ -32,6 +34,10 @@ import (
 // extern void _gotk4_gtk4_IMContextClass_set_surrounding(GtkIMContext*, char*, int, int);
 // extern void _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(GtkIMContext*, char*, int, int, int);
 // extern void _gotk4_gtk4_IMContextClass_set_use_preedit(GtkIMContext*, gboolean);
+// extern void _gotk4_gtk4_IMContext_ConnectCommit(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_IMContext_ConnectPreeditChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_IMContext_ConnectPreeditEnd(gpointer, guintptr);
+// extern void _gotk4_gtk4_IMContext_ConnectPreeditStart(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -651,17 +657,81 @@ func BaseIMContext(obj IMContexter) *IMContext {
 	return obj.baseIMContext()
 }
 
+//export _gotk4_gtk4_IMContext_ConnectCommit
+func _gotk4_gtk4_IMContext_ConnectCommit(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(str string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(str string))
+	}
+
+	var _str string // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_str)
+}
+
 // ConnectCommit signal is emitted when a complete input sequence has been
 // entered by the user. This can be a single character immediately after a key
 // press or the final result of preediting.
 func (context *IMContext) ConnectCommit(f func(str string)) externglib.SignalHandle {
-	return context.Connect("commit", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(context, "commit", false, unsafe.Pointer(C._gotk4_gtk4_IMContext_ConnectCommit), f)
+}
+
+//export _gotk4_gtk4_IMContext_ConnectDeleteSurrounding
+func _gotk4_gtk4_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(offset, nChars int) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(offset, nChars int) (ok bool))
+	}
+
+	var _offset int // out
+	var _nChars int // out
+
+	_offset = int(arg1)
+	_nChars = int(arg2)
+
+	ok := f(_offset, _nChars)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDeleteSurrounding signal is emitted when the input method needs to
 // delete all or part of the context surrounding the cursor.
-func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) bool) externglib.SignalHandle {
-	return context.Connect("delete-surrounding", externglib.GeneratedClosure{Func: f})
+func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(context, "delete-surrounding", false, unsafe.Pointer(C._gotk4_gtk4_IMContext_ConnectDeleteSurrounding), f)
+}
+
+//export _gotk4_gtk4_IMContext_ConnectPreeditChanged
+func _gotk4_gtk4_IMContext_ConnectPreeditChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPreeditChanged signal is emitted whenever the preedit sequence
@@ -669,25 +739,79 @@ func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) bo
 // preedit sequence, in which case gtk_im_context_get_preedit_string() returns
 // the empty string.
 func (context *IMContext) ConnectPreeditChanged(f func()) externglib.SignalHandle {
-	return context.Connect("preedit-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(context, "preedit-changed", false, unsafe.Pointer(C._gotk4_gtk4_IMContext_ConnectPreeditChanged), f)
+}
+
+//export _gotk4_gtk4_IMContext_ConnectPreeditEnd
+func _gotk4_gtk4_IMContext_ConnectPreeditEnd(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPreeditEnd signal is emitted when a preediting sequence has been
 // completed or canceled.
 func (context *IMContext) ConnectPreeditEnd(f func()) externglib.SignalHandle {
-	return context.Connect("preedit-end", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(context, "preedit-end", false, unsafe.Pointer(C._gotk4_gtk4_IMContext_ConnectPreeditEnd), f)
+}
+
+//export _gotk4_gtk4_IMContext_ConnectPreeditStart
+func _gotk4_gtk4_IMContext_ConnectPreeditStart(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPreeditStart signal is emitted when a new preediting sequence starts.
 func (context *IMContext) ConnectPreeditStart(f func()) externglib.SignalHandle {
-	return context.Connect("preedit-start", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(context, "preedit-start", false, unsafe.Pointer(C._gotk4_gtk4_IMContext_ConnectPreeditStart), f)
+}
+
+//export _gotk4_gtk4_IMContext_ConnectRetrieveSurrounding
+func _gotk4_gtk4_IMContext_ConnectRetrieveSurrounding(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectRetrieveSurrounding signal is emitted when the input method requires
 // the context surrounding the cursor. The callback should set the input method
 // surrounding context by calling the gtk_im_context_set_surrounding() method.
-func (context *IMContext) ConnectRetrieveSurrounding(f func() bool) externglib.SignalHandle {
-	return context.Connect("retrieve-surrounding", externglib.GeneratedClosure{Func: f})
+func (context *IMContext) ConnectRetrieveSurrounding(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(context, "retrieve-surrounding", false, unsafe.Pointer(C._gotk4_gtk4_IMContext_ConnectRetrieveSurrounding), f)
 }
 
 // DeleteSurrounding asks the widget that the input context is attached to

@@ -15,6 +15,10 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 // extern gboolean _gotk4_gtk4_EntryCompletionMatchFunc(GtkEntryCompletion*, char*, GtkTreeIter*, gpointer);
+// extern gboolean _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(gpointer, GtkTreeModel*, GtkTreeIter*, guintptr);
+// extern gboolean _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(gpointer, gchar*, guintptr);
+// extern gboolean _gotk4_gtk4_EntryCompletion_ConnectMatchSelected(gpointer, GtkTreeModel*, GtkTreeIter*, guintptr);
+// extern void _gotk4_gtk4_EntryCompletion_ConnectNoMatches(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -124,6 +128,50 @@ func marshalEntryCompletioner(p uintptr) (interface{}, error) {
 	return wrapEntryCompletion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch
+func _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(arg0 C.gpointer, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(model TreeModeller, iter *TreeIter) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(model TreeModeller, iter *TreeIter) (ok bool))
+	}
+
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_model = rv
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	ok := f(_model, _iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectCursorOnMatch: emitted when a match from the cursor is on a match of
 // the list.
 //
@@ -132,8 +180,34 @@ func marshalEntryCompletioner(p uintptr) (interface{}, error) {
 //
 // Note that model is the model that was passed to
 // gtk.EntryCompletion.SetModel().
-func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter *TreeIter) bool) externglib.SignalHandle {
-	return completion.Connect("cursor-on-match", externglib.GeneratedClosure{Func: f})
+func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter *TreeIter) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(completion, "cursor-on-match", false, unsafe.Pointer(C._gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch), f)
+}
+
+//export _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix
+func _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(prefix string) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(prefix string) (ok bool))
+	}
+
+	var _prefix string // out
+
+	_prefix = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := f(_prefix)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectInsertPrefix: emitted when the inline autocompletion is triggered.
@@ -144,8 +218,52 @@ func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModelle
 // Applications may connect to this signal in order to insert only a smaller
 // part of the prefix into the entry - e.g. the entry used in the FileChooser
 // inserts only the part of the prefix up to the next '/'.
-func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) bool) externglib.SignalHandle {
-	return completion.Connect("insert-prefix", externglib.GeneratedClosure{Func: f})
+func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(completion, "insert-prefix", false, unsafe.Pointer(C._gotk4_gtk4_EntryCompletion_ConnectInsertPrefix), f)
+}
+
+//export _gotk4_gtk4_EntryCompletion_ConnectMatchSelected
+func _gotk4_gtk4_EntryCompletion_ConnectMatchSelected(arg0 C.gpointer, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(model TreeModeller, iter *TreeIter) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(model TreeModeller, iter *TreeIter) (ok bool))
+	}
+
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_model = rv
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	ok := f(_model, _iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectMatchSelected: emitted when a match from the list is selected.
@@ -155,8 +273,24 @@ func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) boo
 //
 // Note that model is the model that was passed to
 // gtk.EntryCompletion.SetModel().
-func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter *TreeIter) bool) externglib.SignalHandle {
-	return completion.Connect("match-selected", externglib.GeneratedClosure{Func: f})
+func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter *TreeIter) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(completion, "match-selected", false, unsafe.Pointer(C._gotk4_gtk4_EntryCompletion_ConnectMatchSelected), f)
+}
+
+//export _gotk4_gtk4_EntryCompletion_ConnectNoMatches
+func _gotk4_gtk4_EntryCompletion_ConnectNoMatches(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectNoMatches: emitted when the filter model has zero number of rows in
@@ -164,7 +298,7 @@ func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModelle
 //
 // In other words when GtkEntryCompletion is out of suggestions.
 func (completion *EntryCompletion) ConnectNoMatches(f func()) externglib.SignalHandle {
-	return completion.Connect("no-matches", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(completion, "no-matches", false, unsafe.Pointer(C._gotk4_gtk4_EntryCompletion_ConnectNoMatches), f)
 }
 
 // NewEntryCompletion creates a new GtkEntryCompletion object.

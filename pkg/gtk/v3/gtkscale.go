@@ -18,6 +18,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gchar* _gotk4_gtk3_ScaleClass_format_value(GtkScale*, gdouble);
+// extern gchar* _gotk4_gtk3_Scale_ConnectFormatValue(gpointer, gdouble, guintptr);
 // extern void _gotk4_gtk3_ScaleClass_draw_value(GtkScale*);
 // extern void _gotk4_gtk3_ScaleClass_get_layout_offsets(GtkScale*, gint*, gint*);
 import "C"
@@ -216,6 +217,30 @@ func marshalScaler(p uintptr) (interface{}, error) {
 	return wrapScale(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Scale_ConnectFormatValue
+func _gotk4_gtk3_Scale_ConnectFormatValue(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) (cret *C.gchar) {
+	var f func(value float64) (utf8 string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(value float64) (utf8 string))
+	}
+
+	var _value float64 // out
+
+	_value = float64(arg1)
+
+	utf8 := f(_value)
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
 // ConnectFormatValue: signal which allows you to change how the scale value is
 // displayed. Connect a signal handler which returns an allocated string
 // representing value. That string will then be used to display the scale's
@@ -234,8 +259,8 @@ func marshalScaler(p uintptr) (interface{}, error) {
 //      return g_strdup_printf ("-->\0.*g<--",
 //                              gtk_scale_get_digits (scale), value);
 //     }.
-func (scale *Scale) ConnectFormatValue(f func(value float64) string) externglib.SignalHandle {
-	return scale.Connect("format-value", externglib.GeneratedClosure{Func: f})
+func (scale *Scale) ConnectFormatValue(f func(value float64) (utf8 string)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(scale, "format-value", false, unsafe.Pointer(C._gotk4_gtk3_Scale_ConnectFormatValue), f)
 }
 
 // NewScale creates a new Scale.

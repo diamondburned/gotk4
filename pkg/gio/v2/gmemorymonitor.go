@@ -12,6 +12,7 @@ import (
 // #include <gio/gio.h>
 // #include <glib-object.h>
 // extern void _gotk4_gio2_MemoryMonitorInterface_low_memory_warning(GMemoryMonitor*, GMemoryMonitorWarningLevel);
+// extern void _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning(gpointer, GMemoryMonitorWarningLevel, guintptr);
 import "C"
 
 func init() {
@@ -136,11 +137,31 @@ func BaseMemoryMonitor(obj MemoryMonitorrer) *MemoryMonitor {
 	return obj.baseMemoryMonitor()
 }
 
+//export _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning
+func _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning(arg0 C.gpointer, arg1 C.GMemoryMonitorWarningLevel, arg2 C.guintptr) {
+	var f func(level MemoryMonitorWarningLevel)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(level MemoryMonitorWarningLevel))
+	}
+
+	var _level MemoryMonitorWarningLevel // out
+
+	_level = MemoryMonitorWarningLevel(arg1)
+
+	f(_level)
+}
+
 // ConnectLowMemoryWarning: emitted when the system is running low on free
 // memory. The signal handler should then take the appropriate action depending
 // on the warning level. See the MonitorWarningLevel documentation for details.
 func (monitor *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitorWarningLevel)) externglib.SignalHandle {
-	return monitor.Connect("low-memory-warning", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(monitor, "low-memory-warning", false, unsafe.Pointer(C._gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning), f)
 }
 
 // MemoryMonitorDupDefault gets a reference to the default Monitor for the

@@ -18,6 +18,8 @@ import (
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_HSVClass_changed(GtkHSV*);
 // extern void _gotk4_gtk3_HSVClass_move(GtkHSV*, GtkDirectionType);
+// extern void _gotk4_gtk3_HSV_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_HSV_ConnectMove(gpointer, GtkDirectionType, guintptr);
 import "C"
 
 func init() {
@@ -110,12 +112,48 @@ func marshalHSVer(p uintptr) (interface{}, error) {
 	return wrapHSV(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_HSV_ConnectChanged
+func _gotk4_gtk3_HSV_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 func (hsv *HSV) ConnectChanged(f func()) externglib.SignalHandle {
-	return hsv.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(hsv, "changed", false, unsafe.Pointer(C._gotk4_gtk3_HSV_ConnectChanged), f)
+}
+
+//export _gotk4_gtk3_HSV_ConnectMove
+func _gotk4_gtk3_HSV_ConnectMove(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
+	var f func(object DirectionType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object DirectionType))
+	}
+
+	var _object DirectionType // out
+
+	_object = DirectionType(arg1)
+
+	f(_object)
 }
 
 func (hsv *HSV) ConnectMove(f func(object DirectionType)) externglib.SignalHandle {
-	return hsv.Connect("move", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(hsv, "move", false, unsafe.Pointer(C._gotk4_gtk3_HSV_ConnectMove), f)
 }
 
 // NewHSV creates a new HSV color selector.

@@ -28,6 +28,8 @@ import (
 // extern void _gotk4_gtk4_CellRendererClass_get_preferred_width(GtkCellRenderer*, GtkWidget*, int*, int*);
 // extern void _gotk4_gtk4_CellRendererClass_get_preferred_width_for_height(GtkCellRenderer*, GtkWidget*, int, int*, int*);
 // extern void _gotk4_gtk4_CellRendererClass_snapshot(GtkCellRenderer*, GtkSnapshot*, GtkWidget*, GdkRectangle*, GdkRectangle*, GtkCellRendererState);
+// extern void _gotk4_gtk4_CellRenderer_ConnectEditingCanceled(gpointer, guintptr);
+// extern void _gotk4_gtk4_CellRenderer_ConnectEditingStarted(gpointer, GtkCellEditable*, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -823,13 +825,67 @@ func BaseCellRenderer(obj CellRendererer) *CellRenderer {
 	return obj.baseCellRenderer()
 }
 
+//export _gotk4_gtk4_CellRenderer_ConnectEditingCanceled
+func _gotk4_gtk4_CellRenderer_ConnectEditingCanceled(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectEditingCanceled: this signal gets emitted when the user cancels the
 // process of editing a cell. For example, an editable cell renderer could be
 // written to cancel editing when the user presses Escape.
 //
 // See also: gtk_cell_renderer_stop_editing().
 func (cell *CellRenderer) ConnectEditingCanceled(f func()) externglib.SignalHandle {
-	return cell.Connect("editing-canceled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(cell, "editing-canceled", false, unsafe.Pointer(C._gotk4_gtk4_CellRenderer_ConnectEditingCanceled), f)
+}
+
+//export _gotk4_gtk4_CellRenderer_ConnectEditingStarted
+func _gotk4_gtk4_CellRenderer_ConnectEditingStarted(arg0 C.gpointer, arg1 *C.GtkCellEditable, arg2 *C.gchar, arg3 C.guintptr) {
+	var f func(editable CellEditabler, path string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(editable CellEditabler, path string))
+	}
+
+	var _editable CellEditabler // out
+	var _path string            // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellEditabler is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellEditabler)
+			return ok
+		})
+		rv, ok := casted.(CellEditabler)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
+		}
+		_editable = rv
+	}
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	f(_editable, _path)
 }
 
 // ConnectEditingStarted: this signal gets emitted when a cell starts to be
@@ -860,7 +916,7 @@ func (cell *CellRenderer) ConnectEditingCanceled(f func()) externglib.SignalHand
 //        }
 //    }.
 func (cell *CellRenderer) ConnectEditingStarted(f func(editable CellEditabler, path string)) externglib.SignalHandle {
-	return cell.Connect("editing-started", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(cell, "editing-started", false, unsafe.Pointer(C._gotk4_gtk4_CellRenderer_ConnectEditingStarted), f)
 }
 
 // Activate passes an activate event to the cell renderer for possible

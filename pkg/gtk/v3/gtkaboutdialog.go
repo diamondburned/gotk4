@@ -20,6 +20,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_AboutDialogClass_activate_link(GtkAboutDialog*, gchar*);
+// extern gboolean _gotk4_gtk3_AboutDialog_ConnectActivateLink(gpointer, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -243,11 +244,37 @@ func marshalAboutDialogger(p uintptr) (interface{}, error) {
 	return wrapAboutDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_AboutDialog_ConnectActivateLink
+func _gotk4_gtk3_AboutDialog_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(uri string) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(uri string) (ok bool))
+	}
+
+	var _uri string // out
+
+	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := f(_uri)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectActivateLink: signal which gets emitted to activate a URI.
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk_show_uri_on_window().
-func (about *AboutDialog) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
-	return about.Connect("activate-link", externglib.GeneratedClosure{Func: f})
+func (about *AboutDialog) ConnectActivateLink(f func(uri string) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(about, "activate-link", false, unsafe.Pointer(C._gotk4_gtk3_AboutDialog_ConnectActivateLink), f)
 }
 
 // NewAboutDialog creates a new AboutDialog.

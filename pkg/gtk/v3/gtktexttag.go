@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -16,6 +17,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_TextTagClass_event(GtkTextTag*, GObject*, GdkEvent*, GtkTextIter*);
+// extern gboolean _gotk4_gtk3_TextTag_ConnectEvent(gpointer, GObject, GdkEvent, GtkTextIter*, guintptr);
 import "C"
 
 func init() {
@@ -26,6 +29,19 @@ func init() {
 
 // TextTagOverrider contains methods that are overridable.
 type TextTagOverrider interface {
+	// Event emits the “event” signal on the TextTag.
+	//
+	// The function takes the following parameters:
+	//
+	//    - eventObject: object that received the event, such as a widget.
+	//    - event: event.
+	//    - iter: location where the event was received.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: result of signal emission (whether the event was handled).
+	//
+	Event(eventObject *externglib.Object, event *gdk.Event, iter *TextIter) bool
 }
 
 // TextTag: you may wish to begin by reading the [text widget conceptual
@@ -57,6 +73,44 @@ func classInitTextTagger(gclassPtr, data C.gpointer) {
 	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkTextTagClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkTextTagClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Event(eventObject *externglib.Object, event *gdk.Event, iter *TextIter) bool
+	}); ok {
+		pclass.event = (*[0]byte)(C._gotk4_gtk3_TextTagClass_event)
+	}
+}
+
+//export _gotk4_gtk3_TextTagClass_event
+func _gotk4_gtk3_TextTagClass_event(arg0 *C.GtkTextTag, arg1 *C.GObject, arg2 *C.GdkEvent, arg3 *C.GtkTextIter) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Event(eventObject *externglib.Object, event *gdk.Event, iter *TextIter) bool
+	})
+
+	var _eventObject *externglib.Object // out
+	var _event *gdk.Event               // out
+	var _iter *TextIter                 // out
+
+	_eventObject = externglib.Take(unsafe.Pointer(arg1))
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+
+	ok := iface.Event(_eventObject, _event, _iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 func wrapTextTag(obj *externglib.Object) *TextTag {
@@ -69,10 +123,44 @@ func marshalTextTagger(p uintptr) (interface{}, error) {
 	return wrapTextTag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_TextTag_ConnectEvent
+func _gotk4_gtk3_TextTag_ConnectEvent(arg0 C.gpointer, arg1 C.GObject, arg2 C.GdkEvent, arg3 *C.GtkTextIter, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(object *externglib.Object, event *gdk.Event, iter *TextIter) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object *externglib.Object, event *gdk.Event, iter *TextIter) (ok bool))
+	}
+
+	var _object *externglib.Object // out
+	var _event *gdk.Event          // out
+	var _iter *TextIter            // out
+
+	_object = externglib.Take(unsafe.Pointer(&arg1))
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg2))))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+
+	ok := f(_object, _event, _iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectEvent signal is emitted when an event occurs on a region of the buffer
 // marked with this tag.
-func (tag *TextTag) ConnectEvent(f func(object *externglib.Object, event *gdk.Event, iter *TextIter) bool) externglib.SignalHandle {
-	return tag.Connect("event", externglib.GeneratedClosure{Func: f})
+func (tag *TextTag) ConnectEvent(f func(object *externglib.Object, event *gdk.Event, iter *TextIter) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(tag, "event", false, unsafe.Pointer(C._gotk4_gtk3_TextTag_ConnectEvent), f)
 }
 
 // NewTextTag creates a TextTag. Configure the tag using object arguments, i.e.

@@ -26,6 +26,7 @@ import (
 // extern gint _gotk4_gtk3_FontChooserIface_get_font_size(GtkFontChooser*);
 // extern void _gotk4_gtk3_FontChooserIface_font_activated(GtkFontChooser*, gchar*);
 // extern void _gotk4_gtk3_FontChooserIface_set_font_map(GtkFontChooser*, PangoFontMap*);
+// extern void _gotk4_gtk3_FontChooser_ConnectFontActivated(gpointer, gchar*, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -233,11 +234,31 @@ func marshalFontChooserer(p uintptr) (interface{}, error) {
 	return wrapFontChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_FontChooser_ConnectFontActivated
+func _gotk4_gtk3_FontChooser_ConnectFontActivated(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(fontname string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(fontname string))
+	}
+
+	var _fontname string // out
+
+	_fontname = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_fontname)
+}
+
 // ConnectFontActivated: emitted when a font is activated. This usually happens
 // when the user double clicks an item, or an item is selected and the user
 // presses one of the keys Space, Shift+Space, Return or Enter.
 func (fontchooser *FontChooser) ConnectFontActivated(f func(fontname string)) externglib.SignalHandle {
-	return fontchooser.Connect("font-activated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(fontchooser, "font-activated", false, unsafe.Pointer(C._gotk4_gtk3_FontChooser_ConnectFontActivated), f)
 }
 
 // Font gets the currently-selected font name.

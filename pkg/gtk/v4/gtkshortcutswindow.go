@@ -11,6 +11,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ShortcutsWindow_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk4_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -122,13 +124,45 @@ func marshalShortcutsWindower(p uintptr) (interface{}, error) {
 	return wrapShortcutsWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_ShortcutsWindow_ConnectClose
+func _gotk4_gtk4_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectClose: emitted when the user uses a keybinding to close the window.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is the Escape key.
 func (v *ShortcutsWindow) ConnectClose(f func()) externglib.SignalHandle {
-	return v.Connect("close", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "close", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsWindow_ConnectClose), f)
+}
+
+//export _gotk4_gtk4_ShortcutsWindow_ConnectSearch
+func _gotk4_gtk4_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSearch: emitted when the user uses a keybinding to start a search.
@@ -137,5 +171,5 @@ func (v *ShortcutsWindow) ConnectClose(f func()) externglib.SignalHandle {
 //
 // The default binding for this signal is Control-F.
 func (v *ShortcutsWindow) ConnectSearch(f func()) externglib.SignalHandle {
-	return v.Connect("search", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "search", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsWindow_ConnectSearch), f)
 }

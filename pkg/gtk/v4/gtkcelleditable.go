@@ -16,6 +16,8 @@ import (
 // extern void _gotk4_gtk4_CellEditableIface_editing_done(GtkCellEditable*);
 // extern void _gotk4_gtk4_CellEditableIface_remove_widget(GtkCellEditable*);
 // extern void _gotk4_gtk4_CellEditableIface_start_editing(GtkCellEditable*, GdkEvent*);
+// extern void _gotk4_gtk4_CellEditable_ConnectEditingDone(gpointer, guintptr);
+// extern void _gotk4_gtk4_CellEditable_ConnectRemoveWidget(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -153,6 +155,22 @@ func marshalCellEditabler(p uintptr) (interface{}, error) {
 	return wrapCellEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_CellEditable_ConnectEditingDone
+func _gotk4_gtk4_CellEditable_ConnectEditingDone(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectEditingDone: this signal is a sign for the cell renderer to update its
 // value from the cell_editable.
 //
@@ -165,7 +183,23 @@ func marshalCellEditabler(p uintptr) (interface{}, error) {
 // gtk_cell_editable_editing_done() is a convenience method for emitting
 // CellEditable::editing-done.
 func (cellEditable *CellEditable) ConnectEditingDone(f func()) externglib.SignalHandle {
-	return cellEditable.Connect("editing-done", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(cellEditable, "editing-done", false, unsafe.Pointer(C._gotk4_gtk4_CellEditable_ConnectEditingDone), f)
+}
+
+//export _gotk4_gtk4_CellEditable_ConnectRemoveWidget
+func _gotk4_gtk4_CellEditable_ConnectRemoveWidget(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectRemoveWidget: this signal is meant to indicate that the cell is
@@ -180,7 +214,7 @@ func (cellEditable *CellEditable) ConnectEditingDone(f func()) externglib.Signal
 // gtk_cell_editable_remove_widget() is a convenience method for emitting
 // CellEditable::remove-widget.
 func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) externglib.SignalHandle {
-	return cellEditable.Connect("remove-widget", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(cellEditable, "remove-widget", false, unsafe.Pointer(C._gotk4_gtk4_CellEditable_ConnectRemoveWidget), f)
 }
 
 // EditingDone emits the CellEditable::editing-done signal.

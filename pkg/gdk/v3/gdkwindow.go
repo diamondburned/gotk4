@@ -24,6 +24,7 @@ import (
 // extern gboolean _gotk4_gdk3_WindowChildFunc(GdkWindow*, gpointer);
 // extern void _gotk4_gdk3_WindowClass_from_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
 // extern void _gotk4_gdk3_WindowClass_to_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
+// extern void _gotk4_gdk3_Window_ConnectMovedToRect(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
 import "C"
 
 func init() {
@@ -982,17 +983,34 @@ func BaseWindow(obj Windower) *Window {
 	return obj.baseWindow()
 }
 
-// ConnectCreateSurface signal is emitted when an offscreen window needs its
-// surface (re)created, which happens either when the window is first drawn to,
-// or when the window is being resized. The first signal handler that returns a
-// non-NULL surface will stop any further signal emission, and its surface will
-// be used.
-//
-// Note that it is not possible to access the window's previous surface from
-// within any callback of this signal. Calling
-// gdk_offscreen_window_get_surface() will lead to a crash.
-func (window *Window) ConnectCreateSurface(f func(width, height int) *cairo.Surface) externglib.SignalHandle {
-	return window.Connect("create-surface", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gdk3_Window_ConnectMovedToRect
+func _gotk4_gdk3_Window_ConnectMovedToRect(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
+	var f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool))
+	}
+
+	var _flippedRect cgo.Handle // out
+	var _finalRect cgo.Handle   // out
+	var _flippedX bool          // out
+	var _flippedY bool          // out
+
+	_flippedRect = (cgo.Handle)(unsafe.Pointer(arg1))
+	_finalRect = (cgo.Handle)(unsafe.Pointer(arg2))
+	if arg3 != 0 {
+		_flippedX = true
+	}
+	if arg4 != 0 {
+		_flippedY = true
+	}
+
+	f(_flippedRect, _finalRect, _flippedX, _flippedY)
 }
 
 // ConnectMovedToRect: emitted when the position of window is finalized after
@@ -1007,13 +1025,7 @@ func (window *Window) ConnectCreateSurface(f func(width, height int) *cairo.Surf
 // translated in the case that flipping is still ineffective in keeping window
 // on-screen.
 func (window *Window) ConnectMovedToRect(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
-	return window.Connect("moved-to-rect", externglib.GeneratedClosure{Func: f})
-}
-
-// ConnectPickEmbeddedChild signal is emitted to find an embedded child at the
-// given position.
-func (window *Window) ConnectPickEmbeddedChild(f func(x, y float64) Windower) externglib.SignalHandle {
-	return window.Connect("pick-embedded-child", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(window, "moved-to-rect", false, unsafe.Pointer(C._gotk4_gdk3_Window_ConnectMovedToRect), f)
 }
 
 // NewWindow creates a new Window using the attributes from attributes. See

@@ -17,7 +17,9 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_SwitchClass_state_set(GtkSwitch*, gboolean);
+// extern gboolean _gotk4_gtk3_Switch_ConnectStateSet(gpointer, gboolean, guintptr);
 // extern void _gotk4_gtk3_SwitchClass_activate(GtkSwitch*);
+// extern void _gotk4_gtk3_Switch_ConnectActivate(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -150,11 +152,55 @@ func marshalSwitcher(p uintptr) (interface{}, error) {
 	return wrapSwitch(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Switch_ConnectActivate
+func _gotk4_gtk3_Switch_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate signal on GtkSwitch is an action signal and emitting it
 // causes the switch to animate. Applications should never connect to this
 // signal, but use the notify::active signal.
 func (sw *Switch) ConnectActivate(f func()) externglib.SignalHandle {
-	return sw.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(sw, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Switch_ConnectActivate), f)
+}
+
+//export _gotk4_gtk3_Switch_ConnectStateSet
+func _gotk4_gtk3_Switch_ConnectStateSet(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(state bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(state bool) (ok bool))
+	}
+
+	var _state bool // out
+
+	if arg1 != 0 {
+		_state = true
+	}
+
+	ok := f(_state)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectStateSet signal on GtkSwitch is emitted to change the underlying
@@ -169,8 +215,8 @@ func (sw *Switch) ConnectActivate(f func()) externglib.SignalHandle {
 // Visually, the underlying state is represented by the trough color of the
 // switch, while the Switch:active property is represented by the position of
 // the switch.
-func (sw *Switch) ConnectStateSet(f func(state bool) bool) externglib.SignalHandle {
-	return sw.Connect("state-set", externglib.GeneratedClosure{Func: f})
+func (sw *Switch) ConnectStateSet(f func(state bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(sw, "state-set", false, unsafe.Pointer(C._gotk4_gtk3_Switch_ConnectStateSet), f)
 }
 
 // NewSwitch creates a new Switch widget.

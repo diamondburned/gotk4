@@ -14,6 +14,7 @@ import (
 // #include <gio/gio.h>
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_SocketServiceClass_incoming(GSocketService*, GSocketConnection*, GObject*);
+// extern gboolean _gotk4_gio2_SocketService_ConnectIncoming(gpointer, GSocketConnection*, GObject, guintptr);
 import "C"
 
 func init() {
@@ -117,14 +118,42 @@ func marshalSocketServicer(p uintptr) (interface{}, error) {
 	return wrapSocketService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_SocketService_ConnectIncoming
+func _gotk4_gio2_SocketService_ConnectIncoming(arg0 C.gpointer, arg1 *C.GSocketConnection, arg2 C.GObject, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(connection *SocketConnection, sourceObject *externglib.Object) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(connection *SocketConnection, sourceObject *externglib.Object) (ok bool))
+	}
+
+	var _connection *SocketConnection    // out
+	var _sourceObject *externglib.Object // out
+
+	_connection = wrapSocketConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_sourceObject = externglib.Take(unsafe.Pointer(&arg2))
+
+	ok := f(_connection, _sourceObject)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectIncoming signal is emitted when a new incoming connection to service
 // needs to be handled. The handler must initiate the handling of connection,
 // but may not block; in essence, asynchronous operations must be used.
 //
 // connection will be unreffed once the signal handler returns, so you need to
 // ref it yourself if you are planning to use it.
-func (service *SocketService) ConnectIncoming(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
-	return service.Connect("incoming", externglib.GeneratedClosure{Func: f})
+func (service *SocketService) ConnectIncoming(f func(connection *SocketConnection, sourceObject *externglib.Object) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(service, "incoming", false, unsafe.Pointer(C._gotk4_gio2_SocketService_ConnectIncoming), f)
 }
 
 // NewSocketService creates a new Service with no sockets to listen for. New

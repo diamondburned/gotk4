@@ -17,6 +17,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_ToggleToolButtonClass_toggled(GtkToggleToolButton*);
+// extern void _gotk4_gtk3_ToggleToolButton_ConnectToggled(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -120,9 +121,25 @@ func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
 	return wrapToggleToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ToggleToolButton_ConnectToggled
+func _gotk4_gtk3_ToggleToolButton_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectToggled: emitted whenever the toggle tool button changes state.
 func (button *ToggleToolButton) ConnectToggled(f func()) externglib.SignalHandle {
-	return button.Connect("toggled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "toggled", false, unsafe.Pointer(C._gotk4_gtk3_ToggleToolButton_ConnectToggled), f)
 }
 
 // NewToggleToolButton returns a new ToggleToolButton.

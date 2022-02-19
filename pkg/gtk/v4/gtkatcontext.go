@@ -13,6 +13,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ATContext_ConnectStateChange(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -78,10 +79,26 @@ func BaseATContext(obj ATContexter) *ATContext {
 	return obj.baseATContext()
 }
 
+//export _gotk4_gtk4_ATContext_ConnectStateChange
+func _gotk4_gtk4_ATContext_ConnectStateChange(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectStateChange: emitted when the attributes of the accessible for the
 // GtkATContext instance change.
 func (self *ATContext) ConnectStateChange(f func()) externglib.SignalHandle {
-	return self.Connect("state-change", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "state-change", false, unsafe.Pointer(C._gotk4_gtk4_ATContext_ConnectStateChange), f)
 }
 
 // NewATContextCreate creates a new GtkATContext instance for the given

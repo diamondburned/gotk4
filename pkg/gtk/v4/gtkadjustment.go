@@ -15,6 +15,8 @@ import (
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_AdjustmentClass_changed(GtkAdjustment*);
 // extern void _gotk4_gtk4_AdjustmentClass_value_changed(GtkAdjustment*);
+// extern void _gotk4_gtk4_Adjustment_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_Adjustment_ConnectValueChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -94,18 +96,50 @@ func marshalAdjustmenter(p uintptr) (interface{}, error) {
 	return wrapAdjustment(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Adjustment_ConnectChanged
+func _gotk4_gtk4_Adjustment_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted when one or more of the GtkAdjustment properties have
 // been changed.
 //
 // Note that the gtk.Adjustment:value property is covered by the
 // gtk.Adjustment::value-changed signal.
 func (adjustment *Adjustment) ConnectChanged(f func()) externglib.SignalHandle {
-	return adjustment.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(adjustment, "changed", false, unsafe.Pointer(C._gotk4_gtk4_Adjustment_ConnectChanged), f)
+}
+
+//export _gotk4_gtk4_Adjustment_ConnectValueChanged
+func _gotk4_gtk4_Adjustment_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectValueChanged: emitted when the value has been changed.
 func (adjustment *Adjustment) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return adjustment.Connect("value-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(adjustment, "value-changed", false, unsafe.Pointer(C._gotk4_gtk4_Adjustment_ConnectValueChanged), f)
 }
 
 // NewAdjustment creates a new GtkAdjustment.

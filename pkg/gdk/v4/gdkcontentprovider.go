@@ -25,6 +25,7 @@ import (
 // extern void _gotk4_gdk4_ContentProviderClass_attach_clipboard(GdkContentProvider*, GdkClipboard*);
 // extern void _gotk4_gdk4_ContentProviderClass_content_changed(GdkContentProvider*);
 // extern void _gotk4_gdk4_ContentProviderClass_detach_clipboard(GdkContentProvider*, GdkClipboard*);
+// extern void _gotk4_gdk4_ContentProvider_ConnectContentChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -272,10 +273,26 @@ func marshalContentProviderer(p uintptr) (interface{}, error) {
 	return wrapContentProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdk4_ContentProvider_ConnectContentChanged
+func _gotk4_gdk4_ContentProvider_ConnectContentChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectContentChanged: emitted whenever the content provided by this provider
 // has changed.
 func (provider *ContentProvider) ConnectContentChanged(f func()) externglib.SignalHandle {
-	return provider.Connect("content-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(provider, "content-changed", false, unsafe.Pointer(C._gotk4_gdk4_ContentProvider_ConnectContentChanged), f)
 }
 
 // ContentChanged emits the ::content-changed signal.

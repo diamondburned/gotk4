@@ -27,6 +27,10 @@ import (
 // extern void _gotk4_gio2_ActionGroupInterface_action_state_changed(GActionGroup*, gchar*, GVariant*);
 // extern void _gotk4_gio2_ActionGroupInterface_activate_action(GActionGroup*, gchar*, GVariant*);
 // extern void _gotk4_gio2_ActionGroupInterface_change_action_state(GActionGroup*, gchar*, GVariant*);
+// extern void _gotk4_gio2_ActionGroup_ConnectActionAdded(gpointer, gchar*, guintptr);
+// extern void _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged(gpointer, gchar*, gboolean, guintptr);
+// extern void _gotk4_gio2_ActionGroup_ConnectActionRemoved(gpointer, gchar*, guintptr);
+// extern void _gotk4_gio2_ActionGroup_ConnectActionStateChanged(gpointer, gchar*, GVariant*, guintptr);
 import "C"
 
 func init() {
@@ -620,29 +624,122 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 	return wrapActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_ActionGroup_ConnectActionAdded
+func _gotk4_gio2_ActionGroup_ConnectActionAdded(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(actionName string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(actionName string))
+	}
+
+	var _actionName string // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_actionName)
+}
+
 // ConnectActionAdded signals that a new action was just added to the group.
 // This signal is emitted after the action has been added and is now visible.
 func (actionGroup *ActionGroup) ConnectActionAdded(f func(actionName string)) externglib.SignalHandle {
-	return actionGroup.Connect("action-added", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(actionGroup, "action-added", false, unsafe.Pointer(C._gotk4_gio2_ActionGroup_ConnectActionAdded), f)
+}
+
+//export _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged
+func _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.gboolean, arg3 C.guintptr) {
+	var f func(actionName string, enabled bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(actionName string, enabled bool))
+	}
+
+	var _actionName string // out
+	var _enabled bool      // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	if arg2 != 0 {
+		_enabled = true
+	}
+
+	f(_actionName, _enabled)
 }
 
 // ConnectActionEnabledChanged signals that the enabled status of the named
 // action has changed.
 func (actionGroup *ActionGroup) ConnectActionEnabledChanged(f func(actionName string, enabled bool)) externglib.SignalHandle {
-	return actionGroup.Connect("action-enabled-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(actionGroup, "action-enabled-changed", false, unsafe.Pointer(C._gotk4_gio2_ActionGroup_ConnectActionEnabledChanged), f)
+}
+
+//export _gotk4_gio2_ActionGroup_ConnectActionRemoved
+func _gotk4_gio2_ActionGroup_ConnectActionRemoved(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(actionName string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(actionName string))
+	}
+
+	var _actionName string // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_actionName)
 }
 
 // ConnectActionRemoved signals that an action is just about to be removed from
 // the group. This signal is emitted before the action is removed, so the action
 // is still visible and can be queried from the signal handler.
 func (actionGroup *ActionGroup) ConnectActionRemoved(f func(actionName string)) externglib.SignalHandle {
-	return actionGroup.Connect("action-removed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(actionGroup, "action-removed", false, unsafe.Pointer(C._gotk4_gio2_ActionGroup_ConnectActionRemoved), f)
+}
+
+//export _gotk4_gio2_ActionGroup_ConnectActionStateChanged
+func _gotk4_gio2_ActionGroup_ConnectActionStateChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.GVariant, arg3 C.guintptr) {
+	var f func(actionName string, value *glib.Variant)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(actionName string, value *glib.Variant))
+	}
+
+	var _actionName string   // out
+	var _value *glib.Variant // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	C.g_variant_ref(arg2)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_value)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	f(_actionName, _value)
 }
 
 // ConnectActionStateChanged signals that the state of the named action has
 // changed.
 func (actionGroup *ActionGroup) ConnectActionStateChanged(f func(actionName string, value *glib.Variant)) externglib.SignalHandle {
-	return actionGroup.Connect("action-state-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(actionGroup, "action-state-changed", false, unsafe.Pointer(C._gotk4_gio2_ActionGroup_ConnectActionStateChanged), f)
 }
 
 // ActionAdded emits the Group::action-added signal on action_group.

@@ -22,6 +22,9 @@ import (
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_ApplicationClass_window_added(GtkApplication*, GtkWindow*);
 // extern void _gotk4_gtk3_ApplicationClass_window_removed(GtkApplication*, GtkWindow*);
+// extern void _gotk4_gtk3_Application_ConnectQueryEnd(gpointer, guintptr);
+// extern void _gotk4_gtk3_Application_ConnectWindowAdded(gpointer, GtkWindow*, guintptr);
+// extern void _gotk4_gtk3_Application_ConnectWindowRemoved(gpointer, GtkWindow*, guintptr);
 import "C"
 
 func init() {
@@ -247,26 +250,82 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 	return wrapApplication(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Application_ConnectQueryEnd
+func _gotk4_gtk3_Application_ConnectQueryEnd(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectQueryEnd: emitted when the session manager is about to end the
 // session, only if Application::register-session is TRUE. Applications can
 // connect to this signal and call gtk_application_inhibit() with
 // GTK_APPLICATION_INHIBIT_LOGOUT to delay the end of the session until state
 // has been saved.
 func (application *Application) ConnectQueryEnd(f func()) externglib.SignalHandle {
-	return application.Connect("query-end", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(application, "query-end", false, unsafe.Pointer(C._gotk4_gtk3_Application_ConnectQueryEnd), f)
+}
+
+//export _gotk4_gtk3_Application_ConnectWindowAdded
+func _gotk4_gtk3_Application_ConnectWindowAdded(arg0 C.gpointer, arg1 *C.GtkWindow, arg2 C.guintptr) {
+	var f func(window *Window)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(window *Window))
+	}
+
+	var _window *Window // out
+
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_window)
 }
 
 // ConnectWindowAdded: emitted when a Window is added to application through
 // gtk_application_add_window().
-func (application *Application) ConnectWindowAdded(f func(window Window)) externglib.SignalHandle {
-	return application.Connect("window-added", externglib.GeneratedClosure{Func: f})
+func (application *Application) ConnectWindowAdded(f func(window *Window)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(application, "window-added", false, unsafe.Pointer(C._gotk4_gtk3_Application_ConnectWindowAdded), f)
+}
+
+//export _gotk4_gtk3_Application_ConnectWindowRemoved
+func _gotk4_gtk3_Application_ConnectWindowRemoved(arg0 C.gpointer, arg1 *C.GtkWindow, arg2 C.guintptr) {
+	var f func(window *Window)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(window *Window))
+	}
+
+	var _window *Window // out
+
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_window)
 }
 
 // ConnectWindowRemoved: emitted when a Window is removed from application,
 // either as a side-effect of being destroyed or explicitly through
 // gtk_application_remove_window().
-func (application *Application) ConnectWindowRemoved(f func(window Window)) externglib.SignalHandle {
-	return application.Connect("window-removed", externglib.GeneratedClosure{Func: f})
+func (application *Application) ConnectWindowRemoved(f func(window *Window)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(application, "window-removed", false, unsafe.Pointer(C._gotk4_gtk3_Application_ConnectWindowRemoved), f)
 }
 
 // NewApplication creates a new Application instance.

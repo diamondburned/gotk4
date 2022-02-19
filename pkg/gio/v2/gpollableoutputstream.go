@@ -255,7 +255,7 @@ func _gotk4_gio2_PollableOutputStreamInterface_writev_nonblocking(arg0 *C.GPolla
 	var _vectors []OutputVector // out
 
 	{
-		src := unsafe.Slice(arg1, arg2)
+		src := unsafe.Slice((*C.GOutputVector)(arg1), arg2)
 		_vectors = make([]OutputVector, arg2)
 		for i := 0; i < int(arg2); i++ {
 			_vectors[i] = *(*OutputVector)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

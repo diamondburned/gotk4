@@ -18,6 +18,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_RadioMenuItemClass_group_changed(GtkRadioMenuItem*);
+// extern void _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -129,8 +130,24 @@ func marshalRadioMenuItemmer(p uintptr) (interface{}, error) {
 	return wrapRadioMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged
+func _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 func (radioMenuItem *RadioMenuItem) ConnectGroupChanged(f func()) externglib.SignalHandle {
-	return radioMenuItem.Connect("group-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(radioMenuItem, "group-changed", false, unsafe.Pointer(C._gotk4_gtk3_RadioMenuItem_ConnectGroupChanged), f)
 }
 
 // NewRadioMenuItem creates a new RadioMenuItem.

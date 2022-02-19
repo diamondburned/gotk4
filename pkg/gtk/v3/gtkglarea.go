@@ -19,7 +19,9 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_GLAreaClass_render(GtkGLArea*, GdkGLContext*);
+// extern gboolean _gotk4_gtk3_GLArea_ConnectRender(gpointer, GdkGLContext*, guintptr);
 // extern void _gotk4_gtk3_GLAreaClass_resize(GtkGLArea*, int, int);
+// extern void _gotk4_gtk3_GLArea_ConnectResize(gpointer, gint, gint, guintptr);
 import "C"
 
 func init() {
@@ -200,16 +202,46 @@ func marshalGLAreaer(p uintptr) (interface{}, error) {
 	return wrapGLArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectCreateContext signal is emitted when the widget is being realized, and
-// allows you to override how the GL context is created. This is useful when you
-// want to reuse an existing GL context, or if you want to try creating
-// different kinds of GL options.
-//
-// If context creation fails then the signal handler can use
-// gtk_gl_area_set_error() to register a more detailed error of how the
-// construction failed.
-func (area *GLArea) ConnectCreateContext(f func() gdk.GLContexter) externglib.SignalHandle {
-	return area.Connect("create-context", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk3_GLArea_ConnectRender
+func _gotk4_gtk3_GLArea_ConnectRender(arg0 C.gpointer, arg1 *C.GdkGLContext, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(context gdk.GLContexter) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context gdk.GLContexter) (ok bool))
+	}
+
+	var _context gdk.GLContexter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.GLContexter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.GLContexter)
+			return ok
+		})
+		rv, ok := casted.(gdk.GLContexter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.GLContexter")
+		}
+		_context = rv
+	}
+
+	ok := f(_context)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectRender signal is emitted every time the contents of the GLArea should
@@ -217,8 +249,30 @@ func (area *GLArea) ConnectCreateContext(f func() gdk.GLContexter) externglib.Si
 //
 // The context is bound to the area prior to emitting this function, and the
 // buffers are painted to the window once the emission terminates.
-func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) externglib.SignalHandle {
-	return area.Connect("render", externglib.GeneratedClosure{Func: f})
+func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(area, "render", false, unsafe.Pointer(C._gotk4_gtk3_GLArea_ConnectRender), f)
+}
+
+//export _gotk4_gtk3_GLArea_ConnectResize
+func _gotk4_gtk3_GLArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(width, height int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(width, height int))
+	}
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	f(_width, _height)
 }
 
 // ConnectResize signal is emitted once when the widget is realized, and then
@@ -231,7 +285,7 @@ func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) externgl
 //
 // The default handler sets up the GL viewport.
 func (area *GLArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
-	return area.Connect("resize", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(area, "resize", false, unsafe.Pointer(C._gotk4_gtk3_GLArea_ConnectResize), f)
 }
 
 // NewGLArea creates a new GLArea widget.

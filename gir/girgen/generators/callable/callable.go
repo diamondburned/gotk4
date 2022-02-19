@@ -217,7 +217,7 @@ func (g *Generator) renderBlock() bool {
 		contextParamIx := findGCancellableParam(g.gen, g.Parameters.Parameters)
 
 		// Copy the parameters list so we can freely mutate it.
-		parameters := append([]gir.Parameter(nil), g.Parameters.Parameters...)
+		parameters := types.ResolveParameters(g.gen, g.Parameters.Parameters)
 
 		// Preprocess the values to normalize an edge case; see comment below.
 		for i, value := range parameters {

@@ -20,7 +20,10 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(GApplication*, GDBusConnection*, gchar*, GError**);
 // extern gboolean _gotk4_gio2_ApplicationClass_name_lost(GApplication*);
+// extern gboolean _gotk4_gio2_Application_ConnectNameLost(gpointer, guintptr);
 // extern gint _gotk4_gio2_ApplicationClass_handle_local_options(GApplication*, GVariantDict*);
+// extern gint _gotk4_gio2_Application_ConnectCommandLine(gpointer, GApplicationCommandLine*, guintptr);
+// extern gint _gotk4_gio2_Application_ConnectHandleLocalOptions(gpointer, GVariantDict*, guintptr);
 // extern int _gotk4_gio2_ApplicationClass_command_line(GApplication*, GApplicationCommandLine*);
 // extern void _gotk4_gio2_ApplicationClass_activate(GApplication*);
 // extern void _gotk4_gio2_ApplicationClass_add_platform_data(GApplication*, GVariantBuilder*);
@@ -32,6 +35,10 @@ import (
 // extern void _gotk4_gio2_ApplicationClass_run_mainloop(GApplication*);
 // extern void _gotk4_gio2_ApplicationClass_shutdown(GApplication*);
 // extern void _gotk4_gio2_ApplicationClass_startup(GApplication*);
+// extern void _gotk4_gio2_Application_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gio2_Application_ConnectOpen(gpointer, GFile**, gint, gchar*, guintptr);
+// extern void _gotk4_gio2_Application_ConnectShutdown(gpointer, guintptr);
+// extern void _gotk4_gio2_Application_ConnectStartup(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -491,7 +498,7 @@ func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg
 	var _hint string   // out
 
 	{
-		src := unsafe.Slice(arg1, arg2)
+		src := unsafe.Slice((**C.GFile)(arg1), arg2)
 		_files = make([]Filer, arg2)
 		for i := 0; i < int(arg2); i++ {
 			{
@@ -566,17 +573,88 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 	return wrapApplication(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_Application_ConnectActivate
+func _gotk4_gio2_Application_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate signal is emitted on the primary instance when an activation
 // occurs. See g_application_activate().
 func (application *Application) ConnectActivate(f func()) externglib.SignalHandle {
-	return application.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(application, "activate", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectActivate), f)
+}
+
+//export _gotk4_gio2_Application_ConnectCommandLine
+func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplicationCommandLine, arg2 C.guintptr) (cret C.gint) {
+	var f func(commandLine *ApplicationCommandLine) (gint int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(commandLine *ApplicationCommandLine) (gint int))
+	}
+
+	var _commandLine *ApplicationCommandLine // out
+
+	_commandLine = wrapApplicationCommandLine(externglib.Take(unsafe.Pointer(arg1)))
+
+	gint := f(_commandLine)
+
+	cret = C.gint(gint)
+
+	return cret
 }
 
 // ConnectCommandLine signal is emitted on the primary instance when a
 // commandline is not handled locally. See g_application_run() and the
 // CommandLine documentation for more information.
-func (application *Application) ConnectCommandLine(f func(commandLine ApplicationCommandLine) int) externglib.SignalHandle {
-	return application.Connect("command-line", externglib.GeneratedClosure{Func: f})
+func (application *Application) ConnectCommandLine(f func(commandLine *ApplicationCommandLine) (gint int)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(application, "command-line", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectCommandLine), f)
+}
+
+//export _gotk4_gio2_Application_ConnectHandleLocalOptions
+func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.GVariantDict, arg2 C.guintptr) (cret C.gint) {
+	var f func(options *glib.VariantDict) (gint int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(options *glib.VariantDict) (gint int))
+	}
+
+	var _options *glib.VariantDict // out
+
+	_options = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_variant_dict_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_options)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
+		},
+	)
+
+	gint := f(_options)
+
+	cret = C.gint(gint)
+
+	return cret
 }
 
 // ConnectHandleLocalOptions signal is emitted on the local instance after the
@@ -616,8 +694,30 @@ func (application *Application) ConnectCommandLine(f func(commandLine Applicatio
 //
 // You can override local_command_line() if you need more powerful capabilities
 // than what is provided here, but this should not normally be required.
-func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) int) externglib.SignalHandle {
-	return application.Connect("handle-local-options", externglib.GeneratedClosure{Func: f})
+func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) (gint int)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(application, "handle-local-options", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectHandleLocalOptions), f)
+}
+
+//export _gotk4_gio2_Application_ConnectNameLost
+func _gotk4_gio2_Application_ConnectNameLost(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
+	var f func() (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (ok bool))
+	}
+
+	ok := f()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectNameLost signal is emitted only on the registered primary instance
@@ -625,26 +725,102 @@ func (application *Application) ConnectHandleLocalOptions(f func(options *glib.V
 // is using the G_APPLICATION_ALLOW_REPLACEMENT flag.
 //
 // The default handler for this signal calls g_application_quit().
-func (application *Application) ConnectNameLost(f func() bool) externglib.SignalHandle {
-	return application.Connect("name-lost", externglib.GeneratedClosure{Func: f})
+func (application *Application) ConnectNameLost(f func() (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(application, "name-lost", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectNameLost), f)
+}
+
+//export _gotk4_gio2_Application_ConnectOpen
+func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
+	var f func(files []Filer, hint string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(files []Filer, hint string))
+	}
+
+	var _files []Filer // out
+	var _hint string   // out
+
+	{
+		src := unsafe.Slice((**C.GFile)(arg1), arg2)
+		_files = make([]Filer, arg2)
+		for i := 0; i < int(arg2); i++ {
+			{
+				objptr := unsafe.Pointer(src[i])
+				if objptr == nil {
+					panic("object of type gio.Filer is nil")
+				}
+
+				object := externglib.Take(objptr)
+				casted := object.WalkCast(func(obj externglib.Objector) bool {
+					_, ok := obj.(Filer)
+					return ok
+				})
+				rv, ok := casted.(Filer)
+				if !ok {
+					panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+				}
+				_files[i] = rv
+			}
+		}
+	}
+	_hint = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+
+	f(_files, _hint)
 }
 
 // ConnectOpen signal is emitted on the primary instance when there are files to
 // open. See g_application_open() for more information.
 func (application *Application) ConnectOpen(f func(files []Filer, hint string)) externglib.SignalHandle {
-	return application.Connect("open", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(application, "open", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectOpen), f)
+}
+
+//export _gotk4_gio2_Application_ConnectShutdown
+func _gotk4_gio2_Application_ConnectShutdown(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectShutdown signal is emitted only on the registered primary instance
 // immediately after the main loop terminates.
 func (application *Application) ConnectShutdown(f func()) externglib.SignalHandle {
-	return application.Connect("shutdown", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(application, "shutdown", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectShutdown), f)
+}
+
+//export _gotk4_gio2_Application_ConnectStartup
+func _gotk4_gio2_Application_ConnectStartup(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectStartup signal is emitted on the primary instance immediately after
 // registration. See g_application_register().
 func (application *Application) ConnectStartup(f func()) externglib.SignalHandle {
-	return application.Connect("startup", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(application, "startup", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectStartup), f)
 }
 
 // NewApplication creates a new #GApplication instance.

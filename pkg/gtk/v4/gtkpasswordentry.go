@@ -13,6 +13,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_PasswordEntry_ConnectActivate(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -121,11 +122,27 @@ func marshalPasswordEntrier(p uintptr) (interface{}, error) {
 	return wrapPasswordEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_PasswordEntry_ConnectActivate
+func _gotk4_gtk4_PasswordEntry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate: emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
 func (entry *PasswordEntry) ConnectActivate(f func()) externglib.SignalHandle {
-	return entry.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(entry, "activate", false, unsafe.Pointer(C._gotk4_gtk4_PasswordEntry_ConnectActivate), f)
 }
 
 // NewPasswordEntry creates a GtkPasswordEntry.

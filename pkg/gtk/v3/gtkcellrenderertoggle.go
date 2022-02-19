@@ -16,6 +16,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_CellRendererToggleClass_toggled(GtkCellRendererToggle*, gchar*);
+// extern void _gotk4_gtk3_CellRendererToggle_ConnectToggled(gpointer, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -85,13 +86,33 @@ func marshalCellRendererToggler(p uintptr) (interface{}, error) {
 	return wrapCellRendererToggle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_CellRendererToggle_ConnectToggled
+func _gotk4_gtk3_CellRendererToggle_ConnectToggled(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(path string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path string))
+	}
+
+	var _path string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_path)
+}
+
 // ConnectToggled signal is emitted when the cell is toggled.
 //
 // It is the responsibility of the application to update the model with the
 // correct value to store at path. Often this is simply the opposite of the
 // value currently stored at path.
 func (toggle *CellRendererToggle) ConnectToggled(f func(path string)) externglib.SignalHandle {
-	return toggle.Connect("toggled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(toggle, "toggled", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererToggle_ConnectToggled), f)
 }
 
 // NewCellRendererToggle creates a new CellRendererToggle. Adjust rendering

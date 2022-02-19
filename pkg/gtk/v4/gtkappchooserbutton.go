@@ -13,6 +13,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_AppChooserButton_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(gpointer, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -103,16 +105,52 @@ func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
 	return wrapAppChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_AppChooserButton_ConnectChanged
+func _gotk4_gtk4_AppChooserButton_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: emitted when the active application changes.
 func (self *AppChooserButton) ConnectChanged(f func()) externglib.SignalHandle {
-	return self.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "changed", false, unsafe.Pointer(C._gotk4_gtk4_AppChooserButton_ConnectChanged), f)
+}
+
+//export _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated
+func _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(itemName string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(itemName string))
+	}
+
+	var _itemName string // out
+
+	_itemName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_itemName)
 }
 
 // ConnectCustomItemActivated: emitted when a custom item is activated.
 //
 // Use gtk.AppChooserButton.AppendCustomItem(), to add custom items.
 func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) externglib.SignalHandle {
-	return self.Connect("custom-item-activated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "custom-item-activated", false, unsafe.Pointer(C._gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated), f)
 }
 
 // NewAppChooserButton creates a new GtkAppChooserButton for applications that

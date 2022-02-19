@@ -223,7 +223,7 @@ func _gotk4_glib2_LogWriterFunc(arg1 C.GLogLevelFlags, arg2 *C.GLogField, arg3 C
 
 	_logLevel = LogLevelFlags(arg1)
 	{
-		src := unsafe.Slice(arg2, arg3)
+		src := unsafe.Slice((*C.GLogField)(arg2), arg3)
 		_fields = make([]LogField, arg3)
 		for i := 0; i < int(arg3); i++ {
 			_fields[i] = *(*LogField)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

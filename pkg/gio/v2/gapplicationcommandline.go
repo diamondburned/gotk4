@@ -284,7 +284,7 @@ func (cmdline *ApplicationCommandLine) Arguments() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_filenames = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))

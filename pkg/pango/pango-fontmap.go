@@ -439,7 +439,7 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		src := unsafe.Slice(_arg1, _arg2)
+		src := unsafe.Slice((**C.PangoFontFamily)(_arg1), _arg2)
 		_families = make([]FontFamilier, _arg2)
 		for i := 0; i < int(_arg2); i++ {
 			{

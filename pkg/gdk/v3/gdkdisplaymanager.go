@@ -13,6 +13,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_DisplayManager_ConnectDisplayOpened(gpointer, GdkDisplay*, guintptr);
 import "C"
 
 func init() {
@@ -75,9 +76,29 @@ func marshalDisplayManagerer(p uintptr) (interface{}, error) {
 	return wrapDisplayManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdk3_DisplayManager_ConnectDisplayOpened
+func _gotk4_gdk3_DisplayManager_ConnectDisplayOpened(arg0 C.gpointer, arg1 *C.GdkDisplay, arg2 C.guintptr) {
+	var f func(display *Display)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(display *Display))
+	}
+
+	var _display *Display // out
+
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_display)
+}
+
 // ConnectDisplayOpened signal is emitted when a display is opened.
-func (manager *DisplayManager) ConnectDisplayOpened(f func(display Display)) externglib.SignalHandle {
-	return manager.Connect("display-opened", externglib.GeneratedClosure{Func: f})
+func (manager *DisplayManager) ConnectDisplayOpened(f func(display *Display)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(manager, "display-opened", false, unsafe.Pointer(C._gotk4_gdk3_DisplayManager_ConnectDisplayOpened), f)
 }
 
 // DefaultDisplay gets the default Display.

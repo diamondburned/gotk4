@@ -14,6 +14,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_EventControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_EventControllerMotion_ConnectLeave(gpointer, guintptr);
+// extern void _gotk4_gtk3_EventControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 func init() {
@@ -59,19 +62,79 @@ func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 	return wrapEventControllerMotion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_EventControllerMotion_ConnectEnter
+func _gotk4_gtk3_EventControllerMotion_ConnectEnter(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(x, y float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	f(_x, _y)
+}
+
 // ConnectEnter signals that the pointer has entered the widget.
 func (v *EventControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
-	return v.Connect("enter", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "enter", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectEnter), f)
+}
+
+//export _gotk4_gtk3_EventControllerMotion_ConnectLeave
+func _gotk4_gtk3_EventControllerMotion_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectLeave signals that pointer has left the widget.
 func (v *EventControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
-	return v.Connect("leave", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "leave", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectLeave), f)
+}
+
+//export _gotk4_gtk3_EventControllerMotion_ConnectMotion
+func _gotk4_gtk3_EventControllerMotion_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(x, y float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	f(_x, _y)
 }
 
 // ConnectMotion: emitted when the pointer moves inside the widget.
 func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return v.Connect("motion", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "motion", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectMotion), f)
 }
 
 // NewEventControllerMotion creates a new event controller that will handle

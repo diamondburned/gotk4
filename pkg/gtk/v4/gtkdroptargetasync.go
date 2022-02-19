@@ -14,6 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectAccept(gpointer, GdkDrop*, guintptr);
+// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectDrop(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(gpointer, GdkDrop*, guintptr);
 import "C"
 
 func init() {
@@ -87,6 +90,48 @@ func marshalDropTargetAsyncer(p uintptr) (interface{}, error) {
 	return wrapDropTargetAsync(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_DropTargetAsync_ConnectAccept
+func _gotk4_gtk4_DropTargetAsync_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(drop gdk.Dropper) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drop gdk.Dropper) (ok bool))
+	}
+
+	var _drop gdk.Dropper // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Dropper is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Dropper)
+			return ok
+		})
+		rv, ok := casted.(gdk.Dropper)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
+		}
+		_drop = rv
+	}
+
+	ok := f(_drop)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectAccept: emitted on the drop site when a drop operation is about to
 // begin.
 //
@@ -102,16 +147,44 @@ func marshalDropTargetAsyncer(p uintptr) (interface{}, error) {
 // processing, such as inspecting the data, this function should return TRUE and
 // proceed as is drop was accepted and if it decides to reject the drop later,
 // it should call gtk.DropTargetAsync.RejectDrop().
-func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.SignalHandle {
-	return self.Connect("accept", externglib.GeneratedClosure{Func: f})
+func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "accept", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectAccept), f)
 }
 
-// ConnectDragEnter: emitted on the drop site when the pointer enters the
-// widget.
-//
-// It can be used to set up custom highlighting.
-func (self *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("drag-enter", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk4_DropTargetAsync_ConnectDragLeave
+func _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) {
+	var f func(drop gdk.Dropper)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drop gdk.Dropper))
+	}
+
+	var _drop gdk.Dropper // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Dropper is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Dropper)
+			return ok
+		})
+		rv, ok := casted.(gdk.Dropper)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
+		}
+		_drop = rv
+	}
+
+	f(_drop)
 }
 
 // ConnectDragLeave: emitted on the drop site when the pointer leaves the
@@ -119,12 +192,53 @@ func (self *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y floa
 //
 // Its main purpose it to undo things done in GtkDropTargetAsync::drag-enter.
 func (self *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) externglib.SignalHandle {
-	return self.Connect("drag-leave", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "drag-leave", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDragLeave), f)
 }
 
-// ConnectDragMotion: emitted while the pointer is moving over the drop target.
-func (self *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("drag-motion", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk4_DropTargetAsync_ConnectDrop
+func _gotk4_gtk4_DropTargetAsync_ConnectDrop(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(drop gdk.Dropper, x, y float64) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drop gdk.Dropper, x, y float64) (ok bool))
+	}
+
+	var _drop gdk.Dropper // out
+	var _x float64        // out
+	var _y float64        // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Dropper is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Dropper)
+			return ok
+		})
+		rv, ok := casted.(gdk.Dropper)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
+		}
+		_drop = rv
+	}
+	_x = float64(arg2)
+	_y = float64(arg3)
+
+	ok := f(_drop, _x, _y)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDrop: emitted on the drop site when the user drops the data onto the
@@ -141,8 +255,8 @@ func (self *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y flo
 //
 // To receive the data, use one of the read functions provided by gdk.Drop such
 // as gdk.Drop.ReadAsync() or gdk.Drop.ReadValueAsync().
-func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) bool) externglib.SignalHandle {
-	return self.Connect("drop", externglib.GeneratedClosure{Func: f})
+func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "drop", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDrop), f)
 }
 
 // NewDropTargetAsync creates a new GtkDropTargetAsync object.

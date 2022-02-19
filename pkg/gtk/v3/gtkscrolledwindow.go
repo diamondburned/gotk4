@@ -18,7 +18,11 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_ScrolledWindowClass_scroll_child(GtkScrolledWindow*, GtkScrollType, gboolean);
+// extern gboolean _gotk4_gtk3_ScrolledWindow_ConnectScrollChild(gpointer, GtkScrollType, gboolean, guintptr);
 // extern void _gotk4_gtk3_ScrolledWindowClass_move_focus_out(GtkScrolledWindow*, GtkDirectionType);
+// extern void _gotk4_gtk3_ScrolledWindow_ConnectEdgeOvershot(gpointer, GtkPositionType, guintptr);
+// extern void _gotk4_gtk3_ScrolledWindow_ConnectEdgeReached(gpointer, GtkPositionType, guintptr);
+// extern void _gotk4_gtk3_ScrolledWindow_ConnectMoveFocusOut(gpointer, GtkDirectionType, guintptr);
 import "C"
 
 func init() {
@@ -291,6 +295,26 @@ func marshalScrolledWindower(p uintptr) (interface{}, error) {
 	return wrapScrolledWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ScrolledWindow_ConnectEdgeOvershot
+func _gotk4_gtk3_ScrolledWindow_ConnectEdgeOvershot(arg0 C.gpointer, arg1 C.GtkPositionType, arg2 C.guintptr) {
+	var f func(pos PositionType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(pos PositionType))
+	}
+
+	var _pos PositionType // out
+
+	_pos = PositionType(arg1)
+
+	f(_pos)
+}
+
 // ConnectEdgeOvershot signal is emitted whenever user initiated scrolling makes
 // the scrolled window firmly surpass (i.e. with some edge resistance) the lower
 // or upper limits defined by the adjustment in that orientation.
@@ -301,7 +325,27 @@ func marshalScrolledWindower(p uintptr) (interface{}, error) {
 // Note: The pos argument is LTR/RTL aware, so callers should be aware too if
 // intending to provide behavior on horizontal edges.
 func (scrolledWindow *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionType)) externglib.SignalHandle {
-	return scrolledWindow.Connect("edge-overshot", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(scrolledWindow, "edge-overshot", false, unsafe.Pointer(C._gotk4_gtk3_ScrolledWindow_ConnectEdgeOvershot), f)
+}
+
+//export _gotk4_gtk3_ScrolledWindow_ConnectEdgeReached
+func _gotk4_gtk3_ScrolledWindow_ConnectEdgeReached(arg0 C.gpointer, arg1 C.GtkPositionType, arg2 C.guintptr) {
+	var f func(pos PositionType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(pos PositionType))
+	}
+
+	var _pos PositionType // out
+
+	_pos = PositionType(arg1)
+
+	f(_pos)
 }
 
 // ConnectEdgeReached signal is emitted whenever user-initiated scrolling makes
@@ -314,7 +358,27 @@ func (scrolledWindow *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionTyp
 // Note: The pos argument is LTR/RTL aware, so callers should be aware too if
 // intending to provide behavior on horizontal edges.
 func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType)) externglib.SignalHandle {
-	return scrolledWindow.Connect("edge-reached", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(scrolledWindow, "edge-reached", false, unsafe.Pointer(C._gotk4_gtk3_ScrolledWindow_ConnectEdgeReached), f)
+}
+
+//export _gotk4_gtk3_ScrolledWindow_ConnectMoveFocusOut
+func _gotk4_gtk3_ScrolledWindow_ConnectMoveFocusOut(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
+	var f func(directionType DirectionType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(directionType DirectionType))
+	}
+
+	var _directionType DirectionType // out
+
+	_directionType = DirectionType(arg1)
+
+	f(_directionType)
 }
 
 // ConnectMoveFocusOut signal is a [keybinding signal][GtkBindingSignal] which
@@ -324,15 +388,45 @@ func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType
 // default bindings for this signal are Ctrl + Tab to move forward and Ctrl +
 // Shift + Tab to move backward.
 func (scrolledWindow *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) externglib.SignalHandle {
-	return scrolledWindow.Connect("move-focus-out", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(scrolledWindow, "move-focus-out", false, unsafe.Pointer(C._gotk4_gtk3_ScrolledWindow_ConnectMoveFocusOut), f)
+}
+
+//export _gotk4_gtk3_ScrolledWindow_ConnectScrollChild
+func _gotk4_gtk3_ScrolledWindow_ConnectScrollChild(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.gboolean, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(scroll ScrollType, horizontal bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(scroll ScrollType, horizontal bool) (ok bool))
+	}
+
+	var _scroll ScrollType // out
+	var _horizontal bool   // out
+
+	_scroll = ScrollType(arg1)
+	if arg2 != 0 {
+		_horizontal = true
+	}
+
+	ok := f(_scroll, _horizontal)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectScrollChild signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted when a keybinding that scrolls is pressed. The horizontal or
 // vertical adjustment is updated which triggers a signal that the scrolled
 // window’s child may listen to and scroll itself.
-func (scrolledWindow *ScrolledWindow) ConnectScrollChild(f func(scroll ScrollType, horizontal bool) bool) externglib.SignalHandle {
-	return scrolledWindow.Connect("scroll-child", externglib.GeneratedClosure{Func: f})
+func (scrolledWindow *ScrolledWindow) ConnectScrollChild(f func(scroll ScrollType, horizontal bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(scrolledWindow, "scroll-child", false, unsafe.Pointer(C._gotk4_gtk3_ScrolledWindow_ConnectScrollChild), f)
 }
 
 // NewScrolledWindow creates a new scrolled window.

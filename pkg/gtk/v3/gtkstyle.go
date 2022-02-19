@@ -48,6 +48,8 @@ import (
 // extern void _gotk4_gtk3_StyleClass_realize(GtkStyle*);
 // extern void _gotk4_gtk3_StyleClass_set_background(GtkStyle*, GdkWindow*, GtkStateType);
 // extern void _gotk4_gtk3_StyleClass_unrealize(GtkStyle*);
+// extern void _gotk4_gtk3_Style_ConnectRealize(gpointer, guintptr);
+// extern void _gotk4_gtk3_Style_ConnectUnrealize(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -2922,12 +2924,44 @@ func marshalStyler(p uintptr) (interface{}, error) {
 	return wrapStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Style_ConnectRealize
+func _gotk4_gtk3_Style_ConnectRealize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectRealize: emitted when the style has been initialized for a particular
 // visual. Connecting to this signal is probably seldom useful since most of the
 // time applications and widgets only deal with styles that have been already
 // realized.
 func (style *Style) ConnectRealize(f func()) externglib.SignalHandle {
-	return style.Connect("realize", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(style, "realize", false, unsafe.Pointer(C._gotk4_gtk3_Style_ConnectRealize), f)
+}
+
+//export _gotk4_gtk3_Style_ConnectUnrealize
+func _gotk4_gtk3_Style_ConnectUnrealize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUnrealize: emitted when the aspects of the style specific to a
@@ -2935,7 +2969,7 @@ func (style *Style) ConnectRealize(f func()) externglib.SignalHandle {
 // useful if a widget wants to cache objects as object data on Style. This
 // signal provides a convenient place to free such cached objects.
 func (style *Style) ConnectUnrealize(f func()) externglib.SignalHandle {
-	return style.Connect("unrealize", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(style, "unrealize", false, unsafe.Pointer(C._gotk4_gtk3_Style_ConnectUnrealize), f)
 }
 
 // NewStyle creates a new Style.

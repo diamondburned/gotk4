@@ -31,6 +31,8 @@ import (
 // extern void _gotk4_gtk3_RecentChooserIface_selection_changed(GtkRecentChooser*);
 // extern void _gotk4_gtk3_RecentChooserIface_unselect_all(GtkRecentChooser*);
 // extern void _gotk4_gtk3_RecentChooserIface_unselect_uri(GtkRecentChooser*, gchar*);
+// extern void _gotk4_gtk3_RecentChooser_ConnectItemActivated(gpointer, guintptr);
+// extern void _gotk4_gtk3_RecentChooser_ConnectSelectionChanged(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -263,11 +265,43 @@ func marshalRecentChooserer(p uintptr) (interface{}, error) {
 	return wrapRecentChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_RecentChooser_ConnectItemActivated
+func _gotk4_gtk3_RecentChooser_ConnectItemActivated(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectItemActivated: this signal is emitted when the user "activates" a
 // recent item in the recent chooser. This can happen by double-clicking on an
 // item in the recently used resources list, or by pressing Enter.
 func (chooser *RecentChooser) ConnectItemActivated(f func()) externglib.SignalHandle {
-	return chooser.Connect("item-activated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(chooser, "item-activated", false, unsafe.Pointer(C._gotk4_gtk3_RecentChooser_ConnectItemActivated), f)
+}
+
+//export _gotk4_gtk3_RecentChooser_ConnectSelectionChanged
+func _gotk4_gtk3_RecentChooser_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSelectionChanged: this signal is emitted when there is a change in the
@@ -275,7 +309,7 @@ func (chooser *RecentChooser) ConnectItemActivated(f func()) externglib.SignalHa
 // the selection with the mouse or the keyboard, or when explicitly calling
 // functions to change the selection.
 func (chooser *RecentChooser) ConnectSelectionChanged(f func()) externglib.SignalHandle {
-	return chooser.Connect("selection-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(chooser, "selection-changed", false, unsafe.Pointer(C._gotk4_gtk3_RecentChooser_ConnectSelectionChanged), f)
 }
 
 // AddFilter adds filter to the list of RecentFilter objects held by chooser.
@@ -634,7 +668,7 @@ func (chooser *RecentChooser) URIs() []string {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
 		_utf8s = make([]string, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))

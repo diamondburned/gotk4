@@ -19,6 +19,8 @@ import (
 // extern void _gotk4_gtk3_PrintOperationPreviewIface_got_page_size(GtkPrintOperationPreview*, GtkPrintContext*, GtkPageSetup*);
 // extern void _gotk4_gtk3_PrintOperationPreviewIface_ready(GtkPrintOperationPreview*, GtkPrintContext*);
 // extern void _gotk4_gtk3_PrintOperationPreviewIface_render_page(GtkPrintOperationPreview*, gint);
+// extern void _gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize(gpointer, GtkPrintContext*, GtkPageSetup*, guintptr);
+// extern void _gotk4_gtk3_PrintOperationPreview_ConnectReady(gpointer, GtkPrintContext*, guintptr);
 import "C"
 
 func init() {
@@ -178,22 +180,64 @@ func marshalPrintOperationPreviewer(p uintptr) (interface{}, error) {
 	return wrapPrintOperationPreview(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize
+func _gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 *C.GtkPageSetup, arg3 C.guintptr) {
+	var f func(context *PrintContext, pageSetup *PageSetup)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *PrintContext, pageSetup *PageSetup))
+	}
+
+	var _context *PrintContext // out
+	var _pageSetup *PageSetup  // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+	_pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg2)))
+
+	f(_context, _pageSetup)
+}
+
 // ConnectGotPageSize signal is emitted once for each page that gets rendered to
 // the preview.
 //
 // A handler for this signal should update the context according to page_setup
 // and set up a suitable cairo context, using
 // gtk_print_context_set_cairo_context().
-func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context PrintContext, pageSetup PageSetup)) externglib.SignalHandle {
-	return preview.Connect("got-page-size", externglib.GeneratedClosure{Func: f})
+func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context *PrintContext, pageSetup *PageSetup)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(preview, "got-page-size", false, unsafe.Pointer(C._gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize), f)
+}
+
+//export _gotk4_gtk3_PrintOperationPreview_ConnectReady
+func _gotk4_gtk3_PrintOperationPreview_ConnectReady(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.guintptr) {
+	var f func(context *PrintContext)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(context *PrintContext))
+	}
+
+	var _context *PrintContext // out
+
+	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+
+	f(_context)
 }
 
 // ConnectReady signal gets emitted once per preview operation, before the first
 // page is rendered.
 //
 // A handler for this signal can be used for setup tasks.
-func (preview *PrintOperationPreview) ConnectReady(f func(context PrintContext)) externglib.SignalHandle {
-	return preview.Connect("ready", externglib.GeneratedClosure{Func: f})
+func (preview *PrintOperationPreview) ConnectReady(f func(context *PrintContext)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(preview, "ready", false, unsafe.Pointer(C._gotk4_gtk3_PrintOperationPreview_ConnectReady), f)
 }
 
 // EndPreview ends a preview.

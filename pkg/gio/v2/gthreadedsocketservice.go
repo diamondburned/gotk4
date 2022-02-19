@@ -14,6 +14,7 @@ import (
 // #include <gio/gio.h>
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(GThreadedSocketService*, GSocketConnection*, GObject*);
+// extern gboolean _gotk4_gio2_ThreadedSocketService_ConnectRun(gpointer, GSocketConnection*, GObject, guintptr);
 import "C"
 
 func init() {
@@ -110,12 +111,40 @@ func marshalThreadedSocketServicer(p uintptr) (interface{}, error) {
 	return wrapThreadedSocketService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_ThreadedSocketService_ConnectRun
+func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.GSocketConnection, arg2 C.GObject, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(connection *SocketConnection, sourceObject *externglib.Object) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(connection *SocketConnection, sourceObject *externglib.Object) (ok bool))
+	}
+
+	var _connection *SocketConnection    // out
+	var _sourceObject *externglib.Object // out
+
+	_connection = wrapSocketConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_sourceObject = externglib.Take(unsafe.Pointer(&arg2))
+
+	ok := f(_connection, _sourceObject)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectRun signal is emitted in a worker thread in response to an incoming
 // connection. This thread is dedicated to handling connection and may perform
 // blocking IO. The signal handler need not return until the connection is
 // closed.
-func (service *ThreadedSocketService) ConnectRun(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
-	return service.Connect("run", externglib.GeneratedClosure{Func: f})
+func (service *ThreadedSocketService) ConnectRun(f func(connection *SocketConnection, sourceObject *externglib.Object) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(service, "run", false, unsafe.Pointer(C._gotk4_gio2_ThreadedSocketService_ConnectRun), f)
 }
 
 // NewThreadedSocketService creates a new SocketService with no listeners.

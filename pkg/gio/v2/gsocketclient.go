@@ -18,6 +18,7 @@ import (
 // #include <glib-object.h>
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_SocketClientClass_event(GSocketClient*, GSocketClientEvent, GSocketConnectable*, GIOStream*);
+// extern void _gotk4_gio2_SocketClient_ConnectEvent(gpointer, GSocketClientEvent, GSocketConnectable*, GIOStream*, guintptr);
 import "C"
 
 func init() {
@@ -136,6 +137,61 @@ func marshalSocketClienter(p uintptr) (interface{}, error) {
 	return wrapSocketClient(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_SocketClient_ConnectEvent
+func _gotk4_gio2_SocketClient_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketClientEvent, arg2 *C.GSocketConnectable, arg3 *C.GIOStream, arg4 C.guintptr) {
+	var f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer))
+	}
+
+	var _event SocketClientEvent        // out
+	var _connectable SocketConnectabler // out
+	var _connection IOStreamer          // out
+
+	_event = SocketClientEvent(arg1)
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.SocketConnectabler is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(SocketConnectabler)
+			return ok
+		})
+		rv, ok := casted.(SocketConnectabler)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
+		}
+		_connectable = rv
+	}
+	if arg3 != nil {
+		{
+			objptr := unsafe.Pointer(arg3)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(IOStreamer)
+				return ok
+			})
+			rv, ok := casted.(IOStreamer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.IOStreamer")
+			}
+			_connection = rv
+		}
+	}
+
+	f(_event, _connectable, _connection)
+}
+
 // ConnectEvent: emitted when client's activity on connectable changes state.
 // Among other things, this can be used to provide progress information about a
 // network connection in the UI. The meanings of the different event values are
@@ -184,7 +240,7 @@ func marshalSocketClienter(p uintptr) (interface{}, error) {
 // Note that there may be additional ClientEvent values in the future;
 // unrecognized event values should be ignored.
 func (client *SocketClient) ConnectEvent(f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)) externglib.SignalHandle {
-	return client.Connect("event", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(client, "event", false, unsafe.Pointer(C._gotk4_gio2_SocketClient_ConnectEvent), f)
 }
 
 // NewSocketClient creates a new Client with the default options.

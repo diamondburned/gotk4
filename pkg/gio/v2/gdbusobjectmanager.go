@@ -21,6 +21,10 @@ import (
 // extern void _gotk4_gio2_DBusObjectManagerIface_interface_removed(GDBusObjectManager*, GDBusObject*, GDBusInterface*);
 // extern void _gotk4_gio2_DBusObjectManagerIface_object_added(GDBusObjectManager*, GDBusObject*);
 // extern void _gotk4_gio2_DBusObjectManagerIface_object_removed(GDBusObjectManager*, GDBusObject*);
+// extern void _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(gpointer, GDBusObject*, GDBusInterface*, guintptr);
+// extern void _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(gpointer, GDBusObject*, GDBusInterface*, guintptr);
+// extern void _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(gpointer, GDBusObject*, guintptr);
+// extern void _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(gpointer, GDBusObject*, guintptr);
 import "C"
 
 func init() {
@@ -361,12 +365,120 @@ func marshalDBusObjectManagerer(p uintptr) (interface{}, error) {
 	return wrapDBusObjectManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded
+func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 *C.GDBusInterface, arg3 C.guintptr) {
+	var f func(object DBusObjector, iface DBusInterfacer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object DBusObjector, iface DBusInterfacer))
+	}
+
+	var _object DBusObjector  // out
+	var _iface DBusInterfacer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusObjector is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusObjector)
+			return ok
+		})
+		rv, ok := casted.(DBusObjector)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
+		}
+		_object = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.DBusInterfacer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusInterfacer)
+			return ok
+		})
+		rv, ok := casted.(DBusInterfacer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
+		}
+		_iface = rv
+	}
+
+	f(_object, _iface)
+}
+
 // ConnectInterfaceAdded: emitted when interface is added to object.
 //
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
 func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
-	return manager.Connect("interface-added", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(manager, "interface-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded), f)
+}
+
+//export _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved
+func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 *C.GDBusInterface, arg3 C.guintptr) {
+	var f func(object DBusObjector, iface DBusInterfacer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object DBusObjector, iface DBusInterfacer))
+	}
+
+	var _object DBusObjector  // out
+	var _iface DBusInterfacer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusObjector is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusObjector)
+			return ok
+		})
+		rv, ok := casted.(DBusObjector)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
+		}
+		_object = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.DBusInterfacer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusInterfacer)
+			return ok
+		})
+		rv, ok := casted.(DBusInterfacer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
+		}
+		_iface = rv
+	}
+
+	f(_object, _iface)
 }
 
 // ConnectInterfaceRemoved: emitted when interface has been removed from object.
@@ -374,17 +486,89 @@ func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObject
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
 func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
-	return manager.Connect("interface-removed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(manager, "interface-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved), f)
+}
+
+//export _gotk4_gio2_DBusObjectManager_ConnectObjectAdded
+func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 C.guintptr) {
+	var f func(object DBusObjector)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object DBusObjector))
+	}
+
+	var _object DBusObjector // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusObjector is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusObjector)
+			return ok
+		})
+		rv, ok := casted.(DBusObjector)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
+		}
+		_object = rv
+	}
+
+	f(_object)
 }
 
 // ConnectObjectAdded: emitted when object is added to manager.
 func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) externglib.SignalHandle {
-	return manager.Connect("object-added", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(manager, "object-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectAdded), f)
+}
+
+//export _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved
+func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 C.guintptr) {
+	var f func(object DBusObjector)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object DBusObjector))
+	}
+
+	var _object DBusObjector // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DBusObjector is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(DBusObjector)
+			return ok
+		})
+		rv, ok := casted.(DBusObjector)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
+		}
+		_object = rv
+	}
+
+	f(_object)
 }
 
 // ConnectObjectRemoved: emitted when object is removed from manager.
 func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) externglib.SignalHandle {
-	return manager.Connect("object-removed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(manager, "object-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectRemoved), f)
 }
 
 // Interface gets the interface proxy for interface_name at object_path, if any.

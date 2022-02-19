@@ -20,7 +20,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GtkCellEditable* _gotk4_gtk3_CellRendererClass_start_editing(GtkCellRenderer*, GdkEvent*, GtkWidget*, gchar*, GdkRectangle*, GdkRectangle*, GtkCellRendererState);
 // extern GtkSizeRequestMode _gotk4_gtk3_CellRendererClass_get_request_mode(GtkCellRenderer*);
+// extern gboolean _gotk4_gtk3_CellRendererClass_activate(GtkCellRenderer*, GdkEvent*, GtkWidget*, gchar*, GdkRectangle*, GdkRectangle*, GtkCellRendererState);
 // extern void _gotk4_gtk3_CellRendererClass_editing_canceled(GtkCellRenderer*);
 // extern void _gotk4_gtk3_CellRendererClass_editing_started(GtkCellRenderer*, GtkCellEditable*, gchar*);
 // extern void _gotk4_gtk3_CellRendererClass_get_aligned_area(GtkCellRenderer*, GtkWidget*, GtkCellRendererState, GdkRectangle*, GdkRectangle*);
@@ -30,6 +32,8 @@ import (
 // extern void _gotk4_gtk3_CellRendererClass_get_preferred_width_for_height(GtkCellRenderer*, GtkWidget*, gint, gint*, gint*);
 // extern void _gotk4_gtk3_CellRendererClass_get_size(GtkCellRenderer*, GtkWidget*, GdkRectangle*, gint*, gint*, gint*, gint*);
 // extern void _gotk4_gtk3_CellRendererClass_render(GtkCellRenderer*, cairo_t*, GtkWidget*, GdkRectangle*, GdkRectangle*, GtkCellRendererState);
+// extern void _gotk4_gtk3_CellRenderer_ConnectEditingCanceled(gpointer, guintptr);
+// extern void _gotk4_gtk3_CellRenderer_ConnectEditingStarted(gpointer, GtkCellEditable*, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -143,6 +147,26 @@ func (c CellRendererState) Has(other CellRendererState) bool {
 
 // CellRendererOverrider contains methods that are overridable.
 type CellRendererOverrider interface {
+	// Activate passes an activate event to the cell renderer for possible
+	// processing. Some cell renderers may use events; for example,
+	// CellRendererToggle toggles when it gets a mouse click.
+	//
+	// The function takes the following parameters:
+	//
+	//    - event: Event.
+	//    - widget that received the event.
+	//    - path: widget-dependent string representation of the event location;
+	//      e.g. for TreeView, a string representation of TreePath.
+	//    - backgroundArea: background area as passed to
+	//      gtk_cell_renderer_render().
+	//    - cellArea: cell area as passed to gtk_cell_renderer_render().
+	//    - flags: render flags.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the event was consumed/handled.
+	//
+	Activate(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool
 	EditingCanceled()
 	// The function takes the following parameters:
 	//
@@ -277,6 +301,27 @@ type CellRendererOverrider interface {
 	//    - flags that affect rendering.
 	//
 	Render(cr *cairo.Context, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState)
+	// StartEditing starts editing the contents of this cell, through a new
+	// CellEditable widget created by the CellRendererClass.start_editing
+	// virtual function.
+	//
+	// The function takes the following parameters:
+	//
+	//    - event (optional): Event.
+	//    - widget that received the event.
+	//    - path: widget-dependent string representation of the event location;
+	//      e.g. for TreeView, a string representation of TreePath.
+	//    - backgroundArea: background area as passed to
+	//      gtk_cell_renderer_render().
+	//    - cellArea: cell area as passed to gtk_cell_renderer_render().
+	//    - flags: render flags.
+	//
+	// The function returns the following values:
+	//
+	//    - cellEditable (optional): new CellEditable for editing this cell, or
+	//      NULL if editing is not possible.
+	//
+	StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
 }
 
 // CellRenderer is a base class of a set of objects used for rendering a cell to
@@ -340,6 +385,12 @@ func classInitCellRendererer(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.GtkCellRendererClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
+	if _, ok := goval.(interface {
+		Activate(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	}); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_activate)
+	}
+
 	if _, ok := goval.(interface{ EditingCanceled() }); ok {
 		pclass.editing_canceled = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_editing_canceled)
 	}
@@ -395,6 +446,62 @@ func classInitCellRendererer(gclassPtr, data C.gpointer) {
 	}); ok {
 		pclass.render = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_render)
 	}
+
+	if _, ok := goval.(interface {
+		StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
+	}); ok {
+		pclass.start_editing = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_start_editing)
+	}
+}
+
+//export _gotk4_gtk3_CellRendererClass_activate
+func _gotk4_gtk3_CellRendererClass_activate(arg0 *C.GtkCellRenderer, arg1 *C.GdkEvent, arg2 *C.GtkWidget, arg3 *C.gchar, arg4 *C.GdkRectangle, arg5 *C.GdkRectangle, arg6 C.GtkCellRendererState) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Activate(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	})
+
+	var _event *gdk.Event              // out
+	var _widget Widgetter              // out
+	var _path string                   // out
+	var _backgroundArea *gdk.Rectangle // out
+	var _cellArea *gdk.Rectangle       // out
+	var _flags CellRendererState       // out
+
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	_backgroundArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg5)))
+	_flags = CellRendererState(arg6)
+
+	ok := iface.Activate(_event, _widget, _path, _backgroundArea, _cellArea, _flags)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 //export _gotk4_gtk3_CellRendererClass_editing_canceled
@@ -702,6 +809,58 @@ func _gotk4_gtk3_CellRendererClass_render(arg0 *C.GtkCellRenderer, arg1 *C.cairo
 	iface.Render(_cr, _widget, _backgroundArea, _cellArea, _flags)
 }
 
+//export _gotk4_gtk3_CellRendererClass_start_editing
+func _gotk4_gtk3_CellRendererClass_start_editing(arg0 *C.GtkCellRenderer, arg1 *C.GdkEvent, arg2 *C.GtkWidget, arg3 *C.gchar, arg4 *C.GdkRectangle, arg5 *C.GdkRectangle, arg6 C.GtkCellRendererState) (cret *C.GtkCellEditable) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
+	})
+
+	var _event *gdk.Event              // out
+	var _widget Widgetter              // out
+	var _path string                   // out
+	var _backgroundArea *gdk.Rectangle // out
+	var _cellArea *gdk.Rectangle       // out
+	var _flags CellRendererState       // out
+
+	if arg1 != nil {
+		{
+			v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+			v = gdk.CopyEventer(v)
+			_event = v
+		}
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	_backgroundArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg5)))
+	_flags = CellRendererState(arg6)
+
+	cellEditable := iface.StartEditing(_event, _widget, _path, _backgroundArea, _cellArea, _flags)
+
+	if cellEditable != nil {
+		cret = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
+	}
+
+	return cret
+}
+
 func wrapCellRenderer(obj *externglib.Object) *CellRenderer {
 	return &CellRenderer{
 		InitiallyUnowned: externglib.InitiallyUnowned{
@@ -723,13 +882,67 @@ func BaseCellRenderer(obj CellRendererer) *CellRenderer {
 	return obj.baseCellRenderer()
 }
 
+//export _gotk4_gtk3_CellRenderer_ConnectEditingCanceled
+func _gotk4_gtk3_CellRenderer_ConnectEditingCanceled(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectEditingCanceled: this signal gets emitted when the user cancels the
 // process of editing a cell. For example, an editable cell renderer could be
 // written to cancel editing when the user presses Escape.
 //
 // See also: gtk_cell_renderer_stop_editing().
 func (cell *CellRenderer) ConnectEditingCanceled(f func()) externglib.SignalHandle {
-	return cell.Connect("editing-canceled", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(cell, "editing-canceled", false, unsafe.Pointer(C._gotk4_gtk3_CellRenderer_ConnectEditingCanceled), f)
+}
+
+//export _gotk4_gtk3_CellRenderer_ConnectEditingStarted
+func _gotk4_gtk3_CellRenderer_ConnectEditingStarted(arg0 C.gpointer, arg1 *C.GtkCellEditable, arg2 *C.gchar, arg3 C.guintptr) {
+	var f func(editable CellEditabler, path string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(editable CellEditabler, path string))
+	}
+
+	var _editable CellEditabler // out
+	var _path string            // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellEditabler is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellEditabler)
+			return ok
+		})
+		rv, ok := casted.(CellEditabler)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
+		}
+		_editable = rv
+	}
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	f(_editable, _path)
 }
 
 // ConnectEditingStarted: this signal gets emitted when a cell starts to be
@@ -760,7 +973,7 @@ func (cell *CellRenderer) ConnectEditingCanceled(f func()) externglib.SignalHand
 //        }
 //    }.
 func (cell *CellRenderer) ConnectEditingStarted(f func(editable CellEditabler, path string)) externglib.SignalHandle {
-	return cell.Connect("editing-started", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(cell, "editing-started", false, unsafe.Pointer(C._gotk4_gtk3_CellRenderer_ConnectEditingStarted), f)
 }
 
 // Activate passes an activate event to the cell renderer for possible

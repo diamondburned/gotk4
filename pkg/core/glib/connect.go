@@ -1,3 +1,5 @@
+//go:build !no_string_connect
+
 package glib
 
 // #include <glib.h>
@@ -9,11 +11,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/closure"
-	"github.com/diamondburned/gotk4/pkg/core/intern"
 )
-
-// SignalHandle is the ID of a signal handler.
-type SignalHandle uint
 
 // Connect is a wrapper around g_signal_connect_closure(). f must be a function
 // with at least one parameter matching the type it is connected to.
@@ -71,9 +69,4 @@ func closureNew(v *Object, f interface{}) *C.GClosure {
 	C.g_closure_add_finalize_notifier(gclosure, C.gpointer(v.Native()), (*[0]byte)(C.removeClosure))
 
 	return gclosure
-}
-
-//export removeClosure
-func removeClosure(obj *C.GObject, gclosure *C.GClosure) {
-	intern.RemoveClosure(unsafe.Pointer(obj), unsafe.Pointer(gclosure))
 }

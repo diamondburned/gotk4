@@ -29,6 +29,9 @@ import (
 // extern gboolean _gotk4_gtk4_WidgetClass_keynav_failed(GtkWidget*, GtkDirectionType);
 // extern gboolean _gotk4_gtk4_WidgetClass_mnemonic_activate(GtkWidget*, gboolean);
 // extern gboolean _gotk4_gtk4_WidgetClass_query_tooltip(GtkWidget*, int, int, gboolean, GtkTooltip*);
+// extern gboolean _gotk4_gtk4_Widget_ConnectKeynavFailed(gpointer, GtkDirectionType, guintptr);
+// extern gboolean _gotk4_gtk4_Widget_ConnectMnemonicActivate(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_Widget_ConnectQueryTooltip(gpointer, gint, gint, gboolean, GtkTooltip*, guintptr);
 // extern void _gotk4_gtk4_WidgetClass_direction_changed(GtkWidget*, GtkTextDirection);
 // extern void _gotk4_gtk4_WidgetClass_hide(GtkWidget*);
 // extern void _gotk4_gtk4_WidgetClass_map(GtkWidget*);
@@ -45,6 +48,16 @@ import (
 // extern void _gotk4_gtk4_WidgetClass_unmap(GtkWidget*);
 // extern void _gotk4_gtk4_WidgetClass_unrealize(GtkWidget*);
 // extern void _gotk4_gtk4_WidgetClass_unroot(GtkWidget*);
+// extern void _gotk4_gtk4_Widget_ConnectDestroy(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectDirectionChanged(gpointer, GtkTextDirection, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectHide(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectMap(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectMoveFocus(gpointer, GtkDirectionType, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectRealize(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectShow(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectStateFlagsChanged(gpointer, GtkStateFlags, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectUnmap(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectUnrealize(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -1190,6 +1203,22 @@ func BaseWidget(obj Widgetter) *Widget {
 	return obj.baseWidget()
 }
 
+//export _gotk4_gtk4_Widget_ConnectDestroy
+func _gotk4_gtk4_Widget_ConnectDestroy(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectDestroy signals that all holders of a reference to the widget should
 // release the reference that they hold.
 //
@@ -1197,24 +1226,102 @@ func BaseWidget(obj Widgetter) *Widget {
 //
 // This signal is not suitable for saving widget state.
 func (widget *Widget) ConnectDestroy(f func()) externglib.SignalHandle {
-	return widget.Connect("destroy", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "destroy", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectDestroy), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectDirectionChanged
+func _gotk4_gtk4_Widget_ConnectDirectionChanged(arg0 C.gpointer, arg1 C.GtkTextDirection, arg2 C.guintptr) {
+	var f func(previousDirection TextDirection)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(previousDirection TextDirection))
+	}
+
+	var _previousDirection TextDirection // out
+
+	_previousDirection = TextDirection(arg1)
+
+	f(_previousDirection)
 }
 
 // ConnectDirectionChanged: emitted when the text direction of a widget changes.
 func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) externglib.SignalHandle {
-	return widget.Connect("direction-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "direction-changed", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectDirectionChanged), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectHide
+func _gotk4_gtk4_Widget_ConnectHide(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectHide: emitted when widget is hidden.
 func (widget *Widget) ConnectHide(f func()) externglib.SignalHandle {
-	return widget.Connect("hide", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "hide", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectHide), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectKeynavFailed
+func _gotk4_gtk4_Widget_ConnectKeynavFailed(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(direction DirectionType) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction DirectionType) (ok bool))
+	}
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	ok := f(_direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectKeynavFailed: emitted if keyboard navigation fails.
 //
 // See gtk.Widget.KeynavFailed() for details.
-func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) externglib.SignalHandle {
-	return widget.Connect("keynav-failed", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "keynav-failed", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectKeynavFailed), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectMap
+func _gotk4_gtk4_Widget_ConnectMap(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectMap: emitted when widget is going to be mapped.
@@ -1227,20 +1334,102 @@ func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) 
 // instance it can resume an animation that was stopped during the emission of
 // gtk.Widget::unmap.
 func (widget *Widget) ConnectMap(f func()) externglib.SignalHandle {
-	return widget.Connect("map", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "map", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectMap), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectMnemonicActivate
+func _gotk4_gtk4_Widget_ConnectMnemonicActivate(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(groupCycling bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(groupCycling bool) (ok bool))
+	}
+
+	var _groupCycling bool // out
+
+	if arg1 != 0 {
+		_groupCycling = true
+	}
+
+	ok := f(_groupCycling)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectMnemonicActivate: emitted when a widget is activated via a mnemonic.
 //
 // The default handler for this signal activates widget if group_cycling is
 // FALSE, or just makes widget grab focus if group_cycling is TRUE.
-func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) externglib.SignalHandle {
-	return widget.Connect("mnemonic-activate", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "mnemonic-activate", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectMnemonicActivate), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectMoveFocus
+func _gotk4_gtk4_Widget_ConnectMoveFocus(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
+	var f func(direction DirectionType)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction DirectionType))
+	}
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	f(_direction)
 }
 
 // ConnectMoveFocus: emitted when the focus is moved.
 func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) externglib.SignalHandle {
-	return widget.Connect("move-focus", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "move-focus", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectMoveFocus), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectQueryTooltip
+func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip, arg5 C.guintptr) (cret C.gboolean) {
+	var f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool))
+	}
+
+	var _x int             // out
+	var _y int             // out
+	var _keyboardMode bool // out
+	var _tooltip *Tooltip  // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	if arg3 != 0 {
+		_keyboardMode = true
+	}
+	_tooltip = wrapTooltip(externglib.Take(unsafe.Pointer(arg4)))
+
+	ok := f(_x, _y, _keyboardMode, _tooltip)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectQueryTooltip: emitted when the widgets tooltip is about to be shown.
@@ -1256,8 +1445,24 @@ func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) externgl
 //
 // The signal handler is free to manipulate tooltip with the therefore destined
 // function calls.
-func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
-	return widget.Connect("query-tooltip", externglib.GeneratedClosure{Func: f})
+func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(widget, "query-tooltip", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectQueryTooltip), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectRealize
+func _gotk4_gtk4_Widget_ConnectRealize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectRealize: emitted when widget is associated with a GdkSurface.
@@ -1265,19 +1470,71 @@ func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, to
 // This means that gtk.Widget.Realize() has been called or the widget has been
 // mapped (that is, it is going to be drawn).
 func (widget *Widget) ConnectRealize(f func()) externglib.SignalHandle {
-	return widget.Connect("realize", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "realize", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectRealize), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectShow
+func _gotk4_gtk4_Widget_ConnectShow(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectShow: emitted when widget is shown.
 func (widget *Widget) ConnectShow(f func()) externglib.SignalHandle {
-	return widget.Connect("show", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "show", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectShow), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectStateFlagsChanged
+func _gotk4_gtk4_Widget_ConnectStateFlagsChanged(arg0 C.gpointer, arg1 C.GtkStateFlags, arg2 C.guintptr) {
+	var f func(flags StateFlags)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(flags StateFlags))
+	}
+
+	var _flags StateFlags // out
+
+	_flags = StateFlags(arg1)
+
+	f(_flags)
 }
 
 // ConnectStateFlagsChanged: emitted when the widget state changes.
 //
 // See gtk.Widget.GetStateFlags().
 func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externglib.SignalHandle {
-	return widget.Connect("state-flags-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "state-flags-changed", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectStateFlagsChanged), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectUnmap
+func _gotk4_gtk4_Widget_ConnectUnmap(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUnmap: emitted when widget is going to be unmapped.
@@ -1288,7 +1545,23 @@ func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externg
 // As ::unmap indicates that a widget will not be shown any longer, it can be
 // used to, for example, stop an animation on the widget.
 func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
-	return widget.Connect("unmap", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "unmap", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectUnmap), f)
+}
+
+//export _gotk4_gtk4_Widget_ConnectUnrealize
+func _gotk4_gtk4_Widget_ConnectUnrealize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUnrealize: emitted when the GdkSurface associated with widget is
@@ -1297,7 +1570,7 @@ func (widget *Widget) ConnectUnmap(f func()) externglib.SignalHandle {
 // This means that gtk.Widget.Unrealize() has been called or the widget has been
 // unmapped (that is, it is going to be hidden).
 func (widget *Widget) ConnectUnrealize(f func()) externglib.SignalHandle {
-	return widget.Connect("unrealize", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(widget, "unrealize", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectUnrealize), f)
 }
 
 // ActionSetEnabled: enable or disable an action installed with

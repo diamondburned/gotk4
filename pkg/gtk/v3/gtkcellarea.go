@@ -26,6 +26,7 @@ import (
 // extern gboolean _gotk4_gtk3_CellAreaClass_focus(GtkCellArea*, GtkDirectionType);
 // extern gboolean _gotk4_gtk3_CellAreaClass_is_activatable(GtkCellArea*);
 // extern gboolean _gotk4_gtk3_CellCallback(GtkCellRenderer*, gpointer);
+// extern gint _gotk4_gtk3_CellAreaClass_event(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkEvent*, GdkRectangle*, GtkCellRendererState);
 // extern void _gotk4_gtk3_CellAreaClass_add(GtkCellArea*, GtkCellRenderer*);
 // extern void _gotk4_gtk3_CellAreaClass_apply_attributes(GtkCellArea*, GtkTreeModel*, GtkTreeIter*, gboolean, gboolean);
 // extern void _gotk4_gtk3_CellAreaClass_get_preferred_height(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, gint*, gint*);
@@ -34,6 +35,10 @@ import (
 // extern void _gotk4_gtk3_CellAreaClass_get_preferred_width_for_height(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, gint, gint*, gint*);
 // extern void _gotk4_gtk3_CellAreaClass_remove(GtkCellArea*, GtkCellRenderer*);
 // extern void _gotk4_gtk3_CellAreaClass_render(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, cairo_t*, GdkRectangle*, GdkRectangle*, GtkCellRendererState, gboolean);
+// extern void _gotk4_gtk3_CellArea_ConnectAddEditable(gpointer, GtkCellRenderer*, GtkCellEditable*, GdkRectangle*, gchar*, guintptr);
+// extern void _gotk4_gtk3_CellArea_ConnectApplyAttributes(gpointer, GtkTreeModel*, GtkTreeIter*, gboolean, gboolean, guintptr);
+// extern void _gotk4_gtk3_CellArea_ConnectFocusChanged(gpointer, GtkCellRenderer*, gchar*, guintptr);
+// extern void _gotk4_gtk3_CellArea_ConnectRemoveEditable(gpointer, GtkCellRenderer*, GtkCellEditable*, guintptr);
 import "C"
 
 func init() {
@@ -206,6 +211,21 @@ type CellAreaOverrider interface {
 	//      area.
 	//
 	CreateContext() *CellAreaContext
+	// Event delegates event handling to a CellArea.
+	//
+	// The function takes the following parameters:
+	//
+	//    - context for this row of data.
+	//    - widget that area is rendering to.
+	//    - event to handle.
+	//    - cellArea: widget relative coordinates for area.
+	//    - flags for area in this row.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: TRUE if the event was handled by area.
+	//
+	Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
 	// Focus: this should be called by the area’s owning layout widget when
 	// focus is to be passed to area, or moved within area for a given direction
 	// and row data.
@@ -548,6 +568,12 @@ func classInitCellAreaer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
+		Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
+	}); ok {
+		pclass.event = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_event)
+	}
+
+	if _, ok := goval.(interface {
 		Focus(direction DirectionType) bool
 	}); ok {
 		pclass.focus = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_focus)
@@ -738,6 +764,52 @@ func _gotk4_gtk3_CellAreaClass_create_context(arg0 *C.GtkCellArea) (cret *C.GtkC
 
 	cret = (*C.GtkCellAreaContext)(unsafe.Pointer(cellAreaContext.Native()))
 	C.g_object_ref(C.gpointer(cellAreaContext.Native()))
+
+	return cret
+}
+
+//export _gotk4_gtk3_CellAreaClass_event
+func _gotk4_gtk3_CellAreaClass_event(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GdkEvent, arg4 *C.GdkRectangle, arg5 C.GtkCellRendererState) (cret C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
+	})
+
+	var _context *CellAreaContext // out
+	var _widget Widgetter         // out
+	var _event *gdk.Event         // out
+	var _cellArea *gdk.Rectangle  // out
+	var _flags CellRendererState  // out
+
+	_context = wrapCellAreaContext(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	_flags = CellRendererState(arg5)
+
+	gint := iface.Event(_context, _widget, _event, _cellArea, _flags)
+
+	cret = C.gint(gint)
 
 	return cret
 }
@@ -1036,16 +1108,158 @@ func BaseCellArea(obj CellAreaer) *CellArea {
 	return obj.baseCellArea()
 }
 
+//export _gotk4_gtk3_CellArea_ConnectAddEditable
+func _gotk4_gtk3_CellArea_ConnectAddEditable(arg0 C.gpointer, arg1 *C.GtkCellRenderer, arg2 *C.GtkCellEditable, arg3 *C.GdkRectangle, arg4 *C.gchar, arg5 C.guintptr) {
+	var f func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string))
+	}
+
+	var _renderer CellRendererer // out
+	var _editable CellEditabler  // out
+	var _cellArea *gdk.Rectangle // out
+	var _path string             // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_renderer = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.CellEditabler is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellEditabler)
+			return ok
+		})
+		rv, ok := casted.(CellEditabler)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
+		}
+		_editable = rv
+	}
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
+
+	f(_renderer, _editable, _cellArea, _path)
+}
+
 // ConnectAddEditable indicates that editing has started on renderer and that
 // editable should be added to the owning cell-layouting widget at cell_area.
 func (area *CellArea) ConnectAddEditable(f func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string)) externglib.SignalHandle {
-	return area.Connect("add-editable", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(area, "add-editable", false, unsafe.Pointer(C._gotk4_gtk3_CellArea_ConnectAddEditable), f)
+}
+
+//export _gotk4_gtk3_CellArea_ConnectApplyAttributes
+func _gotk4_gtk3_CellArea_ConnectApplyAttributes(arg0 C.gpointer, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
+	var f func(model TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(model TreeModeller, iter *TreeIter, isExpander, isExpanded bool))
+	}
+
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
+	var _isExpander bool    // out
+	var _isExpanded bool    // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_model = rv
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	if arg3 != 0 {
+		_isExpander = true
+	}
+	if arg4 != 0 {
+		_isExpanded = true
+	}
+
+	f(_model, _iter, _isExpander, _isExpanded)
 }
 
 // ConnectApplyAttributes: this signal is emitted whenever applying attributes
 // to area from model.
 func (area *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter *TreeIter, isExpander, isExpanded bool)) externglib.SignalHandle {
-	return area.Connect("apply-attributes", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(area, "apply-attributes", false, unsafe.Pointer(C._gotk4_gtk3_CellArea_ConnectApplyAttributes), f)
+}
+
+//export _gotk4_gtk3_CellArea_ConnectFocusChanged
+func _gotk4_gtk3_CellArea_ConnectFocusChanged(arg0 C.gpointer, arg1 *C.GtkCellRenderer, arg2 *C.gchar, arg3 C.guintptr) {
+	var f func(renderer CellRendererer, path string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(renderer CellRendererer, path string))
+	}
+
+	var _renderer CellRendererer // out
+	var _path string             // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_renderer = rv
+	}
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	f(_renderer, _path)
 }
 
 // ConnectFocusChanged indicates that focus changed on this area. This signal is
@@ -1055,13 +1269,67 @@ func (area *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter *Tr
 // renderer did not change, this is because focus may change to the same
 // renderer in the same cell area for a different row of data.
 func (area *CellArea) ConnectFocusChanged(f func(renderer CellRendererer, path string)) externglib.SignalHandle {
-	return area.Connect("focus-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(area, "focus-changed", false, unsafe.Pointer(C._gotk4_gtk3_CellArea_ConnectFocusChanged), f)
+}
+
+//export _gotk4_gtk3_CellArea_ConnectRemoveEditable
+func _gotk4_gtk3_CellArea_ConnectRemoveEditable(arg0 C.gpointer, arg1 *C.GtkCellRenderer, arg2 *C.GtkCellEditable, arg3 C.guintptr) {
+	var f func(renderer CellRendererer, editable CellEditabler)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(renderer CellRendererer, editable CellEditabler))
+	}
+
+	var _renderer CellRendererer // out
+	var _editable CellEditabler  // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_renderer = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.CellEditabler is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellEditabler)
+			return ok
+		})
+		rv, ok := casted.(CellEditabler)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
+		}
+		_editable = rv
+	}
+
+	f(_renderer, _editable)
 }
 
 // ConnectRemoveEditable indicates that editing finished on renderer and that
 // editable should be removed from the owning cell-layouting widget.
 func (area *CellArea) ConnectRemoveEditable(f func(renderer CellRendererer, editable CellEditabler)) externglib.SignalHandle {
-	return area.Connect("remove-editable", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(area, "remove-editable", false, unsafe.Pointer(C._gotk4_gtk3_CellArea_ConnectRemoveEditable), f)
 }
 
 // Activate activates area, usually by activating the currently focused cell,

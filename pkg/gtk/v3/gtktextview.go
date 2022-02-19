@@ -22,6 +22,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_TextViewClass_extend_selection(GtkTextView*, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*);
+// extern gboolean _gotk4_gtk3_TextView_ConnectExtendSelection(gpointer, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*, guintptr);
 // extern void _gotk4_gtk3_TextViewClass_backspace(GtkTextView*);
 // extern void _gotk4_gtk3_TextViewClass_copy_clipboard(GtkTextView*);
 // extern void _gotk4_gtk3_TextViewClass_cut_clipboard(GtkTextView*);
@@ -34,6 +35,21 @@ import (
 // extern void _gotk4_gtk3_TextViewClass_populate_popup(GtkTextView*, GtkWidget*);
 // extern void _gotk4_gtk3_TextViewClass_set_anchor(GtkTextView*);
 // extern void _gotk4_gtk3_TextViewClass_toggle_overwrite(GtkTextView*);
+// extern void _gotk4_gtk3_TextView_ConnectBackspace(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectCopyClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectCutClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectDeleteFromCursor(gpointer, GtkDeleteType, gint, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectInsertEmoji(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectMoveViewport(gpointer, GtkScrollStep, gint, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectPasteClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectPopulatePopup(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectPreeditChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectSelectAll(gpointer, gboolean, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectSetAnchor(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectToggleCursorVisible(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -522,12 +538,44 @@ func marshalTextViewer(p uintptr) (interface{}, error) {
 	return wrapTextView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_TextView_ConnectBackspace
+func _gotk4_gtk3_TextView_ConnectBackspace(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectBackspace signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user asks for it.
 //
 // The default bindings for this signal are Backspace and Shift-Backspace.
 func (textView *TextView) ConnectBackspace(f func()) externglib.SignalHandle {
-	return textView.Connect("backspace", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "backspace", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectBackspace), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectCopyClipboard
+func _gotk4_gtk3_TextView_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -535,7 +583,23 @@ func (textView *TextView) ConnectBackspace(f func()) externglib.SignalHandle {
 //
 // The default bindings for this signal are Ctrl-c and Ctrl-Insert.
 func (textView *TextView) ConnectCopyClipboard(f func()) externglib.SignalHandle {
-	return textView.Connect("copy-clipboard", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "copy-clipboard", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectCopyClipboard), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectCutClipboard
+func _gotk4_gtk3_TextView_ConnectCutClipboard(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectCutClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -543,7 +607,29 @@ func (textView *TextView) ConnectCopyClipboard(f func()) externglib.SignalHandle
 //
 // The default bindings for this signal are Ctrl-x and Shift-Delete.
 func (textView *TextView) ConnectCutClipboard(f func()) externglib.SignalHandle {
-	return textView.Connect("cut-clipboard", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "cut-clipboard", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectCutClipboard), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectDeleteFromCursor
+func _gotk4_gtk3_TextView_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteType, arg2 C.gint, arg3 C.guintptr) {
+	var f func(typ DeleteType, count int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(typ DeleteType, count int))
+	}
+
+	var _typ DeleteType // out
+	var _count int      // out
+
+	_typ = DeleteType(arg1)
+	_count = int(arg2)
+
+	f(_typ, _count)
 }
 
 // ConnectDeleteFromCursor signal is a [keybinding signal][GtkBindingSignal]
@@ -556,13 +642,65 @@ func (textView *TextView) ConnectCutClipboard(f func()) externglib.SignalHandle 
 // Ctrl-Delete for deleting a word and Ctrl-Backspace for deleting a word
 // backwords.
 func (textView *TextView) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) externglib.SignalHandle {
-	return textView.Connect("delete-from-cursor", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "delete-from-cursor", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectDeleteFromCursor), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectExtendSelection
+func _gotk4_gtk3_TextView_ConnectExtendSelection(arg0 C.gpointer, arg1 C.GtkTextExtendSelection, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.GtkTextIter, arg5 C.guintptr) (cret C.gboolean) {
+	var f func(granularity TextExtendSelection, location, start, end *TextIter) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(granularity TextExtendSelection, location, start, end *TextIter) (ok bool))
+	}
+
+	var _granularity TextExtendSelection // out
+	var _location *TextIter              // out
+	var _start *TextIter                 // out
+	var _end *TextIter                   // out
+
+	_granularity = TextExtendSelection(arg1)
+	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+
+	ok := f(_granularity, _location, _start, _end)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectExtendSelection signal is emitted when the selection needs to be
 // extended at location.
-func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end *TextIter) bool) externglib.SignalHandle {
-	return textView.Connect("extend-selection", externglib.GeneratedClosure{Func: f})
+func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end *TextIter) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(textView, "extend-selection", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectExtendSelection), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectInsertAtCursor
+func _gotk4_gtk3_TextView_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(str string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(str string))
+	}
+
+	var _str string // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_str)
 }
 
 // ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -571,7 +709,23 @@ func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSe
 //
 // This signal has no default bindings.
 func (textView *TextView) ConnectInsertAtCursor(f func(str string)) externglib.SignalHandle {
-	return textView.Connect("insert-at-cursor", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "insert-at-cursor", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectInsertAtCursor), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectInsertEmoji
+func _gotk4_gtk3_TextView_ConnectInsertEmoji(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectInsertEmoji signal is a [keybinding signal][GtkBindingSignal] which
@@ -579,7 +733,33 @@ func (textView *TextView) ConnectInsertAtCursor(f func(str string)) externglib.S
 //
 // The default bindings for this signal are Ctrl-. and Ctrl-;.
 func (textView *TextView) ConnectInsertEmoji(f func()) externglib.SignalHandle {
-	return textView.Connect("insert-emoji", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "insert-emoji", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectInsertEmoji), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectMoveCursor
+func _gotk4_gtk3_TextView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
+	var f func(step MovementStep, count int, extendSelection bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(step MovementStep, count int, extendSelection bool))
+	}
+
+	var _step MovementStep    // out
+	var _count int            // out
+	var _extendSelection bool // out
+
+	_step = MovementStep(arg1)
+	_count = int(arg2)
+	if arg3 != 0 {
+		_extendSelection = true
+	}
+
+	f(_step, _count, _extendSelection)
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -603,7 +783,29 @@ func (textView *TextView) ConnectInsertEmoji(f func()) externglib.SignalHandle {
 //
 // - Ctrl-PageUp/PageDown keys move horizontally by pages.
 func (textView *TextView) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
-	return textView.Connect("move-cursor", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectMoveCursor), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectMoveViewport
+func _gotk4_gtk3_TextView_ConnectMoveViewport(arg0 C.gpointer, arg1 C.GtkScrollStep, arg2 C.gint, arg3 C.guintptr) {
+	var f func(step ScrollStep, count int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(step ScrollStep, count int))
+	}
+
+	var _step ScrollStep // out
+	var _count int       // out
+
+	_step = ScrollStep(arg1)
+	_count = int(arg2)
+
+	f(_step, _count)
 }
 
 // ConnectMoveViewport signal is a [keybinding signal][GtkBindingSignal] which
@@ -612,7 +814,23 @@ func (textView *TextView) ConnectMoveCursor(f func(step MovementStep, count int,
 //
 // There are no default bindings for this signal.
 func (textView *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)) externglib.SignalHandle {
-	return textView.Connect("move-viewport", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "move-viewport", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectMoveViewport), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectPasteClipboard
+func _gotk4_gtk3_TextView_ConnectPasteClipboard(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPasteClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -620,7 +838,43 @@ func (textView *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)
 //
 // The default bindings for this signal are Ctrl-v and Shift-Insert.
 func (textView *TextView) ConnectPasteClipboard(f func()) externglib.SignalHandle {
-	return textView.Connect("paste-clipboard", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "paste-clipboard", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectPasteClipboard), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectPopulatePopup
+func _gotk4_gtk3_TextView_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(popup Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(popup Widgetter))
+	}
+
+	var _popup Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_popup = rv
+	}
+
+	f(_popup)
 }
 
 // ConnectPopulatePopup signal gets emitted before showing the context menu of
@@ -636,7 +890,27 @@ func (textView *TextView) ConnectPasteClipboard(f func()) externglib.SignalHandl
 // The signal handler should not make assumptions about the type of widget, but
 // check whether popup is a Menu or Toolbar or another kind of container.
 func (textView *TextView) ConnectPopulatePopup(f func(popup Widgetter)) externglib.SignalHandle {
-	return textView.Connect("populate-popup", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "populate-popup", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectPopulatePopup), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectPreeditChanged
+func _gotk4_gtk3_TextView_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(preedit string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(preedit string))
+	}
+
+	var _preedit string // out
+
+	_preedit = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_preedit)
 }
 
 // ConnectPreeditChanged: if an input method is used, the typed text will not
@@ -646,7 +920,29 @@ func (textView *TextView) ConnectPopulatePopup(f func(popup Widgetter)) externgl
 // This signal is only emitted if the text at the given position is actually
 // editable.
 func (textView *TextView) ConnectPreeditChanged(f func(preedit string)) externglib.SignalHandle {
-	return textView.Connect("preedit-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "preedit-changed", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectPreeditChanged), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectSelectAll
+func _gotk4_gtk3_TextView_ConnectSelectAll(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) {
+	var f func(sel bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(sel bool))
+	}
+
+	var _sel bool // out
+
+	if arg1 != 0 {
+		_sel = true
+	}
+
+	f(_sel)
 }
 
 // ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -655,7 +951,23 @@ func (textView *TextView) ConnectPreeditChanged(f func(preedit string)) externgl
 // The default bindings for this signal are Ctrl-a and Ctrl-/ for selecting and
 // Shift-Ctrl-a and Ctrl-\ for unselecting.
 func (textView *TextView) ConnectSelectAll(f func(sel bool)) externglib.SignalHandle {
-	return textView.Connect("select-all", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "select-all", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectSelectAll), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectSetAnchor
+func _gotk4_gtk3_TextView_ConnectSetAnchor(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSetAnchor signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -664,7 +976,23 @@ func (textView *TextView) ConnectSelectAll(f func(sel bool)) externglib.SignalHa
 //
 // This signal has no default bindings.
 func (textView *TextView) ConnectSetAnchor(f func()) externglib.SignalHandle {
-	return textView.Connect("set-anchor", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "set-anchor", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectSetAnchor), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectToggleCursorVisible
+func _gotk4_gtk3_TextView_ConnectToggleCursorVisible(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectToggleCursorVisible signal is a [keybinding signal][GtkBindingSignal]
@@ -672,7 +1000,23 @@ func (textView *TextView) ConnectSetAnchor(f func()) externglib.SignalHandle {
 //
 // The default binding for this signal is F7.
 func (textView *TextView) ConnectToggleCursorVisible(f func()) externglib.SignalHandle {
-	return textView.Connect("toggle-cursor-visible", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "toggle-cursor-visible", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectToggleCursorVisible), f)
+}
+
+//export _gotk4_gtk3_TextView_ConnectToggleOverwrite
+func _gotk4_gtk3_TextView_ConnectToggleOverwrite(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
@@ -680,7 +1024,7 @@ func (textView *TextView) ConnectToggleCursorVisible(f func()) externglib.Signal
 //
 // The default bindings for this signal is Insert.
 func (textView *TextView) ConnectToggleOverwrite(f func()) externglib.SignalHandle {
-	return textView.Connect("toggle-overwrite", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(textView, "toggle-overwrite", false, unsafe.Pointer(C._gotk4_gtk3_TextView_ConnectToggleOverwrite), f)
 }
 
 // NewTextView creates a new TextView. If you don’t call

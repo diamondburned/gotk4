@@ -18,6 +18,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_RadioButtonClass_group_changed(GtkRadioButton*);
+// extern void _gotk4_gtk3_RadioButton_ConnectGroupChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -174,6 +175,22 @@ func marshalRadioButtonner(p uintptr) (interface{}, error) {
 	return wrapRadioButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_RadioButton_ConnectGroupChanged
+func _gotk4_gtk3_RadioButton_ConnectGroupChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectGroupChanged: emitted when the group of radio buttons that a radio
 // button belongs to changes. This is emitted when a radio button switches from
 // being alone to being part of a group of 2 or more buttons, or vice-versa, and
@@ -181,7 +198,7 @@ func marshalRadioButtonner(p uintptr) (interface{}, error) {
 // one, but not when the composition of the group that a button belongs to
 // changes.
 func (radioButton *RadioButton) ConnectGroupChanged(f func()) externglib.SignalHandle {
-	return radioButton.Connect("group-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(radioButton, "group-changed", false, unsafe.Pointer(C._gotk4_gtk3_RadioButton_ConnectGroupChanged), f)
 }
 
 // NewRadioButton creates a new RadioButton. To be of any practical value, a

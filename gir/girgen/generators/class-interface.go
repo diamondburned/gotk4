@@ -133,13 +133,13 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	{{ range .Signals }}
-	{{ if $.IsInSameFile . }}
-	{{ $name := printf "Connect%s" (KebabToGo true .Name) }}
-	{{ GoDoc . 0 (OverrideSelfName $name) }}
-	func ({{ $.Recv }} *{{ $.StructName }}) {{ $name }}(f func{{ .Tail }}) externglib.SignalHandle {
-		return {{ $.Recv }}.Connect({{ Quote .Name }}, externglib.GeneratedClosure{Func: f})
+	//export {{ .CGoName }}
+	func {{ .CGoName }}{{ .CGoTail }} {{ .Block }}
+
+	{{ GoDoc . 0 (OverrideSelfName .GoName) }}
+	func ({{ $.Recv }} *{{ $.StructName }}) {{ .GoName }}(f func{{ .GoTail }}) externglib.SignalHandle {
+		return externglib.ConnectGeneratedClosure({{ $.Recv }}, {{ Quote .Name }}, false, unsafe.Pointer(C.{{ .CGoName }}), f)
 	}
-	{{ end }}
 	{{ end }}
 `)
 

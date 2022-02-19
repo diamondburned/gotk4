@@ -38,6 +38,12 @@ import (
 // extern void _gotk4_atk1_TextIface_text_caret_moved(AtkText*, gint);
 // extern void _gotk4_atk1_TextIface_text_changed(AtkText*, gint, gint);
 // extern void _gotk4_atk1_TextIface_text_selection_changed(AtkText*);
+// extern void _gotk4_atk1_Text_ConnectTextAttributesChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextCaretMoved(gpointer, gint, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextChanged(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextInsert(gpointer, gint, gint, gchar*, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextRemove(gpointer, gint, gint, gchar*, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextSelectionChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -1404,17 +1410,75 @@ func marshalTexter(p uintptr) (interface{}, error) {
 	return wrapText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_atk1_Text_ConnectTextAttributesChanged
+func _gotk4_atk1_Text_ConnectTextAttributesChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectTextAttributesChanged: "text-attributes-changed" signal is emitted
 // when the text attributes of the text of an object which implements AtkText
 // changes.
 func (text *Text) ConnectTextAttributesChanged(f func()) externglib.SignalHandle {
-	return text.Connect("text-attributes-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(text, "text-attributes-changed", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextAttributesChanged), f)
+}
+
+//export _gotk4_atk1_Text_ConnectTextCaretMoved
+func _gotk4_atk1_Text_ConnectTextCaretMoved(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(arg1 int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 int))
+	}
+
+	var _arg1 int // out
+
+	_arg1 = int(arg1)
+
+	f(_arg1)
 }
 
 // ConnectTextCaretMoved: "text-caret-moved" signal is emitted when the caret
 // position of the text of an object which implements AtkText changes.
 func (text *Text) ConnectTextCaretMoved(f func(arg1 int)) externglib.SignalHandle {
-	return text.Connect("text-caret-moved", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(text, "text-caret-moved", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextCaretMoved), f)
+}
+
+//export _gotk4_atk1_Text_ConnectTextChanged
+func _gotk4_atk1_Text_ConnectTextChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
 }
 
 // ConnectTextChanged: "text-changed" signal is emitted when the text of the
@@ -1422,27 +1486,91 @@ func (text *Text) ConnectTextCaretMoved(f func(arg1 int)) externglib.SignalHandl
 // a detail which is either "insert" or "delete" which identifies whether the
 // text change was an insertion or a deletion.
 func (text *Text) ConnectTextChanged(f func(arg1, arg2 int)) externglib.SignalHandle {
-	return text.Connect("text-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(text, "text-changed", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextChanged), f)
+}
+
+//export _gotk4_atk1_Text_ConnectTextInsert
+func _gotk4_atk1_Text_ConnectTextInsert(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
+	var f func(arg1, arg2 int, arg3 string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int, arg3 string))
+	}
+
+	var _arg1 int    // out
+	var _arg2 int    // out
+	var _arg3 string // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+	_arg3 = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+
+	f(_arg1, _arg2, _arg3)
 }
 
 // ConnectTextInsert: "text-insert" signal is emitted when a new text is
 // inserted. If the signal was not triggered by the user (e.g. typing or pasting
 // text), the "system" detail should be included.
 func (text *Text) ConnectTextInsert(f func(arg1, arg2 int, arg3 string)) externglib.SignalHandle {
-	return text.Connect("text-insert", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(text, "text-insert", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextInsert), f)
+}
+
+//export _gotk4_atk1_Text_ConnectTextRemove
+func _gotk4_atk1_Text_ConnectTextRemove(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
+	var f func(arg1, arg2 int, arg3 string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int, arg3 string))
+	}
+
+	var _arg1 int    // out
+	var _arg2 int    // out
+	var _arg3 string // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+	_arg3 = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+
+	f(_arg1, _arg2, _arg3)
 }
 
 // ConnectTextRemove: "text-remove" signal is emitted when a new text is
 // removed. If the signal was not triggered by the user (e.g. typing or pasting
 // text), the "system" detail should be included.
 func (text *Text) ConnectTextRemove(f func(arg1, arg2 int, arg3 string)) externglib.SignalHandle {
-	return text.Connect("text-remove", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(text, "text-remove", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextRemove), f)
+}
+
+//export _gotk4_atk1_Text_ConnectTextSelectionChanged
+func _gotk4_atk1_Text_ConnectTextSelectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectTextSelectionChanged: "text-selection-changed" signal is emitted when
 // the selected text of an object which implements AtkText changes.
 func (text *Text) ConnectTextSelectionChanged(f func()) externglib.SignalHandle {
-	return text.Connect("text-selection-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(text, "text-selection-changed", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextSelectionChanged), f)
 }
 
 // AddSelection adds a selection bounded by the specified offsets.

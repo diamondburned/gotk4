@@ -48,6 +48,13 @@ import (
 // extern void _gotk4_atk1_TableIface_set_row_description(AtkTable*, gint, gchar*);
 // extern void _gotk4_atk1_TableIface_set_row_header(AtkTable*, gint, AtkObject*);
 // extern void _gotk4_atk1_TableIface_set_summary(AtkTable*, AtkObject*);
+// extern void _gotk4_atk1_Table_ConnectColumnDeleted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectColumnInserted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectColumnReordered(gpointer, guintptr);
+// extern void _gotk4_atk1_Table_ConnectModelChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_Table_ConnectRowDeleted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectRowInserted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectRowReordered(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -1135,47 +1142,183 @@ func marshalTabler(p uintptr) (interface{}, error) {
 	return wrapTable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_atk1_Table_ConnectColumnDeleted
+func _gotk4_atk1_Table_ConnectColumnDeleted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
+}
+
 // ConnectColumnDeleted: "column-deleted" signal is emitted by an object which
 // implements the AtkTable interface when a column is deleted.
 func (table *Table) ConnectColumnDeleted(f func(arg1, arg2 int)) externglib.SignalHandle {
-	return table.Connect("column-deleted", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(table, "column-deleted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectColumnDeleted), f)
+}
+
+//export _gotk4_atk1_Table_ConnectColumnInserted
+func _gotk4_atk1_Table_ConnectColumnInserted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
 }
 
 // ConnectColumnInserted: "column-inserted" signal is emitted by an object which
 // implements the AtkTable interface when a column is inserted.
 func (table *Table) ConnectColumnInserted(f func(arg1, arg2 int)) externglib.SignalHandle {
-	return table.Connect("column-inserted", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(table, "column-inserted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectColumnInserted), f)
+}
+
+//export _gotk4_atk1_Table_ConnectColumnReordered
+func _gotk4_atk1_Table_ConnectColumnReordered(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectColumnReordered: "column-reordered" signal is emitted by an object
 // which implements the AtkTable interface when the columns are reordered.
 func (table *Table) ConnectColumnReordered(f func()) externglib.SignalHandle {
-	return table.Connect("column-reordered", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(table, "column-reordered", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectColumnReordered), f)
+}
+
+//export _gotk4_atk1_Table_ConnectModelChanged
+func _gotk4_atk1_Table_ConnectModelChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectModelChanged: "model-changed" signal is emitted by an object which
 // implements the AtkTable interface when the model displayed by the table
 // changes.
 func (table *Table) ConnectModelChanged(f func()) externglib.SignalHandle {
-	return table.Connect("model-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(table, "model-changed", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectModelChanged), f)
+}
+
+//export _gotk4_atk1_Table_ConnectRowDeleted
+func _gotk4_atk1_Table_ConnectRowDeleted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
 }
 
 // ConnectRowDeleted: "row-deleted" signal is emitted by an object which
 // implements the AtkTable interface when a row is deleted.
 func (table *Table) ConnectRowDeleted(f func(arg1, arg2 int)) externglib.SignalHandle {
-	return table.Connect("row-deleted", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(table, "row-deleted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectRowDeleted), f)
+}
+
+//export _gotk4_atk1_Table_ConnectRowInserted
+func _gotk4_atk1_Table_ConnectRowInserted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
 }
 
 // ConnectRowInserted: "row-inserted" signal is emitted by an object which
 // implements the AtkTable interface when a row is inserted.
 func (table *Table) ConnectRowInserted(f func(arg1, arg2 int)) externglib.SignalHandle {
-	return table.Connect("row-inserted", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(table, "row-inserted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectRowInserted), f)
+}
+
+//export _gotk4_atk1_Table_ConnectRowReordered
+func _gotk4_atk1_Table_ConnectRowReordered(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectRowReordered: "row-reordered" signal is emitted by an object which
 // implements the AtkTable interface when the rows are reordered.
 func (table *Table) ConnectRowReordered(f func()) externglib.SignalHandle {
-	return table.Connect("row-reordered", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(table, "row-reordered", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectRowReordered), f)
 }
 
 // AddColumnSelection adds the specified column to the selection.

@@ -12,6 +12,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_GridView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
 func init() {
@@ -108,13 +109,33 @@ func marshalGridViewer(p uintptr) (interface{}, error) {
 	return wrapGridView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_GridView_ConnectActivate
+func _gotk4_gtk4_GridView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
+	var f func(position uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(position uint))
+	}
+
+	var _position uint // out
+
+	_position = uint(arg1)
+
+	f(_position)
+}
+
 // ConnectActivate: emitted when a cell has been activated by the user, usually
 // via activating the GtkGridView|list.activate-item action.
 //
 // This allows for a convenient way to handle activation in a gridview. See
 // gtk.ListItem:activatable for details on how to use this signal.
 func (self *GridView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return self.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_GridView_ConnectActivate), f)
 }
 
 // NewGridView creates a new GtkGridView that uses the given factory for mapping

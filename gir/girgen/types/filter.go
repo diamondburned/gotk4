@@ -345,6 +345,42 @@ notFound:
 	log.Panicf("GIR type %q has no callable", m.girType)
 }
 
+var signalMatcherRe = regexp.MustCompile(`(.*)\.(.*)::(.*)`)
+
+// ModifySignal is like ModifyCallable, except it only works on signals from
+// classes and interfaces. The GIR type must be "package.class::signal-name".
+func ModifySignal(girType string, f func(c *gir.Signal)) Preprocessor {
+	parts := signalMatcherRe.FindStringSubmatch(girType)
+	if len(parts) != 4 {
+		log.Panicf("GIR signal type %q invalid", girType)
+	}
+
+	return PreprocessorFunc(func(repos gir.Repositories) {
+		result := repos.FindFullType(parts[1] + "." + parts[2])
+		if result == nil {
+			log.Printf("GIR type %q not found", girType)
+			return
+		}
+
+		switch v := result.Type.(type) {
+		case *gir.Class:
+			for i, signal := range v.Signals {
+				if signal.Name == parts[3] {
+					f(&v.Signals[i])
+					return
+				}
+			}
+		case *gir.Interface:
+			for i, signal := range v.Signals {
+				if signal.Name == parts[3] {
+					f(&v.Signals[i])
+					return
+				}
+			}
+		}
+	})
+}
+
 // FilterMatcher describes a filter for a GIR type.
 type FilterMatcher interface {
 	// Filter matches for the girType within the given namespace from the

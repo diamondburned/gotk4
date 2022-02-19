@@ -19,6 +19,7 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_SocketListenerClass_changed(GSocketListener*);
 // extern void _gotk4_gio2_SocketListenerClass_event(GSocketListener*, GSocketListenerEvent, GSocket*);
+// extern void _gotk4_gio2_SocketListener_ConnectEvent(gpointer, GSocketListenerEvent, GSocket*, guintptr);
 import "C"
 
 func init() {
@@ -114,11 +115,33 @@ func marshalSocketListenerer(p uintptr) (interface{}, error) {
 	return wrapSocketListener(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_SocketListener_ConnectEvent
+func _gotk4_gio2_SocketListener_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketListenerEvent, arg2 *C.GSocket, arg3 C.guintptr) {
+	var f func(event SocketListenerEvent, socket *Socket)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event SocketListenerEvent, socket *Socket))
+	}
+
+	var _event SocketListenerEvent // out
+	var _socket *Socket            // out
+
+	_event = SocketListenerEvent(arg1)
+	_socket = wrapSocket(externglib.Take(unsafe.Pointer(arg2)))
+
+	f(_event, _socket)
+}
+
 // ConnectEvent: emitted when listener's activity on socket changes state. Note
 // that when listener is used to listen on both IPv4 and IPv6, a separate set of
 // signals will be emitted for each, and the order they happen in is undefined.
-func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, socket Socket)) externglib.SignalHandle {
-	return listener.Connect("event", externglib.GeneratedClosure{Func: f})
+func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, socket *Socket)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(listener, "event", false, unsafe.Pointer(C._gotk4_gio2_SocketListener_ConnectEvent), f)
 }
 
 // NewSocketListener creates a new Listener with no sockets to listen for. New

@@ -12,6 +12,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -78,11 +79,27 @@ func BaseVulkanContext(obj VulkanContexter) *VulkanContext {
 	return obj.baseVulkanContext()
 }
 
+//export _gotk4_gdk4_VulkanContext_ConnectImagesUpdated
+func _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectImagesUpdated: emitted when the images managed by this context have
 // changed.
 //
 // Usually this means that the swapchain had to be recreated, for example in
 // response to a change of the surface size.
 func (v *VulkanContext) ConnectImagesUpdated(f func()) externglib.SignalHandle {
-	return v.Connect("images-updated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "images-updated", false, unsafe.Pointer(C._gotk4_gdk4_VulkanContext_ConnectImagesUpdated), f)
 }

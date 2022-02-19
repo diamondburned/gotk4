@@ -14,6 +14,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_GesturePan_ConnectPan(gpointer, GtkPanDirection, gdouble, guintptr);
 import "C"
 
 func init() {
@@ -73,10 +74,32 @@ func marshalGesturePanner(p uintptr) (interface{}, error) {
 	return wrapGesturePan(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_GesturePan_ConnectPan
+func _gotk4_gtk3_GesturePan_ConnectPan(arg0 C.gpointer, arg1 C.GtkPanDirection, arg2 C.gdouble, arg3 C.guintptr) {
+	var f func(direction PanDirection, offset float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction PanDirection, offset float64))
+	}
+
+	var _direction PanDirection // out
+	var _offset float64         // out
+
+	_direction = PanDirection(arg1)
+	_offset = float64(arg2)
+
+	f(_direction, _offset)
+}
+
 // ConnectPan: this signal is emitted once a panning gesture along the expected
 // axis is detected.
 func (gesture *GesturePan) ConnectPan(f func(direction PanDirection, offset float64)) externglib.SignalHandle {
-	return gesture.Connect("pan", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "pan", false, unsafe.Pointer(C._gotk4_gtk3_GesturePan_ConnectPan), f)
 }
 
 // NewGesturePan returns a newly created Gesture that recognizes pan gestures.

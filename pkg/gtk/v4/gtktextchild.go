@@ -128,7 +128,7 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((**C.GtkWidget)(_cret), _arg1)
 		_widgets = make([]Widgetter, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			{

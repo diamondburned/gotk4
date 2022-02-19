@@ -14,6 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_DropTarget_ConnectAccept(gpointer, GdkDrop*, guintptr);
+// extern gboolean _gotk4_gtk4_DropTarget_ConnectDrop(gpointer, GValue, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_DropTarget_ConnectLeave(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -124,6 +127,48 @@ func marshalDropTargetter(p uintptr) (interface{}, error) {
 	return wrapDropTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_DropTarget_ConnectAccept
+func _gotk4_gtk4_DropTarget_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(drop gdk.Dropper) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drop gdk.Dropper) (ok bool))
+	}
+
+	var _drop gdk.Dropper // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Dropper is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gdk.Dropper)
+			return ok
+		})
+		rv, ok := casted.(gdk.Dropper)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
+		}
+		_drop = rv
+	}
+
+	ok := f(_drop)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectAccept: emitted on the drop site when a drop operation is about to
 // begin.
 //
@@ -139,8 +184,38 @@ func marshalDropTargetter(p uintptr) (interface{}, error) {
 // data, this function should return TRUE, the gtk.DropTarget:preload property
 // should be set and the value should be inspected via the ::notify:value
 // signal, calling gtk.DropTarget.Reject() if required.
-func (self *DropTarget) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.SignalHandle {
-	return self.Connect("accept", externglib.GeneratedClosure{Func: f})
+func (self *DropTarget) ConnectAccept(f func(drop gdk.Dropper) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "accept", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectAccept), f)
+}
+
+//export _gotk4_gtk4_DropTarget_ConnectDrop
+func _gotk4_gtk4_DropTarget_ConnectDrop(arg0 C.gpointer, arg1 C.GValue, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(value externglib.Value, x, y float64) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(value externglib.Value, x, y float64) (ok bool))
+	}
+
+	var _value externglib.Value // out
+	var _x float64              // out
+	var _y float64              // out
+
+	_value = *externglib.ValueFromNative(unsafe.Pointer((&arg1)))
+	_x = float64(arg2)
+	_y = float64(arg3)
+
+	ok := f(_value, _x, _y)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectDrop: emitted on the drop site when the user drops the data onto the
@@ -153,27 +228,31 @@ func (self *DropTarget) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.
 // Otherwise, the handler returns TRUE. In this case, this handler will accept
 // the drop. The handler is responsible for rading the given value and
 // performing the drop operation.
-func (self *DropTarget) ConnectDrop(f func(value externglib.Value, x, y float64) bool) externglib.SignalHandle {
-	return self.Connect("drop", externglib.GeneratedClosure{Func: f})
+func (self *DropTarget) ConnectDrop(f func(value externglib.Value, x, y float64) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "drop", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectDrop), f)
 }
 
-// ConnectEnter: emitted on the drop site when the pointer enters the widget.
-//
-// It can be used to set up custom highlighting.
-func (self *DropTarget) ConnectEnter(f func(x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("enter", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk4_DropTarget_ConnectLeave
+func _gotk4_gtk4_DropTarget_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectLeave: emitted on the drop site when the pointer leaves the widget.
 //
 // Its main purpose it to undo things done in gtk.DropTarget::enter.
 func (self *DropTarget) ConnectLeave(f func()) externglib.SignalHandle {
-	return self.Connect("leave", externglib.GeneratedClosure{Func: f})
-}
-
-// ConnectMotion: emitted while the pointer is moving over the drop target.
-func (self *DropTarget) ConnectMotion(f func(x, y float64) gdk.DragAction) externglib.SignalHandle {
-	return self.Connect("motion", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "leave", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectLeave), f)
 }
 
 // NewDropTarget creates a new GtkDropTarget object.
@@ -325,7 +404,7 @@ func (self *DropTarget) GTypes() []externglib.Type {
 
 	if _cret != nil {
 		{
-			src := unsafe.Slice(_cret, _arg1)
+			src := unsafe.Slice((*C.GType)(_cret), _arg1)
 			_gTypes = make([]externglib.Type, _arg1)
 			for i := 0; i < int(_arg1); i++ {
 				_gTypes[i] = externglib.Type(src[i])

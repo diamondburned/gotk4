@@ -13,6 +13,9 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_DeviceManager_ConnectDeviceAdded(gpointer, GdkDevice*, guintptr);
+// extern void _gotk4_gdk3_DeviceManager_ConnectDeviceChanged(gpointer, GdkDevice*, guintptr);
+// extern void _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved(gpointer, GdkDevice*, guintptr);
 import "C"
 
 func init() {
@@ -164,10 +167,82 @@ func BaseDeviceManager(obj DeviceManagerer) *DeviceManager {
 	return obj.baseDeviceManager()
 }
 
+//export _gotk4_gdk3_DeviceManager_ConnectDeviceAdded
+func _gotk4_gdk3_DeviceManager_ConnectDeviceAdded(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
+	var f func(device Devicer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(device Devicer))
+	}
+
+	var _device Devicer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Devicer)
+			return ok
+		})
+		rv, ok := casted.(Devicer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
+		}
+		_device = rv
+	}
+
+	f(_device)
+}
+
 // ConnectDeviceAdded signal is emitted either when a new master pointer is
 // created, or when a slave (Hardware) input device is plugged in.
 func (deviceManager *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
-	return deviceManager.Connect("device-added", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(deviceManager, "device-added", false, unsafe.Pointer(C._gotk4_gdk3_DeviceManager_ConnectDeviceAdded), f)
+}
+
+//export _gotk4_gdk3_DeviceManager_ConnectDeviceChanged
+func _gotk4_gdk3_DeviceManager_ConnectDeviceChanged(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
+	var f func(device Devicer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(device Devicer))
+	}
+
+	var _device Devicer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Devicer)
+			return ok
+		})
+		rv, ok := casted.(Devicer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
+		}
+		_device = rv
+	}
+
+	f(_device)
 }
 
 // ConnectDeviceChanged signal is emitted whenever a device has changed in the
@@ -180,13 +255,49 @@ func (deviceManager *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) e
 // to GDK_DEVICE_TYPE_FLOATING, if it's attached, it will change to
 // GDK_DEVICE_TYPE_SLAVE.
 func (deviceManager *DeviceManager) ConnectDeviceChanged(f func(device Devicer)) externglib.SignalHandle {
-	return deviceManager.Connect("device-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(deviceManager, "device-changed", false, unsafe.Pointer(C._gotk4_gdk3_DeviceManager_ConnectDeviceChanged), f)
+}
+
+//export _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved
+func _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
+	var f func(device Devicer)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(device Devicer))
+	}
+
+	var _device Devicer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Devicer)
+			return ok
+		})
+		rv, ok := casted.(Devicer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
+		}
+		_device = rv
+	}
+
+	f(_device)
 }
 
 // ConnectDeviceRemoved signal is emitted either when a master pointer is
 // removed, or when a slave (Hardware) input device is unplugged.
 func (deviceManager *DeviceManager) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
-	return deviceManager.Connect("device-removed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(deviceManager, "device-removed", false, unsafe.Pointer(C._gotk4_gdk3_DeviceManager_ConnectDeviceRemoved), f)
 }
 
 // ClientPointer returns the client pointer, that is, the master pointer that

@@ -26,6 +26,10 @@ import (
 // extern void _gotk4_gtk3_ContainerClass_check_resize(GtkContainer*);
 // extern void _gotk4_gtk3_ContainerClass_remove(GtkContainer*, GtkWidget*);
 // extern void _gotk4_gtk3_ContainerClass_set_focus_child(GtkContainer*, GtkWidget*);
+// extern void _gotk4_gtk3_Container_ConnectAdd(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_Container_ConnectCheckResize(gpointer, guintptr);
+// extern void _gotk4_gtk3_Container_ConnectRemove(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_Container_ConnectSetFocusChild(gpointer, GtkWidget*, guintptr);
 import "C"
 
 func init() {
@@ -546,20 +550,144 @@ func BaseContainer(obj Containerer) *Container {
 	return obj.baseContainer()
 }
 
+//export _gotk4_gtk3_Container_ConnectAdd
+func _gotk4_gtk3_Container_ConnectAdd(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(object Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object Widgetter))
+	}
+
+	var _object Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_object = rv
+	}
+
+	f(_object)
+}
+
 func (container *Container) ConnectAdd(f func(object Widgetter)) externglib.SignalHandle {
-	return container.Connect("add", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(container, "add", false, unsafe.Pointer(C._gotk4_gtk3_Container_ConnectAdd), f)
+}
+
+//export _gotk4_gtk3_Container_ConnectCheckResize
+func _gotk4_gtk3_Container_ConnectCheckResize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 func (container *Container) ConnectCheckResize(f func()) externglib.SignalHandle {
-	return container.Connect("check-resize", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(container, "check-resize", false, unsafe.Pointer(C._gotk4_gtk3_Container_ConnectCheckResize), f)
+}
+
+//export _gotk4_gtk3_Container_ConnectRemove
+func _gotk4_gtk3_Container_ConnectRemove(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(object Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object Widgetter))
+	}
+
+	var _object Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_object = rv
+	}
+
+	f(_object)
 }
 
 func (container *Container) ConnectRemove(f func(object Widgetter)) externglib.SignalHandle {
-	return container.Connect("remove", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(container, "remove", false, unsafe.Pointer(C._gotk4_gtk3_Container_ConnectRemove), f)
+}
+
+//export _gotk4_gtk3_Container_ConnectSetFocusChild
+func _gotk4_gtk3_Container_ConnectSetFocusChild(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(object Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object Widgetter))
+	}
+
+	var _object Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_object = rv
+	}
+
+	f(_object)
 }
 
 func (container *Container) ConnectSetFocusChild(f func(object Widgetter)) externglib.SignalHandle {
-	return container.Connect("set-focus-child", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(container, "set-focus-child", false, unsafe.Pointer(C._gotk4_gtk3_Container_ConnectSetFocusChild), f)
 }
 
 // Add adds widget to container. Typically used for simple containers such as

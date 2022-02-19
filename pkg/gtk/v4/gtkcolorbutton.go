@@ -14,6 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ColorButton_ConnectColorSet(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -80,6 +81,22 @@ func marshalColorButtonner(p uintptr) (interface{}, error) {
 	return wrapColorButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_ColorButton_ConnectColorSet
+func _gotk4_gtk4_ColorButton_ConnectColorSet(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectColorSet: emitted when the user selects a color.
 //
 // When handling this signal, use gtk.ColorChooser.GetRGBA() to find out which
@@ -89,7 +106,7 @@ func marshalColorButtonner(p uintptr) (interface{}, error) {
 // need to react to programmatic color changes as well, use the notify::color
 // signal.
 func (button *ColorButton) ConnectColorSet(f func()) externglib.SignalHandle {
-	return button.Connect("color-set", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "color-set", false, unsafe.Pointer(C._gotk4_gtk4_ColorButton_ConnectColorSet), f)
 }
 
 // NewColorButton creates a new color button.

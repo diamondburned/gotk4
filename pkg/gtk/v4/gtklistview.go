@@ -12,6 +12,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ListView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
 func init() {
@@ -169,13 +170,33 @@ func marshalListViewer(p uintptr) (interface{}, error) {
 	return wrapListView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_ListView_ConnectActivate
+func _gotk4_gtk4_ListView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
+	var f func(position uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(position uint))
+	}
+
+	var _position uint // out
+
+	_position = uint(arg1)
+
+	f(_position)
+}
+
 // ConnectActivate: emitted when a row has been activated by the user, usually
 // via activating the GtkListView|list.activate-item action.
 //
 // This allows for a convenient way to handle activation in a listview. See
 // gtk.ListItem.SetActivatable() for details on how to use this signal.
 func (self *ListView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return self.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_ListView_ConnectActivate), f)
 }
 
 // NewListView creates a new GtkListView that uses the given factory for mapping

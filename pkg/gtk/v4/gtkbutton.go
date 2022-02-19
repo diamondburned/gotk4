@@ -15,6 +15,8 @@ import (
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_ButtonClass_activate(GtkButton*);
 // extern void _gotk4_gtk4_ButtonClass_clicked(GtkButton*);
+// extern void _gotk4_gtk4_Button_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk4_Button_ConnectClicked(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -151,18 +153,50 @@ func marshalButtonner(p uintptr) (interface{}, error) {
 	return wrapButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Button_ConnectActivate
+func _gotk4_gtk4_Button_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivate: emitted to animate press then release.
 //
 // This is an action signal. Applications should never connect to this signal,
 // but use the gtk.Button::clicked signal.
 func (button *Button) ConnectActivate(f func()) externglib.SignalHandle {
-	return button.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Button_ConnectActivate), f)
+}
+
+//export _gotk4_gtk4_Button_ConnectClicked
+func _gotk4_gtk4_Button_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectClicked: emitted when the button has been activated (pressed and
 // released).
 func (button *Button) ConnectClicked(f func()) externglib.SignalHandle {
-	return button.Connect("clicked", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "clicked", false, unsafe.Pointer(C._gotk4_gtk4_Button_ConnectClicked), f)
 }
 
 // NewButton creates a new GtkButton widget.

@@ -14,6 +14,9 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_ScaleButtonClass_value_changed(GtkScaleButton*, double);
+// extern void _gotk4_gtk4_ScaleButton_ConnectPopdown(gpointer, guintptr);
+// extern void _gotk4_gtk4_ScaleButton_ConnectPopup(gpointer, guintptr);
+// extern void _gotk4_gtk4_ScaleButton_ConnectValueChanged(gpointer, gdouble, guintptr);
 import "C"
 
 func init() {
@@ -109,13 +112,45 @@ func marshalScaleButtonner(p uintptr) (interface{}, error) {
 	return wrapScaleButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_ScaleButton_ConnectPopdown
+func _gotk4_gtk4_ScaleButton_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectPopdown: emitted to dismiss the popup.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is <kbd>Escape</kbd>.
 func (button *ScaleButton) ConnectPopdown(f func()) externglib.SignalHandle {
-	return button.Connect("popdown", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "popdown", false, unsafe.Pointer(C._gotk4_gtk4_ScaleButton_ConnectPopdown), f)
+}
+
+//export _gotk4_gtk4_ScaleButton_ConnectPopup
+func _gotk4_gtk4_ScaleButton_ConnectPopup(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPopup: emitted to popup the scale widget.
@@ -125,12 +160,32 @@ func (button *ScaleButton) ConnectPopdown(f func()) externglib.SignalHandle {
 // The default bindings for this signal are <kbd>Space</kbd>, <kbd>Enter</kbd>
 // and <kbd>Return</kbd>.
 func (button *ScaleButton) ConnectPopup(f func()) externglib.SignalHandle {
-	return button.Connect("popup", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "popup", false, unsafe.Pointer(C._gotk4_gtk4_ScaleButton_ConnectPopup), f)
+}
+
+//export _gotk4_gtk4_ScaleButton_ConnectValueChanged
+func _gotk4_gtk4_ScaleButton_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) {
+	var f func(value float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(value float64))
+	}
+
+	var _value float64 // out
+
+	_value = float64(arg1)
+
+	f(_value)
 }
 
 // ConnectValueChanged: emitted when the value field has changed.
 func (button *ScaleButton) ConnectValueChanged(f func(value float64)) externglib.SignalHandle {
-	return button.Connect("value-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "value-changed", false, unsafe.Pointer(C._gotk4_gtk4_ScaleButton_ConnectValueChanged), f)
 }
 
 // NewScaleButton creates a GtkScaleButton.

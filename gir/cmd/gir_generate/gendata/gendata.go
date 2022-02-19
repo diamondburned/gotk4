@@ -162,6 +162,7 @@ var Preprocessors = []Preprocessor{
 	MustIntrospect("Gdk-4.Clipboard.set_text"),
 	MustIntrospect("Gdk-4.Clipboard.set_texture"),
 
+	// Fix up the return array type for (*Variant).String().
 	ModifyCallable("GLib-2.Variant.get_string", func(c *gir.CallableAttrs) {
 		c.ReturnValue.Array = &gir.Array{
 			CType:          "const gchar*",
@@ -169,6 +170,13 @@ var Preprocessors = []Preprocessor{
 			Length:         new(int),  // 0
 			ZeroTerminated: new(bool), // false
 		}
+	}),
+
+	// Fix up Application::open's File type. It's supposed to be a GFile** from
+	// the source code, but that's missing from the GIR data.
+	ModifySignal("Gio-2.Application::open", func(sig *gir.Signal) {
+		param := FindParameterFromSlice(sig.Parameters.Parameters, "files")
+		param.Array.CType = "GFile**"
 	}),
 
 	// Fix up GVariant methods to have nullable returns.
@@ -556,6 +564,13 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 	h := fg.Header()
 	h.NeedsExternGLib()
 
+	h.Import("unsafe")
+	h.ImportCore("gextras")
+
+	// Needed for GValue.
+	h.IncludeC("glib-object.h")
+	h.AddPackage("gobject-2.0")
+
 	type fn struct {
 		Name   string
 		Params []string
@@ -611,6 +626,18 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 		p.Linef("// %s is an alias for pkg/core/glib.%[1]s.", t)
 		p.Linef("type %s = externglib.%[1]s", t)
 	}
+
+	p.Linef("// NewVariantValue creates a new GValue from a GVariant. This function")
+	p.Linef("// only exists as a workaround for externglib's cyclical imports. It")
+	p.Linef("// be removed in the future once externglib is merged in.")
+	p.Linef("func NewVariantValue(variant *Variant) *externglib.Value {")
+	p.Linef("  value := externglib.InitValue(externglib.TypeVariant)")
+	p.Linef("  C.g_value_set_variant(")
+	p.Linef("    (*C.GValue)(unsafe.Pointer(value.Native())),")
+	p.Linef("    (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant))),")
+	p.Linef("  )")
+	p.Linef("  return value")
+	p.Linef("}")
 
 	return nil
 }

@@ -17,6 +17,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_ToolButtonClass_clicked(GtkToolButton*);
+// extern void _gotk4_gtk3_ToolButton_ConnectClicked(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -134,10 +135,26 @@ func marshalToolButtonner(p uintptr) (interface{}, error) {
 	return wrapToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ToolButton_ConnectClicked
+func _gotk4_gtk3_ToolButton_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectClicked: this signal is emitted when the tool button is clicked with
 // the mouse or activated with the keyboard.
 func (button *ToolButton) ConnectClicked(f func()) externglib.SignalHandle {
-	return button.Connect("clicked", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(button, "clicked", false, unsafe.Pointer(C._gotk4_gtk3_ToolButton_ConnectClicked), f)
 }
 
 // NewToolButton creates a new ToolButton using icon_widget as contents and

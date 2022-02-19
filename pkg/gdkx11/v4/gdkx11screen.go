@@ -12,6 +12,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -51,8 +52,24 @@ func marshalX11Screener(p uintptr) (interface{}, error) {
 	return wrapX11Screen(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged
+func _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 func (screen *X11Screen) ConnectWindowManagerChanged(f func()) externglib.SignalHandle {
-	return screen.Connect("window-manager-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(screen, "window-manager-changed", false, unsafe.Pointer(C._gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged), f)
 }
 
 // CurrentDesktop returns the current workspace for screen when running under a

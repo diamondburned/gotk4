@@ -20,6 +20,9 @@ import (
 // extern void _gotk4_gtk3_AppChooserWidgetClass_application_activated(GtkAppChooserWidget*, GAppInfo*);
 // extern void _gotk4_gtk3_AppChooserWidgetClass_application_selected(GtkAppChooserWidget*, GAppInfo*);
 // extern void _gotk4_gtk3_AppChooserWidgetClass_populate_popup(GtkAppChooserWidget*, GtkMenu*, GAppInfo*);
+// extern void _gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated(gpointer, GAppInfo*, guintptr);
+// extern void _gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected(gpointer, GAppInfo*, guintptr);
+// extern void _gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup(gpointer, GtkMenu*, GAppInfo*, guintptr);
 import "C"
 
 func init() {
@@ -234,6 +237,42 @@ func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
 	return wrapAppChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated
+func _gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 C.guintptr) {
+	var f func(application gio.AppInfor)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(application gio.AppInfor))
+	}
+
+	var _application gio.AppInfor // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.AppInfor)
+			return ok
+		})
+		rv, ok := casted.(gio.AppInfor)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_application = rv
+	}
+
+	f(_application)
+}
+
 // ConnectApplicationActivated: emitted when an application item is activated
 // from the widget's list.
 //
@@ -241,21 +280,95 @@ func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
 // selected and the user presses one of the keys Space, Shift+Space, Return or
 // Enter.
 func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) externglib.SignalHandle {
-	return self.Connect("application-activated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "application-activated", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated), f)
+}
+
+//export _gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected
+func _gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 C.guintptr) {
+	var f func(application gio.AppInfor)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(application gio.AppInfor))
+	}
+
+	var _application gio.AppInfor // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.AppInfor)
+			return ok
+		})
+		rv, ok := casted.(gio.AppInfor)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_application = rv
+	}
+
+	f(_application)
 }
 
 // ConnectApplicationSelected: emitted when an application item is selected from
 // the widget's list.
 func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) externglib.SignalHandle {
-	return self.Connect("application-selected", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "application-selected", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected), f)
+}
+
+//export _gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup
+func _gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkMenu, arg2 *C.GAppInfo, arg3 C.guintptr) {
+	var f func(menu *Menu, application gio.AppInfor)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(menu *Menu, application gio.AppInfor))
+	}
+
+	var _menu *Menu               // out
+	var _application gio.AppInfor // out
+
+	_menu = wrapMenu(externglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(gio.AppInfor)
+			return ok
+		})
+		rv, ok := casted.(gio.AppInfor)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_application = rv
+	}
+
+	f(_menu, _application)
 }
 
 // ConnectPopulatePopup: emitted when a context menu is about to popup over an
 // application item. Clients can insert menu items into the provided Menu object
 // in the callback of this signal; the context menu will be shown over the item
 // if at least one item has been added to the menu.
-func (self *AppChooserWidget) ConnectPopulatePopup(f func(menu Menu, application gio.AppInfor)) externglib.SignalHandle {
-	return self.Connect("populate-popup", externglib.GeneratedClosure{Func: f})
+func (self *AppChooserWidget) ConnectPopulatePopup(f func(menu *Menu, application gio.AppInfor)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "populate-popup", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup), f)
 }
 
 // NewAppChooserWidget creates a new AppChooserWidget for applications that can

@@ -20,6 +20,8 @@ import (
 // extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_height(GdkPaintable*);
 // extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_width(GdkPaintable*);
 // extern void _gotk4_gdk4_PaintableInterface_snapshot(GdkPaintable*, GdkSnapshot*, double, double);
+// extern void _gotk4_gdk4_Paintable_ConnectInvalidateContents(gpointer, guintptr);
+// extern void _gotk4_gdk4_Paintable_ConnectInvalidateSize(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -376,12 +378,44 @@ func marshalPaintabler(p uintptr) (interface{}, error) {
 	return wrapPaintable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdk4_Paintable_ConnectInvalidateContents
+func _gotk4_gdk4_Paintable_ConnectInvalidateContents(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectInvalidateContents: emitted when the contents of the paintable change.
 //
 // Examples for such an event would be videos changing to the next frame or the
 // icon theme for an icon changing.
 func (paintable *Paintable) ConnectInvalidateContents(f func()) externglib.SignalHandle {
-	return paintable.Connect("invalidate-contents", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(paintable, "invalidate-contents", false, unsafe.Pointer(C._gotk4_gdk4_Paintable_ConnectInvalidateContents), f)
+}
+
+//export _gotk4_gdk4_Paintable_ConnectInvalidateSize
+func _gotk4_gdk4_Paintable_ConnectInvalidateSize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectInvalidateSize: emitted when the intrinsic size of the paintable
@@ -394,7 +428,7 @@ func (paintable *Paintable) ConnectInvalidateContents(f func()) externglib.Signa
 // Examples for such an event would be a paintable displaying the contents of a
 // toplevel surface being resized.
 func (paintable *Paintable) ConnectInvalidateSize(f func()) externglib.SignalHandle {
-	return paintable.Connect("invalidate-size", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(paintable, "invalidate-size", false, unsafe.Pointer(C._gotk4_gdk4_Paintable_ConnectInvalidateSize), f)
 }
 
 // ComputeConcreteSize: compute a concrete size for the GdkPaintable.

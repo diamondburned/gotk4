@@ -15,6 +15,7 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_FileMonitorClass_cancel(GFileMonitor*);
 // extern void _gotk4_gio2_FileMonitorClass_changed(GFileMonitor*, GFile*, GFile*, GFileMonitorEvent);
+// extern void _gotk4_gio2_FileMonitor_ConnectChanged(gpointer, GFile*, GFile*, GFileMonitorEvent, guintptr);
 import "C"
 
 func init() {
@@ -177,6 +178,61 @@ func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 	return obj.baseFileMonitor()
 }
 
+//export _gotk4_gio2_FileMonitor_ConnectChanged
+func _gotk4_gio2_FileMonitor_ConnectChanged(arg0 C.gpointer, arg1 *C.GFile, arg2 *C.GFile, arg3 C.GFileMonitorEvent, arg4 C.guintptr) {
+	var f func(file, otherFile Filer, eventType FileMonitorEvent)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(file, otherFile Filer, eventType FileMonitorEvent))
+	}
+
+	var _file Filer                 // out
+	var _otherFile Filer            // out
+	var _eventType FileMonitorEvent // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.Filer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Filer)
+			return ok
+		})
+		rv, ok := casted.(Filer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+		}
+		_file = rv
+	}
+	if arg2 != nil {
+		{
+			objptr := unsafe.Pointer(arg2)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Filer)
+				return ok
+			})
+			rv, ok := casted.(Filer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+			}
+			_otherFile = rv
+		}
+	}
+	_eventType = FileMonitorEvent(arg3)
+
+	f(_file, _otherFile, _eventType)
+}
+
 // ConnectChanged: emitted when file has been changed.
 //
 // If using G_FILE_MONITOR_WATCH_MOVES on a directory monitor, and the
@@ -204,7 +260,7 @@ func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 //
 // In all the other cases, other_file will be set to LL.
 func (monitor *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventType FileMonitorEvent)) externglib.SignalHandle {
-	return monitor.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(monitor, "changed", false, unsafe.Pointer(C._gotk4_gio2_FileMonitor_ConnectChanged), f)
 }
 
 // Cancel cancels a file monitor.

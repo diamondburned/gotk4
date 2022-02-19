@@ -9,7 +9,10 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
+	"github.com/diamondburned/gotk4/gir/girgen/generators/callback"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -51,11 +54,23 @@ type Generator struct {
 
 // Signal describes a GLib signal in minimal function form.
 type Signal struct {
-	Name string // kebab-cased
-	Tail string
+	*gir.Signal
+
+	GoName string
+	GoTail string
+	// _gotk4_gtk4_widget_connect_activate
+	CGoName string
+	CGoTail string
+	Block   string // type conversion trampoline
 
 	InfoElements gir.InfoElements
 }
+
+const signalFuncName = "f"
+
+// FuncName returns the Go function variable name. It's a constant used for
+// codegen.
+func (s Signal) FuncName() string { return signalFuncName }
 
 var _ = cmt.EnsureInfoFields((*Generator)(nil))
 
@@ -192,6 +207,44 @@ func (g *Generator) init(typ interface{}) bool {
 	return true
 }
 
+// Create an InstanceParameter manually, since the information is elided. For
+// the generated trampoline function to be valid, it has to have this 0th
+// parameter.
+var signalInstanceParameter = &gir.InstanceParameter{
+	ParameterAttrs: gir.ParameterAttrs{
+		Name:              "arg0",
+		Direction:         "in",
+		TransferOwnership: gir.TransferOwnership{TransferOwnership: "none"},
+		AnyType: gir.AnyType{
+			Type: &gir.Type{
+				// We don't actually need type-safety here, since we'll only
+				// be using the pointer with the user_data parameter to get
+				// our closure.
+				Name:  "gpointer",
+				CType: "gpointer",
+			},
+		},
+	},
+}
+
+var signalDataParameter = gir.Parameter{
+	ParameterAttrs: gir.ParameterAttrs{
+		Name:              "",
+		Direction:         "in",
+		TransferOwnership: gir.TransferOwnership{TransferOwnership: "none"},
+		AnyType: gir.AnyType{
+			Type: &gir.Type{
+				// The closure pointer is actually not a pointer, so we don't
+				// want Go to see what's in it.
+				Name:  "guintptr",
+				CType: "guintptr",
+			},
+		},
+		// Internal parameter.
+		Skip: true,
+	},
+}
+
 // Use accepts either a *gir.Class or a *gir.Interface; any other type will make
 // it panic.
 func (g *Generator) Use(typ interface{}) bool {
@@ -233,22 +286,115 @@ func (g *Generator) Use(typ interface{}) bool {
 		}
 	}
 
-	for _, sig := range signals {
-		if !g.cgen.Use(&g.Root, &gir.CallableAttrs{
-			Parameters:  sig.Parameters,
+	callbackGen := callback.NewGenerator(g.gen)
+	callbackGen.Parent = g.Root.Type
+	callbackGen.Preamble = func(g *callback.Generator, p *pen.BlockSection) (string, bool) {
+		h := g.Header()
+		h.NeedsExternGLib()
+
+		// The callback generator hard-codes the name to what CallbackArg
+		// returns, so we set it as such.
+		closure := callback.CallbackArg(len(g.Parameters.Parameters) - 1)
+
+		p.Linef("var f func%s", g.GoTail)
+		p.Linef("{")
+		p.Linef("  closure := externglib.ConnectedGeneratedClosure(uintptr(%s))", closure)
+		p.Linef("  if closure == nil {")
+		p.Linef(`     panic("given unknown closure user_data")`)
+		p.Linef("  }")
+		p.Linef("  defer closure.TryRepanic()")
+		p.Linef("  ")
+		p.Linef("  f = closure.Func.(func%s)", g.GoTail)
+		p.Linef("}")
+
+		return "f", true
+	}
+
+	for i, sig := range signals {
+		// A signal has 2 implied parameters: the instance (0th) parameter and
+		// the final user_data parameter.
+		param := &gir.Parameters{
+			InstanceParameter: signalInstanceParameter,
+			Parameters:        nil,
+		}
+
+		// Copy the parameters.
+		if sig.Parameters != nil {
+			param.Parameters = types.ResolveParameters(g.gen, sig.Parameters.Parameters)
+
+			// A lot of parameter types in signals don't have a pointer for some
+			// reason. We can clearly see that the GIR documentation generates a
+			// function with pointer arguments yet the GIR file itself doesn't
+			// have them.
+			for i, p := range param.Parameters {
+				if p.AnyType.Type == nil {
+					// AnyType is not a type, so it's probably already a
+					// pointer.
+					continue
+				}
+
+				// Ensure that we have pointers.
+				if !strings.Contains(p.AnyType.Type.CType, "*") {
+					resolved := types.Resolve(g.gen, *p.AnyType.Type)
+					if resolved == nil {
+						// This shouldn't happen because ResolveParameters
+						// should've taken care of it, but whatever.
+						continue
+					}
+
+					if resolved.IsClass() || resolved.IsInterface() || resolved.IsRecord() {
+						t := *p.AnyType.Type
+						t.CType += "*"
+
+						p.AnyType.Type = &t
+						param.Parameters[i] = p
+					}
+				}
+			}
+		}
+
+		// Prepend the user data parameter.
+		param.Parameters = append(param.Parameters, signalDataParameter)
+
+		sigCallable := &gir.CallableAttrs{
+			Parameters:  param,
 			ReturnValue: sig.ReturnValue,
-		}) {
-			g.Logln(logger.Debug, "skipping signal", sig.Name)
+		}
+
+		if !callbackGen.Use(sigCallable) {
+			g.Logln(logger.Skip, "signal", sig.Name)
 			continue
 		}
 
-		for _, res := range g.cgen.Results {
-			res.Import(&g.header, true)
-		}
+		methodName := "Connect" + strcases.KebabToGo(true, sig.Name)
+
+		// |------------------------------|-----------------------|
+		// |  ExportedName                |  Suffices             |
+		// V------------------------------V-----------------------/
+		// _gotk4_{package}{major_version}_{class}_Connect{signal}
+		exportedSignal := file.ExportedName(
+			g.Root.NamespaceFindResult,
+			g.Name,
+			methodName,
+		)
+
+		// Import the extern function header for the trampoline function.
+		g.header.AddCallable(g.Root.NamespaceFindResult, exportedSignal, sigCallable)
+		// Import everything that the conversion trampoline needs into the
+		// callable's headers.
+		g.header.ApplyFrom(callbackGen.Header())
+
+		// for _, res := range g.cgen.Results {
+		// 	res.Import(&g.header, true)
+		// }
 
 		g.Signals = append(g.Signals, Signal{
-			Name:         sig.Name,
-			Tail:         callable.CoalesceTail(g.cgen.Tail),
+			Signal:       &signals[i],
+			GoName:       methodName,
+			GoTail:       callbackGen.GoTail,
+			CGoName:      exportedSignal,
+			CGoTail:      callbackGen.CGoTail,
+			Block:        callbackGen.Block,
 			InfoElements: sig.InfoElements,
 		})
 	}

@@ -799,7 +799,7 @@ func (settings *PrintSettings) PageRanges() []PageRange {
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice(_cret, _arg1)
+		src := unsafe.Slice((*C.GtkPageRange)(_cret), _arg1)
 		_pageRanges = make([]PageRange, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_pageRanges[i] = *(*PageRange)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

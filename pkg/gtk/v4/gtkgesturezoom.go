@@ -12,6 +12,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_GestureZoom_ConnectScaleChanged(gpointer, gdouble, guintptr);
 import "C"
 
 func init() {
@@ -59,10 +60,30 @@ func marshalGestureZoomer(p uintptr) (interface{}, error) {
 	return wrapGestureZoom(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_GestureZoom_ConnectScaleChanged
+func _gotk4_gtk4_GestureZoom_ConnectScaleChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) {
+	var f func(scale float64)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(scale float64))
+	}
+
+	var _scale float64 // out
+
+	_scale = float64(arg1)
+
+	f(_scale)
+}
+
 // ConnectScaleChanged: emitted whenever the distance between both tracked
 // sequences changes.
 func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) externglib.SignalHandle {
-	return gesture.Connect("scale-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(gesture, "scale-changed", false, unsafe.Pointer(C._gotk4_gtk4_GestureZoom_ConnectScaleChanged), f)
 }
 
 // NewGestureZoom returns a newly created GtkGesture that recognizes pinch/zoom

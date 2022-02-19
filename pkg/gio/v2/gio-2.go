@@ -3,8 +3,10 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -12,6 +14,12 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(gpointer, gchar*, guintptr);
+// extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(gpointer, GIOStream*, GCredentials*, guintptr);
+// extern gboolean _gotk4_gio2_DBusServer_ConnectNewConnection(gpointer, GDBusConnection*, guintptr);
+// extern void _gotk4_gio2_AppInfoMonitor_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_SimpleAction_ConnectActivate(gpointer, GVariant*, guintptr);
+// extern void _gotk4_gio2_SimpleAction_ConnectChangeState(gpointer, GVariant*, guintptr);
 import "C"
 
 func init() {
@@ -160,10 +168,26 @@ func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
 	return wrapAppInfoMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_AppInfoMonitor_ConnectChanged
+func _gotk4_gio2_AppInfoMonitor_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectChanged: signal emitted when the app info database for changes (ie:
 // newly installed or removed applications).
 func (v *AppInfoMonitor) ConnectChanged(f func()) externglib.SignalHandle {
-	return v.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gio2_AppInfoMonitor_ConnectChanged), f)
 }
 
 // BytesIcon specifies an image held in memory in a common format (usually png)
@@ -276,15 +300,87 @@ func marshalDBusAuthObserverer(p uintptr) (interface{}, error) {
 	return wrapDBusAuthObserver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism
+func _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(mechanism string) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(mechanism string) (ok bool))
+	}
+
+	var _mechanism string // out
+
+	_mechanism = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := f(_mechanism)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectAllowMechanism: emitted to check if mechanism is allowed to be used.
-func (observer *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string) bool) externglib.SignalHandle {
-	return observer.Connect("allow-mechanism", externglib.GeneratedClosure{Func: f})
+func (observer *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(observer, "allow-mechanism", false, unsafe.Pointer(C._gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism), f)
+}
+
+//export _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer
+func _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(arg0 C.gpointer, arg1 *C.GIOStream, arg2 *C.GCredentials, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(stream IOStreamer, credentials *Credentials) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(stream IOStreamer, credentials *Credentials) (ok bool))
+	}
+
+	var _stream IOStreamer        // out
+	var _credentials *Credentials // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.IOStreamer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(IOStreamer)
+			return ok
+		})
+		rv, ok := casted.(IOStreamer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.IOStreamer")
+		}
+		_stream = rv
+	}
+	if arg2 != nil {
+		_credentials = wrapCredentials(externglib.Take(unsafe.Pointer(arg2)))
+	}
+
+	ok := f(_stream, _credentials)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectAuthorizeAuthenticatedPeer: emitted to check if a peer that is
 // successfully authenticated is authorized.
-func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(stream IOStreamer, credentials Credentials) bool) externglib.SignalHandle {
-	return observer.Connect("authorize-authenticated-peer", externglib.GeneratedClosure{Func: f})
+func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(stream IOStreamer, credentials *Credentials) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(observer, "authorize-authenticated-peer", false, unsafe.Pointer(C._gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer), f)
 }
 
 // DBusConnection type is used for D-Bus connections to remote peers such as a
@@ -480,6 +576,32 @@ func marshalDBusServerer(p uintptr) (interface{}, error) {
 	return wrapDBusServer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_DBusServer_ConnectNewConnection
+func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.GDBusConnection, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(connection *DBusConnection) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(connection *DBusConnection) (ok bool))
+	}
+
+	var _connection *DBusConnection // out
+
+	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+
+	ok := f(_connection)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectNewConnection: emitted when a new authenticated connection has been
 // made. Use g_dbus_connection_get_peer_credentials() to figure out what
 // identity (if any), was authenticated.
@@ -499,8 +621,8 @@ func marshalDBusServerer(p uintptr) (interface{}, error) {
 // You are guaranteed that signal handlers for this signal runs before incoming
 // messages on connection are processed. This means that it's suitable to call
 // g_dbus_connection_register_object() or similar from the signal handler.
-func (server *DBusServer) ConnectNewConnection(f func(connection DBusConnection) bool) externglib.SignalHandle {
-	return server.Connect("new-connection", externglib.GeneratedClosure{Func: f})
+func (server *DBusServer) ConnectNewConnection(f func(connection *DBusConnection) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(server, "new-connection", false, unsafe.Pointer(C._gotk4_gio2_DBusServer_ConnectNewConnection), f)
 }
 
 // Menu is a simple implementation of Model. You populate a #GMenu by adding
@@ -692,6 +814,35 @@ func marshalSimpleActioner(p uintptr) (interface{}, error) {
 	return wrapSimpleAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_SimpleAction_ConnectActivate
+func _gotk4_gio2_SimpleAction_ConnectActivate(arg0 C.gpointer, arg1 *C.GVariant, arg2 C.guintptr) {
+	var f func(parameter *glib.Variant)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(parameter *glib.Variant))
+	}
+
+	var _parameter *glib.Variant // out
+
+	if arg1 != nil {
+		_parameter = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		C.g_variant_ref(arg1)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_parameter)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+
+	f(_parameter)
+}
+
 // ConnectActivate indicates that the action was just activated.
 //
 // parameter will always be of the expected type, i.e. the parameter type
@@ -705,7 +856,36 @@ func marshalSimpleActioner(p uintptr) (interface{}, error) {
 // directly to Action::change-state. This should allow almost all users of
 // Action to connect only one handler or the other.
 func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) externglib.SignalHandle {
-	return simple.Connect("activate", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(simple, "activate", false, unsafe.Pointer(C._gotk4_gio2_SimpleAction_ConnectActivate), f)
+}
+
+//export _gotk4_gio2_SimpleAction_ConnectChangeState
+func _gotk4_gio2_SimpleAction_ConnectChangeState(arg0 C.gpointer, arg1 *C.GVariant, arg2 C.guintptr) {
+	var f func(value *glib.Variant)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(value *glib.Variant))
+	}
+
+	var _value *glib.Variant // out
+
+	if arg1 != nil {
+		_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		C.g_variant_ref(arg1)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_value)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+
+	f(_value)
 }
 
 // ConnectChangeState indicates that the action just received a request to
@@ -740,7 +920,7 @@ func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) ext
 // The handler need not set the state to the requested value. It could set it to
 // any value at all, or take some other action.
 func (simple *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) externglib.SignalHandle {
-	return simple.Connect("change-state", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(simple, "change-state", false, unsafe.Pointer(C._gotk4_gio2_SimpleAction_ConnectChangeState), f)
 }
 
 // SimpleIOStream creates a OStream from an arbitrary Stream and Stream. This

@@ -16,6 +16,7 @@ import (
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_DrawingAreaClass_resize(GtkDrawingArea*, int, int);
 // extern void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
+// extern void _gotk4_gtk4_DrawingArea_ConnectResize(gpointer, gint, gint, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -210,13 +211,35 @@ func marshalDrawingAreaer(p uintptr) (interface{}, error) {
 	return wrapDrawingArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_DrawingArea_ConnectResize
+func _gotk4_gtk4_DrawingArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(width, height int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(width, height int))
+	}
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	f(_width, _height)
+}
+
 // ConnectResize: emitted once when the widget is realized, and then each time
 // the widget is changed while realized.
 //
 // This is useful in order to keep state up to date with the widget size, like
 // for instance a backing surface.
 func (self *DrawingArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
-	return self.Connect("resize", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(self, "resize", false, unsafe.Pointer(C._gotk4_gtk4_DrawingArea_ConnectResize), f)
 }
 
 // NewDrawingArea creates a new drawing area.

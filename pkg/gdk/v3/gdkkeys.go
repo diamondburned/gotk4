@@ -14,6 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_Keymap_ConnectDirectionChanged(gpointer, guintptr);
+// extern void _gotk4_gdk3_Keymap_ConnectKeysChanged(gpointer, guintptr);
+// extern void _gotk4_gdk3_Keymap_ConnectStateChanged(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -308,6 +311,72 @@ func marshalKeymapper(p uintptr) (interface{}, error) {
 	return wrapKeymap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gdk3_Keymap_ConnectDirectionChanged
+func _gotk4_gdk3_Keymap_ConnectDirectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// ConnectDirectionChanged signal gets emitted when the direction of the keymap
+// changes.
+func (keymap *Keymap) ConnectDirectionChanged(f func()) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(keymap, "direction-changed", false, unsafe.Pointer(C._gotk4_gdk3_Keymap_ConnectDirectionChanged), f)
+}
+
+//export _gotk4_gdk3_Keymap_ConnectKeysChanged
+func _gotk4_gdk3_Keymap_ConnectKeysChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// ConnectKeysChanged signal is emitted when the mapping represented by keymap
+// changes.
+func (keymap *Keymap) ConnectKeysChanged(f func()) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(keymap, "keys-changed", false, unsafe.Pointer(C._gotk4_gdk3_Keymap_ConnectKeysChanged), f)
+}
+
+//export _gotk4_gdk3_Keymap_ConnectStateChanged
+func _gotk4_gdk3_Keymap_ConnectStateChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// ConnectStateChanged signal is emitted when the state of the keyboard changes,
+// e.g when Caps Lock is turned on or off. See gdk_keymap_get_caps_lock_state().
+func (keymap *Keymap) ConnectStateChanged(f func()) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(keymap, "state-changed", false, unsafe.Pointer(C._gotk4_gdk3_Keymap_ConnectStateChanged), f)
+}
+
 // CapsLockState returns whether the Caps Lock modifer is locked.
 //
 // The function returns the following values:
@@ -393,7 +462,7 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 	if _arg2 != nil {
 		defer C.free(unsafe.Pointer(_arg2))
 		{
-			src := unsafe.Slice(_arg2, _arg4)
+			src := unsafe.Slice((*C.GdkKeymapKey)(_arg2), _arg4)
 			_keys = make([]KeymapKey, _arg4)
 			for i := 0; i < int(_arg4); i++ {
 				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
@@ -409,7 +478,7 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 	if _arg3 != nil {
 		defer C.free(unsafe.Pointer(_arg3))
 		{
-			src := unsafe.Slice(_arg3, _arg4)
+			src := unsafe.Slice((*C.guint)(_arg3), _arg4)
 			_keyvals = make([]uint, _arg4)
 			for i := 0; i < int(_arg4); i++ {
 				_keyvals[i] = uint(src[i])
@@ -461,7 +530,7 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 
 	defer C.free(unsafe.Pointer(_arg2))
 	{
-		src := unsafe.Slice(_arg2, _arg3)
+		src := unsafe.Slice((*C.GdkKeymapKey)(_arg2), _arg3)
 		_keys = make([]KeymapKey, _arg3)
 		for i := 0; i < int(_arg3); i++ {
 			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))

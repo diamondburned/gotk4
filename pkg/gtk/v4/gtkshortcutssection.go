@@ -11,6 +11,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage(gpointer, gint, guintptr);
 import "C"
 
 func init() {
@@ -82,6 +83,32 @@ func marshalShortcutsSectioner(p uintptr) (interface{}, error) {
 	return wrapShortcutsSection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (v *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) bool) externglib.SignalHandle {
-	return v.Connect("change-current-page", externglib.GeneratedClosure{Func: f})
+//export _gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage
+func _gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(object int) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object int) (ok bool))
+	}
+
+	var _object int // out
+
+	_object = int(arg1)
+
+	ok := f(_object)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func (v *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(v, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage), f)
 }

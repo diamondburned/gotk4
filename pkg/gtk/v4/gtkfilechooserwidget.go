@@ -12,6 +12,18 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectDesktopFolder(gpointer, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectDownFolder(gpointer, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectHomeFolder(gpointer, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectLocationPopup(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectLocationPopupOnPaste(gpointer, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectLocationTogglePopup(gpointer, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectPlacesShortcut(gpointer, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectQuickBookmark(gpointer, gint, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectRecentShortcut(gpointer, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectSearchShortcut(gpointer, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectShowHidden(gpointer, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectUpFolder(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -70,6 +82,22 @@ func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
 	return wrapFileChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_FileChooserWidget_ConnectDesktopFolder
+func _gotk4_gtk4_FileChooserWidget_ConnectDesktopFolder(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectDesktopFolder: emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -79,7 +107,23 @@ func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
 //
 // The default binding for this signal is <kbd>Alt</kbd>-<kbd>D</kbd>.
 func (v *FileChooserWidget) ConnectDesktopFolder(f func()) externglib.SignalHandle {
-	return v.Connect("desktop-folder", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "desktop-folder", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectDesktopFolder), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectDownFolder
+func _gotk4_gtk4_FileChooserWidget_ConnectDownFolder(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectDownFolder: emitted when the user asks for it.
@@ -94,7 +138,23 @@ func (v *FileChooserWidget) ConnectDesktopFolder(f func()) externglib.SignalHand
 //
 // The default binding for this signal is <kbd>Alt</kbd>-<kbd>Down</kbd>.
 func (v *FileChooserWidget) ConnectDownFolder(f func()) externglib.SignalHandle {
-	return v.Connect("down-folder", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "down-folder", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectDownFolder), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectHomeFolder
+func _gotk4_gtk4_FileChooserWidget_ConnectHomeFolder(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectHomeFolder: emitted when the user asks for it.
@@ -106,7 +166,27 @@ func (v *FileChooserWidget) ConnectDownFolder(f func()) externglib.SignalHandle 
 //
 // The default binding for this signal is <kbd>Alt</kbd>-<kbd>Home</kbd>.
 func (v *FileChooserWidget) ConnectHomeFolder(f func()) externglib.SignalHandle {
-	return v.Connect("home-folder", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "home-folder", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectHomeFolder), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectLocationPopup
+func _gotk4_gtk4_FileChooserWidget_ConnectLocationPopup(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(path string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(path string))
+	}
+
+	var _path string // out
+
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_path)
 }
 
 // ConnectLocationPopup: emitted when the user asks for it.
@@ -122,7 +202,23 @@ func (v *FileChooserWidget) ConnectHomeFolder(f func()) externglib.SignalHandle 
 // path name. On Unix systems, this is bound to <kbd>~</kbd> (tilde) with a path
 // string of "~" itself for access to home directories.
 func (v *FileChooserWidget) ConnectLocationPopup(f func(path string)) externglib.SignalHandle {
-	return v.Connect("location-popup", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "location-popup", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectLocationPopup), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectLocationPopupOnPaste
+func _gotk4_gtk4_FileChooserWidget_ConnectLocationPopupOnPaste(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectLocationPopupOnPaste: emitted when the user asks for it.
@@ -134,7 +230,23 @@ func (v *FileChooserWidget) ConnectLocationPopup(f func(path string)) externglib
 //
 // The default binding for this signal is <kbd>Control</kbd>-<kbd>V</kbd>.
 func (v *FileChooserWidget) ConnectLocationPopupOnPaste(f func()) externglib.SignalHandle {
-	return v.Connect("location-popup-on-paste", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "location-popup-on-paste", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectLocationPopupOnPaste), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectLocationTogglePopup
+func _gotk4_gtk4_FileChooserWidget_ConnectLocationTogglePopup(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectLocationTogglePopup: emitted when the user asks for it.
@@ -146,7 +258,23 @@ func (v *FileChooserWidget) ConnectLocationPopupOnPaste(f func()) externglib.Sig
 //
 // The default binding for this signal is <kbd>Control</kbd>-<kbd>L</kbd>.
 func (v *FileChooserWidget) ConnectLocationTogglePopup(f func()) externglib.SignalHandle {
-	return v.Connect("location-toggle-popup", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "location-toggle-popup", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectLocationTogglePopup), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectPlacesShortcut
+func _gotk4_gtk4_FileChooserWidget_ConnectPlacesShortcut(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectPlacesShortcut: emitted when the user asks for it.
@@ -157,7 +285,27 @@ func (v *FileChooserWidget) ConnectLocationTogglePopup(f func()) externglib.Sign
 //
 // The default binding for this signal is <kbd>Alt</kbd>-<kbd>P</kbd>.
 func (v *FileChooserWidget) ConnectPlacesShortcut(f func()) externglib.SignalHandle {
-	return v.Connect("places-shortcut", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "places-shortcut", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectPlacesShortcut), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectQuickBookmark
+func _gotk4_gtk4_FileChooserWidget_ConnectQuickBookmark(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(bookmarkIndex int)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(bookmarkIndex int))
+	}
+
+	var _bookmarkIndex int // out
+
+	_bookmarkIndex = int(arg1)
+
+	f(_bookmarkIndex)
 }
 
 // ConnectQuickBookmark: emitted when the user asks for it.
@@ -173,7 +321,23 @@ func (v *FileChooserWidget) ConnectPlacesShortcut(f func()) externglib.SignalHan
 // that in the default binding, that <kbd>Alt</kbd>-<kbd>1</kbd> is actually
 // defined to switch to the bookmark at index 0, and so on successively.
 func (v *FileChooserWidget) ConnectQuickBookmark(f func(bookmarkIndex int)) externglib.SignalHandle {
-	return v.Connect("quick-bookmark", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "quick-bookmark", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectQuickBookmark), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectRecentShortcut
+func _gotk4_gtk4_FileChooserWidget_ConnectRecentShortcut(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectRecentShortcut: emitted when the user asks for it.
@@ -184,7 +348,23 @@ func (v *FileChooserWidget) ConnectQuickBookmark(f func(bookmarkIndex int)) exte
 //
 // The default binding for this signal is <kbd>Alt</kbd>-<kbd>R</kbd>.
 func (v *FileChooserWidget) ConnectRecentShortcut(f func()) externglib.SignalHandle {
-	return v.Connect("recent-shortcut", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "recent-shortcut", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectRecentShortcut), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectSearchShortcut
+func _gotk4_gtk4_FileChooserWidget_ConnectSearchShortcut(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectSearchShortcut: emitted when the user asks for it.
@@ -195,7 +375,23 @@ func (v *FileChooserWidget) ConnectRecentShortcut(f func()) externglib.SignalHan
 //
 // The default binding for this signal is <kbd>Alt</kbd>-<kbd>S</kbd>.
 func (v *FileChooserWidget) ConnectSearchShortcut(f func()) externglib.SignalHandle {
-	return v.Connect("search-shortcut", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "search-shortcut", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectSearchShortcut), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectShowHidden
+func _gotk4_gtk4_FileChooserWidget_ConnectShowHidden(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectShowHidden: emitted when the user asks for it.
@@ -206,7 +402,23 @@ func (v *FileChooserWidget) ConnectSearchShortcut(f func()) externglib.SignalHan
 //
 // The default binding for this signal is <kbd>Control</kbd>-<kbd>H</kbd>.
 func (v *FileChooserWidget) ConnectShowHidden(f func()) externglib.SignalHandle {
-	return v.Connect("show-hidden", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "show-hidden", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectShowHidden), f)
+}
+
+//export _gotk4_gtk4_FileChooserWidget_ConnectUpFolder
+func _gotk4_gtk4_FileChooserWidget_ConnectUpFolder(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectUpFolder: emitted when the user asks for it.
@@ -218,7 +430,7 @@ func (v *FileChooserWidget) ConnectShowHidden(f func()) externglib.SignalHandle 
 //
 // The default binding for this signal is <kbd>Alt</kbd>-<kbd>Up</kbd>.
 func (v *FileChooserWidget) ConnectUpFolder(f func()) externglib.SignalHandle {
-	return v.Connect("up-folder", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(v, "up-folder", false, unsafe.Pointer(C._gotk4_gtk4_FileChooserWidget_ConnectUpFolder), f)
 }
 
 // NewFileChooserWidget creates a new GtkFileChooserWidget.

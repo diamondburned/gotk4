@@ -23,10 +23,15 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern gboolean _gotk4_gtk3_WindowClass_enable_debugging(GtkWindow*, gboolean);
+// extern gboolean _gotk4_gtk3_Window_ConnectEnableDebugging(gpointer, gboolean, guintptr);
 // extern void _gotk4_gtk3_WindowClass_activate_default(GtkWindow*);
 // extern void _gotk4_gtk3_WindowClass_activate_focus(GtkWindow*);
 // extern void _gotk4_gtk3_WindowClass_keys_changed(GtkWindow*);
 // extern void _gotk4_gtk3_WindowClass_set_focus(GtkWindow*, GtkWidget*);
+// extern void _gotk4_gtk3_Window_ConnectActivateDefault(gpointer, guintptr);
+// extern void _gotk4_gtk3_Window_ConnectActivateFocus(gpointer, guintptr);
+// extern void _gotk4_gtk3_Window_ConnectKeysChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_Window_ConnectSetFocus(gpointer, GtkWidget*, guintptr);
 import "C"
 
 func init() {
@@ -328,16 +333,76 @@ func marshalWindower(p uintptr) (interface{}, error) {
 	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Window_ConnectActivateDefault
+func _gotk4_gtk3_Window_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectActivateDefault signal is a [keybinding signal][GtkBindingSignal]
 // which gets emitted when the user activates the default widget of window.
 func (window *Window) ConnectActivateDefault(f func()) externglib.SignalHandle {
-	return window.Connect("activate-default", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(window, "activate-default", false, unsafe.Pointer(C._gotk4_gtk3_Window_ConnectActivateDefault), f)
+}
+
+//export _gotk4_gtk3_Window_ConnectActivateFocus
+func _gotk4_gtk3_Window_ConnectActivateFocus(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectActivateFocus signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted when the user activates the currently focused widget of window.
 func (window *Window) ConnectActivateFocus(f func()) externglib.SignalHandle {
-	return window.Connect("activate-focus", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(window, "activate-focus", false, unsafe.Pointer(C._gotk4_gtk3_Window_ConnectActivateFocus), f)
+}
+
+//export _gotk4_gtk3_Window_ConnectEnableDebugging
+func _gotk4_gtk3_Window_ConnectEnableDebugging(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(toggle bool) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(toggle bool) (ok bool))
+	}
+
+	var _toggle bool // out
+
+	if arg1 != 0 {
+		_toggle = true
+	}
+
+	ok := f(_toggle)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectEnableDebugging signal is a [keybinding signal][GtkBindingSignal]
@@ -346,20 +411,71 @@ func (window *Window) ConnectActivateFocus(f func()) externglib.SignalHandle {
 // FALSE, the debugger will be pointed at the widget under the pointer.
 //
 // The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
-func (window *Window) ConnectEnableDebugging(f func(toggle bool) bool) externglib.SignalHandle {
-	return window.Connect("enable-debugging", externglib.GeneratedClosure{Func: f})
+func (window *Window) ConnectEnableDebugging(f func(toggle bool) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(window, "enable-debugging", false, unsafe.Pointer(C._gotk4_gtk3_Window_ConnectEnableDebugging), f)
+}
+
+//export _gotk4_gtk3_Window_ConnectKeysChanged
+func _gotk4_gtk3_Window_ConnectKeysChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 // ConnectKeysChanged signal gets emitted when the set of accelerators or
 // mnemonics that are associated with window changes.
 func (window *Window) ConnectKeysChanged(f func()) externglib.SignalHandle {
-	return window.Connect("keys-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(window, "keys-changed", false, unsafe.Pointer(C._gotk4_gtk3_Window_ConnectKeysChanged), f)
+}
+
+//export _gotk4_gtk3_Window_ConnectSetFocus
+func _gotk4_gtk3_Window_ConnectSetFocus(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+	var f func(widget Widgetter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(widget Widgetter))
+	}
+
+	var _widget Widgetter // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	f(_widget)
 }
 
 // ConnectSetFocus: this signal is emitted whenever the currently focused widget
 // in this window changes.
 func (window *Window) ConnectSetFocus(f func(widget Widgetter)) externglib.SignalHandle {
-	return window.Connect("set-focus", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(window, "set-focus", false, unsafe.Pointer(C._gotk4_gtk3_Window_ConnectSetFocus), f)
 }
 
 // NewWindow creates a new Window, which is a toplevel window that can contain

@@ -20,6 +20,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_PopoverClass_closed(GtkPopover*);
+// extern void _gotk4_gtk3_Popover_ConnectClosed(gpointer, guintptr);
 import "C"
 
 func init() {
@@ -149,10 +150,26 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 	return wrapPopover(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Popover_ConnectClosed
+func _gotk4_gtk3_Popover_ConnectClosed(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 // ConnectClosed: this signal is emitted when the popover is dismissed either
 // through API or user interaction.
 func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
-	return popover.Connect("closed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(popover, "closed", false, unsafe.Pointer(C._gotk4_gtk3_Popover_ConnectClosed), f)
 }
 
 // NewPopover creates a new popover to point to relative_to.

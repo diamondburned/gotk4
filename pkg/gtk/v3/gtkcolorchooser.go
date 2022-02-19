@@ -20,6 +20,7 @@ import (
 // extern void _gotk4_gtk3_ColorChooserInterface_color_activated(GtkColorChooser*, GdkRGBA*);
 // extern void _gotk4_gtk3_ColorChooserInterface_get_rgba(GtkColorChooser*, GdkRGBA*);
 // extern void _gotk4_gtk3_ColorChooserInterface_set_rgba(GtkColorChooser*, GdkRGBA*);
+// extern void _gotk4_gtk3_ColorChooser_ConnectColorActivated(gpointer, GdkRGBA*, guintptr);
 import "C"
 
 func init() {
@@ -129,7 +130,7 @@ func _gotk4_gtk3_ColorChooserInterface_add_palette(arg0 *C.GtkColorChooser, arg1
 	_colorsPerLine = int(arg2)
 	if arg4 != nil {
 		{
-			src := unsafe.Slice(arg4, arg3)
+			src := unsafe.Slice((*C.GdkRGBA)(arg4), arg3)
 			_colors = make([]gdk.RGBA, arg3)
 			for i := 0; i < int(arg3); i++ {
 				_colors[i] = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
@@ -184,12 +185,32 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 	return wrapColorChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_ColorChooser_ConnectColorActivated
+func _gotk4_gtk3_ColorChooser_ConnectColorActivated(arg0 C.gpointer, arg1 *C.GdkRGBA, arg2 C.guintptr) {
+	var f func(color *gdk.RGBA)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(color *gdk.RGBA))
+	}
+
+	var _color *gdk.RGBA // out
+
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	f(_color)
+}
+
 // ConnectColorActivated: emitted when a color is activated from the color
 // chooser. This usually happens when the user clicks a color swatch, or a color
 // is selected and the user presses one of the keys Space, Shift+Space, Return
 // or Enter.
 func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) externglib.SignalHandle {
-	return chooser.Connect("color-activated", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(chooser, "color-activated", false, unsafe.Pointer(C._gotk4_gtk3_ColorChooser_ConnectColorActivated), f)
 }
 
 // AddPalette adds a palette to the color chooser. If orientation is horizontal,

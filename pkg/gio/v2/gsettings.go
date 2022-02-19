@@ -21,8 +21,12 @@ import (
 // extern gboolean _gotk4_gio2_SettingsClass_change_event(GSettings*, GQuark*, gint);
 // extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(GSettings*, GQuark);
 // extern gboolean _gotk4_gio2_SettingsGetMapping(GVariant*, gpointer*, gpointer);
+// extern gboolean _gotk4_gio2_Settings_ConnectChangeEvent(gpointer, gpointer, gint, guintptr);
+// extern gboolean _gotk4_gio2_Settings_ConnectWritableChangeEvent(gpointer, guint, guintptr);
 // extern void _gotk4_gio2_SettingsClass_changed(GSettings*, gchar*);
 // extern void _gotk4_gio2_SettingsClass_writable_changed(GSettings*, gchar*);
+// extern void _gotk4_gio2_Settings_ConnectChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gio2_Settings_ConnectWritableChanged(gpointer, gchar*, guintptr);
 import "C"
 
 func init() {
@@ -625,6 +629,38 @@ func marshalSettingser(p uintptr) (interface{}, error) {
 	return wrapSettings(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_Settings_ConnectChangeEvent
+func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(keys []glib.Quark) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(keys []glib.Quark) (ok bool))
+	}
+
+	var _keys []glib.Quark // out
+
+	{
+		src := unsafe.Slice((*C.GQuark)(arg1), arg2)
+		_keys = make([]glib.Quark, arg2)
+		for i := 0; i < int(arg2); i++ {
+			_keys[i] = uint32(src[i])
+		}
+	}
+
+	ok := f(_keys)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // ConnectChangeEvent: "change-event" signal is emitted once per change event
 // that affects this settings object. You should connect to this signal only if
 // you are interested in viewing groups of changes before they are split out
@@ -639,8 +675,28 @@ func marshalSettingser(p uintptr) (interface{}, error) {
 // The default handler for this signal invokes the "changed" signal for each
 // affected key. If any other connected handler returns TRUE then this default
 // functionality will be suppressed.
-func (settings *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) externglib.SignalHandle {
-	return settings.Connect("change-event", externglib.GeneratedClosure{Func: f})
+func (settings *Settings) ConnectChangeEvent(f func(keys []glib.Quark) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(settings, "change-event", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectChangeEvent), f)
+}
+
+//export _gotk4_gio2_Settings_ConnectChanged
+func _gotk4_gio2_Settings_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(key string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(key string))
+	}
+
+	var _key string // out
+
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_key)
 }
 
 // ConnectChanged: "changed" signal is emitted when a key has potentially
@@ -653,7 +709,33 @@ func (settings *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) ex
 // Note that settings only emits this signal if you have read key at least once
 // while a signal handler was already connected for key.
 func (settings *Settings) ConnectChanged(f func(key string)) externglib.SignalHandle {
-	return settings.Connect("changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(settings, "changed", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectChanged), f)
+}
+
+//export _gotk4_gio2_Settings_ConnectWritableChangeEvent
+func _gotk4_gio2_Settings_ConnectWritableChangeEvent(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(key uint) (ok bool)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(key uint) (ok bool))
+	}
+
+	var _key uint // out
+
+	_key = uint(arg1)
+
+	ok := f(_key)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // ConnectWritableChangeEvent: "writable-change-event" signal is emitted once
@@ -672,8 +754,28 @@ func (settings *Settings) ConnectChanged(f func(key string)) externglib.SignalHa
 // writability might also imply changes in value (if for example, a new
 // mandatory setting is introduced). If any other connected handler returns TRUE
 // then this default functionality will be suppressed.
-func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) bool) externglib.SignalHandle {
-	return settings.Connect("writable-change-event", externglib.GeneratedClosure{Func: f})
+func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) (ok bool)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(settings, "writable-change-event", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectWritableChangeEvent), f)
+}
+
+//export _gotk4_gio2_Settings_ConnectWritableChanged
+func _gotk4_gio2_Settings_ConnectWritableChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(key string)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(key string))
+	}
+
+	var _key string // out
+
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_key)
 }
 
 // ConnectWritableChanged: "writable-changed" signal is emitted when the
@@ -684,7 +786,7 @@ func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) bool) exte
 // signal "writable-changed::x" in order to only receive callbacks when the
 // writability of "x" changes.
 func (settings *Settings) ConnectWritableChanged(f func(key string)) externglib.SignalHandle {
-	return settings.Connect("writable-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(settings, "writable-changed", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectWritableChanged), f)
 }
 
 // NewSettings creates a new #GSettings object with the schema specified by

@@ -23,6 +23,7 @@ import (
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_all(GtkSelectionModel*);
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_item(GtkSelectionModel*, guint);
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_range(GtkSelectionModel*, guint, guint);
+// extern void _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(gpointer, guint, guint, guintptr);
 import "C"
 
 func init() {
@@ -461,6 +462,28 @@ func marshalSelectionModeller(p uintptr) (interface{}, error) {
 	return wrapSelectionModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_SelectionModel_ConnectSelectionChanged
+func _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guintptr) {
+	var f func(position, nItems uint)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(position, nItems uint))
+	}
+
+	var _position uint // out
+	var _nItems uint   // out
+
+	_position = uint(arg1)
+	_nItems = uint(arg2)
+
+	f(_position, _nItems)
+}
+
 // ConnectSelectionChanged: emitted when the selection state of some of the
 // items in model changes.
 //
@@ -469,7 +492,7 @@ func marshalSelectionModeller(p uintptr) (interface{}, error) {
 // change the selection state of any of the items in the selection model, though
 // it would be rather useless to emit such a signal.
 func (model *SelectionModel) ConnectSelectionChanged(f func(position, nItems uint)) externglib.SignalHandle {
-	return model.Connect("selection-changed", externglib.GeneratedClosure{Func: f})
+	return externglib.ConnectGeneratedClosure(model, "selection-changed", false, unsafe.Pointer(C._gotk4_gtk4_SelectionModel_ConnectSelectionChanged), f)
 }
 
 // Selection gets the set containing all currently selected items in the model.

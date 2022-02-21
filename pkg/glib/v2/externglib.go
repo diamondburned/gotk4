@@ -85,6 +85,38 @@ type SourceHandle = externglib.SourceHandle
 // SignalHandle is an alias for pkg/core/glib.SignalHandle.
 type SignalHandle = externglib.SignalHandle
 
+// Constant aliases from pkg/core/glib.
+const (
+	TypeInvalid   = externglib.TypeInvalid
+	TypeNone      = externglib.TypeNone
+	TypeInterface = externglib.TypeInterface
+	TypeChar      = externglib.TypeChar
+	TypeUchar     = externglib.TypeUchar
+	TypeBoolean   = externglib.TypeBoolean
+	TypeInt       = externglib.TypeInt
+	TypeUint      = externglib.TypeUint
+	TypeLong      = externglib.TypeLong
+	TypeUlong     = externglib.TypeUlong
+	TypeInt64     = externglib.TypeInt64
+	TypeUint64    = externglib.TypeUint64
+	TypeEnum      = externglib.TypeEnum
+	TypeFlags     = externglib.TypeFlags
+	TypeFloat     = externglib.TypeFloat
+	TypeDouble    = externglib.TypeDouble
+	TypeString    = externglib.TypeString
+	TypePointer   = externglib.TypePointer
+	TypeBoxed     = externglib.TypeBoxed
+	TypeParam     = externglib.TypeParam
+	TypeObject    = externglib.TypeObject
+	TypeVariant   = externglib.TypeVariant
+
+	PriorityHigh        = externglib.PriorityHigh
+	PriorityDefault     = externglib.PriorityDefault
+	PriorityHighIdle    = externglib.PriorityHighIdle
+	PriorityDefaultIdle = externglib.PriorityDefaultIdle
+	PriorityLow         = externglib.PriorityLow
+)
+
 // NewVariantValue creates a new GValue from a GVariant. This function
 // only exists as a workaround for externglib's cyclical imports. It
 // be removed in the future once externglib is merged in.

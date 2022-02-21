@@ -627,6 +627,48 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 		p.Linef("type %s = externglib.%[1]s", t)
 	}
 
+	consts := []string{
+		"TypeInvalid",
+		"TypeNone",
+		"TypeInterface",
+		"TypeChar",
+		"TypeUchar",
+		"TypeBoolean",
+		"TypeInt",
+		"TypeUint",
+		"TypeLong",
+		"TypeUlong",
+		"TypeInt64",
+		"TypeUint64",
+		"TypeEnum",
+		"TypeFlags",
+		"TypeFloat",
+		"TypeDouble",
+		"TypeString",
+		"TypePointer",
+		"TypeBoxed",
+		"TypeParam",
+		"TypeObject",
+		"TypeVariant",
+		"",
+		"PriorityHigh",
+		"PriorityDefault",
+		"PriorityHighIdle",
+		"PriorityDefaultIdle",
+		"PriorityLow",
+	}
+
+	p.Linef("// Constant aliases from pkg/core/glib.")
+	p.Linef("const (")
+	for _, c := range consts {
+		if c == "" {
+			p.EmptyLine()
+			continue
+		}
+		p.Linef("%s = externglib.%[1]s", c)
+	}
+	p.Linef(")")
+
 	p.Linef("// NewVariantValue creates a new GValue from a GVariant. This function")
 	p.Linef("// only exists as a workaround for externglib's cyclical imports. It")
 	p.Linef("// be removed in the future once externglib is merged in.")

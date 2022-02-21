@@ -194,14 +194,9 @@ func (repos *Repositories) add(r Repository, pkg, path string) error {
 	for _, repo := range *repos {
 		for _, repoNsp := range repo.Namespaces {
 			for _, addingNsp := range r.Namespaces {
-				if addingNsp.Name != repoNsp.Name || !EqVersion(addingNsp.Version, repoNsp.Version) {
-					continue
+				if addingNsp.Name == repoNsp.Name && EqVersion(addingNsp.Version, repoNsp.Version) {
+					return nil
 				}
-
-				return fmt.Errorf(
-					"colliding namespace %s, got v%s, add v%s",
-					addingNsp.Name, repoNsp.Version, addingNsp.Version,
-				)
 			}
 		}
 	}

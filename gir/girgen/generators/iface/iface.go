@@ -342,7 +342,13 @@ func (g *Generator) Use(typ interface{}) bool {
 						continue
 					}
 
-					if resolved.IsClass() || resolved.IsInterface() || resolved.IsRecord() {
+					needPtr := false ||
+						resolved.IsClass() ||
+						resolved.IsInterface() ||
+						resolved.IsRecord() ||
+						resolved.IsBuiltin("error") // *GError instead of Error
+
+					if needPtr {
 						t := *p.AnyType.Type
 						t.CType += "*"
 

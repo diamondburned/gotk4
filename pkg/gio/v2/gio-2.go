@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -18,6 +19,7 @@ import (
 // extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(gpointer, GIOStream*, GCredentials*, guintptr);
 // extern gboolean _gotk4_gio2_DBusServer_ConnectNewConnection(gpointer, GDBusConnection*, guintptr);
 // extern void _gotk4_gio2_AppInfoMonitor_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_DBusConnection_ConnectClosed(gpointer, gboolean, GError*, guintptr);
 // extern void _gotk4_gio2_SimpleAction_ConnectActivate(gpointer, GVariant*, guintptr);
 // extern void _gotk4_gio2_SimpleAction_ConnectChangeState(gpointer, GVariant*, guintptr);
 import "C"
@@ -460,6 +462,52 @@ func wrapDBusConnection(obj *externglib.Object) *DBusConnection {
 
 func marshalDBusConnectioner(p uintptr) (interface{}, error) {
 	return wrapDBusConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_gio2_DBusConnection_ConnectClosed
+func _gotk4_gio2_DBusConnection_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, arg2 *C.GError, arg3 C.guintptr) {
+	var f func(remotePeerVanished bool, err error)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(remotePeerVanished bool, err error))
+	}
+
+	var _remotePeerVanished bool // out
+	var _err error               // out
+
+	if arg1 != 0 {
+		_remotePeerVanished = true
+	}
+	if arg2 != nil {
+		_err = gerror.Take(unsafe.Pointer(arg2))
+	}
+
+	f(_remotePeerVanished, _err)
+}
+
+// ConnectClosed: emitted when the connection is closed.
+//
+//
+// The cause of this event can be
+//
+// - If g_dbus_connection_close() is called. In this case remote_peer_vanished
+// is set to FALSE and error is NULL.
+//
+// - If the remote peer closes the connection. In this case remote_peer_vanished
+// is set to TRUE and error is set.
+//
+// - If the remote peer sends invalid or malformed data. In this case
+// remote_peer_vanished is set to FALSE and error is set.
+//
+// Upon receiving this signal, you should give up your reference to connection.
+// You are guaranteed that this signal is emitted only once.
+func (connection *DBusConnection) ConnectClosed(f func(remotePeerVanished bool, err error)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(connection, "closed", false, unsafe.Pointer(C._gotk4_gio2_DBusConnection_ConnectClosed), f)
 }
 
 // DBusMenuModel is an implementation of Model that can be used as a proxy for a

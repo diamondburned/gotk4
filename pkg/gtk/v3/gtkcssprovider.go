@@ -20,6 +20,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_CssProviderClass_parsing_error(GtkCssProvider*, GtkCssSection*, GError*);
+// extern void _gotk4_gtk3_CssProvider_ConnectParsingError(gpointer, GtkCssSection*, GError*, guintptr);
 import "C"
 
 func init() {
@@ -167,6 +168,50 @@ func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
 
 func marshalCSSProviderer(p uintptr) (interface{}, error) {
 	return wrapCSSProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_gtk3_CssProvider_ConnectParsingError
+func _gotk4_gtk3_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.GtkCssSection, arg2 *C.GError, arg3 C.guintptr) {
+	var f func(section *CSSSection, err error)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(section *CSSSection, err error))
+	}
+
+	var _section *CSSSection // out
+	var _err error           // out
+
+	_section = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.gtk_css_section_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_section)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
+		},
+	)
+	_err = gerror.Take(unsafe.Pointer(arg2))
+
+	f(_section, _err)
+}
+
+// ConnectParsingError signals that a parsing error occurred. the path, line and
+// position describe the actual location of the error as accurately as possible.
+//
+// Parsing errors are never fatal, so the parsing will resume after the error.
+// Errors may however cause parts of the given data or even all of it to not be
+// parsed at all. So it is a useful idea to check that the parsing succeeds by
+// connecting to this signal.
+//
+// Note that this signal may be emitted at any time as the css provider may opt
+// to defer parsing parts or all of the input to a later time than when a
+// loading function was called.
+func (cssProvider *CSSProvider) ConnectParsingError(f func(section *CSSSection, err error)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(cssProvider, "parsing-error", false, unsafe.Pointer(C._gotk4_gtk3_CssProvider_ConnectParsingError), f)
 }
 
 // NewCSSProvider returns a newly created CssProvider.

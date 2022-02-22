@@ -789,6 +789,64 @@ func (info *RecentInfo) Age() int {
 	return _gint
 }
 
+// ApplicationInfo gets the data regarding the application that has registered
+// the resource pointed by info.
+//
+// If the command line contains any escape characters defined inside the storage
+// specification, they will be expanded.
+//
+// The function takes the following parameters:
+//
+//    - appName: name of the application that has registered this item.
+//
+// The function returns the following values:
+//
+//    - appExec: return location for the string containing the command line.
+//    - count: return location for the number of times this item was registered.
+//    - stamp: return location for the time this item was last registered for
+//      this application.
+//    - ok: TRUE if an application with app_name has registered this resource
+//      inside the recently used list, or FALSE otherwise. The app_exec string is
+//      owned by the GtkRecentInfo and should not be modified or freed.
+//
+func (info *RecentInfo) ApplicationInfo(appName string) (string, uint, *glib.DateTime, bool) {
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.char          // out
+	var _arg2 *C.char          // in
+	var _arg3 C.guint          // in
+	var _arg4 *C.GDateTime     // in
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_recent_info_get_application_info(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(appName)
+
+	var _appExec string       // out
+	var _count uint           // out
+	var _stamp *glib.DateTime // out
+	var _ok bool              // out
+
+	_appExec = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	_count = uint(_arg3)
+	_stamp = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+	C.g_date_time_ref(_arg4)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_stamp)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
+		},
+	)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _appExec, _count, _stamp, _ok
+}
+
 // Applications retrieves the list of applications that have registered this
 // resource.
 //

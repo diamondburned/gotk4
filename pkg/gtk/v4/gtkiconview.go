@@ -697,6 +697,219 @@ func (iconView *IconView) Columns() int {
 	return _gint
 }
 
+// Cursor fills in path and cell with the current cursor path and cell. If the
+// cursor isn’t currently set, then *path will be NULL. If no cell currently has
+// focus, then *cell will be NULL.
+//
+// The returned TreePath must be freed with gtk_tree_path_free().
+//
+// The function returns the following values:
+//
+//    - path (optional): return location for the current cursor path, or NULL.
+//    - cell (optional): return location the current focus cell, or NULL.
+//    - ok: TRUE if the cursor is set.
+//
+func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
+	var _arg0 *C.GtkIconView     // out
+	var _arg1 *C.GtkTreePath     // in
+	var _arg2 *C.GtkCellRenderer // in
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+
+	_cret = C.gtk_icon_view_get_cursor(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(iconView)
+
+	var _path *TreePath      // out
+	var _cell CellRendererer // out
+	var _ok bool             // out
+
+	if _arg1 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_path)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
+	}
+	if _arg2 != nil {
+		{
+			objptr := unsafe.Pointer(_arg2)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(CellRendererer)
+				return ok
+			})
+			rv, ok := casted.(CellRendererer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+			}
+			_cell = rv
+		}
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _path, _cell, _ok
+}
+
+// DestItemAtPos determines the destination item for a given position.
+//
+// The function takes the following parameters:
+//
+//    - dragX: position to determine the destination item for.
+//    - dragY: position to determine the destination item for.
+//
+// The function returns the following values:
+//
+//    - path (optional): return location for the path of the item, or NULL.
+//    - pos (optional): return location for the drop position, or NULL.
+//    - ok: whether there is an item at the given position.
+//
+func (iconView *IconView) DestItemAtPos(dragX, dragY int) (*TreePath, IconViewDropPosition, bool) {
+	var _arg0 *C.GtkIconView            // out
+	var _arg1 C.int                     // out
+	var _arg2 C.int                     // out
+	var _arg3 *C.GtkTreePath            // in
+	var _arg4 C.GtkIconViewDropPosition // in
+	var _cret C.gboolean                // in
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg1 = C.int(dragX)
+	_arg2 = C.int(dragY)
+
+	_cret = C.gtk_icon_view_get_dest_item_at_pos(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(dragX)
+	runtime.KeepAlive(dragY)
+
+	var _path *TreePath           // out
+	var _pos IconViewDropPosition // out
+	var _ok bool                  // out
+
+	if _arg3 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_path)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
+	}
+	_pos = IconViewDropPosition(_arg4)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _path, _pos, _ok
+}
+
+// DragDestItem gets information about the item that is highlighted for
+// feedback.
+//
+// The function returns the following values:
+//
+//    - path (optional): return location for the path of the highlighted item, or
+//      NULL.
+//    - pos (optional): return location for the drop position, or NULL.
+//
+func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
+	var _arg0 *C.GtkIconView            // out
+	var _arg1 *C.GtkTreePath            // in
+	var _arg2 C.GtkIconViewDropPosition // in
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+
+	C.gtk_icon_view_get_drag_dest_item(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(iconView)
+
+	var _path *TreePath           // out
+	var _pos IconViewDropPosition // out
+
+	if _arg1 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_path)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
+	}
+	_pos = IconViewDropPosition(_arg2)
+
+	return _path, _pos
+}
+
+// ItemAtPos gets the path and cell for the icon at the given position.
+//
+// The function takes the following parameters:
+//
+//    - x position to be identified.
+//    - y position to be identified.
+//
+// The function returns the following values:
+//
+//    - path (optional): return location for the path, or NULL.
+//    - cell (optional): return location for the renderer responsible for the
+//      cell at (x, y), or NULL.
+//    - ok: TRUE if an item exists at the specified position.
+//
+func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) {
+	var _arg0 *C.GtkIconView     // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // out
+	var _arg3 *C.GtkTreePath     // in
+	var _arg4 *C.GtkCellRenderer // in
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+
+	_cret = C.gtk_icon_view_get_item_at_pos(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _path *TreePath      // out
+	var _cell CellRendererer // out
+	var _ok bool             // out
+
+	if _arg3 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_path)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
+	}
+	if _arg4 != nil {
+		{
+			objptr := unsafe.Pointer(_arg4)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(CellRendererer)
+				return ok
+			})
+			rv, ok := casted.(CellRendererer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+			}
+			_cell = rv
+		}
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _path, _cell, _ok
+}
+
 // ItemColumn gets the column in which the item path is currently displayed.
 // Column numbers start at 0.
 //
@@ -1146,6 +1359,142 @@ func (iconView *IconView) TooltipColumn() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// TooltipContext: this function is supposed to be used in a
+// Widget::query-tooltip signal handler for IconView. The x, y and keyboard_tip
+// values which are received in the signal handler, should be passed to this
+// function without modification.
+//
+// The return value indicates whether there is an icon view item at the given
+// coordinates (TRUE) or not (FALSE) for mouse tooltips. For keyboard tooltips
+// the item returned will be the cursor item. When TRUE, then any of model, path
+// and iter which have been provided will be set to point to that row and the
+// corresponding model.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate (relative to widget coordinates).
+//    - y coordinate (relative to widget coordinates).
+//    - keyboardTip: whether this is a keyboard tooltip or not.
+//
+// The function returns the following values:
+//
+//    - model (optional): pointer to receive a TreeModel or NULL.
+//    - path (optional): pointer to receive a TreePath or NULL.
+//    - iter (optional): pointer to receive a TreeIter or NULL.
+//    - ok: whether or not the given tooltip context points to an item.
+//
+func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (TreeModeller, *TreePath, *TreeIter, bool) {
+	var _arg0 *C.GtkIconView  // out
+	var _arg1 C.int           // out
+	var _arg2 C.int           // out
+	var _arg3 C.gboolean      // out
+	var _arg4 *C.GtkTreeModel // in
+	var _arg5 *C.GtkTreePath  // in
+	var _arg6 C.GtkTreeIter   // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	if keyboardTip {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C.gtk_icon_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(keyboardTip)
+
+	var _model TreeModeller // out
+	var _path *TreePath     // out
+	var _iter *TreeIter     // out
+	var _ok bool            // out
+
+	if _arg4 != nil {
+		{
+			objptr := unsafe.Pointer(_arg4)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(TreeModeller)
+				return ok
+			})
+			rv, ok := casted.(TreeModeller)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+			}
+			_model = rv
+		}
+	}
+	if _arg5 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_path)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _model, _path, _iter, _ok
+}
+
+// VisibleRange sets start_path and end_path to be the first and last visible
+// path. Note that there may be invisible paths in between.
+//
+// Both paths should be freed with gtk_tree_path_free() after use.
+//
+// The function returns the following values:
+//
+//    - startPath (optional): return location for start of region, or NULL.
+//    - endPath (optional): return location for end of region, or NULL.
+//    - ok: TRUE, if valid paths were placed in start_path and end_path.
+//
+func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool) {
+	var _arg0 *C.GtkIconView // out
+	var _arg1 *C.GtkTreePath // in
+	var _arg2 *C.GtkTreePath // in
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+
+	_cret = C.gtk_icon_view_get_visible_range(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(iconView)
+
+	var _startPath *TreePath // out
+	var _endPath *TreePath   // out
+	var _ok bool             // out
+
+	if _arg1 != nil {
+		_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_startPath)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
+	}
+	if _arg2 != nil {
+		_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_endPath)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _startPath, _endPath, _ok
 }
 
 // ItemActivated activates the item determined by path.

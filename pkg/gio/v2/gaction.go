@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -638,6 +639,71 @@ func ActionNameIsValid(actionName string) bool {
 	}
 
 	return _ok
+}
+
+// ActionParseDetailedName parses a detailed action name into its separate name
+// and target components.
+//
+// Detailed action names can have three formats.
+//
+// The first format is used to represent an action name with no target value and
+// consists of just an action name containing no whitespace nor the characters
+// ':', '(' or ')'. For example: "app.action".
+//
+// The second format is used to represent an action with a target value that is
+// a non-empty string consisting only of alphanumerics, plus '-' and '.'. In
+// that case, the action name and target value are separated by a double colon
+// ("::"). For example: "app.action::target".
+//
+// The third format is used to represent an action with any type of target
+// value, including strings. The target value follows the action name,
+// surrounded in parens. For example: "app.action(42)". The target value is
+// parsed using g_variant_parse(). If a tuple-typed value is desired, it must be
+// specified in the same way, resulting in two sets of parens, for example:
+// "app.action((1,2,3))". A string target can be specified this way as well:
+// "app.action('target')". For strings, this third format must be used if *
+// target value is empty or contains characters other than alphanumerics, '-'
+// and '.'.
+//
+// The function takes the following parameters:
+//
+//    - detailedName: detailed action name.
+//
+// The function returns the following values:
+//
+//    - actionName: action name.
+//    - targetValue: target value, or NULL for no target.
+//
+func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error) {
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.gchar    // in
+	var _arg3 *C.GVariant // in
+	var _cerr *C.GError   // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.g_action_parse_detailed_name(_arg1, &_arg2, &_arg3, &_cerr)
+	runtime.KeepAlive(detailedName)
+
+	var _actionName string         // out
+	var _targetValue *glib.Variant // out
+	var _goerr error               // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_targetValue = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_targetValue)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _actionName, _targetValue, _goerr
 }
 
 // ActionPrintDetailedName formats a detailed action name from action_name and

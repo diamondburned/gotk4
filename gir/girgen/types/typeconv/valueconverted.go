@@ -373,9 +373,16 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 
 		// TODO: do the same thing for classes as well.
 		if !value.inArray && alwaysPointer {
-			// Fix the mismatch that would happen if the parameter is a C output
-			// parameter, since we normalize that elsewhere.
+			// Fix the mismatch that would happen if the parameter is a C
+			// output parameter, since we normalize that elsewhere.
 			intentionalPtr = true
+
+			// Account for some edge cases where the struct already has a
+			// pointer. The intentionalPtr logic is a bit flawed, but this check
+			// makes it work for cases like TreeView.DestRowAtPos.
+			if vType.Resolved.Ptr > 0 {
+				vType.Resolved.Ptr--
+			}
 
 			// Records are implicitly pointers, and methods of records have
 			// pointer receivers, so it's more correct this way. Only do this if
@@ -560,6 +567,8 @@ func (value *ValueConverted) logPrefix() string {
 		return ""
 	}
 
+	prefix += fmt.Sprintf(" (%s)", value.ParameterAttrs.Direction)
+
 	if cgoType != "" {
 		prefix += fmt.Sprintf(" (%s)", cgoType)
 	}
@@ -568,7 +577,7 @@ func (value *ValueConverted) logPrefix() string {
 		prefix += fmt.Sprintf(" (%s)", value.GoType)
 	}
 
-	return prefix
+	return prefix + ":"
 }
 
 // castPrimitive is used to cast primitives of any pointer level from C to Go or

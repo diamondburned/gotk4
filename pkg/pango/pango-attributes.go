@@ -10,6 +10,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -1324,6 +1325,64 @@ func NewAttrWeight(weight Weight) *Attribute {
 	return _attribute
 }
 
+// MarkupParserFinish finishes parsing markup.
+//
+// After feeding a Pango markup parser some data with
+// g_markup_parse_context_parse(), use this function to get the list of
+// attributes and text out of the markup. This function will not free context,
+// use g_markup_parse_context_free() to do so.
+//
+// The function takes the following parameters:
+//
+//    - context: valid parse context that was returned from markup_parser_new.
+//
+// The function returns the following values:
+//
+//    - attrList (optional) address of return location for a PangoAttrList, or
+//      NULL.
+//    - text (optional) address of return location for text with tags stripped,
+//      or NULL.
+//    - accelChar (optional) address of return location for accelerator char, or
+//      NULL.
+//
+func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
+	var _arg1 *C.GMarkupParseContext // out
+	var _arg2 *C.PangoAttrList       // in
+	var _arg3 *C.char                // in
+	var _arg4 C.gunichar             // in
+	var _cerr *C.GError              // in
+
+	_arg1 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
+
+	C.pango_markup_parser_finish(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(context)
+
+	var _attrList *AttrList // out
+	var _text string        // out
+	var _accelChar uint32   // out
+	var _goerr error        // out
+
+	if _arg2 != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_attrList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+			},
+		)
+	}
+	if _arg3 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+	_accelChar = uint32(_arg4)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _attrList, _text, _accelChar, _goerr
+}
+
 // NewMarkupParser: incrementally parses marked-up text to create a plain-text
 // string and an attribute list.
 //
@@ -1377,6 +1436,84 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	)
 
 	return _markupParseContext
+}
+
+// ParseMarkup parses marked-up text to create a plain-text string and an
+// attribute list.
+//
+// See the Pango Markup (pango_markup.html) docs for details about the supported
+// markup.
+//
+// If accel_marker is nonzero, the given character will mark the character
+// following it as an accelerator. For example, accel_marker might be an
+// ampersand or underscore. All characters marked as an accelerator will receive
+// a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
+// returned in accel_char. Two accel_marker characters following each other
+// produce a single literal accel_marker character.
+//
+// To parse a stream of pango markup incrementally, use markup_parser_new.
+//
+// If any error happens, none of the output arguments are touched except for
+// error.
+//
+// The function takes the following parameters:
+//
+//    - markupText: markup to parse (see the Pango Markup docs).
+//    - length of markup_text, or -1 if nul-terminated.
+//    - accelMarker: character that precedes an accelerator, or 0 for none.
+//
+// The function returns the following values:
+//
+//    - attrList (optional) address of return location for a PangoAttrList, or
+//      NULL.
+//    - text (optional) address of return location for text with tags stripped,
+//      or NULL.
+//    - accelChar (optional) address of return location for accelerator char, or
+//      NULL.
+//
+func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
+	var _arg1 *C.char          // out
+	var _arg2 C.int            // out
+	var _arg3 C.gunichar       // out
+	var _arg4 *C.PangoAttrList // in
+	var _arg5 *C.char          // in
+	var _arg6 C.gunichar       // in
+	var _cerr *C.GError        // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markupText)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = C.gunichar(accelMarker)
+
+	C.pango_parse_markup(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_cerr)
+	runtime.KeepAlive(markupText)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(accelMarker)
+
+	var _attrList *AttrList // out
+	var _text string        // out
+	var _accelChar uint32   // out
+	var _goerr error        // out
+
+	if _arg4 != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_attrList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+			},
+		)
+	}
+	if _arg5 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
+		defer C.free(unsafe.Pointer(_arg5))
+	}
+	_accelChar = uint32(_arg6)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _attrList, _text, _accelChar, _goerr
 }
 
 // AttrColor: PangoAttrColor structure is used to represent attributes that are

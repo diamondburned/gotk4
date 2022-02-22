@@ -19,6 +19,7 @@ import (
 // extern GMenuLinkIter* _gotk4_gio2_MenuModelClass_iterate_item_links(GMenuModel*, gint);
 // extern GMenuModel* _gotk4_gio2_MenuModelClass_get_item_link(GMenuModel*, gint, gchar*);
 // extern GVariant* _gotk4_gio2_MenuModelClass_get_item_attribute_value(GMenuModel*, gint, gchar*, GVariantType*);
+// extern gboolean _gotk4_gio2_MenuAttributeIterClass_get_next(GMenuAttributeIter*, gchar**, GVariant**);
 // extern gboolean _gotk4_gio2_MenuLinkIterClass_get_next(GMenuLinkIter*, gchar**, GMenuModel**);
 // extern gboolean _gotk4_gio2_MenuModelClass_is_mutable(GMenuModel*);
 // extern gint _gotk4_gio2_MenuModelClass_get_n_items(GMenuModel*);
@@ -80,6 +81,28 @@ const MENU_LINK_SUBMENU = "submenu"
 
 // MenuAttributeIterOverrider contains methods that are overridable.
 type MenuAttributeIterOverrider interface {
+	// Next: this function combines g_menu_attribute_iter_next() with
+	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
+	//
+	// First the iterator is advanced to the next (possibly first) attribute. If
+	// that fails, then FALSE is returned and there are no other effects.
+	//
+	// If successful, name and value are set to the name and value of the
+	// attribute that has just been advanced to. At this point,
+	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value()
+	// will return the same values again.
+	//
+	// The value returned in name remains valid for as long as the iterator
+	// remains at the current position. The value returned in value must be
+	// unreffed using g_variant_unref() when it is no longer in use.
+	//
+	// The function returns the following values:
+	//
+	//    - outName (optional): type of the attribute.
+	//    - value (optional): attribute value.
+	//    - ok: TRUE on success, or FALSE if there is no additional attribute.
+	//
+	Next() (string, *glib.Variant, bool)
 }
 
 // MenuAttributeIter is an opaque structure type. You must access it using the
@@ -110,6 +133,41 @@ func classInitMenuAttributeIterer(gclassPtr, data C.gpointer) {
 	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GMenuAttributeIterClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GMenuAttributeIterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Next() (string, *glib.Variant, bool)
+	}); ok {
+		pclass.get_next = (*[0]byte)(C._gotk4_gio2_MenuAttributeIterClass_get_next)
+	}
+}
+
+//export _gotk4_gio2_MenuAttributeIterClass_get_next
+func _gotk4_gio2_MenuAttributeIterClass_get_next(arg0 *C.GMenuAttributeIter, arg1 **C.gchar, arg2 **C.GVariant) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Next() (string, *glib.Variant, bool)
+	})
+
+	outName, value, ok := iface.Next()
+
+	if outName != "" {
+		*arg1 = (*C.gchar)(unsafe.Pointer(C.CString(outName)))
+		defer C.free(unsafe.Pointer(arg1))
+	}
+	if value != nil {
+		if value != nil {
+			*arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+		}
+	}
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 func wrapMenuAttributeIter(obj *externglib.Object) *MenuAttributeIter {
@@ -154,6 +212,61 @@ func (iter *MenuAttributeIter) Name() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// GetNext: this function combines g_menu_attribute_iter_next() with
+// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
+//
+// First the iterator is advanced to the next (possibly first) attribute. If
+// that fails, then FALSE is returned and there are no other effects.
+//
+// If successful, name and value are set to the name and value of the attribute
+// that has just been advanced to. At this point,
+// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value() will
+// return the same values again.
+//
+// The value returned in name remains valid for as long as the iterator remains
+// at the current position. The value returned in value must be unreffed using
+// g_variant_unref() when it is no longer in use.
+//
+// The function returns the following values:
+//
+//    - outName (optional): type of the attribute.
+//    - value (optional): attribute value.
+//    - ok: TRUE on success, or FALSE if there is no additional attribute.
+//
+func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
+	var _arg0 *C.GMenuAttributeIter // out
+	var _arg1 *C.gchar              // in
+	var _arg2 *C.GVariant           // in
+	var _cret C.gboolean            // in
+
+	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(iter.Native()))
+
+	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(iter)
+
+	var _outName string      // out
+	var _value *glib.Variant // out
+	var _ok bool             // out
+
+	if _arg1 != nil {
+		_outName = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	}
+	if _arg2 != nil {
+		_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_value)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _outName, _value, _ok
 }
 
 // Value gets the value of the attribute at the current iterator position.

@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #include <stdlib.h>
@@ -26,6 +27,7 @@ import (
 // extern void _gotk4_gtk3_IMContextClass_commit(GtkIMContext*, gchar*);
 // extern void _gotk4_gtk3_IMContextClass_focus_in(GtkIMContext*);
 // extern void _gotk4_gtk3_IMContextClass_focus_out(GtkIMContext*);
+// extern void _gotk4_gtk3_IMContextClass_get_preedit_string(GtkIMContext*, gchar**, PangoAttrList**, gint*);
 // extern void _gotk4_gtk3_IMContextClass_preedit_changed(GtkIMContext*);
 // extern void _gotk4_gtk3_IMContextClass_preedit_end(GtkIMContext*);
 // extern void _gotk4_gtk3_IMContextClass_preedit_start(GtkIMContext*);
@@ -101,6 +103,21 @@ type IMContextOverrider interface {
 	// change the displayed feedback or reset the contexts state to reflect this
 	// change.
 	FocusOut()
+	// PreeditString: retrieve the current preedit string for the input context,
+	// and a list of attributes to apply to the string. This string should be
+	// displayed inserted at the insertion point.
+	//
+	// The function returns the following values:
+	//
+	//    - str: location to store the retrieved string. The string retrieved
+	//      must be freed with g_free().
+	//    - attrs: location to store the retrieved attribute list. When you are
+	//      done with this list, you must unreference it with
+	//      pango_attr_list_unref().
+	//    - cursorPos: location to store position of cursor (in characters)
+	//      within the preedit string.
+	//
+	PreeditString() (string, *pango.AttrList, int)
 	// Surrounding retrieves context around the insertion point. Input methods
 	// typically want context in order to constrain input text based on existing
 	// text; this is important for languages such as Thai where only some
@@ -271,6 +288,12 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 		pclass.focus_out = (*[0]byte)(C._gotk4_gtk3_IMContextClass_focus_out)
 	}
 
+	if _, ok := goval.(interface {
+		PreeditString() (string, *pango.AttrList, int)
+	}); ok {
+		pclass.get_preedit_string = (*[0]byte)(C._gotk4_gtk3_IMContextClass_get_preedit_string)
+	}
+
 	if _, ok := goval.(interface{ Surrounding() (string, int, bool) }); ok {
 		pclass.get_surrounding = (*[0]byte)(C._gotk4_gtk3_IMContextClass_get_surrounding)
 	}
@@ -380,6 +403,20 @@ func _gotk4_gtk3_IMContextClass_focus_out(arg0 *C.GtkIMContext) {
 	iface := goval.(interface{ FocusOut() })
 
 	iface.FocusOut()
+}
+
+//export _gotk4_gtk3_IMContextClass_get_preedit_string
+func _gotk4_gtk3_IMContextClass_get_preedit_string(arg0 *C.GtkIMContext, arg1 **C.gchar, arg2 **C.PangoAttrList, arg3 *C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		PreeditString() (string, *pango.AttrList, int)
+	})
+
+	str, attrs, cursorPos := iface.PreeditString()
+
+	*arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	*arg2 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
+	*arg3 = C.gint(cursorPos)
 }
 
 //export _gotk4_gtk3_IMContextClass_get_surrounding
@@ -797,6 +834,48 @@ func (context *IMContext) FocusOut() {
 
 	C.gtk_im_context_focus_out(_arg0)
 	runtime.KeepAlive(context)
+}
+
+// PreeditString: retrieve the current preedit string for the input context, and
+// a list of attributes to apply to the string. This string should be displayed
+// inserted at the insertion point.
+//
+// The function returns the following values:
+//
+//    - str: location to store the retrieved string. The string retrieved must be
+//      freed with g_free().
+//    - attrs: location to store the retrieved attribute list. When you are done
+//      with this list, you must unreference it with pango_attr_list_unref().
+//    - cursorPos: location to store position of cursor (in characters) within
+//      the preedit string.
+//
+func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
+	var _arg0 *C.GtkIMContext  // out
+	var _arg1 *C.gchar         // in
+	var _arg2 *C.PangoAttrList // in
+	var _arg3 C.gint           // in
+
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+
+	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(context)
+
+	var _str string            // out
+	var _attrs *pango.AttrList // out
+	var _cursorPos int         // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_attrs)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+		},
+	)
+	_cursorPos = int(_arg3)
+
+	return _str, _attrs, _cursorPos
 }
 
 // Surrounding retrieves context around the insertion point. Input methods

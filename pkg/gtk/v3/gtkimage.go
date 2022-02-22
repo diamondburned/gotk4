@@ -648,6 +648,45 @@ func (image *Image) IconName() (string, int) {
 	return _iconName, _size
 }
 
+// IconSet gets the icon set and size being displayed by the Image. The storage
+// type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_SET (see
+// gtk_image_get_storage_type()).
+//
+// Deprecated: Use gtk_image_get_icon_name() instead.
+//
+// The function returns the following values:
+//
+//    - iconSet (optional): location to store a IconSet, or NULL.
+//    - size (optional): location to store a stock icon size (IconSize), or NULL.
+//
+func (image *Image) IconSet() (*IconSet, int) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.GtkIconSet // in
+	var _arg2 C.GtkIconSize // in
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+
+	C.gtk_image_get_icon_set(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(image)
+
+	var _iconSet *IconSet // out
+	var _size int         // out
+
+	if _arg1 != nil {
+		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		C.gtk_icon_set_ref(_arg1)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_iconSet)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+			},
+		)
+	}
+	_size = int(_arg2)
+
+	return _iconSet, _size
+}
+
 // Pixbuf gets the Pixbuf being displayed by the Image. The storage type of the
 // image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PIXBUF (see
 // gtk_image_get_storage_type()). The caller of this function does not own a

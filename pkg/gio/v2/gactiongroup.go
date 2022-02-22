@@ -20,6 +20,7 @@ import (
 // extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_state_type(GActionGroup*, gchar*);
 // extern gboolean _gotk4_gio2_ActionGroupInterface_get_action_enabled(GActionGroup*, gchar*);
 // extern gboolean _gotk4_gio2_ActionGroupInterface_has_action(GActionGroup*, gchar*);
+// extern gboolean _gotk4_gio2_ActionGroupInterface_query_action(GActionGroup*, gchar*, gboolean*, GVariantType**, GVariantType**, GVariant**, GVariant**);
 // extern gchar** _gotk4_gio2_ActionGroupInterface_list_actions(GActionGroup*);
 // extern void _gotk4_gio2_ActionGroupInterface_action_added(GActionGroup*, gchar*);
 // extern void _gotk4_gio2_ActionGroupInterface_action_enabled_changed(GActionGroup*, gchar*, gboolean);
@@ -268,6 +269,48 @@ type ActionGroupOverrider interface {
 	//      group.
 	//
 	ListActions() []string
+	// QueryAction queries all aspects of the named action within an
+	// action_group.
+	//
+	// This function acquires the information available from
+	// g_action_group_has_action(), g_action_group_get_action_enabled(),
+	// g_action_group_get_action_parameter_type(),
+	// g_action_group_get_action_state_type(),
+	// g_action_group_get_action_state_hint() and
+	// g_action_group_get_action_state() with a single function call.
+	//
+	// This provides two main benefits.
+	//
+	// The first is the improvement in efficiency that comes with not having to
+	// perform repeated lookups of the action in order to discover different
+	// things about it. The second is that implementing Group can now be done by
+	// only overriding this one virtual function.
+	//
+	// The interface provides a default implementation of this function that
+	// calls the individual functions, as required, to fetch the information.
+	// The interface also provides default implementations of those functions
+	// that call this function. All implementations, therefore, must override
+	// either this function or all of the others.
+	//
+	// If the action exists, TRUE is returned and any of the requested fields
+	// (as indicated by having a non-NULL reference passed in) are filled. If
+	// the action doesn't exist, FALSE is returned and the fields may or may not
+	// have been modified.
+	//
+	// The function takes the following parameters:
+	//
+	//    - actionName: name of an action in the group.
+	//
+	// The function returns the following values:
+	//
+	//    - enabled: if the action is presently enabled.
+	//    - parameterType (optional): parameter type, or NULL if none needed.
+	//    - stateType (optional): state type, or NULL if stateless.
+	//    - stateHint (optional): state hint, or NULL if none.
+	//    - state (optional): current state, or NULL if stateless.
+	//    - ok: TRUE if the action exists, else FALSE.
+	//
+	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
 // ActionGroup represents a group of actions. Actions can be used to expose
@@ -358,6 +401,9 @@ type ActionGrouper interface {
 	HasAction(actionName string) bool
 	// ListActions lists the actions contained within action_group.
 	ListActions() []string
+	// QueryAction queries all aspects of the named action within an
+	// action_group.
+	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
 var _ ActionGrouper = (*ActionGroup)(nil)
@@ -377,6 +423,7 @@ func ifaceInitActionGrouper(gifacePtr, data C.gpointer) {
 	iface.get_action_state_type = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state_type)
 	iface.has_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_has_action)
 	iface.list_actions = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_list_actions)
+	iface.query_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_query_action)
 }
 
 //export _gotk4_gio2_ActionGroupInterface_action_added
@@ -609,6 +656,49 @@ func _gotk4_gio2_ActionGroupInterface_list_actions(arg0 *C.GActionGroup) (cret *
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
 			}
 		}
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ActionGroupInterface_query_action
+func _gotk4_gio2_ActionGroupInterface_query_action(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.gboolean, arg3 **C.GVariantType, arg4 **C.GVariantType, arg5 **C.GVariant, arg6 **C.GVariant) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ActionGroupOverrider)
+
+	var _actionName string // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	enabled, parameterType, stateType, stateHint, state, ok := iface.QueryAction(_actionName)
+
+	if enabled {
+		*arg2 = C.TRUE
+	}
+	if parameterType != nil {
+		if parameterType != nil {
+			*arg3 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(parameterType)))
+			runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(parameterType)), nil)
+		}
+	}
+	if stateType != nil {
+		if stateType != nil {
+			*arg4 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(stateType)))
+			runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(stateType)), nil)
+		}
+	}
+	if stateHint != nil {
+		if stateHint != nil {
+			*arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(stateHint)))
+		}
+	}
+	if state != nil {
+		if state != nil {
+			*arg6 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
+		}
+	}
+	if ok {
+		cret = C.TRUE
 	}
 
 	return cret
@@ -1219,4 +1309,115 @@ func (actionGroup *ActionGroup) ListActions() []string {
 	}
 
 	return _utf8s
+}
+
+// QueryAction queries all aspects of the named action within an action_group.
+//
+// This function acquires the information available from
+// g_action_group_has_action(), g_action_group_get_action_enabled(),
+// g_action_group_get_action_parameter_type(),
+// g_action_group_get_action_state_type(),
+// g_action_group_get_action_state_hint() and g_action_group_get_action_state()
+// with a single function call.
+//
+// This provides two main benefits.
+//
+// The first is the improvement in efficiency that comes with not having to
+// perform repeated lookups of the action in order to discover different things
+// about it. The second is that implementing Group can now be done by only
+// overriding this one virtual function.
+//
+// The interface provides a default implementation of this function that calls
+// the individual functions, as required, to fetch the information. The
+// interface also provides default implementations of those functions that call
+// this function. All implementations, therefore, must override either this
+// function or all of the others.
+//
+// If the action exists, TRUE is returned and any of the requested fields (as
+// indicated by having a non-NULL reference passed in) are filled. If the action
+// doesn't exist, FALSE is returned and the fields may or may not have been
+// modified.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of an action in the group.
+//
+// The function returns the following values:
+//
+//    - enabled: if the action is presently enabled.
+//    - parameterType (optional): parameter type, or NULL if none needed.
+//    - stateType (optional): state type, or NULL if stateless.
+//    - stateHint (optional): state hint, or NULL if none.
+//    - state (optional): current state, or NULL if stateless.
+//    - ok: TRUE if the action exists, else FALSE.
+//
+func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gboolean      // in
+	var _arg3 *C.GVariantType // in
+	var _arg4 *C.GVariantType // in
+	var _arg5 *C.GVariant     // in
+	var _arg6 *C.GVariant     // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+
+	var _enabled bool                    // out
+	var _parameterType *glib.VariantType // out
+	var _stateType *glib.VariantType     // out
+	var _stateHint *glib.Variant         // out
+	var _state *glib.Variant             // out
+	var _ok bool                         // out
+
+	if _arg2 != 0 {
+		_enabled = true
+	}
+	if _arg3 != nil {
+		_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_parameterType)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_type_free((*C.GVariantType)(intern.C))
+			},
+		)
+	}
+	if _arg4 != nil {
+		_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_stateType)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_type_free((*C.GVariantType)(intern.C))
+			},
+		)
+	}
+	if _arg5 != nil {
+		_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_stateHint)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+	if _arg6 != nil {
+		_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg6)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_state)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _enabled, _parameterType, _stateType, _stateHint, _state, _ok
 }

@@ -426,6 +426,52 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	runtime.KeepAlive(color)
 }
 
+// Resolve: if gradient is resolvable, resolved_gradient will be filled in with
+// the resolved gradient as a cairo_pattern_t, and TRUE will be returned.
+// Generally, if gradient can’t be resolved, it is due to it being defined on
+// top of a named color that doesn't exist in props.
+//
+// Deprecated: Gradient is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - props to use when resolving named colors.
+//
+// The function returns the following values:
+//
+//    - resolvedGradient: return location for the resolved pattern.
+//    - ok: TRUE if the gradient has been resolved.
+//
+func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool) {
+	var _arg0 *C.GtkGradient        // out
+	var _arg1 *C.GtkStyleProperties // out
+	var _arg2 *C.cairo_pattern_t    // in
+	var _cret C.gboolean            // in
+
+	_arg0 = (*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(gradient)))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
+
+	_cret = C.gtk_gradient_resolve(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(gradient)
+	runtime.KeepAlive(props)
+
+	var _resolvedGradient *cairo.Pattern // out
+	var _ok bool                         // out
+
+	{
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_arg2)}
+		_resolvedGradient = (*cairo.Pattern)(unsafe.Pointer(_pp))
+	}
+	runtime.SetFinalizer(_resolvedGradient, func(v *cairo.Pattern) {
+		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _resolvedGradient, _ok
+}
+
 // The function takes the following parameters:
 //
 // The function returns the following values:

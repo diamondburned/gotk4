@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(GtkShortcutManager*, GtkShortcutController*);
 import "C"
 
+// glib.Type values for gtkshortcutmanager.go.
+var GTypeShortcutManager = externglib.Type(C.gtk_shortcut_manager_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_manager_get_type()), F: marshalShortcutManagerer},
+		{T: GTypeShortcutManager, F: marshalShortcutManager},
 	})
 }
 
@@ -97,7 +100,7 @@ func wrapShortcutManager(obj *externglib.Object) *ShortcutManager {
 	}
 }
 
-func marshalShortcutManagerer(p uintptr) (interface{}, error) {
+func marshalShortcutManager(p uintptr) (interface{}, error) {
 	return wrapShortcutManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

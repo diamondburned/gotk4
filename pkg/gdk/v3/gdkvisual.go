@@ -16,10 +16,16 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkvisual.go.
+var (
+	GTypeVisualType = externglib.Type(C.gdk_visual_type_get_type())
+	GTypeVisual     = externglib.Type(C.gdk_visual_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_visual_type_get_type()), F: marshalVisualType},
-		{T: externglib.Type(C.gdk_visual_get_type()), F: marshalVisualer},
+		{T: GTypeVisualType, F: marshalVisualType},
+		{T: GTypeVisual, F: marshalVisual},
 	})
 }
 
@@ -182,7 +188,7 @@ func wrapVisual(obj *externglib.Object) *Visual {
 	}
 }
 
-func marshalVisualer(p uintptr) (interface{}, error) {
+func marshalVisual(p uintptr) (interface{}, error) {
 	return wrapVisual(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

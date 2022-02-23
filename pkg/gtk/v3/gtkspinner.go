@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkspinner.go.
+var GTypeSpinner = externglib.Type(C.gtk_spinner_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_spinner_get_type()), F: marshalSpinnerer},
+		{T: GTypeSpinner, F: marshalSpinner},
 	})
 }
 
@@ -73,7 +76,7 @@ func wrapSpinner(obj *externglib.Object) *Spinner {
 	}
 }
 
-func marshalSpinnerer(p uintptr) (interface{}, error) {
+func marshalSpinner(p uintptr) (interface{}, error) {
 	return wrapSpinner(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

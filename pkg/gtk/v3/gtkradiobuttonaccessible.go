@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkradiobuttonaccessible.go.
+var GTypeRadioButtonAccessible = externglib.Type(C.gtk_radio_button_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_button_accessible_get_type()), F: marshalRadioButtonAccessibler},
+		{T: GTypeRadioButtonAccessible, F: marshalRadioButtonAccessible},
 	})
 }
 
@@ -71,6 +74,6 @@ func wrapRadioButtonAccessible(obj *externglib.Object) *RadioButtonAccessible {
 	}
 }
 
-func marshalRadioButtonAccessibler(p uintptr) (interface{}, error) {
+func marshalRadioButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapRadioButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

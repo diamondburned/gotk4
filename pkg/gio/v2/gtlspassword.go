@@ -17,9 +17,12 @@ import (
 // extern guchar* _gotk4_gio2_TlsPasswordClass_get_value(GTlsPassword*, gsize*);
 import "C"
 
+// glib.Type values for gtlspassword.go.
+var GTypeTLSPassword = externglib.Type(C.g_tls_password_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_password_get_type()), F: marshalTLSPassworder},
+		{T: GTypeTLSPassword, F: marshalTLSPassword},
 	})
 }
 
@@ -111,7 +114,7 @@ func wrapTLSPassword(obj *externglib.Object) *TLSPassword {
 	}
 }
 
-func marshalTLSPassworder(p uintptr) (interface{}, error) {
+func marshalTLSPassword(p uintptr) (interface{}, error) {
 	return wrapTLSPassword(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

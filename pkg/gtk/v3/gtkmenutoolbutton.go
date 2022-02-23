@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk3_MenuToolButton_ConnectShowMenu(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkmenutoolbutton.go.
+var GTypeMenuToolButton = externglib.Type(C.gtk_menu_tool_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_tool_button_get_type()), F: marshalMenuToolButtonner},
+		{T: GTypeMenuToolButton, F: marshalMenuToolButton},
 	})
 }
 
@@ -128,7 +131,7 @@ func wrapMenuToolButton(obj *externglib.Object) *MenuToolButton {
 	}
 }
 
-func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
+func marshalMenuToolButton(p uintptr) (interface{}, error) {
 	return wrapMenuToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

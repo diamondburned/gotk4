@@ -17,9 +17,12 @@ import (
 // extern void _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gfilenamecompleter.go.
+var GTypeFilenameCompleter = externglib.Type(C.g_filename_completer_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_filename_completer_get_type()), F: marshalFilenameCompleterer},
+		{T: GTypeFilenameCompleter, F: marshalFilenameCompleter},
 	})
 }
 
@@ -70,7 +73,7 @@ func wrapFilenameCompleter(obj *externglib.Object) *FilenameCompleter {
 	}
 }
 
-func marshalFilenameCompleterer(p uintptr) (interface{}, error) {
+func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	return wrapFilenameCompleter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

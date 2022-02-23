@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkimcontextsimple.go.
+var GTypeIMContextSimple = externglib.Type(C.gtk_im_context_simple_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_im_context_simple_get_type()), F: marshalIMContextSimpler},
+		{T: GTypeIMContextSimple, F: marshalIMContextSimple},
 	})
 }
 
@@ -71,7 +74,7 @@ func wrapIMContextSimple(obj *externglib.Object) *IMContextSimple {
 	}
 }
 
-func marshalIMContextSimpler(p uintptr) (interface{}, error) {
+func marshalIMContextSimple(p uintptr) (interface{}, error) {
 	return wrapIMContextSimple(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

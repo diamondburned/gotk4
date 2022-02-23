@@ -17,9 +17,12 @@ import (
 // extern gboolean _gotk4_gio2_ThreadedSocketService_ConnectRun(gpointer, GSocketConnection*, GObject, guintptr);
 import "C"
 
+// glib.Type values for gthreadedsocketservice.go.
+var GTypeThreadedSocketService = externglib.Type(C.g_threaded_socket_service_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_threaded_socket_service_get_type()), F: marshalThreadedSocketServicer},
+		{T: GTypeThreadedSocketService, F: marshalThreadedSocketService},
 	})
 }
 
@@ -107,7 +110,7 @@ func wrapThreadedSocketService(obj *externglib.Object) *ThreadedSocketService {
 	}
 }
 
-func marshalThreadedSocketServicer(p uintptr) (interface{}, error) {
+func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 	return wrapThreadedSocketService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

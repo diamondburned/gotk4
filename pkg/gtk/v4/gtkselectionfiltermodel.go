@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkselectionfiltermodel.go.
+var GTypeSelectionFilterModel = externglib.Type(C.gtk_selection_filter_model_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_selection_filter_model_get_type()), F: marshalSelectionFilterModeller},
+		{T: GTypeSelectionFilterModel, F: marshalSelectionFilterModel},
 	})
 }
 
@@ -55,7 +58,7 @@ func wrapSelectionFilterModel(obj *externglib.Object) *SelectionFilterModel {
 	}
 }
 
-func marshalSelectionFilterModeller(p uintptr) (interface{}, error) {
+func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 	return wrapSelectionFilterModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

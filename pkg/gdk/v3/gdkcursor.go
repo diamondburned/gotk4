@@ -18,10 +18,16 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkcursor.go.
+var (
+	GTypeCursorType = externglib.Type(C.gdk_cursor_type_get_type())
+	GTypeCursor     = externglib.Type(C.gdk_cursor_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_cursor_type_get_type()), F: marshalCursorType},
-		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorrer},
+		{T: GTypeCursorType, F: marshalCursorType},
+		{T: GTypeCursor, F: marshalCursor},
 	})
 }
 
@@ -396,7 +402,7 @@ func wrapCursor(obj *externglib.Object) *Cursor {
 	}
 }
 
-func marshalCursorrer(p uintptr) (interface{}, error) {
+func marshalCursor(p uintptr) (interface{}, error) {
 	return wrapCursor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

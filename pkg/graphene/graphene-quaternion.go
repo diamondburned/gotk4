@@ -15,9 +15,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+// glib.Type values for graphene-quaternion.go.
+var GTypeQuaternion = externglib.Type(C.graphene_quaternion_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.graphene_quaternion_get_type()), F: marshalQuaternion},
+		{T: GTypeQuaternion, F: marshalQuaternion},
 	})
 }
 

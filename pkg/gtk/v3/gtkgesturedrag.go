@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk3_GestureDrag_ConnectDragUpdate(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkgesturedrag.go.
+var GTypeGestureDrag = externglib.Type(C.gtk_gesture_drag_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDragger},
+		{T: GTypeGestureDrag, F: marshalGestureDrag},
 	})
 }
 
@@ -63,7 +66,7 @@ func wrapGestureDrag(obj *externglib.Object) *GestureDrag {
 	}
 }
 
-func marshalGestureDragger(p uintptr) (interface{}, error) {
+func marshalGestureDrag(p uintptr) (interface{}, error) {
 	return wrapGestureDrag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

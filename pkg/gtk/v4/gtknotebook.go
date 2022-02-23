@@ -25,11 +25,18 @@ import (
 // extern void _gotk4_gtk4_Notebook_ConnectSwitchPage(gpointer, GtkWidget*, guint, guintptr);
 import "C"
 
+// glib.Type values for gtknotebook.go.
+var (
+	GTypeNotebookTab  = externglib.Type(C.gtk_notebook_tab_get_type())
+	GTypeNotebook     = externglib.Type(C.gtk_notebook_get_type())
+	GTypeNotebookPage = externglib.Type(C.gtk_notebook_page_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_notebook_tab_get_type()), F: marshalNotebookTab},
-		{T: externglib.Type(C.gtk_notebook_get_type()), F: marshalNotebooker},
-		{T: externglib.Type(C.gtk_notebook_page_get_type()), F: marshalNotebookPager},
+		{T: GTypeNotebookTab, F: marshalNotebookTab},
+		{T: GTypeNotebook, F: marshalNotebook},
+		{T: GTypeNotebookPage, F: marshalNotebookPage},
 	})
 }
 
@@ -178,7 +185,7 @@ func wrapNotebook(obj *externglib.Object) *Notebook {
 	}
 }
 
-func marshalNotebooker(p uintptr) (interface{}, error) {
+func marshalNotebook(p uintptr) (interface{}, error) {
 	return wrapNotebook(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1841,7 +1848,7 @@ func wrapNotebookPage(obj *externglib.Object) *NotebookPage {
 	}
 }
 
-func marshalNotebookPager(p uintptr) (interface{}, error) {
+func marshalNotebookPage(p uintptr) (interface{}, error) {
 	return wrapNotebookPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -51,9 +51,12 @@ import (
 // extern void _gotk4_gio2_Drive_ConnectStopButton(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gdrive.go.
+var GTypeDrive = externglib.Type(C.g_drive_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_drive_get_type()), F: marshalDriver},
+		{T: GTypeDrive, F: marshalDrive},
 	})
 }
 
@@ -168,7 +171,7 @@ func wrapDrive(obj *externglib.Object) *Drive {
 	}
 }
 
-func marshalDriver(p uintptr) (interface{}, error) {
+func marshalDrive(p uintptr) (interface{}, error) {
 	return wrapDrive(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

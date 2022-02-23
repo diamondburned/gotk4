@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk3_EventControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkeventcontrollermotion.go.
+var GTypeEventControllerMotion = externglib.Type(C.gtk_event_controller_motion_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_motion_get_type()), F: marshalEventControllerMotioner},
+		{T: GTypeEventControllerMotion, F: marshalEventControllerMotion},
 	})
 }
 
@@ -58,7 +61,7 @@ func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
 	}
 }
 
-func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
+func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return wrapEventControllerMotion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

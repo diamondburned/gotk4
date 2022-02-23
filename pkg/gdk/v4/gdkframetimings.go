@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkframetimings.go.
+var GTypeFrameTimings = externglib.Type(C.gdk_frame_timings_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_frame_timings_get_type()), F: marshalFrameTimings},
+		{T: GTypeFrameTimings, F: marshalFrameTimings},
 	})
 }
 

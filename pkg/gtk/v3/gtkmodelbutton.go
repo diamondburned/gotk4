@@ -17,10 +17,16 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkmodelbutton.go.
+var (
+	GTypeButtonRole  = externglib.Type(C.gtk_button_role_get_type())
+	GTypeModelButton = externglib.Type(C.gtk_model_button_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_button_role_get_type()), F: marshalButtonRole},
-		{T: externglib.Type(C.gtk_model_button_get_type()), F: marshalModelButtonner},
+		{T: GTypeButtonRole, F: marshalButtonRole},
+		{T: GTypeModelButton, F: marshalModelButton},
 	})
 }
 
@@ -174,7 +180,7 @@ func wrapModelButton(obj *externglib.Object) *ModelButton {
 	}
 }
 
-func marshalModelButtonner(p uintptr) (interface{}, error) {
+func marshalModelButton(p uintptr) (interface{}, error) {
 	return wrapModelButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

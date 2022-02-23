@@ -14,9 +14,12 @@ import (
 // extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, gchar*, guintptr);
 import "C"
 
+// glib.Type values for gtkemojichooser.go.
+var GTypeEmojiChooser = externglib.Type(C.gtk_emoji_chooser_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_emoji_chooser_get_type()), F: marshalEmojiChooserer},
+		{T: GTypeEmojiChooser, F: marshalEmojiChooser},
 	})
 }
 
@@ -110,7 +113,7 @@ func wrapEmojiChooser(obj *externglib.Object) *EmojiChooser {
 	}
 }
 
-func marshalEmojiChooserer(p uintptr) (interface{}, error) {
+func marshalEmojiChooser(p uintptr) (interface{}, error) {
 	return wrapEmojiChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

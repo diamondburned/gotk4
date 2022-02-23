@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gtk4_GestureZoom_ConnectScaleChanged(gpointer, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkgesturezoom.go.
+var GTypeGestureZoom = externglib.Type(C.gtk_gesture_zoom_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_zoom_get_type()), F: marshalGestureZoomer},
+		{T: GTypeGestureZoom, F: marshalGestureZoom},
 	})
 }
 
@@ -56,7 +59,7 @@ func wrapGestureZoom(obj *externglib.Object) *GestureZoom {
 	}
 }
 
-func marshalGestureZoomer(p uintptr) (interface{}, error) {
+func marshalGestureZoom(p uintptr) (interface{}, error) {
 	return wrapGestureZoom(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

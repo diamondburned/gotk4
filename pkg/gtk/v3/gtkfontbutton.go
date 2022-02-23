@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk3_FontButton_ConnectFontSet(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkfontbutton.go.
+var GTypeFontButton = externglib.Type(C.gtk_font_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtonner},
+		{T: GTypeFontButton, F: marshalFontButton},
 	})
 }
 
@@ -121,7 +124,7 @@ func wrapFontButton(obj *externglib.Object) *FontButton {
 	}
 }
 
-func marshalFontButtonner(p uintptr) (interface{}, error) {
+func marshalFontButton(p uintptr) (interface{}, error) {
 	return wrapFontButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkwindowgroup.go.
+var GTypeWindowGroup = externglib.Type(C.gtk_window_group_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_group_get_type()), F: marshalWindowGrouper},
+		{T: GTypeWindowGroup, F: marshalWindowGroup},
 	})
 }
 
@@ -64,7 +67,7 @@ func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 	}
 }
 
-func marshalWindowGrouper(p uintptr) (interface{}, error) {
+func marshalWindowGroup(p uintptr) (interface{}, error) {
 	return wrapWindowGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

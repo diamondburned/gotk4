@@ -41,10 +41,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkflowbox.go.
+var (
+	GTypeFlowBox      = externglib.Type(C.gtk_flow_box_get_type())
+	GTypeFlowBoxChild = externglib.Type(C.gtk_flow_box_child_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBoxer},
-		{T: externglib.Type(C.gtk_flow_box_child_get_type()), F: marshalFlowBoxChilder},
+		{T: GTypeFlowBox, F: marshalFlowBox},
+		{T: GTypeFlowBoxChild, F: marshalFlowBoxChild},
 	})
 }
 
@@ -368,7 +374,7 @@ func wrapFlowBox(obj *externglib.Object) *FlowBox {
 	}
 }
 
-func marshalFlowBoxer(p uintptr) (interface{}, error) {
+func marshalFlowBox(p uintptr) (interface{}, error) {
 	return wrapFlowBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1338,7 +1344,7 @@ func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 	}
 }
 
-func marshalFlowBoxChilder(p uintptr) (interface{}, error) {
+func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 	return wrapFlowBoxChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

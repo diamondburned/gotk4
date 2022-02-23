@@ -20,9 +20,12 @@ import (
 // extern gboolean _gotk4_gtk4_Paned_ConnectToggleHandleFocus(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkpaned.go.
+var GTypePaned = externglib.Type(C.gtk_paned_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPanedder},
+		{T: GTypePaned, F: marshalPaned},
 	})
 }
 
@@ -125,7 +128,7 @@ func wrapPaned(obj *externglib.Object) *Paned {
 	}
 }
 
-func marshalPanedder(p uintptr) (interface{}, error) {
+func marshalPaned(p uintptr) (interface{}, error) {
 	return wrapPaned(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

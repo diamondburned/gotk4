@@ -60,10 +60,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtktreeview.go.
+var (
+	GTypeTreeViewDropPosition = externglib.Type(C.gtk_tree_view_drop_position_get_type())
+	GTypeTreeView             = externglib.Type(C.gtk_tree_view_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_view_drop_position_get_type()), F: marshalTreeViewDropPosition},
-		{T: externglib.Type(C.gtk_tree_view_get_type()), F: marshalTreeViewer},
+		{T: GTypeTreeViewDropPosition, F: marshalTreeViewDropPosition},
+		{T: GTypeTreeView, F: marshalTreeView},
 	})
 }
 
@@ -852,7 +858,7 @@ func wrapTreeView(obj *externglib.Object) *TreeView {
 	}
 }
 
-func marshalTreeViewer(p uintptr) (interface{}, error) {
+func marshalTreeView(p uintptr) (interface{}, error) {
 	return wrapTreeView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

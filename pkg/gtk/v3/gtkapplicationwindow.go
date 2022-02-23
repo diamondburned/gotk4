@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkapplicationwindow.go.
+var GTypeApplicationWindow = externglib.Type(C.gtk_application_window_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_application_window_get_type()), F: marshalApplicationWindower},
+		{T: GTypeApplicationWindow, F: marshalApplicationWindow},
 	})
 }
 
@@ -187,7 +190,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	}
 }
 
-func marshalApplicationWindower(p uintptr) (interface{}, error) {
+func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	return wrapApplicationWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

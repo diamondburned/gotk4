@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkgesturesingle.go.
+var GTypeGestureSingle = externglib.Type(C.gtk_gesture_single_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_single_get_type()), F: marshalGestureSingler},
+		{T: GTypeGestureSingle, F: marshalGestureSingle},
 	})
 }
 
@@ -66,7 +69,7 @@ func wrapGestureSingle(obj *externglib.Object) *GestureSingle {
 	}
 }
 
-func marshalGestureSingler(p uintptr) (interface{}, error) {
+func marshalGestureSingle(p uintptr) (interface{}, error) {
 	return wrapGestureSingle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

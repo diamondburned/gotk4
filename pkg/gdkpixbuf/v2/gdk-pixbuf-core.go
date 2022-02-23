@@ -24,11 +24,18 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gdk-pixbuf-core.go.
+var (
+	GTypeColorspace      = externglib.Type(C.gdk_colorspace_get_type())
+	GTypePixbufAlphaMode = externglib.Type(C.gdk_pixbuf_alpha_mode_get_type())
+	GTypePixbufError     = externglib.Type(C.gdk_pixbuf_error_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_colorspace_get_type()), F: marshalColorspace},
-		{T: externglib.Type(C.gdk_pixbuf_alpha_mode_get_type()), F: marshalPixbufAlphaMode},
-		{T: externglib.Type(C.gdk_pixbuf_error_get_type()), F: marshalPixbufError},
+		{T: GTypeColorspace, F: marshalColorspace},
+		{T: GTypePixbufAlphaMode, F: marshalPixbufAlphaMode},
+		{T: GTypePixbufError, F: marshalPixbufError},
 	})
 }
 

@@ -22,10 +22,16 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gdk-pixbuf-animation.go.
+var (
+	GTypePixbufAnimation     = externglib.Type(C.gdk_pixbuf_animation_get_type())
+	GTypePixbufAnimationIter = externglib.Type(C.gdk_pixbuf_animation_iter_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_animation_get_type()), F: marshalPixbufAnimationer},
-		{T: externglib.Type(C.gdk_pixbuf_animation_iter_get_type()), F: marshalPixbufAnimationIterer},
+		{T: GTypePixbufAnimation, F: marshalPixbufAnimation},
+		{T: GTypePixbufAnimationIter, F: marshalPixbufAnimationIter},
 	})
 }
 
@@ -57,7 +63,7 @@ func wrapPixbufAnimation(obj *externglib.Object) *PixbufAnimation {
 	}
 }
 
-func marshalPixbufAnimationer(p uintptr) (interface{}, error) {
+func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 	return wrapPixbufAnimation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -447,7 +453,7 @@ func wrapPixbufAnimationIter(obj *externglib.Object) *PixbufAnimationIter {
 	}
 }
 
-func marshalPixbufAnimationIterer(p uintptr) (interface{}, error) {
+func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 	return wrapPixbufAnimationIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

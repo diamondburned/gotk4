@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkimagecellaccessible.go.
+var GTypeImageCellAccessible = externglib.Type(C.gtk_image_cell_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_image_cell_accessible_get_type()), F: marshalImageCellAccessibler},
+		{T: GTypeImageCellAccessible, F: marshalImageCellAccessible},
 	})
 }
 
@@ -83,6 +86,6 @@ func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 	}
 }
 
-func marshalImageCellAccessibler(p uintptr) (interface{}, error) {
+func marshalImageCellAccessible(p uintptr) (interface{}, error) {
 	return wrapImageCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

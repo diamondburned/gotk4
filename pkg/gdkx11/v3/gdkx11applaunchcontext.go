@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11applaunchcontext.go.
+var GTypeX11AppLaunchContext = externglib.Type(C.gdk_x11_app_launch_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_app_launch_context_get_type()), F: marshalX11AppLaunchContexter},
+		{T: GTypeX11AppLaunchContext, F: marshalX11AppLaunchContext},
 	})
 }
 
@@ -52,6 +55,6 @@ func wrapX11AppLaunchContext(obj *externglib.Object) *X11AppLaunchContext {
 	}
 }
 
-func marshalX11AppLaunchContexter(p uintptr) (interface{}, error) {
+func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
 	return wrapX11AppLaunchContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -16,10 +16,16 @@ import (
 // #include <pango/pango.h>
 import "C"
 
+// glib.Type values for pango-tabs.go.
+var (
+	GTypeTabAlign = externglib.Type(C.pango_tab_align_get_type())
+	GTypeTabArray = externglib.Type(C.pango_tab_array_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_tab_align_get_type()), F: marshalTabAlign},
-		{T: externglib.Type(C.pango_tab_array_get_type()), F: marshalTabArray},
+		{T: GTypeTabAlign, F: marshalTabAlign},
+		{T: GTypeTabArray, F: marshalTabArray},
 	})
 }
 

@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtknotebookpageaccessible.go.
+var GTypeNotebookPageAccessible = externglib.Type(C.gtk_notebook_page_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_notebook_page_accessible_get_type()), F: marshalNotebookPageAccessibler},
+		{T: GTypeNotebookPageAccessible, F: marshalNotebookPageAccessible},
 	})
 }
 
@@ -59,7 +62,7 @@ func wrapNotebookPageAccessible(obj *externglib.Object) *NotebookPageAccessible 
 	}
 }
 
-func marshalNotebookPageAccessibler(p uintptr) (interface{}, error) {
+func marshalNotebookPageAccessible(p uintptr) (interface{}, error) {
 	return wrapNotebookPageAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

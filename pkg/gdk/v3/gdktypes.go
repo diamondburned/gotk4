@@ -17,19 +17,34 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdktypes.go.
+var (
+	GTypeAxisUse        = externglib.Type(C.gdk_axis_use_get_type())
+	GTypeByteOrder      = externglib.Type(C.gdk_byte_order_get_type())
+	GTypeGLError        = externglib.Type(C.gdk_gl_error_get_type())
+	GTypeGrabOwnership  = externglib.Type(C.gdk_grab_ownership_get_type())
+	GTypeGrabStatus     = externglib.Type(C.gdk_grab_status_get_type())
+	GTypeModifierIntent = externglib.Type(C.gdk_modifier_intent_get_type())
+	GTypeWindowTypeHint = externglib.Type(C.gdk_window_type_hint_get_type())
+	GTypeAxisFlags      = externglib.Type(C.gdk_axis_flags_get_type())
+	GTypeEventMask      = externglib.Type(C.gdk_event_mask_get_type())
+	GTypeModifierType   = externglib.Type(C.gdk_modifier_type_get_type())
+	GTypeRectangle      = externglib.Type(C.gdk_rectangle_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_axis_use_get_type()), F: marshalAxisUse},
-		{T: externglib.Type(C.gdk_byte_order_get_type()), F: marshalByteOrder},
-		{T: externglib.Type(C.gdk_gl_error_get_type()), F: marshalGLError},
-		{T: externglib.Type(C.gdk_grab_ownership_get_type()), F: marshalGrabOwnership},
-		{T: externglib.Type(C.gdk_grab_status_get_type()), F: marshalGrabStatus},
-		{T: externglib.Type(C.gdk_modifier_intent_get_type()), F: marshalModifierIntent},
-		{T: externglib.Type(C.gdk_window_type_hint_get_type()), F: marshalWindowTypeHint},
-		{T: externglib.Type(C.gdk_axis_flags_get_type()), F: marshalAxisFlags},
-		{T: externglib.Type(C.gdk_event_mask_get_type()), F: marshalEventMask},
-		{T: externglib.Type(C.gdk_modifier_type_get_type()), F: marshalModifierType},
-		{T: externglib.Type(C.gdk_rectangle_get_type()), F: marshalRectangle},
+		{T: GTypeAxisUse, F: marshalAxisUse},
+		{T: GTypeByteOrder, F: marshalByteOrder},
+		{T: GTypeGLError, F: marshalGLError},
+		{T: GTypeGrabOwnership, F: marshalGrabOwnership},
+		{T: GTypeGrabStatus, F: marshalGrabStatus},
+		{T: GTypeModifierIntent, F: marshalModifierIntent},
+		{T: GTypeWindowTypeHint, F: marshalWindowTypeHint},
+		{T: GTypeAxisFlags, F: marshalAxisFlags},
+		{T: GTypeEventMask, F: marshalEventMask},
+		{T: GTypeModifierType, F: marshalModifierType},
+		{T: GTypeRectangle, F: marshalRectangle},
 	})
 }
 

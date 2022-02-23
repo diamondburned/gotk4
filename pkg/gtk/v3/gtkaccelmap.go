@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk3_AccelMap_ConnectChanged(gpointer, gchar*, guint, GdkModifierType, guintptr);
 import "C"
 
+// glib.Type values for gtkaccelmap.go.
+var GTypeAccelMap = externglib.Type(C.gtk_accel_map_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_accel_map_get_type()), F: marshalAccelMapper},
+		{T: GTypeAccelMap, F: marshalAccelMap},
 	})
 }
 
@@ -108,7 +111,7 @@ func wrapAccelMap(obj *externglib.Object) *AccelMap {
 	}
 }
 
-func marshalAccelMapper(p uintptr) (interface{}, error) {
+func marshalAccelMap(p uintptr) (interface{}, error) {
 	return wrapAccelMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

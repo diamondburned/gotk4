@@ -41,13 +41,22 @@ import (
 // extern void _gotk4_gtk3_PrintOperation_ConnectUpdateCustomWidget(gpointer, GtkWidget*, GtkPageSetup*, GtkPrintSettings*, guintptr);
 import "C"
 
+// glib.Type values for gtkprintoperation.go.
+var (
+	GTypePrintError           = externglib.Type(C.gtk_print_error_get_type())
+	GTypePrintOperationAction = externglib.Type(C.gtk_print_operation_action_get_type())
+	GTypePrintOperationResult = externglib.Type(C.gtk_print_operation_result_get_type())
+	GTypePrintStatus          = externglib.Type(C.gtk_print_status_get_type())
+	GTypePrintOperation       = externglib.Type(C.gtk_print_operation_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_print_error_get_type()), F: marshalPrintError},
-		{T: externglib.Type(C.gtk_print_operation_action_get_type()), F: marshalPrintOperationAction},
-		{T: externglib.Type(C.gtk_print_operation_result_get_type()), F: marshalPrintOperationResult},
-		{T: externglib.Type(C.gtk_print_status_get_type()), F: marshalPrintStatus},
-		{T: externglib.Type(C.gtk_print_operation_get_type()), F: marshalPrintOperationer},
+		{T: GTypePrintError, F: marshalPrintError},
+		{T: GTypePrintOperationAction, F: marshalPrintOperationAction},
+		{T: GTypePrintOperationResult, F: marshalPrintOperationResult},
+		{T: GTypePrintStatus, F: marshalPrintStatus},
+		{T: GTypePrintOperation, F: marshalPrintOperation},
 	})
 }
 
@@ -740,7 +749,7 @@ func wrapPrintOperation(obj *externglib.Object) *PrintOperation {
 	}
 }
 
-func marshalPrintOperationer(p uintptr) (interface{}, error) {
+func marshalPrintOperation(p uintptr) (interface{}, error) {
 	return wrapPrintOperation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

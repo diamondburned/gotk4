@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkspinbuttonaccessible.go.
+var GTypeSpinButtonAccessible = externglib.Type(C.gtk_spin_button_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_spin_button_accessible_get_type()), F: marshalSpinButtonAccessibler},
+		{T: GTypeSpinButtonAccessible, F: marshalSpinButtonAccessible},
 	})
 }
 
@@ -77,6 +80,6 @@ func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 	}
 }
 
-func marshalSpinButtonAccessibler(p uintptr) (interface{}, error) {
+func marshalSpinButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapSpinButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkliststore.go.
+var GTypeListStore = externglib.Type(C.gtk_list_store_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_store_get_type()), F: marshalListStorer},
+		{T: GTypeListStore, F: marshalListStore},
 	})
 }
 
@@ -105,7 +108,7 @@ func wrapListStore(obj *externglib.Object) *ListStore {
 	}
 }
 
-func marshalListStorer(p uintptr) (interface{}, error) {
+func marshalListStore(p uintptr) (interface{}, error) {
 	return wrapListStore(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

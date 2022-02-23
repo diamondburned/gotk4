@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gtk4_EntryBuffer_ConnectInsertedText(gpointer, guint, gchar*, guint, guintptr);
 import "C"
 
+// glib.Type values for gtkentrybuffer.go.
+var GTypeEntryBuffer = externglib.Type(C.gtk_entry_buffer_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_entry_buffer_get_type()), F: marshalEntryBufferer},
+		{T: GTypeEntryBuffer, F: marshalEntryBuffer},
 	})
 }
 
@@ -269,7 +272,7 @@ func wrapEntryBuffer(obj *externglib.Object) *EntryBuffer {
 	}
 }
 
-func marshalEntryBufferer(p uintptr) (interface{}, error) {
+func marshalEntryBuffer(p uintptr) (interface{}, error) {
 	return wrapEntryBuffer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

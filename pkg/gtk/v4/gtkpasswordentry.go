@@ -16,9 +16,12 @@ import (
 // extern void _gotk4_gtk4_PasswordEntry_ConnectActivate(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkpasswordentry.go.
+var GTypePasswordEntry = externglib.Type(C.gtk_password_entry_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_password_entry_get_type()), F: marshalPasswordEntrier},
+		{T: GTypePasswordEntry, F: marshalPasswordEntry},
 	})
 }
 
@@ -118,7 +121,7 @@ func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 	}
 }
 
-func marshalPasswordEntrier(p uintptr) (interface{}, error) {
+func marshalPasswordEntry(p uintptr) (interface{}, error) {
 	return wrapPasswordEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

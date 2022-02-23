@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkbooleancellaccessible.go.
+var GTypeBooleanCellAccessible = externglib.Type(C.gtk_boolean_cell_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_boolean_cell_accessible_get_type()), F: marshalBooleanCellAccessibler},
+		{T: GTypeBooleanCellAccessible, F: marshalBooleanCellAccessible},
 	})
 }
 
@@ -72,6 +75,6 @@ func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 	}
 }
 
-func marshalBooleanCellAccessibler(p uintptr) (interface{}, error) {
+func marshalBooleanCellAccessible(p uintptr) (interface{}, error) {
 	return wrapBooleanCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

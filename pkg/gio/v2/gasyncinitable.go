@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gasyncinitable.go.
+var GTypeAsyncInitable = externglib.Type(C.g_async_initable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_async_initable_get_type()), F: marshalAsyncInitabler},
+		{T: GTypeAsyncInitable, F: marshalAsyncInitable},
 	})
 }
 
@@ -155,7 +158,7 @@ func wrapAsyncInitable(obj *externglib.Object) *AsyncInitable {
 	}
 }
 
-func marshalAsyncInitabler(p uintptr) (interface{}, error) {
+func marshalAsyncInitable(p uintptr) (interface{}, error) {
 	return wrapAsyncInitable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

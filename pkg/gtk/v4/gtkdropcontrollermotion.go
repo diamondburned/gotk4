@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gtk4_DropControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkdropcontrollermotion.go.
+var GTypeDropControllerMotion = externglib.Type(C.gtk_drop_controller_motion_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_controller_motion_get_type()), F: marshalDropControllerMotioner},
+		{T: GTypeDropControllerMotion, F: marshalDropControllerMotion},
 	})
 }
 
@@ -61,7 +64,7 @@ func wrapDropControllerMotion(obj *externglib.Object) *DropControllerMotion {
 	}
 }
 
-func marshalDropControllerMotioner(p uintptr) (interface{}, error) {
+func marshalDropControllerMotion(p uintptr) (interface{}, error) {
 	return wrapDropControllerMotion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

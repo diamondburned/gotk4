@@ -17,9 +17,12 @@ import (
 // extern void _gotk4_gio2_ConverterIface_reset(GConverter*);
 import "C"
 
+// glib.Type values for gconverter.go.
+var GTypeConverter = externglib.Type(C.g_converter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_converter_get_type()), F: marshalConverterer},
+		{T: GTypeConverter, F: marshalConverter},
 	})
 }
 
@@ -205,7 +208,7 @@ func wrapConverter(obj *externglib.Object) *Converter {
 	}
 }
 
-func marshalConverterer(p uintptr) (interface{}, error) {
+func marshalConverter(p uintptr) (interface{}, error) {
 	return wrapConverter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

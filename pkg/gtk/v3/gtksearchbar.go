@@ -19,9 +19,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtksearchbar.go.
+var GTypeSearchBar = externglib.Type(C.gtk_search_bar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarrer},
+		{T: GTypeSearchBar, F: marshalSearchBar},
 	})
 }
 
@@ -91,7 +94,7 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	}
 }
 
-func marshalSearchBarrer(p uintptr) (interface{}, error) {
+func marshalSearchBar(p uintptr) (interface{}, error) {
 	return wrapSearchBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

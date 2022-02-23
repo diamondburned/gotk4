@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gthemedicon.go.
+var GTypeThemedIcon = externglib.Type(C.g_themed_icon_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIconner},
+		{T: GTypeThemedIcon, F: marshalThemedIcon},
 	})
 }
 
@@ -58,7 +61,7 @@ func wrapThemedIcon(obj *externglib.Object) *ThemedIcon {
 	}
 }
 
-func marshalThemedIconner(p uintptr) (interface{}, error) {
+func marshalThemedIcon(p uintptr) (interface{}, error) {
 	return wrapThemedIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkprogressbaraccessible.go.
+var GTypeProgressBarAccessible = externglib.Type(C.gtk_progress_bar_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_progress_bar_accessible_get_type()), F: marshalProgressBarAccessibler},
+		{T: GTypeProgressBarAccessible, F: marshalProgressBarAccessible},
 	})
 }
 
@@ -63,6 +66,6 @@ func wrapProgressBarAccessible(obj *externglib.Object) *ProgressBarAccessible {
 	}
 }
 
-func marshalProgressBarAccessibler(p uintptr) (interface{}, error) {
+func marshalProgressBarAccessible(p uintptr) (interface{}, error) {
 	return wrapProgressBarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

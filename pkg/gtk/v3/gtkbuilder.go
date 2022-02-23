@@ -22,10 +22,16 @@ import (
 // extern GType _gotk4_gtk3_BuilderClass_get_type_from_name(GtkBuilder*, char*);
 import "C"
 
+// glib.Type values for gtkbuilder.go.
+var (
+	GTypeBuilderError = externglib.Type(C.gtk_builder_error_get_type())
+	GTypeBuilder      = externglib.Type(C.gtk_builder_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_builder_error_get_type()), F: marshalBuilderError},
-		{T: externglib.Type(C.gtk_builder_get_type()), F: marshalBuilderer},
+		{T: GTypeBuilderError, F: marshalBuilderError},
+		{T: GTypeBuilder, F: marshalBuilder},
 	})
 }
 
@@ -352,7 +358,7 @@ func wrapBuilder(obj *externglib.Object) *Builder {
 	}
 }
 
-func marshalBuilderer(p uintptr) (interface{}, error) {
+func marshalBuilder(p uintptr) (interface{}, error) {
 	return wrapBuilder(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

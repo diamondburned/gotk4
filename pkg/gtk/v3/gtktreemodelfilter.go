@@ -23,9 +23,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtktreemodelfilter.go.
+var GTypeTreeModelFilter = externglib.Type(C.gtk_tree_model_filter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_model_filter_get_type()), F: marshalTreeModelFilterer},
+		{T: GTypeTreeModelFilter, F: marshalTreeModelFilter},
 	})
 }
 
@@ -374,7 +377,7 @@ func wrapTreeModelFilter(obj *externglib.Object) *TreeModelFilter {
 	}
 }
 
-func marshalTreeModelFilterer(p uintptr) (interface{}, error) {
+func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 	return wrapTreeModelFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

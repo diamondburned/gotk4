@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkcairocontext.go.
+var GTypeCairoContext = externglib.Type(C.gdk_cairo_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_cairo_context_get_type()), F: marshalCairoContexter},
+		{T: GTypeCairoContext, F: marshalCairoContext},
 	})
 }
 
@@ -55,7 +58,7 @@ func wrapCairoContext(obj *externglib.Object) *CairoContext {
 	}
 }
 
-func marshalCairoContexter(p uintptr) (interface{}, error) {
+func marshalCairoContext(p uintptr) (interface{}, error) {
 	return wrapCairoContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

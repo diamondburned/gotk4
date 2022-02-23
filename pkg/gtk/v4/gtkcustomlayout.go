@@ -13,9 +13,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcustomlayout.go.
+var GTypeCustomLayout = externglib.Type(C.gtk_custom_layout_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_custom_layout_get_type()), F: marshalCustomLayouter},
+		{T: GTypeCustomLayout, F: marshalCustomLayout},
 	})
 }
 
@@ -53,6 +56,6 @@ func wrapCustomLayout(obj *externglib.Object) *CustomLayout {
 	}
 }
 
-func marshalCustomLayouter(p uintptr) (interface{}, error) {
+func marshalCustomLayout(p uintptr) (interface{}, error) {
 	return wrapCustomLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

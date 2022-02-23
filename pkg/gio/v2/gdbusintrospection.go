@@ -16,15 +16,26 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdbusintrospection.go.
+var (
+	GTypeDBusAnnotationInfo = externglib.Type(C.g_dbus_annotation_info_get_type())
+	GTypeDBusArgInfo        = externglib.Type(C.g_dbus_arg_info_get_type())
+	GTypeDBusInterfaceInfo  = externglib.Type(C.g_dbus_interface_info_get_type())
+	GTypeDBusMethodInfo     = externglib.Type(C.g_dbus_method_info_get_type())
+	GTypeDBusNodeInfo       = externglib.Type(C.g_dbus_node_info_get_type())
+	GTypeDBusPropertyInfo   = externglib.Type(C.g_dbus_property_info_get_type())
+	GTypeDBusSignalInfo     = externglib.Type(C.g_dbus_signal_info_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_annotation_info_get_type()), F: marshalDBusAnnotationInfo},
-		{T: externglib.Type(C.g_dbus_arg_info_get_type()), F: marshalDBusArgInfo},
-		{T: externglib.Type(C.g_dbus_interface_info_get_type()), F: marshalDBusInterfaceInfo},
-		{T: externglib.Type(C.g_dbus_method_info_get_type()), F: marshalDBusMethodInfo},
-		{T: externglib.Type(C.g_dbus_node_info_get_type()), F: marshalDBusNodeInfo},
-		{T: externglib.Type(C.g_dbus_property_info_get_type()), F: marshalDBusPropertyInfo},
-		{T: externglib.Type(C.g_dbus_signal_info_get_type()), F: marshalDBusSignalInfo},
+		{T: GTypeDBusAnnotationInfo, F: marshalDBusAnnotationInfo},
+		{T: GTypeDBusArgInfo, F: marshalDBusArgInfo},
+		{T: GTypeDBusInterfaceInfo, F: marshalDBusInterfaceInfo},
+		{T: GTypeDBusMethodInfo, F: marshalDBusMethodInfo},
+		{T: GTypeDBusNodeInfo, F: marshalDBusNodeInfo},
+		{T: GTypeDBusPropertyInfo, F: marshalDBusPropertyInfo},
+		{T: GTypeDBusSignalInfo, F: marshalDBusSignalInfo},
 	})
 }
 

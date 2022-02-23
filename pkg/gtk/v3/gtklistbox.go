@@ -44,10 +44,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtklistbox.go.
+var (
+	GTypeListBox    = externglib.Type(C.gtk_list_box_get_type())
+	GTypeListBoxRow = externglib.Type(C.gtk_list_box_row_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_box_get_type()), F: marshalListBoxer},
-		{T: externglib.Type(C.gtk_list_box_row_get_type()), F: marshalListBoxRower},
+		{T: GTypeListBox, F: marshalListBox},
+		{T: GTypeListBoxRow, F: marshalListBoxRow},
 	})
 }
 
@@ -403,7 +409,7 @@ func wrapListBox(obj *externglib.Object) *ListBox {
 	}
 }
 
-func marshalListBoxer(p uintptr) (interface{}, error) {
+func marshalListBox(p uintptr) (interface{}, error) {
 	return wrapListBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1323,7 +1329,7 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 	}
 }
 
-func marshalListBoxRower(p uintptr) (interface{}, error) {
+func marshalListBoxRow(p uintptr) (interface{}, error) {
 	return wrapListBoxRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

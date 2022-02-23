@@ -15,10 +15,16 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkstringfilter.go.
+var (
+	GTypeStringFilterMatchMode = externglib.Type(C.gtk_string_filter_match_mode_get_type())
+	GTypeStringFilter          = externglib.Type(C.gtk_string_filter_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_string_filter_match_mode_get_type()), F: marshalStringFilterMatchMode},
-		{T: externglib.Type(C.gtk_string_filter_get_type()), F: marshalStringFilterer},
+		{T: GTypeStringFilterMatchMode, F: marshalStringFilterMatchMode},
+		{T: GTypeStringFilter, F: marshalStringFilter},
 	})
 }
 
@@ -95,7 +101,7 @@ func wrapStringFilter(obj *externglib.Object) *StringFilter {
 	}
 }
 
-func marshalStringFilterer(p uintptr) (interface{}, error) {
+func marshalStringFilter(p uintptr) (interface{}, error) {
 	return wrapStringFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

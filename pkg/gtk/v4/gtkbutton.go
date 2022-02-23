@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk4_Button_ConnectClicked(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkbutton.go.
+var GTypeButton = externglib.Type(C.gtk_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtonner},
+		{T: GTypeButton, F: marshalButton},
 	})
 }
 
@@ -149,7 +152,7 @@ func wrapButton(obj *externglib.Object) *Button {
 	}
 }
 
-func marshalButtonner(p uintptr) (interface{}, error) {
+func marshalButton(p uintptr) (interface{}, error) {
 	return wrapButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

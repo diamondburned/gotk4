@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtknumerableicon.go.
+var GTypeNumerableIcon = externglib.Type(C.gtk_numerable_icon_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_numerable_icon_get_type()), F: marshalNumerableIconner},
+		{T: GTypeNumerableIcon, F: marshalNumerableIcon},
 	})
 }
 
@@ -62,7 +65,7 @@ func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 	}
 }
 
-func marshalNumerableIconner(p uintptr) (interface{}, error) {
+func marshalNumerableIcon(p uintptr) (interface{}, error) {
 	return wrapNumerableIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

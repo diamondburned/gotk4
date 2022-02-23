@@ -14,10 +14,16 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkconstraint.go.
+var (
+	GTypeConstraintTarget = externglib.Type(C.gtk_constraint_target_get_type())
+	GTypeConstraint       = externglib.Type(C.gtk_constraint_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_constraint_target_get_type()), F: marshalConstraintTargetter},
-		{T: externglib.Type(C.gtk_constraint_get_type()), F: marshalConstrainter},
+		{T: GTypeConstraintTarget, F: marshalConstraintTarget},
+		{T: GTypeConstraint, F: marshalConstraint},
 	})
 }
 
@@ -56,7 +62,7 @@ func wrapConstraintTarget(obj *externglib.Object) *ConstraintTarget {
 	}
 }
 
-func marshalConstraintTargetter(p uintptr) (interface{}, error) {
+func marshalConstraintTarget(p uintptr) (interface{}, error) {
 	return wrapConstraintTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -110,7 +116,7 @@ func wrapConstraint(obj *externglib.Object) *Constraint {
 	}
 }
 
-func marshalConstrainter(p uintptr) (interface{}, error) {
+func marshalConstraint(p uintptr) (interface{}, error) {
 	return wrapConstraint(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

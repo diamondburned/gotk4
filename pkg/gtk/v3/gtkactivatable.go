@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gtk3_ActivatableIface_update(GtkActivatable*, GtkAction*, gchar*);
 import "C"
 
+// glib.Type values for gtkactivatable.go.
+var GTypeActivatable = externglib.Type(C.gtk_activatable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_activatable_get_type()), F: marshalActivatabler},
+		{T: GTypeActivatable, F: marshalActivatable},
 	})
 }
 
@@ -357,7 +360,7 @@ func wrapActivatable(obj *externglib.Object) *Activatable {
 	}
 }
 
-func marshalActivatabler(p uintptr) (interface{}, error) {
+func marshalActivatable(p uintptr) (interface{}, error) {
 	return wrapActivatable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -17,10 +17,16 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkconstraintlayout.go.
+var (
+	GTypeConstraintLayout      = externglib.Type(C.gtk_constraint_layout_get_type())
+	GTypeConstraintLayoutChild = externglib.Type(C.gtk_constraint_layout_child_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_constraint_layout_get_type()), F: marshalConstraintLayouter},
-		{T: externglib.Type(C.gtk_constraint_layout_child_get_type()), F: marshalConstraintLayoutChilder},
+		{T: GTypeConstraintLayout, F: marshalConstraintLayout},
+		{T: GTypeConstraintLayoutChild, F: marshalConstraintLayoutChild},
 	})
 }
 
@@ -219,7 +225,7 @@ func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 	}
 }
 
-func marshalConstraintLayouter(p uintptr) (interface{}, error) {
+func marshalConstraintLayout(p uintptr) (interface{}, error) {
 	return wrapConstraintLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -615,6 +621,6 @@ func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
 	}
 }
 
-func marshalConstraintLayoutChilder(p uintptr) (interface{}, error) {
+func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
 	return wrapConstraintLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

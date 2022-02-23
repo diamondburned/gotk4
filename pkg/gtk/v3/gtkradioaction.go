@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk3_RadioAction_ConnectChanged(gpointer, GtkRadioAction*, guintptr);
 import "C"
 
+// glib.Type values for gtkradioaction.go.
+var GTypeRadioAction = externglib.Type(C.gtk_radio_action_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_action_get_type()), F: marshalRadioActioner},
+		{T: GTypeRadioAction, F: marshalRadioAction},
 	})
 }
 
@@ -85,7 +88,7 @@ func wrapRadioAction(obj *externglib.Object) *RadioAction {
 	}
 }
 
-func marshalRadioActioner(p uintptr) (interface{}, error) {
+func marshalRadioAction(p uintptr) (interface{}, error) {
 	return wrapRadioAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

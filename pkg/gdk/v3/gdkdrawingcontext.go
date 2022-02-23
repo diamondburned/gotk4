@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkdrawingcontext.go.
+var GTypeDrawingContext = externglib.Type(C.gdk_drawing_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drawing_context_get_type()), F: marshalDrawingContexter},
+		{T: GTypeDrawingContext, F: marshalDrawingContext},
 	})
 }
 
@@ -58,7 +61,7 @@ func wrapDrawingContext(obj *externglib.Object) *DrawingContext {
 	}
 }
 
-func marshalDrawingContexter(p uintptr) (interface{}, error) {
+func marshalDrawingContext(p uintptr) (interface{}, error) {
 	return wrapDrawingContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

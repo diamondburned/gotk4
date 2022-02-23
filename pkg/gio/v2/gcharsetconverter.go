@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gcharsetconverter.go.
+var GTypeCharsetConverter = externglib.Type(C.g_charset_converter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_charset_converter_get_type()), F: marshalCharsetConverterer},
+		{T: GTypeCharsetConverter, F: marshalCharsetConverter},
 	})
 }
 
@@ -58,7 +61,7 @@ func wrapCharsetConverter(obj *externglib.Object) *CharsetConverter {
 	}
 }
 
-func marshalCharsetConverterer(p uintptr) (interface{}, error) {
+func marshalCharsetConverter(p uintptr) (interface{}, error) {
 	return wrapCharsetConverter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

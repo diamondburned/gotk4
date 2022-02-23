@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_atk1_ImageIface_get_image_size(AtkImage*, gint*, gint*);
 import "C"
 
+// glib.Type values for atkimage.go.
+var GTypeImage = externglib.Type(C.atk_image_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_image_get_type()), F: marshalImager},
+		{T: GTypeImage, F: marshalImage},
 	})
 }
 
@@ -216,7 +219,7 @@ func wrapImage(obj *externglib.Object) *Image {
 	}
 }
 
-func marshalImager(p uintptr) (interface{}, error) {
+func marshalImage(p uintptr) (interface{}, error) {
 	return wrapImage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

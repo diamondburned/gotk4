@@ -47,12 +47,20 @@ import (
 // extern void _gotk4_gtk4_TextView_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtktextview.go.
+var (
+	GTypeTextExtendSelection = externglib.Type(C.gtk_text_extend_selection_get_type())
+	GTypeTextViewLayer       = externglib.Type(C.gtk_text_view_layer_get_type())
+	GTypeTextWindowType      = externglib.Type(C.gtk_text_window_type_get_type())
+	GTypeTextView            = externglib.Type(C.gtk_text_view_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_extend_selection_get_type()), F: marshalTextExtendSelection},
-		{T: externglib.Type(C.gtk_text_view_layer_get_type()), F: marshalTextViewLayer},
-		{T: externglib.Type(C.gtk_text_window_type_get_type()), F: marshalTextWindowType},
-		{T: externglib.Type(C.gtk_text_view_get_type()), F: marshalTextViewer},
+		{T: GTypeTextExtendSelection, F: marshalTextExtendSelection},
+		{T: GTypeTextViewLayer, F: marshalTextViewLayer},
+		{T: GTypeTextWindowType, F: marshalTextWindowType},
+		{T: GTypeTextView, F: marshalTextView},
 	})
 }
 
@@ -487,7 +495,7 @@ func wrapTextView(obj *externglib.Object) *TextView {
 	}
 }
 
-func marshalTextViewer(p uintptr) (interface{}, error) {
+func marshalTextView(p uintptr) (interface{}, error) {
 	return wrapTextView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

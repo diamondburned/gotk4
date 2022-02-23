@@ -25,9 +25,12 @@ import (
 // extern void _gotk4_gtk3_Clipboard_ConnectOwnerChange(gpointer, GdkEventOwnerChange*, guintptr);
 import "C"
 
+// glib.Type values for gtkclipboard.go.
+var GTypeClipboard = externglib.Type(C.gtk_clipboard_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_clipboard_get_type()), F: marshalClipboarder},
+		{T: GTypeClipboard, F: marshalClipboard},
 	})
 }
 
@@ -216,7 +219,7 @@ func wrapClipboard(obj *externglib.Object) *Clipboard {
 	}
 }
 
-func marshalClipboarder(p uintptr) (interface{}, error) {
+func marshalClipboard(p uintptr) (interface{}, error) {
 	return wrapClipboard(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

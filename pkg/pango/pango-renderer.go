@@ -28,10 +28,16 @@ import (
 // extern void _gotk4_pango1_RendererClass_prepare_run(PangoRenderer*, PangoLayoutRun*);
 import "C"
 
+// glib.Type values for pango-renderer.go.
+var (
+	GTypeRenderPart = externglib.Type(C.pango_render_part_get_type())
+	GTypeRenderer   = externglib.Type(C.pango_renderer_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_render_part_get_type()), F: marshalRenderPart},
-		{T: externglib.Type(C.pango_renderer_get_type()), F: marshalRendererer},
+		{T: GTypeRenderPart, F: marshalRenderPart},
+		{T: GTypeRenderer, F: marshalRenderer},
 	})
 }
 
@@ -526,7 +532,7 @@ func wrapRenderer(obj *externglib.Object) *Renderer {
 	}
 }
 
-func marshalRendererer(p uintptr) (interface{}, error) {
+func marshalRenderer(p uintptr) (interface{}, error) {
 	return wrapRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

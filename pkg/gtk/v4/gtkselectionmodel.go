@@ -26,9 +26,12 @@ import (
 // extern void _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(gpointer, guint, guint, guintptr);
 import "C"
 
+// glib.Type values for gtkselectionmodel.go.
+var GTypeSelectionModel = externglib.Type(C.gtk_selection_model_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_selection_model_get_type()), F: marshalSelectionModeller},
+		{T: GTypeSelectionModel, F: marshalSelectionModel},
 	})
 }
 
@@ -458,7 +461,7 @@ func wrapSelectionModel(obj *externglib.Object) *SelectionModel {
 	}
 }
 
-func marshalSelectionModeller(p uintptr) (interface{}, error) {
+func marshalSelectionModel(p uintptr) (interface{}, error) {
 	return wrapSelectionModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

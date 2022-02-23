@@ -17,11 +17,18 @@ import (
 // extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(GtkBuilderScope*, GtkBuilder*, char*);
 import "C"
 
+// glib.Type values for gtkbuilderscope.go.
+var (
+	GTypeBuilderClosureFlags = externglib.Type(C.gtk_builder_closure_flags_get_type())
+	GTypeBuilderScope        = externglib.Type(C.gtk_builder_scope_get_type())
+	GTypeBuilderCScope       = externglib.Type(C.gtk_builder_cscope_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_builder_closure_flags_get_type()), F: marshalBuilderClosureFlags},
-		{T: externglib.Type(C.gtk_builder_scope_get_type()), F: marshalBuilderScoper},
-		{T: externglib.Type(C.gtk_builder_cscope_get_type()), F: marshalBuilderCScoper},
+		{T: GTypeBuilderClosureFlags, F: marshalBuilderClosureFlags},
+		{T: GTypeBuilderScope, F: marshalBuilderScope},
+		{T: GTypeBuilderCScope, F: marshalBuilderCScope},
 	})
 }
 
@@ -175,7 +182,7 @@ func wrapBuilderScope(obj *externglib.Object) *BuilderScope {
 	}
 }
 
-func marshalBuilderScoper(p uintptr) (interface{}, error) {
+func marshalBuilderScope(p uintptr) (interface{}, error) {
 	return wrapBuilderScope(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -234,7 +241,7 @@ func wrapBuilderCScope(obj *externglib.Object) *BuilderCScope {
 	}
 }
 
-func marshalBuilderCScoper(p uintptr) (interface{}, error) {
+func marshalBuilderCScope(p uintptr) (interface{}, error) {
 	return wrapBuilderCScope(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

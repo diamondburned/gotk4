@@ -28,9 +28,12 @@ import (
 // extern void _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(GDtlsConnection*, gchar**);
 import "C"
 
+// glib.Type values for gdtlsconnection.go.
+var GTypeDTLSConnection = externglib.Type(C.g_dtls_connection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dtls_connection_get_type()), F: marshalDTLSConnectioner},
+		{T: GTypeDTLSConnection, F: marshalDTLSConnection},
 	})
 }
 
@@ -139,7 +142,7 @@ func wrapDTLSConnection(obj *externglib.Object) *DTLSConnection {
 	}
 }
 
-func marshalDTLSConnectioner(p uintptr) (interface{}, error) {
+func marshalDTLSConnection(p uintptr) (interface{}, error) {
 	return wrapDTLSConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

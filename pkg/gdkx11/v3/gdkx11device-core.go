@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11device-core.go.
+var GTypeX11DeviceCore = externglib.Type(C.gdk_x11_device_core_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_device_core_get_type()), F: marshalX11DeviceCorer},
+		{T: GTypeX11DeviceCore, F: marshalX11DeviceCore},
 	})
 }
 
@@ -49,6 +52,6 @@ func wrapX11DeviceCore(obj *externglib.Object) *X11DeviceCore {
 	}
 }
 
-func marshalX11DeviceCorer(p uintptr) (interface{}, error) {
+func marshalX11DeviceCore(p uintptr) (interface{}, error) {
 	return wrapX11DeviceCore(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

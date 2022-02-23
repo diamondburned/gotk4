@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkspinneraccessible.go.
+var GTypeSpinnerAccessible = externglib.Type(C.gtk_spinner_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_spinner_accessible_get_type()), F: marshalSpinnerAccessibler},
+		{T: GTypeSpinnerAccessible, F: marshalSpinnerAccessible},
 	})
 }
 
@@ -63,6 +66,6 @@ func wrapSpinnerAccessible(obj *externglib.Object) *SpinnerAccessible {
 	}
 }
 
-func marshalSpinnerAccessibler(p uintptr) (interface{}, error) {
+func marshalSpinnerAccessible(p uintptr) (interface{}, error) {
 	return wrapSpinnerAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

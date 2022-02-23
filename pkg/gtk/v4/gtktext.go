@@ -28,9 +28,12 @@ import (
 // extern void _gotk4_gtk4_Text_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtktext.go.
+var GTypeText = externglib.Type(C.gtk_text_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_get_type()), F: marshalTexter},
+		{T: GTypeText, F: marshalText},
 	})
 }
 
@@ -146,7 +149,7 @@ func wrapText(obj *externglib.Object) *Text {
 	}
 }
 
-func marshalTexter(p uintptr) (interface{}, error) {
+func marshalText(p uintptr) (interface{}, error) {
 	return wrapText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

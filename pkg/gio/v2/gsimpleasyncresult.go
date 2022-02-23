@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gsimpleasyncresult.go.
+var GTypeSimpleAsyncResult = externglib.Type(C.g_simple_async_result_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_simple_async_result_get_type()), F: marshalSimpleAsyncResulter},
+		{T: GTypeSimpleAsyncResult, F: marshalSimpleAsyncResult},
 	})
 }
 
@@ -250,7 +253,7 @@ func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
 	}
 }
 
-func marshalSimpleAsyncResulter(p uintptr) (interface{}, error) {
+func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 	return wrapSimpleAsyncResult(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

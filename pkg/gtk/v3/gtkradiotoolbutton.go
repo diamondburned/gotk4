@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkradiotoolbutton.go.
+var GTypeRadioToolButton = externglib.Type(C.gtk_radio_tool_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_tool_button_get_type()), F: marshalRadioToolButtonner},
+		{T: GTypeRadioToolButton, F: marshalRadioToolButton},
 	})
 }
 
@@ -104,7 +107,7 @@ func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 	}
 }
 
-func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
+func marshalRadioToolButton(p uintptr) (interface{}, error) {
 	return wrapRadioToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

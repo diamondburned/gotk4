@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtklevelbaraccessible.go.
+var GTypeLevelBarAccessible = externglib.Type(C.gtk_level_bar_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_level_bar_accessible_get_type()), F: marshalLevelBarAccessibler},
+		{T: GTypeLevelBarAccessible, F: marshalLevelBarAccessible},
 	})
 }
 
@@ -63,6 +66,6 @@ func wrapLevelBarAccessible(obj *externglib.Object) *LevelBarAccessible {
 	}
 }
 
-func marshalLevelBarAccessibler(p uintptr) (interface{}, error) {
+func marshalLevelBarAccessible(p uintptr) (interface{}, error) {
 	return wrapLevelBarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

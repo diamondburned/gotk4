@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk3_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkshortcutswindow.go.
+var GTypeShortcutsWindow = externglib.Type(C.gtk_shortcuts_window_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindower},
+		{T: GTypeShortcutsWindow, F: marshalShortcutsWindow},
 	})
 }
 
@@ -144,7 +147,7 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	}
 }
 
-func marshalShortcutsWindower(p uintptr) (interface{}, error) {
+func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 	return wrapShortcutsWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

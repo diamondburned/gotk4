@@ -24,10 +24,16 @@ import (
 // extern void _gotk4_gtk3_Menu_ConnectPoppedUp(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
 import "C"
 
+// glib.Type values for gtkmenu.go.
+var (
+	GTypeArrowPlacement = externglib.Type(C.gtk_arrow_placement_get_type())
+	GTypeMenu           = externglib.Type(C.gtk_menu_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_arrow_placement_get_type()), F: marshalArrowPlacement},
-		{T: externglib.Type(C.gtk_menu_get_type()), F: marshalMenuer},
+		{T: GTypeArrowPlacement, F: marshalArrowPlacement},
+		{T: GTypeMenu, F: marshalMenu},
 	})
 }
 
@@ -130,7 +136,7 @@ func wrapMenu(obj *externglib.Object) *Menu {
 	}
 }
 
-func marshalMenuer(p uintptr) (interface{}, error) {
+func marshalMenu(p uintptr) (interface{}, error) {
 	return wrapMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

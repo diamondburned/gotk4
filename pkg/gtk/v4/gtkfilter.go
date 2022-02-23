@@ -19,11 +19,18 @@ import (
 // extern void _gotk4_gtk4_Filter_ConnectChanged(gpointer, GtkFilterChange, guintptr);
 import "C"
 
+// glib.Type values for gtkfilter.go.
+var (
+	GTypeFilterChange = externglib.Type(C.gtk_filter_change_get_type())
+	GTypeFilterMatch  = externglib.Type(C.gtk_filter_match_get_type())
+	GTypeFilter       = externglib.Type(C.gtk_filter_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_filter_change_get_type()), F: marshalFilterChange},
-		{T: externglib.Type(C.gtk_filter_match_get_type()), F: marshalFilterMatch},
-		{T: externglib.Type(C.gtk_filter_get_type()), F: marshalFilterer},
+		{T: GTypeFilterChange, F: marshalFilterChange},
+		{T: GTypeFilterMatch, F: marshalFilterMatch},
+		{T: GTypeFilter, F: marshalFilter},
 	})
 }
 
@@ -219,7 +226,7 @@ func wrapFilter(obj *externglib.Object) *Filter {
 	}
 }
 
-func marshalFilterer(p uintptr) (interface{}, error) {
+func marshalFilter(p uintptr) (interface{}, error) {
 	return wrapFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

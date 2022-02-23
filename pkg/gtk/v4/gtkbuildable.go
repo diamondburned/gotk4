@@ -25,9 +25,12 @@ import (
 // extern void _gotk4_gtk4_BuildableIface_set_id(GtkBuildable*, char*);
 import "C"
 
+// glib.Type values for gtkbuildable.go.
+var GTypeBuildable = externglib.Type(C.gtk_buildable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_buildable_get_type()), F: marshalBuildabler},
+		{T: GTypeBuildable, F: marshalBuildable},
 	})
 }
 
@@ -320,7 +323,7 @@ func wrapBuildable(obj *externglib.Object) *Buildable {
 	}
 }
 
-func marshalBuildabler(p uintptr) (interface{}, error) {
+func marshalBuildable(p uintptr) (interface{}, error) {
 	return wrapBuildable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

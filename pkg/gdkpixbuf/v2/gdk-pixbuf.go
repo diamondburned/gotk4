@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdk-pixbuf.go.
+var GTypePixbuf = externglib.Type(C.gdk_pixbuf_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuffer},
+		{T: GTypePixbuf, F: marshalPixbuf},
 	})
 }
 
@@ -172,6 +175,6 @@ func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 	}
 }
 
-func marshalPixbuffer(p uintptr) (interface{}, error) {
+func marshalPixbuf(p uintptr) (interface{}, error) {
 	return wrapPixbuf(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

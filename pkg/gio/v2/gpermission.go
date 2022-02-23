@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gpermission.go.
+var GTypePermission = externglib.Type(C.g_permission_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_permission_get_type()), F: marshalPermissioner},
+		{T: GTypePermission, F: marshalPermission},
 	})
 }
 
@@ -288,7 +291,7 @@ func wrapPermission(obj *externglib.Object) *Permission {
 	}
 }
 
-func marshalPermissioner(p uintptr) (interface{}, error) {
+func marshalPermission(p uintptr) (interface{}, error) {
 	return wrapPermission(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

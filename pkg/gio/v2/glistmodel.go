@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);
 import "C"
 
+// glib.Type values for glistmodel.go.
+var GTypeListModel = externglib.Type(C.g_list_model_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_list_model_get_type()), F: marshalListModeller},
+		{T: GTypeListModel, F: marshalListModel},
 	})
 }
 
@@ -186,7 +189,7 @@ func wrapListModel(obj *externglib.Object) *ListModel {
 	}
 }
 
-func marshalListModeller(p uintptr) (interface{}, error) {
+func marshalListModel(p uintptr) (interface{}, error) {
 	return wrapListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

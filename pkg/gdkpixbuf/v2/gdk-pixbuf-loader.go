@@ -26,9 +26,12 @@ import (
 // extern void _gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared(gpointer, gint, gint, guintptr);
 import "C"
 
+// glib.Type values for gdk-pixbuf-loader.go.
+var GTypePixbufLoader = externglib.Type(C.gdk_pixbuf_loader_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_loader_get_type()), F: marshalPixbufLoaderer},
+		{T: GTypePixbufLoader, F: marshalPixbufLoader},
 	})
 }
 
@@ -188,7 +191,7 @@ func wrapPixbufLoader(obj *externglib.Object) *PixbufLoader {
 	}
 }
 
-func marshalPixbufLoaderer(p uintptr) (interface{}, error) {
+func marshalPixbufLoader(p uintptr) (interface{}, error) {
 	return wrapPixbufLoader(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

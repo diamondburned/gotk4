@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkhscrollbar.go.
+var GTypeHScrollbar = externglib.Type(C.gtk_hscrollbar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hscrollbar_get_type()), F: marshalHScrollbarrer},
+		{T: GTypeHScrollbar, F: marshalHScrollbar},
 	})
 }
 
@@ -76,7 +79,7 @@ func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 	}
 }
 
-func marshalHScrollbarrer(p uintptr) (interface{}, error) {
+func marshalHScrollbar(p uintptr) (interface{}, error) {
 	return wrapHScrollbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

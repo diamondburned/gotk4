@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcellview.go.
+var GTypeCellView = externglib.Type(C.gtk_cell_view_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_view_get_type()), F: marshalCellViewer},
+		{T: GTypeCellView, F: marshalCellView},
 	})
 }
 
@@ -82,7 +85,7 @@ func wrapCellView(obj *externglib.Object) *CellView {
 	}
 }
 
-func marshalCellViewer(p uintptr) (interface{}, error) {
+func marshalCellView(p uintptr) (interface{}, error) {
 	return wrapCellView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

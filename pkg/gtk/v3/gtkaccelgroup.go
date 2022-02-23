@@ -22,10 +22,16 @@ import (
 // extern gboolean _gotk4_gtk3_AccelGroup_ConnectAccelActivate(gpointer, GObject, guint, GdkModifierType, guintptr);
 import "C"
 
+// glib.Type values for gtkaccelgroup.go.
+var (
+	GTypeAccelFlags = externglib.Type(C.gtk_accel_flags_get_type())
+	GTypeAccelGroup = externglib.Type(C.gtk_accel_group_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_accel_flags_get_type()), F: marshalAccelFlags},
-		{T: externglib.Type(C.gtk_accel_group_get_type()), F: marshalAccelGrouper},
+		{T: GTypeAccelFlags, F: marshalAccelFlags},
+		{T: GTypeAccelGroup, F: marshalAccelGroup},
 	})
 }
 
@@ -539,7 +545,7 @@ func wrapAccelGroup(obj *externglib.Object) *AccelGroup {
 	}
 }
 
-func marshalAccelGrouper(p uintptr) (interface{}, error) {
+func marshalAccelGroup(p uintptr) (interface{}, error) {
 	return wrapAccelGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

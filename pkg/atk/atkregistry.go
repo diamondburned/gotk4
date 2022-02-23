@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for atkregistry.go.
+var GTypeRegistry = externglib.Type(C.atk_registry_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_registry_get_type()), F: marshalRegistrier},
+		{T: GTypeRegistry, F: marshalRegistry},
 	})
 }
 
@@ -75,7 +78,7 @@ func wrapRegistry(obj *externglib.Object) *Registry {
 	}
 }
 
-func marshalRegistrier(p uintptr) (interface{}, error) {
+func marshalRegistry(p uintptr) (interface{}, error) {
 	return wrapRegistry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

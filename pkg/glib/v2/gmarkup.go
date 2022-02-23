@@ -19,9 +19,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for gmarkup.go.
+var GTypeMarkupParseContext = externglib.Type(C.g_markup_parse_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_markup_parse_context_get_type()), F: marshalMarkupParseContext},
+		{T: GTypeMarkupParseContext, F: marshalMarkupParseContext},
 	})
 }
 

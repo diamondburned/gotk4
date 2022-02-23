@@ -33,10 +33,16 @@ import (
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectUnmount(gpointer, GMountOperation*, guintptr);
 import "C"
 
+// glib.Type values for gtkplacessidebar.go.
+var (
+	GTypePlacesOpenFlags = externglib.Type(C.gtk_places_open_flags_get_type())
+	GTypePlacesSidebar   = externglib.Type(C.gtk_places_sidebar_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_places_open_flags_get_type()), F: marshalPlacesOpenFlags},
-		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarrer},
+		{T: GTypePlacesOpenFlags, F: marshalPlacesOpenFlags},
+		{T: GTypePlacesSidebar, F: marshalPlacesSidebar},
 	})
 }
 
@@ -196,7 +202,7 @@ func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 	}
 }
 
-func marshalPlacesSidebarrer(p uintptr) (interface{}, error) {
+func marshalPlacesSidebar(p uintptr) (interface{}, error) {
 	return wrapPlacesSidebar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

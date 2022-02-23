@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk3_ToolButton_ConnectClicked(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtktoolbutton.go.
+var GTypeToolButton = externglib.Type(C.gtk_tool_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_button_get_type()), F: marshalToolButtonner},
+		{T: GTypeToolButton, F: marshalToolButton},
 	})
 }
 
@@ -131,7 +134,7 @@ func wrapToolButton(obj *externglib.Object) *ToolButton {
 	}
 }
 
-func marshalToolButtonner(p uintptr) (interface{}, error) {
+func marshalToolButton(p uintptr) (interface{}, error) {
 	return wrapToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

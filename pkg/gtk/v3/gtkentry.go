@@ -51,10 +51,16 @@ import (
 // extern void _gotk4_gtk3_Entry_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkentry.go.
+var (
+	GTypeEntryIconPosition = externglib.Type(C.gtk_entry_icon_position_get_type())
+	GTypeEntry             = externglib.Type(C.gtk_entry_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_entry_icon_position_get_type()), F: marshalEntryIconPosition},
-		{T: externglib.Type(C.gtk_entry_get_type()), F: marshalEntrier},
+		{T: GTypeEntryIconPosition, F: marshalEntryIconPosition},
+		{T: GTypeEntry, F: marshalEntry},
 	})
 }
 
@@ -492,7 +498,7 @@ func wrapEntry(obj *externglib.Object) *Entry {
 	}
 }
 
-func marshalEntrier(p uintptr) (interface{}, error) {
+func marshalEntry(p uintptr) (interface{}, error) {
 	return wrapEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

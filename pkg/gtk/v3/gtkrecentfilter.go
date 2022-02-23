@@ -22,10 +22,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkrecentfilter.go.
+var (
+	GTypeRecentFilterFlags = externglib.Type(C.gtk_recent_filter_flags_get_type())
+	GTypeRecentFilter      = externglib.Type(C.gtk_recent_filter_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_filter_flags_get_type()), F: marshalRecentFilterFlags},
-		{T: externglib.Type(C.gtk_recent_filter_get_type()), F: marshalRecentFilterer},
+		{T: GTypeRecentFilterFlags, F: marshalRecentFilterFlags},
+		{T: GTypeRecentFilter, F: marshalRecentFilter},
 	})
 }
 
@@ -194,7 +200,7 @@ func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
 	}
 }
 
-func marshalRecentFilterer(p uintptr) (interface{}, error) {
+func marshalRecentFilter(p uintptr) (interface{}, error) {
 	return wrapRecentFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

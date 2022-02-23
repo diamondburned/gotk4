@@ -16,9 +16,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+// glib.Type values for graphene-euler.go.
+var GTypeEuler = externglib.Type(C.graphene_euler_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.graphene_euler_get_type()), F: marshalEuler},
+		{T: GTypeEuler, F: marshalEuler},
 	})
 }
 

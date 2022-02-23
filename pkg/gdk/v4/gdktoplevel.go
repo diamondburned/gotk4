@@ -17,12 +17,20 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdktoplevel.go.
+var (
+	GTypeFullscreenMode = externglib.Type(C.gdk_fullscreen_mode_get_type())
+	GTypeSurfaceEdge    = externglib.Type(C.gdk_surface_edge_get_type())
+	GTypeToplevelState  = externglib.Type(C.gdk_toplevel_state_get_type())
+	GTypeToplevel       = externglib.Type(C.gdk_toplevel_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
-		{T: externglib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
-		{T: externglib.Type(C.gdk_toplevel_state_get_type()), F: marshalToplevelState},
-		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalTopleveller},
+		{T: GTypeFullscreenMode, F: marshalFullscreenMode},
+		{T: GTypeSurfaceEdge, F: marshalSurfaceEdge},
+		{T: GTypeToplevelState, F: marshalToplevelState},
+		{T: GTypeToplevel, F: marshalToplevel},
 	})
 }
 
@@ -290,7 +298,7 @@ func wrapToplevel(obj *externglib.Object) *Toplevel {
 	}
 }
 
-func marshalTopleveller(p uintptr) (interface{}, error) {
+func marshalToplevel(p uintptr) (interface{}, error) {
 	return wrapToplevel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

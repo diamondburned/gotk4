@@ -14,10 +14,16 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkshortcutsshortcut.go.
+var (
+	GTypeShortcutType      = externglib.Type(C.gtk_shortcut_type_get_type())
+	GTypeShortcutsShortcut = externglib.Type(C.gtk_shortcuts_shortcut_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_type_get_type()), F: marshalShortcutType},
-		{T: externglib.Type(C.gtk_shortcuts_shortcut_get_type()), F: marshalShortcutsShortcutter},
+		{T: GTypeShortcutType, F: marshalShortcutType},
+		{T: GTypeShortcutsShortcut, F: marshalShortcutsShortcut},
 	})
 }
 
@@ -136,6 +142,6 @@ func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 	}
 }
 
-func marshalShortcutsShortcutter(p uintptr) (interface{}, error) {
+func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
 	return wrapShortcutsShortcut(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

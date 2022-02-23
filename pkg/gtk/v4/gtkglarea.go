@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk4_GLArea_ConnectResize(gpointer, gint, gint, guintptr);
 import "C"
 
+// glib.Type values for gtkglarea.go.
+var GTypeGLArea = externglib.Type(C.gtk_gl_area_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gl_area_get_type()), F: marshalGLAreaer},
+		{T: GTypeGLArea, F: marshalGLArea},
 	})
 }
 
@@ -243,7 +246,7 @@ func wrapGLArea(obj *externglib.Object) *GLArea {
 	}
 }
 
-func marshalGLAreaer(p uintptr) (interface{}, error) {
+func marshalGLArea(p uintptr) (interface{}, error) {
 	return wrapGLArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

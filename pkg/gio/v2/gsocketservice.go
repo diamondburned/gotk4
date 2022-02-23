@@ -17,9 +17,12 @@ import (
 // extern gboolean _gotk4_gio2_SocketService_ConnectIncoming(gpointer, GSocketConnection*, GObject, guintptr);
 import "C"
 
+// glib.Type values for gsocketservice.go.
+var GTypeSocketService = externglib.Type(C.g_socket_service_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_service_get_type()), F: marshalSocketServicer},
+		{T: GTypeSocketService, F: marshalSocketService},
 	})
 }
 
@@ -114,7 +117,7 @@ func wrapSocketService(obj *externglib.Object) *SocketService {
 	}
 }
 
-func marshalSocketServicer(p uintptr) (interface{}, error) {
+func marshalSocketService(p uintptr) (interface{}, error) {
 	return wrapSocketService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

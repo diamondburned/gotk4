@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11surface.go.
+var GTypeX11Surface = externglib.Type(C.gdk_x11_surface_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_surface_get_type()), F: marshalX11Surfacer},
+		{T: GTypeX11Surface, F: marshalX11Surface},
 	})
 }
 
@@ -77,7 +80,7 @@ func wrapX11Surface(obj *externglib.Object) *X11Surface {
 	}
 }
 
-func marshalX11Surfacer(p uintptr) (interface{}, error) {
+func marshalX11Surface(p uintptr) (interface{}, error) {
 	return wrapX11Surface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

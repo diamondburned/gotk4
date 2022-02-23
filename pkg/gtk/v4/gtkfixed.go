@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkfixed.go.
+var GTypeFixed = externglib.Type(C.gtk_fixed_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixedder},
+		{T: GTypeFixed, F: marshalFixed},
 	})
 }
 
@@ -98,7 +101,7 @@ func wrapFixed(obj *externglib.Object) *Fixed {
 	}
 }
 
-func marshalFixedder(p uintptr) (interface{}, error) {
+func marshalFixed(p uintptr) (interface{}, error) {
 	return wrapFixed(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

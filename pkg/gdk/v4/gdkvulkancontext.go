@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gdkvulkancontext.go.
+var GTypeVulkanContext = externglib.Type(C.gdk_vulkan_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_vulkan_context_get_type()), F: marshalVulkanContexter},
+		{T: GTypeVulkanContext, F: marshalVulkanContext},
 	})
 }
 
@@ -66,7 +69,7 @@ func wrapVulkanContext(obj *externglib.Object) *VulkanContext {
 	}
 }
 
-func marshalVulkanContexter(p uintptr) (interface{}, error) {
+func marshalVulkanContext(p uintptr) (interface{}, error) {
 	return wrapVulkanContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

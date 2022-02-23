@@ -18,9 +18,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for giochannel.go.
+var GTypeIOChannel = externglib.Type(C.g_io_channel_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_io_channel_get_type()), F: marshalIOChannel},
+		{T: GTypeIOChannel, F: marshalIOChannel},
 	})
 }
 

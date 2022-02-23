@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkaspectframe.go.
+var GTypeAspectFrame = externglib.Type(C.gtk_aspect_frame_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_aspect_frame_get_type()), F: marshalAspectFramer},
+		{T: GTypeAspectFrame, F: marshalAspectFrame},
 	})
 }
 
@@ -58,7 +61,7 @@ func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	}
 }
 
-func marshalAspectFramer(p uintptr) (interface{}, error) {
+func marshalAspectFrame(p uintptr) (interface{}, error) {
 	return wrapAspectFrame(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

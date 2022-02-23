@@ -19,11 +19,18 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkstyleproperties.go.
+var (
+	GTypeStyleProperties = externglib.Type(C.gtk_style_properties_get_type())
+	GTypeGradient        = externglib.Type(C.gtk_gradient_get_type())
+	GTypeSymbolicColor   = externglib.Type(C.gtk_symbolic_color_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_style_properties_get_type()), F: marshalStylePropertieser},
-		{T: externglib.Type(C.gtk_gradient_get_type()), F: marshalGradient},
-		{T: externglib.Type(C.gtk_symbolic_color_get_type()), F: marshalSymbolicColor},
+		{T: GTypeStyleProperties, F: marshalStyleProperties},
+		{T: GTypeGradient, F: marshalGradient},
+		{T: GTypeSymbolicColor, F: marshalSymbolicColor},
 	})
 }
 
@@ -73,7 +80,7 @@ func wrapStyleProperties(obj *externglib.Object) *StyleProperties {
 	}
 }
 
-func marshalStylePropertieser(p uintptr) (interface{}, error) {
+func marshalStyleProperties(p uintptr) (interface{}, error) {
 	return wrapStyleProperties(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

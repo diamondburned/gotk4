@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gdkcontentserializer.go.
+var GTypeContentSerializer = externglib.Type(C.gdk_content_serializer_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_content_serializer_get_type()), F: marshalContentSerializerer},
+		{T: GTypeContentSerializer, F: marshalContentSerializer},
 	})
 }
 
@@ -134,7 +137,7 @@ func wrapContentSerializer(obj *externglib.Object) *ContentSerializer {
 	}
 }
 
-func marshalContentSerializerer(p uintptr) (interface{}, error) {
+func marshalContentSerializer(p uintptr) (interface{}, error) {
 	return wrapContentSerializer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

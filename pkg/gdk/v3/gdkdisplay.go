@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gdk3_Display_ConnectSeatRemoved(gpointer, GdkSeat*, guintptr);
 import "C"
 
+// glib.Type values for gdkdisplay.go.
+var GTypeDisplay = externglib.Type(C.gdk_display_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayer},
+		{T: GTypeDisplay, F: marshalDisplay},
 	})
 }
 
@@ -58,7 +61,7 @@ func wrapDisplay(obj *externglib.Object) *Display {
 	}
 }
 
-func marshalDisplayer(p uintptr) (interface{}, error) {
+func marshalDisplay(p uintptr) (interface{}, error) {
 	return wrapDisplay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

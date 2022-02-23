@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkflattenlistmodel.go.
+var GTypeFlattenListModel = externglib.Type(C.gtk_flatten_list_model_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flatten_list_model_get_type()), F: marshalFlattenListModeller},
+		{T: GTypeFlattenListModel, F: marshalFlattenListModel},
 	})
 }
 
@@ -58,7 +61,7 @@ func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
 	}
 }
 
-func marshalFlattenListModeller(p uintptr) (interface{}, error) {
+func marshalFlattenListModel(p uintptr) (interface{}, error) {
 	return wrapFlattenListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

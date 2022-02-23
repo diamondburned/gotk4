@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gsocketconnection.go.
+var GTypeSocketConnection = externglib.Type(C.g_socket_connection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_connection_get_type()), F: marshalSocketConnectioner},
+		{T: GTypeSocketConnection, F: marshalSocketConnection},
 	})
 }
 
@@ -92,7 +95,7 @@ func wrapSocketConnection(obj *externglib.Object) *SocketConnection {
 	}
 }
 
-func marshalSocketConnectioner(p uintptr) (interface{}, error) {
+func marshalSocketConnection(p uintptr) (interface{}, error) {
 	return wrapSocketConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

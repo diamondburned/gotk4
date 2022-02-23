@@ -20,9 +20,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkdrawingarea.go.
+var GTypeDrawingArea = externglib.Type(C.gtk_drawing_area_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drawing_area_get_type()), F: marshalDrawingAreaer},
+		{T: GTypeDrawingArea, F: marshalDrawingArea},
 	})
 }
 
@@ -207,7 +210,7 @@ func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 	}
 }
 
-func marshalDrawingAreaer(p uintptr) (interface{}, error) {
+func marshalDrawingArea(p uintptr) (interface{}, error) {
 	return wrapDrawingArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

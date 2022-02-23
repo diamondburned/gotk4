@@ -19,9 +19,12 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
+// glib.Type values for gskrenderer.go.
+var GTypeRenderer = externglib.Type(C.gsk_renderer_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_renderer_get_type()), F: marshalRendererer},
+		{T: GTypeRenderer, F: marshalRenderer},
 	})
 }
 
@@ -72,7 +75,7 @@ func wrapRenderer(obj *externglib.Object) *Renderer {
 	}
 }
 
-func marshalRendererer(p uintptr) (interface{}, error) {
+func marshalRenderer(p uintptr) (interface{}, error) {
 	return wrapRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

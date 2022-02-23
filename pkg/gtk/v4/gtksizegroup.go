@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtksizegroup.go.
+var GTypeSizeGroup = externglib.Type(C.gtk_size_group_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_size_group_get_type()), F: marshalSizeGrouper},
+		{T: GTypeSizeGroup, F: marshalSizeGroup},
 	})
 }
 
@@ -104,7 +107,7 @@ func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
 	}
 }
 
-func marshalSizeGrouper(p uintptr) (interface{}, error) {
+func marshalSizeGroup(p uintptr) (interface{}, error) {
 	return wrapSizeGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

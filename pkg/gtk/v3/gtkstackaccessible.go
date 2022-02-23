@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkstackaccessible.go.
+var GTypeStackAccessible = externglib.Type(C.gtk_stack_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_accessible_get_type()), F: marshalStackAccessibler},
+		{T: GTypeStackAccessible, F: marshalStackAccessible},
 	})
 }
 
@@ -60,6 +63,6 @@ func wrapStackAccessible(obj *externglib.Object) *StackAccessible {
 	}
 }
 
-func marshalStackAccessibler(p uintptr) (interface{}, error) {
+func marshalStackAccessible(p uintptr) (interface{}, error) {
 	return wrapStackAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

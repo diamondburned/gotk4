@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdbusobjectmanagerserver.go.
+var GTypeDBusObjectManagerServer = externglib.Type(C.g_dbus_object_manager_server_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_manager_server_get_type()), F: marshalDBusObjectManagerServerer},
+		{T: GTypeDBusObjectManagerServer, F: marshalDBusObjectManagerServer},
 	})
 }
 
@@ -72,7 +75,7 @@ func wrapDBusObjectManagerServer(obj *externglib.Object) *DBusObjectManagerServe
 	}
 }
 
-func marshalDBusObjectManagerServerer(p uintptr) (interface{}, error) {
+func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 	return wrapDBusObjectManagerServer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

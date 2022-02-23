@@ -21,10 +21,16 @@ import (
 // }
 import "C"
 
+// glib.Type values for gtkmessagedialog.go.
+var (
+	GTypeButtonsType   = externglib.Type(C.gtk_buttons_type_get_type())
+	GTypeMessageDialog = externglib.Type(C.gtk_message_dialog_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
-		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialogger},
+		{T: GTypeButtonsType, F: marshalButtonsType},
+		{T: GTypeMessageDialog, F: marshalMessageDialog},
 	})
 }
 
@@ -158,7 +164,7 @@ func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	}
 }
 
-func marshalMessageDialogger(p uintptr) (interface{}, error) {
+func marshalMessageDialog(p uintptr) (interface{}, error) {
 	return wrapMessageDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

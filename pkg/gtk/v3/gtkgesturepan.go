@@ -17,9 +17,12 @@ import (
 // extern void _gotk4_gtk3_GesturePan_ConnectPan(gpointer, GtkPanDirection, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkgesturepan.go.
+var GTypeGesturePan = externglib.Type(C.gtk_gesture_pan_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_pan_get_type()), F: marshalGesturePanner},
+		{T: GTypeGesturePan, F: marshalGesturePan},
 	})
 }
 
@@ -70,7 +73,7 @@ func wrapGesturePan(obj *externglib.Object) *GesturePan {
 	}
 }
 
-func marshalGesturePanner(p uintptr) (interface{}, error) {
+func marshalGesturePan(p uintptr) (interface{}, error) {
 	return wrapGesturePan(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

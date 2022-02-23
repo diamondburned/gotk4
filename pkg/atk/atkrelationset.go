@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for atkrelationset.go.
+var GTypeRelationSet = externglib.Type(C.atk_relation_set_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_relation_set_get_type()), F: marshalRelationSetter},
+		{T: GTypeRelationSet, F: marshalRelationSet},
 	})
 }
 
@@ -53,7 +56,7 @@ func wrapRelationSet(obj *externglib.Object) *RelationSet {
 	}
 }
 
-func marshalRelationSetter(p uintptr) (interface{}, error) {
+func marshalRelationSet(p uintptr) (interface{}, error) {
 	return wrapRelationSet(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

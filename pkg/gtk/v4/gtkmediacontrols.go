@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkmediacontrols.go.
+var GTypeMediaControls = externglib.Type(C.gtk_media_controls_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_media_controls_get_type()), F: marshalMediaControlser},
+		{T: GTypeMediaControls, F: marshalMediaControls},
 	})
 }
 
@@ -66,7 +69,7 @@ func wrapMediaControls(obj *externglib.Object) *MediaControls {
 	}
 }
 
-func marshalMediaControlser(p uintptr) (interface{}, error) {
+func marshalMediaControls(p uintptr) (interface{}, error) {
 	return wrapMediaControls(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

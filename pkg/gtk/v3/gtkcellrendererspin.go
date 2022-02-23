@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkcellrendererspin.go.
+var GTypeCellRendererSpin = externglib.Type(C.gtk_cell_renderer_spin_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_spin_get_type()), F: marshalCellRendererSpinner},
+		{T: GTypeCellRendererSpin, F: marshalCellRendererSpin},
 	})
 }
 
@@ -67,7 +70,7 @@ func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
 	}
 }
 
-func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
+func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 	return wrapCellRendererSpin(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -16,9 +16,12 @@ import (
 // extern void _gotk4_gtk4_EventControllerFocus_ConnectLeave(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkeventcontrollerfocus.go.
+var GTypeEventControllerFocus = externglib.Type(C.gtk_event_controller_focus_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_focus_get_type()), F: marshalEventControllerFocusser},
+		{T: GTypeEventControllerFocus, F: marshalEventControllerFocus},
 	})
 }
 
@@ -59,7 +62,7 @@ func wrapEventControllerFocus(obj *externglib.Object) *EventControllerFocus {
 	}
 }
 
-func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
+func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 	return wrapEventControllerFocus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

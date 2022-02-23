@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkdragicon.go.
+var GTypeDragIcon = externglib.Type(C.gtk_drag_icon_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIconner},
+		{T: GTypeDragIcon, F: marshalDragIcon},
 	})
 }
 
@@ -97,7 +100,7 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 	}
 }
 
-func marshalDragIconner(p uintptr) (interface{}, error) {
+func marshalDragIcon(p uintptr) (interface{}, error) {
 	return wrapDragIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

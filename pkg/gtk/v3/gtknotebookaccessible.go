@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtknotebookaccessible.go.
+var GTypeNotebookAccessible = externglib.Type(C.gtk_notebook_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_notebook_accessible_get_type()), F: marshalNotebookAccessibler},
+		{T: GTypeNotebookAccessible, F: marshalNotebookAccessible},
 	})
 }
 
@@ -65,6 +68,6 @@ func wrapNotebookAccessible(obj *externglib.Object) *NotebookAccessible {
 	}
 }
 
-func marshalNotebookAccessibler(p uintptr) (interface{}, error) {
+func marshalNotebookAccessible(p uintptr) (interface{}, error) {
 	return wrapNotebookAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

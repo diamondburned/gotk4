@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtknoselection.go.
+var GTypeNoSelection = externglib.Type(C.gtk_no_selection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_no_selection_get_type()), F: marshalNoSelectioner},
+		{T: GTypeNoSelection, F: marshalNoSelection},
 	})
 }
 
@@ -60,7 +63,7 @@ func wrapNoSelection(obj *externglib.Object) *NoSelection {
 	}
 }
 
-func marshalNoSelectioner(p uintptr) (interface{}, error) {
+func marshalNoSelection(p uintptr) (interface{}, error) {
 	return wrapNoSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

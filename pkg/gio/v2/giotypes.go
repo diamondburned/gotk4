@@ -21,11 +21,18 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for giotypes.go.
+var (
+	GTypeFileAttributeMatcher = externglib.Type(C.g_file_attribute_matcher_get_type())
+	GTypeResource             = externglib.Type(C.g_resource_get_type())
+	GTypeSrvTarget            = externglib.Type(C.g_srv_target_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_attribute_matcher_get_type()), F: marshalFileAttributeMatcher},
-		{T: externglib.Type(C.g_resource_get_type()), F: marshalResource},
-		{T: externglib.Type(C.g_srv_target_get_type()), F: marshalSrvTarget},
+		{T: GTypeFileAttributeMatcher, F: marshalFileAttributeMatcher},
+		{T: GTypeResource, F: marshalResource},
+		{T: GTypeSrvTarget, F: marshalSrvTarget},
 	})
 }
 

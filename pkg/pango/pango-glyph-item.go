@@ -15,10 +15,16 @@ import (
 // #include <pango/pango.h>
 import "C"
 
+// glib.Type values for pango-glyph-item.go.
+var (
+	GTypeGlyphItem     = externglib.Type(C.pango_glyph_item_get_type())
+	GTypeGlyphItemIter = externglib.Type(C.pango_glyph_item_iter_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_glyph_item_get_type()), F: marshalGlyphItem},
-		{T: externglib.Type(C.pango_glyph_item_iter_get_type()), F: marshalGlyphItemIter},
+		{T: GTypeGlyphItem, F: marshalGlyphItem},
+		{T: GTypeGlyphItemIter, F: marshalGlyphItemIter},
 	})
 }
 

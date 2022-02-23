@@ -46,14 +46,24 @@ import (
 // extern void _gotk4_atk1_Text_ConnectTextSelectionChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for atktext.go.
+var (
+	GTypeTextAttribute   = externglib.Type(C.atk_text_attribute_get_type())
+	GTypeTextBoundary    = externglib.Type(C.atk_text_boundary_get_type())
+	GTypeTextClipType    = externglib.Type(C.atk_text_clip_type_get_type())
+	GTypeTextGranularity = externglib.Type(C.atk_text_granularity_get_type())
+	GTypeText            = externglib.Type(C.atk_text_get_type())
+	GTypeTextRange       = externglib.Type(C.atk_text_range_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_text_attribute_get_type()), F: marshalTextAttribute},
-		{T: externglib.Type(C.atk_text_boundary_get_type()), F: marshalTextBoundary},
-		{T: externglib.Type(C.atk_text_clip_type_get_type()), F: marshalTextClipType},
-		{T: externglib.Type(C.atk_text_granularity_get_type()), F: marshalTextGranularity},
-		{T: externglib.Type(C.atk_text_get_type()), F: marshalTexter},
-		{T: externglib.Type(C.atk_text_range_get_type()), F: marshalTextRange},
+		{T: GTypeTextAttribute, F: marshalTextAttribute},
+		{T: GTypeTextBoundary, F: marshalTextBoundary},
+		{T: GTypeTextClipType, F: marshalTextClipType},
+		{T: GTypeTextGranularity, F: marshalTextGranularity},
+		{T: GTypeText, F: marshalText},
+		{T: GTypeTextRange, F: marshalTextRange},
 	})
 }
 
@@ -1406,7 +1416,7 @@ func wrapText(obj *externglib.Object) *Text {
 	}
 }
 
-func marshalTexter(p uintptr) (interface{}, error) {
+func marshalText(p uintptr) (interface{}, error) {
 	return wrapText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

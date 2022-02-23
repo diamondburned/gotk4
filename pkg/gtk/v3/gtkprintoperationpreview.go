@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gtk3_PrintOperationPreview_ConnectReady(gpointer, GtkPrintContext*, guintptr);
 import "C"
 
+// glib.Type values for gtkprintoperationpreview.go.
+var GTypePrintOperationPreview = externglib.Type(C.gtk_print_operation_preview_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_print_operation_preview_get_type()), F: marshalPrintOperationPreviewer},
+		{T: GTypePrintOperationPreview, F: marshalPrintOperationPreview},
 	})
 }
 
@@ -176,7 +179,7 @@ func wrapPrintOperationPreview(obj *externglib.Object) *PrintOperationPreview {
 	}
 }
 
-func marshalPrintOperationPreviewer(p uintptr) (interface{}, error) {
+func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
 	return wrapPrintOperationPreview(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

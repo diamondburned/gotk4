@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkdirectorylist.go.
+var GTypeDirectoryList = externglib.Type(C.gtk_directory_list_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_directory_list_get_type()), F: marshalDirectoryLister},
+		{T: GTypeDirectoryList, F: marshalDirectoryList},
 	})
 }
 
@@ -76,7 +79,7 @@ func wrapDirectoryList(obj *externglib.Object) *DirectoryList {
 	}
 }
 
-func marshalDirectoryLister(p uintptr) (interface{}, error) {
+func marshalDirectoryList(p uintptr) (interface{}, error) {
 	return wrapDirectoryList(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

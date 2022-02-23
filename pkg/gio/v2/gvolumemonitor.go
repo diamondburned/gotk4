@@ -45,9 +45,12 @@ import (
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(gpointer, GVolume*, guintptr);
 import "C"
 
+// glib.Type values for gvolumemonitor.go.
+var GTypeVolumeMonitor = externglib.Type(C.g_volume_monitor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_volume_monitor_get_type()), F: marshalVolumeMonitorrer},
+		{T: GTypeVolumeMonitor, F: marshalVolumeMonitor},
 	})
 }
 
@@ -683,7 +686,7 @@ func wrapVolumeMonitor(obj *externglib.Object) *VolumeMonitor {
 	}
 }
 
-func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
+func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 	return wrapVolumeMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

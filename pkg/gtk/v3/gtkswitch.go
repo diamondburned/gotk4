@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gtk3_Switch_ConnectActivate(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkswitch.go.
+var GTypeSwitch = externglib.Type(C.gtk_switch_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_switch_get_type()), F: marshalSwitcher},
+		{T: GTypeSwitch, F: marshalSwitch},
 	})
 }
 
@@ -148,7 +151,7 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 	}
 }
 
-func marshalSwitcher(p uintptr) (interface{}, error) {
+func marshalSwitch(p uintptr) (interface{}, error) {
 	return wrapSwitch(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11device-xi2.go.
+var GTypeX11DeviceXI2 = externglib.Type(C.gdk_x11_device_xi2_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_device_xi2_get_type()), F: marshalX11DeviceXI2er},
+		{T: GTypeX11DeviceXI2, F: marshalX11DeviceXI2},
 	})
 }
 
@@ -72,6 +75,6 @@ func wrapX11DeviceXI2(obj *externglib.Object) *X11DeviceXI2 {
 	}
 }
 
-func marshalX11DeviceXI2er(p uintptr) (interface{}, error) {
+func marshalX11DeviceXI2(p uintptr) (interface{}, error) {
 	return wrapX11DeviceXI2(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

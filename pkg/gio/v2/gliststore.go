@@ -17,9 +17,12 @@ import (
 // extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 import "C"
 
+// glib.Type values for gliststore.go.
+var GTypeListStore = externglib.Type(C.g_list_store_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_list_store_get_type()), F: marshalListStorer},
+		{T: GTypeListStore, F: marshalListStore},
 	})
 }
 
@@ -60,7 +63,7 @@ func wrapListStore(obj *externglib.Object) *ListStore {
 	}
 }
 
-func marshalListStorer(p uintptr) (interface{}, error) {
+func marshalListStore(p uintptr) (interface{}, error) {
 	return wrapListStore(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

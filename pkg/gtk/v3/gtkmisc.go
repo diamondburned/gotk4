@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkmisc.go.
+var GTypeMisc = externglib.Type(C.gtk_misc_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_misc_get_type()), F: marshalMiscer},
+		{T: GTypeMisc, F: marshalMisc},
 	})
 }
 
@@ -87,7 +90,7 @@ func wrapMisc(obj *externglib.Object) *Misc {
 	}
 }
 
-func marshalMiscer(p uintptr) (interface{}, error) {
+func marshalMisc(p uintptr) (interface{}, error) {
 	return wrapMisc(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

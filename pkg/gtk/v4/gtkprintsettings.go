@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk4_PrintSettingsFunc(char*, char*, gpointer);
 import "C"
 
+// glib.Type values for gtkprintsettings.go.
+var GTypePrintSettings = externglib.Type(C.gtk_print_settings_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_print_settings_get_type()), F: marshalPrintSettingser},
+		{T: GTypePrintSettings, F: marshalPrintSettings},
 	})
 }
 
@@ -121,7 +124,7 @@ func wrapPrintSettings(obj *externglib.Object) *PrintSettings {
 	}
 }
 
-func marshalPrintSettingser(p uintptr) (interface{}, error) {
+func marshalPrintSettings(p uintptr) (interface{}, error) {
 	return wrapPrintSettings(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

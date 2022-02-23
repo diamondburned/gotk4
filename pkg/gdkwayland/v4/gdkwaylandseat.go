@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkwaylandseat.go.
+var GTypeWaylandSeat = externglib.Type(C.gdk_wayland_seat_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_seat_get_type()), F: marshalWaylandSeater},
+		{T: GTypeWaylandSeat, F: marshalWaylandSeat},
 	})
 }
 
@@ -53,6 +56,6 @@ func wrapWaylandSeat(obj *externglib.Object) *WaylandSeat {
 	}
 }
 
-func marshalWaylandSeater(p uintptr) (interface{}, error) {
+func marshalWaylandSeat(p uintptr) (interface{}, error) {
 	return wrapWaylandSeat(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

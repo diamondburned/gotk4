@@ -16,9 +16,12 @@ import (
 // extern gchar* _gotk4_atk1_PlugClass_get_object_id(AtkPlug*);
 import "C"
 
+// glib.Type values for atkplug.go.
+var GTypePlug = externglib.Type(C.atk_plug_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_plug_get_type()), F: marshalPlugger},
+		{T: GTypePlug, F: marshalPlug},
 	})
 }
 
@@ -82,7 +85,7 @@ func wrapPlug(obj *externglib.Object) *Plug {
 	}
 }
 
-func marshalPlugger(p uintptr) (interface{}, error) {
+func marshalPlug(p uintptr) (interface{}, error) {
 	return wrapPlug(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

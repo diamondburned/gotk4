@@ -22,9 +22,12 @@ import (
 // extern gboolean _gotk4_gtk3_Overlay_ConnectGetChildPosition(gpointer, GtkWidget*, GdkRectangle*, guintptr);
 import "C"
 
+// glib.Type values for gtkoverlay.go.
+var GTypeOverlay = externglib.Type(C.gtk_overlay_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_overlay_get_type()), F: marshalOverlayer},
+		{T: GTypeOverlay, F: marshalOverlay},
 	})
 }
 
@@ -154,7 +157,7 @@ func wrapOverlay(obj *externglib.Object) *Overlay {
 	}
 }
 
-func marshalOverlayer(p uintptr) (interface{}, error) {
+func marshalOverlay(p uintptr) (interface{}, error) {
 	return wrapOverlay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -24,13 +24,22 @@ import (
 // extern void _gotk4_gtk3_RcStyleClass_merge(GtkRcStyle*, GtkRcStyle*);
 import "C"
 
+// glib.Type values for gtkrc.go.
+var (
+	GTypePathPriorityType = externglib.Type(C.gtk_path_priority_type_get_type())
+	GTypePathType         = externglib.Type(C.gtk_path_type_get_type())
+	GTypeRCTokenType      = externglib.Type(C.gtk_rc_token_type_get_type())
+	GTypeRCFlags          = externglib.Type(C.gtk_rc_flags_get_type())
+	GTypeRCStyle          = externglib.Type(C.gtk_rc_style_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_path_priority_type_get_type()), F: marshalPathPriorityType},
-		{T: externglib.Type(C.gtk_path_type_get_type()), F: marshalPathType},
-		{T: externglib.Type(C.gtk_rc_token_type_get_type()), F: marshalRCTokenType},
-		{T: externglib.Type(C.gtk_rc_flags_get_type()), F: marshalRCFlags},
-		{T: externglib.Type(C.gtk_rc_style_get_type()), F: marshalRCStyler},
+		{T: GTypePathPriorityType, F: marshalPathPriorityType},
+		{T: GTypePathType, F: marshalPathType},
+		{T: GTypeRCTokenType, F: marshalRCTokenType},
+		{T: GTypeRCFlags, F: marshalRCFlags},
+		{T: GTypeRCStyle, F: marshalRCStyle},
 	})
 }
 
@@ -1056,7 +1065,7 @@ func wrapRCStyle(obj *externglib.Object) *RCStyle {
 	}
 }
 
-func marshalRCStyler(p uintptr) (interface{}, error) {
+func marshalRCStyle(p uintptr) (interface{}, error) {
 	return wrapRCStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

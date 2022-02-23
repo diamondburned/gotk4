@@ -15,10 +15,16 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdk-pixbuf-transform.go.
+var (
+	GTypeInterpType     = externglib.Type(C.gdk_interp_type_get_type())
+	GTypePixbufRotation = externglib.Type(C.gdk_pixbuf_rotation_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_interp_type_get_type()), F: marshalInterpType},
-		{T: externglib.Type(C.gdk_pixbuf_rotation_get_type()), F: marshalPixbufRotation},
+		{T: GTypeInterpType, F: marshalInterpType},
+		{T: GTypePixbufRotation, F: marshalPixbufRotation},
 	})
 }
 

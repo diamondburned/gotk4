@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktogglebuttonaccessible.go.
+var GTypeToggleButtonAccessible = externglib.Type(C.gtk_toggle_button_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_button_accessible_get_type()), F: marshalToggleButtonAccessibler},
+		{T: GTypeToggleButtonAccessible, F: marshalToggleButtonAccessible},
 	})
 }
 
@@ -69,6 +72,6 @@ func wrapToggleButtonAccessible(obj *externglib.Object) *ToggleButtonAccessible 
 	}
 }
 
-func marshalToggleButtonAccessibler(p uintptr) (interface{}, error) {
+func marshalToggleButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapToggleButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

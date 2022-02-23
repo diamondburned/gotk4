@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkvbox.go.
+var GTypeVBox = externglib.Type(C.gtk_vbox_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBoxer},
+		{T: GTypeVBox, F: marshalVBox},
 	})
 }
 
@@ -93,7 +96,7 @@ func wrapVBox(obj *externglib.Object) *VBox {
 	}
 }
 
-func marshalVBoxer(p uintptr) (interface{}, error) {
+func marshalVBox(p uintptr) (interface{}, error) {
 	return wrapVBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

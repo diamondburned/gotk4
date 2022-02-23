@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_atk1_Hypertext_ConnectLinkSelected(gpointer, gint, guintptr);
 import "C"
 
+// glib.Type values for atkhypertext.go.
+var GTypeHypertext = externglib.Type(C.atk_hypertext_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_hypertext_get_type()), F: marshalHypertexter},
+		{T: GTypeHypertext, F: marshalHypertext},
 	})
 }
 
@@ -164,7 +167,7 @@ func wrapHypertext(obj *externglib.Object) *Hypertext {
 	}
 }
 
-func marshalHypertexter(p uintptr) (interface{}, error) {
+func marshalHypertext(p uintptr) (interface{}, error) {
 	return wrapHypertext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

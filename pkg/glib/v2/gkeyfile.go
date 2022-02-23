@@ -18,9 +18,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for gkeyfile.go.
+var GTypeKeyFile = externglib.Type(C.g_key_file_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_key_file_get_type()), F: marshalKeyFile},
+		{T: GTypeKeyFile, F: marshalKeyFile},
 	})
 }
 

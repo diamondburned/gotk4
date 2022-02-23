@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktreemodelsort.go.
+var GTypeTreeModelSort = externglib.Type(C.gtk_tree_model_sort_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_model_sort_get_type()), F: marshalTreeModelSorter},
+		{T: GTypeTreeModelSort, F: marshalTreeModelSort},
 	})
 }
 
@@ -116,7 +119,7 @@ func wrapTreeModelSort(obj *externglib.Object) *TreeModelSort {
 	}
 }
 
-func marshalTreeModelSorter(p uintptr) (interface{}, error) {
+func marshalTreeModelSort(p uintptr) (interface{}, error) {
 	return wrapTreeModelSort(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

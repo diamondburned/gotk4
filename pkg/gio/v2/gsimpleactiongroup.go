@@ -16,9 +16,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gsimpleactiongroup.go.
+var GTypeSimpleActionGroup = externglib.Type(C.g_simple_action_group_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_simple_action_group_get_type()), F: marshalSimpleActionGrouper},
+		{T: GTypeSimpleActionGroup, F: marshalSimpleActionGroup},
 	})
 }
 
@@ -60,7 +63,7 @@ func wrapSimpleActionGroup(obj *externglib.Object) *SimpleActionGroup {
 	}
 }
 
-func marshalSimpleActionGrouper(p uintptr) (interface{}, error) {
+func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 	return wrapSimpleActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

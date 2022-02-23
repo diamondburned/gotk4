@@ -17,9 +17,12 @@ import (
 // extern void _gotk4_gtk3_CellRendererCombo_ConnectChanged(gpointer, gchar*, GtkTreeIter*, guintptr);
 import "C"
 
+// glib.Type values for gtkcellrenderercombo.go.
+var GTypeCellRendererCombo = externglib.Type(C.gtk_cell_renderer_combo_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_combo_get_type()), F: marshalCellRendererCombor},
+		{T: GTypeCellRendererCombo, F: marshalCellRendererCombo},
 	})
 }
 
@@ -68,7 +71,7 @@ func wrapCellRendererCombo(obj *externglib.Object) *CellRendererCombo {
 	}
 }
 
-func marshalCellRendererCombor(p uintptr) (interface{}, error) {
+func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 	return wrapCellRendererCombo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

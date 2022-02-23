@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtktreeexpander.go.
+var GTypeTreeExpander = externglib.Type(C.gtk_tree_expander_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_expander_get_type()), F: marshalTreeExpanderer},
+		{T: GTypeTreeExpander, F: marshalTreeExpander},
 	})
 }
 
@@ -100,7 +103,7 @@ func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
 	}
 }
 
-func marshalTreeExpanderer(p uintptr) (interface{}, error) {
+func marshalTreeExpander(p uintptr) (interface{}, error) {
 	return wrapTreeExpander(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

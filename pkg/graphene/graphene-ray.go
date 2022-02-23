@@ -16,9 +16,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+// glib.Type values for graphene-ray.go.
+var GTypeRay = externglib.Type(C.graphene_ray_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.graphene_ray_get_type()), F: marshalRay},
+		{T: GTypeRay, F: marshalRay},
 	})
 }
 

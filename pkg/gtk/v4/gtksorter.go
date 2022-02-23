@@ -19,11 +19,18 @@ import (
 // extern void _gotk4_gtk4_Sorter_ConnectChanged(gpointer, GtkSorterChange, guintptr);
 import "C"
 
+// glib.Type values for gtksorter.go.
+var (
+	GTypeSorterChange = externglib.Type(C.gtk_sorter_change_get_type())
+	GTypeSorterOrder  = externglib.Type(C.gtk_sorter_order_get_type())
+	GTypeSorter       = externglib.Type(C.gtk_sorter_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_sorter_change_get_type()), F: marshalSorterChange},
-		{T: externglib.Type(C.gtk_sorter_order_get_type()), F: marshalSorterOrder},
-		{T: externglib.Type(C.gtk_sorter_get_type()), F: marshalSorterer},
+		{T: GTypeSorterChange, F: marshalSorterChange},
+		{T: GTypeSorterOrder, F: marshalSorterOrder},
+		{T: GTypeSorter, F: marshalSorter},
 	})
 }
 
@@ -227,7 +234,7 @@ func wrapSorter(obj *externglib.Object) *Sorter {
 	}
 }
 
-func marshalSorterer(p uintptr) (interface{}, error) {
+func marshalSorter(p uintptr) (interface{}, error) {
 	return wrapSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

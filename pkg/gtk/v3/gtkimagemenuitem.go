@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkimagemenuitem.go.
+var GTypeImageMenuItem = externglib.Type(C.gtk_image_menu_item_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_image_menu_item_get_type()), F: marshalImageMenuItemmer},
+		{T: GTypeImageMenuItem, F: marshalImageMenuItem},
 	})
 }
 
@@ -110,7 +113,7 @@ func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 	}
 }
 
-func marshalImageMenuItemmer(p uintptr) (interface{}, error) {
+func marshalImageMenuItem(p uintptr) (interface{}, error) {
 	return wrapImageMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

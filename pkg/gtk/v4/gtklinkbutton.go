@@ -15,9 +15,12 @@ import (
 // extern gboolean _gotk4_gtk4_LinkButton_ConnectActivateLink(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtklinkbutton.go.
+var GTypeLinkButton = externglib.Type(C.gtk_link_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButtonner},
+		{T: GTypeLinkButton, F: marshalLinkButton},
 	})
 }
 
@@ -99,7 +102,7 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 	}
 }
 
-func marshalLinkButtonner(p uintptr) (interface{}, error) {
+func marshalLinkButton(p uintptr) (interface{}, error) {
 	return wrapLinkButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

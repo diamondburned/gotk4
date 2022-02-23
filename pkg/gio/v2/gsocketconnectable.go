@@ -17,9 +17,12 @@ import (
 // extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(GSocketConnectable*);
 import "C"
 
+// glib.Type values for gsocketconnectable.go.
+var GTypeSocketConnectable = externglib.Type(C.g_socket_connectable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_connectable_get_type()), F: marshalSocketConnectabler},
+		{T: GTypeSocketConnectable, F: marshalSocketConnectable},
 	})
 }
 
@@ -189,7 +192,7 @@ func wrapSocketConnectable(obj *externglib.Object) *SocketConnectable {
 	}
 }
 
-func marshalSocketConnectabler(p uintptr) (interface{}, error) {
+func marshalSocketConnectable(p uintptr) (interface{}, error) {
 	return wrapSocketConnectable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

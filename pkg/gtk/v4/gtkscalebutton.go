@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk4_ScaleButton_ConnectValueChanged(gpointer, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkscalebutton.go.
+var GTypeScaleButton = externglib.Type(C.gtk_scale_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButtonner},
+		{T: GTypeScaleButton, F: marshalScaleButton},
 	})
 }
 
@@ -108,7 +111,7 @@ func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 	}
 }
 
-func marshalScaleButtonner(p uintptr) (interface{}, error) {
+func marshalScaleButton(p uintptr) (interface{}, error) {
 	return wrapScaleButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

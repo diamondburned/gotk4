@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gtk4_LevelBar_ConnectOffsetChanged(gpointer, gchar*, guintptr);
 import "C"
 
+// glib.Type values for gtklevelbar.go.
+var GTypeLevelBar = externglib.Type(C.gtk_level_bar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBarrer},
+		{T: GTypeLevelBar, F: marshalLevelBar},
 	})
 }
 
@@ -166,7 +169,7 @@ func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	}
 }
 
-func marshalLevelBarrer(p uintptr) (interface{}, error) {
+func marshalLevelBar(p uintptr) (interface{}, error) {
 	return wrapLevelBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

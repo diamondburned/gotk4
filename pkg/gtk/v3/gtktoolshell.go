@@ -27,9 +27,12 @@ import (
 // extern void _gotk4_gtk3_ToolShellIface_rebuild_menu(GtkToolShell*);
 import "C"
 
+// glib.Type values for gtktoolshell.go.
+var GTypeToolShell = externglib.Type(C.gtk_tool_shell_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_shell_get_type()), F: marshalToolSheller},
+		{T: GTypeToolShell, F: marshalToolShell},
 	})
 }
 
@@ -284,7 +287,7 @@ func wrapToolShell(obj *externglib.Object) *ToolShell {
 	}
 }
 
-func marshalToolSheller(p uintptr) (interface{}, error) {
+func marshalToolShell(p uintptr) (interface{}, error) {
 	return wrapToolShell(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

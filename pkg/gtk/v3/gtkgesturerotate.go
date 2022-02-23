@@ -17,9 +17,12 @@ import (
 // extern void _gotk4_gtk3_GestureRotate_ConnectAngleChanged(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkgesturerotate.go.
+var GTypeGestureRotate = externglib.Type(C.gtk_gesture_rotate_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_rotate_get_type()), F: marshalGestureRotater},
+		{T: GTypeGestureRotate, F: marshalGestureRotate},
 	})
 }
 
@@ -57,7 +60,7 @@ func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 	}
 }
 
-func marshalGestureRotater(p uintptr) (interface{}, error) {
+func marshalGestureRotate(p uintptr) (interface{}, error) {
 	return wrapGestureRotate(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

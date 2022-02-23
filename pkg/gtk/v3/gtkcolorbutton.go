@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gtk3_ColorButton_ConnectColorSet(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkcolorbutton.go.
+var GTypeColorButton = externglib.Type(C.gtk_color_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtonner},
+		{T: GTypeColorButton, F: marshalColorButton},
 	})
 }
 
@@ -124,7 +127,7 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 	}
 }
 
-func marshalColorButtonner(p uintptr) (interface{}, error) {
+func marshalColorButton(p uintptr) (interface{}, error) {
 	return wrapColorButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

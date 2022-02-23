@@ -19,11 +19,18 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkselection.go.
+var (
+	GTypeTargetFlags = externglib.Type(C.gtk_target_flags_get_type())
+	GTypeTargetEntry = externglib.Type(C.gtk_target_entry_get_type())
+	GTypeTargetList  = externglib.Type(C.gtk_target_list_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_target_flags_get_type()), F: marshalTargetFlags},
-		{T: externglib.Type(C.gtk_target_entry_get_type()), F: marshalTargetEntry},
-		{T: externglib.Type(C.gtk_target_list_get_type()), F: marshalTargetList},
+		{T: GTypeTargetFlags, F: marshalTargetFlags},
+		{T: GTypeTargetEntry, F: marshalTargetEntry},
+		{T: GTypeTargetList, F: marshalTargetList},
 	})
 }
 

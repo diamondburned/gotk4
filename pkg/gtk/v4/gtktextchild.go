@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtktextchild.go.
+var GTypeTextChildAnchor = externglib.Type(C.gtk_text_child_anchor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchorrer},
+		{T: GTypeTextChildAnchor, F: marshalTextChildAnchor},
 	})
 }
 
@@ -51,7 +54,7 @@ func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 	}
 }
 
-func marshalTextChildAnchorrer(p uintptr) (interface{}, error) {
+func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 	return wrapTextChildAnchor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

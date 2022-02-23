@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning(gpointer, GMemoryMonitorWarningLevel, guintptr);
 import "C"
 
+// glib.Type values for gmemorymonitor.go.
+var GTypeMemoryMonitor = externglib.Type(C.g_memory_monitor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_memory_monitor_get_type()), F: marshalMemoryMonitorrer},
+		{T: GTypeMemoryMonitor, F: marshalMemoryMonitor},
 	})
 }
 
@@ -124,7 +127,7 @@ func wrapMemoryMonitor(obj *externglib.Object) *MemoryMonitor {
 	}
 }
 
-func marshalMemoryMonitorrer(p uintptr) (interface{}, error) {
+func marshalMemoryMonitor(p uintptr) (interface{}, error) {
 	return wrapMemoryMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

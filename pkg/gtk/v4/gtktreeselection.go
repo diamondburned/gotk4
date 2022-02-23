@@ -20,9 +20,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtktreeselection.go.
+var GTypeTreeSelection = externglib.Type(C.gtk_tree_selection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_selection_get_type()), F: marshalTreeSelectioner},
+		{T: GTypeTreeSelection, F: marshalTreeSelection},
 	})
 }
 
@@ -163,7 +166,7 @@ func wrapTreeSelection(obj *externglib.Object) *TreeSelection {
 	}
 }
 
-func marshalTreeSelectioner(p uintptr) (interface{}, error) {
+func marshalTreeSelection(p uintptr) (interface{}, error) {
 	return wrapTreeSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

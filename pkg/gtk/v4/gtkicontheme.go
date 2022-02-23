@@ -19,12 +19,20 @@ import (
 // extern void _gotk4_gtk4_IconTheme_ConnectChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkicontheme.go.
+var (
+	GTypeIconThemeError  = externglib.Type(C.gtk_icon_theme_error_get_type())
+	GTypeIconLookupFlags = externglib.Type(C.gtk_icon_lookup_flags_get_type())
+	GTypeIconPaintable   = externglib.Type(C.gtk_icon_paintable_get_type())
+	GTypeIconTheme       = externglib.Type(C.gtk_icon_theme_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_icon_theme_error_get_type()), F: marshalIconThemeError},
-		{T: externglib.Type(C.gtk_icon_lookup_flags_get_type()), F: marshalIconLookupFlags},
-		{T: externglib.Type(C.gtk_icon_paintable_get_type()), F: marshalIconPaintabler},
-		{T: externglib.Type(C.gtk_icon_theme_get_type()), F: marshalIconThemer},
+		{T: GTypeIconThemeError, F: marshalIconThemeError},
+		{T: GTypeIconLookupFlags, F: marshalIconLookupFlags},
+		{T: GTypeIconPaintable, F: marshalIconPaintable},
+		{T: GTypeIconTheme, F: marshalIconTheme},
 	})
 }
 
@@ -132,7 +140,7 @@ func wrapIconPaintable(obj *externglib.Object) *IconPaintable {
 	}
 }
 
-func marshalIconPaintabler(p uintptr) (interface{}, error) {
+func marshalIconPaintable(p uintptr) (interface{}, error) {
 	return wrapIconPaintable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -321,7 +329,7 @@ func wrapIconTheme(obj *externglib.Object) *IconTheme {
 	}
 }
 
-func marshalIconThemer(p uintptr) (interface{}, error) {
+func marshalIconTheme(p uintptr) (interface{}, error) {
 	return wrapIconTheme(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

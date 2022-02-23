@@ -15,9 +15,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+// glib.Type values for graphene-point3d.go.
+var GTypePoint3D = externglib.Type(C.graphene_point3d_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.graphene_point3d_get_type()), F: marshalPoint3D},
+		{T: GTypePoint3D, F: marshalPoint3D},
 	})
 }
 

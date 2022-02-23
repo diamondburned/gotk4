@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gtk4_GestureSwipe_ConnectSwipe(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkgestureswipe.go.
+var GTypeGestureSwipe = externglib.Type(C.gtk_gesture_swipe_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_swipe_get_type()), F: marshalGestureSwiper},
+		{T: GTypeGestureSwipe, F: marshalGestureSwipe},
 	})
 }
 
@@ -65,7 +68,7 @@ func wrapGestureSwipe(obj *externglib.Object) *GestureSwipe {
 	}
 }
 
-func marshalGestureSwiper(p uintptr) (interface{}, error) {
+func marshalGestureSwipe(p uintptr) (interface{}, error) {
 	return wrapGestureSwipe(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

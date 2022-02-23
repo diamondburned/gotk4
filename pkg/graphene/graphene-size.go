@@ -15,9 +15,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+// glib.Type values for graphene-size.go.
+var GTypeSize = externglib.Type(C.graphene_size_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.graphene_size_get_type()), F: marshalSize},
+		{T: GTypeSize, F: marshalSize},
 	})
 }
 

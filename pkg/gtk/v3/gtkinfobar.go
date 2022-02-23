@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gtk3_InfoBar_ConnectResponse(gpointer, gint, guintptr);
 import "C"
 
+// glib.Type values for gtkinfobar.go.
+var GTypeInfoBar = externglib.Type(C.gtk_info_bar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarrer},
+		{T: GTypeInfoBar, F: marshalInfoBar},
 	})
 }
 
@@ -185,7 +188,7 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	}
 }
 
-func marshalInfoBarrer(p uintptr) (interface{}, error) {
+func marshalInfoBar(p uintptr) (interface{}, error) {
 	return wrapInfoBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

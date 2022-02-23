@@ -20,10 +20,16 @@ import (
 // extern void _gotk4_gtk4_EventControllerScroll_ConnectScrollEnd(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkeventcontrollerscroll.go.
+var (
+	GTypeEventControllerScrollFlags = externglib.Type(C.gtk_event_controller_scroll_flags_get_type())
+	GTypeEventControllerScroll      = externglib.Type(C.gtk_event_controller_scroll_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_scroll_flags_get_type()), F: marshalEventControllerScrollFlags},
-		{T: externglib.Type(C.gtk_event_controller_scroll_get_type()), F: marshalEventControllerScroller},
+		{T: GTypeEventControllerScrollFlags, F: marshalEventControllerScrollFlags},
+		{T: GTypeEventControllerScroll, F: marshalEventControllerScroll},
 	})
 }
 
@@ -156,7 +162,7 @@ func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
 	}
 }
 
-func marshalEventControllerScroller(p uintptr) (interface{}, error) {
+func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 	return wrapEventControllerScroll(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

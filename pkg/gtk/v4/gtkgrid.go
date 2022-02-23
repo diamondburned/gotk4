@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkgrid.go.
+var GTypeGrid = externglib.Type(C.gtk_grid_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_grid_get_type()), F: marshalGridder},
+		{T: GTypeGrid, F: marshalGrid},
 	})
 }
 
@@ -152,7 +155,7 @@ func wrapGrid(obj *externglib.Object) *Grid {
 	}
 }
 
-func marshalGridder(p uintptr) (interface{}, error) {
+func marshalGrid(p uintptr) (interface{}, error) {
 	return wrapGrid(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -28,11 +28,26 @@ func ApplyHeader(dst Headerer, srcs ...Headerer) {
 	}
 }
 
+// Marshaler describes a marshaler.
+type Marshaler struct {
+	GLibGetType string
+	GoTypeName  string
+}
+
+// GLibType returns a type-casted get_type function call.
+func (m Marshaler) GLibType() string {
+	// Small hack to allow overriding.
+	if strings.Contains(m.GLibGetType, ".") {
+		return fmt.Sprintf("externglib.Type(%s)", m.GLibGetType)
+	}
+	return fmt.Sprintf("externglib.Type(C.%s())", m.GLibGetType)
+}
+
 // Header describes the side effects of the conversion, such as importing new
 // things or modifying the CGo preamble. A zero-value instance is a valid
 // instance.
 type Header struct {
-	Marshalers     []string
+	Marshalers     []Marshaler
 	Imports        map[string]string
 	CIncludes      map[string]struct{}
 	Packages       map[string]struct{} // for pkg-config
@@ -165,12 +180,10 @@ func (h *Header) AddMarshaler(glibGetType, goName string) {
 		return
 	}
 
-	h.Marshalers = append(h.Marshalers, fmt.Sprintf(
-		`{T: externglib.Type(C.%s()), F: marshal%s},`, glibGetType, goName,
-	))
+	h.Marshalers = append(h.Marshalers, Marshaler{glibGetType, goName})
 	// Need this for g_value functions inside marshal.
 	h.NeedsGLibObject()
-	// Need this for the pointer cast.
+	// Need this for the pointer cast (which one?).
 	h.Import("unsafe")
 }
 

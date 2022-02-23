@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkcolorseldialog.go.
+var GTypeColorSelectionDialog = externglib.Type(C.gtk_color_selection_dialog_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_selection_dialog_get_type()), F: marshalColorSelectionDialogger},
+		{T: GTypeColorSelectionDialog, F: marshalColorSelectionDialog},
 	})
 }
 
@@ -69,7 +72,7 @@ func wrapColorSelectionDialog(obj *externglib.Object) *ColorSelectionDialog {
 	}
 }
 
-func marshalColorSelectionDialogger(p uintptr) (interface{}, error) {
+func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 	return wrapColorSelectionDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

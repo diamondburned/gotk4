@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk4_Calendar_ConnectPrevYear(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkcalendar.go.
+var GTypeCalendar = externglib.Type(C.gtk_calendar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarrer},
+		{T: GTypeCalendar, F: marshalCalendar},
 	})
 }
 
@@ -102,7 +105,7 @@ func wrapCalendar(obj *externglib.Object) *Calendar {
 	}
 }
 
-func marshalCalendarrer(p uintptr) (interface{}, error) {
+func marshalCalendar(p uintptr) (interface{}, error) {
 	return wrapCalendar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

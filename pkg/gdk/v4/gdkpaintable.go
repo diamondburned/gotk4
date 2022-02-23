@@ -24,10 +24,16 @@ import (
 // extern void _gotk4_gdk4_Paintable_ConnectInvalidateSize(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gdkpaintable.go.
+var (
+	GTypePaintableFlags = externglib.Type(C.gdk_paintable_flags_get_type())
+	GTypePaintable      = externglib.Type(C.gdk_paintable_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_paintable_flags_get_type()), F: marshalPaintableFlags},
-		{T: externglib.Type(C.gdk_paintable_get_type()), F: marshalPaintabler},
+		{T: GTypePaintableFlags, F: marshalPaintableFlags},
+		{T: GTypePaintable, F: marshalPaintable},
 	})
 }
 
@@ -374,7 +380,7 @@ func wrapPaintable(obj *externglib.Object) *Paintable {
 	}
 }
 
-func marshalPaintabler(p uintptr) (interface{}, error) {
+func marshalPaintable(p uintptr) (interface{}, error) {
 	return wrapPaintable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

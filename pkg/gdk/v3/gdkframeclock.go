@@ -24,10 +24,16 @@ import (
 // extern void _gotk4_gdk3_FrameClock_ConnectUpdate(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gdkframeclock.go.
+var (
+	GTypeFrameClockPhase = externglib.Type(C.gdk_frame_clock_phase_get_type())
+	GTypeFrameClock      = externglib.Type(C.gdk_frame_clock_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_frame_clock_phase_get_type()), F: marshalFrameClockPhase},
-		{T: externglib.Type(C.gdk_frame_clock_get_type()), F: marshalFrameClocker},
+		{T: GTypeFrameClockPhase, F: marshalFrameClockPhase},
+		{T: GTypeFrameClock, F: marshalFrameClock},
 	})
 }
 
@@ -175,7 +181,7 @@ func wrapFrameClock(obj *externglib.Object) *FrameClock {
 	}
 }
 
-func marshalFrameClocker(p uintptr) (interface{}, error) {
+func marshalFrameClock(p uintptr) (interface{}, error) {
 	return wrapFrameClock(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

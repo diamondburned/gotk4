@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11visual.go.
+var GTypeX11Visual = externglib.Type(C.gdk_x11_visual_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_visual_get_type()), F: marshalX11Visualer},
+		{T: GTypeX11Visual, F: marshalX11Visual},
 	})
 }
 
@@ -49,6 +52,6 @@ func wrapX11Visual(obj *externglib.Object) *X11Visual {
 	}
 }
 
-func marshalX11Visualer(p uintptr) (interface{}, error) {
+func marshalX11Visual(p uintptr) (interface{}, error) {
 	return wrapX11Visual(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

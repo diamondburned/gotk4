@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkproperty.go.
+var GTypePropMode = externglib.Type(C.gdk_prop_mode_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_prop_mode_get_type()), F: marshalPropMode},
+		{T: GTypePropMode, F: marshalPropMode},
 	})
 }
 

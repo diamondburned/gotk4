@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktreestore.go.
+var GTypeTreeStore = externglib.Type(C.gtk_tree_store_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_store_get_type()), F: marshalTreeStorer},
+		{T: GTypeTreeStore, F: marshalTreeStore},
 	})
 }
 
@@ -92,7 +95,7 @@ func wrapTreeStore(obj *externglib.Object) *TreeStore {
 	}
 }
 
-func marshalTreeStorer(p uintptr) (interface{}, error) {
+func marshalTreeStore(p uintptr) (interface{}, error) {
 	return wrapTreeStore(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -21,10 +21,16 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktoolpalette.go.
+var (
+	GTypeToolPaletteDragTargets = externglib.Type(C.gtk_tool_palette_drag_targets_get_type())
+	GTypeToolPalette            = externglib.Type(C.gtk_tool_palette_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_palette_drag_targets_get_type()), F: marshalToolPaletteDragTargets},
-		{T: externglib.Type(C.gtk_tool_palette_get_type()), F: marshalToolPaletter},
+		{T: GTypeToolPaletteDragTargets, F: marshalToolPaletteDragTargets},
+		{T: GTypeToolPalette, F: marshalToolPalette},
 	})
 }
 
@@ -175,7 +181,7 @@ func wrapToolPalette(obj *externglib.Object) *ToolPalette {
 	}
 }
 
-func marshalToolPaletter(p uintptr) (interface{}, error) {
+func marshalToolPalette(p uintptr) (interface{}, error) {
 	return wrapToolPalette(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

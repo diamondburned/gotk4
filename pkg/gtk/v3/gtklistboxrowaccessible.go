@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtklistboxrowaccessible.go.
+var GTypeListBoxRowAccessible = externglib.Type(C.gtk_list_box_row_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_box_row_accessible_get_type()), F: marshalListBoxRowAccessibler},
+		{T: GTypeListBoxRowAccessible, F: marshalListBoxRowAccessible},
 	})
 }
 
@@ -60,6 +63,6 @@ func wrapListBoxRowAccessible(obj *externglib.Object) *ListBoxRowAccessible {
 	}
 }
 
-func marshalListBoxRowAccessibler(p uintptr) (interface{}, error) {
+func marshalListBoxRowAccessible(p uintptr) (interface{}, error) {
 	return wrapListBoxRowAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

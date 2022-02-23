@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gproxyaddress.go.
+var GTypeProxyAddress = externglib.Type(C.g_proxy_address_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_address_get_type()), F: marshalProxyAddresser},
+		{T: GTypeProxyAddress, F: marshalProxyAddress},
 	})
 }
 
@@ -55,7 +58,7 @@ func wrapProxyAddress(obj *externglib.Object) *ProxyAddress {
 	}
 }
 
-func marshalProxyAddresser(p uintptr) (interface{}, error) {
+func marshalProxyAddress(p uintptr) (interface{}, error) {
 	return wrapProxyAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkprogressbar.go.
+var GTypeProgressBar = externglib.Type(C.gtk_progress_bar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBarrer},
+		{T: GTypeProgressBar, F: marshalProgressBar},
 	})
 }
 
@@ -104,7 +107,7 @@ func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 	}
 }
 
-func marshalProgressBarrer(p uintptr) (interface{}, error) {
+func marshalProgressBar(p uintptr) (interface{}, error) {
 	return wrapProgressBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

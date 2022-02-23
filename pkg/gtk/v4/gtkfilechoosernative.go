@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkfilechoosernative.go.
+var GTypeFileChooserNative = externglib.Type(C.gtk_file_chooser_native_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_native_get_type()), F: marshalFileChooserNativer},
+		{T: GTypeFileChooserNative, F: marshalFileChooserNative},
 	})
 }
 
@@ -204,7 +207,7 @@ func wrapFileChooserNative(obj *externglib.Object) *FileChooserNative {
 	}
 }
 
-func marshalFileChooserNativer(p uintptr) (interface{}, error) {
+func marshalFileChooserNative(p uintptr) (interface{}, error) {
 	return wrapFileChooserNative(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -22,14 +22,24 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtk.go.
+var (
+	GTypeMovementStep        = externglib.Type(C.gtk_movement_step_get_type())
+	GTypeNotebookTab         = externglib.Type(C.gtk_notebook_tab_get_type())
+	GTypeResizeMode          = externglib.Type(C.gtk_resize_mode_get_type())
+	GTypeScrollStep          = externglib.Type(C.gtk_scroll_step_get_type())
+	GTypeDebugFlag           = externglib.Type(C.gtk_debug_flag_get_type())
+	GTypeEntryIconAccessible = externglib.Type(C.gtk_entry_icon_accessible_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_movement_step_get_type()), F: marshalMovementStep},
-		{T: externglib.Type(C.gtk_notebook_tab_get_type()), F: marshalNotebookTab},
-		{T: externglib.Type(C.gtk_resize_mode_get_type()), F: marshalResizeMode},
-		{T: externglib.Type(C.gtk_scroll_step_get_type()), F: marshalScrollStep},
-		{T: externglib.Type(C.gtk_debug_flag_get_type()), F: marshalDebugFlag},
-		{T: externglib.Type(C.gtk_entry_icon_accessible_get_type()), F: marshalEntryIconAccessibler},
+		{T: GTypeMovementStep, F: marshalMovementStep},
+		{T: GTypeNotebookTab, F: marshalNotebookTab},
+		{T: GTypeResizeMode, F: marshalResizeMode},
+		{T: GTypeScrollStep, F: marshalScrollStep},
+		{T: GTypeDebugFlag, F: marshalDebugFlag},
+		{T: GTypeEntryIconAccessible, F: marshalEntryIconAccessible},
 	})
 }
 
@@ -385,7 +395,7 @@ func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 	}
 }
 
-func marshalEntryIconAccessibler(p uintptr) (interface{}, error) {
+func marshalEntryIconAccessible(p uintptr) (interface{}, error) {
 	return wrapEntryIconAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

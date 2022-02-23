@@ -24,9 +24,12 @@ import (
 // extern void _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(gpointer, gchar*, gint64, gint64, guintptr);
 import "C"
 
+// glib.Type values for gmountoperation.go.
+var GTypeMountOperation = externglib.Type(C.g_mount_operation_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_mount_operation_get_type()), F: marshalMountOperationer},
+		{T: GTypeMountOperation, F: marshalMountOperation},
 	})
 }
 
@@ -228,7 +231,7 @@ func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	}
 }
 
-func marshalMountOperationer(p uintptr) (interface{}, error) {
+func marshalMountOperation(p uintptr) (interface{}, error) {
 	return wrapMountOperation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gtk3_Socket_ConnectPlugAdded(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtksocket.go.
+var GTypeSocket = externglib.Type(C.gtk_socket_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocketter},
+		{T: GTypeSocket, F: marshalSocket},
 	})
 }
 
@@ -153,7 +156,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 	}
 }
 
-func marshalSocketter(p uintptr) (interface{}, error) {
+func marshalSocket(p uintptr) (interface{}, error) {
 	return wrapSocket(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

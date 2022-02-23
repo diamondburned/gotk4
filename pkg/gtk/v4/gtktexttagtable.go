@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk4_TextTagTable_ConnectTagRemoved(gpointer, GtkTextTag*, guintptr);
 import "C"
 
+// glib.Type values for gtktexttagtable.go.
+var GTypeTextTagTable = externglib.Type(C.gtk_text_tag_table_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_tag_table_get_type()), F: marshalTextTagTabler},
+		{T: GTypeTextTagTable, F: marshalTextTagTable},
 	})
 }
 
@@ -86,7 +89,7 @@ func wrapTextTagTable(obj *externglib.Object) *TextTagTable {
 	}
 }
 
-func marshalTextTagTabler(p uintptr) (interface{}, error) {
+func marshalTextTagTable(p uintptr) (interface{}, error) {
 	return wrapTextTagTable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -15,9 +15,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+// glib.Type values for graphene-rect.go.
+var GTypeRect = externglib.Type(C.graphene_rect_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.graphene_rect_get_type()), F: marshalRect},
+		{T: GTypeRect, F: marshalRect},
 	})
 }
 

@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk3_RadioButton_ConnectGroupChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkradiobutton.go.
+var GTypeRadioButton = externglib.Type(C.gtk_radio_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_button_get_type()), F: marshalRadioButtonner},
+		{T: GTypeRadioButton, F: marshalRadioButton},
 	})
 }
 
@@ -171,7 +174,7 @@ func wrapRadioButton(obj *externglib.Object) *RadioButton {
 	}
 }
 
-func marshalRadioButtonner(p uintptr) (interface{}, error) {
+func marshalRadioButton(p uintptr) (interface{}, error) {
 	return wrapRadioButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

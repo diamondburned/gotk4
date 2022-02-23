@@ -14,15 +14,26 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
+// glib.Type values for gskenums.go.
+var (
+	GTypeBlendMode          = externglib.Type(C.gsk_blend_mode_get_type())
+	GTypeCorner             = externglib.Type(C.gsk_corner_get_type())
+	GTypeGLUniformType      = externglib.Type(C.gsk_gl_uniform_type_get_type())
+	GTypeRenderNodeType     = externglib.Type(C.gsk_render_node_type_get_type())
+	GTypeScalingFilter      = externglib.Type(C.gsk_scaling_filter_get_type())
+	GTypeSerializationError = externglib.Type(C.gsk_serialization_error_get_type())
+	GTypeTransformCategory  = externglib.Type(C.gsk_transform_category_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_blend_mode_get_type()), F: marshalBlendMode},
-		{T: externglib.Type(C.gsk_corner_get_type()), F: marshalCorner},
-		{T: externglib.Type(C.gsk_gl_uniform_type_get_type()), F: marshalGLUniformType},
-		{T: externglib.Type(C.gsk_render_node_type_get_type()), F: marshalRenderNodeType},
-		{T: externglib.Type(C.gsk_scaling_filter_get_type()), F: marshalScalingFilter},
-		{T: externglib.Type(C.gsk_serialization_error_get_type()), F: marshalSerializationError},
-		{T: externglib.Type(C.gsk_transform_category_get_type()), F: marshalTransformCategory},
+		{T: GTypeBlendMode, F: marshalBlendMode},
+		{T: GTypeCorner, F: marshalCorner},
+		{T: GTypeGLUniformType, F: marshalGLUniformType},
+		{T: GTypeRenderNodeType, F: marshalRenderNodeType},
+		{T: GTypeScalingFilter, F: marshalScalingFilter},
+		{T: GTypeSerializationError, F: marshalSerializationError},
+		{T: GTypeTransformCategory, F: marshalTransformCategory},
 	})
 }
 

@@ -19,9 +19,12 @@ import (
 // extern gpointer _gotk4_gio2_AsyncResultIface_get_user_data(GAsyncResult*);
 import "C"
 
+// glib.Type values for gasyncresult.go.
+var GTypeAsyncResult = externglib.Type(C.g_async_result_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_async_result_get_type()), F: marshalAsyncResulter},
+		{T: GTypeAsyncResult, F: marshalAsyncResult},
 	})
 }
 
@@ -221,7 +224,7 @@ func wrapAsyncResult(obj *externglib.Object) *AsyncResult {
 	}
 }
 
-func marshalAsyncResulter(p uintptr) (interface{}, error) {
+func marshalAsyncResult(p uintptr) (interface{}, error) {
 	return wrapAsyncResult(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

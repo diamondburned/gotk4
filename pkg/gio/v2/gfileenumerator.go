@@ -24,9 +24,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gfileenumerator.go.
+var GTypeFileEnumerator = externglib.Type(C.g_file_enumerator_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_enumerator_get_type()), F: marshalFileEnumeratorrer},
+		{T: GTypeFileEnumerator, F: marshalFileEnumerator},
 	})
 }
 
@@ -290,7 +293,7 @@ func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 	}
 }
 
-func marshalFileEnumeratorrer(p uintptr) (interface{}, error) {
+func marshalFileEnumerator(p uintptr) (interface{}, error) {
 	return wrapFileEnumerator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

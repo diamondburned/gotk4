@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gio2_SocketControlMessageClass_serialize(GSocketControlMessage*, gpointer);
 import "C"
 
+// glib.Type values for gsocketcontrolmessage.go.
+var GTypeSocketControlMessage = externglib.Type(C.g_socket_control_message_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_control_message_get_type()), F: marshalSocketControlMessager},
+		{T: GTypeSocketControlMessage, F: marshalSocketControlMessage},
 	})
 }
 
@@ -180,7 +183,7 @@ func wrapSocketControlMessage(obj *externglib.Object) *SocketControlMessage {
 	}
 }
 
-func marshalSocketControlMessager(p uintptr) (interface{}, error) {
+func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 	return wrapSocketControlMessage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

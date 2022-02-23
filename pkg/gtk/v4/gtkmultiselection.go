@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkmultiselection.go.
+var GTypeMultiSelection = externglib.Type(C.gtk_multi_selection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_multi_selection_get_type()), F: marshalMultiSelectioner},
+		{T: GTypeMultiSelection, F: marshalMultiSelection},
 	})
 }
 
@@ -57,7 +60,7 @@ func wrapMultiSelection(obj *externglib.Object) *MultiSelection {
 	}
 }
 
-func marshalMultiSelectioner(p uintptr) (interface{}, error) {
+func marshalMultiSelection(p uintptr) (interface{}, error) {
 	return wrapMultiSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

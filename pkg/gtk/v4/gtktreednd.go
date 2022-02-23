@@ -21,10 +21,16 @@ import (
 // extern gboolean _gotk4_gtk4_TreeDragSourceIface_row_draggable(GtkTreeDragSource*, GtkTreePath*);
 import "C"
 
+// glib.Type values for gtktreednd.go.
+var (
+	GTypeTreeDragDest   = externglib.Type(C.gtk_tree_drag_dest_get_type())
+	GTypeTreeDragSource = externglib.Type(C.gtk_tree_drag_source_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_drag_dest_get_type()), F: marshalTreeDragDester},
-		{T: externglib.Type(C.gtk_tree_drag_source_get_type()), F: marshalTreeDragSourcer},
+		{T: GTypeTreeDragDest, F: marshalTreeDragDest},
+		{T: GTypeTreeDragSource, F: marshalTreeDragSource},
 	})
 }
 
@@ -240,7 +246,7 @@ func wrapTreeDragDest(obj *externglib.Object) *TreeDragDest {
 	}
 }
 
-func marshalTreeDragDester(p uintptr) (interface{}, error) {
+func marshalTreeDragDest(p uintptr) (interface{}, error) {
 	return wrapTreeDragDest(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -461,7 +467,7 @@ func wrapTreeDragSource(obj *externglib.Object) *TreeDragSource {
 	}
 }
 
-func marshalTreeDragSourcer(p uintptr) (interface{}, error) {
+func marshalTreeDragSource(p uintptr) (interface{}, error) {
 	return wrapTreeDragSource(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

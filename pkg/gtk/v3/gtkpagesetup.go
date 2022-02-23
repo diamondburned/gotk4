@@ -19,9 +19,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkpagesetup.go.
+var GTypePageSetup = externglib.Type(C.gtk_page_setup_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetupper},
+		{T: GTypePageSetup, F: marshalPageSetup},
 	})
 }
 
@@ -81,7 +84,7 @@ func wrapPageSetup(obj *externglib.Object) *PageSetup {
 	}
 }
 
-func marshalPageSetupper(p uintptr) (interface{}, error) {
+func marshalPageSetup(p uintptr) (interface{}, error) {
 	return wrapPageSetup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

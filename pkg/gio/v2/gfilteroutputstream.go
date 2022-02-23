@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gfilteroutputstream.go.
+var GTypeFilterOutputStream = externglib.Type(C.g_filter_output_stream_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_filter_output_stream_get_type()), F: marshalFilterOutputStreamer},
+		{T: GTypeFilterOutputStream, F: marshalFilterOutputStream},
 	})
 }
 
@@ -64,7 +67,7 @@ func wrapFilterOutputStream(obj *externglib.Object) *FilterOutputStream {
 	}
 }
 
-func marshalFilterOutputStreamer(p uintptr) (interface{}, error) {
+func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 	return wrapFilterOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

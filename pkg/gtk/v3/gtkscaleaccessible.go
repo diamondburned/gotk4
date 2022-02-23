@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkscaleaccessible.go.
+var GTypeScaleAccessible = externglib.Type(C.gtk_scale_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scale_accessible_get_type()), F: marshalScaleAccessibler},
+		{T: GTypeScaleAccessible, F: marshalScaleAccessible},
 	})
 }
 
@@ -63,6 +66,6 @@ func wrapScaleAccessible(obj *externglib.Object) *ScaleAccessible {
 	}
 }
 
-func marshalScaleAccessibler(p uintptr) (interface{}, error) {
+func marshalScaleAccessible(p uintptr) (interface{}, error) {
 	return wrapScaleAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

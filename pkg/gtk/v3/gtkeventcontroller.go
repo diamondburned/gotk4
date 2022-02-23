@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkeventcontroller.go.
+var GTypeEventController = externglib.Type(C.gtk_event_controller_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_get_type()), F: marshalEventControllerer},
+		{T: GTypeEventController, F: marshalEventController},
 	})
 }
 
@@ -65,7 +68,7 @@ func wrapEventController(obj *externglib.Object) *EventController {
 	}
 }
 
-func marshalEventControllerer(p uintptr) (interface{}, error) {
+func marshalEventController(p uintptr) (interface{}, error) {
 	return wrapEventController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

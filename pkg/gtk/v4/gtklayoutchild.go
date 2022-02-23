@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtklayoutchild.go.
+var GTypeLayoutChild = externglib.Type(C.gtk_layout_child_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_layout_child_get_type()), F: marshalLayoutChilder},
+		{T: GTypeLayoutChild, F: marshalLayoutChild},
 	})
 }
 
@@ -67,7 +70,7 @@ func wrapLayoutChild(obj *externglib.Object) *LayoutChild {
 	}
 }
 
-func marshalLayoutChilder(p uintptr) (interface{}, error) {
+func marshalLayoutChild(p uintptr) (interface{}, error) {
 	return wrapLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkorientable.go.
+var GTypeOrientable = externglib.Type(C.gtk_orientable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_orientable_get_type()), F: marshalOrientabler},
+		{T: GTypeOrientable, F: marshalOrientable},
 	})
 }
 
@@ -59,7 +62,7 @@ func wrapOrientable(obj *externglib.Object) *Orientable {
 	}
 }
 
-func marshalOrientabler(p uintptr) (interface{}, error) {
+func marshalOrientable(p uintptr) (interface{}, error) {
 	return wrapOrientable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

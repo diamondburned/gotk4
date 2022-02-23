@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gdatainputstream.go.
+var GTypeDataInputStream = externglib.Type(C.g_data_input_stream_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_data_input_stream_get_type()), F: marshalDataInputStreamer},
+		{T: GTypeDataInputStream, F: marshalDataInputStream},
 	})
 }
 
@@ -63,7 +66,7 @@ func wrapDataInputStream(obj *externglib.Object) *DataInputStream {
 	}
 }
 
-func marshalDataInputStreamer(p uintptr) (interface{}, error) {
+func marshalDataInputStream(p uintptr) (interface{}, error) {
 	return wrapDataInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

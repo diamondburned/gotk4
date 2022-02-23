@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkrecentchoosermenu.go.
+var GTypeRecentChooserMenu = externglib.Type(C.gtk_recent_chooser_menu_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_chooser_menu_get_type()), F: marshalRecentChooserMenuer},
+		{T: GTypeRecentChooserMenu, F: marshalRecentChooserMenu},
 	})
 }
 
@@ -97,7 +100,7 @@ func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 	}
 }
 
-func marshalRecentChooserMenuer(p uintptr) (interface{}, error) {
+func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 	return wrapRecentChooserMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -13,9 +13,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcolorchooserwidget.go.
+var GTypeColorChooserWidget = externglib.Type(C.gtk_color_chooser_widget_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_widget_get_type()), F: marshalColorChooserWidgetter},
+		{T: GTypeColorChooserWidget, F: marshalColorChooserWidget},
 	})
 }
 
@@ -81,7 +84,7 @@ func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 	}
 }
 
-func marshalColorChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 	return wrapColorChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

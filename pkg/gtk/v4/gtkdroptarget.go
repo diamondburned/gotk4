@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk4_DropTarget_ConnectLeave(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkdroptarget.go.
+var GTypeDropTarget = externglib.Type(C.gtk_drop_target_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTargetter},
+		{T: GTypeDropTarget, F: marshalDropTarget},
 	})
 }
 
@@ -123,7 +126,7 @@ func wrapDropTarget(obj *externglib.Object) *DropTarget {
 	}
 }
 
-func marshalDropTargetter(p uintptr) (interface{}, error) {
+func marshalDropTarget(p uintptr) (interface{}, error) {
 	return wrapDropTarget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

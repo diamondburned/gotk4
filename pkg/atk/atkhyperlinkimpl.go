@@ -15,9 +15,12 @@ import (
 // extern AtkHyperlink* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(AtkHyperlinkImpl*);
 import "C"
 
+// glib.Type values for atkhyperlinkimpl.go.
+var GTypeHyperlinkImpl = externglib.Type(C.atk_hyperlink_impl_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_hyperlink_impl_get_type()), F: marshalHyperlinkImpler},
+		{T: GTypeHyperlinkImpl, F: marshalHyperlinkImpl},
 	})
 }
 
@@ -100,7 +103,7 @@ func wrapHyperlinkImpl(obj *externglib.Object) *HyperlinkImpl {
 	}
 }
 
-func marshalHyperlinkImpler(p uintptr) (interface{}, error) {
+func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 	return wrapHyperlinkImpl(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

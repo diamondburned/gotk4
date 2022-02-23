@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkimmulticontext.go.
+var GTypeIMMulticontext = externglib.Type(C.gtk_im_multicontext_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_im_multicontext_get_type()), F: marshalIMMulticontexter},
+		{T: GTypeIMMulticontext, F: marshalIMMulticontext},
 	})
 }
 
@@ -55,7 +58,7 @@ func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
 	}
 }
 
-func marshalIMMulticontexter(p uintptr) (interface{}, error) {
+func marshalIMMulticontext(p uintptr) (interface{}, error) {
 	return wrapIMMulticontext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

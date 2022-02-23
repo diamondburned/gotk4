@@ -17,10 +17,16 @@ import (
 // extern gboolean _gotk4_gtk4_AboutDialog_ConnectActivateLink(gpointer, gchar*, guintptr);
 import "C"
 
+// glib.Type values for gtkaboutdialog.go.
+var (
+	GTypeLicense     = externglib.Type(C.gtk_license_get_type())
+	GTypeAboutDialog = externglib.Type(C.gtk_about_dialog_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_license_get_type()), F: marshalLicense},
-		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialogger},
+		{T: GTypeLicense, F: marshalLicense},
+		{T: GTypeAboutDialog, F: marshalAboutDialog},
 	})
 }
 
@@ -218,7 +224,7 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 	}
 }
 
-func marshalAboutDialogger(p uintptr) (interface{}, error) {
+func marshalAboutDialog(p uintptr) (interface{}, error) {
 	return wrapAboutDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

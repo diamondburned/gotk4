@@ -17,9 +17,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdataoutputstream.go.
+var GTypeDataOutputStream = externglib.Type(C.g_data_output_stream_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_data_output_stream_get_type()), F: marshalDataOutputStreamer},
+		{T: GTypeDataOutputStream, F: marshalDataOutputStream},
 	})
 }
 
@@ -61,7 +64,7 @@ func wrapDataOutputStream(obj *externglib.Object) *DataOutputStream {
 	}
 }
 
-func marshalDataOutputStreamer(p uintptr) (interface{}, error) {
+func marshalDataOutputStream(p uintptr) (interface{}, error) {
 	return wrapDataOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

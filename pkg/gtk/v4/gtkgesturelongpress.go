@@ -16,9 +16,12 @@ import (
 // extern void _gotk4_gtk4_GestureLongPress_ConnectPressed(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkgesturelongpress.go.
+var GTypeGestureLongPress = externglib.Type(C.gtk_gesture_long_press_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_long_press_get_type()), F: marshalGestureLongPresser},
+		{T: GTypeGestureLongPress, F: marshalGestureLongPress},
 	})
 }
 
@@ -69,7 +72,7 @@ func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
 	}
 }
 
-func marshalGestureLongPresser(p uintptr) (interface{}, error) {
+func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	return wrapGestureLongPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkrangeaccessible.go.
+var GTypeRangeAccessible = externglib.Type(C.gtk_range_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_range_accessible_get_type()), F: marshalRangeAccessibler},
+		{T: GTypeRangeAccessible, F: marshalRangeAccessible},
 	})
 }
 
@@ -63,6 +66,6 @@ func wrapRangeAccessible(obj *externglib.Object) *RangeAccessible {
 	}
 }
 
-func marshalRangeAccessibler(p uintptr) (interface{}, error) {
+func marshalRangeAccessible(p uintptr) (interface{}, error) {
 	return wrapRangeAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

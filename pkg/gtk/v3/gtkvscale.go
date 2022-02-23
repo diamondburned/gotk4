@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkvscale.go.
+var GTypeVScale = externglib.Type(C.gtk_vscale_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vscale_get_type()), F: marshalVScaler},
+		{T: GTypeVScale, F: marshalVScale},
 	})
 }
 
@@ -76,7 +79,7 @@ func wrapVScale(obj *externglib.Object) *VScale {
 	}
 }
 
-func marshalVScaler(p uintptr) (interface{}, error) {
+func marshalVScale(p uintptr) (interface{}, error) {
 	return wrapVScale(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

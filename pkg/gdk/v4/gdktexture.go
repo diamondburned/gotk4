@@ -17,9 +17,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdktexture.go.
+var GTypeTexture = externglib.Type(C.gdk_texture_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_texture_get_type()), F: marshalTexturer},
+		{T: GTypeTexture, F: marshalTexture},
 	})
 }
 
@@ -79,7 +82,7 @@ func wrapTexture(obj *externglib.Object) *Texture {
 	}
 }
 
-func marshalTexturer(p uintptr) (interface{}, error) {
+func marshalTexture(p uintptr) (interface{}, error) {
 	return wrapTexture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

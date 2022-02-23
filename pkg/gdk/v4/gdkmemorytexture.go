@@ -17,10 +17,16 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkmemorytexture.go.
+var (
+	GTypeMemoryFormat  = externglib.Type(C.gdk_memory_format_get_type())
+	GTypeMemoryTexture = externglib.Type(C.gdk_memory_texture_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_memory_format_get_type()), F: marshalMemoryFormat},
-		{T: externglib.Type(C.gdk_memory_texture_get_type()), F: marshalMemoryTexturer},
+		{T: GTypeMemoryFormat, F: marshalMemoryFormat},
+		{T: GTypeMemoryTexture, F: marshalMemoryTexture},
 	})
 }
 
@@ -130,7 +136,7 @@ func wrapMemoryTexture(obj *externglib.Object) *MemoryTexture {
 	}
 }
 
-func marshalMemoryTexturer(p uintptr) (interface{}, error) {
+func marshalMemoryTexture(p uintptr) (interface{}, error) {
 	return wrapMemoryTexture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

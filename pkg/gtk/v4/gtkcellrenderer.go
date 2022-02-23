@@ -32,11 +32,18 @@ import (
 // extern void _gotk4_gtk4_CellRenderer_ConnectEditingStarted(gpointer, GtkCellEditable*, gchar*, guintptr);
 import "C"
 
+// glib.Type values for gtkcellrenderer.go.
+var (
+	GTypeCellRendererMode  = externglib.Type(C.gtk_cell_renderer_mode_get_type())
+	GTypeCellRendererState = externglib.Type(C.gtk_cell_renderer_state_get_type())
+	GTypeCellRenderer      = externglib.Type(C.gtk_cell_renderer_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_mode_get_type()), F: marshalCellRendererMode},
-		{T: externglib.Type(C.gtk_cell_renderer_state_get_type()), F: marshalCellRendererState},
-		{T: externglib.Type(C.gtk_cell_renderer_get_type()), F: marshalCellRendererer},
+		{T: GTypeCellRendererMode, F: marshalCellRendererMode},
+		{T: GTypeCellRendererState, F: marshalCellRendererState},
+		{T: GTypeCellRenderer, F: marshalCellRenderer},
 	})
 }
 
@@ -812,7 +819,7 @@ func wrapCellRenderer(obj *externglib.Object) *CellRenderer {
 	}
 }
 
-func marshalCellRendererer(p uintptr) (interface{}, error) {
+func marshalCellRenderer(p uintptr) (interface{}, error) {
 	return wrapCellRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

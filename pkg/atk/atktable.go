@@ -57,9 +57,12 @@ import (
 // extern void _gotk4_atk1_Table_ConnectRowReordered(gpointer, guintptr);
 import "C"
 
+// glib.Type values for atktable.go.
+var GTypeTable = externglib.Type(C.atk_table_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_table_get_type()), F: marshalTabler},
+		{T: GTypeTable, F: marshalTable},
 	})
 }
 
@@ -1138,7 +1141,7 @@ func wrapTable(obj *externglib.Object) *Table {
 	}
 }
 
-func marshalTabler(p uintptr) (interface{}, error) {
+func marshalTable(p uintptr) (interface{}, error) {
 	return wrapTable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

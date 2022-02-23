@@ -13,9 +13,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcellrendererprogress.go.
+var GTypeCellRendererProgress = externglib.Type(C.gtk_cell_renderer_progress_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_progress_get_type()), F: marshalCellRendererProgresser},
+		{T: GTypeCellRendererProgress, F: marshalCellRendererProgress},
 	})
 }
 
@@ -47,7 +50,7 @@ func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 	}
 }
 
-func marshalCellRendererProgresser(p uintptr) (interface{}, error) {
+func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 	return wrapCellRendererProgress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

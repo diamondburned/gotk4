@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkcontaineraccessible.go.
+var GTypeContainerAccessible = externglib.Type(C.gtk_container_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_container_accessible_get_type()), F: marshalContainerAccessibler},
+		{T: GTypeContainerAccessible, F: marshalContainerAccessible},
 	})
 }
 
@@ -58,6 +61,6 @@ func wrapContainerAccessible(obj *externglib.Object) *ContainerAccessible {
 	}
 }
 
-func marshalContainerAccessibler(p uintptr) (interface{}, error) {
+func marshalContainerAccessible(p uintptr) (interface{}, error) {
 	return wrapContainerAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

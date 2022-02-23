@@ -18,9 +18,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkmenubutton.go.
+var GTypeMenuButton = externglib.Type(C.gtk_menu_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButtonner},
+		{T: GTypeMenuButton, F: marshalMenuButton},
 	})
 }
 
@@ -135,7 +138,7 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	}
 }
 
-func marshalMenuButtonner(p uintptr) (interface{}, error) {
+func marshalMenuButton(p uintptr) (interface{}, error) {
 	return wrapMenuButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

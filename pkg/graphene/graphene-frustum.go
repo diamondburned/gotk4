@@ -15,9 +15,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+// glib.Type values for graphene-frustum.go.
+var GTypeFrustum = externglib.Type(C.graphene_frustum_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.graphene_frustum_get_type()), F: marshalFrustum},
+		{T: GTypeFrustum, F: marshalFrustum},
 	})
 }
 

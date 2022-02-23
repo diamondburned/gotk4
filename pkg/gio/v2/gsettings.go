@@ -29,10 +29,16 @@ import (
 // extern void _gotk4_gio2_Settings_ConnectWritableChanged(gpointer, gchar*, guintptr);
 import "C"
 
+// glib.Type values for gsettings.go.
+var (
+	GTypeSettingsBindFlags = externglib.Type(C.g_settings_bind_flags_get_type())
+	GTypeSettings          = externglib.Type(C.g_settings_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_settings_bind_flags_get_type()), F: marshalSettingsBindFlags},
-		{T: externglib.Type(C.g_settings_get_type()), F: marshalSettingser},
+		{T: GTypeSettingsBindFlags, F: marshalSettingsBindFlags},
+		{T: GTypeSettings, F: marshalSettings},
 	})
 }
 
@@ -625,7 +631,7 @@ func wrapSettings(obj *externglib.Object) *Settings {
 	}
 }
 
-func marshalSettingser(p uintptr) (interface{}, error) {
+func marshalSettings(p uintptr) (interface{}, error) {
 	return wrapSettings(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

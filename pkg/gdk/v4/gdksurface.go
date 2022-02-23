@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gdk4_Surface_ConnectLeaveMonitor(gpointer, GdkMonitor*, guintptr);
 import "C"
 
+// glib.Type values for gdksurface.go.
+var GTypeSurface = externglib.Type(C.gdk_surface_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_surface_get_type()), F: marshalSurfacer},
+		{T: GTypeSurface, F: marshalSurface},
 	})
 }
 
@@ -74,7 +77,7 @@ func wrapSurface(obj *externglib.Object) *Surface {
 	}
 }
 
-func marshalSurfacer(p uintptr) (interface{}, error) {
+func marshalSurface(p uintptr) (interface{}, error) {
 	return wrapSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

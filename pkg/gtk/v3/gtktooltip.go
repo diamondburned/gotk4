@@ -20,9 +20,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktooltip.go.
+var GTypeTooltip = externglib.Type(C.gtk_tooltip_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tooltip_get_type()), F: marshalTooltipper},
+		{T: GTypeTooltip, F: marshalTooltip},
 	})
 }
 
@@ -76,7 +79,7 @@ func wrapTooltip(obj *externglib.Object) *Tooltip {
 	}
 }
 
-func marshalTooltipper(p uintptr) (interface{}, error) {
+func marshalTooltip(p uintptr) (interface{}, error) {
 	return wrapTooltip(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

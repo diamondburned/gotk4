@@ -47,10 +47,16 @@ import (
 // extern void _gotk4_gtk3_TextBuffer_ConnectRemoveTag(gpointer, GtkTextTag*, GtkTextIter*, GtkTextIter*, guintptr);
 import "C"
 
+// glib.Type values for gtktextbuffer.go.
+var (
+	GTypeTextBufferTargetInfo = externglib.Type(C.gtk_text_buffer_target_info_get_type())
+	GTypeTextBuffer           = externglib.Type(C.gtk_text_buffer_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_buffer_target_info_get_type()), F: marshalTextBufferTargetInfo},
-		{T: externglib.Type(C.gtk_text_buffer_get_type()), F: marshalTextBufferer},
+		{T: GTypeTextBufferTargetInfo, F: marshalTextBufferTargetInfo},
+		{T: GTypeTextBuffer, F: marshalTextBuffer},
 	})
 }
 
@@ -470,7 +476,7 @@ func wrapTextBuffer(obj *externglib.Object) *TextBuffer {
 	}
 }
 
-func marshalTextBufferer(p uintptr) (interface{}, error) {
+func marshalTextBuffer(p uintptr) (interface{}, error) {
 	return wrapTextBuffer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

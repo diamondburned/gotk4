@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gtlsserverconnection.go.
+var GTypeTLSServerConnection = externglib.Type(C.g_tls_server_connection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_server_connection_get_type()), F: marshalTLSServerConnectioner},
+		{T: GTypeTLSServerConnection, F: marshalTLSServerConnection},
 	})
 }
 
@@ -58,7 +61,7 @@ func wrapTLSServerConnection(obj *externglib.Object) *TLSServerConnection {
 	}
 }
 
-func marshalTLSServerConnectioner(p uintptr) (interface{}, error) {
+func marshalTLSServerConnection(p uintptr) (interface{}, error) {
 	return wrapTLSServerConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -15,9 +15,12 @@ import (
 // extern gboolean _gotk4_gtk4_EventControllerLegacy_ConnectEvent(gpointer, GdkEvent*, guintptr);
 import "C"
 
+// glib.Type values for gtkeventcontrollerlegacy.go.
+var GTypeEventControllerLegacy = externglib.Type(C.gtk_event_controller_legacy_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_legacy_get_type()), F: marshalEventControllerLegacier},
+		{T: GTypeEventControllerLegacy, F: marshalEventControllerLegacy},
 	})
 }
 
@@ -55,7 +58,7 @@ func wrapEventControllerLegacy(obj *externglib.Object) *EventControllerLegacy {
 	}
 }
 
-func marshalEventControllerLegacier(p uintptr) (interface{}, error) {
+func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 	return wrapEventControllerLegacy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

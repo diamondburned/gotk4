@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkslicelistmodel.go.
+var GTypeSliceListModel = externglib.Type(C.gtk_slice_list_model_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_slice_list_model_get_type()), F: marshalSliceListModeller},
+		{T: GTypeSliceListModel, F: marshalSliceListModel},
 	})
 }
 
@@ -59,7 +62,7 @@ func wrapSliceListModel(obj *externglib.Object) *SliceListModel {
 	}
 }
 
-func marshalSliceListModeller(p uintptr) (interface{}, error) {
+func marshalSliceListModel(p uintptr) (interface{}, error) {
 	return wrapSliceListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

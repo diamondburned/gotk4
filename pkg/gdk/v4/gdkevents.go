@@ -16,29 +16,54 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkevents.go.
+var (
+	GTypeCrossingMode         = externglib.Type(C.gdk_crossing_mode_get_type())
+	GTypeEventType            = externglib.Type(C.gdk_event_type_get_type())
+	GTypeKeyMatch             = externglib.Type(C.gdk_key_match_get_type())
+	GTypeNotifyType           = externglib.Type(C.gdk_notify_type_get_type())
+	GTypeScrollDirection      = externglib.Type(C.gdk_scroll_direction_get_type())
+	GTypeTouchpadGesturePhase = externglib.Type(C.gdk_touchpad_gesture_phase_get_type())
+	GTypeButtonEvent          = externglib.Type(C.gdk_button_event_get_type())
+	GTypeCrossingEvent        = externglib.Type(C.gdk_crossing_event_get_type())
+	GTypeDNDEvent             = externglib.Type(C.gdk_dnd_event_get_type())
+	GTypeDeleteEvent          = externglib.Type(C.gdk_delete_event_get_type())
+	GTypeEvent                = externglib.Type(C.gdk_event_get_type())
+	GTypeFocusEvent           = externglib.Type(C.gdk_focus_event_get_type())
+	GTypeGrabBrokenEvent      = externglib.Type(C.gdk_grab_broken_event_get_type())
+	GTypeKeyEvent             = externglib.Type(C.gdk_key_event_get_type())
+	GTypeMotionEvent          = externglib.Type(C.gdk_motion_event_get_type())
+	GTypePadEvent             = externglib.Type(C.gdk_pad_event_get_type())
+	GTypeProximityEvent       = externglib.Type(C.gdk_proximity_event_get_type())
+	GTypeScrollEvent          = externglib.Type(C.gdk_scroll_event_get_type())
+	GTypeTouchEvent           = externglib.Type(C.gdk_touch_event_get_type())
+	GTypeTouchpadEvent        = externglib.Type(C.gdk_touchpad_event_get_type())
+	GTypeEventSequence        = externglib.Type(C.gdk_event_sequence_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_crossing_mode_get_type()), F: marshalCrossingMode},
-		{T: externglib.Type(C.gdk_event_type_get_type()), F: marshalEventType},
-		{T: externglib.Type(C.gdk_key_match_get_type()), F: marshalKeyMatch},
-		{T: externglib.Type(C.gdk_notify_type_get_type()), F: marshalNotifyType},
-		{T: externglib.Type(C.gdk_scroll_direction_get_type()), F: marshalScrollDirection},
-		{T: externglib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
-		{T: externglib.Type(C.gdk_button_event_get_type()), F: marshalButtonEventer},
-		{T: externglib.Type(C.gdk_crossing_event_get_type()), F: marshalCrossingEventer},
-		{T: externglib.Type(C.gdk_dnd_event_get_type()), F: marshalDNDEventer},
-		{T: externglib.Type(C.gdk_delete_event_get_type()), F: marshalDeleteEventer},
-		{T: externglib.Type(C.gdk_event_get_type()), F: marshalEventer},
-		{T: externglib.Type(C.gdk_focus_event_get_type()), F: marshalFocusEventer},
-		{T: externglib.Type(C.gdk_grab_broken_event_get_type()), F: marshalGrabBrokenEventer},
-		{T: externglib.Type(C.gdk_key_event_get_type()), F: marshalKeyEventer},
-		{T: externglib.Type(C.gdk_motion_event_get_type()), F: marshalMotionEventer},
-		{T: externglib.Type(C.gdk_pad_event_get_type()), F: marshalPadEventer},
-		{T: externglib.Type(C.gdk_proximity_event_get_type()), F: marshalProximityEventer},
-		{T: externglib.Type(C.gdk_scroll_event_get_type()), F: marshalScrollEventer},
-		{T: externglib.Type(C.gdk_touch_event_get_type()), F: marshalTouchEventer},
-		{T: externglib.Type(C.gdk_touchpad_event_get_type()), F: marshalTouchpadEventer},
-		{T: externglib.Type(C.gdk_event_sequence_get_type()), F: marshalEventSequence},
+		{T: GTypeCrossingMode, F: marshalCrossingMode},
+		{T: GTypeEventType, F: marshalEventType},
+		{T: GTypeKeyMatch, F: marshalKeyMatch},
+		{T: GTypeNotifyType, F: marshalNotifyType},
+		{T: GTypeScrollDirection, F: marshalScrollDirection},
+		{T: GTypeTouchpadGesturePhase, F: marshalTouchpadGesturePhase},
+		{T: GTypeButtonEvent, F: marshalButtonEvent},
+		{T: GTypeCrossingEvent, F: marshalCrossingEvent},
+		{T: GTypeDNDEvent, F: marshalDNDEvent},
+		{T: GTypeDeleteEvent, F: marshalDeleteEvent},
+		{T: GTypeEvent, F: marshalEvent},
+		{T: GTypeFocusEvent, F: marshalFocusEvent},
+		{T: GTypeGrabBrokenEvent, F: marshalGrabBrokenEvent},
+		{T: GTypeKeyEvent, F: marshalKeyEvent},
+		{T: GTypeMotionEvent, F: marshalMotionEvent},
+		{T: GTypePadEvent, F: marshalPadEvent},
+		{T: GTypeProximityEvent, F: marshalProximityEvent},
+		{T: GTypeScrollEvent, F: marshalScrollEvent},
+		{T: GTypeTouchEvent, F: marshalTouchEvent},
+		{T: GTypeTouchpadEvent, F: marshalTouchpadEvent},
+		{T: GTypeEventSequence, F: marshalEventSequence},
 	})
 }
 
@@ -582,7 +607,7 @@ func wrapButtonEvent(obj *externglib.Object) *ButtonEvent {
 	}
 }
 
-func marshalButtonEventer(p uintptr) (interface{}, error) {
+func marshalButtonEvent(p uintptr) (interface{}, error) {
 	return wrapButtonEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -626,7 +651,7 @@ func wrapCrossingEvent(obj *externglib.Object) *CrossingEvent {
 	}
 }
 
-func marshalCrossingEventer(p uintptr) (interface{}, error) {
+func marshalCrossingEvent(p uintptr) (interface{}, error) {
 	return wrapCrossingEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -716,7 +741,7 @@ func wrapDNDEvent(obj *externglib.Object) *DNDEvent {
 	}
 }
 
-func marshalDNDEventer(p uintptr) (interface{}, error) {
+func marshalDNDEvent(p uintptr) (interface{}, error) {
 	return wrapDNDEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -775,7 +800,7 @@ func wrapDeleteEvent(obj *externglib.Object) *DeleteEvent {
 	}
 }
 
-func marshalDeleteEventer(p uintptr) (interface{}, error) {
+func marshalDeleteEvent(p uintptr) (interface{}, error) {
 	return wrapDeleteEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -811,7 +836,7 @@ func wrapEvent(obj *externglib.Object) *Event {
 	}
 }
 
-func marshalEventer(p uintptr) (interface{}, error) {
+func marshalEvent(p uintptr) (interface{}, error) {
 	return wrapEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1297,7 +1322,7 @@ func wrapFocusEvent(obj *externglib.Object) *FocusEvent {
 	}
 }
 
-func marshalFocusEventer(p uintptr) (interface{}, error) {
+func marshalFocusEvent(p uintptr) (interface{}, error) {
 	return wrapFocusEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1344,7 +1369,7 @@ func wrapGrabBrokenEvent(obj *externglib.Object) *GrabBrokenEvent {
 	}
 }
 
-func marshalGrabBrokenEventer(p uintptr) (interface{}, error) {
+func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
 	return wrapGrabBrokenEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1428,7 +1453,7 @@ func wrapKeyEvent(obj *externglib.Object) *KeyEvent {
 	}
 }
 
-func marshalKeyEventer(p uintptr) (interface{}, error) {
+func marshalKeyEvent(p uintptr) (interface{}, error) {
 	return wrapKeyEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1658,7 +1683,7 @@ func wrapMotionEvent(obj *externglib.Object) *MotionEvent {
 	}
 }
 
-func marshalMotionEventer(p uintptr) (interface{}, error) {
+func marshalMotionEvent(p uintptr) (interface{}, error) {
 	return wrapMotionEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1680,7 +1705,7 @@ func wrapPadEvent(obj *externglib.Object) *PadEvent {
 	}
 }
 
-func marshalPadEventer(p uintptr) (interface{}, error) {
+func marshalPadEvent(p uintptr) (interface{}, error) {
 	return wrapPadEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1776,7 +1801,7 @@ func wrapProximityEvent(obj *externglib.Object) *ProximityEvent {
 	}
 }
 
-func marshalProximityEventer(p uintptr) (interface{}, error) {
+func marshalProximityEvent(p uintptr) (interface{}, error) {
 	return wrapProximityEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1798,7 +1823,7 @@ func wrapScrollEvent(obj *externglib.Object) *ScrollEvent {
 	}
 }
 
-func marshalScrollEventer(p uintptr) (interface{}, error) {
+func marshalScrollEvent(p uintptr) (interface{}, error) {
 	return wrapScrollEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1901,7 +1926,7 @@ func wrapTouchEvent(obj *externglib.Object) *TouchEvent {
 	}
 }
 
-func marshalTouchEventer(p uintptr) (interface{}, error) {
+func marshalTouchEvent(p uintptr) (interface{}, error) {
 	return wrapTouchEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1952,7 +1977,7 @@ func wrapTouchpadEvent(obj *externglib.Object) *TouchpadEvent {
 	}
 }
 
-func marshalTouchpadEventer(p uintptr) (interface{}, error) {
+func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 	return wrapTouchpadEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

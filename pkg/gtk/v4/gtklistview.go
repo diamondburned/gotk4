@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gtk4_ListView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
+// glib.Type values for gtklistview.go.
+var GTypeListView = externglib.Type(C.gtk_list_view_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_view_get_type()), F: marshalListViewer},
+		{T: GTypeListView, F: marshalListView},
 	})
 }
 
@@ -166,7 +169,7 @@ func wrapListView(obj *externglib.Object) *ListView {
 	}
 }
 
-func marshalListViewer(p uintptr) (interface{}, error) {
+func marshalListView(p uintptr) (interface{}, error) {
 	return wrapListView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

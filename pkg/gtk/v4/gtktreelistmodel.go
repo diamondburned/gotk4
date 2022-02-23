@@ -18,10 +18,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtktreelistmodel.go.
+var (
+	GTypeTreeListModel = externglib.Type(C.gtk_tree_list_model_get_type())
+	GTypeTreeListRow   = externglib.Type(C.gtk_tree_list_row_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_list_model_get_type()), F: marshalTreeListModeller},
-		{T: externglib.Type(C.gtk_tree_list_row_get_type()), F: marshalTreeListRower},
+		{T: GTypeTreeListModel, F: marshalTreeListModel},
+		{T: GTypeTreeListRow, F: marshalTreeListRow},
 	})
 }
 
@@ -93,7 +99,7 @@ func wrapTreeListModel(obj *externglib.Object) *TreeListModel {
 	}
 }
 
-func marshalTreeListModeller(p uintptr) (interface{}, error) {
+func marshalTreeListModel(p uintptr) (interface{}, error) {
 	return wrapTreeListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -388,7 +394,7 @@ func wrapTreeListRow(obj *externglib.Object) *TreeListRow {
 	}
 }
 
-func marshalTreeListRower(p uintptr) (interface{}, error) {
+func marshalTreeListRow(p uintptr) (interface{}, error) {
 	return wrapTreeListRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

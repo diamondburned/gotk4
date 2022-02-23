@@ -153,13 +153,27 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 	fpen.EmptyLine()
 
 	if len(f.header.Marshalers) > 0 {
+		fpen.Linef("// glib.Type values for %s.", f.name)
+		if len(f.header.Marshalers) == 1 {
+			m := f.header.Marshalers[0]
+			fpen.Linef("var GType%s = %s", m.GoTypeName, m.GLibType())
+		} else {
+			fpen.Words("var (")
+			for _, m := range f.header.Marshalers {
+				fpen.Linef("GType%s = %s", m.GoTypeName, m.GLibType())
+			}
+			fpen.Words(")")
+		}
+		fpen.EmptyLine()
+
 		fpen.Words("func init() {")
 		fpen.Words("  externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{")
-		for _, marshaler := range f.header.Marshalers {
-			fpen.Words(marshaler)
+		for _, m := range f.header.Marshalers {
+			fpen.Linef(`{T: GType%s, F: marshal%[1]s},`, m.GoTypeName)
 		}
 		fpen.Words("  })")
 		fpen.Words("}")
+		fpen.EmptyLine()
 	}
 
 	fpen.Write(f.pen.Bytes())

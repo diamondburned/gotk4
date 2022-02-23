@@ -34,18 +34,32 @@ import (
 // extern void _gotk4_pango1_FontFamilyClass_list_faces(PangoFontFamily*, PangoFontFace***, int*);
 import "C"
 
+// glib.Type values for pango-font.go.
+var (
+	GTypeStretch         = externglib.Type(C.pango_stretch_get_type())
+	GTypeStyle           = externglib.Type(C.pango_style_get_type())
+	GTypeVariant         = externglib.Type(C.pango_variant_get_type())
+	GTypeWeight          = externglib.Type(C.pango_weight_get_type())
+	GTypeFontMask        = externglib.Type(C.pango_font_mask_get_type())
+	GTypeFont            = externglib.Type(C.pango_font_get_type())
+	GTypeFontFace        = externglib.Type(C.pango_font_face_get_type())
+	GTypeFontFamily      = externglib.Type(C.pango_font_family_get_type())
+	GTypeFontDescription = externglib.Type(C.pango_font_description_get_type())
+	GTypeFontMetrics     = externglib.Type(C.pango_font_metrics_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_stretch_get_type()), F: marshalStretch},
-		{T: externglib.Type(C.pango_style_get_type()), F: marshalStyle},
-		{T: externglib.Type(C.pango_variant_get_type()), F: marshalVariant},
-		{T: externglib.Type(C.pango_weight_get_type()), F: marshalWeight},
-		{T: externglib.Type(C.pango_font_mask_get_type()), F: marshalFontMask},
-		{T: externglib.Type(C.pango_font_get_type()), F: marshalFonter},
-		{T: externglib.Type(C.pango_font_face_get_type()), F: marshalFontFacer},
-		{T: externglib.Type(C.pango_font_family_get_type()), F: marshalFontFamilier},
-		{T: externglib.Type(C.pango_font_description_get_type()), F: marshalFontDescription},
-		{T: externglib.Type(C.pango_font_metrics_get_type()), F: marshalFontMetrics},
+		{T: GTypeStretch, F: marshalStretch},
+		{T: GTypeStyle, F: marshalStyle},
+		{T: GTypeVariant, F: marshalVariant},
+		{T: GTypeWeight, F: marshalWeight},
+		{T: GTypeFontMask, F: marshalFontMask},
+		{T: GTypeFont, F: marshalFont},
+		{T: GTypeFontFace, F: marshalFontFace},
+		{T: GTypeFontFamily, F: marshalFontFamily},
+		{T: GTypeFontDescription, F: marshalFontDescription},
+		{T: GTypeFontMetrics, F: marshalFontMetrics},
 	})
 }
 
@@ -566,7 +580,7 @@ func wrapFont(obj *externglib.Object) *Font {
 	}
 }
 
-func marshalFonter(p uintptr) (interface{}, error) {
+func marshalFont(p uintptr) (interface{}, error) {
 	return wrapFont(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1065,7 +1079,7 @@ func wrapFontFace(obj *externglib.Object) *FontFace {
 	}
 }
 
-func marshalFontFacer(p uintptr) (interface{}, error) {
+func marshalFontFace(p uintptr) (interface{}, error) {
 	return wrapFontFace(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1447,7 +1461,7 @@ func wrapFontFamily(obj *externglib.Object) *FontFamily {
 	}
 }
 
-func marshalFontFamilier(p uintptr) (interface{}, error) {
+func marshalFontFamily(p uintptr) (interface{}, error) {
 	return wrapFontFamily(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

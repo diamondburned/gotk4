@@ -16,9 +16,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gcredentials.go.
+var GTypeCredentials = externglib.Type(C.g_credentials_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_credentials_get_type()), F: marshalCredentialser},
+		{T: GTypeCredentials, F: marshalCredentials},
 	})
 }
 
@@ -79,7 +82,7 @@ func wrapCredentials(obj *externglib.Object) *Credentials {
 	}
 }
 
-func marshalCredentialser(p uintptr) (interface{}, error) {
+func marshalCredentials(p uintptr) (interface{}, error) {
 	return wrapCredentials(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

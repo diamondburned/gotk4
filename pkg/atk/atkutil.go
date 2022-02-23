@@ -17,11 +17,18 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for atkutil.go.
+var (
+	GTypeCoordType    = externglib.Type(C.atk_coord_type_get_type())
+	GTypeKeyEventType = externglib.Type(C.atk_key_event_type_get_type())
+	GTypeUtil         = externglib.Type(C.atk_util_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_coord_type_get_type()), F: marshalCoordType},
-		{T: externglib.Type(C.atk_key_event_type_get_type()), F: marshalKeyEventType},
-		{T: externglib.Type(C.atk_util_get_type()), F: marshalUtiller},
+		{T: GTypeCoordType, F: marshalCoordType},
+		{T: GTypeKeyEventType, F: marshalKeyEventType},
+		{T: GTypeUtil, F: marshalUtil},
 	})
 }
 
@@ -326,7 +333,7 @@ func wrapUtil(obj *externglib.Object) *Util {
 	}
 }
 
-func marshalUtiller(p uintptr) (interface{}, error) {
+func marshalUtil(p uintptr) (interface{}, error) {
 	return wrapUtil(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

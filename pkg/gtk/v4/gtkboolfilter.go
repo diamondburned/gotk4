@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkboolfilter.go.
+var GTypeBoolFilter = externglib.Type(C.gtk_bool_filter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bool_filter_get_type()), F: marshalBoolFilterer},
+		{T: GTypeBoolFilter, F: marshalBoolFilter},
 	})
 }
 
@@ -51,7 +54,7 @@ func wrapBoolFilter(obj *externglib.Object) *BoolFilter {
 	}
 }
 
-func marshalBoolFilterer(p uintptr) (interface{}, error) {
+func marshalBoolFilter(p uintptr) (interface{}, error) {
 	return wrapBoolFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

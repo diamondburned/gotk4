@@ -22,12 +22,20 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktypes.go.
+var (
+	GTypeIconSet       = externglib.Type(C.gtk_icon_set_get_type())
+	GTypeIconSource    = externglib.Type(C.gtk_icon_source_get_type())
+	GTypeSelectionData = externglib.Type(C.gtk_selection_data_get_type())
+	GTypeWidgetPath    = externglib.Type(C.gtk_widget_path_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_icon_set_get_type()), F: marshalIconSet},
-		{T: externglib.Type(C.gtk_icon_source_get_type()), F: marshalIconSource},
-		{T: externglib.Type(C.gtk_selection_data_get_type()), F: marshalSelectionData},
-		{T: externglib.Type(C.gtk_widget_path_get_type()), F: marshalWidgetPath},
+		{T: GTypeIconSet, F: marshalIconSet},
+		{T: GTypeIconSource, F: marshalIconSource},
+		{T: GTypeSelectionData, F: marshalSelectionData},
+		{T: GTypeWidgetPath, F: marshalWidgetPath},
 	})
 }
 

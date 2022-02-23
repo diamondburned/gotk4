@@ -47,12 +47,20 @@ import (
 // extern void _gotk4_atk1_Object_ConnectVisibleDataChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for atkobject.go.
+var (
+	GTypeLayer            = externglib.Type(C.atk_layer_get_type())
+	GTypeRole             = externglib.Type(C.atk_role_get_type())
+	GTypeImplementorIface = externglib.Type(C.atk_implementor_get_type())
+	GTypeObjectClass      = externglib.Type(C.atk_object_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_layer_get_type()), F: marshalLayer},
-		{T: externglib.Type(C.atk_role_get_type()), F: marshalRole},
-		{T: externglib.Type(C.atk_implementor_get_type()), F: marshalImplementorIfacer},
-		{T: externglib.Type(C.atk_object_get_type()), F: marshalObjectClasser},
+		{T: GTypeLayer, F: marshalLayer},
+		{T: GTypeRole, F: marshalRole},
+		{T: GTypeImplementorIface, F: marshalImplementorIface},
+		{T: GTypeObjectClass, F: marshalObjectClass},
 	})
 }
 
@@ -977,7 +985,7 @@ func wrapImplementorIface(obj *externglib.Object) *ImplementorIface {
 	}
 }
 
-func marshalImplementorIfacer(p uintptr) (interface{}, error) {
+func marshalImplementorIface(p uintptr) (interface{}, error) {
 	return wrapImplementorIface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1596,7 +1604,7 @@ func wrapObject(obj *externglib.Object) *ObjectClass {
 	}
 }
 
-func marshalObjectClasser(p uintptr) (interface{}, error) {
+func marshalObjectClass(p uintptr) (interface{}, error) {
 	return wrapObject(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

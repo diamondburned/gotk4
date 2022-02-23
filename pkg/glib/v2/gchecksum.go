@@ -16,9 +16,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for gchecksum.go.
+var GTypeChecksum = externglib.Type(C.g_checksum_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_checksum_get_type()), F: marshalChecksum},
+		{T: GTypeChecksum, F: marshalChecksum},
 	})
 }
 

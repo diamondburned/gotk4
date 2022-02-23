@@ -24,9 +24,12 @@ import (
 // extern gint _gotk4_gio2_DatagramBasedInterface_send_messages(GDatagramBased*, GOutputMessage*, guint, gint, gint64, GCancellable*, GError**);
 import "C"
 
+// glib.Type values for gdatagrambased.go.
+var GTypeDatagramBased = externglib.Type(C.g_datagram_based_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBasedder},
+		{T: GTypeDatagramBased, F: marshalDatagramBased},
 	})
 }
 
@@ -467,7 +470,7 @@ func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 	}
 }
 
-func marshalDatagramBasedder(p uintptr) (interface{}, error) {
+func marshalDatagramBased(p uintptr) (interface{}, error) {
 	return wrapDatagramBased(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

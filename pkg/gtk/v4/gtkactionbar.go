@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkactionbar.go.
+var GTypeActionBar = externglib.Type(C.gtk_action_bar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_action_bar_get_type()), F: marshalActionBarrer},
+		{T: GTypeActionBar, F: marshalActionBar},
 	})
 }
 
@@ -65,7 +68,7 @@ func wrapActionBar(obj *externglib.Object) *ActionBar {
 	}
 }
 
-func marshalActionBarrer(p uintptr) (interface{}, error) {
+func marshalActionBar(p uintptr) (interface{}, error) {
 	return wrapActionBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

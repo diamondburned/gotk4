@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk3_CheckButtonClass_draw_indicator(GtkCheckButton*, cairo_t*);
 import "C"
 
+// glib.Type values for gtkcheckbutton.go.
+var GTypeCheckButton = externglib.Type(C.gtk_check_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtonner},
+		{T: GTypeCheckButton, F: marshalCheckButton},
 	})
 }
 
@@ -134,7 +137,7 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	}
 }
 
-func marshalCheckButtonner(p uintptr) (interface{}, error) {
+func marshalCheckButton(p uintptr) (interface{}, error) {
 	return wrapCheckButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

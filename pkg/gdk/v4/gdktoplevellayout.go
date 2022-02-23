@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdktoplevellayout.go.
+var GTypeToplevelLayout = externglib.Type(C.gdk_toplevel_layout_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_toplevel_layout_get_type()), F: marshalToplevelLayout},
+		{T: GTypeToplevelLayout, F: marshalToplevelLayout},
 	})
 }
 

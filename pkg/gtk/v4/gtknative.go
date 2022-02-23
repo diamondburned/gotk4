@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtknative.go.
+var GTypeNativeSurface = externglib.Type(C.gtk_native_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_native_get_type()), F: marshalNativeSurfacer},
+		{T: GTypeNativeSurface, F: marshalNativeSurface},
 	})
 }
 
@@ -92,7 +95,7 @@ func wrapNativeSurface(obj *externglib.Object) *NativeSurface {
 	}
 }
 
-func marshalNativeSurfacer(p uintptr) (interface{}, error) {
+func marshalNativeSurface(p uintptr) (interface{}, error) {
 	return wrapNativeSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

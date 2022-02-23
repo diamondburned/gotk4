@@ -16,9 +16,12 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
+// glib.Type values for gsktypes.go.
+var GTypeTransform = externglib.Type(C.gsk_transform_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_transform_get_type()), F: marshalTransform},
+		{T: GTypeTransform, F: marshalTransform},
 	})
 }
 

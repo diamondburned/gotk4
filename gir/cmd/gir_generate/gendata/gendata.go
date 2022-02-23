@@ -401,10 +401,9 @@ func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
 	h := fg.Header()
 	h.Import("unsafe")
 	h.Import("runtime")
-	h.NeedsExternGLib()
 	h.ImportCore("gextras")
-
-	h.Marshalers = append(h.Marshalers, `{T: externglib.TypeVariant, F: marshalVariant},`)
+	h.NeedsExternGLib()
+	h.AddMarshaler("externglib.TypeVariant", "Variant")
 
 	p := fg.Pen()
 	p.Line(`

@@ -34,11 +34,18 @@ import (
 // extern void _gotk4_gtk3_Window_ConnectSetFocus(gpointer, GtkWidget*, guintptr);
 import "C"
 
+// glib.Type values for gtkwindow.go.
+var (
+	GTypeWindowPosition = externglib.Type(C.gtk_window_position_get_type())
+	GTypeWindowType     = externglib.Type(C.gtk_window_type_get_type())
+	GTypeWindow         = externglib.Type(C.gtk_window_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_position_get_type()), F: marshalWindowPosition},
-		{T: externglib.Type(C.gtk_window_type_get_type()), F: marshalWindowType},
-		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindower},
+		{T: GTypeWindowPosition, F: marshalWindowPosition},
+		{T: GTypeWindowType, F: marshalWindowType},
+		{T: GTypeWindow, F: marshalWindow},
 	})
 }
 
@@ -329,7 +336,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 	}
 }
 
-func marshalWindower(p uintptr) (interface{}, error) {
+func marshalWindow(p uintptr) (interface{}, error) {
 	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

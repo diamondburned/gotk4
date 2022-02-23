@@ -18,10 +18,16 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
+// glib.Type values for gskglshader.go.
+var (
+	GTypeGLShader          = externglib.Type(C.gsk_gl_shader_get_type())
+	GTypeShaderArgsBuilder = externglib.Type(C.gsk_shader_args_builder_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_gl_shader_get_type()), F: marshalGLShaderer},
-		{T: externglib.Type(C.gsk_shader_args_builder_get_type()), F: marshalShaderArgsBuilder},
+		{T: GTypeGLShader, F: marshalGLShader},
+		{T: GTypeShaderArgsBuilder, F: marshalShaderArgsBuilder},
 	})
 }
 
@@ -154,7 +160,7 @@ func wrapGLShader(obj *externglib.Object) *GLShader {
 	}
 }
 
-func marshalGLShaderer(p uintptr) (interface{}, error) {
+func marshalGLShader(p uintptr) (interface{}, error) {
 	return wrapGLShader(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -23,9 +23,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtktreesortable.go.
+var GTypeTreeSortable = externglib.Type(C.gtk_tree_sortable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_sortable_get_type()), F: marshalTreeSortabler},
+		{T: GTypeTreeSortable, F: marshalTreeSortable},
 	})
 }
 
@@ -138,7 +141,7 @@ func wrapTreeSortable(obj *externglib.Object) *TreeSortable {
 	}
 }
 
-func marshalTreeSortabler(p uintptr) (interface{}, error) {
+func marshalTreeSortable(p uintptr) (interface{}, error) {
 	return wrapTreeSortable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -17,9 +17,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkpixbuf.go.
+var GTypePixbufSimpleAnimIter = externglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type()), F: marshalPixbufSimpleAnimIterer},
+		{T: GTypePixbufSimpleAnimIter, F: marshalPixbufSimpleAnimIter},
 	})
 }
 
@@ -54,6 +57,6 @@ func wrapPixbufSimpleAnimIter(obj *externglib.Object) *PixbufSimpleAnimIter {
 	}
 }
 
-func marshalPixbufSimpleAnimIterer(p uintptr) (interface{}, error) {
+func marshalPixbufSimpleAnimIter(p uintptr) (interface{}, error) {
 	return wrapPixbufSimpleAnimIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

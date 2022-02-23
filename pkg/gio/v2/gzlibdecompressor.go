@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gzlibdecompressor.go.
+var GTypeZlibDecompressor = externglib.Type(C.g_zlib_decompressor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressorrer},
+		{T: GTypeZlibDecompressor, F: marshalZlibDecompressor},
 	})
 }
 
@@ -53,7 +56,7 @@ func wrapZlibDecompressor(obj *externglib.Object) *ZlibDecompressor {
 	}
 }
 
-func marshalZlibDecompressorrer(p uintptr) (interface{}, error) {
+func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 	return wrapZlibDecompressor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

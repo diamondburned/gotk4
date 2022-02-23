@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkvideo.go.
+var GTypeVideo = externglib.Type(C.gtk_video_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_video_get_type()), F: marshalVideoer},
+		{T: GTypeVideo, F: marshalVideo},
 	})
 }
 
@@ -75,7 +78,7 @@ func wrapVideo(obj *externglib.Object) *Video {
 	}
 }
 
-func marshalVideoer(p uintptr) (interface{}, error) {
+func marshalVideo(p uintptr) (interface{}, error) {
 	return wrapVideo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -20,9 +20,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkoffscreenwindow.go.
+var GTypeOffscreenWindow = externglib.Type(C.gtk_offscreen_window_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_offscreen_window_get_type()), F: marshalOffscreenWindower},
+		{T: GTypeOffscreenWindow, F: marshalOffscreenWindow},
 	})
 }
 
@@ -85,7 +88,7 @@ func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 	}
 }
 
-func marshalOffscreenWindower(p uintptr) (interface{}, error) {
+func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 	return wrapOffscreenWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

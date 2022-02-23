@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcenterbox.go.
+var GTypeCenterBox = externglib.Type(C.gtk_center_box_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_center_box_get_type()), F: marshalCenterBoxer},
+		{T: GTypeCenterBox, F: marshalCenterBox},
 	})
 }
 
@@ -103,7 +106,7 @@ func wrapCenterBox(obj *externglib.Object) *CenterBox {
 	}
 }
 
-func marshalCenterBoxer(p uintptr) (interface{}, error) {
+func marshalCenterBox(p uintptr) (interface{}, error) {
 	return wrapCenterBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkfilefilter.go.
+var GTypeFileFilter = externglib.Type(C.gtk_file_filter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_filter_get_type()), F: marshalFileFilterer},
+		{T: GTypeFileFilter, F: marshalFileFilter},
 	})
 }
 
@@ -84,7 +87,7 @@ func wrapFileFilter(obj *externglib.Object) *FileFilter {
 	}
 }
 
-func marshalFileFilterer(p uintptr) (interface{}, error) {
+func marshalFileFilter(p uintptr) (interface{}, error) {
 	return wrapFileFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

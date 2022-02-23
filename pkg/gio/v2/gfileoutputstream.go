@@ -28,9 +28,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gfileoutputstream.go.
+var GTypeFileOutputStream = externglib.Type(C.g_file_output_stream_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_output_stream_get_type()), F: marshalFileOutputStreamer},
+		{T: GTypeFileOutputStream, F: marshalFileOutputStream},
 	})
 }
 
@@ -364,7 +367,7 @@ func wrapFileOutputStream(obj *externglib.Object) *FileOutputStream {
 	}
 }
 
-func marshalFileOutputStreamer(p uintptr) (interface{}, error) {
+func marshalFileOutputStream(p uintptr) (interface{}, error) {
 	return wrapFileOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

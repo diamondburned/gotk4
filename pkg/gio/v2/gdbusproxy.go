@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gio2_DBusProxy_ConnectGSignal(gpointer, gchar*, gchar*, GVariant*, guintptr);
 import "C"
 
+// glib.Type values for gdbusproxy.go.
+var GTypeDBusProxy = externglib.Type(C.g_dbus_proxy_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_proxy_get_type()), F: marshalDBusProxier},
+		{T: GTypeDBusProxy, F: marshalDBusProxy},
 	})
 }
 
@@ -147,7 +150,7 @@ func wrapDBusProxy(obj *externglib.Object) *DBusProxy {
 	}
 }
 
-func marshalDBusProxier(p uintptr) (interface{}, error) {
+func marshalDBusProxy(p uintptr) (interface{}, error) {
 	return wrapDBusProxy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

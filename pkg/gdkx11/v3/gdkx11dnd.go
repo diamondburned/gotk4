@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11dnd.go.
+var GTypeX11DragContext = externglib.Type(C.gdk_x11_drag_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_drag_context_get_type()), F: marshalX11DragContexter},
+		{T: GTypeX11DragContext, F: marshalX11DragContext},
 	})
 }
 
@@ -49,6 +52,6 @@ func wrapX11DragContext(obj *externglib.Object) *X11DragContext {
 	}
 }
 
-func marshalX11DragContexter(p uintptr) (interface{}, error) {
+func marshalX11DragContext(p uintptr) (interface{}, error) {
 	return wrapX11DragContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

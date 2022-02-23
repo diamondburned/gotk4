@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcsssection.go.
+var GTypeCSSSection = externglib.Type(C.gtk_css_section_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_css_section_get_type()), F: marshalCSSSection},
+		{T: GTypeCSSSection, F: marshalCSSSection},
 	})
 }
 

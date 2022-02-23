@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gtask.go.
+var GTypeTask = externglib.Type(C.g_task_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_task_get_type()), F: marshalTasker},
+		{T: GTypeTask, F: marshalTask},
 	})
 }
 
@@ -219,7 +222,7 @@ func wrapTask(obj *externglib.Object) *Task {
 	}
 }
 
-func marshalTasker(p uintptr) (interface{}, error) {
+func marshalTask(p uintptr) (interface{}, error) {
 	return wrapTask(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

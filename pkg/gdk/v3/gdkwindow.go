@@ -27,19 +27,34 @@ import (
 // extern void _gotk4_gdk3_Window_ConnectMovedToRect(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
 import "C"
 
+// glib.Type values for gdkwindow.go.
+var (
+	GTypeFullscreenMode       = externglib.Type(C.gdk_fullscreen_mode_get_type())
+	GTypeGravity              = externglib.Type(C.gdk_gravity_get_type())
+	GTypeWindowEdge           = externglib.Type(C.gdk_window_edge_get_type())
+	GTypeWindowType           = externglib.Type(C.gdk_window_type_get_type())
+	GTypeWindowWindowClass    = externglib.Type(C.gdk_window_window_class_get_type())
+	GTypeAnchorHints          = externglib.Type(C.gdk_anchor_hints_get_type())
+	GTypeWMDecoration         = externglib.Type(C.gdk_wm_decoration_get_type())
+	GTypeWMFunction           = externglib.Type(C.gdk_wm_function_get_type())
+	GTypeWindowAttributesType = externglib.Type(C.gdk_window_attributes_type_get_type())
+	GTypeWindowHints          = externglib.Type(C.gdk_window_hints_get_type())
+	GTypeWindow               = externglib.Type(C.gdk_window_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
-		{T: externglib.Type(C.gdk_gravity_get_type()), F: marshalGravity},
-		{T: externglib.Type(C.gdk_window_edge_get_type()), F: marshalWindowEdge},
-		{T: externglib.Type(C.gdk_window_type_get_type()), F: marshalWindowType},
-		{T: externglib.Type(C.gdk_window_window_class_get_type()), F: marshalWindowWindowClass},
-		{T: externglib.Type(C.gdk_anchor_hints_get_type()), F: marshalAnchorHints},
-		{T: externglib.Type(C.gdk_wm_decoration_get_type()), F: marshalWMDecoration},
-		{T: externglib.Type(C.gdk_wm_function_get_type()), F: marshalWMFunction},
-		{T: externglib.Type(C.gdk_window_attributes_type_get_type()), F: marshalWindowAttributesType},
-		{T: externglib.Type(C.gdk_window_hints_get_type()), F: marshalWindowHints},
-		{T: externglib.Type(C.gdk_window_get_type()), F: marshalWindower},
+		{T: GTypeFullscreenMode, F: marshalFullscreenMode},
+		{T: GTypeGravity, F: marshalGravity},
+		{T: GTypeWindowEdge, F: marshalWindowEdge},
+		{T: GTypeWindowType, F: marshalWindowType},
+		{T: GTypeWindowWindowClass, F: marshalWindowWindowClass},
+		{T: GTypeAnchorHints, F: marshalAnchorHints},
+		{T: GTypeWMDecoration, F: marshalWMDecoration},
+		{T: GTypeWMFunction, F: marshalWMFunction},
+		{T: GTypeWindowAttributesType, F: marshalWindowAttributesType},
+		{T: GTypeWindowHints, F: marshalWindowHints},
+		{T: GTypeWindow, F: marshalWindow},
 	})
 }
 
@@ -970,7 +985,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 	}
 }
 
-func marshalWindower(p uintptr) (interface{}, error) {
+func marshalWindow(p uintptr) (interface{}, error) {
 	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

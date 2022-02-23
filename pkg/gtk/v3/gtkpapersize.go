@@ -19,9 +19,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkpapersize.go.
+var GTypePaperSize = externglib.Type(C.gtk_paper_size_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_paper_size_get_type()), F: marshalPaperSize},
+		{T: GTypePaperSize, F: marshalPaperSize},
 	})
 }
 

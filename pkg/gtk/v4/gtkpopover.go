@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk4_Popover_ConnectClosed(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkpopover.go.
+var GTypePopover = externglib.Type(C.gtk_popover_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_popover_get_type()), F: marshalPopoverer},
+		{T: GTypePopover, F: marshalPopover},
 	})
 }
 
@@ -197,7 +200,7 @@ func wrapPopover(obj *externglib.Object) *Popover {
 	}
 }
 
-func marshalPopoverer(p uintptr) (interface{}, error) {
+func marshalPopover(p uintptr) (interface{}, error) {
 	return wrapPopover(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

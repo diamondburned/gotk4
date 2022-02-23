@@ -18,12 +18,20 @@ import (
 // extern void _gotk4_gdk3_Device_ConnectToolChanged(gpointer, GdkDeviceTool*, guintptr);
 import "C"
 
+// glib.Type values for gdkdevice.go.
+var (
+	GTypeDeviceType  = externglib.Type(C.gdk_device_type_get_type())
+	GTypeInputMode   = externglib.Type(C.gdk_input_mode_get_type())
+	GTypeInputSource = externglib.Type(C.gdk_input_source_get_type())
+	GTypeDevice      = externglib.Type(C.gdk_device_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_device_type_get_type()), F: marshalDeviceType},
-		{T: externglib.Type(C.gdk_input_mode_get_type()), F: marshalInputMode},
-		{T: externglib.Type(C.gdk_input_source_get_type()), F: marshalInputSource},
-		{T: externglib.Type(C.gdk_device_get_type()), F: marshalDevicer},
+		{T: GTypeDeviceType, F: marshalDeviceType},
+		{T: GTypeInputMode, F: marshalInputMode},
+		{T: GTypeInputSource, F: marshalInputSource},
+		{T: GTypeDevice, F: marshalDevice},
 	})
 }
 
@@ -189,7 +197,7 @@ func wrapDevice(obj *externglib.Object) *Device {
 	}
 }
 
-func marshalDevicer(p uintptr) (interface{}, error) {
+func marshalDevice(p uintptr) (interface{}, error) {
 	return wrapDevice(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

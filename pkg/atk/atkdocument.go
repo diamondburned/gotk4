@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_atk1_Document_ConnectReload(gpointer, guintptr);
 import "C"
 
+// glib.Type values for atkdocument.go.
+var GTypeDocument = externglib.Type(C.atk_document_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_document_get_type()), F: marshalDocumenter},
+		{T: GTypeDocument, F: marshalDocument},
 	})
 }
 
@@ -75,7 +78,7 @@ func wrapDocument(obj *externglib.Object) *Document {
 	}
 }
 
-func marshalDocumenter(p uintptr) (interface{}, error) {
+func marshalDocument(p uintptr) (interface{}, error) {
 	return wrapDocument(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

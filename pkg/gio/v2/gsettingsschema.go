@@ -17,11 +17,18 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gsettingsschema.go.
+var (
+	GTypeSettingsSchema       = externglib.Type(C.g_settings_schema_get_type())
+	GTypeSettingsSchemaKey    = externglib.Type(C.g_settings_schema_key_get_type())
+	GTypeSettingsSchemaSource = externglib.Type(C.g_settings_schema_source_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_settings_schema_get_type()), F: marshalSettingsSchema},
-		{T: externglib.Type(C.g_settings_schema_key_get_type()), F: marshalSettingsSchemaKey},
-		{T: externglib.Type(C.g_settings_schema_source_get_type()), F: marshalSettingsSchemaSource},
+		{T: GTypeSettingsSchema, F: marshalSettingsSchema},
+		{T: GTypeSettingsSchemaKey, F: marshalSettingsSchemaKey},
+		{T: GTypeSettingsSchemaSource, F: marshalSettingsSchemaSource},
 	})
 }
 

@@ -174,11 +174,18 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkwidget.go.
+var (
+	GTypeWidgetHelpType = externglib.Type(C.gtk_widget_help_type_get_type())
+	GTypeWidget         = externglib.Type(C.gtk_widget_get_type())
+	GTypeRequisition    = externglib.Type(C.gtk_requisition_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_widget_help_type_get_type()), F: marshalWidgetHelpType},
-		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidgetter},
-		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
+		{T: GTypeWidgetHelpType, F: marshalWidgetHelpType},
+		{T: GTypeWidget, F: marshalWidget},
+		{T: GTypeRequisition, F: marshalRequisition},
 	})
 }
 
@@ -2991,7 +2998,7 @@ func wrapWidget(obj *externglib.Object) *Widget {
 	}
 }
 
-func marshalWidgetter(p uintptr) (interface{}, error) {
+func marshalWidget(p uintptr) (interface{}, error) {
 	return wrapWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

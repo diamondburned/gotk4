@@ -16,9 +16,12 @@ import (
 // extern void _gotk4_atk1_ObjectFactoryClass_invalidate(AtkObjectFactory*);
 import "C"
 
+// glib.Type values for atkobjectfactory.go.
+var GTypeObjectFactory = externglib.Type(C.atk_object_factory_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_object_factory_get_type()), F: marshalObjectFactorier},
+		{T: GTypeObjectFactory, F: marshalObjectFactory},
 	})
 }
 
@@ -74,7 +77,7 @@ func wrapObjectFactory(obj *externglib.Object) *ObjectFactory {
 	}
 }
 
-func marshalObjectFactorier(p uintptr) (interface{}, error) {
+func marshalObjectFactory(p uintptr) (interface{}, error) {
 	return wrapObjectFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

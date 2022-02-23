@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk3_ToggleToolButton_ConnectToggled(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtktoggletoolbutton.go.
+var GTypeToggleToolButton = externglib.Type(C.gtk_toggle_tool_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButtonner},
+		{T: GTypeToggleToolButton, F: marshalToggleToolButton},
 	})
 }
 
@@ -117,7 +120,7 @@ func wrapToggleToolButton(obj *externglib.Object) *ToggleToolButton {
 	}
 }
 
-func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
+func marshalToggleToolButton(p uintptr) (interface{}, error) {
 	return wrapToggleToolButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkeditablelabel.go.
+var GTypeEditableLabel = externglib.Type(C.gtk_editable_label_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabeller},
+		{T: GTypeEditableLabel, F: marshalEditableLabel},
 	})
 }
 
@@ -108,7 +111,7 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 	}
 }
 
-func marshalEditableLabeller(p uintptr) (interface{}, error) {
+func marshalEditableLabel(p uintptr) (interface{}, error) {
 	return wrapEditableLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

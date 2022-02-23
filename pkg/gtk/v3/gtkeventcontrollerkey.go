@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gtk3_EventControllerKey_ConnectKeyReleased(gpointer, guint, guint, GdkModifierType, guintptr);
 import "C"
 
+// glib.Type values for gtkeventcontrollerkey.go.
+var GTypeEventControllerKey = externglib.Type(C.gtk_event_controller_key_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyer},
+		{T: GTypeEventControllerKey, F: marshalEventControllerKey},
 	})
 }
 
@@ -62,7 +65,7 @@ func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 	}
 }
 
-func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
+func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	return wrapEventControllerKey(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

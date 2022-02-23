@@ -14,10 +14,16 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkgridlayout.go.
+var (
+	GTypeGridLayout      = externglib.Type(C.gtk_grid_layout_get_type())
+	GTypeGridLayoutChild = externglib.Type(C.gtk_grid_layout_child_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_grid_layout_get_type()), F: marshalGridLayouter},
-		{T: externglib.Type(C.gtk_grid_layout_child_get_type()), F: marshalGridLayoutChilder},
+		{T: GTypeGridLayout, F: marshalGridLayout},
+		{T: GTypeGridLayoutChild, F: marshalGridLayoutChild},
 	})
 }
 
@@ -64,7 +70,7 @@ func wrapGridLayout(obj *externglib.Object) *GridLayout {
 	}
 }
 
-func marshalGridLayouter(p uintptr) (interface{}, error) {
+func marshalGridLayout(p uintptr) (interface{}, error) {
 	return wrapGridLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -387,7 +393,7 @@ func wrapGridLayoutChild(obj *externglib.Object) *GridLayoutChild {
 	}
 }
 
-func marshalGridLayoutChilder(p uintptr) (interface{}, error) {
+func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 	return wrapGridLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkdevicetool.go.
+var GTypeDeviceToolType = externglib.Type(C.gdk_device_tool_type_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_device_tool_type_get_type()), F: marshalDeviceToolType},
+		{T: GTypeDeviceToolType, F: marshalDeviceToolType},
 	})
 }
 

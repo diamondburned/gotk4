@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkhseparator.go.
+var GTypeHSeparator = externglib.Type(C.gtk_hseparator_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hseparator_get_type()), F: marshalHSeparatorrer},
+		{T: GTypeHSeparator, F: marshalHSeparator},
 	})
 }
 
@@ -77,7 +80,7 @@ func wrapHSeparator(obj *externglib.Object) *HSeparator {
 	}
 }
 
-func marshalHSeparatorrer(p uintptr) (interface{}, error) {
+func marshalHSeparator(p uintptr) (interface{}, error) {
 	return wrapHSeparator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

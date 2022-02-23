@@ -13,9 +13,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdksnapshot.go.
+var GTypeSnapshot = externglib.Type(C.gdk_snapshot_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshotter},
+		{T: GTypeSnapshot, F: marshalSnapshot},
 	})
 }
 
@@ -60,7 +63,7 @@ func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	}
 }
 
-func marshalSnapshotter(p uintptr) (interface{}, error) {
+func marshalSnapshot(p uintptr) (interface{}, error) {
 	return wrapSnapshot(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

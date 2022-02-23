@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtktypes.go.
+var GTypeBitset = externglib.Type(C.gtk_bitset_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bitset_get_type()), F: marshalBitset},
+		{T: GTypeBitset, F: marshalBitset},
 	})
 }
 

@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk4_Editable_ConnectDeleteText(gpointer, gint, gint, guintptr);
 import "C"
 
+// glib.Type values for gtkeditable.go.
+var GTypeEditable = externglib.Type(C.gtk_editable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_editable_get_type()), F: marshalEditabler},
+		{T: GTypeEditable, F: marshalEditable},
 	})
 }
 
@@ -238,7 +241,7 @@ func wrapEditable(obj *externglib.Object) *Editable {
 	}
 }
 
-func marshalEditabler(p uintptr) (interface{}, error) {
+func marshalEditable(p uintptr) (interface{}, error) {
 	return wrapEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

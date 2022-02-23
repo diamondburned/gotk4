@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_atk1_Selection_ConnectSelectionChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for atkselection.go.
+var GTypeSelection = externglib.Type(C.atk_selection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_selection_get_type()), F: marshalSelectioner},
+		{T: GTypeSelection, F: marshalSelection},
 	})
 }
 
@@ -308,7 +311,7 @@ func wrapSelection(obj *externglib.Object) *Selection {
 	}
 }
 
-func marshalSelectioner(p uintptr) (interface{}, error) {
+func marshalSelection(p uintptr) (interface{}, error) {
 	return wrapSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

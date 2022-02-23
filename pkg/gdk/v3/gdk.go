@@ -22,11 +22,18 @@ import (
 // extern void _gotk4_gdk3_DragContext_ConnectDropPerformed(gpointer, gint, guintptr);
 import "C"
 
+// glib.Type values for gdk.go.
+var (
+	GTypeStatus      = externglib.Type(C.gdk_status_get_type())
+	GTypeDeviceTool  = externglib.Type(C.gdk_device_tool_get_type())
+	GTypeDragContext = externglib.Type(C.gdk_drag_context_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_status_get_type()), F: marshalStatus},
-		{T: externglib.Type(C.gdk_device_tool_get_type()), F: marshalDeviceTooler},
-		{T: externglib.Type(C.gdk_drag_context_get_type()), F: marshalDragContexter},
+		{T: GTypeStatus, F: marshalStatus},
+		{T: GTypeDeviceTool, F: marshalDeviceTool},
+		{T: GTypeDragContext, F: marshalDragContext},
 	})
 }
 
@@ -91,7 +98,7 @@ func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 	}
 }
 
-func marshalDeviceTooler(p uintptr) (interface{}, error) {
+func marshalDeviceTool(p uintptr) (interface{}, error) {
 	return wrapDeviceTool(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -110,7 +117,7 @@ func wrapDragContext(obj *externglib.Object) *DragContext {
 	}
 }
 
-func marshalDragContexter(p uintptr) (interface{}, error) {
+func marshalDragContext(p uintptr) (interface{}, error) {
 	return wrapDragContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

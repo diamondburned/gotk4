@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktextviewaccessible.go.
+var GTypeTextViewAccessible = externglib.Type(C.gtk_text_view_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_view_accessible_get_type()), F: marshalTextViewAccessibler},
+		{T: GTypeTextViewAccessible, F: marshalTextViewAccessible},
 	})
 }
 
@@ -75,6 +78,6 @@ func wrapTextViewAccessible(obj *externglib.Object) *TextViewAccessible {
 	}
 }
 
-func marshalTextViewAccessibler(p uintptr) (interface{}, error) {
+func marshalTextViewAccessible(p uintptr) (interface{}, error) {
 	return wrapTextViewAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

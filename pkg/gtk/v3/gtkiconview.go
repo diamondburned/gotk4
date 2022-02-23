@@ -39,10 +39,16 @@ import (
 // extern void _gotk4_gtk3_IconView_ConnectUnselectAll(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkiconview.go.
+var (
+	GTypeIconViewDropPosition = externglib.Type(C.gtk_icon_view_drop_position_get_type())
+	GTypeIconView             = externglib.Type(C.gtk_icon_view_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_icon_view_drop_position_get_type()), F: marshalIconViewDropPosition},
-		{T: externglib.Type(C.gtk_icon_view_get_type()), F: marshalIconViewer},
+		{T: GTypeIconViewDropPosition, F: marshalIconViewDropPosition},
+		{T: GTypeIconView, F: marshalIconView},
 	})
 }
 
@@ -334,7 +340,7 @@ func wrapIconView(obj *externglib.Object) *IconView {
 	}
 }
 
-func marshalIconViewer(p uintptr) (interface{}, error) {
+func marshalIconView(p uintptr) (interface{}, error) {
 	return wrapIconView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

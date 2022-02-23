@@ -15,9 +15,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for gvarianttype.go.
+var GTypeVariantType = externglib.Type(C.g_variant_type_get_gtype())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_variant_type_get_gtype()), F: marshalVariantType},
+		{T: GTypeVariantType, F: marshalVariantType},
 	})
 }
 

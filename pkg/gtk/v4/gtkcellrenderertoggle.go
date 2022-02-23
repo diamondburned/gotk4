@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gtk4_CellRendererToggle_ConnectToggled(gpointer, gchar*, guintptr);
 import "C"
 
+// glib.Type values for gtkcellrenderertoggle.go.
+var GTypeCellRendererToggle = externglib.Type(C.gtk_cell_renderer_toggle_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_toggle_get_type()), F: marshalCellRendererToggler},
+		{T: GTypeCellRendererToggle, F: marshalCellRendererToggle},
 	})
 }
 
@@ -45,7 +48,7 @@ func wrapCellRendererToggle(obj *externglib.Object) *CellRendererToggle {
 	}
 }
 
-func marshalCellRendererToggler(p uintptr) (interface{}, error) {
+func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	return wrapCellRendererToggle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

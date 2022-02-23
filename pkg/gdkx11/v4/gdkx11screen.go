@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gdkx11screen.go.
+var GTypeX11Screen = externglib.Type(C.gdk_x11_screen_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_screen_get_type()), F: marshalX11Screener},
+		{T: GTypeX11Screen, F: marshalX11Screen},
 	})
 }
 
@@ -48,7 +51,7 @@ func wrapX11Screen(obj *externglib.Object) *X11Screen {
 	}
 }
 
-func marshalX11Screener(p uintptr) (interface{}, error) {
+func marshalX11Screen(p uintptr) (interface{}, error) {
 	return wrapX11Screen(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkvpaned.go.
+var GTypeVPaned = externglib.Type(C.gtk_vpaned_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vpaned_get_type()), F: marshalVPanedder},
+		{T: GTypeVPaned, F: marshalVPaned},
 	})
 }
 
@@ -74,7 +77,7 @@ func wrapVPaned(obj *externglib.Object) *VPaned {
 	}
 }
 
-func marshalVPanedder(p uintptr) (interface{}, error) {
+func marshalVPaned(p uintptr) (interface{}, error) {
 	return wrapVPaned(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

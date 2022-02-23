@@ -24,9 +24,12 @@ import (
 // extern void _gotk4_gtk3_CellEditable_ConnectRemoveWidget(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkcelleditable.go.
+var GTypeCellEditable = externglib.Type(C.gtk_cell_editable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_editable_get_type()), F: marshalCellEditabler},
+		{T: GTypeCellEditable, F: marshalCellEditable},
 	})
 }
 
@@ -141,7 +144,7 @@ func wrapCellEditable(obj *externglib.Object) *CellEditable {
 	}
 }
 
-func marshalCellEditabler(p uintptr) (interface{}, error) {
+func marshalCellEditable(p uintptr) (interface{}, error) {
 	return wrapCellEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

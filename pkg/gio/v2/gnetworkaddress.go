@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gnetworkaddress.go.
+var GTypeNetworkAddress = externglib.Type(C.g_network_address_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_address_get_type()), F: marshalNetworkAddresser},
+		{T: GTypeNetworkAddress, F: marshalNetworkAddress},
 	})
 }
 
@@ -61,7 +64,7 @@ func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
 	}
 }
 
-func marshalNetworkAddresser(p uintptr) (interface{}, error) {
+func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	return wrapNetworkAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

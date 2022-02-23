@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gio2_SocketListener_ConnectEvent(gpointer, GSocketListenerEvent, GSocket*, guintptr);
 import "C"
 
+// glib.Type values for gsocketlistener.go.
+var GTypeSocketListener = externglib.Type(C.g_socket_listener_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_listener_get_type()), F: marshalSocketListenerer},
+		{T: GTypeSocketListener, F: marshalSocketListener},
 	})
 }
 
@@ -111,7 +114,7 @@ func wrapSocketListener(obj *externglib.Object) *SocketListener {
 	}
 }
 
-func marshalSocketListenerer(p uintptr) (interface{}, error) {
+func marshalSocketListener(p uintptr) (interface{}, error) {
 	return wrapSocketListener(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

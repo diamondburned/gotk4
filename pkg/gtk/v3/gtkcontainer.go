@@ -32,9 +32,12 @@ import (
 // extern void _gotk4_gtk3_Container_ConnectSetFocusChild(gpointer, GtkWidget*, guintptr);
 import "C"
 
+// glib.Type values for gtkcontainer.go.
+var GTypeContainer = externglib.Type(C.gtk_container_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_container_get_type()), F: marshalContainerer},
+		{T: GTypeContainer, F: marshalContainer},
 	})
 }
 
@@ -537,7 +540,7 @@ func wrapContainer(obj *externglib.Object) *Container {
 	}
 }
 
-func marshalContainerer(p uintptr) (interface{}, error) {
+func marshalContainer(p uintptr) (interface{}, error) {
 	return wrapContainer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

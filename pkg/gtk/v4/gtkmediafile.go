@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk4_MediaFileClass_open(GtkMediaFile*);
 import "C"
 
+// glib.Type values for gtkmediafile.go.
+var GTypeMediaFile = externglib.Type(C.gtk_media_file_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_media_file_get_type()), F: marshalMediaFiler},
+		{T: GTypeMediaFile, F: marshalMediaFile},
 	})
 }
 
@@ -108,7 +111,7 @@ func wrapMediaFile(obj *externglib.Object) *MediaFile {
 	}
 }
 
-func marshalMediaFiler(p uintptr) (interface{}, error) {
+func marshalMediaFile(p uintptr) (interface{}, error) {
 	return wrapMediaFile(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

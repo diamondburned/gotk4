@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gdk3_Screen_ConnectSizeChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gdkscreen.go.
+var GTypeScreen = externglib.Type(C.gdk_screen_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_screen_get_type()), F: marshalScreener},
+		{T: GTypeScreen, F: marshalScreen},
 	})
 }
 
@@ -50,7 +53,7 @@ func wrapScreen(obj *externglib.Object) *Screen {
 	}
 }
 
-func marshalScreener(p uintptr) (interface{}, error) {
+func marshalScreen(p uintptr) (interface{}, error) {
 	return wrapScreen(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

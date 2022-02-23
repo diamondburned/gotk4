@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for atkstateset.go.
+var GTypeStateSet = externglib.Type(C.atk_state_set_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_state_set_get_type()), F: marshalStateSetter},
+		{T: GTypeStateSet, F: marshalStateSet},
 	})
 }
 
@@ -50,7 +53,7 @@ func wrapStateSet(obj *externglib.Object) *StateSet {
 	}
 }
 
-func marshalStateSetter(p uintptr) (interface{}, error) {
+func marshalStateSet(p uintptr) (interface{}, error) {
 	return wrapStateSet(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

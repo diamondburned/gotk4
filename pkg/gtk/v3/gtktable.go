@@ -19,10 +19,16 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktable.go.
+var (
+	GTypeAttachOptions = externglib.Type(C.gtk_attach_options_get_type())
+	GTypeTable         = externglib.Type(C.gtk_table_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_attach_options_get_type()), F: marshalAttachOptions},
-		{T: externglib.Type(C.gtk_table_get_type()), F: marshalTabler},
+		{T: GTypeAttachOptions, F: marshalAttachOptions},
+		{T: GTypeTable, F: marshalTable},
 	})
 }
 
@@ -142,7 +148,7 @@ func wrapTable(obj *externglib.Object) *Table {
 	}
 }
 
-func marshalTabler(p uintptr) (interface{}, error) {
+func marshalTable(p uintptr) (interface{}, error) {
 	return wrapTable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -20,10 +20,16 @@ import (
 // extern gboolean _gotk4_pango1_FontsetForEachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
+// glib.Type values for pango-fontset.go.
+var (
+	GTypeFontset       = externglib.Type(C.pango_fontset_get_type())
+	GTypeFontsetSimple = externglib.Type(C.pango_fontset_simple_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontsetter},
-		{T: externglib.Type(C.pango_fontset_simple_get_type()), F: marshalFontsetSimpler},
+		{T: GTypeFontset, F: marshalFontset},
+		{T: GTypeFontsetSimple, F: marshalFontsetSimple},
 	})
 }
 
@@ -216,7 +222,7 @@ func wrapFontset(obj *externglib.Object) *Fontset {
 	}
 }
 
-func marshalFontsetter(p uintptr) (interface{}, error) {
+func marshalFontset(p uintptr) (interface{}, error) {
 	return wrapFontset(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -363,7 +369,7 @@ func wrapFontsetSimple(obj *externglib.Object) *FontsetSimple {
 	}
 }
 
-func marshalFontsetSimpler(p uintptr) (interface{}, error) {
+func marshalFontsetSimple(p uintptr) (interface{}, error) {
 	return wrapFontsetSimple(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

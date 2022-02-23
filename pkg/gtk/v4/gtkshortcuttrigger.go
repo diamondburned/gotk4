@@ -15,13 +15,22 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkshortcuttrigger.go.
+var (
+	GTypeAlternativeTrigger = externglib.Type(C.gtk_alternative_trigger_get_type())
+	GTypeKeyvalTrigger      = externglib.Type(C.gtk_keyval_trigger_get_type())
+	GTypeMnemonicTrigger    = externglib.Type(C.gtk_mnemonic_trigger_get_type())
+	GTypeNeverTrigger       = externglib.Type(C.gtk_never_trigger_get_type())
+	GTypeShortcutTrigger    = externglib.Type(C.gtk_shortcut_trigger_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_alternative_trigger_get_type()), F: marshalAlternativeTriggerer},
-		{T: externglib.Type(C.gtk_keyval_trigger_get_type()), F: marshalKeyvalTriggerer},
-		{T: externglib.Type(C.gtk_mnemonic_trigger_get_type()), F: marshalMnemonicTriggerer},
-		{T: externglib.Type(C.gtk_never_trigger_get_type()), F: marshalNeverTriggerer},
-		{T: externglib.Type(C.gtk_shortcut_trigger_get_type()), F: marshalShortcutTriggerer},
+		{T: GTypeAlternativeTrigger, F: marshalAlternativeTrigger},
+		{T: GTypeKeyvalTrigger, F: marshalKeyvalTrigger},
+		{T: GTypeMnemonicTrigger, F: marshalMnemonicTrigger},
+		{T: GTypeNeverTrigger, F: marshalNeverTrigger},
+		{T: GTypeShortcutTrigger, F: marshalShortcutTrigger},
 	})
 }
 
@@ -59,7 +68,7 @@ func wrapAlternativeTrigger(obj *externglib.Object) *AlternativeTrigger {
 	}
 }
 
-func marshalAlternativeTriggerer(p uintptr) (interface{}, error) {
+func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
 	return wrapAlternativeTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -210,7 +219,7 @@ func wrapKeyvalTrigger(obj *externglib.Object) *KeyvalTrigger {
 	}
 }
 
-func marshalKeyvalTriggerer(p uintptr) (interface{}, error) {
+func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 	return wrapKeyvalTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -323,7 +332,7 @@ func wrapMnemonicTrigger(obj *externglib.Object) *MnemonicTrigger {
 	}
 }
 
-func marshalMnemonicTriggerer(p uintptr) (interface{}, error) {
+func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 	return wrapMnemonicTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -409,7 +418,7 @@ func wrapNeverTrigger(obj *externglib.Object) *NeverTrigger {
 	}
 }
 
-func marshalNeverTriggerer(p uintptr) (interface{}, error) {
+func marshalNeverTrigger(p uintptr) (interface{}, error) {
 	return wrapNeverTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -484,7 +493,7 @@ func wrapShortcutTrigger(obj *externglib.Object) *ShortcutTrigger {
 	}
 }
 
-func marshalShortcutTriggerer(p uintptr) (interface{}, error) {
+func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 	return wrapShortcutTrigger(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

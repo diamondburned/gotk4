@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkplugaccessible.go.
+var GTypePlugAccessible = externglib.Type(C.gtk_plug_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_plug_accessible_get_type()), F: marshalPlugAccessibler},
+		{T: GTypePlugAccessible, F: marshalPlugAccessible},
 	})
 }
 
@@ -68,7 +71,7 @@ func wrapPlugAccessible(obj *externglib.Object) *PlugAccessible {
 	}
 }
 
-func marshalPlugAccessibler(p uintptr) (interface{}, error) {
+func marshalPlugAccessible(p uintptr) (interface{}, error) {
 	return wrapPlugAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

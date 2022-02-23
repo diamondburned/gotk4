@@ -34,10 +34,16 @@ import (
 // extern void _gotk4_gio2_Resolver_ConnectReload(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gresolver.go.
+var (
+	GTypeResolverNameLookupFlags = externglib.Type(C.g_resolver_name_lookup_flags_get_type())
+	GTypeResolver                = externglib.Type(C.g_resolver_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_resolver_name_lookup_flags_get_type()), F: marshalResolverNameLookupFlags},
-		{T: externglib.Type(C.g_resolver_get_type()), F: marshalResolverer},
+		{T: GTypeResolverNameLookupFlags, F: marshalResolverNameLookupFlags},
+		{T: GTypeResolver, F: marshalResolver},
 	})
 }
 
@@ -721,7 +727,7 @@ func wrapResolver(obj *externglib.Object) *Resolver {
 	}
 }
 
-func marshalResolverer(p uintptr) (interface{}, error) {
+func marshalResolver(p uintptr) (interface{}, error) {
 	return wrapResolver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

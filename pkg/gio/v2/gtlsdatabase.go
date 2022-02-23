@@ -29,9 +29,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gtlsdatabase.go.
+var GTypeTLSDatabase = externglib.Type(C.g_tls_database_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_database_get_type()), F: marshalTLSDatabaser},
+		{T: GTypeTLSDatabase, F: marshalTLSDatabase},
 	})
 }
 
@@ -735,7 +738,7 @@ func wrapTLSDatabase(obj *externglib.Object) *TLSDatabase {
 	}
 }
 
-func marshalTLSDatabaser(p uintptr) (interface{}, error) {
+func marshalTLSDatabase(p uintptr) (interface{}, error) {
 	return wrapTLSDatabase(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

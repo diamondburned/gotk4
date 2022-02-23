@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtktreelistrowsorter.go.
+var GTypeTreeListRowSorter = externglib.Type(C.gtk_tree_list_row_sorter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_list_row_sorter_get_type()), F: marshalTreeListRowSorterer},
+		{T: GTypeTreeListRowSorter, F: marshalTreeListRowSorter},
 	})
 }
 
@@ -60,7 +63,7 @@ func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
 	}
 }
 
-func marshalTreeListRowSorterer(p uintptr) (interface{}, error) {
+func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 	return wrapTreeListRowSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

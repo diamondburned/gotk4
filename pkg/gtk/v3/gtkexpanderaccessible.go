@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkexpanderaccessible.go.
+var GTypeExpanderAccessible = externglib.Type(C.gtk_expander_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_expander_accessible_get_type()), F: marshalExpanderAccessibler},
+		{T: GTypeExpanderAccessible, F: marshalExpanderAccessible},
 	})
 }
 
@@ -65,6 +68,6 @@ func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
 	}
 }
 
-func marshalExpanderAccessibler(p uintptr) (interface{}, error) {
+func marshalExpanderAccessible(p uintptr) (interface{}, error) {
 	return wrapExpanderAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

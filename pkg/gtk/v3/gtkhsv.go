@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gtk3_HSV_ConnectMove(gpointer, GtkDirectionType, guintptr);
 import "C"
 
+// glib.Type values for gtkhsv.go.
+var GTypeHSV = externglib.Type(C.gtk_hsv_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hsv_get_type()), F: marshalHSVer},
+		{T: GTypeHSV, F: marshalHSV},
 	})
 }
 
@@ -108,7 +111,7 @@ func wrapHSV(obj *externglib.Object) *HSV {
 	}
 }
 
-func marshalHSVer(p uintptr) (interface{}, error) {
+func marshalHSV(p uintptr) (interface{}, error) {
 	return wrapHSV(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

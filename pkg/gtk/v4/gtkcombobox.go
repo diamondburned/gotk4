@@ -26,9 +26,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkcombobox.go.
+var GTypeComboBox = externglib.Type(C.gtk_combo_box_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBoxer},
+		{T: GTypeComboBox, F: marshalComboBox},
 	})
 }
 
@@ -198,7 +201,7 @@ func wrapComboBox(obj *externglib.Object) *ComboBox {
 	}
 }
 
-func marshalComboBoxer(p uintptr) (interface{}, error) {
+func marshalComboBox(p uintptr) (interface{}, error) {
 	return wrapComboBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

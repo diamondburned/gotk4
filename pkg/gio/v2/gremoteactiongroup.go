@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(GRemoteActionGroup*, gchar*, GVariant*, GVariant*);
 import "C"
 
+// glib.Type values for gremoteactiongroup.go.
+var GTypeRemoteActionGroup = externglib.Type(C.g_remote_action_group_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_remote_action_group_get_type()), F: marshalRemoteActionGrouper},
+		{T: GTypeRemoteActionGroup, F: marshalRemoteActionGroup},
 	})
 }
 
@@ -174,7 +177,7 @@ func wrapRemoteActionGroup(obj *externglib.Object) *RemoteActionGroup {
 	}
 }
 
-func marshalRemoteActionGrouper(p uintptr) (interface{}, error) {
+func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 	return wrapRemoteActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

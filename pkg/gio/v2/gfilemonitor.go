@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gio2_FileMonitor_ConnectChanged(gpointer, GFile*, GFile*, GFileMonitorEvent, guintptr);
 import "C"
 
+// glib.Type values for gfilemonitor.go.
+var GTypeFileMonitor = externglib.Type(C.g_file_monitor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitorrer},
+		{T: GTypeFileMonitor, F: marshalFileMonitor},
 	})
 }
 
@@ -165,7 +168,7 @@ func wrapFileMonitor(obj *externglib.Object) *FileMonitor {
 	}
 }
 
-func marshalFileMonitorrer(p uintptr) (interface{}, error) {
+func marshalFileMonitor(p uintptr) (interface{}, error) {
 	return wrapFileMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

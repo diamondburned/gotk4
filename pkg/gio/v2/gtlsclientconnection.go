@@ -16,9 +16,12 @@ import (
 // extern void _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(GTlsClientConnection*, GTlsClientConnection*);
 import "C"
 
+// glib.Type values for gtlsclientconnection.go.
+var GTypeTLSClientConnection = externglib.Type(C.g_tls_client_connection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_client_connection_get_type()), F: marshalTLSClientConnectioner},
+		{T: GTypeTLSClientConnection, F: marshalTLSClientConnection},
 	})
 }
 
@@ -140,7 +143,7 @@ func wrapTLSClientConnection(obj *externglib.Object) *TLSClientConnection {
 	}
 }
 
-func marshalTLSClientConnectioner(p uintptr) (interface{}, error) {
+func marshalTLSClientConnection(p uintptr) (interface{}, error) {
 	return wrapTLSClientConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

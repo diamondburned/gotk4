@@ -26,9 +26,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkcelllayout.go.
+var GTypeCellLayout = externglib.Type(C.gtk_cell_layout_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_layout_get_type()), F: marshalCellLayouter},
+		{T: GTypeCellLayout, F: marshalCellLayout},
 	})
 }
 
@@ -240,7 +243,7 @@ func wrapCellLayout(obj *externglib.Object) *CellLayout {
 	}
 }
 
-func marshalCellLayouter(p uintptr) (interface{}, error) {
+func marshalCellLayout(p uintptr) (interface{}, error) {
 	return wrapCellLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

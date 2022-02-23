@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkpicture.go.
+var GTypePicture = externglib.Type(C.gtk_picture_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_picture_get_type()), F: marshalPicturer},
+		{T: GTypePicture, F: marshalPicture},
 	})
 }
 
@@ -111,7 +114,7 @@ func wrapPicture(obj *externglib.Object) *Picture {
 	}
 }
 
-func marshalPicturer(p uintptr) (interface{}, error) {
+func marshalPicture(p uintptr) (interface{}, error) {
 	return wrapPicture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

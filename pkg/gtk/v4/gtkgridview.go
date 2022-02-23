@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gtk4_GridView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
+// glib.Type values for gtkgridview.go.
+var GTypeGridView = externglib.Type(C.gtk_grid_view_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_grid_view_get_type()), F: marshalGridViewer},
+		{T: GTypeGridView, F: marshalGridView},
 	})
 }
 
@@ -105,7 +108,7 @@ func wrapGridView(obj *externglib.Object) *GridView {
 	}
 }
 
-func marshalGridViewer(p uintptr) (interface{}, error) {
+func marshalGridView(p uintptr) (interface{}, error) {
 	return wrapGridView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

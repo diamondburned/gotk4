@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtklockbutton.go.
+var GTypeLockButton = externglib.Type(C.gtk_lock_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtonner},
+		{T: GTypeLockButton, F: marshalLockButton},
 	})
 }
 
@@ -106,7 +109,7 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 	}
 }
 
-func marshalLockButtonner(p uintptr) (interface{}, error) {
+func marshalLockButton(p uintptr) (interface{}, error) {
 	return wrapLockButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

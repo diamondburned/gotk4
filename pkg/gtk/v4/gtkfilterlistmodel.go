@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkfilterlistmodel.go.
+var GTypeFilterListModel = externglib.Type(C.gtk_filter_list_model_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_filter_list_model_get_type()), F: marshalFilterListModeller},
+		{T: GTypeFilterListModel, F: marshalFilterListModel},
 	})
 }
 
@@ -62,7 +65,7 @@ func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
 	}
 }
 
-func marshalFilterListModeller(p uintptr) (interface{}, error) {
+func marshalFilterListModel(p uintptr) (interface{}, error) {
 	return wrapFilterListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

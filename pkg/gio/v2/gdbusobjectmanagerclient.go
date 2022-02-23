@@ -25,9 +25,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gdbusobjectmanagerclient.go.
+var GTypeDBusObjectManagerClient = externglib.Type(C.g_dbus_object_manager_client_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_manager_client_get_type()), F: marshalDBusObjectManagerClienter},
+		{T: GTypeDBusObjectManagerClient, F: marshalDBusObjectManagerClient},
 	})
 }
 
@@ -182,7 +185,7 @@ func wrapDBusObjectManagerClient(obj *externglib.Object) *DBusObjectManagerClien
 	}
 }
 
-func marshalDBusObjectManagerClienter(p uintptr) (interface{}, error) {
+func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 	return wrapDBusObjectManagerClient(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

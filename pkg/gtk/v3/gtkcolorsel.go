@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gtk3_ColorSelection_ConnectColorChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkcolorsel.go.
+var GTypeColorSelection = externglib.Type(C.gtk_color_selection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_selection_get_type()), F: marshalColorSelectioner},
+		{T: GTypeColorSelection, F: marshalColorSelection},
 	})
 }
 
@@ -92,7 +95,7 @@ func wrapColorSelection(obj *externglib.Object) *ColorSelection {
 	}
 }
 
-func marshalColorSelectioner(p uintptr) (interface{}, error) {
+func marshalColorSelection(p uintptr) (interface{}, error) {
 	return wrapColorSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

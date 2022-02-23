@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(gpointer, gdouble, gdouble, guint, GdkEventSequence*, guintptr);
 import "C"
 
+// glib.Type values for gtkgestureclick.go.
+var GTypeGestureClick = externglib.Type(C.gtk_gesture_click_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_click_get_type()), F: marshalGestureClicker},
+		{T: GTypeGestureClick, F: marshalGestureClick},
 	})
 }
 
@@ -64,7 +67,7 @@ func wrapGestureClick(obj *externglib.Object) *GestureClick {
 	}
 }
 
-func marshalGestureClicker(p uintptr) (interface{}, error) {
+func marshalGestureClick(p uintptr) (interface{}, error) {
 	return wrapGestureClick(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

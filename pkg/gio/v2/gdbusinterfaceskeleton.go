@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gio2_DBusInterfaceSkeletonClass_flush(GDBusInterfaceSkeleton*);
 import "C"
 
+// glib.Type values for gdbusinterfaceskeleton.go.
+var GTypeDBusInterfaceSkeleton = externglib.Type(C.g_dbus_interface_skeleton_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_interface_skeleton_get_type()), F: marshalDBusInterfaceSkeletonner},
+		{T: GTypeDBusInterfaceSkeleton, F: marshalDBusInterfaceSkeleton},
 	})
 }
 
@@ -177,7 +180,7 @@ func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 	}
 }
 
-func marshalDBusInterfaceSkeletonner(p uintptr) (interface{}, error) {
+func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 	return wrapDBusInterfaceSkeleton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -27,10 +27,16 @@ import (
 // extern void _gotk4_gtk3_Application_ConnectWindowRemoved(gpointer, GtkWindow*, guintptr);
 import "C"
 
+// glib.Type values for gtkapplication.go.
+var (
+	GTypeApplicationInhibitFlags = externglib.Type(C.gtk_application_inhibit_flags_get_type())
+	GTypeApplication             = externglib.Type(C.gtk_application_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_application_inhibit_flags_get_type()), F: marshalApplicationInhibitFlags},
-		{T: externglib.Type(C.gtk_application_get_type()), F: marshalApplicationer},
+		{T: GTypeApplicationInhibitFlags, F: marshalApplicationInhibitFlags},
+		{T: GTypeApplication, F: marshalApplication},
 	})
 }
 
@@ -246,7 +252,7 @@ func wrapApplication(obj *externglib.Object) *Application {
 	}
 }
 
-func marshalApplicationer(p uintptr) (interface{}, error) {
+func marshalApplication(p uintptr) (interface{}, error) {
 	return wrapApplication(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

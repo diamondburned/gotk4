@@ -30,9 +30,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkentrycompletion.go.
+var GTypeEntryCompletion = externglib.Type(C.gtk_entry_completion_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_entry_completion_get_type()), F: marshalEntryCompletioner},
+		{T: GTypeEntryCompletion, F: marshalEntryCompletion},
 	})
 }
 
@@ -313,7 +316,7 @@ func wrapEntryCompletion(obj *externglib.Object) *EntryCompletion {
 	}
 }
 
-func marshalEntryCompletioner(p uintptr) (interface{}, error) {
+func marshalEntryCompletion(p uintptr) (interface{}, error) {
 	return wrapEntryCompletion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

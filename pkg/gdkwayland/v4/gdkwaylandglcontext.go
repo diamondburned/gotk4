@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkwaylandglcontext.go.
+var GTypeWaylandGLContext = externglib.Type(C.gdk_wayland_gl_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_gl_context_get_type()), F: marshalWaylandGLContexter},
+		{T: GTypeWaylandGLContext, F: marshalWaylandGLContext},
 	})
 }
 
@@ -52,6 +55,6 @@ func wrapWaylandGLContext(obj *externglib.Object) *WaylandGLContext {
 	}
 }
 
-func marshalWaylandGLContexter(p uintptr) (interface{}, error) {
+func marshalWaylandGLContext(p uintptr) (interface{}, error) {
 	return wrapWaylandGLContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

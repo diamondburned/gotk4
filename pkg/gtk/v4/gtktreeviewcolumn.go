@@ -20,10 +20,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtktreeviewcolumn.go.
+var (
+	GTypeTreeViewColumnSizing = externglib.Type(C.gtk_tree_view_column_sizing_get_type())
+	GTypeTreeViewColumn       = externglib.Type(C.gtk_tree_view_column_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_view_column_sizing_get_type()), F: marshalTreeViewColumnSizing},
-		{T: externglib.Type(C.gtk_tree_view_column_get_type()), F: marshalTreeViewColumner},
+		{T: GTypeTreeViewColumnSizing, F: marshalTreeViewColumnSizing},
+		{T: GTypeTreeViewColumn, F: marshalTreeViewColumn},
 	})
 }
 
@@ -166,7 +172,7 @@ func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
 	}
 }
 
-func marshalTreeViewColumner(p uintptr) (interface{}, error) {
+func marshalTreeViewColumn(p uintptr) (interface{}, error) {
 	return wrapTreeViewColumn(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

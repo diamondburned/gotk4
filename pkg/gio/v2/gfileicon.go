@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gfileicon.go.
+var GTypeFileIcon = externglib.Type(C.g_file_icon_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_icon_get_type()), F: marshalFileIconner},
+		{T: GTypeFileIcon, F: marshalFileIcon},
 	})
 }
 
@@ -55,7 +58,7 @@ func wrapFileIcon(obj *externglib.Object) *FileIcon {
 	}
 }
 
-func marshalFileIconner(p uintptr) (interface{}, error) {
+func marshalFileIcon(p uintptr) (interface{}, error) {
 	return wrapFileIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

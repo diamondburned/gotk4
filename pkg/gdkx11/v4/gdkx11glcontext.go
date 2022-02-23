@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11glcontext.go.
+var GTypeX11GLContext = externglib.Type(C.gdk_x11_gl_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_gl_context_get_type()), F: marshalX11GLContexter},
+		{T: GTypeX11GLContext, F: marshalX11GLContext},
 	})
 }
 
@@ -84,6 +87,6 @@ func wrapX11GLContext(obj *externglib.Object) *X11GLContext {
 	}
 }
 
-func marshalX11GLContexter(p uintptr) (interface{}, error) {
+func marshalX11GLContext(p uintptr) (interface{}, error) {
 	return wrapX11GLContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

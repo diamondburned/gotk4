@@ -18,9 +18,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkmaplistmodel.go.
+var GTypeMapListModel = externglib.Type(C.gtk_map_list_model_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_map_list_model_get_type()), F: marshalMapListModeller},
+		{T: GTypeMapListModel, F: marshalMapListModel},
 	})
 }
 
@@ -115,7 +118,7 @@ func wrapMapListModel(obj *externglib.Object) *MapListModel {
 	}
 }
 
-func marshalMapListModeller(p uintptr) (interface{}, error) {
+func marshalMapListModel(p uintptr) (interface{}, error) {
 	return wrapMapListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

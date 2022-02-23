@@ -25,9 +25,12 @@ import (
 // extern void _gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup(gpointer, GtkMenu*, GAppInfo*, guintptr);
 import "C"
 
+// glib.Type values for gtkappchooserwidget.go.
+var GTypeAppChooserWidget = externglib.Type(C.gtk_app_chooser_widget_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidgetter},
+		{T: GTypeAppChooserWidget, F: marshalAppChooserWidget},
 	})
 }
 
@@ -233,7 +236,7 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 	}
 }
 
-func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	return wrapAppChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

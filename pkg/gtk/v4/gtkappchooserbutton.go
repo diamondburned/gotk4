@@ -17,9 +17,12 @@ import (
 // extern void _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(gpointer, gchar*, guintptr);
 import "C"
 
+// glib.Type values for gtkappchooserbutton.go.
+var GTypeAppChooserButton = externglib.Type(C.gtk_app_chooser_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButtonner},
+		{T: GTypeAppChooserButton, F: marshalAppChooserButton},
 	})
 }
 
@@ -101,7 +104,7 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 	}
 }
 
-func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
+func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	return wrapAppChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

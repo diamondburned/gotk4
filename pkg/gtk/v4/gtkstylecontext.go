@@ -20,10 +20,16 @@ import (
 // extern void _gotk4_gtk4_StyleContextClass_changed(GtkStyleContext*);
 import "C"
 
+// glib.Type values for gtkstylecontext.go.
+var (
+	GTypeStyleContextPrintFlags = externglib.Type(C.gtk_style_context_print_flags_get_type())
+	GTypeStyleContext           = externglib.Type(C.gtk_style_context_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_style_context_print_flags_get_type()), F: marshalStyleContextPrintFlags},
-		{T: externglib.Type(C.gtk_style_context_get_type()), F: marshalStyleContexter},
+		{T: GTypeStyleContextPrintFlags, F: marshalStyleContextPrintFlags},
+		{T: GTypeStyleContext, F: marshalStyleContext},
 	})
 }
 
@@ -170,7 +176,7 @@ func wrapStyleContext(obj *externglib.Object) *StyleContext {
 	}
 }
 
-func marshalStyleContexter(p uintptr) (interface{}, error) {
+func marshalStyleContext(p uintptr) (interface{}, error) {
 	return wrapStyleContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

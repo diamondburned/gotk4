@@ -21,21 +21,38 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gdkevents.go.
+var (
+	GTypeCrossingMode         = externglib.Type(C.gdk_crossing_mode_get_type())
+	GTypeEventType            = externglib.Type(C.gdk_event_type_get_type())
+	GTypeFilterReturn         = externglib.Type(C.gdk_filter_return_get_type())
+	GTypeNotifyType           = externglib.Type(C.gdk_notify_type_get_type())
+	GTypeOwnerChange          = externglib.Type(C.gdk_owner_change_get_type())
+	GTypePropertyState        = externglib.Type(C.gdk_property_state_get_type())
+	GTypeScrollDirection      = externglib.Type(C.gdk_scroll_direction_get_type())
+	GTypeSettingAction        = externglib.Type(C.gdk_setting_action_get_type())
+	GTypeTouchpadGesturePhase = externglib.Type(C.gdk_touchpad_gesture_phase_get_type())
+	GTypeVisibilityState      = externglib.Type(C.gdk_visibility_state_get_type())
+	GTypeWindowState          = externglib.Type(C.gdk_window_state_get_type())
+	GTypeEventSequence        = externglib.Type(C.gdk_event_sequence_get_type())
+	GTypeEvent                = externglib.Type(C.gdk_event_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_crossing_mode_get_type()), F: marshalCrossingMode},
-		{T: externglib.Type(C.gdk_event_type_get_type()), F: marshalEventType},
-		{T: externglib.Type(C.gdk_filter_return_get_type()), F: marshalFilterReturn},
-		{T: externglib.Type(C.gdk_notify_type_get_type()), F: marshalNotifyType},
-		{T: externglib.Type(C.gdk_owner_change_get_type()), F: marshalOwnerChange},
-		{T: externglib.Type(C.gdk_property_state_get_type()), F: marshalPropertyState},
-		{T: externglib.Type(C.gdk_scroll_direction_get_type()), F: marshalScrollDirection},
-		{T: externglib.Type(C.gdk_setting_action_get_type()), F: marshalSettingAction},
-		{T: externglib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
-		{T: externglib.Type(C.gdk_visibility_state_get_type()), F: marshalVisibilityState},
-		{T: externglib.Type(C.gdk_window_state_get_type()), F: marshalWindowState},
-		{T: externglib.Type(C.gdk_event_sequence_get_type()), F: marshalEventSequence},
-		{T: externglib.Type(C.gdk_event_get_type()), F: marshalEvent},
+		{T: GTypeCrossingMode, F: marshalCrossingMode},
+		{T: GTypeEventType, F: marshalEventType},
+		{T: GTypeFilterReturn, F: marshalFilterReturn},
+		{T: GTypeNotifyType, F: marshalNotifyType},
+		{T: GTypeOwnerChange, F: marshalOwnerChange},
+		{T: GTypePropertyState, F: marshalPropertyState},
+		{T: GTypeScrollDirection, F: marshalScrollDirection},
+		{T: GTypeSettingAction, F: marshalSettingAction},
+		{T: GTypeTouchpadGesturePhase, F: marshalTouchpadGesturePhase},
+		{T: GTypeVisibilityState, F: marshalVisibilityState},
+		{T: GTypeWindowState, F: marshalWindowState},
+		{T: GTypeEventSequence, F: marshalEventSequence},
+		{T: GTypeEvent, F: marshalEvent},
 	})
 }
 

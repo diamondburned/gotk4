@@ -13,33 +13,62 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
+// glib.Type values for gskrendernodeimpl.go.
+var (
+	GTypeBlendNode                   = externglib.Type(C.gsk_blend_node_get_type())
+	GTypeBlurNode                    = externglib.Type(C.gsk_blur_node_get_type())
+	GTypeBorderNode                  = externglib.Type(C.gsk_border_node_get_type())
+	GTypeCairoNode                   = externglib.Type(C.gsk_cairo_node_get_type())
+	GTypeClipNode                    = externglib.Type(C.gsk_clip_node_get_type())
+	GTypeColorMatrixNode             = externglib.Type(C.gsk_color_matrix_node_get_type())
+	GTypeColorNode                   = externglib.Type(C.gsk_color_node_get_type())
+	GTypeConicGradientNode           = externglib.Type(C.gsk_conic_gradient_node_get_type())
+	GTypeContainerNode               = externglib.Type(C.gsk_container_node_get_type())
+	GTypeCrossFadeNode               = externglib.Type(C.gsk_cross_fade_node_get_type())
+	GTypeDebugNode                   = externglib.Type(C.gsk_debug_node_get_type())
+	GTypeGLShaderNode                = externglib.Type(C.gsk_gl_shader_node_get_type())
+	GTypeInsetShadowNode             = externglib.Type(C.gsk_inset_shadow_node_get_type())
+	GTypeLinearGradientNode          = externglib.Type(C.gsk_linear_gradient_node_get_type())
+	GTypeOpacityNode                 = externglib.Type(C.gsk_opacity_node_get_type())
+	GTypeOutsetShadowNode            = externglib.Type(C.gsk_outset_shadow_node_get_type())
+	GTypeRadialGradientNode          = externglib.Type(C.gsk_radial_gradient_node_get_type())
+	GTypeRepeatNode                  = externglib.Type(C.gsk_repeat_node_get_type())
+	GTypeRepeatingLinearGradientNode = externglib.Type(C.gsk_repeating_linear_gradient_node_get_type())
+	GTypeRepeatingRadialGradientNode = externglib.Type(C.gsk_repeating_radial_gradient_node_get_type())
+	GTypeRoundedClipNode             = externglib.Type(C.gsk_rounded_clip_node_get_type())
+	GTypeShadowNode                  = externglib.Type(C.gsk_shadow_node_get_type())
+	GTypeTextNode                    = externglib.Type(C.gsk_text_node_get_type())
+	GTypeTextureNode                 = externglib.Type(C.gsk_texture_node_get_type())
+	GTypeTransformNode               = externglib.Type(C.gsk_transform_node_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_blend_node_get_type()), F: marshalBlendNoder},
-		{T: externglib.Type(C.gsk_blur_node_get_type()), F: marshalBlurNoder},
-		{T: externglib.Type(C.gsk_border_node_get_type()), F: marshalBorderNoder},
-		{T: externglib.Type(C.gsk_cairo_node_get_type()), F: marshalCairoNoder},
-		{T: externglib.Type(C.gsk_clip_node_get_type()), F: marshalClipNoder},
-		{T: externglib.Type(C.gsk_color_matrix_node_get_type()), F: marshalColorMatrixNoder},
-		{T: externglib.Type(C.gsk_color_node_get_type()), F: marshalColorNoder},
-		{T: externglib.Type(C.gsk_conic_gradient_node_get_type()), F: marshalConicGradientNoder},
-		{T: externglib.Type(C.gsk_container_node_get_type()), F: marshalContainerNoder},
-		{T: externglib.Type(C.gsk_cross_fade_node_get_type()), F: marshalCrossFadeNoder},
-		{T: externglib.Type(C.gsk_debug_node_get_type()), F: marshalDebugNoder},
-		{T: externglib.Type(C.gsk_gl_shader_node_get_type()), F: marshalGLShaderNoder},
-		{T: externglib.Type(C.gsk_inset_shadow_node_get_type()), F: marshalInsetShadowNoder},
-		{T: externglib.Type(C.gsk_linear_gradient_node_get_type()), F: marshalLinearGradientNoder},
-		{T: externglib.Type(C.gsk_opacity_node_get_type()), F: marshalOpacityNoder},
-		{T: externglib.Type(C.gsk_outset_shadow_node_get_type()), F: marshalOutsetShadowNoder},
-		{T: externglib.Type(C.gsk_radial_gradient_node_get_type()), F: marshalRadialGradientNoder},
-		{T: externglib.Type(C.gsk_repeat_node_get_type()), F: marshalRepeatNoder},
-		{T: externglib.Type(C.gsk_repeating_linear_gradient_node_get_type()), F: marshalRepeatingLinearGradientNoder},
-		{T: externglib.Type(C.gsk_repeating_radial_gradient_node_get_type()), F: marshalRepeatingRadialGradientNoder},
-		{T: externglib.Type(C.gsk_rounded_clip_node_get_type()), F: marshalRoundedClipNoder},
-		{T: externglib.Type(C.gsk_shadow_node_get_type()), F: marshalShadowNoder},
-		{T: externglib.Type(C.gsk_text_node_get_type()), F: marshalTextNoder},
-		{T: externglib.Type(C.gsk_texture_node_get_type()), F: marshalTextureNoder},
-		{T: externglib.Type(C.gsk_transform_node_get_type()), F: marshalTransformNoder},
+		{T: GTypeBlendNode, F: marshalBlendNode},
+		{T: GTypeBlurNode, F: marshalBlurNode},
+		{T: GTypeBorderNode, F: marshalBorderNode},
+		{T: GTypeCairoNode, F: marshalCairoNode},
+		{T: GTypeClipNode, F: marshalClipNode},
+		{T: GTypeColorMatrixNode, F: marshalColorMatrixNode},
+		{T: GTypeColorNode, F: marshalColorNode},
+		{T: GTypeConicGradientNode, F: marshalConicGradientNode},
+		{T: GTypeContainerNode, F: marshalContainerNode},
+		{T: GTypeCrossFadeNode, F: marshalCrossFadeNode},
+		{T: GTypeDebugNode, F: marshalDebugNode},
+		{T: GTypeGLShaderNode, F: marshalGLShaderNode},
+		{T: GTypeInsetShadowNode, F: marshalInsetShadowNode},
+		{T: GTypeLinearGradientNode, F: marshalLinearGradientNode},
+		{T: GTypeOpacityNode, F: marshalOpacityNode},
+		{T: GTypeOutsetShadowNode, F: marshalOutsetShadowNode},
+		{T: GTypeRadialGradientNode, F: marshalRadialGradientNode},
+		{T: GTypeRepeatNode, F: marshalRepeatNode},
+		{T: GTypeRepeatingLinearGradientNode, F: marshalRepeatingLinearGradientNode},
+		{T: GTypeRepeatingRadialGradientNode, F: marshalRepeatingRadialGradientNode},
+		{T: GTypeRoundedClipNode, F: marshalRoundedClipNode},
+		{T: GTypeShadowNode, F: marshalShadowNode},
+		{T: GTypeTextNode, F: marshalTextNode},
+		{T: GTypeTextureNode, F: marshalTextureNode},
+		{T: GTypeTransformNode, F: marshalTransformNode},
 	})
 }
 
@@ -62,7 +91,7 @@ func wrapBlendNode(obj *externglib.Object) *BlendNode {
 	}
 }
 
-func marshalBlendNoder(p uintptr) (interface{}, error) {
+func marshalBlendNode(p uintptr) (interface{}, error) {
 	return wrapBlendNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -84,7 +113,7 @@ func wrapBlurNode(obj *externglib.Object) *BlurNode {
 	}
 }
 
-func marshalBlurNoder(p uintptr) (interface{}, error) {
+func marshalBlurNode(p uintptr) (interface{}, error) {
 	return wrapBlurNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -106,7 +135,7 @@ func wrapBorderNode(obj *externglib.Object) *BorderNode {
 	}
 }
 
-func marshalBorderNoder(p uintptr) (interface{}, error) {
+func marshalBorderNode(p uintptr) (interface{}, error) {
 	return wrapBorderNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -128,7 +157,7 @@ func wrapCairoNode(obj *externglib.Object) *CairoNode {
 	}
 }
 
-func marshalCairoNoder(p uintptr) (interface{}, error) {
+func marshalCairoNode(p uintptr) (interface{}, error) {
 	return wrapCairoNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -150,7 +179,7 @@ func wrapClipNode(obj *externglib.Object) *ClipNode {
 	}
 }
 
-func marshalClipNoder(p uintptr) (interface{}, error) {
+func marshalClipNode(p uintptr) (interface{}, error) {
 	return wrapClipNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -173,7 +202,7 @@ func wrapColorMatrixNode(obj *externglib.Object) *ColorMatrixNode {
 	}
 }
 
-func marshalColorMatrixNoder(p uintptr) (interface{}, error) {
+func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 	return wrapColorMatrixNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -195,7 +224,7 @@ func wrapColorNode(obj *externglib.Object) *ColorNode {
 	}
 }
 
-func marshalColorNoder(p uintptr) (interface{}, error) {
+func marshalColorNode(p uintptr) (interface{}, error) {
 	return wrapColorNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -217,7 +246,7 @@ func wrapConicGradientNode(obj *externglib.Object) *ConicGradientNode {
 	}
 }
 
-func marshalConicGradientNoder(p uintptr) (interface{}, error) {
+func marshalConicGradientNode(p uintptr) (interface{}, error) {
 	return wrapConicGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -239,7 +268,7 @@ func wrapContainerNode(obj *externglib.Object) *ContainerNode {
 	}
 }
 
-func marshalContainerNoder(p uintptr) (interface{}, error) {
+func marshalContainerNode(p uintptr) (interface{}, error) {
 	return wrapContainerNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -261,7 +290,7 @@ func wrapCrossFadeNode(obj *externglib.Object) *CrossFadeNode {
 	}
 }
 
-func marshalCrossFadeNoder(p uintptr) (interface{}, error) {
+func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 	return wrapCrossFadeNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -284,7 +313,7 @@ func wrapDebugNode(obj *externglib.Object) *DebugNode {
 	}
 }
 
-func marshalDebugNoder(p uintptr) (interface{}, error) {
+func marshalDebugNode(p uintptr) (interface{}, error) {
 	return wrapDebugNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -306,7 +335,7 @@ func wrapGLShaderNode(obj *externglib.Object) *GLShaderNode {
 	}
 }
 
-func marshalGLShaderNoder(p uintptr) (interface{}, error) {
+func marshalGLShaderNode(p uintptr) (interface{}, error) {
 	return wrapGLShaderNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -328,7 +357,7 @@ func wrapInsetShadowNode(obj *externglib.Object) *InsetShadowNode {
 	}
 }
 
-func marshalInsetShadowNoder(p uintptr) (interface{}, error) {
+func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 	return wrapInsetShadowNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -350,7 +379,7 @@ func wrapLinearGradientNode(obj *externglib.Object) *LinearGradientNode {
 	}
 }
 
-func marshalLinearGradientNoder(p uintptr) (interface{}, error) {
+func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 	return wrapLinearGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -372,7 +401,7 @@ func wrapOpacityNode(obj *externglib.Object) *OpacityNode {
 	}
 }
 
-func marshalOpacityNoder(p uintptr) (interface{}, error) {
+func marshalOpacityNode(p uintptr) (interface{}, error) {
 	return wrapOpacityNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -394,7 +423,7 @@ func wrapOutsetShadowNode(obj *externglib.Object) *OutsetShadowNode {
 	}
 }
 
-func marshalOutsetShadowNoder(p uintptr) (interface{}, error) {
+func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 	return wrapOutsetShadowNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -416,7 +445,7 @@ func wrapRadialGradientNode(obj *externglib.Object) *RadialGradientNode {
 	}
 }
 
-func marshalRadialGradientNoder(p uintptr) (interface{}, error) {
+func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 	return wrapRadialGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -438,7 +467,7 @@ func wrapRepeatNode(obj *externglib.Object) *RepeatNode {
 	}
 }
 
-func marshalRepeatNoder(p uintptr) (interface{}, error) {
+func marshalRepeatNode(p uintptr) (interface{}, error) {
 	return wrapRepeatNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -460,7 +489,7 @@ func wrapRepeatingLinearGradientNode(obj *externglib.Object) *RepeatingLinearGra
 	}
 }
 
-func marshalRepeatingLinearGradientNoder(p uintptr) (interface{}, error) {
+func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 	return wrapRepeatingLinearGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -482,7 +511,7 @@ func wrapRepeatingRadialGradientNode(obj *externglib.Object) *RepeatingRadialGra
 	}
 }
 
-func marshalRepeatingRadialGradientNoder(p uintptr) (interface{}, error) {
+func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 	return wrapRepeatingRadialGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -505,7 +534,7 @@ func wrapRoundedClipNode(obj *externglib.Object) *RoundedClipNode {
 	}
 }
 
-func marshalRoundedClipNoder(p uintptr) (interface{}, error) {
+func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 	return wrapRoundedClipNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -528,7 +557,7 @@ func wrapShadowNode(obj *externglib.Object) *ShadowNode {
 	}
 }
 
-func marshalShadowNoder(p uintptr) (interface{}, error) {
+func marshalShadowNode(p uintptr) (interface{}, error) {
 	return wrapShadowNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -550,7 +579,7 @@ func wrapTextNode(obj *externglib.Object) *TextNode {
 	}
 }
 
-func marshalTextNoder(p uintptr) (interface{}, error) {
+func marshalTextNode(p uintptr) (interface{}, error) {
 	return wrapTextNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -572,7 +601,7 @@ func wrapTextureNode(obj *externglib.Object) *TextureNode {
 	}
 }
 
-func marshalTextureNoder(p uintptr) (interface{}, error) {
+func marshalTextureNode(p uintptr) (interface{}, error) {
 	return wrapTextureNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -594,6 +623,6 @@ func wrapTransformNode(obj *externglib.Object) *TransformNode {
 	}
 }
 
-func marshalTransformNoder(p uintptr) (interface{}, error) {
+func marshalTransformNode(p uintptr) (interface{}, error) {
 	return wrapTransformNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

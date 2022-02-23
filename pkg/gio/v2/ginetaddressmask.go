@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for ginetaddressmask.go.
+var GTypeInetAddressMask = externglib.Type(C.g_inet_address_mask_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_inet_address_mask_get_type()), F: marshalInetAddressMasker},
+		{T: GTypeInetAddressMask, F: marshalInetAddressMask},
 	})
 }
 
@@ -57,7 +60,7 @@ func wrapInetAddressMask(obj *externglib.Object) *InetAddressMask {
 	}
 }
 
-func marshalInetAddressMasker(p uintptr) (interface{}, error) {
+func marshalInetAddressMask(p uintptr) (interface{}, error) {
 	return wrapInetAddressMask(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

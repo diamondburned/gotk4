@@ -33,11 +33,18 @@ import (
 // extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, AtkRectangle*, guintptr);
 import "C"
 
+// glib.Type values for atkcomponent.go.
+var (
+	GTypeScrollType = externglib.Type(C.atk_scroll_type_get_type())
+	GTypeComponent  = externglib.Type(C.atk_component_get_type())
+	GTypeRectangle  = externglib.Type(C.atk_rectangle_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_scroll_type_get_type()), F: marshalScrollType},
-		{T: externglib.Type(C.atk_component_get_type()), F: marshalComponenter},
-		{T: externglib.Type(C.atk_rectangle_get_type()), F: marshalRectangle},
+		{T: GTypeScrollType, F: marshalScrollType},
+		{T: GTypeComponent, F: marshalComponent},
+		{T: GTypeRectangle, F: marshalRectangle},
 	})
 }
 
@@ -670,7 +677,7 @@ func wrapComponent(obj *externglib.Object) *Component {
 	}
 }
 
-func marshalComponenter(p uintptr) (interface{}, error) {
+func marshalComponent(p uintptr) (interface{}, error) {
 	return wrapComponent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

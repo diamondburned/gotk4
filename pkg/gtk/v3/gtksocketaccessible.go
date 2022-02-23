@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtksocketaccessible.go.
+var GTypeSocketAccessible = externglib.Type(C.gtk_socket_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_socket_accessible_get_type()), F: marshalSocketAccessibler},
+		{T: GTypeSocketAccessible, F: marshalSocketAccessible},
 	})
 }
 
@@ -61,7 +64,7 @@ func wrapSocketAccessible(obj *externglib.Object) *SocketAccessible {
 	}
 }
 
-func marshalSocketAccessibler(p uintptr) (interface{}, error) {
+func marshalSocketAccessible(p uintptr) (interface{}, error) {
 	return wrapSocketAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

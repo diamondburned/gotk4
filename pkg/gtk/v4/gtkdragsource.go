@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gtk4_DragSource_ConnectDragEnd(gpointer, GdkDrag*, gboolean, guintptr);
 import "C"
 
+// glib.Type values for gtkdragsource.go.
+var GTypeDragSource = externglib.Type(C.gtk_drag_source_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drag_source_get_type()), F: marshalDragSourcer},
+		{T: GTypeDragSource, F: marshalDragSource},
 	})
 }
 
@@ -127,7 +130,7 @@ func wrapDragSource(obj *externglib.Object) *DragSource {
 	}
 }
 
-func marshalDragSourcer(p uintptr) (interface{}, error) {
+func marshalDragSource(p uintptr) (interface{}, error) {
 	return wrapDragSource(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

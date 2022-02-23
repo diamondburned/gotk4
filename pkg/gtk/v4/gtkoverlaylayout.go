@@ -14,10 +14,16 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkoverlaylayout.go.
+var (
+	GTypeOverlayLayout      = externglib.Type(C.gtk_overlay_layout_get_type())
+	GTypeOverlayLayoutChild = externglib.Type(C.gtk_overlay_layout_child_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_overlay_layout_get_type()), F: marshalOverlayLayouter},
-		{T: externglib.Type(C.gtk_overlay_layout_child_get_type()), F: marshalOverlayLayoutChilder},
+		{T: GTypeOverlayLayout, F: marshalOverlayLayout},
+		{T: GTypeOverlayLayoutChild, F: marshalOverlayLayoutChild},
 	})
 }
 
@@ -56,7 +62,7 @@ func wrapOverlayLayout(obj *externglib.Object) *OverlayLayout {
 	}
 }
 
-func marshalOverlayLayouter(p uintptr) (interface{}, error) {
+func marshalOverlayLayout(p uintptr) (interface{}, error) {
 	return wrapOverlayLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -109,7 +115,7 @@ func wrapOverlayLayoutChild(obj *externglib.Object) *OverlayLayoutChild {
 	}
 }
 
-func marshalOverlayLayoutChilder(p uintptr) (interface{}, error) {
+func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 	return wrapOverlayLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

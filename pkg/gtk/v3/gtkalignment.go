@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkalignment.go.
+var GTypeAlignment = externglib.Type(C.gtk_alignment_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_alignment_get_type()), F: marshalAlignmenter},
+		{T: GTypeAlignment, F: marshalAlignment},
 	})
 }
 
@@ -82,7 +85,7 @@ func wrapAlignment(obj *externglib.Object) *Alignment {
 	}
 }
 
-func marshalAlignmenter(p uintptr) (interface{}, error) {
+func marshalAlignment(p uintptr) (interface{}, error) {
 	return wrapAlignment(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

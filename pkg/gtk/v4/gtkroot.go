@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkroot.go.
+var GTypeRoot = externglib.Type(C.gtk_root_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_root_get_type()), F: marshalRooter},
+		{T: GTypeRoot, F: marshalRoot},
 	})
 }
 
@@ -85,7 +88,7 @@ func wrapRoot(obj *externglib.Object) *Root {
 	}
 }
 
-func marshalRooter(p uintptr) (interface{}, error) {
+func marshalRoot(p uintptr) (interface{}, error) {
 	return wrapRoot(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkimageaccessible.go.
+var GTypeImageAccessible = externglib.Type(C.gtk_image_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_image_accessible_get_type()), F: marshalImageAccessibler},
+		{T: GTypeImageAccessible, F: marshalImageAccessible},
 	})
 }
 
@@ -63,6 +66,6 @@ func wrapImageAccessible(obj *externglib.Object) *ImageAccessible {
 	}
 }
 
-func marshalImageAccessibler(p uintptr) (interface{}, error) {
+func marshalImageAccessible(p uintptr) (interface{}, error) {
 	return wrapImageAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

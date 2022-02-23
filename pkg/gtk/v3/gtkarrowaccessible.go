@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkarrowaccessible.go.
+var GTypeArrowAccessible = externglib.Type(C.gtk_arrow_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_arrow_accessible_get_type()), F: marshalArrowAccessibler},
+		{T: GTypeArrowAccessible, F: marshalArrowAccessible},
 	})
 }
 
@@ -63,6 +66,6 @@ func wrapArrowAccessible(obj *externglib.Object) *ArrowAccessible {
 	}
 }
 
-func marshalArrowAccessibler(p uintptr) (interface{}, error) {
+func marshalArrowAccessible(p uintptr) (interface{}, error) {
 	return wrapArrowAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

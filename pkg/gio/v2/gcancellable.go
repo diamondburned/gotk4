@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gio2_Cancellable_ConnectCancelled(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gcancellable.go.
+var GTypeCancellable = externglib.Type(C.g_cancellable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_cancellable_get_type()), F: marshalCancellabler},
+		{T: GTypeCancellable, F: marshalCancellable},
 	})
 }
 
@@ -72,7 +75,7 @@ func wrapCancellable(obj *externglib.Object) *Cancellable {
 	}
 }
 
-func marshalCancellabler(p uintptr) (interface{}, error) {
+func marshalCancellable(p uintptr) (interface{}, error) {
 	return wrapCancellable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -32,10 +32,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkassistant.go.
+var (
+	GTypeAssistantPageType = externglib.Type(C.gtk_assistant_page_type_get_type())
+	GTypeAssistant         = externglib.Type(C.gtk_assistant_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_assistant_page_type_get_type()), F: marshalAssistantPageType},
-		{T: externglib.Type(C.gtk_assistant_get_type()), F: marshalAssistanter},
+		{T: GTypeAssistantPageType, F: marshalAssistantPageType},
+		{T: GTypeAssistant, F: marshalAssistant},
 	})
 }
 
@@ -274,7 +280,7 @@ func wrapAssistant(obj *externglib.Object) *Assistant {
 	}
 }
 
-func marshalAssistanter(p uintptr) (interface{}, error) {
+func marshalAssistant(p uintptr) (interface{}, error) {
 	return wrapAssistant(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

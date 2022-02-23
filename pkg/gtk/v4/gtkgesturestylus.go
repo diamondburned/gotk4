@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk4_GestureStylus_ConnectUp(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
+// glib.Type values for gtkgesturestylus.go.
+var GTypeGestureStylus = externglib.Type(C.gtk_gesture_stylus_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStylusser},
+		{T: GTypeGestureStylus, F: marshalGestureStylus},
 	})
 }
 
@@ -62,7 +65,7 @@ func wrapGestureStylus(obj *externglib.Object) *GestureStylus {
 	}
 }
 
-func marshalGestureStylusser(p uintptr) (interface{}, error) {
+func marshalGestureStylus(p uintptr) (interface{}, error) {
 	return wrapGestureStylus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

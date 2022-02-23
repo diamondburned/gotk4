@@ -50,10 +50,16 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gappinfo.go.
+var (
+	GTypeAppInfo          = externglib.Type(C.g_app_info_get_type())
+	GTypeAppLaunchContext = externglib.Type(C.g_app_launch_context_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_app_info_get_type()), F: marshalAppInfor},
-		{T: externglib.Type(C.g_app_launch_context_get_type()), F: marshalAppLaunchContexter},
+		{T: GTypeAppInfo, F: marshalAppInfo},
+		{T: GTypeAppLaunchContext, F: marshalAppLaunchContext},
 	})
 }
 
@@ -184,7 +190,7 @@ func wrapAppInfo(obj *externglib.Object) *AppInfo {
 	}
 }
 
-func marshalAppInfor(p uintptr) (interface{}, error) {
+func marshalAppInfo(p uintptr) (interface{}, error) {
 	return wrapAppInfo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1770,7 +1776,7 @@ func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	}
 }
 
-func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
+func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	return wrapAppLaunchContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

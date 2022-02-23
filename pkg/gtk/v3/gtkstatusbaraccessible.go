@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkstatusbaraccessible.go.
+var GTypeStatusbarAccessible = externglib.Type(C.gtk_statusbar_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_statusbar_accessible_get_type()), F: marshalStatusbarAccessibler},
+		{T: GTypeStatusbarAccessible, F: marshalStatusbarAccessible},
 	})
 }
 
@@ -60,6 +63,6 @@ func wrapStatusbarAccessible(obj *externglib.Object) *StatusbarAccessible {
 	}
 }
 
-func marshalStatusbarAccessibler(p uintptr) (interface{}, error) {
+func marshalStatusbarAccessible(p uintptr) (interface{}, error) {
 	return wrapStatusbarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

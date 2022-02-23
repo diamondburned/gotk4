@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktoplevelaccessible.go.
+var GTypeToplevelAccessible = externglib.Type(C.gtk_toplevel_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toplevel_accessible_get_type()), F: marshalToplevelAccessibler},
+		{T: GTypeToplevelAccessible, F: marshalToplevelAccessible},
 	})
 }
 
@@ -53,7 +56,7 @@ func wrapToplevelAccessible(obj *externglib.Object) *ToplevelAccessible {
 	}
 }
 
-func marshalToplevelAccessibler(p uintptr) (interface{}, error) {
+func marshalToplevelAccessible(p uintptr) (interface{}, error) {
 	return wrapToplevelAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

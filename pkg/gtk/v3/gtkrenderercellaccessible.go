@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkrenderercellaccessible.go.
+var GTypeRendererCellAccessible = externglib.Type(C.gtk_renderer_cell_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_renderer_cell_accessible_get_type()), F: marshalRendererCellAccessibler},
+		{T: GTypeRendererCellAccessible, F: marshalRendererCellAccessible},
 	})
 }
 
@@ -71,7 +74,7 @@ func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible 
 	}
 }
 
-func marshalRendererCellAccessibler(p uintptr) (interface{}, error) {
+func marshalRendererCellAccessible(p uintptr) (interface{}, error) {
 	return wrapRendererCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

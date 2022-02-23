@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkwindowcontrols.go.
+var GTypeWindowControls = externglib.Type(C.gtk_window_controls_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_controls_get_type()), F: marshalWindowControlser},
+		{T: GTypeWindowControls, F: marshalWindowControls},
 	})
 }
 
@@ -109,7 +112,7 @@ func wrapWindowControls(obj *externglib.Object) *WindowControls {
 	}
 }
 
-func marshalWindowControlser(p uintptr) (interface{}, error) {
+func marshalWindowControls(p uintptr) (interface{}, error) {
 	return wrapWindowControls(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

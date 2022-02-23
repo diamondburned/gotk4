@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkwindowhandle.go.
+var GTypeWindowHandle = externglib.Type(C.gtk_window_handle_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_handle_get_type()), F: marshalWindowHandler},
+		{T: GTypeWindowHandle, F: marshalWindowHandle},
 	})
 }
 
@@ -75,7 +78,7 @@ func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 	}
 }
 
-func marshalWindowHandler(p uintptr) (interface{}, error) {
+func marshalWindowHandle(p uintptr) (interface{}, error) {
 	return wrapWindowHandle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

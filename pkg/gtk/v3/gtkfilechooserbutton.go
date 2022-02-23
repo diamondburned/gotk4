@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk3_FileChooserButton_ConnectFileSet(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkfilechooserbutton.go.
+var GTypeFileChooserButton = externglib.Type(C.gtk_file_chooser_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_button_get_type()), F: marshalFileChooserButtonner},
+		{T: GTypeFileChooserButton, F: marshalFileChooserButton},
 	})
 }
 
@@ -128,7 +131,7 @@ func wrapFileChooserButton(obj *externglib.Object) *FileChooserButton {
 	}
 }
 
-func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
+func marshalFileChooserButton(p uintptr) (interface{}, error) {
 	return wrapFileChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

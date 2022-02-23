@@ -15,11 +15,18 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkmultifilter.go.
+var (
+	GTypeAnyFilter   = externglib.Type(C.gtk_any_filter_get_type())
+	GTypeEveryFilter = externglib.Type(C.gtk_every_filter_get_type())
+	GTypeMultiFilter = externglib.Type(C.gtk_multi_filter_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_any_filter_get_type()), F: marshalAnyFilterer},
-		{T: externglib.Type(C.gtk_every_filter_get_type()), F: marshalEveryFilterer},
-		{T: externglib.Type(C.gtk_multi_filter_get_type()), F: marshalMultiFilterer},
+		{T: GTypeAnyFilter, F: marshalAnyFilter},
+		{T: GTypeEveryFilter, F: marshalEveryFilter},
+		{T: GTypeMultiFilter, F: marshalMultiFilter},
 	})
 }
 
@@ -65,7 +72,7 @@ func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 	}
 }
 
-func marshalAnyFilterer(p uintptr) (interface{}, error) {
+func marshalAnyFilter(p uintptr) (interface{}, error) {
 	return wrapAnyFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -134,7 +141,7 @@ func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 	}
 }
 
-func marshalEveryFilterer(p uintptr) (interface{}, error) {
+func marshalEveryFilter(p uintptr) (interface{}, error) {
 	return wrapEveryFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -215,7 +222,7 @@ func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
 	}
 }
 
-func marshalMultiFilterer(p uintptr) (interface{}, error) {
+func marshalMultiFilter(p uintptr) (interface{}, error) {
 	return wrapMultiFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

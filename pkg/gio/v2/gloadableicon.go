@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gloadableicon.go.
+var GTypeLoadableIcon = externglib.Type(C.g_loadable_icon_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_loadable_icon_get_type()), F: marshalLoadableIconner},
+		{T: GTypeLoadableIcon, F: marshalLoadableIcon},
 	})
 }
 
@@ -59,7 +62,7 @@ func wrapLoadableIcon(obj *externglib.Object) *LoadableIcon {
 	}
 }
 
-func marshalLoadableIconner(p uintptr) (interface{}, error) {
+func marshalLoadableIcon(p uintptr) (interface{}, error) {
 	return wrapLoadableIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

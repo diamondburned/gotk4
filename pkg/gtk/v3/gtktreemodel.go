@@ -46,13 +46,22 @@ import (
 // extern void _gotk4_gtk3_TreeModel_ConnectRowsReordered(gpointer, GtkTreePath*, GtkTreeIter*, gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtktreemodel.go.
+var (
+	GTypeTreeModelFlags   = externglib.Type(C.gtk_tree_model_flags_get_type())
+	GTypeTreeModel        = externglib.Type(C.gtk_tree_model_get_type())
+	GTypeTreeIter         = externglib.Type(C.gtk_tree_iter_get_type())
+	GTypeTreePath         = externglib.Type(C.gtk_tree_path_get_type())
+	GTypeTreeRowReference = externglib.Type(C.gtk_tree_row_reference_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_model_flags_get_type()), F: marshalTreeModelFlags},
-		{T: externglib.Type(C.gtk_tree_model_get_type()), F: marshalTreeModeller},
-		{T: externglib.Type(C.gtk_tree_iter_get_type()), F: marshalTreeIter},
-		{T: externglib.Type(C.gtk_tree_path_get_type()), F: marshalTreePath},
-		{T: externglib.Type(C.gtk_tree_row_reference_get_type()), F: marshalTreeRowReference},
+		{T: GTypeTreeModelFlags, F: marshalTreeModelFlags},
+		{T: GTypeTreeModel, F: marshalTreeModel},
+		{T: GTypeTreeIter, F: marshalTreeIter},
+		{T: GTypeTreePath, F: marshalTreePath},
+		{T: GTypeTreeRowReference, F: marshalTreeRowReference},
 	})
 }
 
@@ -965,7 +974,7 @@ func wrapTreeModel(obj *externglib.Object) *TreeModel {
 	}
 }
 
-func marshalTreeModeller(p uintptr) (interface{}, error) {
+func marshalTreeModel(p uintptr) (interface{}, error) {
 	return wrapTreeModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

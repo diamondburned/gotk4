@@ -16,10 +16,16 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkfixedlayout.go.
+var (
+	GTypeFixedLayout      = externglib.Type(C.gtk_fixed_layout_get_type())
+	GTypeFixedLayoutChild = externglib.Type(C.gtk_fixed_layout_child_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_fixed_layout_get_type()), F: marshalFixedLayouter},
-		{T: externglib.Type(C.gtk_fixed_layout_child_get_type()), F: marshalFixedLayoutChilder},
+		{T: GTypeFixedLayout, F: marshalFixedLayout},
+		{T: GTypeFixedLayoutChild, F: marshalFixedLayoutChild},
 	})
 }
 
@@ -81,7 +87,7 @@ func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
 	}
 }
 
-func marshalFixedLayouter(p uintptr) (interface{}, error) {
+func marshalFixedLayout(p uintptr) (interface{}, error) {
 	return wrapFixedLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -133,7 +139,7 @@ func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
 	}
 }
 
-func marshalFixedLayoutChilder(p uintptr) (interface{}, error) {
+func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 	return wrapFixedLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

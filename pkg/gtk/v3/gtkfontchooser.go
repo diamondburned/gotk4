@@ -30,10 +30,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkfontchooser.go.
+var (
+	GTypeFontChooserLevel = externglib.Type(C.gtk_font_chooser_level_get_type())
+	GTypeFontChooser      = externglib.Type(C.gtk_font_chooser_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_chooser_level_get_type()), F: marshalFontChooserLevel},
-		{T: externglib.Type(C.gtk_font_chooser_get_type()), F: marshalFontChooserer},
+		{T: GTypeFontChooserLevel, F: marshalFontChooserLevel},
+		{T: GTypeFontChooser, F: marshalFontChooser},
 	})
 }
 
@@ -230,7 +236,7 @@ func wrapFontChooser(obj *externglib.Object) *FontChooser {
 	}
 }
 
-func marshalFontChooserer(p uintptr) (interface{}, error) {
+func marshalFontChooser(p uintptr) (interface{}, error) {
 	return wrapFontChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

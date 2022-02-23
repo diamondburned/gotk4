@@ -35,9 +35,12 @@ import (
 // extern void _gotk4_gtk3_StatusIcon_ConnectPopupMenu(gpointer, guint, guint, guintptr);
 import "C"
 
+// glib.Type values for gtkstatusicon.go.
+var GTypeStatusIcon = externglib.Type(C.gtk_status_icon_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_status_icon_get_type()), F: marshalStatusIconner},
+		{T: GTypeStatusIcon, F: marshalStatusIcon},
 	})
 }
 
@@ -311,7 +314,7 @@ func wrapStatusIcon(obj *externglib.Object) *StatusIcon {
 	}
 }
 
-func marshalStatusIconner(p uintptr) (interface{}, error) {
+func marshalStatusIcon(p uintptr) (interface{}, error) {
 	return wrapStatusIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

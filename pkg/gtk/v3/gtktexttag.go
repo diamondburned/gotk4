@@ -21,9 +21,12 @@ import (
 // extern gboolean _gotk4_gtk3_TextTag_ConnectEvent(gpointer, GObject, GdkEvent, GtkTextIter*, guintptr);
 import "C"
 
+// glib.Type values for gtktexttag.go.
+var GTypeTextTag = externglib.Type(C.gtk_text_tag_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTagger},
+		{T: GTypeTextTag, F: marshalTextTag},
 	})
 }
 
@@ -119,7 +122,7 @@ func wrapTextTag(obj *externglib.Object) *TextTag {
 	}
 }
 
-func marshalTextTagger(p uintptr) (interface{}, error) {
+func marshalTextTag(p uintptr) (interface{}, error) {
 	return wrapTextTag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk4_LayoutManagerClass_unroot(GtkLayoutManager*);
 import "C"
 
+// glib.Type values for gtklayoutmanager.go.
+var GTypeLayoutManager = externglib.Type(C.gtk_layout_manager_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_layout_manager_get_type()), F: marshalLayoutManagerer},
+		{T: GTypeLayoutManager, F: marshalLayoutManager},
 	})
 }
 
@@ -383,7 +386,7 @@ func wrapLayoutManager(obj *externglib.Object) *LayoutManager {
 	}
 }
 
-func marshalLayoutManagerer(p uintptr) (interface{}, error) {
+func marshalLayoutManager(p uintptr) (interface{}, error) {
 	return wrapLayoutManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

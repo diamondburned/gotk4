@@ -15,9 +15,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+// glib.Type values for graphene-plane.go.
+var GTypePlane = externglib.Type(C.graphene_plane_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.graphene_plane_get_type()), F: marshalPlane},
+		{T: GTypePlane, F: marshalPlane},
 	})
 }
 

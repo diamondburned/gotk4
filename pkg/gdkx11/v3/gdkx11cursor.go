@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11cursor.go.
+var GTypeX11Cursor = externglib.Type(C.gdk_x11_cursor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_cursor_get_type()), F: marshalX11Cursorrer},
+		{T: GTypeX11Cursor, F: marshalX11Cursor},
 	})
 }
 
@@ -49,6 +52,6 @@ func wrapX11Cursor(obj *externglib.Object) *X11Cursor {
 	}
 }
 
-func marshalX11Cursorrer(p uintptr) (interface{}, error) {
+func marshalX11Cursor(p uintptr) (interface{}, error) {
 	return wrapX11Cursor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

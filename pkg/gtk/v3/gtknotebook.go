@@ -37,9 +37,12 @@ import (
 // extern void _gotk4_gtk3_Notebook_ConnectSwitchPage(gpointer, GtkWidget*, guint, guintptr);
 import "C"
 
+// glib.Type values for gtknotebook.go.
+var GTypeNotebook = externglib.Type(C.gtk_notebook_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_notebook_get_type()), F: marshalNotebooker},
+		{T: GTypeNotebook, F: marshalNotebook},
 	})
 }
 
@@ -567,7 +570,7 @@ func wrapNotebook(obj *externglib.Object) *Notebook {
 	}
 }
 
-func marshalNotebooker(p uintptr) (interface{}, error) {
+func marshalNotebook(p uintptr) (interface{}, error) {
 	return wrapNotebook(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

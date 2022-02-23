@@ -39,9 +39,12 @@ import (
 // extern void _gotk4_gtk3_ThemingEngineClass_render_slider(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkOrientation);
 import "C"
 
+// glib.Type values for gtkthemingengine.go.
+var GTypeThemingEngine = externglib.Type(C.gtk_theming_engine_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_theming_engine_get_type()), F: marshalThemingEnginer},
+		{T: GTypeThemingEngine, F: marshalThemingEngine},
 	})
 }
 
@@ -764,7 +767,7 @@ func wrapThemingEngine(obj *externglib.Object) *ThemingEngine {
 	}
 }
 
-func marshalThemingEnginer(p uintptr) (interface{}, error) {
+func marshalThemingEngine(p uintptr) (interface{}, error) {
 	return wrapThemingEngine(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

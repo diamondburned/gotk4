@@ -24,11 +24,18 @@ import (
 // extern void _gotk4_gtk3_RecentManager_ConnectChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkrecentmanager.go.
+var (
+	GTypeRecentManagerError = externglib.Type(C.gtk_recent_manager_error_get_type())
+	GTypeRecentManager      = externglib.Type(C.gtk_recent_manager_get_type())
+	GTypeRecentInfo         = externglib.Type(C.gtk_recent_info_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_manager_error_get_type()), F: marshalRecentManagerError},
-		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManagerer},
-		{T: externglib.Type(C.gtk_recent_info_get_type()), F: marshalRecentInfo},
+		{T: GTypeRecentManagerError, F: marshalRecentManagerError},
+		{T: GTypeRecentManager, F: marshalRecentManager},
+		{T: GTypeRecentInfo, F: marshalRecentInfo},
 	})
 }
 
@@ -168,7 +175,7 @@ func wrapRecentManager(obj *externglib.Object) *RecentManager {
 	}
 }
 
-func marshalRecentManagerer(p uintptr) (interface{}, error) {
+func marshalRecentManager(p uintptr) (interface{}, error) {
 	return wrapRecentManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

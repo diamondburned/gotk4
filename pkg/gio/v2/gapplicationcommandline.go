@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(GApplicationCommandLine*, gchar*);
 import "C"
 
+// glib.Type values for gapplicationcommandline.go.
+var GTypeApplicationCommandLine = externglib.Type(C.g_application_command_line_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_application_command_line_get_type()), F: marshalApplicationCommandLiner},
+		{T: GTypeApplicationCommandLine, F: marshalApplicationCommandLine},
 	})
 }
 
@@ -200,7 +203,7 @@ func wrapApplicationCommandLine(obj *externglib.Object) *ApplicationCommandLine 
 	}
 }
 
-func marshalApplicationCommandLiner(p uintptr) (interface{}, error) {
+func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 	return wrapApplicationCommandLine(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

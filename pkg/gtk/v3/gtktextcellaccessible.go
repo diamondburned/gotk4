@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktextcellaccessible.go.
+var GTypeTextCellAccessible = externglib.Type(C.gtk_text_cell_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_cell_accessible_get_type()), F: marshalTextCellAccessibler},
+		{T: GTypeTextCellAccessible, F: marshalTextCellAccessible},
 	})
 }
 
@@ -83,6 +86,6 @@ func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 	}
 }
 
-func marshalTextCellAccessibler(p uintptr) (interface{}, error) {
+func marshalTextCellAccessible(p uintptr) (interface{}, error) {
 	return wrapTextCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

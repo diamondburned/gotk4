@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gproxy.go.
+var GTypeProxy = externglib.Type(C.g_proxy_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_get_type()), F: marshalProxier},
+		{T: GTypeProxy, F: marshalProxy},
 	})
 }
 
@@ -72,7 +75,7 @@ func wrapProxy(obj *externglib.Object) *Proxy {
 	}
 }
 
-func marshalProxier(p uintptr) (interface{}, error) {
+func marshalProxy(p uintptr) (interface{}, error) {
 	return wrapProxy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

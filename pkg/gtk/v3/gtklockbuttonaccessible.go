@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtklockbuttonaccessible.go.
+var GTypeLockButtonAccessible = externglib.Type(C.gtk_lock_button_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_lock_button_accessible_get_type()), F: marshalLockButtonAccessibler},
+		{T: GTypeLockButtonAccessible, F: marshalLockButtonAccessible},
 	})
 }
 
@@ -69,6 +72,6 @@ func wrapLockButtonAccessible(obj *externglib.Object) *LockButtonAccessible {
 	}
 }
 
-func marshalLockButtonAccessibler(p uintptr) (interface{}, error) {
+func marshalLockButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapLockButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -20,9 +20,12 @@ import (
 // extern gssize _gotk4_gio2_SocketAddressClass_get_native_size(GSocketAddress*);
 import "C"
 
+// glib.Type values for gsocketaddress.go.
+var GTypeSocketAddress = externglib.Type(C.g_socket_address_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_address_get_type()), F: marshalSocketAddresser},
+		{T: GTypeSocketAddress, F: marshalSocketAddress},
 	})
 }
 
@@ -166,7 +169,7 @@ func wrapSocketAddress(obj *externglib.Object) *SocketAddress {
 	}
 }
 
-func marshalSocketAddresser(p uintptr) (interface{}, error) {
+func marshalSocketAddress(p uintptr) (interface{}, error) {
 	return wrapSocketAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

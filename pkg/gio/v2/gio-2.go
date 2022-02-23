@@ -24,25 +24,46 @@ import (
 // extern void _gotk4_gio2_SimpleAction_ConnectChangeState(gpointer, GVariant*, guintptr);
 import "C"
 
+// glib.Type values for gio-2.go.
+var (
+	GTypeAppInfoMonitor       = externglib.Type(C.g_app_info_monitor_get_type())
+	GTypeBytesIcon            = externglib.Type(C.g_bytes_icon_get_type())
+	GTypeDBusActionGroup      = externglib.Type(C.g_dbus_action_group_get_type())
+	GTypeDBusAuthObserver     = externglib.Type(C.g_dbus_auth_observer_get_type())
+	GTypeDBusConnection       = externglib.Type(C.g_dbus_connection_get_type())
+	GTypeDBusMenuModel        = externglib.Type(C.g_dbus_menu_model_get_type())
+	GTypeDBusMessage          = externglib.Type(C.g_dbus_message_get_type())
+	GTypeDBusMethodInvocation = externglib.Type(C.g_dbus_method_invocation_get_type())
+	GTypeDBusServer           = externglib.Type(C.g_dbus_server_get_type())
+	GTypeMenu                 = externglib.Type(C.g_menu_get_type())
+	GTypeMenuItem             = externglib.Type(C.g_menu_item_get_type())
+	GTypeNotification         = externglib.Type(C.g_notification_get_type())
+	GTypePropertyAction       = externglib.Type(C.g_property_action_get_type())
+	GTypeSimpleAction         = externglib.Type(C.g_simple_action_get_type())
+	GTypeSimpleIOStream       = externglib.Type(C.g_simple_io_stream_get_type())
+	GTypeSimplePermission     = externglib.Type(C.g_simple_permission_get_type())
+	GTypeTestDBus             = externglib.Type(C.g_test_dbus_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorrer},
-		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconner},
-		{T: externglib.Type(C.g_dbus_action_group_get_type()), F: marshalDBusActionGrouper},
-		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserverer},
-		{T: externglib.Type(C.g_dbus_connection_get_type()), F: marshalDBusConnectioner},
-		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModeller},
-		{T: externglib.Type(C.g_dbus_message_get_type()), F: marshalDBusMessager},
-		{T: externglib.Type(C.g_dbus_method_invocation_get_type()), F: marshalDBusMethodInvocationer},
-		{T: externglib.Type(C.g_dbus_server_get_type()), F: marshalDBusServerer},
-		{T: externglib.Type(C.g_menu_get_type()), F: marshalMenuer},
-		{T: externglib.Type(C.g_menu_item_get_type()), F: marshalMenuItemmer},
-		{T: externglib.Type(C.g_notification_get_type()), F: marshalNotificationer},
-		{T: externglib.Type(C.g_property_action_get_type()), F: marshalPropertyActioner},
-		{T: externglib.Type(C.g_simple_action_get_type()), F: marshalSimpleActioner},
-		{T: externglib.Type(C.g_simple_io_stream_get_type()), F: marshalSimpleIOStreamer},
-		{T: externglib.Type(C.g_simple_permission_get_type()), F: marshalSimplePermissioner},
-		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBusser},
+		{T: GTypeAppInfoMonitor, F: marshalAppInfoMonitor},
+		{T: GTypeBytesIcon, F: marshalBytesIcon},
+		{T: GTypeDBusActionGroup, F: marshalDBusActionGroup},
+		{T: GTypeDBusAuthObserver, F: marshalDBusAuthObserver},
+		{T: GTypeDBusConnection, F: marshalDBusConnection},
+		{T: GTypeDBusMenuModel, F: marshalDBusMenuModel},
+		{T: GTypeDBusMessage, F: marshalDBusMessage},
+		{T: GTypeDBusMethodInvocation, F: marshalDBusMethodInvocation},
+		{T: GTypeDBusServer, F: marshalDBusServer},
+		{T: GTypeMenu, F: marshalMenu},
+		{T: GTypeMenuItem, F: marshalMenuItem},
+		{T: GTypeNotification, F: marshalNotification},
+		{T: GTypePropertyAction, F: marshalPropertyAction},
+		{T: GTypeSimpleAction, F: marshalSimpleAction},
+		{T: GTypeSimpleIOStream, F: marshalSimpleIOStream},
+		{T: GTypeSimplePermission, F: marshalSimplePermission},
+		{T: GTypeTestDBus, F: marshalTestDBus},
 	})
 }
 
@@ -166,7 +187,7 @@ func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
 	}
 }
 
-func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
+func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
 	return wrapAppInfoMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -216,7 +237,7 @@ func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 	}
 }
 
-func marshalBytesIconner(p uintptr) (interface{}, error) {
+func marshalBytesIcon(p uintptr) (interface{}, error) {
 	return wrapBytesIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -245,7 +266,7 @@ func wrapDBusActionGroup(obj *externglib.Object) *DBusActionGroup {
 	}
 }
 
-func marshalDBusActionGrouper(p uintptr) (interface{}, error) {
+func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 	return wrapDBusActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -298,7 +319,7 @@ func wrapDBusAuthObserver(obj *externglib.Object) *DBusAuthObserver {
 	}
 }
 
-func marshalDBusAuthObserverer(p uintptr) (interface{}, error) {
+func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
 	return wrapDBusAuthObserver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -460,7 +481,7 @@ func wrapDBusConnection(obj *externglib.Object) *DBusConnection {
 	}
 }
 
-func marshalDBusConnectioner(p uintptr) (interface{}, error) {
+func marshalDBusConnection(p uintptr) (interface{}, error) {
 	return wrapDBusConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -530,7 +551,7 @@ func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 	}
 }
 
-func marshalDBusMenuModeller(p uintptr) (interface{}, error) {
+func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 	return wrapDBusMenuModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -551,7 +572,7 @@ func wrapDBusMessage(obj *externglib.Object) *DBusMessage {
 	}
 }
 
-func marshalDBusMessager(p uintptr) (interface{}, error) {
+func marshalDBusMessage(p uintptr) (interface{}, error) {
 	return wrapDBusMessage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -577,7 +598,7 @@ func wrapDBusMethodInvocation(obj *externglib.Object) *DBusMethodInvocation {
 	}
 }
 
-func marshalDBusMethodInvocationer(p uintptr) (interface{}, error) {
+func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 	return wrapDBusMethodInvocation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -620,7 +641,7 @@ func wrapDBusServer(obj *externglib.Object) *DBusServer {
 	}
 }
 
-func marshalDBusServerer(p uintptr) (interface{}, error) {
+func marshalDBusServer(p uintptr) (interface{}, error) {
 	return wrapDBusServer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -697,7 +718,7 @@ func wrapMenu(obj *externglib.Object) *Menu {
 	}
 }
 
-func marshalMenuer(p uintptr) (interface{}, error) {
+func marshalMenu(p uintptr) (interface{}, error) {
 	return wrapMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -718,7 +739,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	}
 }
 
-func marshalMenuItemmer(p uintptr) (interface{}, error) {
+func marshalMenuItem(p uintptr) (interface{}, error) {
 	return wrapMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -757,7 +778,7 @@ func wrapNotification(obj *externglib.Object) *Notification {
 	}
 }
 
-func marshalNotificationer(p uintptr) (interface{}, error) {
+func marshalNotification(p uintptr) (interface{}, error) {
 	return wrapNotification(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -829,7 +850,7 @@ func wrapPropertyAction(obj *externglib.Object) *PropertyAction {
 	}
 }
 
-func marshalPropertyActioner(p uintptr) (interface{}, error) {
+func marshalPropertyAction(p uintptr) (interface{}, error) {
 	return wrapPropertyAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -858,7 +879,7 @@ func wrapSimpleAction(obj *externglib.Object) *SimpleAction {
 	}
 }
 
-func marshalSimpleActioner(p uintptr) (interface{}, error) {
+func marshalSimpleAction(p uintptr) (interface{}, error) {
 	return wrapSimpleAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -995,7 +1016,7 @@ func wrapSimpleIOStream(obj *externglib.Object) *SimpleIOStream {
 	}
 }
 
-func marshalSimpleIOStreamer(p uintptr) (interface{}, error) {
+func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 	return wrapSimpleIOStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1021,7 +1042,7 @@ func wrapSimplePermission(obj *externglib.Object) *SimplePermission {
 	}
 }
 
-func marshalSimplePermissioner(p uintptr) (interface{}, error) {
+func marshalSimplePermission(p uintptr) (interface{}, error) {
 	return wrapSimplePermission(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1111,6 +1132,6 @@ func wrapTestDBus(obj *externglib.Object) *TestDBus {
 	}
 }
 
-func marshalTestDBusser(p uintptr) (interface{}, error) {
+func marshalTestDBus(p uintptr) (interface{}, error) {
 	return wrapTestDBus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

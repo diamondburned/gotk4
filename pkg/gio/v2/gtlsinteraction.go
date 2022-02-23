@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gtlsinteraction.go.
+var GTypeTLSInteraction = externglib.Type(C.g_tls_interaction_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_interaction_get_type()), F: marshalTLSInteractioner},
+		{T: GTypeTLSInteraction, F: marshalTLSInteraction},
 	})
 }
 
@@ -341,7 +344,7 @@ func wrapTLSInteraction(obj *externglib.Object) *TLSInteraction {
 	}
 }
 
-func marshalTLSInteractioner(p uintptr) (interface{}, error) {
+func marshalTLSInteraction(p uintptr) (interface{}, error) {
 	return wrapTLSInteraction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

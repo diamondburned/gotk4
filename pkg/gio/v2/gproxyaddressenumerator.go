@@ -13,9 +13,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gproxyaddressenumerator.go.
+var GTypeProxyAddressEnumerator = externglib.Type(C.g_proxy_address_enumerator_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumeratorrer},
+		{T: GTypeProxyAddressEnumerator, F: marshalProxyAddressEnumerator},
 	})
 }
 
@@ -56,6 +59,6 @@ func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator 
 	}
 }
 
-func marshalProxyAddressEnumeratorrer(p uintptr) (interface{}, error) {
+func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 	return wrapProxyAddressEnumerator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

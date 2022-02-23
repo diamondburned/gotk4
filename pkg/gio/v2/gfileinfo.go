@@ -17,9 +17,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gfileinfo.go.
+var GTypeFileInfo = externglib.Type(C.g_file_info_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_info_get_type()), F: marshalFileInfor},
+		{T: GTypeFileInfo, F: marshalFileInfo},
 	})
 }
 
@@ -573,7 +576,7 @@ func wrapFileInfo(obj *externglib.Object) *FileInfo {
 	}
 }
 
-func marshalFileInfor(p uintptr) (interface{}, error) {
+func marshalFileInfo(p uintptr) (interface{}, error) {
 	return wrapFileInfo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

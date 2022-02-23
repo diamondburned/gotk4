@@ -16,11 +16,18 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkdnd.go.
+var (
+	GTypeDragCancelReason = externglib.Type(C.gdk_drag_cancel_reason_get_type())
+	GTypeDragProtocol     = externglib.Type(C.gdk_drag_protocol_get_type())
+	GTypeDragAction       = externglib.Type(C.gdk_drag_action_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
-		{T: externglib.Type(C.gdk_drag_protocol_get_type()), F: marshalDragProtocol},
-		{T: externglib.Type(C.gdk_drag_action_get_type()), F: marshalDragAction},
+		{T: GTypeDragCancelReason, F: marshalDragCancelReason},
+		{T: GTypeDragProtocol, F: marshalDragProtocol},
+		{T: GTypeDragAction, F: marshalDragAction},
 	})
 }
 

@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkstackswitcher.go.
+var GTypeStackSwitcher = externglib.Type(C.gtk_stack_switcher_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_switcher_get_type()), F: marshalStackSwitcherer},
+		{T: GTypeStackSwitcher, F: marshalStackSwitcher},
 	})
 }
 
@@ -90,7 +93,7 @@ func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 	}
 }
 
-func marshalStackSwitcherer(p uintptr) (interface{}, error) {
+func marshalStackSwitcher(p uintptr) (interface{}, error) {
 	return wrapStackSwitcher(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

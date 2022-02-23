@@ -17,9 +17,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkcustomfilter.go.
+var GTypeCustomFilter = externglib.Type(C.gtk_custom_filter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_custom_filter_get_type()), F: marshalCustomFilterer},
+		{T: GTypeCustomFilter, F: marshalCustomFilter},
 	})
 }
 
@@ -85,7 +88,7 @@ func wrapCustomFilter(obj *externglib.Object) *CustomFilter {
 	}
 }
 
-func marshalCustomFilterer(p uintptr) (interface{}, error) {
+func marshalCustomFilter(p uintptr) (interface{}, error) {
 	return wrapCustomFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

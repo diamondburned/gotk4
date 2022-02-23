@@ -19,11 +19,18 @@ import (
 // extern void _gotk4_gtk4_ScrolledWindow_ConnectMoveFocusOut(gpointer, GtkDirectionType, guintptr);
 import "C"
 
+// glib.Type values for gtkscrolledwindow.go.
+var (
+	GTypeCornerType     = externglib.Type(C.gtk_corner_type_get_type())
+	GTypePolicyType     = externglib.Type(C.gtk_policy_type_get_type())
+	GTypeScrolledWindow = externglib.Type(C.gtk_scrolled_window_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_corner_type_get_type()), F: marshalCornerType},
-		{T: externglib.Type(C.gtk_policy_type_get_type()), F: marshalPolicyType},
-		{T: externglib.Type(C.gtk_scrolled_window_get_type()), F: marshalScrolledWindower},
+		{T: GTypeCornerType, F: marshalCornerType},
+		{T: GTypePolicyType, F: marshalPolicyType},
+		{T: GTypeScrolledWindow, F: marshalScrolledWindow},
 	})
 }
 
@@ -221,7 +228,7 @@ func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 	}
 }
 
-func marshalScrolledWindower(p uintptr) (interface{}, error) {
+func marshalScrolledWindow(p uintptr) (interface{}, error) {
 	return wrapScrolledWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

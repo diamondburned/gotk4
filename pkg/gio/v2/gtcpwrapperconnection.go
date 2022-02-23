@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gtcpwrapperconnection.go.
+var GTypeTCPWrapperConnection = externglib.Type(C.g_tcp_wrapper_connection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tcp_wrapper_connection_get_type()), F: marshalTCPWrapperConnectioner},
+		{T: GTypeTCPWrapperConnection, F: marshalTCPWrapperConnection},
 	})
 }
 
@@ -57,7 +60,7 @@ func wrapTCPWrapperConnection(obj *externglib.Object) *TCPWrapperConnection {
 	}
 }
 
-func marshalTCPWrapperConnectioner(p uintptr) (interface{}, error) {
+func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
 	return wrapTCPWrapperConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

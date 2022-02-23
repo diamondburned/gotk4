@@ -15,9 +15,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for glib-2.go.
+var GTypeIOCondition = externglib.Type(C.g_io_condition_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_io_condition_get_type()), F: marshalIOCondition},
+		{T: GTypeIOCondition, F: marshalIOCondition},
 	})
 }
 

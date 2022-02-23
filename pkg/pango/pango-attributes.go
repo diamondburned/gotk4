@@ -22,16 +22,28 @@ import (
 // extern gboolean _gotk4_pango1_AttrFilterFunc(PangoAttribute*, gpointer);
 import "C"
 
+// glib.Type values for pango-attributes.go.
+var (
+	GTypeAttrType     = externglib.Type(C.pango_attr_type_get_type())
+	GTypeOverline     = externglib.Type(C.pango_overline_get_type())
+	GTypeUnderline    = externglib.Type(C.pango_underline_get_type())
+	GTypeShowFlags    = externglib.Type(C.pango_show_flags_get_type())
+	GTypeAttrIterator = externglib.Type(C.pango_attr_iterator_get_type())
+	GTypeAttrList     = externglib.Type(C.pango_attr_list_get_type())
+	GTypeAttribute    = externglib.Type(C.pango_attribute_get_type())
+	GTypeColor        = externglib.Type(C.pango_color_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_attr_type_get_type()), F: marshalAttrType},
-		{T: externglib.Type(C.pango_overline_get_type()), F: marshalOverline},
-		{T: externglib.Type(C.pango_underline_get_type()), F: marshalUnderline},
-		{T: externglib.Type(C.pango_show_flags_get_type()), F: marshalShowFlags},
-		{T: externglib.Type(C.pango_attr_iterator_get_type()), F: marshalAttrIterator},
-		{T: externglib.Type(C.pango_attr_list_get_type()), F: marshalAttrList},
-		{T: externglib.Type(C.pango_attribute_get_type()), F: marshalAttribute},
-		{T: externglib.Type(C.pango_color_get_type()), F: marshalColor},
+		{T: GTypeAttrType, F: marshalAttrType},
+		{T: GTypeOverline, F: marshalOverline},
+		{T: GTypeUnderline, F: marshalUnderline},
+		{T: GTypeShowFlags, F: marshalShowFlags},
+		{T: GTypeAttrIterator, F: marshalAttrIterator},
+		{T: GTypeAttrList, F: marshalAttrList},
+		{T: GTypeAttribute, F: marshalAttribute},
+		{T: GTypeColor, F: marshalColor},
 	})
 }
 

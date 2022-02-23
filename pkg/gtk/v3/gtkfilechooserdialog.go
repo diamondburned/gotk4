@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkfilechooserdialog.go.
+var GTypeFileChooserDialog = externglib.Type(C.gtk_file_chooser_dialog_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialogger},
+		{T: GTypeFileChooserDialog, F: marshalFileChooserDialog},
 	})
 }
 
@@ -224,6 +227,6 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 	}
 }
 
-func marshalFileChooserDialogger(p uintptr) (interface{}, error) {
+func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 	return wrapFileChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

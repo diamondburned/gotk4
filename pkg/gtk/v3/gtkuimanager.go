@@ -35,10 +35,16 @@ import (
 // extern void _gotk4_gtk3_UIManager_ConnectPreActivate(gpointer, GtkAction*, guintptr);
 import "C"
 
+// glib.Type values for gtkuimanager.go.
+var (
+	GTypeUIManagerItemType = externglib.Type(C.gtk_ui_manager_item_type_get_type())
+	GTypeUIManager         = externglib.Type(C.gtk_ui_manager_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_ui_manager_item_type_get_type()), F: marshalUIManagerItemType},
-		{T: externglib.Type(C.gtk_ui_manager_get_type()), F: marshalUIManagerer},
+		{T: GTypeUIManagerItemType, F: marshalUIManagerItemType},
+		{T: GTypeUIManager, F: marshalUIManager},
 	})
 }
 
@@ -639,7 +645,7 @@ func wrapUIManager(obj *externglib.Object) *UIManager {
 	}
 }
 
-func marshalUIManagerer(p uintptr) (interface{}, error) {
+func marshalUIManager(p uintptr) (interface{}, error) {
 	return wrapUIManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

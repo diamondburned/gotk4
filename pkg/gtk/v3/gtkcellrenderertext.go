@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk3_CellRendererText_ConnectEdited(gpointer, gchar*, gchar*, guintptr);
 import "C"
 
+// glib.Type values for gtkcellrenderertext.go.
+var GTypeCellRendererText = externglib.Type(C.gtk_cell_renderer_text_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_text_get_type()), F: marshalCellRendererTexter},
+		{T: GTypeCellRendererText, F: marshalCellRendererText},
 	})
 }
 
@@ -90,7 +93,7 @@ func wrapCellRendererText(obj *externglib.Object) *CellRendererText {
 	}
 }
 
-func marshalCellRendererTexter(p uintptr) (interface{}, error) {
+func marshalCellRendererText(p uintptr) (interface{}, error) {
 	return wrapCellRendererText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

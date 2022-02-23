@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gzlibcompressor.go.
+var GTypeZlibCompressor = externglib.Type(C.g_zlib_compressor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_zlib_compressor_get_type()), F: marshalZlibCompressorrer},
+		{T: GTypeZlibCompressor, F: marshalZlibCompressor},
 	})
 }
 
@@ -53,7 +56,7 @@ func wrapZlibCompressor(obj *externglib.Object) *ZlibCompressor {
 	}
 }
 
-func marshalZlibCompressorrer(p uintptr) (interface{}, error) {
+func marshalZlibCompressor(p uintptr) (interface{}, error) {
 	return wrapZlibCompressor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

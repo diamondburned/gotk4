@@ -36,9 +36,12 @@ import (
 // extern void _gotk4_gtk3_MenuShell_ConnectSelectionDone(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkmenushell.go.
+var GTypeMenuShell = externglib.Type(C.gtk_menu_shell_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_shell_get_type()), F: marshalMenuSheller},
+		{T: GTypeMenuShell, F: marshalMenuShell},
 	})
 }
 
@@ -341,7 +344,7 @@ func wrapMenuShell(obj *externglib.Object) *MenuShell {
 	}
 }
 
-func marshalMenuSheller(p uintptr) (interface{}, error) {
+func marshalMenuShell(p uintptr) (interface{}, error) {
 	return wrapMenuShell(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

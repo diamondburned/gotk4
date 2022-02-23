@@ -23,10 +23,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkfilefilter.go.
+var (
+	GTypeFileFilterFlags = externglib.Type(C.gtk_file_filter_flags_get_type())
+	GTypeFileFilter      = externglib.Type(C.gtk_file_filter_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_filter_flags_get_type()), F: marshalFileFilterFlags},
-		{T: externglib.Type(C.gtk_file_filter_get_type()), F: marshalFileFilterer},
+		{T: GTypeFileFilterFlags, F: marshalFileFilterFlags},
+		{T: GTypeFileFilter, F: marshalFileFilter},
 	})
 }
 
@@ -176,7 +182,7 @@ func wrapFileFilter(obj *externglib.Object) *FileFilter {
 	}
 }
 
-func marshalFileFilterer(p uintptr) (interface{}, error) {
+func marshalFileFilter(p uintptr) (interface{}, error) {
 	return wrapFileFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

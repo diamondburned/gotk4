@@ -13,9 +13,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkbinlayout.go.
+var GTypeBinLayout = externglib.Type(C.gtk_bin_layout_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bin_layout_get_type()), F: marshalBinLayouter},
+		{T: GTypeBinLayout, F: marshalBinLayout},
 	})
 }
 
@@ -55,7 +58,7 @@ func wrapBinLayout(obj *externglib.Object) *BinLayout {
 	}
 }
 
-func marshalBinLayouter(p uintptr) (interface{}, error) {
+func marshalBinLayout(p uintptr) (interface{}, error) {
 	return wrapBinLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

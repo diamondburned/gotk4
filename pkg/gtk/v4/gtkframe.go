@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gtk4_FrameClass_compute_child_allocation(GtkFrame*, GtkAllocation*);
 import "C"
 
+// glib.Type values for gtkframe.go.
+var GTypeFrame = externglib.Type(C.gtk_frame_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_frame_get_type()), F: marshalFramer},
+		{T: GTypeFrame, F: marshalFrame},
 	})
 }
 
@@ -130,7 +133,7 @@ func wrapFrame(obj *externglib.Object) *Frame {
 	}
 }
 
-func marshalFramer(p uintptr) (interface{}, error) {
+func marshalFrame(p uintptr) (interface{}, error) {
 	return wrapFrame(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

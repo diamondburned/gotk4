@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gtlsfiledatabase.go.
+var GTypeTLSFileDatabase = externglib.Type(C.g_tls_file_database_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_file_database_get_type()), F: marshalTLSFileDatabaser},
+		{T: GTypeTLSFileDatabase, F: marshalTLSFileDatabase},
 	})
 }
 
@@ -57,7 +60,7 @@ func wrapTLSFileDatabase(obj *externglib.Object) *TLSFileDatabase {
 	}
 }
 
-func marshalTLSFileDatabaser(p uintptr) (interface{}, error) {
+func marshalTLSFileDatabase(p uintptr) (interface{}, error) {
 	return wrapTLSFileDatabase(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

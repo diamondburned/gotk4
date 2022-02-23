@@ -13,9 +13,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gnativevolumemonitor.go.
+var GTypeNativeVolumeMonitor = externglib.Type(C.g_native_volume_monitor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_native_volume_monitor_get_type()), F: marshalNativeVolumeMonitorrer},
+		{T: GTypeNativeVolumeMonitor, F: marshalNativeVolumeMonitor},
 	})
 }
 
@@ -61,7 +64,7 @@ func wrapNativeVolumeMonitor(obj *externglib.Object) *NativeVolumeMonitor {
 	}
 }
 
-func marshalNativeVolumeMonitorrer(p uintptr) (interface{}, error) {
+func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
 	return wrapNativeVolumeMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

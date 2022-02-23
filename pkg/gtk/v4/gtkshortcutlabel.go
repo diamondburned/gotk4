@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkshortcutlabel.go.
+var GTypeShortcutLabel = externglib.Type(C.gtk_shortcut_label_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_label_get_type()), F: marshalShortcutLabeller},
+		{T: GTypeShortcutLabel, F: marshalShortcutLabel},
 	})
 }
 
@@ -65,7 +68,7 @@ func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 	}
 }
 
-func marshalShortcutLabeller(p uintptr) (interface{}, error) {
+func marshalShortcutLabel(p uintptr) (interface{}, error) {
 	return wrapShortcutLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

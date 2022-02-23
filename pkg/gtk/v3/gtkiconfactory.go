@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkiconfactory.go.
+var GTypeIconFactory = externglib.Type(C.gtk_icon_factory_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_icon_factory_get_type()), F: marshalIconFactorier},
+		{T: GTypeIconFactory, F: marshalIconFactory},
 	})
 }
 
@@ -333,7 +336,7 @@ func wrapIconFactory(obj *externglib.Object) *IconFactory {
 	}
 }
 
-func marshalIconFactorier(p uintptr) (interface{}, error) {
+func marshalIconFactory(p uintptr) (interface{}, error) {
 	return wrapIconFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

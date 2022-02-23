@@ -17,9 +17,12 @@ import (
 // extern gboolean _gotk4_gio2_TlsBackendInterface_supports_tls(GTlsBackend*);
 import "C"
 
+// glib.Type values for gtlsbackend.go.
+var GTypeTLSBackend = externglib.Type(C.g_tls_backend_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_backend_get_type()), F: marshalTLSBackender},
+		{T: GTypeTLSBackend, F: marshalTLSBackend},
 	})
 }
 
@@ -154,7 +157,7 @@ func wrapTLSBackend(obj *externglib.Object) *TLSBackend {
 	}
 }
 
-func marshalTLSBackender(p uintptr) (interface{}, error) {
+func marshalTLSBackend(p uintptr) (interface{}, error) {
 	return wrapTLSBackend(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

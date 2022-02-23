@@ -16,9 +16,12 @@ import (
 // extern void _gotk4_gtk4_ATContext_ConnectStateChange(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkatcontext.go.
+var GTypeATContext = externglib.Type(C.gtk_at_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_at_context_get_type()), F: marshalATContexter},
+		{T: GTypeATContext, F: marshalATContext},
 	})
 }
 
@@ -66,7 +69,7 @@ func wrapATContext(obj *externglib.Object) *ATContext {
 	}
 }
 
-func marshalATContexter(p uintptr) (interface{}, error) {
+func marshalATContext(p uintptr) (interface{}, error) {
 	return wrapATContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

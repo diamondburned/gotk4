@@ -19,10 +19,16 @@ import (
 // extern void _gotk4_gdk4_Drag_ConnectDropPerformed(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gdkdrag.go.
+var (
+	GTypeDragCancelReason = externglib.Type(C.gdk_drag_cancel_reason_get_type())
+	GTypeDrag             = externglib.Type(C.gdk_drag_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
-		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDragger},
+		{T: GTypeDragCancelReason, F: marshalDragCancelReason},
+		{T: GTypeDrag, F: marshalDrag},
 	})
 }
 
@@ -123,7 +129,7 @@ func wrapDrag(obj *externglib.Object) *Drag {
 	}
 }
 
-func marshalDragger(p uintptr) (interface{}, error) {
+func marshalDrag(p uintptr) (interface{}, error) {
 	return wrapDrag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

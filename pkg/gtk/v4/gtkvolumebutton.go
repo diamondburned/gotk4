@@ -13,9 +13,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkvolumebutton.go.
+var GTypeVolumeButton = externglib.Type(C.gtk_volume_button_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButtonner},
+		{T: GTypeVolumeButton, F: marshalVolumeButton},
 	})
 }
 
@@ -59,7 +62,7 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 	}
 }
 
-func marshalVolumeButtonner(p uintptr) (interface{}, error) {
+func marshalVolumeButton(p uintptr) (interface{}, error) {
 	return wrapVolumeButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

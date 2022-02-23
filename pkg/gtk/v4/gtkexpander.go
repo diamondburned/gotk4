@@ -15,9 +15,12 @@ import (
 // extern void _gotk4_gtk4_Expander_ConnectActivate(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkexpander.go.
+var GTypeExpander = externglib.Type(C.gtk_expander_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_expander_get_type()), F: marshalExpanderer},
+		{T: GTypeExpander, F: marshalExpander},
 	})
 }
 
@@ -140,7 +143,7 @@ func wrapExpander(obj *externglib.Object) *Expander {
 	}
 }
 
-func marshalExpanderer(p uintptr) (interface{}, error) {
+func marshalExpander(p uintptr) (interface{}, error) {
 	return wrapExpander(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

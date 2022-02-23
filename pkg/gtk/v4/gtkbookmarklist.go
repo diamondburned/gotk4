@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkbookmarklist.go.
+var GTypeBookmarkList = externglib.Type(C.gtk_bookmark_list_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bookmark_list_get_type()), F: marshalBookmarkLister},
+		{T: GTypeBookmarkList, F: marshalBookmarkList},
 	})
 }
 
@@ -60,7 +63,7 @@ func wrapBookmarkList(obj *externglib.Object) *BookmarkList {
 	}
 }
 
-func marshalBookmarkLister(p uintptr) (interface{}, error) {
+func marshalBookmarkList(p uintptr) (interface{}, error) {
 	return wrapBookmarkList(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

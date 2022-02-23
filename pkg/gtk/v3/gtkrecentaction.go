@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkrecentaction.go.
+var GTypeRecentAction = externglib.Type(C.gtk_recent_action_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_action_get_type()), F: marshalRecentActioner},
+		{T: GTypeRecentAction, F: marshalRecentAction},
 	})
 }
 
@@ -68,7 +71,7 @@ func wrapRecentAction(obj *externglib.Object) *RecentAction {
 	}
 }
 
-func marshalRecentActioner(p uintptr) (interface{}, error) {
+func marshalRecentAction(p uintptr) (interface{}, error) {
 	return wrapRecentAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

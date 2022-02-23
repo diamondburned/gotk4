@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtktextmark.go.
+var GTypeTextMark = externglib.Type(C.gtk_text_mark_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_mark_get_type()), F: marshalTextMarker},
+		{T: GTypeTextMark, F: marshalTextMark},
 	})
 }
 
@@ -76,7 +79,7 @@ func wrapTextMark(obj *externglib.Object) *TextMark {
 	}
 }
 
-func marshalTextMarker(p uintptr) (interface{}, error) {
+func marshalTextMark(p uintptr) (interface{}, error) {
 	return wrapTextMark(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

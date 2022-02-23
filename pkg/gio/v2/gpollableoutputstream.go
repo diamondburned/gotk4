@@ -24,9 +24,12 @@ import (
 // extern gssize _gotk4_gio2_PollableOutputStreamInterface_write_nonblocking(GPollableOutputStream*, void*, gsize, GError**);
 import "C"
 
+// glib.Type values for gpollableoutputstream.go.
+var GTypePollableOutputStream = externglib.Type(C.g_pollable_output_stream_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_pollable_output_stream_get_type()), F: marshalPollableOutputStreamer},
+		{T: GTypePollableOutputStream, F: marshalPollableOutputStream},
 	})
 }
 
@@ -281,7 +284,7 @@ func wrapPollableOutputStream(obj *externglib.Object) *PollableOutputStream {
 	}
 }
 
-func marshalPollableOutputStreamer(p uintptr) (interface{}, error) {
+func marshalPollableOutputStream(p uintptr) (interface{}, error) {
 	return wrapPollableOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

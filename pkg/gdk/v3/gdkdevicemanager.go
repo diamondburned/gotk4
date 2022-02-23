@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved(gpointer, GdkDevice*, guintptr);
 import "C"
 
+// glib.Type values for gdkdevicemanager.go.
+var GTypeDeviceManager = externglib.Type(C.gdk_device_manager_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_device_manager_get_type()), F: marshalDeviceManagerer},
+		{T: GTypeDeviceManager, F: marshalDeviceManager},
 	})
 }
 
@@ -154,7 +157,7 @@ func wrapDeviceManager(obj *externglib.Object) *DeviceManager {
 	}
 }
 
-func marshalDeviceManagerer(p uintptr) (interface{}, error) {
+func marshalDeviceManager(p uintptr) (interface{}, error) {
 	return wrapDeviceManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

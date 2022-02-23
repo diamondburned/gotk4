@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gio2_DBusInterfaceIface_set_object(GDBusInterface*, GDBusObject*);
 import "C"
 
+// glib.Type values for gdbusinterface.go.
+var GTypeDBusInterface = externglib.Type(C.g_dbus_interface_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_interface_get_type()), F: marshalDBusInterfacer},
+		{T: GTypeDBusInterface, F: marshalDBusInterface},
 	})
 }
 
@@ -146,7 +149,7 @@ func wrapDBusInterface(obj *externglib.Object) *DBusInterface {
 	}
 }
 
-func marshalDBusInterfacer(p uintptr) (interface{}, error) {
+func marshalDBusInterface(p uintptr) (interface{}, error) {
 	return wrapDBusInterface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

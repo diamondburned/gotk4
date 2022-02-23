@@ -15,86 +15,168 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gioenums.go.
+var (
+	GTypeBusType                      = externglib.Type(C.g_bus_type_get_type())
+	GTypeConverterResult              = externglib.Type(C.g_converter_result_get_type())
+	GTypeCredentialsType              = externglib.Type(C.g_credentials_type_get_type())
+	GTypeDBusError                    = externglib.Type(C.g_dbus_error_get_type())
+	GTypeDBusMessageByteOrder         = externglib.Type(C.g_dbus_message_byte_order_get_type())
+	GTypeDBusMessageHeaderField       = externglib.Type(C.g_dbus_message_header_field_get_type())
+	GTypeDBusMessageType              = externglib.Type(C.g_dbus_message_type_get_type())
+	GTypeDataStreamByteOrder          = externglib.Type(C.g_data_stream_byte_order_get_type())
+	GTypeDataStreamNewlineType        = externglib.Type(C.g_data_stream_newline_type_get_type())
+	GTypeDriveStartStopType           = externglib.Type(C.g_drive_start_stop_type_get_type())
+	GTypeEmblemOrigin                 = externglib.Type(C.g_emblem_origin_get_type())
+	GTypeFileAttributeStatus          = externglib.Type(C.g_file_attribute_status_get_type())
+	GTypeFileAttributeType            = externglib.Type(C.g_file_attribute_type_get_type())
+	GTypeFileMonitorEvent             = externglib.Type(C.g_file_monitor_event_get_type())
+	GTypeFileType                     = externglib.Type(C.g_file_type_get_type())
+	GTypeFilesystemPreviewType        = externglib.Type(C.g_filesystem_preview_type_get_type())
+	GTypeIOErrorEnum                  = externglib.Type(C.g_io_error_enum_get_type())
+	GTypeIOModuleScopeFlags           = externglib.Type(C.g_io_module_scope_flags_get_type())
+	GTypeMemoryMonitorWarningLevel    = externglib.Type(C.g_memory_monitor_warning_level_get_type())
+	GTypeMountOperationResult         = externglib.Type(C.g_mount_operation_result_get_type())
+	GTypeNetworkConnectivity          = externglib.Type(C.g_network_connectivity_get_type())
+	GTypeNotificationPriority         = externglib.Type(C.g_notification_priority_get_type())
+	GTypePasswordSave                 = externglib.Type(C.g_password_save_get_type())
+	GTypePollableReturn               = externglib.Type(C.g_pollable_return_get_type())
+	GTypeResolverError                = externglib.Type(C.g_resolver_error_get_type())
+	GTypeResolverRecordType           = externglib.Type(C.g_resolver_record_type_get_type())
+	GTypeResourceError                = externglib.Type(C.g_resource_error_get_type())
+	GTypeSocketClientEvent            = externglib.Type(C.g_socket_client_event_get_type())
+	GTypeSocketFamily                 = externglib.Type(C.g_socket_family_get_type())
+	GTypeSocketListenerEvent          = externglib.Type(C.g_socket_listener_event_get_type())
+	GTypeSocketProtocol               = externglib.Type(C.g_socket_protocol_get_type())
+	GTypeSocketType                   = externglib.Type(C.g_socket_type_get_type())
+	GTypeTLSAuthenticationMode        = externglib.Type(C.g_tls_authentication_mode_get_type())
+	GTypeTLSCertificateRequestFlags   = externglib.Type(C.g_tls_certificate_request_flags_get_type())
+	GTypeTLSChannelBindingError       = externglib.Type(C.g_tls_channel_binding_error_get_type())
+	GTypeTLSChannelBindingType        = externglib.Type(C.g_tls_channel_binding_type_get_type())
+	GTypeTLSDatabaseLookupFlags       = externglib.Type(C.g_tls_database_lookup_flags_get_type())
+	GTypeTLSError                     = externglib.Type(C.g_tls_error_get_type())
+	GTypeTLSInteractionResult         = externglib.Type(C.g_tls_interaction_result_get_type())
+	GTypeTLSRehandshakeMode           = externglib.Type(C.g_tls_rehandshake_mode_get_type())
+	GTypeZlibCompressorFormat         = externglib.Type(C.g_zlib_compressor_format_get_type())
+	GTypeAppInfoCreateFlags           = externglib.Type(C.g_app_info_create_flags_get_type())
+	GTypeApplicationFlags             = externglib.Type(C.g_application_flags_get_type())
+	GTypeAskPasswordFlags             = externglib.Type(C.g_ask_password_flags_get_type())
+	GTypeBusNameOwnerFlags            = externglib.Type(C.g_bus_name_owner_flags_get_type())
+	GTypeBusNameWatcherFlags          = externglib.Type(C.g_bus_name_watcher_flags_get_type())
+	GTypeConverterFlags               = externglib.Type(C.g_converter_flags_get_type())
+	GTypeDBusCallFlags                = externglib.Type(C.g_dbus_call_flags_get_type())
+	GTypeDBusCapabilityFlags          = externglib.Type(C.g_dbus_capability_flags_get_type())
+	GTypeDBusConnectionFlags          = externglib.Type(C.g_dbus_connection_flags_get_type())
+	GTypeDBusInterfaceSkeletonFlags   = externglib.Type(C.g_dbus_interface_skeleton_flags_get_type())
+	GTypeDBusMessageFlags             = externglib.Type(C.g_dbus_message_flags_get_type())
+	GTypeDBusObjectManagerClientFlags = externglib.Type(C.g_dbus_object_manager_client_flags_get_type())
+	GTypeDBusPropertyInfoFlags        = externglib.Type(C.g_dbus_property_info_flags_get_type())
+	GTypeDBusProxyFlags               = externglib.Type(C.g_dbus_proxy_flags_get_type())
+	GTypeDBusSendMessageFlags         = externglib.Type(C.g_dbus_send_message_flags_get_type())
+	GTypeDBusServerFlags              = externglib.Type(C.g_dbus_server_flags_get_type())
+	GTypeDBusSignalFlags              = externglib.Type(C.g_dbus_signal_flags_get_type())
+	GTypeDBusSubtreeFlags             = externglib.Type(C.g_dbus_subtree_flags_get_type())
+	GTypeDriveStartFlags              = externglib.Type(C.g_drive_start_flags_get_type())
+	GTypeFileAttributeInfoFlags       = externglib.Type(C.g_file_attribute_info_flags_get_type())
+	GTypeFileCopyFlags                = externglib.Type(C.g_file_copy_flags_get_type())
+	GTypeFileCreateFlags              = externglib.Type(C.g_file_create_flags_get_type())
+	GTypeFileMeasureFlags             = externglib.Type(C.g_file_measure_flags_get_type())
+	GTypeFileMonitorFlags             = externglib.Type(C.g_file_monitor_flags_get_type())
+	GTypeFileQueryInfoFlags           = externglib.Type(C.g_file_query_info_flags_get_type())
+	GTypeIOStreamSpliceFlags          = externglib.Type(C.g_io_stream_splice_flags_get_type())
+	GTypeMountMountFlags              = externglib.Type(C.g_mount_mount_flags_get_type())
+	GTypeMountUnmountFlags            = externglib.Type(C.g_mount_unmount_flags_get_type())
+	GTypeOutputStreamSpliceFlags      = externglib.Type(C.g_output_stream_splice_flags_get_type())
+	GTypeResourceFlags                = externglib.Type(C.g_resource_flags_get_type())
+	GTypeResourceLookupFlags          = externglib.Type(C.g_resource_lookup_flags_get_type())
+	GTypeSocketMsgFlags               = externglib.Type(C.g_socket_msg_flags_get_type())
+	GTypeSubprocessFlags              = externglib.Type(C.g_subprocess_flags_get_type())
+	GTypeTestDBusFlags                = externglib.Type(C.g_test_dbus_flags_get_type())
+	GTypeTLSCertificateFlags          = externglib.Type(C.g_tls_certificate_flags_get_type())
+	GTypeTLSDatabaseVerifyFlags       = externglib.Type(C.g_tls_database_verify_flags_get_type())
+	GTypeTLSPasswordFlags             = externglib.Type(C.g_tls_password_flags_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_bus_type_get_type()), F: marshalBusType},
-		{T: externglib.Type(C.g_converter_result_get_type()), F: marshalConverterResult},
-		{T: externglib.Type(C.g_credentials_type_get_type()), F: marshalCredentialsType},
-		{T: externglib.Type(C.g_dbus_error_get_type()), F: marshalDBusError},
-		{T: externglib.Type(C.g_dbus_message_byte_order_get_type()), F: marshalDBusMessageByteOrder},
-		{T: externglib.Type(C.g_dbus_message_header_field_get_type()), F: marshalDBusMessageHeaderField},
-		{T: externglib.Type(C.g_dbus_message_type_get_type()), F: marshalDBusMessageType},
-		{T: externglib.Type(C.g_data_stream_byte_order_get_type()), F: marshalDataStreamByteOrder},
-		{T: externglib.Type(C.g_data_stream_newline_type_get_type()), F: marshalDataStreamNewlineType},
-		{T: externglib.Type(C.g_drive_start_stop_type_get_type()), F: marshalDriveStartStopType},
-		{T: externglib.Type(C.g_emblem_origin_get_type()), F: marshalEmblemOrigin},
-		{T: externglib.Type(C.g_file_attribute_status_get_type()), F: marshalFileAttributeStatus},
-		{T: externglib.Type(C.g_file_attribute_type_get_type()), F: marshalFileAttributeType},
-		{T: externglib.Type(C.g_file_monitor_event_get_type()), F: marshalFileMonitorEvent},
-		{T: externglib.Type(C.g_file_type_get_type()), F: marshalFileType},
-		{T: externglib.Type(C.g_filesystem_preview_type_get_type()), F: marshalFilesystemPreviewType},
-		{T: externglib.Type(C.g_io_error_enum_get_type()), F: marshalIOErrorEnum},
-		{T: externglib.Type(C.g_io_module_scope_flags_get_type()), F: marshalIOModuleScopeFlags},
-		{T: externglib.Type(C.g_memory_monitor_warning_level_get_type()), F: marshalMemoryMonitorWarningLevel},
-		{T: externglib.Type(C.g_mount_operation_result_get_type()), F: marshalMountOperationResult},
-		{T: externglib.Type(C.g_network_connectivity_get_type()), F: marshalNetworkConnectivity},
-		{T: externglib.Type(C.g_notification_priority_get_type()), F: marshalNotificationPriority},
-		{T: externglib.Type(C.g_password_save_get_type()), F: marshalPasswordSave},
-		{T: externglib.Type(C.g_pollable_return_get_type()), F: marshalPollableReturn},
-		{T: externglib.Type(C.g_resolver_error_get_type()), F: marshalResolverError},
-		{T: externglib.Type(C.g_resolver_record_type_get_type()), F: marshalResolverRecordType},
-		{T: externglib.Type(C.g_resource_error_get_type()), F: marshalResourceError},
-		{T: externglib.Type(C.g_socket_client_event_get_type()), F: marshalSocketClientEvent},
-		{T: externglib.Type(C.g_socket_family_get_type()), F: marshalSocketFamily},
-		{T: externglib.Type(C.g_socket_listener_event_get_type()), F: marshalSocketListenerEvent},
-		{T: externglib.Type(C.g_socket_protocol_get_type()), F: marshalSocketProtocol},
-		{T: externglib.Type(C.g_socket_type_get_type()), F: marshalSocketType},
-		{T: externglib.Type(C.g_tls_authentication_mode_get_type()), F: marshalTLSAuthenticationMode},
-		{T: externglib.Type(C.g_tls_certificate_request_flags_get_type()), F: marshalTLSCertificateRequestFlags},
-		{T: externglib.Type(C.g_tls_channel_binding_error_get_type()), F: marshalTLSChannelBindingError},
-		{T: externglib.Type(C.g_tls_channel_binding_type_get_type()), F: marshalTLSChannelBindingType},
-		{T: externglib.Type(C.g_tls_database_lookup_flags_get_type()), F: marshalTLSDatabaseLookupFlags},
-		{T: externglib.Type(C.g_tls_error_get_type()), F: marshalTLSError},
-		{T: externglib.Type(C.g_tls_interaction_result_get_type()), F: marshalTLSInteractionResult},
-		{T: externglib.Type(C.g_tls_rehandshake_mode_get_type()), F: marshalTLSRehandshakeMode},
-		{T: externglib.Type(C.g_zlib_compressor_format_get_type()), F: marshalZlibCompressorFormat},
-		{T: externglib.Type(C.g_app_info_create_flags_get_type()), F: marshalAppInfoCreateFlags},
-		{T: externglib.Type(C.g_application_flags_get_type()), F: marshalApplicationFlags},
-		{T: externglib.Type(C.g_ask_password_flags_get_type()), F: marshalAskPasswordFlags},
-		{T: externglib.Type(C.g_bus_name_owner_flags_get_type()), F: marshalBusNameOwnerFlags},
-		{T: externglib.Type(C.g_bus_name_watcher_flags_get_type()), F: marshalBusNameWatcherFlags},
-		{T: externglib.Type(C.g_converter_flags_get_type()), F: marshalConverterFlags},
-		{T: externglib.Type(C.g_dbus_call_flags_get_type()), F: marshalDBusCallFlags},
-		{T: externglib.Type(C.g_dbus_capability_flags_get_type()), F: marshalDBusCapabilityFlags},
-		{T: externglib.Type(C.g_dbus_connection_flags_get_type()), F: marshalDBusConnectionFlags},
-		{T: externglib.Type(C.g_dbus_interface_skeleton_flags_get_type()), F: marshalDBusInterfaceSkeletonFlags},
-		{T: externglib.Type(C.g_dbus_message_flags_get_type()), F: marshalDBusMessageFlags},
-		{T: externglib.Type(C.g_dbus_object_manager_client_flags_get_type()), F: marshalDBusObjectManagerClientFlags},
-		{T: externglib.Type(C.g_dbus_property_info_flags_get_type()), F: marshalDBusPropertyInfoFlags},
-		{T: externglib.Type(C.g_dbus_proxy_flags_get_type()), F: marshalDBusProxyFlags},
-		{T: externglib.Type(C.g_dbus_send_message_flags_get_type()), F: marshalDBusSendMessageFlags},
-		{T: externglib.Type(C.g_dbus_server_flags_get_type()), F: marshalDBusServerFlags},
-		{T: externglib.Type(C.g_dbus_signal_flags_get_type()), F: marshalDBusSignalFlags},
-		{T: externglib.Type(C.g_dbus_subtree_flags_get_type()), F: marshalDBusSubtreeFlags},
-		{T: externglib.Type(C.g_drive_start_flags_get_type()), F: marshalDriveStartFlags},
-		{T: externglib.Type(C.g_file_attribute_info_flags_get_type()), F: marshalFileAttributeInfoFlags},
-		{T: externglib.Type(C.g_file_copy_flags_get_type()), F: marshalFileCopyFlags},
-		{T: externglib.Type(C.g_file_create_flags_get_type()), F: marshalFileCreateFlags},
-		{T: externglib.Type(C.g_file_measure_flags_get_type()), F: marshalFileMeasureFlags},
-		{T: externglib.Type(C.g_file_monitor_flags_get_type()), F: marshalFileMonitorFlags},
-		{T: externglib.Type(C.g_file_query_info_flags_get_type()), F: marshalFileQueryInfoFlags},
-		{T: externglib.Type(C.g_io_stream_splice_flags_get_type()), F: marshalIOStreamSpliceFlags},
-		{T: externglib.Type(C.g_mount_mount_flags_get_type()), F: marshalMountMountFlags},
-		{T: externglib.Type(C.g_mount_unmount_flags_get_type()), F: marshalMountUnmountFlags},
-		{T: externglib.Type(C.g_output_stream_splice_flags_get_type()), F: marshalOutputStreamSpliceFlags},
-		{T: externglib.Type(C.g_resource_flags_get_type()), F: marshalResourceFlags},
-		{T: externglib.Type(C.g_resource_lookup_flags_get_type()), F: marshalResourceLookupFlags},
-		{T: externglib.Type(C.g_socket_msg_flags_get_type()), F: marshalSocketMsgFlags},
-		{T: externglib.Type(C.g_subprocess_flags_get_type()), F: marshalSubprocessFlags},
-		{T: externglib.Type(C.g_test_dbus_flags_get_type()), F: marshalTestDBusFlags},
-		{T: externglib.Type(C.g_tls_certificate_flags_get_type()), F: marshalTLSCertificateFlags},
-		{T: externglib.Type(C.g_tls_database_verify_flags_get_type()), F: marshalTLSDatabaseVerifyFlags},
-		{T: externglib.Type(C.g_tls_password_flags_get_type()), F: marshalTLSPasswordFlags},
+		{T: GTypeBusType, F: marshalBusType},
+		{T: GTypeConverterResult, F: marshalConverterResult},
+		{T: GTypeCredentialsType, F: marshalCredentialsType},
+		{T: GTypeDBusError, F: marshalDBusError},
+		{T: GTypeDBusMessageByteOrder, F: marshalDBusMessageByteOrder},
+		{T: GTypeDBusMessageHeaderField, F: marshalDBusMessageHeaderField},
+		{T: GTypeDBusMessageType, F: marshalDBusMessageType},
+		{T: GTypeDataStreamByteOrder, F: marshalDataStreamByteOrder},
+		{T: GTypeDataStreamNewlineType, F: marshalDataStreamNewlineType},
+		{T: GTypeDriveStartStopType, F: marshalDriveStartStopType},
+		{T: GTypeEmblemOrigin, F: marshalEmblemOrigin},
+		{T: GTypeFileAttributeStatus, F: marshalFileAttributeStatus},
+		{T: GTypeFileAttributeType, F: marshalFileAttributeType},
+		{T: GTypeFileMonitorEvent, F: marshalFileMonitorEvent},
+		{T: GTypeFileType, F: marshalFileType},
+		{T: GTypeFilesystemPreviewType, F: marshalFilesystemPreviewType},
+		{T: GTypeIOErrorEnum, F: marshalIOErrorEnum},
+		{T: GTypeIOModuleScopeFlags, F: marshalIOModuleScopeFlags},
+		{T: GTypeMemoryMonitorWarningLevel, F: marshalMemoryMonitorWarningLevel},
+		{T: GTypeMountOperationResult, F: marshalMountOperationResult},
+		{T: GTypeNetworkConnectivity, F: marshalNetworkConnectivity},
+		{T: GTypeNotificationPriority, F: marshalNotificationPriority},
+		{T: GTypePasswordSave, F: marshalPasswordSave},
+		{T: GTypePollableReturn, F: marshalPollableReturn},
+		{T: GTypeResolverError, F: marshalResolverError},
+		{T: GTypeResolverRecordType, F: marshalResolverRecordType},
+		{T: GTypeResourceError, F: marshalResourceError},
+		{T: GTypeSocketClientEvent, F: marshalSocketClientEvent},
+		{T: GTypeSocketFamily, F: marshalSocketFamily},
+		{T: GTypeSocketListenerEvent, F: marshalSocketListenerEvent},
+		{T: GTypeSocketProtocol, F: marshalSocketProtocol},
+		{T: GTypeSocketType, F: marshalSocketType},
+		{T: GTypeTLSAuthenticationMode, F: marshalTLSAuthenticationMode},
+		{T: GTypeTLSCertificateRequestFlags, F: marshalTLSCertificateRequestFlags},
+		{T: GTypeTLSChannelBindingError, F: marshalTLSChannelBindingError},
+		{T: GTypeTLSChannelBindingType, F: marshalTLSChannelBindingType},
+		{T: GTypeTLSDatabaseLookupFlags, F: marshalTLSDatabaseLookupFlags},
+		{T: GTypeTLSError, F: marshalTLSError},
+		{T: GTypeTLSInteractionResult, F: marshalTLSInteractionResult},
+		{T: GTypeTLSRehandshakeMode, F: marshalTLSRehandshakeMode},
+		{T: GTypeZlibCompressorFormat, F: marshalZlibCompressorFormat},
+		{T: GTypeAppInfoCreateFlags, F: marshalAppInfoCreateFlags},
+		{T: GTypeApplicationFlags, F: marshalApplicationFlags},
+		{T: GTypeAskPasswordFlags, F: marshalAskPasswordFlags},
+		{T: GTypeBusNameOwnerFlags, F: marshalBusNameOwnerFlags},
+		{T: GTypeBusNameWatcherFlags, F: marshalBusNameWatcherFlags},
+		{T: GTypeConverterFlags, F: marshalConverterFlags},
+		{T: GTypeDBusCallFlags, F: marshalDBusCallFlags},
+		{T: GTypeDBusCapabilityFlags, F: marshalDBusCapabilityFlags},
+		{T: GTypeDBusConnectionFlags, F: marshalDBusConnectionFlags},
+		{T: GTypeDBusInterfaceSkeletonFlags, F: marshalDBusInterfaceSkeletonFlags},
+		{T: GTypeDBusMessageFlags, F: marshalDBusMessageFlags},
+		{T: GTypeDBusObjectManagerClientFlags, F: marshalDBusObjectManagerClientFlags},
+		{T: GTypeDBusPropertyInfoFlags, F: marshalDBusPropertyInfoFlags},
+		{T: GTypeDBusProxyFlags, F: marshalDBusProxyFlags},
+		{T: GTypeDBusSendMessageFlags, F: marshalDBusSendMessageFlags},
+		{T: GTypeDBusServerFlags, F: marshalDBusServerFlags},
+		{T: GTypeDBusSignalFlags, F: marshalDBusSignalFlags},
+		{T: GTypeDBusSubtreeFlags, F: marshalDBusSubtreeFlags},
+		{T: GTypeDriveStartFlags, F: marshalDriveStartFlags},
+		{T: GTypeFileAttributeInfoFlags, F: marshalFileAttributeInfoFlags},
+		{T: GTypeFileCopyFlags, F: marshalFileCopyFlags},
+		{T: GTypeFileCreateFlags, F: marshalFileCreateFlags},
+		{T: GTypeFileMeasureFlags, F: marshalFileMeasureFlags},
+		{T: GTypeFileMonitorFlags, F: marshalFileMonitorFlags},
+		{T: GTypeFileQueryInfoFlags, F: marshalFileQueryInfoFlags},
+		{T: GTypeIOStreamSpliceFlags, F: marshalIOStreamSpliceFlags},
+		{T: GTypeMountMountFlags, F: marshalMountMountFlags},
+		{T: GTypeMountUnmountFlags, F: marshalMountUnmountFlags},
+		{T: GTypeOutputStreamSpliceFlags, F: marshalOutputStreamSpliceFlags},
+		{T: GTypeResourceFlags, F: marshalResourceFlags},
+		{T: GTypeResourceLookupFlags, F: marshalResourceLookupFlags},
+		{T: GTypeSocketMsgFlags, F: marshalSocketMsgFlags},
+		{T: GTypeSubprocessFlags, F: marshalSubprocessFlags},
+		{T: GTypeTestDBusFlags, F: marshalTestDBusFlags},
+		{T: GTypeTLSCertificateFlags, F: marshalTLSCertificateFlags},
+		{T: GTypeTLSDatabaseVerifyFlags, F: marshalTLSDatabaseVerifyFlags},
+		{T: GTypeTLSPasswordFlags, F: marshalTLSPasswordFlags},
 	})
 }
 

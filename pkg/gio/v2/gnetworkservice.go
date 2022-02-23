@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gnetworkservice.go.
+var GTypeNetworkService = externglib.Type(C.g_network_service_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_service_get_type()), F: marshalNetworkServicer},
+		{T: GTypeNetworkService, F: marshalNetworkService},
 	})
 }
 
@@ -59,7 +62,7 @@ func wrapNetworkService(obj *externglib.Object) *NetworkService {
 	}
 }
 
-func marshalNetworkServicer(p uintptr) (interface{}, error) {
+func marshalNetworkService(p uintptr) (interface{}, error) {
 	return wrapNetworkService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

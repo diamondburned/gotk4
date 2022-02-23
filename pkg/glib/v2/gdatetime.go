@@ -16,9 +16,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for gdatetime.go.
+var GTypeDateTime = externglib.Type(C.g_date_time_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_date_time_get_type()), F: marshalDateTime},
+		{T: GTypeDateTime, F: marshalDateTime},
 	})
 }
 

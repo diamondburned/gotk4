@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtknumericsorter.go.
+var GTypeNumericSorter = externglib.Type(C.gtk_numeric_sorter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_numeric_sorter_get_type()), F: marshalNumericSorterer},
+		{T: GTypeNumericSorter, F: marshalNumericSorter},
 	})
 }
 
@@ -52,7 +55,7 @@ func wrapNumericSorter(obj *externglib.Object) *NumericSorter {
 	}
 }
 
-func marshalNumericSorterer(p uintptr) (interface{}, error) {
+func marshalNumericSorter(p uintptr) (interface{}, error) {
 	return wrapNumericSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

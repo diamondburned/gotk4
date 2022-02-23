@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gfileattribute.go.
+var GTypeFileAttributeInfoList = externglib.Type(C.g_file_attribute_info_list_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_attribute_info_list_get_type()), F: marshalFileAttributeInfoList},
+		{T: GTypeFileAttributeInfoList, F: marshalFileAttributeInfoList},
 	})
 }
 

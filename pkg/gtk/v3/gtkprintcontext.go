@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkprintcontext.go.
+var GTypePrintContext = externglib.Type(C.gtk_print_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_print_context_get_type()), F: marshalPrintContexter},
+		{T: GTypePrintContext, F: marshalPrintContext},
 	})
 }
 
@@ -103,7 +106,7 @@ func wrapPrintContext(obj *externglib.Object) *PrintContext {
 	}
 }
 
-func marshalPrintContexter(p uintptr) (interface{}, error) {
+func marshalPrintContext(p uintptr) (interface{}, error) {
 	return wrapPrintContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

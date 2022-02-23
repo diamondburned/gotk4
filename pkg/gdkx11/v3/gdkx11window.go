@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11window.go.
+var GTypeX11Window = externglib.Type(C.gdk_x11_window_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_window_get_type()), F: marshalX11Windower},
+		{T: GTypeX11Window, F: marshalX11Window},
 	})
 }
 
@@ -77,7 +80,7 @@ func wrapX11Window(obj *externglib.Object) *X11Window {
 	}
 }
 
-func marshalX11Windower(p uintptr) (interface{}, error) {
+func marshalX11Window(p uintptr) (interface{}, error) {
 	return wrapX11Window(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

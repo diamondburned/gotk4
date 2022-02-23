@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(gpointer, GdkDrop*, guintptr);
 import "C"
 
+// glib.Type values for gtkdroptargetasync.go.
+var GTypeDropTargetAsync = externglib.Type(C.gtk_drop_target_async_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_target_async_get_type()), F: marshalDropTargetAsyncer},
+		{T: GTypeDropTargetAsync, F: marshalDropTargetAsync},
 	})
 }
 
@@ -86,7 +89,7 @@ func wrapDropTargetAsync(obj *externglib.Object) *DropTargetAsync {
 	}
 }
 
-func marshalDropTargetAsyncer(p uintptr) (interface{}, error) {
+func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 	return wrapDropTargetAsync(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

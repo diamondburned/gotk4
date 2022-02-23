@@ -16,9 +16,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gmemoryinputstream.go.
+var GTypeMemoryInputStream = externglib.Type(C.g_memory_input_stream_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_memory_input_stream_get_type()), F: marshalMemoryInputStreamer},
+		{T: GTypeMemoryInputStream, F: marshalMemoryInputStream},
 	})
 }
 
@@ -69,7 +72,7 @@ func wrapMemoryInputStream(obj *externglib.Object) *MemoryInputStream {
 	}
 }
 
-func marshalMemoryInputStreamer(p uintptr) (interface{}, error) {
+func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 	return wrapMemoryInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

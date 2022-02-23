@@ -18,15 +18,26 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkexpression.go.
+var (
+	GTypeCClosureExpression = externglib.Type(C.gtk_cclosure_expression_get_type())
+	GTypeClosureExpression  = externglib.Type(C.gtk_closure_expression_get_type())
+	GTypeConstantExpression = externglib.Type(C.gtk_constant_expression_get_type())
+	GTypeExpression         = externglib.Type(C.gtk_expression_get_type())
+	GTypeObjectExpression   = externglib.Type(C.gtk_object_expression_get_type())
+	GTypePropertyExpression = externglib.Type(C.gtk_property_expression_get_type())
+	GTypeExpressionWatch    = externglib.Type(C.gtk_expression_watch_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cclosure_expression_get_type()), F: marshalCClosureExpressioner},
-		{T: externglib.Type(C.gtk_closure_expression_get_type()), F: marshalClosureExpressioner},
-		{T: externglib.Type(C.gtk_constant_expression_get_type()), F: marshalConstantExpressioner},
-		{T: externglib.Type(C.gtk_expression_get_type()), F: marshalExpressioner},
-		{T: externglib.Type(C.gtk_object_expression_get_type()), F: marshalObjectExpressioner},
-		{T: externglib.Type(C.gtk_property_expression_get_type()), F: marshalPropertyExpressioner},
-		{T: externglib.Type(C.gtk_expression_watch_get_type()), F: marshalExpressionWatch},
+		{T: GTypeCClosureExpression, F: marshalCClosureExpression},
+		{T: GTypeClosureExpression, F: marshalClosureExpression},
+		{T: GTypeConstantExpression, F: marshalConstantExpression},
+		{T: GTypeExpression, F: marshalExpression},
+		{T: GTypeObjectExpression, F: marshalObjectExpression},
+		{T: GTypePropertyExpression, F: marshalPropertyExpression},
+		{T: GTypeExpressionWatch, F: marshalExpressionWatch},
 	})
 }
 
@@ -194,7 +205,7 @@ func wrapCClosureExpression(obj *externglib.Object) *CClosureExpression {
 	}
 }
 
-func marshalCClosureExpressioner(p uintptr) (interface{}, error) {
+func marshalCClosureExpression(p uintptr) (interface{}, error) {
 	return wrapCClosureExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -217,7 +228,7 @@ func wrapClosureExpression(obj *externglib.Object) *ClosureExpression {
 	}
 }
 
-func marshalClosureExpressioner(p uintptr) (interface{}, error) {
+func marshalClosureExpression(p uintptr) (interface{}, error) {
 	return wrapClosureExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -239,7 +250,7 @@ func wrapConstantExpression(obj *externglib.Object) *ConstantExpression {
 	}
 }
 
-func marshalConstantExpressioner(p uintptr) (interface{}, error) {
+func marshalConstantExpression(p uintptr) (interface{}, error) {
 	return wrapConstantExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -439,7 +450,7 @@ func wrapExpression(obj *externglib.Object) *Expression {
 	}
 }
 
-func marshalExpressioner(p uintptr) (interface{}, error) {
+func marshalExpression(p uintptr) (interface{}, error) {
 	return wrapExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -676,7 +687,7 @@ func wrapObjectExpression(obj *externglib.Object) *ObjectExpression {
 	}
 }
 
-func marshalObjectExpressioner(p uintptr) (interface{}, error) {
+func marshalObjectExpression(p uintptr) (interface{}, error) {
 	return wrapObjectExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -755,7 +766,7 @@ func wrapPropertyExpression(obj *externglib.Object) *PropertyExpression {
 	}
 }
 
-func marshalPropertyExpressioner(p uintptr) (interface{}, error) {
+func marshalPropertyExpression(p uintptr) (interface{}, error) {
 	return wrapPropertyExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

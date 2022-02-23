@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtksortlistmodel.go.
+var GTypeSortListModel = externglib.Type(C.gtk_sort_list_model_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_sort_list_model_get_type()), F: marshalSortListModeller},
+		{T: GTypeSortListModel, F: marshalSortListModel},
 	})
 }
 
@@ -63,7 +66,7 @@ func wrapSortListModel(obj *externglib.Object) *SortListModel {
 	}
 }
 
-func marshalSortListModeller(p uintptr) (interface{}, error) {
+func marshalSortListModel(p uintptr) (interface{}, error) {
 	return wrapSortListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gproxyresolver.go.
+var GTypeProxyResolver = externglib.Type(C.g_proxy_resolver_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_resolver_get_type()), F: marshalProxyResolverer},
+		{T: GTypeProxyResolver, F: marshalProxyResolver},
 	})
 }
 
@@ -72,7 +75,7 @@ func wrapProxyResolver(obj *externglib.Object) *ProxyResolver {
 	}
 }
 
-func marshalProxyResolverer(p uintptr) (interface{}, error) {
+func marshalProxyResolver(p uintptr) (interface{}, error) {
 	return wrapProxyResolver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

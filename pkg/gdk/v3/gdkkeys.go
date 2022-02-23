@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gdk3_Keymap_ConnectStateChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gdkkeys.go.
+var GTypeKeymap = externglib.Type(C.gdk_keymap_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_keymap_get_type()), F: marshalKeymapper},
+		{T: GTypeKeymap, F: marshalKeymap},
 	})
 }
 
@@ -307,7 +310,7 @@ func wrapKeymap(obj *externglib.Object) *Keymap {
 	}
 }
 
-func marshalKeymapper(p uintptr) (interface{}, error) {
+func marshalKeymap(p uintptr) (interface{}, error) {
 	return wrapKeymap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_atk1_EditableTextIface_set_text_contents(AtkEditableText*, gchar*);
 import "C"
 
+// glib.Type values for atkeditabletext.go.
+var GTypeEditableText = externglib.Type(C.atk_editable_text_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_editable_text_get_type()), F: marshalEditableTexter},
+		{T: GTypeEditableText, F: marshalEditableText},
 	})
 }
 
@@ -218,7 +221,7 @@ func wrapEditableText(obj *externglib.Object) *EditableText {
 	}
 }
 
-func marshalEditableTexter(p uintptr) (interface{}, error) {
+func marshalEditableText(p uintptr) (interface{}, error) {
 	return wrapEditableText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

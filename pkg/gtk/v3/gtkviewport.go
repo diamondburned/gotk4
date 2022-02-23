@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkviewport.go.
+var GTypeViewport = externglib.Type(C.gtk_viewport_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_viewport_get_type()), F: marshalViewporter},
+		{T: GTypeViewport, F: marshalViewport},
 	})
 }
 
@@ -92,7 +95,7 @@ func wrapViewport(obj *externglib.Object) *Viewport {
 	}
 }
 
-func marshalViewporter(p uintptr) (interface{}, error) {
+func marshalViewport(p uintptr) (interface{}, error) {
 	return wrapViewport(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

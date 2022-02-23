@@ -14,11 +14,18 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdksurface-wayland.go.
+var (
+	GTypeWaylandPopup    = externglib.Type(C.gdk_wayland_popup_get_type())
+	GTypeWaylandSurface  = externglib.Type(C.gdk_wayland_surface_get_type())
+	GTypeWaylandToplevel = externglib.Type(C.gdk_wayland_toplevel_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_popup_get_type()), F: marshalWaylandPopupper},
-		{T: externglib.Type(C.gdk_wayland_surface_get_type()), F: marshalWaylandSurfacer},
-		{T: externglib.Type(C.gdk_wayland_toplevel_get_type()), F: marshalWaylandTopleveller},
+		{T: GTypeWaylandPopup, F: marshalWaylandPopup},
+		{T: GTypeWaylandSurface, F: marshalWaylandSurface},
+		{T: GTypeWaylandToplevel, F: marshalWaylandToplevel},
 	})
 }
 
@@ -56,7 +63,7 @@ func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 	}
 }
 
-func marshalWaylandPopupper(p uintptr) (interface{}, error) {
+func marshalWaylandPopup(p uintptr) (interface{}, error) {
 	return wrapWaylandPopup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -81,7 +88,7 @@ func wrapWaylandSurface(obj *externglib.Object) *WaylandSurface {
 	}
 }
 
-func marshalWaylandSurfacer(p uintptr) (interface{}, error) {
+func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	return wrapWaylandSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -124,6 +131,6 @@ func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 	}
 }
 
-func marshalWaylandTopleveller(p uintptr) (interface{}, error) {
+func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 	return wrapWaylandToplevel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

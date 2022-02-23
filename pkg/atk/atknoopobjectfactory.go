@@ -13,9 +13,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for atknoopobjectfactory.go.
+var GTypeNoOpObjectFactory = externglib.Type(C.atk_no_op_object_factory_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_no_op_object_factory_get_type()), F: marshalNoOpObjectFactorier},
+		{T: GTypeNoOpObjectFactory, F: marshalNoOpObjectFactory},
 	})
 }
 
@@ -51,7 +54,7 @@ func wrapNoOpObjectFactory(obj *externglib.Object) *NoOpObjectFactory {
 	}
 }
 
-func marshalNoOpObjectFactorier(p uintptr) (interface{}, error) {
+func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
 	return wrapNoOpObjectFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

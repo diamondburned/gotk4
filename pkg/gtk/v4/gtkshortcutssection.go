@@ -14,9 +14,12 @@ import (
 // extern gboolean _gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage(gpointer, gint, guintptr);
 import "C"
 
+// glib.Type values for gtkshortcutssection.go.
+var GTypeShortcutsSection = externglib.Type(C.gtk_shortcuts_section_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_section_get_type()), F: marshalShortcutsSectioner},
+		{T: GTypeShortcutsSection, F: marshalShortcutsSection},
 	})
 }
 
@@ -79,7 +82,7 @@ func wrapShortcutsSection(obj *externglib.Object) *ShortcutsSection {
 	}
 }
 
-func marshalShortcutsSectioner(p uintptr) (interface{}, error) {
+func marshalShortcutsSection(p uintptr) (interface{}, error) {
 	return wrapShortcutsSection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkwidgetaccessible.go.
+var GTypeWidgetAccessible = externglib.Type(C.gtk_widget_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_widget_accessible_get_type()), F: marshalWidgetAccessibler},
+		{T: GTypeWidgetAccessible, F: marshalWidgetAccessible},
 	})
 }
 
@@ -58,6 +61,6 @@ func wrapWidgetAccessible(obj *externglib.Object) *WidgetAccessible {
 	}
 }
 
-func marshalWidgetAccessibler(p uintptr) (interface{}, error) {
+func marshalWidgetAccessible(p uintptr) (interface{}, error) {
 	return wrapWidgetAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

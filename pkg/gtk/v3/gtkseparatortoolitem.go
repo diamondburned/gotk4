@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkseparatortoolitem.go.
+var GTypeSeparatorToolItem = externglib.Type(C.gtk_separator_tool_item_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_tool_item_get_type()), F: marshalSeparatorToolItemmer},
+		{T: GTypeSeparatorToolItem, F: marshalSeparatorToolItem},
 	})
 }
 
@@ -86,7 +89,7 @@ func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 	}
 }
 
-func marshalSeparatorToolItemmer(p uintptr) (interface{}, error) {
+func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 	return wrapSeparatorToolItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

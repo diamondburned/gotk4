@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkmenubuttonaccessible.go.
+var GTypeMenuButtonAccessible = externglib.Type(C.gtk_menu_button_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_button_accessible_get_type()), F: marshalMenuButtonAccessibler},
+		{T: GTypeMenuButtonAccessible, F: marshalMenuButtonAccessible},
 	})
 }
 
@@ -71,6 +74,6 @@ func wrapMenuButtonAccessible(obj *externglib.Object) *MenuButtonAccessible {
 	}
 }
 
-func marshalMenuButtonAccessibler(p uintptr) (interface{}, error) {
+func marshalMenuButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapMenuButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

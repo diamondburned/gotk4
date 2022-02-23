@@ -27,9 +27,12 @@ import (
 // extern void _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(gpointer, GDBusObject*, guintptr);
 import "C"
 
+// glib.Type values for gdbusobjectmanager.go.
+var GTypeDBusObjectManager = externglib.Type(C.g_dbus_object_manager_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_manager_get_type()), F: marshalDBusObjectManagerer},
+		{T: GTypeDBusObjectManager, F: marshalDBusObjectManager},
 	})
 }
 
@@ -361,7 +364,7 @@ func wrapDBusObjectManager(obj *externglib.Object) *DBusObjectManager {
 	}
 }
 
-func marshalDBusObjectManagerer(p uintptr) (interface{}, error) {
+func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 	return wrapDBusObjectManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

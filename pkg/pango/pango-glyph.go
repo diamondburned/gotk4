@@ -17,10 +17,16 @@ import (
 // #include <pango/pango.h>
 import "C"
 
+// glib.Type values for pango-glyph.go.
+var (
+	GTypeShapeFlags  = externglib.Type(C.pango_shape_flags_get_type())
+	GTypeGlyphString = externglib.Type(C.pango_glyph_string_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_shape_flags_get_type()), F: marshalShapeFlags},
-		{T: externglib.Type(C.pango_glyph_string_get_type()), F: marshalGlyphString},
+		{T: GTypeShapeFlags, F: marshalShapeFlags},
+		{T: GTypeGlyphString, F: marshalGlyphString},
 	})
 }
 

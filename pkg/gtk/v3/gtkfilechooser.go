@@ -25,12 +25,20 @@ import (
 // extern void _gotk4_gtk3_FileChooser_ConnectUpdatePreview(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkfilechooser.go.
+var (
+	GTypeFileChooserAction       = externglib.Type(C.gtk_file_chooser_action_get_type())
+	GTypeFileChooserConfirmation = externglib.Type(C.gtk_file_chooser_confirmation_get_type())
+	GTypeFileChooserError        = externglib.Type(C.gtk_file_chooser_error_get_type())
+	GTypeFileChooser             = externglib.Type(C.gtk_file_chooser_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_action_get_type()), F: marshalFileChooserAction},
-		{T: externglib.Type(C.gtk_file_chooser_confirmation_get_type()), F: marshalFileChooserConfirmation},
-		{T: externglib.Type(C.gtk_file_chooser_error_get_type()), F: marshalFileChooserError},
-		{T: externglib.Type(C.gtk_file_chooser_get_type()), F: marshalFileChooserer},
+		{T: GTypeFileChooserAction, F: marshalFileChooserAction},
+		{T: GTypeFileChooserConfirmation, F: marshalFileChooserConfirmation},
+		{T: GTypeFileChooserError, F: marshalFileChooserError},
+		{T: GTypeFileChooser, F: marshalFileChooser},
 	})
 }
 
@@ -436,7 +444,7 @@ func wrapFileChooser(obj *externglib.Object) *FileChooser {
 	}
 }
 
-func marshalFileChooserer(p uintptr) (interface{}, error) {
+func marshalFileChooser(p uintptr) (interface{}, error) {
 	return wrapFileChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

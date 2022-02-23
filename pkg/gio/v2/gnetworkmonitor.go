@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gio2_NetworkMonitor_ConnectNetworkChanged(gpointer, gboolean, guintptr);
 import "C"
 
+// glib.Type values for gnetworkmonitor.go.
+var GTypeNetworkMonitor = externglib.Type(C.g_network_monitor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorrer},
+		{T: GTypeNetworkMonitor, F: marshalNetworkMonitor},
 	})
 }
 
@@ -77,7 +80,7 @@ func wrapNetworkMonitor(obj *externglib.Object) *NetworkMonitor {
 	}
 }
 
-func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
+func marshalNetworkMonitor(p uintptr) (interface{}, error) {
 	return wrapNetworkMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

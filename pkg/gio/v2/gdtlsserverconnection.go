@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdtlsserverconnection.go.
+var GTypeDTLSServerConnection = externglib.Type(C.g_dtls_server_connection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dtls_server_connection_get_type()), F: marshalDTLSServerConnectioner},
+		{T: GTypeDTLSServerConnection, F: marshalDTLSServerConnection},
 	})
 }
 
@@ -56,7 +59,7 @@ func wrapDTLSServerConnection(obj *externglib.Object) *DTLSServerConnection {
 	}
 }
 
-func marshalDTLSServerConnectioner(p uintptr) (interface{}, error) {
+func marshalDTLSServerConnection(p uintptr) (interface{}, error) {
 	return wrapDTLSServerConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

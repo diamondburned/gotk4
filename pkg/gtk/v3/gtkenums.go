@@ -17,56 +17,108 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkenums.go.
+var (
+	GTypeAlign              = externglib.Type(C.gtk_align_get_type())
+	GTypeArrowType          = externglib.Type(C.gtk_arrow_type_get_type())
+	GTypeBaselinePosition   = externglib.Type(C.gtk_baseline_position_get_type())
+	GTypeBorderStyle        = externglib.Type(C.gtk_border_style_get_type())
+	GTypeDeleteType         = externglib.Type(C.gtk_delete_type_get_type())
+	GTypeDirectionType      = externglib.Type(C.gtk_direction_type_get_type())
+	GTypeDragResult         = externglib.Type(C.gtk_drag_result_get_type())
+	GTypeEventSequenceState = externglib.Type(C.gtk_event_sequence_state_get_type())
+	GTypeIMPreeditStyle     = externglib.Type(C.gtk_im_preedit_style_get_type())
+	GTypeIMStatusStyle      = externglib.Type(C.gtk_im_status_style_get_type())
+	GTypeIconSize           = externglib.Type(C.gtk_icon_size_get_type())
+	GTypeInputPurpose       = externglib.Type(C.gtk_input_purpose_get_type())
+	GTypeJustification      = externglib.Type(C.gtk_justification_get_type())
+	GTypeLevelBarMode       = externglib.Type(C.gtk_level_bar_mode_get_type())
+	GTypeMenuDirectionType  = externglib.Type(C.gtk_menu_direction_type_get_type())
+	GTypeMessageType        = externglib.Type(C.gtk_message_type_get_type())
+	GTypeNumberUpLayout     = externglib.Type(C.gtk_number_up_layout_get_type())
+	GTypeOrientation        = externglib.Type(C.gtk_orientation_get_type())
+	GTypePackDirection      = externglib.Type(C.gtk_pack_direction_get_type())
+	GTypePackType           = externglib.Type(C.gtk_pack_type_get_type())
+	GTypePageOrientation    = externglib.Type(C.gtk_page_orientation_get_type())
+	GTypePageSet            = externglib.Type(C.gtk_page_set_get_type())
+	GTypePanDirection       = externglib.Type(C.gtk_pan_direction_get_type())
+	GTypePopoverConstraint  = externglib.Type(C.gtk_popover_constraint_get_type())
+	GTypePositionType       = externglib.Type(C.gtk_position_type_get_type())
+	GTypePrintDuplex        = externglib.Type(C.gtk_print_duplex_get_type())
+	GTypePrintPages         = externglib.Type(C.gtk_print_pages_get_type())
+	GTypePrintQuality       = externglib.Type(C.gtk_print_quality_get_type())
+	GTypePropagationPhase   = externglib.Type(C.gtk_propagation_phase_get_type())
+	GTypeReliefStyle        = externglib.Type(C.gtk_relief_style_get_type())
+	GTypeScrollType         = externglib.Type(C.gtk_scroll_type_get_type())
+	GTypeScrollablePolicy   = externglib.Type(C.gtk_scrollable_policy_get_type())
+	GTypeSelectionMode      = externglib.Type(C.gtk_selection_mode_get_type())
+	GTypeSensitivityType    = externglib.Type(C.gtk_sensitivity_type_get_type())
+	GTypeShadowType         = externglib.Type(C.gtk_shadow_type_get_type())
+	GTypeSizeGroupMode      = externglib.Type(C.gtk_size_group_mode_get_type())
+	GTypeSizeRequestMode    = externglib.Type(C.gtk_size_request_mode_get_type())
+	GTypeSortType           = externglib.Type(C.gtk_sort_type_get_type())
+	GTypeStateType          = externglib.Type(C.gtk_state_type_get_type())
+	GTypeTextDirection      = externglib.Type(C.gtk_text_direction_get_type())
+	GTypeToolbarStyle       = externglib.Type(C.gtk_toolbar_style_get_type())
+	GTypeTreeViewGridLines  = externglib.Type(C.gtk_tree_view_grid_lines_get_type())
+	GTypeUnit               = externglib.Type(C.gtk_unit_get_type())
+	GTypeWrapMode           = externglib.Type(C.gtk_wrap_mode_get_type())
+	GTypeInputHints         = externglib.Type(C.gtk_input_hints_get_type())
+	GTypeJunctionSides      = externglib.Type(C.gtk_junction_sides_get_type())
+	GTypeRegionFlags        = externglib.Type(C.gtk_region_flags_get_type())
+	GTypeStateFlags         = externglib.Type(C.gtk_state_flags_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_align_get_type()), F: marshalAlign},
-		{T: externglib.Type(C.gtk_arrow_type_get_type()), F: marshalArrowType},
-		{T: externglib.Type(C.gtk_baseline_position_get_type()), F: marshalBaselinePosition},
-		{T: externglib.Type(C.gtk_border_style_get_type()), F: marshalBorderStyle},
-		{T: externglib.Type(C.gtk_delete_type_get_type()), F: marshalDeleteType},
-		{T: externglib.Type(C.gtk_direction_type_get_type()), F: marshalDirectionType},
-		{T: externglib.Type(C.gtk_drag_result_get_type()), F: marshalDragResult},
-		{T: externglib.Type(C.gtk_event_sequence_state_get_type()), F: marshalEventSequenceState},
-		{T: externglib.Type(C.gtk_im_preedit_style_get_type()), F: marshalIMPreeditStyle},
-		{T: externglib.Type(C.gtk_im_status_style_get_type()), F: marshalIMStatusStyle},
-		{T: externglib.Type(C.gtk_icon_size_get_type()), F: marshalIconSize},
-		{T: externglib.Type(C.gtk_input_purpose_get_type()), F: marshalInputPurpose},
-		{T: externglib.Type(C.gtk_justification_get_type()), F: marshalJustification},
-		{T: externglib.Type(C.gtk_level_bar_mode_get_type()), F: marshalLevelBarMode},
-		{T: externglib.Type(C.gtk_menu_direction_type_get_type()), F: marshalMenuDirectionType},
-		{T: externglib.Type(C.gtk_message_type_get_type()), F: marshalMessageType},
-		{T: externglib.Type(C.gtk_number_up_layout_get_type()), F: marshalNumberUpLayout},
-		{T: externglib.Type(C.gtk_orientation_get_type()), F: marshalOrientation},
-		{T: externglib.Type(C.gtk_pack_direction_get_type()), F: marshalPackDirection},
-		{T: externglib.Type(C.gtk_pack_type_get_type()), F: marshalPackType},
-		{T: externglib.Type(C.gtk_page_orientation_get_type()), F: marshalPageOrientation},
-		{T: externglib.Type(C.gtk_page_set_get_type()), F: marshalPageSet},
-		{T: externglib.Type(C.gtk_pan_direction_get_type()), F: marshalPanDirection},
-		{T: externglib.Type(C.gtk_popover_constraint_get_type()), F: marshalPopoverConstraint},
-		{T: externglib.Type(C.gtk_position_type_get_type()), F: marshalPositionType},
-		{T: externglib.Type(C.gtk_print_duplex_get_type()), F: marshalPrintDuplex},
-		{T: externglib.Type(C.gtk_print_pages_get_type()), F: marshalPrintPages},
-		{T: externglib.Type(C.gtk_print_quality_get_type()), F: marshalPrintQuality},
-		{T: externglib.Type(C.gtk_propagation_phase_get_type()), F: marshalPropagationPhase},
-		{T: externglib.Type(C.gtk_relief_style_get_type()), F: marshalReliefStyle},
-		{T: externglib.Type(C.gtk_scroll_type_get_type()), F: marshalScrollType},
-		{T: externglib.Type(C.gtk_scrollable_policy_get_type()), F: marshalScrollablePolicy},
-		{T: externglib.Type(C.gtk_selection_mode_get_type()), F: marshalSelectionMode},
-		{T: externglib.Type(C.gtk_sensitivity_type_get_type()), F: marshalSensitivityType},
-		{T: externglib.Type(C.gtk_shadow_type_get_type()), F: marshalShadowType},
-		{T: externglib.Type(C.gtk_size_group_mode_get_type()), F: marshalSizeGroupMode},
-		{T: externglib.Type(C.gtk_size_request_mode_get_type()), F: marshalSizeRequestMode},
-		{T: externglib.Type(C.gtk_sort_type_get_type()), F: marshalSortType},
-		{T: externglib.Type(C.gtk_state_type_get_type()), F: marshalStateType},
-		{T: externglib.Type(C.gtk_text_direction_get_type()), F: marshalTextDirection},
-		{T: externglib.Type(C.gtk_toolbar_style_get_type()), F: marshalToolbarStyle},
-		{T: externglib.Type(C.gtk_tree_view_grid_lines_get_type()), F: marshalTreeViewGridLines},
-		{T: externglib.Type(C.gtk_unit_get_type()), F: marshalUnit},
-		{T: externglib.Type(C.gtk_wrap_mode_get_type()), F: marshalWrapMode},
-		{T: externglib.Type(C.gtk_input_hints_get_type()), F: marshalInputHints},
-		{T: externglib.Type(C.gtk_junction_sides_get_type()), F: marshalJunctionSides},
-		{T: externglib.Type(C.gtk_region_flags_get_type()), F: marshalRegionFlags},
-		{T: externglib.Type(C.gtk_state_flags_get_type()), F: marshalStateFlags},
+		{T: GTypeAlign, F: marshalAlign},
+		{T: GTypeArrowType, F: marshalArrowType},
+		{T: GTypeBaselinePosition, F: marshalBaselinePosition},
+		{T: GTypeBorderStyle, F: marshalBorderStyle},
+		{T: GTypeDeleteType, F: marshalDeleteType},
+		{T: GTypeDirectionType, F: marshalDirectionType},
+		{T: GTypeDragResult, F: marshalDragResult},
+		{T: GTypeEventSequenceState, F: marshalEventSequenceState},
+		{T: GTypeIMPreeditStyle, F: marshalIMPreeditStyle},
+		{T: GTypeIMStatusStyle, F: marshalIMStatusStyle},
+		{T: GTypeIconSize, F: marshalIconSize},
+		{T: GTypeInputPurpose, F: marshalInputPurpose},
+		{T: GTypeJustification, F: marshalJustification},
+		{T: GTypeLevelBarMode, F: marshalLevelBarMode},
+		{T: GTypeMenuDirectionType, F: marshalMenuDirectionType},
+		{T: GTypeMessageType, F: marshalMessageType},
+		{T: GTypeNumberUpLayout, F: marshalNumberUpLayout},
+		{T: GTypeOrientation, F: marshalOrientation},
+		{T: GTypePackDirection, F: marshalPackDirection},
+		{T: GTypePackType, F: marshalPackType},
+		{T: GTypePageOrientation, F: marshalPageOrientation},
+		{T: GTypePageSet, F: marshalPageSet},
+		{T: GTypePanDirection, F: marshalPanDirection},
+		{T: GTypePopoverConstraint, F: marshalPopoverConstraint},
+		{T: GTypePositionType, F: marshalPositionType},
+		{T: GTypePrintDuplex, F: marshalPrintDuplex},
+		{T: GTypePrintPages, F: marshalPrintPages},
+		{T: GTypePrintQuality, F: marshalPrintQuality},
+		{T: GTypePropagationPhase, F: marshalPropagationPhase},
+		{T: GTypeReliefStyle, F: marshalReliefStyle},
+		{T: GTypeScrollType, F: marshalScrollType},
+		{T: GTypeScrollablePolicy, F: marshalScrollablePolicy},
+		{T: GTypeSelectionMode, F: marshalSelectionMode},
+		{T: GTypeSensitivityType, F: marshalSensitivityType},
+		{T: GTypeShadowType, F: marshalShadowType},
+		{T: GTypeSizeGroupMode, F: marshalSizeGroupMode},
+		{T: GTypeSizeRequestMode, F: marshalSizeRequestMode},
+		{T: GTypeSortType, F: marshalSortType},
+		{T: GTypeStateType, F: marshalStateType},
+		{T: GTypeTextDirection, F: marshalTextDirection},
+		{T: GTypeToolbarStyle, F: marshalToolbarStyle},
+		{T: GTypeTreeViewGridLines, F: marshalTreeViewGridLines},
+		{T: GTypeUnit, F: marshalUnit},
+		{T: GTypeWrapMode, F: marshalWrapMode},
+		{T: GTypeInputHints, F: marshalInputHints},
+		{T: GTypeJunctionSides, F: marshalJunctionSides},
+		{T: GTypeRegionFlags, F: marshalRegionFlags},
+		{T: GTypeStateFlags, F: marshalStateFlags},
 	})
 }
 

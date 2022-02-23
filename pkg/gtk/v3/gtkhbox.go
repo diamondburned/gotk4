@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkhbox.go.
+var GTypeHBox = externglib.Type(C.gtk_hbox_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hbox_get_type()), F: marshalHBoxer},
+		{T: GTypeHBox, F: marshalHBox},
 	})
 }
 
@@ -87,7 +90,7 @@ func wrapHBox(obj *externglib.Object) *HBox {
 	}
 }
 
-func marshalHBoxer(p uintptr) (interface{}, error) {
+func marshalHBox(p uintptr) (interface{}, error) {
 	return wrapHBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

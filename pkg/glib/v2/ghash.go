@@ -17,9 +17,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for ghash.go.
+var GTypeHashTable = externglib.Type(C.g_hash_table_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_hash_table_get_type()), F: marshalHashTable},
+		{T: GTypeHashTable, F: marshalHashTable},
 	})
 }
 

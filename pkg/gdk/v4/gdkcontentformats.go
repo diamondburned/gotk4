@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkcontentformats.go.
+var GTypeContentFormatsBuilder = externglib.Type(C.gdk_content_formats_builder_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_content_formats_builder_get_type()), F: marshalContentFormatsBuilder},
+		{T: GTypeContentFormatsBuilder, F: marshalContentFormatsBuilder},
 	})
 }
 

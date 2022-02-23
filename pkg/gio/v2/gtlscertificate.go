@@ -18,9 +18,12 @@ import (
 // extern GTlsCertificateFlags _gotk4_gio2_TlsCertificateClass_verify(GTlsCertificate*, GSocketConnectable*, GTlsCertificate*);
 import "C"
 
+// glib.Type values for gtlscertificate.go.
+var GTypeTLSCertificate = externglib.Type(C.g_tls_certificate_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tls_certificate_get_type()), F: marshalTLSCertificater},
+		{T: GTypeTLSCertificate, F: marshalTLSCertificate},
 	})
 }
 
@@ -154,7 +157,7 @@ func wrapTLSCertificate(obj *externglib.Object) *TLSCertificate {
 	}
 }
 
-func marshalTLSCertificater(p uintptr) (interface{}, error) {
+func marshalTLSCertificate(p uintptr) (interface{}, error) {
 	return wrapTLSCertificate(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gsimpleproxyresolver.go.
+var GTypeSimpleProxyResolver = externglib.Type(C.g_simple_proxy_resolver_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_simple_proxy_resolver_get_type()), F: marshalSimpleProxyResolverer},
+		{T: GTypeSimpleProxyResolver, F: marshalSimpleProxyResolver},
 	})
 }
 
@@ -59,7 +62,7 @@ func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
 	}
 }
 
-func marshalSimpleProxyResolverer(p uintptr) (interface{}, error) {
+func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 	return wrapSimpleProxyResolver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

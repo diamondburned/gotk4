@@ -26,10 +26,16 @@ import (
 // extern void _gotk4_gtk3_Toolbar_ConnectStyleChanged(gpointer, GtkToolbarStyle, guintptr);
 import "C"
 
+// glib.Type values for gtktoolbar.go.
+var (
+	GTypeToolbarSpaceStyle = externglib.Type(C.gtk_toolbar_space_style_get_type())
+	GTypeToolbar           = externglib.Type(C.gtk_toolbar_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toolbar_space_style_get_type()), F: marshalToolbarSpaceStyle},
-		{T: externglib.Type(C.gtk_toolbar_get_type()), F: marshalToolbarrer},
+		{T: GTypeToolbarSpaceStyle, F: marshalToolbarSpaceStyle},
+		{T: GTypeToolbar, F: marshalToolbar},
 	})
 }
 
@@ -255,7 +261,7 @@ func wrapToolbar(obj *externglib.Object) *Toolbar {
 	}
 }
 
-func marshalToolbarrer(p uintptr) (interface{}, error) {
+func marshalToolbar(p uintptr) (interface{}, error) {
 	return wrapToolbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

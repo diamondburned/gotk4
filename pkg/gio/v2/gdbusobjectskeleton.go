@@ -17,9 +17,12 @@ import (
 // extern gboolean _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(gpointer, GDBusInterfaceSkeleton*, GDBusMethodInvocation*, guintptr);
 import "C"
 
+// glib.Type values for gdbusobjectskeleton.go.
+var GTypeDBusObjectSkeleton = externglib.Type(C.g_dbus_object_skeleton_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_skeleton_get_type()), F: marshalDBusObjectSkeletonner},
+		{T: GTypeDBusObjectSkeleton, F: marshalDBusObjectSkeleton},
 	})
 }
 
@@ -116,7 +119,7 @@ func wrapDBusObjectSkeleton(obj *externglib.Object) *DBusObjectSkeleton {
 	}
 }
 
-func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
+func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 	return wrapDBusObjectSkeleton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

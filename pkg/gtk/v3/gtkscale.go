@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gtk3_ScaleClass_get_layout_offsets(GtkScale*, gint*, gint*);
 import "C"
 
+// glib.Type values for gtkscale.go.
+var GTypeScale = externglib.Type(C.gtk_scale_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scale_get_type()), F: marshalScaler},
+		{T: GTypeScale, F: marshalScale},
 	})
 }
 
@@ -213,7 +216,7 @@ func wrapScale(obj *externglib.Object) *Scale {
 	}
 }
 
-func marshalScaler(p uintptr) (interface{}, error) {
+func marshalScale(p uintptr) (interface{}, error) {
 	return wrapScale(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

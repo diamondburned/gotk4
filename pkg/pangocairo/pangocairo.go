@@ -23,10 +23,16 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for pangocairo.go.
+var (
+	GTypeFont    = externglib.Type(C.pango_cairo_font_get_type())
+	GTypeFontMap = externglib.Type(C.pango_cairo_font_map_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_cairo_font_get_type()), F: marshalFonter},
-		{T: externglib.Type(C.pango_cairo_font_map_get_type()), F: marshalFontMapper},
+		{T: GTypeFont, F: marshalFont},
+		{T: GTypeFontMap, F: marshalFontMap},
 	})
 }
 
@@ -608,7 +614,7 @@ func wrapFont(obj *externglib.Object) *Font {
 	}
 }
 
-func marshalFonter(p uintptr) (interface{}, error) {
+func marshalFont(p uintptr) (interface{}, error) {
 	return wrapFont(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -650,7 +656,7 @@ func wrapFontMap(obj *externglib.Object) *FontMap {
 	}
 }
 
-func marshalFontMapper(p uintptr) (interface{}, error) {
+func marshalFontMap(p uintptr) (interface{}, error) {
 	return wrapFontMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

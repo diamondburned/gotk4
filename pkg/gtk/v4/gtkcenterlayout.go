@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcenterlayout.go.
+var GTypeCenterLayout = externglib.Type(C.gtk_center_layout_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_center_layout_get_type()), F: marshalCenterLayouter},
+		{T: GTypeCenterLayout, F: marshalCenterLayout},
 	})
 }
 
@@ -57,7 +60,7 @@ func wrapCenterLayout(obj *externglib.Object) *CenterLayout {
 	}
 }
 
-func marshalCenterLayouter(p uintptr) (interface{}, error) {
+func marshalCenterLayout(p uintptr) (interface{}, error) {
 	return wrapCenterLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

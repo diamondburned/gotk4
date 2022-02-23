@@ -19,10 +19,16 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtk.go.
+var (
+	GTypeEditableProperties = externglib.Type(C.gtk_editable_properties_get_type())
+	GTypeDebugFlags         = externglib.Type(C.gtk_debug_flags_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_editable_properties_get_type()), F: marshalEditableProperties},
-		{T: externglib.Type(C.gtk_debug_flags_get_type()), F: marshalDebugFlags},
+		{T: GTypeEditableProperties, F: marshalEditableProperties},
+		{T: GTypeDebugFlags, F: marshalDebugFlags},
 	})
 }
 

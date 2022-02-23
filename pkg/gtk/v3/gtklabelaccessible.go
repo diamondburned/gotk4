@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtklabelaccessible.go.
+var GTypeLabelAccessible = externglib.Type(C.gtk_label_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_label_accessible_get_type()), F: marshalLabelAccessibler},
+		{T: GTypeLabelAccessible, F: marshalLabelAccessible},
 	})
 }
 
@@ -69,6 +72,6 @@ func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
 	}
 }
 
-func marshalLabelAccessibler(p uintptr) (interface{}, error) {
+func marshalLabelAccessible(p uintptr) (interface{}, error) {
 	return wrapLabelAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gio2_SocketClient_ConnectEvent(gpointer, GSocketClientEvent, GSocketConnectable*, GIOStream*, guintptr);
 import "C"
 
+// glib.Type values for gsocketclient.go.
+var GTypeSocketClient = externglib.Type(C.g_socket_client_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_client_get_type()), F: marshalSocketClienter},
+		{T: GTypeSocketClient, F: marshalSocketClient},
 	})
 }
 
@@ -133,7 +136,7 @@ func wrapSocketClient(obj *externglib.Object) *SocketClient {
 	}
 }
 
-func marshalSocketClienter(p uintptr) (interface{}, error) {
+func marshalSocketClient(p uintptr) (interface{}, error) {
 	return wrapSocketClient(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

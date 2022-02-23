@@ -15,9 +15,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
+// glib.Type values for graphene-vec3.go.
+var GTypeVec3 = externglib.Type(C.graphene_vec3_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.graphene_vec3_get_type()), F: marshalVec3},
+		{T: GTypeVec3, F: marshalVec3},
 	})
 }
 

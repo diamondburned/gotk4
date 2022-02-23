@@ -14,9 +14,12 @@ import (
 // extern void _gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkstyleprovider.go.
+var GTypeStyleProvider = externglib.Type(C.gtk_style_provider_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_style_provider_get_type()), F: marshalStyleProviderer},
+		{T: GTypeStyleProvider, F: marshalStyleProvider},
 	})
 }
 
@@ -81,7 +84,7 @@ func wrapStyleProvider(obj *externglib.Object) *StyleProvider {
 	}
 }
 
-func marshalStyleProviderer(p uintptr) (interface{}, error) {
+func marshalStyleProvider(p uintptr) (interface{}, error) {
 	return wrapStyleProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

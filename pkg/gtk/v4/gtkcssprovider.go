@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gtk4_CssProvider_ConnectParsingError(gpointer, GtkCssSection*, GError*, guintptr);
 import "C"
 
+// glib.Type values for gtkcssprovider.go.
+var GTypeCSSProvider = externglib.Type(C.gtk_css_provider_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_css_provider_get_type()), F: marshalCSSProviderer},
+		{T: GTypeCSSProvider, F: marshalCSSProvider},
 	})
 }
 
@@ -83,7 +86,7 @@ func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
 	}
 }
 
-func marshalCSSProviderer(p uintptr) (interface{}, error) {
+func marshalCSSProvider(p uintptr) (interface{}, error) {
 	return wrapCSSProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

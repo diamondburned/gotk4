@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkmultisorter.go.
+var GTypeMultiSorter = externglib.Type(C.gtk_multi_sorter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_multi_sorter_get_type()), F: marshalMultiSorterer},
+		{T: GTypeMultiSorter, F: marshalMultiSorter},
 	})
 }
 
@@ -65,7 +68,7 @@ func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 	}
 }
 
-func marshalMultiSorterer(p uintptr) (interface{}, error) {
+func marshalMultiSorter(p uintptr) (interface{}, error) {
 	return wrapMultiSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

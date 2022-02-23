@@ -17,17 +17,30 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdktypes.go.
+var (
+	GTypeAxisUse        = externglib.Type(C.gdk_axis_use_get_type())
+	GTypeGLError        = externglib.Type(C.gdk_gl_error_get_type())
+	GTypeGravity        = externglib.Type(C.gdk_gravity_get_type())
+	GTypeVulkanError    = externglib.Type(C.gdk_vulkan_error_get_type())
+	GTypeAxisFlags      = externglib.Type(C.gdk_axis_flags_get_type())
+	GTypeDragAction     = externglib.Type(C.gdk_drag_action_get_type())
+	GTypeModifierType   = externglib.Type(C.gdk_modifier_type_get_type())
+	GTypeContentFormats = externglib.Type(C.gdk_content_formats_get_type())
+	GTypeRectangle      = externglib.Type(C.gdk_rectangle_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_axis_use_get_type()), F: marshalAxisUse},
-		{T: externglib.Type(C.gdk_gl_error_get_type()), F: marshalGLError},
-		{T: externglib.Type(C.gdk_gravity_get_type()), F: marshalGravity},
-		{T: externglib.Type(C.gdk_vulkan_error_get_type()), F: marshalVulkanError},
-		{T: externglib.Type(C.gdk_axis_flags_get_type()), F: marshalAxisFlags},
-		{T: externglib.Type(C.gdk_drag_action_get_type()), F: marshalDragAction},
-		{T: externglib.Type(C.gdk_modifier_type_get_type()), F: marshalModifierType},
-		{T: externglib.Type(C.gdk_content_formats_get_type()), F: marshalContentFormats},
-		{T: externglib.Type(C.gdk_rectangle_get_type()), F: marshalRectangle},
+		{T: GTypeAxisUse, F: marshalAxisUse},
+		{T: GTypeGLError, F: marshalGLError},
+		{T: GTypeGravity, F: marshalGravity},
+		{T: GTypeVulkanError, F: marshalVulkanError},
+		{T: GTypeAxisFlags, F: marshalAxisFlags},
+		{T: GTypeDragAction, F: marshalDragAction},
+		{T: GTypeModifierType, F: marshalModifierType},
+		{T: GTypeContentFormats, F: marshalContentFormats},
+		{T: GTypeRectangle, F: marshalRectangle},
 	})
 }
 

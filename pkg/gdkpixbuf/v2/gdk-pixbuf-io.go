@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gdk-pixbuf-io.go.
+var GTypePixbufFormat = externglib.Type(C.gdk_pixbuf_format_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_format_get_type()), F: marshalPixbufFormat},
+		{T: GTypePixbufFormat, F: marshalPixbufFormat},
 	})
 }
 

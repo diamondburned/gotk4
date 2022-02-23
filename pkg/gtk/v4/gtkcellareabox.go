@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcellareabox.go.
+var GTypeCellAreaBox = externglib.Type(C.gtk_cell_area_box_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_area_box_get_type()), F: marshalCellAreaBoxer},
+		{T: GTypeCellAreaBox, F: marshalCellAreaBox},
 	})
 }
 
@@ -71,7 +74,7 @@ func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 	}
 }
 
-func marshalCellAreaBoxer(p uintptr) (interface{}, error) {
+func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	return wrapCellAreaBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

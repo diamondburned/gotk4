@@ -13,9 +13,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcellrendererpixbuf.go.
+var GTypeCellRendererPixbuf = externglib.Type(C.gtk_cell_renderer_pixbuf_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbuffer},
+		{T: GTypeCellRendererPixbuf, F: marshalCellRendererPixbuf},
 	})
 }
 
@@ -51,7 +54,7 @@ func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
 	}
 }
 
-func marshalCellRendererPixbuffer(p uintptr) (interface{}, error) {
+func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 	return wrapCellRendererPixbuf(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

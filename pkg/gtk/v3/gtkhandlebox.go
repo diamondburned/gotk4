@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gtk3_HandleBox_ConnectChildDetached(gpointer, GtkWidget*, guintptr);
 import "C"
 
+// glib.Type values for gtkhandlebox.go.
+var GTypeHandleBox = externglib.Type(C.gtk_handle_box_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_handle_box_get_type()), F: marshalHandleBoxer},
+		{T: GTypeHandleBox, F: marshalHandleBox},
 	})
 }
 
@@ -166,7 +169,7 @@ func wrapHandleBox(obj *externglib.Object) *HandleBox {
 	}
 }
 
-func marshalHandleBoxer(p uintptr) (interface{}, error) {
+func marshalHandleBox(p uintptr) (interface{}, error) {
 	return wrapHandleBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

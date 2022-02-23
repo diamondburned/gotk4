@@ -36,11 +36,18 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkrecentchooser.go.
+var (
+	GTypeRecentChooserError = externglib.Type(C.gtk_recent_chooser_error_get_type())
+	GTypeRecentSortType     = externglib.Type(C.gtk_recent_sort_type_get_type())
+	GTypeRecentChooser      = externglib.Type(C.gtk_recent_chooser_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_chooser_error_get_type()), F: marshalRecentChooserError},
-		{T: externglib.Type(C.gtk_recent_sort_type_get_type()), F: marshalRecentSortType},
-		{T: externglib.Type(C.gtk_recent_chooser_get_type()), F: marshalRecentChooserer},
+		{T: GTypeRecentChooserError, F: marshalRecentChooserError},
+		{T: GTypeRecentSortType, F: marshalRecentSortType},
+		{T: GTypeRecentChooser, F: marshalRecentChooser},
 	})
 }
 
@@ -261,7 +268,7 @@ func wrapRecentChooser(obj *externglib.Object) *RecentChooser {
 	}
 }
 
-func marshalRecentChooserer(p uintptr) (interface{}, error) {
+func marshalRecentChooser(p uintptr) (interface{}, error) {
 	return wrapRecentChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

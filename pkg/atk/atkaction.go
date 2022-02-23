@@ -21,9 +21,12 @@ import (
 // extern gint _gotk4_atk1_ActionIface_get_n_actions(AtkAction*);
 import "C"
 
+// glib.Type values for atkaction.go.
+var GTypeAction = externglib.Type(C.atk_action_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_action_get_type()), F: marshalActioner},
+		{T: GTypeAction, F: marshalAction},
 	})
 }
 
@@ -339,7 +342,7 @@ func wrapAction(obj *externglib.Object) *Action {
 	}
 }
 
-func marshalActioner(p uintptr) (interface{}, error) {
+func marshalAction(p uintptr) (interface{}, error) {
 	return wrapAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

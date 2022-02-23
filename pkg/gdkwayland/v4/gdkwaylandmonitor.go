@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkwaylandmonitor.go.
+var GTypeWaylandMonitor = externglib.Type(C.gdk_wayland_monitor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_monitor_get_type()), F: marshalWaylandMonitorrer},
+		{T: GTypeWaylandMonitor, F: marshalWaylandMonitor},
 	})
 }
 
@@ -53,6 +56,6 @@ func wrapWaylandMonitor(obj *externglib.Object) *WaylandMonitor {
 	}
 }
 
-func marshalWaylandMonitorrer(p uintptr) (interface{}, error) {
+func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 	return wrapWaylandMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

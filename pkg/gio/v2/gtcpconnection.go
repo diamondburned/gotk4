@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gtcpconnection.go.
+var GTypeTCPConnection = externglib.Type(C.g_tcp_connection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_tcp_connection_get_type()), F: marshalTCPConnectioner},
+		{T: GTypeTCPConnection, F: marshalTCPConnection},
 	})
 }
 
@@ -53,7 +56,7 @@ func wrapTCPConnection(obj *externglib.Object) *TCPConnection {
 	}
 }
 
-func marshalTCPConnectioner(p uintptr) (interface{}, error) {
+func marshalTCPConnection(p uintptr) (interface{}, error) {
 	return wrapTCPConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

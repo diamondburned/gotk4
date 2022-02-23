@@ -82,9 +82,12 @@ import (
 // extern void _gotk4_gio2_FileProgressCallback(goffset, goffset, gpointer);
 import "C"
 
+// glib.Type values for gfile.go.
+var GTypeFile = externglib.Type(C.g_file_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_get_type()), F: marshalFiler},
+		{T: GTypeFile, F: marshalFile},
 	})
 }
 
@@ -503,7 +506,7 @@ func wrapFile(obj *externglib.Object) *File {
 	}
 }
 
-func marshalFiler(p uintptr) (interface{}, error) {
+func marshalFile(p uintptr) (interface{}, error) {
 	return wrapFile(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

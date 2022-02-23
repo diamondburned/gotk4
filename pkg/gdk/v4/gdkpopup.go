@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkpopup.go.
+var GTypePopup = externglib.Type(C.gdk_popup_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopupper},
+		{T: GTypePopup, F: marshalPopup},
 	})
 }
 
@@ -73,7 +76,7 @@ func wrapPopup(obj *externglib.Object) *Popup {
 	}
 }
 
-func marshalPopupper(p uintptr) (interface{}, error) {
+func marshalPopup(p uintptr) (interface{}, error) {
 	return wrapPopup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

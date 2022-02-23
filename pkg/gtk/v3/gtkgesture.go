@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gtk3_Gesture_ConnectUpdate(gpointer, GdkEventSequence*, guintptr);
 import "C"
 
+// glib.Type values for gtkgesture.go.
+var GTypeGesture = externglib.Type(C.gtk_gesture_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_get_type()), F: marshalGesturer},
+		{T: GTypeGesture, F: marshalGesture},
 	})
 }
 
@@ -167,7 +170,7 @@ func wrapGesture(obj *externglib.Object) *Gesture {
 	}
 }
 
-func marshalGesturer(p uintptr) (interface{}, error) {
+func marshalGesture(p uintptr) (interface{}, error) {
 	return wrapGesture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

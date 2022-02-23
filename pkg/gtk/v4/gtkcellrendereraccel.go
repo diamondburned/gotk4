@@ -17,10 +17,16 @@ import (
 // extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited(gpointer, gchar*, guint, GdkModifierType, guint, guintptr);
 import "C"
 
+// glib.Type values for gtkcellrendereraccel.go.
+var (
+	GTypeCellRendererAccelMode = externglib.Type(C.gtk_cell_renderer_accel_mode_get_type())
+	GTypeCellRendererAccel     = externglib.Type(C.gtk_cell_renderer_accel_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
-		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceller},
+		{T: GTypeCellRendererAccelMode, F: marshalCellRendererAccelMode},
+		{T: GTypeCellRendererAccel, F: marshalCellRendererAccel},
 	})
 }
 
@@ -79,7 +85,7 @@ func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
 	}
 }
 
-func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
+func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 	return wrapCellRendererAccel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -16,10 +16,16 @@ import (
 // #include <pango/pango.h>
 import "C"
 
+// glib.Type values for pango-gravity.go.
+var (
+	GTypeGravity     = externglib.Type(C.pango_gravity_get_type())
+	GTypeGravityHint = externglib.Type(C.pango_gravity_hint_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_gravity_get_type()), F: marshalGravity},
-		{T: externglib.Type(C.pango_gravity_hint_get_type()), F: marshalGravityHint},
+		{T: GTypeGravity, F: marshalGravity},
+		{T: GTypeGravityHint, F: marshalGravityHint},
 	})
 }
 

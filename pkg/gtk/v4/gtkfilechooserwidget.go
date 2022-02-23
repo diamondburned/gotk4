@@ -26,9 +26,12 @@ import (
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectUpFolder(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkfilechooserwidget.go.
+var GTypeFileChooserWidget = externglib.Type(C.gtk_file_chooser_widget_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidgetter},
+		{T: GTypeFileChooserWidget, F: marshalFileChooserWidget},
 	})
 }
 
@@ -78,7 +81,7 @@ func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 	}
 }
 
-func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 	return wrapFileChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

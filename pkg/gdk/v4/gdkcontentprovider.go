@@ -29,9 +29,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gdkcontentprovider.go.
+var GTypeContentProvider = externglib.Type(C.gdk_content_provider_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_content_provider_get_type()), F: marshalContentProviderer},
+		{T: GTypeContentProvider, F: marshalContentProvider},
 	})
 }
 
@@ -269,7 +272,7 @@ func wrapContentProvider(obj *externglib.Object) *ContentProvider {
 	}
 }
 
-func marshalContentProviderer(p uintptr) (interface{}, error) {
+func marshalContentProvider(p uintptr) (interface{}, error) {
 	return wrapContentProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

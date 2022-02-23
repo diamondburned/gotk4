@@ -21,16 +21,28 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkshortcutaction.go.
+var (
+	GTypeShortcutActionFlags = externglib.Type(C.gtk_shortcut_action_flags_get_type())
+	GTypeActivateAction      = externglib.Type(C.gtk_activate_action_get_type())
+	GTypeCallbackAction      = externglib.Type(C.gtk_callback_action_get_type())
+	GTypeMnemonicAction      = externglib.Type(C.gtk_mnemonic_action_get_type())
+	GTypeNamedAction         = externglib.Type(C.gtk_named_action_get_type())
+	GTypeNothingAction       = externglib.Type(C.gtk_nothing_action_get_type())
+	GTypeShortcutAction      = externglib.Type(C.gtk_shortcut_action_get_type())
+	GTypeSignalAction        = externglib.Type(C.gtk_signal_action_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_action_flags_get_type()), F: marshalShortcutActionFlags},
-		{T: externglib.Type(C.gtk_activate_action_get_type()), F: marshalActivateActioner},
-		{T: externglib.Type(C.gtk_callback_action_get_type()), F: marshalCallbackActioner},
-		{T: externglib.Type(C.gtk_mnemonic_action_get_type()), F: marshalMnemonicActioner},
-		{T: externglib.Type(C.gtk_named_action_get_type()), F: marshalNamedActioner},
-		{T: externglib.Type(C.gtk_nothing_action_get_type()), F: marshalNothingActioner},
-		{T: externglib.Type(C.gtk_shortcut_action_get_type()), F: marshalShortcutActioner},
-		{T: externglib.Type(C.gtk_signal_action_get_type()), F: marshalSignalActioner},
+		{T: GTypeShortcutActionFlags, F: marshalShortcutActionFlags},
+		{T: GTypeActivateAction, F: marshalActivateAction},
+		{T: GTypeCallbackAction, F: marshalCallbackAction},
+		{T: GTypeMnemonicAction, F: marshalMnemonicAction},
+		{T: GTypeNamedAction, F: marshalNamedAction},
+		{T: GTypeNothingAction, F: marshalNothingAction},
+		{T: GTypeShortcutAction, F: marshalShortcutAction},
+		{T: GTypeSignalAction, F: marshalSignalAction},
 	})
 }
 
@@ -165,7 +177,7 @@ func wrapActivateAction(obj *externglib.Object) *ActivateAction {
 	}
 }
 
-func marshalActivateActioner(p uintptr) (interface{}, error) {
+func marshalActivateAction(p uintptr) (interface{}, error) {
 	return wrapActivateAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -220,7 +232,7 @@ func wrapCallbackAction(obj *externglib.Object) *CallbackAction {
 	}
 }
 
-func marshalCallbackActioner(p uintptr) (interface{}, error) {
+func marshalCallbackAction(p uintptr) (interface{}, error) {
 	return wrapCallbackAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -287,7 +299,7 @@ func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
 	}
 }
 
-func marshalMnemonicActioner(p uintptr) (interface{}, error) {
+func marshalMnemonicAction(p uintptr) (interface{}, error) {
 	return wrapMnemonicAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -342,7 +354,7 @@ func wrapNamedAction(obj *externglib.Object) *NamedAction {
 	}
 }
 
-func marshalNamedActioner(p uintptr) (interface{}, error) {
+func marshalNamedAction(p uintptr) (interface{}, error) {
 	return wrapNamedAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -430,7 +442,7 @@ func wrapNothingAction(obj *externglib.Object) *NothingAction {
 	}
 }
 
-func marshalNothingActioner(p uintptr) (interface{}, error) {
+func marshalNothingAction(p uintptr) (interface{}, error) {
 	return wrapNothingAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -519,7 +531,7 @@ func wrapShortcutAction(obj *externglib.Object) *ShortcutAction {
 	}
 }
 
-func marshalShortcutActioner(p uintptr) (interface{}, error) {
+func marshalShortcutAction(p uintptr) (interface{}, error) {
 	return wrapShortcutAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -682,7 +694,7 @@ func wrapSignalAction(obj *externglib.Object) *SignalAction {
 	}
 }
 
-func marshalSignalActioner(p uintptr) (interface{}, error) {
+func marshalSignalAction(p uintptr) (interface{}, error) {
 	return wrapSignalAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

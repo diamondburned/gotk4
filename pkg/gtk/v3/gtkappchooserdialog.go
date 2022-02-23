@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkappchooserdialog.go.
+var GTypeAppChooserDialog = externglib.Type(C.gtk_app_chooser_dialog_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_dialog_get_type()), F: marshalAppChooserDialogger},
+		{T: GTypeAppChooserDialog, F: marshalAppChooserDialog},
 	})
 }
 
@@ -98,7 +101,7 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 	}
 }
 
-func marshalAppChooserDialogger(p uintptr) (interface{}, error) {
+func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return wrapAppChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

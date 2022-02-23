@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_pango1_FontMapClass_list_families(PangoFontMap*, PangoFontFamily***, int*);
 import "C"
 
+// glib.Type values for pango-fontmap.go.
+var GTypeFontMap = externglib.Type(C.pango_font_map_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_font_map_get_type()), F: marshalFontMapper},
+		{T: GTypeFontMap, F: marshalFontMap},
 	})
 }
 
@@ -281,7 +284,7 @@ func wrapFontMap(obj *externglib.Object) *FontMap {
 	}
 }
 
-func marshalFontMapper(p uintptr) (interface{}, error) {
+func marshalFontMap(p uintptr) (interface{}, error) {
 	return wrapFontMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

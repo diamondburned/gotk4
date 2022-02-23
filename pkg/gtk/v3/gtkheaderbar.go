@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkheaderbar.go.
+var GTypeHeaderBar = externglib.Type(C.gtk_header_bar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBarrer},
+		{T: GTypeHeaderBar, F: marshalHeaderBar},
 	})
 }
 
@@ -77,7 +80,7 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 	}
 }
 
-func marshalHeaderBarrer(p uintptr) (interface{}, error) {
+func marshalHeaderBar(p uintptr) (interface{}, error) {
 	return wrapHeaderBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

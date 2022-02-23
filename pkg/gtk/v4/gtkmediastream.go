@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gtk4_MediaStreamClass_update_audio(GtkMediaStream*, gboolean, double);
 import "C"
 
+// glib.Type values for gtkmediastream.go.
+var GTypeMediaStream = externglib.Type(C.gtk_media_stream_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_media_stream_get_type()), F: marshalMediaStreamer},
+		{T: GTypeMediaStream, F: marshalMediaStream},
 	})
 }
 
@@ -283,7 +286,7 @@ func wrapMediaStream(obj *externglib.Object) *MediaStream {
 	}
 }
 
-func marshalMediaStreamer(p uintptr) (interface{}, error) {
+func marshalMediaStream(p uintptr) (interface{}, error) {
 	return wrapMediaStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

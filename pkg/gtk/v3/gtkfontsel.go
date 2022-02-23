@@ -18,10 +18,16 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkfontsel.go.
+var (
+	GTypeFontSelection       = externglib.Type(C.gtk_font_selection_get_type())
+	GTypeFontSelectionDialog = externglib.Type(C.gtk_font_selection_dialog_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_selection_get_type()), F: marshalFontSelectioner},
-		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialogger},
+		{T: GTypeFontSelection, F: marshalFontSelection},
+		{T: GTypeFontSelectionDialog, F: marshalFontSelectionDialog},
 	})
 }
 
@@ -72,7 +78,7 @@ func wrapFontSelection(obj *externglib.Object) *FontSelection {
 	}
 }
 
-func marshalFontSelectioner(p uintptr) (interface{}, error) {
+func marshalFontSelection(p uintptr) (interface{}, error) {
 	return wrapFontSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -573,7 +579,7 @@ func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 	}
 }
 
-func marshalFontSelectionDialogger(p uintptr) (interface{}, error) {
+func marshalFontSelectionDialog(p uintptr) (interface{}, error) {
 	return wrapFontSelectionDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

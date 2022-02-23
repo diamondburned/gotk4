@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkbin.go.
+var GTypeBin = externglib.Type(C.gtk_bin_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBinner},
+		{T: GTypeBin, F: marshalBin},
 	})
 }
 
@@ -80,7 +83,7 @@ func wrapBin(obj *externglib.Object) *Bin {
 	}
 }
 
-func marshalBinner(p uintptr) (interface{}, error) {
+func marshalBin(p uintptr) (interface{}, error) {
 	return wrapBin(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -17,10 +17,16 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkpopuplayout.go.
+var (
+	GTypeAnchorHints = externglib.Type(C.gdk_anchor_hints_get_type())
+	GTypePopupLayout = externglib.Type(C.gdk_popup_layout_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_anchor_hints_get_type()), F: marshalAnchorHints},
-		{T: externglib.Type(C.gdk_popup_layout_get_type()), F: marshalPopupLayout},
+		{T: GTypeAnchorHints, F: marshalAnchorHints},
+		{T: GTypePopupLayout, F: marshalPopupLayout},
 	})
 }
 

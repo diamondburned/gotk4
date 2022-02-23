@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtksingleselection.go.
+var GTypeSingleSelection = externglib.Type(C.gtk_single_selection_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_single_selection_get_type()), F: marshalSingleSelectioner},
+		{T: GTypeSingleSelection, F: marshalSingleSelection},
 	})
 }
 
@@ -62,7 +65,7 @@ func wrapSingleSelection(obj *externglib.Object) *SingleSelection {
 	}
 }
 
-func marshalSingleSelectioner(p uintptr) (interface{}, error) {
+func marshalSingleSelection(p uintptr) (interface{}, error) {
 	return wrapSingleSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

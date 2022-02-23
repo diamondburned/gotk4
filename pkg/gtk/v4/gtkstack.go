@@ -15,11 +15,18 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkstack.go.
+var (
+	GTypeStackTransitionType = externglib.Type(C.gtk_stack_transition_type_get_type())
+	GTypeStack               = externglib.Type(C.gtk_stack_get_type())
+	GTypeStackPage           = externglib.Type(C.gtk_stack_page_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_transition_type_get_type()), F: marshalStackTransitionType},
-		{T: externglib.Type(C.gtk_stack_get_type()), F: marshalStacker},
-		{T: externglib.Type(C.gtk_stack_page_get_type()), F: marshalStackPager},
+		{T: GTypeStackTransitionType, F: marshalStackTransitionType},
+		{T: GTypeStack, F: marshalStack},
+		{T: GTypeStackPage, F: marshalStackPage},
 	})
 }
 
@@ -223,7 +230,7 @@ func wrapStack(obj *externglib.Object) *Stack {
 	}
 }
 
-func marshalStacker(p uintptr) (interface{}, error) {
+func marshalStack(p uintptr) (interface{}, error) {
 	return wrapStack(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -913,7 +920,7 @@ func wrapStackPage(obj *externglib.Object) *StackPage {
 	}
 }
 
-func marshalStackPager(p uintptr) (interface{}, error) {
+func marshalStackPage(p uintptr) (interface{}, error) {
 	return wrapStackPage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

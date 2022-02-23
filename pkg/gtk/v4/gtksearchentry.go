@@ -20,9 +20,12 @@ import (
 // extern void _gotk4_gtk4_SearchEntry_ConnectStopSearch(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtksearchentry.go.
+var GTypeSearchEntry = externglib.Type(C.gtk_search_entry_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalSearchEntrier},
+		{T: GTypeSearchEntry, F: marshalSearchEntry},
 	})
 }
 
@@ -119,7 +122,7 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 	}
 }
 
-func marshalSearchEntrier(p uintptr) (interface{}, error) {
+func marshalSearchEntry(p uintptr) (interface{}, error) {
 	return wrapSearchEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

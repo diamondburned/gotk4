@@ -21,11 +21,18 @@ import (
 // extern void _gotk4_gtk4_Dialog_ConnectResponse(gpointer, gint, guintptr);
 import "C"
 
+// glib.Type values for gtkdialog.go.
+var (
+	GTypeResponseType = externglib.Type(C.gtk_response_type_get_type())
+	GTypeDialogFlags  = externglib.Type(C.gtk_dialog_flags_get_type())
+	GTypeDialog       = externglib.Type(C.gtk_dialog_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
-		{T: externglib.Type(C.gtk_dialog_flags_get_type()), F: marshalDialogFlags},
-		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialogger},
+		{T: GTypeResponseType, F: marshalResponseType},
+		{T: GTypeDialogFlags, F: marshalDialogFlags},
+		{T: GTypeDialog, F: marshalDialog},
 	})
 }
 
@@ -374,7 +381,7 @@ func wrapDialog(obj *externglib.Object) *Dialog {
 	}
 }
 
-func marshalDialogger(p uintptr) (interface{}, error) {
+func marshalDialog(p uintptr) (interface{}, error) {
 	return wrapDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

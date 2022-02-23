@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkflowboxaccessible.go.
+var GTypeFlowBoxAccessible = externglib.Type(C.gtk_flow_box_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flow_box_accessible_get_type()), F: marshalFlowBoxAccessibler},
+		{T: GTypeFlowBoxAccessible, F: marshalFlowBoxAccessible},
 	})
 }
 
@@ -65,6 +68,6 @@ func wrapFlowBoxAccessible(obj *externglib.Object) *FlowBoxAccessible {
 	}
 }
 
-func marshalFlowBoxAccessibler(p uintptr) (interface{}, error) {
+func marshalFlowBoxAccessible(p uintptr) (interface{}, error) {
 	return wrapFlowBoxAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

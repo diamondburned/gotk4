@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gtk3_ToolItem_ConnectToolbarReconfigured(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtktoolitem.go.
+var GTypeToolItem = externglib.Type(C.gtk_tool_item_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_item_get_type()), F: marshalToolItemmer},
+		{T: GTypeToolItem, F: marshalToolItem},
 	})
 }
 
@@ -129,7 +132,7 @@ func wrapToolItem(obj *externglib.Object) *ToolItem {
 	}
 }
 
-func marshalToolItemmer(p uintptr) (interface{}, error) {
+func marshalToolItem(p uintptr) (interface{}, error) {
 	return wrapToolItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

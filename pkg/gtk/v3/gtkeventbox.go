@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkeventbox.go.
+var GTypeEventBox = externglib.Type(C.gtk_event_box_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_box_get_type()), F: marshalEventBoxer},
+		{T: GTypeEventBox, F: marshalEventBox},
 	})
 }
 
@@ -68,7 +71,7 @@ func wrapEventBox(obj *externglib.Object) *EventBox {
 	}
 }
 
-func marshalEventBoxer(p uintptr) (interface{}, error) {
+func marshalEventBox(p uintptr) (interface{}, error) {
 	return wrapEventBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

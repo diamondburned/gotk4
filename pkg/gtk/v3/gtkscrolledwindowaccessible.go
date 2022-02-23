@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkscrolledwindowaccessible.go.
+var GTypeScrolledWindowAccessible = externglib.Type(C.gtk_scrolled_window_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scrolled_window_accessible_get_type()), F: marshalScrolledWindowAccessibler},
+		{T: GTypeScrolledWindowAccessible, F: marshalScrolledWindowAccessible},
 	})
 }
 
@@ -60,6 +63,6 @@ func wrapScrolledWindowAccessible(obj *externglib.Object) *ScrolledWindowAccessi
 	}
 }
 
-func marshalScrolledWindowAccessibler(p uintptr) (interface{}, error) {
+func marshalScrolledWindowAccessible(p uintptr) (interface{}, error) {
 	return wrapScrolledWindowAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

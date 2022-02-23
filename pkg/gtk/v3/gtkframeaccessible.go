@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkframeaccessible.go.
+var GTypeFrameAccessible = externglib.Type(C.gtk_frame_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_frame_accessible_get_type()), F: marshalFrameAccessibler},
+		{T: GTypeFrameAccessible, F: marshalFrameAccessible},
 	})
 }
 
@@ -60,6 +63,6 @@ func wrapFrameAccessible(obj *externglib.Object) *FrameAccessible {
 	}
 }
 
-func marshalFrameAccessibler(p uintptr) (interface{}, error) {
+func marshalFrameAccessible(p uintptr) (interface{}, error) {
 	return wrapFrameAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

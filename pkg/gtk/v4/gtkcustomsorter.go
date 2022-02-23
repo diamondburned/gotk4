@@ -18,9 +18,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkcustomsorter.go.
+var GTypeCustomSorter = externglib.Type(C.gtk_custom_sorter_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_custom_sorter_get_type()), F: marshalCustomSorterer},
+		{T: GTypeCustomSorter, F: marshalCustomSorter},
 	})
 }
 
@@ -55,7 +58,7 @@ func wrapCustomSorter(obj *externglib.Object) *CustomSorter {
 	}
 }
 
-func marshalCustomSorterer(p uintptr) (interface{}, error) {
+func marshalCustomSorter(p uintptr) (interface{}, error) {
 	return wrapCustomSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

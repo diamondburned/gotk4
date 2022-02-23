@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkhbbox.go.
+var GTypeHButtonBox = externglib.Type(C.gtk_hbutton_box_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hbutton_box_get_type()), F: marshalHButtonBoxer},
+		{T: GTypeHButtonBox, F: marshalHButtonBox},
 	})
 }
 
@@ -71,7 +74,7 @@ func wrapHButtonBox(obj *externglib.Object) *HButtonBox {
 	}
 }
 
-func marshalHButtonBoxer(p uintptr) (interface{}, error) {
+func marshalHButtonBox(p uintptr) (interface{}, error) {
 	return wrapHButtonBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -18,9 +18,12 @@ import (
 // extern gboolean _gotk4_gio2_InitableIface_init(GInitable*, GCancellable*, GError**);
 import "C"
 
+// glib.Type values for ginitable.go.
+var GTypeInitable = externglib.Type(C.g_initable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_initable_get_type()), F: marshalInitabler},
+		{T: GTypeInitable, F: marshalInitable},
 	})
 }
 
@@ -144,7 +147,7 @@ func wrapInitable(obj *externglib.Object) *Initable {
 	}
 }
 
-func marshalInitabler(p uintptr) (interface{}, error) {
+func marshalInitable(p uintptr) (interface{}, error) {
 	return wrapInitable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

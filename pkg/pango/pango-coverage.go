@@ -15,10 +15,16 @@ import (
 // #include <pango/pango.h>
 import "C"
 
+// glib.Type values for pango-coverage.go.
+var (
+	GTypeCoverageLevel = externglib.Type(C.pango_coverage_level_get_type())
+	GTypeCoverage      = externglib.Type(C.pango_coverage_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_coverage_level_get_type()), F: marshalCoverageLevel},
-		{T: externglib.Type(C.pango_coverage_get_type()), F: marshalCoverager},
+		{T: GTypeCoverageLevel, F: marshalCoverageLevel},
+		{T: GTypeCoverage, F: marshalCoverage},
 	})
 }
 
@@ -86,7 +92,7 @@ func wrapCoverage(obj *externglib.Object) *Coverage {
 	}
 }
 
-func marshalCoverager(p uintptr) (interface{}, error) {
+func marshalCoverage(p uintptr) (interface{}, error) {
 	return wrapCoverage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

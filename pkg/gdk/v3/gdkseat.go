@@ -23,10 +23,16 @@ import (
 // extern void _gotk4_gdk3_Seat_ConnectToolRemoved(gpointer, GdkDeviceTool*, guintptr);
 import "C"
 
+// glib.Type values for gdkseat.go.
+var (
+	GTypeSeatCapabilities = externglib.Type(C.gdk_seat_capabilities_get_type())
+	GTypeSeat             = externglib.Type(C.gdk_seat_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_seat_capabilities_get_type()), F: marshalSeatCapabilities},
-		{T: externglib.Type(C.gdk_seat_get_type()), F: marshalSeater},
+		{T: GTypeSeatCapabilities, F: marshalSeatCapabilities},
+		{T: GTypeSeat, F: marshalSeat},
 	})
 }
 
@@ -181,7 +187,7 @@ func wrapSeat(obj *externglib.Object) *Seat {
 	}
 }
 
-func marshalSeater(p uintptr) (interface{}, error) {
+func marshalSeat(p uintptr) (interface{}, error) {
 	return wrapSeat(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

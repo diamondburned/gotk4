@@ -19,11 +19,18 @@ import (
 // extern void _gotk4_gtk4_SpinButton_ConnectWrapped(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkspinbutton.go.
+var (
+	GTypeSpinButtonUpdatePolicy = externglib.Type(C.gtk_spin_button_update_policy_get_type())
+	GTypeSpinType               = externglib.Type(C.gtk_spin_type_get_type())
+	GTypeSpinButton             = externglib.Type(C.gtk_spin_button_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
-		{T: externglib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
-		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButtonner},
+		{T: GTypeSpinButtonUpdatePolicy, F: marshalSpinButtonUpdatePolicy},
+		{T: GTypeSpinType, F: marshalSpinType},
+		{T: GTypeSpinButton, F: marshalSpinButton},
 	})
 }
 
@@ -311,7 +318,7 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 	}
 }
 
-func marshalSpinButtonner(p uintptr) (interface{}, error) {
+func marshalSpinButton(p uintptr) (interface{}, error) {
 	return wrapSpinButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

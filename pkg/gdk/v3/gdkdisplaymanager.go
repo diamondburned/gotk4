@@ -16,9 +16,12 @@ import (
 // extern void _gotk4_gdk3_DisplayManager_ConnectDisplayOpened(gpointer, GdkDisplay*, guintptr);
 import "C"
 
+// glib.Type values for gdkdisplaymanager.go.
+var GTypeDisplayManager = externglib.Type(C.gdk_display_manager_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_manager_get_type()), F: marshalDisplayManagerer},
+		{T: GTypeDisplayManager, F: marshalDisplayManager},
 	})
 }
 
@@ -72,7 +75,7 @@ func wrapDisplayManager(obj *externglib.Object) *DisplayManager {
 	}
 }
 
-func marshalDisplayManagerer(p uintptr) (interface{}, error) {
+func marshalDisplayManager(p uintptr) (interface{}, error) {
 	return wrapDisplayManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

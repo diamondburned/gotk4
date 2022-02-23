@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkpopovermenu.go.
+var GTypePopoverMenu = externglib.Type(C.gtk_popover_menu_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_popover_menu_get_type()), F: marshalPopoverMenuer},
+		{T: GTypePopoverMenu, F: marshalPopoverMenu},
 	})
 }
 
@@ -135,7 +138,7 @@ func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 	}
 }
 
-func marshalPopoverMenuer(p uintptr) (interface{}, error) {
+func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	return wrapPopoverMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

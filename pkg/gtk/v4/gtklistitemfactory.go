@@ -13,9 +13,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtklistitemfactory.go.
+var GTypeListItemFactory = externglib.Type(C.gtk_list_item_factory_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_item_factory_get_type()), F: marshalListItemFactorier},
+		{T: GTypeListItemFactory, F: marshalListItemFactory},
 	})
 }
 
@@ -94,6 +97,6 @@ func wrapListItemFactory(obj *externglib.Object) *ListItemFactory {
 	}
 }
 
-func marshalListItemFactorier(p uintptr) (interface{}, error) {
+func marshalListItemFactory(p uintptr) (interface{}, error) {
 	return wrapListItemFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

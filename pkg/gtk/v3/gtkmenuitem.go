@@ -32,9 +32,12 @@ import (
 // extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(gpointer, gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkmenuitem.go.
+var GTypeMenuItem = externglib.Type(C.gtk_menu_item_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_item_get_type()), F: marshalMenuItemmer},
+		{T: GTypeMenuItem, F: marshalMenuItem},
 	})
 }
 
@@ -254,7 +257,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	}
 }
 
-func marshalMenuItemmer(p uintptr) (interface{}, error) {
+func marshalMenuItem(p uintptr) (interface{}, error) {
 	return wrapMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

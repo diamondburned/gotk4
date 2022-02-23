@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkradiomenuitem.go.
+var GTypeRadioMenuItem = externglib.Type(C.gtk_radio_menu_item_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_menu_item_get_type()), F: marshalRadioMenuItemmer},
+		{T: GTypeRadioMenuItem, F: marshalRadioMenuItem},
 	})
 }
 
@@ -126,7 +129,7 @@ func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 	}
 }
 
-func marshalRadioMenuItemmer(p uintptr) (interface{}, error) {
+func marshalRadioMenuItem(p uintptr) (interface{}, error) {
 	return wrapRadioMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

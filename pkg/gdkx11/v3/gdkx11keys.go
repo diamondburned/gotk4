@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11keys.go.
+var GTypeX11Keymap = externglib.Type(C.gdk_x11_keymap_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_keymap_get_type()), F: marshalX11Keymapper},
+		{T: GTypeX11Keymap, F: marshalX11Keymap},
 	})
 }
 
@@ -50,7 +53,7 @@ func wrapX11Keymap(obj *externglib.Object) *X11Keymap {
 	}
 }
 
-func marshalX11Keymapper(p uintptr) (interface{}, error) {
+func marshalX11Keymap(p uintptr) (interface{}, error) {
 	return wrapX11Keymap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

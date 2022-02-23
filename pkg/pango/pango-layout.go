@@ -16,14 +16,24 @@ import (
 // #include <pango/pango.h>
 import "C"
 
+// glib.Type values for pango-layout.go.
+var (
+	GTypeAlignment     = externglib.Type(C.pango_alignment_get_type())
+	GTypeEllipsizeMode = externglib.Type(C.pango_ellipsize_mode_get_type())
+	GTypeWrapMode      = externglib.Type(C.pango_wrap_mode_get_type())
+	GTypeLayout        = externglib.Type(C.pango_layout_get_type())
+	GTypeLayoutIter    = externglib.Type(C.pango_layout_iter_get_type())
+	GTypeLayoutLine    = externglib.Type(C.pango_layout_line_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_alignment_get_type()), F: marshalAlignment},
-		{T: externglib.Type(C.pango_ellipsize_mode_get_type()), F: marshalEllipsizeMode},
-		{T: externglib.Type(C.pango_wrap_mode_get_type()), F: marshalWrapMode},
-		{T: externglib.Type(C.pango_layout_get_type()), F: marshalLayouter},
-		{T: externglib.Type(C.pango_layout_iter_get_type()), F: marshalLayoutIter},
-		{T: externglib.Type(C.pango_layout_line_get_type()), F: marshalLayoutLine},
+		{T: GTypeAlignment, F: marshalAlignment},
+		{T: GTypeEllipsizeMode, F: marshalEllipsizeMode},
+		{T: GTypeWrapMode, F: marshalWrapMode},
+		{T: GTypeLayout, F: marshalLayout},
+		{T: GTypeLayoutIter, F: marshalLayoutIter},
+		{T: GTypeLayoutLine, F: marshalLayoutLine},
 	})
 }
 
@@ -187,7 +197,7 @@ func wrapLayout(obj *externglib.Object) *Layout {
 	}
 }
 
-func marshalLayouter(p uintptr) (interface{}, error) {
+func marshalLayout(p uintptr) (interface{}, error) {
 	return wrapLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

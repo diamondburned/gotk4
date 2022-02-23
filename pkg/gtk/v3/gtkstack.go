@@ -18,10 +18,16 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkstack.go.
+var (
+	GTypeStackTransitionType = externglib.Type(C.gtk_stack_transition_type_get_type())
+	GTypeStack               = externglib.Type(C.gtk_stack_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_transition_type_get_type()), F: marshalStackTransitionType},
-		{T: externglib.Type(C.gtk_stack_get_type()), F: marshalStacker},
+		{T: GTypeStackTransitionType, F: marshalStackTransitionType},
+		{T: GTypeStack, F: marshalStack},
 	})
 }
 
@@ -194,7 +200,7 @@ func wrapStack(obj *externglib.Object) *Stack {
 	}
 }
 
-func marshalStacker(p uintptr) (interface{}, error) {
+func marshalStack(p uintptr) (interface{}, error) {
 	return wrapStack(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

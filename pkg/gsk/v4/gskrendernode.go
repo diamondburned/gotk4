@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gsk4_ParseErrorFunc(GskParseLocation*, GskParseLocation*, GError*, gpointer);
 import "C"
 
+// glib.Type values for gskrendernode.go.
+var GTypeRenderNode = externglib.Type(C.gsk_render_node_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_render_node_get_type()), F: marshalRenderNoder},
+		{T: GTypeRenderNode, F: marshalRenderNode},
 	})
 }
 
@@ -2295,7 +2298,7 @@ func wrapRenderNode(obj *externglib.Object) *RenderNode {
 	}
 }
 
-func marshalRenderNoder(p uintptr) (interface{}, error) {
+func marshalRenderNode(p uintptr) (interface{}, error) {
 	return wrapRenderNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

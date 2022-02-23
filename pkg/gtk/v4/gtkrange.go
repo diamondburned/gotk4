@@ -26,9 +26,12 @@ import (
 // extern void _gotk4_gtk4_Range_ConnectValueChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkrange.go.
+var GTypeRange = externglib.Type(C.gtk_range_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_range_get_type()), F: marshalRanger},
+		{T: GTypeRange, F: marshalRange},
 	})
 }
 
@@ -199,7 +202,7 @@ func wrapRange(obj *externglib.Object) *Range {
 	}
 }
 
-func marshalRanger(p uintptr) (interface{}, error) {
+func marshalRange(p uintptr) (interface{}, error) {
 	return wrapRange(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

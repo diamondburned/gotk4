@@ -16,9 +16,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for gtimezone.go.
+var GTypeTimeZone = externglib.Type(C.g_time_zone_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_time_zone_get_type()), F: marshalTimeZone},
+		{T: GTypeTimeZone, F: marshalTimeZone},
 	})
 }
 

@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_atk1_Window_ConnectRestore(gpointer, guintptr);
 import "C"
 
+// glib.Type values for atkwindow.go.
+var GTypeWindow = externglib.Type(C.atk_window_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_window_get_type()), F: marshalWindower},
+		{T: GTypeWindow, F: marshalWindow},
 	})
 }
 
@@ -63,7 +66,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 	}
 }
 
-func marshalWindower(p uintptr) (interface{}, error) {
+func marshalWindow(p uintptr) (interface{}, error) {
 	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

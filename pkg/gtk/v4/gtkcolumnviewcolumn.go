@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkcolumnviewcolumn.go.
+var GTypeColumnViewColumn = externglib.Type(C.gtk_column_view_column_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_column_view_column_get_type()), F: marshalColumnViewColumner},
+		{T: GTypeColumnViewColumn, F: marshalColumnViewColumn},
 	})
 }
 
@@ -61,7 +64,7 @@ func wrapColumnViewColumn(obj *externglib.Object) *ColumnViewColumn {
 	}
 }
 
-func marshalColumnViewColumner(p uintptr) (interface{}, error) {
+func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 	return wrapColumnViewColumn(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

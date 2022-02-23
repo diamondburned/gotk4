@@ -29,9 +29,12 @@ import (
 // extern void _gotk4_gtk3_CellAccessibleParentIface_update_relationset(GtkCellAccessibleParent*, GtkCellAccessible*, AtkRelationSet*);
 import "C"
 
+// glib.Type values for gtkcellaccessibleparent.go.
+var GTypeCellAccessibleParent = externglib.Type(C.gtk_cell_accessible_parent_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_accessible_parent_get_type()), F: marshalCellAccessibleParenter},
+		{T: GTypeCellAccessibleParent, F: marshalCellAccessibleParent},
 	})
 }
 
@@ -295,7 +298,7 @@ func wrapCellAccessibleParent(obj *externglib.Object) *CellAccessibleParent {
 	}
 }
 
-func marshalCellAccessibleParenter(p uintptr) (interface{}, error) {
+func marshalCellAccessibleParent(p uintptr) (interface{}, error) {
 	return wrapCellAccessibleParent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

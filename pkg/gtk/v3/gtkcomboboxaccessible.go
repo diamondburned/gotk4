@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkcomboboxaccessible.go.
+var GTypeComboBoxAccessible = externglib.Type(C.gtk_combo_box_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_combo_box_accessible_get_type()), F: marshalComboBoxAccessibler},
+		{T: GTypeComboBoxAccessible, F: marshalComboBoxAccessible},
 	})
 }
 
@@ -71,6 +74,6 @@ func wrapComboBoxAccessible(obj *externglib.Object) *ComboBoxAccessible {
 	}
 }
 
-func marshalComboBoxAccessibler(p uintptr) (interface{}, error) {
+func marshalComboBoxAccessible(p uintptr) (interface{}, error) {
 	return wrapComboBoxAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

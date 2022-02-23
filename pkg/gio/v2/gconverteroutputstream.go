@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gconverteroutputstream.go.
+var GTypeConverterOutputStream = externglib.Type(C.g_converter_output_stream_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_converter_output_stream_get_type()), F: marshalConverterOutputStreamer},
+		{T: GTypeConverterOutputStream, F: marshalConverterOutputStream},
 	})
 }
 
@@ -70,7 +73,7 @@ func wrapConverterOutputStream(obj *externglib.Object) *ConverterOutputStream {
 	}
 }
 
-func marshalConverterOutputStreamer(p uintptr) (interface{}, error) {
+func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 	return wrapConverterOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

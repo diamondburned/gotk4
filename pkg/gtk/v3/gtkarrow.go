@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkarrow.go.
+var GTypeArrow = externglib.Type(C.gtk_arrow_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrower},
+		{T: GTypeArrow, F: marshalArrow},
 	})
 }
 
@@ -81,7 +84,7 @@ func wrapArrow(obj *externglib.Object) *Arrow {
 	}
 }
 
-func marshalArrower(p uintptr) (interface{}, error) {
+func marshalArrow(p uintptr) (interface{}, error) {
 	return wrapArrow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -28,11 +28,18 @@ import (
 // extern void _gotk4_gio2_MenuModel_ConnectItemsChanged(gpointer, gint, gint, gint, guintptr);
 import "C"
 
+// glib.Type values for gmenumodel.go.
+var (
+	GTypeMenuAttributeIter = externglib.Type(C.g_menu_attribute_iter_get_type())
+	GTypeMenuLinkIter      = externglib.Type(C.g_menu_link_iter_get_type())
+	GTypeMenuModel         = externglib.Type(C.g_menu_model_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_menu_attribute_iter_get_type()), F: marshalMenuAttributeIterer},
-		{T: externglib.Type(C.g_menu_link_iter_get_type()), F: marshalMenuLinkIterer},
-		{T: externglib.Type(C.g_menu_model_get_type()), F: marshalMenuModeller},
+		{T: GTypeMenuAttributeIter, F: marshalMenuAttributeIter},
+		{T: GTypeMenuLinkIter, F: marshalMenuLinkIter},
+		{T: GTypeMenuModel, F: marshalMenuModel},
 	})
 }
 
@@ -176,7 +183,7 @@ func wrapMenuAttributeIter(obj *externglib.Object) *MenuAttributeIter {
 	}
 }
 
-func marshalMenuAttributeIterer(p uintptr) (interface{}, error) {
+func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 	return wrapMenuAttributeIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -426,7 +433,7 @@ func wrapMenuLinkIter(obj *externglib.Object) *MenuLinkIter {
 	}
 }
 
-func marshalMenuLinkIterer(p uintptr) (interface{}, error) {
+func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 	return wrapMenuLinkIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
@@ -1071,7 +1078,7 @@ func wrapMenuModel(obj *externglib.Object) *MenuModel {
 	}
 }
 
-func marshalMenuModeller(p uintptr) (interface{}, error) {
+func marshalMenuModel(p uintptr) (interface{}, error) {
 	return wrapMenuModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

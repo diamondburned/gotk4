@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk3_GestureMultiPress_ConnectStopped(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkgesturemultipress.go.
+var GTypeGestureMultiPress = externglib.Type(C.gtk_gesture_multi_press_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_multi_press_get_type()), F: marshalGestureMultiPresser},
+		{T: GTypeGestureMultiPress, F: marshalGestureMultiPress},
 	})
 }
 
@@ -69,7 +72,7 @@ func wrapGestureMultiPress(obj *externglib.Object) *GestureMultiPress {
 	}
 }
 
-func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
+func marshalGestureMultiPress(p uintptr) (interface{}, error) {
 	return wrapGestureMultiPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkconstraintguide.go.
+var GTypeConstraintGuide = externglib.Type(C.gtk_constraint_guide_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_constraint_guide_get_type()), F: marshalConstraintGuider},
+		{T: GTypeConstraintGuide, F: marshalConstraintGuide},
 	})
 }
 
@@ -63,7 +66,7 @@ func wrapConstraintGuide(obj *externglib.Object) *ConstraintGuide {
 	}
 }
 
-func marshalConstraintGuider(p uintptr) (interface{}, error) {
+func marshalConstraintGuide(p uintptr) (interface{}, error) {
 	return wrapConstraintGuide(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

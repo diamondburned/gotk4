@@ -15,10 +15,16 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkrevealer.go.
+var (
+	GTypeRevealerTransitionType = externglib.Type(C.gtk_revealer_transition_type_get_type())
+	GTypeRevealer               = externglib.Type(C.gtk_revealer_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_revealer_transition_type_get_type()), F: marshalRevealerTransitionType},
-		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealerer},
+		{T: GTypeRevealerTransitionType, F: marshalRevealerTransitionType},
+		{T: GTypeRevealer, F: marshalRevealer},
 	})
 }
 
@@ -133,7 +139,7 @@ func wrapRevealer(obj *externglib.Object) *Revealer {
 	}
 }
 
-func marshalRevealerer(p uintptr) (interface{}, error) {
+func marshalRevealer(p uintptr) (interface{}, error) {
 	return wrapRevealer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

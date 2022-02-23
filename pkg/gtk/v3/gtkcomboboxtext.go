@@ -17,9 +17,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkcomboboxtext.go.
+var GTypeComboBoxText = externglib.Type(C.gtk_combo_box_text_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_combo_box_text_get_type()), F: marshalComboBoxTexter},
+		{T: GTypeComboBoxText, F: marshalComboBoxText},
 	})
 }
 
@@ -133,7 +136,7 @@ func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 	}
 }
 
-func marshalComboBoxTexter(p uintptr) (interface{}, error) {
+func marshalComboBoxText(p uintptr) (interface{}, error) {
 	return wrapComboBoxText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gdkdrop.go.
+var GTypeDrop = externglib.Type(C.gdk_drop_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDropper},
+		{T: GTypeDrop, F: marshalDrop},
 	})
 }
 
@@ -67,7 +70,7 @@ func wrapDrop(obj *externglib.Object) *Drop {
 	}
 }
 
-func marshalDropper(p uintptr) (interface{}, error) {
+func marshalDrop(p uintptr) (interface{}, error) {
 	return wrapDrop(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

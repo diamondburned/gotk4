@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkwidgetpaintable.go.
+var GTypeWidgetPaintable = externglib.Type(C.gtk_widget_paintable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_widget_paintable_get_type()), F: marshalWidgetPaintabler},
+		{T: GTypeWidgetPaintable, F: marshalWidgetPaintable},
 	})
 }
 
@@ -72,7 +75,7 @@ func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
 	}
 }
 
-func marshalWidgetPaintabler(p uintptr) (interface{}, error) {
+func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 	return wrapWidgetPaintable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

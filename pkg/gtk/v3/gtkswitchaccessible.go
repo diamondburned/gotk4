@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkswitchaccessible.go.
+var GTypeSwitchAccessible = externglib.Type(C.gtk_switch_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_switch_accessible_get_type()), F: marshalSwitchAccessibler},
+		{T: GTypeSwitchAccessible, F: marshalSwitchAccessible},
 	})
 }
 
@@ -63,6 +66,6 @@ func wrapSwitchAccessible(obj *externglib.Object) *SwitchAccessible {
 	}
 }
 
-func marshalSwitchAccessibler(p uintptr) (interface{}, error) {
+func marshalSwitchAccessible(p uintptr) (interface{}, error) {
 	return wrapSwitchAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

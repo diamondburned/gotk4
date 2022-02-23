@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkmenushellaccessible.go.
+var GTypeMenuShellAccessible = externglib.Type(C.gtk_menu_shell_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_shell_accessible_get_type()), F: marshalMenuShellAccessibler},
+		{T: GTypeMenuShellAccessible, F: marshalMenuShellAccessible},
 	})
 }
 
@@ -65,6 +68,6 @@ func wrapMenuShellAccessible(obj *externglib.Object) *MenuShellAccessible {
 	}
 }
 
-func marshalMenuShellAccessibler(p uintptr) (interface{}, error) {
+func marshalMenuShellAccessible(p uintptr) (interface{}, error) {
 	return wrapMenuShellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

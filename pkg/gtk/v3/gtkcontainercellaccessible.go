@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkcontainercellaccessible.go.
+var GTypeContainerCellAccessible = externglib.Type(C.gtk_container_cell_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_container_cell_accessible_get_type()), F: marshalContainerCellAccessibler},
+		{T: GTypeContainerCellAccessible, F: marshalContainerCellAccessible},
 	})
 }
 
@@ -72,7 +75,7 @@ func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessibl
 	}
 }
 
-func marshalContainerCellAccessibler(p uintptr) (interface{}, error) {
+func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
 	return wrapContainerCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

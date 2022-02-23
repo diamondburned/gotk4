@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for atkgobjectaccessible.go.
+var GTypeGObjectAccessible = externglib.Type(C.atk_gobject_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_gobject_accessible_get_type()), F: marshalGObjectAccessibler},
+		{T: GTypeGObjectAccessible, F: marshalGObjectAccessible},
 	})
 }
 
@@ -53,7 +56,7 @@ func wrapGObjectAccessible(obj *externglib.Object) *GObjectAccessible {
 	}
 }
 
-func marshalGObjectAccessibler(p uintptr) (interface{}, error) {
+func marshalGObjectAccessible(p uintptr) (interface{}, error) {
 	return wrapGObjectAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

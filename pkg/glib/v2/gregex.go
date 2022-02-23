@@ -18,10 +18,16 @@ import (
 // #include <glib.h>
 import "C"
 
+// glib.Type values for gregex.go.
+var (
+	GTypeMatchInfo = externglib.Type(C.g_match_info_get_type())
+	GTypeRegex     = externglib.Type(C.g_regex_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_match_info_get_type()), F: marshalMatchInfo},
-		{T: externglib.Type(C.g_regex_get_type()), F: marshalRegex},
+		{T: GTypeMatchInfo, F: marshalMatchInfo},
+		{T: GTypeRegex, F: marshalRegex},
 	})
 }
 

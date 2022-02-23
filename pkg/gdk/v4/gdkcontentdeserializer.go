@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gdkcontentdeserializer.go.
+var GTypeContentDeserializer = externglib.Type(C.gdk_content_deserializer_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_content_deserializer_get_type()), F: marshalContentDeserializerer},
+		{T: GTypeContentDeserializer, F: marshalContentDeserializer},
 	})
 }
 
@@ -137,7 +140,7 @@ func wrapContentDeserializer(obj *externglib.Object) *ContentDeserializer {
 	}
 }
 
-func marshalContentDeserializerer(p uintptr) (interface{}, error) {
+func marshalContentDeserializer(p uintptr) (interface{}, error) {
 	return wrapContentDeserializer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

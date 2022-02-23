@@ -20,9 +20,12 @@ import (
 // extern gint _gotk4_atk1_StreamableContentIface_get_n_mime_types(AtkStreamableContent*);
 import "C"
 
+// glib.Type values for atkstreamablecontent.go.
+var GTypeStreamableContent = externglib.Type(C.atk_streamable_content_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_streamable_content_get_type()), F: marshalStreamableContenter},
+		{T: GTypeStreamableContent, F: marshalStreamableContent},
 	})
 }
 
@@ -201,7 +204,7 @@ func wrapStreamableContent(obj *externglib.Object) *StreamableContent {
 	}
 }
 
-func marshalStreamableContenter(p uintptr) (interface{}, error) {
+func marshalStreamableContent(p uintptr) (interface{}, error) {
 	return wrapStreamableContent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

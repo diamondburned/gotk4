@@ -15,9 +15,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkdropdown.go.
+var GTypeDropDown = externglib.Type(C.gtk_drop_down_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_down_get_type()), F: marshalDropDowner},
+		{T: GTypeDropDown, F: marshalDropDown},
 	})
 }
 
@@ -91,7 +94,7 @@ func wrapDropDown(obj *externglib.Object) *DropDown {
 	}
 }
 
-func marshalDropDowner(p uintptr) (interface{}, error) {
+func marshalDropDown(p uintptr) (interface{}, error) {
 	return wrapDropDown(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

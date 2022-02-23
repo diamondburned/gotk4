@@ -43,9 +43,12 @@ import (
 // extern void _gotk4_gio2_Mount_ConnectUnmounted(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gmount.go.
+var GTypeMount = externglib.Type(C.g_mount_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_mount_get_type()), F: marshalMounter},
+		{T: GTypeMount, F: marshalMount},
 	})
 }
 
@@ -144,7 +147,7 @@ func wrapMount(obj *externglib.Object) *Mount {
 	}
 }
 
-func marshalMounter(p uintptr) (interface{}, error) {
+func marshalMount(p uintptr) (interface{}, error) {
 	return wrapMount(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

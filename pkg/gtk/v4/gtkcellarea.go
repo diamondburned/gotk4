@@ -38,9 +38,12 @@ import (
 // extern void _gotk4_gtk4_CellArea_ConnectRemoveEditable(gpointer, GtkCellRenderer*, GtkCellEditable*, guintptr);
 import "C"
 
+// glib.Type values for gtkcellarea.go.
+var GTypeCellArea = externglib.Type(C.gtk_cell_area_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_area_get_type()), F: marshalCellAreaer},
+		{T: GTypeCellArea, F: marshalCellArea},
 	})
 }
 
@@ -1101,7 +1104,7 @@ func wrapCellArea(obj *externglib.Object) *CellArea {
 	}
 }
 
-func marshalCellAreaer(p uintptr) (interface{}, error) {
+func marshalCellArea(p uintptr) (interface{}, error) {
 	return wrapCellArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

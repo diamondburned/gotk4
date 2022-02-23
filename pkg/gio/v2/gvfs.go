@@ -30,9 +30,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gvfs.go.
+var GTypeVFS = externglib.Type(C.g_vfs_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_vfs_get_type()), F: marshalVFSer},
+		{T: GTypeVFS, F: marshalVFS},
 	})
 }
 
@@ -385,7 +388,7 @@ func wrapVFS(obj *externglib.Object) *VFS {
 	}
 }
 
-func marshalVFSer(p uintptr) (interface{}, error) {
+func marshalVFS(p uintptr) (interface{}, error) {
 	return wrapVFS(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

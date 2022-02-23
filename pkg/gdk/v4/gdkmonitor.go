@@ -17,10 +17,16 @@ import (
 // extern void _gotk4_gdk4_Monitor_ConnectInvalidate(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gdkmonitor.go.
+var (
+	GTypeSubpixelLayout = externglib.Type(C.gdk_subpixel_layout_get_type())
+	GTypeMonitor        = externglib.Type(C.gdk_monitor_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
-		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitorrer},
+		{T: GTypeSubpixelLayout, F: marshalSubpixelLayout},
+		{T: GTypeMonitor, F: marshalMonitor},
 	})
 }
 
@@ -100,7 +106,7 @@ func wrapMonitor(obj *externglib.Object) *Monitor {
 	}
 }
 
-func marshalMonitorrer(p uintptr) (interface{}, error) {
+func marshalMonitor(p uintptr) (interface{}, error) {
 	return wrapMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

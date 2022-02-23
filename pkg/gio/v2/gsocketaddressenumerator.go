@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
+// glib.Type values for gsocketaddressenumerator.go.
+var GTypeSocketAddressEnumerator = externglib.Type(C.g_socket_address_enumerator_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_address_enumerator_get_type()), F: marshalSocketAddressEnumeratorrer},
+		{T: GTypeSocketAddressEnumerator, F: marshalSocketAddressEnumerator},
 	})
 }
 
@@ -192,7 +195,7 @@ func wrapSocketAddressEnumerator(obj *externglib.Object) *SocketAddressEnumerato
 	}
 }
 
-func marshalSocketAddressEnumeratorrer(p uintptr) (interface{}, error) {
+func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	return wrapSocketAddressEnumerator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

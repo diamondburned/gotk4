@@ -19,11 +19,18 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gmain.go.
+var (
+	GTypeMainContext = externglib.Type(C.g_main_context_get_type())
+	GTypeMainLoop    = externglib.Type(C.g_main_loop_get_type())
+	GTypeSource      = externglib.Type(C.g_source_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_main_context_get_type()), F: marshalMainContext},
-		{T: externglib.Type(C.g_main_loop_get_type()), F: marshalMainLoop},
-		{T: externglib.Type(C.g_source_get_type()), F: marshalSource},
+		{T: GTypeMainContext, F: marshalMainContext},
+		{T: GTypeMainLoop, F: marshalMainLoop},
+		{T: GTypeSource, F: marshalSource},
 	})
 }
 

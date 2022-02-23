@@ -20,9 +20,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkdragdest.go.
+var GTypeDestDefaults = externglib.Type(C.gtk_dest_defaults_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_dest_defaults_get_type()), F: marshalDestDefaults},
+		{T: GTypeDestDefaults, F: marshalDestDefaults},
 	})
 }
 

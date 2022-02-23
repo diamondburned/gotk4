@@ -13,9 +13,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtklistbase.go.
+var GTypeListBase = externglib.Type(C.gtk_list_base_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_base_get_type()), F: marshalListBaser},
+		{T: GTypeListBase, F: marshalListBase},
 	})
 }
 
@@ -84,7 +87,7 @@ func wrapListBase(obj *externglib.Object) *ListBase {
 	}
 }
 
-func marshalListBaser(p uintptr) (interface{}, error) {
+func marshalListBase(p uintptr) (interface{}, error) {
 	return wrapListBase(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

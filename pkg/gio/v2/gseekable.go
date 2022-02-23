@@ -22,9 +22,12 @@ import (
 // extern goffset _gotk4_gio2_SeekableIface_tell(GSeekable*);
 import "C"
 
+// glib.Type values for gseekable.go.
+var GTypeSeekable = externglib.Type(C.g_seekable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_seekable_get_type()), F: marshalSeekabler},
+		{T: GTypeSeekable, F: marshalSeekable},
 	})
 }
 
@@ -74,7 +77,7 @@ func wrapSeekable(obj *externglib.Object) *Seekable {
 	}
 }
 
-func marshalSeekabler(p uintptr) (interface{}, error) {
+func marshalSeekable(p uintptr) (interface{}, error) {
 	return wrapSeekable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

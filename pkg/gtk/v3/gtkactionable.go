@@ -23,9 +23,12 @@ import (
 // extern void _gotk4_gtk3_ActionableInterface_set_action_target_value(GtkActionable*, GVariant*);
 import "C"
 
+// glib.Type values for gtkactionable.go.
+var GTypeActionable = externglib.Type(C.gtk_actionable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_actionable_get_type()), F: marshalActionabler},
+		{T: GTypeActionable, F: marshalActionable},
 	})
 }
 
@@ -219,7 +222,7 @@ func wrapActionable(obj *externglib.Object) *Actionable {
 	}
 }
 
-func marshalActionabler(p uintptr) (interface{}, error) {
+func marshalActionable(p uintptr) (interface{}, error) {
 	return wrapActionable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

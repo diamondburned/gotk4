@@ -16,9 +16,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkx11monitor.go.
+var GTypeX11Monitor = externglib.Type(C.gdk_x11_monitor_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_monitor_get_type()), F: marshalX11Monitorrer},
+		{T: GTypeX11Monitor, F: marshalX11Monitor},
 	})
 }
 
@@ -51,7 +54,7 @@ func wrapX11Monitor(obj *externglib.Object) *X11Monitor {
 	}
 }
 
-func marshalX11Monitorrer(p uintptr) (interface{}, error) {
+func marshalX11Monitor(p uintptr) (interface{}, error) {
 	return wrapX11Monitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

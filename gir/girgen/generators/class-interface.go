@@ -116,7 +116,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	}
 
 	{{ if .HasMarshaler }}
-	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
+	func marshal{{ .StructName }}(p uintptr) (interface{}, error) {
 		return {{ $wrapper }}(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 	}
 	{{ end }}
@@ -226,7 +226,7 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 
 	if igen.GLibGetType != "" && !types.FilterCType(gen, igen.GLibGetType) {
 		data.HasMarshaler = true
-		writer.Header().AddMarshaler(igen.GLibGetType, igen.InterfaceName)
+		writer.Header().AddMarshaler(igen.GLibGetType, igen.StructName)
 	}
 
 	writer.Pen().WriteTmpl(classInterfaceTmpl, data)

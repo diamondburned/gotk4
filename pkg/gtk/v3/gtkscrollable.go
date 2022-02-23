@@ -18,9 +18,12 @@ import (
 // extern gboolean _gotk4_gtk3_ScrollableInterface_get_border(GtkScrollable*, GtkBorder*);
 import "C"
 
+// glib.Type values for gtkscrollable.go.
+var GTypeScrollable = externglib.Type(C.gtk_scrollable_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scrollable_get_type()), F: marshalScrollabler},
+		{T: GTypeScrollable, F: marshalScrollable},
 	})
 }
 
@@ -130,7 +133,7 @@ func wrapScrollable(obj *externglib.Object) *Scrollable {
 	}
 }
 
-func marshalScrollabler(p uintptr) (interface{}, error) {
+func marshalScrollable(p uintptr) (interface{}, error) {
 	return wrapScrollable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -19,9 +19,12 @@ import (
 // extern gint _gotk4_atk1_TableCellIface_get_row_span(AtkTableCell*);
 import "C"
 
+// glib.Type values for atktablecell.go.
+var GTypeTableCell = externglib.Type(C.atk_table_cell_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_table_cell_get_type()), F: marshalTableCeller},
+		{T: GTypeTableCell, F: marshalTableCell},
 	})
 }
 
@@ -200,7 +203,7 @@ func wrapTableCell(obj *externglib.Object) *TableCell {
 	}
 }
 
-func marshalTableCeller(p uintptr) (interface{}, error) {
+func marshalTableCell(p uintptr) (interface{}, error) {
 	return wrapTableCell(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

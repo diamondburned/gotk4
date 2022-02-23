@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk3_Adjustment_ConnectValueChanged(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkadjustment.go.
+var GTypeAdjustment = externglib.Type(C.gtk_adjustment_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_adjustment_get_type()), F: marshalAdjustmenter},
+		{T: GTypeAdjustment, F: marshalAdjustment},
 	})
 }
 
@@ -103,7 +106,7 @@ func wrapAdjustment(obj *externglib.Object) *Adjustment {
 	}
 }
 
-func marshalAdjustmenter(p uintptr) (interface{}, error) {
+func marshalAdjustment(p uintptr) (interface{}, error) {
 	return wrapAdjustment(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -14,9 +14,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkstacksidebar.go.
+var GTypeStackSidebar = externglib.Type(C.gtk_stack_sidebar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_sidebar_get_type()), F: marshalStackSidebarrer},
+		{T: GTypeStackSidebar, F: marshalStackSidebar},
 	})
 }
 
@@ -64,7 +67,7 @@ func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 	}
 }
 
-func marshalStackSidebarrer(p uintptr) (interface{}, error) {
+func marshalStackSidebar(p uintptr) (interface{}, error) {
 	return wrapStackSidebar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

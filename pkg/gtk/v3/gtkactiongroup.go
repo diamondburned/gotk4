@@ -25,9 +25,12 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
+// glib.Type values for gtkactiongroup.go.
+var GTypeActionGroup = externglib.Type(C.gtk_action_group_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_action_group_get_type()), F: marshalActionGrouper},
+		{T: GTypeActionGroup, F: marshalActionGroup},
 	})
 }
 
@@ -153,7 +156,7 @@ func wrapActionGroup(obj *externglib.Object) *ActionGroup {
 	}
 }
 
-func marshalActionGrouper(p uintptr) (interface{}, error) {
+func marshalActionGroup(p uintptr) (interface{}, error) {
 	return wrapActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

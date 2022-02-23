@@ -13,9 +13,12 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
+// glib.Type values for gskcairorenderer.go.
+var GTypeCairoRenderer = externglib.Type(C.gsk_cairo_renderer_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_cairo_renderer_get_type()), F: marshalCairoRendererer},
+		{T: GTypeCairoRenderer, F: marshalCairoRenderer},
 	})
 }
 
@@ -51,7 +54,7 @@ func wrapCairoRenderer(obj *externglib.Object) *CairoRenderer {
 	}
 }
 
-func marshalCairoRendererer(p uintptr) (interface{}, error) {
+func marshalCairoRenderer(p uintptr) (interface{}, error) {
 	return wrapCairoRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

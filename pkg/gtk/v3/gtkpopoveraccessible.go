@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkpopoveraccessible.go.
+var GTypePopoverAccessible = externglib.Type(C.gtk_popover_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_popover_accessible_get_type()), F: marshalPopoverAccessibler},
+		{T: GTypePopoverAccessible, F: marshalPopoverAccessible},
 	})
 }
 
@@ -60,6 +63,6 @@ func wrapPopoverAccessible(obj *externglib.Object) *PopoverAccessible {
 	}
 }
 
-func marshalPopoverAccessibler(p uintptr) (interface{}, error) {
+func marshalPopoverAccessible(p uintptr) (interface{}, error) {
 	return wrapPopoverAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

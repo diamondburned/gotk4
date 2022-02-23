@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkshortcutsgroup.go.
+var GTypeShortcutsGroup = externglib.Type(C.gtk_shortcuts_group_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_group_get_type()), F: marshalShortcutsGrouper},
+		{T: GTypeShortcutsGroup, F: marshalShortcutsGroup},
 	})
 }
 
@@ -75,6 +78,6 @@ func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
 	}
 }
 
-func marshalShortcutsGrouper(p uintptr) (interface{}, error) {
+func marshalShortcutsGroup(p uintptr) (interface{}, error) {
 	return wrapShortcutsGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

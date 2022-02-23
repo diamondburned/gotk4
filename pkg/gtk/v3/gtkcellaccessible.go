@@ -18,9 +18,12 @@ import (
 // extern void _gotk4_gtk3_CellAccessibleClass_update_cache(GtkCellAccessible*, gboolean);
 import "C"
 
+// glib.Type values for gtkcellaccessible.go.
+var GTypeCellAccessible = externglib.Type(C.gtk_cell_accessible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_accessible_get_type()), F: marshalCellAccessibler},
+		{T: GTypeCellAccessible, F: marshalCellAccessible},
 	})
 }
 
@@ -101,6 +104,6 @@ func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 	}
 }
 
-func marshalCellAccessibler(p uintptr) (interface{}, error) {
+func marshalCellAccessible(p uintptr) (interface{}, error) {
 	return wrapCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

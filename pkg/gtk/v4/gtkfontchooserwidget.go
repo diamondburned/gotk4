@@ -13,9 +13,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// glib.Type values for gtkfontchooserwidget.go.
+var GTypeFontChooserWidget = externglib.Type(C.gtk_font_chooser_widget_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidgetter},
+		{T: GTypeFontChooserWidget, F: marshalFontChooserWidget},
 	})
 }
 
@@ -74,7 +77,7 @@ func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 	}
 }
 
-func marshalFontChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 	return wrapFontChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkinvisible.go.
+var GTypeInvisible = externglib.Type(C.gtk_invisible_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_invisible_get_type()), F: marshalInvisibler},
+		{T: GTypeInvisible, F: marshalInvisible},
 	})
 }
 
@@ -67,7 +70,7 @@ func wrapInvisible(obj *externglib.Object) *Invisible {
 	}
 }
 
-func marshalInvisibler(p uintptr) (interface{}, error) {
+func marshalInvisible(p uintptr) (interface{}, error) {
 	return wrapInvisible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

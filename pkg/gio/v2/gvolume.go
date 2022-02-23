@@ -39,9 +39,12 @@ import (
 // extern void _gotk4_gio2_Volume_ConnectRemoved(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gvolume.go.
+var GTypeVolume = externglib.Type(C.g_volume_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_volume_get_type()), F: marshalVolumer},
+		{T: GTypeVolume, F: marshalVolume},
 	})
 }
 
@@ -175,7 +178,7 @@ func wrapVolume(obj *externglib.Object) *Volume {
 	}
 }
 
-func marshalVolumer(p uintptr) (interface{}, error) {
+func marshalVolume(p uintptr) (interface{}, error) {
 	return wrapVolume(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

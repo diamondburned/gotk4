@@ -19,9 +19,12 @@ import (
 // extern void _gotk4_gio2_ActionMapInterface_remove_action(GActionMap*, gchar*);
 import "C"
 
+// glib.Type values for gactionmap.go.
+var GTypeActionMap = externglib.Type(C.g_action_map_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMapper},
+		{T: GTypeActionMap, F: marshalActionMap},
 	})
 }
 
@@ -166,7 +169,7 @@ func wrapActionMap(obj *externglib.Object) *ActionMap {
 	}
 }
 
-func marshalActionMapper(p uintptr) (interface{}, error) {
+func marshalActionMap(p uintptr) (interface{}, error) {
 	return wrapActionMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

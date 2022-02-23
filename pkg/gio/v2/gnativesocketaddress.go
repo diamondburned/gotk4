@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gnativesocketaddress.go.
+var GTypeNativeSocketAddress = externglib.Type(C.g_native_socket_address_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_native_socket_address_get_type()), F: marshalNativeSocketAddresser},
+		{T: GTypeNativeSocketAddress, F: marshalNativeSocketAddress},
 	})
 }
 
@@ -54,7 +57,7 @@ func wrapNativeSocketAddress(obj *externglib.Object) *NativeSocketAddress {
 	}
 }
 
-func marshalNativeSocketAddresser(p uintptr) (interface{}, error) {
+func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	return wrapNativeSocketAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

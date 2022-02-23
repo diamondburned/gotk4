@@ -15,10 +15,16 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkdevicepad.go.
+var (
+	GTypeDevicePadFeature = externglib.Type(C.gdk_device_pad_feature_get_type())
+	GTypeDevicePad        = externglib.Type(C.gdk_device_pad_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
-		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePadder},
+		{T: GTypeDevicePadFeature, F: marshalDevicePadFeature},
+		{T: GTypeDevicePad, F: marshalDevicePad},
 	})
 }
 
@@ -109,7 +115,7 @@ func wrapDevicePad(obj *externglib.Object) *DevicePad {
 	}
 }
 
-func marshalDevicePadder(p uintptr) (interface{}, error) {
+func marshalDevicePad(p uintptr) (interface{}, error) {
 	return wrapDevicePad(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

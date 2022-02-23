@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk4_Label_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
 import "C"
 
+// glib.Type values for gtklabel.go.
+var GTypeLabel = externglib.Type(C.gtk_label_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_label_get_type()), F: marshalLabeller},
+		{T: GTypeLabel, F: marshalLabel},
 	})
 }
 
@@ -229,7 +232,7 @@ func wrapLabel(obj *externglib.Object) *Label {
 	}
 }
 
-func marshalLabeller(p uintptr) (interface{}, error) {
+func marshalLabel(p uintptr) (interface{}, error) {
 	return wrapLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

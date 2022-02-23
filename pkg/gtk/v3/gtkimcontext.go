@@ -42,9 +42,12 @@ import (
 // extern void _gotk4_gtk3_IMContext_ConnectPreeditStart(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkimcontext.go.
+var GTypeIMContext = externglib.Type(C.gtk_im_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_im_context_get_type()), F: marshalIMContexter},
+		{T: GTypeIMContext, F: marshalIMContext},
 	})
 }
 
@@ -558,7 +561,7 @@ func wrapIMContext(obj *externglib.Object) *IMContext {
 	}
 }
 
-func marshalIMContexter(p uintptr) (interface{}, error) {
+func marshalIMContext(p uintptr) (interface{}, error) {
 	return wrapIMContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

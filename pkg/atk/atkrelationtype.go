@@ -14,9 +14,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for atkrelationtype.go.
+var GTypeRelationType = externglib.Type(C.atk_relation_type_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_relation_type_get_type()), F: marshalRelationType},
+		{T: GTypeRelationType, F: marshalRelationType},
 	})
 }
 

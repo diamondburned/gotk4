@@ -22,9 +22,12 @@ import (
 // extern void _gotk4_gtk3_Statusbar_ConnectTextPushed(gpointer, guint, gchar*, guintptr);
 import "C"
 
+// glib.Type values for gtkstatusbar.go.
+var GTypeStatusbar = externglib.Type(C.gtk_statusbar_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbarrer},
+		{T: GTypeStatusbar, F: marshalStatusbar},
 	})
 }
 
@@ -167,7 +170,7 @@ func wrapStatusbar(obj *externglib.Object) *Statusbar {
 	}
 }
 
-func marshalStatusbarrer(p uintptr) (interface{}, error) {
+func marshalStatusbar(p uintptr) (interface{}, error) {
 	return wrapStatusbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

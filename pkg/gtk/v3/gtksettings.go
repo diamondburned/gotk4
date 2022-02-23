@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtksettings.go.
+var GTypeSettings = externglib.Type(C.gtk_settings_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_settings_get_type()), F: marshalSettingser},
+		{T: GTypeSettings, F: marshalSettings},
 	})
 }
 
@@ -86,7 +89,7 @@ func wrapSettings(obj *externglib.Object) *Settings {
 	}
 }
 
-func marshalSettingser(p uintptr) (interface{}, error) {
+func marshalSettings(p uintptr) (interface{}, error) {
 	return wrapSettings(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

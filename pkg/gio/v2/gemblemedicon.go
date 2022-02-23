@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gemblemedicon.go.
+var GTypeEmblemedIcon = externglib.Type(C.g_emblemed_icon_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIconner},
+		{T: GTypeEmblemedIcon, F: marshalEmblemedIcon},
 	})
 }
 
@@ -59,7 +62,7 @@ func wrapEmblemedIcon(obj *externglib.Object) *EmblemedIcon {
 	}
 }
 
-func marshalEmblemedIconner(p uintptr) (interface{}, error) {
+func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	return wrapEmblemedIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

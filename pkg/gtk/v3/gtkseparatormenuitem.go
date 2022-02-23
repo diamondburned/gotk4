@@ -16,9 +16,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkseparatormenuitem.go.
+var GTypeSeparatorMenuItem = externglib.Type(C.gtk_separator_menu_item_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_menu_item_get_type()), F: marshalSeparatorMenuItemmer},
+		{T: GTypeSeparatorMenuItem, F: marshalSeparatorMenuItem},
 	})
 }
 
@@ -93,7 +96,7 @@ func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 	}
 }
 
-func marshalSeparatorMenuItemmer(p uintptr) (interface{}, error) {
+func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
 	return wrapSeparatorMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -20,10 +20,16 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkpadcontroller.go.
+var (
+	GTypePadActionType = externglib.Type(C.gtk_pad_action_type_get_type())
+	GTypePadController = externglib.Type(C.gtk_pad_controller_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_pad_action_type_get_type()), F: marshalPadActionType},
-		{T: externglib.Type(C.gtk_pad_controller_get_type()), F: marshalPadControllerer},
+		{T: GTypePadActionType, F: marshalPadActionType},
+		{T: GTypePadController, F: marshalPadController},
 	})
 }
 
@@ -126,7 +132,7 @@ func wrapPadController(obj *externglib.Object) *PadController {
 	}
 }
 
-func marshalPadControllerer(p uintptr) (interface{}, error) {
+func marshalPadController(p uintptr) (interface{}, error) {
 	return wrapPadController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

@@ -21,9 +21,12 @@ import (
 // extern void _gotk4_gtk3_CellAreaContextClass_reset(GtkCellAreaContext*);
 import "C"
 
+// glib.Type values for gtkcellareacontext.go.
+var GTypeCellAreaContext = externglib.Type(C.gtk_cell_area_context_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_area_context_get_type()), F: marshalCellAreaContexter},
+		{T: GTypeCellAreaContext, F: marshalCellAreaContext},
 	})
 }
 
@@ -222,7 +225,7 @@ func wrapCellAreaContext(obj *externglib.Object) *CellAreaContext {
 	}
 }
 
-func marshalCellAreaContexter(p uintptr) (interface{}, error) {
+func marshalCellAreaContext(p uintptr) (interface{}, error) {
 	return wrapCellAreaContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

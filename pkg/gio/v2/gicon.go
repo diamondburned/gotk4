@@ -21,9 +21,12 @@ import (
 // extern guint _gotk4_gio2_IconIface_hash(GIcon*);
 import "C"
 
+// glib.Type values for gicon.go.
+var GTypeIcon = externglib.Type(C.g_icon_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_icon_get_type()), F: marshalIconner},
+		{T: GTypeIcon, F: marshalIcon},
 	})
 }
 
@@ -185,7 +188,7 @@ func wrapIcon(obj *externglib.Object) *Icon {
 	}
 }
 
-func marshalIconner(p uintptr) (interface{}, error) {
+func marshalIcon(p uintptr) (interface{}, error) {
 	return wrapIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

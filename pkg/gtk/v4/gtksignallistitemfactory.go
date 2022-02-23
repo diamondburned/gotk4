@@ -17,9 +17,12 @@ import (
 // extern void _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(gpointer, GtkListItem*, guintptr);
 import "C"
 
+// glib.Type values for gtksignallistitemfactory.go.
+var GTypeSignalListItemFactory = externglib.Type(C.gtk_signal_list_item_factory_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_signal_list_item_factory_get_type()), F: marshalSignalListItemFactorier},
+		{T: GTypeSignalListItemFactory, F: marshalSignalListItemFactory},
 	})
 }
 
@@ -92,7 +95,7 @@ func wrapSignalListItemFactory(obj *externglib.Object) *SignalListItemFactory {
 	}
 }
 
-func marshalSignalListItemFactorier(p uintptr) (interface{}, error) {
+func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 	return wrapSignalListItemFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

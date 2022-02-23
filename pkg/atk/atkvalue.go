@@ -27,10 +27,16 @@ import (
 // extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, gchar*, guintptr);
 import "C"
 
+// glib.Type values for atkvalue.go.
+var (
+	GTypeValueType = externglib.Type(C.atk_value_type_get_type())
+	GTypeValue     = externglib.Type(C.atk_value_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_value_type_get_type()), F: marshalValueType},
-		{T: externglib.Type(C.atk_value_get_type()), F: marshalValueer},
+		{T: GTypeValueType, F: marshalValueType},
+		{T: GTypeValue, F: marshalValue},
 	})
 }
 
@@ -551,7 +557,7 @@ func wrapValue(obj *externglib.Object) *Value {
 	}
 }
 
-func marshalValueer(p uintptr) (interface{}, error) {
+func marshalValue(p uintptr) (interface{}, error) {
 	return wrapValue(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

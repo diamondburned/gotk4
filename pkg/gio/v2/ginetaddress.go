@@ -16,9 +16,12 @@ import (
 // extern gchar* _gotk4_gio2_InetAddressClass_to_string(GInetAddress*);
 import "C"
 
+// glib.Type values for ginetaddress.go.
+var GTypeInetAddress = externglib.Type(C.g_inet_address_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_inet_address_get_type()), F: marshalInetAddresser},
+		{T: GTypeInetAddress, F: marshalInetAddress},
 	})
 }
 
@@ -84,7 +87,7 @@ func wrapInetAddress(obj *externglib.Object) *InetAddress {
 	}
 }
 
-func marshalInetAddresser(p uintptr) (interface{}, error) {
+func marshalInetAddress(p uintptr) (interface{}, error) {
 	return wrapInetAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

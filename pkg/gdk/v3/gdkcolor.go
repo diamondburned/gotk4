@@ -15,9 +15,12 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// glib.Type values for gdkcolor.go.
+var GTypeColor = externglib.Type(C.gdk_color_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_color_get_type()), F: marshalColor},
+		{T: GTypeColor, F: marshalColor},
 	})
 }
 

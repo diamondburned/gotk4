@@ -18,9 +18,12 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// glib.Type values for gtkaccellabel.go.
+var GTypeAccelLabel = externglib.Type(C.gtk_accel_label_get_type())
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_accel_label_get_type()), F: marshalAccelLabeller},
+		{T: GTypeAccelLabel, F: marshalAccelLabel},
 	})
 }
 
@@ -98,7 +101,7 @@ func wrapAccelLabel(obj *externglib.Object) *AccelLabel {
 	}
 }
 
-func marshalAccelLabeller(p uintptr) (interface{}, error) {
+func marshalAccelLabel(p uintptr) (interface{}, error) {
 	return wrapAccelLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

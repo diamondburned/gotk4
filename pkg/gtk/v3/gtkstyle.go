@@ -52,10 +52,16 @@ import (
 // extern void _gotk4_gtk3_Style_ConnectUnrealize(gpointer, guintptr);
 import "C"
 
+// glib.Type values for gtkstyle.go.
+var (
+	GTypeExpanderStyle = externglib.Type(C.gtk_expander_style_get_type())
+	GTypeStyle         = externglib.Type(C.gtk_style_get_type())
+)
+
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_expander_style_get_type()), F: marshalExpanderStyle},
-		{T: externglib.Type(C.gtk_style_get_type()), F: marshalStyler},
+		{T: GTypeExpanderStyle, F: marshalExpanderStyle},
+		{T: GTypeStyle, F: marshalStyle},
 	})
 }
 
@@ -2920,7 +2926,7 @@ func wrapStyle(obj *externglib.Object) *Style {
 	}
 }
 
-func marshalStyler(p uintptr) (interface{}, error) {
+func marshalStyle(p uintptr) (interface{}, error) {
 	return wrapStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 

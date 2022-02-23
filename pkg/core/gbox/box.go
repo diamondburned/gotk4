@@ -80,6 +80,10 @@ const minLegalPointer = 4096
 
 var registry slab.Slab
 
+func init() {
+	registry.Grow(1024)
+}
+
 // Assign assigns the given value and returns the fake pointer.
 func Assign(v interface{}) uintptr {
 	return registry.Put(v, false) + minLegalPointer

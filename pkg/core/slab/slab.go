@@ -25,6 +25,18 @@ type Slab struct {
 	free uintptr      // 1 word
 }
 
+// Grow grows the slab to the given capacity.
+func (s *Slab) Grow(n int) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if cap(s.list) < n {
+		new := make([]slabEntry, len(s.list), n)
+		copy(new, s.list)
+		s.list = new
+	}
+}
+
 // Put stores the entry inside the slab. If once is true, then when the entry is
 // retrieved using Get, it will also be wiped off the list.
 func (s *Slab) Put(entry interface{}, once bool) uintptr {

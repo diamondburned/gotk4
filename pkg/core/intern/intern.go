@@ -54,12 +54,9 @@ var shared = struct {
 	weak map[unsafe.Pointer]uintptr
 	// strong stores *Box while the object is still referenced by C but not Go.
 	strong map[unsafe.Pointer]*Box
-	// sharing keeps toggle notifies.
-	// sharing map[unsafe.Pointer]struct{}
 }{
-	weak:   make(map[unsafe.Pointer]uintptr),
-	strong: make(map[unsafe.Pointer]*Box),
-	// sharing: make(map[unsafe.Pointer]struct{}),
+	weak:   make(map[unsafe.Pointer]uintptr, 1024),
+	strong: make(map[unsafe.Pointer]*Box, 1024),
 }
 
 // ObjectClosure gets the FuncStack instance from the given GObject and GClosure

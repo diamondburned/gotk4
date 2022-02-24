@@ -969,11 +969,7 @@ func newValuePrimitive(v interface{}) *Value {
 		val.SetString(e)
 	case Objector:
 		val = InitValue(TypeObject)
-		val.SetInstance(uintptr(unsafe.Pointer(e.Native())))
-		// TODO: this likely won't work as intended: e might still be freed
-		// before the value is. The caller will have to somehow keep this one
-		// alive.
-		runtime.KeepAlive(e)
+		val.SetObject(InternObject(e))
 	}
 	return val
 }
@@ -1090,8 +1086,8 @@ func init() {
 func (m *marshalMap) lookup(v *Value) GValueMarshaler {
 	typ := v.Type()
 
-	// Check the inheritance tree for concrete classes.
-	for t := typ; t != 0; t = t.Parent() {
+	// Check the inheritance tree for concrete classes up until TypeObject.
+	for t := typ; t != 0 && t != TypeObject; t = t.Parent() {
 		f, ok := m.lookupType(t)
 		if ok {
 			return f
@@ -1283,7 +1279,7 @@ func marshalVariant(p uintptr) (interface{}, error) {
 // any concrete object type out, as long as there exists a marshaler for it.
 func (v *Value) GoValue() interface{} {
 	if !v.isValue() {
-		return nil
+		return InvalidValue
 	}
 
 	f := marshalers.lookup(v)
@@ -1406,6 +1402,13 @@ func (v *Value) SetString(val string) {
 func (v *Value) SetInstance(instance uintptr) {
 	C.g_value_set_instance(v.native(), C.gpointer(instance))
 	runtime.KeepAlive(v)
+}
+
+// SetObject is a wrapper around g_value_set_object().
+func (v *Value) SetObject(obj *Object) {
+	C.g_value_set_object(v.native(), C.gpointer(obj.native()))
+	runtime.KeepAlive(v)
+	runtime.KeepAlive(obj)
 }
 
 // SetPointer is a wrapper around g_value_set_pointer().
